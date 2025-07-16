@@ -4,99 +4,115 @@
   <context>
     <name>NavigationIndicator</name>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="85"/>
+      <location filename="../../NavigationIndicatorGui.py" line="86"/>
       <source>Select</source>
       <translation>Seç</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="86"/>
+      <location filename="../../NavigationIndicatorGui.py" line="87"/>
       <source>Zoom</source>
       <translation>Yakınlaştır</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="87"/>
+      <location filename="../../NavigationIndicatorGui.py" line="88"/>
       <source>Rotate</source>
       <translation>Döndür</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="88"/>
-      <source>Pan</source>
-      <translation>Yassılaştır</translation>
-    </message>
-    <message>
       <location filename="../../NavigationIndicatorGui.py" line="89"/>
-      <source>Tilt</source>
-      <translation>Eğimi ayarla</translation>
+      <source>Pan</source>
+      <translation>Kaydır</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="90"/>
-      <source>Navigation style</source>
-      <translation>Gezinme stili</translation>
+      <source>Tilt</source>
+      <translation>Eğilim</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="91"/>
-      <source>Page Up or Page Down key.</source>
-      <translation>Sayfa Yukarı veya Sayfa Aşağı Tuşu.</translation>
+      <source>Navigation style</source>
+      <translation>Dolaşım tarzı</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="92"/>
-      <source>Rotation focus</source>
-      <translation>Döndürme odaklaması</translation>
+      <source>Page Up or Page Down key.</source>
+      <translation>Sayfa Yukarı veya Sayfa Aşağı düğmesi.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="93"/>
+      <source>Rotation focus</source>
+      <translation>Döndürme odağı</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="94"/>
       <source>Middle mouse button or H key.</source>
-      <translation>Farenin orta butonu ya da H tuşu.</translation>
+      <translation>Orta fare düğmesi veya H düğmesi.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="95"/>
+      <location filename="../../NavigationIndicatorGui.py" line="96"/>
       <source>Middle mouse button.</source>
-      <translation>Farenin orta tuşu.</translation>
+      <translation>Orta fare düğmesi.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="98"/>
+      <location filename="../../NavigationIndicatorGui.py" line="99"/>
       <source>Navigation style not recognized.</source>
-      <translation>Gezinme stili tanınmıyor.</translation>
+      <translation>Dolaşım tarzı tanımlanamadı.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="569"/>
+      <location filename="../../NavigationIndicatorGui.py" line="608"/>
       <source>Settings</source>
       <translation>Ayarlar</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="570"/>
+      <location filename="../../NavigationIndicatorGui.py" line="609"/>
       <source>Orbit style</source>
       <translation>Yörünge stili</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="571"/>
+      <location filename="../../NavigationIndicatorGui.py" line="610"/>
       <source>Compact</source>
       <translation>Kompakt</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="572"/>
+      <location filename="../../NavigationIndicatorGui.py" line="611"/>
       <source>Tooltip</source>
-      <translation>Ipucu</translation>
+      <translation>Araç ipucu</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="573"/>
+      <location filename="../../NavigationIndicatorGui.py" line="612"/>
       <source>Turntable</source>
       <translation>Döner tabla</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="574"/>
+      <location filename="../../NavigationIndicatorGui.py" line="613"/>
       <source>Free Turntable</source>
-      <translation>Döner Tabla</translation>
+      <translation>Serbest döner tabla</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="575"/>
+      <location filename="../../NavigationIndicatorGui.py" line="614"/>
       <source>Trackball</source>
-      <translation>Trackball</translation>
+      <translation>İz topu</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="576"/>
+      <location filename="../../NavigationIndicatorGui.py" line="615"/>
+      <source>Trackball Classic</source>
+      <translation type="unfinished">Trackball Classic</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="616"/>
+      <source>Rounded Arcball</source>
+      <translation type="unfinished">Rounded Arcball</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="617"/>
       <source>Undefined</source>
       <translation>Tanımlanmamış</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="629"/>
+      <source>Navigation indicator</source>
+      <comment>A context menu action used to show or hide the &apos;Navigation indicator&apos; toolbar widget</comment>
+      <translation type="unfinished">Navigation indicator</translation>
     </message>
   </context>
 </TS>

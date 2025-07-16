@@ -178,7 +178,7 @@ PyObject* SketchPy::moveGeometry(PyObject* args)
 
 Py::Long SketchPy::getConstraint() const
 {
-    // return Py::Int();
+    // return Py::Long();
     throw Py::AttributeError("Not yet implemented");
 }
 

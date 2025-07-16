@@ -197,111 +197,111 @@
       <translation>Παρακαλώ επιλέξτε πρώτα 3 αντικείμενα</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="334"/>
-      <location filename="../../OpenSCADCommands.py" line="365"/>
+      <location filename="../../OpenSCADCommands.py" line="333"/>
+      <location filename="../../OpenSCADCommands.py" line="364"/>
       <source>Add</source>
       <translation>Προσθήκη</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="369"/>
+      <location filename="../../OpenSCADCommands.py" line="368"/>
       <source>Clear</source>
       <translation>Εκκαθάριση</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="366"/>
+      <location filename="../../OpenSCADCommands.py" line="365"/>
       <source>Load</source>
       <translation>Φόρτωση</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="367"/>
+      <location filename="../../OpenSCADCommands.py" line="366"/>
       <source>Save</source>
       <translation>Αποθήκευση</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="335"/>
-      <location filename="../../OpenSCADCommands.py" line="368"/>
+      <location filename="../../OpenSCADCommands.py" line="334"/>
+      <location filename="../../OpenSCADCommands.py" line="367"/>
       <source>Refresh</source>
       <translation>Ανανέωση</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="336"/>
+      <location filename="../../OpenSCADCommands.py" line="335"/>
       <source>Clear code</source>
       <translation>Εκκαθάριση κώδικα</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="337"/>
+      <location filename="../../OpenSCADCommands.py" line="336"/>
       <source>Open...</source>
       <translation>Άνοιγμα...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="338"/>
+      <location filename="../../OpenSCADCommands.py" line="337"/>
       <source>Save...</source>
       <translation>Αποθήκευση...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="339"/>
-      <location filename="../../OpenSCADCommands.py" line="370"/>
+      <location filename="../../OpenSCADCommands.py" line="338"/>
+      <location filename="../../OpenSCADCommands.py" line="369"/>
       <source>as Mesh</source>
       <translation>ως Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="352"/>
-      <location filename="../../OpenSCADCommands.py" line="371"/>
+      <location filename="../../OpenSCADCommands.py" line="351"/>
+      <location filename="../../OpenSCADCommands.py" line="370"/>
       <source>Add OpenSCAD Element</source>
       <translation>Προσθήκη Στοιχείου OpenSCAD</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="428"/>
+      <location filename="../../OpenSCADCommands.py" line="427"/>
       <source>Open file</source>
       <translation>Άνοιγμα αρχείου</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="430"/>
-      <location filename="../../OpenSCADCommands.py" line="444"/>
+      <location filename="../../OpenSCADCommands.py" line="429"/>
+      <location filename="../../OpenSCADCommands.py" line="443"/>
       <source>OpenSCAD Files</source>
       <translation>Αρχεία OpenSCAD</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="442"/>
+      <location filename="../../OpenSCADCommands.py" line="441"/>
       <source>Save file</source>
       <translation>Αποθήκευση αρχείου</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="456"/>
-      <location filename="../../OpenSCADCommands.py" line="485"/>
+      <location filename="../../OpenSCADCommands.py" line="455"/>
+      <location filename="../../OpenSCADCommands.py" line="484"/>
       <source>Perform</source>
       <translation>Εκτέλεση</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="482"/>
-      <location filename="../../OpenSCADCommands.py" line="486"/>
+      <location filename="../../OpenSCADCommands.py" line="481"/>
+      <location filename="../../OpenSCADCommands.py" line="485"/>
       <source>Mesh Boolean</source>
       <translation>Δημιουργία Πλέγματος με τη χρήση Λειτουργιών Boole</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="487"/>
+      <location filename="../../OpenSCADCommands.py" line="486"/>
       <source>Minkowski sum</source>
       <translation>Άθροισμα Minkowski</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="654"/>
+      <location filename="../../OpenSCADUtils.py" line="653"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
       <translation>Το αρχείο OpenSCAD περιέχει δύο σχήματα 2D και 3D. Αυτό δεν υποστηρίζεται σε αυτόν τον εισαγωγέα, όλα τα σχήματα πρέπει να έχουν την ίδια διάσταση.</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="665"/>
+      <location filename="../../OpenSCADUtils.py" line="664"/>
       <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
       <translation>Σφάλμα: όλα τα σχήματα πρέπει να είναι 2D είτε 3D</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="549"/>
-      <location filename="../../importCSG.py" line="1434"/>
+      <location filename="../../importCSG.py" line="517"/>
+      <location filename="../../importCSG.py" line="1389"/>
       <source>Unsupported Function</source>
       <translation>Μη υποστηριζόμενη λειτουργία</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="549"/>
-      <location filename="../../importCSG.py" line="1434"/>
+      <location filename="../../importCSG.py" line="517"/>
+      <location filename="../../importCSG.py" line="1389"/>
       <source>Press OK</source>
       <translation>Πιέστε το OK</translation>
     </message>
@@ -448,12 +448,12 @@
   <context>
     <name>OpenSCAD_AddOpenSCADElement</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="530"/>
+      <location filename="../../OpenSCADCommands.py" line="529"/>
       <source>Add OpenSCAD Element...</source>
       <translation>Προσθήκη στοιχείου OpenSCAD...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="534"/>
+      <location filename="../../OpenSCADCommands.py" line="533"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
       <translation>Προσθέστε ένα στοιχείο OpenSCAD εισάγοντας κώδικα OpenSCAD και εκτελώντας το OpenSCAD</translation>
     </message>
@@ -461,12 +461,12 @@
   <context>
     <name>OpenSCAD_MeshBoolean</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="545"/>
+      <location filename="../../OpenSCADCommands.py" line="544"/>
       <source>Mesh Boolean...</source>
       <translation>Δημιουργία Πλέγματος με τη χρήση Λειτουργιών Boole...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="549"/>
+      <location filename="../../OpenSCADCommands.py" line="548"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
       <translation>Εξαγάγετε αντικείμενα ως πλέγματα και χρησιμοποιήστε το OpenSCAD για να εκτελέσετε μια λειτουργία Boolean</translation>
     </message>
@@ -474,12 +474,12 @@
   <context>
     <name>OpenSCAD_Hull</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="566"/>
+      <location filename="../../OpenSCADCommands.py" line="565"/>
       <source>Hull</source>
       <translation>Κύτος</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="569"/>
+      <location filename="../../OpenSCADCommands.py" line="568"/>
       <source>Use OpenSCAD to create a hull</source>
       <translation>Χρησιμοποιήστε το OpenSCAD για να δημιουργήσετε ένα κύτος</translation>
     </message>
@@ -500,12 +500,12 @@
   <context>
     <name>OpenSCAD_Minkowski</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="586"/>
+      <location filename="../../OpenSCADCommands.py" line="585"/>
       <source>Minkowski sum</source>
       <translation>Άθροισμα Minkowski</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="589"/>
+      <location filename="../../OpenSCADCommands.py" line="588"/>
       <source>Use OpenSCAD to create a Minkowski sum</source>
       <translation>Χρησιμοποιήστε το OpenSCAD για να δημιουργήσετε ένα ποσό Minkowski</translation>
     </message>

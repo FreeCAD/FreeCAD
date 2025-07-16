@@ -196,7 +196,7 @@ bool CheckCompileResult(int shaderId, const char* shaderName, bool isVertex)
         len = 1020;
     }
     log[len] = 0;
-    Base::Console().Error(log);
+    Base::Console().error(log);
     return true;
 }
 

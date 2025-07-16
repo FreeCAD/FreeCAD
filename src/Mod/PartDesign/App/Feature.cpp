@@ -94,15 +94,14 @@ App::DocumentObjectExecReturn* Feature::recompute()
     }
     catch (Base::Exception& e) {
         failed = true;
-        e.ReportException();
+        e.reportException();
         FC_ERR("Failed to recompute suppressed feature " << getFullName());
     }
 
+    Shape.setValue(getBaseTopoShape(true));
+
     if (!failed) {
         updateSuppressedShape();
-    }
-    else {
-        Shape.setValue(getBaseTopoShape(true));
     }
     return App::DocumentObject::StdReturn;
 }
@@ -121,7 +120,6 @@ void Feature::setMaterialToBodyMaterial()
 
 void Feature::updateSuppressedShape()
 {
-    auto baseShape = getBaseTopoShape(true);
     TopoShape res(getID());
     TopoShape shape = Shape.getShape();
     shape.setPlacement(Base::Placement());
@@ -139,7 +137,6 @@ void Feature::updateSuppressedShape()
         res.makeElementCompound(generated);
         res.setPlacement(Placement.getValue());
     }
-    Shape.setValue(baseShape);
     SuppressedShape.setValue(res);
 }
 
@@ -195,6 +192,13 @@ void Feature::onChanged(const App::Property *prop)
                     != ShapeMaterial.getValue().getUUID()) {
                     body->ShapeMaterial.setValue(ShapeMaterial.getValue());
                 }
+            }
+        } else if (prop == &Suppressed){
+            if (Suppressed.getValue()) {
+                SuppressedPlacement = Placement.getValue();
+            } else {
+                Placement.setValue(SuppressedPlacement);
+                SuppressedPlacement = Base::Placement();
             }
         }
     }
@@ -285,8 +289,8 @@ const TopoDS_Shape& Feature::getBaseShape() const {
     if (!BaseObject)
         throw Base::ValueError("Base feature's shape is not defined");
 
-    if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())||
-        BaseObject->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId()))
+    if (BaseObject->isDerivedFrom<PartDesign::ShapeBinder>()||
+        BaseObject->isDerivedFrom<PartDesign::SubShapeBinder>())
     {
         throw Base::ValueError("Base shape of shape binder cannot be used");
     }
@@ -318,8 +322,8 @@ Part::TopoShape Feature::getBaseTopoShape(bool silent) const
             }
             throw Base::RuntimeError("Missing container body");
         }
-        if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())
-            || BaseObject->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId())) {
+        if (BaseObject->isDerivedFrom<PartDesign::ShapeBinder>()
+            || BaseObject->isDerivedFrom<PartDesign::SubShapeBinder>()) {
             if (silent) {
                 return result;
             }
@@ -389,13 +393,13 @@ TopoShape Feature::makeTopoShapeFromPlane(const App::DocumentObject* obj)
 
 Body* Feature::getFeatureBody() const {
 
-    auto body = Base::freecad_dynamic_cast<Body>(_Body.getValue());
+    auto body = freecad_cast<Body*>(_Body.getValue());
     if(body)
         return body;
 
     auto list = getInList();
     for (auto in : list) {
-        if(in->isDerivedFrom(Body::getClassTypeId()) && //is Body?
+        if(in->isDerivedFrom<Body>() && //is Body?
            static_cast<Body*>(in)->hasObject(this)) {    //is part of this Body?
 
                return static_cast<Body*>(in);

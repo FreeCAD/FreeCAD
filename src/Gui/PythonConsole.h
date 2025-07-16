@@ -115,6 +115,8 @@ public:
     void OnChange( Base::Subject<const char*> &rCaller,const char* rcReason ) override;
     void printStatement( const QString& cmd );
     QString readline( );
+    int getInputStringPosition() override;
+    QString getInputString() override;
 
 public Q_SLOTS:
     void onSaveHistoryAs();

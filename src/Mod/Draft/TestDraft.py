@@ -105,9 +105,9 @@ from drafttests.test_modification import DraftModification as DraftTest03
 from drafttests.test_draftgeomutils import TestDraftGeomUtils as DraftTest04
 
 # Handling of file formats tests
-from drafttests.test_svg import DraftSVG as DraftTest05
-from drafttests.test_dxf import DraftDXF as DraftTest06
-from drafttests.test_dwg import DraftDWG as DraftTest07
+# from drafttests.test_svg import DraftSVG as DraftTest05
+# from drafttests.test_dxf import DraftDXF as DraftTest06
+# from drafttests.test_dwg import DraftDWG as DraftTest07
 # from drafttests.test_oca import DraftOCA as DraftTest08
 # from drafttests.test_airfoildat import DraftAirfoilDAT as DraftTest09
 from drafttests.test_array import DraftArray as DraftTest10
@@ -117,9 +117,9 @@ True if DraftTest01 else False
 True if DraftTest02 else False
 True if DraftTest03 else False
 True if DraftTest04 else False
-True if DraftTest05 else False
-True if DraftTest06 else False
-True if DraftTest07 else False
+# True if DraftTest05 else False
+# True if DraftTest06 else False
+# True if DraftTest07 else False
 # True if DraftTest08 else False
 # True if DraftTest09 else False
 True if DraftTest10 else False

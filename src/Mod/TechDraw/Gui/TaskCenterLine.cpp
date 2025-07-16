@@ -48,6 +48,8 @@ using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
 using DU = DrawUtil;
+using Mode = CenterLine::Mode;
+using Type = CenterLine::Type;
 
 //ctor for edit
 TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
@@ -61,8 +63,8 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     m_btnOK(nullptr),
     m_btnCancel(nullptr),
     m_edgeName(edgeName),
-    m_type(CenterLine::FACE),
-    m_mode(CenterLine::VERTICAL),
+    m_type(Type::FACE),
+    m_mode(Mode::VERTICAL),
     m_editMode(editMode)
 {
     ui->setupUi(this);
@@ -97,8 +99,8 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     m_subNames(subNames),
     m_geomIndex(0),
     m_cl(nullptr),
-    m_type(CenterLine::FACE),
-    m_mode(CenterLine::VERTICAL),
+    m_type(Type::FACE),
+    m_mode(Mode::VERTICAL),
     m_editMode(editMode)
 {
     //existence of page and feature are checked by isActive method of calling command
@@ -107,13 +109,13 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     std::string check = subNames.front();
     std::string geomType = TechDraw::DrawUtil::getGeomTypeFromName(check);
     if (geomType == "Face") {
-        m_type = CenterLine::FACE;
+        m_type = Type::FACE;
     } else if (geomType == "Edge") {
-        m_type = CenterLine::EDGE;
+        m_type = Type::EDGE;
     } else if (geomType == "Vertex") {
-        m_type = CenterLine::VERTEX;
+        m_type = Type::VERTEX;
     } else {
-        Base::Console().Error("TaskCenterLine - unknown geometry type: %s.  Can not proceed.\n", geomType.c_str());
+        Base::Console().error("TaskCenterLine - unknown geometry type: %s.  Can not proceed.\n", geomType.c_str());
         return;
     }
 
@@ -143,7 +145,7 @@ void TaskCenterLine::changeEvent(QEvent *event)
 void TaskCenterLine::setUiConnect()
 {
     // first enabling/disabling
-    if (m_type == CenterLine::FACE) // if face, then aligned is not possible
+    if (m_type == Type::FACE) // if face, then aligned is not possible
         ui->rbAligned->setEnabled(false);
     else
         ui->rbAligned->setEnabled(true);
@@ -156,11 +158,7 @@ void TaskCenterLine::setUiConnect()
     connect(ui->qsbHorizShift, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskCenterLine::onShiftHorizChanged);
     connect(ui->qsbExtend, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskCenterLine::onExtendChanged);
     connect(ui->qsbRotate, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskCenterLine::onRotationChanged);
-#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
-    connect(ui->bgOrientation, qOverload<int>(&QButtonGroup::buttonClicked), this, &TaskCenterLine::onOrientationChanged);
-#else
     connect(ui->bgOrientation, &QButtonGroup::idClicked, this, &TaskCenterLine::onOrientationChanged);
-#endif
 }
 
 void TaskCenterLine::setUiPrimary()
@@ -196,12 +194,12 @@ void TaskCenterLine::setUiPrimary()
     int precision = Base::UnitsApi::getDecimals();
     ui->qsbRotate->setDecimals(precision);
 
-    if (m_type == CenterLine::EDGE) {
-       int orientation = checkPathologicalEdges(m_mode);
+    if (m_type == Type::EDGE) {
+       Mode orientation = checkPathologicalEdges(m_mode);
        setUiOrientation(orientation);
     }
-    if (m_type == CenterLine::VERTEX) {
-       int orientation = checkPathologicalVertices(m_mode);
+    if (m_type == Type::VERTEX) {
+       Mode orientation = checkPathologicalVertices(m_mode);
        setUiOrientation(orientation);
     }
 }
@@ -226,11 +224,11 @@ void TaskCenterLine::setUiEdit()
     ui->rbVertical->setChecked(false);
     ui->rbHorizontal->setChecked(false);
     ui->rbAligned->setChecked(false);
-    if (m_cl->m_mode == CenterLine::VERTICAL)
+    if (m_cl->m_mode == Mode::VERTICAL)
         ui->rbVertical->setChecked(true);
-    else if (m_cl->m_mode == CenterLine::HORIZONTAL)
+    else if (m_cl->m_mode == Mode::HORIZONTAL)
         ui->rbHorizontal->setChecked(true);
-    else if (m_cl->m_mode == CenterLine::ALIGNED)
+    else if (m_cl->m_mode == Mode::ALIGNED)
         ui->rbAligned->setChecked(true);
 
     Base::Quantity qVal;
@@ -256,14 +254,14 @@ void TaskCenterLine::onOrientationChanged()
         return;
     }
     if (ui->rbVertical->isChecked())
-        m_cl->m_mode = CenterLine::CLMODE::VERTICAL;
+        m_cl->m_mode = Mode::VERTICAL;
     else if (ui->rbHorizontal->isChecked())
-        m_cl->m_mode = CenterLine::CLMODE::HORIZONTAL;
+        m_cl->m_mode = Mode::HORIZONTAL;
     else if (ui->rbAligned->isChecked())
-        m_cl->m_mode = CenterLine::CLMODE::ALIGNED;
+        m_cl->m_mode = Mode::ALIGNED;
     // for centerlines between 2 lines we cannot just recompute
     // because the new orientation might lead to an invalid centerline
-    if (m_type == CenterLine::EDGE)
+    if (m_type == Type::EDGE)
         updateOrientation();
     else
         m_partFeat->recomputeFeature();
@@ -315,9 +313,8 @@ void TaskCenterLine::onColorChanged()
         return;
     }
 
-    App::Color ac;
-    ac.setValue<QColor>(ui->cpLineColor->color());
-    m_cl->m_format.getColor().setValue<QColor>(ui->cpLineColor->color());
+    Base::Color color = Base::Color::fromValue<QColor>(ui->cpLineColor->color());
+    m_cl->m_format.setColor(color);
     m_partFeat->recomputeFeature();
 }
 
@@ -343,9 +340,9 @@ void TaskCenterLine::onStyleChanged()
 
 // check that we are not trying to create an impossible centerline (ex a vertical centerline
 // between 2 horizontal edges)
-int TaskCenterLine::checkPathologicalEdges(int inMode)
+Mode TaskCenterLine::checkPathologicalEdges(Mode inMode)
 {
-    if (m_type != CenterLine::EDGE) {
+    if (m_type != Type::EDGE) {
         // not an edge based centerline, this doesn't apply
         return inMode;
     }
@@ -361,10 +358,10 @@ int TaskCenterLine::checkPathologicalEdges(int inMode)
     bool edge2Horizontal = DU::fpCompare(ends2.front().y, ends2.back().y, EWTOLERANCE);
 
     if (edge1Vertical && edge2Vertical) {
-        return CenterLine::CLMODE::VERTICAL;
+        return Mode::VERTICAL;
     }
     if (edge1Horizontal && edge2Horizontal) {
-        return CenterLine::CLMODE::HORIZONTAL;
+        return Mode::HORIZONTAL;
     }
 
     // not pathological case, just return the input mode
@@ -373,9 +370,9 @@ int TaskCenterLine::checkPathologicalEdges(int inMode)
 
 // check that we are not trying to create an impossible centerline (ex a vertical centerline
 // between 2 vertices aligned vertically)
-int TaskCenterLine::checkPathologicalVertices(int inMode)
+Mode TaskCenterLine::checkPathologicalVertices(Mode inMode)
 {
-    if (m_type != CenterLine::VERTEX) {
+    if (m_type != Type::VERTEX) {
         // not a vertex based centerline, this doesn't apply
         return inMode;
     }
@@ -387,12 +384,12 @@ int TaskCenterLine::checkPathologicalVertices(int inMode)
 
     if (DU::fpCompare(point1.x, point2.x, EWTOLERANCE)) {
         // points are aligned vertically, CL must be horizontal
-        return CenterLine::CLMODE::HORIZONTAL;
+        return Mode::HORIZONTAL;
     }
 
     if (DU::fpCompare(point1.y, point2.y, EWTOLERANCE)) {
         // points are aligned horizontally, CL must be vertical
-        return CenterLine::CLMODE::VERTICAL;
+        return Mode::VERTICAL;
     }
 
     // not pathological case, just return the input mode
@@ -405,10 +402,10 @@ void TaskCenterLine::createCenterLine()
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Centerline"));
 
     // check for illogical parameters
-    if (m_type == CenterLine::EDGE) {
+    if (m_type == Type::EDGE) {
         // between lines
         m_mode = checkPathologicalEdges(m_mode);
-    } else if (m_type == CenterLine::VERTEX) {
+    } else if (m_type == Type::VERTEX) {
         // between points
         m_mode = checkPathologicalVertices(m_mode);
     }
@@ -428,7 +425,7 @@ void TaskCenterLine::createCenterLine()
     cl->setExtend(extendBy);
     cl->setRotate(rotate);
     cl->m_flip2Line = false;
-    App::Color ac;
+    Base::Color ac;
     ac.setValue<QColor>(ui->cpLineColor->color());
     cl->m_format.setColor(ac);
     cl->m_format.setWidth(ui->dsbWeight->value().getValue());
@@ -447,7 +444,6 @@ void TaskCenterLine::createCenterLine()
 
 void TaskCenterLine::updateOrientation()
 {
-//    Base::Console().Message("TCL::updateOrientation()\n");
     if (!m_cl) {
         return;
     }
@@ -455,15 +451,15 @@ void TaskCenterLine::updateOrientation()
     // this can lead to a crash, see e.g.
     // https://forum.freecad.org/viewtopic.php?f=35&t=44255&start=20#p503220
     // The centerline creation can fail if m_type is edge and both selected edges are vertical or horizontal.
-    int orientation = m_cl->m_mode;
-    if (m_type == CenterLine::EDGE) {
+    Mode orientation = m_cl->m_mode;
+    if (m_type == Type::EDGE) {
         // between lines
         if (!m_edgeName.empty() && !m_cl->m_edges.empty()) {
              // we have an existing centerline, not a freshly created one, and it is a centerline between edges
             m_subNames = m_cl->m_edges;
             orientation = checkPathologicalEdges(orientation);
         }
-    } else if (m_type == CenterLine::VERTEX) {
+    } else if (m_type == Type::VERTEX) {
         // between points
         if (!m_edgeName.empty() && !m_cl->m_verts.empty()) {
              // we have an existing centerline, not a freshly created one, and it is a centerline between points
@@ -477,15 +473,15 @@ void TaskCenterLine::updateOrientation()
     m_partFeat->recomputeFeature();
 }
 
-void TaskCenterLine::setUiOrientation(int orientation)
+void TaskCenterLine::setUiOrientation(Mode orientation)
 {
     ui->rbVertical->blockSignals(true);
     ui->rbVertical->blockSignals(true);
 
-    if (orientation == CenterLine::CLMODE::VERTICAL) {
+    if (orientation == Mode::VERTICAL) {
         ui->rbVertical->setChecked(true);
         ui->rbHorizontal->setChecked(false);
-    } else if (orientation == CenterLine::CLMODE::HORIZONTAL) {
+    } else if (orientation == Mode::HORIZONTAL) {
         ui->rbVertical->setChecked(false);
         ui->rbHorizontal->setChecked(true);
     }
@@ -511,7 +507,7 @@ void TaskCenterLine::enableTaskButtons(bool isEnabled)
 double TaskCenterLine::getCenterWidth()
 {
     Gui::ViewProvider* vp = QGIView::getViewProvider(m_partFeat);
-    auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
+    auto partVP = freecad_cast<ViewProviderViewPart*>(vp);
     if (!partVP) {
         return TechDraw::LineGroup::getDefaultWidth("Graphic");
     }
@@ -611,7 +607,6 @@ TaskDlgCenterLine::~TaskDlgCenterLine()
 
 void TaskDlgCenterLine::update()
 {
-//    widget->updateTask();
 }
 
 void TaskDlgCenterLine::modifyStandardButtons(QDialogButtonBox* box)

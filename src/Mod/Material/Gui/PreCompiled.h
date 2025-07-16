@@ -42,7 +42,6 @@
 #ifdef _PreComp_
 
 // standard
-#include <cfloat>
 #include <cmath>
 #include <limits>
 
@@ -53,18 +52,13 @@
 #include <string>
 #include <vector>
 
-// OpenCasCade
-// #include <Mod/Part/App/OpenCascadeAll.h>
 
 // Qt Toolkit
-#ifndef __QtAll__
 #include <Gui/QtAll.h>
-#endif
 
 // Inventor includes OpenGL
-#ifndef __InventorAll__
 # include <Gui/InventorAll.h>
-#endif
+
 
 #endif  //_PreComp_
 

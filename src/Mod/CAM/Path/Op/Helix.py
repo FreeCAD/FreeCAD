@@ -22,7 +22,6 @@
 
 import Path.Base.Generator.helix as helix
 from PathScripts.PathUtils import fmt
-from PathScripts.PathUtils import sort_locations
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Part
@@ -241,8 +240,6 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         self.commandlist.append(Path.Command("(helix cut operation)"))
 
         self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
-
-        holes = sort_locations(holes, ["x", "y"])
 
         tool = obj.ToolController.Tool
         tooldiamter = tool.Diameter.Value if hasattr(tool.Diameter, "Value") else tool.Diameter

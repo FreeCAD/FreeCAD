@@ -57,6 +57,11 @@ jobs:
     env:
       logdir: /tmp/log/
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@6c439dc8bdf85cadbbce9ed30d1c7b959517bc49 # v2.12.2
+        with:
+          egress-policy: audit
+
       - name: Make needed directories
         run: |
           mkdir -p ${{ env.logdir }}
@@ -103,7 +108,7 @@ jobs:
           done
       - name: Upload logs
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: ${{ github.job }}-Logs
           path: |

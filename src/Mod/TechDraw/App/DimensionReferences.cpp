@@ -108,7 +108,7 @@ TopoDS_Shape ReferenceEntry::getGeometry() const
         return {};
     }
 
-    if ( getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) ) {
+    if ( getObject()->isDerivedFrom<TechDraw::DrawViewPart>() ) {
         // 2d geometry from DrawViewPart will be rotated and scaled
         return getGeometry2d();
     }
@@ -150,7 +150,7 @@ TopoDS_Shape ReferenceEntry::getGeometry2d() const
         }
     }
     catch (...) {
-        Base::Console().Message("RE::getGeometry2d - no shape for dimension 2d reference - gType: **%s**\n", gType.c_str());
+        Base::Console().message("RE::getGeometry2d - no shape for dimension 2d reference - gType: **%s**\n", gType.c_str());
     }
 
     return {};
@@ -277,14 +277,14 @@ bool ReferenceEntry::isWholeObject() const
 bool ReferenceEntry::is3d() const
 {
     if (getObject() &&
-        getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) &&
+        getObject()->isDerivedFrom<TechDraw::DrawViewPart>() &&
         !getSubName().empty()) {
         // this is a well formed 2d reference
         return false;
     }
 
     if (getObject() &&
-        getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) &&
+        getObject()->isDerivedFrom<TechDraw::DrawViewPart>() &&
         getSubName().empty()) {
         // this is a broken 3d reference, so it should be treated as 3d
         return true;
@@ -302,14 +302,14 @@ bool ReferenceEntry::hasGeometry() const
         return false;
     }
 
-    if ( getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) ) {
+    if ( getObject()->isDerivedFrom<TechDraw::DrawViewPart>() ) {
         // 2d reference
         return hasGeometry2d();
     }
 
     // 3d reference
     // TODO: shouldn't this be ShapeFinder.getLocatedShape?
-    auto shape = Part::Feature::getTopoShape(getObject());
+    auto shape = Part::Feature::getTopoShape(getObject(), Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
     auto subShape = shape.getSubShape(getSubName().c_str());
 
     return !subShape.IsNull();

@@ -55,7 +55,7 @@ public:
         add_varargs_method("show",
                            &Module::show,
                            "show(points,[string]) -- Add the points to the active document or "
-                           "create one if no document exists.");
+                           "create one if no document exists.  Returns document object.");
         initialize("This module is the Points module.");  // register with Python
     }
 
@@ -83,7 +83,7 @@ private:
         PyMem_Free(Name);
 
         try {
-            Base::Console().Log("Open in Points with %s", EncodedName.c_str());
+            Base::Console().log("Open in Points with %s", EncodedName.c_str());
             Base::FileInfo file(EncodedName.c_str());
 
             // extract ending
@@ -205,7 +205,7 @@ private:
         PyMem_Free(Name);
 
         try {
-            Base::Console().Log("Import in Points with %s", EncodedName.c_str());
+            Base::Console().log("Import in Points with %s", EncodedName.c_str());
             Base::FileInfo file(EncodedName.c_str());
 
             // extract ending
@@ -295,8 +295,7 @@ private:
                 pcFeature->purgeTouched();
             }
             else {
-                Points::Feature* pcFeature = static_cast<Points::Feature*>(
-                    pcDoc->addObject("Points::Feature", file.fileNamePure().c_str()));
+                auto* pcFeature = pcDoc->addObject<Points::Feature>(file.fileNamePure().c_str());
                 pcFeature->Points.setValue(reader->getPoints());
                 pcDoc->recomputeFeature(pcFeature);
                 pcFeature->purgeTouched();
@@ -329,13 +328,12 @@ private:
         }
 
         Py::Sequence list(object);
-        Base::Type pointsId = Base::Type::fromName("Points::Feature");
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             PyObject* item = (*it).ptr();
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
                 App::DocumentObject* obj =
                     static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
-                if (obj->getTypeId().isDerivedFrom(pointsId)) {
+                if (obj->isDerivedFrom<Points::Feature>()) {
                     // get relative placement
                     Points::Feature* fea = static_cast<Points::Feature*>(obj);
                     Base::Placement globalPlacement = fea->globalPlacement();
@@ -392,7 +390,7 @@ private:
                     break;
                 }
                 else {
-                    Base::Console().Message("'%s' is not a point object, export will be ignored.\n",
+                    Base::Console().message("'%s' is not a point object, export will be ignored.\n",
                                             obj->Label.getValue());
                 }
             }
@@ -414,9 +412,8 @@ private:
             if (!pcDoc) {
                 pcDoc = App::GetApplication().newDocument();
             }
-            PointsPy* pPoints = static_cast<PointsPy*>(pcObj);
-            Points::Feature* pcFeature =
-                static_cast<Points::Feature*>(pcDoc->addObject("Points::Feature", name));
+            auto* pPoints = static_cast<PointsPy*>(pcObj);
+            auto* pcFeature = pcDoc->addObject<Points::Feature>(name);
             // copy the data
             pcFeature->Points.setValue(*(pPoints->getPointKernelPtr()));
             return Py::asObject(pcFeature->getPyObject());

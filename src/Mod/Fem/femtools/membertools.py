@@ -21,7 +21,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-""" Collection of functions for the Fem module.
+"""Collection of functions for the Fem module.
 
 This module contains function for managing a analysis and all the different
 types of objects it contains, helper for executing a simulation.
@@ -141,11 +141,7 @@ def get_mesh_to_solve(analysis):
     """
     mesh_to_solve = None
     for m in analysis.Group:
-        if (
-            m.isDerivedFrom("Fem::FemMeshObject")
-            # the next line should not be needed as the result mesh is not a analysis member
-            and not femutils.is_of_type(m, "Fem::MeshResult")
-        ):
+        if m.isDerivedFrom("Fem::FemMeshObject") and not m.Suppressed:
             if not mesh_to_solve:
                 mesh_to_solve = m
             else:
@@ -286,6 +282,10 @@ class AnalysisMember:
         self.cons_temperature = self.get_several_member("Fem::ConstraintTemperature")
         self.cons_tie = self.get_several_member("Fem::ConstraintTie")
         self.cons_transform = self.get_several_member("Fem::ConstraintTransform")
+        self.cons_electrostatic = self.get_several_member("Fem::ConstraintElectrostaticPotential")
+        self.cons_electricchargedensity = self.get_several_member(
+            "Fem::ConstraintElectricChargeDensity"
+        )
 
     def get_several_member(self, t):
         return get_several_member(self.analysis, t)

@@ -25,9 +25,9 @@
 
 #include <App/FeaturePython.h>
 #include <App/GeoFeature.h>
-#include <App/PropertyUnits.h>
 #include <Mod/Material/App/PropertyMaterial.h>
 #include <Mod/Part/PartGlobal.h>
+#include <Base/Bitmask.h>
 
 #include <TopoDS_Face.hxx>
 
@@ -45,6 +45,18 @@ struct HistoryItem;
 namespace Part
 {
 
+enum class ShapeOption
+{
+    NoFlag = 0,
+    NeedSubElement = 1,
+    ResolveLink = 2,
+    Transform = 4,
+    NoElementMap = 8,
+    DontSimplifyCompound = 16
+};
+using ShapeOptions = Base::Flags<ShapeOption>;
+
+
 class PartFeaturePy;
 
 /** Base class of all shape feature classes in FreeCAD
@@ -60,12 +72,6 @@ public:
 
     PropertyPartShape Shape;
     Materials::PropertyMaterial ShapeMaterial;
-
-    // Convenience properties set when material or shape changes
-    App::PropertyString MaterialName;
-    App::PropertyDensity Density;
-    App::PropertyMass Mass;
-    App::PropertyVolume Volume;
 
     /** @name methods override feature */
     //@{
@@ -137,15 +143,15 @@ public:
      * @param transform: if true, apply obj's transformation. Set to false
      * if pmat already include obj's transformation matrix.
      */
-    static TopoDS_Shape getShape(const App::DocumentObject *obj,
-            const char *subname=nullptr, bool needSubElement=false, Base::Matrix4D *pmat=nullptr,
-            App::DocumentObject **owner=nullptr, bool resolveLink=true, bool transform=true);
+    static TopoDS_Shape getShape(const App::DocumentObject *obj, ShapeOptions options,
+            const char *subname=nullptr, Base::Matrix4D *pmat=nullptr,
+            App::DocumentObject **owner=nullptr);
 
-    static TopoShape getTopoShape(const App::DocumentObject *obj,
-            const char *subname=nullptr, bool needSubElement=false, Base::Matrix4D *pmat=nullptr,
-            App::DocumentObject **owner=nullptr, bool resolveLink=true, bool transform=true,
-            bool noElementMap=false);
+    static TopoShape getTopoShape(const App::DocumentObject* obj, ShapeOptions options,
+                                    const char* subname=nullptr, Base::Matrix4D* pmat=nullptr, 
+                                    App::DocumentObject**owner=nullptr);
 
+    static TopoShape simplifyCompound(TopoShape compoundShape);
     static void clearShapeCache();
 
     static App::DocumentObject *getShapeOwner(const App::DocumentObject *obj, const char *subname=nullptr);
@@ -160,7 +166,7 @@ public:
 
     static bool isElementMappingDisabled(App::PropertyContainer *container);
 
-    bool getCameraAlignmentDirection(Base::Vector3d &direction, const char *subname) const override;
+    bool getCameraAlignmentDirection(Base::Vector3d &directionZ, Base::Vector3d &directionX, const char *subname) const override;
 
     static void guessNewLink(std::string &replacementName, DocumentObject *base, const char *oldLink);
 
@@ -175,12 +181,10 @@ protected:
     App::DocumentObjectExecReturn *execute() override;
     void onBeforeChange(const App::Property* prop) override;
     void onChanged(const App::Property* prop) override;
+    void onDocumentRestored() override;
 
     void copyMaterial(Feature* feature);
     void copyMaterial(App::DocumentObject* link);
-
-    /// Update the mass and volume properties
-    void updatePhysicalProperties();
 
     void registerElementCache(const std::string &prefix, PropertyPartShape *prop);
 
@@ -211,7 +215,7 @@ private:
     std::vector<std::pair<std::string, PropertyPartShape*>> _elementCachePrefixMap;
 };
 
-class FilletBase : public Part::Feature
+class PartExport FilletBase : public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::FilletBase);
 
@@ -291,6 +295,7 @@ bool checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& second,
 
 } //namespace Part
 
+ENABLE_BITMASK_OPERATORS(Part::ShapeOption)
 
 #endif // PART_FEATURE_H
 

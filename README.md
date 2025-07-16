@@ -71,7 +71,7 @@ Reporting Issues
 
 To report an issue please:
 
-- Consider posting to the [Forum](https://forum.freecad.org), [Discord](https://discord.com/invite/F4hdxzYZfc) channel, or [Reddit](https://www.reddit.com/r/FreeCAD) to verify the issue; 
+- Consider posting to the [Forum](https://forum.freecad.org), [Discord](https://discord.com/invite/w2cTKGzccC) channel, or [Reddit](https://www.reddit.com/r/FreeCAD) to verify the issue; 
 - Search the existing [issues](https://github.com/FreeCAD/FreeCAD/issues) for potential duplicates; 
 - Use the most updated stable or [development versions](https://github.com/FreeCAD/FreeCAD-Bundle/releases/tag/weekly-builds) of FreeCAD; 
 - Post version info from `Help > About FreeCAD > Copy to clipboard`; 

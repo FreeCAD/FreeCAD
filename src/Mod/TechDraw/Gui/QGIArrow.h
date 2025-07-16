@@ -24,10 +24,12 @@
 #define DRAWINGGUI_QGRAPHICSITEMARROW_H
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
+#include <Mod/TechDraw/App/ArrowPropEnum.h>
 
 #include <Base/Vector3D.h>
 
-# include "QGIPrimPath.h"
+#include "QGIPrimPath.h"
+#include "QGIUserTypes.h"
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -37,24 +39,13 @@ QT_END_NAMESPACE
 namespace TechDrawGui
 {
 
-/*enum ArrowType {*/
-/*    FILLED_TRIANGLE = 0, */
-/*    OPEN_ARROW, */
-/*    HASH_MARK, */
-/*    DOT, */
-/*    OPEN_CIRCLE, */
-/*    FORK, */
-/*    PYRAMID, */
-/*    NONE*/
-/*};*/
-
 class TechDrawGuiExport QGIArrow : public QGIPrimPath
 {
 public:
     explicit QGIArrow();
     ~QGIArrow() override {}
 
-    enum {Type = QGraphicsItem::UserType + 109};
+    enum {Type = UserType::QGIArrow};
     int type() const override { return Type;}
 
 public:
@@ -64,16 +55,16 @@ public:
     void flip() { m_flipped = !m_flipped; }
     double getSize() { return m_size; }
     void setSize(double s);
-    int getStyle() { return m_style; }
-    void setStyle(int s) { m_style = s; }
+    TechDraw::ArrowType getStyle() { return m_style; }
+    void setStyle(TechDraw::ArrowType s) { m_style = s; }
     bool getDirMode() { return m_dirMode; }
     void setDirMode(bool b) { m_dirMode = b; }
     Base::Vector3d getDirection(void) { return m_flipped ? -m_dir : m_dir; }
     void setDirection(Base::Vector3d v) { m_dir = v; }
     void setDirection(double angle) { m_dir = Base::Vector3d(cos(angle), sin(angle), 0.0); }
-    static int getPrefArrowStyle();
+    static TechDraw::ArrowType getPrefArrowStyle();
     static double getPrefArrowSize();
-    static double getOverlapAdjust(int style, double size);
+    static double getOverlapAdjust(TechDraw::ArrowType style, double size);
 
 protected:
     QPainterPath makeFilledTriangle(double length, double width, bool flipped);
@@ -93,7 +84,7 @@ private:
     QBrush m_brush;
     Qt::BrushStyle m_fill;
     double m_size;
-    int m_style;
+    TechDraw::ArrowType m_style;
     bool m_flipped;
     bool m_dirMode;
     Base::Vector3d m_dir;

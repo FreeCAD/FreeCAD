@@ -34,7 +34,6 @@
 
 #ifndef XERCES_CPP_NAMESPACE_BEGIN
 #define XERCES_CPP_NAMESPACE_QUALIFIER
-using namespace XERCES_CPP_NAMESPACE;
 namespace XERCES_CPP_NAMESPACE
 {
 class BinInputStream;

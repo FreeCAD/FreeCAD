@@ -110,7 +110,7 @@ int Exporter::addObject(App::DocumentObject* obj, float tol)
         auto linked = sobj->getLinkedObject(true, &matrix, false);
         auto it = meshCache.find(linked);
         if (it == meshCache.end()) {
-            if (linked->isDerivedFrom(Mesh::Feature::getClassTypeId())) {
+            if (linked->isDerivedFrom<Mesh::Feature>()) {
                 it = meshCache.emplace(linked, static_cast<Mesh::Feature*>(linked)->Mesh.getValue())
                          .first;
                 it->second.setTransform(matrix);
@@ -470,7 +470,7 @@ bool ExporterAMF::addMesh(const char* name, const MeshObject& mesh)
             }
         }
 
-        seq.next(true);  // allow to cancel
+        seq.next(true);  // allow one to cancel
     }
 
     *outputStreamPtr << "\t\t\t</vertices>\n"
@@ -484,7 +484,7 @@ bool ExporterAMF::addMesh(const char* name, const MeshObject& mesh)
             *outputStreamPtr << "\t\t\t\t\t<v" << i << '>' << *(triItr++) << "</v" << i << ">\n";
         }
         *outputStreamPtr << "\t\t\t\t</triangle>\n";
-        seq.next(true);  // allow to cancel
+        seq.next(true);  // allow one to cancel
     }
 
     *outputStreamPtr << "\t\t\t</volume>\n"

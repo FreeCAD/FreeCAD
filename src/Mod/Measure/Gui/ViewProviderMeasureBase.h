@@ -72,7 +72,7 @@ public:
 // NOLINTBEGIN
 class MeasureGuiExport ViewProviderMeasureBase: public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(ViewProviderMeasureBase);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeasureGui::ViewProviderMeasureBase);
 
 public:
     /// constructor.
@@ -87,6 +87,9 @@ public:
     App::PropertyColor LineColor;
     App::PropertyInteger FontSize;
     // NOLINTEND
+
+    // Fields
+    SoSFFloat fieldFontSize;
 
     /**
      * Attaches the document object to this view provider.

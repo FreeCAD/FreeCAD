@@ -124,7 +124,7 @@ void ViewProviderInventorObject::updateData(const App::Property* prop)
             }
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyPlacement::getClassTypeId()) &&
+    else if (prop->isDerivedFrom<App::PropertyPlacement>() &&
              strcmp(prop->getName(), "Placement") == 0) {
         // Note: If R is the rotation, c the rotation center and t the translation
         // vector then Inventor applies the following transformation: R*(x-c)+c+t

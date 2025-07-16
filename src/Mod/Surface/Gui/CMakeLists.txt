@@ -4,12 +4,6 @@ include_directories(
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${Boost_INCLUDE_DIRS}
-    ${COIN3D_INCLUDE_DIRS}
-    ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
-    ${ZLIB_INCLUDE_DIR}
 )
 
 set(SurfaceGui_LIBS
@@ -26,9 +20,12 @@ SET(SurfaceGui_UIC_SRCS
     TaskFillingVertex.ui
     TaskGeomFillSurface.ui
     TaskSections.ui
+    Blending/TaskBlendCurve.ui
 )
 
 SET(BlendingGui_SRCS
+    Blending/TaskBlendCurve.cpp
+    Blending/TaskBlendCurve.h
     Blending/ViewProviderBlendCurve.cpp
     Blending/ViewProviderBlendCurve.h
 )

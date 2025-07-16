@@ -138,7 +138,7 @@ void QGVNavStyleOpenSCAD::handleMouseReleaseEvent(QMouseEvent *event)
 
 bool QGVNavStyleOpenSCAD::allowContextMenu(QContextMenuEvent *event)
 {
-//    Base::Console().Message("QGVNSCAD::allowContextMenu()\n");
+//    Base::Console().message("QGVNSCAD::allowContextMenu()\n");
     if (event->reason() == QContextMenuEvent::Mouse) {
         //must check for a button combination involving context menu button
         if (QGuiApplication::keyboardModifiers().testFlag(Qt::ShiftModifier)) {

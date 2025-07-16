@@ -101,13 +101,10 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
                     *item   << "Std_ToggleFreeze";
                 }
 
-                bool docHaveBodies = activeView->getAppDocument()->countObjectsOfType (
-                                        PartDesign::Body::getClassTypeId () ) > 0;
-
-                if ( docHaveBodies ) {
+                if (activeView->getAppDocument()->countObjectsOfType<PartDesign::Body>() > 0) {
                     bool addMoveFeature = true;
                     bool addMoveFeatureInTree = (body != nullptr);
-                    for (auto sel: selection) {
+                    for (auto sel : selection) {
                         // if at least one selected feature cannot be moved to a body
                         // disable the entry
                         if ( addMoveFeature && !PartDesign::Body::isAllowed ( sel.pObject ) ) {
@@ -131,36 +128,17 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
                     }
                 }
             }
-
-            if (Gui::Selection().countObjectsOfType(PartDesign::Transformed::getClassTypeId()) -
-                Gui::Selection().countObjectsOfType(PartDesign::MultiTransform::getClassTypeId()) == 1 )
+            if (Gui::Selection().countObjectsOfType<PartDesign::Transformed>() -
+                Gui::Selection().countObjectsOfType<PartDesign::MultiTransform>() == 1 ) {
                 *item << "PartDesign_MultiTransform";
-
-            if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
-                *item << "Std_Placement"
-                      << "Std_ToggleVisibility"
-                      << "Std_ShowSelection"
-                      << "Std_HideSelection"
-                      << "Std_ToggleSelectability"
-                      << "Std_TreeSelectAllInstances"
-                      << "Separator"
-                      << "Std_RandomColor"
-                      << "Std_ToggleTransparency"
-                      << "Std_Cut"
-                      << "Std_Copy"
-                      << "Std_Paste"
-                      << "Std_Delete"
-                      << "Std_SendToPythonConsole"
-                      << "Separator";
             }
         }
     }
 
-    if (strcmp(recipient, "View") == 0) {
-        if (item->hasItems())
-            *item << "Separator";
-        Gui::StdWorkbench::setupContextMenu(recipient, item);
+    if (item->hasItems()) {
+        *item << "Separator";
     }
+    Gui::StdWorkbench::setupContextMenu(recipient, item);
 }
 
 void Workbench::activated()
@@ -172,10 +150,10 @@ void Workbench::activated()
     std::vector<Gui::TaskView::TaskWatcher*> Watcher;
 
     const char* Vertex[] = {
-        "PartDesign_Point",
-        "PartDesign_Line",
-        "PartDesign_Plane",
-        "PartDesign_CoordinateSystem",
+        "Part_DatumPoint",
+        "Part_DatumLine",
+        "Part_DatumPlane",
+        "Part_CoordinateSystem",
         nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Vertex COUNT 1..",
@@ -187,10 +165,10 @@ void Workbench::activated()
     const char* Edge[] = {
         "PartDesign_Fillet",
         "PartDesign_Chamfer",
-        "PartDesign_Point",
-        "PartDesign_Line",
-        "PartDesign_Plane",
-        "PartDesign_CoordinateSystem",
+        "Part_DatumPoint",
+        "Part_DatumLine",
+        "Part_DatumPlane",
+        "Part_CoordinateSystem",
         nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Edge COUNT 1..",
@@ -205,10 +183,10 @@ void Workbench::activated()
         "PartDesign_Chamfer",
         "PartDesign_Draft",
         "PartDesign_Thickness",
-        "PartDesign_Point",
-        "PartDesign_Line",
-        "PartDesign_Plane",
-        "PartDesign_CoordinateSystem",
+        "Part_DatumPoint",
+        "Part_DatumLine",
+        "Part_DatumPlane",
+        "Part_CoordinateSystem",
         nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Face COUNT 1",
@@ -239,10 +217,10 @@ void Workbench::activated()
 
     const char* Plane1[] = {
         "PartDesign_NewSketch",
-        "PartDesign_Plane",
-        "PartDesign_Line",
-        "PartDesign_Point",
-        "PartDesign_CoordinateSystem",
+        "Part_DatumPoint",
+        "Part_DatumLine",
+        "Part_DatumPlane",
+        "Part_CoordinateSystem",
         nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT App::Plane COUNT 1",
@@ -252,10 +230,10 @@ void Workbench::activated()
     ));
     const char* Plane2[] = {
         "PartDesign_NewSketch",
-        "PartDesign_Point",
-        "PartDesign_Line",
-        "PartDesign_Plane",
-        "PartDesign_CoordinateSystem",
+        "Part_DatumPoint",
+        "Part_DatumLine",
+        "Part_DatumPlane",
+        "Part_CoordinateSystem",
         nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Plane COUNT 1",
@@ -265,9 +243,9 @@ void Workbench::activated()
     ));
 
     const char* Line[] = {
-        "PartDesign_Point",
-        "PartDesign_Line",
-        "PartDesign_Plane",
+        "Part_DatumPoint",
+        "Part_DatumLine",
+        "Part_DatumPlane",
         nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Line COUNT 1",
@@ -277,10 +255,10 @@ void Workbench::activated()
     ));
 
     const char* Point[] = {
-        "PartDesign_Point",
-        "PartDesign_Line",
-        "PartDesign_Plane",
-        "PartDesign_CoordinateSystem",
+        "Part_DatumPoint",
+        "Part_DatumLine",
+        "Part_DatumPlane",
+        "Part_CoordinateSystem",
         nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Point COUNT 1",

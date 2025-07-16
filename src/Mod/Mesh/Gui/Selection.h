@@ -26,7 +26,7 @@
 #include <vector>
 #include <QWidget>
 
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 
 #include "MeshSelection.h"
 

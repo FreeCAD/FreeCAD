@@ -13,14 +13,8 @@ include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${Boost_INCLUDE_DIRS}
-    ${OCC_INCLUDE_DIR}
-    ${COIN3D_INCLUDE_DIRS}
-    ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
 )
 
-link_directories(${OCC_LIBRARY_DIR})
 link_directories(${SMESH_LIB_PATH})
 
 set(MeshPartGui_LIBS

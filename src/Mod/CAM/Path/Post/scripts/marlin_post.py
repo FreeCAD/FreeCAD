@@ -36,6 +36,7 @@ import Path
 import Path.Base.Util as PathUtil
 import Path.Post.Utils as PostUtils
 import PathScripts.PathUtils as PathUtils
+from builtins import open as pyopen
 
 Revised = "2020-11-03"  # Revision date for this file.
 
@@ -156,7 +157,7 @@ parser.add_argument(
     "--preamble", help='set commands to be issued before the first command, default=""'
 )
 parser.add_argument(
-    "--postamble", help='set commands to be issued after the last command, default="M5"'
+    "--postamble", help='set commands to be issued after the last command, default="M5\\n"'
 )
 parser.add_argument("--tool-change", action="store_true", help="Insert M6 for all tool changes")
 parser.add_argument(
@@ -262,9 +263,9 @@ def processArguments(argstring):
         if args.show_editor:
             SHOW_EDITOR = True
         if args.preamble is not None:
-            PREAMBLE = args.preamble
+            PREAMBLE = args.preamble.replace("\\n", "\n")
         if args.postamble is not None:
-            POSTAMBLE = args.postamble
+            POSTAMBLE = args.postamble.replace("\\n", "\n")
         if args.no_translate_drill:
             TRANSLATE_DRILL_CYCLES = False
         if args.translate_drill:
@@ -334,8 +335,8 @@ def export(objectslist, filename, argstring):
     # Write the preamble:
     if OUTPUT_COMMENTS:
         gcode += linenumber() + "(Begin preamble)\n"
-    for line in PREAMBLE.splitlines(True):
-        gcode += linenumber() + line
+    for line in PREAMBLE.splitlines():
+        gcode += linenumber() + line + "\n"
 
     # Write these settings AFTER the preamble,
     # to prevent the preamble from changing these:
@@ -357,7 +358,7 @@ def export(objectslist, filename, argstring):
             return
 
         # Skip inactive operations:
-        if PathUtil.opProperty(obj, "Active") is False:
+        if not PathUtil.activeForOp(obj):
             continue
 
         # Do the pre_op:
@@ -371,12 +372,7 @@ def export(objectslist, filename, argstring):
             gcode += linenumber() + line
 
         # Get coolant mode:
-        coolantMode = "None"  # None is the word returned from the operation
-        if hasattr(obj, "CoolantMode") or hasattr(obj, "Base") and hasattr(obj.Base, "CoolantMode"):
-            if hasattr(obj, "CoolantMode"):
-                coolantMode = obj.CoolantMode
-            else:
-                coolantMode = obj.Base.CoolantMode
+        coolantMode = PathUtil.coolantModeForOp(obj)
 
         # Turn coolant on if required:
         if OUTPUT_COMMENTS:
@@ -409,8 +405,8 @@ def export(objectslist, filename, argstring):
         gcode += linenumber() + "(Block-enable: 1)\n"
     if OUTPUT_COMMENTS:
         gcode += linenumber() + "(Begin postamble)\n"
-    for line in POSTAMBLE.splitlines(True):
-        gcode += linenumber() + line
+    for line in POSTAMBLE.splitlines():
+        gcode += linenumber() + line + "\n"
 
     # Optionally add a final XYZ position to the end of the gcode:
     if RETURN_TO:
@@ -455,8 +451,10 @@ def export(objectslist, filename, argstring):
     print("Done postprocessing.")
 
     # Write the file:
-    with open(filename, "w") as fp:
-        fp.write(final)
+    if not filename == "-":
+        gfile = pyopen(filename, "w")
+        gfile.write(final)
+        gfile.close()
 
     return final
 

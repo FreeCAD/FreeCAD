@@ -23,7 +23,7 @@ protected:
     void SetUp() override
     {
         createTestDoc();
-        _common = dynamic_cast<Common*>(_doc->addObject("Part::Common"));
+        _common = _doc->addObject<Common>();
         _common->Base.setValue(_boxes[0]);
         _common->Tool.setValue(_boxes[1]);
         _common->execute();  // We should now have an elementMap with 26 entries.

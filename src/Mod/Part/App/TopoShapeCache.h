@@ -114,6 +114,7 @@ public:
         int find(const TopoDS_Shape& parent, const TopoDS_Shape& subShape);
         TopoDS_Shape find(const TopoDS_Shape& parent, int index);
         int count() const;
+        bool empty() const;
 
         friend TopoShapeCache;
     };

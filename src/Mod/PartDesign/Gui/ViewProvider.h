@@ -55,6 +55,8 @@ public:
     void updateData(const App::Property*) override;
     void onChanged(const App::Property* prop) override;
 
+    Gui::ViewProvider* startEditing(int ModNum) override;
+
     void setTipIcon(bool onoff);
 
     //body mode means that the object is part of a body and that the body is used to set the

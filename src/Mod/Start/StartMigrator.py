@@ -104,14 +104,13 @@ class StartMigrator2024:
         show_on_startup = self.start_prefs.GetBool("ShowOnStartup", True)
         show_examples = self.start_prefs.GetBool("ShowExamples", True)
         close_start = self.start_prefs.GetBool("closeStart", False)
-        custom_folder = self.start_prefs.GetString(
-            "ShowCustomFolder", ""
-        )  # Note: allow multiple locations separated by ";;"
+        custom_folder = self.start_prefs.GetString("ShowCustomFolder", "")
         self.start_prefs.Clear()
         self.start_prefs.SetBool("ShowOnStartup", show_on_startup)
         self.start_prefs.SetBool("ShowExamples", show_examples)
         self.start_prefs.SetBool("CloseStart", close_start)
-        self.start_prefs.SetString("ShowCustomFolder", custom_folder)
+        # ShowCustomFolder renamed to CustomFolder in 1.1
+        self.start_prefs.SetString("CustomFolder", custom_folder)
 
     # Indicate that this migration has been run
     def _mark_complete(self):

@@ -151,12 +151,17 @@ int FlowLayout::doLayout(const QRect& rect, bool testOnly) const
     int bottom {};
     getContentsMargins(&left, &top, &right, &bottom);
     QRect effectiveRect = rect.adjusted(+left, +top, -right, -bottom);
+
     int x = effectiveRect.x();
     int y = effectiveRect.y();
     int lineHeight = 0;
 
+    QVector<QLayoutItem*> currentRow;
+
     for (auto item : std::as_const(itemList)) {
         QWidget* wid = item->widget();
+        QSize itemSizeHint = item->sizeHint();
+
         int spaceX = horizontalSpacing();
         if (spaceX == -1) {
             spaceX = wid->style()->layoutSpacing(QSizePolicy::PushButton,
@@ -171,20 +176,40 @@ int FlowLayout::doLayout(const QRect& rect, bool testOnly) const
                                                  Qt::Vertical);
         }
 
-        int nextX = x + item->sizeHint().width() + spaceX;
-        if (nextX - spaceX > effectiveRect.right() && lineHeight > 0) {
+        int nextX = x + itemSizeHint.width() + spaceX;
+
+        // Step 1: Wrap if necessary
+        if (nextX - spaceX > effectiveRect.right() && !currentRow.isEmpty()) {
+            // Apply row height to all items in the current row
+            for (auto rowItem : currentRow) {
+                if (!testOnly) {
+                    rowItem->setGeometry(QRect(QPoint(rowItem->geometry().x(), y),
+                                               QSize(rowItem->sizeHint().width(), lineHeight)));
+                }
+            }
+
+            // Move to next row
+            y += lineHeight + spaceY;
             x = effectiveRect.x();
-            y = y + lineHeight + spaceY;
-            nextX = x + item->sizeHint().width() + spaceX;
-            lineHeight = 0;
+            currentRow.clear();
         }
+
+        currentRow.append(item);
+        lineHeight = std::max(lineHeight, itemSizeHint.height());
 
         if (!testOnly) {
-            item->setGeometry(QRect(QPoint(x, y), item->sizeHint()));
+            item->setGeometry(QRect(QPoint(x, y), QSize(itemSizeHint.width(), lineHeight)));
         }
 
-        x = nextX;
-        lineHeight = std::max(lineHeight, item->sizeHint().height());
+        x += itemSizeHint.width() + spaceX;
+    }
+
+    // Step 2: Apply the last row's height
+    for (auto rowItem : currentRow) {
+        if (!testOnly) {
+            rowItem->setGeometry(QRect(QPoint(rowItem->geometry().x(), y),
+                                       QSize(rowItem->sizeHint().width(), lineHeight)));
+        }
     }
 
     return y + lineHeight - rect.y() + bottom;

@@ -39,7 +39,7 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Base/Console.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/Command.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
 #include <Mod/PartDesign/App/FeaturePolarPattern.h>
@@ -113,10 +113,10 @@ void TaskPolarPatternParameters::setupParameterUI(QWidget* widget)
             App::Origin* origin = body->getOrigin();
             auto vpOrigin = static_cast<ViewProviderCoordinateSystem*>(
                 Gui::Application::Instance->getViewProvider(origin));
-            vpOrigin->setTemporaryVisibility(true, false);
+            vpOrigin->setTemporaryVisibility(Gui::DatumElement::Axes);
         }
         catch (const Base::Exception& ex) {
-            Base::Console().Error("%s\n", ex.what());
+            Base::Console().error("%s\n", ex.what());
         }
     }
 
@@ -394,7 +394,7 @@ TaskPolarPatternParameters::~TaskPolarPatternParameters()
         }
     }
     catch (const Base::Exception& ex) {
-        Base::Console().Error("%s\n", ex.what());
+        Base::Console().error("%s\n", ex.what());
     }
 }
 

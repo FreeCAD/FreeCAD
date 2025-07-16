@@ -28,6 +28,8 @@
 #include <QGraphicsItem>
 #include <QGraphicsTextItem>
 
+#include "QGIUserTypes.h"
+
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -43,7 +45,7 @@ public:
     explicit QGCustomLabel();
     ~QGCustomLabel() override = default;
 
-    enum {Type = QGraphicsItem::UserType + 135};
+    enum {Type = UserType::QGCustomLabel};
     int type() const override { return Type;}
 
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;

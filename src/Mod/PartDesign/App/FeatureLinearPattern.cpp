@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <limits>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <gp_Dir.hxx>
@@ -49,7 +50,8 @@ namespace PartDesign {
 
 PROPERTY_SOURCE(PartDesign::LinearPattern, PartDesign::Transformed)
 
-const App::PropertyIntegerConstraint::Constraints LinearPattern::intOccurrences = { 1, INT_MAX, 1 };
+const App::PropertyIntegerConstraint::Constraints LinearPattern::intOccurrences = {
+    1, std::numeric_limits<int>::max(), 1 };
 
 const char* LinearPattern::ModeEnums[] = { "length", "offset", nullptr };
 
@@ -161,9 +163,7 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
         dir = gp_Dir(d.x, d.y, d.z);
     } else if (refObject->isDerivedFrom<App::Line>()) {
         App::Line* line = static_cast<App::Line*>(refObject);
-        Base::Rotation rot = line->Placement.getValue().getRotation();
-        Base::Vector3d d(1,0,0);
-        rot.multVec(d, d);
+        Base::Vector3d d = line->getDirection();
         dir = gp_Dir(d.x, d.y, d.z);
     } else if (refObject->isDerivedFrom<Part::Feature>()) {
         if (subStrings[0].empty())

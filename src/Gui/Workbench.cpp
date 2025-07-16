@@ -463,6 +463,9 @@ void Workbench::removeTaskWatcher()
 std::list<std::string> Workbench::listToolbars() const
 {
     std::unique_ptr<ToolBarItem> tb(setupToolBars());
+    setupCustomToolbars(tb.get(), "Toolbar");
+    WorkbenchManipulator::changeToolBars(tb.get());
+
     std::list<std::string> bars;
     QList<ToolBarItem*> items = tb->getItems();
     for (const auto & item : items) {
@@ -474,6 +477,8 @@ std::list<std::string> Workbench::listToolbars() const
 std::list<std::pair<std::string, std::list<std::string>>> Workbench::getToolbarItems() const
 {
     std::unique_ptr<ToolBarItem> tb(setupToolBars());
+    setupCustomToolbars(tb.get(), "Toolbar");
+    WorkbenchManipulator::changeToolBars(tb.get());
 
     std::list<std::pair<std::string, std::list<std::string>>> itemsList;
     QList<ToolBarItem*> items = tb->getItems();
@@ -492,6 +497,9 @@ std::list<std::pair<std::string, std::list<std::string>>> Workbench::getToolbarI
 std::list<std::string> Workbench::listMenus() const
 {
     std::unique_ptr<MenuItem> mb(setupMenuBar());
+    addPermanentMenuItems(mb.get());
+    WorkbenchManipulator::changeMenuBar(mb.get());
+
     std::list<std::string> menus;
     QList<MenuItem*> items = mb->getItems();
     for (const auto & item : items) {
@@ -594,7 +602,7 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
               << StdViews << "Separator"
               << "Std_ViewDockUndockFullscreen";
 
-        if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
+        if (Gui::Selection().countObjectsOfType<App::DocumentObject>() > 0) {
             *item << "Separator" << "Std_ToggleVisibility"
                   << "Std_ToggleSelectability" << "Std_TreeSelection"
                   << "Std_RandomColor" << "Std_ToggleTransparency" << "Separator" << "Std_Delete"
@@ -603,7 +611,7 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
     }
     else if (strcmp(recipient,"Tree") == 0)
     {
-        if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
+        if (Gui::Selection().countObjectsOfType<App::DocumentObject>() > 0) {
             *item  << "Std_ToggleFreeze" << "Separator"
                   << "Std_Placement" << "Std_ToggleVisibility" << "Std_ShowSelection" << "Std_HideSelection"
                   << "Std_ToggleSelectability" << "Std_TreeSelectAllInstances" << "Separator"
@@ -710,24 +718,25 @@ MenuItem* StdWorkbench::setupMenuBar() const
     // Tools
     auto tool = new MenuItem( menuBar );
     tool->setCommand("&Tools");
-    *tool << "Std_DlgParameter"
+#ifdef BUILD_ADDONMGR
+    *tool << "Std_AddonMgr"
+          << "Separator";
+#endif
+    *tool << "Std_Measure"
+          << "Std_UnitsCalculator"
           << "Separator"
-          << "Std_ViewScreenShot"
           << "Std_ViewLoadImage"
+          << "Std_ViewScreenShot"
+          << "Std_TextDocument"
+          << "Std_DemoMode"
+          << "Separator"
           << "Std_SceneInspector"
           << "Std_DependencyGraph"
           << "Std_ExportDependencyGraph"
+          << "Separator"
           << "Std_ProjectUtil"
-          << "Separator"
-          << "Std_TextDocument"
-          << "Separator"
-          << "Std_DemoMode"
-          << "Std_UnitsCalculator"
-          << "Separator"
+          << "Std_DlgParameter"
           << "Std_DlgCustomize";
-#ifdef BUILD_ADDONMGR
-    *tool << "Std_AddonMgr";
-#endif
 
     // Macro
     auto macro = new MenuItem( menuBar );
@@ -758,11 +767,11 @@ MenuItem* StdWorkbench::setupMenuBar() const
     // Help
     auto help = new MenuItem( menuBar );
     help->setCommand("&Help");
-    *help << "Std_OnlineHelp" << "Std_WhatsThis" << "Separator"
+    *help << "Std_WhatsThis" << "Separator"
           // Start page and additional separator are dynamically inserted here
-          << "Std_FreeCADUserHub" << "Std_FreeCADForum" << "Std_FreeCADFAQ" << "Std_ReportBug" << "Separator"
+          << "Std_FreeCADUserHub" << "Std_FreeCADForum" << "Std_ReportBug" << "Separator"
           << "Std_RestartInSafeMode" << "Separator"
-          << "Std_FreeCADPowerUserHub" << "Std_PythonHelp" << "Separator"
+          << "Std_DevHandbook" << "Std_PythonHelp" << "Separator"
           << "Std_FreeCADWebsite" << "Std_FreeCADDonation" << "Std_About";
 
     return menuBar;
@@ -803,7 +812,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     auto view = new ToolBarItem( root );
     view->setCommand("View");
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewGroup" << "Std_AlignToSelection"
-          << "Separator" << "Std_DrawStyle" << "Std_TreeViewActions";
+          << "Separator" << "Std_DrawStyle" << "Std_TreeViewActions" << "Std_Measure";
 
     // Individual views
     auto individualViews = new ToolBarItem(root, ToolBarItem::DefaultVisibility::Hidden);
@@ -852,13 +861,13 @@ ToolBarItem* StdWorkbench::setupCommandBars() const
 DockWindowItems* StdWorkbench::setupDockWindows() const
 {
     auto root = new DockWindowItems();
-    root->addDockWidget("Std_TreeView", Qt::LeftDockWidgetArea, true, false);
-    root->addDockWidget("Std_PropertyView", Qt::LeftDockWidgetArea, true, false);
-    root->addDockWidget("Std_SelectionView", Qt::LeftDockWidgetArea, false, false);
-    root->addDockWidget("Std_ComboView", Qt::LeftDockWidgetArea, true, true);
-    root->addDockWidget("Std_TaskView", Qt::LeftDockWidgetArea, true, true);
-    root->addDockWidget("Std_ReportView", Qt::BottomDockWidgetArea, false, true);
-    root->addDockWidget("Std_PythonView", Qt::BottomDockWidgetArea, false, true);
+    root->addDockWidget("Std_TreeView", Qt::LeftDockWidgetArea, Gui::DockWindowOption::Visible);
+    root->addDockWidget("Std_PropertyView", Qt::LeftDockWidgetArea, Gui::DockWindowOption::Visible);
+    root->addDockWidget("Std_SelectionView", Qt::LeftDockWidgetArea, Gui::DockWindowOption::Hidden);
+    root->addDockWidget("Std_ComboView", Qt::LeftDockWidgetArea, Gui::DockWindowOption::VisibleTabbed);
+    root->addDockWidget("Std_TaskView", Qt::LeftDockWidgetArea, Gui::DockWindowOption::VisibleTabbed);
+    root->addDockWidget("Std_ReportView", Qt::BottomDockWidgetArea, Gui::DockWindowOption::HiddenTabbed);
+    root->addDockWidget("Std_PythonView", Qt::BottomDockWidgetArea, Gui::DockWindowOption::HiddenTabbed);
 
     //Dagview through parameter.
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
@@ -866,7 +875,7 @@ DockWindowItems* StdWorkbench::setupDockWindows() const
 
     bool enabled = group->GetBool("Enabled", false);
     if (enabled) {
-      root->addDockWidget("Std_DAGView", Qt::RightDockWidgetArea, false, false);
+      root->addDockWidget("Std_DAGView", Qt::RightDockWidgetArea, Gui::DockWindowOption::Hidden);
     }
 
     return root;
@@ -987,7 +996,7 @@ ToolBarItem* NoneWorkbench::setupCommandBars() const
 DockWindowItems* NoneWorkbench::setupDockWindows() const
 {
     auto root = new DockWindowItems();
-    root->addDockWidget("Std_ReportView", Qt::BottomDockWidgetArea, true, false);
+    root->addDockWidget("Std_ReportView", Qt::BottomDockWidgetArea, Gui::DockWindowOption::Visible);
     return root;
 }
 
@@ -1049,6 +1058,7 @@ PythonBaseWorkbench::~PythonBaseWorkbench()
     delete _toolBar;
     delete _commandBar;
     if (_workbenchPy) {
+        Base::PyGILStateLocker lock;
         _workbenchPy->setInvalid();
         _workbenchPy->DecRef();
     }

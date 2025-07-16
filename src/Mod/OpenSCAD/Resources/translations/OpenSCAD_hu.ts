@@ -46,7 +46,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="119"/>
       <source>If this is checked, Multmatrix Object will be Parametric</source>
-      <translation>Ha ez ki van jelölve akkor a Többmátrix tárgy Parametrikus lesz</translation>
+      <translation>Ha ez kijelölt, akkor a Többmátrix objektum változós lesz</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="122"/>
@@ -57,7 +57,7 @@
       <location filename="../ui/openscadprefs-base.ui" line="139"/>
       <location filename="../ui/openscadprefs-base.ui" line="162"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
-      <translation>A sokszög, hasáb vagy csonka maximális felületeinek száma. Ha az fn nagyobb mint ez az érték akkor ezt a tárgyat mint kört veszi figyelembe. Állítsa 0-ra a határtalansághoz</translation>
+      <translation>A sokszög, hasáb vagy csonka maximális felületeinek száma. Ha az fn nagyobb mint ez az érték akkor ezt az objektumot mint kört veszi figyelembe. Állítsa 0-ra a határtalansághoz</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="142"/>
@@ -194,114 +194,114 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="301"/>
       <source>Please select 3 objects first</source>
-      <translation>Kérem válasszon ki először 3 tárgyat</translation>
+      <translation>Kérem válasszon ki először 3 objektumot</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="334"/>
-      <location filename="../../OpenSCADCommands.py" line="365"/>
+      <location filename="../../OpenSCADCommands.py" line="333"/>
+      <location filename="../../OpenSCADCommands.py" line="364"/>
       <source>Add</source>
       <translation>Hozzáad</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="369"/>
+      <location filename="../../OpenSCADCommands.py" line="368"/>
       <source>Clear</source>
       <translation>Törlés</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="366"/>
+      <location filename="../../OpenSCADCommands.py" line="365"/>
       <source>Load</source>
       <translation>Betöltés</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="367"/>
+      <location filename="../../OpenSCADCommands.py" line="366"/>
       <source>Save</source>
       <translation>Mentés</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="335"/>
-      <location filename="../../OpenSCADCommands.py" line="368"/>
+      <location filename="../../OpenSCADCommands.py" line="334"/>
+      <location filename="../../OpenSCADCommands.py" line="367"/>
       <source>Refresh</source>
       <translation>Frissítés</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="336"/>
+      <location filename="../../OpenSCADCommands.py" line="335"/>
       <source>Clear code</source>
       <translation>Törlő kód</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="337"/>
+      <location filename="../../OpenSCADCommands.py" line="336"/>
       <source>Open...</source>
       <translation>Megnyitás...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="338"/>
+      <location filename="../../OpenSCADCommands.py" line="337"/>
       <source>Save...</source>
       <translation>Mentés...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="339"/>
-      <location filename="../../OpenSCADCommands.py" line="370"/>
+      <location filename="../../OpenSCADCommands.py" line="338"/>
+      <location filename="../../OpenSCADCommands.py" line="369"/>
       <source>as Mesh</source>
       <translation>mint háló</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="352"/>
-      <location filename="../../OpenSCADCommands.py" line="371"/>
+      <location filename="../../OpenSCADCommands.py" line="351"/>
+      <location filename="../../OpenSCADCommands.py" line="370"/>
       <source>Add OpenSCAD Element</source>
       <translation>OpenSCAD elem hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="428"/>
+      <location filename="../../OpenSCADCommands.py" line="427"/>
       <source>Open file</source>
       <translation>Fájl megnyitása</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="430"/>
-      <location filename="../../OpenSCADCommands.py" line="444"/>
+      <location filename="../../OpenSCADCommands.py" line="429"/>
+      <location filename="../../OpenSCADCommands.py" line="443"/>
       <source>OpenSCAD Files</source>
       <translation>OpenSCAD fájlok</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="442"/>
+      <location filename="../../OpenSCADCommands.py" line="441"/>
       <source>Save file</source>
       <translation>Fájl mentése</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="456"/>
-      <location filename="../../OpenSCADCommands.py" line="485"/>
+      <location filename="../../OpenSCADCommands.py" line="455"/>
+      <location filename="../../OpenSCADCommands.py" line="484"/>
       <source>Perform</source>
       <translation>Végrehajt</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="482"/>
-      <location filename="../../OpenSCADCommands.py" line="486"/>
+      <location filename="../../OpenSCADCommands.py" line="481"/>
+      <location filename="../../OpenSCADCommands.py" line="485"/>
       <source>Mesh Boolean</source>
       <translation>Logikai háló</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="487"/>
+      <location filename="../../OpenSCADCommands.py" line="486"/>
       <source>Minkowski sum</source>
       <translation>Minkowski összeg</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="654"/>
+      <location filename="../../OpenSCADUtils.py" line="653"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
       <translation>OpenSCAD fájl tartalmaz mind a 2D és 3D alakzatokat. Ezt ebben az importőrben nem támogatják, minden formának azonos dimenzióval kell rendelkeznie.</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="665"/>
+      <location filename="../../OpenSCADUtils.py" line="664"/>
       <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
       <translation>Hiba: vagy minden alakzatnak 2D-snek kell lennie, vagy minden alakzatnak 3D-snek kell lennie</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="549"/>
-      <location filename="../../importCSG.py" line="1434"/>
+      <location filename="../../importCSG.py" line="517"/>
+      <location filename="../../importCSG.py" line="1389"/>
       <source>Unsupported Function</source>
       <translation>Nem támogatott funkció</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="549"/>
-      <location filename="../../importCSG.py" line="1434"/>
+      <location filename="../../importCSG.py" line="517"/>
+      <location filename="../../importCSG.py" line="1389"/>
       <source>Press OK</source>
       <translation>OK-ra kattintson</translation>
     </message>
@@ -423,12 +423,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="304"/>
       <source>Replace Object</source>
-      <translation>Cserélje ki a tárgyat</translation>
+      <translation>Cserélje ki az objektumot</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="307"/>
       <source>Replace an object in the Tree view. Please select old, new, and parent object</source>
-      <translation>Tárgy cseréje fanézetben. Kérjük, válassza ki a régi, új és szülő tárgyakat</translation>
+      <translation>Objektum cseréje fanézetben. Kérjük, válassza ki a régi, új és szülő objektumokat</translation>
     </message>
   </context>
   <context>
@@ -436,23 +436,23 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="317"/>
       <source>Remove Objects and their Children</source>
-      <translation>A tárgy és az összes al rész tárgyak eltávolítása</translation>
+      <translation>Az objektum és az összes alpontja eltávolítása</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="320"/>
       <source>Removes the selected objects and all children that are not referenced from other objects</source>
-      <translation>Eltávolítja a kijelölt tárgyakat és minden rész altárgyát, melyek nem hivatkoznak más tárgyakra</translation>
+      <translation>Eltávolítja a kijelölt objektumokat és minden alpontját, melyek nem hivatkoznak más objektumokra</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_AddOpenSCADElement</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="530"/>
+      <location filename="../../OpenSCADCommands.py" line="529"/>
       <source>Add OpenSCAD Element...</source>
       <translation>OpenSCAD elem hozzáadása...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="534"/>
+      <location filename="../../OpenSCADCommands.py" line="533"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
       <translation>OpenSCAD elem hozzáadása OpenSCAD kód bevitelével és az OpenSCAD bináris futtatásával</translation>
     </message>
@@ -460,25 +460,25 @@
   <context>
     <name>OpenSCAD_MeshBoolean</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="545"/>
+      <location filename="../../OpenSCADCommands.py" line="544"/>
       <source>Mesh Boolean...</source>
       <translation>Logikai háló...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="549"/>
+      <location filename="../../OpenSCADCommands.py" line="548"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
-      <translation>Hálóként exportálja a tárgyakat és egy logikai művelet végrehajtásához használja az OpenSCAD-t</translation>
+      <translation>Hálóként exportálja az objektumokat és egy logikai művelet végrehajtásához használja az OpenSCAD-t</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_Hull</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="566"/>
+      <location filename="../../OpenSCADCommands.py" line="565"/>
       <source>Hull</source>
       <translation>Héj</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="569"/>
+      <location filename="../../OpenSCADCommands.py" line="568"/>
       <source>Use OpenSCAD to create a hull</source>
       <translation>Az OpenSCAD használata hajótest létrehozásához</translation>
     </message>
@@ -499,12 +499,12 @@
   <context>
     <name>OpenSCAD_Minkowski</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="586"/>
+      <location filename="../../OpenSCADCommands.py" line="585"/>
       <source>Minkowski sum</source>
       <translation>Minkowski összeg</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="589"/>
+      <location filename="../../OpenSCADCommands.py" line="588"/>
       <source>Use OpenSCAD to create a Minkowski sum</source>
       <translation>Minkowski összeg létrehozása az OpenSCAD használatával</translation>
     </message>

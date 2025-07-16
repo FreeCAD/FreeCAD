@@ -24,7 +24,7 @@
 #define SKETCHERGUI_DrawSketchHandlerFillet_H
 
 #include <Gui/Notifications.h>
-#include <Gui/SelectionFilter.h>
+#include <Gui/Selection/SelectionFilter.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
 
@@ -57,7 +57,7 @@ public:
         if (pObj != this->object) {
             return false;
         }
-        if (!sSubName || sSubName[0] == '\0') {
+        if (Base::Tools::isNullOrEmpty(sSubName)) {
             return false;
         }
         std::string element(sSubName);
@@ -314,18 +314,18 @@ private:
 
         if (constructionMethod() == DrawSketchHandlerFillet::ConstructionMethod::Fillet) {
             if (preserveCorner) {
-                return QString::fromLatin1("Sketcher_Pointer_Create_PointFillet");
+                return QStringLiteral("Sketcher_Pointer_Create_PointFillet");
             }
             else {
-                return QString::fromLatin1("Sketcher_Pointer_Create_Fillet");
+                return QStringLiteral("Sketcher_Pointer_Create_Fillet");
             }
         }
         else {
             if (preserveCorner) {
-                return QString::fromLatin1("Sketcher_Pointer_Create_PointChamfer");
+                return QStringLiteral("Sketcher_Pointer_Create_PointChamfer");
             }
             else {
-                return QString::fromLatin1("Sketcher_Pointer_Create_Chamfer");
+                return QStringLiteral("Sketcher_Pointer_Create_Chamfer");
             }
         }
     }
@@ -402,6 +402,7 @@ private:
                 moveToNextMode();
             }
         }
+        updateHint();
     }
 
 
@@ -409,6 +410,23 @@ private:
     bool preserveCorner;
     int vtId, geoId1, geoId2;
     Base::Vector2d firstPos, secondPos;
+
+    struct HintEntry
+    {
+        SelectMode state;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static HintTable getFilletHintTable();
+    static std::list<Gui::InputHint> lookupFilletHints(SelectMode state);
+
+public:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return lookupFilletHints(state());
+    }
 };
 
 template<>
@@ -456,7 +474,33 @@ void DSHFilletController::adaptDrawingToCheckboxChange(int checkboxindex, bool v
     handler->updateCursor();
 }
 
-}  // namespace SketcherGui
 
+DrawSketchHandlerFillet::HintTable DrawSketchHandlerFillet::getFilletHintTable()
+{
+    using enum Gui::InputHint::UserInput;
+
+    return {{.state = SelectMode::SeekFirst,
+             .hints = {{QObject::tr("%1 pick first edge or point", "Sketcher Fillet/Chamfer: hint"),
+                        {MouseLeft}}}},
+            {.state = SelectMode::SeekSecond,
+             .hints = {{QObject::tr("%1 pick second edge", "Sketcher Fillet/Chamfer: hint"),
+                        {MouseLeft}}}},
+            {.state = SelectMode::End,
+             .hints = {
+                 {QObject::tr("%1 create fillet", "Sketcher Fillet/Chamfer: hint"), {MouseLeft}}}}};
+}
+
+std::list<Gui::InputHint> DrawSketchHandlerFillet::lookupFilletHints(SelectMode state)
+{
+    const auto filletHintTable = getFilletHintTable();
+
+    auto it = std::ranges::find_if(filletHintTable, [state](const HintEntry& entry) {
+        return entry.state == state;
+    });
+
+    return (it != filletHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
+}
+
+}  // namespace SketcherGui
 
 #endif  // SKETCHERGUI_DrawSketchHandlerFillet_H

@@ -1,37 +1,40 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2024 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU General Public License (GPL)            *
-# *   as published by the Free Software Foundation; either version 3 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU General Public License for more details.                          *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
 import tempfile
 
+import ifcopenshell
+
 import FreeCAD
 import Draft
-import ifcopenshell
 
 from importers import exportIFC
 from importers import exportIFCHelper
 from importers import importIFCHelper
 
-from nativeifc import ifc_tools
-from nativeifc import ifc_import
+from . import ifc_tools
+from . import ifc_import
 
 
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
@@ -127,6 +130,13 @@ def get_export_preferences(ifcfile, preferred_context=None, create=None):
                         best_context = ifc_tools.api_run("context.add_context",
                                                          ifcfile,
                                                          context_type = preferred_context[0])
+    if not best_context:
+        if contexts:
+            best_context = contexts[0]
+        else:
+            best_context = ifc_tools.api_run("context.add_context",
+                                             ifcfile,
+                                             context_type = "Model")
     return prefs, best_context
 
 
@@ -187,6 +197,10 @@ def get_object_type(ifcentity, objecttype=None):
                 objecttype = "text"
         elif ifcentity.is_a("IfcGridAxis"):
             objecttype = "axis"
+        elif ifcentity.is_a("IfcControl"):
+            objecttype = "schedule"
+        elif ifcentity.is_a() in ["IfcBuilding", "IfcBuildingStorey"]:
+            objecttype = "buildingpart"
     return objecttype
 
 
@@ -201,7 +215,10 @@ def is_annotation(obj):
         return True
     elif obj.isDerivedFrom("App::Annotation"):
         return True
-    elif Draft.getType(obj) in ["DraftText",
+    elif Draft.getType(obj) in ["BezCurve",
+                                "BSpline",
+                                "Wire",
+                                "DraftText",
                                 "Text",
                                 "Dimension",
                                 "LinearDimension",

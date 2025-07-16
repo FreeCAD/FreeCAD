@@ -45,6 +45,7 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProvider.h>
+#include <Gui/PreferencePages/DlgSettingsPDF.h>
 
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawPagePy.h>
@@ -183,11 +184,14 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
     QString documentName = QString::fromUtf8(doc->getName());
     QPdfWriter pdfWriter(outputFile);
 
-    // set the printed PDF Version to comply with PDF/A-1b, more details under:
-    // https://www.kdab.com/creating-pdfa-documents-qt/
-    pdfWriter.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
+    // setPdfVersion sets the printed PDF Version to what is chosen in Preferences/Import-Export/PDF
+    // more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+    pdfWriter.setPdfVersion(Gui::Dialog::DlgSettingsPDF::evaluatePDFVersion());
 
     pdfWriter.setTitle(documentName);
+    pdfWriter.setCreator(QString::fromStdString(App::Application::getNameWithVersion())
+                       + QLatin1String(" TechDraw"));
+
     pdfWriter.setResolution(printer->resolution());
     QPageLayout pageLayout = printer->pageLayout();
     // we want to set the layout for the first page before we make the painter(&pdfWriter) or the layout for the first page will
@@ -269,7 +273,7 @@ void PagePrinter::printBannerPage(QPrinter* printer, QPainter& painter, QPageLay
     verticalPos += 2 * verticalSpacing * fontSizePx;
     for (auto& obj : docObjs) {
         //print a line for each page
-        QString pageLine = QString::fromUtf8(obj->getNameInDocument()) + QString::fromUtf8(" / ")
+        QString pageLine = QString::fromUtf8(obj->getNameInDocument()) + QStringLiteral(" / ")
             + QString::fromUtf8(obj->Label.getValue());
         painter.drawText(leftMargin, verticalPos, pageLine);
         verticalPos += verticalSpacing * fontSizePx;
@@ -339,7 +343,7 @@ void PagePrinter::print(ViewProviderPage* vpPage, QPrinter* printer)
 void PagePrinter::printPdf(ViewProviderPage* vpPage, const std::string& file)
 {
     if (file.empty()) {
-        Base::Console().Warning("PagePrinter - no file specified\n");
+        Base::Console().warning("PagePrinter - no file specified\n");
         return;
     }
 
@@ -349,12 +353,15 @@ void PagePrinter::printPdf(ViewProviderPage* vpPage, const std::string& file)
     // set up the pdfwriter
     QString outputFile = QString::fromStdString(filespec);
     QPdfWriter pdfWriter(outputFile);
-    pdfWriter.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
+    pdfWriter.setPdfVersion(Gui::Dialog::DlgSettingsPDF::evaluatePDFVersion());
     QPageLayout pageLayout = pdfWriter.pageLayout();
     auto marginsdb = pageLayout.margins(QPageLayout::Millimeter);
     QString documentName = QString::fromUtf8(vpPage->getDrawPage()->getNameInDocument());
     pdfWriter.setTitle(documentName);
     // default pdfWriter dpi is 1200.
+
+    pdfWriter.setCreator(QString::fromStdString(App::Application::getNameWithVersion())
+                       + QLatin1String(" TechDraw"));
 
     // set up the page layout
     auto dPage = vpPage->getDrawPage();
@@ -391,7 +398,7 @@ void PagePrinter::printPdf(ViewProviderPage* vpPage, const std::string& file)
 void PagePrinter::saveSVG(ViewProviderPage* vpPage, const std::string& file)
 {
     if (file.empty()) {
-        Base::Console().Warning("PagePrinter - no file specified\n");
+        Base::Console().warning("PagePrinter - no file specified\n");
         return;
     }
     auto filespec = Base::Tools::escapeEncodeFilename(file);

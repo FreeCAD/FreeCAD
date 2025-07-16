@@ -74,8 +74,10 @@ class Dimension(gui_base_original.Creator):
     def __init__(self):
         super().__init__()
         self.max = 2
-        self.cont = None
+        self.chain = None # Last chain's leg in ChainMode
+        self.contMode = None
         self.dir = None
+        self.featureName = "Dimension"
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -83,23 +85,25 @@ class Dimension(gui_base_original.Creator):
         return {'Pixmap': 'Draft_Dimension',
                 'Accel': "D, I",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Dimension", "Dimension"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Dimension", "Creates a dimension.\n\n- Pick three points to create a simple linear dimension.\n- Select a straight line to create a linear dimension linked to that line.\n- Select an arc or circle to create a radius or diameter dimension linked to that arc.\n- Select two straight lines to create an angular dimension between them.\nCTRL to snap, SHIFT to constrain, ALT to select an edge or arc.\n\nYou may select a single line or single circular arc before launching this command\nto create the corresponding linked dimension.\nYou may also select an 'App::MeasureDistance' object before launching this command\nto turn it into a 'Draft Dimension' object.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Dimension", "Creates a dimension.\n\n- Pick three points to create a simple linear dimension.\n- Select a straight line to create a linear dimension linked to that line.\n- Select an arc or circle to create a radius or diameter dimension linked to that arc.\n- Select two straight lines to create an angular dimension between them.\nSHIFT to constrain, E or ALT to select an edge or arc.\n\nYou may select a single line or single circular arc before launching this command\nto create the corresponding linked dimension.")}
 
-    def Activated(self):
+    def Activated(self, dir_vec=None):
         """Execute when the command is called."""
-        if self.cont:
+        if self.chain and not self.contMode:
             self.finish()
         else:
-            super().Activated(name="Dimension")
+            super().Activated(name=self.featureName)
             if self.ui:
-                self.ui.pointUi(title=translate("draft", "Dimension"), icon="Draft_Dimension")
+                self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Dimension")
                 self.ui.continueCmd.show()
+                self.ui.chainedModeCmd.show()
                 self.ui.selectButton.show()
                 self.altdown = False
                 self.call = self.view.addEventCallback("SoEvent", self.action)
                 self.dimtrack = trackers.dimTracker()
                 self.arctrack = trackers.arcTracker()
                 self.link = None
+                self.dir = dir_vec
                 self.edges = []
                 self.angles = []
                 self.angledata = None
@@ -159,7 +163,8 @@ class Dimension(gui_base_original.Creator):
     def finish(self, cont=False):
         """Terminate the operation."""
         self.end_callbacks(self.call)
-        self.cont = None
+        self.chain = None
+        self.contMode = None
         self.dir = None
         if self.ui:
             self.dimtrack.finalize()
@@ -283,8 +288,9 @@ class Dimension(gui_base_original.Creator):
             # Linear dimension, not linked to any edge
             self.create_linear_dimension()
 
-        if self.ui.continueMode:
-            self.cont = self.node[2]
+        if self.ui.chainedMode or self.ui.continueMode:
+            if self.ui.chainedMode:
+                self.chain = self.node[2]
             if not self.dir:
                 if self.link:
                     v1 = self.link[0].Shape.Vertexes[self.link[1]].Point
@@ -339,7 +345,7 @@ class Dimension(gui_base_original.Creator):
                         ed = ob.Shape.Edges[num]
                         v1 = ed.Vertexes[0].Point
                         v2 = ed.Vertexes[-1].Point
-                        self.dimtrack.update([v1, v2, self.cont])
+                        self.dimtrack.update([v1, v2, self.chain])
             else:
                 if self.node and (len(self.edges) < 2):
                     self.dimtrack.on()
@@ -413,7 +419,7 @@ class Dimension(gui_base_original.Creator):
                 # update the dimline
                 if self.node and not self.arcmode:
                     self.dimtrack.update(self.node
-                                         + [self.point] + [self.cont])
+                                         + [self.point] + [self.chain])
             gui_tool_utils.redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
@@ -493,10 +499,10 @@ class Dimension(gui_base_original.Creator):
                         self.dimtrack.on()
                         if self.planetrack:
                             self.planetrack.set(self.node[0])
-                    elif len(self.node) == 2 and self.cont:
-                        self.node.append(self.cont)
+                    elif len(self.node) == 2 and self.chain:
+                        self.node.append(self.chain)
                         self.createObject()
-                        if not self.cont:
+                        if not self.chain:
                             self.finish()
                     elif len(self.node) == 3:
                         # for unlinked arc mode:
@@ -506,7 +512,10 @@ class Dimension(gui_base_original.Creator):
                         #     cen = self.node[0].add(v)
                         #     self.node = [self.node[0], self.node[1], cen]
                         self.createObject()
-                        if not self.cont:
+                        if self.ui.continueMode:
+                            self.contMode = True
+                            self.Activated()
+                        elif not self.chain:
                             self.finish()
                     elif self.angledata:
                         self.node.append(self.point)
@@ -526,7 +535,7 @@ class Dimension(gui_base_original.Creator):
             self.dimtrack.on()
         elif len(self.node) == 3:
             self.createObject()
-            if not self.cont:
+            if not self.chain:
                 self.finish()
 
     def set_constraint_node(self):

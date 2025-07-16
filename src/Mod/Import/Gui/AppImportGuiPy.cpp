@@ -25,7 +25,6 @@
 #define WNT  // avoid conflict with GUID
 #endif
 #ifndef _PreComp_
-#include <climits>
 #include <iostream>
 
 #include <QString>
@@ -47,6 +46,7 @@
 #endif
 #endif
 
+#include <chrono>
 #include "ExportOCAFGui.h"
 #include "ImportOCAFGui.h"
 #include "OCAFBrowser.h"
@@ -71,7 +71,6 @@
 #include <Mod/Part/App/ImportStep.h>
 #include <Mod/Part/App/Interface.h>
 #include <Mod/Part/App/OCAF/ImportExportSettings.h>
-#include <Mod/Part/App/ProgressIndicator.h>
 #include <Mod/Part/App/encodeFilename.h>
 #include <Mod/Part/Gui/DlgExportStep.h>
 #include <Mod/Part/Gui/DlgImportStep.h>
@@ -272,8 +271,8 @@ private:
                     reader.read(hDoc);
                 }
                 catch (OSD_Exception& e) {
-                    Base::Console().Error("%s\n", e.GetMessageString());
-                    Base::Console().Message("Try to load STEP file without colors...\n");
+                    Base::Console().error("%s\n", e.GetMessageString());
+                    Base::Console().message("Try to load STEP file without colors...\n");
 
                     Part::ImportStepParts(pcDoc, Utf8Name.c_str());
                     pcDoc->recompute();
@@ -285,8 +284,8 @@ private:
                     reader.read(hDoc);
                 }
                 catch (OSD_Exception& e) {
-                    Base::Console().Error("%s\n", e.GetMessageString());
-                    Base::Console().Message("Try to load IGES file without colors...\n");
+                    Base::Console().error("%s\n", e.GetMessageString());
+                    Base::Console().message("Try to load IGES file without colors...\n");
 
                     Part::ImportIgesParts(pcDoc, Utf8Name.c_str());
                     pcDoc->recompute();
@@ -341,8 +340,8 @@ private:
         return Py::None();
     }
 
-    static std::map<std::string, App::Color> getShapeColors(App::DocumentObject* obj,
-                                                            const char* subname)
+    static std::map<std::string, Base::Color> getShapeColors(App::DocumentObject* obj,
+                                                             const char* subname)
     {
         auto vp = Gui::Application::Instance->getViewProvider(obj);
         if (vp) {
@@ -403,8 +402,15 @@ private:
             ImpExpDxfReadGui dxf_file(EncodedName, pcDoc);
             dxf_file.setOptionSource(defaultOptions);
             dxf_file.setOptions();
+
+            auto startTime = std::chrono::high_resolution_clock::now();
             dxf_file.DoRead(IgnoreErrors);
+            auto endTime = std::chrono::high_resolution_clock::now();
+            std::chrono::duration<double> elapsed = endTime - startTime;
+            dxf_file.setImportTime(elapsed.count());
+
             pcDoc->recompute();
+            return dxf_file.getStatsAsPyObject();
         }
         catch (const Standard_Failure& e) {
             throw Py::RuntimeError(e.GetMessageString());
@@ -412,7 +418,6 @@ private:
         catch (const Base::Exception& e) {
             throw Py::RuntimeError(e.what());
         }
-        return Py::None();
     }
 
     Py::Object exportOptions(const Py::Tuple& args)
@@ -535,7 +540,7 @@ private:
                     "User parameter:BaseApp/Preferences/Mod/Part/STEP");
                 std::string scheme = hGrp->GetASCII("Scheme", Part::Interface::writeStepScheme());
                 std::list<std::string> supported = Part::supportedSTEPSchemes();
-                if (std::find(supported.begin(), supported.end(), scheme) != supported.end()) {
+                if (std::ranges::find(supported, scheme) != supported.end()) {
                     Part::Interface::writeStepScheme(scheme.c_str());
                 }
 

@@ -6,17 +6,17 @@
     <message>
       <location filename="../../UnitTest.ui" line="17"/>
       <source>FreeCAD UnitTest</source>
-      <translation>FreeCAD Birim Denemesi</translation>
+      <translation>FreeCAD UnitTest</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="32"/>
       <source>Test</source>
-      <translation>Denetim</translation>
+      <translation>Test</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="44"/>
       <source>Select test name:</source>
-      <translation>Denetim için bir ad seçin:</translation>
+      <translation>Test adı seçin:</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="96"/>
@@ -26,7 +26,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="99"/>
       <source>Alt+S</source>
-      <translation>Alt+S</translation>
+      <translation>Alt + S</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="128"/>
@@ -46,7 +46,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="144"/>
       <source>Alt+A</source>
-      <translation>Alt+A</translation>
+      <translation>Alt + A</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="154"/>
@@ -120,16 +120,16 @@ Yığın iz dahil, hata hakkında daha fazla bilgi almak için unsur ağacında 
     <message>
       <location filename="../../UnitTestImp.cpp" line="179"/>
       <source>About FreeCAD UnitTest</source>
-      <translation>FreeCAD Birim Denemesi hakkında</translation>
+      <translation>FreeCAD UnitTest hakkında</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="180"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
-      <translation>Telif hakkı (c) Werner Mayer
+      <translation>Telif hakkı © Werner Mayer
 
-FreeCAS BirimTest FreeCAD'in bir parçasıdır ve kişileirn kendi modüllerine test birimleri yazmasını destekler.</translation>
+FreeCAD UnitTest, FreeCAD’in bir parçasıdır ve kendi modülleriniz için birim testleri yazmayı destekler.</translation>
     </message>
   </context>
 </TS>

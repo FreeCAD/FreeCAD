@@ -28,6 +28,7 @@
 #include <Mod/Mesh/MeshGlobal.h>
 #endif
 #include <algorithm>
+#include <limits>
 #include <list>
 #include <set>
 #include <vector>
@@ -201,7 +202,8 @@ protected:
     // NOLINTBEGIN
     std::list<Base::Vector3f> _vPoints; /**< Holds the points for the fit algorithm.  */
     bool _bIsFitted {false};            /**< Flag, whether the fit has been called. */
-    float _fLastResult {FLOAT_MAX};     /**< Stores the last result of the fit */
+    float _fLastResult {
+        std::numeric_limits<float>::max()}; /**< Stores the last result of the fit */
     // NOLINTEND
 };
 

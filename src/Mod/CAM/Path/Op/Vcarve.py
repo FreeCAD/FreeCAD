@@ -164,15 +164,15 @@ class _Geometry(object):
 
     def incrementStepDownDepth(self, maximumUsableDepth):
         """
-        Increase stepDown depth before staring new carving pass.
+        Increase stepDown depth before starting new carving pass.
         :returns: True if successful, False if maximum depth achieved
         """
 
-        # do not allow to increase depth if we are already at stop depth
+        # do not allow one to increase depth if we are already at stop depth
         if self.maximumDepth == self.stop:
             return False
 
-        # do not allow to increase depth if we are already at
+        # do not allow one to increase depth if we are already at
         # maximum usable depth
 
         if self.maximumDepth <= maximumUsableDepth:
@@ -204,8 +204,8 @@ class _Geometry(object):
         return _Geometry(zStart + zOff, max(zStop + zOff, zFinal), zScale, zStepDown)
 
     @classmethod
-    def FromObj(cls, obj, model):
-        zStart = model.Shape.BoundBox.ZMax
+    def FromObj(cls, obj):
+        zStart = obj.BaseShapes[0].Shape.BoundBox.ZMax
         finalDepth = obj.FinalDepth.Value
         stepDown = abs(obj.StepDown.Value)
 
@@ -284,29 +284,34 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             )
         obj.setEditorMode("BaseShapes", 2)  # hide
 
-        obj.addProperty(
-            "App::PropertyBool",
-            "OptimizeMovements",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Optimize movements"),
-        )
+        if not hasattr(obj, "OptimizeMovements"):
 
-        obj.addProperty(
-            "App::PropertyBool",
-            "FinishingPass",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Add finishing pass"),
-        )
+            obj.addProperty(
+                "App::PropertyBool",
+                "OptimizeMovements",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Optimize movements"),
+            )
+            obj.OptimizeMovements = False
 
-        obj.addProperty(
-            "App::PropertyDistance",
-            "FinishingPassZOffset",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Finishing pass Z offset"),
-        )
+        if not hasattr(obj, "FinishingPass"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "FinishingPass",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Add finishing pass"),
+            )
+            obj.FinishingPass = False
 
-        obj.FinishingPass = False
-        obj.FinishingPassZOffset = "0.00"
+        if not hasattr(obj, "FinishingPassZOffset"):
+            obj.addProperty(
+                "App::PropertyDistance",
+                "FinishingPassZOffset",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Finishing pass Z offset"),
+            )
+
+            obj.FinishingPassZOffset = "0.00"
 
     def initOperation(self, obj):
         """initOperation(obj) ... create vcarve specific properties."""
@@ -334,7 +339,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         )
 
         obj.Colinear = 10.0
-        obj.Discretize = 0.01
+        obj.Discretize = 0.25
         obj.Tolerance = Path.Preferences.defaultGeometryTolerance()
         self.setupAdditionalProperties(obj)
 
@@ -349,6 +354,12 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
         wires_by_face = dict()
         self.voronoiDebugCache = dict()
+
+        def is_exterior(vertex, face):
+            vector = FreeCAD.Vector(vertex.toPoint(face.BoundBox.ZMin))
+            (u, v) = face.Surface.parameter(vector)
+            # isPartOfDomain is faster than face.IsInside(...)
+            return not face.isPartOfDomain(u, v)
 
         def insert_many_wires(vd, wires):
             for wire in wires:
@@ -390,12 +401,17 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                         e.Color = PRIMARY
                 else:
                     e.Color = SECONDARY
-            vd.colorExterior(EXTERIOR1)
-            vd.colorExterior(
-                EXTERIOR2,
-                lambda v: not f.isInside(v.toPoint(f.BoundBox.ZMin), obj.Tolerance, True),
-            )
+
+            # filter our colinear edged so there are fewer ones
+            # to iterate over in colorExterior which is slow
             vd.colorColinear(COLINEAR, obj.Colinear)
+
+            vd.colorExterior(EXTERIOR1)
+            vd.colorExterior(EXTERIOR2, lambda v: is_exterior(v, f))
+
+            # if colorTwin is done before colorExterior we seem to have
+            # much more weird exterior edges needed to be filtered out,
+            # keep it here to be safe
             vd.colorTwins(TWIN)
 
             wires = _collectVoronoiWires(vd)
@@ -484,7 +500,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         # iterate over each face separately
         for face, wires in self.buildMedialWires(obj, faces).items():
 
-            geom = _Geometry.FromObj(obj, self.model[0])
+            geom = _Geometry.FromObj(obj)
 
             # If using depth step-down, calculate maximum usable depth for current face.
             # This is done to avoid adding additional step-down engraving passes when it
@@ -505,15 +521,12 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             while geom.incrementStepDownDepth(maximumUsableDepth):
                 cutWires(wires, pathlist, obj.OptimizeMovements)
 
-        # add finishing pass if enabled
+            # add finishing pass if enabled
 
-        #   if obj.FinishingPass:
-        #       geom.offset = obj.FinishingPassZOffset.Value
+            if obj.FinishingPass:
+                geom.offset = obj.FinishingPassZOffset.Value
 
-        #       for w in wires:
-        #           pWire = self._getPartEdges(obj, w, geom)
-        #           if pWire:
-        #               pathlist.extend(cutWire(pWire))
+                cutWires(wires, pathlist, obj.OptimizeMovements)
 
         self.commandlist = pathlist
 

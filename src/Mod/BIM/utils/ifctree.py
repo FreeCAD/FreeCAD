@@ -1,21 +1,24 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2022 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
@@ -32,10 +35,11 @@ my ryzen9 machine, for 2700 objects. Larger files like the King Arch file
 (20 Mb / 750 000 objects) would import in 18 minutes...
 """
 
-import FreeCAD
-import ifcopenshell
-from PySide2 import QtCore, QtGui, QtWidgets
 import time
+
+import ifcopenshell
+
+from PySide import QtWidgets
 
 
 class ViewProvider:
@@ -94,24 +98,24 @@ def create(ifcentity):
             if hasattr(obj, attr):
                 continue
             elif isinstance(value, int):
-                obj.addProperty("App::PropertyInteger", attr, "IFC")
+                obj.addProperty("App::PropertyInteger", attr, "IFC", locked=True)
                 setattr(obj, attr, value)
             elif isinstance(value, float):
-                obj.addProperty("App::PropertyFloat", attr, "IFC")
+                obj.addProperty("App::PropertyFloat", attr, "IFC", locked=True)
                 setattr(obj, attr, value)
             elif isinstance(value, ifcopenshell.entity_instance):
                 value = create(value)
-                obj.addProperty("App::PropertyLink", attr, "IFC")
+                obj.addProperty("App::PropertyLink", attr, "IFC", locked=True)
                 setattr(obj, attr, value)
             elif isinstance(value, (list, tuple)) and value:
                 if isinstance(value[0], ifcopenshell.entity_instance):
                     nvalue = []
                     for elt in value:
                         nvalue.append(create(elt))
-                    obj.addProperty("App::PropertyLinkList", attr, "IFC")
+                    obj.addProperty("App::PropertyLinkList", attr, "IFC", locked=True)
                     setattr(obj, attr, nvalue)
             else:
-                obj.addProperty("App::PropertyString", attr, "IFC")
+                obj.addProperty("App::PropertyString", attr, "IFC", locked=True)
                 if value is not None:
                     setattr(obj, attr, str(value))
     for parent in ifcfile.get_inverse(ifcentity):

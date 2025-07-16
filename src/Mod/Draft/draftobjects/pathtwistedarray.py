@@ -84,14 +84,16 @@ class PathTwistedArray(DraftLink):
             obj.addProperty("App::PropertyLink",
                             "Base",
                             "Objects",
-                            QT_TRANSLATE_NOOP("App::Property","The base object that will be duplicated."))
+                            QT_TRANSLATE_NOOP("App::Property","The base object that will be duplicated."),
+                            locked=True)
             obj.Base = None
 
         if "PathObject" not in properties:
             obj.addProperty("App::PropertyLink",
                             "PathObject",
                             "Objects",
-                            QT_TRANSLATE_NOOP("App::Property","The object along which the copies will be distributed. It must contain 'Edges'."))
+                            QT_TRANSLATE_NOOP("App::Property","The object along which the copies will be distributed. It must contain 'Edges'."),
+                            locked=True)
             obj.PathObject = None
 
         if "Fuse" not in properties:
@@ -102,30 +104,45 @@ class PathTwistedArray(DraftLink):
             obj.addProperty("App::PropertyBool",
                             "Fuse",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Fuse = False
 
         if "Count" not in properties:
             obj.addProperty("App::PropertyInteger",
                             "Count",
                             "Objects",
-                            QT_TRANSLATE_NOOP("App::Property","Number of copies to create."))
+                            QT_TRANSLATE_NOOP("App::Property","Number of copies to create."),
+                            locked=True)
             obj.Count = 15
 
         if "RotationFactor" not in properties:
             obj.addProperty("App::PropertyFloat",
                             "RotationFactor",
                             "Objects",
-                            QT_TRANSLATE_NOOP("App::Property","Rotation factor of the twisted array."))
+                            QT_TRANSLATE_NOOP("App::Property","Rotation factor of the twisted array."),
+                            locked=True)
             obj.RotationFactor = 0.25
 
         if self.use_link and "ExpandArray" not in properties:
             obj.addProperty("App::PropertyBool",
                             "ExpandArray",
                             "Objects",
-                            QT_TRANSLATE_NOOP("App::Property","Show the individual array elements (only for Link arrays)"))
+                            QT_TRANSLATE_NOOP("App::Property","Show the individual array elements (only for Link arrays)"),
+                            locked=True)
             obj.ExpandArray = False
             obj.setPropertyStatus('Shape', 'Transient')
+
+        if not self.use_link:
+            if "PlacementList" not in properties:
+                _tip = QT_TRANSLATE_NOOP("App::Property",
+                                         "The placement for each array element")
+                obj.addProperty("App::PropertyPlacementList",
+                                "PlacementList",
+                                "Objects",
+                                _tip,
+                                locked=True)
+                obj.PlacementList = []
 
     def linkSetup(self, obj):
         """Set up the object as a link object."""
@@ -134,11 +151,18 @@ class PathTwistedArray(DraftLink):
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
-        # Fuse property was added in v1.0, obj should be OK if it is present:
-        if hasattr(obj, "Fuse"):
+        # Fuse property was added in v1.0 and PlacementList property was added
+        # for non-link arrays in v1.1, obj should be OK if both are present:
+        if hasattr(obj, "Fuse") and hasattr(obj, "PlacementList"):
             return
+
+        if not hasattr(obj, "Fuse"):
+            _wrn("v1.0, " + obj.Label + ", " + translate("draft", "added 'Fuse' property"))
+        if not hasattr(obj, "PlacementList"):
+            _wrn("v1.1, " + obj.Label + ", " + translate("draft", "added hidden property 'PlacementList'"))
+
         self.set_properties(obj)
-        _wrn("v1.0, " + obj.Label + ", " + translate("draft", "added 'Fuse' property"))
+        self.execute(obj) # Required to update PlacementList.
 
     def execute(self, obj):
         """Execute when the object is created or recomputed."""

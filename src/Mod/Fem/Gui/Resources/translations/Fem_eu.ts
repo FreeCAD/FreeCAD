@@ -148,17 +148,17 @@
   <context>
     <name>CmdFemConstraintInitialTemperature</name>
     <message>
-      <location filename="../../Command.cpp" line="725"/>
+      <location filename="../../Command.cpp" line="726"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="726"/>
+      <location filename="../../Command.cpp" line="727"/>
       <source>Initial temperature</source>
       <translation>Hasierako tenperatura</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="727"/>
+      <location filename="../../Command.cpp" line="728"/>
       <source>Creates an initial temperature acting on a body</source>
       <translation>Hasierako tenperatura bat sortzen du gorputz baterako</translation>
     </message>
@@ -166,17 +166,17 @@
   <context>
     <name>CmdFemConstraintPlaneRotation</name>
     <message>
-      <location filename="../../Command.cpp" line="776"/>
+      <location filename="../../Command.cpp" line="777"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="777"/>
+      <location filename="../../Command.cpp" line="778"/>
       <source>Plane multi-point constraint</source>
       <translation>Planoaren puntu anitzeko murrizketa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="778"/>
+      <location filename="../../Command.cpp" line="779"/>
       <source>Creates a plane multi-point constraint for a face</source>
       <translation>Planoaren puntu anitzeko murrizketa bat sortzen du aurpegi baterako</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdFemConstraintPressure</name>
     <message>
-      <location filename="../../Command.cpp" line="827"/>
+      <location filename="../../Command.cpp" line="828"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="828"/>
+      <location filename="../../Command.cpp" line="829"/>
       <source>Pressure load</source>
       <translation>Presio-karga</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="829"/>
+      <location filename="../../Command.cpp" line="830"/>
       <source>Creates a pressure load acting on a face</source>
       <translation>Aurpegi batean eragiten duen presio-karga bat sortzen du</translation>
     </message>
@@ -202,17 +202,17 @@
   <context>
     <name>CmdFemConstraintPulley</name>
     <message>
-      <location filename="../../Command.cpp" line="938"/>
+      <location filename="../../Command.cpp" line="939"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="939"/>
+      <location filename="../../Command.cpp" line="940"/>
       <source>Pulley constraint</source>
       <translation>Polea-murrizketa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="940"/>
+      <location filename="../../Command.cpp" line="941"/>
       <source>Creates a pulley constraint</source>
       <translation>Polea-murrizketa sortzen du</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdFemConstraintSpring</name>
     <message>
-      <location filename="../../Command.cpp" line="883"/>
+      <location filename="../../Command.cpp" line="884"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="884"/>
+      <location filename="../../Command.cpp" line="885"/>
       <source>Spring</source>
       <translation>Malgukia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="885"/>
+      <location filename="../../Command.cpp" line="886"/>
       <source>Creates a spring acting on a face</source>
       <translation>Aurpegi batean eragiten duen malguki bat sortzen du</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdFemConstraintTemperature</name>
     <message>
-      <location filename="../../Command.cpp" line="991"/>
+      <location filename="../../Command.cpp" line="992"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="992"/>
+      <location filename="../../Command.cpp" line="993"/>
       <source>Temperature boundary condition</source>
       <translation>Tenperaturaren muga-baldintza</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="993"/>
+      <location filename="../../Command.cpp" line="994"/>
       <source>Creates a temperature/concentrated heat flux load acting on a face</source>
       <translation>Aurpegi batean eragiten duen tenperaturaren/bero-fluxu kontzentratuaren karga bat sortzen du</translation>
     </message>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdFemConstraintTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="1042"/>
+      <location filename="../../Command.cpp" line="1043"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1043"/>
+      <location filename="../../Command.cpp" line="1044"/>
       <source>Local coordinate system</source>
       <translation>Koordenatuen sistema lokala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1044"/>
+      <location filename="../../Command.cpp" line="1045"/>
       <source>Create a local coordinate system on a face</source>
       <translation>Sortu koordenatuen sistema lokala aurpegi batean</translation>
     </message>
@@ -274,32 +274,32 @@
   <context>
     <name>CmdFemCreateNodesSet</name>
     <message>
-      <location filename="../../Command.cpp" line="1188"/>
+      <location filename="../../Command.cpp" line="1189"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1189"/>
+      <location filename="../../Command.cpp" line="1190"/>
       <source>Nodes set</source>
       <translation>Nodoen multzoa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1190"/>
+      <location filename="../../Command.cpp" line="1191"/>
       <source>Creates a FEM mesh nodes set</source>
       <translation>FEM amaraun-nodoen multzo bat sortzen du</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1225"/>
+      <location filename="../../Command.cpp" line="1226"/>
       <source>Wrong selection</source>
       <translation>Hautapen okerra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1226"/>
+      <location filename="../../Command.cpp" line="1227"/>
       <source>Select a single FEM mesh or nodes set, please.</source>
       <translation>Hautatu FEM amaraun bakar bat edo nodoen multzo bat.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1377"/>
+      <location filename="../../Command.cpp" line="1378"/>
       <source>Select a single FEM Mesh, please.</source>
       <translation type="unfinished">Select a single FEM Mesh, please.</translation>
     </message>
@@ -307,18 +307,18 @@
   <context>
     <name>CmdFemDefineNodesSet</name>
     <message>
-      <location filename="../../Command.cpp" line="1129"/>
+      <location filename="../../Command.cpp" line="1130"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1130"/>
+      <location filename="../../Command.cpp" line="1131"/>
       <source>Node set by poly</source>
       <translation>Poligonoaren arabera ezarritako nodoa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1131"/>
-      <location filename="../../Command.cpp" line="1133"/>
+      <location filename="../../Command.cpp" line="1132"/>
+      <location filename="../../Command.cpp" line="1134"/>
       <source>Create node set by Poly</source>
       <translation>Sortu nodo multzoa poligono baten arabera</translation>
     </message>
@@ -326,17 +326,17 @@
   <context>
     <name>CmdFemPostApllyChanges</name>
     <message>
-      <location filename="../../Command.cpp" line="2663"/>
+      <location filename="../../Command.cpp" line="2624"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2664"/>
+      <location filename="../../Command.cpp" line="2625"/>
       <source>Apply changes to pipeline</source>
       <translation>Aplikatu aldaketak kanalizazioari</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2665"/>
+      <location filename="../../Command.cpp" line="2626"/>
       <source>Apply changes to parameters directly and not on recompute only...</source>
       <translation>Aplikatu parametroak aldaketak zuzenean eta ez birkalkulatzean soilik...</translation>
     </message>
@@ -344,27 +344,27 @@
   <context>
     <name>CmdFemPostClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2009"/>
+      <location filename="../../Command.cpp" line="2030"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2010"/>
+      <location filename="../../Command.cpp" line="2031"/>
       <source>Region clip filter</source>
       <translation>Eskualde-ebaketako iragazkia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2012"/>
+      <location filename="../../Command.cpp" line="2033"/>
       <source>Define/create a clip filter which uses functions to define the clipped region</source>
       <translation>Definitu/sortu eskualde ebaki bat definitzeko funtzioak erabiltzen dituen ebaketa-iragazki bat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2565"/>
+      <location filename="../../Command.cpp" line="2526"/>
       <source>Wrong selection</source>
       <translation>Hautapen okerra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2566"/>
+      <location filename="../../Command.cpp" line="2527"/>
       <source>Select a pipeline, please.</source>
       <translation>Hautatu kanalizazio bat, mesedez.</translation>
     </message>
@@ -372,17 +372,17 @@
   <context>
     <name>CmdFemPostCutFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2062"/>
+      <location filename="../../Command.cpp" line="2068"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2063"/>
+      <location filename="../../Command.cpp" line="2069"/>
       <source>Function cut filter</source>
       <translation>Eskualde-mozketako iragazkia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2064"/>
+      <location filename="../../Command.cpp" line="2070"/>
       <source>Cut the data along an implicit function</source>
       <translation>Moztu datuak funtzio inplizitu baten luzeran</translation>
     </message>
@@ -390,17 +390,17 @@
   <context>
     <name>CmdFemPostDataAlongLineFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2114"/>
+      <location filename="../../Command.cpp" line="2105"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2115"/>
+      <location filename="../../Command.cpp" line="2106"/>
       <source>Line clip filter</source>
       <translation>Lerro-ebaketako iragazkia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2116"/>
+      <location filename="../../Command.cpp" line="2107"/>
       <source>Define/create a clip filter which clips a field along a line</source>
       <translation>Definitu/sortu eremu bat lerro batean zehar ebakitzen duen ebaketa-iragazki bat</translation>
     </message>
@@ -408,17 +408,17 @@
   <context>
     <name>CmdFemPostDataAtPointFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2163"/>
+      <location filename="../../Command.cpp" line="2142"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2164"/>
+      <location filename="../../Command.cpp" line="2143"/>
       <source>Data at point clip filter</source>
       <translation>Datuak puntuan ebakitzeko iragazkia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2165"/>
+      <location filename="../../Command.cpp" line="2144"/>
       <source>Define/create a clip filter which clips a field data at point</source>
       <translation>Definitu/sortu eremu bateko datuak puntu baten ebakitzen duen ebaketa-iragazki bat</translation>
     </message>
@@ -426,37 +426,37 @@
   <context>
     <name>CmdFemPostFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2436"/>
+      <location filename="../../Command.cpp" line="2403"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2437"/>
+      <location filename="../../Command.cpp" line="2404"/>
       <source>Filter functions</source>
       <translation>Iragazki-funtzioak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2438"/>
+      <location filename="../../Command.cpp" line="2405"/>
       <source>Functions for use in postprocessing filter...</source>
       <translation>Post-prozesatzeko iragazkian erabiliko diren funtzioak...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2617"/>
+      <location filename="../../Command.cpp" line="2578"/>
       <source>Plane</source>
       <translation>Planoa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2624"/>
+      <location filename="../../Command.cpp" line="2585"/>
       <source>Sphere</source>
       <translation>Esfera</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2631"/>
+      <location filename="../../Command.cpp" line="2592"/>
       <source>Cylinder</source>
       <translation>Zilindroa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2638"/>
+      <location filename="../../Command.cpp" line="2599"/>
       <source>Box</source>
       <translation>Kutxa</translation>
     </message>
@@ -464,65 +464,65 @@
   <context>
     <name>CmdFemPostLinearizedStressesFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1908"/>
+      <location filename="../../Command.cpp" line="1929"/>
       <source>Thickness [mm]</source>
       <comment>Plot X-Axis Label</comment>
       <translation>Lodiera [mm]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1912"/>
+      <location filename="../../Command.cpp" line="1933"/>
       <source>Stress [MPa]</source>
       <comment>Plot Y-Axis Label</comment>
       <translation>Estresa [MPa]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1916"/>
+      <location filename="../../Command.cpp" line="1937"/>
       <source>Linearized Stresses</source>
       <comment>Plot title</comment>
       <translation>Estres linealizatua</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1920"/>
+      <location filename="../../Command.cpp" line="1941"/>
       <source>Membrane</source>
       <comment>Plot legend item label</comment>
       <translation>Mintza</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1924"/>
+      <location filename="../../Command.cpp" line="1945"/>
       <source>Membrane and Bending</source>
       <comment>Plot legend item label</comment>
       <translation>Mintza eta makurdura</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1928"/>
+      <location filename="../../Command.cpp" line="1949"/>
       <source>Total</source>
       <comment>Plot legend item label</comment>
       <translation>Totala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2213"/>
+      <location filename="../../Command.cpp" line="2180"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2214"/>
+      <location filename="../../Command.cpp" line="2181"/>
       <source>Stress linearization plot</source>
       <translation>Estresa linealizatzeko trazaketa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2215"/>
+      <location filename="../../Command.cpp" line="2182"/>
       <source>Define/create stress linearization plots</source>
       <translation>Definitu/sortu estresa linealizatzeko trazaketak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2252"/>
-      <location filename="../../Command.cpp" line="2261"/>
+      <location filename="../../Command.cpp" line="2219"/>
+      <location filename="../../Command.cpp" line="2228"/>
       <source>Wrong selection</source>
       <translation>Hautapen okerra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2253"/>
-      <location filename="../../Command.cpp" line="2262"/>
+      <location filename="../../Command.cpp" line="2220"/>
+      <location filename="../../Command.cpp" line="2229"/>
       <source>Select a Clip filter which clips a STRESS field along a line, please.</source>
       <translation>Hautatu ESTRES eremu bat lerro batean zehar ebakitzen duen ebaketa-iragazki bat.</translation>
     </message>
@@ -530,27 +530,27 @@
   <context>
     <name>CmdFemPostPipelineFromResult</name>
     <message>
-      <location filename="../../Command.cpp" line="2704"/>
+      <location filename="../../Command.cpp" line="2665"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2705"/>
+      <location filename="../../Command.cpp" line="2666"/>
       <source>Post pipeline from result</source>
       <translation>Argitaratu kanalizazioa emaitzatik</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2706"/>
+      <location filename="../../Command.cpp" line="2667"/>
       <source>Creates a post processing pipeline from a result object</source>
       <translation>Post-prozesuko kanalizazio bat sortzen du emaitza-objektu batetik abiatuta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2784"/>
+      <location filename="../../Command.cpp" line="2745"/>
       <source>Wrong selection type</source>
       <translation>Hautapen mota okerra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2785"/>
+      <location filename="../../Command.cpp" line="2746"/>
       <source>Select a result object, please.</source>
       <translation>Hautatu emaitzako objektua.</translation>
     </message>
@@ -558,17 +558,17 @@
   <context>
     <name>CmdFemPostScalarClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2288"/>
+      <location filename="../../Command.cpp" line="2255"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2289"/>
+      <location filename="../../Command.cpp" line="2256"/>
       <source>Scalar clip filter</source>
       <translation>Ebaketa-iragazki eskalarra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2291"/>
+      <location filename="../../Command.cpp" line="2258"/>
       <source>Define/create a clip filter which clips a field with a scalar value</source>
       <translation>Definitu/sortu eremu bat balio eskalar batekin ebakitzen duen ebaketa-iragazki bat</translation>
     </message>
@@ -576,17 +576,17 @@
   <context>
     <name>CmdFemPostWarpVectorFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2338"/>
+      <location filename="../../Command.cpp" line="2293"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2339"/>
+      <location filename="../../Command.cpp" line="2294"/>
       <source>Warp filter</source>
       <translation>Bihurritze-iragazkia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2340"/>
+      <location filename="../../Command.cpp" line="2295"/>
       <source>Warp the geometry along a vector field by a certain factor</source>
       <translation>Bihurritu geometria eremu bektorial baten luzeran, faktore jakin bat erabilita</translation>
     </message>
@@ -639,83 +639,83 @@
       <translation>Sortu bero-fluxuaren karga aurpegian</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="743"/>
+      <location filename="../../Command.cpp" line="744"/>
       <source>Make initial temperature condition on body</source>
       <translation>Sortu hasierako tenperatura-baldintza gorputzean</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="794"/>
+      <location filename="../../Command.cpp" line="795"/>
       <source>Make plane multi-point constraint on face</source>
       <translation>Sortu planoaren puntu anitzeko murrizketa aurpegian</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="845"/>
+      <location filename="../../Command.cpp" line="846"/>
       <source>Make pressure load on face</source>
       <translation>Sortu presio-karga aurpegian</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="901"/>
+      <location filename="../../Command.cpp" line="902"/>
       <source>Make spring on face</source>
       <translation>Sortu malgukia aurpegian</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="956"/>
+      <location filename="../../Command.cpp" line="957"/>
       <source>Make pulley constraint</source>
       <translation>Sortu polea-murrizketa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1009"/>
+      <location filename="../../Command.cpp" line="1010"/>
       <source>Make temperature boundary condition on face</source>
       <translation>Sortu tenperaturaren muga-baldintza aurpegian</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1060"/>
+      <location filename="../../Command.cpp" line="1061"/>
       <source>Make local coordinate system on face</source>
       <translation>Sortu koordenatuen sistema lokala aurpegian</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1110"/>
-      <location filename="../../Command.cpp" line="1261"/>
+      <location filename="../../Command.cpp" line="1111"/>
+      <location filename="../../Command.cpp" line="1262"/>
       <source>Place robot</source>
       <translation>Kokatu robota</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1204"/>
+      <location filename="../../Command.cpp" line="1205"/>
       <source>Edit nodes set</source>
       <translation>Editatu nodo multzoa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1213"/>
+      <location filename="../../Command.cpp" line="1214"/>
       <source>Create nodes set</source>
       <translation>Sortu nodo multzoa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1352"/>
+      <location filename="../../Command.cpp" line="1353"/>
       <source>Edit Elements set</source>
       <translation type="unfinished">Edit Elements set</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1363"/>
+      <location filename="../../Command.cpp" line="1364"/>
       <source>Create Elements set</source>
       <translation type="unfinished">Create Elements set</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1850"/>
+      <location filename="../../Command.cpp" line="1878"/>
       <source>Create filter</source>
       <translation>Sortu iragazkia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2470"/>
+      <location filename="../../Command.cpp" line="2437"/>
       <source>Create function</source>
       <translation>Sortu funtzioa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2756"/>
+      <location filename="../../Command.cpp" line="2717"/>
       <source>Create pipeline from result</source>
       <translation>Sortu kanalizazioa emaitzatik</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="295"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="285"/>
       <source>Edit Mirror</source>
       <translation>Editatu ispilua</translation>
     </message>
@@ -797,22 +797,22 @@ hasierako tenperatura:</translation>
   <context>
     <name>FEM_PostCreateFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2619"/>
+      <location filename="../../Command.cpp" line="2580"/>
       <source>Create a plane function, defined by its origin and normal</source>
       <translation>Sortu plano-funtzioa, bere jatorria eta normala abiapuntutzat hartuta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2626"/>
+      <location filename="../../Command.cpp" line="2587"/>
       <source>Create a sphere function, defined by its center and radius</source>
       <translation>Sortu esfera-funtzioa, bere zentroa eta erradioa abiapuntutzat hartuta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2632"/>
+      <location filename="../../Command.cpp" line="2593"/>
       <source>Create a cylinder function, defined by its center, axis and radius</source>
       <translation>Sortu zilindro-funtzioa, bere zentroa, ardatza eta erradioa abiapuntutzat hartuta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2639"/>
+      <location filename="../../Command.cpp" line="2600"/>
       <source>Create a box function, defined by its center, length, width and height</source>
       <translation>Sortu koadro-funtzioa, bere zentroa, luzera, zabalera eta altuera abiapuntutzat hartuta</translation>
     </message>
@@ -916,156 +916,186 @@ hasierako tenperatura:</translation>
       <translation>Ebazlearen lehenespenak</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="294"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="337"/>
       <source>Number of CPU's to use</source>
       <translation>Erabiliko den PUZ kopurua</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="323"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="360"/>
+      <source>Number of threads used for analysis</source>
+      <translation type="unfinished">Number of threads used for analysis</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="494"/>
       <source>Matrix solver</source>
       <translation>Matrize-ebazlea</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="343"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="870"/>
+      <source> Hz</source>
+      <translation type="unfinished"> Hz</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="392"/>
       <source>Default</source>
       <translation>Lehenetsia</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="348"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="397"/>
       <source>PaStiX</source>
       <translation type="unfinished">PaStiX</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="353"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="402"/>
       <source>Pardiso</source>
       <translation type="unfinished">Pardiso</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="363"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="407"/>
+      <source>SPOOLES equation solver</source>
+      <translation type="unfinished">SPOOLES equation solver</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="412"/>
       <source>Iterative Scaling</source>
       <translation>Eskalatze iteratiboa</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="376"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="425"/>
       <source>Non-linear geometry</source>
       <translation>Geometria ez lineala</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="383"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="579"/>
       <source>Use non-linear geometry</source>
       <translation>Erabili geometria ez lineala</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="399"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="501"/>
       <source>Time incrementation control parameter</source>
       <translation>Denbora handitzeko kontrol-parametroa</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="406"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="321"/>
       <source>Use non ccx defaults</source>
       <translation>Erabili ccx ez diren lehenespenak</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="454"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="307"/>
       <source>Time Initial Step</source>
       <translation>Denboraren hasierako urratsa</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="502"/>
-      <location filename="../../DlgSettingsFemCcx.ui" line="541"/>
-      <location filename="../../DlgSettingsFemCcx.ui" line="596"/>
-      <location filename="../../DlgSettingsFemCcx.ui" line="651"/>
-      <source>s</source>
-      <translation>s</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="509"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="314"/>
       <source>Time End</source>
       <translation>Denboraren amaiera</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="665"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="344"/>
       <source>3D Output, unchecked for 2D</source>
       <translation>3D irteera, ez markatu 2Drako</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="686"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="665"/>
+      <source>Result object</source>
+      <translation type="unfinished">Result object</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="672"/>
+      <source>Pipeline only</source>
+      <translation type="unfinished">Pipeline only</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="675"/>
+      <source>Load results as pipeline instead of CCX_Results objects.
+After unchecking this option, the CalculiX command behaves like SolverCalculiXCcxTools</source>
+      <translation type="unfinished">Load results as pipeline instead of CCX_Results objects.
+After unchecking this option, the CalculiX command behaves like SolverCalculiXCcxTools</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="692"/>
+      <source>Result format</source>
+      <translation type="unfinished">Result format</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="699"/>
+      <source>Save result in binary format.
+Only takes effect if 'Pipeline only' is enabled</source>
+      <translation type="unfinished">Save result in binary format.
+Only takes effect if 'Pipeline only' is enabled</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="703"/>
+      <source>Use binary format</source>
+      <translation type="unfinished">Use binary format</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="724"/>
       <source>Thermo mechanical defaults</source>
       <translation>Lehenespen termomekanikoak</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="694"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="732"/>
       <source>Analysis type (transient or steady state)</source>
       <translation>Analisi mota (egoera egonkorra edo aldi baterakoa)</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="701"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="739"/>
       <source>Use steady state</source>
       <translation>Erabili egoera egonkorra</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="422"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="521"/>
       <source>Maximum number of iterations</source>
       <translation>Iterazio kopuru maximoa</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
-      <source>Spooles equation solver</source>
-      <translation type="unfinished">Spooles equation solver</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="417"/>
       <source>Cholesky iterative solver</source>
       <translation type="unfinished">Cholesky iterative solver</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="548"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="528"/>
       <source>Time Minimum Step</source>
       <translation type="unfinished">Time Minimum Step</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="603"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="658"/>
       <source>Time Maximum Step</source>
       <translation type="unfinished">Time Maximum Step</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="658"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="626"/>
       <source>Beam, shell element 3D output format</source>
       <translation type="unfinished">Beam, shell element 3D output format</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="722"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="760"/>
       <source>Frequency defaults</source>
       <translation>Maiztasun-lehenespenak</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="730"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="800"/>
       <source>Eigenmode number</source>
       <translation>Eigenmode zenbakia</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="775"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="793"/>
       <source>High frequency limit</source>
       <translation>Maiztasun altuko muga</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="813"/>
-      <location filename="../../DlgSettingsFemCcx.ui" line="861"/>
-      <source>Hz</source>
-      <translation>Hz</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="820"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="854"/>
       <source>Low frequency limit</source>
       <translation>Behe maiztasuneko muga</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcxImp.cpp" line="149"/>
+      <location filename="../../DlgSettingsFemCcxImp.cpp" line="155"/>
       <source>File does not exist</source>
       <translation>Fitxategia ez da existitzen</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcxImp.cpp" line="150"/>
+      <location filename="../../DlgSettingsFemCcxImp.cpp" line="156"/>
       <source>The specified executable
 '%1'
  does not exist!
@@ -1122,6 +1152,31 @@ fusionatuko dira bolumenaren mugak ikusgai izan daitezen.</translation>
       <translation>Iragazi emaitzak</translation>
     </message>
     <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="291"/>
+      <source>Results</source>
+      <translation>Emaitzak</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="297"/>
+      <source>Save result in binary format</source>
+      <translation type="unfinished">Save result in binary format</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="300"/>
+      <source>Use binary format</source>
+      <translation type="unfinished">Use binary format</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="316"/>
+      <source>Save the index of geometric entities</source>
+      <translation type="unfinished">Save the index of geometric entities</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="319"/>
+      <source>Save geometry IDs</source>
+      <translation type="unfinished">Save geometry IDs</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="128"/>
       <source>Leave blank to use default ElmerGrid binary file</source>
       <translation>Utzi hutsik ElmerGrid fitxategi bitar lehenetsia erabiltzeko</translation>
@@ -1162,12 +1217,12 @@ fusionatuko dira bolumenaren mugak ikusgai izan daitezen.</translation>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Oharra:&lt;/span&gt; Nukleoen kopuru bikoitia erabiltzea gomendatzen da, amaraunen simetriaren abantailaz baliatzeko (8 nukleo erabiltzea, 9 erabiltzea baino azkarragoa izan daiteke).&lt;br/&gt;&lt;span style=" font-weight:600;"&gt;Bigarren oharra:&lt;/span&gt; Muturreko kasuetan, ElmerSolver ebazleak ez du konbergituko nukleo kopurua handiegia bada.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="108"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="112"/>
       <source>File does not exist</source>
       <translation>Fitxategia ez da existitzen</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="109"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="113"/>
       <source>The specified executable
 '%1'
  does not exist!
@@ -1178,20 +1233,20 @@ Specify another file please.</source>
 Zehaztu beste fitxategi bat.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="127"/>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="138"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="131"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="142"/>
       <source>FEM Elmer: Not suitable for multithreading</source>
       <translation>FEM Elmer: Ez da egokia hari anitz erabiltzeko</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="128"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="132"/>
       <source>Wrong Elmer setting: You use more than one CPU core.
 Therefore an executable with the suffix '_mpi.exe' is required.</source>
       <translation>Elmer ezarpen okerra: PUZ nukleo bat baino gehiago erabili behar da.
 Hortaz, '_mpi.exe' atzizkia duen exekutagarria behar da.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="139"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="143"/>
       <source>Wrong Elmer setting: You use more than one CPU core.
 Therefore an executable with the suffix '_mpi' is required.</source>
       <translation>Elmer ezarpen okerra: PUZ nukleo bat baino gehiago erabili behar da.
@@ -1419,22 +1474,47 @@ gehituko den ebazle lehenetsia</translation>
       <translation>Bilatu bitarren direktorio ezagunetan</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGmsh.ui" line="65"/>
+      <location filename="../../DlgSettingsFemGmsh.ui" line="71"/>
       <source>Gmsh binary path</source>
       <translation>Gmsh bitarraren bide-izena</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGmsh.ui" line="99"/>
+      <location filename="../../DlgSettingsFemGmsh.ui" line="105"/>
       <source>Leave blank to use default Gmsh binary file</source>
       <translation type="unfinished">Leave blank to use default Gmsh binary file</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGmshImp.cpp" line="79"/>
+      <location filename="../../DlgSettingsFemGmsh.ui" line="123"/>
+      <source>Options</source>
+      <translation>Aukerak</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmsh.ui" line="131"/>
+      <source>Log verbosity</source>
+      <translation type="unfinished">Log verbosity</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmsh.ui" line="138"/>
+      <source>Level of verbosity printed on the task panel</source>
+      <translation type="unfinished">Level of verbosity printed on the task panel</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmsh.ui" line="157"/>
+      <source>Number of threads</source>
+      <translation type="unfinished">Number of threads</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmsh.ui" line="167"/>
+      <source>Number of threads used for meshing</source>
+      <translation type="unfinished">Number of threads used for meshing</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="91"/>
       <source>File does not exist</source>
       <translation>Fitxategia ez da existitzen</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemGmshImp.cpp" line="80"/>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="92"/>
       <source>The specified executable
 '%1'
  does not exist!
@@ -1504,6 +1584,21 @@ funtzionatzen du.</translation>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="76"/>
       <source>FreeCAD result object</source>
       <translation>Emaitzako FreeCAD objektua</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemInOutVtk.ui" line="89"/>
+      <source>Export</source>
+      <translation>Esportatu</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemInOutVtk.ui" line="95"/>
+      <source>Mesh elements to export</source>
+      <translation type="unfinished">Mesh elements to export</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemInOutVtk.ui" line="102"/>
+      <source>Mesh element level to export</source>
+      <translation type="unfinished">Mesh element level to export</translation>
     </message>
   </context>
   <context>
@@ -1721,7 +1816,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintBearing</name>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="376"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="374"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
@@ -1729,7 +1824,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintContact</name>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="553"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="542"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
@@ -1737,7 +1832,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintDisplacement</name>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="602"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="601"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
@@ -1745,7 +1840,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1092"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1088"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
@@ -1753,7 +1848,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="462"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="454"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
@@ -1761,7 +1856,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintGear</name>
     <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="339"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="334"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
@@ -1769,7 +1864,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintHeatflux</name>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="530"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="515"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
@@ -1785,7 +1880,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintPressure</name>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="312"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="305"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
@@ -1793,7 +1888,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintPulley</name>
     <message>
-      <location filename="../../TaskFemConstraintPulley.cpp" line="223"/>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="219"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
@@ -1801,7 +1896,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintSpring</name>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="321"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="314"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
@@ -1809,7 +1904,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="385"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="382"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
@@ -1817,7 +1912,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintTransform</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="604"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="593"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
@@ -1838,7 +1933,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskDlgPost</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="333"/>
+      <location filename="../../TaskPostBoxes.cpp" line="364"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
@@ -1910,8 +2005,8 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskFemConstraintContact</name>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="57"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="63"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="58"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="64"/>
       <source>Delete</source>
       <translation>Ezabatu</translation>
     </message>
@@ -1920,19 +2015,19 @@ Zehaztu beste fitxategi bat.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="193"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="199"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="204"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="216"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="224"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="232"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="268"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="278"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="215"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="223"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="231"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="265"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="274"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="319"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="325"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="331"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="336"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="330"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="341"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="348"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="355"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="363"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="399"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="409"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="356"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="391"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="400"/>
       <source>Selection error</source>
       <translation>Hautapen-errorea</translation>
     </message>
@@ -1943,45 +2038,45 @@ Zehaztu beste fitxategi bat.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="194"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="326"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="320"/>
       <source>Only one master face and one slave face for a contact constraint!</source>
       <translation>Aurpegi nagusi bakarra eta mendeko aurpegi bakarra kontaktu-murrizketako!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="199"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="268"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="331"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="399"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="265"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="325"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="391"/>
       <source>Nothing selected!</source>
       <translation>Ez da ezer hautatu!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="205"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="225"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="224"/>
       <source>Only one slave face for a contact constraint!</source>
       <translation>Mendeko aurpegi bakarra kontaktu-murrizketako!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="216"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="278"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="348"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="409"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="215"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="274"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="341"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="400"/>
       <source>Selected object is not a part!</source>
       <translation>Hautatutako objektua ez da pieza bat!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="232"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="363"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="231"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="356"/>
       <source>Only faces can be picked</source>
       <translation>Aurpegiak soilik aukera daitezke</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="337"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="331"/>
       <source>Only one master for a contact constraint!</source>
       <translation>Nagusi bakarra kontaktu-murrizketako!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="356"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="349"/>
       <source>Only one master face for a contact constraint!</source>
       <translation>Aurpegi nagusi bakarra kontaktu-murrizketako!</translation>
     </message>
@@ -1989,28 +2084,28 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskFemConstraintDisplacement</name>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="240"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="250"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="288"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="311"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="321"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="242"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="252"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="289"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="312"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="322"/>
       <source>Selection error</source>
       <translation>Hautapen-errorea</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="240"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="311"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="242"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="312"/>
       <source>Nothing selected!</source>
       <translation>Ez da ezer hautatu!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="250"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="321"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="252"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="322"/>
       <source>Selected object is not a part!</source>
       <translation>Hautatutako objektua ez da pieza bat!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="286"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="287"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
       <translation>Hautapen mota bakarra (erpina, aurpegia edo ertza) onartzen da analisi-elementu bakoitzeko</translation>
     </message>
@@ -2018,28 +2113,28 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskFemConstraintFixed</name>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="111"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="121"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="160"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="183"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="193"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="110"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="119"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="156"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="179"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="188"/>
       <source>Selection error</source>
       <translation>Hautapen-errorea</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="111"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="183"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="110"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="179"/>
       <source>Nothing selected!</source>
       <translation>Ez da ezer hautatu!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="121"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="193"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="119"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="188"/>
       <source>Selected object is not a part!</source>
       <translation>Hautatutako objektua ez da pieza bat!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="158"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="154"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
       <translation>Hautapen mota bakarra (erpina, aurpegia edo ertza) onartzen da analisi-elementu bakoitzeko</translation>
     </message>
@@ -2047,47 +2142,47 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="331"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="333"/>
       <source>Basic</source>
       <translation>Oinarrizkoa</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="332"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="334"/>
       <source>Turbulence</source>
       <translation>Turbulentzia</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="333"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="335"/>
       <source>Thermal</source>
       <translation>Termikoa</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="335"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="337"/>
       <source>select boundary type, faces and set value</source>
       <translation>Hautatu muga mota, aurpegiak eta ezarri balioa</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="507"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="508"/>
       <source>Intensity [0~1]</source>
       <translation>Intentsitatea [0~1]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="509"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="510"/>
       <source>Dissipation Rate [m2/s3]</source>
       <translation>Barreiadura-tasa [m2/s3]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="512"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="513"/>
       <source>Length Scale [m]</source>
       <translation type="unfinished">Length Scale [m]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="515"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="516"/>
       <source>Viscosity Ratio [1]</source>
       <translation>Biskositate-erlazioa [1]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="518"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="519"/>
       <source>Hydraulic Diameter [m]</source>
       <translation>Diametro hidraulikoa [m]</translation>
     </message>
@@ -2149,26 +2244,26 @@ Zehaztu beste fitxategi bat.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="821"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="831"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="870"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="893"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="903"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="868"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="891"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="901"/>
       <source>Selection error</source>
       <translation>Hautapen-errorea</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="821"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="893"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="891"/>
       <source>Nothing selected!</source>
       <translation>Ez da ezer hautatu!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="831"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="903"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="901"/>
       <source>Selected object is not a part!</source>
       <translation>Hautatutako objektua ez da pieza bat!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="868"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="866"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
       <translation>Hautapen mota bakarra (erpina, aurpegia edo ertza) onartzen da analisi-elementu bakoitzeko</translation>
     </message>
@@ -2177,38 +2272,38 @@ Zehaztu beste fitxategi bat.</translation>
     <name>FemGui::TaskFemConstraintForce</name>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="127"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="137"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="176"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="199"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="209"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="136"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="173"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="196"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="205"/>
       <source>Selection error</source>
       <translation>Hautapen-errorea</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="127"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="199"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="196"/>
       <source>Nothing selected!</source>
       <translation>Ez da ezer hautatu!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="137"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="209"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="136"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="205"/>
       <source>Selected object is not a part!</source>
       <translation>Hautatutako objektua ez da pieza bat!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="174"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="171"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
       <translation>Hautapen mota bakarra (erpina, aurpegia edo ertza) onartzen da analisi-elementu bakoitzeko</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="317"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="333"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="311"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="326"/>
       <source>Wrong selection</source>
       <translation>Hautapen okerra</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="317"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="311"/>
       <source>Select an edge or a face, please.</source>
       <translation>Hautatu ertz bat edo aurpegi bat.</translation>
     </message>
@@ -2216,24 +2311,24 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskFemConstraintGear</name>
     <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="151"/>
-      <location filename="../../TaskFemConstraintGear.cpp" line="159"/>
-      <location filename="../../TaskFemConstraintGear.cpp" line="166"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="150"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="158"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="165"/>
       <source>Selection error</source>
       <translation>Hautapen-errorea</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="152"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="151"/>
       <source>Only planar faces can be picked</source>
       <translation>Aurpegi planarrak soilik aukera daitezke</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="160"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="159"/>
       <source>Only linear edges can be picked</source>
       <translation>Ertz linealak soilik aukera daitezke</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="167"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="166"/>
       <source>Only faces and edges can be picked</source>
       <translation>Aurpegiak eta ertzak soilik aukera daitezke</translation>
     </message>
@@ -2241,30 +2336,30 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskFemConstraintHeatflux</name>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="265"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="275"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="285"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="267"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="276"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="286"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="330"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="341"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="351"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="340"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="350"/>
       <source>Selection error</source>
       <translation>Hautapen-errorea</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="265"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="267"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="330"/>
       <source>Nothing selected!</source>
       <translation>Ez da ezer hautatu!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="275"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="341"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="276"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="340"/>
       <source>Selected object is not a part!</source>
       <translation>Hautatutako objektua ez da pieza bat!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="286"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="352"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="287"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="351"/>
       <source>Selection must only consist of faces!</source>
       <translation>Hautapenean aurpegiak soilik onartzen dira!</translation>
     </message>
@@ -2277,27 +2372,27 @@ Zehaztu beste fitxategi bat.</translation>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="148"/>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="160"/>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="169"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="200"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="217"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="227"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="199"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="216"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="226"/>
       <source>Selection error</source>
       <translation>Hautapen-errorea</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="128"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="201"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="200"/>
       <source>Only one face can be selected for a plane multi-point constraint!</source>
       <translation>Aurpegi bakarra hautatu daiteke planoaren puntu anitzeko murrizketa baterako!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="137"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="217"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="216"/>
       <source>Nothing selected!</source>
       <translation>Ez da ezer hautatu!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="149"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="227"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="226"/>
       <source>Selected object is not a part!</source>
       <translation>Hautatutako objektua ez da pieza bat!</translation>
     </message>
@@ -2315,28 +2410,28 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskFemConstraintPressure</name>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="133"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="143"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="152"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="188"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="198"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="132"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="141"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="150"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="184"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="193"/>
       <source>Selection error</source>
       <translation>Hautapen-errorea</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="133"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="188"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="132"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="184"/>
       <source>Nothing selected!</source>
       <translation>Ez da ezer hautatu!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="143"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="198"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="141"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="193"/>
       <source>Selected object is not a part!</source>
       <translation>Hautatutako objektua ez da pieza bat!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="152"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="150"/>
       <source>Only faces can be picked</source>
       <translation>Aurpegiak soilik aukera daitezke</translation>
     </message>
@@ -2357,28 +2452,28 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskFemConstraintSpring</name>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="131"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="141"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="150"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="186"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="196"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="130"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="139"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="148"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="182"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="191"/>
       <source>Selection error</source>
       <translation>Hautapen-errorea</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="131"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="186"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="130"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="182"/>
       <source>Nothing selected!</source>
       <translation>Ez da ezer hautatu!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="141"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="196"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="139"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="191"/>
       <source>Selected object is not a part!</source>
       <translation>Hautatutako objektua ez da pieza bat!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="150"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="148"/>
       <source>Only faces can be picked</source>
       <translation>Aurpegiak soilik aukera daitezke</translation>
     </message>
@@ -2386,22 +2481,22 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="189"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="199"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="240"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="250"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="190"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="200"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="239"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="249"/>
       <source>Selection error</source>
       <translation>Hautapen-errorea</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="189"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="240"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="190"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="239"/>
       <source>Nothing selected!</source>
       <translation>Ez da ezer hautatu!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="199"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="250"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="200"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="249"/>
       <source>Selected object is not a part!</source>
       <translation>Hautatutako objektua ez da pieza bat!</translation>
     </message>
@@ -2419,54 +2514,54 @@ Zehaztu beste fitxategi bat.</translation>
       <translation>Aurpegi transformagarriak aldatu dira. Gehitu aurpegi transformagarriak soilik eta kendu transformatu ezin direnak.</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="295"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="301"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="307"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="315"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="309"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="323"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="330"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="337"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="345"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="355"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="396"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="428"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="438"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="338"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="348"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="386"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="420"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="429"/>
       <source>Selection error</source>
       <translation>Hautapen-errorea</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="301"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="428"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="295"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="420"/>
       <source>Nothing selected!</source>
       <translation>Ez da ezer hautatu!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="308"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="316"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="302"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="310"/>
       <source>Only one face for rectangular local coordinate system!</source>
       <translation>Aurpegi bakar bat koordenatuen sistema lokal laukizuzen bakoizeko!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="338"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="331"/>
       <source>Only one face for local coordinate system!</source>
       <translation>Aurpegi bakar bat koordenatuen sistema lokal bakoizeko!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="397"/>
-      <source>Only transformable faces can be selected! Apply displacement boundary condition to surface first then apply local coordinate system to surface</source>
-      <translation>Aurpegi transformagarriak soilik hautatu daitezke! Aplikatu desplazamenduaren muga-baldintza gainazalari lehenengo, gero aplikatu koordenatu-sistema gainazalari</translation>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="387"/>
+      <source>Only transformable faces can be selected! Apply a displacement boundary condition or a force load to a face first then apply local coordinate system to the face.</source>
+      <translation type="unfinished">Only transformable faces can be selected! Apply a displacement boundary condition or a force load to a face first then apply local coordinate system to the face.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="330"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="438"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="323"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="429"/>
       <source>Selected object is not a part!</source>
       <translation>Hautatutako objektua ez da pieza bat!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="345"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="338"/>
       <source>Only faces can be picked</source>
       <translation>Aurpegiak soilik aukera daitezke</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="356"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="349"/>
       <source>Only cylindrical faces can be picked</source>
       <translation>Aurpegi zilindrikoak soilik aukera daitezke</translation>
     </message>
@@ -2482,7 +2577,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskPostClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1272"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1408"/>
       <source>Clip region, choose implicit function</source>
       <translation>Ebaki eskualdea, aukeratu funtzio inplizitua</translation>
     </message>
@@ -2490,7 +2585,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1566"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1718"/>
       <source>Function cut, choose implicit function</source>
       <translation>Funtzio moztua, aukeratu funtzio inplizitua</translation>
     </message>
@@ -2498,12 +2593,12 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskPostDataAlongLine</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="486"/>
+      <location filename="../../TaskPostBoxes.cpp" line="629"/>
       <source>Data along a line options</source>
       <translation>Lerro baten luzeran dauden datuen aukerak</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="882"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1013"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
       <translation>Luzera</translation>
@@ -2512,12 +2607,12 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="911"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1050"/>
       <source>Data at point options</source>
       <translation>Puntu bateko datuek aukerak</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1244"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1369"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
       <translation>%1 hemen: (%2; %3; %4) honakoa da: %5 %6</translation>
     </message>
@@ -2525,7 +2620,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskPostDisplay</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="371"/>
+      <location filename="../../TaskPostBoxes.cpp" line="406"/>
       <source>Result display options</source>
       <translation>Emaitza erakusteko aukerak</translation>
     </message>
@@ -2533,7 +2628,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskPostFunction</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="457"/>
+      <location filename="../../TaskPostBoxes.cpp" line="484"/>
       <source>Implicit function</source>
       <translation>Funtzio inplizitua</translation>
     </message>
@@ -2541,7 +2636,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1709"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1851"/>
       <source>Scalar clip options</source>
       <translation>Ebaketa eskalarraren aukerak</translation>
     </message>
@@ -2549,7 +2644,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1839"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1972"/>
       <source>Warp options</source>
       <translation>Bihurritze-aukerak</translation>
     </message>
@@ -2565,7 +2660,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::ViewProviderFemAnalysis</name>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="168"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="164"/>
       <source>Activate analysis</source>
       <translation>Aktibatu analisia</translation>
     </message>
@@ -2586,195 +2681,79 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemMaterial</name>
     <message>
-      <location filename="../ui/MaterialReinforcement.ui" line="14"/>
       <location filename="../ui/Material.ui" line="14"/>
       <source>FEM material</source>
       <translation>FEM materiala</translation>
     </message>
     <message>
-      <location filename="../ui/MaterialReinforcement.ui" line="37"/>
-      <location filename="../ui/MaterialReinforcement.ui" line="110"/>
-      <location filename="../ui/Material.ui" line="26"/>
-      <source>Material</source>
-      <translation>Materiala</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="34"/>
-      <source>Category</source>
-      <translation>Kategoria</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="48"/>
-      <source>Material card</source>
-      <translation>Material-txartela</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="56"/>
-      <source>choose...</source>
-      <translation>aukeratu...</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="64"/>
-      <source>Material name</source>
-      <translation>Materialaren izena</translation>
-    </message>
-    <message>
-      <location filename="../ui/MaterialReinforcement.ui" line="74"/>
-      <location filename="../ui/MaterialReinforcement.ui" line="147"/>
-      <location filename="../ui/Material.ui" line="71"/>
-      <source>TextLabel</source>
-      <translation>Testu-etiketa</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="80"/>
-      <source>Material Description</source>
-      <translation>Materialaren deskribapena</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="99"/>
-      <source>Editing material</source>
-      <translation>Materialaren edizioa</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="107"/>
-      <source>Use FreeCAD material editor</source>
-      <translation type="unfinished">Use FreeCAD material editor</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="123"/>
+      <location filename="../ui/Material.ui" line="437"/>
       <source>Use this task panel</source>
       <translation type="unfinished">Use this task panel</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="144"/>
+      <location filename="../ui/Material.ui" line="29"/>
       <source>Basic Properties</source>
       <translation>Oinarrizko propietateak</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="155"/>
-      <source>Density</source>
-      <translation>Dentsitatea</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="177"/>
-      <source>0 kg/m^3</source>
-      <translation>0 kg/m^3</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="213"/>
+      <location filename="../ui/Material.ui" line="91"/>
       <source>Mechanical Properties</source>
       <translation>Propietate mekanikoak</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="224"/>
+      <location filename="../ui/Material.ui" line="102"/>
       <source>Young's Modulus:</source>
       <translation>Young-en modulua:</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="246"/>
-      <source>0 Pa</source>
-      <translation>0 Pa</translation>
+      <location filename="../ui/Material.ui" line="40"/>
+      <source>Density:</source>
+      <translation type="unfinished">Density:</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="271"/>
+      <location filename="../ui/Material.ui" line="142"/>
       <source>Poisson Ratio:</source>
       <translation>Poisson-en proportzioa:</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="323"/>
+      <location filename="../ui/Material.ui" line="190"/>
       <source>Fluidic Properties</source>
       <translation>Fluxu-propietateak</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="334"/>
-      <source>Kinematic viscosity:</source>
-      <translation>Biskositate zinematikoa:</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="356"/>
-      <source>0 m^2/s</source>
-      <translation>0 m^2/s</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="392"/>
+      <location filename="../ui/Material.ui" line="252"/>
       <source>Thermal Properties</source>
       <translation type="unfinished">Thermal Properties</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="497"/>
+      <location filename="../ui/Material.ui" line="343"/>
+      <source>Reference Temperature:</source>
+      <translation type="unfinished">Reference Temperature:</translation>
+    </message>
+    <message>
+      <location filename="../ui/Material.ui" line="346"/>
+      <source>Reference temperature for thermal expansion</source>
+      <translation type="unfinished">Reference temperature for thermal expansion</translation>
+    </message>
+    <message>
+      <location filename="../ui/Material.ui" line="386"/>
       <source>Specific Heat Capacity:</source>
       <translation type="unfinished">Specific Heat Capacity:</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="403"/>
+      <location filename="../ui/Material.ui" line="263"/>
       <source>Thermal Conductivity:</source>
       <translation>Eroankortasun termikoa:</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="425"/>
-      <source>0 W/m/K</source>
-      <translation>0 W/m/K</translation>
+      <location filename="../ui/Material.ui" line="201"/>
+      <source>Kinematic Viscosity:</source>
+      <translation type="unfinished">Kinematic Viscosity:</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="450"/>
+      <location filename="../ui/Material.ui" line="303"/>
       <source>Expansion Coefficient:</source>
       <translation>Hedatze-koefizientea:</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="472"/>
-      <location filename="../ui/Material.ui" line="566"/>
-      <source>0 m/m/K</source>
-      <translation>0 m/m/K</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="519"/>
-      <source>0 J/kg/K</source>
-      <translation>0 J/kg/K</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="544"/>
-      <source>Vol Expansion Coeff</source>
-      <translation>Hedatze bolumetrikoaren koefizientea</translation>
-    </message>
-    <message>
-      <location filename="../ui/MaterialReinforcement.ui" line="29"/>
-      <source>Matrix Material</source>
-      <translation>Matrize-materiala</translation>
-    </message>
-    <message>
-      <location filename="../ui/MaterialReinforcement.ui" line="45"/>
-      <location filename="../ui/MaterialReinforcement.ui" line="118"/>
-      <source>Choose</source>
-      <translation>Aukeratu</translation>
-    </message>
-    <message>
-      <location filename="../ui/MaterialReinforcement.ui" line="53"/>
-      <location filename="../ui/MaterialReinforcement.ui" line="126"/>
-      <source>Properties</source>
-      <translation>Propietateak</translation>
-    </message>
-    <message>
-      <location filename="../ui/MaterialReinforcement.ui" line="60"/>
-      <location filename="../ui/MaterialReinforcement.ui" line="133"/>
-      <source>Edit</source>
-      <translation>Editatu</translation>
-    </message>
-    <message>
-      <location filename="../ui/MaterialReinforcement.ui" line="67"/>
-      <location filename="../ui/MaterialReinforcement.ui" line="140"/>
-      <source>Name</source>
-      <translation>Izena</translation>
-    </message>
-    <message>
-      <location filename="../ui/MaterialReinforcement.ui" line="83"/>
-      <location filename="../ui/MaterialReinforcement.ui" line="156"/>
-      <source>Description</source>
-      <translation>Deskribapena</translation>
-    </message>
-    <message>
-      <location filename="../ui/MaterialReinforcement.ui" line="102"/>
-      <source>Reinforcement Material</source>
-      <translation>Indartze-materiala</translation>
     </message>
   </context>
   <context>
@@ -3020,12 +2999,13 @@ Zehaztu beste fitxategi bat.</translation>
       <location filename="../ui/FlowVelocity.ui" line="14"/>
       <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <location filename="../ui/Magnetization.ui" line="14"/>
+      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
       <location filename="../ui/CurrentDensity.ui" line="14"/>
       <source>Analysis feature properties</source>
       <translation>Analisi-elementuaren propietateak</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="22"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="50"/>
       <source>Potential:</source>
       <translation>Potentziala:</translation>
     </message>
@@ -3033,185 +3013,190 @@ Zehaztu beste fitxategi bat.</translation>
       <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="76"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="218"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="273"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="318"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="373"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="418"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="473"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="518"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="586"/>
       <location filename="../ui/FlowVelocity.ui" line="32"/>
       <location filename="../ui/FlowVelocity.ui" line="87"/>
       <location filename="../ui/FlowVelocity.ui" line="118"/>
-      <location filename="../ui/Magnetization.ui" line="91"/>
-      <location filename="../ui/Magnetization.ui" line="135"/>
-      <location filename="../ui/Magnetization.ui" line="189"/>
-      <location filename="../ui/Magnetization.ui" line="233"/>
-      <location filename="../ui/Magnetization.ui" line="287"/>
-      <location filename="../ui/Magnetization.ui" line="331"/>
-      <location filename="../ui/CurrentDensity.ui" line="94"/>
-      <location filename="../ui/CurrentDensity.ui" line="141"/>
-      <location filename="../ui/CurrentDensity.ui" line="197"/>
-      <location filename="../ui/CurrentDensity.ui" line="243"/>
-      <location filename="../ui/CurrentDensity.ui" line="297"/>
-      <location filename="../ui/CurrentDensity.ui" line="341"/>
       <source>unspecified</source>
       <translation>zehaztu gabea</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="51"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="60"/>
       <source>Electric potential</source>
       <translation>Potentzial elektrikoa</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="88"/>
-      <source>To define a vector field</source>
-      <translation>Eremu bektoriala definitzea</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="91"/>
-      <source>Vector Field</source>
-      <translation>Eremu bektoriala</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="104"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="100"/>
       <source>Imaginary part is only used for equations
 with a harmonic/oscillating driving force</source>
       <translation>Zati irudikaria gidatze-indar harmonikoa/oszilatzailea
 duten ekuazioetan soilik erabiltzen da</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="531"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="150"/>
+      <source>Real part of scalar potential</source>
+      <translation type="unfinished">Real part of scalar potential</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="211"/>
+      <source>Real part of vector potential x-component
+Note: has no effect if a solid was selected</source>
+      <translation type="unfinished">Real part of vector potential x-component
+Note: has no effect if a solid was selected</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="234"/>
+      <source>Imaginary part of vector potential x-component
+Note: has no effect if a solid was selected</source>
+      <translation type="unfinished">Imaginary part of vector potential x-component
+Note: has no effect if a solid was selected</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="274"/>
+      <source>Real part of vector potential y-component
+Note: has no effect if a solid was selected</source>
+      <translation type="unfinished">Real part of vector potential y-component
+Note: has no effect if a solid was selected</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="297"/>
+      <source>Imaginary part of vector potential y-component
+Note: has no effect if a solid was selected</source>
+      <translation type="unfinished">Imaginary part of vector potential y-component
+Note: has no effect if a solid was selected</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="337"/>
+      <source>Real part of vector potential z-component
+Note: has no effect if a solid was selected</source>
+      <translation type="unfinished">Real part of vector potential z-component
+Note: has no effect if a solid was selected</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="360"/>
+      <source>Imaginary part of vector potential z-component
+Note: has no effect if a solid was selected</source>
+      <translation type="unfinished">Imaginary part of vector potential z-component
+Note: has no effect if a solid was selected</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="391"/>
+      <source>Electric Infinity</source>
+      <translation type="unfinished">Electric Infinity</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="398"/>
       <source>Whether the boundary condition defines a constant potential</source>
       <translation>Muga-baldintzak potentzial-konstante bat definitzen duen ala ez</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="544"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="413"/>
+      <source>Neumann</source>
+      <translation type="unfinished">Neumann</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="419"/>
+      <source>Electric Flux Density:</source>
+      <translation type="unfinished">Electric Flux Density:</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="426"/>
+      <source>Normal component of electric displacement field</source>
+      <translation type="unfinished">Normal component of electric displacement field</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="439"/>
+      <source>Capacitance</source>
+      <translation type="unfinished">Capacitance</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="445"/>
+      <source>Capacitance Body:</source>
+      <translation type="unfinished">Capacitance Body:</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="448"/>
+      <source>Enabled by 'Calculate Capacity Matrix' in Electrostatic equation</source>
+      <translation type="unfinished">Enabled by 'Calculate Capacity Matrix' in Electrostatic equation</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="388"/>
       <source>Whether the boundary condition defines a farfield potential</source>
       <translation>Muga-baldintzak urruneko eremuko potentzial bat definitzen duen ala ez</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="554"/>
-      <source>Whether the boundary condition is for the electric force</source>
-      <translation>Muga-baldintza indar elektrikorako den ala ez</translation>
+      <location filename="../ui/ElectrostaticPotential.ui" line="26"/>
+      <source>Boundary Condition:</source>
+      <translation type="unfinished">Boundary Condition:</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="566"/>
-      <source>Capacity Body:</source>
-      <extracomment>Enabled by 'Calculate Capacity Matrix' in Electrostatic equation</extracomment>
-      <translation type="unfinished">Capacity Body:</translation>
+      <location filename="../ui/ElectrostaticPotential.ui" line="39"/>
+      <source>Dirichlet</source>
+      <translation type="unfinished">Dirichlet</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="120"/>
-      <location filename="../ui/Magnetization.ui" line="30"/>
-      <location filename="../ui/CurrentDensity.ui" line="30"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="81"/>
+      <source>To define scalar potential and magnetic vector potential</source>
+      <translation type="unfinished">To define scalar potential and magnetic vector potential</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="84"/>
+      <source>Electromagnetic Potential</source>
+      <translation type="unfinished">Electromagnetic Potential</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
+      <location filename="../ui/Magnetization.ui" line="39"/>
+      <location filename="../ui/CurrentDensity.ui" line="61"/>
+      <location filename="../ui/CurrentDensity.ui" line="246"/>
       <source>Real</source>
       <translation>Erreala</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="130"/>
-      <location filename="../ui/Magnetization.ui" line="40"/>
-      <location filename="../ui/CurrentDensity.ui" line="40"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
+      <location filename="../ui/Magnetization.ui" line="49"/>
+      <location filename="../ui/CurrentDensity.ui" line="71"/>
+      <location filename="../ui/CurrentDensity.ui" line="256"/>
       <source>Imaginary</source>
       <translation>Irudikaria</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="140"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="133"/>
       <source>Scalar</source>
       <translation>Eskalarra</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="156"/>
-      <source>Potential as specified above</source>
-      <translation>Potentziala goian adierazi den moduan</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="193"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="172"/>
       <source>Imaginary part of scalar potential</source>
       <translation>Potentzial eskalar baten zati irudikaria</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="231"/>
-      <location filename="../ui/Magnetization.ui" line="50"/>
-      <location filename="../ui/CurrentDensity.ui" line="50"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="194"/>
+      <location filename="../ui/Magnetization.ui" line="56"/>
+      <location filename="../ui/CurrentDensity.ui" line="78"/>
       <source>x</source>
       <translation>x</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="247"/>
-      <source>Real part of potential x-component
-Note: has no effect if a solid was selected</source>
-      <translation>Potentzialaren X osagaiaren zati erreala
-Oharra: ez du eraginik solido bat hautatu bada</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="292"/>
-      <source>Imaginary part of potential x-component
-Note: has no effect if a solid was selected</source>
-      <translation>Potentzialaren X osagaiaren zati irudikaria
-Oharra: ez du eraginik solido bat hautatu bada</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="331"/>
-      <location filename="../ui/Magnetization.ui" line="148"/>
-      <location filename="../ui/CurrentDensity.ui" line="154"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="257"/>
+      <location filename="../ui/Magnetization.ui" line="107"/>
+      <location filename="../ui/CurrentDensity.ui" line="129"/>
       <source>y</source>
       <translation>y</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="347"/>
-      <source>Real part of potential y-component
-Note: has no effect if a solid was selected</source>
-      <translation>Potentzialaren Y osagaiaren zati erreala
-Oharra: ez du eraginik solido bat hautatu bada</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="392"/>
-      <source>Imaginary part of potential y-component
-Note: has no effect if a solid was selected</source>
-      <translation>Potentzialaren Y osagaiaren zati irudikaria
-Oharra: ez du eraginik solido bat hautatu bada</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="431"/>
-      <location filename="../ui/Magnetization.ui" line="246"/>
-      <location filename="../ui/CurrentDensity.ui" line="256"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="320"/>
+      <location filename="../ui/Magnetization.ui" line="158"/>
+      <location filename="../ui/CurrentDensity.ui" line="180"/>
       <source>z</source>
       <translation>z</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="447"/>
-      <source>Real part of potential z-component
-Note: has no effect if a solid was selected</source>
-      <translation>Potentzialaren Z osagaiaren zati erreala
-Oharra: ez du eraginik solido bat hautatu bada</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="492"/>
-      <source>Imaginary part of potential z-component
-Note: has no effect if a solid was selected</source>
-      <translation>Potentzialaren Z osagaiaren zati irudikaria
-Oharra: ez du eraginik solido bat hautatu bada</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="534"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="401"/>
       <source>Potential Constant</source>
       <translation>Potentzial-konstantea</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="547"/>
-      <source>Farfield / Electric infinity</source>
-      <translation>Urruneko eremua / Amaigabetasun elektrikoa</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="557"/>
-      <source>Calculate Electric Force</source>
-      <translation>Kalkulatu indar elektrikoa</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="602"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="455"/>
       <source>Counter of the body (or face) with a capacitance</source>
       <translation>Gorputzaren (edo aurpegiaren) zenbagailua kapazitantzia batekin</translation>
     </message>
@@ -3227,28 +3212,60 @@ Oharra: ez du eraginik solido bat hautatu bada</translation>
       <translation>Zeharkako sekzioaren parametroa</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="71"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="41"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="311"/>
       <source>Width:</source>
       <translation>Zabalera:</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="97"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="67"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="279"/>
       <source>Height:</source>
       <translation>Altuera:</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="149"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="104"/>
       <source>Diameter:</source>
       <translation>Diametroa:</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="186"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="141"/>
       <source>Outer diameter:</source>
       <translation type="unfinished">Outer diameter:</translation>
     </message>
     <message>
+      <location filename="../ui/ElementGeometry1D.ui" line="204"/>
+      <source>Axis1 Length:</source>
+      <translation type="unfinished">Axis1 Length:</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementGeometry1D.ui" line="236"/>
+      <source>Axis2 Length:</source>
+      <translation type="unfinished">Axis2 Length:</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementGeometry1D.ui" line="343"/>
+      <source>T1 Thickness:</source>
+      <translation type="unfinished">T1 Thickness:</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementGeometry1D.ui" line="375"/>
+      <source>T2 Thickness:</source>
+      <translation type="unfinished">T2 Thickness:</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementGeometry1D.ui" line="407"/>
+      <source>T3 Thickness:</source>
+      <translation type="unfinished">T3 Thickness:</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementGeometry1D.ui" line="439"/>
+      <source>T4 Thickness:</source>
+      <translation type="unfinished">T4 Thickness:</translation>
+    </message>
+    <message>
       <location filename="../ui/ElementGeometry2D.ui" line="37"/>
-      <location filename="../ui/ElementGeometry1D.ui" line="212"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="167"/>
       <source>Thickness:</source>
       <translation>Lodiera:</translation>
     </message>
@@ -3354,11 +3371,11 @@ Oharra: ez du eraginik solido bat hautatu bada</translation>
       <location filename="../ui/MeshRegion.ui" line="44"/>
       <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
-      <location filename="../ui/ElementGeometry1D.ui" line="78"/>
-      <location filename="../ui/ElementGeometry1D.ui" line="104"/>
-      <location filename="../ui/ElementGeometry1D.ui" line="156"/>
-      <location filename="../ui/ElementGeometry1D.ui" line="193"/>
-      <location filename="../ui/ElementGeometry1D.ui" line="219"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="48"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="74"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="111"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="148"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="174"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -3366,88 +3383,6 @@ Oharra: ez du eraginik solido bat hautatu bada</translation>
       <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure:</source>
       <translation>Presioa:</translation>
-    </message>
-    <message>
-      <location filename="../ui/CurrentDensity.ui" line="20"/>
-      <source>Current density:</source>
-      <translation>Uneko dentsitatea:</translation>
-    </message>
-    <message>
-      <location filename="../ui/CurrentDensity.ui" line="66"/>
-      <source>Real part of potential x-component
-Note: if a face was selected this will be the value
-          in normal face direction
-          settings for y and z will be ignored</source>
-      <translation>Potentzialaren X osagaiaren zati erreala
-Oharra: aurpegi bat hautatu bada, hau izango da
-              aurpegiaren norabide normaleko balioa
-              Y eta Z osagaien ezarpenak ezikusi egingo dira</translation>
-    </message>
-    <message>
-      <location filename="../ui/CurrentDensity.ui" line="113"/>
-      <source>Imaginary part of potential x-component
-Note: if a face was selected this will be the value
-          in normal face direction
-          settings for y and z will be ignored</source>
-      <translation>Potentzialaren X osagaiaren zati irudikaria
-Oharra: aurpegi bat hautatu bada, hau izango da
-              aurpegiaren norabide normaleko balioa
-              Y eta Z osagaien ezarpenak ezikusi egingo dira</translation>
-    </message>
-    <message>
-      <location filename="../ui/CurrentDensity.ui" line="170"/>
-      <source>Real part of potential y-component
-Note: for 2D only setting for x is possible,
-          setting for y will be ignored</source>
-      <translation>Potentzialaren Y osagaiaren zati erreala
-Oharra: 2D kasuetan soilik, X-en ezarpena posible da,
-              Y-ren ezarpena ezikusi egingo da</translation>
-    </message>
-    <message>
-      <location filename="../ui/CurrentDensity.ui" line="216"/>
-      <source>Imaginary part of potential y-component
-Note: for 2D only setting for x is possible,
-          setting for y will be ignored</source>
-      <translation>Potentzialaren Y osagaiaren zati irudikaria
-Oharra: 2D kasuetan soilik, X-en ezarpena posible da,
-              Y-ren ezarpena ezikusi egingo da</translation>
-    </message>
-    <message>
-      <location filename="../ui/Magnetization.ui" line="20"/>
-      <source>Magnetization</source>
-      <translation>Magnetizazioa</translation>
-    </message>
-    <message>
-      <location filename="../ui/Magnetization.ui" line="66"/>
-      <source>Real part of potential x-component</source>
-      <translation>Potentzialaren X osagaiaren zati erreala</translation>
-    </message>
-    <message>
-      <location filename="../ui/Magnetization.ui" line="110"/>
-      <source>Imaginary part of potential x-component</source>
-      <translation>Potentzialaren X osagaiaren zati irudikaria</translation>
-    </message>
-    <message>
-      <location filename="../ui/Magnetization.ui" line="164"/>
-      <source>Real part of potential y-component</source>
-      <translation>Potentzialaren Y osagaiaren zati erreala</translation>
-    </message>
-    <message>
-      <location filename="../ui/Magnetization.ui" line="208"/>
-      <source>Imaginary part of potential y-component</source>
-      <translation>Potentzialaren Y osagaiaren zati irudikaria</translation>
-    </message>
-    <message>
-      <location filename="../ui/Magnetization.ui" line="262"/>
-      <location filename="../ui/CurrentDensity.ui" line="272"/>
-      <source>Real part of potential z-component</source>
-      <translation>Potentzialaren Z osagaiaren zati erreala</translation>
-    </message>
-    <message>
-      <location filename="../ui/Magnetization.ui" line="306"/>
-      <location filename="../ui/CurrentDensity.ui" line="316"/>
-      <source>Imaginary part of potential z-component</source>
-      <translation>Potentzialaren Z osagaiaren zati irudikaria</translation>
     </message>
     <message>
       <location filename="../ui/FlowVelocity.ui" line="164"/>
@@ -3461,6 +3396,8 @@ Oharra: 2D kasuetan soilik, X-en ezarpena posible da,
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="35"/>
+      <location filename="../ui/ElectricChargeDensity.ui" line="25"/>
+      <location filename="../ui/CurrentDensity.ui" line="29"/>
       <source>Mode:</source>
       <translation>Modua:</translation>
     </message>
@@ -3474,6 +3411,115 @@ Oharra: 2D kasuetan soilik, X-en ezarpena posible da,
       <source>Dissipation Rate:</source>
       <translation type="unfinished">Dissipation Rate:</translation>
     </message>
+    <message>
+      <location filename="../ui/Magnetization.ui" line="26"/>
+      <location filename="../ui/CurrentDensity.ui" line="48"/>
+      <source>Imaginary part is only used for equations
+with harmonic/oscillating driving current</source>
+      <translation type="unfinished">Imaginary part is only used for equations
+with harmonic/oscillating driving current</translation>
+    </message>
+    <message>
+      <location filename="../ui/Magnetization.ui" line="66"/>
+      <source>Real part of magnetization x-component</source>
+      <translation type="unfinished">Real part of magnetization x-component</translation>
+    </message>
+    <message>
+      <location filename="../ui/Magnetization.ui" line="88"/>
+      <source>Imaginary part of magnetization x-component</source>
+      <translation type="unfinished">Imaginary part of magnetization x-component</translation>
+    </message>
+    <message>
+      <location filename="../ui/Magnetization.ui" line="117"/>
+      <source>Real part of magnetization y-component</source>
+      <translation type="unfinished">Real part of magnetization y-component</translation>
+    </message>
+    <message>
+      <location filename="../ui/Magnetization.ui" line="139"/>
+      <source>Imaginary part of magnetization y-component</source>
+      <translation type="unfinished">Imaginary part of magnetization y-component</translation>
+    </message>
+    <message>
+      <location filename="../ui/Magnetization.ui" line="168"/>
+      <source>Real part of magnetization z-component</source>
+      <translation type="unfinished">Real part of magnetization z-component</translation>
+    </message>
+    <message>
+      <location filename="../ui/Magnetization.ui" line="190"/>
+      <source>Imaginary part of magnetization z-component</source>
+      <translation type="unfinished">Imaginary part of magnetization z-component</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectricChargeDensity.ui" line="50"/>
+      <source>Free surface charge density</source>
+      <translation type="unfinished">Free surface charge density</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectricChargeDensity.ui" line="55"/>
+      <location filename="../ui/ElectricChargeDensity.ui" line="98"/>
+      <source>Density:</source>
+      <translation type="unfinished">Density:</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectricChargeDensity.ui" line="93"/>
+      <source>Free volume charge density</source>
+      <translation type="unfinished">Free volume charge density</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectricChargeDensity.ui" line="136"/>
+      <source>Free total charge</source>
+      <translation type="unfinished">Free total charge</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectricChargeDensity.ui" line="141"/>
+      <source>Total Charge:</source>
+      <translation type="unfinished">Total Charge:</translation>
+    </message>
+    <message>
+      <location filename="../ui/CurrentDensity.ui" line="23"/>
+      <source>Select Custom mode to enable vector current density</source>
+      <translation type="unfinished">Select Custom mode to enable vector current density</translation>
+    </message>
+    <message>
+      <location filename="../ui/CurrentDensity.ui" line="88"/>
+      <source>Real part of current density x-component</source>
+      <translation type="unfinished">Real part of current density x-component</translation>
+    </message>
+    <message>
+      <location filename="../ui/CurrentDensity.ui" line="110"/>
+      <source>Imaginary part of current density x-component</source>
+      <translation type="unfinished">Imaginary part of current density x-component</translation>
+    </message>
+    <message>
+      <location filename="../ui/CurrentDensity.ui" line="139"/>
+      <source>Real part of current density y-component</source>
+      <translation type="unfinished">Real part of current density y-component</translation>
+    </message>
+    <message>
+      <location filename="../ui/CurrentDensity.ui" line="161"/>
+      <source>Imaginary part of current density y-component</source>
+      <translation type="unfinished">Imaginary part of current density y-component</translation>
+    </message>
+    <message>
+      <location filename="../ui/CurrentDensity.ui" line="190"/>
+      <source>Real part of current density z-component</source>
+      <translation type="unfinished">Real part of current density z-component</translation>
+    </message>
+    <message>
+      <location filename="../ui/CurrentDensity.ui" line="212"/>
+      <source>Imaginary part of current density z-component</source>
+      <translation type="unfinished">Imaginary part of current density z-component</translation>
+    </message>
+    <message>
+      <location filename="../ui/CurrentDensity.ui" line="237"/>
+      <source>Current density normal to surface</source>
+      <translation type="unfinished">Current density normal to surface</translation>
+    </message>
+    <message>
+      <location filename="../ui/CurrentDensity.ui" line="263"/>
+      <source>Normal:</source>
+      <translation type="unfinished">Normal:</translation>
+    </message>
   </context>
   <context>
     <name>GmshMesh</name>
@@ -3484,41 +3530,47 @@ Oharra: 2D kasuetan soilik, X-en ezarpena posible da,
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="26"/>
-      <source>FEM Mesh Parameters</source>
-      <translation type="unfinished">FEM Mesh Parameters</translation>
+      <source>Mesh Parameters</source>
+      <translation type="unfinished">Mesh Parameters</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="37"/>
-      <source>Element dimension:</source>
-      <translation>Elementu-kota:</translation>
+      <source>Element Dimension:</source>
+      <translation type="unfinished">Element Dimension:</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="47"/>
-      <source>Max element size (0.0 = Auto):</source>
-      <translation>Elementu-tamaina maximoa (0.0 = Auto):</translation>
+      <source>Maximum Size:</source>
+      <translation type="unfinished">Maximum Size:</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="82"/>
-      <source>Min element size (0.0 = Auto):</source>
-      <translation>Elementu-tamaina minimoa (0.0 = Auto):</translation>
+      <location filename="../ui/MeshGmsh.ui" line="57"/>
+      <location filename="../ui/MeshGmsh.ui" line="95"/>
+      <source>Use 0.0 to set size automatically</source>
+      <translation type="unfinished">Use 0.0 to set size automatically</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="120"/>
-      <source>Element order:</source>
-      <translation>Elementuen ordena:</translation>
+      <location filename="../ui/MeshGmsh.ui" line="85"/>
+      <source>Minimum Size:</source>
+      <translation type="unfinished">Minimum Size:</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="138"/>
+      <location filename="../ui/MeshGmsh.ui" line="126"/>
+      <source>Element Order:</source>
+      <translation type="unfinished">Element Order:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshGmsh.ui" line="144"/>
       <source>Gmsh</source>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="163"/>
+      <location filename="../ui/MeshGmsh.ui" line="172"/>
       <source>Time:</source>
       <translation>Denbora:</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="189"/>
+      <location filename="../ui/MeshGmsh.ui" line="198"/>
       <source>Gmsh version</source>
       <translation>Gmsh bertsioa</translation>
     </message>
@@ -3557,24 +3609,24 @@ Oharra: 2D kasuetan soilik, X-en ezarpena posible da,
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="76"/>
+      <location filename="../../Command.cpp" line="77"/>
       <source>No active Analysis</source>
       <translation>Analisi aktiborik ez</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="77"/>
+      <location filename="../../Command.cpp" line="78"/>
       <source>You need to create or activate a Analysis</source>
       <translation>Analisi bat sortu edo aktibatu behar duzu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="337"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="966"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="327"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="988"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Elkarrizketa-koadro bat irekita dago ataza-panelean</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="338"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="967"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="328"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="989"/>
       <source>Do you want to close this dialog?</source>
       <translation>Koadro hori itxi nahi duzu?</translation>
     </message>
@@ -3584,25 +3636,20 @@ Oharra: 2D kasuetan soilik, X-en ezarpena posible da,
       <translation>Amarauna sortzea</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="181"/>
-      <location filename="../../AppFemGui.cpp" line="182"/>
-      <location filename="../../AppFemGui.cpp" line="183"/>
-      <location filename="../../AppFemGui.cpp" line="184"/>
-      <location filename="../../AppFemGui.cpp" line="185"/>
       <location filename="../../AppFemGui.cpp" line="186"/>
+      <location filename="../../AppFemGui.cpp" line="187"/>
+      <location filename="../../AppFemGui.cpp" line="188"/>
+      <location filename="../../AppFemGui.cpp" line="189"/>
+      <location filename="../../AppFemGui.cpp" line="190"/>
+      <location filename="../../AppFemGui.cpp" line="191"/>
       <source>FEM</source>
       <translation>FEM</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="189"/>
-      <location filename="../../AppFemGui.cpp" line="190"/>
+      <location filename="../../AppFemGui.cpp" line="194"/>
+      <location filename="../../AppFemGui.cpp" line="195"/>
       <source>Import-Export</source>
       <translation>Inportatu-Esportatu</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPostBoxes.cpp" line="313"/>
-      <source>Edit post processing object</source>
-      <translation>Editatu post-prozesuko objektua</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="110"/>
@@ -3640,7 +3687,7 @@ Oharra: 2D kasuetan soilik, X-en ezarpena posible da,
       <translation>Taldeak</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="332"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="315"/>
       <source>Are you sure you want to continue?</source>
       <translation>Ziur zaude jarraitu nahi duzula?</translation>
     </message>
@@ -3658,117 +3705,147 @@ Oharra: 2D kasuetan soilik, X-en ezarpena posible da,
       <translation>Erakutsi emaitza</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="20"/>
+      <location filename="../ui/ResultShow.ui" line="26"/>
       <source>Result type</source>
       <translation>Emaitza mota</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="34"/>
+      <location filename="../ui/ResultShow.ui" line="40"/>
       <source>None</source>
       <translation>Bat ere ez</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="50"/>
+      <location filename="../ui/ResultShow.ui" line="56"/>
       <source>Displacement Magnitude</source>
       <translation>Desplazamendu-magnitudea</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="57"/>
+      <location filename="../ui/ResultShow.ui" line="63"/>
       <source>von Mises Stress</source>
       <translation>von Mises estresa</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="70"/>
+      <location filename="../ui/ResultShow.ui" line="76"/>
       <source>Displacement X</source>
       <translation>X desplazamendua</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="77"/>
+      <location filename="../ui/ResultShow.ui" line="83"/>
       <source>Max Principal Stress</source>
       <translation>Estres nagusi max.</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="90"/>
+      <location filename="../ui/ResultShow.ui" line="96"/>
       <source>Displacement Y</source>
       <translation>Y desplazamendua</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="97"/>
+      <location filename="../ui/ResultShow.ui" line="103"/>
       <source>Min Principal Stress</source>
       <translation>Estres nagusi min.</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="110"/>
+      <location filename="../ui/ResultShow.ui" line="116"/>
       <source>Displacement Z</source>
       <translation>Z desplazamendua</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="117"/>
+      <location filename="../ui/ResultShow.ui" line="123"/>
       <source>Max Shear Stress (Tresca)</source>
       <translation>ZIzailadura-esfortzu maximoa (Tresca)</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="130"/>
+      <location filename="../ui/ResultShow.ui" line="136"/>
       <source>Equivalent Plastic Strain</source>
       <translation>Tentsio plastiko baliokidea</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="137"/>
+      <location filename="../ui/ResultShow.ui" line="143"/>
       <source>Mass Flow Rate</source>
       <translation>Masaren fluxu-emaria</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="150"/>
+      <location filename="../ui/ResultShow.ui" line="156"/>
       <source>Temperature</source>
       <translation>Tenperatura</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="157"/>
+      <location filename="../ui/ResultShow.ui" line="163"/>
       <source>Network Pressure</source>
       <translation>Sare-presioa</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="168"/>
+      <location filename="../ui/ResultShow.ui" line="181"/>
       <source>Min:</source>
       <translation>Min:</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="188"/>
+      <location filename="../ui/ResultShow.ui" line="201"/>
       <source>Max:</source>
       <translation>Max:</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="205"/>
+      <location filename="../ui/ResultShow.ui" line="229"/>
+      <source>Displacement Scaling</source>
+      <translation type="unfinished">Displacement Scaling</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="276"/>
+      <source>Factor</source>
+      <translation>Faktorea</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="312"/>
+      <source>Slider Max</source>
+      <translation type="unfinished">Slider Max</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="358"/>
+      <source>Animation Control</source>
+      <translation type="unfinished">Animation Control</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="382"/>
+      <source>Number of Steps per Cycle</source>
+      <translation type="unfinished">Number of Steps per Cycle</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="429"/>
+      <source>Number of Cycles</source>
+      <translation type="unfinished">Number of Cycles</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="467"/>
+      <source>Frame Rate</source>
+      <translation type="unfinished">Frame Rate</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="505"/>
+      <source>Toggles between Start and Stop</source>
+      <translation type="unfinished">Toggles between Start and Stop</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="508"/>
+      <source>Start Animation</source>
+      <translation type="unfinished">Start Animation</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultShow.ui" line="170"/>
       <source>Histogram</source>
       <translation>Histograma</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="217"/>
-      <source>Displacement</source>
-      <translation>Desplazamendua</translation>
-    </message>
-    <message>
-      <location filename="../ui/ResultShow.ui" line="225"/>
+      <location filename="../ui/ResultShow.ui" line="237"/>
       <source>Show</source>
       <translation>Erakutsi</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="261"/>
-      <source>Factor:</source>
-      <translation>Faktorea:</translation>
-    </message>
-    <message>
-      <location filename="../ui/ResultShow.ui" line="294"/>
-      <source>Slider max:</source>
-      <translation>Graduatzailaren maximoa:</translation>
-    </message>
-    <message>
-      <location filename="../ui/ResultShow.ui" line="325"/>
+      <location filename="../ui/ResultShow.ui" line="522"/>
       <source>User defined equation</source>
       <translation>Erabiltzaileak definitutako ekuazioa</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="331"/>
+      <location filename="../ui/ResultShow.ui" line="528"/>
       <source>Runs the equation given in the field below,
 outputs the results to the Min and Max fields
 and colors the result mesh accordingly</source>
@@ -3777,19 +3854,19 @@ irteerako emaitzak Min eta Max eremuetan sartzen dira
 eta amarauna horren arabera koloreztatzen du</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="336"/>
+      <location filename="../ui/ResultShow.ui" line="533"/>
       <source>Calculate</source>
       <translation>Kalkulatu</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="355"/>
+      <location filename="../ui/ResultShow.ui" line="552"/>
       <source>Enter here an equation to be calculated.
 For possible variables, see the description box below.</source>
       <translation>Sartu hemen kalkulatuko den ekuazioa.
 Balizko aldagaietarako, ikusi beheko deskribapen-koadroa.</translation>
     </message>
     <message>
-      <location filename="../ui/ResultShow.ui" line="359"/>
+      <location filename="../ui/ResultShow.ui" line="556"/>
       <source>P1 - P3 # Max - Min Principal Stress</source>
       <translation>P1 - P3 # Estres nagusi max - min</translation>
     </message>
@@ -3892,62 +3969,62 @@ Balizko aldagaietarako, ikusi beheko deskribapen-koadroa.</translation>
   <context>
     <name>SolverCalculix</name>
     <message>
-      <location filename="../ui/SolverCalculix.ui" line="14"/>
+      <location filename="../ui/SolverCcxTools.ui" line="14"/>
       <source>Mechanical analysis</source>
       <translation>Analisi mekanikoa</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculix.ui" line="20"/>
+      <location filename="../ui/SolverCcxTools.ui" line="20"/>
       <source>Working directory</source>
       <translation>Lanerako direktorioa</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculix.ui" line="55"/>
+      <location filename="../ui/SolverCcxTools.ui" line="55"/>
       <source>Analysis type</source>
       <translation>Analisi mota</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculix.ui" line="67"/>
+      <location filename="../ui/SolverCcxTools.ui" line="67"/>
       <source>Static</source>
       <translation>Estatikoa</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculix.ui" line="77"/>
+      <location filename="../ui/SolverCcxTools.ui" line="77"/>
       <source>Frequency</source>
       <translation>Maiztasuna</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculix.ui" line="84"/>
+      <location filename="../ui/SolverCcxTools.ui" line="84"/>
       <source>Thermo mechanical</source>
       <translation>Termomekanikoa</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculix.ui" line="91"/>
+      <location filename="../ui/SolverCcxTools.ui" line="91"/>
       <source>Check Mesh</source>
       <translation>Egiaztatu amarauna</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculix.ui" line="98"/>
+      <location filename="../ui/SolverCcxTools.ui" line="98"/>
       <source>Buckling</source>
       <translation>Sabeltzea</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculix.ui" line="110"/>
+      <location filename="../ui/SolverCcxTools.ui" line="110"/>
       <source>Write .inp file</source>
       <translation>Idatzi .inp fitxategia</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculix.ui" line="120"/>
+      <location filename="../ui/SolverCcxTools.ui" line="120"/>
       <source>Edit .inp file</source>
       <translation>Editatu .inp fitxategia</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculix.ui" line="130"/>
+      <location filename="../ui/SolverCcxTools.ui" line="130"/>
       <source>Run CalculiX</source>
       <translation>Exekutatu CalculiX</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculix.ui" line="151"/>
+      <location filename="../ui/SolverCcxTools.ui" line="151"/>
       <source>Time:</source>
       <translation>Denbora:</translation>
     </message>
@@ -3983,7 +4060,7 @@ Balizko aldagaietarako, ikusi beheko deskribapen-koadroa.</translation>
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="336"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="319"/>
       <source>Object dependencies</source>
       <translation>Objektuaren mendekotasunak</translation>
     </message>
@@ -4526,54 +4603,28 @@ norabidea erabiliko da norabide gisa</translation>
       <translation>Kendu</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.ui" line="68"/>
-      <source>Surface Convection</source>
-      <translation>Gainazal-konbekzioa</translation>
+      <location filename="../../TaskFemConstraintHeatflux.ui" line="70"/>
+      <source>Constraint Type</source>
+      <translation type="unfinished">Constraint Type</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.ui" line="75"/>
-      <source>Surface Radiation</source>
-      <translation type="unfinished">Surface Radiation</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintHeatflux.ui" line="82"/>
-      <source>Surface heat flux</source>
-      <translation>Gainazalaren bero-fluxua</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintHeatflux.ui" line="102"/>
+      <location filename="../../TaskFemConstraintHeatflux.ui" line="133"/>
       <source>Film Coefficient</source>
       <translation type="unfinished">Film Coefficient</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.ui" line="109"/>
-      <source>W/m^2/K</source>
-      <translation type="unfinished">W/m^2/K</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintHeatflux.ui" line="136"/>
-      <location filename="../../TaskFemConstraintHeatflux.ui" line="198"/>
-      <source>K</source>
-      <translation type="unfinished">K</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintHeatflux.ui" line="227"/>
+      <location filename="../../TaskFemConstraintHeatflux.ui" line="96"/>
       <source>Surface Heat Flux</source>
       <translation type="unfinished">Surface Heat Flux</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.ui" line="234"/>
-      <source>W/m^2</source>
-      <translation type="unfinished">W/m^2</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintHeatflux.ui" line="129"/>
-      <location filename="../../TaskFemConstraintHeatflux.ui" line="191"/>
+      <location filename="../../TaskFemConstraintHeatflux.ui" line="156"/>
+      <location filename="../../TaskFemConstraintHeatflux.ui" line="218"/>
       <source>Ambient Temperature</source>
       <translation>Giro-tenperatura</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.ui" line="167"/>
+      <location filename="../../TaskFemConstraintHeatflux.ui" line="193"/>
       <source>Emissivity</source>
       <translation type="unfinished">Emissivity</translation>
     </message>
@@ -4686,32 +4737,32 @@ Elmer ebazlean</translation>
   <context>
     <name>TaskFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.ui" line="20"/>
+      <location filename="../../TaskFemConstraintTemperature.ui" line="32"/>
       <source>Click Add or Remove and select geometric element(s)</source>
       <translation type="unfinished">Click Add or Remove and select geometric element(s)</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.ui" line="29"/>
+      <location filename="../../TaskFemConstraintTemperature.ui" line="47"/>
       <source>Add</source>
       <translation>Gehitu</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.ui" line="39"/>
+      <location filename="../../TaskFemConstraintTemperature.ui" line="63"/>
       <source>Remove</source>
       <translation>Kendu</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.ui" line="56"/>
+      <location filename="../../TaskFemConstraintTemperature.ui" line="80"/>
       <source>Constraint type</source>
       <translation>Murrizketa mota</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.ui" line="66"/>
+      <location filename="../../TaskFemConstraintTemperature.ui" line="90"/>
       <source>Temperature</source>
       <translation>Tenperatura</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.ui" line="83"/>
+      <location filename="../../TaskFemConstraintTemperature.ui" line="107"/>
       <source>Concentrated heat flux</source>
       <translation>Bero-fluxu kontzentratua</translation>
     </message>
@@ -4945,36 +4996,16 @@ Elmer ebazlean</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="116"/>
-      <source>Vector</source>
-      <translation>Bektorea</translation>
+      <source>Component</source>
+      <translation>Osagaia</translation>
     </message>
     <message>
-      <location filename="../../TaskPostDisplay.ui" line="130"/>
-      <source>Magnitute</source>
-      <translation>Magnitudea</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPostDisplay.ui" line="135"/>
-      <source>X</source>
-      <translation>X</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPostDisplay.ui" line="140"/>
-      <source>Y</source>
-      <translation>Y</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPostDisplay.ui" line="145"/>
-      <source>Z</source>
-      <translation>Z</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPostDisplay.ui" line="156"/>
+      <location filename="../../TaskPostDisplay.ui" line="136"/>
       <source>Styling</source>
       <translation>Estiloa</translation>
     </message>
     <message>
-      <location filename="../../TaskPostDisplay.ui" line="162"/>
+      <location filename="../../TaskPostDisplay.ui" line="142"/>
       <source>Transparency</source>
       <translation>Gardentasuna</translation>
     </message>
@@ -5314,33 +5345,41 @@ Elmer ebazlean</translation>
   <context>
     <name>setupFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1803"/>
+      <location filename="../../Command.cpp" line="1839"/>
       <source>Error: A filter can only be applied to a single object.</source>
       <translation>Errorea: Iragazki bat objektu bakar bati soilik aplikatu dakioke.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1805"/>
-      <location filename="../../Command.cpp" line="1816"/>
-      <location filename="../../Command.cpp" line="1845"/>
+      <location filename="../../Command.cpp" line="1841"/>
+      <location filename="../../Command.cpp" line="1852"/>
       <source>The filter could not be set up.</source>
       <translation>Ezin izan da iragazkia konfiguratu.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1815"/>
-      <location filename="../../Command.cpp" line="1844"/>
+      <location filename="../../Command.cpp" line="1851"/>
       <source>Error: no post processing object selected.</source>
       <translation>Errorea: Ez da hautatu post-prozesuko objektua.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1869"/>
+      <source>Error: Object not in a post processing group</source>
+      <translation type="unfinished">Error: Object not in a post processing group</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1870"/>
+      <source>The filter could not be set up: Object not in a post processing group.</source>
+      <translation type="unfinished">The filter could not be set up: Object not in a post processing group.</translation>
     </message>
   </context>
   <context>
     <name>FEM_Analysis</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="58"/>
+      <location filename="../../../femcommands/commands.py" line="61"/>
       <source>Analysis container</source>
       <translation>Analisi-edukiontzia</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="62"/>
+      <location filename="../../../femcommands/commands.py" line="65"/>
       <source>Creates an analysis container with default solver</source>
       <translation>Analisi-edukiontzia sortzen du ebazle lehenetsiarekin</translation>
     </message>
@@ -5348,12 +5387,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_ClippingPlaneAdd</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="93"/>
+      <location filename="../../../femcommands/commands.py" line="96"/>
       <source>Clipping plane on face</source>
       <translation>Ebaketa-planoa aurpegian</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="96"/>
+      <location filename="../../../femcommands/commands.py" line="99"/>
       <source>Add a clipping plane on a selected face</source>
       <translation>Gehitu ebaketa-planoa hautatutako aurpegi batean</translation>
     </message>
@@ -5361,12 +5400,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_ClippingPlaneRemoveAll</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="149"/>
+      <location filename="../../../femcommands/commands.py" line="152"/>
       <source>Remove all clipping planes</source>
       <translation>Kendu ebaketa-plano guztiak</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="152"/>
+      <location filename="../../../femcommands/commands.py" line="155"/>
       <source>Removes all clipping planes</source>
       <translation>Ebaketa-plano guztiak kentzen ditu</translation>
     </message>
@@ -5374,12 +5413,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_ConstantVacuumPermittivity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="173"/>
+      <location filename="../../../femcommands/commands.py" line="176"/>
       <source>Constant vacuum permittivity</source>
       <translation>Hutsaren permitibitate-konstantea</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="177"/>
+      <location filename="../../../femcommands/commands.py" line="180"/>
       <source>Creates a FEM constant vacuum permittivity to overwrite standard value</source>
       <translation>FEM hutsaren permitibitate-konstante bat sortzen du balio estandarra gainidazteko</translation>
     </message>
@@ -5387,12 +5426,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_ElementFluid1D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="343"/>
+      <location filename="../../../femcommands/commands.py" line="362"/>
       <source>Fluid section for 1D flow</source>
       <translation>Jariakin-sekzioa 1D jariorako</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="346"/>
+      <location filename="../../../femcommands/commands.py" line="365"/>
       <source>Creates a FEM fluid section for 1D flow</source>
       <translation>FEM jariakin-sekzio bat sortzen du 1D jariorako</translation>
     </message>
@@ -5400,12 +5439,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_ElementGeometry1D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="356"/>
+      <location filename="../../../femcommands/commands.py" line="375"/>
       <source>Beam cross section</source>
       <translation>Habearen zeharkako sekzioa</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="359"/>
+      <location filename="../../../femcommands/commands.py" line="378"/>
       <source>Creates a FEM beam cross section</source>
       <translation>FEM habe baten zeharkako sekzioa sortzen du</translation>
     </message>
@@ -5413,12 +5452,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_ElementGeometry2D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="369"/>
+      <location filename="../../../femcommands/commands.py" line="388"/>
       <source>Shell plate thickness</source>
       <translation>Oskol-plakaren lodiera</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="372"/>
+      <location filename="../../../femcommands/commands.py" line="391"/>
       <source>Creates a FEM shell plate thickness</source>
       <translation>FEM oskol-plakaren lodiera bat sortzen du</translation>
     </message>
@@ -5426,12 +5465,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_ElementRotation1D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="382"/>
+      <location filename="../../../femcommands/commands.py" line="401"/>
       <source>Beam rotation</source>
       <translation>Habe-biraketa</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="383"/>
+      <location filename="../../../femcommands/commands.py" line="402"/>
       <source>Creates a FEM beam rotation</source>
       <translation>FEM habe baten biraketa sortzen du</translation>
     </message>
@@ -5439,12 +5478,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_EquationElectrostatic</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="433"/>
+      <location filename="../../../femcommands/commands.py" line="452"/>
       <source>Electrostatic equation</source>
       <translation>Elektrostatika-ekuazioa</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="436"/>
+      <location filename="../../../femcommands/commands.py" line="455"/>
       <source>Creates a FEM equation for electrostatic</source>
       <translation>FEM ekuazio bat sortzen du elektrostatikarako</translation>
     </message>
@@ -5452,12 +5491,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_EquationElasticity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="407"/>
+      <location filename="../../../femcommands/commands.py" line="426"/>
       <source>Elasticity equation</source>
       <translation>Elastikotasun-ekuazioa</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="410"/>
+      <location filename="../../../femcommands/commands.py" line="429"/>
       <source>Creates a FEM equation for elasticity (stress)</source>
       <translation type="unfinished">Creates a FEM equation for elasticity (stress)</translation>
     </message>
@@ -5465,12 +5504,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_EquationFlow</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="446"/>
+      <location filename="../../../femcommands/commands.py" line="465"/>
       <source>Flow equation</source>
       <translation>Jario-ekuazioa</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="447"/>
+      <location filename="../../../femcommands/commands.py" line="466"/>
       <source>Creates a FEM equation for flow</source>
       <translation>FEM ekuazio bat sortzen du jariorako</translation>
     </message>
@@ -5478,12 +5517,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_EquationFlux</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="457"/>
+      <location filename="../../../femcommands/commands.py" line="476"/>
       <source>Flux equation</source>
       <translation>Fluxu-ekuazioa</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="458"/>
+      <location filename="../../../femcommands/commands.py" line="477"/>
       <source>Creates a FEM equation for flux</source>
       <translation>FEM ekuazio bat sortzen du fluxurako</translation>
     </message>
@@ -5491,12 +5530,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_EquationElectricforce</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="420"/>
+      <location filename="../../../femcommands/commands.py" line="439"/>
       <source>Electricforce equation</source>
       <translation>Indar elektrikoaren ekuazioa</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="423"/>
+      <location filename="../../../femcommands/commands.py" line="442"/>
       <source>Creates a FEM equation for electric forces</source>
       <translation>FEM ekuazio bat sortzen du indar elektrikoetarako</translation>
     </message>
@@ -5504,12 +5543,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_EquationHeat</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="468"/>
+      <location filename="../../../femcommands/commands.py" line="487"/>
       <source>Heat equation</source>
       <translation>Bero-ekuazioa</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="469"/>
+      <location filename="../../../femcommands/commands.py" line="488"/>
       <source>Creates a FEM equation for heat</source>
       <translation>FEM ekuazio bat sortzen du berorako</translation>
     </message>
@@ -5517,12 +5556,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_Examples</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="512"/>
+      <location filename="../../../femcommands/commands.py" line="544"/>
       <source>Open FEM examples</source>
       <translation>Ireki FEM adibideak</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="513"/>
+      <location filename="../../../femcommands/commands.py" line="545"/>
       <source>Opens the FEM examples</source>
       <translation>FEM adibideak irekitzen ditu</translation>
     </message>
@@ -5530,12 +5569,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_MaterialEditor</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="527"/>
+      <location filename="../../../femcommands/commands.py" line="559"/>
       <source>Material editor</source>
       <translation>Materialen editorea</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="530"/>
+      <location filename="../../../femcommands/commands.py" line="562"/>
       <source>Opens the FreeCAD material editor</source>
       <translation>FreeCADen materialen editorea irekitzen du</translation>
     </message>
@@ -5543,12 +5582,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_MaterialFluid</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="543"/>
+      <location filename="../../../femcommands/commands.py" line="575"/>
       <source>Material for fluid</source>
       <translation>Materiala jariakinerako</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="544"/>
+      <location filename="../../../femcommands/commands.py" line="576"/>
       <source>Creates a FEM material for fluid</source>
       <translation>FEM materiala sortzen du jariakinerako</translation>
     </message>
@@ -5556,12 +5595,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_MaterialMechanicalNonlinear</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="556"/>
+      <location filename="../../../femcommands/commands.py" line="588"/>
       <source>Nonlinear mechanical material</source>
       <translation>Material mekaniko ez-lineala</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="559"/>
+      <location filename="../../../femcommands/commands.py" line="591"/>
       <source>Creates a nonlinear mechanical material</source>
       <translation>Material mekaniko ez-lineal bat sortzen du</translation>
     </message>
@@ -5569,12 +5608,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_MaterialReinforced</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="623"/>
+      <location filename="../../../femcommands/commands.py" line="655"/>
       <source>Reinforced material (concrete)</source>
       <translation>Indartutako materiala (hormigoia)</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="627"/>
+      <location filename="../../../femcommands/commands.py" line="659"/>
       <source>Creates a material for reinforced matrix material such as concrete</source>
       <translation>Material bat sortzen du matrize indartuko materialetarako, esaterako hormigoirako</translation>
     </message>
@@ -5582,12 +5621,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_MaterialSolid</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="637"/>
+      <location filename="../../../femcommands/commands.py" line="669"/>
       <source>Material for solid</source>
       <translation>Materiala solidorako</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="639"/>
+      <location filename="../../../femcommands/commands.py" line="671"/>
       <source>Creates a FEM material for solid</source>
       <translation>FEM material bat sortzen du solido baterako</translation>
     </message>
@@ -5595,12 +5634,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_FEMMesh2Mesh</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="649"/>
+      <location filename="../../../femcommands/commands.py" line="681"/>
       <source>FEM mesh to mesh</source>
       <translation>FEM amaraunetik amaraunera</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="652"/>
+      <location filename="../../../femcommands/commands.py" line="684"/>
       <source>Converts the surface of a FEM mesh to a mesh</source>
       <translation>FEM amaraun baten azalera amaraun bihurtzen du</translation>
     </message>
@@ -5608,12 +5647,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_MeshBoundaryLayer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="691"/>
+      <location filename="../../../femcommands/commands.py" line="723"/>
       <source>FEM mesh boundary layer</source>
       <translation>FEM amaraunaren muga-geruza</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="694"/>
+      <location filename="../../../femcommands/commands.py" line="726"/>
       <source>Creates a FEM mesh boundary layer</source>
       <translation>FEM amaraunaren muga-geruza sortzen du</translation>
     </message>
@@ -5621,12 +5660,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_MeshClear</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="704"/>
+      <location filename="../../../femcommands/commands.py" line="736"/>
       <source>Clear FEM mesh</source>
       <translation>Garbitu FEM amarauna</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="705"/>
+      <location filename="../../../femcommands/commands.py" line="737"/>
       <source>Clears the Mesh of a FEM mesh object</source>
       <translation>FEM amaraun-objektu baten amarauna garbitzen du</translation>
     </message>
@@ -5634,12 +5673,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_MeshDisplayInfo</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="724"/>
+      <location filename="../../../femcommands/commands.py" line="756"/>
       <source>Display FEM mesh info</source>
       <translation>Bistaratu FEM amaraunaren informazioa</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="725"/>
+      <location filename="../../../femcommands/commands.py" line="757"/>
       <source>Displays FEM mesh information</source>
       <translation>FEM amaraunaren informazioa bistaratzen du</translation>
     </message>
@@ -5647,12 +5686,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_MeshGmshFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="748"/>
+      <location filename="../../../femcommands/commands.py" line="780"/>
       <source>FEM mesh from shape by Gmsh</source>
       <translation>FEM amarauna formatik, Gmsh bidez</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="751"/>
+      <location filename="../../../femcommands/commands.py" line="783"/>
       <source>Creates a FEM mesh from a shape by Gmsh mesher</source>
       <translation>FEM amaraun bat sortzen du forma batetik abiatuz, Gmsh sare-sortzailea erabiliz</translation>
     </message>
@@ -5660,12 +5699,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_MeshGroup</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="798"/>
+      <location filename="../../../femcommands/commands.py" line="830"/>
       <source>FEM mesh group</source>
       <translation>FEM amaraun taldea</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="799"/>
+      <location filename="../../../femcommands/commands.py" line="831"/>
       <source>Creates a FEM mesh group</source>
       <translation>FEM amaraun talde bat sortzen du</translation>
     </message>
@@ -5673,12 +5712,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_MeshNetgenFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="811"/>
+      <location filename="../../../femcommands/commands.py" line="843"/>
       <source>FEM mesh from shape by Netgen</source>
       <translation>FEM amarauna formatik, Netgen bidez</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="815"/>
+      <location filename="../../../femcommands/commands.py" line="847"/>
       <source>Creates a FEM mesh from a solid or face shape by Netgen internal mesher</source>
       <translation>FEM amaraun bat sortzen du solido batetik edo aurpegi-forma batetik, Netgen barneko amaraun-sortzailea erabiliz</translation>
     </message>
@@ -5686,12 +5725,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_ResultShow</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="876"/>
+      <location filename="../../../femcommands/commands.py" line="908"/>
       <source>Show result</source>
       <translation>Erakutsi emaitza</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="880"/>
+      <location filename="../../../femcommands/commands.py" line="912"/>
       <source>Shows and visualizes selected result data</source>
       <translation>Hautatutako emaitza-datuak erakusten eta bistaratzen ditu</translation>
     </message>
@@ -5699,12 +5738,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_ResultsPurge</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="892"/>
+      <location filename="../../../femcommands/commands.py" line="924"/>
       <source>Purge results</source>
       <translation>Araztu emaitzak</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="896"/>
+      <location filename="../../../femcommands/commands.py" line="928"/>
       <source>Purges all results from active analysis</source>
       <translation>Analisi aktiboetako emaitza guztiak arazten ditu</translation>
     </message>
@@ -5712,12 +5751,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_SolverCalculiXCcxTools</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1006"/>
+      <location filename="../../../femcommands/commands.py" line="1038"/>
       <source>Solver CalculiX Standard</source>
       <translation>CalculiX ebazle estandarra</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1011"/>
+      <location filename="../../../femcommands/commands.py" line="1043"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
       <translation>FEM CalculiX ebazle estandarra sortzen du ccx tresnekin</translation>
     </message>
@@ -5725,12 +5764,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_SolverControl</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1059"/>
+      <location filename="../../../femcommands/commands.py" line="1095"/>
       <source>Solver job control</source>
       <translation>Ebazle-lanaren kontrola</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1064"/>
+      <location filename="../../../femcommands/commands.py" line="1100"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>Ebazlearen atributuak aldatzen ditu eta hautatutako ebazlerako kalkuluak exekutatzen ditu</translation>
     </message>
@@ -5738,12 +5777,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_SolverElmer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1076"/>
+      <location filename="../../../femcommands/commands.py" line="1112"/>
       <source>Solver Elmer</source>
       <translation>Elmer ebazlea</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1078"/>
+      <location filename="../../../femcommands/commands.py" line="1114"/>
       <source>Creates a FEM solver Elmer</source>
       <translation>FEM Elmer ebazlea sortzen du</translation>
     </message>
@@ -5751,12 +5790,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_SolverMystran</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1089"/>
+      <location filename="../../../femcommands/commands.py" line="1151"/>
       <source>Solver Mystran</source>
       <translation>Mystran ebazlea</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1091"/>
+      <location filename="../../../femcommands/commands.py" line="1153"/>
       <source>Creates a FEM solver Mystran</source>
       <translation>FEM Mystran ebazlea sortzen du</translation>
     </message>
@@ -5764,12 +5803,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_SolverRun</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1101"/>
+      <location filename="../../../femcommands/commands.py" line="1163"/>
       <source>Run solver calculations</source>
       <translation>Exekutatu ebazlearen kalkuluak</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1105"/>
+      <location filename="../../../femcommands/commands.py" line="1167"/>
       <source>Runs the calculations for the selected solver</source>
       <translation>Hautatutako ebazlearen kalkuluak exekutatzen ditu</translation>
     </message>
@@ -5777,12 +5816,12 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM_SolverZ88</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1121"/>
+      <location filename="../../../femcommands/commands.py" line="1214"/>
       <source>Solver Z88</source>
       <translation>Z88 ebazlea</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1123"/>
+      <location filename="../../../femcommands/commands.py" line="1216"/>
       <source>Creates a FEM solver Z88</source>
       <translation>FEM Z88 ebazlea sortzen du</translation>
     </message>
@@ -5844,12 +5883,12 @@ Elmer ebazlean</translation>
   <context>
     <name>_Selector</name>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="50"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="81"/>
       <source>Add</source>
       <translation>Gehitu</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="51"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="82"/>
       <source>Remove</source>
       <translation>Kendu</translation>
     </message>
@@ -5857,12 +5896,12 @@ Elmer ebazlean</translation>
   <context>
     <name>BoundarySelector</name>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="130"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="161"/>
       <source>Select Faces/Edges/Vertexes</source>
       <translation>Hautatu aurpegiak/ertzak/erpinak</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="131"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="162"/>
       <source>To add references: select them in the 3D view and click "Add".</source>
       <translation type="unfinished">To add references: select them in the 3D view and click "Add".</translation>
     </message>
@@ -5870,12 +5909,12 @@ Elmer ebazlean</translation>
   <context>
     <name>SolidSelector</name>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="146"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="177"/>
       <source>Select Solids</source>
       <translation>Hautatu solidoak</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="152"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="183"/>
       <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
       <translation>Hautatu zerrendari gehi dakizkiokeen elementu zatiak solidoan. Solidoa gehitzeko, sakatu 'Gehitu'.</translation>
     </message>
@@ -5883,32 +5922,32 @@ Elmer ebazlean</translation>
   <context>
     <name>GeometryElementsSelection</name>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="264"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="295"/>
       <source>Geometry reference selector</source>
       <translation type="unfinished">Geometry reference selector</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="266"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="297"/>
       <source>Add</source>
       <translation>Gehitu</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="273"/>
-      <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements can be selected: {}{}{}</source>
-      <translation>Sakatu 'Gehitu' eta hautatu elementu geometrikoak, haiek zerrendari gehitzeko.{} Honako geometria-elementuak hautatu daitezke: {}{}{}</translation>
+      <location filename="../../../femguiutils/selection_widgets.py" line="318"/>
+      <source>Click and select geometric elements to add them to the list.{}The following geometry elements can be selected: {}{}{}</source>
+      <translation type="unfinished">Click and select geometric elements to add them to the list.{}The following geometry elements can be selected: {}{}{}</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="276"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="321"/>
       <source>{}If no geometry is added to the list, all remaining ones are used.</source>
       <translation>{}Zerrendari geometriarik gehitzen ez bazaio, geratzen direnak erabiliko dira.</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="285"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="302"/>
       <source>Selection mode</source>
       <translation>Hautapen modua</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/selection_widgets.py" line="287"/>
+      <location filename="../../../femguiutils/selection_widgets.py" line="304"/>
       <source>Solid</source>
       <translation>Solidoa</translation>
     </message>
@@ -5916,108 +5955,148 @@ Elmer ebazlean</translation>
   <context>
     <name>FEM</name>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="273"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="318"/>
       <source>Displacement Magnitude</source>
       <translation>Desplazamendu-magnitudea</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="282"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="327"/>
       <source>Displacement X</source>
       <translation>X desplazamendua</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="290"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="335"/>
       <source>Displacement Y</source>
       <translation>Y desplazamendua</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="298"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="343"/>
       <source>Displacement Z</source>
       <translation>Z desplazamendua</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="307"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="354"/>
       <source>von Mises Stress</source>
       <translation>von Mises estresa</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="316"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="366"/>
       <source>Max Shear Stress</source>
       <translation>Zizailadura-esfortzu maximoa</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="327"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="378"/>
       <source>Max Principal Stress</source>
       <translation>Estres nagusi max.</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="337"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="390"/>
       <source>Temperature</source>
       <translation>Tenperatura</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="346"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="402"/>
       <source>Mass Flow Rate</source>
       <translation>Masaren fluxu-emaria</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="357"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="414"/>
       <source>Network Pressure</source>
       <translation>Sare-presioa</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="369"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="426"/>
       <source>Min Principal Stress</source>
       <translation>Estres nagusi min.</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="379"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="438"/>
       <source>Equivalent Plastic Strain</source>
       <translation>Tentsio plastiko baliokidea</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="398"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="458"/>
       <source>Information</source>
       <translation>Informazioa</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="399"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="462"/>
       <source>No histogram available.
 Please select a result type first.</source>
       <translation>Ez dago histogramarik erabilgarri.
 Hasteko, hautatu emaitza mota bat.</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="546"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="610"/>
       <source>Histogram of {}</source>
       <translation>{}(e)n histograma</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="547"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="611"/>
       <source>Nodes</source>
       <translation>Nodoak</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="668"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="739"/>
       <source>Empty result mesh</source>
       <translation>Emaitzako amaraun hutsa</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="681"/>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="690"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="752"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="761"/>
       <source>No result object</source>
       <translation>Ez dago objekturik emaitza gisa</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="194"/>
+      <source>
+
+Correct module found in:
+{}</source>
+      <translation type="unfinished">
+
+Correct module found in:
+{}</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="202"/>
+      <source>
+
+Should this module be loaded instead?</source>
+      <translation type="unfinished">
+
+Should this module be loaded instead?</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="219"/>
+      <source>
+
+No matching module was found in the current python path.</source>
+      <translation type="unfinished">
+
+No matching module was found in the current python path.</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="223"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="249"/>
+      <source>VTK module conflict</source>
+      <translation type="unfinished">VTK module conflict</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="252"/>
+      <source>This functionality is not available due to VTK python module conflict</source>
+      <translation type="unfinished">This functionality is not available due to VTK python module conflict</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationMagnetodynamic2D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="497"/>
+      <location filename="../../../femcommands/commands.py" line="516"/>
       <source>Magnetodynamic2D equation</source>
       <translation>Ekuazio magnetodinamikoa 2D</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="501"/>
+      <location filename="../../../femcommands/commands.py" line="520"/>
       <source>Creates a FEM equation for 2D magnetodynamic forces</source>
       <translation type="unfinished">Creates a FEM equation for 2D magnetodynamic forces</translation>
     </message>
@@ -6025,13 +6104,13 @@ Hasteko, hautatu emaitza mota bat.</translation>
   <context>
     <name>CmdFemCompEmConstraints</name>
     <message>
-      <location filename="../../Command.cpp" line="1399"/>
+      <location filename="../../Command.cpp" line="1400"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1400"/>
       <location filename="../../Command.cpp" line="1401"/>
+      <location filename="../../Command.cpp" line="1402"/>
       <source>Electromagnetic boundary conditions</source>
       <translation>Muga-baldintza elektromagnetikoak</translation>
     </message>
@@ -6039,12 +6118,12 @@ Hasteko, hautatu emaitza mota bat.</translation>
   <context>
     <name>FEM_EquationMagnetodynamic</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="481"/>
+      <location filename="../../../femcommands/commands.py" line="500"/>
       <source>Magnetodynamic equation</source>
       <translation>Ekuazio magnetodinamikoa</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="485"/>
+      <location filename="../../../femcommands/commands.py" line="504"/>
       <source>Creates a FEM equation for magnetodynamic forces</source>
       <translation type="unfinished">Creates a FEM equation for magnetodynamic forces</translation>
     </message>
@@ -6062,30 +6141,45 @@ Hasteko, hautatu emaitza mota bat.</translation>
       <translation>Eremua:</translation>
     </message>
     <message>
-      <location filename="../../TaskPostContours.ui" line="79"/>
+      <location filename="../../TaskPostContours.ui" line="77"/>
+      <source>Enable Laplacian smoothing</source>
+      <translation type="unfinished">Enable Laplacian smoothing</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostContours.ui" line="80"/>
+      <source>Smoothing</source>
+      <translation>Leuntzea</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostContours.ui" line="97"/>
+      <source>Factor to control vertex displacement</source>
+      <translation type="unfinished">Factor to control vertex displacement</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostContours.ui" line="113"/>
       <source>Contour lines will not be colored</source>
       <translation>Ingerada-lerroak ez dira koloreztatuko</translation>
     </message>
     <message>
-      <location filename="../../TaskPostContours.ui" line="82"/>
-      <source>No color</source>
-      <translation>Kolorerik ez</translation>
+      <location filename="../../TaskPostContours.ui" line="116"/>
+      <source>No Color</source>
+      <translation type="unfinished">No Color</translation>
     </message>
   </context>
   <context>
     <name>CmdFemCompEmEquations</name>
     <message>
-      <location filename="../../Command.cpp" line="1523"/>
+      <location filename="../../Command.cpp" line="1543"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1524"/>
+      <location filename="../../Command.cpp" line="1544"/>
       <source>Electromagnetic equations</source>
       <translation>Ekuazio elektromagnetikoak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1525"/>
+      <location filename="../../Command.cpp" line="1545"/>
       <source>Electromagnetic equations for the Elmer solver</source>
       <translation>Elmer ebazlerako ekuazio elektromagnetikoak</translation>
     </message>
@@ -6093,17 +6187,17 @@ Hasteko, hautatu emaitza mota bat.</translation>
   <context>
     <name>CmdFemPostContoursFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2387"/>
+      <location filename="../../Command.cpp" line="2330"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2388"/>
+      <location filename="../../Command.cpp" line="2331"/>
       <source>Contours filter</source>
       <translation>Ingeraden iragazkia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2389"/>
+      <location filename="../../Command.cpp" line="2332"/>
       <source>Define/create a contours filter which displays iso contours</source>
       <translation>Definitu/sortu ingeradak bistaratzen dituen iragazkia</translation>
     </message>
@@ -6111,7 +6205,7 @@ Hasteko, hautatu emaitza mota bat.</translation>
   <context>
     <name>FemGui::TaskPostContours</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1438"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1559"/>
       <source>Contours filter options</source>
       <translation>Ingeraden iragazkiaren aukerak</translation>
     </message>
@@ -6119,12 +6213,12 @@ Hasteko, hautatu emaitza mota bat.</translation>
   <context>
     <name>FEM_EquationDeformation</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="393"/>
+      <location filename="../../../femcommands/commands.py" line="412"/>
       <source>Deformation equation</source>
       <translation>Deformazio-ekuazioa</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="397"/>
+      <location filename="../../../femcommands/commands.py" line="416"/>
       <source>Creates a FEM equation for deformation (nonlinear elasticity)</source>
       <translation type="unfinished">Creates a FEM equation for deformation (nonlinear elasticity)</translation>
     </message>
@@ -6206,43 +6300,30 @@ Hasteko, hautatu emaitza mota bat.</translation>
   <context>
     <name>CmdFemCompMechEquations</name>
     <message>
-      <location filename="../../Command.cpp" line="1675"/>
+      <location filename="../../Command.cpp" line="1711"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1676"/>
+      <location filename="../../Command.cpp" line="1712"/>
       <source>Mechanical equations</source>
       <translation>Ekuazio mekanikoak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1677"/>
+      <location filename="../../Command.cpp" line="1713"/>
       <source>Mechanical equations for the Elmer solver</source>
       <translation>Elmer ebazlerako ekuazio mekanikoak</translation>
     </message>
   </context>
   <context>
-    <name>FEM_SolverCalculiX</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1034"/>
-      <source>Solver CalculiX (new framework)</source>
-      <translation>CalculiX ebazlea (lan-marko berria)</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1039"/>
-      <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
-      <translation>FEM CalculiX ebazlearen lan-marko berria sortzen du (emaitzen errore-maneiatze gutxiago)</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_ConstraintBodyHeatSource</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="189"/>
+      <location filename="../../../femcommands/commands.py" line="192"/>
       <source>Body heat source</source>
       <translation>Gorputz-beroaren iturburua</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="192"/>
+      <location filename="../../../femcommands/commands.py" line="195"/>
       <source>Creates a body heat source</source>
       <translation>Gorputz-beroaren iturburu bat sortzen du</translation>
     </message>
@@ -6250,12 +6331,12 @@ Hasteko, hautatu emaitza mota bat.</translation>
   <context>
     <name>FEM_ConstraintCentrif</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="202"/>
+      <location filename="../../../femcommands/commands.py" line="205"/>
       <source>Centrifugal load</source>
       <translation>Karga zentrifugoa</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="203"/>
+      <location filename="../../../femcommands/commands.py" line="206"/>
       <source>Creates a centrifugal load</source>
       <translation>Karga zentrifukoa sortzen du</translation>
     </message>
@@ -6263,12 +6344,12 @@ Hasteko, hautatu emaitza mota bat.</translation>
   <context>
     <name>FEM_ConstraintCurrentDensity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="216"/>
+      <location filename="../../../femcommands/commands.py" line="219"/>
       <source>Current density boundary condition</source>
       <translation>Uneko dentsitatearen muga-baldintza</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="220"/>
+      <location filename="../../../femcommands/commands.py" line="223"/>
       <source>Creates a current density boundary condition</source>
       <translation>Uneko dentsitatearen muga-baldintza sortzen du</translation>
     </message>
@@ -6276,12 +6357,12 @@ Hasteko, hautatu emaitza mota bat.</translation>
   <context>
     <name>FEM_ConstraintElectrostaticPotential</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="233"/>
+      <location filename="../../../femcommands/commands.py" line="252"/>
       <source>Electrostatic potential boundary condition</source>
       <translation>Potentzial elektrostatikoaren muga-baldintza</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="237"/>
+      <location filename="../../../femcommands/commands.py" line="256"/>
       <source>Creates an electrostatic potential boundary condition</source>
       <translation>Potentzial elektrostatikoaren muga-baldintza sortzen du</translation>
     </message>
@@ -6289,12 +6370,12 @@ Hasteko, hautatu emaitza mota bat.</translation>
   <context>
     <name>FEM_ConstraintFlowVelocity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="249"/>
+      <location filename="../../../femcommands/commands.py" line="268"/>
       <source>Flow velocity boundary condition</source>
       <translation>Fluxu-abiaduraren muga-baldintza</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="252"/>
+      <location filename="../../../femcommands/commands.py" line="271"/>
       <source>Creates a flow velocity boundary condition</source>
       <translation>Fluxu-abiaduraren muga-baldintza sortzen du</translation>
     </message>
@@ -6302,12 +6383,12 @@ Hasteko, hautatu emaitza mota bat.</translation>
   <context>
     <name>FEM_ConstraintInitialFlowVelocity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="264"/>
+      <location filename="../../../femcommands/commands.py" line="283"/>
       <source>Initial flow velocity condition</source>
       <translation>Hasierako fluxu-abiaduraren baldintza</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="268"/>
+      <location filename="../../../femcommands/commands.py" line="287"/>
       <source>Creates initial flow velocity condition</source>
       <translation>Hasierako fluxu-abiaduraren baldintza sortzen du</translation>
     </message>
@@ -6315,12 +6396,12 @@ Hasteko, hautatu emaitza mota bat.</translation>
   <context>
     <name>FEM_ConstraintInitialPressure</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="280"/>
+      <location filename="../../../femcommands/commands.py" line="299"/>
       <source>Initial pressure condition</source>
       <translation>Hasierako presio-baldintza</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="283"/>
+      <location filename="../../../femcommands/commands.py" line="302"/>
       <source>Creates an initial pressure condition</source>
       <translation>Hasierako presioaren baldintza sortzen du</translation>
     </message>
@@ -6328,12 +6409,12 @@ Hasteko, hautatu emaitza mota bat.</translation>
   <context>
     <name>FEM_ConstraintMagnetization</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="295"/>
+      <location filename="../../../femcommands/commands.py" line="314"/>
       <source>Magnetization boundary condition</source>
       <translation>Magnetizazioaren muga-baldintza</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="298"/>
+      <location filename="../../../femcommands/commands.py" line="317"/>
       <source>Creates a magnetization boundary condition</source>
       <translation>Magnetizazioaren muga-baldintza sortzen du</translation>
     </message>
@@ -6341,12 +6422,12 @@ Hasteko, hautatu emaitza mota bat.</translation>
   <context>
     <name>FEM_ConstraintSectionPrint</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="308"/>
+      <location filename="../../../femcommands/commands.py" line="327"/>
       <source>Section print feature</source>
       <translation>Sekzio-inprimatzearen elementua</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="311"/>
+      <location filename="../../../femcommands/commands.py" line="330"/>
       <source>Creates a section print feature</source>
       <translation>Sekzio-inprimatzearen elementu bat sortzen du</translation>
     </message>
@@ -6354,12 +6435,12 @@ Hasteko, hautatu emaitza mota bat.</translation>
   <context>
     <name>FEM_ConstraintSelfWeight</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="321"/>
+      <location filename="../../../femcommands/commands.py" line="340"/>
       <source>Gravity load</source>
       <translation>Grabitate-karga</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="322"/>
+      <location filename="../../../femcommands/commands.py" line="341"/>
       <source>Creates a gravity load</source>
       <translation>Grabitate-karga bat sortzen du</translation>
     </message>
@@ -6367,12 +6448,12 @@ Hasteko, hautatu emaitza mota bat.</translation>
   <context>
     <name>FEM_ConstraintTie</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="332"/>
+      <location filename="../../../femcommands/commands.py" line="351"/>
       <source>Tie constraint</source>
       <translation>Lokarri-murrizketa</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="333"/>
+      <location filename="../../../femcommands/commands.py" line="352"/>
       <source>Creates a tie constraint</source>
       <translation>Lokarri-murrizketa sortzen du</translation>
     </message>
@@ -6380,12 +6461,12 @@ Hasteko, hautatu emaitza mota bat.</translation>
   <context>
     <name>FEM_MeshRegion</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="865"/>
+      <location filename="../../../femcommands/commands.py" line="897"/>
       <source>FEM mesh refinement</source>
       <translation type="unfinished">FEM mesh refinement</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="866"/>
+      <location filename="../../../femcommands/commands.py" line="898"/>
       <source>Creates a FEM mesh refinement</source>
       <translation type="unfinished">Creates a FEM mesh refinement</translation>
     </message>
@@ -6507,23 +6588,23 @@ Hasteko, hautatu emaitza mota bat.</translation>
   <context>
     <name>FemGui::TaskFemConstraintRigidBody</name>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="273"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="284"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="275"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="285"/>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="324"/>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="347"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="358"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="357"/>
       <source>Selection error</source>
       <translation>Hautapen-errorea</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="273"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="275"/>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="347"/>
       <source>Nothing selected!</source>
       <translation>Ez da ezer hautatu!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="284"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="358"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="285"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="357"/>
       <source>Selected object is not a part!</source>
       <translation>Hautatutako objektua ez da pieza bat!</translation>
     </message>
@@ -6536,7 +6617,7 @@ Hasteko, hautatu emaitza mota bat.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintRigidBody</name>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="743"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="741"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
@@ -6586,7 +6667,7 @@ Hasteko, hautatu emaitza mota bat.</translation>
       <location filename="../../TaskCreateElementSet.cpp" line="241"/>
       <location filename="../../TaskCreateElementSet.cpp" line="472"/>
       <location filename="../../TaskCreateElementSet.cpp" line="563"/>
-      <location filename="../../Command.cpp" line="1376"/>
+      <location filename="../../Command.cpp" line="1377"/>
       <source>Wrong selection</source>
       <translation>Hautapen okerra</translation>
     </message>
@@ -6618,17 +6699,17 @@ Hasteko, hautatu emaitza mota bat.</translation>
       <translation type="unfinished">All Elements Erased - no mesh generated.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1336"/>
+      <location filename="../../Command.cpp" line="1337"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1337"/>
-      <source>Erase Elements</source>
-      <translation type="unfinished">Erase Elements</translation>
+      <location filename="../../Command.cpp" line="1338"/>
+      <source>Erase elements</source>
+      <translation type="unfinished">Erase elements</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1338"/>
+      <location filename="../../Command.cpp" line="1339"/>
       <source>Creates a FEM mesh elements set</source>
       <translation type="unfinished">Creates a FEM mesh elements set</translation>
     </message>
@@ -6644,18 +6725,18 @@ Hasteko, hautatu emaitza mota bat.</translation>
   <context>
     <name>CmdFemDefineElementsSet</name>
     <message>
-      <location filename="../../Command.cpp" line="1281"/>
+      <location filename="../../Command.cpp" line="1282"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1282"/>
+      <location filename="../../Command.cpp" line="1283"/>
       <source>Element set by poly</source>
       <translation type="unfinished">Element set by poly</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1283"/>
-      <location filename="../../Command.cpp" line="1285"/>
+      <location filename="../../Command.cpp" line="1284"/>
+      <location filename="../../Command.cpp" line="1286"/>
       <source>Create Element set by Poly</source>
       <translation type="unfinished">Create Element set by Poly</translation>
     </message>
@@ -6679,13 +6760,13 @@ Hasteko, hautatu emaitza mota bat.</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="47"/>
-      <source>Maximal Size:</source>
-      <translation type="unfinished">Maximal Size:</translation>
+      <source>Maximum Size:</source>
+      <translation type="unfinished">Maximum Size:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="82"/>
-      <source>Minimal Size:</source>
-      <translation type="unfinished">Minimal Size:</translation>
+      <source>Minimum Size:</source>
+      <translation type="unfinished">Minimum Size:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="117"/>
@@ -6713,18 +6794,18 @@ Hasteko, hautatu emaitza mota bat.</translation>
       <translation>Netgen</translation>
     </message>
     <message>
-      <location filename="../ui/MeshNetgen.ui" line="217"/>
+      <location filename="../ui/MeshNetgen.ui" line="220"/>
       <source>Time:</source>
       <translation>Denbora:</translation>
     </message>
     <message>
-      <location filename="../ui/MeshNetgen.ui" line="243"/>
+      <location filename="../ui/MeshNetgen.ui" line="246"/>
       <source>Netgen version</source>
       <translation type="unfinished">Netgen version</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgSettingsNetgen</name>
+    <name>FemGui::DlgSettingsNetgen</name>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="14"/>
       <location filename="../ui/DlgSettingsNetgen.ui" line="20"/>
@@ -6740,6 +6821,500 @@ Hasteko, hautatu emaitza mota bat.</translation>
       <location filename="../ui/DlgSettingsNetgen.ui" line="35"/>
       <source>Legacy Netgen</source>
       <translation type="unfinished">Legacy Netgen</translation>
+    </message>
+    <message>
+      <location filename="../ui/DlgSettingsNetgen.ui" line="51"/>
+      <source>Options</source>
+      <translation>Aukerak</translation>
+    </message>
+    <message>
+      <location filename="../ui/DlgSettingsNetgen.ui" line="59"/>
+      <source>Log verbosity</source>
+      <translation type="unfinished">Log verbosity</translation>
+    </message>
+    <message>
+      <location filename="../ui/DlgSettingsNetgen.ui" line="66"/>
+      <source>Level of verbosity printed on the task panel</source>
+      <translation type="unfinished">Level of verbosity printed on the task panel</translation>
+    </message>
+    <message>
+      <location filename="../ui/DlgSettingsNetgen.ui" line="85"/>
+      <source>Number of threads</source>
+      <translation type="unfinished">Number of threads</translation>
+    </message>
+    <message>
+      <location filename="../ui/DlgSettingsNetgen.ui" line="95"/>
+      <source>Number of threads used for meshing</source>
+      <translation type="unfinished">Number of threads used for meshing</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintElectricChargeDensity</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="236"/>
+      <source>Electric charge density</source>
+      <translation type="unfinished">Electric charge density</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="239"/>
+      <source>Creates a electric charge density</source>
+      <translation type="unfinished">Creates a electric charge density</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationStaticCurrent</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="530"/>
+      <source>Static current equation</source>
+      <translation type="unfinished">Static current equation</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="533"/>
+      <source>Creates a FEM equation for static current</source>
+      <translation type="unfinished">Creates a FEM equation for static current</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverCalculiX</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1064"/>
+      <source>Solver CalculiX</source>
+      <translation type="unfinished">Solver CalculiX</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1069"/>
+      <source>Creates a FEM solver CalculiX</source>
+      <translation type="unfinished">Creates a FEM solver CalculiX</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_PostFilterGlyph</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1226"/>
+      <source>Glyph filter</source>
+      <translation type="unfinished">Glyph filter</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1231"/>
+      <source>Post processing filter that adds glyphs to the mesh vertices for vertex data visualization</source>
+      <translation type="unfinished">Post processing filter that adds glyphs to the mesh vertices for vertex data visualization</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskPostCalculator</name>
+    <message>
+      <location filename="../../TaskPostCalculator.ui" line="28"/>
+      <source>Field Name:</source>
+      <translation type="unfinished">Field Name:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostCalculator.ui" line="41"/>
+      <source>Mathematical expression</source>
+      <translation type="unfinished">Mathematical expression</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostCalculator.ui" line="54"/>
+      <source>Available fields</source>
+      <translation type="unfinished">Available fields</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostCalculator.ui" line="62"/>
+      <source>Scalars:</source>
+      <translation type="unfinished">Scalars:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostCalculator.ui" line="72"/>
+      <source>Vectors:</source>
+      <translation type="unfinished">Vectors:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostCalculator.ui" line="82"/>
+      <source>Operators:</source>
+      <translation type="unfinished">Operators:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostCalculator.ui" line="102"/>
+      <source>Replace invalid data:</source>
+      <translation type="unfinished">Replace invalid data:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostCalculator.ui" line="105"/>
+      <source>Replacement value for invalid operations</source>
+      <translation type="unfinished">Replacement value for invalid operations</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskPostBranch</name>
+    <message>
+      <location filename="../../TaskPostBranch.ui" line="34"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filter will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filter will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostBranch.ui" line="37"/>
+      <source>Mode</source>
+      <translation>Modua</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostBranch.ui" line="50"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filters will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filters will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostBranch.ui" line="54"/>
+      <source>Serial</source>
+      <translation type="unfinished">Serial</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostBranch.ui" line="59"/>
+      <source>Parallel</source>
+      <translation>Paraleloa</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostBranch.ui" line="73"/>
+      <location filename="../../TaskPostBranch.ui" line="90"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the how the output of the branch is determined:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Passthrough:&lt;/span&gt; The branches output is the same as its input, no matter what the branch child filter do.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Append:&lt;/span&gt; The branches output is a collection of all child filter: it appends child outputs together and offers this as branch output.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the how the output of the branch is determined:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Passthrough:&lt;/span&gt; The branches output is the same as its input, no matter what the branch child filter do.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Append:&lt;/span&gt; The branches output is a collection of all child filter: it appends child outputs together and offers this as branch output.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostBranch.ui" line="77"/>
+      <source>Passthrough</source>
+      <translation type="unfinished">Passthrough</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostBranch.ui" line="82"/>
+      <source>Append</source>
+      <translation type="unfinished">Append</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostBranch.ui" line="93"/>
+      <source>Output</source>
+      <translation>Irteera</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskPostFrames</name>
+    <message>
+      <location filename="../../TaskPostFrames.ui" line="26"/>
+      <source>Form</source>
+      <translation>Inprimakia</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostFrames.ui" line="34"/>
+      <source>Type of frames:</source>
+      <translation type="unfinished">Type of frames:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostFrames.ui" line="41"/>
+      <source>Ressonance Frequencies</source>
+      <translation type="unfinished">Ressonance Frequencies</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostFrames.ui" line="84"/>
+      <source>Frame</source>
+      <translation>Markoa</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPostFrames.ui" line="89"/>
+      <source>Value</source>
+      <translation>Balioa</translation>
+    </message>
+  </context>
+  <context>
+    <name>SolverCalculiX</name>
+    <message>
+      <location filename="../ui/SolverCalculiX.ui" line="14"/>
+      <source>Solver CalculiX Control</source>
+      <translation type="unfinished">Solver CalculiX Control</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverCalculiX.ui" line="20"/>
+      <source>Working Directory</source>
+      <translation>Laneko direktorioa</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverCalculiX.ui" line="35"/>
+      <source>Write</source>
+      <translation>Idatzi</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverCalculiX.ui" line="45"/>
+      <source>Edit</source>
+      <translation>Editatu</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverCalculiX.ui" line="56"/>
+      <source>Path to working directory</source>
+      <translation type="unfinished">Path to working directory</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverCalculiX.ui" line="66"/>
+      <source>...</source>
+      <translation>...</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverCalculiX.ui" line="78"/>
+      <source>Solver Parameters</source>
+      <translation type="unfinished">Solver Parameters</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverCalculiX.ui" line="86"/>
+      <source>Analysis Type:</source>
+      <translation type="unfinished">Analysis Type:</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverCalculiX.ui" line="126"/>
+      <source>Time:</source>
+      <translation>Denbora:</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverCalculiX.ui" line="133"/>
+      <source>Solver Version</source>
+      <translation type="unfinished">Solver Version</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemMaterialReinforcement</name>
+    <message>
+      <location filename="../ui/MaterialReinforcement.ui" line="14"/>
+      <source>FEM material reinforcement</source>
+      <translation type="unfinished">FEM material reinforcement</translation>
+    </message>
+    <message>
+      <location filename="../ui/MaterialReinforcement.ui" line="29"/>
+      <source>Matrix Material</source>
+      <translation>Matrize-materiala</translation>
+    </message>
+    <message>
+      <location filename="../ui/MaterialReinforcement.ui" line="61"/>
+      <source>Reinforcement Material</source>
+      <translation>Indartze-materiala</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskPostGlyph</name>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="22"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="38"/>
+      <source>The form of the glyph</source>
+      <translation type="unfinished">The form of the glyph</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="25"/>
+      <source>Form</source>
+      <translation>Inprimakia</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="42"/>
+      <source>Arrow</source>
+      <translation>Gezia</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="47"/>
+      <source>Cone</source>
+      <translation>Konoa</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="52"/>
+      <source>Cube</source>
+      <translation>Kuboa</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="57"/>
+      <source>Cylinder</source>
+      <translation>Zilindroa</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="62"/>
+      <source>Line</source>
+      <translation>Lerroa</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="67"/>
+      <source>Sphere</source>
+      <translation>Esfera</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="75"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="91"/>
+      <source>Which vector field is used to orient the glyphs</source>
+      <translation type="unfinished">Which vector field is used to orient the glyphs</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="78"/>
+      <source>Orientation</source>
+      <translation>Orientazioa</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="95"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="148"/>
+      <source>None</source>
+      <translation>Bat ere ez</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="111"/>
+      <source>Sca&amp;le</source>
+      <translation type="unfinished">Sca&amp;le</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="126"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="144"/>
+      <source>Which data field is used to scale the glyphs</source>
+      <translation type="unfinished">Which data field is used to scale the glyphs</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="129"/>
+      <source>Data</source>
+      <translation>Datuak</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="158"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="176"/>
+      <source>A constant multiplier the glyphs are scaled with</source>
+      <translation type="unfinished">A constant multiplier the glyphs are scaled with</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="161"/>
+      <source>Factor</source>
+      <translation>Faktorea</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="199"/>
+      <source>Changes the scale factor by +/- 50% of the set scale factor</source>
+      <translation type="unfinished">Changes the scale factor by +/- 50% of the set scale factor</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="226"/>
+      <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
+      <translation type="unfinished">If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="230"/>
+      <source>Not a vector</source>
+      <translation type="unfinished">Not a vector</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="235"/>
+      <source>By magnitude</source>
+      <translation type="unfinished">By magnitude</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="240"/>
+      <source>By components</source>
+      <translation type="unfinished">By components</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="251"/>
+      <source>Vertex Mas&amp;king</source>
+      <translation type="unfinished">Vertex Mas&amp;king</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="263"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="349"/>
+      <source>Which vertices are used as glyph locations</source>
+      <translation type="unfinished">Which vertices are used as glyph locations</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="266"/>
+      <source>Mode</source>
+      <translation>Modua</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="282"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="311"/>
+      <source>Defines the maximal number of vertices used for "Uniform Sampling" masking mode</source>
+      <translation type="unfinished">Defines the maximal number of vertices used for "Uniform Sampling" masking mode</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="298"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="330"/>
+      <source>Define the stride for "Every Nth" masking mode</source>
+      <translation type="unfinished">Define the stride for "Every Nth" masking mode</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="301"/>
+      <source>Stride</source>
+      <translation type="unfinished">Stride</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="314"/>
+      <source>Max </source>
+      <translation type="unfinished">Max </translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="353"/>
+      <source>All</source>
+      <translation>Dena</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="358"/>
+      <source>Every Nth</source>
+      <translation type="unfinished">Every Nth</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="363"/>
+      <source>Uniform Sampling</source>
+      <translation type="unfinished">Uniform Sampling</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemPostCalculatorFilter</name>
+    <message>
+      <location filename="../../Command.cpp" line="2367"/>
+      <source>Fem</source>
+      <translation>Fem</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2368"/>
+      <source>Calculator filter</source>
+      <translation type="unfinished">Calculator filter</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2369"/>
+      <source>Create new fields from current data</source>
+      <translation type="unfinished">Create new fields from current data</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemPostBranchFilter</name>
+    <message>
+      <location filename="../../Command.cpp" line="2765"/>
+      <source>Fem</source>
+      <translation>Fem</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2766"/>
+      <source>Pipeline branch</source>
+      <translation type="unfinished">Pipeline branch</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2767"/>
+      <source>Branches the pipeline into a new path</source>
+      <translation type="unfinished">Branches the pipeline into a new path</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskPostFrames</name>
+    <message>
+      <location filename="../../TaskPostBoxes.cpp" line="513"/>
+      <source>Result Frames</source>
+      <translation type="unfinished">Result Frames</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskPostBranch</name>
+    <message>
+      <location filename="../../TaskPostBoxes.cpp" line="574"/>
+      <source>Branch behaviour</source>
+      <translation type="unfinished">Branch behaviour</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskPostCalculator</name>
+    <message>
+      <location filename="../../TaskPostBoxes.cpp" line="2140"/>
+      <source>Calculator options</source>
+      <translation type="unfinished">Calculator options</translation>
     </message>
   </context>
 </TS>

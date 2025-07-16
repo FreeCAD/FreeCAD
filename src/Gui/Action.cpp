@@ -46,7 +46,7 @@
 #include "Action.h"
 #include "BitmapFactory.h"
 #include "Command.h"
-#include "DlgUndoRedo.h"
+#include "Dialogs/DlgUndoRedo.h"
 #include "PreferencePages/DlgSettingsWorkbenchesImp.h"
 #include "Document.h"
 #include "EditorView.h"
@@ -137,16 +137,21 @@ void Action::setCheckable(bool check)
     }
 }
 
-void Action::setChecked(bool check, bool no_signal)
+void Action::setChecked(bool check)
 {
-    bool blocked = false;
-    if (no_signal) {
-        blocked = _action->blockSignals(true);
-    }
     _action->setChecked(check);
-    if (no_signal) {
-        _action->blockSignals(blocked);
-    }
+}
+
+/*!
+ * \brief Action::setBlockedChecked
+ * \param check
+ * Does the same as \ref setChecked but additionally blocks
+ * any signals.
+ */
+void Action::setBlockedChecked(bool check)
+{
+    QSignalBlocker block(_action);
+    _action->setChecked(check);
 }
 
 bool Action::isChecked() const
@@ -331,10 +336,10 @@ QString Action::createToolTip(QString helpText,
         helpText.resize(helpText.size() - shortcut.size());
     }
     if (!shortcut.isEmpty()) {
-        shortcut = QString::fromLatin1(" (%1)").arg(shortcut);
+        shortcut = QStringLiteral(" (%1)").arg(shortcut);
     }
 
-    QString tooltip = QString::fromLatin1(
+    QString tooltip = QStringLiteral(
             "<p style='white-space:pre; margin-bottom:0.5em;'><b>%1</b>%2</p>").arg(
             text.toHtmlEscaped(), shortcut.toHtmlEscaped());
 
@@ -371,12 +376,11 @@ QString Action::createToolTip(QString helpText,
         return tooltip + helpText + cmdName;
     }
 
-    tooltip += QString::fromLatin1(
-            "<p style='white-space:pre; margin:0;'>");
+    tooltip += QStringLiteral("<p style='white-space:pre; margin:0;'>");
 
     // If the user supplied tooltip contains line break, we shall honour it.
     if (helpText.indexOf(QLatin1Char('\n')) >= 0) {
-        tooltip += helpText.toHtmlEscaped() + QString::fromLatin1("</p>") ;
+        tooltip += helpText.toHtmlEscaped() + QStringLiteral("</p>") ;
     }
     else {
         // If not, try to end the non wrapping paragraph at some pre defined
@@ -385,7 +389,7 @@ QString Action::createToolTip(QString helpText,
         QFontMetrics fm(font);
         int width = QtTools::horizontalAdvance(fm, helpText);
         if (width <= tipWidth) {
-            tooltip += helpText.toHtmlEscaped() + QString::fromLatin1("</p>") ;
+            tooltip += helpText.toHtmlEscaped() + QStringLiteral("</p>") ;
         }
         else {
             int index = tipWidth / width * helpText.size();
@@ -396,7 +400,7 @@ QString Action::createToolTip(QString helpText,
                 }
             }
             tooltip += helpText.left(index).toHtmlEscaped()
-                + QString::fromLatin1("</p>")
+                + QStringLiteral("</p>")
                 + helpText.right(helpText.size()-index).trimmed().toHtmlEscaped();
         }
     }
@@ -475,7 +479,7 @@ void ActionGroup::addTo(QWidget *widget)
             widget->addAction(action());
             QToolButton* tb = widget->findChildren<QToolButton*>().constLast();
             tb->setPopupMode(QToolButton::MenuButtonPopup);
-            tb->setObjectName(QString::fromLatin1("qt_toolbutton_menubutton"));
+            tb->setObjectName(QStringLiteral("qt_toolbutton_menubutton"));
             QList<QAction*> acts = groupAction()->actions();
             auto menu = new QMenu(tb);
             menu->addActions(acts);
@@ -554,7 +558,7 @@ QList<QAction*> ActionGroup::actions() const
 int ActionGroup::checkedAction() const
 {
     auto checked = groupAction()->checkedAction();
-    
+
     return actions().indexOf(checked);
 }
 
@@ -602,9 +606,37 @@ void ActionGroup::onActivated (QAction* act)
     }
 }
 
-void ActionGroup::onHovered (QAction *act)
+/**
+ * Shows tooltip at the right side when hovered.
+ */
+void ActionGroup::onHovered(QAction *act)
 {
-    QToolTip::showText(QCursor::pos(), act->toolTip());
+    const auto topLevelWidgets = QApplication::topLevelWidgets();
+    QMenu* foundMenu = nullptr;
+
+    for (QWidget* widget : topLevelWidgets) {
+        QList<QMenu*> menus = widget->findChildren<QMenu*>();
+
+        for (QMenu* menu : menus) {
+            if (menu->isVisible() && menu->actions().contains(act)) {
+                foundMenu = menu;
+                break;
+            }
+        }
+
+        if (foundMenu) {
+            break;
+        }
+
+    }
+
+    if (foundMenu) {
+        QRect actionRect = foundMenu->actionGeometry(act);
+        QPoint globalPos = foundMenu->mapToGlobal(actionRect.topRight());
+        QToolTip::showText(globalPos, act->toolTip(), foundMenu, actionRect);
+    } else {
+        QToolTip::showText(QCursor::pos(), act->toolTip());
+    }
 }
 
 
@@ -681,7 +713,7 @@ void WorkbenchGroup::refreshWorkbenchList()
         QString tip = Application::Instance->workbenchToolTip(wbName);
 
         QAction* action = getOrCreateAction(wbName);
-        
+
         groupAction()->addAction(action);
 
         action->setText(name);
@@ -692,7 +724,7 @@ void WorkbenchGroup::refreshWorkbenchList()
         action->setToolTip(tip);
         action->setStatusTip(tr("Select the '%1' workbench").arg(name));
         if (index < 9) {
-            action->setShortcut(QKeySequence(QString::fromUtf8("W,%1").arg(index + 1)));
+            action->setShortcut(QKeySequence(QStringLiteral("W,%1").arg(index + 1)));
         }
         if (wbName.toStdString() == activeWbName) {
             action->setChecked(true);
@@ -850,10 +882,10 @@ void RecentFilesAction::appendFile(const QString& filename)
 
 static QString numberToLabel(int number) {
     if (number > 0 && number < 10) { // NOLINT: *-magic-numbers
-        return QString::fromLatin1("&%1").arg(number);
+        return QStringLiteral("&%1").arg(number);
     }
     if (number == 10) { // NOLINT: *-magic-numbers
-        return QString::fromLatin1("1&0");
+        return QStringLiteral("1&0");
     }
     // If we have a number greater than 10, we start using the alphabet.
     // So 11 becomes 'A' and so on.
@@ -861,10 +893,10 @@ static QString numberToLabel(int number) {
     constexpr char lettersEnd = lettersStart + ('Z' - 'A');
     if (number >= lettersStart && number < lettersEnd) {
         QChar letter = QChar::fromLatin1('A' + (number - lettersStart));
-        return QString::fromLatin1("%1 (&%2)").arg(number).arg(letter);
+        return QStringLiteral("%1 (&%2)").arg(number).arg(letter);
     }
     // Not enough accelerators to cover this number.
-    return QString::fromLatin1("%1").arg(number);
+    return QStringLiteral("%1").arg(number);
 }
 
 /**
@@ -879,7 +911,7 @@ void RecentFilesAction::setFiles(const QStringList& files)
     for (int index = 0; index < numRecentFiles; index++) {
         QString numberLabel = numberToLabel(index + 1);
         QFileInfo fi(files[index]);
-        recentFiles[index]->setText(QString::fromLatin1("%1 %2").arg(numberLabel).arg(fi.fileName()));
+        recentFiles[index]->setText(QStringLiteral("%1 %2").arg(numberLabel).arg(fi.fileName()));
         recentFiles[index]->setStatusTip(tr("Open file %1").arg(files[index]));
         recentFiles[index]->setToolTip(files[index]); // set the full name that we need later for saving
         recentFiles[index]->setData(QVariant(index));
@@ -977,7 +1009,7 @@ void RecentFilesAction::save()
     QList<QAction*> recentFiles = groupAction()->actions();
     int num = std::min<int>(count, recentFiles.count());
     for (int index = 0; index < num; index++) {
-        QString key = QString::fromLatin1("MRU%1").arg(index);
+        QString key = QStringLiteral("MRU%1").arg(index);
         QString value = recentFiles[index]->toolTip();
         if (value.isEmpty()) {
             break;
@@ -1041,7 +1073,7 @@ void RecentMacrosAction::setFiles(const QStringList& files)
     for (int index = 0; index < numRecentFiles; index++) {
         QFileInfo fi(files[index]);
         QString numberLabel = numberToLabel(index + 1);
-        recentFiles[index]->setText(QString::fromLatin1("%1 %2").arg(numberLabel).arg(fi.completeBaseName()));
+        recentFiles[index]->setText(QStringLiteral("%1 %2").arg(numberLabel).arg(fi.completeBaseName()));
         recentFiles[index]->setToolTip(files[index]); // set the full name that we need later for saving
         recentFiles[index]->setData(QVariant(index));
         QString accel(tr("none"));
@@ -1084,7 +1116,7 @@ void RecentMacrosAction::setFiles(const QStringList& files)
                              " Recent Macros menu -> Keyboard Modifiers this should be Ctrl+Shift+"
                              " by default, if this is now blank then you should revert it back to"
                              " Ctrl+Shift+ by pressing both keys at the same time.");
-        Base::Console().Warning("%s\n", qPrintable(msgMain));
+        Base::Console().warning("%s\n", qPrintable(msgMain));
     }
 }
 
@@ -1144,7 +1176,7 @@ void RecentMacrosAction::activateFile(int id)
                 // handle SystemExit exceptions
                 Base::PyGILStateLocker locker;
                 Base::PyException exc;
-                exc.ReportException();
+                exc.reportException();
             }
         }
     }
@@ -1192,7 +1224,7 @@ void RecentMacrosAction::save()
     QList<QAction*> recentFiles = groupAction()->actions();
     int num = std::min<int>(count, recentFiles.count());
     for (int index = 0; index < num; index++) {
-        QString key = QString::fromLatin1("MRU%1").arg(index);
+        QString key = QStringLiteral("MRU%1").arg(index);
         QString value = recentFiles[index]->toolTip();
         if (value.isEmpty()) {
             break;

@@ -29,6 +29,7 @@
 #include <App/GroupExtension.h>
 #include <App/Part.h>
 #include "Application.h"
+#include "cet_lut.hpp"
 #include "CommandT.h"
 #include "DockWindowManager.h"
 #include "Document.h"
@@ -90,14 +91,14 @@ void StdCmdRandomColor::activated(int iMsg)
 
     auto setRandomColor = [](ViewProvider* view) {
         // NOLINTBEGIN
-        auto fMax = (float)RAND_MAX;
-        auto fRed = (float)rand()/fMax;
-        auto fGrn = (float)rand()/fMax;
-        auto fBlu = (float)rand()/fMax;
+        int colIndex = rand() % (CET::R1.size() / 3) * 3;
+        float fRed = CET::R1[colIndex] / 255.0F;
+        float fGrn = CET::R1[colIndex + 1] / 255.0F;
+        float fBlu = CET::R1[colIndex + 2] / 255.0F;
         // NOLINTEND
-        auto objColor = App::Color(fRed, fGrn, fBlu);
+        auto objColor = Base::Color(fRed, fGrn, fBlu);
 
-        auto vpLink = dynamic_cast<ViewProviderLink*>(view);
+        auto vpLink = freecad_cast<ViewProviderLink*>(view);
         if (vpLink) {
             if (!vpLink->OverrideMaterial.getValue()) {
                 vpLink->OverrideMaterial.setValue(true);
@@ -185,6 +186,8 @@ void StdCmdToggleFreeze::activated(int iMsg)
             obj->unfreeze();
             for (auto child : obj->getInListRecursive())
                 child->unfreeze();
+            for (auto child : obj->getOutListRecursive())
+                child->unfreeze();
         } else {
             obj->freeze();
             for (auto parent : obj->getOutListRecursive())
@@ -244,30 +247,30 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
         // clear variables from previous run, if any
         QString cmd = QLatin1String("try:\n    del(doc,lnk,obj,shp,sub,subs)\nexcept Exception:\n    pass\n");
         Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
-        cmd = QString::fromLatin1("doc = App.getDocument(\"%1\")").arg(docname);
+        cmd = QStringLiteral("doc = App.getDocument(\"%1\")").arg(docname);
         Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
         //support links
         if (obj->isDerivedFrom<App::Link>()) {
-            cmd = QString::fromLatin1("lnk = doc.getObject(\"%1\")").arg(objname);
+            cmd = QStringLiteral("lnk = doc.getObject(\"%1\")").arg(objname);
             Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
-            cmd = QString::fromLatin1("obj = lnk.getLinkedObject()");
+            cmd = QStringLiteral("obj = lnk.getLinkedObject()");
             Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
             const auto link = static_cast<const App::Link*>(obj);
             obj = link->getLinkedObject();
         } else {
-            cmd = QString::fromLatin1("obj = doc.getObject(\"%1\")").arg(objname);
+            cmd = QStringLiteral("obj = doc.getObject(\"%1\")").arg(objname);
             Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
         }
         if (obj->isDerivedFrom<App::GeoFeature>()) {
             const auto geoObj = static_cast<const App::GeoFeature*>(obj);
             const App::PropertyGeometry* geo = geoObj->getPropertyOfGeometry();
             if (geo){
-                cmd = QString::fromLatin1("shp = obj.") + QLatin1String(geo->getName()); //"Shape", "Mesh", "Points", etc.
+                cmd = QStringLiteral("shp = obj.") + QLatin1String(geo->getName()); //"Shape", "Mesh", "Points", etc.
                 Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
                 if (sels[0].hasSubNames()) {
                     std::vector<std::string> subnames = sels[0].getSubNames();
                     QString subname = QString::fromLatin1(subnames[0].c_str());
-                    cmd = QString::fromLatin1("sub = obj.getSubObject(\"%1\")").arg(subname);
+                    cmd = QStringLiteral("sub = obj.getSubObject(\"%1\")").arg(subname);
                     Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
                     if (subnames.size() > 1) {
                         std::ostringstream strm;
@@ -290,7 +293,7 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
         }
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 
 }

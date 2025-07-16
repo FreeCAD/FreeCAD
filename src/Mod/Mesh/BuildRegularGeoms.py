@@ -7,9 +7,9 @@
 Return value are list of vectors, 3 vectors define a facet.
 
 Sample code for creating a mesh:
-	facets = Cube(3.0, 4.0, 5.0)
-	m = Mesh.newMesh()
-	m.addFacets(facets)
+        facets = Cube(3.0, 4.0, 5.0)
+        m = Mesh.newMesh()
+        m.addFacets(facets)
 """
 
 

@@ -26,7 +26,7 @@
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="title">
-      <string>Z88 binary</string>
+      <string>Z88 Binary</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -135,7 +135,7 @@
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="title">
-      <string>Solver settings</string>
+      <string>Solver Settings</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -237,7 +237,7 @@ that &quot;MAXGS&quot; needs to be increased.</string>
         <item row="3" column="0">
          <widget class="QLabel" name="l_max_coincidence">
           <property name="text">
-           <string>Max places in coincidence vector</string>
+           <string>Maximum places in coincidence vector</string>
           </property>
          </widget>
         </item>

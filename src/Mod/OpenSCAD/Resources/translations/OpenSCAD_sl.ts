@@ -197,111 +197,111 @@
       <translation>Izberite najprej 3 predmete</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="334"/>
-      <location filename="../../OpenSCADCommands.py" line="365"/>
+      <location filename="../../OpenSCADCommands.py" line="333"/>
+      <location filename="../../OpenSCADCommands.py" line="364"/>
       <source>Add</source>
       <translation>Dodaj</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="369"/>
+      <location filename="../../OpenSCADCommands.py" line="368"/>
       <source>Clear</source>
       <translation>Počisti</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="366"/>
+      <location filename="../../OpenSCADCommands.py" line="365"/>
       <source>Load</source>
       <translation>Naloži</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="367"/>
+      <location filename="../../OpenSCADCommands.py" line="366"/>
       <source>Save</source>
       <translation>Shrani</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="335"/>
-      <location filename="../../OpenSCADCommands.py" line="368"/>
+      <location filename="../../OpenSCADCommands.py" line="334"/>
+      <location filename="../../OpenSCADCommands.py" line="367"/>
       <source>Refresh</source>
       <translation>Osveži</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="336"/>
+      <location filename="../../OpenSCADCommands.py" line="335"/>
       <source>Clear code</source>
       <translation>Počisti kodo</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="337"/>
+      <location filename="../../OpenSCADCommands.py" line="336"/>
       <source>Open...</source>
       <translation>Odpri ...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="338"/>
+      <location filename="../../OpenSCADCommands.py" line="337"/>
       <source>Save...</source>
       <translation>Shrani ...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="339"/>
-      <location filename="../../OpenSCADCommands.py" line="370"/>
+      <location filename="../../OpenSCADCommands.py" line="338"/>
+      <location filename="../../OpenSCADCommands.py" line="369"/>
       <source>as Mesh</source>
       <translation>kot ploskovje</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="352"/>
-      <location filename="../../OpenSCADCommands.py" line="371"/>
+      <location filename="../../OpenSCADCommands.py" line="351"/>
+      <location filename="../../OpenSCADCommands.py" line="370"/>
       <source>Add OpenSCAD Element</source>
       <translation>Dodaj OpenSCAD prvino</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="428"/>
+      <location filename="../../OpenSCADCommands.py" line="427"/>
       <source>Open file</source>
       <translation>Odpri datoteko</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="430"/>
-      <location filename="../../OpenSCADCommands.py" line="444"/>
+      <location filename="../../OpenSCADCommands.py" line="429"/>
+      <location filename="../../OpenSCADCommands.py" line="443"/>
       <source>OpenSCAD Files</source>
       <translation>OpenSCADove datoteke</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="442"/>
+      <location filename="../../OpenSCADCommands.py" line="441"/>
       <source>Save file</source>
       <translation>Shrani datoteko</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="456"/>
-      <location filename="../../OpenSCADCommands.py" line="485"/>
+      <location filename="../../OpenSCADCommands.py" line="455"/>
+      <location filename="../../OpenSCADCommands.py" line="484"/>
       <source>Perform</source>
       <translation>Izvedi</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="482"/>
-      <location filename="../../OpenSCADCommands.py" line="486"/>
+      <location filename="../../OpenSCADCommands.py" line="481"/>
+      <location filename="../../OpenSCADCommands.py" line="485"/>
       <source>Mesh Boolean</source>
       <translation>Logična operacija ploskovja</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="487"/>
+      <location filename="../../OpenSCADCommands.py" line="486"/>
       <source>Minkowski sum</source>
       <translation>Vsota Minkowskega</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="654"/>
+      <location filename="../../OpenSCADUtils.py" line="653"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
       <translation>OpenSCADova dototeka vsebuje tako 2D, kot 3D oblike. Ta uvozilnik tega ne podpira. Vse oblike morajo imeti enako število razsežnosti.</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="665"/>
+      <location filename="../../OpenSCADUtils.py" line="664"/>
       <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
       <translation>Napaka: vse oblike morajo biti bodisi 2D, bodisi 3D</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="549"/>
-      <location filename="../../importCSG.py" line="1434"/>
+      <location filename="../../importCSG.py" line="517"/>
+      <location filename="../../importCSG.py" line="1389"/>
       <source>Unsupported Function</source>
       <translation>Nepodprta zmožnost</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="549"/>
-      <location filename="../../importCSG.py" line="1434"/>
+      <location filename="../../importCSG.py" line="517"/>
+      <location filename="../../importCSG.py" line="1389"/>
       <source>Press OK</source>
       <translation>Pritisnite V redu</translation>
     </message>
@@ -447,12 +447,12 @@
   <context>
     <name>OpenSCAD_AddOpenSCADElement</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="530"/>
+      <location filename="../../OpenSCADCommands.py" line="529"/>
       <source>Add OpenSCAD Element...</source>
       <translation>Dodaj OpenSCAD prvino ...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="534"/>
+      <location filename="../../OpenSCADCommands.py" line="533"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
       <translation>Dodaj OpenSCAD prvino z vnosom OpenSCADove kode in zagonom OpenSCAD programa</translation>
     </message>
@@ -460,12 +460,12 @@
   <context>
     <name>OpenSCAD_MeshBoolean</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="545"/>
+      <location filename="../../OpenSCADCommands.py" line="544"/>
       <source>Mesh Boolean...</source>
       <translation>Logična operacija ploskovja...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="549"/>
+      <location filename="../../OpenSCADCommands.py" line="548"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
       <translation>Izvozi predmete kot ploskovja in za logične operacije uporabi OpenSCAD</translation>
     </message>
@@ -473,12 +473,12 @@
   <context>
     <name>OpenSCAD_Hull</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="566"/>
+      <location filename="../../OpenSCADCommands.py" line="565"/>
       <source>Hull</source>
       <translation>Lupina</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="569"/>
+      <location filename="../../OpenSCADCommands.py" line="568"/>
       <source>Use OpenSCAD to create a hull</source>
       <translation>Za ustvarjanje lupine uporabi OpenSCAD</translation>
     </message>
@@ -499,12 +499,12 @@
   <context>
     <name>OpenSCAD_Minkowski</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="586"/>
+      <location filename="../../OpenSCADCommands.py" line="585"/>
       <source>Minkowski sum</source>
       <translation>Vsota Minkowskega</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="589"/>
+      <location filename="../../OpenSCADCommands.py" line="588"/>
       <source>Use OpenSCAD to create a Minkowski sum</source>
       <translation>Za vsoto Minkovskega uporabi OpenSCAD</translation>
     </message>

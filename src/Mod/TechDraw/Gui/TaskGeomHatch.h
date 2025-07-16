@@ -76,12 +76,12 @@ private:
     std::string m_name;
     double m_scale;
     double m_weight;
-    App::Color m_color;
+    Base::Color m_color;
     std::string m_origFile;
     std::string m_origName;
     double m_origScale;
     double m_origWeight;
-    App::Color m_origColor;
+    Base::Color m_origColor;
     double m_rotation;
     double m_origRotation;
     Base::Vector3d m_offset;

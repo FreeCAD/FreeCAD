@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>440</width>
-    <height>342</height>
+    <width>457</width>
+    <height>481</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -49,6 +49,19 @@
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <layout class="QGridLayout" name="gridLayout">
+        <item row="2" column="1">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
         <item row="0" column="0">
          <widget class="QLabel" name="label_13">
           <property name="font">
@@ -61,49 +74,15 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="pdsbPageScale">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>174</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Default scale for new pages</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="decimals">
-           <number>2</number>
-          </property>
-          <property name="value">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>DefaultScale</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/General</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_14">
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_15">
           <property name="font">
            <font>
             <italic>true</italic>
            </font>
           </property>
           <property name="text">
-           <string>View Scale Type</string>
+           <string>View Custom Scale</string>
           </property>
          </widget>
         </item>
@@ -150,30 +129,39 @@
           </item>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_15">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
+        <item row="0" column="2">
+         <widget class="Gui::PrefDoubleSpinBox" name="pdsbPageScale">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
-          <property name="text">
-           <string>View Custom Scale</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
+          <property name="minimumSize">
            <size>
-            <width>40</width>
-            <height>20</height>
+            <width>174</width>
+            <height>0</height>
            </size>
           </property>
-         </spacer>
+          <property name="toolTip">
+           <string>Default scale for new pages</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="value">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DefaultScale</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
         </item>
         <item row="2" column="2">
          <widget class="Gui::PrefDoubleSpinBox" name="pdsbViewScale">
@@ -209,6 +197,39 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>DefaultViewScale</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_14">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>View Scale Type</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="Gui::PrefCheckBox" name="cbLegacyScale">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, Svg symbols, spreadsheet views and Draft views will use the original (incorrect) scaling method as used in v1.0 and earlier.  If unchecked, a more accurate method will be used.  &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>Legacy Symbol Scaling</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>LegacySvgScaling</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/TechDraw/General</cstring>
@@ -306,7 +327,7 @@
           </property>
          </spacer>
         </item>
-       <item row="1" column="2">
+        <item row="1" column="2">
          <widget class="Gui::PrefDoubleSpinBox" name="pdsbCenterScale">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -351,7 +372,7 @@
          </widget>
         </item>
         <item row="2" column="2">
-         <widget class="Gui::PrefUnitSpinBox" name="pdsbTemplateMark">
+         <widget class="Gui::PrefUnitSpinBox" name="pdsbTemplateMark" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -367,10 +388,7 @@
           <property name="toolTip">
            <string>Size of template field click handles</string>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="value">
+          <property name="value" stdset="0">
            <double>3.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
@@ -410,7 +428,7 @@
           </property>
          </widget>
         </item>
-        </layout>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -424,7 +442,7 @@
       </font>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; Items in &lt;span style=" font-style:italic;"&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -451,6 +469,11 @@
    <class>Gui::QuantitySpinBox</class>
    <extends>QWidget</extends>
    <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
    <class>Gui::PrefComboBox</class>

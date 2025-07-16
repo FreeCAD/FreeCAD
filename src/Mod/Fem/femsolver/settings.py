@@ -21,7 +21,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-""" Query FEM specific settings including solver settings.
+"""Query FEM specific settings including solver settings.
 
 Query settings from the hierarchically organized settings/parameter system of
 FreeCAD related to the FEM module. The collection of independent functions use

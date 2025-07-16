@@ -1,0 +1,7 @@
+c_compiler:               # [win]
+  - vs2022                # [win]
+cxx_compiler:             # [win]
+  - vs2022                # [win]
+
+MACOSX_DEPLOYMENT_TARGET: # [osx]
+  - '10.13'               # [osx]

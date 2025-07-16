@@ -57,11 +57,8 @@ public:
     void setWidget(QWidget* w);
 
 protected:
-    //virtual void doAction(SoAction * action);
     virtual void GLRender(SoGLRenderAction *action);
     virtual void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
-    //virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-    //virtual void rayPick (SoRayPickAction *action);
     virtual void generatePrimitives(SoAction *action);
     void getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1, SbVec3f & v2, SbVec3f & v3);
 

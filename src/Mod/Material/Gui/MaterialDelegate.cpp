@@ -25,6 +25,7 @@
 #include <QDesktopServices>
 #include <QIODevice>
 #include <QItemSelectionModel>
+#include <QMessageBox>
 #include <QPainter>
 #include <QString>
 #include <QStringList>
@@ -143,7 +144,32 @@ void MaterialDelegate::setValue(QAbstractItemModel* model,
         auto propertyName = group->child(row, 0)->data().toString();
         std::string _name = propertyName.toStdString();
         auto property = material->getProperty(propertyName);
-        property->setValue(value);
+
+        try {
+            property->setValue(value);
+        }
+        catch (const Base::ValueError&) {
+            // Units mismatch
+            auto quantity = value.value<Base::Quantity>();
+            Base::Console().log("Units mismatch '%s' = '%s', "
+                                "setting to default property units '%s'\n",
+                                propertyName.toStdString().c_str(),
+                                quantity.getUserString().c_str(),
+                                property->getUnits().toStdString().c_str());
+
+            QMessageBox msgBox;
+            msgBox.setWindowTitle(QStringLiteral("Property units mismatch"));
+            msgBox.setText(QStringLiteral("Units mismatch '%1' = '%2', "
+                           "setting to default property units '%3'\n")
+                           .arg(propertyName)
+                           .arg(QString::fromStdString(quantity.getUserString()))
+                           .arg(property->getUnits()));
+            msgBox.exec();
+
+            property->setQuantity(
+                Base::Quantity(quantity.getValue(), property->getUnits().toStdString()));
+        }
+
         group->child(row, 1)->setText(property->getString());
     }
 
@@ -250,7 +276,7 @@ void MaterialDelegate::showColorModal(const QString& propertyName, QStandardItem
         if (result == QDialog::Accepted) {
             QColor color = dlg->selectedColor();
             if (color.isValid()) {
-                QString colorText = QString(QString::fromStdString("(%1,%2,%3,%4)"))
+                QString colorText = QString(QStringLiteral("(%1,%2,%3,%4)"))
                                         .arg(color.red() / 255.0)
                                         .arg(color.green() / 255.0)
                                         .arg(color.blue() / 255.0)
@@ -424,7 +450,7 @@ QWidget* MaterialDelegate::createWidget(QWidget* parent,
     if (type == Materials::MaterialValue::Integer) {
         auto spinner = new Gui::IntSpinBox(parent);
         spinner->setMinimum(0);
-        spinner->setMaximum(INT_MAX);
+        spinner->setMaximum(std::numeric_limits<int>::max());
         spinner->setValue(item.toInt());
         widget = spinner;
     }
@@ -445,7 +471,7 @@ QWidget* MaterialDelegate::createWidget(QWidget* parent,
     }
     else if (type == Materials::MaterialValue::Boolean) {
         auto combo = new Gui::PrefComboBox(parent);
-        combo->insertItem(0, QString::fromStdString(""));
+        combo->insertItem(0, QStringLiteral(""));
         combo->insertItem(1, tr("False"));
         combo->insertItem(2, tr("True"));
         combo->setCurrentText(item.toString());

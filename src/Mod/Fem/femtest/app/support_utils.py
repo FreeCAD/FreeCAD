@@ -87,7 +87,7 @@ def get_defmake_count(fem_vtk_post=True):
         # we are not able to create VTK post objects
         new_lines = []
         for li in lines_defmake:
-            if "PostVtk" not in li:
+            if "Post" not in li:
                 new_lines.append(li)
         lines_defmake = new_lines
     return len(lines_defmake)

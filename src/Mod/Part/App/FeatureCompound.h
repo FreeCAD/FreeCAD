@@ -30,7 +30,7 @@
 namespace Part
 {
 
-class Compound : public Part::Feature
+class PartExport Compound : public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Compound);
 

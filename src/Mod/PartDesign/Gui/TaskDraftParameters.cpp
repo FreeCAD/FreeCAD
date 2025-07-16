@@ -35,7 +35,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Gui/Command.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/PartDesign/App/FeatureDraft.h>
 #include <Mod/PartDesign/Gui/ReferenceSelection.h>
@@ -268,7 +268,7 @@ TaskDraftParameters::~TaskDraftParameters()
     }
     catch (const Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -284,7 +284,7 @@ void TaskDraftParameters::apply()
 {
     // Alert user if he created an empty feature
     if (ui->listWidgetReferences->count() == 0) {
-        Base::Console().Warning(tr("Empty draft created !\n").toStdString().c_str());
+        Base::Console().warning(tr("Empty draft created !\n").toStdString().c_str());
     }
 
     TaskDressUpParameters::apply();

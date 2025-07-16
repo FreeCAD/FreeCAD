@@ -197,111 +197,111 @@
       <translation>Vă rugăm să selectaţi mai întâi 3 obiecte</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="334"/>
-      <location filename="../../OpenSCADCommands.py" line="365"/>
+      <location filename="../../OpenSCADCommands.py" line="333"/>
+      <location filename="../../OpenSCADCommands.py" line="364"/>
       <source>Add</source>
       <translation>Adaugă</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="369"/>
+      <location filename="../../OpenSCADCommands.py" line="368"/>
       <source>Clear</source>
       <translation>Șterge</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="366"/>
+      <location filename="../../OpenSCADCommands.py" line="365"/>
       <source>Load</source>
       <translation>Incarcă</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="367"/>
+      <location filename="../../OpenSCADCommands.py" line="366"/>
       <source>Save</source>
       <translation>Salvare</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="335"/>
-      <location filename="../../OpenSCADCommands.py" line="368"/>
+      <location filename="../../OpenSCADCommands.py" line="334"/>
+      <location filename="../../OpenSCADCommands.py" line="367"/>
       <source>Refresh</source>
       <translation>Reîmprospătare</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="336"/>
+      <location filename="../../OpenSCADCommands.py" line="335"/>
       <source>Clear code</source>
       <translation>Șterge codul</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="337"/>
+      <location filename="../../OpenSCADCommands.py" line="336"/>
       <source>Open...</source>
       <translation>Deschide...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="338"/>
+      <location filename="../../OpenSCADCommands.py" line="337"/>
       <source>Save...</source>
       <translation>Salvează...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="339"/>
-      <location filename="../../OpenSCADCommands.py" line="370"/>
+      <location filename="../../OpenSCADCommands.py" line="338"/>
+      <location filename="../../OpenSCADCommands.py" line="369"/>
       <source>as Mesh</source>
       <translation>ca Mesh</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="352"/>
-      <location filename="../../OpenSCADCommands.py" line="371"/>
+      <location filename="../../OpenSCADCommands.py" line="351"/>
+      <location filename="../../OpenSCADCommands.py" line="370"/>
       <source>Add OpenSCAD Element</source>
       <translation>Adaugă element OpenSCAD</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="428"/>
+      <location filename="../../OpenSCADCommands.py" line="427"/>
       <source>Open file</source>
       <translation>Deschide fișier</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="430"/>
-      <location filename="../../OpenSCADCommands.py" line="444"/>
+      <location filename="../../OpenSCADCommands.py" line="429"/>
+      <location filename="../../OpenSCADCommands.py" line="443"/>
       <source>OpenSCAD Files</source>
       <translation>Fișiere OpenSCAD</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="442"/>
+      <location filename="../../OpenSCADCommands.py" line="441"/>
       <source>Save file</source>
       <translation>Salvează fișierul</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="456"/>
-      <location filename="../../OpenSCADCommands.py" line="485"/>
+      <location filename="../../OpenSCADCommands.py" line="455"/>
+      <location filename="../../OpenSCADCommands.py" line="484"/>
       <source>Perform</source>
       <translation>Efectuează</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="482"/>
-      <location filename="../../OpenSCADCommands.py" line="486"/>
+      <location filename="../../OpenSCADCommands.py" line="481"/>
+      <location filename="../../OpenSCADCommands.py" line="485"/>
       <source>Mesh Boolean</source>
       <translation>Mesh Boolean</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="487"/>
+      <location filename="../../OpenSCADCommands.py" line="486"/>
       <source>Minkowski sum</source>
       <translation>Minkowski sum</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="654"/>
+      <location filename="../../OpenSCADUtils.py" line="653"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
       <translation>Fișierul OpenSCAD conține atât forme 2D, cât și 3D. Acest lucru nu este acceptat în acest importator, toate formele trebuie să aibă aceeași dimensiune.</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="665"/>
+      <location filename="../../OpenSCADUtils.py" line="664"/>
       <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
       <translation>Eroare: fie toate formele trebuie să fie 2D, fie toate formele trebuie să fie 3D</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="549"/>
-      <location filename="../../importCSG.py" line="1434"/>
+      <location filename="../../importCSG.py" line="517"/>
+      <location filename="../../importCSG.py" line="1389"/>
       <source>Unsupported Function</source>
       <translation>Funcție nesuportată</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="549"/>
-      <location filename="../../importCSG.py" line="1434"/>
+      <location filename="../../importCSG.py" line="517"/>
+      <location filename="../../importCSG.py" line="1389"/>
       <source>Press OK</source>
       <translation>Apasati Ok</translation>
     </message>
@@ -447,12 +447,12 @@
   <context>
     <name>OpenSCAD_AddOpenSCADElement</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="530"/>
+      <location filename="../../OpenSCADCommands.py" line="529"/>
       <source>Add OpenSCAD Element...</source>
       <translation>Adaugă element OpenSCAD...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="534"/>
+      <location filename="../../OpenSCADCommands.py" line="533"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
       <translation>Adăugați un element OpenSCAD prin introducerea codului OpenSCAD și executarea binarului OpenSCAD</translation>
     </message>
@@ -460,12 +460,12 @@
   <context>
     <name>OpenSCAD_MeshBoolean</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="545"/>
+      <location filename="../../OpenSCADCommands.py" line="544"/>
       <source>Mesh Boolean...</source>
       <translation>Mesh Boolean...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="549"/>
+      <location filename="../../OpenSCADCommands.py" line="548"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
       <translation>Exportă obiectele ca ochiuri și folosește OpenSCAD pentru a efectua o operațiune boolean</translation>
     </message>
@@ -473,12 +473,12 @@
   <context>
     <name>OpenSCAD_Hull</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="566"/>
+      <location filename="../../OpenSCADCommands.py" line="565"/>
       <source>Hull</source>
       <translation>carenă</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="569"/>
+      <location filename="../../OpenSCADCommands.py" line="568"/>
       <source>Use OpenSCAD to create a hull</source>
       <translation>Folosește OpenSCAD pentru a crea o cocă</translation>
     </message>
@@ -499,12 +499,12 @@
   <context>
     <name>OpenSCAD_Minkowski</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="586"/>
+      <location filename="../../OpenSCADCommands.py" line="585"/>
       <source>Minkowski sum</source>
       <translation>Minkowski sum</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="589"/>
+      <location filename="../../OpenSCADCommands.py" line="588"/>
       <source>Use OpenSCAD to create a Minkowski sum</source>
       <translation>Utilizaţi OpenSCAD pentru a crea o sumă Minkowski</translation>
     </message>

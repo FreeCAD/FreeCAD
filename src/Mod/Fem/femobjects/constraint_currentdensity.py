@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2023 Uwe Stöhr <uwestoehr@lyx.org>                      *
+# *   Copyright (c) 2025 Mario Passaglia <mpassaglia[at]cbc.uba.ar>         *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -22,14 +23,18 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM constraint current density document object"
-__author__ = "Uwe Stöhr"
+__author__ = "Uwe Stöhr, Mario Passaglia"
 __url__ = "https://www.freecad.org"
 
 ## @package constraint_currentdensity
 #  \ingroup FEM
 #  \brief constraint current density object
 
+from FreeCAD import Base
+
 from . import base_fempythonobject
+
+_PropHelper = base_fempythonobject._PropHelper
 
 
 class ConstraintCurrentDensity(base_fempythonobject.BaseFemPythonObject):
@@ -38,101 +43,159 @@ class ConstraintCurrentDensity(base_fempythonobject.BaseFemPythonObject):
 
     def __init__(self, obj):
         super().__init__(obj)
-        self.add_properties(obj)
+
+        for prop in self._get_properties():
+            prop.add_to_object(obj)
+
+    def _get_properties(self):
+        prop = []
+
+        prop.append(
+            _PropHelper(
+                type="App::PropertyCurrentDensity",
+                name="CurrentDensity_re_1",
+                group="Current Density",
+                doc="Real part of current density x-component",
+                value="0 A/m^2",
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyCurrentDensity",
+                name="CurrentDensity_re_2",
+                group="Current Density",
+                doc="Real part of current density y-component",
+                value="0 A/m^2",
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyCurrentDensity",
+                name="CurrentDensity_re_3",
+                group="Current Density",
+                doc="Real part of current density z-component",
+                value="0 A/m^2",
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyCurrentDensity",
+                name="CurrentDensity_im_1",
+                group="Current Density",
+                doc="Imaginary part of current density x-component",
+                value="0 A/m^2",
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyCurrentDensity",
+                name="CurrentDensity_im_2",
+                group="Current Density",
+                doc="Imaginary part of current density y-component",
+                value="0 A/m^2",
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyCurrentDensity",
+                name="CurrentDensity_im_3",
+                group="Current Density",
+                doc="Imaginary part of current density z-component",
+                value="0 A/m^2",
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="EnableCurrentDensity_1",
+                group="Current Density",
+                doc="Enable currenty density x component",
+                value=False,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="EnableCurrentDensity_2",
+                group="Current Density",
+                doc="Enable currenty density y component",
+                value=False,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="EnableCurrentDensity_3",
+                group="Current Density",
+                doc="Enable currenty density z component",
+                value=False,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyCurrentDensity",
+                name="NormalCurrentDensity_re",
+                group="Current Density",
+                doc="Real part of current density normal to boundary",
+                value="0 A/m^2",
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyCurrentDensity",
+                name="NormalCurrentDensity_im",
+                group="Current Density",
+                doc="Imaginary part of current density normal to boundary",
+                value="0 A/m^2",
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyEnumeration",
+                name="Mode",
+                group="Current Density",
+                doc="Set current boundary condition direction mode",
+                value=["Custom", "Normal"],
+            )
+        )
+
+        return prop
 
     def onDocumentRestored(self, obj):
-        self.add_properties(obj)
+        # update old project with new properties
+        for prop in self._get_properties():
+            try:
+                obj.getPropertyByName(prop.name)
+            except Base.PropertyError:
+                prop.add_to_object(obj)
 
-    def add_properties(self, obj):
-        if not hasattr(obj, "CurrentDensity_re_1"):
-            obj.addProperty(
-                "App::PropertyCurrentDensity",
-                "CurrentDensity_re_1",
-                "Vector Potential",
-                "Real part of current density x-component",
-            )
-            obj.setPropertyStatus("CurrentDensity_re_1", "LockDynamic")
-            obj.CurrentDensity_re_1 = "0 A/m^2"
-        if not hasattr(obj, "CurrentDensity_re_2"):
-            obj.addProperty(
-                "App::PropertyCurrentDensity",
-                "CurrentDensity_re_2",
-                "Vector Potential",
-                "Real part of current density y-component",
-            )
-            obj.setPropertyStatus("CurrentDensity_re_2", "LockDynamic")
-            obj.CurrentDensity_re_2 = "0 A/m^2"
-        if not hasattr(obj, "CurrentDensity_re_3"):
-            obj.addProperty(
-                "App::PropertyCurrentDensity",
-                "CurrentDensity_re_3",
-                "Vector Potential",
-                "Real part of current density z-component",
-            )
-            obj.setPropertyStatus("CurrentDensity_re_3", "LockDynamic")
-            obj.CurrentDensity_re_3 = "0 A/m^2"
-        if not hasattr(obj, "CurrentDensity_im_1"):
-            obj.addProperty(
-                "App::PropertyCurrentDensity",
-                "CurrentDensity_im_1",
-                "Vector Potential",
-                "Imaginary part of current density x-component",
-            )
-            obj.setPropertyStatus("CurrentDensity_im_1", "LockDynamic")
-            obj.CurrentDensity_im_1 = "0 A/m^2"
-        if not hasattr(obj, "CurrentDensity_im_2"):
-            obj.addProperty(
-                "App::PropertyCurrentDensity",
-                "CurrentDensity_im_2",
-                "Vector Potential",
-                "Imaginary part of current density y-component",
-            )
-            obj.setPropertyStatus("CurrentDensity_im_2", "LockDynamic")
-            obj.CurrentDensity_im_2 = "0 A/m^2"
-        if not hasattr(obj, "CurrentDensity_im_3"):
-            obj.addProperty(
-                "App::PropertyCurrentDensity",
-                "CurrentDensity_im_3",
-                "Vector Potential",
-                "Imaginary part of current density z-component",
-            )
-            obj.setPropertyStatus("CurrentDensity_im_3", "LockDynamic")
-            obj.CurrentDensity_im_3 = "0 A/m^2"
+        # enable current density properties from old properties
+        try:
+            obj.EnableCurrentDensity_1 = not obj.getPropertyByName(
+                "CurrentDensity_re_1_Disabled"
+            ) or not obj.getPropertyByName("CurrentDensity_im_1_Disabled")
 
-        # now the enable bools
-        if not hasattr(obj, "CurrentDensity_re_1_Disabled"):
-            obj.addProperty(
-                "App::PropertyBool", "CurrentDensity_re_1_Disabled", "Vector Potential", ""
-            )
-            obj.setPropertyStatus("CurrentDensity_re_1_Disabled", "LockDynamic")
-            obj.CurrentDensity_re_1_Disabled = True
-        if not hasattr(obj, "CurrentDensity_re_2_Disabled"):
-            obj.addProperty(
-                "App::PropertyBool", "CurrentDensity_re_2_Disabled", "Vector Potential", ""
-            )
-            obj.setPropertyStatus("CurrentDensity_re_2_Disabled", "LockDynamic")
-            obj.CurrentDensity_re_2_Disabled = True
-        if not hasattr(obj, "CurrentDensity_re_3_Disabled"):
-            obj.addProperty(
-                "App::PropertyBool", "CurrentDensity_re_3_Disabled", "Vector Potential", ""
-            )
-            obj.setPropertyStatus("CurrentDensity_re_3_Disabled", "LockDynamic")
-            obj.CurrentDensity_re_3_Disabled = True
-        if not hasattr(obj, "CurrentDensity_im_1_Disabled"):
-            obj.addProperty(
-                "App::PropertyBool", "CurrentDensity_im_1_Disabled", "Vector Potential", ""
-            )
-            obj.setPropertyStatus("CurrentDensity_im_1_Disabled", "LockDynamic")
-            obj.CurrentDensity_im_1_Disabled = True
-        if not hasattr(obj, "CurrentDensity_im_2_Disabled"):
-            obj.addProperty(
-                "App::PropertyBool", "CurrentDensity_im_2_Disabled", "Vector Potential", ""
-            )
-            obj.setPropertyStatus("CurrentDensity_im_2_Disabled", "LockDynamic")
-            obj.CurrentDensity_im_2_Disabled = True
-        if not hasattr(obj, "CurrentDensity_im_3_Disabled"):
-            obj.addProperty(
-                "App::PropertyBool", "CurrentDensity_im_3_Disabled", "Vector Potential", ""
-            )
-            obj.setPropertyStatus("CurrentDensity_im_3_Disabled", "LockDynamic")
-            obj.CurrentDensity_im_3_Disabled = True
+            obj.EnableCurrentDensity_2 = not obj.getPropertyByName(
+                "CurrentDensity_re_2_Disabled"
+            ) or not obj.getPropertyByName("CurrentDensity_im_2_Disabled")
+
+            obj.EnableCurrentDensity_3 = not obj.getPropertyByName(
+                "CurrentDensity_re_3_Disabled"
+            ) or not obj.getPropertyByName("CurrentDensity_im_3_Disabled")
+
+            # remove old properties
+            obj.setPropertyStatus("CurrentDensity_re_1_Disabled", "-LockDynamic")
+            obj.removeProperty("CurrentDensity_re_1_Disabled")
+            obj.setPropertyStatus("CurrentDensity_re_2_Disabled", "-LockDynamic")
+            obj.removeProperty("CurrentDensity_re_2_Disabled")
+            obj.setPropertyStatus("CurrentDensity_re_3_Disabled", "-LockDynamic")
+            obj.removeProperty("CurrentDensity_re_3_Disabled")
+            obj.setPropertyStatus("CurrentDensity_im_1_Disabled", "-LockDynamic")
+            obj.removeProperty("CurrentDensity_im_1_Disabled")
+            obj.setPropertyStatus("CurrentDensity_im_2_Disabled", "-LockDynamic")
+            obj.removeProperty("CurrentDensity_im_2_Disabled")
+            obj.setPropertyStatus("CurrentDensity_im_3_Disabled", "-LockDynamic")
+            obj.removeProperty("CurrentDensity_im_3_Disabled")
+
+        except Base.PropertyError:
+            pass

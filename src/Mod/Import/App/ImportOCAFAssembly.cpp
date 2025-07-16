@@ -37,7 +37,6 @@
 #include <XCAFDoc_DocumentTool.hxx>
 #include <XCAFDoc_Location.hxx>
 #include <XCAFDoc_ShapeTool.hxx>
-#include <climits>
 #include <sstream>
 #endif
 
@@ -160,7 +159,7 @@ void ImportOCAFAssembly::loadShapes(const TDF_Label& label,
 
     std::stringstream str;
 
-    Base::Console().Log("H:%-9d \tN:%-30s \tTop:%d, Asm:%d, Shape:%d, Compound:%d, Simple:%d, "
+    Base::Console().log("H:%-9d \tN:%-30s \tTop:%d, Asm:%d, Shape:%d, Compound:%d, Simple:%d, "
                         "Free:%d, Ref:%d, Component:%d, SubShape:%d\tTrf:%s-- Dep:%d  \n",
                         hash,
                         part_name.c_str(),
@@ -177,7 +176,7 @@ void ImportOCAFAssembly::loadShapes(const TDF_Label& label,
                         dep);
 
     label.Dump(str);
-    Base::Console().Message(str.str().c_str());
+    Base::Console().message(str.str().c_str());
 #endif
 
     std::string asm_name = assembly;
@@ -219,7 +218,7 @@ void ImportOCAFAssembly::createShape(const TDF_Label& label,
                                      const TopLoc_Location& loc,
                                      const std::string& name)
 {
-    Base::Console().Log("-create Shape\n");
+    Base::Console().log("-create Shape\n");
     const TopoDS_Shape& aShape = aShapeTool->GetShape(label);
     if (!aShape.IsNull() && aShape.ShapeType() == TopAbs_COMPOUND) {
         TopExp_Explorer xp;
@@ -241,7 +240,7 @@ void ImportOCAFAssembly::createShape(const TopoDS_Shape& aShape,
                                      const TopLoc_Location& loc,
                                      const std::string& name)
 {
-    Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Feature"));
+    Part::Feature* part = doc->addObject<Part::Feature>();
     if (!loc.IsIdentity()) {
         part->Shape.setValue(aShape.Moved(loc));
     }
@@ -251,14 +250,14 @@ void ImportOCAFAssembly::createShape(const TopoDS_Shape& aShape,
     part->Label.setValue(name);
 
     Quantity_Color aColor;
-    App::Color color(0.8f, 0.8f, 0.8f);
+    Base::Color color(0.8f, 0.8f, 0.8f);
     if (aColorTool->GetColor(aShape, XCAFDoc_ColorGen, aColor)
         || aColorTool->GetColor(aShape, XCAFDoc_ColorSurf, aColor)
         || aColorTool->GetColor(aShape, XCAFDoc_ColorCurv, aColor)) {
         color.r = (float)aColor.Red();
         color.g = (float)aColor.Green();
         color.b = (float)aColor.Blue();
-        std::vector<App::Color> colors;
+        std::vector<Base::Color> colors;
         colors.push_back(color);
         applyColors(part, colors);
     }
@@ -270,7 +269,7 @@ void ImportOCAFAssembly::createShape(const TopoDS_Shape& aShape,
         xp.Next();
     }
     bool found_face_color = false;
-    std::vector<App::Color> faceColors;
+    std::vector<Base::Color> faceColors;
     faceColors.resize(faces.Extent(), color);
     xp.Init(aShape, TopAbs_FACE);
     while (xp.More()) {

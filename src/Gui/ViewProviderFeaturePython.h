@@ -26,16 +26,18 @@
 #include <App/AutoTransaction.h>
 #include <App/PropertyPythonObject.h>
 #include <App/FeaturePython.h>
+#include <Gui/Selection/SelectionObserverPython.h>
 
 #include "ViewProviderGeometryObject.h"
 #include "Document.h"
-
 
 class SoSensor;
 class SoDragger;
 class SoNode;
 
 namespace Gui {
+
+class SelectionChanges;
 
 class GuiExport ViewProviderFeaturePythonImp
 {
@@ -55,6 +57,7 @@ public:
     QIcon getIcon() const;
     bool claimChildren(std::vector<App::DocumentObject*>&) const;
     ValueT useNewSelectionModel() const;
+    void onSelectionChanged(const SelectionChanges&);
     ValueT getElementPicked(const SoPickedPoint *pp, std::string &subname) const;
     bool getElement(const SoDetail *det, std::string &) const;
     bool getDetail(const char*, SoDetail *&det) const;
@@ -130,6 +133,7 @@ public:
 private:
     ViewProviderDocumentObject* object;
     App::PropertyPythonObject &Proxy;
+    SelectionObserverPythonHandler selectionObserver;
     bool has__object__{false};
 
 #define FC_PY_VIEW_OBJECT \
@@ -252,6 +256,10 @@ public:
         default:
             return ViewProviderT::useNewSelectionModel();
         }
+    }
+    /// called when the selection changes for the view provider
+    void onSelectionChanged(const SelectionChanges& changes) override {
+        return imp->onSelectionChanged(changes);
     }
     bool getElementPicked(const SoPickedPoint *pp, std::string &subname) const override {
         auto ret = imp->getElementPicked(pp,subname);

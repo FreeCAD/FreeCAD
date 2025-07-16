@@ -45,11 +45,11 @@ using namespace RobotGui;
 
 #if 0  // needed for Qt's lupdate utility
     qApp->translate("Workbench", "Robot");
-    qApp->translate("Workbench", "Insert Robots");
+    qApp->translate("Workbench", "Insert Robot");
     qApp->translate("Workbench", "&Robot");
-    qApp->translate("Workbench", "Export trajectory");
-    qApp->translate("Gui::TaskView::TaskWatcherCommands", "Trajectory tools");
-    qApp->translate("Gui::TaskView::TaskWatcherCommands", "Robot tools");
+    qApp->translate("Workbench", "Export Trajectory");
+    qApp->translate("Gui::TaskView::TaskWatcherCommands", "Trajectory Tools");
+    qApp->translate("Gui::TaskView::TaskWatcherCommands", "Robot Tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Insert Robot");
 #endif
 
@@ -63,19 +63,18 @@ Workbench::~Workbench() = default;
 void Workbench::activated()
 {
     std::string res = App::Application::getResourceDir();
-    QString dir = QString::fromLatin1("%1/Mod/Robot/Lib/Kuka").arg(QString::fromUtf8(res.c_str()));
-    QFileInfo fi(dir, QString::fromLatin1("kr_16.csv"));
+    QString dir = QStringLiteral("%1/Mod/Robot/Lib/Kuka").arg(QString::fromUtf8(res.c_str()));
+    QFileInfo fi(dir, QStringLiteral("kr_16.csv"));
 
     if (!fi.exists()) {
         Gui::WaitCursor wc;
         wc.restoreCursor();
-        QMessageBox::warning(
-            Gui::getMainWindow(),
-            QObject::tr("No robot files installed"),
-            QObject::tr("Please visit %1 and copy the files to %2")
-                .arg(QString::fromLatin1("https://github.com/FreeCAD/FreeCAD/tree/master"
-                                         "/src/Mod/Robot/Lib/Kuka"),
-                     dir));
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("No robot files installed"),
+                             QObject::tr("Visit %1 and copy the files to %2")
+                                 .arg(QStringLiteral("https://github.com/FreeCAD/FreeCAD/tree/main"
+                                                     "/src/Mod/Robot/Lib/Kuka"),
+                                      dir));
         wc.setWaitCursor();
     }
 
@@ -104,26 +103,26 @@ void Workbench::activated()
         new Gui::TaskView::TaskWatcherCommands("SELECT Robot::TrajectoryObject COUNT 1"
                                                "SELECT Robot::RobotObject COUNT 1",
                                                RobotAndTrac,
-                                               "Trajectory tools",
+                                               "Trajectory Tools",
                                                "Robot_InsertWaypoint"));
 
     Watcher.push_back(new TaskWatcherRobot);
 
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands("SELECT Robot::RobotObject COUNT 1",
                                                              Robot,
-                                                             "Robot tools",
+                                                             "Robot Tools",
                                                              "Robot_CreateRobot"));
 
     Watcher.push_back(
         new Gui::TaskView::TaskWatcherCommands("SELECT Robot::TrajectoryObject COUNT 1",
                                                TracSingle,
-                                               "Trajectory tools",
+                                               "Trajectory Tools",
                                                "Robot_CreateRobot"));
 
     Watcher.push_back(
         new Gui::TaskView::TaskWatcherCommands("SELECT Robot::TrajectoryObject COUNT 2..",
                                                TracMore,
-                                               "Trajectory tools",
+                                               "Trajectory Tools",
                                                "Robot_CreateRobot"));
 
     Watcher.push_back(
@@ -173,7 +172,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // analyze
     Gui::MenuItem* insertRobots = new Gui::MenuItem;
-    insertRobots->setCommand("Insert Robots");
+    insertRobots->setCommand("Insert Robot");
     *insertRobots << "Robot_InsertKukaIR500"
                   << "Robot_InsertKukaIR210"
                   << "Robot_InsertKukaIR125"
@@ -183,7 +182,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // boolean
     Gui::MenuItem* exportM = new Gui::MenuItem;
-    exportM->setCommand("Export trajectory");
+    exportM->setCommand("Export Trajectory");
     *exportM << "Robot_ExportKukaCompact"
              << "Robot_ExportKukaFull";
 

@@ -27,7 +27,7 @@
 
 #include <Gui/MDIView.h>
 #include <Gui/MDIViewPy.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "ViewProviderPage.h"
@@ -157,6 +157,7 @@ private:
 
     QList<QGraphicsItem*> m_orderedSceneSelection;        //items in selection order
 
+    QString defaultFileName();
 };
 
 class MDIViewPagePy : public Py::PythonExtension<MDIViewPagePy>

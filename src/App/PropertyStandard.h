@@ -117,7 +117,7 @@ public:
 
     /** Sets the property
      */
-    void setValue(const boost::filesystem::path&);
+    void setValue(const std::filesystem::path&);
 
     /** Sets the property
      */
@@ -125,7 +125,7 @@ public:
 
     /** This method returns a string representation of the property
      */
-    const boost::filesystem::path& getValue() const;
+    const std::filesystem::path& getValue() const;
 
     const char* getEditorName() const override
     {
@@ -153,7 +153,7 @@ public:
     }
 
 protected:
-    boost::filesystem::path _cValue;
+    std::filesystem::path _cValue;
 };
 
 /// Property wrapper around an Enumeration object.
@@ -999,7 +999,7 @@ protected:
 };
 
 
-/** Color properties
+/** Base::Color properties
  * This is the father of all properties handling colors.
  */
 class AppExport PropertyColor: public Property
@@ -1021,13 +1021,13 @@ public:
 
     /** Sets the property
      */
-    void setValue(const Color& col);
+    void setValue(const Base::Color& col);
     void setValue(float r, float g, float b, float a = 1.0F);
     void setValue(uint32_t rgba);
 
     /** This method returns a string representation of the property
      */
-    const Color& getValue() const;
+    const Base::Color& getValue() const;
 
     const char* getEditorName() const override
     {
@@ -1045,7 +1045,7 @@ public:
 
     unsigned int getMemSize() const override
     {
-        return sizeof(Color);
+        return sizeof(Base::Color);
     }
 
     bool isSame(const Property& other) const override
@@ -1058,10 +1058,10 @@ public:
     }
 
 private:
-    Color _cCol;
+    Base::Color _cCol;
 };
 
-class AppExport PropertyColorList: public PropertyListsT<Color>
+class AppExport PropertyColorList: public PropertyListsT<Base::Color>
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -1091,7 +1091,7 @@ public:
     unsigned int getMemSize() const override;
 
 protected:
-    Color getPyValue(PyObject* py) const override;
+    Base::Color getPyValue(PyObject* py) const override;
 };
 
 
@@ -1118,19 +1118,19 @@ public:
     /** Sets the property
      */
     void setValue(const Material& mat);
-    void setValue(const Color& col);
+    void setValue(const Base::Color& col);
     void setValue(float r, float g, float b, float a = 1.0F);
     void setValue(uint32_t rgba);
-    void setAmbientColor(const Color& col);
+    void setAmbientColor(const Base::Color& col);
     void setAmbientColor(float r, float g, float b, float a = 1.0F);
     void setAmbientColor(uint32_t rgba);
-    void setDiffuseColor(const Color& col);
+    void setDiffuseColor(const Base::Color& col);
     void setDiffuseColor(float r, float g, float b, float a = 1.0F);
     void setDiffuseColor(uint32_t rgba);
-    void setSpecularColor(const Color& col);
+    void setSpecularColor(const Base::Color& col);
     void setSpecularColor(float r, float g, float b, float a = 1.0F);
     void setSpecularColor(uint32_t rgba);
-    void setEmissiveColor(const Color& col);
+    void setEmissiveColor(const Base::Color& col);
     void setEmissiveColor(float r, float g, float b, float a = 1.0F);
     void setEmissiveColor(uint32_t rgba);
     void setShininess(float);
@@ -1139,10 +1139,10 @@ public:
     /** This method returns a string representation of the property
      */
     const Material& getValue() const;
-    const Color& getAmbientColor() const;
-    const Color& getDiffuseColor() const;
-    const Color& getSpecularColor() const;
-    const Color& getEmissiveColor() const;
+    const Base::Color& getAmbientColor() const;
+    const Base::Color& getDiffuseColor() const;
+    const Base::Color& getSpecularColor() const;
+    const Base::Color& getEmissiveColor() const;
     double getShininess() const;
     double getTransparency() const;
 
@@ -1204,32 +1204,32 @@ public:
     void setValue(const Material& mat);
     void setValue(int index, const Material& mat);
 
-    void setAmbientColor(const Color& col);
+    void setAmbientColor(const Base::Color& col);
     void setAmbientColor(float r, float g, float b, float a = 1.0F);
     void setAmbientColor(uint32_t rgba);
-    void setAmbientColor(int index, const Color& col);
+    void setAmbientColor(int index, const Base::Color& col);
     void setAmbientColor(int index, float r, float g, float b, float a = 1.0F);
     void setAmbientColor(int index, uint32_t rgba);
 
-    void setDiffuseColor(const Color& col);
+    void setDiffuseColor(const Base::Color& col);
     void setDiffuseColor(float r, float g, float b, float a = 1.0F);
     void setDiffuseColor(uint32_t rgba);
-    void setDiffuseColor(int index, const Color& col);
+    void setDiffuseColor(int index, const Base::Color& col);
     void setDiffuseColor(int index, float r, float g, float b, float a = 1.0F);
     void setDiffuseColor(int index, uint32_t rgba);
-    void setDiffuseColors(const std::vector<App::Color>& colors);
+    void setDiffuseColors(const std::vector<Base::Color>& colors);
 
-    void setSpecularColor(const Color& col);
+    void setSpecularColor(const Base::Color& col);
     void setSpecularColor(float r, float g, float b, float a = 1.0F);
     void setSpecularColor(uint32_t rgba);
-    void setSpecularColor(int index, const Color& col);
+    void setSpecularColor(int index, const Base::Color& col);
     void setSpecularColor(int index, float r, float g, float b, float a = 1.0F);
     void setSpecularColor(int index, uint32_t rgba);
 
-    void setEmissiveColor(const Color& col);
+    void setEmissiveColor(const Base::Color& col);
     void setEmissiveColor(float r, float g, float b, float a = 1.0F);
     void setEmissiveColor(uint32_t rgba);
-    void setEmissiveColor(int index, const Color& col);
+    void setEmissiveColor(int index, const Base::Color& col);
     void setEmissiveColor(int index, float r, float g, float b, float a = 1.0F);
     void setEmissiveColor(int index, uint32_t rgba);
 
@@ -1240,18 +1240,18 @@ public:
     void setTransparency(int index, float);
     void setTransparencies(const std::vector<float>& transparencies);
 
-    const Color& getAmbientColor() const;
-    const Color& getAmbientColor(int index) const;
+    const Base::Color& getAmbientColor() const;
+    const Base::Color& getAmbientColor(int index) const;
 
-    const Color& getDiffuseColor() const;
-    const Color& getDiffuseColor(int index) const;
-    std::vector<App::Color> getDiffuseColors() const;
+    const Base::Color& getDiffuseColor() const;
+    const Base::Color& getDiffuseColor(int index) const;
+    std::vector<Base::Color> getDiffuseColors() const;
 
-    const Color& getSpecularColor() const;
-    const Color& getSpecularColor(int index) const;
+    const Base::Color& getSpecularColor() const;
+    const Base::Color& getSpecularColor(int index) const;
 
-    const Color& getEmissiveColor() const;
-    const Color& getEmissiveColor(int index) const;
+    const Base::Color& getEmissiveColor() const;
+    const Base::Color& getEmissiveColor(int index) const;
 
     float getShininess() const;
     float getShininess(int index) const;

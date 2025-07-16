@@ -99,6 +99,11 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             self.tec_changed,
         )
         QtCore.QObject.connect(
+            self.parameterWidget.qsb_expansion_reference_temperature,
+            QtCore.SIGNAL("editingFinished()"),
+            self.tec_changed,
+        )
+        QtCore.QObject.connect(
             self.parameterWidget.qsb_specific_heat,
             QtCore.SIGNAL("editingFinished()"),
             self.sh_changed,
@@ -135,7 +140,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.form = [self.parameterWidget, self.selectionWidget]
 
         # check references, has to be after initialisation of selectionWidget
-        self.material_tree.UUID = self.get_material_uuid(self.material)
+        self.material_tree.UUID = self.uuid
         self.set_mat_params_in_input_fields(self.material)
 
         self.selectionWidget.has_equal_references_shape_types()
@@ -154,13 +159,6 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.selectionWidget.finish_selection()
         return super().reject()
 
-    def isfloat(self, num):
-        try:
-            float(num)
-            return True
-        except ValueError:
-            return False
-
     # choose material ****************************************************************************
     def filter_models(self, category):
         material_filter = Materials.MaterialFilter()
@@ -170,70 +168,28 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             material_filter.RequiredModels = [uuids.Fluid]
             self.material_tree.setFilter(material_filter)
 
-    def get_material_uuid(self, material):
-        if self.uuid:
-            try:
-                self.material_manager.getMaterial(self.uuid)
-                return self.uuid
-            except:
-                return ""
-
-        if not self.material:
-            return ""
-
-        for a_mat in self.material_manager.Materials:
-            # check if every item of the current material fits to a known material card
-            # if all items were found we know it is the right card
-            # we can hereby not simply perform
-            # set(self.materials[a_mat].items()) ^ set(material.items())
-            # because entries are often identical, just appear in the set in a different order
-            unmatched_item = False
-            a_mat_prop = self.material_manager.getMaterial(a_mat).Properties.items()
-            for item in material.items():
-                if item not in a_mat_prop:
-                    unmatched_item = True
-                    # often the difference is just a decimal e.g. "120" to "120.0"
-                    # therefore first check if the item name exists
-                    for a_mat_item in a_mat_prop:
-                        if item[0] == a_mat_item[0]:
-                            # now check if we have a number value in a unit
-                            if item[1].split() and not self.isfloat(item[1].split()[0]):
-                                break
-                            if item[1].split() and float(item[1].split()[0]) == float(
-                                a_mat_item[1].split()[0]
-                            ):
-                                unmatched_item = False
-                            elif not item[1].split():
-                                # handle the case where item[1] is an empty string
-                                if not self.isfloat(item[1]):
-                                    break
-                                if float(item[1]) == float(a_mat_item[1]):
-                                    unmatched_item = False
-                    break
-            if not unmatched_item:
-                return a_mat
-        return ""
-
     def toggleInputFieldsReadOnly(self):
         if self.parameterWidget.chbu_allow_edit.isChecked():
-            self.parameterWidget.qsb_density.setReadOnly(False)
-            self.parameterWidget.qsb_young_modulus.setReadOnly(False)
-            self.parameterWidget.qsb_poisson_ratio.setReadOnly(False)
-            self.parameterWidget.qsb_thermal_conductivity.setReadOnly(False)
-            self.parameterWidget.qsb_expansion_coefficient.setReadOnly(False)
-            self.parameterWidget.qsb_specific_heat.setReadOnly(False)
-            self.parameterWidget.qsb_kinematic_viscosity.setReadOnly(False)
+            self.parameterWidget.qsb_density.setDisabled(False)
+            self.parameterWidget.qsb_young_modulus.setDisabled(False)
+            self.parameterWidget.qsb_poisson_ratio.setDisabled(False)
+            self.parameterWidget.qsb_thermal_conductivity.setDisabled(False)
+            self.parameterWidget.qsb_expansion_coefficient.setDisabled(False)
+            self.parameterWidget.qsb_expansion_reference_temperature.setDisabled(False)
+            self.parameterWidget.qsb_specific_heat.setDisabled(False)
+            self.parameterWidget.qsb_kinematic_viscosity.setDisabled(False)
             self.parameterWidget.wgt_material_tree.setEnabled(False)
             self.uuid = ""
             self.mat_from_input_fields()
         else:
-            self.parameterWidget.qsb_density.setReadOnly(True)
-            self.parameterWidget.qsb_young_modulus.setReadOnly(True)
-            self.parameterWidget.qsb_poisson_ratio.setReadOnly(True)
-            self.parameterWidget.qsb_thermal_conductivity.setReadOnly(True)
-            self.parameterWidget.qsb_expansion_coefficient.setReadOnly(True)
-            self.parameterWidget.qsb_specific_heat.setReadOnly(True)
-            self.parameterWidget.qsb_kinematic_viscosity.setReadOnly(True)
+            self.parameterWidget.qsb_density.setDisabled(True)
+            self.parameterWidget.qsb_young_modulus.setDisabled(True)
+            self.parameterWidget.qsb_poisson_ratio.setDisabled(True)
+            self.parameterWidget.qsb_thermal_conductivity.setDisabled(True)
+            self.parameterWidget.qsb_expansion_coefficient.setDisabled(True)
+            self.parameterWidget.qsb_expansion_reference_temperature.setDisabled(True)
+            self.parameterWidget.qsb_specific_heat.setDisabled(True)
+            self.parameterWidget.qsb_kinematic_viscosity.setDisabled(True)
             self.parameterWidget.wgt_material_tree.setEnabled(True)
             self.set_from_editor(self.material_tree.UUID)
 
@@ -266,6 +222,14 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         if self.parameterWidget.chbu_allow_edit.isChecked():
             self.material["ThermalExpansionCoefficient"] = (
                 self.parameterWidget.qsb_expansion_coefficient.property("value").UserString
+            )
+
+    def tec_changed(self):
+        if self.parameterWidget.chbu_allow_edit.isChecked():
+            self.material["ThermalExpansionReferenceTemperature"] = (
+                self.parameterWidget.qsb_expansion_reference_temperature.property(
+                    "value"
+                ).UserString
             )
 
     def sh_changed(self):
@@ -321,6 +285,12 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             self.parameterWidget.qsb_expansion_coefficient.setProperty("value", v)
         else:
             self.parameterWidget.qsb_expansion_coefficient.setProperty("rawValue", 0.0)
+        if "ThermalExpansionReferenceTemperature" in matmap:
+            self.parameterWidget.qsb_expansion_reference_temperature.setProperty(
+                "value", Units.Quantity(matmap["ThermalExpansionReferenceTemperature"])
+            )
+        else:
+            self.parameterWidget.qsb_expansion_reference_temperature.setProperty("rawValue", 0.0)
         if "SpecificHeat" in matmap:
             self.parameterWidget.qsb_specific_heat.setProperty(
                 "value", Units.Quantity(matmap["SpecificHeat"])
@@ -343,6 +313,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         d["Density"] = p.qsb_density.property("value").UserString
         d["ThermalConductivity"] = p.qsb_thermal_conductivity.property("value").UserString
         d["ThermalExpansionCoefficient"] = p.qsb_expansion_coefficient.property("value").UserString
+        d["ThermalExpansionReferenceTemperature"] = p.qsb_expansion_reference_temperature.property(
+            "value"
+        ).UserString
         d["SpecificHeat"] = p.qsb_specific_heat.property("value").UserString
         if self.obj.Category == "Solid":
             d["YoungsModulus"] = p.qsb_young_modulus.property("value").UserString

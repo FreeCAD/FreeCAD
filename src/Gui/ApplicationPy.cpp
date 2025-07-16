@@ -44,11 +44,13 @@
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <CXX/Objects.hxx>
 
+#include <Gui/PreferencePages/DlgSettingsPDF.h>
+
 #include "Application.h"
 #include "ApplicationPy.h"
 #include "BitmapFactory.h"
 #include "Command.h"
-#include "DlgPreferencesImp.h"
+#include "Dialogs/DlgPreferencesImp.h"
 #include "Document.h"
 #include "DocumentObserverPython.h"
 #include "DownloadManager.h"
@@ -659,7 +661,7 @@ PyObject* ApplicationPy::sOpen(PyObject * /*self*/, PyObject *args)
         FileHandler handler(fileName);
         if (!handler.openFile()) {
             QString ext = handler.extension();
-            Base::Console().Error("File type '%s' not supported\n", ext.toLatin1().constData());
+            Base::Console().error("File type '%s' not supported\n", ext.toLatin1().constData());
         }
     }
     PY_CATCH;
@@ -683,7 +685,7 @@ PyObject* ApplicationPy::sInsert(PyObject * /*self*/, PyObject *args)
         FileHandler handler(fileName);
         if (!handler.importFile(std::string(DocName ? DocName : ""))) {
             QString ext = handler.extension();
-            Base::Console().Error("File type '%s' not supported\n", ext.toLatin1().constData());
+            Base::Console().error("File type '%s' not supported\n", ext.toLatin1().constData());
         }
     } PY_CATCH;
 
@@ -773,16 +775,19 @@ PyObject* ApplicationPy::sExport(PyObject * /*self*/, PyObject *args)
                         view3d->viewAll();
                     }
                     QPrinter printer(QPrinter::ScreenResolution);
-                    // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
-                    printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
+                    // setPdfVersion sets the printed PDF Version to what is chosen in
+                    // Preferences/Import-Export/PDF more details under:
+                    // https://www.kdab.com/creating-pdfa-documents-qt/
+                    printer.setPdfVersion(Gui::Dialog::DlgSettingsPDF::evaluatePDFVersion());
                     printer.setOutputFormat(QPrinter::PdfFormat);
                     printer.setOutputFileName(fileName);
+                    printer.setCreator(QString::fromStdString(App::Application::getNameWithVersion()));
                     view->print(&printer);
                 }
             }
         }
         else {
-            Base::Console().Error("File type '%s' not supported\n", ext.toLatin1().constData());
+            Base::Console().error("File type '%s' not supported\n", ext.toLatin1().constData());
         }
     } PY_CATCH;
 
@@ -801,7 +806,7 @@ PyObject* ApplicationPy::sSendActiveView(PyObject * /*self*/, PyObject *args)
     const char* ppReturn = nullptr;
     if (!Application::Instance->sendMsgToActiveView(psCommandStr,&ppReturn)) {
         if (!Base::asBoolean(suppress)) {
-            Base::Console().Warning("Unknown view command: %s\n",psCommandStr);
+            Base::Console().warning("Unknown view command: %s\n",psCommandStr);
         }
     }
 
@@ -825,7 +830,7 @@ PyObject* ApplicationPy::sSendFocusView(PyObject * /*self*/, PyObject *args)
     const char* ppReturn = nullptr;
     if (!Application::Instance->sendMsgToFocusView(psCommandStr,&ppReturn)) {
         if (!Base::asBoolean(suppress)) {
-            Base::Console().Warning("Unknown view command: %s\n",psCommandStr);
+            Base::Console().warning("Unknown view command: %s\n",psCommandStr);
         }
     }
 
@@ -1288,23 +1293,35 @@ PyObject* ApplicationPy::sAddCommand(PyObject * /*self*/, PyObject *args)
     std::string group;
     try {
         Base::PyGILStateLocker lock;
-        Py::Module mod(PyImport_ImportModule("inspect"), true);
-        if (mod.isNull()) {
-            PyErr_SetString(PyExc_ImportError, "Cannot load inspect module");
+
+        // Get the traceback module.
+        Py::Module tb(PyImport_ImportModule("traceback"), true);
+        if (tb.isNull()) {
+            PyErr_SetString(PyExc_ImportError, "Cannot load traceback module");
             return nullptr;
         }
-        Py::Callable inspect(mod.getAttr("stack"));
-        Py::List list(inspect.apply());
 
-        std::string file;
-        // usually this is the file name of the calling script
-        Py::Object info = list.getItem(0);
-        PyObject *pyfile = PyStructSequence_GET_ITEM(*info,1);
-        if(!pyfile) {
-            throw Py::Exception();
+        // Extract the stack information.
+        Py::Callable extract(tb.getAttr("extract_stack"));
+        Py::List stack = extract.apply();
+        if (stack.size() <= 0) {
+            PyErr_SetString(PyExc_RuntimeError, "traceback.extract_stack() returned empty result");
+            return nullptr;
         }
 
-        file = Py::Object(pyfile).as_string();
+        // Extract the filename and line number.
+        Py::Tuple entry(stack.getItem(0));
+        Py::Object filename_obj = entry[0];
+        if (!filename_obj.isString()) {
+            throw Py::Exception();
+        }
+        std::string file = Py::String(filename_obj).as_std_string();
+        if (file.empty()) {
+            PyErr_SetString(PyExc_RuntimeError, "Failed to identify caller from stack");
+            return nullptr;
+        }
+
+        // Split path into file and module name.
         Base::FileInfo fi(file);
         // convert backslashes to slashes
         file = fi.filePath();
@@ -1625,7 +1642,7 @@ PyObject* ApplicationPy::sGetMarkerIndex(PyObject * /*self*/, PyObject *args)
         //get the marker size
         auto sizeList = Gui::Inventor::MarkerBitmaps::getSupportedSizes(marker_arg);
 
-        if (std::find(std::begin(sizeList), std::end(sizeList), defSize) == std::end(sizeList)) {
+        if (std::ranges::find(sizeList, defSize) == std::end(sizeList)) {
             defSize = defaultSize;
         }
 

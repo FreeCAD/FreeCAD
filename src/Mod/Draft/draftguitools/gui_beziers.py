@@ -64,7 +64,7 @@ class BezCurve(gui_lines.Line):
         return {"Pixmap": "Draft_BezCurve",
                 "Accel": "B, Z",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_BezCurve", "Bézier curve"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_BezCurve", "Creates an N-degree Bézier curve. The more points you pick, the higher the degree.\nCTRL to snap, SHIFT to constrain.")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_BezCurve", "Creates an N-degree Bézier curve. The more points you pick, the higher the degree.\nSHIFT to constrain.")}
 
     def Activated(self):
         """Execute when the command is called.
@@ -125,7 +125,7 @@ class BezCurve(gui_lines.Line):
                     self.finish(cont=None, closed=False)
                 if len(self.node) > 2:
                     # does this make sense for a BCurve?
-                    # DNC: allows to close the curve
+                    # DNC: allows one to close the curve
                     # by placing ends close to each other
                     # with tol = Draft tolerance
                     # old code has been to insensitive
@@ -251,7 +251,7 @@ class CubicBezCurve(gui_lines.Line):
         return {"Pixmap": "Draft_CubicBezCurve",
                 # "Accel": "B, Z",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Cubic Bézier curve"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.\nAfter the curve is created you can go back to edit each control point and set the properties of each knot.\nCTRL to snap, SHIFT to constrain.")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.\nAfter the curve is created you can go back to edit each control point and set the properties of each knot.\nSHIFT to constrain.")}
 
     def Activated(self):
         """Execute when the command is called.
@@ -327,7 +327,7 @@ class CubicBezCurve(gui_lines.Line):
                         # add point to "clicked list"
                         self.node.append(self.point)
                         self.drawUpdate(self.point)
-                        # DNC: allows to close the curve
+                        # DNC: allows one to close the curve
                         # by placing ends close to each other
                         # with tol = Draft tolerance
                         # old code has been to insensitive
@@ -363,7 +363,7 @@ class CubicBezCurve(gui_lines.Line):
                     if len(self.node) > 2:
                         self.node[-3] = 2 * self.node[-2] - self.node[-1]
                         self.drawUpdate(self.point)
-                        # DNC: allows to close the curve
+                        # DNC: allows one to close the curve
                         # by placing ends close to each other
                         # with tol = Draft tolerance
                         # old code has been to insensitive

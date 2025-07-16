@@ -1,23 +1,26 @@
-#***************************************************************************
-#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
 
 # WARNING ##################################################################
 #                                                                          #
@@ -25,15 +28,26 @@
 #                                                                          #
 ############################################################################
 
-
-import FreeCAD, Arch, Draft, os, sys, time, Part, DraftVecUtils, uuid, math, re
-from builtins import open as pyopen
-from draftutils import params
-from draftutils.translate import translate
-
 __title__="FreeCAD IFC importer"
 __author__ = "Yorik van Havre"
 __url__ = "https://www.freecad.org"
+
+import math
+import os
+import re
+import time
+import uuid
+
+from builtins import open as pyopen
+
+import FreeCAD
+import Arch
+import Draft
+import DraftVecUtils
+import Part
+
+from draftutils import params
+from draftutils.translate import translate
 
 # config
 subtractiveTypes = ["IfcOpeningElement"] # elements that must be subtracted from their parents
@@ -937,7 +951,8 @@ def export(exportList,filename):
                  have IFC export capabilities. IFC export currently requires an experimental
                  version of IfcOpenShell available from https://github.com/aothms/IfcOpenShell""")
         return
-    import Arch,Draft
+    import Draft
+    import Arch
 
     # creating base IFC project
     getConfig()
@@ -1139,7 +1154,8 @@ def export(exportList,filename):
     ifc.write()
 
     if exporttxt:
-        import time, os
+        import os
+        import time
         txtstring = "List of objects exported by FreeCAD in file\n"
         txtstring += filename + "\n"
         txtstring += "On " + time.ctime() + "\n"
@@ -1181,7 +1197,8 @@ def getTuples(data,scale=1,placement=None,normal=None,close=True):
     elif isinstance(data,Part.Shape):
         t = []
         if len(data.Wires) == 1:
-            import Part,DraftGeomUtils
+            import Part
+            import DraftGeomUtils
             data = Part.Wire(Part.__sortEdges__(data.Wires[0].Edges))
             verts = data.Vertexes
             try:
@@ -1261,7 +1278,6 @@ def getIfcExtrusionData(obj,scale=1,nosubs=False):
                     edges = Part.__sortEdges__(p.Edges)
                     for e in edges:
                         if isinstance(e.Curve,Part.Circle):
-                            import math
                             follow = True
                             if last:
                                 if not DraftVecUtils.equals(last,e.Vertexes[0].Point):
@@ -1779,7 +1795,7 @@ class IfcDocument:
 
 def explorer(filename,schema="IFC2X3_TC1.exp"):
     "returns a PySide dialog showing the contents of an IFC file"
-    from PySide import QtCore,QtGui
+    from PySide import QtGui
     ifc = IfcDocument(filename,schema)
     schema = IfcSchema(schema)
     tree = QtGui.QTreeWidget()

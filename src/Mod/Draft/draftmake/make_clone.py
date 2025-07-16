@@ -67,10 +67,16 @@ def make_clone(obj, delta=None, forcedraft=False):
     if not isinstance(obj,list):
         obj = [obj]
 
-    if (len(obj) == 1) and obj[0].isDerivedFrom("Part::Part2DObject"):
-        cl = App.ActiveDocument.addObject("Part::Part2DObjectPython","Clone2D")
+    if len(obj) == 1 \
+            and obj[0].isDerivedFrom("Part::Part2DObject") \
+            and utils.get_type(obj[0]) not in ["BezCurve", "BSpline", "Wire"]:
+        # "BezCurve", "BSpline" and "Wire" objects created with < v1.1
+        # are "Part::Part2DObject" objects but they need not be 2D.
+        cl = App.ActiveDocument.addObject("Part::Part2DObjectPython", "Clone2D")
         cl.Label = prefix + obj[0].Label + " (2D)"
-    elif (len(obj) == 1) and (hasattr(obj[0],"CloneOf") or (utils.get_type(obj[0]) == "BuildingPart")) and (not forcedraft):
+    elif len(obj) == 1 \
+            and (hasattr(obj[0], "CloneOf") or utils.get_type(obj[0]) == "BuildingPart") \
+            and not forcedraft:
         # arch objects can be clones
         try:
             import Arch
@@ -106,7 +112,7 @@ def make_clone(obj, delta=None, forcedraft=False):
 
     # fall back to Draft clone mode
     if not cl:
-        cl = App.ActiveDocument.addObject("Part::FeaturePython","Clone")
+        cl = App.ActiveDocument.addObject("Part::FeaturePython", "Clone")
         cl.addExtension("Part::AttachExtensionPython")
         cl.Label = prefix + obj[0].Label
     Clone(cl)

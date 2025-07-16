@@ -42,7 +42,7 @@
          <string>The default line thickness for new shapes</string>
         </property>
         <property name="suffix">
-         <string>px</string>
+         <string notr="true"> px</string>
         </property>
         <property name="maximum">
          <number>9</number>

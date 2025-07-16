@@ -189,7 +189,7 @@
            <string>The default transparency for new shapes</string>
           </property>
           <property name="suffix">
-           <string notr="true">%</string>
+           <string notr="true"> %</string>
           </property>
           <property name="maximum">
            <number>100</number>
@@ -224,7 +224,7 @@
            <string>The default shininess for new shapes</string>
           </property>
           <property name="suffix">
-           <string notr="true">%</string>
+           <string notr="true"> %</string>
           </property>
           <property name="maximum">
            <number>100</number>
@@ -295,7 +295,7 @@
            <string>The default line thickness for new shapes</string>
           </property>
           <property name="suffix">
-           <string>px</string>
+           <string notr="true"> px</string>
           </property>
           <property name="maximum">
            <number>9</number>
@@ -363,7 +363,7 @@
            <string>The default size for new vertices</string>
           </property>
           <property name="suffix">
-           <string>px</string>
+           <string notr="true"> px</string>
           </property>
           <property name="maximum">
            <number>9</number>
@@ -431,7 +431,7 @@
            <string>The font size of bounding boxes in the 3D view</string>
           </property>
           <property name="suffix">
-           <string notr="true">pt</string>
+           <string notr="true"> pt</string>
           </property>
           <property name="decimals">
            <number>1</number>

@@ -69,7 +69,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::Doc
 
     for (auto& l:links) {
         if (is2dObject(l)) {
-            if (l->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            if (l->isDerivedFrom<Part::Feature>()) {
                 TopoDS_Shape temp = getLocatedShape(l);
                 // checkShape on 2d objs?
                 if (!temp.IsNull()) {
@@ -118,7 +118,7 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
             }
 
             for (auto* inObj : l->getInList()) {
-                if (inObj->isDerivedFrom(App::Part::getClassTypeId())) {
+                if (inObj->isDerivedFrom<App::Part>()) {
                     // we replace obj by the assembly
                     obj = inObj;
                     break;
@@ -127,7 +127,7 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
         }
 
         if (obj->isDerivedFrom<App::Link>()) {
-            App::Link* xLink = dynamic_cast<App::Link*>(obj);
+            App::Link* xLink = static_cast<App::Link*>(obj);
             std::vector<TopoDS_Shape> xShapes = getXShapes(xLink);
             if (!xShapes.empty()) {
                 sourceShapes.insert(sourceShapes.end(), xShapes.begin(), xShapes.end());
@@ -135,7 +135,7 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
             }
         }
         else {
-            auto shape = Part::Feature::getShape(obj);
+            auto shape = Part::Feature::getShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
             // if source obj has a shape, we use that shape.
             if(!SU::isShapeReallyNull(shape)) {
                 if (checkShape(obj, shape)) {
@@ -225,7 +225,8 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
                     childNeedsTransform = true;
                 }
             }
-            auto shape = Part::Feature::getShape(l);    // TODO:  getTopoShape() ?
+            // TODO:  getTopoShape() ?
+            auto shape = Part::Feature::getShape(l, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
             Part::TopoShape ts(shape);
             if (ts.isInfinite()) {
                 shape = ShapeFinder::stripInfiniteShapes(shape);
@@ -248,7 +249,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
                 }
                 xSourceShapes.push_back(shape);
             } else {
-                Base::Console().Message("SE::getXShapes - no shape from getXShape\n");
+                Base::Console().message("SE::getXShapes - no shape from getXShape\n");
             }
         }
     } else {
@@ -280,7 +281,7 @@ TopoDS_Shape ShapeExtractor::getShapeFromXLink(const App::Link* xLink)
     App::DocumentObject* linkedObject = xLink->getLink(depth);
     if (linkedObject) {
         // have a linked object, get the shape
-        TopoDS_Shape shape = Part::Feature::getShape(linkedObject);
+        TopoDS_Shape shape = Part::Feature::getShape(linkedObject, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (shape.IsNull()) {
             // this is where we need to parse the target for objects with a shape??
             return TopoDS_Shape();
@@ -297,7 +298,7 @@ TopoDS_Shape ShapeExtractor::getShapeFromXLink(const App::Link* xLink)
             }
         }
         catch (...) {
-            Base::Console().Error("ShapeExtractor failed to retrieve shape from %s\n", xLink->getNameInDocument());
+            Base::Console().error("ShapeExtractor failed to retrieve shape from %s\n", xLink->getNameInDocument());
             return TopoDS_Shape();
         }
         if (checkShape(linkedObject, ts.getShape())) {
@@ -361,7 +362,7 @@ TopoDS_Shape ShapeExtractor::getShapesFused(const std::vector<App::DocumentObjec
             FCBRepAlgoAPI_Fuse mkFuse(fusedShape, aChild);
             // Let's check if the fusion has been successful
             if (!mkFuse.IsDone()) {
-                Base::Console().Error("SE - Fusion failed\n");
+                Base::Console().error("SE - Fusion failed\n");
                 return baseShape;
             }
             fusedShape = mkFuse.Shape();
@@ -398,31 +399,20 @@ bool ShapeExtractor::is2dObject(const App::DocumentObject* obj)
 bool ShapeExtractor::isEdgeType(const App::DocumentObject* obj)
 {
     Base::Type t = obj->getTypeId();
-    if (t.isDerivedFrom(Part::Line::getClassTypeId()) ) {
-        return true;
-    } else if (t.isDerivedFrom(Part::Circle::getClassTypeId())) {
-        return true;
-    } else if (t.isDerivedFrom(Part::Ellipse::getClassTypeId())) {
-        return true;
-    } else if (t.isDerivedFrom(Part::RegularPolygon::getClassTypeId())) {
-        return true;
-    }
-    return false;
+    return t.isDerivedFrom(Part::Line::getClassTypeId())
+           || t.isDerivedFrom(Part::Circle::getClassTypeId())
+           || t.isDerivedFrom(Part::Ellipse::getClassTypeId())
+           || t.isDerivedFrom(Part::RegularPolygon::getClassTypeId());
 }
 
 bool ShapeExtractor::isPointType(const App::DocumentObject* obj)
 {
-    if (obj) {
-        Base::Type t = obj->getTypeId();
-        if (t.isDerivedFrom(Part::Vertex::getClassTypeId())) {
-            return true;
-        } else if (isDraftPoint(obj)) {
-            return true;
-        } else if (isDatumPoint(obj)) {
-            return true;
-        }
+    if (!obj) {
+        return false;
     }
-    return false;
+    return obj->isDerivedFrom<Part::Vertex>()
+           || isDraftPoint(obj)
+           || isDatumPoint(obj);
 }
 
 bool ShapeExtractor::isDraftPoint(const App::DocumentObject* obj)
@@ -456,7 +446,7 @@ Base::Vector3d ShapeExtractor::getLocation3dFromFeat(const App::DocumentObject* 
         return Base::Vector3d(0.0, 0.0, 0.0);
     }
 //    if (isDraftPoint(obj) {
-//        //Draft Points are not necc. Part::PartFeature??
+//        //Draft Points are not necc. Part::Feature??
 //        //if Draft option "use part primitives" is not set are Draft points still PartFeature?
 
     const Part::Feature* pf = dynamic_cast<const Part::Feature*>(obj);
@@ -476,7 +466,7 @@ Base::Vector3d ShapeExtractor::getLocation3dFromFeat(const App::DocumentObject* 
 //! get the located and oriented version of docObj shape
 TopoDS_Shape ShapeExtractor::getLocatedShape(const App::DocumentObject* docObj)
 {
-        Part::TopoShape shape = Part::Feature::getTopoShape(docObj);
+        Part::TopoShape shape = Part::Feature::getTopoShape(docObj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         const Part::Feature* pf = dynamic_cast<const Part::Feature*>(docObj);
         if (pf) {
             shape.setPlacement(pf->globalPlacement());
@@ -486,17 +476,8 @@ TopoDS_Shape ShapeExtractor::getLocatedShape(const App::DocumentObject* docObj)
 
 bool ShapeExtractor::isSketchObject(const App::DocumentObject* obj)
 {
-// TODO:: the check for an object being a sketch should be done as in the commented
-// if statement below. To do this, we need to include Mod/Sketcher/SketchObject.h,
-// but that makes TechDraw dependent on Eigen libraries which we don't use.  As a
-// workaround we will inspect the object's class name.
-//    if (obj->isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
-    std::string objTypeName = obj->getTypeId().getName();
-    std::string sketcherToken("Sketcher");
-    if (objTypeName.find(sketcherToken) != std::string::npos) {
-        return true;
-    }
-    return false;
+    // Use name to lookup to avoid dependency on Sketcher module
+    return obj->isDerivedFrom(Base::Type::fromName("Sketcher::SketchObject"));
 }
 
 
@@ -516,7 +497,7 @@ bool ShapeExtractor::checkShape(const App::DocumentObject* shapeObj, TopoDS_Shap
         }
         // this is ok for devs, but there must be a better way to inform the user from somewhere deep in the
         // call stack. notification area from App?
-        Base::Console().Warning(
+        Base::Console().warning(
             "ShapeExtractor found a problem shape in %s.  Results may be incorrect.\n",
             shapeObj->getNameInDocument());
         return false;

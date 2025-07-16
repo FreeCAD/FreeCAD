@@ -140,7 +140,7 @@ PreferenceUiForm::PreferenceUiForm(const QString& fn, QWidget* parent)
         setLayout(layout);
     }
     else {
-        Base::Console().Error("Failed to load UI file from '%s'\n",
+        Base::Console().error("Failed to load UI file from '%s'\n",
             (const char*)fn.toUtf8());
     }
 }
@@ -187,6 +187,7 @@ void PreferenceUiForm::loadSettings()
     loadPrefWidgets<Gui::PrefColorButton    *>();
     loadPrefWidgets<Gui::PrefUnitSpinBox    *>();
     loadPrefWidgets<Gui::PrefQuantitySpinBox*>();
+    loadPrefWidgets<Gui::PrefCheckableGroupBox*>();
 }
 
 void PreferenceUiForm::saveSettings()
@@ -208,6 +209,7 @@ void PreferenceUiForm::saveSettings()
     savePrefWidgets<Gui::PrefColorButton    *>();
     savePrefWidgets<Gui::PrefUnitSpinBox    *>();
     savePrefWidgets<Gui::PrefQuantitySpinBox*>();
+    savePrefWidgets<Gui::PrefCheckableGroupBox*>();
 }
 
 QWidget* Gui::Dialog::PreferenceUiForm::form()

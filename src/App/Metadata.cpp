@@ -57,7 +57,7 @@ directly. If you did not intend to use a system-defined macro
 #endif
 
 using namespace App;
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 #ifndef XERCES_CPP_NAMESPACE_BEGIN
 #define XERCES_CPP_NAMESPACE_QUALIFIER
 using namespace XERCES_CPP_NAMESPACE;
@@ -158,7 +158,7 @@ void Metadata::loadFromInputSource(const InputSource& source)
         throw Base::XMLBaseException(
             "Malformed package.xml document: Root <package> group not found");
     }
-    auto formatVersion = XMLString::parseInt(_dom->getAttribute(XUTF8Str("format").unicodeForm()));
+    auto formatVersion = XMLString::parseInt(_dom->getAttribute(XUTF8StrLiteral("format").unicodeForm()));
     switch (formatVersion) {
         case 1:
             parseVersion1(_dom);
@@ -246,7 +246,7 @@ std::string Metadata::classname() const
     return _classname;
 }
 
-boost::filesystem::path Metadata::subdirectory() const
+std::filesystem::path Metadata::subdirectory() const
 {
     return _subdirectory;
 }
@@ -370,7 +370,7 @@ void Metadata::setClassname(const std::string& name)
     _classname = name;
 }
 
-void Metadata::setSubdirectory(const boost::filesystem::path& path)
+void Metadata::setSubdirectory(const std::filesystem::path& path)
 {
     _subdirectory = path;
 }
@@ -475,7 +475,7 @@ void Metadata::removeTag(const std::string& tag)
     _tag.erase(new_end, _tag.end());
 }
 
-void Metadata::removeFile(const boost::filesystem::path& path)
+void Metadata::removeFile(const std::filesystem::path& path)
 {
     auto new_end = std::remove(_file.begin(), _file.end(), path);
     _file.erase(new_end, _file.end());
@@ -560,10 +560,10 @@ void addAttribute(DOMElement* node, const std::string& key, const std::string& v
 void addAttribute(DOMElement* node, const std::string& key, bool value)
 {
     if (value) {
-        node->setAttribute(XUTF8Str(key.c_str()).unicodeForm(), XUTF8Str("True").unicodeForm());
+        node->setAttribute(XUTF8Str(key.c_str()).unicodeForm(), XUTF8StrLiteral("True").unicodeForm());
     }
     else {
-        node->setAttribute(XUTF8Str(key.c_str()).unicodeForm(), XUTF8Str("False").unicodeForm());
+        node->setAttribute(XUTF8Str(key.c_str()).unicodeForm(), XUTF8StrLiteral("False").unicodeForm());
     }
 }
 
@@ -608,13 +608,13 @@ void addDependencyNode(DOMElement* root, const std::string& name, const Meta::De
 void Metadata::write(const fs::path& file) const
 {
     DOMImplementation* impl =
-        DOMImplementationRegistry::getDOMImplementation(XUTF8Str("Core LS").unicodeForm());
+        DOMImplementationRegistry::getDOMImplementation(XUTF8StrLiteral("Core LS").unicodeForm());
 
-    DOMDocument* doc = impl->createDocument(nullptr, XUTF8Str("package").unicodeForm(), nullptr);
+    DOMDocument* doc = impl->createDocument(nullptr, XUTF8StrLiteral("package").unicodeForm(), nullptr);
     DOMElement* root = doc->getDocumentElement();
-    root->setAttribute(XUTF8Str("format").unicodeForm(), XUTF8Str("1").unicodeForm());
-    root->setAttribute(XUTF8Str("xmlns").unicodeForm(),
-                       XUTF8Str("https://wiki.freecad.org/Package_Metadata").unicodeForm());
+    root->setAttribute(XUTF8StrLiteral("format").unicodeForm(), XUTF8StrLiteral("1").unicodeForm());
+    root->setAttribute(XUTF8StrLiteral("xmlns").unicodeForm(),
+                       XUTF8StrLiteral("https://wiki.freecad.org/Package_Metadata").unicodeForm());
 
     appendToElement(root);
 
@@ -852,7 +852,7 @@ void Metadata::appendToElement(DOMElement* root) const
 
     if (!_content.empty()) {
         auto doc = root->getOwnerDocument();
-        DOMElement* contentRootElement = doc->createElement(XUTF8Str("content").unicodeForm());
+        DOMElement* contentRootElement = doc->createElement(XUTF8StrLiteral("content").unicodeForm());
         root->appendChild(contentRootElement);
         for (const auto& content : _content) {
             DOMElement* contentElement =
@@ -982,7 +982,7 @@ Meta::Contact::Contact(const XERCES_CPP_NAMESPACE::DOMElement* elem)
     if (!elem) {
         return;
     }
-    auto emailAttribute = elem->getAttribute(XUTF8Str("email").unicodeForm());
+    auto emailAttribute = elem->getAttribute(XUTF8StrLiteral("email").unicodeForm());
     name = StrXUTF8(elem->getTextContent()).str;
     email = StrXUTF8(emailAttribute).str;
 }
@@ -1004,7 +1004,7 @@ Meta::License::License(const XERCES_CPP_NAMESPACE::DOMElement* elem)
     if (!elem) {
         return;
     }
-    auto fileAttribute = elem->getAttribute(XUTF8Str("file").unicodeForm());
+    auto fileAttribute = elem->getAttribute(XUTF8StrLiteral("file").unicodeForm());
     if (XMLString::stringLen(fileAttribute) > 0) {
         file = fs::path(StrXUTF8(fileAttribute).str);
     }
@@ -1033,7 +1033,7 @@ Meta::Url::Url(const XERCES_CPP_NAMESPACE::DOMElement* elem)
     if (!elem) {
         return;
     }
-    auto typeAttribute = StrXUTF8(elem->getAttribute(XUTF8Str("type").unicodeForm())).str;
+    auto typeAttribute = StrXUTF8(elem->getAttribute(XUTF8StrLiteral("type").unicodeForm())).str;
     if (typeAttribute.empty() || typeAttribute == "website") {
         type = UrlType::website;
     }
@@ -1057,7 +1057,7 @@ Meta::Url::Url(const XERCES_CPP_NAMESPACE::DOMElement* elem)
     }
 
     if (type == UrlType::repository) {
-        branch = StrXUTF8(elem->getAttribute(XUTF8Str("branch").unicodeForm())).str;
+        branch = StrXUTF8(elem->getAttribute(XUTF8StrLiteral("branch").unicodeForm())).str;
     }
     location = StrXUTF8(elem->getTextContent()).str;
 }
@@ -1083,13 +1083,13 @@ App::Meta::Dependency::Dependency(std::string pkg)
 
 Meta::Dependency::Dependency(const XERCES_CPP_NAMESPACE::DOMElement* elem)
 {
-    version_lt = StrXUTF8(elem->getAttribute(XUTF8Str("version_lt").unicodeForm())).str;
-    version_lte = StrXUTF8(elem->getAttribute(XUTF8Str("version_lte").unicodeForm())).str;
-    version_eq = StrXUTF8(elem->getAttribute(XUTF8Str("version_eq").unicodeForm())).str;
-    version_gte = StrXUTF8(elem->getAttribute(XUTF8Str("version_gte").unicodeForm())).str;
-    version_gt = StrXUTF8(elem->getAttribute(XUTF8Str("version_gt").unicodeForm())).str;
-    condition = StrXUTF8(elem->getAttribute(XUTF8Str("condition").unicodeForm())).str;
-    std::string opt_string = StrXUTF8(elem->getAttribute(XUTF8Str("optional").unicodeForm())).str;
+    version_lt = StrXUTF8(elem->getAttribute(XUTF8StrLiteral("version_lt").unicodeForm())).str;
+    version_lte = StrXUTF8(elem->getAttribute(XUTF8StrLiteral("version_lte").unicodeForm())).str;
+    version_eq = StrXUTF8(elem->getAttribute(XUTF8StrLiteral("version_eq").unicodeForm())).str;
+    version_gte = StrXUTF8(elem->getAttribute(XUTF8StrLiteral("version_gte").unicodeForm())).str;
+    version_gt = StrXUTF8(elem->getAttribute(XUTF8StrLiteral("version_gt").unicodeForm())).str;
+    condition = StrXUTF8(elem->getAttribute(XUTF8StrLiteral("condition").unicodeForm())).str;
+    std::string opt_string = StrXUTF8(elem->getAttribute(XUTF8StrLiteral("optional").unicodeForm())).str;
     if (opt_string == "true"
         || opt_string == "True") {  // Support Python capitalization in this one case...
         optional = true;
@@ -1097,7 +1097,7 @@ Meta::Dependency::Dependency(const XERCES_CPP_NAMESPACE::DOMElement* elem)
     else {
         optional = false;
     }
-    std::string type_string = StrXUTF8(elem->getAttribute(XUTF8Str("type").unicodeForm())).str;
+    std::string type_string = StrXUTF8(elem->getAttribute(XUTF8StrLiteral("type").unicodeForm())).str;
     if (type_string == "automatic" || type_string.empty()) {
         dependencyType = Meta::DependencyType::automatic;
     }

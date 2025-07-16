@@ -110,14 +110,13 @@ class GuiExport WorkbenchTabWidget : public QWidget
         {
             // Qt does not expose any way to programmatically control scroll of QTabBar hence
             // we need to use a bit hacky solution of simulating clicks on the scroll buttons
+            const auto buttonToClickName = wheelEvent->angleDelta().y() < 0
+                ? QStringLiteral("ScrollLeftButton")
+                : QStringLiteral("ScrollRightButton");
 
-            auto left = findChild<QAbstractButton*>(QString::fromUtf8("ScrollLeftButton"));
-            auto right = findChild<QAbstractButton*>(QString::fromUtf8("ScrollRightButton"));
-
-            if (wheelEvent->angleDelta().y() > 0) {
-                right->click();
-            } else {
-                left->click();
+            // Qt introduces named buttons in Qt 6.3 and 5.15.6, before that they are not available
+            if (const auto button = findChild<QAbstractButton*>(buttonToClickName)) {
+                button->click();
             }
         }
 

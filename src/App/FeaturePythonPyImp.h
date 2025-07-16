@@ -48,12 +48,9 @@
 
 #if PY_VERSION_HEX >= 0x030c0000
 #define PYTHON_TYPE_SLOTS 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-#elif PY_VERSION_HEX >= 0x03090000
-#define PYTHON_TYPE_SLOTS 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-#elif PY_VERSION_HEX >= 0x03080000
-#define PYTHON_TYPE_SLOTS 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 #else
-#define PYTHON_TYPE_SLOTS 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+#define PYTHON_TYPE_SLOTS 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+
 #endif \
 
 #define PYTHON_TYPE_IMP(_class_, _subclass_) \

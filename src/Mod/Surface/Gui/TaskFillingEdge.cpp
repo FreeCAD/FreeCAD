@@ -35,15 +35,17 @@
 #endif
 
 #include <App/Document.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/Widgets.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include "TaskFilling.h"
 #include "TaskFillingEdge.h"
+
 #include "ui_TaskFillingEdge.h"
 
 
@@ -73,11 +75,11 @@ public:
         if (pObj == editedObject) {
             return false;
         }
-        if (!pObj->isDerivedFrom(Part::Feature::getClassTypeId())) {
+        if (!pObj->isDerivedFrom<Part::Feature>()) {
             return false;
         }
 
-        if (!sSubName || sSubName[0] == '\0') {
+        if (Base::Tools::isNullOrEmpty(sSubName)) {
             return false;
         }
 
@@ -133,7 +135,7 @@ FillingEdgePanel::FillingEdgePanel(ViewProviderFilling* vp, Surface::Filling* ob
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
-    action->setShortcut(QString::fromLatin1("Del"));
+    action->setShortcut(QStringLiteral("Del"));
     action->setShortcutContext(Qt::WidgetShortcut);
     ui->listUnbound->addAction(action);
     connect(action, &QAction::triggered, this, &FillingEdgePanel::onDeleteUnboundEdge);
@@ -213,8 +215,8 @@ void FillingEdgePanel::setEditedObject(Surface::Filling* fea)
         QListWidgetItem* item = new QListWidgetItem(ui->listUnbound);
         ui->listUnbound->addItem(item);
 
-        QString text = QString::fromLatin1("%1.%2").arg(QString::fromUtf8(obj->Label.getValue()),
-                                                        QString::fromStdString(edge));
+        QString text = QStringLiteral("%1.%2").arg(QString::fromUtf8(obj->Label.getValue()),
+                                                   QString::fromStdString(edge));
         item->setText(text);
 
         // The user data field of a list widget item
@@ -388,17 +390,17 @@ void FillingEdgePanel::onListUnboundItemDoubleClicked(QListWidgetItem* item)
                     // fill up the combo boxes
                     modifyBoundary(true);
                     ui->comboBoxUnboundFaces->addItem(tr("None"), QByteArray(""));
-                    ui->comboBoxUnboundCont->addItem(QString::fromLatin1("C0"),
+                    ui->comboBoxUnboundCont->addItem(QStringLiteral("C0"),
                                                      static_cast<int>(GeomAbs_C0));
-                    ui->comboBoxUnboundCont->addItem(QString::fromLatin1("G1"),
+                    ui->comboBoxUnboundCont->addItem(QStringLiteral("G1"),
                                                      static_cast<int>(GeomAbs_G1));
-                    ui->comboBoxUnboundCont->addItem(QString::fromLatin1("G2"),
+                    ui->comboBoxUnboundCont->addItem(QStringLiteral("G2"),
                                                      static_cast<int>(GeomAbs_G2));
                     TopTools_ListIteratorOfListOfShape it(adj_faces);
                     for (; it.More(); it.Next()) {
                         const TopoDS_Shape& F = it.Value();
                         int index = faces.FindIndex(F);
-                        QString text = QString::fromLatin1("Face%1").arg(index);
+                        QString text = QStringLiteral("Face%1").arg(index);
                         ui->comboBoxUnboundFaces->addItem(text, text.toLatin1());
                     }
 
@@ -437,9 +439,9 @@ void FillingEdgePanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             ui->listUnbound->addItem(item);
 
             Gui::SelectionObject sel(msg);
-            QString text = QString::fromLatin1("%1.%2").arg(
-                QString::fromUtf8(sel.getObject()->Label.getValue()),
-                QString::fromLatin1(msg.pSubName));
+            QString text =
+                QStringLiteral("%1.%2").arg(QString::fromUtf8(sel.getObject()->Label.getValue()),
+                                            QString::fromLatin1(msg.pSubName));
             item->setText(text);
 
             QList<QVariant> data;

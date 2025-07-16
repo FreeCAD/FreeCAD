@@ -66,9 +66,7 @@ class DraftObject(object):
         allows distinguishing among various types of objects
         derived from the same C++ class.
 
-            >>> print(A.TypeId, "->", A.Proxy.Type)
-            Part::Part2DObjectPython -> Wire
-            >>> print(B.TypeId, "->", B.Proxy.Type)
+            >>> print(obj.TypeId, "->", obj.Proxy.Type)
             Part::Part2DObjectPython -> Circle
 
     This class attribute is accessible through the `Proxy` object:
@@ -183,8 +181,9 @@ class DraftObject(object):
             delattr(self, "props_changed")
 
     def props_changed_placement_only(self, obj=None):
-        """Return `True` if the self.props_changed list, after removing `Shape`
-        and `_LinkTouched` items, only contains `Placement` items.
+        """Return `True` if the self.props_changed list, after removing
+        `_LinkTouched`, `Shape`, `Density`, `Volume` and `Mass` items,
+        only contains `Placement` items.
 
         Parameters
         ----------
@@ -205,10 +204,9 @@ class DraftObject(object):
             return False
 
         props = set(self.props_changed)
-        if "Shape" in props:
-            props.remove("Shape")
-        if "_LinkTouched" in props:
-            props.remove("_LinkTouched")
+        for prop in ("_LinkTouched", "Shape", "Density", "Volume", "Mass"):
+            if prop in props:
+                props.remove(prop)
         return props == {"Placement"}
 
 

@@ -31,7 +31,6 @@
 # else
 # include <GL/gl.h>
 # endif
-# include <cfloat>
 # include <QFontMetrics>
 # include <QPainter>
 # include <QPen>
@@ -51,14 +50,7 @@
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
-
-#if COIN_MAJOR_VERSION > 3
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
-#else
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#endif
-
-#include <QtOpenGL.h>
 
 #include "SoTextLabel.h"
 #include "SoFCInteractiveElement.h"
@@ -67,31 +59,6 @@
 
 using namespace Gui;
 
-/*!
-\code
-
-s="""
-  #Inventor V2.1 ascii
-
-  Annotation {
-    Translation { translation 4 0 0 }
-    FontStyle {
-        size 20
-        style BOLD
-    }
-    BaseColor {
-        rgb 0.0 0.0 0.0
-    }
-
-
-    SoTextLabel { string ["Text label", "Second line"] backgroundColor 1.0 0.447059 0.337255}
-  }
-"""
-
-App.ActiveDocument.addObject("App::InventorObject","iv").Buffer=s
-
-\endcode
-*/
 
 SO_NODE_SOURCE(SoTextLabel)
 
@@ -217,11 +184,7 @@ void SoTextLabel::GLRender(SoGLRenderAction *action)
 
         // disable textures for all units
         SoGLTextureEnabledElement::set(state, this, false);
-#if COIN_MAJOR_VERSION > 3
         SoMultiTextureEnabledElement::set(state, this, false);
-#else
-        SoGLTexture3EnabledElement::set(state, this, false);
-#endif
 
         glPushAttrib(GL_ENABLE_BIT | GL_PIXEL_MODE_BIT | GL_COLOR_BUFFER_BIT);
         glPushClientAttrib(GL_CLIENT_PIXEL_STORE_BIT);
@@ -307,7 +270,7 @@ SoStringLabel::SoStringLabel()
  */
 void SoStringLabel::GLRender(SoGLRenderAction *action)
 {
-    QtGLWidget* window;
+    QOpenGLWidget* window;
     SoState * state = action->getState();
     state->push();
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
@@ -379,6 +342,9 @@ SoFrameLabel::SoFrameLabel()
     SO_NODE_ADD_FIELD(name, ("Helvetica"));
     SO_NODE_ADD_FIELD(size, (12));
     SO_NODE_ADD_FIELD(frame, (true));
+    SO_NODE_ADD_FIELD(border, (true));
+    SO_NODE_ADD_FIELD(backgroundUseBaseColor, (false));
+    SO_NODE_ADD_FIELD(textUseBaseColor, (false));
   //SO_NODE_ADD_FIELD(image, (SbVec2s(0,0), 0, NULL));
 }
 
@@ -387,7 +353,6 @@ void SoFrameLabel::setIcon(const QPixmap &pixMap)
     iconPixmap = pixMap;
     drawImage();
 }
-
 
 void SoFrameLabel::notify(SoNotList * list)
 {
@@ -398,9 +363,11 @@ void SoFrameLabel::notify(SoNotList * list)
         f == &this->justification ||
         f == &this->name ||
         f == &this->size ||
-        f == &this->frame) {
+        f == &this->frame ||
+        f == &this->border) {
         drawImage();
     }
+
     inherited::notify(list);
 }
 
@@ -418,11 +385,12 @@ void SoFrameLabel::drawImage()
     int w = 0;
     int h = fm.height() * num;
     const SbColor& b = backgroundColor.getValue();
-    QColor brush;
-    brush.setRgbF(b[0],b[1],b[2]);
+    QColor backgroundBrush;
+    backgroundBrush.setRgbF(b[0],b[1],b[2]);
     const SbColor& t = textColor.getValue();
     QColor front;
     front.setRgbF(t[0],t[1],t[2]);
+    const QPen borderPen(QColor(0,0,127), 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
 
     QStringList lines;
     for (int i=0; i<num; i++) {
@@ -432,7 +400,7 @@ void SoFrameLabel::drawImage()
     }
 
     int padding = 5;
-    
+
     bool drawIcon = false;
     QImage iconImg;
     int widthIcon = 0;
@@ -457,18 +425,17 @@ void SoFrameLabel::drawImage()
     painter.setRenderHint(QPainter::Antialiasing);
 
     SbBool drawFrame = frame.getValue();
-    if (drawFrame) {
-        painter.setPen(QPen(QColor(0,0,127), 2, Qt::SolidLine, Qt::RoundCap,
-                            Qt::RoundJoin));
-        painter.setBrush(QBrush(brush, Qt::SolidPattern));
+    SbBool drawBorder = border.getValue();
+    if (drawFrame || drawBorder) {
+        painter.setPen(drawBorder ? borderPen : QPen(Qt::transparent));
+        painter.setBrush(QBrush(drawFrame ? backgroundBrush : Qt::transparent));
+
         QRectF rectangle(0.0, 0.0, widthTotal, heightTotal);
         painter.drawRoundedRect(rectangle, 5, 5);
     }
 
-
     if (drawIcon) {
         painter.drawImage(QPoint(padding, paddingIconV), iconImg); 
-        
     }
 
     painter.setPen(front);
@@ -495,6 +462,25 @@ void SoFrameLabel::drawImage()
  */
 void SoFrameLabel::GLRender(SoGLRenderAction *action)
 {
+
+    if (backgroundUseBaseColor.getValue()) {
+        SoState* state = action->getState();
+        const SbColor& diffuse = SoLazyElement::getDiffuse(state, 0);
+
+        if (diffuse != this->backgroundColor.getValue()) {
+            this->backgroundColor.setValue(diffuse);
+        }
+    }
+
+    if (textUseBaseColor.getValue()) {
+        SoState* state = action->getState();
+        const SbColor& diffuse = SoLazyElement::getDiffuse(state, 0);
+
+        if (diffuse != this->textColor.getValue()) {
+            this->textColor.setValue(diffuse);
+        }
+    }
+
     inherited::GLRender(action);
 }
 

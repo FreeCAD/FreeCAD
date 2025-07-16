@@ -106,7 +106,7 @@ void DlgSettingsFemZ88Imp::onfileNameChanged(QString FileName)
         QMessageBox::critical(this,
                               tr("File does not exist"),
                               tr("The specified z88r executable\n'%1'\n does not exist!\n"
-                                 "Specify another file please.")
+                                 "Specify another file.")
                                   .arg(FileName));
         return;
     }

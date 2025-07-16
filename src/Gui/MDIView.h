@@ -23,7 +23,7 @@
 #ifndef GUI_MDIVIEW_H
 #define GUI_MDIVIEW_H
 
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <QMainWindow>
 #include <Gui/ActiveObjectList.h>
 #include <Gui/View.h>
@@ -145,6 +145,11 @@ public:
     bool isActiveObject(App::DocumentObject*o, const char*n, const char *subname=nullptr) const
     {
         return ActiveObjects.hasObject(o,n,subname);
+    }
+
+    App::DocumentObject* getActiveObjectWithExtension(const Base::Type extensionTypeId) const
+    {
+        return ActiveObjects.getObjectWithExtension(extensionTypeId);
     }
 
     /*!

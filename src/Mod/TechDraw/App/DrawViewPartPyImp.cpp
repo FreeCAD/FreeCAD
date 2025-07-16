@@ -62,8 +62,10 @@ std::string DrawViewPartPy::representation() const
 
 PyObject* DrawViewPartPy::getVisibleEdges(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, "")) {
-        return nullptr;
+    //NOLINTNEXTLINE
+    PyObject* conventionalCoords = Py_False;    // false for gui display (+Y down), true for calculations (+Y up)
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &conventionalCoords)) {
+        throw Py::ValueError("Expected '[conventionalCoords=True/False] or None' ");
     }
 
     DrawViewPart* dvp = getDrawViewPartPtr();
@@ -71,7 +73,12 @@ PyObject* DrawViewPartPy::getVisibleEdges(PyObject *args)
     std::vector<TechDraw::BaseGeomPtr> geoms = dvp->getEdgeGeometry();
     for (auto& g: geoms) {
         if (g->getHlrVisible()) {
-            PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(g->getOCCEdge()));
+            TopoDS_Edge occEdge = g->getOCCEdge();
+            if (PyBool_Check(conventionalCoords) && conventionalCoords == Py_True) {
+                TopoDS_Shape occShape = ShapeUtils::invertGeometry(occEdge);
+                occEdge = TopoDS::Edge(occShape);
+            }
+            PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(occEdge));
             pEdgeList.append(Py::asObject(pEdge));
         }
     }
@@ -81,8 +88,10 @@ PyObject* DrawViewPartPy::getVisibleEdges(PyObject *args)
 
 PyObject* DrawViewPartPy::getHiddenEdges(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, "")) {
-        return nullptr;
+    PyObject* conventionalCoords = Py_False;    // false for gui display (+Y down), true for calculations (+Y up)
+    //NOLINTNEXTLINE
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &conventionalCoords)) {
+        throw Py::ValueError("Expected '[conventionalCoords=True/False] or None' ");
     }
 
     DrawViewPart* dvp = getDrawViewPartPtr();
@@ -90,7 +99,12 @@ PyObject* DrawViewPartPy::getHiddenEdges(PyObject *args)
     std::vector<TechDraw::BaseGeomPtr> geoms = dvp->getEdgeGeometry();
     for (auto& g: geoms) {
         if (!g->getHlrVisible()) {
-            PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(g->getOCCEdge()));
+            TopoDS_Edge occEdge = g->getOCCEdge();
+            if (PyBool_Check(conventionalCoords) && conventionalCoords == Py_True) {
+                TopoDS_Shape occShape = ShapeUtils::invertGeometry(occEdge);
+                occEdge = TopoDS::Edge(occShape);
+            }
+            PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(occEdge));
             pEdgeList.append(Py::asObject(pEdge));
         }
     }
@@ -100,8 +114,10 @@ PyObject* DrawViewPartPy::getHiddenEdges(PyObject *args)
 
 PyObject* DrawViewPartPy::getVisibleVertexes(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, "")) {
-        return nullptr;
+    PyObject* conventionalCoords = Py_False;    // false for gui display (+Y down), true for calculations (+Y up)
+    //NOLINTNEXTLINE
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &conventionalCoords)) {
+        throw Py::ValueError("Expected '[conventionalCoords=True/False] or None' ");
     }
 
     DrawViewPart* dvp = getDrawViewPartPtr();
@@ -109,7 +125,11 @@ PyObject* DrawViewPartPy::getVisibleVertexes(PyObject *args)
     auto vertsAll = dvp->getVertexGeometry();
     for (auto& vert: vertsAll) {
         if (vert->getHlrVisible()) {
-            PyObject* pVertex = new Base::VectorPy(new Base::Vector3d(vert->point()));
+            Base::Vector3d vertPoint = vert->point();
+            if (PyBool_Check(conventionalCoords) && conventionalCoords == Py_True) {
+                vertPoint = DU::invertY(vertPoint);
+            }
+            PyObject* pVertex = new Base::VectorPy(new Base::Vector3d(vertPoint));
             pVertexList.append(Py::asObject(pVertex));
         }
     }
@@ -119,8 +139,10 @@ PyObject* DrawViewPartPy::getVisibleVertexes(PyObject *args)
 
 PyObject* DrawViewPartPy::getHiddenVertexes(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, "")) {
-        return nullptr;
+    PyObject* conventionalCoords = Py_False;    // false for gui display (+Y down), true for calculations (+Y up)
+    //NOLINTNEXTLINE
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &conventionalCoords)) {
+        throw Py::ValueError("Expected '[conventionalCoords=True/False] or None' ");
     }
 
     DrawViewPart* dvp = getDrawViewPartPtr();
@@ -128,14 +150,17 @@ PyObject* DrawViewPartPy::getHiddenVertexes(PyObject *args)
     auto vertsAll = dvp->getVertexGeometry();
     for (auto& vert: vertsAll) {
         if (!vert->getHlrVisible()) {
-            PyObject* pVertex = new Base::VectorPy(new Base::Vector3d(vert->point()));
+            Base::Vector3d vertPoint = vert->point();
+            if (PyBool_Check(conventionalCoords) && conventionalCoords == Py_True) {
+                vertPoint = DU::invertY(vertPoint);
+            }
+            PyObject* pVertex = new Base::VectorPy(new Base::Vector3d(vertPoint));
             pVertexList.append(Py::asObject(pVertex));
         }
     }
 
     return Py::new_reference_to(pVertexList);
 }
-
 
 
 PyObject* DrawViewPartPy::requestPaint(PyObject *args)
@@ -351,7 +376,7 @@ PyObject* DrawViewPartPy::makeCosmeticLine(PyObject *args)
     PyObject* pPnt2 = nullptr;
     int style = LineFormat::getDefEdgeStyle();
     double weight = LineFormat::getDefEdgeWidth();
-    App::Color defCol = LineFormat::getDefEdgeColor();
+    Base::Color defCol = LineFormat::getDefEdgeColor();
     PyObject* pColor = nullptr;
 
     if (!PyArg_ParseTuple(args, "O!O!|idO!", &(Base::VectorPy::Type), &pPnt1,
@@ -389,7 +414,7 @@ PyObject* DrawViewPartPy::makeCosmeticLine3D(PyObject *args)
     PyObject* pPnt2 = nullptr;
     int style = LineFormat::getDefEdgeStyle();
     double weight = LineFormat::getDefEdgeWidth();
-    App::Color defCol = LineFormat::getDefEdgeColor();
+    Base::Color defCol = LineFormat::getDefEdgeColor();
     PyObject* pColor = nullptr;
 
     if (!PyArg_ParseTuple(args, "O!O!|idO!", &(Base::VectorPy::Type), &pPnt1,
@@ -434,7 +459,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
     double radius = 5.0;
     int style = LineFormat::getDefEdgeStyle();
     double weight = LineFormat::getDefEdgeWidth();
-    App::Color defCol = LineFormat::getDefEdgeColor();
+    Base::Color defCol = LineFormat::getDefEdgeColor();
     PyObject* pColor = nullptr;
 
     if (!PyArg_ParseTuple(args, "O!d|idO!", &(Base::VectorPy::Type), &pPnt1,
@@ -474,7 +499,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
     double angle2 = 360.0;
     int style = LineFormat::getDefEdgeStyle();
     double weight = LineFormat::getDefEdgeWidth();
-    App::Color defCol = LineFormat::getDefEdgeColor();
+    Base::Color defCol = LineFormat::getDefEdgeColor();
     PyObject* pColor = nullptr;
 
     if (!PyArg_ParseTuple(args, "O!ddd|idO!", &(Base::VectorPy::Type), &pPnt1,
@@ -516,7 +541,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircle3d(PyObject *args)
     double radius = 5.0;
     int style = LineFormat::getDefEdgeStyle();
     double weight = LineFormat::getDefEdgeWidth();
-    App::Color defCol = LineFormat::getDefEdgeColor();
+    Base::Color defCol = LineFormat::getDefEdgeColor();
     PyObject* pColor = nullptr;
 
     if (!PyArg_ParseTuple(args, "O!d|idO!", &(Base::VectorPy::Type), &pPnt1,
@@ -559,7 +584,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc3d(PyObject *args)
     double angle2 = 360.0;
     int style = LineFormat::getDefEdgeStyle();
     double weight = LineFormat::getDefEdgeWidth();
-    App::Color defCol = LineFormat::getDefEdgeColor();
+    Base::Color defCol = LineFormat::getDefEdgeColor();
     PyObject* pColor = nullptr;
 
     if (!PyArg_ParseTuple(args, "O!ddd|idO!", &(Base::VectorPy::Type), &pPnt1,
@@ -620,7 +645,7 @@ PyObject* DrawViewPartPy::getCosmeticEdge(PyObject *args)
 
 PyObject* DrawViewPartPy::getCosmeticEdgeBySelection(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::getCosmeticEdgeBySelection()\n");
+//    Base::Console().message("DVPPI::getCosmeticEdgeBySelection()\n");
     char* name;
     if (!PyArg_ParseTuple(args, "s", &name)) {
         return nullptr;
@@ -640,7 +665,7 @@ PyObject* DrawViewPartPy::getCosmeticEdgeBySelection(PyObject *args)
 
 PyObject* DrawViewPartPy::removeCosmeticEdge(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::removeCosmeticEdge()\n");
+//    Base::Console().message("DVPPI::removeCosmeticEdge()\n");
     char* tag;
     if (!PyArg_ParseTuple(args, "s", &tag)) {
         return nullptr;
@@ -656,9 +681,9 @@ PyObject* DrawViewPartPy::removeCosmeticEdge(PyObject *args)
 
 PyObject* DrawViewPartPy::makeCenterLine(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::makeCenterLine()\n");
+//    Base::Console().message("DVPPI::makeCenterLine()\n");
     PyObject* pSubs;
-    int mode = 0;
+    CenterLine::Mode mode = CenterLine::Mode::VERTICAL;
     std::vector<std::string> subs;
 
     if (!PyArg_ParseTuple(args, "O!i", &PyList_Type, &pSubs, &mode)) {
@@ -719,7 +744,7 @@ PyObject* DrawViewPartPy::getCenterLine(PyObject *args)
 
 PyObject* DrawViewPartPy::getCenterLineBySelection(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::getCenterLineBySelection()\n");
+//    Base::Console().message("DVPPI::getCenterLineBySelection()\n");
     char* tag;
     if (!PyArg_ParseTuple(args, "s", &tag)) {
         return nullptr;
@@ -738,7 +763,7 @@ PyObject* DrawViewPartPy::getCenterLineBySelection(PyObject *args)
 
 PyObject* DrawViewPartPy::removeCenterLine(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::removeCenterLine()\n");
+//    Base::Console().message("DVPPI::removeCenterLine()\n");
     char* tag;
     if (!PyArg_ParseTuple(args, "s", &tag)) {
         return nullptr;
@@ -754,10 +779,10 @@ PyObject* DrawViewPartPy::removeCenterLine(PyObject *args)
 
 PyObject* DrawViewPartPy::formatGeometricEdge(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::formatGeometricEdge()\n");
+//    Base::Console().message("DVPPI::formatGeometricEdge()\n");
     int idx = -1;
     int style = Qt::SolidLine;
-    App::Color color = LineFormat::getDefEdgeColor();
+    Base::Color color = LineFormat::getDefEdgeColor();
     double weight = 0.5;
     int visible = 1;
     PyObject* pColor;

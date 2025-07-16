@@ -35,17 +35,6 @@
 namespace TechDraw
 {
 
-enum ProjItemType{ Front,
-          Left,
-          Right,
-          Rear,
-          Top,
-          Bottom,
-          FrontTopLeft,
-          FrontTopRight,
-          FrontBottomLeft,
-          FrontBottomRight };
-
 class DrawProjGroup;
 
 class TechDrawExport DrawProjGroupItem : public TechDraw::DrawViewPart

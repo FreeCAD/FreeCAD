@@ -61,85 +61,85 @@ class Shape2DView(DraftObject):
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "The base object this 2D view must represent")
             obj.addProperty("App::PropertyLink", "Base",
-                            "Draft", _tip)
+                            "Draft", _tip, locked=True)
         if not "Projection" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "The projection vector of this object")
             obj.addProperty("App::PropertyVector", "Projection",
-                            "Draft", _tip)
+                            "Draft", _tip, locked=True)
             obj.Projection = App.Vector(0,0,1)
         if not "ProjectionMode" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "The way the viewed object must be projected")
             obj.addProperty("App::PropertyEnumeration", "ProjectionMode",
-                            "Draft", _tip)
+                            "Draft", _tip, locked=True)
             obj.ProjectionMode = ["Solid", "Individual Faces",
                                   "Cutlines", "Cutfaces","Solid faces"]
         if not "FaceNumbers" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "The indices of the faces to be projected in Individual Faces mode")
             obj.addProperty("App::PropertyIntegerList", "FaceNumbers",
-                            "Draft", _tip)
+                            "Draft", _tip, locked=True)
         if not "HiddenLines" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "Show hidden lines")
             obj.addProperty("App::PropertyBool", "HiddenLines",
-                            "Draft", _tip)
+                            "Draft", _tip, locked=True)
             obj.HiddenLines = False
         if not "FuseArch" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "Fuse wall and structure objects of same type and material")
             obj.addProperty("App::PropertyBool", "FuseArch",
-                            "Draft", _tip)
+                            "Draft", _tip, locked=True)
         if not "Tessellation" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "Tessellate Ellipses and B-splines into line segments")
             obj.addProperty("App::PropertyBool", "Tessellation",
-                            "Draft", _tip)
+                            "Draft", _tip, locked=True)
             obj.Tessellation = False
         if not "InPlace" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "For Cutlines and Cutfaces modes, this leaves the faces at the cut location")
             obj.addProperty("App::PropertyBool", "InPlace",
-                            "Draft", _tip)
+                            "Draft", _tip, locked=True)
             obj.InPlace = True
         if not "SegmentLength" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "Length of line segments if tessellating Ellipses or B-splines into line segments")
             obj.addProperty("App::PropertyFloat", "SegmentLength",
-                            "Draft", _tip)
+                            "Draft", _tip, locked=True)
             obj.SegmentLength = .05
         if not "VisibleOnly" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "If this is True, this object will include only visible objects")
             obj.addProperty("App::PropertyBool", "VisibleOnly",
-                            "Draft", _tip)
+                            "Draft", _tip, locked=True)
             obj.VisibleOnly = False
         if not "ExclusionPoints" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "A list of exclusion points. Any edge touching any of those points will not be drawn.")
             obj.addProperty("App::PropertyVectorList", "ExclusionPoints",
-                            "Draft", _tip)
+                            "Draft", _tip, locked=True)
         if not "ExclusionNames" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "A list of exclusion object names. Any object viewed that matches a name from the list will not be drawn.")
             obj.addProperty("App::PropertyStringList", "ExclusionNames",
-                            "Draft", _tip)
+                            "Draft", _tip, locked=True)
         if not "OnlySolids" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "If this is True, only solid geometry is handled. This overrides the base object's Only Solids property")
             obj.addProperty("App::PropertyBool", "OnlySolids",
-                            "Draft", _tip)
+                            "Draft", _tip, locked=True)
         if not "Clip" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property")
             obj.addProperty("App::PropertyBool", "Clip",
-                            "Draft", _tip)
+                            "Draft", _tip, locked=True)
         if not "AutoUpdate" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                     "This object will be recomputed only if this is True.")
             obj.addProperty("App::PropertyBool", "AutoUpdate",
-                            "Draft", _tip)
+                            "Draft", _tip, locked=True)
             obj.AutoUpdate = True
 
     def getProjected(self,obj,shape,direction):
@@ -232,6 +232,7 @@ class Shape2DView(DraftObject):
                     cutplane.Placement = cutplane.Placement.multiply(obj.Base.Placement)
                 if objs:
                     onlysolids = True
+                    # TODO Fix this : 2025.1.26, why test obj.Base.OnlySolids if override by obj.OnlySolids
                     if hasattr(obj.Base,"OnlySolids"):
                         onlysolids = obj.Base.OnlySolids
                     if hasattr(obj,"OnlySolids"): # override base object
@@ -279,6 +280,7 @@ class Shape2DView(DraftObject):
                             if hasattr(o, "Shape"):
                                 shapes.extend(self._get_shapes(o.Shape, onlysolids))
                     clip = False
+                    # TODO Fix this : 2025.1.26, why test obj.Base.Clip if override by obj.Clip
                     if hasattr(obj.Base,"Clip"):
                         clip = obj.Base.Clip
                     if hasattr(obj,"Clip"): #override base object
@@ -316,19 +318,57 @@ class Shape2DView(DraftObject):
                         comp = Part.makeCompound(cuts)
                         obj.Shape = self.getProjected(obj,comp,proj)
                     elif obj.ProjectionMode in ["Cutlines", "Cutfaces"]:
+                        if not cutp:  # Cutfaces and Cutlines needs cutp
+                            obj.Shape = Part.Shape()
+                            return
                         for sh in shapes:
                             if sh.Volume < 0:
                                 sh.reverse()
-                            c = sh.section(cutp)
-                            if hasattr(obj,"InPlace"):
-                                if not obj.InPlace:
-                                    c = self.getProjected(obj, c, proj)
                             faces = []
                             if (obj.ProjectionMode == "Cutfaces") and (sh.ShapeType == "Solid"):
-                                wires = DraftGeomUtils.findWires(c.Edges)
-                                for w in wires:
-                                    if w.isClosed():
-                                        faces.append(Part.Face(w))
+                                sc = sh.common(cutp)
+                                facesOrg = None
+                                if hasattr(sc, "Faces"):
+                                    facesOrg = sc.Faces
+                                if not facesOrg:
+                                    continue
+                                if hasattr(obj,"InPlace"):
+                                    if obj.InPlace:
+                                        faces = facesOrg
+                                    # Alternative approach in https://forum.freecad.org/viewtopic.php?p=807314#p807314, not adopted
+                                    else:
+                                        for faceOrg in facesOrg:
+                                            if len(faceOrg.Wires) == 1:
+                                                wireProj = self.getProjected(obj, faceOrg, proj)
+                                                #return Compound
+                                                wireProjWire = Part.Wire(wireProj.Edges)
+                                                faceProj = Part.Face(wireProjWire)
+                                            elif len(faceOrg.Wires) == 2:
+                                                wireClosedOuter = faceOrg.OuterWire
+                                                for w in faceOrg.Wires:
+                                                    if not w.isEqual(wireClosedOuter):
+                                                        wireClosedInner = w
+                                                        break
+                                                wireProjOuter = self.getProjected(obj, wireClosedOuter, proj)
+                                                #return Compound
+                                                wireProjOuterWire = Part.Wire(wireProjOuter.Edges)
+                                                faceProj = Part.Face(wireProjOuterWire)
+                                                wireProjInner = self.getProjected(obj, wireClosedInner, proj)
+                                                #return Compound
+                                                wireProjInnerWire = Part.Wire(wireProjInner.Edges)
+                                                faceProj.cutHoles([wireProjInnerWire])  # (list of wires)
+                                            faces.append(faceProj)
+                            else:
+                                c = sh.section(cutp)
+                                if hasattr(obj,"InPlace"):
+                                    if not obj.InPlace:
+                                        c = self.getProjected(obj, c, proj)
+                            #faces = []
+                            #if (obj.ProjectionMode == "Cutfaces") and (sh.ShapeType == "Solid"):
+                            #    wires = DraftGeomUtils.findWires(c.Edges)
+                            #    for w in wires:
+                            #        if w.isClosed():
+                            #            faces.append(Part.Face(w))
                             if faces:
                                 cuts.extend(faces)
                             else:

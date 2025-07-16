@@ -72,11 +72,22 @@ ViewProviderCoordinateSystem::~ViewProviderCoordinateSystem() {
 
 std::vector<App::DocumentObject*> ViewProviderCoordinateSystem::claimChildren() const
 {
-    return static_cast<App::Origin*>( getObject() )->OriginFeatures.getValues();
+    auto* lcs = getObject<App::LocalCoordinateSystem>();
+    if (!lcs) {
+        return {};
+    }
+
+    std::vector<App::DocumentObject*> childs = lcs->OriginFeatures.getValues();
+    auto it = std::find(childs.begin(), childs.end(), lcs);
+    if (it != childs.end()) {
+        childs.erase(it);
+    }
+    return childs;
 }
 
-std::vector<App::DocumentObject*> ViewProviderCoordinateSystem::claimChildren3D() const {
-    return claimChildren ();
+std::vector<App::DocumentObject*> ViewProviderCoordinateSystem::claimChildren3D() const
+{
+    return claimChildren();
 }
 
 void ViewProviderCoordinateSystem::attach(App::DocumentObject* pcObject)
@@ -97,54 +108,47 @@ void ViewProviderCoordinateSystem::setDisplayMode(const char* ModeName)
     ViewProviderDocumentObject::setDisplayMode(ModeName);
 }
 
-void ViewProviderCoordinateSystem::setTemporaryVisibility(bool axis, bool plane, bool points) {
-    auto origin = static_cast<App::Origin*>( getObject() );
+void ViewProviderCoordinateSystem::setTemporaryVisibility(DatumElements elements)
+{
+    auto* lcs = getObject<App::LocalCoordinateSystem>();
+    if (!lcs) {
+        return;
+    }
 
     bool saveState = tempVisMap.empty();
 
     try {
         // Remember & Set axis visibility
-        for(App::DocumentObject* obj : origin->axes()) {
-            if (obj) {
-                Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(obj);
-                if(vp) {
-                    if (saveState) {
-                        tempVisMap[vp] = vp->isVisible();
-                    }
-                    vp->setVisible(axis);
+        for(App::DocumentObject* obj : lcs->axes()) {
+            if (auto vp = Gui::Application::Instance->getViewProvider(obj)) {
+                if (saveState) {
+                    tempVisMap[vp] = vp->isVisible();
                 }
+                vp->setVisible(elements.testFlag(DatumElement::Axes));
             }
         }
 
         // Remember & Set plane visibility
-        for(App::DocumentObject* obj : origin->planes()) {
-            if (obj) {
-                Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(obj);
-                if(vp) {
-                    if (saveState) {
-                        tempVisMap[vp] = vp->isVisible();
-                    }
-                    vp->setVisible(plane);
+        for(App::DocumentObject* obj : lcs->planes()) {
+            if (auto vp = Gui::Application::Instance->getViewProvider(obj)) {
+                if (saveState) {
+                    tempVisMap[vp] = vp->isVisible();
                 }
+                vp->setVisible(elements.testFlag(DatumElement::Planes));
             }
         }
 
         // Remember & Set origin point visibility
-        App::DocumentObject* obj = origin->getOrigin();
-        if (obj) {
-            Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(obj);
-            if (vp) {
-                if (saveState) {
-                    tempVisMap[vp] = vp->isVisible();
-                }
-                vp->setVisible(points);
+        App::DocumentObject* obj = lcs->getOrigin();
+        if (auto vp = Gui::Application::Instance->getViewProvider(obj)) {
+            if (saveState) {
+                tempVisMap[vp] = vp->isVisible();
             }
+            vp->setVisible(elements.testFlag(DatumElement::Origin));
         }
-
-
     }
     catch (const Base::Exception &ex) {
-        Base::Console().Error ("%s\n", ex.what() );
+        Base::Console().error ("%s\n", ex.what() );
     }
 
     // Remember & Set self visibility
@@ -166,13 +170,17 @@ double ViewProviderCoordinateSystem::defaultSize()
     return hGrp->GetFloat("DatumsSize", 25);
 }
 
-bool ViewProviderCoordinateSystem::isTemporaryVisibility() {
+bool ViewProviderCoordinateSystem::isTemporaryVisibility()
+{
     return !tempVisMap.empty();
 }
 
 void ViewProviderCoordinateSystem::setPlaneLabelVisibility(bool val)
 {
-    auto lcs = getObject<App::LocalCoordinateSystem>();
+    auto* lcs = getObject<App::LocalCoordinateSystem>();
+    if (!lcs) {
+        return;
+    }
     for (auto* plane : lcs->planes()) {
         auto* vp = dynamic_cast<Gui::ViewProviderPlane*>(
             Gui::Application::Instance->getViewProvider(plane));
@@ -180,50 +188,46 @@ void ViewProviderCoordinateSystem::setPlaneLabelVisibility(bool val)
             vp->setLabelVisibility(val);
         }
     }
+}
 
+void ViewProviderCoordinateSystem::applyDatumObjects(const DatumObjectFunc& func)
+{
+    auto* lcs = getObject<App::LocalCoordinateSystem>();
+    if (!lcs) {
+        return;
+    }
+    const auto& objs = lcs->OriginFeatures.getValues();
+    for (auto* obj : objs) {
+        auto* vp = dynamic_cast<Gui::ViewProviderDatum*>(
+            Gui::Application::Instance->getViewProvider(obj));
+        if (vp) {
+            func(vp);
+        }
+    }
 }
 
 void ViewProviderCoordinateSystem::setTemporaryScale(double factor)
 {
-    auto lcs = getObject<App::LocalCoordinateSystem>();
-    auto& objs = lcs->OriginFeatures.getValues();
-    for (auto* obj : objs) {
-        auto* vp = dynamic_cast<Gui::ViewProviderDatum*>(
-            Gui::Application::Instance->getViewProvider(obj));
-        if (vp) {
-            vp->setTemporaryScale(factor);
-        }
-    }
+    applyDatumObjects([factor](ViewProviderDatum* vp) {
+        vp->setTemporaryScale(factor);
+    });
 }
 
 void ViewProviderCoordinateSystem::resetTemporarySize()
 {
-    auto lcs = getObject<App::LocalCoordinateSystem>();
-    auto& objs = lcs->OriginFeatures.getValues();
-    for (auto* obj : objs) {
-        auto* vp = dynamic_cast<Gui::ViewProviderDatum*>(
-            Gui::Application::Instance->getViewProvider(obj));
-        if (vp) {
-            vp->resetTemporarySize();
-        }
-    }
+    applyDatumObjects([](ViewProviderDatum* vp) {
+        vp->resetTemporarySize();
+    });
 }
 
-void ViewProviderCoordinateSystem::updateData(const App::Property* prop) {
-    auto* jcs = dynamic_cast<App::LocalCoordinateSystem*>(getObject());
-    if(jcs) {
-        if (prop == &jcs->Placement) {
-            // Update position
-        }
+bool ViewProviderCoordinateSystem::onDelete(const std::vector<std::string> &)
+{
+    auto* lcs = getObject<App::LocalCoordinateSystem>();
+    if (!lcs) {
+        return false;
     }
-    ViewProviderDocumentObject::updateData(prop);
-}
 
-bool ViewProviderCoordinateSystem::onDelete(const std::vector<std::string> &) {
-    auto lcs = getObject<App::LocalCoordinateSystem>();
-
-    auto origin = dynamic_cast<App::Origin*>(lcs);
-    if (origin && !origin->getInList().empty()) {
+    if (lcs->is<App::Origin>() && !lcs->getInList().empty()) {
         // Do not allow deletion of origin objects that are not lost.
         return false;
     }

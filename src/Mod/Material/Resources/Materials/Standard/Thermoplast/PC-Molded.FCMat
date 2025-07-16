@@ -1,0 +1,28 @@
+﻿---
+# File created by FreeCAD 1.0.0 Revision: 38641 +468 (Git)
+General:
+  UUID: "2fe8c459-4ff4-4555-80a9-61d118b245c3"
+  Name: "PC-Molded"
+  Author: "Michael Schloh von Bennewitz"
+  License: "CC-BY-3.0"
+  Description: "Polycarbonates (PC) are a group of thermoplastic polymers containing carbonate groups in their chemical structures. Polycarbonates used in engineering are strong, tough materials, and some grades are optically transparent."
+Models:
+  Linear Elastic:
+    UUID: "7b561d1d-fb9b-44f6-9da9-56a4f74d7536"
+    CompressiveStrength: "80,00 MPa"
+    Density: "1200,00 kg/m^3"
+    PoissonRatio: "0.37"
+    UltimateTensileStrength: "60,00 MPa"
+    YieldStrength: "80,00 MPa"
+    YoungsModulus: "2200,00 MPa"
+  Father:
+    UUID: "9cdda8b6-b606-4778-8f13-3934d8668e67"
+    Father: "Thermoplast"
+  Costs:
+    UUID: "881df808-8726-4c2e-be38-688bb6cce466"
+    ProductURL: "https://www.wikipedia.org/wiki/Polycarbonate"
+  Thermal:
+    UUID: "9959d007-a970-4ea7-bae4-3eb1b8b883c7"
+    SpecificHeat: "1250,00 J/kg/K"
+    ThermalConductivity: "0,20 W/m/K"
+    ThermalExpansionCoefficient: "68,00 µm/m/K"

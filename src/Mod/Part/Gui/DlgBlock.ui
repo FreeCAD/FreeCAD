@@ -331,7 +331,6 @@
    </item>
   </layout>
  </widget>
- <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <tabstops>
   <tabstop>FirstLimitType</tabstop>
   <tabstop>FirstLimitLength</tabstop>

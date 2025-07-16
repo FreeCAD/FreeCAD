@@ -46,8 +46,8 @@
 #include <Gui/Document.h>
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
@@ -263,7 +263,7 @@ std::vector<Part::TopoShape> getShapesFromSelection()
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
     std::vector <Part::TopoShape> shapes;
     for (auto it : objs) {
-        Part::TopoShape shp = Part::Feature::getTopoShape(it);
+        Part::TopoShape shp = Part::Feature::getTopoShape(it, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (!shp.isNull()){
             shapes.push_back(shp);
         }
@@ -279,8 +279,7 @@ bool hasShapesInSelection()
     bool hasShapes = false;
     std::vector<App::DocumentObject*> docobjs = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
     for (auto it : docobjs) {
-        // Only check for the existence of a shape but don't perform a transformation
-        if (!Part::Feature::getTopoShape(it, nullptr, false, nullptr, nullptr, true, false, false).isNull()) {
+        if (!Part::Feature::getTopoShape(it, Part::ShapeOption::ResolveLink).isNull()) {
             hasShapes = true;
             break;
         }
@@ -321,7 +320,7 @@ void CmdPartCut::activated(int iMsg)
     std::vector<std::string> names;
     for (const auto & it : Sel) {
         const App::DocumentObject* obj = it.getObject();
-        const TopoDS_Shape& shape = Part::Feature::getShape(obj);
+        const TopoDS_Shape& shape = Part::Feature::getShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (!PartGui::checkForSolids(shape) && !askUser) {
             int ret = QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Non-solids selected"),
                 QObject::tr("The use of non-solids for boolean operations may lead to unexpected results.\n"
@@ -344,8 +343,7 @@ void CmdPartCut::activated(int iMsg)
 
 bool CmdPartCut::isActive()
 {
-    return getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink)==2;
+    return getSelection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink) == 2;
 }
 
 //===========================================================================
@@ -381,7 +379,7 @@ void CmdPartCommon::activated(int iMsg)
     std::vector<std::string> names;
     for (const auto & it : Sel) {
         const App::DocumentObject* obj = it.getObject();
-        const TopoDS_Shape& shape = Part::Feature::getShape(obj);
+        const TopoDS_Shape& shape = Part::Feature::getShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (!PartGui::checkForSolids(shape) && !askUser) {
             int ret = QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Non-solids selected"),
                 QObject::tr("The use of non-solids for boolean operations may lead to unexpected results.\n"
@@ -404,8 +402,7 @@ void CmdPartCommon::activated(int iMsg)
 
 bool CmdPartCommon::isActive()
 {
-    return getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) >= 1;
+    return getSelection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink) >= 1;
 }
 
 //===========================================================================
@@ -436,7 +433,7 @@ void CmdPartFuse::activated(int iMsg)
     if (Sel.size() == 1){
         numShapes = 1; //to be updated later in code
         Gui::SelectionObject selobj = Sel[0];
-        TopoDS_Shape sh = Part::Feature::getShape(selobj.getObject());
+        TopoDS_Shape sh = Part::Feature::getShape(selobj.getObject(), Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         while (numShapes==1 && sh.ShapeType() == TopAbs_COMPOUND) {
             numShapes = 0;
             TopoDS_Iterator it(sh);
@@ -460,7 +457,7 @@ void CmdPartFuse::activated(int iMsg)
     std::vector<std::string> names;
     for (const auto & it : Sel) {
         const App::DocumentObject* obj = it.getObject();
-        const TopoDS_Shape& shape = Part::Feature::getShape(obj);
+        const TopoDS_Shape& shape = Part::Feature::getShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (!PartGui::checkForSolids(shape) && !askUser) {
             int ret = QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Non-solids selected"),
                 QObject::tr("The use of non-solids for boolean operations may lead to unexpected results.\n"
@@ -483,8 +480,7 @@ void CmdPartFuse::activated(int iMsg)
 
 bool CmdPartFuse::isActive()
 {
-    return getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) >= 1;
+    return getSelection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink) >= 1;
 }
 
 //===========================================================================
@@ -839,8 +835,7 @@ CmdPartCompound::CmdPartCompound()
 void CmdPartCompound::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    unsigned int n = getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink);
+    unsigned int n = getSelection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink);
     if (n < 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select one shape or more, please."));
@@ -872,8 +867,7 @@ void CmdPartCompound::activated(int iMsg)
 
 bool CmdPartCompound::isActive()
 {
-    return getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) >= 1;
+    return getSelection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink) >= 1;
 }
 
 //===========================================================================
@@ -921,7 +915,7 @@ void CmdPartSection::activated(int iMsg)
 
 bool CmdPartSection::isActive()
 {
-    return getSelection().countObjectsOfType(App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) == 2;
+    return getSelection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink) == 2;
 }
 
 //===========================================================================
@@ -945,11 +939,11 @@ void CmdPartImport::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QStringList filter;
-    filter << QString::fromLatin1("STEP (*.stp *.step)");
-    filter << QString::fromLatin1("STEP with colors (*.stp *.step)");
-    filter << QString::fromLatin1("IGES (*.igs *.iges)");
-    filter << QString::fromLatin1("IGES with colors (*.igs *.iges)");
-    filter << QString::fromLatin1("BREP (*.brp *.brep)");
+    filter << QStringLiteral("STEP (*.stp *.step)");
+    filter << QStringLiteral("STEP with colors (*.stp *.step)");
+    filter << QStringLiteral("IGES (*.igs *.iges)");
+    filter << QStringLiteral("IGES with colors (*.igs *.iges)");
+    filter << QStringLiteral("BREP (*.brp *.brep)");
 
     QString select;
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")), &select);
@@ -1008,11 +1002,11 @@ void CmdPartExport::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QStringList filter;
-    filter << QString::fromLatin1("STEP (*.stp *.step)");
-    filter << QString::fromLatin1("STEP with colors (*.stp *.step)");
-    filter << QString::fromLatin1("IGES (*.igs *.iges)");
-    filter << QString::fromLatin1("IGES with colors (*.igs *.iges)");
-    filter << QString::fromLatin1("BREP (*.brp *.brep)");
+    filter << QStringLiteral("STEP (*.stp *.step)");
+    filter << QStringLiteral("STEP with colors (*.stp *.step)");
+    filter << QStringLiteral("IGES (*.igs *.iges)");
+    filter << QStringLiteral("IGES with colors (*.igs *.iges)");
+    filter << QStringLiteral("BREP (*.brp *.brep)");
 
     QString select;
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")), &select);
@@ -1032,7 +1026,7 @@ void CmdPartExport::activated(int iMsg)
 
 bool CmdPartExport::isActive()
 {
-    return Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) > 0;
+    return Gui::Selection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink) > 0;
 }
 
 //===========================================================================
@@ -1056,12 +1050,12 @@ void CmdPartImportCurveNet::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QStringList filter;
-    filter << QString::fromLatin1("%1 (*.stp *.step *.igs *.iges *.brp *.brep)")
+    filter << QStringLiteral("%1 (*.stp *.step *.igs *.iges *.brp *.brep)")
                  .arg(QObject::tr("All CAD Files"));
-    filter << QString::fromLatin1("STEP (*.stp *.step)");
-    filter << QString::fromLatin1("IGES (*.igs *.iges)");
-    filter << QString::fromLatin1("BREP (*.brp *.brep)");
-    filter << QString::fromLatin1("%1 (*.*)")
+    filter << QStringLiteral("STEP (*.stp *.step)");
+    filter << QStringLiteral("IGES (*.igs *.iges)");
+    filter << QStringLiteral("BREP (*.brp *.brep)");
+    filter << QStringLiteral("%1 (*.*)")
                  .arg(QObject::tr("All Files"));
 
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")));
@@ -1107,16 +1101,16 @@ void CmdPartMakeSolid::activated(int iMsg)
         (App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink);
     runCommand(Doc, "import Part");
     for (auto it : objs) {
-        const TopoDS_Shape& shape = Part::Feature::getShape(it);
+        const TopoDS_Shape& shape = Part::Feature::getShape(it, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (!shape.IsNull()) {
             TopAbs_ShapeEnum type = shape.ShapeType();
             QString str;
             if (type == TopAbs_SOLID) {
-                Base::Console().Message("%s is ignored because it is already a solid.\n",
+                Base::Console().message("%s is ignored because it is already a solid.\n",
                     it->Label.getValue());
             }
             else if (type == TopAbs_COMPOUND || type == TopAbs_COMPSOLID) {
-                str = QString::fromLatin1(
+                str = QStringLiteral(
                     "__s__=App.ActiveDocument.%1.Shape.Faces\n"
                     "__s__=Part.Solid(Part.Shell(__s__))\n"
                     "__o__=App.ActiveDocument.addObject(\"Part::Feature\",\"%1_solid\")\n"
@@ -1128,7 +1122,7 @@ void CmdPartMakeSolid::activated(int iMsg)
                          QLatin1String(it->Label.getValue()));
             }
             else if (type == TopAbs_SHELL) {
-                str = QString::fromLatin1(
+                str = QStringLiteral(
                     "__s__=App.ActiveDocument.%1.Shape\n"
                     "__s__=Part.Solid(__s__)\n"
                     "__o__=App.ActiveDocument.addObject(\"Part::Feature\",\"%1_solid\")\n"
@@ -1140,7 +1134,7 @@ void CmdPartMakeSolid::activated(int iMsg)
                          QLatin1String(it->Label.getValue()));
             }
             else {
-                Base::Console().Message("%s is ignored because it is neither a shell nor a compound.\n",
+                Base::Console().message("%s is ignored because it is neither a shell nor a compound.\n",
                     it->Label.getValue());
             }
 
@@ -1149,7 +1143,7 @@ void CmdPartMakeSolid::activated(int iMsg)
                     runCommand(Doc, str.toLatin1());
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("Cannot convert %s because %s.\n",
+                Base::Console().error("Cannot convert %s because %s.\n",
                     it->Label.getValue(), e.what());
             }
         }
@@ -1158,8 +1152,7 @@ void CmdPartMakeSolid::activated(int iMsg)
 
 bool CmdPartMakeSolid::isActive()
 {
-    return Gui::Selection().countObjectsOfType
-        (App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) > 0;
+    return Gui::Selection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink) > 0;
 }
 
 //===========================================================================
@@ -1186,13 +1179,13 @@ void CmdPartReverseShape::activated(int iMsg)
         (App::DocumentObject::getClassTypeId());
     openCommand(QT_TRANSLATE_NOOP("Command", "Reverse"));
     for (auto it : objs) {
-        const TopoDS_Shape& shape = Part::Feature::getShape(it);
+        const TopoDS_Shape& shape = Part::Feature::getShape(it, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (!shape.IsNull()) {
             std::string name = it->getNameInDocument();
             name += "_rev";
             name = getUniqueObjectName(name.c_str());
 
-            QString str = QString::fromLatin1(
+            QString str = QStringLiteral(
                 "__o__=App.ActiveDocument.addObject(\"Part::Reverse\",\"%1\")\n"
                 "__o__.Source=App.ActiveDocument.%2\n"
                 "__o__.Label=\"%3 (Rev)\"\n"
@@ -1209,7 +1202,7 @@ void CmdPartReverseShape::activated(int iMsg)
                 copyVisual(name.c_str(), "PointColor", it->getNameInDocument());
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("Cannot convert %s because %s.\n",
+                Base::Console().error("Cannot convert %s because %s.\n",
                     it->Label.getValue(), e.what());
             }
         }
@@ -1360,7 +1353,7 @@ void CmdPartMakeFace::activated(int iMsg)
 
 bool CmdPartMakeFace::isActive()
 {
-    return (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) > 0 &&
+    return (Gui::Selection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink) > 0 &&
             !Gui::Control().activeDialog());
 }
 
@@ -1625,7 +1618,7 @@ void CmdPartOffset::activated(int iMsg)
     std::vector<App::DocumentObject*> docobjs = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
     std::vector<App::DocumentObject*> shapes;
     for (auto it : docobjs) {
-        if (!Part::Feature::getTopoShape(it).isNull()) {
+        if (!Part::Feature::getTopoShape(it, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform).isNull()) {
            shapes.push_back(it);
         }
     }
@@ -1642,9 +1635,7 @@ void CmdPartOffset::activated(int iMsg)
     updateActive();
 
     doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",offset.c_str());
-
-    adjustCameraPosition();
-
+    
     copyVisual(offset.c_str(), "ShapeAppearance", shape->getNameInDocument());
     copyVisual(offset.c_str(), "LineColor" , shape->getNameInDocument());
     copyVisual(offset.c_str(), "PointColor", shape->getNameInDocument());
@@ -1683,7 +1674,7 @@ void CmdPartOffset2D::activated(int iMsg)
     std::vector<App::DocumentObject*> shapes;
 
     for (auto it : docobjs) {
-        if (!Part::Feature::getTopoShape(it).isNull()) {
+        if (!Part::Feature::getTopoShape(it, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform).isNull()) {
            shapes.push_back(it);
         }
     }
@@ -1699,7 +1690,6 @@ void CmdPartOffset2D::activated(int iMsg)
     doCommand(Doc,"App.ActiveDocument.%s.Value = 1.0",offset.c_str());
     updateActive();
     doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",offset.c_str());
-    adjustCameraPosition();
 
     copyVisual(offset.c_str(), "ShapeAppearance", shape->getNameInDocument());
     copyVisual(offset.c_str(), "LineColor" , shape->getNameInDocument());
@@ -1837,7 +1827,7 @@ void CmdPartThickness::activated(int iMsg)
         selection = selobjs[0].getAsPropertyLinkSubString();
         const std::vector<std::string>& subnames = selobjs[0].getSubNames();
         obj = selobjs[0].getObject();
-        topoShape = Part::Feature::getTopoShape(obj);
+        topoShape = Part::Feature::getTopoShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (!topoShape.isNull()) {
             for (std::vector<std::string>::const_iterator it = subnames.begin(); it != subnames.end(); ++it) {
                 subShapes.emplace_back(topoShape.getSubShape(subnames[0].c_str()));
@@ -1883,7 +1873,6 @@ void CmdPartThickness::activated(int iMsg)
                   obj->getDocument()->getName(), obj->getNameInDocument());
     }
     doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",thick.c_str());
-    adjustCameraPosition();
 
     copyVisual(thick.c_str(), "ShapeAppearance", obj->getNameInDocument());
     copyVisual(thick.c_str(), "LineColor" , obj->getNameInDocument());
@@ -1892,8 +1881,7 @@ void CmdPartThickness::activated(int iMsg)
 
 bool CmdPartThickness::isActive()
 {
-    Base::Type partid = Base::Type::fromName("Part::Feature");
-    bool objectsSelected = Gui::Selection().countObjectsOfType(partid, nullptr, Gui::ResolveMode::FollowLink) > 0;
+    bool objectsSelected = Gui::Selection().countObjectsOfType<Part::Feature>(nullptr, Gui::ResolveMode::FollowLink) > 0;
     return (objectsSelected && !Gui::Control().activeDialog());
 }
 
@@ -1923,11 +1911,11 @@ void CmdShapeInfo::activated(int iMsg)
 bool CmdShapeInfo::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc || doc->countObjectsOfType(Part::Feature::getClassTypeId()) == 0)
+    if (!doc || doc->countObjectsOfType<Part::Feature>() == 0)
         return false;
 
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         return !viewer->isEditing();
     }
@@ -1973,17 +1961,26 @@ void CmdPartRuledSurface::activated(int iMsg)
             docobj1 = selobjs[0].getObject();
             obj1 = docobj1->getNameInDocument();
             obj2 = obj1; //changed later if 2 objects were selected
-            const Part::TopoShape& shape1 = Part::Feature::getTopoShape(docobj1);
+            const Part::TopoShape& shape1 = Part::Feature::getTopoShape(docobj1, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
             if (shape1.isNull()) {
                 ok = false;
             }
             if (ok && subnames1.size() <= 2) {
                 if (!subnames1.empty()) {
-                    curve1 = Part::Feature::getTopoShape(docobj1, subnames1[0].c_str(), true /*need element*/).getShape();
+                    curve2 = Part::Feature::getTopoShape(docobj1,
+                                                           Part::ShapeOption::NeedSubElement
+                                                         | Part::ShapeOption::ResolveLink
+                                                         | Part::ShapeOption::Transform,
+                                                         subnames1[0].c_str()).getShape();                                 
+
                     link1 = subnames1[0];
                 }
                 if (subnames1.size() == 2) {
-                    curve2 = Part::Feature::getTopoShape(docobj1, subnames1[1].c_str(), true /*need element*/).getShape();
+                    curve2 = Part::Feature::getTopoShape(docobj1,
+                                                           Part::ShapeOption::NeedSubElement
+                                                         | Part::ShapeOption::ResolveLink
+                                                         | Part::ShapeOption::Transform,
+                                                         subnames1[1].c_str()).getShape();                                 
                     link2 = subnames1[1];
                 }
                 if (subnames1.empty()) {
@@ -1998,12 +1995,17 @@ void CmdPartRuledSurface::activated(int iMsg)
             docobj2 = selobjs[1].getObject();
             obj2 = docobj2->getNameInDocument();
 
-            const Part::TopoShape& shape2 = Part::Feature::getTopoShape(docobj2);
+            const Part::TopoShape& shape2 = Part::Feature::getTopoShape(docobj2, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
             if (shape2.isNull()) {
                 ok = false;
             }
             if (ok && subnames2.size() == 1) {
-                curve2 = Part::Feature::getTopoShape(docobj2, subnames2[0].c_str(), true /*need element*/).getShape();
+                curve2 = Part::Feature::getTopoShape(docobj2,
+                                                       Part::ShapeOption::NeedSubElement
+                                                     | Part::ShapeOption::ResolveLink
+                                                     | Part::ShapeOption::Transform,
+                                                     subnames2[0].c_str()).getShape();                             
+
                 link2 = subnames2[0];
             } else {
                 if (subnames2.empty()) {
@@ -2107,8 +2109,7 @@ void CmdColorPerFace::activated(int iMsg)
 
 bool CmdColorPerFace::isActive()
 {
-    Base::Type partid = Base::Type::fromName("Part::Feature");
-    bool objectSelected = Gui::Selection().countObjectsOfType(partid) == 1;
+    bool objectSelected = Gui::Selection().countObjectsOfType<Part::Feature>() == 1;
     return (hasActiveDocument() && !Gui::Control().activeDialog() && objectSelected);
 }
 
@@ -2230,10 +2231,10 @@ namespace {
 
         if (activeObj) {
             QString activeName = QString::fromLatin1(activeObj->getNameInDocument());
-            return QString::fromLatin1("App.ActiveDocument.getObject('%1\').addObject(obj)\n").arg(activeName);
+            return QStringLiteral("App.ActiveDocument.getObject('%1\').addObject(obj)\n").arg(activeName);
         }
 
-        return QString::fromLatin1("# Object created at document root.");
+        return QStringLiteral("# Object created at document root.");
     }
 }
 
@@ -2243,8 +2244,8 @@ CmdPartCoordinateSystem::CmdPartCoordinateSystem()
     : Command("Part_CoordinateSystem")
 {
     sGroup = QT_TR_NOOP("Part");
-    sMenuText = QT_TR_NOOP("Create a coordinate system");
-    sToolTipText = QT_TR_NOOP("A coordinate system object that can be attached to other objects.");
+    sMenuText = QT_TR_NOOP("Create coordinate system");
+    sToolTipText = QT_TR_NOOP("Create a coordinate system object that can be attached to other objects.");
     sWhatsThis = "Part_CoordinateSystem";
     sStatusTip = sToolTipText;
     sPixmap = "Std_CoordinateSystem";
@@ -2269,100 +2270,100 @@ bool CmdPartCoordinateSystem::isActive()
 }
 
 //===========================================================================
-// Part_Plane
+// Part_DatumPlane
 //===========================================================================
-DEF_STD_CMD_A(CmdPartPlane)
+DEF_STD_CMD_A(CmdPartDatumPlane)
 
-CmdPartPlane::CmdPartPlane()
-    : Command("Part_Plane")
+CmdPartDatumPlane::CmdPartDatumPlane()
+    : Command("Part_DatumPlane")
 {
     sGroup = QT_TR_NOOP("Part");
-    sMenuText = QT_TR_NOOP("Create a datum plane");
-    sToolTipText = QT_TR_NOOP("A plane object that can be attached to other objects.");
-    sWhatsThis = "Part_Plane";
+    sMenuText = QT_TR_NOOP("Create datum plane");
+    sToolTipText = QT_TR_NOOP("Create a datum plane object that can be attached to other objects.");
+    sWhatsThis = "Part_DatumPlane";
     sStatusTip = sToolTipText;
     sPixmap = "Std_Plane";
 }
 
-void CmdPartPlane::activated(int iMsg)
+void CmdPartDatumPlane::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Add a datum plane"));
 
-    std::string name = getUniqueObjectName("Plane");
+    std::string name = getUniqueObjectName("DatumPlane");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumPlane','%s')", name.c_str());
     doCommand(Doc, getAutoGroupCommandStr().toUtf8());
     doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
 
-bool CmdPartPlane::isActive()
+bool CmdPartDatumPlane::isActive()
 {
     return hasActiveDocument();
 }
 
 //===========================================================================
-// Part_Line
+// Part_DatumLine
 //===========================================================================
-DEF_STD_CMD_A(CmdPartLine)
+DEF_STD_CMD_A(CmdPartDatumLine)
 
-CmdPartLine::CmdPartLine()
-    : Command("Part_Line")
+CmdPartDatumLine::CmdPartDatumLine()
+    : Command("Part_DatumLine")
 {
     sGroup = QT_TR_NOOP("Part");
-    sMenuText = QT_TR_NOOP("Create a datum line");
-    sToolTipText = QT_TR_NOOP("A line object that can be attached to other objects.");
-    sWhatsThis = "Part_Line";
+    sMenuText = QT_TR_NOOP("Create datum line");
+    sToolTipText = QT_TR_NOOP("Create a datum line object that can be attached to other objects.");
+    sWhatsThis = "Part_DatumLine";
     sStatusTip = sToolTipText;
     sPixmap = "Std_Axis";
 }
 
-void CmdPartLine::activated(int iMsg)
+void CmdPartDatumLine::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Add a datum line"));
 
-    std::string name = getUniqueObjectName("Line");
+    std::string name = getUniqueObjectName("DatumLine");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumLine','%s')", name.c_str());
     doCommand(Doc, getAutoGroupCommandStr().toUtf8());
     doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
 
-bool CmdPartLine::isActive()
+bool CmdPartDatumLine::isActive()
 {
     return hasActiveDocument();
 }
 
 //===========================================================================
-// Part_Point
+// Part_DatumPoint
 //===========================================================================
-DEF_STD_CMD_A(CmdPartPoint)
+DEF_STD_CMD_A(CmdPartDatumPoint)
 
-CmdPartPoint::CmdPartPoint()
-    : Command("Part_Point")
+CmdPartDatumPoint::CmdPartDatumPoint()
+    : Command("Part_DatumPoint")
 {
     sGroup = QT_TR_NOOP("Part");
-    sMenuText = QT_TR_NOOP("Create a datum point");
-    sToolTipText = QT_TR_NOOP("A point object that can be attached to other objects.");
-    sWhatsThis = "Part_Point";
+    sMenuText = QT_TR_NOOP("Create datum point");
+    sToolTipText = QT_TR_NOOP("Create a datum point object that can be attached to other objects.");
+    sWhatsThis = "Part_DatumPoint";
     sStatusTip = sToolTipText;
     sPixmap = "Std_Point";
 }
 
-void CmdPartPoint::activated(int iMsg)
+void CmdPartDatumPoint::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Add a datum point"));
 
-    std::string name = getUniqueObjectName("Point");
+    std::string name = getUniqueObjectName("DatumPoint");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumPoint','%s')", name.c_str());
     doCommand(Doc, getAutoGroupCommandStr().toUtf8());
     doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
 
-bool CmdPartPoint::isActive()
+bool CmdPartDatumPoint::isActive()
 {
     return hasActiveDocument();
 }
@@ -2378,17 +2379,17 @@ public:
         : GroupCommand("Part_Datums")
     {
         sGroup = QT_TR_NOOP("Part");
-        sMenuText = QT_TR_NOOP("Create a datum");
-        sToolTipText = QT_TR_NOOP("Create a datum object (LCS, Plane, Line, Point) that can be attached to other objects.");
+        sMenuText = QT_TR_NOOP("Create datum");
+        sToolTipText = QT_TR_NOOP("Create a datum object (coordinate system, plane, line, point) that can be attached to other objects.");
         sWhatsThis = "Part_Datums";
         sStatusTip = sToolTipText;
 
         setCheckable(false);
 
         addCommand("Part_CoordinateSystem");
-        addCommand("Part_Plane");
-        addCommand("Part_Line");
-        addCommand("Part_Point");
+        addCommand("Part_DatumPlane");
+        addCommand("Part_DatumLine");
+        addCommand("Part_DatumPoint");
     }
 
     const char* className() const override
@@ -2448,8 +2449,8 @@ void CreatePartCommands()
     rcCmdMgr.addCommand(new CmdPartSectionCut());
 
     rcCmdMgr.addCommand(new CmdPartCoordinateSystem());
-    rcCmdMgr.addCommand(new CmdPartPlane());
-    rcCmdMgr.addCommand(new CmdPartLine());
-    rcCmdMgr.addCommand(new CmdPartPoint());
+    rcCmdMgr.addCommand(new CmdPartDatumPlane());
+    rcCmdMgr.addCommand(new CmdPartDatumLine());
+    rcCmdMgr.addCommand(new CmdPartDatumPoint());
     rcCmdMgr.addCommand(new CmdPartDatums());
 }

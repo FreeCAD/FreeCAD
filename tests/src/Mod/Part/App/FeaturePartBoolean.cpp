@@ -19,7 +19,7 @@ protected:
     void SetUp() override
     {
         // createTestDoc();
-        // _boolean = dynamic_cast<Part::Boolean*>(_doc->addObject("Part::Boolean"));
+        // _boolean = _doc->addObject<Part::Boolean>();
     }
 
     void TearDown() override

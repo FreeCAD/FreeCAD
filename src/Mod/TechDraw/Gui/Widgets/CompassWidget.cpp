@@ -37,6 +37,8 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include <Gui/QuantitySpinBox.h>
+
 #include <Base/Console.h>
 #include <Base/Tools.h>
 
@@ -49,7 +51,7 @@ CompassWidget::CompassWidget(QWidget* parent)
     : QWidget(parent), m_minimumWidth(200), m_minimumHeight(200), m_defaultMargin(10), m_angle(0.0),
       m_advanceIncrement(10.0)
 {
-    setObjectName(QString::fromUtf8("Compass"));
+    setObjectName(QStringLiteral("Compass"));
     m_rect = QRect(0, 0, m_minimumWidth, m_minimumHeight);
     buildWidget();
     compassDial->setSize(m_minimumHeight - 2 * m_defaultMargin);
@@ -66,16 +68,10 @@ bool CompassWidget::eventFilter(QObject* target, QEvent* event)
     if (target == dsbAngle) {
         if (event->type() == QEvent::KeyPress) {
             QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-            if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
-                dsbAngle->interpretText();
-                slotSpinBoxEnter(dsbAngle->value());
+            const auto isEnter = keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter;
+            if (isEnter && dsbAngle->isNormalized()) {
                 return true;
             }
-        }
-        else if (event->type() == QEvent::FocusOut) {
-            dsbAngle->interpretText();
-            slotSpinBoxEnter(dsbAngle->value());
-            return true;
         }
     }
     return QWidget::eventFilter(target, event);
@@ -91,26 +87,26 @@ void CompassWidget::buildWidget()
     setSizePolicy(sizePolicy);
     setMinimumSize(QSize(m_minimumWidth, m_minimumHeight));
     compassLayout = new QVBoxLayout(this);
-    compassLayout->setObjectName(QString::fromUtf8("CompassLayout"));
+    compassLayout->setObjectName(QStringLiteral("CompassLayout"));
 
     compassDialLayout = new QHBoxLayout();
-    compassDialLayout->setObjectName(QString::fromUtf8("compassDialLayout"));
+    compassDialLayout->setObjectName(QStringLiteral("compassDialLayout"));
 
     pbCWAdvance = new QPushButton(this);
-    pbCWAdvance->setObjectName(QString::fromUtf8("pbCWAdvance"));
+    pbCWAdvance->setObjectName(QStringLiteral("pbCWAdvance"));
     QIcon icon1;
-    icon1.addFile(QString::fromUtf8(":/icons/arrow-cw.svg"), QSize(), QIcon::Normal, QIcon::On);
+    icon1.addFile(QStringLiteral(":/icons/arrow-cw.svg"), QSize(), QIcon::Normal, QIcon::On);
     pbCWAdvance->setIcon(icon1);
     compassDialLayout->addWidget(pbCWAdvance);
 
     compassDial = new CompassDialWidget(this);
-    compassDial->setObjectName(QString::fromUtf8("CompassDial"));
+    compassDial->setObjectName(QStringLiteral("CompassDial"));
     compassDialLayout->addWidget(compassDial);
 
     pbCCWAdvance = new QPushButton(this);
-    pbCCWAdvance->setObjectName(QString::fromUtf8("pbCCWAdvance"));
+    pbCCWAdvance->setObjectName(QStringLiteral("pbCCWAdvance"));
     QIcon icon2;
-    icon2.addFile(QString::fromUtf8(":/icons/arrow-ccw.svg"), QSize(), QIcon::Normal, QIcon::On);
+    icon2.addFile(QStringLiteral(":/icons/arrow-ccw.svg"), QSize(), QIcon::Normal, QIcon::On);
     pbCCWAdvance->setIcon(icon2);
     compassDialLayout->addWidget(pbCCWAdvance);
 
@@ -118,9 +114,9 @@ void CompassWidget::buildWidget()
     compassLayout->addLayout(compassDialLayout);
 
     compassControlLayout = new QHBoxLayout();
-    compassControlLayout->setObjectName(QString::fromUtf8("compassControlLayout"));
+    compassControlLayout->setObjectName(QStringLiteral("compassControlLayout"));
     compassControlLabel = new QLabel(this);
-    compassControlLabel->setObjectName(QString::fromUtf8("compassControlLabel"));
+    compassControlLabel->setObjectName(QStringLiteral("compassControlLabel"));
     QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Minimum);
     sizePolicy2.setHorizontalStretch(0);
     sizePolicy2.setVerticalStretch(0);
@@ -128,19 +124,11 @@ void CompassWidget::buildWidget()
     compassControlLabel->setSizePolicy(sizePolicy2);
 
     compassControlLayout->addWidget(compassControlLabel);
-
-    dsbAngle = new QDoubleSpinBox(this);
-    dsbAngle->setObjectName(QString::fromUtf8("dsbAngle"));
-    sizePolicy2.setHeightForWidth(dsbAngle->sizePolicy().hasHeightForWidth());
-    dsbAngle->setSizePolicy(sizePolicy2);
-    dsbAngle->setMinimumSize(QSize(75, 26));
-    dsbAngle->setMouseTracking(true);
-    dsbAngle->setFocusPolicy(Qt::ClickFocus);
-    dsbAngle->setAlignment(Qt::AlignRight | Qt::AlignTrailing | Qt::AlignVCenter);
-    dsbAngle->setKeyboardTracking(false);
-    dsbAngle->setSuffix(QString::fromUtf8("\302\260"));
-    dsbAngle->setMaximum(360.000000000000000);
-    dsbAngle->setMinimum(-360.000000000000000);
+    dsbAngle = new Gui::QuantitySpinBox(this);
+    dsbAngle->setObjectName(QStringLiteral("dsbAngle"));
+    dsbAngle->setUnit(Base::Unit::Angle);
+    connect(dsbAngle, QOverload<double>::of(&Gui::QuantitySpinBox::valueChanged),
+        this, &CompassWidget::slotSpinBoxEnter);
 
     compassControlLayout->addWidget(dsbAngle);
 
@@ -182,7 +170,7 @@ void CompassWidget::paintEvent(QPaintEvent* event)
 // set the compass dial and spinbox to a new angle
 void CompassWidget::setDialAngle(double newAngle)
 {
-    //    Base::Console().Message("CW::setDialAngle(%.3f)\n", newAngle);
+    //    Base::Console().message("CW::setDialAngle(%.3f)\n", newAngle);
     m_angle = newAngle;
     if (compassDial) {
         compassDial->setAngle(m_angle);
@@ -195,7 +183,7 @@ void CompassWidget::setDialAngle(double newAngle)
 //slot for updates from spinbox on Enter/Return press.
 void CompassWidget::slotSpinBoxEnter(double newAngle)
 {
-    //    Base::Console().Message("CW::slotSpinBoxEnter(%.3f)\n", newAngle);
+    //    Base::Console().message("CW::slotSpinBoxEnter(%.3f)\n", newAngle);
     if (dsbAngle) {
         m_angle = newAngle;
         Q_EMIT angleChanged(m_angle);

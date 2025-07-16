@@ -62,7 +62,7 @@
 using namespace Part;
 
 
-// From: https://github.com/Celemation/FreeCAD/blob/joel_selection_summary_demo/src/Gui/SelectionSummary.cpp
+// From: https://github.com/Celemation/FreeCAD/blob/joel_selection_summary_demo/src/Gui/Selection/SelectionSummary.cpp
 
 // Should work with edges and wires
 static float getLength(TopoDS_Shape& wire){
@@ -98,9 +98,15 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat
         return {};
     }
 
-    Part::TopoShape shape = Part::Feature::getTopoShape(obj, subject.getElementName(), false, mat, nullptr, true);
+    Part::TopoShape shape = Part::Feature::getTopoShape(
+        obj,
+          Part::ShapeOption::ResolveLink 
+        | Part::ShapeOption::Transform,
+        subject.getElementName(),
+        mat);
+
     if (shape.isNull()) {
-        Base::Console().Log("Part::MeasureClient::getLocatedShape: Did not retrieve shape for %s, %s\n", obj->getNameInDocument(), subject.getElementName());
+        Base::Console().log("Part::MeasureClient::getLocatedShape: Did not retrieve shape for %s, %s\n", obj->getNameInDocument(), subject.getElementName());
         return {};
     }
 
@@ -108,7 +114,7 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat
     shape.setPlacement(placement);
 
     // Don't get the subShape from datum elements
-    if (obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
+    if (obj->isDerivedFrom<Part::Datum>()) {
         return shape.getShape();
     }
 
@@ -121,10 +127,15 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat
 
 App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* subName)
 {
-    TopoDS_Shape shape = Part::Feature::getShape(ob, subName, true);
+    TopoDS_Shape shape = Part::Feature::getShape(ob,
+                                                    Part::ShapeOption::NeedSubElement
+                                                  | Part::ShapeOption::ResolveLink
+                                                  | Part::ShapeOption::Transform,
+                                                 subName);
+
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
-        Base::Console().Message("Part::PartMeasureTypeCb did not retrieve shape for %s, %s\n", ob->getNameInDocument(), subName);
+        Base::Console().message("Part::PartMeasureTypeCb did not retrieve shape for %s, %s\n", ob->getNameInDocument(), subName);
         return App::MeasureElementType();
     }
     TopAbs_ShapeEnum shapeType = shape.ShapeType();
@@ -139,10 +150,8 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
 
             switch (curve.GetType()) {
                 case GeomAbs_Line: {
-                    if (ob->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Datum"))) {
-                        return App::MeasureElementType::LINE;
-                    }
-                    return App::MeasureElementType::LINESEGMENT;
+                    return ob->isDerivedFrom<Part::Datum>() ? App::MeasureElementType::LINE
+                                                            : App::MeasureElementType::LINESEGMENT;
                 }
                 case GeomAbs_Circle: { return App::MeasureElementType::CIRCLE; }
                 case GeomAbs_BezierCurve:
@@ -159,11 +168,12 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
             switch (surface.GetType()) {
                 case GeomAbs_Cylinder: { return App::MeasureElementType::CYLINDER; }
                 case GeomAbs_Plane: { return App::MeasureElementType::PLANE; }
-                default: { return App::MeasureElementType::INVALID; }
+                default: {
+                    return App::MeasureElementType::SURFACE; }
             }
         }
         case TopAbs_SOLID: {
-            return App::MeasureElementType::Volume;
+            return App::MeasureElementType::VOLUME;
         }
         default: {
             return App::MeasureElementType::INVALID;
@@ -178,8 +188,13 @@ bool getShapeFromStrings(TopoDS_Shape &shapeOut, const App::SubObjectT& subject,
     if (!obj) {
         return {};
      }
-    shapeOut = Part::Feature::getShape(obj, subject.getElementName(), true, mat);
-    return !shapeOut.IsNull();
+     shapeOut = Part::Feature::getShape(obj,
+                                            Part::ShapeOption::NeedSubElement
+                                          | Part::ShapeOption::ResolveLink
+                                          | Part::ShapeOption::Transform,
+                                        subject.getElementName(),
+                                        mat);
+     return !shapeOut.IsNull();
 }
 
 
@@ -190,7 +205,7 @@ Part::VectorAdapter buildAdapter(const App::SubObjectT& subject)
 
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
-        Base::Console().Message("Part::buildAdapter did not retrieve shape for %s, %s\n",
+        Base::Console().message("Part::buildAdapter did not retrieve shape for %s, %s\n",
                                 subject.getObjectName(), subject.getElementName());
         return Part::VectorAdapter();
     }
@@ -242,7 +257,7 @@ MeasureLengthInfoPtr MeasureLengthHandler(const App::SubObjectT& subject)
 
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
-        Base::Console().Message("MeasureLengthHandler did not retrieve shape for %s, %s\n",
+        Base::Console().message("MeasureLengthHandler did not retrieve shape for %s, %s\n",
                                 subject.getObjectName(), subject.getElementName());
         return std::make_shared<MeasureLengthInfo>(false, 0.0, Base::Matrix4D());
     }
@@ -303,7 +318,7 @@ MeasureAreaInfoPtr MeasureAreaHandler(const App::SubObjectT& subject)
 
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
-        Base::Console().Message("MeasureAreaHandler did not retrieve shape for %s, %s\n",
+        Base::Console().message("MeasureAreaHandler did not retrieve shape for %s, %s\n",
                                 subject.getObjectName(), subject.getElementName());
         return std::make_shared<MeasureAreaInfo>(false, 0.0, Base::Matrix4D());
     }
@@ -330,7 +345,7 @@ MeasurePositionInfoPtr MeasurePositionHandler(const App::SubObjectT& subject)
     TopoDS_Shape shape = getLocatedShape(subject);
 
     if (shape.IsNull()) {
-        Base::Console().Message("MeasurePositionHandler did not retrieve shape for %s, %s\n",
+        Base::Console().message("MeasurePositionHandler did not retrieve shape for %s, %s\n",
                                 subject.getObjectName(), subject.getElementName());
         return std::make_shared<MeasurePositionInfo>(false, Base::Vector3d());
     }
@@ -352,7 +367,7 @@ MeasureAngleInfoPtr MeasureAngleHandler(const App::SubObjectT& subject)
 
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
-        Base::Console().Message("MeasureAngleHandler did not retrieve shape for %s, %s\n",
+        Base::Console().message("MeasureAngleHandler did not retrieve shape for %s, %s\n",
                                 subject.getObjectName(), subject.getElementName());
         return std::make_shared<MeasureAngleInfo>();
     }
@@ -391,7 +406,7 @@ MeasureDistanceInfoPtr MeasureDistanceHandler(const App::SubObjectT& subject)
 
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
-        Base::Console().Message("MeasureDistanceHandler did not retrieve shape for %s, %s\n",
+        Base::Console().message("MeasureDistanceHandler did not retrieve shape for %s, %s\n",
                                 subject.getObjectName(), subject.getElementName());
         return std::make_shared<MeasureDistanceInfo>();
     }
@@ -463,5 +478,3 @@ Part::CallbackRegistrationList Part::MeasureClient::reportRadiusCB()
     callbacks.emplace_back("Sketcher", "Radius", MeasureRadiusHandler);
     return callbacks;
 }
-
-

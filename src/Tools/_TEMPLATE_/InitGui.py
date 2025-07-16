@@ -4,6 +4,7 @@
 
 class _TEMPLATE_Workbench(Workbench):
     "_TEMPLATE_ workbench object"
+
     MenuText = "_TEMPLATE_"
     ToolTip = "_TEMPLATE_ workbench"
 

@@ -32,7 +32,7 @@
 #include <App/Origin.h>
 
 #include <Base/Console.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/Command.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureLinearPattern.h>
@@ -542,7 +542,7 @@ TaskMultiTransformParameters::~TaskMultiTransformParameters()
     }
     catch (const Py::Exception&) {
         Base::PyException exc;  // extract the Python error text
-        exc.ReportException();
+        exc.reportException();
     }
 }
 

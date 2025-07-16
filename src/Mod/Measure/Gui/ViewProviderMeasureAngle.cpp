@@ -67,6 +67,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Quantity.h>
+#include <Base/Tools.h>
 #include <Gui/ArcEngine.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -325,8 +326,7 @@ void ViewProviderMeasureAngle::redrawAnnotation()
 {
     auto obj = dynamic_cast<Measure::MeasureAngle*>(getMeasureObject());
     double angleDeg = obj->Angle.getValue();
-    constexpr double radiansPerDegree = M_PI / 180.0;
-    this->fieldAngle = angleDeg * radiansPerDegree;
+    this->fieldAngle = Base::toRadians(angleDeg);
 
     // Set matrix
     try {
@@ -334,7 +334,7 @@ void ViewProviderMeasureAngle::redrawAnnotation()
         pcTransform->setMatrix(matrix);
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("Error in ViewProviderMeasureAngle::redrawAnnotation: %s\n",
+        Base::Console().error("Error in ViewProviderMeasureAngle::redrawAnnotation: %s\n",
                               e.what());
         return;
     }

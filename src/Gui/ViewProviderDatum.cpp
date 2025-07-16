@@ -41,6 +41,8 @@
 #include "SoFCSelection.h"
 #include "ViewProviderCoordinateSystem.h"
 
+#include <Inventor/So3DAnnotation.h>
+
 
 using namespace Gui;
 
@@ -111,7 +113,7 @@ void ViewProviderDatum::attach(App::DocumentObject* pcObject)
     visible->addChild(pRoot);
 
     // Hidden features
-    auto hidden = new SoAnnotation();
+    auto hidden = new So3DAnnotation();
 
     // Style for hidden lines
     style = new SoDrawStyle();

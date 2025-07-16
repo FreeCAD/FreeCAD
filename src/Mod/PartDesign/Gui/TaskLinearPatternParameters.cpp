@@ -33,7 +33,7 @@
 #include <App/Origin.h>
 #include <Base/Console.h>
 #include <Gui/Application.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/Command.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -111,10 +111,10 @@ void TaskLinearPatternParameters::setupParameterUI(QWidget* widget)
             App::Origin* origin = body->getOrigin();
             auto vpOrigin = static_cast<ViewProviderCoordinateSystem*>(
                 Gui::Application::Instance->getViewProvider(origin));
-            vpOrigin->setTemporaryVisibility(true, false);
+            vpOrigin->setTemporaryVisibility(Gui::DatumElement::Axes);
         }
         catch (const Base::Exception& ex) {
-            Base::Console().Error("%s\n", ex.what());
+            Base::Console().error("%s\n", ex.what());
         }
     }
 
@@ -400,7 +400,7 @@ TaskLinearPatternParameters::~TaskLinearPatternParameters()
         }
     }
     catch (const Base::Exception& ex) {
-        Base::Console().Error("%s\n", ex.what());
+        Base::Console().error("%s\n", ex.what());
     }
 }
 

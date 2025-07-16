@@ -96,11 +96,8 @@ void ImageView::setImage(const QImage& image)
 void ImageView::scaleImage(double factor)
 {
     scaleFactor *= factor;
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+
     imageLabel->resize(scaleFactor * imageLabel->pixmap(Qt::ReturnByValue).size());
-#else
-    imageLabel->resize(scaleFactor * imageLabel->pixmap()->size());
-#endif
 
     adjustScrollBar(scrollArea->horizontalScrollBar(), factor);
     adjustScrollBar(scrollArea->verticalScrollBar(), factor);

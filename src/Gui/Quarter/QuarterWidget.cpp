@@ -70,14 +70,13 @@
 #include <QMetaObject>
 #include <QOpenGLDebugLogger>
 #include <QOpenGLDebugMessage>
+#include <QOpenGLWidget>
 #include <QPaintEvent>
 #include <QResizeEvent>
 #include <QWindow>
 
 #include <Inventor/C/basic.h>
-#if COIN_MAJOR_VERSION >= 4
 #include <Inventor/SbByteBuffer.h>
-#endif
 
 #include <Inventor/SbColor.h>
 #include <Inventor/SbViewportRegion.h>
@@ -91,6 +90,8 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/scxml/ScXML.h>
 #include <Inventor/scxml/SoScXMLStateMachine.h>
+
+#include <Base/Profiler.h>
 
 #include "QuarterWidget.h"
 #include "InteractionMode.h"
@@ -230,7 +231,7 @@ public:
 };
 
 /*! constructor */
-QuarterWidget::QuarterWidget(const QtGLFormat & format, QWidget * parent, const QtGLWidget * sharewidget, Qt::WindowFlags f)
+QuarterWidget::QuarterWidget(const QSurfaceFormat & format, QWidget * parent, const QOpenGLWidget * sharewidget, Qt::WindowFlags f)
   : inherited(parent)
 {
   Q_UNUSED(f); 
@@ -238,15 +239,15 @@ QuarterWidget::QuarterWidget(const QtGLFormat & format, QWidget * parent, const 
 }
 
 /*! constructor */
-QuarterWidget::QuarterWidget(QWidget * parent, const QtGLWidget * sharewidget, Qt::WindowFlags f)
+QuarterWidget::QuarterWidget(QWidget * parent, const QOpenGLWidget * sharewidget, Qt::WindowFlags f)
   : inherited(parent)
 {
   Q_UNUSED(f); 
-  this->constructor(QtGLFormat(), sharewidget);
+  this->constructor(QSurfaceFormat(), sharewidget);
 }
 
 /*! constructor */
-QuarterWidget::QuarterWidget(QtGLContext * context, QWidget * parent, const QtGLWidget * sharewidget, Qt::WindowFlags f)
+QuarterWidget::QuarterWidget(QOpenGLContext * context, QWidget * parent, const QOpenGLWidget * sharewidget, Qt::WindowFlags f)
   : inherited(parent)
 {
   Q_UNUSED(f); 
@@ -254,7 +255,7 @@ QuarterWidget::QuarterWidget(QtGLContext * context, QWidget * parent, const QtGL
 }
 
 void
-QuarterWidget::constructor(const QtGLFormat & format, const QtGLWidget * sharewidget)
+QuarterWidget::constructor(const QSurfaceFormat & format, const QOpenGLWidget * sharewidget)
 {
   QGraphicsScene* scene = new QGraphicsScene(this);
   setScene(scene);
@@ -838,6 +839,8 @@ void QuarterWidget::resizeEvent(QResizeEvent* event)
 */
 void QuarterWidget::paintEvent(QPaintEvent* event)
 {
+    ZoneScoped;
+
     if (updateDevicePixelRatio()) {
         qreal dev_pix_ratio = devicePixelRatio();
         int width = static_cast<int>(dev_pix_ratio * this->width());
@@ -856,7 +859,7 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
 
     glMatrixMode(GL_PROJECTION);
 
-    QtGLWidget* w = static_cast<QtGLWidget*>(this->viewport());
+    QOpenGLWidget* w = static_cast<QOpenGLWidget*>(this->viewport());
     if (!w->isValid()) {
         qWarning() << "No valid GL context found!";
         return;
@@ -936,11 +939,7 @@ bool QuarterWidget::viewportEvent(QEvent* event)
     }
     else if (event->type() == QEvent::Wheel) {
         auto wheel = static_cast<QWheelEvent*>(event);
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-        QPoint pos = wheel->pos();
-#else
         QPoint pos = wheel->position().toPoint();
-#endif
         QGraphicsItem* item = itemAt(pos);
         if (!item) {
             QGraphicsView::viewportEvent(event);
@@ -989,6 +988,7 @@ QuarterWidget::redraw()
 void
 QuarterWidget::actualRedraw()
 {
+  ZoneScoped;
   PRIVATE(this)->sorendermanager->render(PRIVATE(this)->clearwindow,
                                          PRIVATE(this)->clearzbuffer);
 }
@@ -1243,11 +1243,7 @@ QuarterWidget::setNavigationModeFile(const QUrl & url)
     QFile file(filenametmp);
     if (file.open(QIODevice::ReadOnly)){
       QByteArray fileContents = file.readAll();
-#if COIN_MAJOR_VERSION >= 4
       stateMachine = ScXML::readBuffer(SbByteBuffer(fileContents.size(), fileContents.constData()));
-#else
-      stateMachine = ScXML::readBuffer(fileContents.constData());
-#endif
       file.close();
     }
   }

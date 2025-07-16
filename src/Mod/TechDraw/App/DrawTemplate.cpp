@@ -116,10 +116,9 @@ std::pair<int, int> DrawTemplate::getPageNumbers() const
     std::sort(pageNames.begin(), pageNames.end(), collator);
 
     int pos = 0;
-    DrawPage *page = getParentPage();
-    if (page) {
-        auto it = std::find(pageNames.begin(), pageNames.end(), QString::fromUtf8(page->Label.getValue()));
-        if (it != pageNames.end()) {
+    if (const DrawPage* page = getParentPage()) {
+        if (const auto it = std::ranges::find(pageNames, QString::fromUtf8(page->Label.getValue()));
+            it != pageNames.end()) {
             pos = it - pageNames.begin() + 1;
         }
     }

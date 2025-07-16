@@ -25,16 +25,21 @@
 #define GUI_VIEWPROVIDER_DRAGGER_H
 
 #include "ViewProviderDocumentObject.h"
+#include <Base/Placement.h>
+#include <App/PropertyGeo.h>
+#include <Base/Bitmask.h>
 
 class SoDragger;
 class SoTransform;
 
-namespace Base { class Placement;}
-
 namespace Gui {
 
+namespace TaskView {
+    class TaskDialog;
+}
+
+class SoTransformDragger;
 class View3DInventorViewer;
-class SoFCCSysDragger;
 
 /**
  * The base class for all view providers modifying the placement
@@ -52,6 +57,21 @@ public:
     /// destructor.
     ~ViewProviderDragger() override;
 
+    /// Origin used when object is transformed. It temporarily changes the origin of object.
+    /// Dragger is normally placed at the transform origin, unless explicitly overridden via
+    /// ViewProviderDragger#setDraggerPlacement() method.
+    App::PropertyPlacement TransformOrigin;
+
+    void attach(App::DocumentObject* pcObject) override;
+
+    /// Convenience method to obtain the transform origin
+    Base::Placement getTransformOrigin() const { return TransformOrigin.getValue(); }
+    /// Convenience method to set the transform origin
+    void setTransformOrigin(const Base::Placement& placement);
+    /// Resets transform origin to the object origin
+    void resetTransformOrigin();
+
+public:
     /** @name Edit methods */
     //@{
     bool doubleClicked() override;
@@ -63,25 +83,75 @@ public:
     /*! synchronize From FC placement to Coin placement*/
     static void updateTransform(const Base::Placement &from, SoTransform *to);
 
+    enum class DraggerComponent
+    {
+        None = 0,
+        XPos = 1 << 0,
+        YPos = 1 << 1,
+        ZPos = 1 << 2,
+        XRot = 1 << 3,
+        YRot = 1 << 4,
+        ZRot = 1 << 5,
+        All = XPos | YPos | ZPos | XRot | YRot | ZRot
+    };
+    using DraggerComponents = Base::Flags<DraggerComponent>;
+    /// updates placement of object based on dragger position and chosen axes components
+    void updatePlacementFromDragger(DraggerComponents components = DraggerComponent::All);
+    /// updates transform of object based on dragger position, can be used to preview movement
+    void updateTransformFromDragger();
+
+    /// Gets object placement relative to its coordinate system
+    Base::Placement getObjectPlacement() const;
+    /// Gets current dragger placement, including current dragger movement
+    Base::Placement getDraggerPlacement() const;
+    /// Gets original dragger placement, without current dragger movement
+    Base::Placement getOriginalDraggerPlacement() const;
+    /// Sets placement of dragger relative to objects origin
+    void setDraggerPlacement(const Base::Placement& placement);
+
 protected:
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
     void setEditViewer(View3DInventorViewer*, int ModNum) override;
     void unsetEditViewer(View3DInventorViewer*) override;
     //@}
-    SoFCCSysDragger *csysDragger = nullptr;
 
+    void onChanged(const App::Property* prop) override;
+
+    bool forwardToLink();
+
+    /// Gets placement property of the object
+    App::PropertyPlacement* getPlacementProperty() const;
+
+    /**
+     * Returns a newly create dialog for the part to be placed in the task view
+     * Must be reimplemented in subclasses.
+     */
+    virtual TaskView::TaskDialog* getTransformDialog();
+
+    CoinPtr<SoTransformDragger> transformDragger;
+    ViewProvider *forwardedViewProvider = nullptr;
+
+    CoinPtr<SoSwitch> pcPlacement;
 private:
-    static void dragFinishCallback(void * data, SoDragger * d);
-    static void updatePlacementFromDragger(ViewProviderDragger *sudoThis, SoFCCSysDragger *draggerIn);
+    static void dragStartCallback(void *data, SoDragger *d);
+    static void dragFinishCallback(void *data, SoDragger *d);
+    static void dragMotionCallback(void *data, SoDragger *d);
 
-    bool checkLink();
+    void updateDraggerPosition();
 
-    ViewProvider *_linkDragger = nullptr;
+    Base::Placement draggerPlacement { };
+
+    // Rotation by orthonormalizing depending on given axes components
+    Base::Rotation orthonormalize(Base::Vector3d x,
+                                  Base::Vector3d y,
+                                  Base::Vector3d z,
+                                  ViewProviderDragger::DraggerComponents components = DraggerComponent::All);
 };
 
 } // namespace Gui
 
+ENABLE_BITMASK_OPERATORS(Gui::ViewProviderDragger::DraggerComponent)
 
 #endif // GUI_VIEWPROVIDER_DRAGGER_H
 

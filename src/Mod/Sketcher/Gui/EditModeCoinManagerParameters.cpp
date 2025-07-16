@@ -24,6 +24,9 @@
 
 #include "Mod/Sketcher/App/ExternalGeometryFacade.h"
 
+#include <Base/Color.h>
+#include <Gui/ViewParams.h>
+
 #include "EditModeCoinManagerParameters.h"
 
 
@@ -38,9 +41,7 @@ int GeometryLayerParameters::getSubLayerIndex(const int geoId,
     if (isExternal) {
         auto egf = Sketcher::ExternalGeometryFacade::getFacade(geom->clone());
         if (egf->testFlag(Sketcher::ExternalGeometryExtension::Defining)) {
-            // Defining external are added to the Normal sublayers because they
-            // share the same line style.
-            return static_cast<int>(SubLayer::Normal);
+            return static_cast<int>(SubLayer::ExternalDefining);
         }
     }
 
@@ -50,10 +51,20 @@ int GeometryLayerParameters::getSubLayerIndex(const int geoId,
                                                  : SubLayer::Normal);
 }
 
-SbColor DrawingParameters::InformationColor(0.0f, 1.0f, 0.0f);       // #00FF00 -> (  0,255,  0)
-SbColor DrawingParameters::CreateCurveColor(0.5f, 0.5f, 0.5f);       // ##7f7f7f -> (127,127,127)
-SbColor DrawingParameters::CrossColorH(0.8f, 0.4f, 0.4f);            // #CC6666 -> (204,102,102)
-SbColor DrawingParameters::CrossColorV(0.47f, 1.0f, 0.51f);          // #83FF83 -> (120,255,131)
+SbColor DrawingParameters::InformationColor(0.0f, 1.0f, 0.0f);  // #00FF00 -> (  0,255,  0)
+SbColor DrawingParameters::CreateCurveColor(0.5f, 0.5f, 0.5f);  // ##7f7f7f -> (127,127,127)
+
+namespace
+{  // Anonymous namespace to avoid making those variables global
+unsigned long HColorLong = Gui::ViewParams::instance()->getAxisXColor();
+Base::Color Hcolor = Base::Color(static_cast<uint32_t>(HColorLong));
+
+unsigned long VColorLong = Gui::ViewParams::instance()->getAxisYColor();
+Base::Color Vcolor = Base::Color(static_cast<uint32_t>(VColorLong));
+}  // namespace
+SbColor DrawingParameters::CrossColorH(Hcolor.r, Hcolor.g, Hcolor.b);
+SbColor DrawingParameters::CrossColorV(Vcolor.r, Vcolor.g, Vcolor.b);
+
 SbColor DrawingParameters::InvalidSketchColor(1.0f, 0.42f, 0.0f);    // #FF6D00 -> (255,109,  0)
 SbColor DrawingParameters::FullyConstrainedColor(0.0f, 1.0f, 0.0f);  // #00FF00 -> (  0,255,  0)
 SbColor
@@ -69,7 +80,9 @@ SbColor DrawingParameters::PreselectColor(0.88f, 0.88f, 0.0f);           // #E1E
 SbColor DrawingParameters::SelectColor(0.11f, 0.68f, 0.11f);             // #1CAD1C -> ( 28,173, 28)
 SbColor DrawingParameters::PreselectSelectedColor(0.36f, 0.48f, 0.11f);  // #5D7B1C -> ( 93,123, 28)
 SbColor DrawingParameters::CurveExternalColor(0.8f, 0.2f, 0.6f);         // #CC3399 -> (204, 51,153)
-SbColor DrawingParameters::CurveDraftColor(0.0f, 0.0f, 0.86f);           // #0000DC -> (  0,  0,220)
+SbColor
+    DrawingParameters::CurveExternalDefiningColor(0.8f, 0.2f, 0.6f);  // #CC3399 -> (204, 51,153)
+SbColor DrawingParameters::CurveDraftColor(0.0f, 0.0f, 0.86f);        // #0000DC -> (  0,  0,220)
 SbColor
     DrawingParameters::FullyConstraintConstructionElementColor(0.56f,
                                                                0.66f,

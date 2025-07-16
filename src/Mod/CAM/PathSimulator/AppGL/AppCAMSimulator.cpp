@@ -71,7 +71,7 @@ PyMOD_INIT_FUNC(CAMSimulator)
 
     //
     PyObject* mod = CAMSimulator::initModule();
-    Base::Console().Log("Loading CAMSimulator module.... done\n");
+    Base::Console().log("Loading CAMSimulator module.... done\n");
 
     // Add Types to module
     Base::Interpreter().addType(&CAMSimulator::CAMSimPy::Type, mod, "PathSim");

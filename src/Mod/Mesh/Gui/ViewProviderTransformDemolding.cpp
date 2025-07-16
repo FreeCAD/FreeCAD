@@ -34,7 +34,7 @@
 #endif
 
 #include <Base/Console.h>
-#include <Gui/SoFCSelection.h>
+#include <Gui/Selection/SoFCSelection.h>
 
 #include <Mod/Mesh/App/Core/Iterator.h>
 #include <Mod/Mesh/App/MeshFeature.h>
@@ -170,7 +170,7 @@ void ViewProviderMeshTransformDemolding::DragEndCallback()
     SbRotation rot = pcTrackballDragger->rotation.getValue();
     calcMaterialIndex(rot);
 
-    Base::Console().Log("View: Finish dragging\n");
+    Base::Console().log("View: Finish dragging\n");
 }
 
 void ViewProviderMeshTransformDemolding::valueChangedCallback()

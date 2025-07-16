@@ -58,7 +58,7 @@ using namespace PartDesign;
 
 PROPERTY_SOURCE(PartDesign::Draft, PartDesign::DressUp)
 
-const App::PropertyAngle::Constraints Draft::floatAngle = { 0.0, 90.0 - Base::toDegrees<double>(Precision::Angular()), 0.1 };
+const App::PropertyAngle::Constraints Draft::floatAngle = { -90.0, 90.0 - Base::toDegrees<double>(Precision::Angular()), 0.1 };
 
 Draft::Draft()
 {
@@ -244,7 +244,7 @@ App::DocumentObjectExecReturn *Draft::execute()
                     if (c.GetType() != GeomAbs_Line)
                         throw Base::TypeError("Neutral plane reference edge must be linear");
                     double a = c.Line().Angle(gp_Lin(c.Value(c.FirstParameter()), pullDirection));
-                    if (std::fabs(a - M_PI_2) > Precision::Confusion())
+                    if (std::fabs(a - std::numbers::pi/2) > Precision::Confusion())
                         throw Base::ValueError("Neutral plane reference edge must be normal to pull direction");
                     neutralPlane = gp_Pln(c.Value(c.FirstParameter()), pullDirection);
                 } else {
@@ -301,7 +301,7 @@ App::DocumentObjectExecReturn *Draft::execute()
                     //       therefore unusable. See https://forum.freecad.org/viewtopic.php?f=10&t=3209&start=10#p25341
                     //       The only solution is to discard mkDraft and start over without the current face
                     // mkDraft.Remove(face);
-                    Base::Console().Error("Adding face failed on %s. Omitted\n", it->c_str());
+                    Base::Console().error("Adding face failed on %s. Omitted\n", it->c_str());
                     success = false;
                     SubVals.erase(it);
                     break;

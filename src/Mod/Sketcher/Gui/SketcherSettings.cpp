@@ -107,11 +107,12 @@ void SketcherSettings::saveSettings()
     ui->checkBoxAdvancedSolverTaskBox->onSave();
     ui->checkBoxRecalculateInitialSolutionWhileDragging->onSave();
     ui->checkBoxEnableEscape->onSave();
-    ui->checkBoxDisableShading->onSave();
     ui->checkBoxNotifyConstraintSubstitutions->onSave();
     ui->checkBoxAutoRemoveRedundants->onSave();
     ui->checkBoxUnifiedCoincident->onSave();
     ui->checkBoxHorVerAuto->onSave();
+    ui->checkBoxLineGroup->onSave();
+    ui->checkBoxAddExtGeo->onSave();
 
     enum
     {
@@ -164,6 +165,9 @@ void SketcherSettings::saveSettings()
     hGrp->SetBool("DimensioningDiameter", Diameter);
     hGrp->SetBool("DimensioningRadius", Radius);
 
+    index = ui->autoScaleMode->currentIndex();
+    hGrp->SetInt("AutoScaleMode", index);
+
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
 
@@ -179,13 +183,15 @@ void SketcherSettings::loadSettings()
     ui->checkBoxAdvancedSolverTaskBox->onRestore();
     ui->checkBoxRecalculateInitialSolutionWhileDragging->onRestore();
     ui->checkBoxEnableEscape->onRestore();
-    ui->checkBoxDisableShading->onRestore();
     ui->checkBoxNotifyConstraintSubstitutions->onRestore();
     ui->checkBoxAutoRemoveRedundants->onRestore();
     ui->checkBoxUnifiedCoincident->onRestore();
     setProperty("checkBoxUnifiedCoincident", ui->checkBoxUnifiedCoincident->isChecked());
     ui->checkBoxHorVerAuto->onRestore();
     setProperty("checkBoxHorVerAuto", ui->checkBoxHorVerAuto->isChecked());
+    ui->checkBoxAddExtGeo->onRestore();
+    setProperty("checkBoxLineGroup", ui->checkBoxLineGroup->isChecked());
+    ui->checkBoxAddExtGeo->onRestore();
 
     // Dimensioning constraints mode
     ui->dimensioningMode->clear();
@@ -218,6 +224,16 @@ void SketcherSettings::loadSettings()
     index = Diameter ? (Radius ? 0 : 1) : 2;
     ui->radiusDiameterMode->setCurrentIndex(index);
 
+
+    // The items have to be added in the same order
+    // as the AutoScaleMode enum
+    ui->autoScaleMode->clear();
+    ui->autoScaleMode->addItem(tr("Always"));
+    ui->autoScaleMode->addItem(tr("Never"));
+    ui->autoScaleMode->addItem(tr("When no scale feature is visible"));
+    index = hGrp->GetInt("AutoScaleMode", static_cast<int>(AutoScaleMode::Always));
+    ui->autoScaleMode->setCurrentIndex(index);
+
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
     ui->ovpVisibility->clear();
@@ -244,6 +260,9 @@ void SketcherSettings::checkForRestart()
         SketcherSettings::requireRestart();
     }
     if (property("checkBoxHorVerAuto").toBool() != ui->checkBoxHorVerAuto->isChecked()) {
+        SketcherSettings::requireRestart();
+    }
+    if (property("checkBoxLineGroup").toBool() != ui->checkBoxLineGroup->isChecked()) {
         SketcherSettings::requireRestart();
     }
 }
@@ -274,6 +293,8 @@ void SketcherSettings::resetSettingsToDefaults()
     // reset "radius/diameter mode for dimensioning" parameter
     hGrp->RemoveBool("DimensioningDiameter");
     hGrp->RemoveBool("DimensioningRadius");
+
+    hGrp->RemoveInt("AutoScaleMode");
 
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
@@ -485,8 +506,8 @@ void SketcherSettingsDisplay::onBtnTVApplyClicked(bool)
                                 this->ui->checkBoxTVSectionView->isChecked() ? "True" : "False");
     }
     catch (Base::PyException& e) {
-        Base::Console().DeveloperError("SketcherSettings", "error in onBtnTVApplyClicked:\n");
-        e.ReportException();
+        Base::Console().developerError("SketcherSettings", "error in onBtnTVApplyClicked:\n");
+        e.reportException();
         errMsg = QString::fromLatin1(e.what());
     }
     catch (...) {
@@ -512,6 +533,7 @@ SketcherSettingsAppearance::SketcherSettingsAppearance(QWidget* parent)
     ui->ConstructionPattern->setIconSize(QSize(70, 12));
     ui->InternalPattern->setIconSize(QSize(70, 12));
     ui->ExternalPattern->setIconSize(QSize(70, 12));
+    ui->ExternalDefiningPattern->setIconSize(QSize(70, 12));
     for (auto& style : styles) {
         QPixmap px(ui->EdgePattern->iconSize());
         px.fill(Qt::transparent);
@@ -531,6 +553,7 @@ SketcherSettingsAppearance::SketcherSettingsAppearance(QWidget* parent)
         ui->ConstructionPattern->addItem(QIcon(px), QString(), QVariant(style));
         ui->InternalPattern->addItem(QIcon(px), QString(), QVariant(style));
         ui->ExternalPattern->addItem(QIcon(px), QString(), QVariant(style));
+        ui->ExternalDefiningPattern->addItem(QIcon(px), QString(), QVariant(style));
     }
 }
 
@@ -550,6 +573,7 @@ void SketcherSettingsAppearance::saveSettings()
     ui->EditedEdgeColor->onSave();
     ui->ConstructionColor->onSave();
     ui->ExternalColor->onSave();
+    ui->ExternalDefiningColor->onSave();
     ui->InvalidSketchColor->onSave();
     ui->FullyConstrainedColor->onSave();
     ui->InternalAlignedGeoColor->onSave();
@@ -571,6 +595,7 @@ void SketcherSettingsAppearance::saveSettings()
     ui->ConstructionWidth->onSave();
     ui->InternalWidth->onSave();
     ui->ExternalWidth->onSave();
+    ui->ExternalDefiningWidth->onSave();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/View");
@@ -589,6 +614,10 @@ void SketcherSettingsAppearance::saveSettings()
     data = ui->ExternalPattern->itemData(ui->ExternalPattern->currentIndex());
     pattern = data.toInt();
     hGrp->SetInt("ExternalPattern", pattern);
+
+    data = ui->ExternalDefiningPattern->itemData(ui->ExternalDefiningPattern->currentIndex());
+    pattern = data.toInt();
+    hGrp->SetInt("ExternalDefiningPattern", pattern);
 }
 
 void SketcherSettingsAppearance::loadSettings()
@@ -599,6 +628,7 @@ void SketcherSettingsAppearance::loadSettings()
     ui->EditedEdgeColor->onRestore();
     ui->ConstructionColor->onRestore();
     ui->ExternalColor->onRestore();
+    ui->ExternalDefiningColor->onRestore();
     ui->InvalidSketchColor->onRestore();
     ui->FullyConstrainedColor->onRestore();
     ui->InternalAlignedGeoColor->onRestore();
@@ -620,6 +650,7 @@ void SketcherSettingsAppearance::loadSettings()
     ui->ConstructionWidth->onRestore();
     ui->InternalWidth->onRestore();
     ui->ExternalWidth->onRestore();
+    ui->ExternalDefiningWidth->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/View");
@@ -650,6 +681,13 @@ void SketcherSettingsAppearance::loadSettings()
         index = 0;
     }
     ui->ExternalPattern->setCurrentIndex(index);
+
+    pattern = hGrp->GetInt("ExternalDefiningPattern", 0b1111111111111111);
+    index = ui->ExternalDefiningPattern->findData(QVariant(pattern));
+    if (index < 0) {
+        index = 0;
+    }
+    ui->ExternalDefiningPattern->setCurrentIndex(index);
 }
 
 /**

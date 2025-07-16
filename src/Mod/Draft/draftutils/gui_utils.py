@@ -120,71 +120,66 @@ def autogroup(obj):
                 return
 
     # autogroup code
-    active_group = None
     if Gui.draftToolBar.autogroup is not None:
         active_group = App.ActiveDocument.getObject(Gui.draftToolBar.autogroup)
-        if active_group:
-            gr = active_group.Group
-            if not obj in gr:
-                gr.append(obj)
-                active_group.Group = gr
+        if obj in active_group.InListRecursive:
+            return
+        if not obj in active_group.Group:
+            active_group.Group += [obj]
 
-    if Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") is not None:
+    elif Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") is not None:
         # NativeIFC handling
         try:
             from nativeifc import ifc_tools
             parent = Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
-            if parent != active_group:
-                ifc_tools.aggregate(obj, parent)
+            ifc_tools.aggregate(obj, parent)
         except:
             pass
 
     elif Gui.ActiveDocument.ActiveView.getActiveObject("Arch") is not None:
         # add object to active Arch Container
         active_arch_obj = Gui.ActiveDocument.ActiveView.getActiveObject("Arch")
-        if active_arch_obj != active_group:
-            if obj in active_arch_obj.InListRecursive:
-                # do not autogroup if obj points to active_arch_obj to prevent cyclic references
-                return
-            active_arch_obj.addObject(obj)
+        if obj in active_arch_obj.InListRecursive:
+            # do not autogroup if obj points to active_arch_obj to prevent cyclic references
+            return
+        active_arch_obj.addObject(obj)
 
     elif Gui.ActiveDocument.ActiveView.getActiveObject("part") is not None:
         # add object to active part and change it's placement accordingly
         # so object does not jump to different position, works with App::Link
         # if not scaled. Modified accordingly to realthunder suggestions
         active_part, parent, sub = Gui.ActiveDocument.ActiveView.getActiveObject("part", False)
-        if active_part != active_group:
-            if obj in active_part.InListRecursive:
-                # do not autogroup if obj points to active_part to prevent cyclic references
-                return
-            matrix = parent.getSubObject(sub, retType=4)
-            if matrix.hasScale() == App.ScaleType.Uniform:
-                err = translate("draft",
-                                "Unable to insert new object into "
-                                "a scaled part")
-                App.Console.PrintMessage(err)
-                return
-            inverse_placement = App.Placement(matrix.inverse())
-            if utils.get_type(obj) == 'Point':
-                point_vector = App.Vector(obj.X, obj.Y, obj.Z)
-                real_point = inverse_placement.multVec(point_vector)
-                obj.X = real_point.x
-                obj.Y = real_point.y
-                obj.Z = real_point.z
-            elif utils.get_type(obj) in ["Dimension", "LinearDimension"]:
-                obj.Start = inverse_placement.multVec(obj.Start)
-                obj.End = inverse_placement.multVec(obj.End)
-                obj.Dimline = inverse_placement.multVec(obj.Dimline)
-                obj.Normal = inverse_placement.Rotation.multVec(obj.Normal)
-                obj.Direction = inverse_placement.Rotation.multVec(obj.Direction)
-            elif utils.get_type(obj) in ["Label"]:
-                obj.Placement = App.Placement(inverse_placement.multiply(obj.Placement))
-                obj.TargetPoint = inverse_placement.multVec(obj.TargetPoint)
-            elif hasattr(obj,"Placement"):
-                # every object that have a placement is processed here
-                obj.Placement = App.Placement(inverse_placement.multiply(obj.Placement))
+        if obj in active_part.InListRecursive:
+            # do not autogroup if obj points to active_part to prevent cyclic references
+            return
+        matrix = parent.getSubObject(sub, retType=4)
+        if matrix.hasScale() == App.ScaleType.Uniform:
+            err = translate("draft",
+                            "Unable to insert new object into "
+                            "a scaled part")
+            App.Console.PrintMessage(err)
+            return
+        inverse_placement = App.Placement(matrix.inverse())
+        if utils.get_type(obj) == 'Point':
+            point_vector = App.Vector(obj.X, obj.Y, obj.Z)
+            real_point = inverse_placement.multVec(point_vector)
+            obj.X = real_point.x
+            obj.Y = real_point.y
+            obj.Z = real_point.z
+        elif utils.get_type(obj) in ["Dimension", "LinearDimension"]:
+            obj.Start = inverse_placement.multVec(obj.Start)
+            obj.End = inverse_placement.multVec(obj.End)
+            obj.Dimline = inverse_placement.multVec(obj.Dimline)
+            obj.Normal = inverse_placement.Rotation.multVec(obj.Normal)
+            obj.Direction = inverse_placement.Rotation.multVec(obj.Direction)
+        elif utils.get_type(obj) in ["Label"]:
+            obj.Placement = App.Placement(inverse_placement.multiply(obj.Placement))
+            obj.TargetPoint = inverse_placement.multVec(obj.TargetPoint)
+        elif hasattr(obj,"Placement"):
+            # every object that have a placement is processed here
+            obj.Placement = App.Placement(inverse_placement.multiply(obj.Placement))
 
-            active_part.addObject(obj)
+        active_part.addObject(obj)
 
 
 def dim_symbol(symbol=None, invert=False):
@@ -376,16 +371,16 @@ def get_diffuse_color(objs):
                 if obj.ColoredElements is None:
                     return cols
                 face_num = len(base.Shape.Faces)
-                for elm, overide in zip(obj.ColoredElements[1], obj.ViewObject.OverrideColorList):
+                for elm, override in zip(obj.ColoredElements[1], obj.ViewObject.OverrideColorList):
                     if "Face" in elm: # Examples: "Face3" and "1.Face6". Int before "." is zero-based, other int is 1-based.
                         if "." in elm:
                             elm0, elm1 = elm.split(".")
                             i = (int(elm0) * face_num) + int(elm1[4:]) - 1
-                            cols[i] = overide
+                            cols[i] = override
                         else:
                             i = int(elm[4:]) - 1
                             for j in range(count):
-                                cols[(j * face_num) + i] = overide
+                                cols[(j * face_num) + i] = override
                 return cols
             elif hasattr(obj, "ElementList"):
                 # LinkGroup
@@ -395,10 +390,10 @@ def get_diffuse_color(objs):
                     if obj.ColoredElements is None:
                         cols += sub_cols
                     else:
-                        for elm, overide in zip(obj.ColoredElements[1], obj.ViewObject.OverrideColorList):
+                        for elm, override in zip(obj.ColoredElements[1], obj.ViewObject.OverrideColorList):
                             if sub.Name + ".Face" in elm:
                                 i = int(elm[(len(sub.Name) + 5):]) - 1
-                                sub_cols[i] = overide
+                                sub_cols[i] = override
                         cols += sub_cols
                 return cols
             else:
@@ -465,8 +460,6 @@ def apply_current_style(objs):
                 if style[prop][0] == "index":
                     if style[prop][2] in vobj.getEnumerationsOfProperty(prop):
                         setattr(vobj, prop, style[prop][2])
-                elif style[prop][0] == "color":
-                    setattr(vobj, prop, style[prop][1] & 0xFFFFFF00)
                 else:
                     setattr(vobj, prop, style[prop][1])
 
@@ -504,7 +497,7 @@ def restore_view_object(obj, vp_module, vp_class, format=True, format_ref=None):
             format_object(obj, format_ref)
 
 
-def format_object(target, origin=None):
+def format_object(target, origin=None, ignore_construction=False):
     """Apply visual properties to an object.
 
     This function only works if the graphical interface is available.
@@ -526,6 +519,10 @@ def format_object(target, origin=None):
         If construction mode is not active, its visual properties are assigned
         to `target`, with the exception of `BoundingBox`, `Proxy`, `RootNode`
         and `Visibility`.
+
+    ignore_construction: bool, optional
+        Defaults to `False`.
+        Set to `True` to ignore construction mode.
     """
     if not target:
         return
@@ -533,30 +530,38 @@ def format_object(target, origin=None):
         return
     if not hasattr(Gui, "draftToolBar"):
         return
-    if not hasattr(target, 'ViewObject'):
+    if not hasattr(target, "ViewObject"):
         return
+    if hasattr(target, "Shape") and target.Shape.Faces:
+        len_faces = len(target.Shape.Faces)
+    else:
+        len_faces = 1
     obrep = target.ViewObject
     obprops = obrep.PropertiesList
-    if origin and hasattr(origin, 'ViewObject'):
+    if origin and hasattr(origin, "ViewObject"):
         matchrep = origin.ViewObject
         for p in matchrep.PropertiesList:
-            if p not in ("DisplayMode", "BoundingBox",
-                         "Proxy", "RootNode", "Visibility"):
-                if p in obprops:
-                    if not obrep.getEditorMode(p):
-                        if hasattr(getattr(matchrep, p), "Value"):
-                            val = getattr(matchrep, p).Value
-                        else:
-                            val = getattr(matchrep, p)
-                        try:
-                            setattr(obrep, p, val)
-                        except Exception:
-                            pass
+            if p in ("DisplayMode", "BoundingBox", "Proxy", "RootNode", "Visibility"):
+                continue
+            if p not in obprops:
+                continue
+            if obrep.getEditorMode(p):
+                continue
+            val = getattr(matchrep, p)
+            if isinstance(val, tuple):
+                if len(val) != len_faces:
+                    val = (val[0], )
+            elif hasattr(val, "Value"):
+                val = val.Value
+            try:
+                setattr(obrep, p, val)
+            except Exception:
+                pass
         if matchrep.DisplayMode in obrep.listDisplayModes():
             obrep.DisplayMode = matchrep.DisplayMode
         if hasattr(obrep, "DiffuseColor"):
             difcol = get_diffuse_color(origin)
-            if difcol:
+            if difcol and len(difcol) == len_faces:
                 obrep.DiffuseColor = difcol
     elif "FontName" not in obprops:
         # Apply 2 Draft style preferences, other style preferences are applied by Core.
@@ -566,9 +571,11 @@ def format_object(target, origin=None):
             dm = utils.DISPLAY_MODES[params.get_param("DefaultDisplayMode")]
             if dm in obrep.listDisplayModes():
                 obrep.DisplayMode = dm
+    if ignore_construction:
+        return
     if Gui.draftToolBar.isConstructionMode():
         doc = App.ActiveDocument
-        col = params.get_param("constructioncolor") & 0xFFFFFF00
+        col = params.get_param("constructioncolor") | 0x000000FF
         grp = doc.getObject("Draft_Construction")
         if not grp:
             grp = doc.addObject("App::DocumentObjectGroup", "Draft_Construction")
@@ -678,10 +685,12 @@ def select(objs=None, gui=App.GuiUp):
 
     Parameters
     ----------
-    objs: list of App::DocumentObject, optional
+    objs: list of App::DocumentObjects or tuples, or a single object or tuple, optional
         It defaults to `None`.
-        Any type of scripted object.
-        It may be a list of objects or a single object.
+        Format for tuples:
+        `(doc.Name or "", sel.Object.Name, sel.SubElementName or "")`
+        For example (Box nested in Part):
+        `("", "Part", "Box.Edge1")`
 
     gui: bool, optional
         It defaults to the value of `App.GuiUp`, which is `True`
@@ -692,12 +701,25 @@ def select(objs=None, gui=App.GuiUp):
     """
     if gui:
         Gui.Selection.clearSelection()
-        if objs:
+        if objs is not None:
             if not isinstance(objs, list):
                 objs = [objs]
             for obj in objs:
-                if obj:
-                    Gui.Selection.addSelection(obj)
+                if not obj:
+                    continue
+                if isinstance(obj, tuple):
+                    # Example of tuple (Rectangle in Part):
+                    #   ("", "Part", "Rectangle.")
+                    # See:
+                    #   utils._modifiers_process_selection()
+                    #   utils._modifiers_process_subselection()
+                    parent = App.ActiveDocument.getObject(obj[1])
+                    if parent and parent.getSubObject(obj[2]):
+                        Gui.Selection.addSelection(*obj)
+                    continue
+                if utils.is_deleted(obj):
+                    continue
+                Gui.Selection.addSelection(obj)
 
 
 def load_texture(filename, size=None, gui=App.GuiUp):

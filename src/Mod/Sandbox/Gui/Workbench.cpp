@@ -34,8 +34,6 @@
 # include <Inventor/SbLinear.h>
 #endif
 
-#include <QtOpenGL.h>
-
 #include "Workbench.h"
 #include <App/Application.h>
 #include <Gui/MenuManager.h>
@@ -54,7 +52,7 @@ Workbench::Workbench()
 {
     // Tree view
     Gui::DockWindow* tree = new Gui::DockWindow(0, Gui::getMainWindow());
-    tree->setWindowTitle(QString::fromLatin1("Tree view"));
+    tree->setWindowTitle(QStringLiteral("Tree view"));
     Gui::TreeView* treeWidget = new Gui::TreeView(tree);
     treeWidget->setRootIsDecorated(false);
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");

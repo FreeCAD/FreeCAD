@@ -30,8 +30,10 @@
 
 #include <Base/Parameter.h>
 #include <Base/Tools2D.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/ToolHandler.h>
+#include <Gui/InputHint.h>
+
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/Constraint.h>
 
@@ -145,6 +147,7 @@ public:
     virtual ~DrawSketchHandler();
 
     void activate(ViewProviderSketch*);
+    void setSketchGui(ViewProviderSketch* vp);
     void deactivate() override;
 
     virtual void mouseMove(Base::Vector2d pos) = 0;
@@ -159,6 +162,10 @@ public:
         return false;
     }
 
+    virtual std::list<Gui::InputHint> getToolHints() const
+    {
+        return {};
+    }
     void quit() override;
 
     friend class ViewProviderSketch;
@@ -206,7 +213,7 @@ public:
     std::unique_ptr<QWidget> createToolWidget() const;
 
     /** @brief Returns whether this tool expects/supports a visible tool widget. Emphasis is in
-     * visibility, so to allow to adapt the interface accordingly.
+     * visibility, so to allow one to adapt the interface accordingly.
      * This is an NVI interface and specific handlers must overload the corresponding virtual
      * function.
      */
@@ -271,6 +278,31 @@ protected:
 
     void signalToolChanged() const;
 
+    // Helpers for seekAutoConstraint :
+    // Helper structure to hold preselection data
+    struct PreselectionData
+    {
+        int geoId = Sketcher::GeoEnum::GeoUndef;
+        Sketcher::PointPos posId = Sketcher::PointPos::none;
+        // direction of hit shape (if it is a line, the direction of the line)
+        Base::Vector3d hitShapeDir = Base::Vector3d(0, 0, 0);
+        bool isLine = false;
+    };
+    PreselectionData getPreselectionData();
+
+    void seekPreselectionAutoConstraint(std::vector<AutoConstraint>& constraints,
+                                        const Base::Vector2d& Pos,
+                                        const Base::Vector2d& Dir,
+                                        AutoConstraint::TargetType type);
+
+    bool isLineCenterAutoConstraint(int GeoId, const Base::Vector2d& Pos) const;
+
+    void seekAlignmentAutoConstraint(std::vector<AutoConstraint>& constraints,
+                                     const Base::Vector2d& Dir);
+
+    void seekTangentAutoConstraint(std::vector<AutoConstraint>& constraints,
+                                   const Base::Vector2d& Pos,
+                                   const Base::Vector2d& Dir);
 
 protected:
     /**

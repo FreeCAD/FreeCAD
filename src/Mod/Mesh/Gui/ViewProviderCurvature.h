@@ -54,9 +54,9 @@ class PropertyCurvatureList;
 namespace MeshGui
 {
 
-/** The ViewProviderMeshCurvature class is associated to the mesh curvature feature. It allows to
- * display the most known types of curvatures, such as Gaussian curvature, mean curvature, minimum
- * and maximum curvature. Moreover a color bar is also added to the scene.
+/** The ViewProviderMeshCurvature class is associated to the mesh curvature feature. It allows one
+ * to display the most known types of curvatures, such as Gaussian curvature, mean curvature,
+ * minimum and maximum curvature. Moreover a color bar is also added to the scene.
  *
  * @author Werner Mayer
  */

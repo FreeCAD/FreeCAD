@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *   Copyright (c) 2025 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -21,43 +22,27 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 """Unit tests for the Draft Workbench, object creation tests."""
+
 ## @package test_creation
 # \ingroup drafttests
 # \brief Unit tests for the Draft Workbench, object creation tests.
 
 ## \addtogroup drafttests
 # @{
-import unittest
+
 import math
 
 import FreeCAD as App
 import Draft
-import drafttests.auxiliary as aux
-
 from FreeCAD import Vector
+from drafttests import test_base
 from draftutils.messages import _msg
 
 
-class DraftCreation(unittest.TestCase):
+class DraftCreation(test_base.DraftTestCaseDoc):
     """Test Draft creation functions."""
-
-    def setUp(self):
-        """Set up a new document to hold the tests.
-
-        This is executed before every test, so we create a document
-        to hold the objects.
-        """
-        aux.draw_header()
-        doc_name = self.__class__.__name__
-        if App.ActiveDocument:
-            if App.ActiveDocument.Name != doc_name:
-                App.newDocument(doc_name)
-        else:
-            App.newDocument(doc_name)
-        App.setActiveDocument(doc_name)
-        self.doc = App.ActiveDocument
-        _msg("  Temporary document '{}'".format(self.doc.Name))
 
     def test_line(self):
         """Create a line."""
@@ -282,7 +267,7 @@ class DraftCreation(unittest.TestCase):
         _msg("  or an App::PropertyLinkSubList")
 
         _msg("  Box")
-        box = App.ActiveDocument.addObject("Part::Box")
+        box = self.doc.addObject("Part::Box")
         self.doc.recompute()
         # The facebinder function accepts a Gui selection set,
         # or a 'PropertyLinkSubList'
@@ -378,14 +363,14 @@ class DraftCreation(unittest.TestCase):
         _msg("  length={0}, width={1}".format(length, width))
         rect = Draft.make_rectangle(length, width)
         rect.MakeFace = True
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
 
         patfile = App.getResourceDir() + "Mod/TechDraw/PAT/FCPAT.pat"
         patname = "Horizontal5"
         _msg("  patfile='{0}'".format(patfile))
         _msg("  patname='{0}'".format(patname))
         obj = Draft.make_hatch(rect, patfile, patname, scale=1, rotation=45)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
 
         box = obj.Shape.BoundBox
         # A rather high tolerance is required.
@@ -393,12 +378,5 @@ class DraftCreation(unittest.TestCase):
                       and math.isclose(box.XLength, length, rel_tol=0, abs_tol=1e-6)
                       and math.isclose(box.YLength, width, rel_tol=0, abs_tol=1e-6))
         self.assertTrue(obj_is_ok, "'{}' failed".format(operation))
-
-    def tearDown(self):
-        """Finish the test.
-
-        This is executed after each test, so we close the document.
-        """
-        App.closeDocument(self.doc.Name)
 
 ## @}

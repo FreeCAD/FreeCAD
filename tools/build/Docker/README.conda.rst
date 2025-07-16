@@ -9,7 +9,7 @@ Build and run the `freecad-conda` container with the following commands:
 
 .. code-block:: console
 
-    docker build --file tools/build/Dockerfile.Conda --tag freecad-conda
+    docker build --file tools/build/Docker/Dockerfile.Conda --tag freecad-conda .
     docker run --rm --interactive --tty --volume $(pwd):/builds:z freecad-conda
 
 Build Code

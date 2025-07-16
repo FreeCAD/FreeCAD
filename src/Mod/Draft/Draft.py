@@ -54,12 +54,6 @@ from draftutils.utils import ARROW_TYPES as arrowtypes
 
 from draftutils.utils import (type_check,
                               typecheck,
-                              get_param_type,
-                              getParamType,
-                              get_param,
-                              getParam,
-                              set_param,
-                              setParam,
                               precision,
                               tolerance)
 
@@ -78,7 +72,6 @@ from draftutils.utils import (get_real_name,
                               compare_objects,
                               compareObjects,
                               shapify,
-                              filter_objects_for_modifiers,
                               is_closed_edge)
 
 from draftutils.utils import (string_encode_coin,
@@ -154,20 +147,17 @@ from draftfunctions.heal import heal
 from draftfunctions.move import (move,
                                  move_vertex,
                                  move_edge,
-                                 copy_moved_edge,
-                                 copy_moved_edges)
+                                 copy_moved_edge)
 
 from draftfunctions.rotate import (rotate,
                                    rotate_vertex,
                                    rotate_edge,
-                                   copy_rotated_edge,
-                                   copy_rotated_edges)
+                                   copy_rotated_edge)
 
 from draftfunctions.scale import (scale,
                                   scale_vertex,
                                   scale_edge,
-                                  copy_scaled_edge,
-                                  copy_scaled_edges)
+                                  copy_scaled_edge)
 
 from draftfunctions.join import (join_wires,
                                  joinWires,
@@ -371,7 +361,8 @@ if App.GuiUp:
     from draftviewproviders.view_fillet import ViewProviderFillet
 
 from draftobjects.layer import (Layer,
-                                _VisGroup)
+                                _VisGroup,
+                                get_layer)
 
 from draftmake.make_layer import make_layer
 

@@ -136,7 +136,7 @@ Py::Object DocumentProtectorPy::addObject(const Py::Tuple& args)
     if (!obj) {
         std::string s;
         std::ostringstream s_out;
-        s_out << "Couldn't create an object of type '" << type << "'";
+        s_out << "Could not create an object of type '" << type << "'";
         throw Py::RuntimeError(s_out.str());
     }
     //return Py::asObject(obj->getPyObject());
@@ -211,10 +211,6 @@ Py::Object DocumentObjectProtectorPy::getattr(const char * attr)
         App::Property* prop = obj->getPropertyByName(attr);
         if (!prop) {
             return Py::PythonExtension<DocumentObjectProtectorPy>::getattr(attr);
-            //std::string s;
-            //std::ostringstream s_out;
-            //s_out << "No such attribute '" << attr << "'";
-            //throw Py::AttributeError(s_out.str());
         }
 
         return Py::asObject(prop->getPyObject());

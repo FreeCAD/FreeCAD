@@ -1,50 +1,30 @@
-#***************************************************************************
-#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
-import os
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
 
-import FreeCAD
-import ArchCommands
-import ArchComponent
-import Draft
-import DraftVecUtils
-import ArchWindowPresets
-from FreeCAD import Units
-from FreeCAD import Vector
-from draftutils import params
-from draftutils.messages import _wrn
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore, QtGui
-    from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-    import draftguitools.gui_trackers as DraftTrackers
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
-    # \endcond
+__title__  = "FreeCAD Window"
+__author__ = "Yorik van Havre"
+__url__    = "https://www.freecad.org"
 
 ## @package ArchWindow
 #  \ingroup ARCH
@@ -55,17 +35,39 @@ else:
 #  of wires, and that can be inserted into other Arch objects,
 #  by defining a volume that gets subtracted from them.
 
-__title__  = "FreeCAD Window"
-__author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
+import os
+
+import FreeCAD
+import ArchCommands
+import ArchComponent
+import ArchWindowPresets
+import Draft
+import DraftVecUtils
+
+from FreeCAD import Units
+from FreeCAD import Vector
+from draftutils import params
+from draftutils.messages import _wrn
+
+if FreeCAD.GuiUp:
+    from PySide import QtCore, QtGui
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    import draftguitools.gui_trackers as DraftTrackers
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
 
 # presets
 WindowPartTypes = ["Frame","Solid panel","Glass panel","Louvre"]
 WindowOpeningModes = ["None","Arc 90","Arc 90 inv","Arc 45","Arc 45 inv","Arc 180",
                       "Arc 180 inv","Triangle","Triangle inv","Sliding","Sliding inv"]
 WindowPresets = ArchWindowPresets.WindowPresets
-
-
 
 
 def recolorize(attr): # names is [docname,objname]
@@ -96,12 +98,17 @@ class _Window(ArchComponent.Component):
     def __init__(self,obj):
 
         ArchComponent.Component.__init__(self,obj)
+        self.Type = "Window"
         self.setProperties(obj)
         obj.IfcType = "Window"
         obj.MoveWithHost = True
 
         # Add features in the SketchArch External Add-on
         self.addSketchArchFeatures(obj)
+
+        # Initialize those two values later on during first onChanged call
+        self.baseSill = None
+        self.basePos = None
 
     def addSketchArchFeatures(self,obj,linkObj=None,mode=None):
         '''
@@ -119,57 +126,78 @@ class _Window(ArchComponent.Component):
         except:
             pass
 
-    def setProperties(self,obj):
+    def setProperties(self,obj,mode=None):
 
         lp = obj.PropertiesList
         if not "Hosts" in lp:
-            obj.addProperty("App::PropertyLinkList","Hosts","Window",QT_TRANSLATE_NOOP("App::Property","The objects that host this window"))
+            obj.addProperty("App::PropertyLinkList","Hosts","Window",QT_TRANSLATE_NOOP("App::Property","The objects that host this window"), locked=True)
         if not "WindowParts" in lp:
-            obj.addProperty("App::PropertyStringList","WindowParts","Window",QT_TRANSLATE_NOOP("App::Property","The components of this window"))
+            obj.addProperty("App::PropertyStringList","WindowParts","Window",QT_TRANSLATE_NOOP("App::Property","The components of this window"), locked=True)
             obj.setEditorMode("WindowParts",2)
         if not "HoleDepth" in lp:
-            obj.addProperty("App::PropertyLength","HoleDepth","Window",QT_TRANSLATE_NOOP("App::Property","The depth of the hole that this window makes in its host object. If 0, the value will be calculated automatically."))
+            obj.addProperty("App::PropertyLength","HoleDepth","Window",QT_TRANSLATE_NOOP("App::Property","The depth of the hole that this window makes in its host object. If 0, the value will be calculated automatically."), locked=True)
         if not "Subvolume" in lp:
-            obj.addProperty("App::PropertyLink","Subvolume","Window",QT_TRANSLATE_NOOP("App::Property","An optional object that defines a volume to be subtracted from hosts of this window"))
+            obj.addProperty("App::PropertyLink","Subvolume","Window",QT_TRANSLATE_NOOP("App::Property","An optional object that defines a volume to be subtracted from hosts of this window"), locked=True)
         if not "Width" in lp:
-            obj.addProperty("App::PropertyLength","Width","Window",QT_TRANSLATE_NOOP("App::Property","The width of this window"))
+            obj.addProperty("App::PropertyLength","Width","Window",QT_TRANSLATE_NOOP("App::Property","The width of this window"), locked=True)
         if not "Height" in lp:
-            obj.addProperty("App::PropertyLength","Height","Window",QT_TRANSLATE_NOOP("App::Property","The height of this window"))
+            obj.addProperty("App::PropertyLength","Height","Window",QT_TRANSLATE_NOOP("App::Property","The height of this window"), locked=True)
+        if not "Sill" in lp:
+            obj.addProperty("App::PropertyLength","Sill","Window",QT_TRANSLATE_NOOP("App::Property","The height of this window's sill"), locked=True)
         if not "Normal" in lp:
-            obj.addProperty("App::PropertyVector","Normal","Window",QT_TRANSLATE_NOOP("App::Property","The normal direction of this window"))
+            obj.addProperty("App::PropertyVector","Normal","Window",QT_TRANSLATE_NOOP("App::Property","The normal direction of this window"), locked=True)
+        # Automatic Normal Reverse
+        if not "AutoNormalReversed" in lp:
+            obj.addProperty("App::PropertyBool","AutoNormalReversed","Window",QT_TRANSLATE_NOOP("App::Property","When normal direction is in auto mode (0,0,0), use reversed normal direction of the Base Sketch, i.e. -z."), locked=True)
+            if mode == 'ODR':
+                obj.AutoNormalReversed = False  # To maintain auto extrusion behaviour before introduction of this flag, this remains False if this is called by onDocumentRestored()
+            elif mode == None:
+                obj.AutoNormalReversed = True  # To enable new extrusion behaviour which is consistent with Window intuitive creation tool after introduction of this flag, this is set True.
         if not "Preset" in lp:
-            obj.addProperty("App::PropertyInteger","Preset","Window",QT_TRANSLATE_NOOP("App::Property","The preset number this window is based on"))
+            obj.addProperty("App::PropertyInteger","Preset","Window",QT_TRANSLATE_NOOP("App::Property","The preset number this window is based on"), locked=True)
             obj.setEditorMode("Preset",2)
         if not "Frame" in lp:
-            obj.addProperty("App::PropertyLength","Frame","Window",QT_TRANSLATE_NOOP("App::Property","The frame size of this window"))
+            obj.addProperty("App::PropertyLength","Frame","Window",QT_TRANSLATE_NOOP("App::Property",
+                                                                                     "The frame depth of this window. Measured from front face to back face horizontally (i.e. perpendicular to the window elevation plane)."),
+                                                                                     locked=True)
         if not "Offset" in lp:
-            obj.addProperty("App::PropertyLength","Offset","Window",QT_TRANSLATE_NOOP("App::Property","The offset size of this window"))
+            obj.addProperty("App::PropertyLength","Offset","Window",QT_TRANSLATE_NOOP("App::Property","The offset size of this window"), locked=True)
         if not "Area" in lp:
-            obj.addProperty("App::PropertyArea","Area","Window",QT_TRANSLATE_NOOP("App::Property","The area of this window"))
+            obj.addProperty("App::PropertyArea","Area","Window",QT_TRANSLATE_NOOP("App::Property","The area of this window"), locked=True)
         if not "LouvreWidth" in lp:
-            obj.addProperty("App::PropertyLength","LouvreWidth","Window",QT_TRANSLATE_NOOP("App::Property","The width of louvre elements"))
+            obj.addProperty("App::PropertyLength","LouvreWidth","Window",QT_TRANSLATE_NOOP("App::Property","The width of louvre elements"), locked=True)
         if not "LouvreSpacing" in lp:
-            obj.addProperty("App::PropertyLength","LouvreSpacing","Window",QT_TRANSLATE_NOOP("App::Property","The space between louvre elements"))
+            obj.addProperty("App::PropertyLength","LouvreSpacing","Window",QT_TRANSLATE_NOOP("App::Property","The space between louvre elements"), locked=True)
         if not "Opening" in lp:
-            obj.addProperty("App::PropertyPercent","Opening","Window",QT_TRANSLATE_NOOP("App::Property","Opens the subcomponents that have a hinge defined"))
+            obj.addProperty("App::PropertyPercent","Opening","Window",QT_TRANSLATE_NOOP("App::Property","Opens the subcomponents that have a hinge defined"), locked=True)
         if not "HoleWire" in lp:
-            obj.addProperty("App::PropertyInteger","HoleWire","Window",QT_TRANSLATE_NOOP("App::Property","The number of the wire that defines the hole. If 0, the value will be calculated automatically"))
+            obj.addProperty("App::PropertyInteger","HoleWire","Window",QT_TRANSLATE_NOOP("App::Property","The number of the wire that defines the hole. If 0, the value will be calculated automatically"), locked=True)
         if not "SymbolPlan" in lp:
-            obj.addProperty("App::PropertyBool","SymbolPlan","Window",QT_TRANSLATE_NOOP("App::Property","Shows plan opening symbols if available"))
+            obj.addProperty("App::PropertyBool","SymbolPlan","Window",QT_TRANSLATE_NOOP("App::Property","Shows plan opening symbols if available"), locked=True)
         if not "SymbolElevation" in lp:
-            obj.addProperty("App::PropertyBool","SymbolElevation","Window",QT_TRANSLATE_NOOP("App::Property","Show elevation opening symbols if available"))
+            obj.addProperty("App::PropertyBool","SymbolElevation","Window",QT_TRANSLATE_NOOP("App::Property","Show elevation opening symbols if available"), locked=True)
         obj.setEditorMode("VerticalArea",2)
         obj.setEditorMode("HorizontalArea",2)
         obj.setEditorMode("PerimeterLength",2)
-        self.Type = "Window"
 
     def onDocumentRestored(self,obj):
 
         ArchComponent.Component.onDocumentRestored(self,obj)
-        self.setProperties(obj)
+        self.setProperties(obj,mode='ODR')
 
         # Add features in the SketchArch External Add-on
         self.addSketchArchFeatures(obj, mode='ODR')
+
+        # Need to restore 'initial' settings as corresponding codes in onChanged() does upon object creation
+        self.baseSill = obj.Sill.Value
+        self.basePos = obj.Base.Placement.Base
+        self.atthOff = None
+        if hasattr(obj, 'AttachmentOffsetXyzAndRotation'):
+            self.atthOff = obj.AttachmentOffsetXyzAndRotation.Base
+
+    def loads(self,state):
+
+        self.Type = "Window"
 
     def onBeforeChange(self,obj,prop):
 
@@ -181,7 +209,39 @@ class _Window(ArchComponent.Component):
     def onChanged(self,obj,prop):
 
         self.hideSubobjects(obj,prop)
-        if not "Restore" in obj.State:
+        if prop == "Sill":
+            val = getattr(obj,prop).Value
+
+            if (getattr(self, 'baseSill', None) is None and
+                getattr(self, 'basePos', None) is None and
+                getattr(self, 'atthOff', None) is None):  # TODO Any cases only 1 or 2 are not None?
+                self.baseSill = val
+                self.basePos = obj.Base.Placement.Base
+                self.atthOff = None
+                if hasattr(obj, 'AttachmentOffsetXyzAndRotation'):
+                    self.atthOff = obj.AttachmentOffsetXyzAndRotation.Base
+                return
+
+            import ArchSketchObject  # Need to import per method
+            host = None
+            if obj.Hosts:
+                host = obj.Hosts[0]
+            if (hasattr(obj, 'AttachToAxisOrSketch') and
+                obj.AttachToAxisOrSketch == "Host" and
+                host and Draft.getType(host.Base) == "ArchSketch" and
+                hasattr(ArchSketchObject, 'updateAttachmentOffset')):
+                SketchArch = True
+            else:
+                SketchArch = False
+
+            if SketchArch:
+                objAttOff = obj.AttachmentOffsetXyzAndRotation
+                objAttOff.Base.z = self.atthOff.z + (obj.Sill.Value - self.baseSill)
+                obj.AttachmentOffsetXyzAndRotation = objAttOff
+            else:
+                obj.Base.Placement.Base.z = self.basePos.z + (obj.Sill.Value - self.baseSill)
+
+        elif not "Restore" in obj.State:
             if prop in ["Base","WindowParts","Placement","HoleDepth","Height","Width","Hosts","Shape"]:
                 # anti-recursive loops, bc the base sketch will touch the Placement all the time
                 touchhosts = False
@@ -244,11 +304,17 @@ class _Window(ArchComponent.Component):
                         ext = w
                 wires.remove(ext)
                 shape = Part.Face(ext)
-                norm = shape.normalAt(0,0)
-                if hasattr(obj,"Normal"):
-                    if obj.Normal:
+                norm = None
+                if hasattr(obj,"Normal"):  # TODO Any reason need this test?
+                    if obj.Normal:  # TODO v=Vector(0,0,0), if v: print('true') - true: It always return True?  Why this test?
                         if not DraftVecUtils.isNull(obj.Normal):
                             norm = obj.Normal
+                if not norm:
+                    if not obj.AutoNormalReversed:
+                        norm = shape.normalAt(0,0)  # TODO Should use Sketch's normal, to avoid possible difference in edge direction of various wires, for consistency?
+                    else:  # elif obj.AutoNormalReversed:
+                        norm = obj.Base.getGlobalPlacement().Rotation.multVec(FreeCAD.Vector(0,0,1))
+                        norm = norm.negative()
                 if hinge and omode:
                     opening = None
                     if hasattr(obj,"Opening"):
@@ -514,12 +580,25 @@ class _Window(ArchComponent.Component):
         # Execute features in the SketchArch External Add-on
         self.executeSketchArchFeatures(obj, linkObj)
 
-    def getSubVolume(self,obj,plac=None):
+    def getSubFace(self):
+        "returns a subface for creation of subvolume for cutting in a base object"
+        # creation of subface from HoleWire (getSubWire)
+        raise NotImplementedError
+
+    def getSubVolume(self,obj,plac=None, host=None):
 
         "returns a subvolume for cutting in a base object"
 
+        # check if this is a clone or not, setup orig if positive
+        orig = None
+        if Draft.isClone(obj,"Window"):
+            if hasattr(obj,"CloneOf"):  # TODO need to check this?
+                orig = obj.CloneOf
+
+        # TODO Why always need tests e.g. hasattr(obj,"Subvolme"), hasattr(obj,"ClonOf") etc.?
+
         # check if we have a custom subvolume
-        if hasattr(obj,"Subvolume"):
+        if hasattr(obj,"Subvolume"):  # TODO To support Links
             if obj.Subvolume:
                 if hasattr(obj.Subvolume,'Shape'):
                     if not obj.Subvolume.Shape.isNull():
@@ -532,62 +611,75 @@ class _Window(ArchComponent.Component):
                         return sh
 
         # getting extrusion depth
-        base = None
-        if obj.Base:
-            base = obj.Base
         width = 0
-        if hasattr(obj,"HoleDepth"):  # the code have not checked whether this is a clone and use the original's HoleDepth; if HoleDepth is set in this object, even it is a clone, the original's HoleDepth is overridden
+        if hasattr(obj,"HoleDepth"):  # if this is a clone, the original's HoleDepth is overridden if HoleDepth is set in the clone  # TODO To support Links
             if obj.HoleDepth.Value:
                 width = obj.HoleDepth.Value
         if not width:
-            if base:
-                b = base.Shape.BoundBox
-                width = max(b.XLength,b.YLength,b.ZLength)
+            if orig and hasattr(orig,"HoleDepth"):
+                if orig.HoleDepth.Value:
+                    width = orig.HoleDepth.Value
         if not width:
-            if Draft.isClone(obj,"Window"):  # check whether this is a clone and use the original's HoleDepth or Shape's Boundbox
-                if hasattr(obj,"CloneOf"):
-                    orig = obj.CloneOf
-                else:
-                    orig = obj.Objects[0]
-                if orig.Base:
-                    base = orig.Base
+            if host and Draft.getType(host) == "Wall":
+                # TODO More robust approach :  With ArchSketch, on which wall segment an ArchObject is attached to is declared by user and saved.
+                #      The extrusion of each wall segment could be done per segment, and punch hole in the exact wall segment before fusing them all. No need to care about each wall segment thickness.
+                # TODO Consider to turn below codes to getWidths/getSortedWidths() in ArchWall (below codes copied and modified from ArchWall)
+                propSetUuid = host.Proxy.ArchSkPropSetPickedUuid
+                widths = []  # [] or None are both False
+                if hasattr(host,"ArchSketchData") and host.ArchSketchData and Draft.getType(host.Base) == "ArchSketch":
+                    if hasattr(host.Base, 'Proxy'):  # TODO Any need to test ?
+                        if hasattr(host.Base.Proxy, 'getWidths'):
+                            # Return a list of Width corresponding to indexes
+                            # of sorted edges of Sketch.
+                            widths = host.Base.Proxy.getWidths(host.Base,
+                                                     propSetUuid=propSetUuid)
+                if not widths:
+                    if host.OverrideWidth:
+                        # TODO No need to test as in ArchWall if host.Base is Sketch and sortSketchWidth(), just need the max value
+                        widths = host.OverrideWidth
+                    elif host.Width:
+                        widths = [host.Width.Value]
 
-                if hasattr(orig,"HoleDepth"):
-                    if orig.HoleDepth.Value:
-                        width = orig.HoleDepth.Value
-                if not width:
-                    if base:
-                        b = base.Shape.BoundBox
-                        width = max(b.XLength,b.YLength,b.ZLength)
-        if not width:
+                    # TODO Below codes copied and adopted from ArchWall.py.
+                    #      Consider adding a variable to store the layer's
+                    #      thickness as deduced, so the figure there could be
+                    #      used directly without re-calculated here below.
+                    if hasattr(host,"Material"):
+                        if host.Material:
+                            if hasattr(host.Material,"Materials"):
+                                thicknesses = [abs(t) for t in host.Material.Thicknesses]
+                                totalThk = sum(thicknesses)
+                                # Append totalThk to widths, find max below
+                                widths.append(totalThk)
+
+                if widths:
+                    width = max(widths)
+                    # +100mm to ensure subtract is through at the moment
+                    width += 100
+            elif obj.Base:  # If host is not Wall
+                b = obj.Base.Shape.BoundBox
+                width = max(b.XLength,b.YLength,b.ZLength)  # TODO Fix this, the width would be too much in many cases
+        if not width:  # TODO Should not happen, it means there is no Base (Sketch or another FC object) in Clone either
             width = 1.1112 # some weird value to have little chance to overlap with an existing face
 
-        if not base:
-            if Draft.isClone(obj,"Window"):  # if this object has not base, check whether this is a clone and use the original's base
-                if hasattr(obj,"CloneOf"):
-                    orig = obj.CloneOf
-                else:
-                    orig = obj.Objects[0]  # not sure what is this exactly
-                if orig.Base:
-                    base = orig.Base
-                else:
-                    return None
+        # setup base
+        if orig:
+            base = orig.Base  # always use original's base; clone's base should not be used to supersede original's base
+        else:
+            base = obj.Base
 
         # finding which wire to use to drill the hole
-
         f = None
-        if hasattr(obj,"HoleWire"):  # the code have not checked whether this is a clone and use the original's HoleWire; if HoleWire is set in this object, even it is a clone, the original's BoundBox/HoleWire is overridden
+        if hasattr(obj,"HoleWire"):  # if this is a clone, the original's HoleWire is overridden if HoleWire is set in the clone  # TODO To support Links
             if obj.HoleWire > 0:
                 if obj.HoleWire <= len(base.Shape.Wires):
                     f = base.Shape.Wires[obj.HoleWire-1]
-
         if not f:
-            if Draft.isClone(obj,"Window"):
-                # check original HoleWire then
+            if orig and hasattr(orig,"HoleDepth"):
+                # check original's HoleWire
                 if orig.HoleWire > 0:
                     if orig.HoleWire <= len(base.Shape.Wires):
                         f = base.Shape.Wires[obj.HoleWire-1]
-
         if not f:
             # finding biggest wire in the base shape
             max_length = 0
@@ -1115,7 +1207,7 @@ class _ArchWindowTaskPanel:
             val = int(val)
             if self.obj:
                 if not hasattr(self.obj,"HoleWire"):
-                    self.obj.addProperty("App::PropertyInteger","HoleWire","Arch",QT_TRANSLATE_NOOP("App::Property","The number of the wire that defines the hole. A value of 0 means automatic"))
+                    self.obj.addProperty("App::PropertyInteger","HoleWire","Arch",QT_TRANSLATE_NOOP("App::Property","The number of the wire that defines the hole. A value of 0 means automatic"), locked=True)
                 self.obj.HoleWire = val
 
     def getIcon(self,obj):
@@ -1378,14 +1470,14 @@ class _ArchWindowTaskPanel:
         self.new1.setText(QtGui.QApplication.translate("Arch", "Name", None))
         self.new2.setText(QtGui.QApplication.translate("Arch", "Type", None))
         self.new3.setText(QtGui.QApplication.translate("Arch", "Wires", None))
-        self.new4.setText(QtGui.QApplication.translate("Arch", "Thickness", None))
+        self.new4.setText(QtGui.QApplication.translate("Arch", "Frame depth", None))
         self.new5.setText(QtGui.QApplication.translate("Arch", "Offset", None))
         self.new6.setText(QtGui.QApplication.translate("Arch", "Hinge", None))
         self.new7.setText(QtGui.QApplication.translate("Arch", "Opening mode", None))
-        self.addp4.setText(QtGui.QApplication.translate("Arch", "+ default", None))
-        self.addp4.setToolTip(QtGui.QApplication.translate("Arch", "If this is checked, the default Frame value of this window will be added to the value entered here", None))
-        self.addp5.setText(QtGui.QApplication.translate("Arch", "+ default", None))
-        self.addp5.setToolTip(QtGui.QApplication.translate("Arch", "If this is checked, the default Offset value of this window will be added to the value entered here", None))
+        self.addp4.setText(QtGui.QApplication.translate("Arch", "+ Frame prop.", None))
+        self.addp4.setToolTip(QtGui.QApplication.translate("Arch", "If this is checked, the window's Frame property value will be added to the value entered here", None))
+        self.addp5.setText(QtGui.QApplication.translate("Arch", "+ Offset prop.", None))
+        self.addp5.setToolTip(QtGui.QApplication.translate("Arch", "If this is checked, the window's Offset property value will be added to the value entered here", None))
         self.field6.setText(QtGui.QApplication.translate("Arch", "Get selected edge", None))
         self.field6.setToolTip(QtGui.QApplication.translate("Arch", "Press to retrieve the selected edge", None))
         self.invertOpeningButton.setText(QtGui.QApplication.translate("Arch", "Invert opening direction", None))
@@ -1404,6 +1496,3 @@ class _ArchWindowTaskPanel:
 
         if self.obj:
             self.obj.ViewObject.Proxy.invertHinge()
-
-
-

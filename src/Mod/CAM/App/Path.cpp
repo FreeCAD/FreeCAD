@@ -154,7 +154,7 @@ double Toolpath::getCycleTime(double hFeed, double vFeed, double hRapid, double 
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/CAM");
         if (!hGrp->GetBool("WarningsSuppressAllSpeeds", true)) {
-            Base::Console().Warning("Feed Rate Error: Check Tool Controllers have Feed Rates");
+            Base::Console().warning("Feed Rate Error: Check Tool Controllers have Feed Rates");
         }
         return 0;
     }
@@ -507,7 +507,7 @@ void Toolpath::SaveDocFile(Base::Writer& writer) const
 void Toolpath::Restore(XMLReader& reader)
 {
     reader.readElement("Path");
-    std::string file(reader.getAttribute("file"));
+    std::string file(reader.getAttribute<const char*>("file"));
 
     if (!file.empty()) {
         // initiate a file read

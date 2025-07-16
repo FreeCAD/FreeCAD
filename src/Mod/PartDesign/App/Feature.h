@@ -60,6 +60,8 @@ public:
 
     /// Keep a copy of suppressed shapes so that we can restore them (and maybe display them)
     Part::PropertyPartShape SuppressedShape;
+    /// Keep a copy of the placement before suppression to restore it back when unsuppressed, fix #20205
+    Base::Placement SuppressedPlacement;
     App::DocumentObjectExecReturn* recompute() override;
 
     short mustExecute() const override;

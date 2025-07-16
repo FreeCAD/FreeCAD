@@ -54,8 +54,9 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
 #include <Gui/Control.h>
+#include <Gui/Inventor/Draggers/SoTransformDragger.h>
 #include <Gui/MDIView.h>
-#include <Gui/SoFCCSysDragger.h>
+#include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewParams.h>
@@ -84,7 +85,7 @@ void printPlacement(Base::Placement plc, const char* name)
     double angle;
     Base::Rotation rot = plc.getRotation();
     rot.getRawValue(axis, angle);
-    Base::Console().Warning(
+    Base::Console().warning(
         "placement %s : position (%.1f, %.1f, %.1f) - axis (%.1f, %.1f, %.1f) angle %.1f\n",
         name,
         pos.x,
@@ -160,10 +161,7 @@ bool ViewProviderAssembly::doubleClicked()
 bool ViewProviderAssembly::canDragObject(App::DocumentObject* obj) const
 {
     // The user should not be able to drag the joint group out of the assembly
-    if (!obj || obj->getTypeId() == Assembly::JointGroup::getClassTypeId()) {
-        return false;
-    }
-    return true;
+    return obj && !obj->is<Assembly::JointGroup>();
 }
 
 bool ViewProviderAssembly::canDragObjectToTarget(App::DocumentObject* obj,
@@ -194,7 +192,7 @@ bool ViewProviderAssembly::canDragObjectToTarget(App::DocumentObject* obj,
         if (obj == obj1 || obj == obj2 || obj == part1 || obj == part2 || obj == obj3) {
             if (!prompted) {
                 prompted = true;
-                QMessageBox msgBox;
+                QMessageBox msgBox(Gui::getMainWindow());
                 msgBox.setText(tr("The object is associated to one or more joints."));
                 msgBox.setInformativeText(
                     tr("Do you want to move the object and delete associated joints?"));
@@ -269,7 +267,7 @@ void ViewProviderAssembly::setDragger()
 {
     // Create the dragger coin object
     assert(!asmDragger);
-    asmDragger = new Gui::SoFCCSysDragger();
+    asmDragger = new Gui::SoTransformDragger();
     asmDragger->setAxisColors(Gui::ViewParams::instance()->getAxisXColor(),
                               Gui::ViewParams::instance()->getAxisYColor(),
                               Gui::ViewParams::instance()->getAxisZColor());
@@ -342,7 +340,7 @@ bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInvent
         return tryMouseMove(cursorPos, viewer);
     }
     catch (const Base::Exception& e) {
-        Base::Console().Warning("%s\n", e.what());
+        Base::Console().warning("%s\n", e.what());
         return false;
     }
 }
@@ -644,6 +642,11 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
                     // In case of sub-assembly, the jointgroup would trigger the dragger.
                     continue;
                 }
+                if (onlySolids
+                    && !(obj->isDerivedFrom<App::Part>() || obj->isDerivedFrom<Part::Feature>()
+                         || obj->isDerivedFrom<App::Link>())) {
+                    continue;
+                }
                 App::DocumentObject* part =
                     getMovingPartFromRef(assemblyPart, selRoot, subNamesStr);
 
@@ -819,7 +822,7 @@ void ViewProviderAssembly::initMove(const SbVec2s& cursorPos, Gui::View3DInvento
         tryInitMove(cursorPos, viewer);
     }
     catch (const Base::Exception& e) {
-        Base::Console().Warning("%s\n", e.what());
+        Base::Console().warning("%s\n", e.what());
     }
 }
 
@@ -1028,9 +1031,8 @@ bool ViewProviderAssembly::onDelete(const std::vector<std::string>& subNames)
 {
     // Delete the assembly groups when assembly is deleted
     for (auto obj : getObject()->getOutList()) {
-        if (obj->getTypeId() == Assembly::JointGroup::getClassTypeId()
-            || obj->getTypeId() == Assembly::ViewGroup::getClassTypeId()
-            || obj->getTypeId() == Assembly::BomGroup::getClassTypeId()) {
+        if (obj->is<Assembly::JointGroup>() || obj->is<Assembly::ViewGroup>()
+            || obj->is<Assembly::BomGroup>()) {
 
             // Delete the group content first.
             Gui::Command::doCommand(Gui::Command::Doc,
@@ -1062,10 +1064,10 @@ bool ViewProviderAssembly::canDelete(App::DocumentObject* objBeingDeleted) const
         addSubComponents = [&](AssemblyLink* asmLink, std::vector<App::DocumentObject*>& objs) {
             std::vector<App::DocumentObject*> assemblyLinkGroup = asmLink->Group.getValues();
             for (auto* obj : assemblyLinkGroup) {
-                auto* subAsmLink = dynamic_cast<AssemblyLink*>(obj);
+                auto* subAsmLink = freecad_cast<AssemblyLink*>(obj);
                 auto* link = dynamic_cast<App::Link*>(obj);
                 if (subAsmLink || link) {
-                    if (std::find(objs.begin(), objs.end(), obj) == objs.end()) {
+                    if (std::ranges::find(objs, obj) == objs.end()) {
                         objs.push_back(obj);
                         if (subAsmLink && !asmLink->isRigid()) {
                             addSubComponents(subAsmLink, objs);
@@ -1088,7 +1090,7 @@ bool ViewProviderAssembly::canDelete(App::DocumentObject* objBeingDeleted) const
             }
             joints = assemblyPart->getJointsOfPart(obj);
             for (auto* joint : joints) {
-                if (std::find(objToDel.begin(), objToDel.end(), joint) == objToDel.end()) {
+                if (std::ranges::find(objToDel, joint) == objToDel.end()) {
                     objToDel.push_back(joint);
                 }
             }
@@ -1142,7 +1144,7 @@ Base::Placement ViewProviderAssembly::getDraggerPlacement()
             Base::convertTo<Base::Rotation>(asmDragger->rotation.getValue())};
 }
 
-Gui::SoFCCSysDragger* ViewProviderAssembly::getDragger()
+Gui::SoTransformDragger* ViewProviderAssembly::getDragger()
 {
     return asmDragger;
 }

@@ -33,6 +33,8 @@
 
 using namespace Materials;
 
+TYPESYSTEM_SOURCE(Materials::MaterialFilterOptions, Base::BaseClass)
+
 MaterialFilterOptions::MaterialFilterOptions()
 {
     auto param = App::GetApplication().GetParameterGroupByPath(
@@ -66,25 +68,25 @@ MaterialFilter::MaterialFilter()
     , _requireAppearance(false)
 {}
 
-bool MaterialFilter::modelIncluded(const std::shared_ptr<Material>& material) const
+bool MaterialFilter::modelIncluded(const Material& material) const
 {
     if (_requirePhysical) {
-        if (!material->hasPhysicalProperties()) {
+        if (!material.hasPhysicalProperties()) {
             return false;
         }
     }
     if (_requireAppearance) {
-        if (!material->hasAppearanceProperties()) {
+        if (!material.hasAppearanceProperties()) {
             return false;
         }
     }
     for (const auto& complete : _requiredComplete) {
-        if (!material->isModelComplete(complete)) {
+        if (!material.isModelComplete(complete)) {
             return false;
         }
     }
     for (const auto& required : _required) {
-        if (!material->hasModel(required)) {
+        if (!material.hasModel(required)) {
             return false;
         }
     }
@@ -94,10 +96,9 @@ bool MaterialFilter::modelIncluded(const std::shared_ptr<Material>& material) co
 
 bool MaterialFilter::modelIncluded(const QString& uuid) const
 {
-    MaterialManager manager;
     try {
-        auto material = manager.getMaterial(uuid);
-        return modelIncluded(material);
+        auto material = MaterialManager::getManager().getMaterial(uuid);
+        return modelIncluded(*material);
     }
     catch (const MaterialNotFound&) {
     }

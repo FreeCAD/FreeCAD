@@ -22,6 +22,10 @@
 
 #include <PreCompiled.h>
 
+#ifndef _PreComp_
+#include <limits>
+#endif
+
 #include <QImage>
 #include <QScreen>
 #include <QString>
@@ -43,12 +47,10 @@
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProvider.h>
-
-constexpr float MAX_FLOAT = std::numeric_limits<float>::max();
 
 long NavlibInterface::GetSelectionTransform(navlib::matrix_t&) const
 {
@@ -57,7 +59,7 @@ long NavlibInterface::GetSelectionTransform(navlib::matrix_t&) const
 
 long NavlibInterface::GetIsSelectionEmpty(navlib::bool_t& empty) const
 {
-    empty = !Gui::SelectionSingleton::instance().hasSelection();
+    empty = !Gui::Selection().hasSelection();
     return 0;
 }
 
@@ -66,7 +68,7 @@ long NavlibInterface::SetSelectionTransform(const navlib::matrix_t&)
     return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 }
 
-long NavlibInterface::GetPivotPosition(navlib::point_t& position) const
+long NavlibInterface::GetPivotPosition(navlib::point_t&) const
 {
     return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 }
@@ -109,9 +111,11 @@ long NavlibInterface::SetPivotVisible(bool visible)
     return 0;
 }
 
+extern template SoCamera* NavlibInterface::getCamera<SoCamera*>() const;
+
 long NavlibInterface::GetHitLookAt(navlib::point_t& position) const
 {
-    if (is2DView())
+    if (is2DView() || !is3DView())
         return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 
     const Gui::View3DInventorViewer* const inventorViewer = currentView.pView3d->getViewer();
@@ -126,7 +130,7 @@ long NavlibInterface::GetHitLookAt(navlib::point_t& position) const
     SoRayPickAction rayPickAction(inventorViewer->getSoRenderManager()->getViewportRegion());
     SbMatrix cameraMatrix;
     SbVec3f closestHitPoint;
-    float minLength = MAX_FLOAT;
+    float minLength = std::numeric_limits<float>::max();
 
     // Get the camera rotation
     SoCamera* pCamera = getCamera<SoCamera*>();
@@ -194,7 +198,7 @@ long NavlibInterface::GetHitLookAt(navlib::point_t& position) const
         }
     }
 
-    if (minLength < MAX_FLOAT) {
+    if (minLength < std::numeric_limits<float>::max()) {
         std::copy(closestHitPoint.getValue(), closestHitPoint.getValue() + 3, &position.x);
         return 0;
     }
@@ -221,12 +225,12 @@ long NavlibInterface::GetSelectionExtents(navlib::box_t& extents) const
                       return 0l;
                   });
 
-    extents = {boundingBox.MinX,
-               boundingBox.MinY,
-               boundingBox.MinZ,
-               boundingBox.MaxX,
-               boundingBox.MaxY,
-               boundingBox.MaxZ};
+    extents = {{boundingBox.MinX,
+                boundingBox.MinY,
+                boundingBox.MinZ},
+               {boundingBox.MaxX,
+                boundingBox.MaxY,
+                boundingBox.MaxZ}};
 
     return 0;
 }
@@ -282,7 +286,7 @@ void NavlibInterface::initializePivot()
     pivot.pDepthTestAlways->function.setValue(SoDepthBufferElement::ALWAYS);
     pivot.pDepthTestLess->function.setValue(SoDepthBufferElement::LESS);
 
-    pivot.pivotImage = QImage(QString::fromStdString(":/icons/3dx_pivot.png"));
+    pivot.pivotImage = QImage(QStringLiteral(":/icons/3dx_pivot.png"));
     Gui::BitmapFactory().convert(pivot.pivotImage, pivot.pImage->image);
 
     pivot.pVisibility->ref();

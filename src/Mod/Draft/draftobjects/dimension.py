@@ -135,7 +135,8 @@ class DimensionBase(DraftAnnotation):
             obj.addProperty("App::PropertyVector",
                             "Normal",
                             "Dimension",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Normal = App.Vector(0, 0, 1)
 
         # TODO: remove Support property as it is not used at all.
@@ -148,7 +149,8 @@ class DimensionBase(DraftAnnotation):
             obj.addProperty("App::PropertyLink",
                             "Support",
                             "Dimension",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Support = None
 
         if "LinkedGeometry" not in properties:
@@ -165,7 +167,8 @@ class DimensionBase(DraftAnnotation):
             obj.addProperty("App::PropertyLinkSubList",
                             "LinkedGeometry",
                             "Dimension",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.LinkedGeometry = []
 
         if "Dimline" not in properties:
@@ -188,7 +191,8 @@ class DimensionBase(DraftAnnotation):
             obj.addProperty("App::PropertyVectorDistance",
                             "Dimline",
                             "Dimension",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Dimline = App.Vector(0, 1, 0)
 
     def update_properties_1v1(self, obj, vobj):
@@ -235,8 +239,8 @@ class LinearDimension(DimensionBase):
 
     def __init__(self, obj):
         obj.Proxy = self
-        self.set_properties(obj)
         self.Type = "LinearDimension"
+        self.set_properties(obj)
 
     def set_properties(self, obj):
         """Set basic properties only if they don't exist."""
@@ -256,7 +260,8 @@ class LinearDimension(DimensionBase):
             obj.addProperty("App::PropertyVectorDistance",
                             "Start",
                             "Linear/radial dimension",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Start = App.Vector(0, 0, 0)
 
         if "End" not in properties:
@@ -270,7 +275,8 @@ class LinearDimension(DimensionBase):
             obj.addProperty("App::PropertyVectorDistance",
                             "End",
                             "Linear/radial dimension",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.End = App.Vector(1, 0, 0)
 
         if "Direction" not in properties:
@@ -282,7 +288,8 @@ class LinearDimension(DimensionBase):
             obj.addProperty("App::PropertyVector",
                             "Direction",
                             "Linear/radial dimension",
-                            _tip)
+                            _tip,
+                            locked=True)
 
         if "Distance" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -299,7 +306,8 @@ class LinearDimension(DimensionBase):
             obj.addProperty("App::PropertyLength",
                             "Distance",
                             "Linear/radial dimension",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Distance = 0
 
         if "Diameter" not in properties:
@@ -310,7 +318,8 @@ class LinearDimension(DimensionBase):
             obj.addProperty("App::PropertyBool",
                             "Diameter",
                             "Radial dimension",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Diameter = False
 
     def onDocumentRestored(self, obj):
@@ -319,7 +328,6 @@ class LinearDimension(DimensionBase):
         gui_utils.restore_view_object(
             obj, vp_module="view_dimension", vp_class="ViewProviderLinearDimension"
         )
-        self.Type = "LinearDimension"
 
         if not getattr(obj, "ViewObject", None):
             return
@@ -331,6 +339,9 @@ class LinearDimension(DimensionBase):
         if hasattr(vobj, "TextColor"):
             return
         super().update_properties_0v21(obj, vobj)
+
+    def loads(self, state):
+        self.Type = "LinearDimension"
 
     def onChanged(self, obj, prop):
         """Execute when a property is changed.
@@ -345,6 +356,14 @@ class LinearDimension(DimensionBase):
         #    obj.setPropertyStatus('Normal', 'Hidden')
         if hasattr(obj, "Support"):
             obj.setPropertyStatus('Support', 'Hidden')
+
+    def transform(self, obj, pla):
+        """Transform the object by applying a placement."""
+        obj.Start = pla.multVec(obj.Start)
+        obj.End = pla.multVec(obj.End)
+        obj.Dimline = pla.multVec(obj.Dimline)
+        obj.Normal = pla.Rotation.multVec(obj.Normal)
+        obj.Direction = pla.Rotation.multVec(obj.Direction)
 
     def execute(self, obj):
         """Execute when the object is created or recomputed.
@@ -522,8 +541,8 @@ class AngularDimension(DimensionBase):
 
     def __init__(self, obj):
         obj.Proxy = self
-        self.set_properties(obj)
         self.Type = "AngularDimension"
+        self.set_properties(obj)
 
     def set_properties(self, obj):
         """Set basic properties only if they don't exist."""
@@ -539,7 +558,8 @@ class AngularDimension(DimensionBase):
             obj.addProperty("App::PropertyAngle",
                             "FirstAngle",
                             "Angular dimension",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.FirstAngle = 0
 
         if "LastAngle" not in properties:
@@ -550,7 +570,8 @@ class AngularDimension(DimensionBase):
             obj.addProperty("App::PropertyAngle",
                             "LastAngle",
                             "Angular dimension",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.LastAngle = 90
 
         if "Center" not in properties:
@@ -565,7 +586,8 @@ class AngularDimension(DimensionBase):
             obj.addProperty("App::PropertyVectorDistance",
                             "Center",
                             "Angular dimension",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Center = App.Vector(0, 0, 0)
 
         if "Angle" not in properties:
@@ -579,7 +601,8 @@ class AngularDimension(DimensionBase):
             obj.addProperty("App::PropertyAngle",
                             "Angle",
                             "Angular dimension",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Angle = 0
 
     def onDocumentRestored(self, obj):
@@ -588,7 +611,6 @@ class AngularDimension(DimensionBase):
         gui_utils.restore_view_object(
             obj, vp_module="view_dimension", vp_class="ViewProviderAngularDimension"
         )
-        self.Type = "AngularDimension"
 
         if not getattr(obj, "ViewObject", None):
             return
@@ -600,6 +622,27 @@ class AngularDimension(DimensionBase):
         if hasattr(vobj, "TextColor"):
             return
         super().update_properties_0v21(obj, vobj)
+
+    def loads(self, state):
+        self.Type = "AngularDimension"
+
+    def transform(self, obj, pla):
+        """Transform the object by applying a placement."""
+        import Part
+
+        new_normal = pla.Rotation.multVec(obj.Normal)
+        c_old = Part.makeCircle(1, App.Vector(), obj.Normal)
+        c_tra = c_old.transformShape((pla * c_old.Placement).Rotation.Matrix)
+        c_new = Part.makeCircle(1, App.Vector(), new_normal)
+        delta_angle = math.degrees(c_new.Curve.parameter(c_tra.firstVertex().Point))
+        first_angle = (obj.FirstAngle.Value + delta_angle) % 360
+        last_angle = (obj.LastAngle.Value + delta_angle) % 360
+
+        obj.Center = pla.multVec(obj.Center)
+        obj.Dimline = pla.multVec(obj.Dimline)
+        obj.Normal = new_normal
+        obj.FirstAngle = first_angle
+        obj.LastAngle = last_angle
 
     def execute(self, obj):
         """Execute when the object is created or recomputed.

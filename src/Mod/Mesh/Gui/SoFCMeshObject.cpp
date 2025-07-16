@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <algorithm>
-#include <climits>
+#include <limits>
 #ifdef FC_OS_WIN32
 #include <windows.h>
 #endif
@@ -53,7 +53,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Gui/SoFCInteractiveElement.h>
-#include <Gui/SoFCSelectionAction.h>
+#include <Gui/Selection/SoFCSelectionAction.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/Core/Elements.h>
 #include <Mod/Mesh/App/Core/Grid.h>
@@ -607,7 +607,7 @@ void SoFCMeshObjectShape::initClass()
 }
 
 SoFCMeshObjectShape::SoFCMeshObjectShape()
-    : renderTriangleLimit(UINT_MAX)
+    : renderTriangleLimit(std::numeric_limits<unsigned>::max())
 {
     SO_NODE_CONSTRUCTOR(SoFCMeshObjectShape);
     setName(SoFCMeshObjectShape::getClassTypeId().getName());
@@ -1157,7 +1157,7 @@ void SoFCMeshObjectShape::generatePrimitives(SoAction* action)
         }
     }
     catch (const Base::MemoryException&) {
-        Base::Console().Log("Not enough memory to generate primitives\n");
+        Base::Console().log("Not enough memory to generate primitives\n");
     }
 
     endShape();
@@ -1235,7 +1235,7 @@ void SoFCMeshSegmentShape::initClass()
 }
 
 SoFCMeshSegmentShape::SoFCMeshSegmentShape()
-    : renderTriangleLimit(UINT_MAX)
+    : renderTriangleLimit(std::numeric_limits<unsigned>::max())
 {
     SO_NODE_CONSTRUCTOR(SoFCMeshSegmentShape);
     SO_NODE_ADD_FIELD(index, (0));
@@ -1582,7 +1582,7 @@ void SoFCMeshSegmentShape::generatePrimitives(SoAction* action)
         }
     }
     catch (const Base::MemoryException&) {
-        Base::Console().Log("Not enough memory to generate primitives\n");
+        Base::Console().log("Not enough memory to generate primitives\n");
     }
 
     endShape();

@@ -42,6 +42,8 @@
 #include "Exception.h"
 #include "Interpreter.h"
 
+#include <Tools.h>
+
 
 namespace Base
 {
@@ -73,14 +75,14 @@ public:
             Py::Tuple args(2);
             args.setItem(0, Py::asObject(GetPyObject(hGrp)));
             // A Reason of null indicates to clear the parameter group
-            if (Reason && Reason[0] != '\0') {
+            if (!Base::Tools::isNullOrEmpty(Reason)) {
                 args.setItem(1, Py::String(Reason));
             }
             method.apply(args);
         }
         catch (Py::Exception&) {
             Base::PyException e;  // extract the Python error text
-            e.ReportException();
+            e.reportException();
         }
     }
     bool isEqual(const Py::Object& obj) const
@@ -775,7 +777,7 @@ void ParameterGrpPy::tryCall(ParameterGrpObserver* obs,
     }
     catch (Py::Exception&) {
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
     }
 }
 

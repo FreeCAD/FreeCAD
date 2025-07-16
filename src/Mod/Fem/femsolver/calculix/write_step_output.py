@@ -47,6 +47,8 @@ def write_step_output(f, ccxwriter):
             f.write("U, NT\n")
         else:
             f.write("MF, PS\n")
+    elif ccxwriter.analysis_type == "electromagnetic":
+        f.write("NT\n")
     else:
         f.write("U\n")
     if not ccxwriter.member.geos_fluidsection:
@@ -56,13 +58,12 @@ def write_step_output(f, ccxwriter):
             variables += ", HFL"
         if ccxwriter.solver_obj.MaterialNonlinearity == "nonlinear":
             variables += ", PEEQ"
+        if ccxwriter.analysis_type == "electromagnetic":
+            variables = "HFL"
 
         f.write(variables + "\n")
 
         # dat file
-        # reaction forces: freecad.org/tracker/view.php?id=2934
-        # some hint can be found in this topic:
-        # https://forum.freecad.org/viewtopic.php?f=18&t=20664&start=10#p520642
         if ccxwriter.member.cons_fixed or ccxwriter.member.cons_displacement:
             f.write("** outputs --> dat file\n")
         if ccxwriter.member.cons_fixed:
@@ -107,7 +108,21 @@ def write_step_output(f, ccxwriter):
                         "*NODE PRINT, NSET={}_RotNode, TOTALS=ONLY\n".format(femobj["Object"].Name)
                     )
                     f.write("RF\n")
-        if ccxwriter.member.cons_fixed or ccxwriter.member.cons_displacement:
+        if ccxwriter.member.cons_contact:
+            # contact forces for all Constraint contact (only available for face-to-face penalty contact)
+            f.write("** contact forces for Constraint contact\n")
+            for femobj in ccxwriter.member.cons_contact:
+                # femobj --> dict, FreeCAD document object is femobj["Object"]
+                f.write(
+                    "*CONTACT PRINT, MASTER={}, SLAVE={}\n".format(
+                        "IND" + femobj["Object"].Name, "DEP" + femobj["Object"].Name
+                    )
+                )
+                f.write("CF, CFN, CFS\n")
+        if any(
+            vars(ccxwriter.member).get(f"cons_{key}")
+            for key in ["fixed", "displacement", "rigidbody", "contact"]
+        ):
             f.write("\n")
         f.write(f"*OUTPUT, FREQUENCY={ccxwriter.solver_obj.OutputFrequency}")
 

@@ -45,7 +45,7 @@ protected:
     //@}
 };
 
-class MultiCommon : public Part::Feature
+class PartExport MultiCommon : public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::MultiCommon);
 

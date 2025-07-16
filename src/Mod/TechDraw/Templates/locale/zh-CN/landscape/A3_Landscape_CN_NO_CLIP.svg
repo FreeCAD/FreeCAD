@@ -171,7 +171,7 @@
                 <text x="275.5" y="285" freecad:editable="APPROVER_NAME"><tspan>批准人</tspan></text>
                 <text x="308" y="284" freecad:editable="TOTAL_SHEETS"><tspan> 99 </tspan></text>
                 <text x="333" y="284" freecad:editable="OF_SHEET"><tspan> 1 </tspan></text>
-                <text x="342" y="275" freecad:editable="SCALE"><tspan>M x:x</tspan></text>
+                <text x="342" y="275" freecad:editable="scale"><tspan>M x:x</tspan></text>
  		<text x="306" y="275" fill="#000000" text-align="center" freecad:editable="STAGE-S"><tspan/></text>
          	<text x="312.5" y="275" fill="#000000" text-align="center" freecad:editable="STAGE-A"><tspan/></text>
          	<text x="318.5" y="275" fill="#000000" text-align="center" freecad:editable="STAGE-B"><tspan/></text>

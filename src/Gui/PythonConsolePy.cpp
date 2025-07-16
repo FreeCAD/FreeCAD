@@ -50,7 +50,7 @@ Py::Object PythonStdout::getattr(const char *name)
 {
     if (strcmp(name, "softspace") == 0) {
         int i=0;
-        return Py::Int(i);
+        return Py::Long(i);
     }
     return getattr_methods(name);
 }
@@ -114,7 +114,7 @@ Py::Object PythonStderr::getattr(const char *name)
 {
     if (strcmp(name, "softspace") == 0) {
         int i=0;
-        return Py::Int(i);
+        return Py::Long(i);
     }
     return getattr_methods(name);
 }
@@ -175,7 +175,7 @@ Py::Object OutputStdout::getattr(const char *name)
 {
     if (strcmp(name, "softspace") == 0) {
         int i=0;
-        return Py::Int(i);
+        return Py::Long(i);
     }
     return getattr_methods(name);
 }
@@ -197,7 +197,7 @@ Py::Object OutputStdout::write(const Py::Tuple& args)
     PyObject* unicode = PyUnicode_AsEncodedString(output, "utf-8", nullptr);
     if (unicode) {
         const char* string = PyBytes_AsString(unicode);
-        Base::Console().Message("%s",string);
+        Base::Console().message("%s",string);
         Py_DECREF(unicode);
     }
 
@@ -236,7 +236,7 @@ Py::Object OutputStderr::getattr(const char *name)
 {
     if (strcmp(name, "softspace") == 0) {
         int i=0;
-        return Py::Int(i);
+        return Py::Long(i);
     }
     return getattr_methods(name);
 }
@@ -258,7 +258,7 @@ Py::Object OutputStderr::write(const Py::Tuple& args)
     PyObject* unicode = PyUnicode_AsEncodedString(output, "utf-8", nullptr);
     if (unicode) {
         const char* string = PyBytes_AsString(unicode);
-        Base::Console().Error("%s",string);
+        Base::Console().error("%s",string);
         Py_DECREF(unicode);
     }
 

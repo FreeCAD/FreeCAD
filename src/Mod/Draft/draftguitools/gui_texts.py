@@ -58,7 +58,7 @@ class Text(gui_base_original.Creator):
         return {'Pixmap': 'Draft_Text',
                 'Accel': "T, E",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Text", "Text"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Text", "Creates a multi-line annotation. CTRL to snap.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Text", "Creates a multi-line annotation.")}
 
     def Activated(self):
         """Execute when the command is called."""

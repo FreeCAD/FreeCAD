@@ -62,19 +62,19 @@ FemMeshShapeNetgenObject::FemMeshShapeNetgenObject()
         (0.3),
         "MeshParams",
         Prop_None,
-        " allows to define how much the linear dimensions of two adjacent cells can differ");
+        " allows defining how much the linear dimensions of two adjacent cells can differ");
     ADD_PROPERTY_TYPE(
         NbSegsPerEdge,
         (1),
         "MeshParams",
         Prop_None,
-        "allows to define the minimum number of mesh segments in which edges will be split");
+        "allows defining the minimum number of mesh segments in which edges will be split");
     ADD_PROPERTY_TYPE(
         NbSegsPerRadius,
         (2),
         "MeshParams",
         Prop_None,
-        "allows to define the minimum number of mesh segments in which radiuses will be split");
+        "allows defining the minimum number of mesh segments in which radii will be split");
     ADD_PROPERTY_TYPE(Optimize, (true), "MeshParams", Prop_None, "Optimize the resulting mesh");
 }
 
@@ -115,23 +115,13 @@ App::DocumentObjectExecReturn* FemMeshShapeNetgenObject::execute()
 
     myNetGenMesher.Compute();
 
-    // throw Base::RuntimeError("Compute Done\n");
-
     SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(newMesh.getSMesh())->GetMeshDS();
     const SMDS_MeshInfo& info = data->GetMeshInfo();
     int numFaces = data->NbFaces();
     int numNode = info.NbNodes();
-    // int numTria = info.NbTriangles();
-    // int numQuad = info.NbQuadrangles();
-    // int numPoly = info.NbPolygons();
     int numVolu = info.NbVolumes();
-    // int numTetr = info.NbTetras();
-    // int numHexa = info.NbHexas();
-    // int numPyrd = info.NbPyramids();
-    // int numPris = info.NbPrisms();
-    // int numHedr = info.NbPolyhedrons();
 
-    Base::Console().Log("NetgenMesh: %i Nodes, %i Volumes, %i Faces\n", numNode, numVolu, numFaces);
+    Base::Console().log("NetgenMesh: %i Nodes, %i Volumes, %i Faces\n", numNode, numVolu, numFaces);
 
     FemMesh.setValue(newMesh);
     return App::DocumentObject::StdReturn;
@@ -141,22 +131,3 @@ App::DocumentObjectExecReturn* FemMeshShapeNetgenObject::execute()
         this);
 #endif
 }
-
-// short FemMeshShapeNetgenObject::mustExecute(void) const
-//{
-//     return 0;
-// }
-
-// PyObject *FemMeshShapeNetgenObject::getPyObject()
-//{
-//     if (PythonObject.is(Py::_None())){
-//         // ref counter is set to 1
-//         PythonObject = Py::Object(new DocumentObjectPy(this),true);
-//     }
-//     return Py::new_reference_to(PythonObject);
-// }
-
-// void FemMeshShapeNetgenObject::onChanged(const Property* prop)
-//{
-//     Fem::FemMeshShapeObject::onChanged(prop);
-// }

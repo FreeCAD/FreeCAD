@@ -41,11 +41,12 @@ public:
     /// constructor
     ViewProviderDimension();
     /// destructor
-    ~ViewProviderDimension() override;
+    ~ViewProviderDimension() override = default;
 
     App::PropertyFont   Font;
     App::PropertyLength Fontsize;
     App::PropertyLength Arrowsize;
+    App::PropertyEnumeration  ArrowStyle;
     App::PropertyLength LineWidth;
     App::PropertyColor  Color;
 
@@ -69,11 +70,11 @@ public:
     App::PropertyFloat GapFactorASME;
     App::PropertyFloat LineSpacingFactorISO;
 
-    void attach(App::DocumentObject *) override;
+    void attach(App::DocumentObject *pcFeat) override;
     bool useNewSelectionModel() const override {return false;}
-    void updateData(const App::Property*) override;
+    void updateData(const App::Property* prop) override;
     void onChanged(const App::Property* p) override;
-    void setupContextMenu(QMenu*, QObject*, const char*) override;
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     bool setEdit(int ModNum) override;
     bool doubleClicked() override;
     bool onDelete(const std::vector<std::string> & parms) override;
@@ -81,7 +82,7 @@ public:
 
     TechDraw::DrawViewDimension* getViewObject() const override;
 
-    App::Color prefColor() const;
+    Base::Color prefColor() const;
     std::string prefFont() const;
     double prefFontSize() const;
     double prefArrowSize() const;
@@ -90,12 +91,15 @@ public:
     bool canDelete(App::DocumentObject* obj) const override;
     void setPixmapForType();
 
+    std::vector<App::DocumentObject*> claimChildren() const override;
+
+
 protected:
     void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
 
 private:
-    static const char *StandardAndStyleEnums[];
-    static const char *RenderingExtentEnums[];
+    static const char *StandardAndStyleEnums[];  // NOLINT
+    static const char *RenderingExtentEnums[];   // NOLINT
 
 };
 

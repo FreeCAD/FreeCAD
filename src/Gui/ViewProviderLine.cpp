@@ -33,6 +33,7 @@
 #endif
 
 #include <App/Datums.h>
+#include <Gui/Utilities.h>
 #include <Gui/ViewParams.h>
 
 #include "ViewProviderLine.h"
@@ -53,7 +54,8 @@ ViewProviderLine::ViewProviderLine()
 
 ViewProviderLine::~ViewProviderLine() = default;
 
-void ViewProviderLine::attach(App::DocumentObject *obj) {
+void ViewProviderLine::attach(App::DocumentObject *obj)
+{
     ViewProviderDatum::attach(obj);
 
     // Setup label text and line colors
@@ -82,14 +84,16 @@ void ViewProviderLine::attach(App::DocumentObject *obj) {
 
     static const float size = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetFloat("DatumLineSize", 70.0);
 
+    auto line = getObject<App::Line>();
+    Base::Vector3d dir = line->getBaseDirection();
     SbVec3f verts[2];
     if (noRole) {
-        verts[0] = SbVec3f(0, 0, 2 * size);
+        verts[0] = Base::convertTo<SbVec3f>(dir * 2 * size);
         verts[1] = SbVec3f(0, 0, 0);
     }
     else {
-        verts[0] = SbVec3f(0, 0, size);
-        verts[1] = SbVec3f(0, 0, 0.2 * size);
+        verts[0] = Base::convertTo<SbVec3f>(dir * size);
+        verts[1] = Base::convertTo<SbVec3f>(dir * 0.2 * size);
     }
 
     // indexes used to create the edges
@@ -108,7 +112,7 @@ void ViewProviderLine::attach(App::DocumentObject *obj) {
     sep->addChild ( pLines );
 
     auto textTranslation = new SoTranslation ();
-    textTranslation->translation.setValue(SbVec3f(0, 0, size * 1.1));
+    textTranslation->translation.setValue(Base::convertTo<SbVec3f>(dir * 1.1 * size));
     sep->addChild ( textTranslation );
 
     auto ps = new SoPickStyle();

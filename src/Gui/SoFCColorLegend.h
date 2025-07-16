@@ -58,7 +58,7 @@ public:
   void setColorLegend (const App::ColorLegend& legend);
 
   unsigned short getColorIndex (float fVal) const { return _currentLegend.getColorIndex(fVal);  }
-  App::Color getColor (float fVal) const override { return _currentLegend.getColor(fVal); }
+  Base::Color getColor (float fVal) const override { return _currentLegend.getColor(fVal); }
   void setOutsideGrayed (bool bVal) override { _currentLegend.setOutsideGrayed(bVal); }
   bool isVisible (float) const override { return false; }
   float getMinValue () const override { return _currentLegend.getMinValue(); }

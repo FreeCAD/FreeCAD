@@ -25,11 +25,11 @@
 
 #include <memory>
 #include <QGraphicsView>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <Gui/DockWindow.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 
 #include "DAGModel.h"
 

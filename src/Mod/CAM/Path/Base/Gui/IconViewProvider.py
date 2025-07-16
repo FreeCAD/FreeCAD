@@ -22,7 +22,6 @@
 
 import FreeCAD
 import Path
-import PathGui
 import importlib
 
 __title__ = "CAM Icon ViewProvider"
@@ -95,8 +94,11 @@ class ViewProvider(object):
 
         edit = translate("Path", "Edit")
         action = QtGui.QAction(edit, menu)
-        action.triggered.connect(self.setEdit)
+        action.triggered.connect(self._editInContextMenuTriggered)
         menu.addAction(action)
+
+    def _editInContextMenuTriggered(self, checked):
+        self.setEdit()
 
 
 _factory = {}

@@ -183,16 +183,16 @@ bool ViewProviderBody::doubleClicked()
 //    if (ActiveGuiDoc == NULL) return;
 //
 //    // Highlight active body and all its features
-//    //Base::Console().Error("ViewProviderBody::updateTree()\n");
+//    //Base::Console().error("ViewProviderBody::updateTree()\n");
 //    PartDesign::Body* body = getObject<PartDesign::Body>();
 //    bool active = body->IsActive.getValue();
-//    //Base::Console().Error("Body is %s\n", active ? "active" : "inactive");
+//    //Base::Console().error("Body is %s\n", active ? "active" : "inactive");
 //    ActiveGuiDoc->signalHighlightObject(*this, Gui::Blue, active);
 //    std::vector<App::DocumentObject*> features = body->Group.getValues();
 //    bool highlight = true;
 //    App::DocumentObject* tip = body->Tip.getValue();
 //    for (std::vector<App::DocumentObject*>::const_iterator f = features.begin(); f != features.end(); f++) {
-//        //Base::Console().Error("Highlighting %s: %s\n", (*f)->getNameInDocument(), highlight ? "true" : "false");
+//        //Base::Console().error("Highlighting %s: %s\n", (*f)->getNameInDocument(), highlight ? "true" : "false");
 //        Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->getViewProvider(*f));
 //        if (vp != NULL)
 //            ActiveGuiDoc->signalHighlightObject(*vp, Gui::LightBlue, active ? highlight : false);
@@ -225,7 +225,7 @@ void ViewProviderBody::updateData(const App::Property* prop)
         // restore icons
         for (auto feature : features) {
             Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(feature);
-            if (vp && vp->isDerivedFrom(PartDesignGui::ViewProvider::getClassTypeId())) {
+            if (vp && vp->isDerivedFrom<PartDesignGui::ViewProvider>()) {
                 static_cast<PartDesignGui::ViewProvider*>(vp)->setTipIcon(feature == tip);
             }
         }
@@ -257,7 +257,7 @@ void ViewProviderBody::onChanged(const App::Property* prop) {
             if(getOverrideMode() == "As Is")
                 setDisplayMaskMode(DisplayMode.getValueAsString());
             else {
-                Base::Console().Message("Set override mode: %s\n", getOverrideMode().c_str());
+                Base::Console().message("Set override mode: %s\n", getOverrideMode().c_str());
                 setDisplayMaskMode(getOverrideMode().c_str());
             }
         }
@@ -282,6 +282,7 @@ void ViewProviderBody::unifyVisualProperty(const App::Property* prop) {
         prop == &Selectable ||
         prop == &DisplayModeBody ||
         prop == &PointColorArray ||
+        prop == &ShowPlacement ||
         prop == &LineColorArray) {
         return;
     }
@@ -300,7 +301,7 @@ void ViewProviderBody::unifyVisualProperty(const App::Property* prop) {
     auto features = body->Group.getValues();
     for (auto feature : features) {
 
-        if (!feature->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+        if (!feature->isDerivedFrom<PartDesign::Feature>()) {
             continue;
         }
 
@@ -321,7 +322,7 @@ void ViewProviderBody::setVisualBodyMode(bool bodymode) {
     auto features = body->Group.getValues();
     for(auto feature : features) {
 
-        if(!feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+        if(!feature->isDerivedFrom<PartDesign::Feature>())
             continue;
 
         auto* vp = static_cast<PartDesignGui::ViewProvider*>(gdoc->getViewProvider(feature));
@@ -355,15 +356,15 @@ bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
     if (obj->isDerivedFrom<App::VarSet>()) {
         return true;
     }
-    else if (obj->isDerivedFrom(App::DatumElement::getClassTypeId())) {
+    else if (obj->isDerivedFrom<App::DatumElement>()) {
         // accept only datums that are not part of a LCS.
         auto* lcs = static_cast<App::DatumElement*>(obj)->getLCS();
         return !lcs;
     }
-    else if (obj->isDerivedFrom(App::LocalCoordinateSystem::getClassTypeId())) {
-        return !obj->isDerivedFrom(App::Origin::getClassTypeId());
+    else if (obj->isDerivedFrom<App::LocalCoordinateSystem>()) {
+        return !obj->isDerivedFrom<App::Origin>();
     }
-    else if (!obj->isDerivedFrom(Part::Feature::getClassTypeId())) {
+    else if (!obj->isDerivedFrom<Part::Feature>()) {
         return false;
     }
     else if (PartDesign::Body::findBodyOf(obj)) {
@@ -402,7 +403,7 @@ void ViewProviderBody::dropObject(App::DocumentObject* obj)
             body->addObjects(move);
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
     }
     else if (!body->BaseFeature.getValue()) {

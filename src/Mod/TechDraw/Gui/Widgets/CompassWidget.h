@@ -35,6 +35,10 @@ class QPushButton;
 class QVBoxLayout;
 QT_END_NAMESPACE
 
+namespace Gui {
+class QuantitySpinBox;
+}
+
 namespace TechDrawGui
 {
 
@@ -94,7 +98,7 @@ private:
 
     CompassDialWidget* compassDial;
     //    DoubleSpinBoxNoEnter* dsbAngle;
-    QDoubleSpinBox* dsbAngle;
+    Gui::QuantitySpinBox* dsbAngle;
     QLabel* compassControlLabel;
     QPushButton* pbCWAdvance;
     QPushButton* pbCCWAdvance;

@@ -170,8 +170,7 @@ PyObject* MaterialTreeWidgetPy::setFilter(PyObject* args)
     }
     if (PyObject_TypeCheck(obj, &(Materials::MaterialFilterPy::Type))) {
         auto filter = static_cast<Materials::MaterialFilterPy*>(obj)->getMaterialFilterPtr();
-        auto filterPtr = std::make_shared<Materials::MaterialFilter>(*filter);
-        getMaterialTreeWidgetPtr()->setFilter(filterPtr);
+        getMaterialTreeWidgetPtr()->setFilter(*filter);
     }
     else if (PyList_Check(obj)) {
         // The argument is a list of filters

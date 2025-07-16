@@ -49,7 +49,7 @@ CmdCloudTest::CmdCloudTest()
 
 void CmdCloudTest::activated(int)
 {
-    Base::Console().Message("Hello, World!\n");
+    Base::Console().message("Hello, World!\n");
 }
 
 void CreateCloudCommands(void)

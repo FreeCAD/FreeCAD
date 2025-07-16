@@ -141,10 +141,15 @@ bool Transaction::isEmpty() const
 
 bool Transaction::hasObject(const TransactionalObject* Obj) const
 {
+#if BOOST_VERSION < 107500
     return !!_Objects.get<1>().count(Obj);
+#else
+    return !!_Objects.get<1>().contains(Obj);
+#endif
 }
 
-void Transaction::addOrRemoveProperty(TransactionalObject* Obj, const Property* pcProp, bool add)
+void Transaction::changeProperty(TransactionalObject* Obj,
+                                 std::function<void(TransactionObject* to)> changeFunc)
 {
     auto& index = _Objects.get<1>();
     auto pos = index.find(Obj);
@@ -160,7 +165,21 @@ void Transaction::addOrRemoveProperty(TransactionalObject* Obj, const Property* 
         index.emplace(Obj, To);
     }
 
-    To->addOrRemoveProperty(pcProp, add);
+    changeFunc(To);
+}
+
+void Transaction::renameProperty(TransactionalObject* Obj, const Property* pcProp, const char* oldName)
+{
+    changeProperty(Obj, [pcProp, oldName](TransactionObject* to) {
+        to->renameProperty(pcProp, oldName);
+    });
+}
+
+void Transaction::addOrRemoveProperty(TransactionalObject* Obj, const Property* pcProp, bool add)
+{
+    changeProperty(Obj, [pcProp, add](TransactionObject* to) {
+        to->addOrRemoveProperty(pcProp, add);
+    });
 }
 
 //**************************************************************************
@@ -183,7 +202,7 @@ void Transaction::apply(Document& Doc, bool forward)
         }
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         errMsg = e.what();
     }
     catch (std::exception& e) {
@@ -290,7 +309,13 @@ TransactionObject::TransactionObject() = default;
 TransactionObject::~TransactionObject()
 {
     for (auto& v : _PropChangeMap) {
-        delete v.second.property;
+        auto& data = v.second;
+        // If nameOrig is used, it means it is a transaction of a rename
+        // operation.  This operation does not interact with v.second.property,
+        // so it should not be deleted in that case.
+	if (data.nameOrig.empty()) {
+	    delete v.second.property;
+	}
     }
 }
 
@@ -307,6 +332,15 @@ void TransactionObject::applyChn(Document& /*Doc*/, TransactionalObject* pcObj, 
         for (auto& v : _PropChangeMap) {
             auto& data = v.second;
             auto prop = const_cast<Property*>(data.propertyOrig);
+
+            if (!data.nameOrig.empty()) {
+                // This means we are undoing/redoing a rename operation
+                Property* currentProp = pcObj->getDynamicPropertyByName(data.name.c_str());
+                if (currentProp) {
+                    pcObj->renameDynamicProperty(currentProp, data.nameOrig.c_str());
+                }
+                continue;
+            }
 
             if (!data.property) {
                 // here means we are undoing/redoing and property add operation
@@ -364,7 +398,7 @@ void TransactionObject::applyChn(Document& /*Doc*/, TransactionalObject* pcObj, 
                 prop->Paste(*data.property);
             }
             catch (Base::Exception& e) {
-                e.ReportException();
+                e.reportException();
                 FC_ERR("exception while restoring " << prop->getFullName() << ": " << e.what());
             }
             catch (std::exception& e) {
@@ -387,6 +421,21 @@ void TransactionObject::setProperty(const Property* pcProp)
         data.propertyType = pcProp->getTypeId();
         data.property->setStatusValue(pcProp->getStatus());
     }
+}
+
+void TransactionObject::renameProperty(const Property* pcProp, const char* oldName)
+{
+    if (!pcProp || !pcProp->getContainer()) {
+        return;
+    }
+
+    auto& data = _PropChangeMap[pcProp->getID()];
+
+    if (data.name.empty()) {
+        static_cast<DynamicProperty::PropData&>(data) =
+            pcProp->getContainer()->getDynamicPropertyData(pcProp);
+    }
+    data.nameOrig = oldName;
 }
 
 void TransactionObject::addOrRemoveProperty(const Property* pcProp, bool add)
@@ -464,7 +513,6 @@ void TransactionDocumentObject::applyDel(Document& Doc, TransactionalObject* pcO
     if (status == Del) {
         DocumentObject* obj = static_cast<DocumentObject*>(pcObj);
 
-#ifndef USE_OLD_DAG
         // Make sure the backlinks of all linked objects are updated. As the links of the removed
         // object are never set to [] they also do not remove the backlink. But as they are
         // not in the document anymore we need to remove them anyway to ensure a correct graph
@@ -472,7 +520,6 @@ void TransactionDocumentObject::applyDel(Document& Doc, TransactionalObject* pcO
         for (auto link : list) {
             link->_removeBackLink(obj);
         }
-#endif
 
         // simply filling in the saved object
         Doc._removeObject(obj);
@@ -485,13 +532,11 @@ void TransactionDocumentObject::applyNew(Document& Doc, TransactionalObject* pcO
         DocumentObject* obj = static_cast<DocumentObject*>(pcObj);
         Doc._addObject(obj, _NameInDocument.c_str());
 
-#ifndef USE_OLD_DAG
         // make sure the backlinks of all linked objects are updated
         auto list = obj->getOutList();
         for (auto link : list) {
             link->_addBackLink(obj);
         }
-#endif
     }
 }
 

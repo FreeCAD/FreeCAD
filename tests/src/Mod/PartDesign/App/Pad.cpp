@@ -23,9 +23,8 @@ protected:
     void SetUp() override
     {
         _doc = App::GetApplication().newDocument("Pad_test", "testUser");
-        _body = dynamic_cast<PartDesign::Body*>(_doc->addObject("PartDesign::Body"));
-        _sketch = dynamic_cast<Sketcher::SketchObject*>(
-            _doc->addObject("Sketcher::SketchObject", "Sketch"));
+        _body = _doc->addObject<PartDesign::Body>();
+        _sketch = _doc->addObject<Sketcher::SketchObject>("Sketch");
         _body->addObject(_sketch);
 
         _sketch->AttachmentSupport.setValue(_doc->getObject("XY_Plane"), "");
@@ -69,7 +68,7 @@ TEST_F(PadTest, TestMidPlaneTwoLength)
 
     doc->recompute();
 
-    auto pad = dynamic_cast<PartDesign::Pad*>(doc->addObject("PartDesign::Pad", "Pad"));
+    auto pad = doc->addObject<PartDesign::Pad>("Pad");
     body->addObject(pad);
     pad->Profile.setValue(sketch, {""});
     pad->Direction.setValue(0.0, 0.0, 1.0);

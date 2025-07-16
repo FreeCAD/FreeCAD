@@ -33,7 +33,7 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
@@ -62,7 +62,7 @@ TaskCosmeticCircle::TaskCosmeticCircle(TechDraw::DrawViewPart* partFeat,
 
     m_ce = m_partFeat->getCosmeticEdgeBySelection(m_circleName);
     if (!m_ce) {
-        Base::Console().Error("TaskCosmeticCircle - bad parameters.  Can not proceed.\n");
+        Base::Console().error("TaskCosmeticCircle - bad parameters.  Can not proceed.\n");
         return;
     }
 
@@ -72,6 +72,8 @@ TaskCosmeticCircle::TaskCosmeticCircle(TechDraw::DrawViewPart* partFeat,
 
     connect(ui->qsbRadius, qOverload<double>(&QuantitySpinBox::valueChanged),
             this, &TaskCosmeticCircle::radiusChanged);
+    connect(ui->rbArc, &QRadioButton::clicked, this, &TaskCosmeticCircle::arcButtonClicked);
+
 
 }
 
@@ -91,6 +93,11 @@ TaskCosmeticCircle::TaskCosmeticCircle(TechDraw::DrawViewPart* partFeat,
     ui->setupUi(this);
 
     setUiPrimary();
+
+    connect(ui->qsbRadius, qOverload<double>(&QuantitySpinBox::valueChanged),
+            this, &TaskCosmeticCircle::radiusChanged);
+    connect(ui->rbArc, &QRadioButton::clicked, this, &TaskCosmeticCircle::arcButtonClicked);
+
 }
 
 TaskCosmeticCircle::~TaskCosmeticCircle()
@@ -154,8 +161,13 @@ void TaskCosmeticCircle::setUiPrimary()
     double radius = (mathPoints[1] - mathPoints[0]).Length() / m_partFeat->getScale();
     ui->qsbRadius->setValue(radius);
 
-    ui->qsbStartAngle->setValue(Base::toDegrees(DU::angleWithX(mathPoints[1] - mathPoints[0])));
-    ui->qsbEndAngle->setValue(Base::toDegrees(DU::angleWithX(mathPoints[2] - mathPoints[0])));
+    ui->qsbStartAngle->setValue(0);
+    ui->qsbEndAngle->setValue(360);
+
+    enableArcWidgets(false);
+    ui->qsbStartAngle->setEnabled(false);
+    ui->qsbEndAngle->setEnabled(false);
+    ui->cbClockwise->setEnabled(false);
 }
 
 void TaskCosmeticCircle::setUiEdit()
@@ -174,6 +186,15 @@ void TaskCosmeticCircle::setUiEdit()
 
     ui->qsbStartAngle->setValue(Base::toDegrees(m_ce->m_geometry->getStartAngle()));
     ui->qsbEndAngle->setValue(Base::toDegrees(m_ce->m_geometry->getEndAngle()));
+
+    if (m_ce->m_geometry->getGeomType() == GeomType::ARCOFCIRCLE) {
+        ui->rbArc->setChecked(true);
+        enableArcWidgets(true);
+    } else {
+        ui->rbArc->setChecked(false);
+        enableArcWidgets(false);
+    }
+
 }
 
 void TaskCosmeticCircle::radiusChanged()
@@ -184,11 +205,28 @@ void TaskCosmeticCircle::radiusChanged()
     }
 }
 
+void TaskCosmeticCircle::arcButtonClicked()
+{
+    if (ui->rbArc->isChecked()) {
+        enableArcWidgets(true);
+    } else {
+        enableArcWidgets(false);
+    }
+}
+
+void TaskCosmeticCircle::enableArcWidgets(bool newState)
+{
+    ui->qsbStartAngle->setEnabled(newState);
+    ui->qsbEndAngle->setEnabled(newState);
+    ui->cbClockwise->setEnabled(newState);
+
+}
+
 
 //******************************************************************************
 void TaskCosmeticCircle::createCosmeticCircle(void)
 {
-//    Base::Console().Message("TCL::createCosmeticCircle()\n");
+//    Base::Console().message("TCL::createCosmeticCircle()\n");
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Cosmetic Circle"));
 
@@ -205,8 +243,7 @@ void TaskCosmeticCircle::createCosmeticCircle(void)
     }
 
     TechDraw::BaseGeomPtr bg;
-    if (ui->qsbStartAngle->value().getValue() == 0.0 &&
-        ui->qsbEndAngle->value().getValue() == 0.0)  {
+    if (!ui->rbArc->isChecked()) {
         bg = std::make_shared<TechDraw::Circle> (center, ui->qsbRadius->value().getValue());
     } else {
         bg = std::make_shared<TechDraw::AOC>(center, ui->qsbRadius->value().getValue(),
@@ -224,7 +261,7 @@ void TaskCosmeticCircle::createCosmeticCircle(void)
 
 void TaskCosmeticCircle::updateCosmeticCircle(void)
 {
-    // Base::Console().Message("TCL::updateCosmeticCircle()\n");
+    // Base::Console().message("TCL::updateCosmeticCircle()\n");
     double x = ui->qsbCenterX->value().getValue();
     double y = ui->qsbCenterY->value().getValue();
     double z = ui->qsbCenterZ->value().getValue();
@@ -234,8 +271,7 @@ void TaskCosmeticCircle::updateCosmeticCircle(void)
     m_ce->permaRadius = ui->qsbRadius->value().getValue();
 
     TechDraw::BaseGeomPtr bg;
-    if (ui->qsbStartAngle->value().getValue() == 0.0 &&
-        ui->qsbEndAngle->value().getValue() == 0.0)  {
+    if (!ui->rbArc->isChecked()) {
         bg = std::make_shared<TechDraw::Circle> (p0, m_ce->permaRadius);
     } else {
         bg = std::make_shared<TechDraw::AOC>(p0, ui->qsbRadius->value().getValue(),
@@ -253,7 +289,7 @@ bool TaskCosmeticCircle::accept()
 {
     if (ui->qsbRadius->value().getValue() <= 0.0) {
         // this won't work!
-        Base::Console().Error("TaskCosmeticCircle - can not create a circle with radius: %.3f\n",
+        Base::Console().error("TaskCosmeticCircle - can not create a circle with radius: %.3f\n",
                                 ui->qsbRadius->value().getValue());
         return false;
     }

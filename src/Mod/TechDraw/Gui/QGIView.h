@@ -25,7 +25,7 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <QColor>
 #include <QFont>
@@ -36,6 +36,8 @@
 
 #include <Base/Parameter.h>
 #include <Base/Vector3D.h>
+
+#include "QGIUserTypes.h"
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
@@ -74,13 +76,13 @@ class QGCustomImage;
 class QGTracker;
 class QGIVertex;
 
-class TechDrawGuiExport  QGIView : public QObject, public QGraphicsItemGroup
+class TechDrawGuiExport QGIView : public QObject, public QGraphicsItemGroup
 {
     Q_OBJECT
 public:
     QGIView();
 
-    enum {Type = QGraphicsItem::UserType + 101};
+    enum {Type = UserType::QGIView};
     int type() const override { return Type;}
     QRectF boundingRect() const override;
     void paint( QPainter *painter,
@@ -167,6 +169,9 @@ public:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+
+    template <typename T>
+    std::vector<T> getObjects(std::vector<int> indexes);
 
 protected:
     QGIView* getQGIVByName(std::string name);

@@ -59,7 +59,7 @@ namespace Part {
 
     // Description:
     //
-    // This template allows to define a geometry extension for a given type (uniform interface for one value of type T).
+    // This template allows one to define a geometry extension for a given type (uniform interface for one value of type T).
     //
     // Warnings:
     // - The default constructor relies on the default constructor of T for initialisation. Built-in types
@@ -87,7 +87,7 @@ namespace Part {
     // 6. Register your type and corresponding python type in AppPart.cpp
 
     template <typename T>
-    Base::Type GeometryDefaultExtension<T>::classTypeId{Base::Type::badType()};
+    Base::Type GeometryDefaultExtension<T>::classTypeId{Base::Type::BadType};
 
     // Must be explicitly declared here
     template<> void * GeometryDefaultExtension<long>::create();

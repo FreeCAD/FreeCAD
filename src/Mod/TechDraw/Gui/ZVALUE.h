@@ -16,7 +16,8 @@ namespace ZVALUE {
     const int SECTIONLINE = 90;
     const int MATTING = 100;
     const int DIMENSION = 110;
-    const int LABEL = 120;
+    const int BALLOON = 120;
+    const int ANNOTATION = 120;
     const int TRACKER = 125;
     const int LOCK = 200;
 }

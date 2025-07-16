@@ -59,7 +59,7 @@ Segmentation::Segmentation(Mesh::Feature* mesh, QWidget* parent, Qt::WindowFlags
     , myMesh(mesh)
 {
     ui->setupUi(this);
-    ui->numPln->setRange(1, INT_MAX);
+    ui->numPln->setRange(1, std::numeric_limits<int>::max());
     ui->numPln->setValue(100);
 
     ui->checkBoxSmooth->setChecked(false);
@@ -115,7 +115,7 @@ void Segmentation::accept()
                 std::vector<MeshCore::PointIndex> indexes = kernel.GetFacetPoints(jt);
                 MeshCore::PlaneFit fit;
                 fit.AddPoints(kernel.GetPoints(indexes));
-                if (fit.Fit() < FLOAT_MAX) {
+                if (fit.Fit() < std::numeric_limits<float>::max()) {
                     Base::Vector3f base = fit.GetBase();
                     Base::Vector3f axis = fit.GetNormal();
                     MeshCore::AbstractSurfaceFit* fitter =
@@ -138,8 +138,7 @@ void Segmentation::accept()
     std::string internalname = "Segments_";
     internalname += myMesh->getNameInDocument();
 
-    App::DocumentObjectGroup* group = static_cast<App::DocumentObjectGroup*>(
-        document->addObject("App::DocumentObjectGroup", internalname.c_str()));
+    auto* group = document->addObject<App::DocumentObjectGroup>(internalname.c_str());
     std::string labelname = "Segments ";
     labelname += myMesh->Label.getValue();
     group->Label.setValue(labelname);
@@ -212,13 +211,13 @@ void Segmentation::accept()
                         }
                         else {
                             failures.push_back(feaSegm);
-                            Base::Console().Warning("Failed to create face from %s\n",
+                            Base::Console().warning("Failed to create face from %s\n",
                                                     feaSegm->Label.getValue());
                         }
                     }
                     catch (Standard_Failure&) {
                         failures.push_back(feaSegm);
-                        Base::Console().Error("Fatal failure to create face from %s\n",
+                        Base::Console().error("Fatal failure to create face from %s\n",
                                               feaSegm->Label.getValue());
                     }
                 }

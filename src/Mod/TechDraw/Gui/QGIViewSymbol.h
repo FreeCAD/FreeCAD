@@ -29,6 +29,7 @@
 #include <QByteArray>
 
 #include "QGIView.h"
+#include "QGIUserTypes.h"
 
 
 namespace TechDraw {
@@ -46,7 +47,7 @@ public:
     QGIViewSymbol();
     ~QGIViewSymbol() override;
 
-    enum {Type = QGraphicsItem::UserType + 121};
+    enum {Type = UserType::QGIViewSymbol};
     int type() const override { return Type;}
 
     void updateView(bool update = false) override;
@@ -59,6 +60,8 @@ public:
 protected:
     virtual void drawSvg();
     void symbolToSvg(QByteArray qba);
+    double legacyScaler(TechDraw::DrawViewSymbol* feature) const;
+    double symbolScaler(TechDraw::DrawViewSymbol* feature) const;
 
     QGDisplayArea* m_displayArea;
     QGCustomSvg *m_svgItem;

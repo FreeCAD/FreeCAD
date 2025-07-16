@@ -76,7 +76,7 @@ bool ViewProviderAssemblyLink::setEdit(int mode)
     auto* assemblyLink = dynamic_cast<Assembly::AssemblyLink*>(getObject());
 
     if (!assemblyLink->isRigid() && mode == (int)ViewProvider::Transform) {
-        Base::Console().UserTranslatedNotification(
+        Base::Console().userTranslatedNotification(
             "Flexible sub-assemblies cannot be transformed.");
         return true;
     }
@@ -86,7 +86,7 @@ bool ViewProviderAssemblyLink::setEdit(int mode)
 
 bool ViewProviderAssemblyLink::doubleClicked()
 {
-    auto* link = dynamic_cast<AssemblyLink*>(getObject());
+    auto* link = freecad_cast<AssemblyLink*>(getObject());
 
     if (!link) {
         return true;
@@ -94,7 +94,7 @@ bool ViewProviderAssemblyLink::doubleClicked()
     auto* assembly = link->getLinkedAssembly();
 
     auto* vpa =
-        dynamic_cast<ViewProviderAssembly*>(Gui::Application::Instance->getViewProvider(assembly));
+        freecad_cast<ViewProviderAssembly*>(Gui::Application::Instance->getViewProvider(assembly));
     if (!vpa) {
         return true;
     }
@@ -106,7 +106,7 @@ bool ViewProviderAssemblyLink::onDelete(const std::vector<std::string>& subNames
 {
     Q_UNUSED(subNames)
 
-    Base::Console().Warning("onDelete\n");
+    Base::Console().warning("onDelete\n");
 
     Gui::Command::doCommand(Gui::Command::Doc,
                             "App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()",

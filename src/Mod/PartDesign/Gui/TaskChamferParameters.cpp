@@ -33,7 +33,7 @@
 #include <Base/Interpreter.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/Tools.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/PartDesign/App/FeatureChamfer.h>
@@ -289,7 +289,7 @@ TaskChamferParameters::~TaskChamferParameters()
     }
     catch (const Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -324,7 +324,7 @@ void TaskChamferParameters::apply()
 
     // Alert user if he created an empty feature
     if (ui->listWidgetReferences->count() == 0) {
-        Base::Console().Warning(tr("Empty chamfer created !\n").toStdString().c_str());
+        Base::Console().warning(tr("Empty chamfer created !\n").toStdString().c_str());
     }
 }
 

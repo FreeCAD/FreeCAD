@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="lbl_info">
      <property name="text">
-      <string>Click Add or Remove and select geometric element(s)</string>
+      <string>Click Add or Remove and select geometric elements</string>
      </property>
     </widget>
    </item>
@@ -80,7 +80,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="lbl_ref_node_x">
           <property name="text">
-           <string>X:</string>
+           <string>X</string>
           </property>
          </widget>
         </item>
@@ -103,7 +103,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="lbl_ref_node_y">
           <property name="text">
-           <string>Y:</string>
+           <string>Y</string>
           </property>
          </widget>
         </item>
@@ -126,7 +126,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="lbl_ref_node_z">
           <property name="text">
-           <string>Z:</string>
+           <string>Z</string>
           </property>
          </widget>
         </item>
@@ -180,21 +180,21 @@
         <item row="0" column="0">
          <widget class="QLabel" name="lbl_trans_x_mode">
           <property name="text">
-           <string>X:</string>
+           <string>X</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="lbl_trans_y_mode">
           <property name="text">
-           <string>Y:</string>
+           <string>Y</string>
           </property>
          </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="lbl_trans_z_mode">
           <property name="text">
-           <string>Z:</string>
+           <string>Z</string>
           </property>
          </widget>
         </item>
@@ -228,21 +228,21 @@
         <item row="0" column="0">
          <widget class="QLabel" name="lbl_trans_x_disp">
           <property name="text">
-           <string>X:</string>
+           <string>X</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="lbl_trans_y_disp">
           <property name="text">
-           <string>Y:</string>
+           <string>Y</string>
           </property>
          </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="lbl_trans_z_disp">
           <property name="text">
-           <string>Z:</string>
+           <string>Z</string>
           </property>
          </widget>
         </item>
@@ -306,21 +306,21 @@
         <item row="0" column="0">
          <widget class="QLabel" name="lbl_trans_x_force">
           <property name="text">
-           <string>X:</string>
+           <string>X</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="lbl_trans_y_force">
           <property name="text">
-           <string>Y:</string>
+           <string>Y</string>
           </property>
          </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="lbl_trans_z_force">
           <property name="text">
-           <string>Z:</string>
+           <string>Z</string>
           </property>
          </widget>
         </item>
@@ -397,21 +397,21 @@
         <item row="0" column="0">
          <widget class="QLabel" name="lbl_rot_x_mode">
           <property name="text">
-           <string>X:</string>
+           <string>X</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="lbl_rot_y_mode">
           <property name="text">
-           <string>Y:</string>
+           <string>Y</string>
           </property>
          </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="lbl_rot_z_mode">
           <property name="text">
-           <string>Z:</string>
+           <string>Z</string>
           </property>
          </widget>
         </item>
@@ -445,21 +445,21 @@
         <item row="0" column="0">
          <widget class="QLabel" name="lbl_rot_x_axis">
           <property name="text">
-           <string>X:</string>
+           <string>X</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="lbl_rot_y_axis">
           <property name="text">
-           <string>Y:</string>
+           <string>Y</string>
           </property>
          </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="lbl_rot_z_axis">
           <property name="text">
-           <string>Z:</string>
+           <string>Z</string>
           </property>
          </widget>
         </item>
@@ -496,7 +496,7 @@
         <item row="3" column="0">
          <widget class="QLabel" name="lbl_rot_angle">
           <property name="text">
-           <string>Angle:</string>
+           <string>Angle</string>
           </property>
          </widget>
         </item>
@@ -534,21 +534,21 @@
         <item row="0" column="0">
          <widget class="QLabel" name="lbl_rot_x_moment">
           <property name="text">
-           <string>X:</string>
+           <string>X</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="lbl_rot_y_moment">
           <property name="text">
-           <string>Y:</string>
+           <string>Y</string>
           </property>
          </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="lbl_rot_z_rot">
           <property name="text">
-           <string>Z:</string>
+           <string>Z</string>
           </property>
          </widget>
         </item>

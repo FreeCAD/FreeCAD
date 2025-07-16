@@ -51,7 +51,7 @@ class CommandInsertNewPart:
     def GetResources(self):
         return {
             "Pixmap": "Geofeaturegroup",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_InsertNewPart", "Insert a new part"),
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_InsertNewPart", "Insert New Part"),
             "Accel": "P",
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(

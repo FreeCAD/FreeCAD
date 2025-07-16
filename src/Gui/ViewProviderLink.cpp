@@ -25,6 +25,16 @@
 #ifndef _PreComp_
 # include <atomic>
 # include <cctype>
+# include <unordered_set>
+# include <unordered_map>
+# include <utility>
+# include <deque>
+# include <memory>
+# include <algorithm>
+# include <vector>
+# include <set>
+# include <map>
+# include <string>
 # include <boost/algorithm/string/predicate.hpp>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -41,7 +51,6 @@
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoTransform.h>
 # include <Inventor/sensors/SoNodeSensor.h>
-# include <Inventor/SoPickedPoint.h>
 # include <QApplication>
 # include <QMenu>
 # include <QCheckBox>
@@ -62,11 +71,11 @@
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Control.h"
+#include "Inventor/Draggers/SoTransformDragger.h"
 #include "LinkViewPy.h"
 #include "Selection.h"
-#include "SoFCCSysDragger.h"
 #include "SoFCUnifiedSelection.h"
-#include "TaskCSysDragger.h"
+#include "TaskTransform.h"
 #include "TaskElementColors.h"
 #include "View3DInventor.h"
 #include "ViewParams.h"
@@ -74,7 +83,7 @@
 
 #include "ActionFunction.h"
 #include "Command.h"
-#include "DlgObjectSelection.h"
+#include "Dialogs/DlgObjectSelection.h"
 
 FC_LOG_LEVEL_INIT("App::Link", true, true)
 
@@ -140,7 +149,7 @@ public:
             Document *pDoc = Application::Instance->getDocument(obj->getDocument());
             if(pDoc) {
                 ViewProvider *vp = pDoc->getViewProvider(obj);
-                if(vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
+                if(vp && vp->isDerivedFrom<ViewProviderDocumentObject>())
                     return static_cast<ViewProviderDocumentObject*>(vp);
             }
         }
@@ -191,7 +200,7 @@ public:
         }
     }
 
-    LinkInfo(ViewProviderDocumentObject *vp)
+    explicit LinkInfo(ViewProviderDocumentObject *vp)
         :ref(0),pcLinked(vp)
     {
         FC_LOG("new link to " << pcLinked->getObject()->getFullName());
@@ -283,7 +292,7 @@ public:
                 continue;
             int count = pcSwitches[i]->getNumChildren();
             if((index<0 && i==LinkView::SnapshotChild) || !count)
-                pcSwitches[i]->whichChild = -1;
+                pcSwitches[i]->whichChild = SO_SWITCH_NONE;
             else if(count>pcLinked->getDefaultMode())
                 pcSwitches[i]->whichChild = pcLinked->getDefaultMode();
             else
@@ -313,12 +322,8 @@ public:
         }
     }
 
-    // VC2013 has trouble with template argument dependent lookup in
+    // MSVC has trouble with template argument dependent lookup in
     // namespace. Have to put the below functions in global namespace.
-    //
-    // However, gcc seems to behave the opposite, hence the conditional
-    // compilation  here.
-    //
 #if defined(_MSC_VER)
     friend void Gui::intrusive_ptr_add_ref(LinkInfo *px);
     friend void Gui::intrusive_ptr_release(LinkInfo *px);
@@ -334,7 +339,7 @@ public:
         for(int idx : indices) {
             if(!pcSwitches[idx])
                 continue;
-            if(pcSwitches[idx]->whichChild.getValue()==-1)
+            if(pcSwitches[idx]->whichChild.getValue()==SO_SWITCH_NONE)
                 return false;
         }
         return true;
@@ -348,7 +353,7 @@ public:
             if(!pcSwitches[idx])
                 continue;
             if(!visible)
-                pcSwitches[idx]->whichChild = -1;
+                pcSwitches[idx]->whichChild = SO_SWITCH_NONE;
             else if(pcSwitches[idx]->getNumChildren()>pcLinked->getDefaultMode())
                 pcSwitches[idx]->whichChild = pcLinked->getDefaultMode();
         }
@@ -389,7 +394,7 @@ public:
         pcLinkedSwitch.reset();
 
         coinRemoveAllChildren(pcSnapshot);
-        pcModeSwitch->whichChild = -1;
+        pcModeSwitch->whichChild = SO_SWITCH_NONE;
         coinRemoveAllChildren(pcModeSwitch);
 
         SoSwitch *pcUpdateSwitch = pcModeSwitch;
@@ -668,8 +673,11 @@ public:
 
     QIcon getIcon(QPixmap px) {
         static int iconSize = -1;
-        if(iconSize < 0)
-            iconSize = QApplication::style()->standardPixmap(QStyle::SP_DirClosedIcon).width();
+        if (iconSize < 0) {
+            auto sampleIcon = QApplication::style()->standardPixmap(QStyle::SP_DirClosedIcon);
+            double pixelRatio = sampleIcon.devicePixelRatio();
+            iconSize = static_cast<int>(sampleIcon.width() / pixelRatio);
+        }
 
         if(!isLinked())
             return QIcon();
@@ -701,7 +709,7 @@ namespace Gui
     {
         px->release();
     }
-}
+} // namespace Gui
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -740,7 +748,7 @@ void ViewProviderLinkObserver::extensionBeforeDelete() {
 void ViewProviderLinkObserver::extensionReattach(App::DocumentObject *) {
     if(linkInfo) {
         linkInfo->pcLinked =
-            Base::freecad_dynamic_cast<ViewProviderDocumentObject>(getExtendedContainer());
+            freecad_cast<ViewProviderDocumentObject*>(getExtendedContainer());
         linkInfo->update();
     }
 }
@@ -750,7 +758,7 @@ void ViewProviderLinkObserver::extensionOnChanged(const App::Property *prop) {
 }
 
 void ViewProviderLinkObserver::extensionModeSwitchChange() {
-    auto owner = freecad_dynamic_cast<ViewProviderDocumentObject>(getExtendedContainer());
+    auto owner = freecad_cast<ViewProviderDocumentObject*>(getExtendedContainer());
     if(owner && linkInfo)
         linkInfo->updateSwitch();
 }
@@ -1001,7 +1009,7 @@ void LinkView::setMaterial(int index, const App::Material *material) {
             pcLinkRoot->removeColorOverride();
             return;
         }
-        App::Color c = material->diffuseColor;
+        Base::Color c = material->diffuseColor;
         c.setTransparency(material->transparency);
         pcLinkRoot->setColorOverride(c);
         for(int i=0;i<getSize();++i)
@@ -1014,14 +1022,14 @@ void LinkView::setMaterial(int index, const App::Material *material) {
             info.pcRoot->removeColorOverride();
             return;
         }
-        App::Color c = material->diffuseColor;
+        Base::Color c = material->diffuseColor;
         c.setTransparency(material->transparency);
         info.pcRoot->setColorOverride(c);
     }
 }
 
 void LinkView::setLink(App::DocumentObject *obj, const std::vector<std::string> &subs) {
-    setLinkViewObject(Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+    setLinkViewObject(freecad_cast<ViewProviderDocumentObject*>(
             Application::Instance->getViewProvider(obj)),subs);
 
 }
@@ -1142,7 +1150,7 @@ void LinkView::setChildren(const std::vector<App::DocumentObject*> &children,
         auto &info = *nodeArray[i];
         info.isGroup = false;
         info.groupIndex = -1;
-        info.pcSwitch->whichChild = (vis.size()<=i||vis[i])?0:-1;
+        info.pcSwitch->whichChild = (vis.size()<=i||vis[i])?0:SO_SWITCH_NONE;
         info.link(obj);
         if(obj->hasExtension(App::GroupExtension::getExtensionClassTypeId(),false)) {
             info.isGroup = true;
@@ -1193,7 +1201,7 @@ void LinkView::setTransform(int index, const Base::Matrix4D &mat) {
 
 void LinkView::setElementVisible(int idx, bool visible) {
     if(idx>=0 && idx<(int)nodeArray.size())
-        nodeArray[idx]->pcSwitch->whichChild = visible?0:-1;
+        nodeArray[idx]->pcSwitch->whichChild = visible?0:SO_SWITCH_NONE;
 }
 
 bool LinkView::isElementVisible(int idx) const {
@@ -1529,8 +1537,9 @@ bool LinkView::linkGetDetailPath(const char *subname, SoFullPath *path, SoDetail
             return true;
 
         if(info.isLinked()) {
-            info.linkInfo->getDetail(false,childType,subname,det,path);
-            return true;
+            if (info.linkInfo->getDetail(false,childType,subname,det,path)) {
+                return true;
+            }
         }
     }
     if(isLinked()) {
@@ -1624,7 +1633,7 @@ static const char *_LinkElementIcon = "LinkElement";
 
 ViewProviderLink::ViewProviderLink()
     :linkType(LinkTypeNone),hasSubName(false),hasSubElement(false)
-    ,useCenterballDragger(false),childVp(nullptr),overlayCacheKey(0)
+    ,childVp(nullptr),overlayCacheKey(0)
 {
     sPixmap = _LinkIcon;
 
@@ -1670,7 +1679,7 @@ ViewProviderLink::~ViewProviderLink()
 }
 
 bool ViewProviderLink::isSelectable() const {
-    return !pcDragger && Selectable.getValue();
+    return Selectable.getValue();
 }
 
 void ViewProviderLink::attach(App::DocumentObject *pcObj) {
@@ -1685,7 +1694,7 @@ void ViewProviderLink::attach(App::DocumentObject *pcObj) {
     setDisplayMaskMode("Link");
     inherited::attach(pcObj);
     checkIcon();
-    if(pcObj->isDerivedFrom(App::LinkElement::getClassTypeId()))
+    if(pcObj->isDerivedFrom<App::LinkElement>())
         hide();
     linkView->setOwner(this);
 
@@ -1724,7 +1733,7 @@ QIcon ViewProviderLink::getIcon() const {
 
 QPixmap ViewProviderLink::getOverlayPixmap() const {
     auto ext = getLinkExtension();
-    int px = 12 * getMainWindow()->devicePixelRatioF();
+    constexpr int px = 12;
     if(ext && ext->getLinkedObjectProperty() && ext->_getElementCountValue())
         return BitmapFactory().pixmapFromSvg("LinkArrayOverlay", QSizeF(px,px));
     else if(hasSubElement)
@@ -1737,7 +1746,7 @@ QPixmap ViewProviderLink::getOverlayPixmap() const {
 
 void ViewProviderLink::onChanged(const App::Property* prop) {
     if(prop==&ChildViewProvider) {
-        childVp = freecad_dynamic_cast<ViewProviderDocumentObject>(ChildViewProvider.getObject().get());
+        childVp = freecad_cast<ViewProviderDocumentObject*>(ChildViewProvider.getObject().get());
         if(childVp && getObject()) {
             if(strcmp(childVp->getTypeId().getName(),getObject()->getViewProviderName())!=0
                     && !childVp->allowOverride(*getObject()))
@@ -1850,8 +1859,6 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
     }else if(prop == ext->getPlacementProperty() || prop == ext->getLinkPlacementProperty()) {
         auto propLinkPlacement = ext->getLinkPlacementProperty();
         if(!propLinkPlacement || propLinkPlacement == prop) {
-            const auto &pla = static_cast<const App::PropertyPlacement*>(prop)->getValue();
-            ViewProviderGeometryObject::updateTransform(pla, pcTransform);
             const auto &v = ext->getScaleVector();
             if(canScale(v))
                 pcTransform->scaleFactor.setValue(v.x,v.y,v.z);
@@ -1860,7 +1867,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
         }
     }else if(prop == ext->getLinkCopyOnChangeGroupProperty()) {
         if (auto group = ext->getLinkCopyOnChangeGroupValue()) {
-            auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+            auto vp = freecad_cast<ViewProviderDocumentObject*>(
                     Application::Instance->getViewProvider(group));
             if (vp) {
                 vp->hide();
@@ -1911,7 +1918,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
     }else if(prop == ext->_getShowElementProperty()) {
         if(!ext->_getShowElementValue()) {
 
-            auto linked = freecad_dynamic_cast<ViewProviderDocumentObject>(getLinkedView(true,ext));
+            auto linked = freecad_cast<ViewProviderDocumentObject*>(getLinkedView(true,ext));
             if(linked && linked->getDocument()==getDocument())
                 linked->hide();
 
@@ -1925,9 +1932,9 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
                 bool hasMaterial = false;
                 materials.reserve(elements.size());
                 for(size_t i=0;i<elements.size();++i) {
-                    auto element = freecad_dynamic_cast<App::LinkElement>(elements[i]);
+                    auto element = freecad_cast<App::LinkElement*>(elements[i]);
                     if(!element) continue;
-                    auto vp = freecad_dynamic_cast<ViewProviderLink>(
+                    auto vp = freecad_cast<ViewProviderLink*>(
                             Application::Instance->getViewProvider(element));
                     if(!vp) continue;
                     overrideMaterial = overrideMaterial || vp->OverrideMaterial.getValue();
@@ -2012,7 +2019,7 @@ void ViewProviderLink::updateElementList(App::LinkBaseExtension *ext) {
         int i=-1;
         for(auto obj : elements) {
             ++i;
-            auto vp = freecad_dynamic_cast<ViewProviderLink>(
+            auto vp = freecad_cast<ViewProviderLink*>(
                     Application::Instance->getViewProvider(obj));
             if(!vp) continue;
             if(OverrideMaterialList.getSize()>i)
@@ -2230,7 +2237,7 @@ bool ViewProviderLink::canDropObjectEx(App::DocumentObject *obj,
     if(!hasSubName && linkView->isLinked()) {
         auto linked = getLinkedView(false,ext);
         if(linked) {
-            auto linkedVdp = freecad_dynamic_cast<ViewProviderDocumentObject>(linked);
+            auto linkedVdp = freecad_cast<ViewProviderDocumentObject*>(linked);
             if(linkedVdp) {
                 if(linkedVdp->getObject()==obj || linkedVdp->getObject()==owner)
                     return false;
@@ -2239,7 +2246,7 @@ bool ViewProviderLink::canDropObjectEx(App::DocumentObject *obj,
         }
     }
     if(obj->getDocument() != getObject()->getDocument() &&
-       !freecad_dynamic_cast<App::PropertyXLink>(ext->getLinkedObjectProperty()))
+       !freecad_cast<App::PropertyXLink*>(ext->getLinkedObjectProperty()))
         return false;
 
     return true;
@@ -2348,7 +2355,7 @@ bool ViewProviderLink::getDetailPath(
         return false;
     }
     std::string _subname;
-    if(subname && subname[0]) {
+    if(!Base::Tools::isNullOrEmpty(subname)) {
         if (auto linked = ext->getLinkedObjectValue()) {
             if (const char *dot = strchr(subname,'.')) {
                 if(subname[0]=='$') {
@@ -2381,8 +2388,19 @@ bool ViewProviderLink::getDetailPath(
 
 bool ViewProviderLink::onDelete(const std::vector<std::string> &) {
     auto element = getObject<App::LinkElement>();
-    if (element && !element->canDelete())
+    if (element && !element->canDelete()) {
         return false;
+    }
+
+    auto link = getObject<App::Link>();
+    if (link && link->ElementCount.getValue() != 0) {
+        auto doc = link->getDocument();
+        auto elements = link->ElementList.getValues();
+        for (auto element : elements) {
+            doc->removeObject(element->getNameInDocument());
+        }
+    }
+    
     auto ext = getLinkExtension();
     if (ext->isLinkMutated()) {
         auto linked = ext->getLinkedObjectValue();
@@ -2506,7 +2524,7 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                     }
                     Command::updateActive();
                 } catch (Base::Exception &e) {
-                    e.ReportException();
+                    e.reportException();
                 }
             });
         }
@@ -2524,7 +2542,7 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                     ext->getLinkCopyOnChangeProperty()->setValue(1);
                     Command::updateActive();
                 } catch (Base::Exception &e) {
-                    e.ReportException();
+                    e.reportException();
                 }
             });
             act = submenu->addAction(QObject::tr("Tracking"));
@@ -2538,7 +2556,7 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                     ext->getLinkCopyOnChangeProperty()->setValue(3);
                     Command::updateActive();
                 } catch (Base::Exception &e) {
-                    e.ReportException();
+                    e.reportException();
                 }
             });
         }
@@ -2556,7 +2574,7 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                 ext->getLinkCopyOnChangeProperty()->setValue((long)0);
                 Command::updateActive();
             } catch (Base::Exception &e) {
-                e.ReportException();
+                e.reportException();
             }
         });
     }
@@ -2575,7 +2593,7 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                 ext->syncCopyOnChange();
                 Command::updateActive();
             } catch (Base::Exception &e) {
-                e.ReportException();
+                e.reportException();
             }
         });
     }
@@ -2585,7 +2603,7 @@ void ViewProviderLink::_setupContextMenu(
         App::LinkBaseExtension *ext, QMenu* menu, QObject* receiver, const char* member)
 {
     if(linkEdit(ext)) {
-        if (auto linkvp = Base::freecad_dynamic_cast<ViewProviderLink>(linkView->getLinkedView()))
+        if (auto linkvp = freecad_cast<ViewProviderLink*>(linkView->getLinkedView()))
             linkvp->_setupContextMenu(ext, menu, receiver, member);
         else
             linkView->getLinkedView()->setupContextMenu(menu,receiver,member);
@@ -2601,7 +2619,7 @@ void ViewProviderLink::_setupContextMenu(
                 ext->getShowElementProperty()->setValue(!ext->getShowElementValue());
                 Command::updateActive();
             } catch (Base::Exception &e) {
-                e.ReportException();
+                e.reportException();
             }
         });
         action->setToolTip(QObject::tr(
@@ -2677,7 +2695,7 @@ bool ViewProviderLink::initDraggingPlacement() {
         }
     } catch (Py::Exception&) {
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
         return false;
     }
 
@@ -2728,7 +2746,7 @@ bool ViewProviderLink::initDraggingPlacement() {
     {
         App::PropertyPlacement *propPla = nullptr;
         if(ext->getLinkTransformValue() && ext->getLinkedObjectValue()) {
-            propPla = Base::freecad_dynamic_cast<App::PropertyPlacement>(
+            propPla = freecad_cast<App::PropertyPlacement*>(
                     ext->getLinkedObjectValue()->getPropertyByName("Placement"));
         }
         if(propPla) {
@@ -2764,25 +2782,30 @@ ViewProvider *ViewProviderLink::startEditing(int mode) {
     }
 
     static thread_local bool _pendingTransform;
-    static thread_local Base::Matrix4D  _editingTransform;
+    static thread_local Matrix4D _editingTransform;
 
     auto doc = Application::Instance->editDocument();
 
-    if(mode==ViewProvider::Transform) {
-        if(_pendingTransform && doc)
+    if (mode == ViewProvider::Transform) {
+        if (_pendingTransform && doc) {
             doc->setEditingTransform(_editingTransform);
+        }
 
-        if(!initDraggingPlacement())
+        if (!initDraggingPlacement()) {
             return nullptr;
-        if(useCenterballDragger)
-            pcDragger = CoinPtr<SoCenterballDragger>(new SoCenterballDragger);
-        else
-            pcDragger = CoinPtr<SoFCCSysDragger>(new SoFCCSysDragger);
-        updateDraggingPlacement(dragCtx->initialPlacement,true);
-        pcDragger->addStartCallback(dragStartCallback, this);
-        pcDragger->addFinishCallback(dragFinishCallback, this);
-        pcDragger->addMotionCallback(dragMotionCallback, this);
-        return inherited::startEditing(mode);
+        }
+
+        if (auto result = inherited::startEditing(mode)) {
+            if (transformDragger.get()) {
+                transformDragger->addStartCallback(dragStartCallback, this);
+                transformDragger->addFinishCallback(dragFinishCallback, this);
+                transformDragger->addMotionCallback(dragMotionCallback, this);
+
+                setDraggerPlacement(dragCtx->initialPlacement);
+            }
+
+            return result;
+        }
     }
 
     if(!linkEdit()) {
@@ -2810,7 +2833,7 @@ ViewProvider *ViewProviderLink::startEditing(int mode) {
         FC_ERR("no linked object");
         return nullptr;
     }
-    auto vpd = freecad_dynamic_cast<ViewProviderDocumentObject>(
+    auto vpd = freecad_cast<ViewProviderDocumentObject*>(
                 Application::Instance->getViewProvider(linked));
     if(!vpd) {
         FC_ERR("no linked viewprovider");
@@ -2839,6 +2862,7 @@ bool ViewProviderLink::setEdit(int ModNum)
         Selection().clearSelection();
         return true;
     }
+
     return inherited::setEdit(ModNum);
 }
 
@@ -2849,125 +2873,21 @@ void ViewProviderLink::setEditViewer(Gui::View3DInventorViewer* viewer, int ModN
         return;
     }
 
-    if (pcDragger && viewer)
-    {
-        auto rootPickStyle = new SoPickStyle();
-        rootPickStyle->style = SoPickStyle::UNPICKABLE;
-        static_cast<SoFCUnifiedSelection*>(
-                viewer->getSceneGraph())->insertChild(rootPickStyle, 0);
-
-        if(useCenterballDragger) {
-            auto dragger = static_cast<SoCenterballDragger*>(pcDragger.get());
-            auto group = new SoAnnotation;
-            auto pickStyle = new SoPickStyle;
-            pickStyle->setOverride(true);
-            group->addChild(pickStyle);
-            group->addChild(pcDragger);
-
-            // Because the dragger is not grouped with the actual geometry,
-            // we use an invisible cube sized by the bounding box obtained from
-            // initDraggingPlacement() to scale the centerball dragger properly
-
-            auto * ss = static_cast<SoSurroundScale*>(dragger->getPart("surroundScale", TRUE));
-            ss->numNodesUpToContainer = 3;
-            ss->numNodesUpToReset = 2;
-
-            auto *geoGroup = new SoGroup;
-            group->addChild(geoGroup);
-            auto *style = new SoDrawStyle;
-            style->style.setValue(SoDrawStyle::INVISIBLE);
-            style->setOverride(TRUE);
-            geoGroup->addChild(style);
-            auto *cube = new SoCube;
-            geoGroup->addChild(cube);
-            auto length = std::max(std::max(dragCtx->bbox.LengthX(),
-                        dragCtx->bbox.LengthY()), dragCtx->bbox.LengthZ());
-            cube->width = length;
-            cube->height = length;
-            cube->depth = length;
-
-            viewer->setupEditingRoot(group,&dragCtx->preTransform);
-        } else {
-            auto dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
-            dragger->draggerSize.setValue(ViewParams::instance()->getDraggerScale());
-            dragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
-            viewer->setupEditingRoot(pcDragger,&dragCtx->preTransform);
-
-            auto task = new TaskCSysDragger(this, dragger);
-            Gui::Control().showDialog(task);
-        }
-    }
+    ViewProviderDragger::setEditViewer(viewer, ModNum);
 }
 
 void ViewProviderLink::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 {
-    SoNode *child = static_cast<SoFCUnifiedSelection*>(viewer->getSceneGraph())->getChild(0);
-    if (child && child->isOfType(SoPickStyle::getClassTypeId()))
-        static_cast<SoFCUnifiedSelection*>(viewer->getSceneGraph())->removeChild(child);
-    pcDragger.reset();
     dragCtx.reset();
-    Gui::Control().closeDialog();
+
+    inherited::unsetEditViewer(viewer);
 }
 
-Base::Placement ViewProviderLink::currentDraggingPlacement() const
-{
-    // if there isn't an active dragger return a default placement
-    if (!pcDragger)
-        return Base::Placement();
-
-    SbVec3f v;
-    SbRotation r;
-    if (useCenterballDragger) {
-        auto dragger = static_cast<SoCenterballDragger*>(pcDragger.get());
-        v = dragger->center.getValue();
-        r = dragger->rotation.getValue();
-    }
-    else {
-        auto dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
-        v = dragger->translation.getValue();
-        r = dragger->rotation.getValue();
-    }
-
-    float q1,q2,q3,q4;
-    r.getValue(q1,q2,q3,q4);
-    return Base::Placement(Base::Vector3d(v[0],v[1],v[2]),Base::Rotation(q1,q2,q3,q4));
-}
-
-void ViewProviderLink::enableCenterballDragger(bool enable) {
-    if(enable == useCenterballDragger)
-        return;
-    if(pcDragger)
-        LINK_THROW(Base::RuntimeError,"Cannot change dragger during dragging");
-    useCenterballDragger = enable;
-}
-
-void ViewProviderLink::updateDraggingPlacement(const Base::Placement &pla, bool force) {
-    if(pcDragger && (force || currentDraggingPlacement()!=pla)) {
-        const auto &pos = pla.getPosition();
-        const auto &rot = pla.getRotation();
-        FC_LOG("updating dragger placement (" << pos.x << ", " << pos.y << ", " << pos.z << ')');
-        if(useCenterballDragger) {
-            auto dragger = static_cast<SoCenterballDragger*>(pcDragger.get());
-            SbBool wasenabled = dragger->enableValueChangedCallbacks(FALSE);
-            SbMatrix matrix;
-            matrix = convert(pla.toMatrix());
-            dragger->center.setValue(SbVec3f(0,0,0));
-            dragger->setMotionMatrix(matrix);
-            if (wasenabled) {
-                dragger->enableValueChangedCallbacks(TRUE);
-                dragger->valueChanged();
-            }
-        }else{
-            auto dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
-            dragger->translation.setValue(SbVec3f(pos.x,pos.y,pos.z));
-            dragger->rotation.setValue(rot[0],rot[1],rot[2],rot[3]);
-        }
-    }
-}
-
-bool ViewProviderLink::callDraggerProxy(const char *fname, bool update) {
-    if(!pcDragger)
+bool ViewProviderLink::callDraggerProxy(const char* fname) {
+    if (!transformDragger) {
         return false;
+    }
+
     Base::PyGILStateLocker lock;
     try {
         auto* proxy = getPropertyByName("Proxy");
@@ -2982,52 +2902,36 @@ bool ViewProviderLink::callDraggerProxy(const char *fname, bool update) {
         }
     } catch (Py::Exception&) {
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
         return true;
     }
 
-    if(update) {
-        auto ext = getLinkExtension();
-        if(ext) {
-            const auto &pla = currentDraggingPlacement();
-            auto prop = ext->getLinkPlacementProperty();
-            if(!prop)
-                prop = ext->getPlacementProperty();
-            if(prop) {
-                auto plaNew = pla * Base::Placement(dragCtx->mat);
-                if(prop->getValue()!=plaNew)
-                    prop->setValue(plaNew);
-            }
-            updateDraggingPlacement(pla);
-        }
-    }
     return false;
 }
 
 void ViewProviderLink::dragStartCallback(void *data, SoDragger *) {
     auto me = static_cast<ViewProviderLink*>(data);
-    me->dragCtx->initialPlacement = me->currentDraggingPlacement();
-    if(!me->callDraggerProxy("onDragStart",false)) {
-        me->dragCtx->cmdPending = true;
-        me->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Link Transform"));
-    }else
-        me->dragCtx->cmdPending = false;
+
+    me->dragCtx->initialPlacement = me->getDraggerPlacement();
+    me->callDraggerProxy("onDragStart");
 }
 
 void ViewProviderLink::dragFinishCallback(void *data, SoDragger *) {
     auto me = static_cast<ViewProviderLink*>(data);
-    me->callDraggerProxy("onDragEnd",true);
-    if(me->dragCtx->cmdPending) {
-        if(me->currentDraggingPlacement() == me->dragCtx->initialPlacement)
+    me->callDraggerProxy("onDragEnd");
+
+    if (me->dragCtx->cmdPending) {
+        if (me->getDraggerPlacement() == me->dragCtx->initialPlacement) {
             me->getDocument()->abortCommand();
-        else
+        } else {
             me->getDocument()->commitCommand();
+        }
     }
 }
 
 void ViewProviderLink::dragMotionCallback(void *data, SoDragger *) {
     auto me = static_cast<ViewProviderLink*>(data);
-    me->callDraggerProxy("onDragMotion",true);
+    me->callDraggerProxy("onDragMotion");
 }
 
 void ViewProviderLink::updateLinks(ViewProvider *vp) {
@@ -3037,10 +2941,10 @@ void ViewProviderLink::updateLinks(ViewProvider *vp) {
             ext->linkInfo->update();
     }
     catch (const Base::TypeError &e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (const Base::ValueError &e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -3055,7 +2959,7 @@ PyObject *ViewProviderLink::getPyLinkView() {
     return linkView->getPyObject();
 }
 
-std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char *subname) const {
+std::map<std::string, Base::Color> ViewProviderLink::getElementColors(const char *subname) const {
     bool isPrefix = true;
     if(!subname)
         subname = "";
@@ -3063,7 +2967,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
         auto len = strlen(subname);
         isPrefix = !len || subname[len-1]=='.';
     }
-    std::map<std::string, App::Color> colors;
+    std::map<std::string, Base::Color> colors;
     auto ext = getLinkExtension();
     if(!ext || ! ext->getColoredElementsProperty())
         return colors;
@@ -3073,7 +2977,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
     std::string wildcard(subname);
     if(wildcard == "Face" || wildcard == "Face*" || wildcard.empty()) {
         if(wildcard.size()==4 || OverrideMaterial.getValue()) {
-            App::Color c = ShapeMaterial.getValue().diffuseColor;
+            Base::Color c = ShapeMaterial.getValue().diffuseColor;
             c.setTransparency(ShapeMaterial.getValue().transparency);
             colors["Face"] = c;
             if(wildcard.size()==4)
@@ -3119,7 +3023,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
             auto link = vp->getObject()->getLinkedObject(false);
             if(!link || link==vp->getObject())
                 break;
-            auto next = freecad_dynamic_cast<ViewProviderLink>(
+            auto next = freecad_cast<ViewProviderLink*>(
                     Application::Instance->getViewProvider(link));
             if(!next)
                 break;
@@ -3194,9 +3098,9 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
     bool found = true;
     if(colors.empty()) {
         found = false;
-        colors.emplace(subname,App::Color());
+        colors.emplace(subname,Base::Color());
     }
-    std::map<std::string, App::Color> ret;
+    std::map<std::string, Base::Color> ret;
     for(const auto &v : colors) {
         const char *pos = nullptr;
         auto sobj = getObject()->resolve(v.first.c_str(),nullptr,nullptr,&pos);
@@ -3220,18 +3124,18 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
     return ret;
 }
 
-void ViewProviderLink::setElementColors(const std::map<std::string, App::Color> &colorMap) {
+void ViewProviderLink::setElementColors(const std::map<std::string, Base::Color> &colorMap) {
     auto ext = getLinkExtension();
     if(!ext || ! ext->getColoredElementsProperty())
         return;
 
     // For checking and collapsing array element color
-    std::map<std::string,std::map<int,App::Color> > subMap;
+    std::map<std::string,std::map<int,Base::Color> > subMap;
     int element_count = ext->getElementCountValue();
 
     std::vector<std::string> subs;
-    std::vector<App::Color> colors;
-    App::Color faceColor;
+    std::vector<Base::Color> colors;
+    Base::Color faceColor;
     bool hasFaceColor = false;
     for(const auto &v : colorMap) {
         if(!hasFaceColor && v.first == "Face") {
@@ -3255,7 +3159,7 @@ void ViewProviderLink::setElementColors(const std::map<std::string, App::Color> 
     }
     for(auto &v : subMap) {
         if(element_count == (int)v.second.size()) {
-            App::Color firstColor = v.second.begin()->second;
+            Base::Color firstColor = v.second.begin()->second;
             subs.push_back(v.first);
             colors.push_back(firstColor);
             for(auto it=v.second.begin();it!=v.second.end();) {
@@ -3301,7 +3205,7 @@ void ViewProviderLink::applyColors() {
     // reset color and visibility first
     action.apply(linkView->getLinkRoot());
 
-    std::map<std::string, std::map<std::string,App::Color> > colorMap;
+    std::map<std::string, std::map<std::string,Base::Color> > colorMap;
     std::set<std::string> hideList;
     auto colors = getElementColors();
     colors.erase("Face");
@@ -3408,7 +3312,16 @@ void ViewProviderLink::getPropertyMap(std::map<std::string,App::Property*> &Map)
     }
 }
 
-void ViewProviderLink::getPropertyList(std::vector<App::Property*> &List) const {
+void ViewProviderLink::visitProperties(const std::function<void(App::Property*)>& visitor) const
+{
+    inherited::visitProperties(visitor);
+    if (childVp != nullptr) {
+        childVp->visitProperties(visitor);
+    }
+}
+
+void ViewProviderLink::getPropertyList(std::vector<App::Property*>& List) const
+{
     std::map<std::string,App::Property*> Map;
     getPropertyMap(Map);
     List.reserve(List.size()+Map.size());
@@ -3433,7 +3346,7 @@ ViewProviderDocumentObject *ViewProviderLink::getLinkedViewProvider(
         linked = ext->getTrueLinkedObject(recursive);
     if(!linked)
         return self;
-    auto res = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+    auto res = freecad_cast<ViewProviderDocumentObject*>(
             Application::Instance->getViewProvider(linked));
     if(res)
         return res;

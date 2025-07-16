@@ -64,28 +64,26 @@ QGIBreakLine::QGIBreakLine()
 
 
     setColor(PreferencesGui::sectionLineQColor());
-
-    // setFill(Qt::NoBrush);
-    setFill(Qt::SolidPattern);
+    m_brush.setStyle(Qt::SolidPattern);
 }
 
 void QGIBreakLine::draw()
 {
-    if (breakType() == 0) {
+    if (breakType() == DrawBrokenView::BreakType::NONE) {
         // none
         m_background->hide();
         m_line0->hide();
         m_line1->hide();
     }
 
-    if (breakType() == 1) {
+    if (breakType() == DrawBrokenView::BreakType::ZIGZAG) {
         drawLargeZigZag();
         m_background->show();
         m_line0->show();
         m_line1->show();
     }
 
-    if (breakType() == 2) {
+    if (breakType() == DrawBrokenView::BreakType::SIMPLE) {
         // simple line from pref
         drawSimpleLines();
         m_background->hide();
@@ -131,7 +129,7 @@ void QGIBreakLine::drawLargeZigZag()
 // start needs to be Rez'd and +Y up
 QPainterPath QGIBreakLine::makeHorizontalZigZag(Base::Vector3d start) const
 {
-    // Base::Console().Message("QGIBL::makeHorizontalZigZag(%s)\n", DU::formatVector(start).c_str());
+    // Base::Console().message("QGIBL::makeHorizontalZigZag(%s)\n", DU::formatVector(start).c_str());
     QPainterPath pPath;
     double step = (m_right - m_left) / segments;
     Base::Vector3d xOffset = Base::Vector3d(step, 0.0, 0.0);        // 1/2 wave length
@@ -152,7 +150,7 @@ QPainterPath QGIBreakLine::makeHorizontalZigZag(Base::Vector3d start) const
 
 QPainterPath QGIBreakLine::makeVerticalZigZag(Base::Vector3d start) const
 {
-    // Base::Console().Message("QGIBL::makeVerticalZigZag(%s)\n", DU::formatVector(start).c_str());
+    // Base::Console().message("QGIBL::makeVerticalZigZag(%s)\n", DU::formatVector(start).c_str());
     QPainterPath pPath;
     double step = (m_top - m_bottom) / segments;
     Base::Vector3d xOffset = Base::Vector3d(zigzagWidth, 0.0, 0.0);  // amplitude
@@ -211,7 +209,7 @@ QPainterPath QGIBreakLine::pathFromPoints(Base::Vector3d start, Base::Vector3d e
 
 void QGIBreakLine::setBounds(double left, double top, double right, double bottom)
 {
-    // Base::Console().Message("QGIBL::setBounds(%.3f, %.3f, %.3f, %.3f\n", left, top, right, bottom);
+    // Base::Console().message("QGIBL::setBounds(%.3f, %.3f, %.3f, %.3f\n", left, top, right, bottom);
     m_left = left;
     m_right = right;
     m_top = top;
@@ -253,9 +251,6 @@ void QGIBreakLine::paint ( QPainter * painter, const QStyleOptionGraphicsItem * 
 
 void QGIBreakLine::setTools()
 {
-    m_pen.setWidthF(m_width);
-    m_pen.setColor(m_colCurrent);
-    m_brush.setStyle(m_brushCurrent);
     m_brush.setColor(PreferencesGui::pageQColor());
 
     m_line0->setPen(m_pen);

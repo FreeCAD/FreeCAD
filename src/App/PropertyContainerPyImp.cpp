@@ -86,7 +86,7 @@ PyObject* PropertyContainerPy::getPropertyTouchList(PyObject* args)
     }
 
     App::Property* prop = getPropertyContainerPtr()->getPropertyByName(pstr);
-    if (prop && prop->isDerivedFrom(PropertyLists::getClassTypeId())) {
+    if (prop && prop->isDerivedFrom<PropertyLists>()) {
         const auto& touched = static_cast<PropertyLists*>(prop)->getTouchList();
         Py::Tuple ret(touched.size());
         int i = 0;
@@ -247,7 +247,7 @@ PyObject* PropertyContainerPy::setPropertyStatus(PyObject* args)
         return nullptr;
     }
 
-    auto linkProp = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
+    auto linkProp = freecad_cast<App::PropertyLinkBase*>(prop);
     std::bitset<32> status(prop->getStatus());
 
     std::vector<Py::Object> items;
@@ -284,7 +284,7 @@ PyObject* PropertyContainerPy::setPropertyStatus(PyObject* args)
             status.set(it->second, value);
         }
         else if (item.isNumeric()) {
-            int v = Py::Int(item);
+            int v = Py::Long(item);
             if (v < 0) {
                 value = false;
                 v = -v;
@@ -326,7 +326,7 @@ PyObject* PropertyContainerPy::getPropertyStatus(PyObject* args)
             return nullptr;
         }
 
-        auto linkProp = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
+        auto linkProp = freecad_cast<App::PropertyLinkBase*>(prop);
         if (linkProp && linkProp->testFlag(App::PropertyLinkBase::LinkAllowPartial)) {
             ret.append(Py::String("AllowPartial"));
         }
@@ -345,7 +345,7 @@ PyObject* PropertyContainerPy::getPropertyStatus(PyObject* args)
                 }
             }
             if (!found) {
-                ret.append(Py::Int(static_cast<long>(i)));
+                ret.append(Py::Long(static_cast<long>(i)));
             }
         }
     }
@@ -482,7 +482,7 @@ PyObject* PropertyContainerPy::getEnumerationsOfProperty(PyObject* args)
         return nullptr;
     }
 
-    PropertyEnumeration* enumProp = dynamic_cast<PropertyEnumeration*>(prop);
+    PropertyEnumeration* enumProp = freecad_cast<PropertyEnumeration*>(prop);
     if (!enumProp) {
         Py_Return;
     }
@@ -510,7 +510,7 @@ Py::List PropertyContainerPy::getPropertiesList() const
 }
 
 
-PyObject* PropertyContainerPy::dumpPropertyContent(PyObject* args, PyObject* kwds)
+PyObject* PropertyContainerPy::dumpPropertyContent(PyObject* args, PyObject* kwds) const
 {
     int compression = 3;
     const char* property {};
@@ -647,7 +647,7 @@ PyObject* PropertyContainerPy::getCustomAttributes(const char* attr) const
     }
     /// FIXME: For v0.20: Do not use stuff from Part module here!
     if (Base::streq(attr, "Shape")
-         && getPropertyContainerPtr()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+         && getPropertyContainerPtr()->isDerivedFrom<App::DocumentObject>()) {
         // Special treatment of Shape property
         static PyObject* _getShape = nullptr;
         if (!_getShape) {
@@ -703,4 +703,26 @@ int PropertyContainerPy::setCustomAttributes(const char* attr, PyObject* obj)
     }
 
     return 0;
+}
+
+PyObject* PropertyContainerPy::renameProperty(PyObject* args) const
+{
+    char* oldName {};
+    char* newName {};
+    if (PyArg_ParseTuple(args, "ss", &oldName, &newName) == 0) {
+        return nullptr;
+    }
+
+    Property* prop = getPropertyContainerPtr()->getDynamicPropertyByName(oldName);
+    if (!prop) {
+        PyErr_Format(PyExc_AttributeError, "Property container has no dynamic property '%s'", oldName);
+        return nullptr;
+    }
+
+    PY_TRY
+    {
+        prop->getContainer()->renameDynamicProperty(prop, newName);
+        Py_Return;
+    }
+    PY_CATCH
 }

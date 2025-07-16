@@ -42,8 +42,8 @@ class Text(DraftAnnotation):
 
     def __init__(self, obj):
         obj.Proxy = self
-        self.set_properties(obj)
         self.Type = "Text"
+        self.set_properties(obj)
 
     def set_properties(self, obj):
         """Add properties to the object and set them."""
@@ -56,7 +56,8 @@ class Text(DraftAnnotation):
             obj.addProperty("App::PropertyPlacement",
                             "Placement",
                             "Base",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Placement = App.Placement()
 
         if "Text" not in properties:
@@ -68,18 +69,16 @@ class Text(DraftAnnotation):
             obj.addProperty("App::PropertyStringList",
                             "Text",
                             "Base",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Text = []
 
     def onDocumentRestored(self,obj):
         """Execute code when the document is restored."""
         super().onDocumentRestored(obj)
         gui_utils.restore_view_object(obj, vp_module="view_text", vp_class="ViewProviderText")
-        # See loads: old_type is None for new objects.
-        old_type = self.Type
-        self.Type = "Text"
-
-        if old_type is None:
+        # See loads:
+        if self.stored_type is None:
             return
         if not getattr(obj, "ViewObject", None):
             return
@@ -94,10 +93,11 @@ class Text(DraftAnnotation):
         _wrn("v0.21, " + obj.Label + ", "
              + translate("draft", "renamed 'DisplayMode' options to 'World/Screen'"))
 
-    def loads(self,state):
+    def loads(self, state):
         # Before update_properties_0v21 the self.Type value was stored.
         # We use this to identify older objects that need to be updated.
-        self.Type = state
+        self.stored_type = state
+        self.Type = "Text"
 
 
 # Alias for compatibility with v0.18 and earlier

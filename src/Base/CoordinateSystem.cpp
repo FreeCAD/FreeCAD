@@ -26,6 +26,8 @@
 #include "CoordinateSystem.h"
 #include "Exception.h"
 #include "Matrix.h"
+#include "Placement.h"
+#include "Rotation.h"
 
 
 using namespace Base;

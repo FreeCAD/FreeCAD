@@ -27,7 +27,7 @@
 # include <sstream>
 #endif
 
-// inclusion of the generated files (generated out of PropertyContainerPy.xml)
+// inclusion of the generated files (generated out of PropertyContainerPy.pyi)
 #include "ViewProviderExtensionPy.h"
 #include "ViewProviderExtensionPy.cpp"
 #include "ViewProviderDocumentObject.h"
@@ -61,7 +61,7 @@ PyObject* ViewProviderExtensionPy::setIgnoreOverlayIcon(PyObject *args)
     Py_Return;
 }
 
-PyObject* ViewProviderExtensionPy::ignoreOverlayIcon(PyObject *args)
+PyObject* ViewProviderExtensionPy::ignoreOverlayIcon(PyObject *args) const
 {
     const char* name = nullptr;
     if (!PyArg_ParseTuple(args, "s", &name))

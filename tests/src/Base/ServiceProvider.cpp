@@ -62,7 +62,7 @@ TEST(ServiceProvider, provideImplementation)
     // Arrange
     Base::ServiceProvider serviceProvider;
 
-    serviceProvider.implement<SimpleService>(new FirstServiceImplementation);
+    serviceProvider.registerImplementation<SimpleService>(new FirstServiceImplementation);
 
     // Act
     auto implementation = serviceProvider.provide<SimpleService>();
@@ -77,8 +77,8 @@ TEST(ServiceProvider, provideLatestImplementation)
     // Arrange
     Base::ServiceProvider serviceProvider;
 
-    serviceProvider.implement<SimpleService>(new FirstServiceImplementation);
-    serviceProvider.implement<SimpleService>(new SecondServiceImplementation);
+    serviceProvider.registerImplementation<SimpleService>(new FirstServiceImplementation);
+    serviceProvider.registerImplementation<SimpleService>(new SecondServiceImplementation);
 
     // Act
     auto implementation = serviceProvider.provide<SimpleService>();
@@ -93,8 +93,8 @@ TEST(ServiceProvider, provideAllImplementations)
     // Arrange
     Base::ServiceProvider serviceProvider;
 
-    serviceProvider.implement<SimpleService>(new FirstServiceImplementation);
-    serviceProvider.implement<SimpleService>(new SecondServiceImplementation);
+    serviceProvider.registerImplementation<SimpleService>(new FirstServiceImplementation);
+    serviceProvider.registerImplementation<SimpleService>(new SecondServiceImplementation);
 
     // Act
     auto implementations = serviceProvider.all<SimpleService>();

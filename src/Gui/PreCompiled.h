@@ -50,8 +50,6 @@
 #include <fcntl.h>
 #include <cctype>
 #include <typeinfo>
-#include <cfloat>
-#include <climits>
 
 #ifdef FC_OS_WIN32
 #include <Windows.h>
@@ -67,10 +65,14 @@
 #include <algorithm>
 #include <atomic>
 #include <bitset>
+#include <limits>
 #include <list>
 #include <map>
+#include <numbers>
+#include <optional>
 #include <queue>
 #include <random>
+#include <ranges>
 #include <set>
 #include <sstream>
 #include <stack>
@@ -82,7 +84,7 @@
 
 // Boost
 #include <boost_graph_adjacency_list.hpp>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/bind/bind.hpp>
 #include <boost/core/ignore_unused.hpp>

@@ -194,7 +194,7 @@ bool Body::isSolidFeature(const App::DocumentObject *obj)
             // Datum objects are not solid
             return false;
         }
-        if (auto transFeature = Base::freecad_dynamic_cast<PartDesign::Transformed>(obj)) {
+        if (auto transFeature = freecad_cast<PartDesign::Transformed*>(obj)) {
             // Transformed Features inside a MultiTransform are not solid features
             return !transFeature->isMultiTransformChild();
         }
@@ -255,12 +255,12 @@ std::vector<App::DocumentObject*> Body::addObject(App::DocumentObject *feature)
     }
 
     if(feature->Visibility.getValue()
-        && feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+        && feature->isDerivedFrom<PartDesign::Feature>())
     {
         for(auto obj : Group.getValues()) {
             if(obj->Visibility.getValue()
                     && obj!=feature
-                    && obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+                    && obj->isDerivedFrom<PartDesign::Feature>())
                 obj->Visibility.setValue(false);
         }
     }
@@ -313,7 +313,7 @@ void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* targe
 
     Group.setValues (model);
 
-    if(feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+    if(feature->isDerivedFrom<PartDesign::Feature>())
         static_cast<PartDesign::Feature*>(feature)->_Body.setValue(this);
 
     // Set the BaseFeature property
@@ -353,7 +353,7 @@ std::vector<App::DocumentObject*> Body::removeObject(App::DocumentObject* featur
     }
 
     std::vector<App::DocumentObject*> model = Group.getValues();
-    std::vector<App::DocumentObject*>::iterator it = std::find(model.begin(), model.end(), feature);
+    const auto it = std::ranges::find(model, feature);
 
     // Adjust Tip feature if it is pointing to the deleted object
     if (Tip.getValue()== feature) {
@@ -378,19 +378,19 @@ App::DocumentObjectExecReturn *Body::execute()
 {
     Part::BodyBase::execute();
     /*
-    Base::Console().Error("Body '%s':\n", getNameInDocument());
+    Base::Console().error("Body '%s':\n", getNameInDocument());
     App::DocumentObject* tip = Tip.getValue();
-    Base::Console().Error("   Tip: %s\n", (tip == NULL) ? "None" : tip->getNameInDocument());
+    Base::Console().error("   Tip: %s\n", (tip == NULL) ? "None" : tip->getNameInDocument());
     std::vector<App::DocumentObject*> model = Group.getValues();
-    Base::Console().Error("   Group:\n");
+    Base::Console().error("   Group:\n");
     for (std::vector<App::DocumentObject*>::const_iterator m = model.begin(); m != model.end(); m++) {
         if (*m == NULL) continue;
-        Base::Console().Error("      %s", (*m)->getNameInDocument());
+        Base::Console().error("      %s", (*m)->getNameInDocument());
         if (Body::isSolidFeature(*m)) {
             App::DocumentObject* baseFeature = static_cast<PartDesign::Feature*>(*m)->BaseFeature.getValue();
-            Base::Console().Error(", Base: %s\n", baseFeature == NULL ? "None" : baseFeature->getNameInDocument());
+            Base::Console().error(", Base: %s\n", baseFeature == NULL ? "None" : baseFeature->getNameInDocument());
         } else {
-            Base::Console().Error("\n");
+            Base::Console().error("\n");
         }
     }
     */
@@ -399,7 +399,7 @@ App::DocumentObjectExecReturn *Body::execute()
 
     Part::TopoShape tipShape;
     if ( tip ) {
-        if ( !tip->getTypeId().isDerivedFrom ( PartDesign::Feature::getClassTypeId() ) ) {
+        if ( !tip->isDerivedFrom<PartDesign::Feature>() ) {
             return new App::DocumentObjectExecReturn (QT_TRANSLATE_NOOP("Exception", "Linked object is not a PartDesign feature" ));
         }
 
@@ -441,8 +441,8 @@ void Body::onChanged(const App::Property* prop) {
 
             if (BaseFeature.getValue()) {
                 //setup the FeatureBase if needed
-                if (!first || !first->isDerivedFrom(FeatureBase::getClassTypeId())) {
-                    bf = static_cast<FeatureBase*>(getDocument()->addObject("PartDesign::FeatureBase", "BaseFeature"));
+                if (!first || !first->isDerivedFrom<FeatureBase>()) {
+                    bf = getDocument()->addObject<FeatureBase>("BaseFeature");
                     insertObject(bf, first, false);
 
                     if (!Tip.getValue())
@@ -460,7 +460,7 @@ void Body::onChanged(const App::Property* prop) {
         else if (prop == &Group) {
             //if the FeatureBase was deleted we set the BaseFeature link to nullptr
             if (BaseFeature.getValue() &&
-               (Group.getValues().empty() || !Group.getValues().front()->isDerivedFrom(FeatureBase::getClassTypeId()))) {
+               (Group.getValues().empty() || !Group.getValues().front()->isDerivedFrom<FeatureBase>())) {
                     BaseFeature.setValue(nullptr);
             }
         }
@@ -532,7 +532,7 @@ App::DocumentObject *Body::getSubObject(const char *subname,
             const char* secondDot = strchr(firstDot + 1, '.');
             if (secondDot) {
                 auto firstObj = Group.find(std::string(subname, firstDot).c_str());
-                if (!firstObj || firstObj->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+                if (!firstObj || firstObj->isDerivedFrom<PartDesign::Feature>()) {
                     auto secondObj = Group.find(std::string(firstDot + 1, secondDot).c_str());
                     if (secondObj) {
                         // we support only one level of sibling grouping, so no
@@ -564,7 +564,7 @@ App::DocumentObject *Body::getSubObject(const char *subname,
     // We return the shape only if there are feature visible inside
     for(auto obj : Group.getValues()) {
         if(obj->Visibility.getValue() &&
-           obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+           obj->isDerivedFrom<PartDesign::Feature>())
         {
             return Part::BodyBase::getSubObject(subname,pyObj,pmat,transform,depth);
         }
@@ -578,7 +578,7 @@ App::DocumentObject *Body::getSubObject(const char *subname,
 void Body::onDocumentRestored()
 {
     for(auto obj : Group.getValues()) {
-        if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+        if(obj->isDerivedFrom<PartDesign::Feature>())
             static_cast<PartDesign::Feature*>(obj)->_Body.setValue(this);
     }
     _GroupTouched.setStatus(App::Property::Output,true);

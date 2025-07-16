@@ -25,7 +25,7 @@
 
 #include <QDialog>
 #include <Base/Placement.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 

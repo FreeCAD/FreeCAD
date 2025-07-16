@@ -31,6 +31,7 @@ class QPlainTextEdit;
 namespace Py {
 class Object;
 class List;
+class String;
 }
 namespace Gui {
 

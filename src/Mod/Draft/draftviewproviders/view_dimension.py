@@ -124,7 +124,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyLength",
                              "TextSpacing",
                              "Text",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.TextSpacing = params.get_param("dimspacing")
 
         if "FlipText" not in properties:
@@ -133,7 +134,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyBool",
                              "FlipText",
                              "Text",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.FlipText = False
 
         if "TextPosition" not in properties:
@@ -143,7 +145,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyVectorDistance",
                              "TextPosition",
                              "Text",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.TextPosition = App.Vector(0, 0, 0)
 
         if "Override" not in properties:
@@ -154,7 +157,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyString",
                              "Override",
                              "Text",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.Override = ''
 
     def set_units_properties(self, vobj, properties):
@@ -167,7 +171,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyInteger",
                              "Decimals",
                              "Units",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.Decimals = params.get_param("dimPrecision")
 
         if "ShowUnit" not in properties:
@@ -176,7 +181,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyBool",
                              "ShowUnit",
                              "Units",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.ShowUnit = params.get_param("showUnit")
 
         if "UnitOverride" not in properties:
@@ -187,7 +193,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyString",
                              "UnitOverride",
                              "Units",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.UnitOverride = params.get_param("overrideUnit")
 
     def set_graphics_properties(self, vobj, properties):
@@ -200,18 +207,9 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyLength",
                              "ArrowSizeStart",
                              "Graphics",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.ArrowSizeStart = params.get_param("arrowsizestart")
-
-        if "ArrowTypeStart" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Arrow type")
-            vobj.addProperty("App::PropertyEnumeration",
-                             "ArrowTypeStart",
-                             "Graphics",
-                             _tip)
-            vobj.ArrowTypeStart = utils.ARROW_TYPES
-            vobj.ArrowTypeStart = utils.ARROW_TYPES[params.get_param("dimsymbolstart")]
 
         if "ArrowSizeEnd" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -219,8 +217,20 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyLength",
                              "ArrowSizeEnd",
                              "Graphics",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.ArrowSizeEnd = params.get_param("arrowsizeend")
+
+        if "ArrowTypeStart" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Arrow type")
+            vobj.addProperty("App::PropertyEnumeration",
+                             "ArrowTypeStart",
+                             "Graphics",
+                             _tip,
+                             locked=True)
+            vobj.ArrowTypeStart = utils.ARROW_TYPES
+            vobj.ArrowTypeStart = utils.ARROW_TYPES[params.get_param("dimsymbolstart")]
 
         if "ArrowTypeEnd" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -228,7 +238,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyEnumeration",
                              "ArrowTypeEnd",
                              "Graphics",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.ArrowTypeEnd = utils.ARROW_TYPES
             vobj.ArrowTypeEnd = utils.ARROW_TYPES[params.get_param("dimsymbolend")]
 
@@ -238,7 +249,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyBool",
                              "FlipArrows",
                              "Graphics",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.FlipArrows = False
 
         if "DimOvershoot" not in properties:
@@ -249,7 +261,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyDistance",
                              "DimOvershoot",
                              "Graphics",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.DimOvershoot = params.get_param("dimovershoot")
 
         if "ExtLines" not in properties:
@@ -258,7 +271,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyDistance",
                              "ExtLines",
                              "Graphics",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.ExtLines = params.get_param("extlines")
 
         if "ExtOvershoot" not in properties:
@@ -268,7 +282,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyDistance",
                              "ExtOvershoot",
                              "Graphics",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.ExtOvershoot = params.get_param("extovershoot")
 
         if "ShowLine" not in properties:
@@ -277,7 +292,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.addProperty("App::PropertyBool",
                              "ShowLine",
                              "Graphics",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.ShowLine = params.get_param("DimShowLine")
 
     def getIcon(self):
@@ -396,7 +412,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         vobj = obj.ViewObject
 
         if prop == "Diameter":
-            if hasattr(vobj, "Override") and vobj.Override:
+            if getattr(vobj, "Override", False):
                 if obj.Diameter:
                     vobj.Override = vobj.Override.replace("R $dim", "Ø $dim")
                 else:
@@ -524,7 +540,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         else:
             self.trot = (0, 0, 0, 1)
 
-        if hasattr(vobj, "FlipArrows") and vobj.FlipArrows:
+        if getattr(vobj, "FlipArrows", False):
             u = u.negative()
 
         v2 = norm.cross(u)
@@ -556,7 +572,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         else:
             offset = DraftVecUtils.scaleTo(v1, 0.05)
 
-        if hasattr(vobj, "FlipText") and vobj.FlipText:
+        if getattr(vobj, "FlipText", False):
             _rott = App.Rotation(self.trot[0], self.trot[1], self.trot[2], self.trot[3])
             self.trot = _rott.multiply(App.Rotation(App.Vector(0, 0, 1), 180)).Q
             offset = offset.negative()
@@ -603,7 +619,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             unit = vobj.UnitOverride
 
         # Special representation if we use 'Building US' scheme
-        if (params.get_param("UserSchema", path="Units") == 5) or (unit == "arch"):
+        if (not unit and params.get_param("UserSchema", path="Units") == 5) or (unit == "arch"):
             self.string = App.Units.Quantity(length, App.Units.Length).UserString
             if self.string.count('"') > 1:
                 # multiple inch tokens
@@ -623,7 +639,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
                                                  None,
                                                  'Length', show_unit, unit)
 
-        if hasattr(vobj, "Override") and vobj.Override:
+        if getattr(vobj, "Override", False):
             self.string = vobj.Override.replace("$dim", self.string)
 
         self.text_wld.string = utils.string_encode_coin(self.string)
@@ -747,11 +763,6 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
                 hasattr(vobj, "ArrowSizeStart") and hasattr(vobj, "ArrowSizeEnd")):
             return
 
-        if self.p3.x < self.p2.x:
-            inv = False
-        else:
-            inv = True
-
         # Set scale
         startSymbol = utils.ARROW_TYPES.index("None")
         if vobj.Object.Diameter or not self.is_linked_to_circle():
@@ -773,7 +784,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         else:
             s1.addChild(self.trans1)
 
-        s1.addChild(gui_utils.dim_symbol(startSymbol, invert=not inv))
+        s1.addChild(gui_utils.dim_symbol(startSymbol, invert=False))
         self.marks.addChild(s1)
 
         s2 = coin.SoSeparator()
@@ -782,7 +793,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         else:
             s2.addChild(self.trans2)
 
-        s2.addChild(gui_utils.dim_symbol(endSymbol, invert=inv))
+        s2.addChild(gui_utils.dim_symbol(endSymbol, invert=True))
         self.marks.addChild(s2)
 
         self.node_wld.insertChild(self.marks, 2)
@@ -964,7 +975,7 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
                                       obj.LastAngle.Value)
         self.p2 = self.circle.Vertexes[0].Point
         self.p3 = self.circle.Vertexes[-1].Point
-        midp = DraftGeomUtils.findMidpoint(self.circle.Edges[0])
+        midp = DraftGeomUtils.findMidpoint(self.circle)
         ray = midp - obj.Center
 
         # Set text value
@@ -1118,11 +1129,15 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         r = App.Placement(_plane_rot_3).Rotation
         offset = r.multVec(App.Vector(0, 1, 0))
 
-        if hasattr(vobj, "TextSpacing"):
-            offset = DraftVecUtils.scaleTo(offset,
-                                           vobj.TextSpacing.Value)
+        if hasattr(vobj, "TextSpacing") and hasattr(vobj, "ScaleMultiplier"):
+            ts = vobj.TextSpacing.Value * vobj.ScaleMultiplier
+            offset = DraftVecUtils.scaleTo(offset, ts)
         else:
             offset = DraftVecUtils.scaleTo(offset, 0.05)
+
+        if getattr(vobj, "FlipText", False):
+            r = r.multiply(App.Rotation(App.Vector(0, 0, 1), 180))
+            offset = offset.negative()
 
         if m == "Screen":
             offset = offset.negative()

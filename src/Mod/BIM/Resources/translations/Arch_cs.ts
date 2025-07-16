@@ -11,7 +11,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="26"/>
       <source>Choose a preset card</source>
-      <translation>Vyberte přednastavenou kartu</translation>
+      <translation>Vyberte kartu předvolby</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="30"/>
@@ -31,7 +31,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="58"/>
       <source>Name</source>
-      <translation>Jméno</translation>
+      <translation>Název</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="65"/>
@@ -61,7 +61,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="139"/>
       <source>Section Color</source>
-      <translation>Barva sekce</translation>
+      <translation>Barva v řezu</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="163"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="268"/>
       <source>Parent</source>
-      <translation>Rodič</translation>
+      <translation>Nadřazený</translation>
     </message>
   </context>
   <context>
@@ -222,133 +222,169 @@
       <translation>Vlastnost</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="76"/>
+      <location filename="../ui/ArchSchedule.ui" line="82"/>
       <source>Unit</source>
       <translation>Jednotka</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="79"/>
+      <location filename="../ui/ArchSchedule.ui" line="85"/>
       <source>An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</source>
       <translation>Volitelný formát jednotky pro vyjádření výsledné hodnoty. Příklad: m^3 (můžete také napsat m³ nebo m3)</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="84"/>
+      <location filename="../ui/ArchSchedule.ui" line="90"/>
       <source>Objects</source>
       <translation>Objekty</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="87"/>
-      <source>An optional semicolon (;) separated list of object names
-(internal names, not labels), to be considered by this operation.
-If the list contains groups, children will be added.
-Leave blank to use all objects from the document</source>
-      <translation>Volitelný středníkem (;) oddělený seznam názvů objektů
-(interní názvy, nikoli štítky), které je třeba vzít v úvahu při této operaci.
-Pokud seznam obsahuje skupiny, budou přidány děti.
-Chcete-li použít všechny objekty z dokumentu, ponechte prázdné</translation>
-    </message>
-    <message>
-      <location filename="../ui/ArchSchedule.ui" line="95"/>
+      <location filename="../ui/ArchSchedule.ui" line="109"/>
       <source>Filter</source>
       <translation>Filtr</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="71"/>
-      <source>The property to retrieve from each object.Can be 'Count' to count the objects, or property names like 'Length' or 'Shape.Volume' to retrieve a certain property.</source>
-      <translation>Vlastnost, kterou chcete načíst z každého objektu. Může být 'Počítat' pro počítání objektů, nebo názvy vlastností jako 'Délka' nebo 'Tvare.Volume' pro načtení určité vlastnosti.</translation>
+      <source>The property to retrieve from each object.Can be 'Count'
+to count the objects, or property names like 'Length' or
+'Shape.Volume' to retrieve a certain property.
+
+When used with native IFC objects, this can be used to
+retrieve any attribute or custom properties of the elements
+retrieved.</source>
+      <translation type="unfinished">The property to retrieve from each object.Can be 'Count'
+to count the objects, or property names like 'Length' or
+'Shape.Volume' to retrieve a certain property.
+
+When used with native IFC objects, this can be used to
+retrieve any attribute or custom properties of the elements
+retrieved.</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="108"/>
+      <location filename="../ui/ArchSchedule.ui" line="93"/>
+      <source>An optional semicolon (;) separated list of object names
+(internal names, not labels), to be considered by this operation.
+If the list contains groups, children will be added.
+
+Leave blank to use all objects from the document.
+
+If the document is an IFC project, all IFC entities of the
+document will be used, no matter if they are expanded
+in FreeCAD or not.
+
+Use the name of the IFC project to get all the IFC entities
+of that project, no matter if they are expanded or not.</source>
+      <translation type="unfinished">An optional semicolon (;) separated list of object names
+(internal names, not labels), to be considered by this operation.
+If the list contains groups, children will be added.
+
+Leave blank to use all objects from the document.
+
+If the document is an IFC project, all IFC entities of the
+document will be used, no matter if they are expanded
+in FreeCAD or not.
+
+Use the name of the IFC project to get all the IFC entities
+of that project, no matter if they are expanded or not.</translation>
+    </message>
+    <message>
+      <location filename="../ui/ArchSchedule.ui" line="112"/>
+      <source>An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filter (exclude objects that match the filter). Objects whose property contains the value will be matched.
+
+Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied
+
+When dealing with native IFC objects, you can use FreeCAD properties name, ex: 'Class:IfcWall' or any other IFC attribute (ex. 'IsTypedBy:#455'). If the 'Objects' column has been set to an IFC project or document, all the IFC entities of that project will be considered.</source>
+      <translation type="unfinished">An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filter (exclude objects that match the filter). Objects whose property contains the value will be matched.
+
+Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied
+
+When dealing with native IFC objects, you can use FreeCAD properties name, ex: 'Class:IfcWall' or any other IFC attribute (ex. 'IsTypedBy:#455'). If the 'Objects' column has been set to an IFC project or document, all the IFC entities of that project will be considered.</translation>
+    </message>
+    <message>
+      <location filename="../ui/ArchSchedule.ui" line="126"/>
       <source>If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</source>
       <translation>Pokud je toto povoleno, bude spolu s tímto objektem plánu udržována přidružená tabulka obsahující výsledky</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="111"/>
+      <location filename="../ui/ArchSchedule.ui" line="129"/>
       <source>Associate spreadsheet</source>
       <translation>Přidružit tabulku</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="118"/>
+      <location filename="../ui/ArchSchedule.ui" line="136"/>
       <source>If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</source>
       <translation>Je-li toto povoleno, vyplní se další řádky s každým uvažovaným objektem. Pokud ne, pouze součty.</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="121"/>
+      <location filename="../ui/ArchSchedule.ui" line="139"/>
       <source>Detailed results</source>
       <translation>Podrobné výsledky</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="128"/>
+      <location filename="../ui/ArchSchedule.ui" line="146"/>
       <source>If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</source>
       <translation>Pokud je toto povoleno, plán a související tabulka se aktualizují vždy, když je dokument přepočítán.</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="131"/>
+      <location filename="../ui/ArchSchedule.ui" line="149"/>
       <source>Auto update</source>
       <translation>Automatická aktualizace</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="142"/>
+      <location filename="../ui/ArchSchedule.ui" line="160"/>
       <source>Adds a line below the selected line/cell</source>
       <translation>Přidá řádek pod vybraný řádek/buňku</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="145"/>
+      <location filename="../ui/ArchSchedule.ui" line="163"/>
       <source>Add row</source>
       <translation>Přidat řádek</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="156"/>
+      <location filename="../ui/ArchSchedule.ui" line="174"/>
       <source>Deletes the selected line</source>
       <translation>Smaže výběr</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="159"/>
+      <location filename="../ui/ArchSchedule.ui" line="177"/>
       <source>Del row</source>
       <translation>Smazat řádek</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="170"/>
+      <location filename="../ui/ArchSchedule.ui" line="188"/>
       <source>Clears the whole list</source>
       <translation>Vymaže celý seznam</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="173"/>
+      <location filename="../ui/ArchSchedule.ui" line="191"/>
       <source>Clear</source>
       <translation>Vyčistit</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="184"/>
+      <location filename="../ui/ArchSchedule.ui" line="202"/>
       <source>Put selected objects into the 'Objects' column of the selected row</source>
       <translation>Vložte vybrané objekty do sloupce 'Objekty' vybraného řádku</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="208"/>
+      <location filename="../ui/ArchSchedule.ui" line="226"/>
       <source>This exports the results to a CSV or Markdown file. Note for CSV export: In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar, New sheet, From file, Link (Note: as of LibreOffice v6.x the correct path now is: Sheet, Insert Sheet..., From file, Browse...)</source>
       <translation>Toto exportuje výsledky do souboru CSV nebo Markdown. Poznámka pro export do CSV: V LibreOffice si můžete ponechat soubor CSV propojený kliknutím pravým tlačítkem na pás karet Listy, Nový list, Ze souboru, Odkaz (poznámka: od LibreOffice v6.x je nyní správnou cestou: List, Vložit list..., Ze souboru, Procházet...)</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="187"/>
+      <location filename="../ui/ArchSchedule.ui" line="205"/>
       <source>Add selection</source>
       <translation>Přidat výběr</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="98"/>
-      <source>An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filter (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied</source>
-      <translation>Volitelný středník (;) oddělený seznam vlastností:value filtrů. Přidejte před název vlastnosti k invertování efektu filtru (vyloučí objekty, které odpovídají filtru). Objekty, jejichž vlastnost obsahuje hodnotu, budou shodné. Příklady platných filtrů (vše je necitlivé na malá a velká písmena): Název:Zeď - Zohlední pouze objekty s 'stěna' jejich jménem (interní název); ! ame:Zeď - Zohlední pouze objekty, které DON'T mají 'zeď' ve svém jménu (interní název); Popis: Vyhraj - Zohlední pouze objekty s 'win' v jejich popisu; ! abel:Vyhraj - Zohlední pouze objekty, které NEPOUŽÍVEJTE ve svém štítku; IfcType:Zeď - Zohlední pouze objekty, které Ifc typ je 'ze'; ! ag:Zeď - Zohlední pouze objekty, které tag není 'zeď'. Pokud necháte toto pole prázdné, není použito filtrování</translation>
-    </message>
-    <message>
-      <location filename="../ui/ArchSchedule.ui" line="194"/>
+      <location filename="../ui/ArchSchedule.ui" line="212"/>
       <source>Imports the contents of a CSV file</source>
       <translation>Importuje obsah souboru CSV</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="197"/>
+      <location filename="../ui/ArchSchedule.ui" line="215"/>
       <source>Import</source>
       <translation>Import</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="211"/>
+      <location filename="../ui/ArchSchedule.ui" line="229"/>
       <source>Export</source>
       <translation>Export</translation>
     </message>
@@ -414,32 +450,32 @@ Chcete-li použít všechny objekty z dokumentu, ponechte prázdné</translation
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="20"/>
       <source>This dialog allows you to display and manage IFC properties attached to BIM objects. Only properties and sets present in all selected objects will be displayed and editable.</source>
-      <translation type="unfinished">This dialog allows you to display and manage IFC properties attached to BIM objects. Only properties and sets present in all selected objects will be displayed and editable.</translation>
+      <translation>Tento dialog vám umožní zobrazit a spravovat IFC vlastnosti přiřazené k BIM objektům. Zobrazené a editovatelné budou pouze vlastnosti a nastavení přítomné ve všech vybraných objektech.</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="32"/>
       <source>Only selected objects</source>
-      <translation type="unfinished">Only selected objects</translation>
+      <translation>Pouze vybrané objekty</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="39"/>
       <source>Only visible BIM objects</source>
-      <translation type="unfinished">Only visible BIM objects</translation>
+      <translation>Pouze viditelné BIM objekty</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="50"/>
       <source>Order by:</source>
-      <translation type="unfinished">Order by:</translation>
+      <translation>Seřadit dle:</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="111"/>
       <source>Search for a property or property set:</source>
-      <translation type="unfinished">Search for a property or property set:</translation>
+      <translation>Hledat vlastnost nebo nastavení:</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="131"/>
       <source>Only show matches</source>
-      <translation type="unfinished">Only show matches</translation>
+      <translation>Zobrazit jen odpovídající</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="141"/>
@@ -449,7 +485,7 @@ Chcete-li použít všechny objekty z dokumentu, ponechte prázdné</translation
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="150"/>
       <source>List of IFC properties for the selected objects. Double-click to edit, drag and drop to reorganize</source>
-      <translation type="unfinished">List of IFC properties for the selected objects. Double-click to edit, drag and drop to reorganize</translation>
+      <translation>Seznam IFC vlastností pro vybraný objekt. Dvojklik pro editaci, "táhni a pusť" pro přeskládání</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="63"/>
@@ -470,22 +506,22 @@ Chcete-li použít všechny objekty z dokumentu, ponechte prázdné</translation
     <message>
       <location filename="../ui/dialogClassification.ui" line="14"/>
       <source>Classification manager</source>
-      <translation type="unfinished">Classification manager</translation>
+      <translation>Správce klasifikací</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="42"/>
       <source>Objects &amp;&amp; Materials</source>
-      <translation type="unfinished">Objects &amp;&amp; Materials</translation>
+      <translation>Objekty &amp;&amp; Materiály</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="48"/>
       <source>Only visible objects</source>
-      <translation type="unfinished">Only visible objects</translation>
+      <translation>Pouze viditelné objekty</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="60"/>
       <source>Sort by:</source>
-      <translation type="unfinished">Sort by:</translation>
+      <translation>Seřadit dle:</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="68"/>
@@ -499,7 +535,7 @@ Chcete-li použít všechny objekty z dokumentu, ponechte prázdné</translation
       <location filename="../ui/dialogIfcProperties.ui" line="68"/>
       <location filename="../ui/dialogIfcElements.ui" line="57"/>
       <source>IFC type</source>
-      <translation type="unfinished">IFC type</translation>
+      <translation>Typ IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="88"/>
@@ -512,12 +548,12 @@ Chcete-li použít všechny objekty z dokumentu, ponechte prázdné</translation
       <location filename="../ui/dialogIfcProperties.ui" line="78"/>
       <location filename="../ui/dialogIfcElements.ui" line="72"/>
       <source>Model structure</source>
-      <translation type="unfinished">Model structure</translation>
+      <translation>Struktura modelu</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="122"/>
       <source>Object / Material</source>
-      <translation type="unfinished">Object / Material</translation>
+      <translation>Objekt / Materiál</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="127"/>
@@ -527,70 +563,70 @@ Chcete-li použít všechny objekty z dokumentu, ponechte prázdné</translation
     <message>
       <location filename="../ui/dialogClassification.ui" line="136"/>
       <source>Available classification systems</source>
-      <translation type="unfinished">Available classification systems</translation>
+      <translation>Dostupné klasifikační systémy</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="142"/>
       <source>Classification systems found on this computer</source>
-      <translation type="unfinished">Classification systems found on this computer</translation>
+      <translation>Klasifikační systémy nalezené v tomto počítači</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="178"/>
       <source>Apply the selected class to selected materials</source>
-      <translation type="unfinished">Apply the selected class to selected materials</translation>
+      <translation>Použít vybranou třídu na vybrané materiály</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="181"/>
       <source>&lt;&lt; Apply to selected</source>
-      <translation type="unfinished">&lt;&lt; Apply to selected</translation>
+      <translation>&lt;&lt; Použít na vybrané</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="188"/>
       <source>Use this class as material name</source>
-      <translation type="unfinished">Use this class as material name</translation>
+      <translation>Použít tuto třídu jako název materiálu</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="191"/>
       <source>&lt;&lt; Set as name</source>
-      <translation type="unfinished">&lt;&lt; Set as name</translation>
+      <translation>&lt;&lt; Použít jako název</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="200"/>
       <source>Prefix with class name when applying</source>
-      <translation type="unfinished">Prefix with class name when applying</translation>
+      <translation>Předpona názvu třídy při použití</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="214"/>
       <source>XML or IFC files of several classification systems can be downloaded from &lt;a href="https://github.com/Moult/IfcClassification"&gt;https://github.com/Moult/IfcClassification&lt;/a&gt; and placed in %s</source>
-      <translation type="unfinished">XML or IFC files of several classification systems can be downloaded from &lt;a href="https://github.com/Moult/IfcClassification"&gt;https://github.com/Moult/IfcClassification&lt;/a&gt; and placed in %s</translation>
+      <translation>XML nebo IFC soubory několika klasifikačních systémů mohou být staženy z &lt;a href="https://github.com/Moult/IfcClassification"&gt;https://github.com/Moult/IfcClassification&lt;/a&gt; a umístěny v %s</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="14"/>
       <source>Single IFC document</source>
-      <translation type="unfinished">Single IFC document</translation>
+      <translation>Jediný IFC dokument</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="20"/>
       <source>Do you wish to convert this document to an IFC document? Replying 'Yes' will automatically turn all new objects to IFC, while 'No' will allow you to have both IFC and non-IFC elements in the file.</source>
-      <translation type="unfinished">Do you wish to convert this document to an IFC document? Replying 'Yes' will automatically turn all new objects to IFC, while 'No' will allow you to have both IFC and non-IFC elements in the file.</translation>
+      <translation>Přejete si převést tento dokument na IFC dokument? Odpověď 'Yes' automaticky převede všechny nové objekty na IFC, zatímco 'No' vám umožní mít v souboru IFC i ne-IFC objekty.</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="30"/>
       <source>Add a default building structure (IfcSite, IfcBuilding and IfcBuildingStorey). You can also add the structure manually later.</source>
-      <translation type="unfinished">Add a default building structure (IfcSite, IfcBuilding and IfcBuildingStorey). You can also add the structure manually later.</translation>
+      <translation>Vložit výchozí strukturu budovy (IfcSite, IfcBuilding a IfcBuildingStorey). Strukturu můžete také vložit ručně později.</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="33"/>
       <source>Also create a default structure</source>
-      <translation type="unfinished">Also create a default structure</translation>
+      <translation>Vytvořit také výchozí strukturu</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="40"/>
-      <source>If this is checked, you won't be asked again when creating a new FreeCAD document, 
+      <source>If this is checked, you won't be asked again when creating a new FreeCAD document,
 and that document won't be turned into an IFC document automatically.
 You can still turn a FreeCAD document into an IFC document manually, using
 Utils -&gt; Make IFC project</source>
-      <translation type="unfinished">If this is checked, you won't be asked again when creating a new FreeCAD document, 
+      <translation type="unfinished">If this is checked, you won't be asked again when creating a new FreeCAD document,
 and that document won't be turned into an IFC document automatically.
 You can still turn a FreeCAD document into an IFC document manually, using
 Utils -&gt; Make IFC project</translation>
@@ -599,72 +635,82 @@ Utils -&gt; Make IFC project</translation>
       <location filename="../ui/dialogConvertDocument.ui" line="46"/>
       <location filename="../ui/dialogCreateProject.ui" line="30"/>
       <source>Do not ask again</source>
-      <translation type="unfinished">Do not ask again</translation>
+      <translation>Znovu se neptat</translation>
     </message>
     <message>
       <location filename="../ui/dialogCreateProject.ui" line="14"/>
       <source>Default structure</source>
-      <translation type="unfinished">Default structure</translation>
+      <translation>Výchozí struktura</translation>
     </message>
     <message>
       <location filename="../ui/dialogCreateProject.ui" line="20"/>
       <source>Create a default structure (IfcProject, IfcSite, IfcBuilding and IfcBuildingStorey)? Replying "No" will only create an IfcProject. You can then add the structure manually later.</source>
-      <translation type="unfinished">Create a default structure (IfcProject, IfcSite, IfcBuilding and IfcBuildingStorey)? Replying "No" will only create an IfcProject. You can then add the structure manually later.</translation>
+      <translation>Vytvořit výchozí strukturu (IfcProjekt, IfcSite, IfcBuilding a IfcBuildingStorey)? Odpovědí "No" se vytvoří pouze IfcProject. Strukturu můžete vložit později ručně.</translation>
     </message>
     <message>
       <location filename="../ui/dialogExport.ui" line="20"/>
       <source>One or more IFC documents contained in this FreeCAD document have been modified, but were not saved.  They will automatically be saved now.</source>
-      <translation type="unfinished">One or more IFC documents contained in this FreeCAD document have been modified, but were not saved.  They will automatically be saved now.</translation>
+      <translation>Jeden nebo více IFC dokumentů obsažených v tomto FreeCAD dokumentu bylo upraveno, ale nebylo uloženo. Nyní budou automaticky uloženy.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="152"/>
       <location filename="../ui/dialogExport.ui" line="30"/>
       <source>Ask me again next time</source>
-      <translation type="unfinished">Ask me again next time</translation>
+      <translation>Příště se znovu zeptat</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="14"/>
       <source>IFC Elements Manager</source>
-      <translation type="unfinished">IFC Elements Manager</translation>
+      <translation>Správce IFC prvků</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This dialog lets you change the IFC type and material associated with any BIM object in this document. Double-click the IFC type to change, or use the drop-down menu below the list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This dialog lets you change the IFC type and material associated with any BIM object in this document. Double-click the IFC type to change, or use the drop-down menu below the list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tento dialog vám umožňuje změnit IFC typ a materiál přiřazený jakémukoliv BIM objektu tohoto dokumentu. Typ IFC změňte buď dvojklikem, nebo použijte rozbalovací menu pod seznamem.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="30"/>
       <location filename="../ui/dialogIfcQuantities.ui" line="30"/>
       <source>only visible BIM objects</source>
-      <translation type="unfinished">only visible BIM objects</translation>
+      <translation>jen viditelné BIM objekty</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="39"/>
       <source>order by:</source>
-      <translation type="unfinished">order by:</translation>
+      <translation>seřadit dle:</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="103"/>
       <source>change type to:</source>
-      <translation type="unfinished">change type to:</translation>
+      <translation>změnit typ na:</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="110"/>
       <source>change material to:</source>
-      <translation type="unfinished">change material to:</translation>
+      <translation>změnit materiál na:</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcQuantities.ui" line="14"/>
       <source>IFC Quantities Manager</source>
-      <translation type="unfinished">IFC Quantities Manager</translation>
+      <translation>IFC správce množství</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcQuantities.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked quantities will be exported to IFC. Quantities marked with a warning sign indicate a zero value that you might need to check. Clicking a column header will apply to all selected items.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Warning&lt;/span&gt;: Horizontal area is the area obtained when projecting the object on the ground (X,Y) plane, but vertical area is the sum of all areas of the faces that are vertical (orthogonal to the ground plane), so a wall will have its both faces counted.&lt;/p&gt;&lt;p&gt;Length, width and height values can be changed here, but beware, it might change the geometry!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked quantities will be exported to IFC. Quantities marked with a warning sign indicate a zero value that you might need to check. Clicking a column header will apply to all selected items.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Warning&lt;/span&gt;: Horizontal area is the area obtained when projecting the object on the ground (X,Y) plane, but vertical area is the sum of all areas of the faces that are vertical (orthogonal to the ground plane), so a wall will have its both faces counted.&lt;/p&gt;&lt;p&gt;Length, width and height values can be changed here, but beware, it might change the geometry!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zaškrtnutá množství budou exportována do IFC. Množství s varovnou značkou indikují nulovou hodnotu, kterou by bylo potřeba zkontrolovat. Kliknutí na hlavičku sloupce označí všechny vybrané položky.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Varování&lt;/span&gt;: Horizontální povrch je obsahem oblasti, získané projekcí objektu na zem (X,Y rovinu), zatímco Vertikální povrch je součtem obsahů všech vertikálních ploch (tj. kolmých k rovině země), čili u stěny se započítá plocha z obou jejích stran.&lt;/p&gt;&lt;p&gt;Hodnoty délky, šířky a výšky zde mohou být změněny, avšak pozor, může to změnit geometrii!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcQuantities.ui" line="59"/>
+      <location filename="../ui/dialogIfcQuantities.ui" line="49"/>
+      <source>Apply</source>
+      <translation>Použít</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogIfcQuantities.ui" line="69"/>
+      <source>Refresh</source>
+      <translation>Aktualizovat</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogIfcQuantities.ui" line="80"/>
       <location filename="../ui/dialogLayersIFC.ui" line="53"/>
       <source>Select all</source>
       <translation>Vybrat vše</translation>
@@ -672,122 +718,122 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="14"/>
       <source>IFC import options</source>
-      <translation type="unfinished">IFC import options</translation>
+      <translation>Možnosti importu IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="22"/>
       <source>How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</source>
-      <translation type="unfinished">How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</translation>
+      <translation>Jak bude IFC soubor importován: Pouze jeden objekt, pouze struktura projektu nebo všechny jednotlivé objekty.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="26"/>
       <source>Only root object (default)</source>
-      <translation type="unfinished">Only root object (default)</translation>
+      <translation>Jen kořenový objekt (výchozí)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="31"/>
       <source>Project structure (levels)</source>
-      <translation type="unfinished">Project structure (levels)</translation>
+      <translation>Struktura projektu (úrovně)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="36"/>
       <source>All individual IFC objects</source>
-      <translation type="unfinished">All individual IFC objects</translation>
+      <translation>Všechny jednotlivé IFC objekty</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="44"/>
       <source>Initial import</source>
-      <translation type="unfinished">Initial import</translation>
+      <translation>Úvodní import</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="51"/>
       <source>This defines how the IFC data is stored in the FreeCAD document. 'Single IFC document' means that the FreeCAD document is the IFC document, anything you create in it belongs to the IFC document too. 'Use IFC document object' means that an object will be created inside the FreeCAD document to represent the IFC document. You will be able to add non-IFC objects alongside.</source>
-      <translation type="unfinished">This defines how the IFC data is stored in the FreeCAD document. 'Single IFC document' means that the FreeCAD document is the IFC document, anything you create in it belongs to the IFC document too. 'Use IFC document object' means that an object will be created inside the FreeCAD document to represent the IFC document. You will be able to add non-IFC objects alongside.</translation>
+      <translation>Toto definuje, jak jsou ve FreeCAD dokumentu uložena IFC data. 'Jediný IFC dokument' znamená, že FreeCAD dokument je IFC dokumentem, cokoli v něm vytvoříte, náleží také IFC dokumentu. 'Použít objekt IFC dokumentu' znamená, že bude vytvořen objekt IFC dokumentu uvnitř FreeCAD dokumentu. Budete moci vkládat ne-IFC objekty po boku IFC objektů.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="55"/>
       <source>Locked (IFC objects only)</source>
-      <translation type="unfinished">Locked (IFC objects only)</translation>
+      <translation>Uzamčeno (jen IFC objekty)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="60"/>
       <source>Unlocked (non-IFC objects permitted)</source>
-      <translation type="unfinished">Unlocked (non-IFC objects permitted)</translation>
+      <translation>Odemčeno (ne-IFC objekty povoleny)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="68"/>
       <source>Lock document</source>
-      <translation type="unfinished">Lock document</translation>
+      <translation>Zamknout dokument</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="75"/>
       <source>Representation type</source>
-      <translation type="unfinished">Representation type</translation>
+      <translation>Typ reprezentace objektu</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="82"/>
       <source>The type of object created at import. Mesh is faster, but Shapes are more precise. You can convert between the two anytime by right-clicking the object tree</source>
-      <translation type="unfinished">The type of object created at import. Mesh is faster, but Shapes are more precise. You can convert between the two anytime by right-clicking the object tree</translation>
+      <translation>Typ objektu vytvořeného při importu. Síť je rychlejší, Tvary jsou přesnější. Můžete mezi nimi kdykoliv převádět kliknutím pravým tlačítkem ve stromu objektů</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="89"/>
       <source>Load the shape (slower)</source>
-      <translation type="unfinished">Load the shape (slower)</translation>
+      <translation>Načíst tvar (pomalejší)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="94"/>
       <source>Load 3D representation only, no shape (default)</source>
-      <translation type="unfinished">Load 3D representation only, no shape (default)</translation>
+      <translation>Načíst pouze 3D reprezentaci, bez tvaru (výchozí)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="99"/>
       <source>No 3D representation at all</source>
-      <translation type="unfinished">No 3D representation at all</translation>
+      <translation>Bez 3D reprezentace objektu</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="109"/>
       <source>If this is checked, the workbench specified in Start preferences will be loaded after import</source>
-      <translation type="unfinished">If this is checked, the workbench specified in Start preferences will be loaded after import</translation>
+      <translation>Je-li zaškrtnuto, po importu se načte pracovní prostředí specifikované ve Start preferencích</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="112"/>
       <source>Switch workbench after import</source>
-      <translation type="unfinished">Switch workbench after import</translation>
+      <translation>Po importu přepnout prostředí</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="119"/>
       <source>Preload property sets of all objects. It is advised to leave this unchecked and load property sets later, only when needed</source>
-      <translation type="unfinished">Preload property sets of all objects. It is advised to leave this unchecked and load property sets later, only when needed</translation>
+      <translation>Přednačte sady vlastností všech objektů. Doporučuje se nechat toto nezaškrtnuté a načíst vlastnosti později, když jsou potřeba</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="122"/>
       <source>Preload property sets</source>
-      <translation type="unfinished">Preload property sets</translation>
+      <translation>Přednačíst sady vlastností</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="129"/>
       <source>Preload all materials fo the file. It is advised to leave this unchecked and load materials later, only when needed</source>
-      <translation type="unfinished">Preload all materials fo the file. It is advised to leave this unchecked and load materials later, only when needed</translation>
+      <translation>Přednačte všechny materiály. Doporučuje se nechat toto nezaškrtnuté a načíst materiály později, když jsou potřeba</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="132"/>
       <source>Preload materials</source>
-      <translation type="unfinished">Preload materials</translation>
+      <translation>Přednačíst materiály</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="139"/>
       <source>Preload all layers of the file. It is advised to leave this unchecked and load layers later, only when needed</source>
-      <translation type="unfinished">Preload all layers of the file. It is advised to leave this unchecked and load layers later, only when needed</translation>
+      <translation>Přednačte všechny vrstvy souboru. Doporučuje se nechat toto nezaškrtnuté a načíst vrstvy později, když jsou potřeba</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="142"/>
       <source>Preload layers</source>
-      <translation type="unfinished">Preload layers</translation>
+      <translation>Přednačíst vrstvy</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="149"/>
       <source>If this is unchecked, these settings will be applied automatically next time. You can change this later under menu Edit -&gt; Preferences -&gt; BIM -&gt; Native IFC</source>
-      <translation type="unfinished">If this is unchecked, these settings will be applied automatically next time. You can change this later under menu Edit -&gt; Preferences -&gt; BIM -&gt; Native IFC</translation>
+      <translation>Není-li zaškrtnuto, tato nastavení budou příště uplatněna automaticky. Můžete to později změnit v menu Upravit -&gt; Nastavení -&gt; BIM -&gt; Native IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="14"/>
@@ -802,7 +848,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="36"/>
       <source>Adds this layer to an IFC project</source>
-      <translation type="unfinished">Adds this layer to an IFC project</translation>
+      <translation>Přidat tuto vrstvu do IFC projektu</translation>
     </message>
     <message>
       <location filename="../ui/dialogPhases.ui" line="55"/>
@@ -847,7 +893,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogMaterialChooser.ui" line="14"/>
       <source>Choose a material</source>
-      <translation type="unfinished">Choose a material</translation>
+      <translation>Vyberte materiál</translation>
     </message>
     <message>
       <location filename="../ui/dialogNudgeValue.ui" line="14"/>
@@ -872,12 +918,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflightResults.ui" line="14"/>
       <source>Test results</source>
-      <translation type="unfinished">Test results</translation>
+      <translation>Výsledky testu</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflightResults.ui" line="43"/>
       <source>Results of test:</source>
-      <translation type="unfinished">Results of test:</translation>
+      <translation>Výsledky testu:</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflightResults.ui" line="91"/>
@@ -887,47 +933,47 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="14"/>
       <source>BIM Project Setup</source>
-      <translation type="unfinished">BIM Project Setup</translation>
+      <translation>Nastavení BIM projektu</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="20"/>
       <source>This screen allows you to configure a new BIM project in FreeCAD.</source>
-      <translation type="unfinished">This screen allows you to configure a new BIM project in FreeCAD.</translation>
+      <translation>Tato obrazovka vám umožní nakonfigurovat nový BIM projekt ve FreeCADu.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="31"/>
       <source>Use preset...</source>
-      <translation type="unfinished">Use preset...</translation>
+      <translation>Použít předvolbu...</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="41"/>
       <source>Saves the current document as a template, including all the current BIM settings</source>
-      <translation type="unfinished">Saves the current document as a template, including all the current BIM settings</translation>
+      <translation>Uloží aktuální dokument jako šablonu, včetně všech nastavení aktuálního BIM</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="44"/>
       <source>Save template...</source>
-      <translation type="unfinished">Save template...</translation>
+      <translation>Uložit šablonu...</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="56"/>
       <source>Loads the contents of a FCStd file into the active document, applying all the BIM settings stored in it if any</source>
-      <translation type="unfinished">Loads the contents of a FCStd file into the active document, applying all the BIM settings stored in it if any</translation>
+      <translation>Načte obsah FCStd souboru do aktivního dokumentu, za použití všech BIM nastavení, jsou-li v něm nějaká uložena</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="59"/>
       <source>Load template...</source>
-      <translation type="unfinished">Load template...</translation>
+      <translation>Načíst šablonu...</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="88"/>
       <source>Create new document</source>
-      <translation type="unfinished">Create new document</translation>
+      <translation>Vytvořit nový dokument</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="100"/>
       <source>Project name</source>
-      <translation type="unfinished">Project name</translation>
+      <translation>Název projektu</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="130"/>
@@ -942,27 +988,27 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="117"/>
       <source>If this is checked, a human figure will be added, which helps greatly to give a sense of scale when viewing the model</source>
-      <translation type="unfinished">If this is checked, a human figure will be added, which helps greatly to give a sense of scale when viewing the model</translation>
+      <translation>Je-li zaškrtnuto, bude vložena postava člověka, která velmi pomůže pro vnímání měřítka při pohledu na model</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="120"/>
       <source>Add a human figure</source>
-      <translation type="unfinished">Add a human figure</translation>
+      <translation>Vložit postavu člověka</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="142"/>
       <source>The site object contains all the data relative to the project location. Later on, you can attach a physical object representing the terrain.</source>
-      <translation type="unfinished">The site object contains all the data relative to the project location. Later on, you can attach a physical object representing the terrain.</translation>
+      <translation>Objekt parcely obsahuje všechna data vztažená k poloze projektu. Následně k ní můžete připojit fyzický objekt reprezentující terén.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="154"/>
       <source> E</source>
-      <translation type="unfinished"> E</translation>
+      <translation> V</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="170"/>
       <source>Elevation</source>
-      <translation type="unfinished">Elevation</translation>
+      <translation>Nadm. výška</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="177"/>
@@ -972,23 +1018,30 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="184"/>
       <source>Default Site</source>
-      <translation type="unfinished">Default Site</translation>
+      <translation>Výchozí parcela</translation>
     </message>
     <message>
+      <location filename="../ui/dialogAddPSet.ui" line="14"/>
+      <source>Add standard IFC PSet</source>
+      <translation type="unfinished">Add standard IFC PSet</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogAddPSet.ui" line="43"/>
+      <location filename="../ui/dialogAddProperty.ui" line="87"/>
       <location filename="../ui/dialogProjectManager.ui" line="191"/>
       <location filename="../ui/dialogProjectManager.ui" line="295"/>
       <source>Name</source>
-      <translation>Jméno</translation>
+      <translation>Název</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="198"/>
       <source> °</source>
-      <translation type="unfinished"> °</translation>
+      <translation> °</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="208"/>
       <source>Longitude</source>
-      <translation type="unfinished">Longitude</translation>
+      <translation>Zem. délka</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="225"/>
@@ -998,62 +1051,62 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="232"/>
       <source>Latitude</source>
-      <translation type="unfinished">Latitude</translation>
+      <translation>Zem. šířka</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="239"/>
       <source> N</source>
-      <translation type="unfinished"> N</translation>
+      <translation> S</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="260"/>
       <source>Create Building</source>
-      <translation type="unfinished">Create Building</translation>
+      <translation>Vytvořit budovu</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="269"/>
       <source>This will configure a single building for this project. If your project is made of several buildings, you can duplicate it after creation and update its properties.</source>
-      <translation type="unfinished">This will configure a single building for this project. If your project is made of several buildings, you can duplicate it after creation and update its properties.</translation>
+      <translation>Toto nakonfiguruje jednu budovu pro tento projekt. Pokud je váš projekt tvořen více budovami, můžete ji, po vytvoření a aktualizaci vlastností, duplikovat.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="281"/>
       <source>Gross building length</source>
-      <translation type="unfinished">Gross building length</translation>
+      <translation>Šířka hrubé stavby</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="288"/>
       <source>Gross building width</source>
-      <translation type="unfinished">Gross building width</translation>
+      <translation>Šířka hrubé stavby</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="302"/>
       <source>Default Building</source>
-      <translation type="unfinished">Default Building</translation>
+      <translation>Výchozí budova</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="309"/>
       <source>Number of H axes</source>
-      <translation type="unfinished">Number of H axes</translation>
+      <translation>Počet Horiz. os</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="316"/>
       <source>Distance between H axes</source>
-      <translation type="unfinished">Distance between H axes</translation>
+      <translation>Vzdál. mezi Horiz. osami</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="323"/>
       <source>Number of V axes</source>
-      <translation type="unfinished">Number of V axes</translation>
+      <translation>Počet Vert. os</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="346"/>
       <source>Distance between V axes</source>
-      <translation type="unfinished">Distance between V axes</translation>
+      <translation>Vzdál. mezi Vert. osami</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="363"/>
       <source>Main use</source>
-      <translation type="unfinished">Main use</translation>
+      <translation>Hlavní užití</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="377"/>
@@ -1062,7 +1115,7 @@ Utils -&gt; Make IFC project</translation>
       <location filename="../ui/dialogProjectManager.ui" line="414"/>
       <location filename="../ui/dialogProjectManager.ui" line="479"/>
       <source>0 </source>
-      <translation type="unfinished">0 </translation>
+      <translation>0 </translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="424"/>
@@ -1072,37 +1125,37 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="442"/>
       <source>Axes color</source>
-      <translation type="unfinished">Axes color</translation>
+      <translation>Barva os</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="454"/>
       <source>Levels</source>
-      <translation type="unfinished">Levels</translation>
+      <translation>Podlaží</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="472"/>
       <source>Level height</source>
-      <translation type="unfinished">Level height</translation>
+      <translation>Výška podlaží</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="489"/>
       <source>Number of levels</source>
-      <translation type="unfinished">Number of levels</translation>
+      <translation>Počet podlaží</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="498"/>
       <source>Bind levels to vertical axes</source>
-      <translation type="unfinished">Bind levels to vertical axes</translation>
+      <translation>Vázat podlaží na svislé osy</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="505"/>
       <source>Define a working plane for each level</source>
-      <translation type="unfinished">Define a working plane for each level</translation>
+      <translation>Definovat prac. rovinu pro každé podlaží</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="512"/>
       <source>Default groups to be added to each level</source>
-      <translation type="unfinished">Default groups to be added to each level</translation>
+      <translation>Výchozí skupiny, vkládané do každého podlaží</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="534"/>
@@ -1117,52 +1170,52 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="567"/>
       <source>The above settings can be saved as a preset. Presets are stored as .txt files in your FreeCAD user folder</source>
-      <translation type="unfinished">The above settings can be saved as a preset. Presets are stored as .txt files in your FreeCAD user folder</translation>
+      <translation>Nastavení výše mohou být uložena do předvolby. Předvolby jsou uloženy do .txt souborů v uživ. adresáři FreeCADu</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="579"/>
       <source>Save preset</source>
-      <translation type="unfinished">Save preset</translation>
+      <translation>Uložit předvolbu</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="62"/>
       <source>This screen lists all the components of the current document. You can select them to create a FreeCAD spreadsheet containing information from them.</source>
-      <translation type="unfinished">This screen lists all the components of the current document. You can select them to create a FreeCAD spreadsheet containing information from them.</translation>
+      <translation>Tato obrazovka obsahuje seznam všech součástí aktuálního dokumentu. Můžete je vybrat pro vytvoření FreeCAD sešitu, obsahujícího informace o součástech.</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="78"/>
       <source>This dialogue window will help you to generate list of components, dimensions, materials from a opened BIM file for Quantity Surveyor purposes.</source>
-      <translation type="unfinished">This dialogue window will help you to generate list of components, dimensions, materials from a opened BIM file for Quantity Surveyor purposes.</translation>
+      <translation>Toto dialogové okno vám pomůže vygenerovat seznam součástí, rozměry a materiály z otevřeného BIM souboru pro účely zjišťování množství.</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="94"/>
       <source>Select from these options the values you want from each component. FreeCAD will generate a line in the spreadsheet with these values (if they are present).</source>
-      <translation type="unfinished">Select from these options the values you want from each component. FreeCAD will generate a line in the spreadsheet with these values (if they are present).</translation>
+      <translation>Vyberte z těchto možností hodnoty, které požadujete od každé součásti. FreeCAD vygeneruje do sešitu řádek s těmito hodnotami (jsou-li zde nějaké).</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="110"/>
       <source>object.Length</source>
-      <translation type="unfinished">object.Length</translation>
+      <translation>object.Length</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="123"/>
       <source>Shape.Volume</source>
-      <translation type="unfinished">Shape.Volume</translation>
+      <translation>Shape.Volume</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="136"/>
       <source>object.Label</source>
-      <translation type="unfinished">object.Label</translation>
+      <translation>object.Label</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="149"/>
       <source>count</source>
-      <translation type="unfinished">count</translation>
+      <translation>počet</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="175"/>
       <source>Select these components from the list if you want to hide the rest of them and move to Survey mode.</source>
-      <translation type="unfinished">Select these components from the list if you want to hide the rest of them and move to Survey mode.</translation>
+      <translation>Pokud chcete skrýt ostatní položky a přejít do režimu průzkumu, vyberte tyto součásti ze seznamu.</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="217"/>
@@ -1172,12 +1225,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="14"/>
       <source>Spaces manager</source>
-      <translation type="unfinished">Spaces manager</translation>
+      <translation>Správce prostorů</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="20"/>
       <source>This screen will allow you to check the spaces configuration of your project and change some attributes.</source>
-      <translation type="unfinished">This screen will allow you to check the spaces configuration of your project and change some attributes.</translation>
+      <translation>Tato obrazovka vám umožní zkontrolovat konfigurace prostorů ve vašem projektu a měnit některé parametry.</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="37"/>
@@ -1206,54 +1259,54 @@ Utils -&gt; Make IFC project</translation>
       <location filename="../ui/dialogSpaces.ui" line="68"/>
       <location filename="../ui/dialogSpaces.ui" line="135"/>
       <source>Occupants</source>
-      <translation type="unfinished">Occupants</translation>
+      <translation>Obyvatelé</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="75"/>
       <location filename="../ui/dialogSpaces.ui" line="145"/>
       <source>1.00 m²</source>
-      <translation type="unfinished">1.00 m²</translation>
+      <translation>1.00 m²</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="85"/>
       <location filename="../ui/dialogSpaces.ui" line="169"/>
       <source>Electric consumption</source>
-      <translation type="unfinished">Electric consumption</translation>
+      <translation>Spotřeba elektřiny</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="92"/>
       <source>0</source>
-      <translation type="unfinished">0</translation>
+      <translation>0</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="102"/>
       <source>0 W</source>
-      <translation type="unfinished">0 W</translation>
+      <translation>0 W</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="115"/>
       <source>Space information</source>
-      <translation type="unfinished">Space information</translation>
+      <translation>Informace o prostoru</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="155"/>
       <source>Label</source>
-      <translation>Štítek</translation>
+      <translation>Popisek</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="179"/>
       <source>Level</source>
-      <translation type="unfinished">Level</translation>
+      <translation>Podlaží</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="186"/>
       <source>Level name</source>
-      <translation type="unfinished">Level name</translation>
+      <translation>Název podlaží</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="205"/>
       <source> W</source>
-      <translation type="unfinished"> W</translation>
+      <translation> W</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="212"/>
@@ -1263,7 +1316,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogTree.ui" line="14"/>
       <source>IFC representation of</source>
-      <translation type="unfinished">IFC representation of</translation>
+      <translation>IFC reprezentace</translation>
     </message>
     <message>
       <location filename="../ui/dialogTree.ui" line="40"/>
@@ -1281,44 +1334,104 @@ Utils -&gt; Make IFC project</translation>
       <translation>Vítejte</translation>
     </message>
     <message>
-      <location filename="../ui/dialogWelcome.ui" line="56"/>
+      <location filename="../ui/dialogWelcome.ui" line="71"/>
       <source>Welcome to the BIM workbench!</source>
-      <translation type="unfinished">Welcome to the BIM workbench!</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogWelcome.ui" line="63"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This appears to be the first time that you are using the BIM workbench. If you press OK, the next screen will propose you to set a couple of typical FreeCAD options that are suitable for BIM work. You can change these options anytime later under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; BIM Setup...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This appears to be the first time that you are using the BIM workbench. If you press OK, the next screen will propose you to set a couple of typical FreeCAD options that are suitable for BIM work. You can change these options anytime later under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; BIM Setup...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Vítejte v pracovním prostředí BIM!</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="78"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This appears to be the first time that you are using the BIM workbench. If you press OK, the next screen will propose you to set a couple of typical FreeCAD options that are suitable for BIM work. You can change these options anytime later under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; BIM Setup...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vypadá to, že jste zkoušíte prostředí BIM poprvé. Stisknete-li OK, následující obrazovka vám navrhne sadu několika typických nastavení FreeCADu, které jsou vhodné pro práci v BIM. Kdykoliv později můžete tato nastavení změnit přes menu &lt;span style=" font-weight:600;"&gt;Spravovat -&amp;gt; Nastavení BIM...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogWelcome.ui" line="93"/>
       <source>How to get started?</source>
-      <translation type="unfinished">How to get started?</translation>
+      <translation>Jak začít?</translation>
     </message>
     <message>
-      <location filename="../ui/dialogWelcome.ui" line="85"/>
+      <location filename="../ui/dialogWelcome.ui" line="100"/>
       <source>FreeCAD is a complex application. If this is your first contact with FreeCAD, or you have never worked with 3D or BIM before, you might want to take our &lt;a href="https://wiki.freecad.org/BIM_ingame_tutorial"&gt;BIM tutorial&lt;/a&gt; first (Also available under menu &lt;span style=" font-weight:600;"&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;).</source>
-      <translation type="unfinished">FreeCAD is a complex application. If this is your first contact with FreeCAD, or you have never worked with 3D or BIM before, you might want to take our &lt;a href="https://wiki.freecad.org/BIM_ingame_tutorial"&gt;BIM tutorial&lt;/a&gt; first (Also available under menu &lt;span style=" font-weight:600;"&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;).</translation>
+      <translation>FreeCAD je komplexní aplikace. Je-li toto váš první kontakt s FreeCADem nebo jste předtím nikdy nepracovali v 3D / BIM, možná byste si mohli nejprve projít náš &lt;a href="https://wiki.freecad.org/BIM_ingame_tutorial"&gt;Průvodce BIM&lt;/a&gt; (dostupný také pod menu &lt;span style=" font-weight:600;"&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;.</translation>
     </message>
     <message>
-      <location filename="../ui/dialogWelcome.ui" line="95"/>
+      <location filename="../ui/dialogWelcome.ui" line="110"/>
       <source>The BIM workbench also has a &lt;a href="https://wiki.freecad.org/BIM_Workbench"&gt;complete documentation&lt;/a&gt;  available under the Help menu. The "what's this?" button will also open the help page of any tool from the toolbars.</source>
-      <translation type="unfinished">The BIM workbench also has a &lt;a href="https://wiki.freecad.org/BIM_Workbench"&gt;complete documentation&lt;/a&gt;  available under the Help menu. The "what's this?" button will also open the help page of any tool from the toolbars.</translation>
+      <translation>Prostředí BIM má také &lt;a href="https://wiki.freecad.org/BIM_Workbench"&gt;kompletní dokumentaci&lt;/a&gt; dostupnou skrze Help menu. Tlačítko "what's this?" také otevře stránku pomoci pro každý nástroj z nástrojové lišty.</translation>
     </message>
     <message>
-      <location filename="../ui/dialogWelcome.ui" line="105"/>
+      <location filename="../ui/dialogWelcome.ui" line="120"/>
       <source>A good way to start building a BIM model is by setting up basic characteristics of your project, under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; Project setup&lt;/span&gt;. You can also directly configure different floor plans for your project, under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; Levels.&lt;/span&gt;</source>
-      <translation type="unfinished">A good way to start building a BIM model is by setting up basic characteristics of your project, under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; Project setup&lt;/span&gt;. You can also directly configure different floor plans for your project, under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; Levels.&lt;/span&gt;</translation>
+      <translation>Dobrý způsob, jak začít tvorbu BIM modelu, je nastavením charakteristik vašeho projektu pod menu &lt;span style=" font-weight:600;"&gt;Spravovat -&amp;gt; Nastavení projektu&lt;/span&gt;. Můžete také přímo konfigurovat plány pater pro váš projekt, pod menu &lt;span style=" font-weight:600;"&gt;Spravovat -&amp;gt; Podlaží.&lt;/span&gt;</translation>
     </message>
     <message>
-      <location filename="../ui/dialogWelcome.ui" line="115"/>
+      <location filename="../ui/dialogWelcome.ui" line="130"/>
       <source>There is no mandatory behaviour here though, and you can also start creating walls and columns directly, and care about organizing things in levels later.</source>
-      <translation type="unfinished">There is no mandatory behaviour here though, and you can also start creating walls and columns directly, and care about organizing things in levels later.</translation>
+      <translation>Není zde žádný povinný postup, můžete začít přímo vytvářením stěn a sloupů, a o organizaci věcí do úrovní se postarat později.</translation>
     </message>
     <message>
-      <location filename="../ui/dialogWelcome.ui" line="125"/>
+      <location filename="../ui/dialogWelcome.ui" line="140"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You might also want to start from an existing floor plan or 3D model made in another application. Under menu &lt;span style=" font-weight:600;"&gt;File -&amp;gt; Import&lt;/span&gt;, you will find a wide range of file formats that can be imported into FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You might also want to start from an existing floor plan or 3D model made in another application. Under menu &lt;span style=" font-weight:600;"&gt;File -&amp;gt; Import&lt;/span&gt;, you will find a wide range of file formats that can be imported into FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt; &lt;head/&gt; &lt;body&gt; &lt;p&gt;Možná byste chtěli začít s již existujícím půdorysem nebo 3D modelem vytvořeným v jiné aplikaci. Pod menu &lt;span style=" font-weight:600;"&gt;Soubor -&amp;gt; Import&lt;/span&gt;, naleznete řadu souborových formátů, které mohou být importovány do FreeCADu.&lt;/p&gt; &lt;/body&gt; &lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogConvertType.ui" line="14"/>
+      <source>Convert to IFC type</source>
+      <translation type="unfinished">Convert to IFC type</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogConvertType.ui" line="26"/>
+      <source>This object will be converted to a %1 type. Types can be used to give common attributes and properties to several objects at once.</source>
+      <translation type="unfinished">This object will be converted to a %1 type. Types can be used to give common attributes and properties to several objects at once.</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogConvertType.ui" line="36"/>
+      <source>Keep original object. The object will adopt the new type</source>
+      <translation type="unfinished">Keep original object. The object will adopt the new type</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogAddProperty.ui" line="14"/>
+      <source>Add IFC property</source>
+      <translation type="unfinished">Add IFC property</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogAddProperty.ui" line="44"/>
+      <source>IfcLabel</source>
+      <translation type="unfinished">IfcLabel</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogAddProperty.ui" line="49"/>
+      <source>IfcBoolean</source>
+      <translation type="unfinished">IfcBoolean</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogAddProperty.ui" line="54"/>
+      <source>IfcInteger</source>
+      <translation type="unfinished">IfcInteger</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogAddProperty.ui" line="59"/>
+      <source>IfcReal</source>
+      <translation type="unfinished">IfcReal</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogAddProperty.ui" line="64"/>
+      <source>IfcLengthMeasure</source>
+      <translation type="unfinished">IfcLengthMeasure</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogAddProperty.ui" line="69"/>
+      <source>IfcAreaMeasure</source>
+      <translation type="unfinished">IfcAreaMeasure</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogAddProperty.ui" line="80"/>
+      <source>Type</source>
+      <translation>Typ</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogAddProperty.ui" line="94"/>
+      <source>PSet</source>
+      <translation type="unfinished">PSet</translation>
     </message>
   </context>
   <context>
@@ -1387,7 +1500,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="14"/>
       <source>Multi-material definition</source>
-      <translation type="unfinished">Multi-material definition</translation>
+      <translation>Definice multimateriálu</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="21"/>
@@ -1551,17 +1664,17 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="14"/>
       <source>Custom properties</source>
-      <translation type="unfinished">Custom properties</translation>
+      <translation>Vlastní nastavení</translation>
     </message>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="23"/>
       <source>Name</source>
-      <translation>Jméno</translation>
+      <translation>Název</translation>
     </message>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="30"/>
       <source>Can only contain alphanumerical characters and no spaces. Use CamelCase typing to define spaces automatically</source>
-      <translation type="unfinished">Can only contain alphanumerical characters and no spaces. Use CamelCase typing to define spaces automatically</translation>
+      <translation>Může obsahovat pouze alfanumerické znaky bez mezer. Pro automaticky generované mezery použijte TentoZpůsob psaní</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="189"/>
@@ -1572,12 +1685,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="44"/>
       <source>A description for this property, can be in any language.</source>
-      <translation type="unfinished">A description for this property, can be in any language.</translation>
+      <translation>Popis této vlastnosti, může být v jakémkoli jazyce.</translation>
     </message>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="51"/>
       <source>The property will be hidden in the interface, and can only be modified via Python script</source>
-      <translation type="unfinished">The property will be hidden in the interface, and can only be modified via Python script</translation>
+      <translation>Tato vlastnost bude v rozhraní skryta, upravena může být pouze pomocí Python skriptu</translation>
     </message>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="54"/>
@@ -1587,7 +1700,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="61"/>
       <source>The property is visible but cannot be modified by the user</source>
-      <translation type="unfinished">The property is visible but cannot be modified by the user</translation>
+      <translation>Tato vlastnost je viditelná, ale uživatel ji nemůže měnit</translation>
     </message>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="64"/>
@@ -1602,12 +1715,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="14"/>
       <source>Library browser</source>
-      <translation type="unfinished">Library browser</translation>
+      <translation>Prohlížeč knihovny</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="29"/>
       <source>Inserts the selected object in the current document</source>
-      <translation type="unfinished">Inserts the selected object in the current document</translation>
+      <translation>Vloží vybraný objekt do aktuálního dokumentu</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="32"/>
@@ -1617,12 +1730,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="39"/>
       <source>or</source>
-      <translation type="unfinished">or</translation>
+      <translation>nebo</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="49"/>
       <source>Links the selected object in the current document. Only works in Offline mode</source>
-      <translation type="unfinished">Links the selected object in the current document. Only works in Offline mode</translation>
+      <translation>Propojí vybraný objekt s aktuálním dokumentem. Funguje pouze v offline režimu</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="52"/>
@@ -1632,17 +1745,17 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="63"/>
       <source>Search:</source>
-      <translation type="unfinished">Search:</translation>
+      <translation>Hledat:</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="79"/>
       <source>Search external websites</source>
-      <translation type="unfinished">Search external websites</translation>
+      <translation>Hledat externí webové stránky</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="83"/>
       <source>...</source>
-      <translation type="unfinished">...</translation>
+      <translation>...</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="153"/>
@@ -1652,57 +1765,57 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="181"/>
       <source>Save thumbnails when saving a file</source>
-      <translation type="unfinished">Save thumbnails when saving a file</translation>
+      <translation>Uložit náhledy při ukládání souboru</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="193"/>
       <source>If this is checked, the library doesn't need to be installed. Contents will be fetched online.</source>
-      <translation type="unfinished">If this is checked, the library doesn't need to be installed. Contents will be fetched online.</translation>
+      <translation>Je-li zaškrtnuto, knihovna nemusí být nainstalována. Obsah bude načten online.</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="196"/>
       <source>Online mode</source>
-      <translation type="unfinished">Online mode</translation>
+      <translation>Online režim</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="206"/>
       <source>Open the search results inside FreeCAD's web browser instead of the system browser</source>
-      <translation type="unfinished">Open the search results inside FreeCAD's web browser instead of the system browser</translation>
+      <translation>Otevřít výsledky hledání v prohlížeči FreeCADu, namísto systémového prohlížeče</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="209"/>
       <source>Open search in FreeCAD web view</source>
-      <translation type="unfinished">Open search in FreeCAD web view</translation>
+      <translation>Otevřít hledání ve web. zobraz. FreeCADu</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="216"/>
       <source>Opens a 3D preview of the selected file.</source>
-      <translation type="unfinished">Opens a 3D preview of the selected file.</translation>
+      <translation>Otevře 3D náhled vybraného souboru.</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="219"/>
       <source>Preview model in 3D view</source>
-      <translation type="unfinished">Preview model in 3D view</translation>
+      <translation>Náhled modelu v 3D pohledu</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="229"/>
       <source>Show available alternative file formats for library items (STEP, IFC, etc...)</source>
-      <translation type="unfinished">Show available alternative file formats for library items (STEP, IFC, etc...)</translation>
+      <translation>Zobrazit dostupné alternativní formáty souborů pro položky knihovny (STEP, IFC, atd...)</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="232"/>
       <source>Display alternative formats</source>
-      <translation type="unfinished">Display alternative formats</translation>
+      <translation>Zobrazit alternativní formáty</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="239"/>
       <source>Note: STEP and BREP files can be placed at custom location. FCStd and IFC files will be placed where objects are defined in the file.</source>
-      <translation type="unfinished">Note: STEP and BREP files can be placed at custom location. FCStd and IFC files will be placed where objects are defined in the file.</translation>
+      <translation>Pozn.: STEP a BREP soubory mohou být umístěny do vlastního umístění. FCStd a IFC soubory budou umístěny tam, kde jsou v souboru definovány objekty.</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="252"/>
       <source>Save thumbnails</source>
-      <translation type="unfinished">Save thumbnails</translation>
+      <translation>Uložit náhledy</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="262"/>
@@ -1712,27 +1825,27 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="14"/>
       <source>IFC Preflight</source>
-      <translation type="unfinished">IFC Preflight</translation>
+      <translation>IFC "Předletová kontrola"</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The following test will check your model or the selected object(s) and their children for conformity to some IFC standards.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Important&lt;/span&gt;: None of the failed tests below will prevent exporting IFC files, nor do these tests guarantee that your IFC files meets some specific quality or standard requirement. They are there to help you assess what is and what is not in your exported file. It's for you to choose which item is of importance to you or not. Hovering the mouse over each description will give you more information to decide.&lt;/p&gt;&lt;p&gt;After a test is run, clicking the corresponding button will give you more information to help you to fix problems.&lt;/p&gt;&lt;p&gt;The &lt;a href="http://www.buildingsmart-tech.org/specifications"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;official IFC website&lt;/span&gt;&lt;/a&gt; contains a lot of useful information about IFC standards.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The following test will check your model or the selected object(s) and their children for conformity to some IFC standards.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Important&lt;/span&gt;: None of the failed tests below will prevent exporting IFC files, nor do these tests guarantee that your IFC files meets some specific quality or standard requirement. They are there to help you assess what is and what is not in your exported file. It's for you to choose which item is of importance to you or not. Hovering the mouse over each description will give you more information to decide.&lt;/p&gt;&lt;p&gt;After a test is run, clicking the corresponding button will give you more information to help you to fix problems.&lt;/p&gt;&lt;p&gt;The &lt;a href="http://www.buildingsmart-tech.org/specifications"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;official IFC website&lt;/span&gt;&lt;/a&gt; contains a lot of useful information about IFC standards.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Následující test zkontroluje váš model nebo vybrané objekty a jejich potomky z hlediska konformity s některými IFC standardy.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Důležité&lt;/span&gt;: Žádný z neúspěšných testů níže nezabrání exportu IFC souborů, ani vám nezaručí, že vaše IFC soubory vyhovují speciálním kvalitativním požadavkům nebo standardům. Jsou zde proto, aby vám pomohly posoudit, co je a co není ve vámi exportovaném souboru. Je na vašem uvážení, která položka je pro vás důležitá a která ne. Přejetí myší přes každý popisek vám dá více informací k rozhodnutí.&lt;/p&gt;&lt;p&gt;Jakmile je test dokončen, kliknutím na odpovídající tlačítko dostanete více informací, které vám pomohou vyřešit problémy.&lt;/p&gt;&lt;p&gt;Oficiální &lt;a href="http://www.buildingsmart-tech.org/specifications"&gt; &lt;span style=" text-decoration: underline; color:#0000ff;"&gt;web IFC&lt;/span&gt;&lt;/a&gt; obsahuje velké množství užitečných informací o IFC standardech.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="30"/>
       <source>Warning, this can take some time!</source>
-      <translation type="unfinished">Warning, this can take some time!</translation>
+      <translation>Varování, toto může chvíli trvat!</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="33"/>
       <source>Run all tests</source>
-      <translation type="unfinished">Run all tests</translation>
+      <translation>Spustit všechny testy</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="40"/>
       <source>Work on</source>
-      <translation type="unfinished">Work on</translation>
+      <translation>Testovat</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="46"/>
@@ -1742,12 +1855,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="53"/>
       <source>All visible objects</source>
-      <translation type="unfinished">All visible objects</translation>
+      <translation>Všechny viditelné objekty</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="63"/>
       <source>Whole document</source>
-      <translation type="unfinished">Whole document</translation>
+      <translation>Celý dokument</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="73"/>
@@ -1757,12 +1870,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="79"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC export in FreeCAD is performed by an open-source third-party library called IfcOpenShell. To be able to export to the newer IFC4 standard, IfcOpenShell must have been compiled with IFC4 support enabled.  This test will check if IFC4 support is available in your version of IfcOpenShell. If not, you will only be able to export IFC files in the older IFC2x3 standard. Note that some applications out there still have incomplete or inexistent IFC4 support, so in some cases IFC2x3 might still work better.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC export in FreeCAD is performed by an open-source third-party library called IfcOpenShell. To be able to export to the newer IFC4 standard, IfcOpenShell must have been compiled with IFC4 support enabled.  This test will check if IFC4 support is available in your version of IfcOpenShell. If not, you will only be able to export IFC files in the older IFC2x3 standard. Note that some applications out there still have incomplete or inexistent IFC4 support, so in some cases IFC2x3 might still work better.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC export ve FreeCADu je prováděn skrze open-source third-party knihovnu zvanou IfcOpenShell. Aby bylo možné exportovat do novějšího IFC4 standardu, IfcOpenShell musí být zkompilována s povolenou podporou IFC4. Tento test zkontroluje, je-li podpora IFC4 dostupná ve vaší verzi IfcOpenShell. Pokud není, budete moci exportovat IFC soubory pouze ve starším IFC2x3 standardu. Pozn., některé další aplikace stále nemají, nebo mají nekompletní, podporu IFC4 standardu, čili v některých případech může IFC2x3 stále fungovat lépe.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="82"/>
       <source>Is IFC4 support enabled?</source>
-      <translation type="unfinished">Is IFC4 support enabled?</translation>
+      <translation>Je povolena podpora IFC4?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="92"/>
@@ -1787,47 +1900,47 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="102"/>
       <source>Project structure</source>
-      <translation type="unfinished">Project structure</translation>
+      <translation>Struktura projektu</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="115"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All IfcBuildingStorey (levels) elements are required to be inside an IfcBuilding element. This is a mandatory requirement of the IFC standard. When exporting your FreeCAD model to IFC, a default IfcBuilding will be created for all level objects (BuildingPart objects with their IFC role set as Building Storey)  found that are not inside a Building. However, it is best if you create that building yourself, so you have more control over its name and properties. This test is here to help you to find those levels without buildings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All IfcBuildingStorey (levels) elements are required to be inside an IfcBuilding element. This is a mandatory requirement of the IFC standard. When exporting your FreeCAD model to IFC, a default IfcBuilding will be created for all level objects (BuildingPart objects with their IFC role set as Building Storey)  found that are not inside a Building. However, it is best if you create that building yourself, so you have more control over its name and properties. This test is here to help you to find those levels without buildings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Všechny prvky IfcBuildingStorey (podlaží) jsou vyžadovány uvnitř prvku IfcBuilding. Toto je základní požadavek IFC standardu. Při exportu vašeho FreeCAD modelu do IFC bude vytvořen výchozí IfcBuilding pro všechny objekty podlaží (BuildingPart objekty s IFC rolemi nastavenými na Building Storey) nalezené mimo prvek Building. Každopádně nejlepší je, vytvoříte-li si budovu sami, a máte tedy více kontroly nad jejím názvem a vlastnostmi. Tento test vám pomůže najít podlaží bez příslušných budov.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="118"/>
       <source>Are all storeys part of a building?</source>
-      <translation type="unfinished">Are all storeys part of a building?</translation>
+      <translation>Jsou všechna podlaží součástí budovy?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="128"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All elements derived from IfcProduct (that is, all the BIM elements that compose your model)  are required to be inside an IfcBuildingStorey (level) element. This is a mandatory requirement of the IFC standard. When exporting your FreeCAD model to IFC, a default IfcBuildingStorey will be created for all BIM objects found that are not inside one already. However, it is best if you make sure yourself that all elements are correctly located inside a level, so you have more control over it. This test is here to help you to find those BIM objects without a level.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All elements derived from IfcProduct (that is, all the BIM elements that compose your model)  are required to be inside an IfcBuildingStorey (level) element. This is a mandatory requirement of the IFC standard. When exporting your FreeCAD model to IFC, a default IfcBuildingStorey will be created for all BIM objects found that are not inside one already. However, it is best if you make sure yourself that all elements are correctly located inside a level, so you have more control over it. This test is here to help you to find those BIM objects without a level.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Všechny prvky odvozené z IfcProduct (tj. všechny BIM prvky, ze kterých se skládá váš model) musí být uvnitř prvku IfcBuildingStorey (podlaží). Toto je základní požadavek IFC standardu. Při exportu vašeho FreeCAD modelu do IFC bude vytvořen výchozí IfcBuildingStorey pro všechny BIM objekty nalezené mimo podlaží. Každopádně nejlepší je ujistit se, jsou-li všechny prvky správně umístěné v podlaží, a máte tedy nad tím více kontroly. Tento test vám pomůže najít BIM objekty bez podlaží.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="131"/>
       <source>Are all BIM objects part of a level?</source>
-      <translation type="unfinished">Are all BIM objects part of a level?</translation>
+      <translation>Jsou všechny BIM objekty součástí podlaží?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="148"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All IfcBuilding elements are required to be inside an IfcSite element. This is a mandatory requirement of the IFC standard. When exporting your FreeCAD model to IFC, a default IfcSite will be created for all Building objects found that are not inside a Site. However, it is best if you create that site yourself, so you have more control over its name and properties. This test is here to help you to find those buildings without sites.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All IfcBuilding elements are required to be inside an IfcSite element. This is a mandatory requirement of the IFC standard. When exporting your FreeCAD model to IFC, a default IfcSite will be created for all Building objects found that are not inside a Site. However, it is best if you create that site yourself, so you have more control over its name and properties. This test is here to help you to find those buildings without sites.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Všechny prvky IfcBuilding musí být uvnitř prvku IfcSite. Toto je základní požadavek IFC standardu. Při exportu vašeho FreeCAD modelu do IFC bude vytvořen výchozí IfcSite pro všechny Building objekty nalezené mimo pozemek. Každopádně nejlepší je, vytvoříte-li si pozemek sami, a máte tedy více kontroly nad jeho názvem a vlastnostmi. Tento test vám pomůže najít objekty budov bez pozemku.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="151"/>
       <source>Are all buildings part of a site?</source>
-      <translation type="unfinished">Are all buildings part of a site?</translation>
+      <translation>Jsou všechny budovy součástí pozemku?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="168"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC standard requires at least one site, one building and one level or building storey per project. This test will ensure that at least one object of each of these 3 types exists in the model.&lt;/p&gt;&lt;p&gt;Note that, as this is a mandatory requirement, FreeCAD will automatically add a default site, a default building and/or a default building storey if any of these is missing. So even if this test didn't pass, your exported IFC file will meet the requirements.&lt;/p&gt;&lt;p&gt;However, it is always better to create these objects yourself, as you get more control over naming and properties.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC standard requires at least one site, one building and one level or building storey per project. This test will ensure that at least one object of each of these 3 types exists in the model.&lt;/p&gt;&lt;p&gt;Note that, as this is a mandatory requirement, FreeCAD will automatically add a default site, a default building and/or a default building storey if any of these is missing. So even if this test didn't pass, your exported IFC file will meet the requirements.&lt;/p&gt;&lt;p&gt;However, it is always better to create these objects yourself, as you get more control over naming and properties.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC standard vyžaduje alespoň jeden pozemek, jednu budovu a jedno patro nebo podlaží na projekt. Tento test ujistí, že model obsahuje alespoň jeden objekt od každého z těchto 3 typů.&lt;/p&gt;&lt;p&gt;Pozn., jelikož je toto základní požadavek, FreeCAD automaticky přidá výchozí pozemek, budovu a/nebo výchozí podlaží, jestliže kterýkoliv z nich chybí. I když tento test neprojde, váš exportovaný IFC soubor splní tyto požadavky.&lt;/p&gt;&lt;p&gt;Každopádně, vždy je lepší si vytvořit tyto objekty vlastní, a mít tak lepší kontrolu nad jejich názvy a vlastnostmi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="171"/>
       <source>Is there at least one site, one building and one level in the model?</source>
-      <translation type="unfinished">Is there at least one site, one building and one level in the model?</translation>
+      <translation>Je v modelu alespoň jeden pozemek, jedna budova a jedno podlaží?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="191"/>
@@ -1837,22 +1950,22 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="204"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Although it is not a requirement for IFC objects to have fully clean and solid geometry (and you will more than often find IFC files with bad geometry out there, oh boy if you find!), it is of course better if they do. You will reduce chances of problems with other applications, and after all, in real life, all objects have solid shapes.&lt;/p&gt;&lt;p&gt;FreeCAD has a lot of tools to check for geometry quality, and most parametric objects, including BIM objects, will usually warn you if their geometry becomes unclean or not solid at some point. This test makes sure everything is OK.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Although it is not a requirement for IFC objects to have fully clean and solid geometry (and you will more than often find IFC files with bad geometry out there, oh boy if you find!), it is of course better if they do. You will reduce chances of problems with other applications, and after all, in real life, all objects have solid shapes.&lt;/p&gt;&lt;p&gt;FreeCAD has a lot of tools to check for geometry quality, and most parametric objects, including BIM objects, will usually warn you if their geometry becomes unclean or not solid at some point. This test makes sure everything is OK.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Přestože není po IFC objektech vyžadováno, aby měly čistou a solidní geometrii (a častěji než často najdete IFC soubory se špatnou geometrií, ó běda, když ji najdete!), je samozřejmě lepší, aby ji měly. Omezíte šanci na vznik problémů s jinými aplikacemi, a koneckonců, v reálném životě mají všechny objekty solidní tvary.&lt;/p&gt;&lt;p&gt;FreeCAD má spoustu nástrojů pro kontrolu kvality geometrie a většina parametrických objektů, včetně BIM objektů, vás obvykle bude varovat, když se jejich geometrie v nějaké chvíli stane nečistou nebo nesolidní. Tento test ověří, je-li geometrie v pořádku.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="207"/>
       <source>Are all BIM objects solid and valid?</source>
-      <translation type="unfinished">Are all BIM objects solid and valid?</translation>
+      <translation>Jsou všechny BIM objekty platné a solidní?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="217"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC format provides a defined type for most of the objects that compose a building, for example walls, columns, doors, or sinks. But it also supports undefined objects, which are given the generic BuildingElementProxy type. This test will check that all objects have a defined type.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that failing this test is not necessarily bad, as you might specifically want some object to not have any defined type. In some cases, this might even give better results, as some applications like Revit might add possibly unwanted additional constraints or transformations to some known types such as structural elements (beams or columns). Exporting them as BuildingElementProxies will prevent that.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC format provides a defined type for most of the objects that compose a building, for example walls, columns, doors, or sinks. But it also supports undefined objects, which are given the generic BuildingElementProxy type. This test will check that all objects have a defined type.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that failing this test is not necessarily bad, as you might specifically want some object to not have any defined type. In some cases, this might even give better results, as some applications like Revit might add possibly unwanted additional constraints or transformations to some known types such as structural elements (beams or columns). Exporting them as BuildingElementProxies will prevent that.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC formát nabízí definované typy pro většinu objektů tvořících budovu, např. stěny, sloupy, dveře, okna nebo umyvadla. Podporuje také nedefinované objekty, kterým je přirazen obecný typ BuildingElementProxy. Tento test ověří, zda všechny objekty mají definované typy.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Selhání tohoto testu nemusí nutně znamenat chybu, jelikož můžete chtít, aby nějaký specifický objekt neměl žádný definovaný typ. V některých případech toto může vracet lepší výsledky, jelikož aplikace jako třeba Revit mohou přidávat nechtěná omezení nebo transformace některým neznámým typům, například strukturálním prvkům (nosníky, sloupy). Export takových prvků pod typem BuildingElementProxy tomuto chování předejde.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="220"/>
       <source>Are all BIM objects of a defined IFC type?</source>
-      <translation type="unfinished">Are all BIM objects of a defined IFC type?</translation>
+      <translation>Jsou všechny objekty BIM definovaného IFC typu?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="240"/>
@@ -1862,97 +1975,97 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="246"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classification systems, such as UniClass or MasterFormat, or even your own custom system, are in some cases an important part of a building project. This test will ensure that all BIM objects and materials found in the model have their standard code property dutifully filled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classification systems, such as UniClass or MasterFormat, or even your own custom system, are in some cases an important part of a building project. This test will ensure that all BIM objects and materials found in the model have their standard code property dutifully filled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Klasifikační systémy jako UniClass nebo MasterFormat, či váš vlastní systém, jsou v některých případech důležitou součástí stavebního projektu. Tento test ověří, zda všechny BIM objekty a materiály nalezené v modelu mají svědomitě vyplněný svůj standardní kód.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="249"/>
       <source>Do all BIM objects and materials have a standard classification code defined?</source>
-      <translation type="unfinished">Do all BIM objects and materials have a standard classification code defined?</translation>
+      <translation>Mají všechny BIM objekty a materiály definovaný standardní klasifikační kód?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="273"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC standard offers standard, predefined property sets for many object types. for example, the property set Pset_WallCommon contains properties that the IFC standard thinks all walls should have. This test will check that all BIM objects have the right property set, if available.&lt;/p&gt;&lt;p&gt;Note that this is by no means a formal requirement, and these will inflate the size of your IFC file consequently. We suggest you add standard property sets only if you are actually using any of them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC standard offers standard, predefined property sets for many object types. for example, the property set Pset_WallCommon contains properties that the IFC standard thinks all walls should have. This test will check that all BIM objects have the right property set, if available.&lt;/p&gt;&lt;p&gt;Note that this is by no means a formal requirement, and these will inflate the size of your IFC file consequently. We suggest you add standard property sets only if you are actually using any of them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC standard nabízí standardní, předdefinované sady vlastností pro mnoho objektových typů. Například sada Pset_WallCommon obsahuje vlastnosti, které by podle IFC standardu měly mít všechny stěny. Tento test ověří, zda všechny BIM objekty mají správnou sadu vlastností, je-li dostupná.&lt;/p&gt;&lt;p&gt;Vezměte na vědomí, že toto není oficiální požadavek, a tyto prvky budou následně zvětšovat velikost vašeho IFC souboru. Doporučujeme vám vkládat standardní sady vlastností jen, když opravdu některou z nich používáte.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="276"/>
       <source>Do all common IFC types have the corresponding Property Set?</source>
-      <translation type="unfinished">Do all common IFC types have the corresponding Property Set?</translation>
+      <translation>Mají všechny běžné IFC typy odpovídající sadu vlastností?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="286"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC objects have a geometry representation, which defines the shape of the object, but can also have some or their dimensions, such as height, width or area, explicitly stated. This is very useful for BIM applications that don't process the geometry, such as spreadsheets. Those applications are still able to get and estimate quantities from IFC objects without the need to analyze the geometry.&lt;/p&gt;&lt;p&gt;It is also a possibility for errors (or even fraud), as nothing guarantees that those explicitly stated dimensions match what is inside the geometry.&lt;/p&gt;&lt;p&gt;This test will find any BIM object that has available dimension properties such as width or height, for example walls and structures, but such properties are not marked for explicit export to IFC.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC objects have a geometry representation, which defines the shape of the object, but can also have some or their dimensions, such as height, width or area, explicitly stated. This is very useful for BIM applications that don't process the geometry, such as spreadsheets. Those applications are still able to get and estimate quantities from IFC objects without the need to analyze the geometry.&lt;/p&gt;&lt;p&gt;It is also a possibility for errors (or even fraud), as nothing guarantees that those explicitly stated dimensions match what is inside the geometry.&lt;/p&gt;&lt;p&gt;This test will find any BIM object that has available dimension properties such as width or height, for example walls and structures, but such properties are not marked for explicit export to IFC.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC objekty nesou geometrickou reprezentaci, určenou tvarem objektu, ale mohou mít i explicitně uvedené některé rozměry jako výšku, šířku nebo povrch. To je velmi užitečné pro BIM aplikace, které nezpracovávají geometrii, ale jen tabulky. Tyto aplikace jsou tak stále schopné získat a odhadnout množství z IFC objektů bez nutnosti analyzovat geometrii.&lt;/p&gt;&lt;p&gt;Je ovšem možný vznik chyb (či dokonce podvodu), jelikož zde není žádná garance, že explicitně zadané rozměry odpovídají tomu, co obsahuje geometrie.&lt;/p&gt;&lt;p&gt;Tento test najde objekty s dostupnými rozměrovými vlastnostmi jako je šířka nebo výška, např. pro stěny a struktury, které ale nejsou označeny pro explicitní export do IFC.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="289"/>
       <source>Do all geometric BIM objects have explicit dimensions set?</source>
-      <translation type="unfinished">Do all geometric BIM objects have explicit dimensions set?</translation>
+      <translation>Mají všechny geom. objekty BIM nastavené explicitní rozměry?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="299"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Although there is no requirement for IFC objects to have a material defined, in the real world, it is an important layer of information to be added to you model. This test will find BIM objects without a material defined.&lt;/p&gt;&lt;p&gt;If a BIM object is exported without a material, it will nevertheless be assigned an IfcSurfaceStyle, which will be created from the object color. Some BIM applications actually disregard materials, and only consider the surface style of an object. No IfcMaterial will be attributed to that object.&lt;/p&gt;&lt;p&gt;If a BIM object has a material defined, a surface style will still be created (an IfcMaterial too) but its surface style will take the same name and properties as the material, thus giving more consistency to your file, no matter what other BIM consider, surface style, material, or both.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Although there is no requirement for IFC objects to have a material defined, in the real world, it is an important layer of information to be added to you model. This test will find BIM objects without a material defined.&lt;/p&gt;&lt;p&gt;If a BIM object is exported without a material, it will nevertheless be assigned an IfcSurfaceStyle, which will be created from the object color. Some BIM applications actually disregard materials, and only consider the surface style of an object. No IfcMaterial will be attributed to that object.&lt;/p&gt;&lt;p&gt;If a BIM object has a material defined, a surface style will still be created (an IfcMaterial too) but its surface style will take the same name and properties as the material, thus giving more consistency to your file, no matter what other BIM consider, surface style, material, or both.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Přestože zde není žádný požadavek, aby IFC objekty měly definované materiály, v reálném světě je to důležitá vrstva informace, vkládaná do vašeho modelu. Tento test najde BIM objekty bez definovaného materiálu.&lt;/p&gt;&lt;p&gt;I když je BIM objekt exportován bez definovaného materiálu, stejně mu bude přiřazen IfcSurfaceStyle, vytvořený z barvy objektu. Některé BIM aplikace ve skutečnosti neuvažují materiály, ale pouze styl povrchu toho kterého objektu. Takovému objektu nebude přiřazen IfcMaterial.&lt;/p&gt;&lt;p&gt;Pokud BIM objekt má definovaný materiál, styl povrchu bude přesto také vytvořen (spolu s IfcMaterial). Styl povrchu ale převezme název a vlastnosti z materiálu, což dává souboru větší konzistenci, bez ohledu na to, jestli ostatní BIM aplikace uvažují styl povrchu, materiál nebo obojí.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="302"/>
       <source>Do all BIM objects have a material?</source>
-      <translation type="unfinished">Do all BIM objects have a material?</translation>
+      <translation>Mají všechny BIM objekty materiál?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="319"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Even if a BIM object has a standard property set for its type attributed, there is no guarantee that this property set still contains or only contains all the properties that the IFC standard has defined for that set. They might have been modified after the property set has been added.&lt;/p&gt;&lt;p&gt;This test will check that all standard property sets found throughout the model contain all and only the properties specified in the standard definition.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Even if a BIM object has a standard property set for its type attributed, there is no guarantee that this property set still contains or only contains all the properties that the IFC standard has defined for that set. They might have been modified after the property set has been added.&lt;/p&gt;&lt;p&gt;This test will check that all standard property sets found throughout the model contain all and only the properties specified in the standard definition.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;I když mají objekty BIM nastavenou standardní sadu vlastností přiřazenou pro jejich typ, není ještě zaručeno, že tato sada vlastností obsahuje pouze všechny vlastnosti definované IFC standardem pro tuto sadu. Mohou být totiž upraveny až po vložení sady vlastností.&lt;/p&gt;&lt;p&gt;Tento test ověří, zda všechny, v modelu nalezené, standardní sady vlastností obsahují jen a pouze všechny vlastnosti specifikované v definici standardu.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="322"/>
       <source>Do all standard Property Set contain the correct properties?</source>
-      <translation type="unfinished">Do all standard Property Set contain the correct properties?</translation>
+      <translation>Obsahují všechny standardní Sady vlastností správné vlastnosti?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="349"/>
       <source>Optional/Compatibility</source>
-      <translation type="unfinished">Optional/Compatibility</translation>
+      <translation>Volitelné/Kompatibilita</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="362"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The geometry of IFC objects can be defined in a large number of ways, such as extrusions, subtractions, revolutions, or even faceted objects.&lt;/p&gt;&lt;p&gt;However, extrusions of flat shapes, which is the most basic and common type, often offer advantages over other types in other BIM applications.&lt;/p&gt;&lt;p&gt;This test will find any object that cannot be exported to IFC as an extrusion, or as a shared extrusion (clone).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The geometry of IFC objects can be defined in a large number of ways, such as extrusions, subtractions, revolutions, or even faceted objects.&lt;/p&gt;&lt;p&gt;However, extrusions of flat shapes, which is the most basic and common type, often offer advantages over other types in other BIM applications.&lt;/p&gt;&lt;p&gt;This test will find any object that cannot be exported to IFC as an extrusion, or as a shared extrusion (clone).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Geometrie IFC objektů může být definována velkým množstvím způsobů, jako jsou vytažení (extruze), odečtení těles, orotování nebo povrchové objekty.&lt;/p&gt;&lt;p&gt;Každopádně nejzákladnějším a nejběžnějším způsobem je vytažení plochých tvarů, které je pro jiné BIM aplikace často výhodnější než ostatní typy.&lt;/p&gt;&lt;p&gt;Tento test najde objekty, které nemohou být exportovány do IFC jako vytažení nebo jako sdílené vytažení (klon).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="365"/>
       <source>Are all object exportable as extrusions?</source>
-      <translation type="unfinished">Are all object exportable as extrusions?</translation>
+      <translation>Jsou všechny objekty exportovatelné jako extruze?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="375"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Walls, columns and beams in FreeCAD can be constructed in a wide number of ways. But some simpler BIM applications might have difficulties with walls that are not of the most simple type, that is, a single, straight piece of wall (which correspond to the IfcWallStandardCase type) or beams and columns that are not based on a straight extrusion of a flat profile (BeamStandardCase, ColumnStandardCase)&lt;/p&gt;&lt;p&gt;This test will find any wall which is not such a standard case.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note&lt;/span&gt;: At the moment, BIM objects that meet the requirements to be of a standard case, are still exported as IfcWall, IfcBeam, IfcColumn.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Walls, columns and beams in FreeCAD can be constructed in a wide number of ways. But some simpler BIM applications might have difficulties with walls that are not of the most simple type, that is, a single, straight piece of wall (which correspond to the IfcWallStandardCase type) or beams and columns that are not based on a straight extrusion of a flat profile (BeamStandardCase, ColumnStandardCase)&lt;/p&gt;&lt;p&gt;This test will find any wall which is not such a standard case.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note&lt;/span&gt;: At the moment, BIM objects that meet the requirements to be of a standard case, are still exported as IfcWall, IfcBeam, IfcColumn.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Stěny, sloupy a nosníky mohou být ve FreeCADu konstruovány mnoha způsoby. Některé jednodušší BIM aplikace ovšem mohou mít problémy se stěnami, které nejsou nejjednodušším typem, to jest jedinou, přímou částí stěny (což odpovídá IFC typu IfcWallStandardCase) nebo s nosníky a sloupy, které nejsou založeny na přímém vytažení (extruzi) plochého profilu (BeamStandardCase, ColumnStandardCase)&lt;/p&gt;&lt;p&gt;Tento test najde stěny, které jsou takto nestandardní&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Pozn&lt;/span&gt;.: Momentálně jsou BIM objekty, vyhovující požadavkům pro standardní případ, exportovány jako IfcWall, IfcBeam a IfcColumn.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="378"/>
       <source>Are all walls, beams and columns based on a single line or profile (standard case)?</source>
-      <translation type="unfinished">Are all walls, beams and columns based on a single line or profile (standard case)?</translation>
+      <translation>Jsou stěny, nosníky a sloupy založeny na jediné čáře nebo profilu (standardní způsob)?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="395"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Revit discards all objects that contain lines smaller than 1/32 inch (0.8mm). This test will find any object containing lines smaller than that value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Revit discards all objects that contain lines smaller than 1/32 inch (0.8mm). This test will find any object containing lines smaller than that value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Revit vyřazuje všechny objekty, které obsahují čáry menší než 1/32 palce (0,8mm). Tento test najde objekty obsahující čáry menší než je tato hodnota.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="398"/>
       <source>Are all lines bigger than 1/32 inches (minimum accepted by Revit)?</source>
-      <translation type="unfinished">Are all lines bigger than 1/32 inches (minimum accepted by Revit)?</translation>
+      <translation>Jsou všechny čáry větší než 1/32 palce (minimum akceptované Revitem)?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="415"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When exporting a model to IFC, all BIM objects that are an extrusion of a rectangular profile will use an IfcRectangleProfileDef entity as their extrusion profile. However, Revit won't import these correctly. If you are going to use the IFC file in Revit, we recommend you to disable this behavior by checking the option under menu &lt;span style=" font-weight:600;"&gt;Edit -&amp;gt; Preferences -&amp;gt; BIM -&amp;gt; NativeIFC -&amp;gt; Disable IfcRectangularProfileDef&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;When that option is checked, all extrusion profiles will be exported as generic IfcArbitraryProfileDef entities, regardless of if they are rectangular or not, which will contain a little less information, but will open correctly in Revit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When exporting a model to IFC, all BIM objects that are an extrusion of a rectangular profile will use an IfcRectangleProfileDef entity as their extrusion profile. However, Revit won't import these correctly. If you are going to use the IFC file in Revit, we recommend you to disable this behavior by checking the option under menu &lt;span style=" font-weight:600;"&gt;Edit -&amp;gt; Preferences -&amp;gt; BIM -&amp;gt; NativeIFC -&amp;gt; Disable IfcRectangularProfileDef&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;When that option is checked, all extrusion profiles will be exported as generic IfcArbitraryProfileDef entities, regardless of if they are rectangular or not, which will contain a little less information, but will open correctly in Revit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Při exportu modelu do IFC použijí všechny BIM objekty, tvořené vytažením pravoúhlého profilu, prvek IfcRectangleProfileDef jako jejich profil vytažení. Revit ovšem tyto prvky neimportuje správně. Pokud se chystáte používat IFC soubor v Revitu, doporučujeme vám zakázat toto chování zaškrtnutím možnosti v menu &lt;span style=" font-weight:600;"&gt;Upravit -&amp;gt; Nastavení -&amp;gt; BIM -&amp;gt; Nativní IFC -&amp;gt; Zakázat IfcRectangularProfileDef&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;Je-li možnost zaškrtnutá, všechny profily vytažení budou exportovány jako obecné prvky IfcArbitraryProfileDef bez ohledu na to, jestli jsou pravoúhlé nebo ne. Prvek bude obsahovat trochu méně informací, ale otevře se v Revitu správně.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="418"/>
       <source>Is IfcRectangleProfileDef export disabled? (Revit only)</source>
-      <translation type="unfinished">Is IfcRectangleProfileDef export disabled? (Revit only)</translation>
+      <translation>Je zakázán export IfcRectangleProfileDef? (jen pro Revit)</translation>
     </message>
     <message>
       <location filename="../ui/dialogViews.ui" line="14"/>
@@ -1963,12 +2076,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogReorder.ui" line="20"/>
       <source>Drag items to reorder then press OK to accept</source>
-      <translation type="unfinished">Drag items to reorder then press OK to accept</translation>
+      <translation>Přetáhněte položky pro změnu pořadí a pak stiskněte OK</translation>
     </message>
     <message>
       <location filename="../ui/dialogReorder.ui" line="37"/>
       <source>Order alphabetically</source>
-      <translation type="unfinished">Order alphabetically</translation>
+      <translation>Seřadit abecedně</translation>
     </message>
     <message>
       <location filename="../ui/dialogTutorial.ui" line="14"/>
@@ -1999,12 +2112,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/dialogTutorial.ui" line="41"/>
       <source>Tasks to complete:</source>
-      <translation type="unfinished">Tasks to complete:</translation>
+      <translation>Úkoly k dokončení:</translation>
     </message>
     <message>
       <location filename="../ui/dialogTutorial.ui" line="50"/>
       <source>Goal1</source>
-      <translation type="unfinished">Goal1</translation>
+      <translation>Cíl1</translation>
     </message>
     <message>
       <location filename="../ui/dialogTutorial.ui" line="60"/>
@@ -2015,47 +2128,52 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/dialogTutorial.ui" line="70"/>
       <source>Goal2</source>
-      <translation type="unfinished">Goal2</translation>
+      <translation>Cíl2</translation>
     </message>
     <message>
       <location filename="../ui/dialogTutorial.ui" line="91"/>
       <source>&lt;&lt; Previous</source>
-      <translation type="unfinished">&lt;&lt; Previous</translation>
+      <translation>&lt;&lt; Předchozí</translation>
     </message>
     <message>
       <location filename="../ui/dialogTutorial.ui" line="98"/>
       <source>Next &gt;&gt;</source>
-      <translation type="unfinished">Next &gt;&gt;</translation>
+      <translation>Další &gt;&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogViews.ui" line="64"/>
       <source>Element</source>
-      <translation type="unfinished">Element</translation>
+      <translation>Prvek</translation>
     </message>
     <message>
       <location filename="../ui/dialogViews.ui" line="69"/>
       <source>Level</source>
-      <translation type="unfinished">Level</translation>
+      <translation>Podlaží</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialogViews.ui" line="79"/>
+      <source>2D Views</source>
+      <translation>2D pohledy</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="14"/>
       <source>Doors and windows</source>
-      <translation type="unfinished">Doors and windows</translation>
+      <translation>Dveře a okna</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="20"/>
       <source>This screen lists all the windows of the current document. You can modify them individually or together</source>
-      <translation type="unfinished">This screen lists all the windows of the current document. You can modify them individually or together</translation>
+      <translation>Tato obrazovka vypisuje všechna okna aktuálního dokumentu. Můžete je upravovat jednotlivě nebo společně</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="32"/>
       <source>Group by:</source>
-      <translation type="unfinished">Group by:</translation>
+      <translation>Seskupit dle:</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="40"/>
       <source>Do not group</source>
-      <translation type="unfinished">Do not group</translation>
+      <translation>Neseskupovat</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="50"/>
@@ -2072,23 +2190,23 @@ p, li { white-space: pre-wrap; }
       <location filename="../ui/dialogWindows.ui" line="151"/>
       <location filename="../ui/dialogWindows.ui" line="196"/>
       <source>Tag</source>
-      <translation>Štítek</translation>
+      <translation>Výstupek</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="97"/>
       <source>Total number of doors:</source>
-      <translation type="unfinished">Total number of doors:</translation>
+      <translation>Celkový počet dveří:</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="104"/>
       <source>Total number of windows:</source>
-      <translation type="unfinished">Total number of windows:</translation>
+      <translation>Celkový počet oken:</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="111"/>
       <location filename="../ui/dialogWindows.ui" line="121"/>
       <source>0</source>
-      <translation type="unfinished">0</translation>
+      <translation>0</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="161"/>
@@ -2098,7 +2216,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/dialogWindows.ui" line="168"/>
       <source>Label</source>
-      <translation>Štítek</translation>
+      <translation>Popisek</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="175"/>
@@ -2114,12 +2232,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/dialogWindows.ui" line="233"/>
       <source>Spaces</source>
-      <translation type="unfinished">Spaces</translation>
+      <translation>Prostory</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="14"/>
       <source>NativeIFC</source>
-      <translation type="unfinished">NativeIFC</translation>
+      <translation>Nativní IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="20"/>
@@ -2129,112 +2247,112 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="28"/>
       <source>Initial import</source>
-      <translation type="unfinished">Initial import</translation>
+      <translation>Úvodní import</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="35"/>
       <source>How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</source>
-      <translation type="unfinished">How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</translation>
+      <translation>Jak bude IFC soubor importován: Pouze jeden objekt, pouze struktura projektu nebo všechny jednotlivé objekty.</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="45"/>
       <source>Only root object (default)</source>
-      <translation type="unfinished">Only root object (default)</translation>
+      <translation>Jen kořenový objekt (výchozí)</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="50"/>
       <source>Project structure (levels)</source>
-      <translation type="unfinished">Project structure (levels)</translation>
+      <translation>Struktura projektu (úrovně)</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="55"/>
       <source>All individual IFC objects</source>
-      <translation type="unfinished">All individual IFC objects</translation>
+      <translation>Všechny jednotlivé IFC objekty</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="63"/>
       <source>Representation type</source>
-      <translation type="unfinished">Representation type</translation>
+      <translation>Typ reprezentace objektu</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="70"/>
       <source>The type of object created at import. Coin only is much faster, but you don't get the full shape information. You can convert between the two anytime by right-clicking the object tree</source>
-      <translation type="unfinished">The type of object created at import. Coin only is much faster, but you don't get the full shape information. You can convert between the two anytime by right-clicking the object tree</translation>
+      <translation>Typ objektu vytvářeného při importu. Pouze Coin je mnohem rychlejší, ale nedostanete celou informaci o tvaru. Pravým kliknutím na strom objektu můžete kdykoliv přepínat mezi oběma typy</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="83"/>
       <source>Load full shape (slower)</source>
-      <translation type="unfinished">Load full shape (slower)</translation>
+      <translation>Načíst plný tvar (pomalejší)</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="88"/>
       <source>Load 3D representation only, no shape (default)</source>
-      <translation type="unfinished">Load 3D representation only, no shape (default)</translation>
+      <translation>Načíst pouze 3D reprezentaci, bez tvaru (výchozí)</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="93"/>
       <source>No 3D representation at all</source>
-      <translation type="unfinished">No 3D representation at all</translation>
+      <translation>Bez 3D reprezentace objektu</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="103"/>
       <source>If this is checked, the BIM workbench will be loaded after import</source>
-      <translation type="unfinished">If this is checked, the BIM workbench will be loaded after import</translation>
+      <translation>Je-li toto zaškrtnuto, po importu se načte pracovní prostředí BIM</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="106"/>
       <source>Switch to BIM workbench after import</source>
-      <translation type="unfinished">Switch to BIM workbench after import</translation>
+      <translation>Přepnout do BIM prostředí po importu</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="119"/>
       <source>Load all property sets automatically when opening an IFC file</source>
-      <translation type="unfinished">Load all property sets automatically when opening an IFC file</translation>
+      <translation>Načíst automaticky všechny sady vlastností při otevírání IFC souboru</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="122"/>
       <source>Preload property sets</source>
-      <translation type="unfinished">Preload property sets</translation>
+      <translation>Přednačíst sady vlastností</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="135"/>
       <source>Load all materials automatically when opening an IFC file</source>
-      <translation type="unfinished">Load all materials automatically when opening an IFC file</translation>
+      <translation>Načíst automaticky všechny materiály při otevírání IFC souboru</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="138"/>
       <source>Preload materials</source>
-      <translation type="unfinished">Preload materials</translation>
+      <translation>Přednačíst materiály</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="151"/>
       <source>Load all layers automatically when opening an IFC file</source>
-      <translation type="unfinished">Load all layers automatically when opening an IFC file</translation>
+      <translation>Načíst automaticky všechny úrovně při otevírání IFC souboru</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="154"/>
       <source>Preload layers</source>
-      <translation type="unfinished">Preload layers</translation>
+      <translation>Přednačíst vrstvy</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="167"/>
       <source>When enabling this, the original version of objects dropped onto an IFC project tree will not be deleted.</source>
-      <translation type="unfinished">When enabling this, the original version of objects dropped onto an IFC project tree will not be deleted.</translation>
+      <translation>Povolením tohoto nebudou, po vložení do stromu IFC projektu, smazány originální verze objektů.</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="170"/>
       <source>Keep original version of aggregated objects</source>
-      <translation type="unfinished">Keep original version of aggregated objects</translation>
+      <translation>Zachovat originální verzi agregovaných objektů</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="183"/>
       <source>If this is checked, a dialog will be shown at each import</source>
-      <translation type="unfinished">If this is checked, a dialog will be shown at each import</translation>
+      <translation>Je-li zaškrtnuto, dialog se zobrazí při každém importu</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="186"/>
       <source>Show options dialog when importing</source>
-      <translation type="unfinished">Show options dialog when importing</translation>
+      <translation>Zobrazit dialog možností při importu</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="205"/>
@@ -2244,17 +2362,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="211"/>
       <source>Show warning when saving</source>
-      <translation type="unfinished">Show warning when saving</translation>
+      <translation>Zobrazit varování při ukládání</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="230"/>
       <source>New document</source>
-      <translation type="unfinished">New document</translation>
+      <translation>Nový dokument</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="236"/>
       <source>Always lock new documents</source>
-      <translation type="unfinished">Always lock new documents</translation>
+      <translation>Vždy uzamknout nové dokumenty</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="249"/>
@@ -2265,22 +2383,22 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="268"/>
       <source>New project</source>
-      <translation type="unfinished">New project</translation>
+      <translation>Nový projekt</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="274"/>
       <source>If this is checked, when creating a new projects, a default structure (site, building and storey) will be added under the project</source>
-      <translation type="unfinished">If this is checked, when creating a new projects, a default structure (site, building and storey) will be added under the project</translation>
+      <translation>Je-li toto zaškrtnuto, bude při vytváření nových projektů přidána do projektu výchozí struktura (pozemek, stavba a podlaží)</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="277"/>
       <source>Create a default structure</source>
-      <translation type="unfinished">Create a default structure</translation>
+      <translation>Vytvořit výchozí strukturu</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="290"/>
       <source>Check this to ask the above question every time a project is created</source>
-      <translation type="unfinished">Check this to ask the above question every time a project is created</translation>
+      <translation>Zaškrtněte pro dotazování se vždy při vytváření nového projektu</translation>
     </message>
   </context>
   <context>
@@ -2298,12 +2416,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="26"/>
       <source>Auto-join walls</source>
-      <translation>Automatické slučování zdí</translation>
+      <translation>Automatické slučování stěn</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="42"/>
       <source>If this is checked, when 2 similar walls are being connected, their underlying sketches will be joined into one, and the two walls will become one</source>
-      <translation>Je-li zaškrtnuto, při spojení dvou podobných zdí budou jejich výchozí náčrty spojeny do jednoho a obě zdi budou sloučeny do jedné</translation>
+      <translation>Je-li zaškrtnuto, při spojení dvou podobných stěn budou jejich výchozí náčrty spojeny do jednoho a obě stěny budou sloučeny do jedné</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="58"/>
@@ -2338,12 +2456,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="109"/>
       <source>By default, new objects will have their "Move with host" property set to False, which means they won't move when their host object is moved.</source>
-      <translation>Ve výchozím nastavení budou mít nové objekty vlastnost "Přesunout s hostitelem" nastavenou na hodnotu False, což znamená, že se při přesunutí hostitelského objektu nebudou pohybovat.</translation>
+      <translation>Není-li zaškrtnuto, budou mít nové objekty vlastnost "Přesouvat s hostitelem" nastavenou na hodnotu False, což znamená, že se při přesunutí hostitelského objektu nebudou pohybovat.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="112"/>
       <source>Set "Move with host" property to True by default</source>
-      <translation>Ve výchozím nastavení nastavte vlastnost "Přesunout s hostitelem" na hodnotu True</translation>
+      <translation>Nastavit "Přesouvat s hostitelem" ve výchozím nast. na True</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="128"/>
@@ -2408,17 +2526,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="45"/>
       <source>Join base sketches of walls if possible</source>
-      <translation type="unfinished">Join base sketches of walls if possible</translation>
+      <translation>Propojit základní náčrty stěn, je-li to možné</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="61"/>
       <source>Remove external geometry of base sketches if needed</source>
-      <translation type="unfinished">Remove external geometry of base sketches if needed</translation>
+      <translation>Je-li to potřeba, odstranit externí geometrii zákl. náčrtů</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="144"/>
       <source>Do not compute areas for objects with more than</source>
-      <translation type="unfinished">Do not compute areas for objects with more than</translation>
+      <translation>Nepočítat povrchy pro objekty s více než</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="279"/>
@@ -2428,7 +2546,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="295"/>
       <source>If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</source>
-      <translation>Při zaškrtnutí díry v plochách budou provedeny odečtením, jinak orientací drátu</translation>
+      <translation>Je-li zaškrtnuto, otvory v plochách budou provedeny odečtením, nikoli pomocí orientace křivek</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="298"/>
@@ -2491,27 +2609,26 @@ k projekcím skrytých předmětů.</translation>
       <location filename="../ui/preferences-arch.ui" line="486"/>
       <source>Scaling factor for patterns used by objects that have
 a Footprint display mode</source>
-      <translation type="unfinished">Scaling factor for patterns used by objects that have
-a Footprint display mode</translation>
+      <translation>Měřítko pro vzory používané těmi objekty, které mají režim zobrazení půdorysu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="515"/>
       <source>BIM server</source>
-      <translation type="unfinished">BIM server</translation>
+      <translation>BIM server</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="528"/>
       <source>The URL of a BIM server instance (www.bimserver.org) to connect to.</source>
-      <translation type="unfinished">The URL of a BIM server instance (www.bimserver.org) to connect to.</translation>
+      <translation>URL adresa BIM server instance (www.bimserver.org) pro připojení.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="544"/>
       <source>If this is selected, the "Open BIM Server in browser"
 button will open the BIM Server interface in an external browser
 instead of the FreeCAD web workbench</source>
-      <translation type="unfinished">If this is selected, the "Open BIM Server in browser"
-button will open the BIM Server interface in an external browser
-instead of the FreeCAD web workbench</translation>
+      <translation>Je-li toto vybráno, tlačítko "Otevřít v prohlížeči"
+otevře BIM Server rozhraní v externím prohlížeči
+namísto webového rozhraní FreeCADu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="521"/>
@@ -2544,12 +2661,12 @@ instead of the FreeCAD web workbench</translation>
       <translation>Výchozí hodnoty</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="331"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="344"/>
       <location filename="../ui/preferences-archdefaults.ui" line="370"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="396"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="422"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="448"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="474"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="395"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="414"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="480"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="499"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -2561,123 +2678,133 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="26"/>
       <source>Wall color</source>
-      <translation type="unfinished">Wall color</translation>
+      <translation>Barva stěny</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="57"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="63"/>
       <source>Structure color</source>
-      <translation type="unfinished">Structure color</translation>
+      <translation>Barva struktury</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="81"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="87"/>
       <source>Rebar color</source>
-      <translation type="unfinished">Rebar color</translation>
+      <translation>Barva výztuže</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="105"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="111"/>
       <source>Window glass transparency</source>
-      <translation type="unfinished">Window glass transparency</translation>
+      <translation>Průhlednost okenního skla</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="118"/>
-      <location filename="../ui/preferences-archdefaults.ui" line="216"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="124"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="222"/>
       <source> %</source>
       <translation> %</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="137"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="143"/>
       <source>Window glass color</source>
-      <translation type="unfinished">Window glass color</translation>
+      <translation>Barva okenního skla</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="161"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="167"/>
       <source>Panel color</source>
-      <translation type="unfinished">Panel color</translation>
+      <translation>Barva panelu</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="185"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="191"/>
       <source>Helper color (grids, axes, etc.)</source>
-      <translation type="unfinished">Helper color (grids, axes, etc.)</translation>
+      <translation>Barvy pomocných (mřížky, osy atd.)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="209"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="215"/>
       <source>Space transparency</source>
-      <translation type="unfinished">Space transparency</translation>
+      <translation>Barva prostoru</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="235"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="241"/>
       <source>Space line style</source>
-      <translation type="unfinished">Space line style</translation>
+      <translation>Styl čáry prostoru</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="252"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="258"/>
       <source>Solid</source>
       <translation>Těleso</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="257"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="263"/>
       <source>Dashed</source>
       <translation>Čárkovaný</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="262"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="268"/>
       <source>Dotted</source>
       <translation>Tečkovaný</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="267"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="273"/>
       <source>Dashdot</source>
       <translation>Čerchovaný</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="275"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="281"/>
       <source>Space line color</source>
-      <translation type="unfinished">Space line color</translation>
+      <translation>Barva čáry prostoru</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="302"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="308"/>
       <source>Other</source>
       <translation>Jiný</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="308"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="321"/>
       <source>Use sketches for walls</source>
-      <translation type="unfinished">Use sketches for walls</translation>
+      <translation>Použít náčrty pro stěny</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="324"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="363"/>
       <source>Pipe diameter</source>
-      <translation type="unfinished">Pipe diameter</translation>
+      <translation>Průměr potrubí</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="357"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="466"/>
       <source>Rebar diameter</source>
-      <translation type="unfinished">Rebar diameter</translation>
+      <translation>Průměr výztuže</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="389"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="525"/>
+      <source>When clicking a view or level in the BIM views manager, this switches the background to plain color when activating a 2D view, and to gradient color when activating a level</source>
+      <translation type="unfinished">When clicking a view or level in the BIM views manager, this switches the background to plain color when activating a 2D view, and to gradient color when activating a level</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-archdefaults.ui" line="528"/>
+      <source>Switch backgrounds</source>
+      <translation type="unfinished">Switch backgrounds</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-archdefaults.ui" line="314"/>
       <source>Rebar offset</source>
-      <translation type="unfinished">Rebar offset</translation>
+      <translation>Odsazení výztuže</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="415"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="337"/>
       <source>Stair length</source>
-      <translation type="unfinished">Stair length</translation>
+      <translation>Délka schodu</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="441"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="518"/>
       <source>Stair width</source>
-      <translation type="unfinished">Stair width</translation>
+      <translation>Šířka schodu</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="467"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="473"/>
       <source>Stair height</source>
-      <translation type="unfinished">Stair height</translation>
+      <translation>Výška schodu</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-archdefaults.ui" line="493"/>
+      <location filename="../ui/preferences-archdefaults.ui" line="446"/>
       <source>Number of stair steps</source>
-      <translation type="unfinished">Number of stair steps</translation>
+      <translation>Počet schodů</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="14"/>
@@ -2685,9 +2812,135 @@ instead of the FreeCAD web workbench</translation>
       <translation>IFC import</translation>
     </message>
     <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="14"/>
+      <source>SH3D import</source>
+      <translation type="unfinished">SH3D import</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="32"/>
       <location filename="../ui/preferences-ifc.ui" line="32"/>
       <source>Show this dialog when importing</source>
       <translation>Zobrazit tento dialog při importu</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="45"/>
+      <source>Shows verbose debug messages during import of SH3D files in the Report
+                    view panel. Log level message must be allowed for this setting to have an effect.</source>
+      <translation type="unfinished">Shows verbose debug messages during import of SH3D files in the Report
+                    view panel. Log level message must be allowed for this setting to have an effect.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="71"/>
+      <source>Whether to import the model's doors and windows</source>
+      <translation type="unfinished">Whether to import the model's doors and windows</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="74"/>
+      <source>Doors and Windows</source>
+      <translation type="unfinished">Doors and Windows</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="87"/>
+      <source>Whether to import the model's furnitures</source>
+      <translation type="unfinished">Whether to import the model's furnitures</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="90"/>
+      <source>Furnitures</source>
+      <translation type="unfinished">Furnitures</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="103"/>
+      <source>Whether to create Arch::Equipment for each furniture defined in the model (NOTE: this can negatively impact the import process speed)</source>
+      <translation type="unfinished">Whether to create Arch::Equipment for each furniture defined in the model (NOTE: this can negatively impact the import process speed)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="106"/>
+      <source>Create Arch::Equipment</source>
+      <translation type="unfinished">Create Arch::Equipment</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="119"/>
+      <source>Whether to join the different Arch::Wall together</source>
+      <translation type="unfinished">Whether to join the different Arch::Wall together</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="122"/>
+      <source>Join Arch::Wall</source>
+      <translation type="unfinished">Join Arch::Wall</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="135"/>
+      <source>Whether to import the model's lights. Note that you also need to import
+                    the model's furnitures.</source>
+      <translation type="unfinished">Whether to import the model's lights. Note that you also need to import
+                    the model's furnitures.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="139"/>
+      <source>Lights (requires Render)</source>
+      <translation type="unfinished">Lights (requires Render)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="152"/>
+      <source>Whether to import the model's cameras</source>
+      <translation type="unfinished">Whether to import the model's cameras</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="155"/>
+      <source>Cameras (requires Render)</source>
+      <translation type="unfinished">Cameras (requires Render)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="168"/>
+      <source>Merge imported element with existing FC object</source>
+      <translation type="unfinished">Merge imported element with existing FC object</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="171"/>
+      <source>Merge into existing document</source>
+      <translation type="unfinished">Merge into existing document</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="186"/>
+      <source>Default Floor Color</source>
+      <translation type="unfinished">Default Floor Color</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="202"/>
+      <location filename="../ui/preferences-sh3d-import.ui" line="242"/>
+      <source>This color might be used when a room does not define its own color.</source>
+      <translation type="unfinished">This color might be used when a room does not define its own color.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="226"/>
+      <source>Default Ceiling Color</source>
+      <translation type="unfinished">Default Ceiling Color</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="264"/>
+      <source>Create a default Render project with the newly created Site</source>
+      <translation type="unfinished">Create a default Render project with the newly created Site</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="267"/>
+      <source>Create Render Project (requires Render)</source>
+      <translation type="unfinished">Create Render Project (requires Render)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="280"/>
+      <source>Fit view while importing.</source>
+      <translation type="unfinished">Fit view while importing.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="296"/>
+      <source>Create a default IFC project with the newly created Site.</source>
+      <translation type="unfinished">Create a default IFC project with the newly created Site.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="299"/>
+      <source>Create IFC Project</source>
+      <translation type="unfinished">Create IFC Project</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="45"/>
@@ -2697,6 +2950,7 @@ of IFC files in the Report view panel</source>
 IFC souborů v panelu Zobrazení reportu</translation>
     </message>
     <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="49"/>
       <location filename="../ui/preferences-ifc.ui" line="49"/>
       <source>Show debug messages</source>
       <translation>Zobrazit zprávy ladění</translation>
@@ -2739,6 +2993,7 @@ pokud zaznamenáte pády, když nastavíte více jader.</translation>
       <translation>Počet jader, která mají být použita (experimentální)</translation>
     </message>
     <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="65"/>
       <location filename="../ui/preferences-ifc.ui" line="148"/>
       <source>Import options</source>
       <translation>Možnosti importu</translation>
@@ -2757,13 +3012,13 @@ pokud zaznamenáte pády, když nastavíte více jader.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="173"/>
       <source>Parametric BIM objects</source>
-      <translation type="unfinished">Parametric BIM objects</translation>
+      <translation>Parametrické BIM objekty</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="178"/>
       <location filename="../ui/preferences-ifc.ui" line="222"/>
       <source>Non-parametric BIM objects</source>
-      <translation type="unfinished">Non-parametric BIM objects</translation>
+      <translation>Neparametrické BIM objekty</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="183"/>
@@ -2812,8 +3067,8 @@ Uchovat prvek IfcProduct pro import všech prvků budovy.</translation>
       <location filename="../ui/preferences-ifc.ui" line="275"/>
       <source>Openings will be imported as subtractions, otherwise wall shapes
 will already have their openings subtracted</source>
-      <translation>Otvory budou importovány jako odčítání, jinak budou mít tvary zdí
-své otvory již odečteny</translation>
+      <translation>Otvory budou importovány jako odečty, jinak by byly
+otvory součástí už tvaru stěn</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="279"/>
@@ -2835,7 +3090,7 @@ Pamatujte, že to může věci zpomalit.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="309"/>
       <source>Split walls made of multiple layers</source>
-      <translation>Dělené stěny z více vrstev</translation>
+      <translation>Rozdělit stěny vyrobené z více vrstev</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="312"/>
@@ -2901,6 +3156,7 @@ This will slow down the import, but one can watch the import.</source>
 To zpomalí import, ale budete moci sledovat import.</translation>
     </message>
     <message>
+      <location filename="../ui/preferences-sh3d-import.ui" line="283"/>
       <location filename="../ui/preferences-ifc.ui" line="424"/>
       <source>Fit view while importing</source>
       <translation>Přizpůsobit zobrazení při importu</translation>
@@ -2984,7 +3240,7 @@ Pokud používáte Netgen, ujistěte se, že je k dispozici.</translation>
     <message>
       <location filename="../ui/preferences-dae.ui" line="108"/>
       <source>Builtin and Mefisto mesher options</source>
-      <translation type="unfinished">Builtin and Mefisto mesher options</translation>
+      <translation>Možnosti Mefisto a vestavěného síťovacího algoritmu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="116"/>
@@ -3072,6 +3328,7 @@ Gradient velikosti lokální sítě h(x) je vázán |Δh(x)| ≤ 1/hodnota.</tra
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="26"/>
+      <location filename="../ui/preferences-sh3d-import.ui" line="26"/>
       <location filename="../ui/preferences-ifc.ui" line="26"/>
       <source>General options</source>
       <translation>Obecné nastavení</translation>
@@ -3233,23 +3490,22 @@ Pokud je to váš případ, můžete toto zakázat a pak budou všechny profily 
       <location filename="../ui/preferences-ifc-export.ui" line="268"/>
       <source>Some IFC types such as IfcWall or IfcBeam have special standard versions like IfcWallStandardCase or IfcBeamStandardCase. If this option is turned on, FreeCAD will automatically export such objects
 as standard cases when the necessary conditions are met.</source>
-      <translation type="unfinished">Some IFC types such as IfcWall or IfcBeam have special standard versions like IfcWallStandardCase or IfcBeamStandardCase. If this option is turned on, FreeCAD will automatically export such objects
-as standard cases when the necessary conditions are met.</translation>
+      <translation>Některé IFC typy jako třeba IfcWall nebo IfcBeam mají své standardní varianty (IfcWallStandardCase nebo IfcBeamStandardCase). Je-li tato možnost zapnuta, FreeCAD automaticky exportuje takové objekty ve standardní variantě, pokud jsou splněny potřebné podmínky.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="387"/>
       <source>Add default building if one is not found in the document</source>
-      <translation type="unfinished">Add default building if one is not found in the document</translation>
+      <translation>Vložit výchozí budovu jestliže v dokumentu není žádná nalezena</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="403"/>
       <source>In FreeCAD, it is possible to nest groups inside buildings or storeys. If this option is disabled, FreeCAD groups will be saved as IfcGroups and aggregated to the building structure. Aggregating non-building elements such as IfcGroups is however not recommended by the IFC standards. It is therefore also possible to export these groups as IfcElementAssemblies, which produces an IFC-compliant file. However, at FreeCAD, we believe nesting groups inside structures should be possible, and this option is there to have a chance to demonstrate our point of view.</source>
-      <translation type="unfinished">In FreeCAD, it is possible to nest groups inside buildings or storeys. If this option is disabled, FreeCAD groups will be saved as IfcGroups and aggregated to the building structure. Aggregating non-building elements such as IfcGroups is however not recommended by the IFC standards. It is therefore also possible to export these groups as IfcElementAssemblies, which produces an IFC-compliant file. However, at FreeCAD, we believe nesting groups inside structures should be possible, and this option is there to have a chance to demonstrate our point of view.</translation>
+      <translation>Ve FreeCADu je možné vnořovat skupiny uvnitř budov nebo podlaží. Je-li možnost deaktivována, tyto FreeCAD skupiny budou uloženy jako IfcGroups a budou zahrnuty do struktury stavby. Zahrnování nestavebních prvků do IfcGroups je ovšem IFC standardy nedoporučováno. Proto je možné tyto skupiny exportovat také jako IfcElementAssemblies, které vytváří soubor vyhovující IFC. Každopádně, ve FreeCADu věříme, že vnořování skupin uvnitř struktur by mělo být možné, a proto je tato možnost také příležitostí, jak ukázat náš názor na věc.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="406"/>
       <source>Export nested groups as assemblies</source>
-      <translation type="unfinished">Export nested groups as assemblies</translation>
+      <translation>Exportovat vnořené skupiny jako sestavy</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="272"/>
@@ -3277,7 +3533,7 @@ Parcela není povinná, ale běžnou praxí je mít alespoň jednu v souboru.</t
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="376"/>
       <source>IFC standard compliance</source>
-      <translation type="unfinished">IFC standard compliance</translation>
+      <translation>Shoda s IFC standardem</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="382"/>
@@ -3445,17 +3701,17 @@ bude pracovat při otevírání souboru.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="444"/>
       <source>Parameters of the structure</source>
-      <translation type="unfinished">Parameters of the structure</translation>
+      <translation>Parametry struktury</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="499"/>
       <source>Switch Length/Height</source>
-      <translation type="unfinished">Switch Length/Height</translation>
+      <translation>Přepnout Délka/Výška</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="501"/>
       <source>Switch Length/Width</source>
-      <translation type="unfinished">Switch Length/Width</translation>
+      <translation>Přepnout Délka/Šířka</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="505"/>
@@ -3465,138 +3721,138 @@ bude pracovat při otevírání souboru.</translation>
       <translation>Pokračovat</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="783"/>
+      <location filename="../../ArchStructure.py" line="867"/>
       <source>Error: The base shape couldn't be extruded along this tool object</source>
       <translation>Chyba: Základní tvar nelze vytáhnout podél tohoto objektu nástroje</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="809"/>
-      <location filename="../../ArchWall.py" line="439"/>
+      <location filename="../../ArchStructure.py" line="893"/>
+      <location filename="../../ArchWall.py" line="513"/>
       <source>This mesh is an invalid solid</source>
       <translation>Tato síť netvoří platné těleso</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="873"/>
-      <location filename="../../ArchPanel.py" line="205"/>
+      <location filename="../../ArchStructure.py" line="990"/>
+      <location filename="../../ArchPanel.py" line="207"/>
       <source>Facemaker returned an error</source>
       <translation>Fakulta vrátila chybu</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1188"/>
+      <location filename="../../ArchStructure.py" line="1331"/>
       <source>Node Tools</source>
       <translation>Nástroje uzlu</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1193"/>
+      <location filename="../../ArchStructure.py" line="1336"/>
       <source>Reset nodes</source>
       <translation>Reset nodes</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1200"/>
+      <location filename="../../ArchStructure.py" line="1343"/>
       <source>Edit nodes</source>
       <translation>Upravit uzly</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1206"/>
+      <location filename="../../ArchStructure.py" line="1349"/>
       <source>Extend nodes</source>
       <translation>Rozšířit uzly</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1207"/>
+      <location filename="../../ArchStructure.py" line="1350"/>
       <source>Extends the nodes of this element to reach the nodes of another element</source>
       <translation>Rozšíří uzly tohoto prvku tak, aby se dostaly do uzlů jiného prvku</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1213"/>
+      <location filename="../../ArchStructure.py" line="1356"/>
       <source>Connect nodes</source>
       <translation>Připojit uzly</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1214"/>
+      <location filename="../../ArchStructure.py" line="1357"/>
       <source>Connects nodes of this element with the nodes of another element</source>
       <translation>Spojuje uzly tohoto prvku s uzly jiného prvku</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1220"/>
+      <location filename="../../ArchStructure.py" line="1363"/>
       <source>Toggle all nodes</source>
       <translation>Přepnout všechny uzly</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1221"/>
+      <location filename="../../ArchStructure.py" line="1364"/>
       <source>Toggles all structural nodes of the document on/off</source>
       <translation>Zapnout/vypnout všechny strukturální uzly dokumentu</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1226"/>
+      <location filename="../../ArchStructure.py" line="1369"/>
       <source>Extrusion Tools</source>
       <translation>Nástroje pro extruzi</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1231"/>
-      <location filename="../../ArchStructure.py" line="1365"/>
+      <location filename="../../ArchStructure.py" line="1374"/>
+      <location filename="../../ArchStructure.py" line="1508"/>
       <source>Select tool...</source>
       <translation>Vyberte nástroj...</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1232"/>
+      <location filename="../../ArchStructure.py" line="1375"/>
       <source>Select object or edges to be used as a Tool (extrusion path)</source>
       <translation>Vyberte objekt nebo hrany, které mají být použity jako nástroj (cesta vysunutí)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1255"/>
-      <location filename="../../ArchStructure.py" line="1287"/>
+      <location filename="../../ArchStructure.py" line="1398"/>
+      <location filename="../../ArchStructure.py" line="1430"/>
       <source>Choose another Structure object:</source>
       <translation>Vyberte jiný objekt struktury:</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1260"/>
-      <location filename="../../ArchStructure.py" line="1292"/>
+      <location filename="../../ArchStructure.py" line="1403"/>
+      <location filename="../../ArchStructure.py" line="1435"/>
       <source>The chosen object is not a Structure</source>
       <translation>Zvolený objekt není struktura</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1263"/>
-      <location filename="../../ArchStructure.py" line="1295"/>
+      <location filename="../../ArchStructure.py" line="1406"/>
+      <location filename="../../ArchStructure.py" line="1438"/>
       <source>The chosen object has no structural nodes</source>
       <translation>Zvolený objekt nemá žádné strukturální uzly</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1266"/>
-      <location filename="../../ArchStructure.py" line="1298"/>
+      <location filename="../../ArchStructure.py" line="1409"/>
+      <location filename="../../ArchStructure.py" line="1441"/>
       <source>One of these objects has more than 2 nodes</source>
       <translation>Jeden z těchto objektů má více než 2 uzly</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1273"/>
-      <location filename="../../ArchStructure.py" line="1305"/>
+      <location filename="../../ArchStructure.py" line="1416"/>
+      <location filename="../../ArchStructure.py" line="1448"/>
       <source>Unable to find a suitable intersection point</source>
       <translation>Nelze najít vhodný průsečík</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1276"/>
+      <location filename="../../ArchStructure.py" line="1419"/>
       <source>Intersection found.
 </source>
       <translation>Křížová sekce nalezena.
 </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1308"/>
+      <location filename="../../ArchStructure.py" line="1451"/>
       <source>Intersection found.</source>
       <translation>Průsečík nalezen.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1344"/>
+      <location filename="../../ArchStructure.py" line="1487"/>
       <source>Done</source>
       <translation>Hotovo</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1449"/>
-      <location filename="../../ArchPanel.py" line="437"/>
+      <location filename="../../ArchStructure.py" line="1592"/>
+      <location filename="../../ArchPanel.py" line="439"/>
       <source>Couldn't compute a shape</source>
       <translation>Nelze vypočítat tvar</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="225"/>
+      <location filename="../../Arch.py" line="247"/>
       <source>Equipment</source>
       <translation>Vybavení</translation>
     </message>
@@ -3651,38 +3907,38 @@ bude pracovat při otevírání souboru.</translation>
       <translation>Podlaha</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="810"/>
+      <location filename="../../ArchBuildingPart.py" line="803"/>
       <source>Deactivate</source>
       <translation>Deaktivovat</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="812"/>
+      <location filename="../../ArchBuildingPart.py" line="805"/>
       <source>Activate</source>
       <translation>Aktivovat</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="820"/>
+      <location filename="../../ArchBuildingPart.py" line="813"/>
       <source>Set working plane</source>
       <translation>Nastavit pracovní rovinu</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="828"/>
+      <location filename="../../ArchBuildingPart.py" line="821"/>
       <source>Write camera position</source>
       <translation>Zapsat polohu kamery</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="835"/>
+      <location filename="../../ArchBuildingPart.py" line="828"/>
       <source>Create group...</source>
       <translation>Vytvořit skupinu...</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="842"/>
-      <location filename="../../ArchMaterial.py" line="93"/>
+      <location filename="../../ArchBuildingPart.py" line="835"/>
+      <location filename="../../ArchMaterial.py" line="95"/>
       <source>Reorder children alphabetically</source>
       <translation>Změnit pořadí potomků abecedně</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="849"/>
+      <location filename="../../ArchBuildingPart.py" line="842"/>
       <source>Clone level up</source>
       <translation>Klonovat úroveň nahoru</translation>
     </message>
@@ -3707,7 +3963,7 @@ bude pracovat při otevírání souboru.</translation>
       <translation>Profil</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="720"/>
+      <location filename="../../Arch.py" line="756"/>
       <source>Site</source>
       <translation>Parcela</translation>
     </message>
@@ -3723,26 +3979,26 @@ bude pracovat při otevírání souboru.</translation>
       <translation>Vytvořit střechu</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="728"/>
+      <location filename="../../ArchRoof.py" line="730"/>
       <location filename="../../bimcommands/BimRoof.py" line="77"/>
       <source>Unable to create a roof</source>
       <translation>Nelze vytvořit střechu</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1663"/>
+      <location filename="../../ArchComponent.py" line="1676"/>
       <location filename="../../bimcommands/BimRoof.py" line="79"/>
       <location filename="../../bimcommands/BimSpace.py" line="68"/>
       <source>Please select a base object</source>
       <translation>Vyber základní objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="945"/>
-      <location filename="../../Arch.py" line="643"/>
+      <location filename="../../ArchRoof.py" line="947"/>
+      <location filename="../../Arch.py" line="665"/>
       <source>Roof</source>
       <translation>Střecha</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="946"/>
+      <location filename="../../ArchRoof.py" line="948"/>
       <source>Parameters of the roof profiles :
 * Angle : slope in degrees relative to the horizontal.
 * Run : horizontal distance between the wall and the ridge.
@@ -3767,37 +4023,37 @@ Pokud je úhel = 0, pak se úhel vypočítá tak, aby výška byla stejná jako 
 Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relativní profil.</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="947"/>
+      <location filename="../../ArchRoof.py" line="949"/>
       <source>Id</source>
       <translation>ID</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="948"/>
+      <location filename="../../ArchRoof.py" line="950"/>
       <source>Angle (deg)</source>
       <translation>Úhel (deg)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="949"/>
+      <location filename="../../ArchRoof.py" line="951"/>
       <source>Run (mm)</source>
       <translation>Spustit (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="950"/>
+      <location filename="../../ArchRoof.py" line="952"/>
       <source>IdRel</source>
       <translation>IdRel</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="951"/>
+      <location filename="../../ArchRoof.py" line="953"/>
       <source>Thickness (mm)</source>
       <translation>Tloušťka (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="952"/>
+      <location filename="../../ArchRoof.py" line="954"/>
       <source>Overhang (mm)</source>
       <translation>Přesah (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="953"/>
+      <location filename="../../ArchRoof.py" line="955"/>
       <source>Height (mm)</source>
       <translation>Výška (mm)</translation>
     </message>
@@ -3809,22 +4065,22 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
     <message>
       <location filename="../../ArchWindowPresets.py" line="522"/>
       <source>Opening</source>
-      <translation type="unfinished">Opening</translation>
+      <translation>Otvory</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCutPlane.py" line="54"/>
       <source>Select two objects, an object to be cut and an object defining a cutting plane, in that order</source>
-      <translation type="unfinished">Select two objects, an object to be cut and an object defining a cutting plane, in that order</translation>
+      <translation>Vyberte dva objekty. Objekt, který má být oříznut a objekt definující rovinu řezu, v tomto pořadí</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCutPlane.py" line="57"/>
       <source>The first object does not have a shape</source>
-      <translation type="unfinished">The first object does not have a shape</translation>
+      <translation>První objekt nemá žádný tvar</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCutPlane.py" line="60"/>
       <source>The second object does not define a plane</source>
-      <translation type="unfinished">The second object does not define a plane</translation>
+      <translation>Druhý objekt nedefinuje rovinu</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCutPlane.py" line="96"/>
@@ -3857,7 +4113,7 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
       <translation>Přední</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="604"/>
+      <location filename="../../Arch.py" line="626"/>
       <source>External Reference</source>
       <translation>Externí odkaz</translation>
     </message>
@@ -3874,15 +4130,15 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
     <message>
       <location filename="../../ArchReference.py" line="160"/>
       <source>Part not found in file</source>
-      <translation type="unfinished">Part not found in file</translation>
+      <translation>Díl v souboru nebyl nenalezen</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="181"/>
       <location filename="../../ArchReference.py" line="227"/>
       <location filename="../../ArchReference.py" line="438"/>
-      <location filename="../../ArchReference.py" line="836"/>
+      <location filename="../../ArchReference.py" line="839"/>
       <source>NativeIFC not available - unable to process IFC files</source>
-      <translation type="unfinished">NativeIFC not available - unable to process IFC files</translation>
+      <translation>NativeIFC není k dispozici - nelze zpracovat IFC soubory</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="281"/>
@@ -3890,74 +4146,74 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
       <translation type="unfinished">Error removing splitter</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="660"/>
+      <location filename="../../ArchReference.py" line="663"/>
       <source>Reload reference</source>
       <translation>Znovu načíst reference</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="668"/>
+      <location filename="../../ArchReference.py" line="671"/>
       <source>Open reference</source>
       <translation>Otevřít reference</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="715"/>
+      <location filename="../../ArchReference.py" line="718"/>
       <source>Unable to get lightWeight node for object referenced in</source>
       <translation type="unfinished">Unable to get lightWeight node for object referenced in</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="723"/>
-      <location filename="../../ArchReference.py" line="727"/>
+      <location filename="../../ArchReference.py" line="726"/>
+      <location filename="../../ArchReference.py" line="730"/>
       <source>Invalid lightWeight node for object referenced in</source>
       <translation type="unfinished">Invalid lightWeight node for object referenced in</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="736"/>
-      <location filename="../../ArchReference.py" line="740"/>
-      <location filename="../../ArchReference.py" line="768"/>
-      <location filename="../../ArchReference.py" line="772"/>
+      <location filename="../../ArchReference.py" line="739"/>
+      <location filename="../../ArchReference.py" line="743"/>
+      <location filename="../../ArchReference.py" line="771"/>
+      <location filename="../../ArchReference.py" line="775"/>
       <source>Invalid root node in</source>
-      <translation type="unfinished">Invalid root node in</translation>
+      <translation>Neplatný kořenový uzel v</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="862"/>
+      <location filename="../../ArchReference.py" line="865"/>
       <source>External reference</source>
-      <translation type="unfinished">External reference</translation>
+      <translation>Externí odkaz</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="864"/>
+      <location filename="../../ArchReference.py" line="867"/>
       <source>External file</source>
-      <translation type="unfinished">External file</translation>
+      <translation>Externí soubor</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="868"/>
+      <location filename="../../ArchReference.py" line="871"/>
       <source>Open</source>
       <translation>Otevřít</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="875"/>
+      <location filename="../../ArchReference.py" line="878"/>
       <source>Part to use:</source>
-      <translation type="unfinished">Part to use:</translation>
+      <translation>Použitý díl:</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="880"/>
+      <location filename="../../ArchReference.py" line="883"/>
       <source>Choose file...</source>
-      <translation type="unfinished">Choose file...</translation>
+      <translation>Vyberte soubor...</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="891"/>
-      <location filename="../../ArchReference.py" line="955"/>
+      <location filename="../../ArchReference.py" line="894"/>
+      <location filename="../../ArchReference.py" line="958"/>
       <source>None (Use whole object)</source>
-      <translation type="unfinished">None (Use whole object)</translation>
+      <translation>Žádný (použít celý objekt)</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="942"/>
+      <location filename="../../ArchReference.py" line="945"/>
       <source>Reference files</source>
-      <translation type="unfinished">Reference files</translation>
+      <translation>Referenční soubory</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="944"/>
+      <location filename="../../ArchReference.py" line="947"/>
       <source>Choose reference file</source>
-      <translation type="unfinished">Choose reference file</translation>
+      <translation>Vyberte referenční soubor</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimReference.py" line="54"/>
@@ -3965,7 +4221,7 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
       <translation>Vytvořit externí reference</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="269"/>
+      <location filename="../../Arch.py" line="291"/>
       <source>Frame</source>
       <translation>Rám</translation>
     </message>
@@ -3975,7 +4231,7 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
       <translation>Vytvořit rám</translation>
     </message>
     <message>
-      <location filename="../../ArchFrame.py" line="180"/>
+      <location filename="../../ArchFrame.py" line="182"/>
       <source>Crossing point not found in profile.</source>
       <translation>V profilu nebyl nalezen průsečík.</translation>
     </message>
@@ -4002,12 +4258,12 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
     <message>
       <location filename="../../importers/importSHP.py" line="134"/>
       <source>The shapefile Python library was not found on your system. Would you like to download it now from %1? It will be placed in your macros folder.</source>
-      <translation type="unfinished">The shapefile Python library was not found on your system. Would you like to download it now from %1? It will be placed in your macros folder.</translation>
+      <translation>Pythonová knihovna shapefile nebyla v systému nalezena. Přejete si ji nyní stáhnout z %1? Bude uložena v adresáři maker.</translation>
     </message>
     <message>
       <location filename="../../importers/importSHP.py" line="140"/>
       <source>Error: Unable to download from %1</source>
-      <translation type="unfinished">Error: Unable to download from %1</translation>
+      <translation>Chyba: Nelze stáhnout z %1</translation>
     </message>
     <message>
       <location filename="../../importers/importSHP.py" line="150"/>
@@ -4030,7 +4286,7 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
       <translation>Knihovnu shapefile lze stáhnout z následující adresy URL a nainstalovat do složky maker:</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1107"/>
+      <location filename="../../Arch.py" line="1139"/>
       <source>Window</source>
       <translation>Okno</translation>
     </message>
@@ -4077,173 +4333,173 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
       <translation>Výška parapetu</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="896"/>
+      <location filename="../../ArchWindow.py" line="902"/>
       <source>This window has no defined opening</source>
       <translation>Toto okno nemá žádné definované otevření</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1173"/>
-      <location filename="../../ArchWindow.py" line="1222"/>
-      <location filename="../../ArchWindow.py" line="1383"/>
+      <location filename="../../ArchWindow.py" line="1179"/>
+      <location filename="../../ArchWindow.py" line="1228"/>
+      <location filename="../../ArchWindow.py" line="1389"/>
       <source>Get selected edge</source>
       <translation>Získat vybranou hranu</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1322"/>
+      <location filename="../../ArchWindow.py" line="1328"/>
       <source>Unable to create component</source>
       <translation>Nepodařilo se vytvořit komponentu</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1360"/>
+      <location filename="../../ArchWindow.py" line="1366"/>
       <source>Window elements</source>
       <translation>Prvky okna</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1361"/>
+      <location filename="../../ArchWindow.py" line="1367"/>
       <source>Hole wire</source>
-      <translation>Otvor drátu</translation>
+      <translation>Křivka otvoru</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1362"/>
+      <location filename="../../ArchWindow.py" line="1368"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
-      <translation>Číslo drátu, který definuje otvor v hostitelském objektu. Hodnota nuly automaticky převezme největší drát</translation>
+      <translation>Číslo křivky, která definuje otvor v hostitelském objektu. Nulová hodnota automaticky převezme největší křivku</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1363"/>
+      <location filename="../../ArchWindow.py" line="1369"/>
       <source>Pick selected</source>
       <translation>Vybrat vybrané</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1364"/>
-      <location filename="../../ArchAxisSystem.py" line="323"/>
-      <location filename="../../ArchAxis.py" line="752"/>
-      <location filename="../../ArchComponent.py" line="1949"/>
-      <location filename="../../ArchSectionPlane.py" line="1324"/>
-      <location filename="../../ArchSpace.py" line="739"/>
+      <location filename="../../ArchWindow.py" line="1370"/>
+      <location filename="../../ArchAxisSystem.py" line="325"/>
+      <location filename="../../ArchAxis.py" line="784"/>
+      <location filename="../../ArchComponent.py" line="1962"/>
+      <location filename="../../ArchSectionPlane.py" line="1335"/>
+      <location filename="../../ArchSpace.py" line="741"/>
       <source>Remove</source>
       <translation>Odstranit</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1365"/>
-      <location filename="../../ArchAxisSystem.py" line="324"/>
-      <location filename="../../ArchAxis.py" line="753"/>
-      <location filename="../../ArchComponent.py" line="1950"/>
-      <location filename="../../ArchSpace.py" line="733"/>
+      <location filename="../../ArchWindow.py" line="1371"/>
+      <location filename="../../ArchAxisSystem.py" line="326"/>
+      <location filename="../../ArchAxis.py" line="785"/>
+      <location filename="../../ArchComponent.py" line="1963"/>
+      <location filename="../../ArchSpace.py" line="735"/>
       <source>Add</source>
       <translation>Přidat</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="858"/>
-      <location filename="../../ArchReference.py" line="652"/>
-      <location filename="../../ArchWindow.py" line="1366"/>
-      <location filename="../../ArchIFCView.py" line="56"/>
-      <location filename="../../ArchAxisSystem.py" line="203"/>
-      <location filename="../../ArchMaterial.py" line="363"/>
-      <location filename="../../ArchMaterial.py" line="663"/>
-      <location filename="../../ArchGrid.py" line="285"/>
-      <location filename="../../ArchSchedule.py" line="432"/>
-      <location filename="../../ArchAxis.py" line="581"/>
-      <location filename="../../ArchComponent.py" line="1505"/>
-      <location filename="../../ArchSectionPlane.py" line="1138"/>
+      <location filename="../../ArchSite.py" line="862"/>
+      <location filename="../../ArchReference.py" line="655"/>
+      <location filename="../../ArchWindow.py" line="1372"/>
+      <location filename="../../ArchIFCView.py" line="58"/>
+      <location filename="../../ArchAxisSystem.py" line="205"/>
+      <location filename="../../ArchMaterial.py" line="367"/>
+      <location filename="../../ArchMaterial.py" line="669"/>
+      <location filename="../../ArchGrid.py" line="287"/>
+      <location filename="../../ArchSchedule.py" line="627"/>
+      <location filename="../../ArchAxis.py" line="613"/>
+      <location filename="../../ArchComponent.py" line="1518"/>
+      <location filename="../../ArchSectionPlane.py" line="1149"/>
       <source>Edit</source>
       <translation>Upravit</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1367"/>
+      <location filename="../../ArchWindow.py" line="1373"/>
       <source>Create/update component</source>
       <translation>Vytvořit/aktualizovat komponentu</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1368"/>
+      <location filename="../../ArchWindow.py" line="1374"/>
       <source>Base 2D object</source>
       <translation>Základní 2D objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1369"/>
-      <location filename="../../ArchWindow.py" line="1374"/>
+      <location filename="../../ArchWindow.py" line="1375"/>
+      <location filename="../../ArchWindow.py" line="1380"/>
       <source>Wires</source>
-      <translation>Dráty</translation>
+      <translation>Křivky</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1370"/>
-      <location filename="../../ArchComponent.py" line="1957"/>
+      <location filename="../../ArchWindow.py" line="1376"/>
+      <location filename="../../ArchComponent.py" line="1970"/>
       <source>Components</source>
       <translation>Komponenty</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1371"/>
+      <location filename="../../ArchWindow.py" line="1377"/>
       <source>Create new component</source>
       <translation>Vytvořit novou komponentu</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1372"/>
-      <location filename="../../ArchMaterial.py" line="743"/>
-      <location filename="../../ArchMaterial.py" line="762"/>
+      <location filename="../../ArchWindow.py" line="1378"/>
+      <location filename="../../ArchMaterial.py" line="749"/>
+      <location filename="../../ArchMaterial.py" line="768"/>
       <source>Name</source>
-      <translation>Jméno</translation>
+      <translation>Název</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1373"/>
-      <location filename="../../ArchComponent.py" line="2012"/>
+      <location filename="../../ArchWindow.py" line="1379"/>
+      <location filename="../../ArchComponent.py" line="2025"/>
       <location filename="../../ArchCommands.py" line="1366"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="461"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="474"/>
       <source>Type</source>
       <translation>Typ</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1375"/>
-      <location filename="../../ArchMaterial.py" line="743"/>
-      <location filename="../../ArchMaterial.py" line="762"/>
+      <location filename="../../ArchWindow.py" line="1381"/>
+      <location filename="../../ArchMaterial.py" line="749"/>
+      <location filename="../../ArchMaterial.py" line="768"/>
       <location filename="../../bimcommands/BimPanel.py" line="162"/>
       <source>Thickness</source>
       <translation>Tloušťka</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1376"/>
+      <location filename="../../ArchWindow.py" line="1382"/>
       <location filename="../../ArchPrecast.py" line="1418"/>
       <source>Offset</source>
       <translation>Odsazení</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1377"/>
+      <location filename="../../ArchWindow.py" line="1383"/>
       <source>Hinge</source>
       <translation>Závěs</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1378"/>
+      <location filename="../../ArchWindow.py" line="1384"/>
       <source>Opening mode</source>
       <translation>Režim otevírání</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1379"/>
-      <location filename="../../ArchWindow.py" line="1381"/>
+      <location filename="../../ArchWindow.py" line="1385"/>
+      <location filename="../../ArchWindow.py" line="1387"/>
       <source>+ default</source>
       <translation>+ výchozí</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1380"/>
+      <location filename="../../ArchWindow.py" line="1386"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
       <translation>Je-li zaškrtnuto, výchozí hodnota rámu tohoto okna bude přidána k hodnotě zadané zde</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1382"/>
+      <location filename="../../ArchWindow.py" line="1388"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
       <translation>Je-li zaškrtnuto, výchozí hodnota odsazení tohoto okna bude přidána k hodnotě zadané zde</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1384"/>
+      <location filename="../../ArchWindow.py" line="1390"/>
       <source>Press to retrieve the selected edge</source>
       <translation>Stisknutím načíst vybraný okraj</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="826"/>
-      <location filename="../../ArchWindow.py" line="1385"/>
+      <location filename="../../ArchWindow.py" line="832"/>
+      <location filename="../../ArchWindow.py" line="1391"/>
       <source>Invert opening direction</source>
       <translation>Obrátit směr otevírání</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="835"/>
-      <location filename="../../ArchWindow.py" line="1386"/>
+      <location filename="../../ArchWindow.py" line="841"/>
+      <location filename="../../ArchWindow.py" line="1392"/>
       <source>Invert hinge position</source>
       <translation>Otočit polohu závěsů</translation>
     </message>
@@ -4268,28 +4524,28 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
       <translation>Vyberte prosím alespoň jednu osu</translation>
     </message>
     <message>
-      <location filename="../../ArchAxisSystem.py" line="322"/>
-      <location filename="../../ArchAxis.py" line="751"/>
+      <location filename="../../ArchAxisSystem.py" line="324"/>
+      <location filename="../../ArchAxis.py" line="783"/>
       <location filename="../../Arch.py" line="68"/>
-      <location filename="../../ArchComponent.py" line="1956"/>
+      <location filename="../../ArchComponent.py" line="1969"/>
       <source>Axes</source>
       <translation>Osy</translation>
     </message>
     <message>
-      <location filename="../../ArchAxisSystem.py" line="325"/>
+      <location filename="../../ArchAxisSystem.py" line="327"/>
       <source>Axis system components</source>
       <translation>Komponenty souřadného systému</translation>
     </message>
     <message>
       <location filename="../../importers/importJSON.py" line="58"/>
-      <location filename="../../importers/importWebGL.py" line="873"/>
+      <location filename="../../importers/importWebGL.py" line="840"/>
       <location filename="../../importers/importOBJ.py" line="258"/>
       <location filename="../../importers/importOBJ.py" line="282"/>
       <source>Successfully written</source>
       <translation>Úspěšně zapsáno</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="923"/>
+      <location filename="../../Arch.py" line="955"/>
       <source>Truss</source>
       <translation>Vazník</translation>
     </message>
@@ -4330,17 +4586,22 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
       <translation>Chyba: stará verze IfcOpenShell</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="535"/>
+      <location filename="../../Arch.py" line="159"/>
+      <source>Drawing</source>
+      <translation>Výkres</translation>
+    </message>
+    <message>
+      <location filename="../../Arch.py" line="557"/>
       <source>Project</source>
       <translation>Projekt</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="778"/>
+      <location filename="../../Arch.py" line="814"/>
       <source>Stairs</source>
       <translation>Schodiště</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="881"/>
+      <location filename="../../Arch.py" line="913"/>
       <source>Railing</source>
       <translation>Zábradlí</translation>
     </message>
@@ -4352,7 +4613,7 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
     <message>
       <location filename="../../ArchStairs.py" line="236"/>
       <source>removed properties 'OutlineWireLeft' and 'OutlineWireRight', and added properties 'RailingLeft' and 'RailingRight'</source>
-      <translation>odstranil vlastnosti 'OutlineWireLeft' a 'OutlineWireright' a přidal vlastnosti 'RailingLeft' a 'Railingright'</translation>
+      <translation>odstraněny vlastnosti 'OutlineWireLeft' a 'OutlineWireright' a přidány vlastnosti 'RailingLeft' a 'Railingright'</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="250"/>
@@ -4360,44 +4621,44 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
       <translation>změnil typ vlastností 'RailingLeft' a 'RailingRight</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="567"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="570"/>
       <source>Create material</source>
       <translation>Vytvořit materiál</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="598"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="601"/>
       <source>Create multi-material</source>
-      <translation>Vytvořit více materiálů</translation>
+      <translation>Vytvořit multimateriál</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="88"/>
+      <location filename="../../ArchMaterial.py" line="90"/>
       <source>Merge duplicates</source>
       <translation>Sloučit duplikáty</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="743"/>
-      <location filename="../../ArchMaterial.py" line="762"/>
-      <location filename="../../Arch.py" line="306"/>
+      <location filename="../../ArchMaterial.py" line="749"/>
+      <location filename="../../ArchMaterial.py" line="768"/>
+      <location filename="../../Arch.py" line="328"/>
       <source>Material</source>
       <translation>Materiál</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="326"/>
+      <location filename="../../Arch.py" line="348"/>
       <source>MultiMaterial</source>
-      <translation type="unfinished">MultiMaterial</translation>
+      <translation>Multimateriál</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="793"/>
+      <location filename="../../ArchMaterial.py" line="799"/>
       <source>New layer</source>
       <translation>Nová vrstva</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="830"/>
+      <location filename="../../ArchMaterial.py" line="836"/>
       <source>Total thickness</source>
       <translation>Celková tloušťka</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="844"/>
+      <location filename="../../ArchMaterial.py" line="850"/>
       <source>depends on the object</source>
       <translation>záleží na objektu</translation>
     </message>
@@ -4448,58 +4709,58 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
       <translation>Celková velikost sloupce je větší než šířka</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="385"/>
-      <location filename="../../Arch.py" line="288"/>
+      <location filename="../../ArchGrid.py" line="387"/>
+      <location filename="../../Arch.py" line="310"/>
       <source>Grid</source>
       <translation>Mřížka</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="386"/>
+      <location filename="../../ArchGrid.py" line="388"/>
       <source>Total width</source>
       <translation>Celková šířka</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="387"/>
+      <location filename="../../ArchGrid.py" line="389"/>
       <source>Total height</source>
       <translation>Celková výška</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="388"/>
+      <location filename="../../ArchGrid.py" line="390"/>
       <source>Add row</source>
       <translation>Přidat řádek</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="389"/>
+      <location filename="../../ArchGrid.py" line="391"/>
       <source>Del row</source>
       <translation>Smazat řádek</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="390"/>
+      <location filename="../../ArchGrid.py" line="392"/>
       <source>Add column</source>
       <translation>Přidat sloupec</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="391"/>
+      <location filename="../../ArchGrid.py" line="393"/>
       <source>Del column</source>
-      <translation type="unfinished">Del column</translation>
+      <translation>Smazat sloupec</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="392"/>
+      <location filename="../../ArchGrid.py" line="394"/>
       <source>Create span</source>
       <translation>Vytvořit rozpětí</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="393"/>
+      <location filename="../../ArchGrid.py" line="395"/>
       <source>Remove span</source>
       <translation>Odstranit rozpětí</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="394"/>
+      <location filename="../../ArchGrid.py" line="396"/>
       <source>Rows</source>
       <translation>Řádky</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="394"/>
+      <location filename="../../ArchGrid.py" line="396"/>
       <source>Columns</source>
       <translation>Sloupy</translation>
     </message>
@@ -4601,7 +4862,7 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
     <message>
       <location filename="../../ArchPrecast.py" line="1408"/>
       <source>Precast options</source>
-      <translation>Možnosti předplatného</translation>
+      <translation>Možnosti prefabrikátu</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1409"/>
@@ -4621,13 +4882,13 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
     <message>
       <location filename="../../ArchPrecast.py" line="1415"/>
       <source>Slant</source>
-      <translation type="unfinished">Slant</translation>
+      <translation>Sklon</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1416"/>
-      <location filename="../../Arch.py" line="127"/>
+      <location filename="../../Arch.py" line="130"/>
       <source>Level</source>
-      <translation type="unfinished">Level</translation>
+      <translation>Podlaží</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1417"/>
@@ -4635,30 +4896,30 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
       <translation>Rotace</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="376"/>
+      <location filename="../../Arch.py" line="398"/>
       <source>Panel</source>
-      <translation type="unfinished">Panel</translation>
+      <translation>Panel</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="399"/>
+      <location filename="../../Arch.py" line="421"/>
       <source>View of</source>
-      <translation type="unfinished">View of</translation>
+      <translation>Náhled na</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="415"/>
+      <location filename="../../Arch.py" line="437"/>
       <source>PanelSheet</source>
-      <translation type="unfinished">PanelSheet</translation>
+      <translation>PanelSheet</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="80"/>
       <location filename="../../bimcommands/BimPanel.py" line="109"/>
       <source>Create Panel</source>
-      <translation type="unfinished">Create Panel</translation>
+      <translation>Vytvořit panel</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="134"/>
       <source>Panel options</source>
-      <translation type="unfinished">Panel options</translation>
+      <translation>Možnosti panelu</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="169"/>
@@ -4668,213 +4929,222 @@ Je-li Run = 0, pak se běh vypočítá tak, aby výška byla stejná jako relati
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="262"/>
       <source>Create Panel Cut</source>
-      <translation type="unfinished">Create Panel Cut</translation>
+      <translation>Vytvořit Panel Cut</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="289"/>
       <source>Create Panel Sheet</source>
-      <translation type="unfinished">Create Panel Sheet</translation>
+      <translation>Vytvořit Panel Sheet</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="409"/>
+      <location filename="../../ArchPanel.py" line="411"/>
       <source>Error computing shape of</source>
-      <translation type="unfinished">Error computing shape of</translation>
+      <translation>Chyba při výpočtu tvaru</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1065"/>
+      <location filename="../../ArchPanel.py" line="1067"/>
       <source>Tools</source>
       <translation>Nástroje</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1069"/>
+      <location filename="../../ArchPanel.py" line="1071"/>
       <source>Edit views positions</source>
       <translation>Upravit polohy pohledů</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="388"/>
       <source>This object has no face</source>
-      <translation type="unfinished">This object has no face</translation>
+      <translation>Tento objekt nemá plochu</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="204"/>
+      <location filename="../../Arch.py" line="226"/>
       <source>Curtain Wall</source>
-      <translation type="unfinished">Curtain Wall</translation>
+      <translation>Stěna opláštění</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCurtainwall.py" line="60"/>
       <location filename="../../bimcommands/BimCurtainwall.py" line="87"/>
       <source>Create Curtain Wall</source>
-      <translation type="unfinished">Create Curtain Wall</translation>
+      <translation>Vytvořit závěsnou stěnu (opláštění)</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="433"/>
+      <location filename="../../Arch.py" line="455"/>
       <source>Pipe</source>
       <translation>Potrubí</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="466"/>
+      <location filename="../../Arch.py" line="488"/>
       <source>Connector</source>
-      <translation type="unfinished">Connector</translation>
+      <translation>Propojka</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="58"/>
       <location filename="../../bimcommands/BimPipe.py" line="65"/>
       <source>Create Pipe</source>
-      <translation type="unfinished">Create Pipe</translation>
+      <translation>Vytvořit potrubí</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="95"/>
       <source>Please select exactly 2 or 3 Pipe objects</source>
-      <translation type="unfinished">Please select exactly 2 or 3 Pipe objects</translation>
+      <translation>Prosím vyberte právě 2 nebo 3 objekty potrubí</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="100"/>
       <source>Please select only Pipe objects</source>
-      <translation type="unfinished">Please select only Pipe objects</translation>
+      <translation>Prosím vyberte pouze objekty potrubí</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="104"/>
       <source>Create Connector</source>
-      <translation type="unfinished">Create Connector</translation>
+      <translation>Vytvořit konektor</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="124"/>
+      <location filename="../../ArchPipe.py" line="128"/>
       <source>Unable to build the base path</source>
-      <translation type="unfinished">Unable to build the base path</translation>
+      <translation>Nelze vytvořit základní dráhu</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="140"/>
+      <location filename="../../ArchPipe.py" line="144"/>
       <source>Unable to build the profile</source>
-      <translation type="unfinished">Unable to build the profile</translation>
+      <translation>Nelze sestavit profil</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="180"/>
+      <location filename="../../ArchPipe.py" line="184"/>
       <source>Unable to build the pipe</source>
-      <translation type="unfinished">Unable to build the pipe</translation>
+      <translation>Nelze sestavit potrubí</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="199"/>
+      <location filename="../../ArchPipe.py" line="203"/>
       <source>The base object is not a Part</source>
-      <translation type="unfinished">The base object is not a Part</translation>
+      <translation>Základní objekt není Díl</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="202"/>
+      <location filename="../../ArchPipe.py" line="206"/>
       <source>Too many wires in the base shape</source>
-      <translation type="unfinished">Too many wires in the base shape</translation>
+      <translation>Příliš mnoho křivek v základním tvaru</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="205"/>
+      <location filename="../../ArchPipe.py" line="209"/>
       <source>The base wire is closed</source>
-      <translation type="unfinished">The base wire is closed</translation>
+      <translation>Základní křivka je uzavřena</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="219"/>
+      <location filename="../../ArchPipe.py" line="223"/>
       <source>The profile is not a 2D Part</source>
-      <translation type="unfinished">The profile is not a 2D Part</translation>
+      <translation>Profil není 2D Díl</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="222"/>
+      <location filename="../../ArchPipe.py" line="226"/>
       <source>The profile is not closed</source>
-      <translation type="unfinished">The profile is not closed</translation>
+      <translation>Profil není uzavřený</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="310"/>
+      <location filename="../../ArchPipe.py" line="319"/>
       <source>Only the 3 first wires will be connected</source>
-      <translation type="unfinished">Only the 3 first wires will be connected</translation>
+      <translation>Pouze první 3 křivky budou spojeny</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="330"/>
-      <location filename="../../ArchPipe.py" line="391"/>
+      <location filename="../../ArchPipe.py" line="339"/>
+      <location filename="../../ArchPipe.py" line="400"/>
       <source>Common vertex not found</source>
-      <translation type="unfinished">Common vertex not found</translation>
+      <translation>Společný bod nebyl nalezen</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="351"/>
+      <location filename="../../ArchPipe.py" line="360"/>
       <source>Pipes are already aligned</source>
-      <translation type="unfinished">Pipes are already aligned</translation>
+      <translation>Trubky jsou již zarovnány</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="380"/>
+      <location filename="../../ArchPipe.py" line="389"/>
       <source>Unable to revolve this connector</source>
-      <translation type="unfinished">Unable to revolve this connector</translation>
+      <translation>Nelze otočit tento konektor</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="403"/>
+      <location filename="../../ArchPipe.py" line="412"/>
       <source>At least 2 pipes must align</source>
-      <translation type="unfinished">At least 2 pipes must align</translation>
+      <translation>Alespoň 2 trubky se musí zarovnat</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="97"/>
+      <location filename="../../ArchSchedule.py" line="102"/>
+      <source>renamed property 'Description' to 'Operation'</source>
+      <translation type="unfinished">renamed property 'Description' to 'Operation'</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSchedule.py" line="103"/>
       <source>removed property 'Result', and added property 'AutoUpdate'</source>
       <translation type="unfinished">removed property 'Result', and added property 'AutoUpdate'</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="99"/>
+      <location filename="../../ArchSchedule.py" line="105"/>
       <source>added property 'Schedule'</source>
       <translation type="unfinished">added property 'Schedule'</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="341"/>
+      <location filename="../../ArchSchedule.py" line="431"/>
       <source>Unable to retrieve value from object</source>
-      <translation type="unfinished">Unable to retrieve value from object</translation>
+      <translation>Nelze získat hodnotu z objektu</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="441"/>
+      <location filename="../../ArchSchedule.py" line="636"/>
       <source>Remove spreadsheet</source>
-      <translation type="unfinished">Remove spreadsheet</translation>
+      <translation>Odstranit tabulku</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="443"/>
+      <location filename="../../ArchSchedule.py" line="638"/>
       <source>Attach spreadsheet</source>
-      <translation type="unfinished">Attach spreadsheet</translation>
+      <translation>Připojit tabulku</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="569"/>
+      <location filename="../../ArchSchedule.py" line="771"/>
       <source>Import CSV file</source>
-      <translation type="unfinished">Import CSV file</translation>
+      <translation>Importovat CSV soubor</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="602"/>
+      <location filename="../../ArchSchedule.py" line="804"/>
       <source>Export CSV file</source>
-      <translation type="unfinished">Export CSV file</translation>
+      <translation>Exportovat CSV soubor</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSchedule.py" line="847"/>
+      <location filename="../../ArchSchedule.py" line="865"/>
+      <source>Operation</source>
+      <translation>Operace</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1127"/>
       <source>Export CSV File</source>
-      <translation type="unfinished">Export CSV File</translation>
+      <translation>Exportovat CSV Soubor</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="623"/>
+      <location filename="../../ArchSchedule.py" line="825"/>
       <source>Unable to recognize that file type</source>
-      <translation type="unfinished">Unable to recognize that file type</translation>
+      <translation>Nelze rozpoznat tento typ souboru</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="645"/>
-      <location filename="../../ArchSchedule.py" line="663"/>
       <location filename="../../ArchCommands.py" line="1038"/>
       <source>Description</source>
       <translation>Popis</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="645"/>
-      <location filename="../../ArchSchedule.py" line="663"/>
-      <location filename="../../ArchComponent.py" line="2013"/>
+      <location filename="../../ArchSchedule.py" line="847"/>
+      <location filename="../../ArchSchedule.py" line="865"/>
+      <location filename="../../ArchComponent.py" line="2026"/>
       <location filename="../../ArchCommands.py" line="1367"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="462"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="475"/>
       <source>Value</source>
       <translation>Hodnota</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="645"/>
-      <location filename="../../ArchSchedule.py" line="663"/>
+      <location filename="../../ArchSchedule.py" line="847"/>
+      <location filename="../../ArchSchedule.py" line="865"/>
       <location filename="../../ArchCommands.py" line="1368"/>
       <source>Unit</source>
       <translation>Jednotka</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="724"/>
+      <location filename="../../Arch.py" line="705"/>
       <source>Schedule</source>
-      <translation type="unfinished">Schedule</translation>
+      <translation>Plán</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="155"/>
@@ -4885,27 +5155,27 @@ Floor object is not allowed to accept Site, Building, or Floor objects.
 Site, Building, and Floor objects will be removed from the selection.
 
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
+      <translation>Do objektu patra můžete vložit jakýkoliv objekt kromě následujících: pozemek, stavba, patro.
 
-Floor object is not allowed to accept Site, Building, or Floor objects.
+Objekt patra nemůže přijmout objekty pozemku, staveb ani pater.
 
-Site, Building, and Floor objects will be removed from the selection.
+Objekty pozemku, stavby a patra budou odstraněny z výběru.
 
-You can change that in the preferences.</translation>
+Toho můžete změnit v nastavení.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="159"/>
       <source>There is no valid object in the selection.
 
 Floor creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>Ve výběru není žádný platný objekt.
 
-Floor creation aborted.</translation>
+Tvorba patra zrušena.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="166"/>
       <source>Create Floor</source>
-      <translation type="unfinished">Create Floor</translation>
+      <translation>Vytvořit patro</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="48"/>
@@ -4913,52 +5183,52 @@ Floor creation aborted.</translation>
       <translation>Vytvořit osu</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="754"/>
+      <location filename="../../ArchAxis.py" line="786"/>
       <source>Distances (mm) and angles (deg) between axes</source>
-      <translation type="unfinished">Distances (mm) and angles (deg) between axes</translation>
+      <translation>Vzdálenosti (mm) a úhly (stupně) mezi osami</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="755"/>
+      <location filename="../../ArchAxis.py" line="787"/>
       <source>Axis</source>
       <translation>Osa</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="756"/>
+      <location filename="../../ArchAxis.py" line="788"/>
       <source>Distance</source>
       <translation>Vzdálenost</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="757"/>
+      <location filename="../../ArchAxis.py" line="789"/>
       <source>Angle</source>
       <translation>Úhel</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="758"/>
+      <location filename="../../ArchAxis.py" line="790"/>
       <source>Label</source>
-      <translation>Štítek</translation>
+      <translation>Popisek</translation>
     </message>
     <message>
       <location filename="../../importers/importOBJ.py" line="84"/>
       <source>Found a shape containing curves, triangulating</source>
-      <translation type="unfinished">Found a shape containing curves, triangulating</translation>
+      <translation>Nalezen tvar obsahující křivky, triangulace</translation>
     </message>
     <message>
       <location filename="../../importers/importOBJ.py" line="364"/>
       <source>Successfully imported</source>
-      <translation type="unfinished">Successfully imported</translation>
+      <translation>Úspěšně importováno</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="930"/>
+      <location filename="../../ArchComponent.py" line="923"/>
       <source>Error computing the shape of this object</source>
-      <translation type="unfinished">Error computing the shape of this object</translation>
+      <translation>Chyba při výpočtu tvaru tohoto objektu</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="944"/>
+      <source>has no solid</source>
+      <translation>nemá těleso</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="951"/>
-      <source>has no solid</source>
-      <translation type="unfinished">has no solid</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="958"/>
       <source>has an invalid shape</source>
       <translation>má neplatný tvar</translation>
     </message>
@@ -4969,112 +5239,117 @@ Floor creation aborted.</translation>
       <location filename="../../ArchPrecast.py" line="456"/>
       <location filename="../../ArchPrecast.py" line="584"/>
       <location filename="../../ArchPrecast.py" line="681"/>
-      <location filename="../../ArchComponent.py" line="960"/>
+      <location filename="../../ArchComponent.py" line="953"/>
       <source>has a null shape</source>
-      <translation type="unfinished">has a null shape</translation>
+      <translation>nemá platný tvar</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="866"/>
-      <location filename="../../ArchComponent.py" line="1514"/>
+      <location filename="../../ArchSite.py" line="870"/>
+      <location filename="../../ArchComponent.py" line="1527"/>
       <source>Toggle subcomponents</source>
-      <translation type="unfinished">Toggle subcomponents</translation>
+      <translation>Přepnout podsoučásti</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1640"/>
+      <location filename="../../ArchComponent.py" line="1164"/>
+      <source>Wrong base type</source>
+      <translation type="unfinished">Wrong base type</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="1653"/>
       <source>Closing Sketch edit</source>
-      <translation type="unfinished">Closing Sketch edit</translation>
+      <translation>Ukončení editace náčrtu</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1948"/>
+      <location filename="../../ArchComponent.py" line="1961"/>
       <location filename="../../ArchCommands.py" line="240"/>
       <source>Component</source>
-      <translation type="unfinished">Component</translation>
+      <translation>Součást</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1951"/>
+      <location filename="../../ArchComponent.py" line="1964"/>
       <source>Components of this object</source>
-      <translation type="unfinished">Components of this object</translation>
+      <translation>Součásti toho objektu</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1952"/>
+      <location filename="../../ArchComponent.py" line="1965"/>
       <source>Base component</source>
-      <translation type="unfinished">Base component</translation>
+      <translation>Základní součást</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1953"/>
+      <location filename="../../ArchComponent.py" line="1966"/>
       <source>Additions</source>
       <translation type="unfinished">Additions</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1954"/>
+      <location filename="../../ArchComponent.py" line="1967"/>
       <source>Subtractions</source>
       <translation type="unfinished">Subtractions</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1955"/>
+      <location filename="../../ArchComponent.py" line="1968"/>
       <source>Objects</source>
       <translation>Objekty</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1958"/>
+      <location filename="../../ArchComponent.py" line="1971"/>
       <source>Fixtures</source>
       <translation type="unfinished">Fixtures</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1959"/>
+      <location filename="../../ArchComponent.py" line="1972"/>
       <source>Group</source>
       <translation>Skupina</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1960"/>
+      <location filename="../../ArchComponent.py" line="1973"/>
       <source>Hosts</source>
       <translation>Hostitelé</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1961"/>
+      <location filename="../../ArchComponent.py" line="1974"/>
       <source>Edit IFC properties</source>
-      <translation type="unfinished">Edit IFC properties</translation>
+      <translation>Upravit vlastnosti IFC</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1962"/>
+      <location filename="../../ArchComponent.py" line="1975"/>
       <source>Edit standard code</source>
-      <translation type="unfinished">Edit standard code</translation>
+      <translation>Upravit standardní kód</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2011"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="460"/>
+      <location filename="../../ArchComponent.py" line="2024"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="473"/>
       <source>Property</source>
       <translation>Vlastnost</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2016"/>
+      <location filename="../../ArchComponent.py" line="2029"/>
       <source>Add property...</source>
-      <translation type="unfinished">Add property...</translation>
+      <translation>Vložit vlastnost...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2017"/>
+      <location filename="../../ArchComponent.py" line="2030"/>
       <source>Add property set...</source>
-      <translation type="unfinished">Add property set...</translation>
+      <translation>Vložit sadu vlastností...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2018"/>
+      <location filename="../../ArchComponent.py" line="2031"/>
       <source>New...</source>
       <translation>Nový...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2156"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="632"/>
+      <location filename="../../ArchComponent.py" line="2169"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="645"/>
       <source>New property</source>
-      <translation type="unfinished">New property</translation>
+      <translation>Nová vlastnost</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2191"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="681"/>
+      <location filename="../../ArchComponent.py" line="2204"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="694"/>
       <source>New property set</source>
-      <translation type="unfinished">New property set</translation>
+      <translation>Nová sada vlastností</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="555"/>
+      <location filename="../../Arch.py" line="577"/>
       <source>Rebar</source>
       <translation>Výztuž</translation>
     </message>
@@ -5082,111 +5357,111 @@ Floor creation aborted.</translation>
       <location filename="../../bimcommands/BimRebar.py" line="64"/>
       <location filename="../../bimcommands/BimRebar.py" line="85"/>
       <source>Create Rebar</source>
-      <translation type="unfinished">Create Rebar</translation>
+      <translation>Vytvořit výztuž</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimRebar.py" line="92"/>
       <source>Please select a base face on a structural object</source>
-      <translation type="unfinished">Please select a base face on a structural object</translation>
+      <translation>Prosím vyberte základní plochu na objektu struktury</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="690"/>
+      <location filename="../../Arch.py" line="726"/>
       <source>Section</source>
-      <translation>Výběr</translation>
+      <translation>Řez</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSectionPlane.py" line="60"/>
       <source>Create Section Plane</source>
-      <translation type="unfinished">Create Section Plane</translation>
+      <translation>Vytvořit rovinu řezu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1146"/>
+      <location filename="../../ArchSectionPlane.py" line="1157"/>
       <source>Toggle Cutview</source>
-      <translation type="unfinished">Toggle Cutview</translation>
+      <translation>Přepnout pohled řezu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1323"/>
+      <location filename="../../ArchSectionPlane.py" line="1334"/>
       <source>Section plane settings</source>
-      <translation type="unfinished">Section plane settings</translation>
+      <translation>Nastavení roviny řezu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1325"/>
+      <location filename="../../ArchSectionPlane.py" line="1336"/>
       <source>Remove highlighted objects from the list above</source>
-      <translation type="unfinished">Remove highlighted objects from the list above</translation>
+      <translation>Odstranit zvýrazněné objekty ze seznamu výše</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1326"/>
+      <location filename="../../ArchSectionPlane.py" line="1337"/>
       <source>Add selected</source>
       <translation>Přidat vybrané</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1327"/>
-      <source>Add selected object(s) to the scope of this section plane</source>
-      <translation type="unfinished">Add selected object(s) to the scope of this section plane</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1328"/>
-      <source>Objects seen by this section plane:</source>
-      <translation type="unfinished">Objects seen by this section plane:</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1329"/>
-      <source>Section plane placement:</source>
-      <translation type="unfinished">Section plane placement:</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1330"/>
-      <source>Rotate X</source>
-      <translation type="unfinished">Rotate X</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1331"/>
-      <source>Rotates the plane along the X axis</source>
-      <translation type="unfinished">Rotates the plane along the X axis</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1332"/>
-      <source>Rotate Y</source>
-      <translation type="unfinished">Rotate Y</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1333"/>
-      <source>Rotates the plane along the Y axis</source>
-      <translation type="unfinished">Rotates the plane along the Y axis</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1334"/>
-      <source>Rotate Z</source>
-      <translation type="unfinished">Rotate Z</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1335"/>
-      <source>Rotates the plane along the Z axis</source>
-      <translation type="unfinished">Rotates the plane along the Z axis</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1336"/>
-      <source>Resize</source>
-      <translation type="unfinished">Resize</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1337"/>
-      <source>Resizes the plane to fit the objects in the list above</source>
-      <translation type="unfinished">Resizes the plane to fit the objects in the list above</translation>
-    </message>
-    <message>
       <location filename="../../ArchSectionPlane.py" line="1338"/>
+      <source>Add selected object(s) to the scope of this section plane</source>
+      <translation>Vložit vybrané objekty do rozsahu této roviny řezu</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1339"/>
+      <source>Objects seen by this section plane:</source>
+      <translation>Objekty viditelné touto rovinou řezu:</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1340"/>
+      <source>Section plane placement:</source>
+      <translation>Umístění roviny řezu:</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1341"/>
+      <source>Rotate X</source>
+      <translation>Otočit v X</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1342"/>
+      <source>Rotates the plane along the X axis</source>
+      <translation>Otočí rovinu podél osy X</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1343"/>
+      <source>Rotate Y</source>
+      <translation>Otočit v Y</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1344"/>
+      <source>Rotates the plane along the Y axis</source>
+      <translation>Otočí rovinu podél osy Y</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1345"/>
+      <source>Rotate Z</source>
+      <translation>Otočit v Z</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1346"/>
+      <source>Rotates the plane along the Z axis</source>
+      <translation>Otočí rovinu podél osy Z</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1347"/>
+      <source>Resize</source>
+      <translation>Změnit velikost</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1348"/>
+      <source>Resizes the plane to fit the objects in the list above</source>
+      <translation>Přizpůsobí velikost roviny objektům v seznamu výše</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1349"/>
       <location filename="../../bimcommands/BimWall.py" line="315"/>
       <source>Center</source>
       <translation>Střed</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1339"/>
+      <location filename="../../ArchSectionPlane.py" line="1350"/>
       <source>Centers the plane on the objects in the list above</source>
-      <translation type="unfinished">Centers the plane on the objects in the list above</translation>
+      <translation>Vycentruje rovinu na objekty ze seznamu výše</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="139"/>
+      <location filename="../../Arch.py" line="142"/>
       <location filename="../../ArchBuilding.py" line="206"/>
       <source>Building</source>
       <translation>Budova</translation>
@@ -5200,85 +5475,85 @@ Building object is not allowed to accept Site and Building objects.
 Site and Building objects will be removed from the selection.
 
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but Site and Building objects in a Building object.
+      <translation>Do objektu budovy můžete vložit jakýkoliv objekt kromě objektů pozemku a stavby.
 
-Building object is not allowed to accept Site and Building objects.
+Objekt stavby nemůže přijmout objekty pozemků a staveb.
 
-Site and Building objects will be removed from the selection.
+Objekty pozemku a stavby budou odstraněny z výběru.
 
-You can change that in the preferences.</translation>
+Toto můžete změnit v nastavení.</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="251"/>
       <source>There is no valid object in the selection.
 
 Building creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>Ve výběru není žádný platný objekt.
 
-Building creation aborted.</translation>
+Tvorba stavby byla zrušena.</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="258"/>
       <location filename="../../bimcommands/BimBuildingPart.py" line="84"/>
       <source>Create Building</source>
-      <translation type="unfinished">Create Building</translation>
+      <translation>Vytvořit budovu</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="747"/>
+      <location filename="../../Arch.py" line="783"/>
       <source>Space</source>
       <translation>Prostor</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSpace.py" line="54"/>
       <source>Create Space</source>
-      <translation type="unfinished">Create Space</translation>
+      <translation>Vytvořit prostor</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="722"/>
+      <location filename="../../ArchSpace.py" line="724"/>
       <source>Set text position</source>
       <translation>Nastavit polohu textu</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="726"/>
+      <location filename="../../ArchSpace.py" line="728"/>
       <source>Space boundaries</source>
-      <translation type="unfinished">Space boundaries</translation>
+      <translation>Hranice prostoru</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="986"/>
+      <location filename="../../Arch.py" line="1018"/>
       <source>Wall</source>
-      <translation type="unfinished">Wall</translation>
+      <translation>Stěna</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="993"/>
+      <location filename="../../Arch.py" line="1025"/>
       <source>Walls can only be based on Part or Mesh objects</source>
-      <translation type="unfinished">Walls can only be based on Part or Mesh objects</translation>
+      <translation>Stěny mohou být založeny jen na objektech Dílu nebo Sítě</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="90"/>
       <location filename="../../bimcommands/BimWall.py" line="166"/>
       <location filename="../../bimcommands/BimWall.py" line="418"/>
       <source>Create Wall</source>
-      <translation type="unfinished">Create Wall</translation>
+      <translation>Vytvořit stěnu</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="119"/>
       <source>First point of wall</source>
-      <translation>První bod zdi</translation>
+      <translation>První bod stěny</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="276"/>
       <source>Wall options</source>
-      <translation type="unfinished">Wall options</translation>
+      <translation>Možnosti stěny</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="280"/>
       <source>Wall Presets...</source>
-      <translation type="unfinished">Wall Presets...</translation>
+      <translation>Předvolby stěny...</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="281"/>
       <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
-      <translation type="unfinished">This list shows all the MultiMaterials objects of this document. Create some to define wall types.</translation>
+      <translation>Tento seznam zobrazuje všechny multimateriálové objekty v dokumentu. Vytvořte nějaký pro definici typů stěn.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="313"/>
@@ -5301,61 +5576,61 @@ Building creation aborted.</translation>
       <translation>Použít náčrty</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="467"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="475"/>
       <source>The selected wall contains no subwall to merge</source>
-      <translation type="unfinished">The selected wall contains no subwall to merge</translation>
+      <translation>Vybrané stěny neobsahují "pod-stěny" ke sloučení</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="470"/>
-      <location filename="../../bimcommands/BimArchUtils.py" line="474"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="478"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="482"/>
       <source>Please select only wall objects</source>
-      <translation type="unfinished">Please select only wall objects</translation>
+      <translation>Prosím vyberte jen objekty stěn</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="461"/>
-      <location filename="../../bimcommands/BimArchUtils.py" line="476"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="469"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="484"/>
       <source>Merge Walls</source>
-      <translation type="unfinished">Merge Walls</translation>
+      <translation>Sloučit stěny</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="243"/>
+      <location filename="../../ArchWall.py" line="272"/>
       <source>changed 'Normal' to [0, 0, 1] to preserve extrusion direction</source>
-      <translation type="unfinished">changed 'Normal' to [0, 0, 1] to preserve extrusion direction</translation>
+      <translation>'Normála' změněna na [0, 0, 1] pro zachování směru vytažení</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="430"/>
+      <location filename="../../ArchWall.py" line="504"/>
       <source>Cannot compute blocks for wall</source>
-      <translation type="unfinished">Cannot compute blocks for wall</translation>
+      <translation>Nelze vypočítat bloky pro stěnu</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="541"/>
+      <location filename="../../ArchWall.py" line="617"/>
       <source>Error: Unable to modify the base object of this wall</source>
-      <translation type="unfinished">Error: Unable to modify the base object of this wall</translation>
+      <translation>Chyba: Nelze změnit základní objekt této stěny</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1303"/>
+      <location filename="../../ArchWall.py" line="1425"/>
       <source>Flip direction</source>
-      <translation>Překlopit směr</translation>
+      <translation>Obrátit směr</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="434"/>
       <source>Invalid cut plane</source>
-      <translation type="unfinished">Invalid cut plane</translation>
+      <translation>Neplatná rovina řezu</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="717"/>
       <source>is not closed</source>
-      <translation type="unfinished">is not closed</translation>
+      <translation>není uzavřen</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="719"/>
       <source>is not valid</source>
-      <translation type="unfinished">is not valid</translation>
+      <translation>není platný</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="721"/>
       <source>doesn't contain any solid</source>
-      <translation type="unfinished">doesn't contain any solid</translation>
+      <translation>neobsahuje žádné těleso</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="727"/>
@@ -5365,7 +5640,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="729"/>
       <source>contains faces that are not part of any solid</source>
-      <translation type="unfinished">contains faces that are not part of any solid</translation>
+      <translation>obsahuje plochy, které nejsou částí tělesa</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1032"/>
@@ -5375,7 +5650,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1033"/>
       <source>Set description</source>
-      <translation type="unfinished">Set description</translation>
+      <translation>Zadat popis</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1034"/>
@@ -5385,17 +5660,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1035"/>
       <source>Copy Length</source>
-      <translation type="unfinished">Copy Length</translation>
+      <translation>Kopírovat délku</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1036"/>
       <source>Copy Area</source>
-      <translation type="unfinished">Copy Area</translation>
+      <translation>Kopírovat rozlohu</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1037"/>
       <source>Export CSV</source>
-      <translation type="unfinished">Export CSV</translation>
+      <translation>Exportovat CSV</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1040"/>
@@ -5410,7 +5685,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1165"/>
       <source>Object doesn't have settable IFC attributes</source>
-      <translation type="unfinished">Object doesn't have settable IFC attributes</translation>
+      <translation>Objekt nemá nastavitelné IFC vlastnosti</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1171"/>
@@ -5426,43 +5701,43 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="54"/>
       <source>Add space boundary</source>
-      <translation type="unfinished">Add space boundary</translation>
+      <translation>Vložit hranici prostoru</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="58"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="62"/>
       <source>Grouping</source>
-      <translation type="unfinished">Grouping</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="89"/>
-      <source>Remove space boundary</source>
-      <translation type="unfinished">Remove space boundary</translation>
+      <translation>Seskupování</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="93"/>
+      <source>Remove space boundary</source>
+      <translation>Odstranit hranici prostoru</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimArchUtils.py" line="101"/>
       <source>Ungrouping</source>
-      <translation type="unfinished">Ungrouping</translation>
+      <translation>Zrušit seskupení</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="127"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="135"/>
       <source>Split Mesh</source>
-      <translation type="unfinished">Split Mesh</translation>
+      <translation>Rozdělit síť</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="170"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="178"/>
       <source>Mesh to Shape</source>
-      <translation type="unfinished">Mesh to Shape</translation>
+      <translation>Síť na Tvar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="260"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="268"/>
       <source>All good! No problems found</source>
-      <translation type="unfinished">All good! No problems found</translation>
+      <translation>Vše v pořádku! Nenalezeny problémy</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="319"/>
-      <location filename="../../bimcommands/BimArchUtils.py" line="346"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="327"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="354"/>
       <source>Create Component</source>
-      <translation type="unfinished">Create Component</translation>
+      <translation>Vytvořit komponentu</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1365"/>
@@ -5472,27 +5747,32 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1375"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
-      <translation type="unfinished">The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</translation>
+      <translation>Objekt nemá žádný IfcPropeties atribut. Zrušit vytváření tabulky pro objekt:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="372"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="380"/>
       <source>Create IFC properties spreadsheet</source>
-      <translation type="unfinished">Create IFC properties spreadsheet</translation>
+      <translation>Vytvořit tabulku IFC vlastností</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBuildingPart.py" line="55"/>
       <source>Create Level</source>
-      <translation type="unfinished">Create Level</translation>
+      <translation>Vytvořit úroveň</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimFence.py" line="52"/>
       <source>Create Fence</source>
-      <translation type="unfinished">Create Fence</translation>
+      <translation>Vytvořit plot</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBox.py" line="283"/>
       <source>Create Box</source>
       <translation>Vytvořit kvádr</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimDrawingView.py" line="55"/>
+      <source>Create 2D View</source>
+      <translation type="unfinished">Create 2D View</translation>
     </message>
   </context>
   <context>
@@ -5500,12 +5780,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="196"/>
       <source>Multiple Structures</source>
-      <translation type="unfinished">Multiple Structures</translation>
+      <translation>Násobné konstrukce</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="199"/>
       <source>Create multiple BIM Structures from a selected base, using each selected edge as an extrusion path</source>
-      <translation type="unfinished">Create multiple BIM Structures from a selected base, using each selected edge as an extrusion path</translation>
+      <translation>Vytvořit několik BIM struktur z vybraného podkladu pomocí každé vybrané hrany, jakožto dráhy pro tažení</translation>
     </message>
   </context>
   <context>
@@ -5513,12 +5793,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="234"/>
       <source>Structural System</source>
-      <translation type="unfinished">Structural System</translation>
+      <translation>Konstrukční systém</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="237"/>
       <source>Create a structural system from a selected structure and axis</source>
-      <translation type="unfinished">Create a structural system from a selected structure and axis</translation>
+      <translation>Vytvořit konstrukční systém z vybrané konstrukce a osy</translation>
     </message>
   </context>
   <context>
@@ -5531,96 +5811,96 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="275"/>
       <source>Creates a structure from scratch or from a selected object (sketch, wire, face or solid)</source>
-      <translation type="unfinished">Creates a structure from scratch or from a selected object (sketch, wire, face or solid)</translation>
+      <translation>Vytvořit strukturu od základu nebo z vybraného objektu (náčrt, křivka, plocha nebo těleso)</translation>
     </message>
   </context>
   <context>
     <name>App::Property</name>
     <message>
       <location filename="../../ArchStructure.py" line="684"/>
-      <location filename="../../ArchStructure.py" line="1361"/>
+      <location filename="../../ArchStructure.py" line="1504"/>
       <source>An optional extrusion path for this element</source>
-      <translation type="unfinished">An optional extrusion path for this element</translation>
+      <translation>Volitelná dráha vytažení pro tento prvek</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="686"/>
       <source>The computed length of the extrusion path</source>
-      <translation type="unfinished">The computed length of the extrusion path</translation>
+      <translation>Vypočtená délka dráhy vysunutí</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="688"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">Start offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Odsazení počátku, podél dráhy vytažení (kladné: prodloužení, záporné: zkrácení)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="690"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Odsazení konce, podél dráhy vytažení (kladné: prodloužení, záporné: zkrácení)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="692"/>
       <source>Automatically align the Base of the Structure perpendicular to the Tool axis</source>
-      <translation type="unfinished">Automatically align the Base of the Structure perpendicular to the Tool axis</translation>
+      <translation>Automaticky zarovnat základnu konstrukce kolmo k ose nástroje</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="694"/>
       <source>X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>X ofset mezi počátkem základny a osou nástroje (pouze, je-li zaškrtnuto BasePerpendicularToTool)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="696"/>
       <source>Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Y ofset mezi počátkem základny a osou nástroje (pouze, je-li zaškrtnuto BasePerpendicularToTool)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="698"/>
       <source>Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Zrcadlit základnu podél její Y osy (pouze, je-li zaškrtnuto BasePerpendicularToTool)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="700"/>
       <source>Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Rotace základny kolem osy nástroje (pouze, je-li zaškrtnuto BasePerpendicularToTool)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="702"/>
       <location filename="../../ArchPanel.py" line="73"/>
       <source>The length of this element, if not based on a profile</source>
-      <translation type="unfinished">The length of this element, if not based on a profile</translation>
+      <translation>Délka tohoto prvku, není-li založen na profilu</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="704"/>
       <location filename="../../ArchPanel.py" line="75"/>
       <source>The width of this element, if not based on a profile</source>
-      <translation type="unfinished">The width of this element, if not based on a profile</translation>
+      <translation>Šířka tohoto prvku, není-li založen na profilu</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="706"/>
       <source>The height or extrusion depth of this element. Keep 0 for automatic</source>
-      <translation type="unfinished">The height or extrusion depth of this element. Keep 0 for automatic</translation>
+      <translation>Výška či hloubka vytažení tohoto prvku. Ponechte 0 pro automatickou</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="708"/>
       <location filename="../../ArchPanel.py" line="102"/>
       <location filename="../../ArchWall.py" line="180"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
-      <translation type="unfinished">The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</translation>
+      <translation>Normálový směr vytažení tohoto objektu (pro (0,0,0) -&gt; automatická normála)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="710"/>
       <location filename="../../ArchPrecast.py" line="70"/>
       <source>The structural nodes of this element</source>
-      <translation type="unfinished">The structural nodes of this element</translation>
+      <translation>Konstrukční uzly tohoto prvku</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="712"/>
       <source>A description of the standard profile this element is based upon</source>
-      <translation type="unfinished">A description of the standard profile this element is based upon</translation>
+      <translation>Popis standardního profilu, na kterém je tento prvek založen</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="714"/>
       <source>Offset distance between the centerline and the nodes line</source>
-      <translation type="unfinished">Offset distance between the centerline and the nodes line</translation>
+      <translation>Ofset mezi středovou osou a přímkou uzlů</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="716"/>
@@ -5629,133 +5909,138 @@ Building creation aborted.</translation>
       <translation type="unfinished">The facemaker type to use to build the profile of this object</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="719"/>
-      <location filename="../../ArchStructure.py" line="727"/>
+      <location filename="../../ArchStructure.py" line="722"/>
+      <location filename="../../ArchStructure.py" line="730"/>
       <source>Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this BIM Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</source>
-      <translation type="unfinished">Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this BIM Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</translation>
+      <translation>Vybrané hrany (nebo skupina hran) základového ArchSketch, použité pro vytvoření tvaru této BIM struktury (namísto výchozího použití všech hran základního tvaru). Vstupní údaje jsou indexy hran či skupin.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1052"/>
+      <location filename="../../ArchStructure.py" line="733"/>
+      <source>Select User Defined PropertySet to use in creating variant shape, with same ArchSketch </source>
+      <translation type="unfinished">Select User Defined PropertySet to use in creating variant shape, with same ArchSketch </translation>
+    </message>
+    <message>
+      <location filename="../../ArchStructure.py" line="1195"/>
       <source>If the nodes are visible or not</source>
-      <translation type="unfinished">If the nodes are visible or not</translation>
+      <translation>Jsou-li uzly viditelné, či nejsou</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1054"/>
+      <location filename="../../ArchStructure.py" line="1197"/>
       <source>The width of the nodes line</source>
-      <translation type="unfinished">The width of the nodes line</translation>
+      <translation>Šířka čáry uzlů</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1056"/>
+      <location filename="../../ArchStructure.py" line="1199"/>
       <source>The size of the node points</source>
-      <translation type="unfinished">The size of the node points</translation>
+      <translation>Velikost bodů uzlu</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1059"/>
+      <location filename="../../ArchStructure.py" line="1202"/>
       <source>The color of the nodes line</source>
-      <translation type="unfinished">The color of the nodes line</translation>
+      <translation>Barva čáry uzlů</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1062"/>
+      <location filename="../../ArchStructure.py" line="1205"/>
       <source>The type of structural node</source>
-      <translation type="unfinished">The type of structural node</translation>
+      <translation>Typ konstrukčního uzlu</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1396"/>
+      <location filename="../../ArchStructure.py" line="1539"/>
       <source>Axes systems this structure is built on</source>
       <translation type="unfinished">Axes systems this structure is built on</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1397"/>
+      <location filename="../../ArchStructure.py" line="1540"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation type="unfinished">The element numbers to exclude when this structure is based on axes</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1398"/>
+      <location filename="../../ArchStructure.py" line="1541"/>
       <source>If true the element are aligned with axes</source>
-      <translation type="unfinished">If true the element are aligned with axes</translation>
+      <translation>Je-li "true", prvek je zarovnán s osami</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="188"/>
       <source>The model description of this equipment</source>
-      <translation type="unfinished">The model description of this equipment</translation>
+      <translation>Popis modelu tohoto zařízení</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="190"/>
       <source>The URL of the product page of this equipment</source>
-      <translation type="unfinished">The URL of the product page of this equipment</translation>
+      <translation>URL produktové stránky tohoto zařízení</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="192"/>
-      <location filename="../../ArchMaterial.py" line="166"/>
+      <location filename="../../ArchMaterial.py" line="168"/>
       <source>A standard code (MasterFormat, OmniClass,...)</source>
-      <translation type="unfinished">A standard code (MasterFormat, OmniClass,...)</translation>
+      <translation>Standardní kód (MasterFormat, OmniClass,...)</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="194"/>
       <source>Additional snap points for this equipment</source>
-      <translation type="unfinished">Additional snap points for this equipment</translation>
+      <translation>Další příchytné body tohoto vybavení</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="196"/>
       <source>The electric power needed by this equipment in Watts</source>
-      <translation type="unfinished">The electric power needed by this equipment in Watts</translation>
+      <translation>Potřebný elektrický příkon tohoto zařízení ve Wattech</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="142"/>
-      <location filename="../../Arch.py" line="172"/>
+      <location filename="../../Arch.py" line="145"/>
+      <location filename="../../Arch.py" line="194"/>
       <location filename="../../ArchBuilding.py" line="281"/>
       <source>The type of this building</source>
-      <translation type="unfinished">The type of this building</translation>
+      <translation>Typ této budovy</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="217"/>
       <location filename="../../ArchFloor.py" line="209"/>
       <source>The height of this object</source>
-      <translation type="unfinished">The height of this object</translation>
+      <translation>Výška tohoto objektu</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="219"/>
       <source>If true, the height value propagates to contained objects if the height of those objects is set to 0</source>
-      <translation type="unfinished">If true, the height value propagates to contained objects if the height of those objects is set to 0</translation>
+      <translation>Je-li "True", tato hodnota výšky se rozšíří na zahrnuté objekty, mají-li tyto objekty výšku nastavenou na 0</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="222"/>
       <source>The level of the (0,0,0) point of this level</source>
-      <translation type="unfinished">The level of the (0,0,0) point of this level</translation>
+      <translation>Výška bodu (0,0,0) této úrovně</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="224"/>
       <location filename="../../ArchFloor.py" line="211"/>
       <source>The computed floor area of this floor</source>
-      <translation type="unfinished">The computed floor area of this floor</translation>
+      <translation>Vypočtená půdorysná plocha tohoto patra</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="226"/>
       <location filename="../../ArchComponent.py" line="205"/>
       <source>An optional description for this component</source>
-      <translation type="unfinished">An optional description for this component</translation>
+      <translation>Volitelný popis tohoto komponentu</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="228"/>
       <location filename="../../ArchComponent.py" line="207"/>
       <source>An optional tag for this component</source>
-      <translation type="unfinished">An optional tag for this component</translation>
+      <translation>Volitelný popisek tohoto komponentu</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="230"/>
       <location filename="../../ArchSectionPlane.py" line="814"/>
       <source>The shape of this object</source>
-      <translation type="unfinished">The shape of this object</translation>
+      <translation>Tvar tohoto objektu</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="232"/>
       <source>This property stores an OpenInventor representation for this object</source>
-      <translation type="unfinished">This property stores an OpenInventor representation for this object</translation>
+      <translation>Tato vlastnost uchovává OpenInventor reprezentaci tohoto objektu</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="235"/>
       <source>If true, only solids will be collected by this object when referenced from other files</source>
-      <translation type="unfinished">If true, only solids will be collected by this object when referenced from other files</translation>
+      <translation>Je-li "True", tento objekt bude shromažďovat pouze tělesa, při odkazování se z jiných souborů</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="238"/>
@@ -5763,160 +6048,160 @@ Building creation aborted.</translation>
       <translation type="unfinished">A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="450"/>
-      <location filename="../../ArchSectionPlane.py" line="903"/>
+      <location filename="../../ArchBuildingPart.py" line="440"/>
+      <location filename="../../ArchSectionPlane.py" line="907"/>
       <source>The line width of this object</source>
       <translation>Tloušťka čáry tohoto objektu</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="453"/>
+      <location filename="../../ArchBuildingPart.py" line="443"/>
       <source>An optional unit to express levels</source>
-      <translation type="unfinished">An optional unit to express levels</translation>
+      <translation>Volitelná jednotka pro vyjádření úrovní</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="445"/>
+      <source>A transformation to apply to the level mark</source>
+      <translation>Použitá transformace pro označení úrovně</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="448"/>
+      <source>If true, show the level</source>
+      <translation>Je-li "true", ukaž úroveň</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="451"/>
+      <source>If true, show the unit on the level tag</source>
+      <translation>Je-li "true", ukaž jednotku na popisku úrovně</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="453"/>
+      <source>If true, display offset will affect the origin mark too</source>
+      <translation>Je-li "true", ofset zobrazení ovlivní i počáteční bod značky</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="455"/>
-      <source>A transformation to apply to the level mark</source>
-      <translation type="unfinished">A transformation to apply to the level mark</translation>
+      <source>If true, the object's label is displayed</source>
+      <translation>Je-li "true", je zobrazen popisek objektu</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="458"/>
-      <source>If true, show the level</source>
-      <translation type="unfinished">If true, show the level</translation>
+      <source>The font to be used for texts</source>
+      <translation>Písmo použité pro texty</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="461"/>
-      <source>If true, show the unit on the level tag</source>
-      <translation type="unfinished">If true, show the unit on the level tag</translation>
+      <source>The font size of texts</source>
+      <translation>Velikost písma textů</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="463"/>
-      <source>If true, display offset will affect the origin mark too</source>
-      <translation type="unfinished">If true, display offset will affect the origin mark too</translation>
-    </message>
-    <message>
-      <location filename="../../ArchBuildingPart.py" line="465"/>
-      <source>If true, the object's label is displayed</source>
-      <translation type="unfinished">If true, the object's label is displayed</translation>
+      <location filename="../../ArchBuildingPart.py" line="464"/>
+      <source>The individual face colors</source>
+      <translation>Barvy jednotlivých ploch</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="468"/>
-      <source>The font to be used for texts</source>
-      <translation type="unfinished">The font to be used for texts</translation>
+      <source>If true, when activated, the working plane will automatically adapt to this level</source>
+      <translation>Je-li aktivováno, pracovní rovina se automaticky přizpůsobí této úrovni</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="471"/>
-      <source>The font size of texts</source>
-      <translation type="unfinished">The font size of texts</translation>
-    </message>
-    <message>
-      <location filename="../../ArchBuildingPart.py" line="474"/>
-      <source>The individual face colors</source>
-      <translation type="unfinished">The individual face colors</translation>
-    </message>
-    <message>
-      <location filename="../../ArchBuildingPart.py" line="478"/>
-      <source>If true, when activated, the working plane will automatically adapt to this level</source>
-      <translation type="unfinished">If true, when activated, the working plane will automatically adapt to this level</translation>
-    </message>
-    <message>
-      <location filename="../../ArchBuildingPart.py" line="481"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
-      <translation type="unfinished">If set to True, the working plane will be kept on Auto mode</translation>
+      <translation>Je-li nastaveno na "True", pracovní rovina zůstane v režimu Auto</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="483"/>
+      <location filename="../../ArchBuildingPart.py" line="473"/>
       <source>Camera position data associated with this object</source>
       <translation>Údaje o poloze kamery přiřazené k tomuto objektu</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="486"/>
+      <location filename="../../ArchBuildingPart.py" line="476"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
-      <translation type="unfinished">If set, the view stored in this object will be restored on double-click</translation>
+      <translation>Je-li nastaveno, pohled uložený v tomto objektu bude vyvolán dvojklikem</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="488"/>
+      <location filename="../../ArchBuildingPart.py" line="478"/>
       <source>If True, double-clicking this object in the tree activates it</source>
-      <translation type="unfinished">If True, double-clicking this object in the tree activates it</translation>
+      <translation>Je-li "True", dvojklik na objekt ve stromu projektu jej aktivuje</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="492"/>
+      <location filename="../../ArchBuildingPart.py" line="482"/>
       <source>If this is enabled, the OpenInventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
-      <translation type="unfinished">If this is enabled, the OpenInventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</translation>
+      <translation>Je-li toto povoleno, OpenInventor reprezentace tohoto objektu bude uložena v souboru FreeCADu, aby bylo možné se na něj, ve zjednodušeném režimu, odkazovat v jiných souborech.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="494"/>
+      <location filename="../../ArchBuildingPart.py" line="484"/>
       <source>A slot to save the OpenInventor representation of this object, if enabled</source>
-      <translation type="unfinished">A slot to save the OpenInventor representation of this object, if enabled</translation>
+      <translation>Slot pro uložení OpenInventor reprezentace tohoto objektu, je-li to povoleno</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="499"/>
+      <location filename="../../ArchBuildingPart.py" line="489"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
-      <translation type="unfinished">If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</translation>
+      <translation>Je-li "True", zobrazení objektů, obsažených v tomto stavebním dílu, převezme tato nastavení čáry, barvy a průhlednosti</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="501"/>
+      <location filename="../../ArchBuildingPart.py" line="491"/>
       <source>The line width of child objects</source>
       <translation>Tloušťka čáry podřazeného objektu</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="504"/>
+      <location filename="../../ArchBuildingPart.py" line="494"/>
       <source>The line color of child objects</source>
       <translation>Barva čáry podřazeného objektu</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="507"/>
+      <location filename="../../ArchBuildingPart.py" line="497"/>
       <source>The shape appearance of child objects</source>
-      <translation type="unfinished">The shape appearance of child objects</translation>
+      <translation>Vzhled tvaru podřízených objektů</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="500"/>
+      <source>The transparency of child objects</source>
+      <translation>Průhlednost podřízených objektů</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="505"/>
+      <source>Cut the view above this level</source>
+      <translation>Oříznout pohled nad touto úrovní</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="507"/>
+      <source>The distance between the level plane and the cut line</source>
+      <translation>Vzdálenost mezi úrovní roviny a čárou řezu</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="510"/>
-      <source>The transparency of child objects</source>
-      <translation type="unfinished">The transparency of child objects</translation>
-    </message>
-    <message>
-      <location filename="../../ArchBuildingPart.py" line="515"/>
-      <source>Cut the view above this level</source>
-      <translation type="unfinished">Cut the view above this level</translation>
-    </message>
-    <message>
-      <location filename="../../ArchBuildingPart.py" line="517"/>
-      <source>The distance between the level plane and the cut line</source>
-      <translation type="unfinished">The distance between the level plane and the cut line</translation>
-    </message>
-    <message>
-      <location filename="../../ArchBuildingPart.py" line="520"/>
       <source>Turn cutting on when activating this level</source>
-      <translation type="unfinished">Turn cutting on when activating this level</translation>
+      <translation>Zapnout ořezání při aktivaci této úrovně</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="524"/>
+      <location filename="../../ArchBuildingPart.py" line="514"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
       <translation type="unfinished">The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="526"/>
+      <location filename="../../ArchBuildingPart.py" line="516"/>
       <source>Turns auto group box on/off</source>
-      <translation type="unfinished">Turns auto group box on/off</translation>
+      <translation>Zapne/vypne autom. kvádr seskupení</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="528"/>
+      <location filename="../../ArchBuildingPart.py" line="518"/>
       <source>Automatically set size from contents</source>
-      <translation type="unfinished">Automatically set size from contents</translation>
+      <translation>Automaticky nastavit velikost dle obsahu</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="530"/>
+      <location filename="../../ArchBuildingPart.py" line="520"/>
       <source>A margin to use when autosize is turned on</source>
-      <translation type="unfinished">A margin to use when autosize is turned on</translation>
+      <translation>Rozšířit okraj při zapnuté auto-velikosti</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="125"/>
       <source>Outside Diameter</source>
-      <translation type="unfinished">Outside Diameter</translation>
+      <translation>Vnější průměr</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="126"/>
       <source>Wall thickness</source>
-      <translation type="unfinished">Wall thickness</translation>
+      <translation>Síla stěny</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="150"/>
@@ -5978,22 +6263,22 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSite.py" line="525"/>
       <source>The street and house number of this site, with postal box or apartment number if needed</source>
-      <translation type="unfinished">The street and house number of this site, with postal box or apartment number if needed</translation>
+      <translation>Ulice a číslo domu tohoto pozemku, s poštovním směrovacím číslem, případně číslem apartmánu</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="527"/>
       <source>The postal or zip code of this site</source>
-      <translation type="unfinished">The postal or zip code of this site</translation>
+      <translation>PSČ nebo ZIP kód tohoto pozemku</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="529"/>
       <source>The city of this site</source>
-      <translation type="unfinished">The city of this site</translation>
+      <translation>Město tohoto pozemku</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="531"/>
       <source>The region, province or county of this site</source>
-      <translation type="unfinished">The region, province or county of this site</translation>
+      <translation>Region, provincie nebo okres tohoto pozemku</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="533"/>
@@ -6004,22 +6289,22 @@ Building creation aborted.</translation>
       <location filename="../../ArchSite.py" line="535"/>
       <location filename="../../ArchSite.py" line="537"/>
       <source>The latitude of this site</source>
-      <translation type="unfinished">The latitude of this site</translation>
+      <translation>Zeměpisná šířka tohoto pozemku</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="539"/>
       <source>Angle between the true North and the North direction in this document</source>
-      <translation type="unfinished">Angle between the true North and the North direction in this document</translation>
+      <translation>Úhel mezi skutečným severem a severní orientací v tomto dokumentu</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="544"/>
       <source>The elevation of level 0 of this site</source>
-      <translation type="unfinished">The elevation of level 0 of this site</translation>
+      <translation>Nadm. výška nulté úrovně tohoto pozemku</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="546"/>
       <source>A URL that shows this site in a mapping website</source>
-      <translation type="unfinished">A URL that shows this site in a mapping website</translation>
+      <translation>Adresa URL, zobrazující tento pozemek na mapovém webu</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="548"/>
@@ -6037,7 +6322,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchSite.py" line="552"/>
       <location filename="../../ArchComponent.py" line="226"/>
       <source>The area of the projection of this object onto the XY plane</source>
-      <translation type="unfinished">The area of the projection of this object onto the XY plane</translation>
+      <translation>Oblast průmětu tohoto objektu do roviny XY</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="554"/>
@@ -6047,12 +6332,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSite.py" line="556"/>
       <source>The volume of earth to be added to this terrain</source>
-      <translation type="unfinished">The volume of earth to be added to this terrain</translation>
+      <translation>Objem země dovážené na tento terén</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="558"/>
       <source>The volume of earth to be removed from this terrain</source>
-      <translation type="unfinished">The volume of earth to be removed from this terrain</translation>
+      <translation>Objem země odvážené z tohoto terénu</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="560"/>
@@ -6118,7 +6403,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSite.py" line="796"/>
       <source>Show compass or not</source>
-      <translation type="unfinished">Show compass or not</translation>
+      <translation>Zobrazit/skrýt kompas</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="798"/>
@@ -6138,37 +6423,37 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchRoof.py" line="162"/>
       <source>The list of angles of the roof segments</source>
-      <translation type="unfinished">The list of angles of the roof segments</translation>
+      <translation>Seznam úhlů segmentů střechy</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="167"/>
       <source>The list of horizontal length projections of the roof segments</source>
-      <translation type="unfinished">The list of horizontal length projections of the roof segments</translation>
+      <translation>Seznam délek vodorovných projekcí segmentů střechy</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="172"/>
       <source>The list of IDs of the relative profiles of the roof segments</source>
-      <translation type="unfinished">The list of IDs of the relative profiles of the roof segments</translation>
+      <translation>Seznam ID odpovídajících profilů segmentů střechy</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="177"/>
       <source>The list of thicknesses of the roof segments</source>
-      <translation type="unfinished">The list of thicknesses of the roof segments</translation>
+      <translation>Seznam tlouštěk segmentů střechy</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="182"/>
       <source>The list of overhangs of the roof segments</source>
-      <translation type="unfinished">The list of overhangs of the roof segments</translation>
+      <translation>Seznam přesahů segmentů střechy</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="187"/>
       <source>The list of calculated heights of the roof segments</source>
-      <translation type="unfinished">The list of calculated heights of the roof segments</translation>
+      <translation>Seznam vypočtených výšek segmentů střechy</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="192"/>
       <source>The face number of the base object used to build the roof</source>
-      <translation type="unfinished">The face number of the base object used to build the roof</translation>
+      <translation>Číslo plochy základního objektu, použitého k sestavení střechy</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="197"/>
@@ -6178,12 +6463,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchRoof.py" line="203"/>
       <source>The total length of the borders of the roof</source>
-      <translation type="unfinished">The total length of the borders of the roof</translation>
+      <translation>Celková délka okrajů střechy</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="209"/>
       <source>Specifies if the direction of the roof should be flipped</source>
-      <translation type="unfinished">Specifies if the direction of the roof should be flipped</translation>
+      <translation>Určuje, zda má být orientace střechy převrácena</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="214"/>
@@ -6193,7 +6478,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchReference.py" line="72"/>
       <source>The base file this component is built upon</source>
-      <translation type="unfinished">The base file this component is built upon</translation>
+      <translation>Základní soubor, na kterém stojí tento komponent</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="75"/>
@@ -6213,22 +6498,22 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchReference.py" line="525"/>
       <source>The latest time stamp of the linked file</source>
-      <translation type="unfinished">The latest time stamp of the linked file</translation>
+      <translation>Nejnovější časové razítko propojeného souboru</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="529"/>
       <source>If true, the colors from the linked file will be kept updated</source>
-      <translation type="unfinished">If true, the colors from the linked file will be kept updated</translation>
+      <translation>Je-li "true", barvy propojeného souboru budou stále aktualizovány</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="65"/>
       <source>The profile used to build this frame</source>
-      <translation type="unfinished">The profile used to build this frame</translation>
+      <translation>Profil použitý k sestavení tohoto rámu</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="67"/>
       <source>Specifies if the profile must be aligned with the extrusion wires</source>
-      <translation type="unfinished">Specifies if the profile must be aligned with the extrusion wires</translation>
+      <translation>Určuje, zda má být profil zarovnán s křivkami vytažení</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="70"/>
@@ -6238,7 +6523,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchFrame.py" line="72"/>
       <source>Crossing point of the path on the profile.</source>
-      <translation type="unfinished">Crossing point of the path on the profile.</translation>
+      <translation>Bod křížení dráhy na profilu.</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="74"/>
@@ -6253,62 +6538,62 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchFrame.py" line="78"/>
       <source>The type of edges to consider</source>
-      <translation type="unfinished">The type of edges to consider</translation>
+      <translation>Typ hran, braných do úvahy</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="81"/>
       <source>If true, geometry is fused, otherwise a compound</source>
-      <translation type="unfinished">If true, geometry is fused, otherwise a compound</translation>
+      <translation>Je-li "True", geometrie nebude složeninou, ale fúzí</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="126"/>
       <source>The objects that host this window</source>
-      <translation type="unfinished">The objects that host this window</translation>
+      <translation>Hostitelské objekty tohoto okna</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="128"/>
       <source>The components of this window</source>
-      <translation type="unfinished">The components of this window</translation>
+      <translation>Součásti tohoto okna</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="131"/>
       <source>The depth of the hole that this window makes in its host object. If 0, the value will be calculated automatically.</source>
-      <translation type="unfinished">The depth of the hole that this window makes in its host object. If 0, the value will be calculated automatically.</translation>
+      <translation>Hloubka otvoru, který toto okno vytvoří v hostitelském objektu. Je-li 0, bude hodnota vypočítána automaticky.</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="133"/>
       <source>An optional object that defines a volume to be subtracted from hosts of this window</source>
-      <translation type="unfinished">An optional object that defines a volume to be subtracted from hosts of this window</translation>
+      <translation>Volitelný objekt, definující objem odečtený od hostitelských objektů tohoto okna</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="135"/>
       <source>The width of this window</source>
-      <translation type="unfinished">The width of this window</translation>
+      <translation>Šířka tohoto okna</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="137"/>
       <source>The height of this window</source>
-      <translation type="unfinished">The height of this window</translation>
+      <translation>Výška tohoto okna</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="139"/>
       <source>The normal direction of this window</source>
-      <translation type="unfinished">The normal direction of this window</translation>
+      <translation>Normálový směr tohoto okna</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="141"/>
       <source>The preset number this window is based on</source>
-      <translation type="unfinished">The preset number this window is based on</translation>
+      <translation>Číslo předvolby, na které je toto okno založeno</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="144"/>
       <source>The frame size of this window</source>
-      <translation type="unfinished">The frame size of this window</translation>
+      <translation>Velikost rámu tohoto okna</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="146"/>
       <source>The offset size of this window</source>
-      <translation type="unfinished">The offset size of this window</translation>
+      <translation>Velikost odsazení tohoto okna</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="148"/>
@@ -6328,27 +6613,27 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="154"/>
       <source>Opens the subcomponents that have a hinge defined</source>
-      <translation type="unfinished">Opens the subcomponents that have a hinge defined</translation>
+      <translation>Otevře podsoučásti, které mají definovaný závěs</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="156"/>
       <source>The number of the wire that defines the hole. If 0, the value will be calculated automatically</source>
-      <translation>Počet drátů definujících otvor. Je-li 0, je hodnota vypočtena automaticky</translation>
+      <translation>Číslo křivky, definující otvor. Je-li 0, je hodnota vypočtena automaticky</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="158"/>
       <source>Shows plan opening symbols if available</source>
-      <translation type="unfinished">Shows plan opening symbols if available</translation>
+      <translation>Zobrazit v plánu symboly otevření, jsou-li k dispozici</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="160"/>
       <source>Show elevation opening symbols if available</source>
-      <translation type="unfinished">Show elevation opening symbols if available</translation>
+      <translation>Zobrazit symboly stoupání, jsou-li k dispozici</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1112"/>
+      <location filename="../../ArchWindow.py" line="1118"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
-      <translation>Počet drátů definujících otvor. Je-li 0, je hodnota vypočtena automaticky</translation>
+      <translation>Číslo křivky, definující otvor. Hodnota 0 znamená automatický výpočet</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="64"/>
@@ -6363,17 +6648,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchTruss.py" line="70"/>
       <source>The angle of the truss</source>
-      <translation type="unfinished">The angle of the truss</translation>
+      <translation>Úhel vazníku</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="74"/>
       <source>The slant type of this truss</source>
-      <translation type="unfinished">The slant type of this truss</translation>
+      <translation>Typ sklonu tohoto vazníku</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="78"/>
       <source>The normal direction of this truss</source>
-      <translation type="unfinished">The normal direction of this truss</translation>
+      <translation>Normálový směr tohoto vazníku</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="82"/>
@@ -6398,219 +6683,219 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchTruss.py" line="96"/>
       <source>The height of the main top and bottom elements of the truss</source>
-      <translation type="unfinished">The height of the main top and bottom elements of the truss</translation>
+      <translation>Výška hlavní horní a dolní pásnice vazníku</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="100"/>
       <source>The width of the main top and bottom elements of the truss</source>
-      <translation type="unfinished">The width of the main top and bottom elements of the truss</translation>
+      <translation>Šířka hlavní horní a dolní pásnice vazníku</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="104"/>
       <source>The type of the middle element of the truss</source>
-      <translation type="unfinished">The type of the middle element of the truss</translation>
+      <translation>Typ středových prvků vazníku</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="108"/>
       <source>The direction of the rods</source>
-      <translation type="unfinished">The direction of the rods</translation>
+      <translation>Orientace tyčí</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="112"/>
       <source>The diameter or side of the rods</source>
-      <translation type="unfinished">The diameter or side of the rods</translation>
+      <translation>Průměr nebo strana tyčí</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="116"/>
       <source>The number of rod sections</source>
-      <translation type="unfinished">The number of rod sections</translation>
+      <translation>Počet sekcí tyče</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="120"/>
       <source>If the truss has a rod at its endpoint or not</source>
-      <translation type="unfinished">If the truss has a rod at its endpoint or not</translation>
+      <translation>Má-li vazník tyč na svých koncích, či nemá</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="123"/>
       <source>How to draw the rods</source>
-      <translation type="unfinished">How to draw the rods</translation>
+      <translation>Jak vykreslit tyče</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="73"/>
       <source>The length of these stairs, if no baseline is defined</source>
-      <translation type="unfinished">The length of these stairs, if no baseline is defined</translation>
+      <translation>Délka tohoto schodiště, nemá-li definovaný podklad</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="75"/>
       <source>The width of these stairs</source>
-      <translation type="unfinished">The width of these stairs</translation>
+      <translation>Šířka tohoto schodiště</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="77"/>
       <source>The total height of these stairs</source>
-      <translation type="unfinished">The total height of these stairs</translation>
+      <translation>Celková výška tohoto schodiště</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="79"/>
       <source>The alignment of these stairs on their baseline, if applicable</source>
-      <translation type="unfinished">The alignment of these stairs on their baseline, if applicable</translation>
+      <translation>Zarovnání schodiště s jeho podkladem, je-li to použitelné</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="84"/>
       <source>The width of a Landing (Second edge and after - First edge follows Width property)</source>
-      <translation type="unfinished">The width of a Landing (Second edge and after - First edge follows Width property)</translation>
+      <translation>Šířka podesty (pro druhou a další hranu - první hrana následuje nastavení šířky schodiště)</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="89"/>
       <source>The number of risers in these stairs</source>
-      <translation type="unfinished">The number of risers in these stairs</translation>
+      <translation>Počet schodišť. stupňů tohoto schodiště</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="91"/>
       <source>The depth of the treads of these stairs</source>
-      <translation type="unfinished">The depth of the treads of these stairs</translation>
+      <translation>Hloubka nášlapů (horiz. rozměr) schodiště</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="94"/>
       <source>The height of the risers of these stairs</source>
-      <translation type="unfinished">The height of the risers of these stairs</translation>
+      <translation>Výška schodišťového stupně tohoto schodiště</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="97"/>
       <source>The size of the nosing</source>
-      <translation type="unfinished">The size of the nosing</translation>
+      <translation>Velikost přesahu nášlapu</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="99"/>
       <source>The thickness of the treads</source>
-      <translation type="unfinished">The thickness of the treads</translation>
+      <translation>Tloušťka nášlapů</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="101"/>
       <source>The Blondel ratio indicates comfortable stairs and should be between 62 and 64cm or 24.5 and 25.5in</source>
-      <translation type="unfinished">The Blondel ratio indicates comfortable stairs and should be between 62 and 64cm or 24.5 and 25.5in</translation>
+      <translation>Blondelův poměr indikuje pohodlnost schodiště a měl by být mezi 62 a 64 cm, potažmo 24,5 a 25,5 in</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="105"/>
       <source>The thickness of the risers</source>
-      <translation type="unfinished">The thickness of the risers</translation>
+      <translation>Tloušťka schodišťového stupně</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="108"/>
       <source>The depth of the landing of these stairs</source>
-      <translation type="unfinished">The depth of the landing of these stairs</translation>
+      <translation>Hloubka (délka) podesty tohoto schodiště</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="111"/>
       <source>The depth of the treads of these stairs - Enforced regardless of Length or edge's Length</source>
-      <translation type="unfinished">The depth of the treads of these stairs - Enforced regardless of Length or edge's Length</translation>
+      <translation>Hloubka (délka) nášlapů tohoto schodiště - vynucená bez ohledu na délku nebo délku hrany</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="113"/>
       <source>The height of the risers of these stairs - Enforced regardless of Height or edge's Height</source>
-      <translation type="unfinished">The height of the risers of these stairs - Enforced regardless of Height or edge's Height</translation>
+      <translation>Výška schodišťového stupně - vynucená bez ohledu na výšku nebo výšku hrany</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="116"/>
       <source>The direction of flight after landing</source>
-      <translation type="unfinished">The direction of flight after landing</translation>
+      <translation>Směr úseku za podestou</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="123"/>
       <source>The 'absolute' top level of a flight of stairs leads to</source>
-      <translation type="unfinished">The 'absolute' top level of a flight of stairs leads to</translation>
+      <translation>Nejvyšší "absolutní" úroveň, ke které úsek schodiště směřuje</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="126"/>
       <location filename="../../ArchStairs.py" line="129"/>
       <source>The 'left outline' of stairs</source>
-      <translation type="unfinished">The 'left outline' of stairs</translation>
+      <translation>"Levý obrys" schodiště</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="150"/>
       <source>The 'left outline' of all segments of stairs</source>
-      <translation type="unfinished">The 'left outline' of all segments of stairs</translation>
+      <translation>"Levý obrys" všech segmentů schodiště</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="153"/>
       <source>The 'right outline' of all segments of stairs</source>
-      <translation type="unfinished">The 'right outline' of all segments of stairs</translation>
+      <translation>"Pravý obrys" všech segmentů schodiště</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="179"/>
       <source>The type of landings of these stairs</source>
-      <translation type="unfinished">The type of landings of these stairs</translation>
+      <translation>Typ podest tohoto schodiště</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="182"/>
       <source>The type of winders in these stairs</source>
-      <translation type="unfinished">The type of winders in these stairs</translation>
+      <translation>Typ šikmých stupňů v tomto schodišti</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="185"/>
       <source>The type of structure of these stairs</source>
-      <translation type="unfinished">The type of structure of these stairs</translation>
+      <translation>Typ konstrukce tohoto schodiště</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="188"/>
       <source>The thickness of the massive structure or of the stringers</source>
-      <translation type="unfinished">The thickness of the massive structure or of the stringers</translation>
+      <translation>Tloušťka masivní konstrukce či schodnic</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="190"/>
       <source>The width of the stringers</source>
-      <translation type="unfinished">The width of the stringers</translation>
+      <translation>Šířka schodnic</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="192"/>
       <source>The offset between the border of the stairs and the structure</source>
-      <translation type="unfinished">The offset between the border of the stairs and the structure</translation>
+      <translation>Odsazení mezi okrajem schodiště a konstrukcí</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="194"/>
-      <location filename="../../ArchStairs.py" line="935"/>
+      <location filename="../../ArchStairs.py" line="941"/>
       <source>The overlap of the stringers above the bottom of the treads</source>
-      <translation type="unfinished">The overlap of the stringers above the bottom of the treads</translation>
+      <translation>Přesah schodnic nad spodní část nášlapů</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="196"/>
       <source>The thickness of the lower floor slab</source>
-      <translation type="unfinished">The thickness of the lower floor slab</translation>
+      <translation>Tloušťka spodní podlahové desky</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="198"/>
       <source>The thickness of the upper floor slab</source>
-      <translation type="unfinished">The thickness of the upper floor slab</translation>
+      <translation>Tloušťka horní podlahové desky</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="200"/>
       <source>The type of connection between the lower floor slab and the start of the stairs</source>
-      <translation type="unfinished">The type of connection between the lower floor slab and the start of the stairs</translation>
+      <translation>Typ spojení mezi spodní podlahovou deskou a začátkem schodiště</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="203"/>
       <source>The type of connection between the end of the stairs and the upper floor slab</source>
-      <translation type="unfinished">The type of connection between the end of the stairs and the upper floor slab</translation>
+      <translation>Typ spojení mezi koncem schodiště a horní podlahovou deskou</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="62"/>
       <source>A single section of the fence</source>
-      <translation type="unfinished">A single section of the fence</translation>
+      <translation>Jedna část plotu</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="66"/>
       <source>A single fence post</source>
-      <translation type="unfinished">A single fence post</translation>
+      <translation>Jeden sloupek plotu</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="70"/>
       <source>The Path the fence should follow</source>
-      <translation type="unfinished">The Path the fence should follow</translation>
+      <translation>Trasa, kterou má plot následovat</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="74"/>
       <source>The number of sections the fence is built of</source>
-      <translation type="unfinished">The number of sections the fence is built of</translation>
+      <translation>Počet částí, z nichž je plot sestaven</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="79"/>
@@ -6620,87 +6905,87 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchFence.py" line="263"/>
       <source>When true, the fence will be colored like the original post and section.</source>
-      <translation type="unfinished">When true, the fence will be colored like the original post and section.</translation>
+      <translation>Je-li "true", plot bude zbarven podle prvního sloupku a první sekce.</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="164"/>
-      <location filename="../../ArchMaterial.py" line="618"/>
+      <location filename="../../ArchMaterial.py" line="166"/>
+      <location filename="../../ArchMaterial.py" line="622"/>
       <source>A description for this material</source>
-      <translation type="unfinished">A description for this material</translation>
-    </message>
-    <message>
-      <location filename="../../ArchMaterial.py" line="168"/>
-      <source>A URL where to find information about this material</source>
-      <translation type="unfinished">A URL where to find information about this material</translation>
+      <translation>Popis tohoto materiálu</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="170"/>
-      <source>The transparency value of this material</source>
-      <translation type="unfinished">The transparency value of this material</translation>
+      <source>A URL where to find information about this material</source>
+      <translation>URL pro hledání informací o tomto materiálu</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="172"/>
+      <source>The transparency value of this material</source>
+      <translation>Hodnota průhlednosti tohoto materiálu</translation>
+    </message>
+    <message>
+      <location filename="../../ArchMaterial.py" line="174"/>
       <source>The color of this material</source>
       <translation>Barva tohoto materiálu</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="174"/>
+      <location filename="../../ArchMaterial.py" line="176"/>
       <source>The color of this material when cut</source>
-      <translation type="unfinished">The color of this material when cut</translation>
+      <translation>Barva tohoto materiálu v řezu</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="619"/>
+      <location filename="../../ArchMaterial.py" line="623"/>
       <source>The list of layer names</source>
-      <translation type="unfinished">The list of layer names</translation>
+      <translation>Seznam názvů vrstev</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="620"/>
+      <location filename="../../ArchMaterial.py" line="624"/>
       <source>The list of layer materials</source>
-      <translation type="unfinished">The list of layer materials</translation>
+      <translation>Seznam materiálů jednot. vrstev</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="621"/>
+      <location filename="../../ArchMaterial.py" line="625"/>
       <source>The list of layer thicknesses</source>
-      <translation type="unfinished">The list of layer thicknesses</translation>
+      <translation>Seznam tlouštěk jednot. vrstev</translation>
     </message>
     <message>
       <location filename="../../ArchIFC.py" line="67"/>
       <source>IFC data</source>
-      <translation type="unfinished">IFC data</translation>
+      <translation>IFC data</translation>
     </message>
     <message>
       <location filename="../../ArchIFC.py" line="74"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="414"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="415"/>
       <source>IFC properties of this object</source>
-      <translation type="unfinished">IFC properties of this object</translation>
+      <translation>IFC vlastnosti tohoto objektu</translation>
     </message>
     <message>
       <location filename="../../ArchIFC.py" line="290"/>
       <location filename="../../ArchIFC.py" line="297"/>
       <source>Description of IFC attributes are not yet implemented</source>
-      <translation type="unfinished">Description of IFC attributes are not yet implemented</translation>
+      <translation>Popis IFC vlastností zatím není implementován</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="64"/>
       <source>The length of this element</source>
-      <translation type="unfinished">The length of this element</translation>
+      <translation>Délka tohoto prvku</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="66"/>
       <source>The width of this element</source>
-      <translation type="unfinished">The width of this element</translation>
+      <translation>Šířka tohoto prvku</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="68"/>
       <source>The height of this element</source>
-      <translation type="unfinished">The height of this element</translation>
+      <translation>Výška tohoto prvku</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="98"/>
       <location filename="../../ArchPrecast.py" line="286"/>
       <location filename="../../ArchPrecast.py" line="427"/>
       <source>The size of the chamfer of this element</source>
-      <translation type="unfinished">The size of the chamfer of this element</translation>
+      <translation>Velikost sražení tohoto prvku</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="100"/>
@@ -6722,32 +7007,32 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPrecast.py" line="220"/>
       <source>The chamfer length of this element</source>
-      <translation type="unfinished">The chamfer length of this element</translation>
+      <translation>Délka sražení tohoto prvku</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="222"/>
       <source>The base length of this element</source>
-      <translation type="unfinished">The base length of this element</translation>
+      <translation>Základní délka tohoto prvku</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="288"/>
       <source>The groove depth of this element</source>
-      <translation type="unfinished">The groove depth of this element</translation>
+      <translation>Hloubka drážky tohoto prvku</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="290"/>
       <source>The groove height of this element</source>
-      <translation type="unfinished">The groove height of this element</translation>
+      <translation>Výška drážky tohoto prvku</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="292"/>
       <source>The spacing between the grooves of this element</source>
-      <translation type="unfinished">The spacing between the grooves of this element</translation>
+      <translation>Rozteč mezi drážkami tohoto prvku</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="294"/>
       <source>The number of grooves of this element</source>
-      <translation type="unfinished">The number of grooves of this element</translation>
+      <translation>Počet drážek tohoto prvku</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="429"/>
@@ -6757,17 +7042,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPrecast.py" line="538"/>
       <source>The type of this slab</source>
-      <translation type="unfinished">The type of this slab</translation>
+      <translation>Typ této desky</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="541"/>
       <source>The size of the base of this element</source>
-      <translation type="unfinished">The size of the base of this element</translation>
+      <translation>Velikost základny tohoto prvku</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="543"/>
       <source>The number of holes in this element</source>
-      <translation type="unfinished">The number of holes in this element</translation>
+      <translation>Počet otvorů v tomto prvku</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="545"/>
@@ -6782,7 +7067,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPrecast.py" line="549"/>
       <source>The spacing between the holes of this element</source>
-      <translation type="unfinished">The spacing between the holes of this element</translation>
+      <translation>Rozteč mezi otvory tohoto prvku</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="649"/>
@@ -6807,17 +7092,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="77"/>
       <source>The thickness or extrusion depth of this element</source>
-      <translation type="unfinished">The thickness or extrusion depth of this element</translation>
+      <translation>Tloušťka či délka vysunutí tohoto prvku</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="79"/>
       <source>The number of sheets to use</source>
-      <translation type="unfinished">The number of sheets to use</translation>
+      <translation>Počet použitých listů</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="82"/>
       <source>The offset between this panel and its baseline</source>
-      <translation type="unfinished">The offset between this panel and its baseline</translation>
+      <translation>Odsazení tohoto panelu od linie jeho základny</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="84"/>
@@ -6855,211 +7140,211 @@ Building creation aborted.</translation>
       <translation>Plocha tohoto panelu</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="504"/>
-      <source>The linked object</source>
-      <translation type="unfinished">The linked object</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPanel.py" line="509"/>
-      <location filename="../../ArchPanel.py" line="789"/>
-      <source>The size of the tag text</source>
-      <translation type="unfinished">The size of the tag text</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPanel.py" line="516"/>
-      <location filename="../../ArchPanel.py" line="796"/>
-      <source>The font of the tag text</source>
-      <translation type="unfinished">The font of the tag text</translation>
-    </message>
-    <message>
       <location filename="../../ArchPanel.py" line="506"/>
-      <source>The text to display. Can be %tag%, %label% or %description% to display the panel tag or label</source>
-      <translation type="unfinished">The text to display. Can be %tag%, %label% or %description% to display the panel tag or label</translation>
+      <source>The linked object</source>
+      <translation>Propojený objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="512"/>
-      <location filename="../../ArchPanel.py" line="792"/>
-      <source>The position of the tag text. Keep (0,0,0) for center position</source>
-      <translation>Poloha textu štítku. Použij (0,0,0) pro vystředění</translation>
+      <location filename="../../ArchPanel.py" line="511"/>
+      <location filename="../../ArchPanel.py" line="791"/>
+      <source>The size of the tag text</source>
+      <translation>Velikost textu značky</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPanel.py" line="518"/>
+      <location filename="../../ArchPanel.py" line="798"/>
+      <source>The font of the tag text</source>
+      <translation>Písmo textu značky</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPanel.py" line="508"/>
+      <source>The text to display. Can be %tag%, %label% or %description% to display the panel tag or label</source>
+      <translation>Text k zobrazení. Pro zobrazení značky, popisku nebo popisu panelu použijte %tag%, %label% nebo %description%</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="514"/>
       <location filename="../../ArchPanel.py" line="794"/>
+      <source>The position of the tag text. Keep (0,0,0) for center position</source>
+      <translation>Poloha textu štítku. Použij (0,0,0) pro vystředění</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPanel.py" line="516"/>
+      <location filename="../../ArchPanel.py" line="796"/>
       <source>The rotation of the tag text</source>
       <translation type="unfinished">The rotation of the tag text</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="519"/>
-      <location filename="../../ArchPanel.py" line="808"/>
-      <source>If True, the object is rendered as a face, if possible.</source>
-      <translation type="unfinished">If True, the object is rendered as a face, if possible.</translation>
-    </message>
-    <message>
       <location filename="../../ArchPanel.py" line="521"/>
-      <source>The allowed angles this object can be rotated to when placed on sheets</source>
-      <translation type="unfinished">The allowed angles this object can be rotated to when placed on sheets</translation>
+      <location filename="../../ArchPanel.py" line="810"/>
+      <source>If True, the object is rendered as a face, if possible.</source>
+      <translation>Je-li "True", objekt je, pokud možno, vykreslen jako plocha.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="524"/>
+      <location filename="../../ArchPanel.py" line="523"/>
+      <source>The allowed angles this object can be rotated to when placed on sheets</source>
+      <translation>Úhly, o které je dovoleno tento objekt otáčet při rozmisťování na listy</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPanel.py" line="526"/>
       <source>An offset value to move the cut plane from the center point</source>
       <translation type="unfinished">An offset value to move the cut plane from the center point</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="697"/>
-      <location filename="../../ArchPanel.py" line="960"/>
-      <source>A margin inside the boundary</source>
-      <translation type="unfinished">A margin inside the boundary</translation>
-    </message>
-    <message>
       <location filename="../../ArchPanel.py" line="699"/>
       <location filename="../../ArchPanel.py" line="962"/>
-      <source>Turns the display of the margin on/off</source>
-      <translation type="unfinished">Turns the display of the margin on/off</translation>
+      <source>A margin inside the boundary</source>
+      <translation>Okraj uvnitř ohraničení</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="785"/>
-      <source>The linked Panel cuts</source>
-      <translation type="unfinished">The linked Panel cuts</translation>
+      <location filename="../../ArchPanel.py" line="701"/>
+      <location filename="../../ArchPanel.py" line="964"/>
+      <source>Turns the display of the margin on/off</source>
+      <translation>Zapnout/vypnout zobrazení okraje</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="787"/>
+      <source>The linked Panel cuts</source>
+      <translation>Propojené Panel Cuts</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPanel.py" line="789"/>
       <source>The tag text to display</source>
       <translation type="unfinished">The tag text to display</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="799"/>
+      <location filename="../../ArchPanel.py" line="801"/>
       <source>The width of the sheet</source>
       <translation type="unfinished">The width of the sheet</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="802"/>
+      <location filename="../../ArchPanel.py" line="804"/>
       <source>The height of the sheet</source>
       <translation type="unfinished">The height of the sheet</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="805"/>
+      <location filename="../../ArchPanel.py" line="807"/>
       <source>The fill ratio of this sheet</source>
       <translation type="unfinished">The fill ratio of this sheet</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="810"/>
+      <location filename="../../ArchPanel.py" line="812"/>
       <source>Specifies an angle for the wood grain (Clockwise, 0 is North)</source>
       <translation type="unfinished">Specifies an angle for the wood grain (Clockwise, 0 is North)</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="812"/>
+      <location filename="../../ArchPanel.py" line="814"/>
       <source>Specifies the scale applied to each panel view.</source>
       <translation type="unfinished">Specifies the scale applied to each panel view.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="815"/>
+      <location filename="../../ArchPanel.py" line="817"/>
       <source>A list of possible rotations for the nester</source>
       <translation type="unfinished">A list of possible rotations for the nester</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="964"/>
+      <location filename="../../ArchPanel.py" line="966"/>
       <source>Turns the display of the wood grain texture on/off</source>
       <translation type="unfinished">Turns the display of the wood grain texture on/off</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="90"/>
       <source>An optional host object for this curtain wall</source>
-      <translation type="unfinished">An optional host object for this curtain wall</translation>
+      <translation>Volitelný hostitelský objekt této závěsné stěny</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="93"/>
       <source>The height of the curtain wall, if based on an edge</source>
-      <translation type="unfinished">The height of the curtain wall, if based on an edge</translation>
+      <translation>Výška závěsné stěny, je-li založena na hraně</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="97"/>
       <source>The number of vertical mullions</source>
-      <translation type="unfinished">The number of vertical mullions</translation>
+      <translation>Počet svislých sloupků</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="101"/>
       <source>If the profile of the vertical mullions get aligned with the surface or not</source>
-      <translation type="unfinished">If the profile of the vertical mullions get aligned with the surface or not</translation>
+      <translation>Zarovná-li se profil svislých sloupků s povrchem, či nezarovná</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="104"/>
       <source>The number of vertical sections of this curtain wall</source>
-      <translation type="unfinished">The number of vertical sections of this curtain wall</translation>
+      <translation>Počet svislých sekcí této závěsné stěny</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="112"/>
       <source>The height of the vertical mullions profile, if no profile is used</source>
-      <translation type="unfinished">The height of the vertical mullions profile, if no profile is used</translation>
+      <translation>Výška profilu svislých sloupků, není-li použit žádný profil</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="116"/>
       <source>The width of the vertical mullions profile, if no profile is used</source>
-      <translation type="unfinished">The width of the vertical mullions profile, if no profile is used</translation>
+      <translation>Šířka profilu svislých sloupků. není-li použit žádný profil</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="120"/>
       <source>A profile for vertical mullions (disables vertical mullion size)</source>
-      <translation type="unfinished">A profile for vertical mullions (disables vertical mullion size)</translation>
+      <translation>Profil vertikálních sloupků (zakáže velikost svislých sloupků)</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="123"/>
       <source>The number of horizontal mullions</source>
-      <translation type="unfinished">The number of horizontal mullions</translation>
+      <translation>Počet vodorovných sloupků</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="127"/>
       <source>If the profile of the horizontal mullions gets aligned with the surface or not</source>
-      <translation type="unfinished">If the profile of the horizontal mullions gets aligned with the surface or not</translation>
+      <translation>Zarovná-li se profil vodorovných sloupků s povrchem, či nezarovná</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="130"/>
       <source>The number of horizontal sections of this curtain wall</source>
-      <translation type="unfinished">The number of horizontal sections of this curtain wall</translation>
+      <translation>Počet vodorovných sekcí této závěsné stěny</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="138"/>
       <source>The height of the horizontal mullions profile, if no profile is used</source>
-      <translation type="unfinished">The height of the horizontal mullions profile, if no profile is used</translation>
+      <translation>Výška profilu vodorovných sloupků, není-li použit žádný profil</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="142"/>
       <source>The width of the horizontal mullions profile, if no profile is used</source>
-      <translation type="unfinished">The width of the horizontal mullions profile, if no profile is used</translation>
+      <translation>Šířka profilu vodorovných sloupků. není-li použit žádný profil</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="146"/>
       <source>A profile for horizontal mullions (disables horizontal mullion size)</source>
-      <translation type="unfinished">A profile for horizontal mullions (disables horizontal mullion size)</translation>
+      <translation>Profil vodorovných sloupků (zakáže velikost vodorovných sloupků)</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="149"/>
       <source>The number of diagonal mullions</source>
-      <translation type="unfinished">The number of diagonal mullions</translation>
+      <translation>Počet úhlopříčných sloupků</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="153"/>
       <source>The size of the diagonal mullions, if any, if no profile is used</source>
-      <translation type="unfinished">The size of the diagonal mullions, if any, if no profile is used</translation>
+      <translation>Velikost úhlopříč. sloupků, jsou-li nějaké, a zároveň nepoužívají profil</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="157"/>
       <source>A profile for diagonal mullions, if any (disables horizontal mullion size)</source>
-      <translation type="unfinished">A profile for diagonal mullions, if any (disables horizontal mullion size)</translation>
+      <translation>Profil úhlopříčných sloupků, jsou-li nějaké (zakáže vodorovnou velikost sloupku)</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="160"/>
       <source>The number of panels</source>
-      <translation type="unfinished">The number of panels</translation>
+      <translation>Počet panelů</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="164"/>
       <source>The thickness of the panels</source>
-      <translation type="unfinished">The thickness of the panels</translation>
+      <translation>Tloušťka panelů</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="168"/>
       <source>Swaps horizontal and vertical lines</source>
-      <translation type="unfinished">Swaps horizontal and vertical lines</translation>
+      <translation>Prohodí vodorovné a svislé čáry</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="171"/>
@@ -7109,12 +7394,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPipe.py" line="86"/>
       <source>Offset from the start point</source>
-      <translation type="unfinished">Offset from the start point</translation>
+      <translation>Odsazení od počátečního bodu</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="88"/>
       <source>Offset from the end point</source>
-      <translation type="unfinished">Offset from the end point</translation>
+      <translation>Odsazení od koncového bodu</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="90"/>
@@ -7127,62 +7412,62 @@ Building creation aborted.</translation>
       <translation type="unfinished">If not based on a profile, this controls the profile of this pipe</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="284"/>
+      <location filename="../../ArchPipe.py" line="288"/>
       <source>The curvature radius of this connector</source>
       <translation type="unfinished">The curvature radius of this connector</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="286"/>
+      <location filename="../../ArchPipe.py" line="290"/>
       <source>The pipes linked by this connector</source>
       <translation type="unfinished">The pipes linked by this connector</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="288"/>
+      <location filename="../../ArchPipe.py" line="292"/>
       <source>The type of this connector</source>
       <translation type="unfinished">The type of this connector</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="104"/>
-      <source>The description column</source>
-      <translation type="unfinished">The description column</translation>
+      <location filename="../../ArchSchedule.py" line="110"/>
+      <source>The operation column</source>
+      <translation type="unfinished">The operation column</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="106"/>
+      <location filename="../../ArchSchedule.py" line="112"/>
       <source>The values column</source>
       <translation type="unfinished">The values column</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="108"/>
+      <location filename="../../ArchSchedule.py" line="114"/>
       <source>The units column</source>
       <translation type="unfinished">The units column</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="110"/>
+      <location filename="../../ArchSchedule.py" line="116"/>
       <source>The objects column</source>
       <translation type="unfinished">The objects column</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="112"/>
+      <location filename="../../ArchSchedule.py" line="118"/>
       <source>The filter column</source>
       <translation type="unfinished">The filter column</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="114"/>
+      <location filename="../../ArchSchedule.py" line="120"/>
       <source>If True, a spreadsheet containing the results is recreated when needed</source>
       <translation type="unfinished">If True, a spreadsheet containing the results is recreated when needed</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="118"/>
+      <location filename="../../ArchSchedule.py" line="124"/>
       <source>If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed</source>
       <translation type="unfinished">If True, the schedule and the associated spreadsheet are updated whenever the document is recomputed</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="130"/>
+      <location filename="../../ArchSchedule.py" line="136"/>
       <source>The BIM Schedule that uses this spreadsheet</source>
       <translation type="unfinished">The BIM Schedule that uses this spreadsheet</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="116"/>
+      <location filename="../../ArchSchedule.py" line="122"/>
       <source>If True, additional lines with each individual object are added to the results</source>
       <translation type="unfinished">If True, additional lines with each individual object are added to the results</translation>
     </message>
@@ -7190,17 +7475,17 @@ Building creation aborted.</translation>
       <location filename="../../ArchFloor.py" line="214"/>
       <location filename="../../ArchSectionPlane.py" line="812"/>
       <source>The placement of this object</source>
-      <translation type="unfinished">The placement of this object</translation>
+      <translation>Umístění tohoto objektu</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="70"/>
       <source>The intervals between axes</source>
-      <translation type="unfinished">The intervals between axes</translation>
+      <translation>Rozestup mezi osami</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="72"/>
       <source>The angles of each axis</source>
-      <translation type="unfinished">The angles of each axis</translation>
+      <translation>Úhel jednotlivých os</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="74"/>
@@ -7215,77 +7500,77 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="78"/>
       <source>The length of the axes</source>
-      <translation type="unfinished">The length of the axes</translation>
+      <translation>Délka os</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="85"/>
       <source>If not zero, the axes are not represented as one full line but as two lines of the given length</source>
-      <translation type="unfinished">If not zero, the axes are not represented as one full line but as two lines of the given length</translation>
+      <translation>Není-li nula, osy nejsou reprezentovány jednou nepřerušenou čárou, ale dvěma čárami dané délky</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="177"/>
+      <location filename="../../ArchAxis.py" line="183"/>
       <source>The size of the axis bubbles</source>
       <translation type="unfinished">The size of the axis bubbles</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="180"/>
+      <location filename="../../ArchAxis.py" line="186"/>
       <source>The numbering style</source>
-      <translation type="unfinished">The numbering style</translation>
+      <translation>Styl číslování</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="184"/>
+      <location filename="../../ArchAxis.py" line="190"/>
       <source>The type of line to draw this axis</source>
-      <translation type="unfinished">The type of line to draw this axis</translation>
+      <translation>Styl vykreslení čáry této osy</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="188"/>
+      <location filename="../../ArchAxis.py" line="194"/>
       <source>Where to add bubbles to this axis: Start, end, both or none</source>
       <translation type="unfinished">Where to add bubbles to this axis: Start, end, both or none</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="191"/>
+      <location filename="../../ArchAxis.py" line="197"/>
       <source>The line width to draw this axis</source>
       <translation>Tloušťka čáry k vykreslení této osy</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="194"/>
-      <source>The color of this axis</source>
-      <translation type="unfinished">The color of this axis</translation>
-    </message>
-    <message>
-      <location filename="../../ArchAxis.py" line="197"/>
-      <source>The number of the first axis</source>
-      <translation type="unfinished">The number of the first axis</translation>
-    </message>
-    <message>
       <location filename="../../ArchAxis.py" line="200"/>
-      <source>The font to use for texts</source>
-      <translation type="unfinished">The font to use for texts</translation>
+      <source>The color of this axis</source>
+      <translation>Barva této osy</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="203"/>
-      <source>The font size</source>
-      <translation type="unfinished">The font size</translation>
+      <source>The number of the first axis</source>
+      <translation>Číslo první osy</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="206"/>
-      <source>If true, show the labels</source>
-      <translation type="unfinished">If true, show the labels</translation>
+      <source>The font to use for texts</source>
+      <translation>Písmo použité pro texty</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="208"/>
+      <location filename="../../ArchAxis.py" line="209"/>
+      <source>The font size</source>
+      <translation>Velikost písma</translation>
+    </message>
+    <message>
+      <location filename="../../ArchAxis.py" line="212"/>
+      <source>If true, show the labels</source>
+      <translation>Je-li "True", zobrazí popisky</translation>
+    </message>
+    <message>
+      <location filename="../../ArchAxis.py" line="214"/>
       <source>A transformation to apply to each label</source>
-      <translation type="unfinished">A transformation to apply to each label</translation>
+      <translation>Transformace, použitá pro každý popisek</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="197"/>
       <source>The base object this component is built upon</source>
-      <translation type="unfinished">The base object this component is built upon</translation>
+      <translation>Základní objekt, na kterém je postaven tento komponent</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="199"/>
       <source>The object this component is cloning</source>
-      <translation type="unfinished">The object this component is cloning</translation>
+      <translation>Objekt, jehož klonem je tento komponent</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="209"/>
@@ -7295,17 +7580,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="211"/>
       <source>A material for this object</source>
-      <translation type="unfinished">A material for this object</translation>
+      <translation>Materiál tohoto objektu</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="217"/>
       <source>Specifies if moving this object moves its base instead</source>
-      <translation type="unfinished">Specifies if moving this object moves its base instead</translation>
+      <translation>Určuje, zda se při přesunu přemístí základna, namísto objektu</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="220"/>
       <source>Specifies if this object must move together when its host is moved</source>
-      <translation type="unfinished">Specifies if this object must move together when its host is moved</translation>
+      <translation>Určuje, zda se objekt bude přesouvat spolu s hostitelským objektem</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="223"/>
@@ -7320,17 +7605,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="232"/>
       <source>An optional higher-resolution mesh or shape for this object</source>
-      <translation type="unfinished">An optional higher-resolution mesh or shape for this object</translation>
+      <translation>Volitelná sít nebo tvar s vyšším rozlišením pro tento objekt</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="234"/>
       <source>An optional axis or axis system on which this object should be duplicated</source>
-      <translation type="unfinished">An optional axis or axis system on which this object should be duplicated</translation>
+      <translation>Volitelná osa nebo osový systém, na který má být tento objekt duplikován</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1182"/>
+      <location filename="../../ArchComponent.py" line="1193"/>
       <source>Use the material color as this object's shape color, if available</source>
-      <translation type="unfinished">Use the material color as this object's shape color, if available</translation>
+      <translation>Použít barvu materiálu pro zbarvení tvaru tohoto objektu, je-li dostupná</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="73"/>
@@ -7375,27 +7660,27 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchRebar.py" line="90"/>
       <source>List of placement of all the bars</source>
-      <translation type="unfinished">List of placement of all the bars</translation>
+      <translation>Seznam umístění všech sloupů</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="92"/>
       <source>The structure object that hosts this rebar</source>
-      <translation type="unfinished">The structure object that hosts this rebar</translation>
+      <translation>Konstrukční objekt obsahující tuto výztuž</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="94"/>
       <source>The custom spacing of rebar</source>
-      <translation type="unfinished">The custom spacing of rebar</translation>
+      <translation>Vlastní rozestup výztuží</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="96"/>
       <source>Length of a single rebar</source>
-      <translation type="unfinished">Length of a single rebar</translation>
+      <translation>Délka jedné výztuže</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="99"/>
       <source>Total length of all rebars</source>
-      <translation type="unfinished">Total length of all rebars</translation>
+      <translation>Celková délka všech výztuží</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="106"/>
@@ -7403,9 +7688,9 @@ Building creation aborted.</translation>
       <translation type="unfinished">The rebar mark</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="400"/>
+      <location filename="../../ArchRebar.py" line="402"/>
       <source>Shape of rebar</source>
-      <translation type="unfinished">Shape of rebar</translation>
+      <translation>Tvar výztuže</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="816"/>
@@ -7415,12 +7700,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="818"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
-      <translation>Pokud nepravda, ne-objemová tělesa budou také ořezána s možnými chybnými výsledky.</translation>
+      <translation>Je-li "false", budou ořezána také ne-objemová tělesa, s možnými chybnými výsledky.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="821"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
-      <translation type="unfinished">If True, resulting views will be clipped to the section plane area.</translation>
+      <translation>Je-li "True", výsledné pohledy budou oříznuty do oblasti roviny řezu.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="823"/>
@@ -7430,58 +7715,58 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="826"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
-      <translation type="unfinished">Geometry further than this value will be cut off. Keep zero for unlimited.</translation>
+      <translation>Geometrie umístěná za touto vzdáleností bude oříznuta. Ponechte nulu pro neomezenou.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="885"/>
+      <location filename="../../ArchSectionPlane.py" line="889"/>
       <source>The display length of this section plane</source>
-      <translation type="unfinished">The display length of this section plane</translation>
+      <translation>Zobrazovaná délka této roviny řezu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="891"/>
+      <location filename="../../ArchSectionPlane.py" line="895"/>
       <source>The display height of this section plane</source>
-      <translation type="unfinished">The display height of this section plane</translation>
+      <translation>Zobrazovaná výška této roviny řezu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="897"/>
+      <location filename="../../ArchSectionPlane.py" line="901"/>
       <source>The size of the arrows of this section plane</source>
-      <translation type="unfinished">The size of the arrows of this section plane</translation>
+      <translation>Velikost šipek této roviny řezu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="900"/>
+      <location filename="../../ArchSectionPlane.py" line="904"/>
       <source>The transparency of this object</source>
-      <translation type="unfinished">The transparency of this object</translation>
+      <translation>Průhlednost tohoto objektu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="906"/>
-      <location filename="../../ArchSectionPlane.py" line="911"/>
+      <location filename="../../ArchSectionPlane.py" line="910"/>
+      <location filename="../../ArchSectionPlane.py" line="915"/>
       <source>Show the cut in the 3D view</source>
       <translation type="unfinished">Show the cut in the 3D view</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="908"/>
+      <location filename="../../ArchSectionPlane.py" line="912"/>
       <source>The color of this object</source>
       <translation type="unfinished">The color of this object</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="913"/>
+      <location filename="../../ArchSectionPlane.py" line="917"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation type="unfinished">The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="916"/>
+      <location filename="../../ArchSectionPlane.py" line="920"/>
       <source>Show the label in the 3D view</source>
       <translation type="unfinished">Show the label in the 3D view</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="918"/>
-      <location filename="../../ArchSpace.py" line="455"/>
+      <location filename="../../ArchSectionPlane.py" line="922"/>
+      <location filename="../../ArchSpace.py" line="457"/>
       <source>The name of the font</source>
       <translation type="unfinished">The name of the font</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="921"/>
-      <location filename="../../ArchSpace.py" line="461"/>
+      <location filename="../../ArchSectionPlane.py" line="925"/>
+      <location filename="../../ArchSpace.py" line="463"/>
       <source>The size of the text font</source>
       <translation type="unfinished">The size of the text font</translation>
     </message>
@@ -7561,49 +7846,44 @@ Building creation aborted.</translation>
       <translation type="unfinished">Defines the calculation type for the horizontal area and its perimeter length</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="452"/>
+      <location filename="../../ArchSpace.py" line="454"/>
       <source>The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data</source>
       <translation type="unfinished">The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="458"/>
+      <location filename="../../ArchSpace.py" line="460"/>
       <source>The color of the area text</source>
       <translation type="unfinished">The color of the area text</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="464"/>
+      <location filename="../../ArchSpace.py" line="466"/>
       <source>The size of the first line of text</source>
       <translation type="unfinished">The size of the first line of text</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="467"/>
+      <location filename="../../ArchSpace.py" line="469"/>
       <source>The space between the lines of text</source>
       <translation type="unfinished">The space between the lines of text</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="470"/>
+      <location filename="../../ArchSpace.py" line="472"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
       <translation>Poloha textu. Použij (0,0,0) pro automatickou polohu</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="472"/>
+      <location filename="../../ArchSpace.py" line="474"/>
       <source>The justification of the text</source>
       <translation type="unfinished">The justification of the text</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="476"/>
+      <location filename="../../ArchSpace.py" line="478"/>
       <source>The number of decimals to use for calculated texts</source>
       <translation type="unfinished">The number of decimals to use for calculated texts</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="479"/>
+      <location filename="../../ArchSpace.py" line="481"/>
       <source>Show the unit suffix</source>
       <translation type="unfinished">Show the unit suffix</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="160"/>
-      <source>The length of this wall. Not used if this wall is based on an underlying object</source>
-      <translation type="unfinished">The length of this wall. Not used if this wall is based on an underlying object</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="172"/>
@@ -7618,12 +7898,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWall.py" line="182"/>
       <source>The face number of the base object used to build this wall</source>
-      <translation>Počet ploch základního objektu použitého pro vytvoření této zdi</translation>
+      <translation>Číslo plochy základního objektu, použité pro vytvoření této stěny</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="162"/>
       <source>The width of this wall. Not used if this wall is based on a face. Disabled and ignored if Base object (ArchSketch) provides the information.</source>
       <translation type="unfinished">The width of this wall. Not used if this wall is based on a face. Disabled and ignored if Base object (ArchSketch) provides the information.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="160"/>
+      <source>The length of this wall. Read-only if this wall is not based on an unconstrained sketch with a single edge, or on a Draft Wire with a single edge. Refer to wiki for details how length is deduced.</source>
+      <translation type="unfinished">The length of this wall. Read-only if this wall is not based on an unconstrained sketch with a single edge, or on a Draft Wire with a single edge. Refer to wiki for details how length is deduced.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="166"/>
@@ -7653,7 +7938,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWall.py" line="193"/>
       <source>Enable this to make the wall generate blocks</source>
-      <translation type="unfinished">Enable this to make the wall generate blocks</translation>
+      <translation>Povolte pro vygenerování stavebních bloků stěny</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="195"/>
@@ -7663,34 +7948,45 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWall.py" line="197"/>
       <source>The height of each block</source>
-      <translation type="unfinished">The height of each block</translation>
+      <translation>Výška jednotlivých bloků</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="199"/>
       <source>The horizontal offset of the first line of blocks</source>
-      <translation type="unfinished">The horizontal offset of the first line of blocks</translation>
+      <translation>Horizontální ofset první řady stavebních bloků</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="201"/>
       <source>The horizontal offset of the second line of blocks</source>
-      <translation type="unfinished">The horizontal offset of the second line of blocks</translation>
+      <translation>Horizontální ofset druhé řady stavebních bloků</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="203"/>
       <source>The size of the joints between each block</source>
-      <translation type="unfinished">The size of the joints between each block</translation>
+      <translation>Šířka spoje mezi jednotlivými bloky</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="205"/>
       <source>The number of entire blocks</source>
-      <translation type="unfinished">The number of entire blocks</translation>
+      <translation>Počet celých bloků</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="208"/>
       <source>The number of broken blocks</source>
-      <translation type="unfinished">The number of broken blocks</translation>
+      <translation>Počet lámaných (koncových) bloků</translation>
     </message>
     <message>
+      <location filename="../../ArchWall.py" line="214"/>
+      <source>Selected edges (or group of edges) of the base Sketch/ArchSketch, to use in creating the shape of this Arch Wall (instead of using all the Base Sketch/ArchSketch's edges by default).  Input are index numbers of edges or groups.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Wall Axis) information, with getWallBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
+      <translation type="unfinished">Selected edges (or group of edges) of the base Sketch/ArchSketch, to use in creating the shape of this Arch Wall (instead of using all the Base Sketch/ArchSketch's edges by default).  Input are index numbers of edges or groups.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Wall Axis) information, with getWallBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="216"/>
+      <source>Select User Defined PropertySet to use in creating variant shape, layers of the Arch Wall with same ArchSketch </source>
+      <translation type="unfinished">Select User Defined PropertySet to use in creating variant shape, layers of the Arch Wall with same ArchSketch </translation>
+    </message>
+    <message>
+      <location filename="../../ArchStructure.py" line="719"/>
       <location filename="../../ArchWall.py" line="211"/>
       <source>Use Base ArchSketch (if used) data (e.g. widths, aligns, offsets) instead of Wall's properties</source>
       <translation type="unfinished">Use Base ArchSketch (if used) data (e.g. widths, aligns, offsets) instead of Wall's properties</translation>
@@ -7699,10 +7995,10 @@ Building creation aborted.</translation>
   <context>
     <name>Arch_StructureTools</name>
     <message>
-      <location filename="../../ArchStructure.py" line="1509"/>
-      <location filename="../../ArchStructure.py" line="1512"/>
+      <location filename="../../ArchStructure.py" line="1652"/>
+      <location filename="../../ArchStructure.py" line="1655"/>
       <source>Structure tools</source>
-      <translation type="unfinished">Structure tools</translation>
+      <translation>Nástroje struktury</translation>
     </message>
   </context>
   <context>
@@ -7715,7 +8011,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimEquipment.py" line="47"/>
       <source>Creates an equipment from a selected object (Part or Mesh)</source>
-      <translation type="unfinished">Creates an equipment from a selected object (Part or Mesh)</translation>
+      <translation>Vytvoří vybavení z vybraného objektu (díl nebo síť)</translation>
     </message>
   </context>
   <context>
@@ -7734,7 +8030,7 @@ Building creation aborted.</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="893"/>
+      <location filename="../../ArchBuildingPart.py" line="886"/>
       <source>Writing camera position</source>
       <translation>Zápis polohy kamery</translation>
     </message>
@@ -7742,102 +8038,102 @@ Building creation aborted.</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="387"/>
+      <location filename="../../InitGui.py" line="389"/>
       <source>Drafting tools</source>
-      <translation type="unfinished">Drafting tools</translation>
+      <translation>Nástroje 2D návrhu</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="388"/>
+      <location filename="../../InitGui.py" line="390"/>
       <source>Draft snap</source>
       <translation>Snímek návrhu</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="389"/>
-      <source>3D/BIM tools</source>
-      <translation type="unfinished">3D/BIM tools</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="390"/>
-      <source>Annotation tools</source>
-      <translation type="unfinished">Annotation tools</translation>
-    </message>
-    <message>
       <location filename="../../InitGui.py" line="391"/>
-      <source>2D modification tools</source>
-      <translation type="unfinished">2D modification tools</translation>
+      <source>3D/BIM tools</source>
+      <translation>Nástroje 3D/BIM</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="392"/>
-      <source>Manage tools</source>
-      <translation type="unfinished">Manage tools</translation>
+      <source>Annotation tools</source>
+      <translation>Nástroje pro anotaci</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="393"/>
-      <source>General modification tools</source>
-      <translation type="unfinished">General modification tools</translation>
+      <source>2D modification tools</source>
+      <translation>Nástroje pro 2D modifikace</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="394"/>
-      <source>Object modification tools</source>
-      <translation type="unfinished">Object modification tools</translation>
+      <source>Manage tools</source>
+      <translation>Nástroje pro správu</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="395"/>
+      <source>General modification tools</source>
+      <translation>Obecné nástroje pro modifikaci</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="396"/>
+      <source>Object modification tools</source>
+      <translation>Nástroje modifikace objektu</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="397"/>
       <source>3D modification tools</source>
-      <translation type="unfinished">3D modification tools</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="408"/>
-      <source>&amp;2D Drafting</source>
-      <translation type="unfinished">&amp;2D Drafting</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="409"/>
-      <source>&amp;3D/BIM</source>
-      <translation type="unfinished">&amp;3D/BIM</translation>
+      <translation>Nástroje 3D modifikací</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="410"/>
-      <source>Reinforcement tools</source>
-      <translation type="unfinished">Reinforcement tools</translation>
+      <source>&amp;2D Drafting</source>
+      <translation>&amp;2D Návrh</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="411"/>
-      <source>&amp;Annotation</source>
-      <translation>&amp;Poznámka</translation>
+      <source>&amp;3D/BIM</source>
+      <translation>&amp;3D/BIM</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="412"/>
-      <source>&amp;Snapping</source>
-      <translation type="unfinished">&amp;Snapping</translation>
+      <source>Reinforcement tools</source>
+      <translation>Nástroje armatury</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="413"/>
-      <source>&amp;Modify</source>
-      <translation type="unfinished">&amp;Modify</translation>
+      <source>&amp;Annotation</source>
+      <translation>&amp;Anotace</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="414"/>
+      <source>&amp;Snapping</source>
+      <translation>&amp;Uchopování</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="415"/>
-      <source>&amp;Manage</source>
-      <translation type="unfinished">&amp;Manage</translation>
+      <source>&amp;Modify</source>
+      <translation>&amp;Modifikovat</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="416"/>
+      <location filename="../../InitGui.py" line="417"/>
+      <source>&amp;Manage</source>
+      <translation>&amp;Spravovat</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="418"/>
       <source>&amp;Flamingo</source>
       <translation type="unfinished">&amp;Flamingo</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="417"/>
+      <location filename="../../InitGui.py" line="419"/>
       <source>&amp;Fasteners</source>
       <translation type="unfinished">&amp;Fasteners</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="418"/>
+      <location filename="../../InitGui.py" line="420"/>
       <source>&amp;Utils</source>
-      <translation type="unfinished">&amp;Utils</translation>
+      <translation>&amp;Pomůcky</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="423"/>
+      <location filename="../../InitGui.py" line="425"/>
       <source>Nudge</source>
       <translation>Hranice</translation>
     </message>
@@ -7852,7 +8148,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimProfile.py" line="46"/>
       <source>Creates a profile</source>
-      <translation type="unfinished">Creates a profile</translation>
+      <translation>Vytvoří profil</translation>
     </message>
   </context>
   <context>
@@ -7865,7 +8161,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimSite.py" line="48"/>
       <source>Creates a site including selected objects.</source>
-      <translation type="unfinished">Creates a site including selected objects.</translation>
+      <translation>Vytvoří pozemek včetně vybraných objektů.</translation>
     </message>
   </context>
   <context>
@@ -7878,7 +8174,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimRoof.py" line="44"/>
       <source>Creates a roof object from the selected wire.</source>
-      <translation type="unfinished">Creates a roof object from the selected wire.</translation>
+      <translation>Vytvoří objekt střechy z vybrané křivky.</translation>
     </message>
   </context>
   <context>
@@ -7891,7 +8187,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimCutPlane.py" line="45"/>
       <source>Cut an object with a plane</source>
-      <translation type="unfinished">Cut an object with a plane</translation>
+      <translation>Oříznout objekt rovinou</translation>
     </message>
   </context>
   <context>
@@ -7899,12 +8195,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimReference.py" line="42"/>
       <source>External reference</source>
-      <translation type="unfinished">External reference</translation>
+      <translation>Externí odkaz</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimReference.py" line="46"/>
       <source>Creates an external reference object</source>
-      <translation type="unfinished">Creates an external reference object</translation>
+      <translation>Vytvoří objekt externího odkazu</translation>
     </message>
   </context>
   <context>
@@ -7930,7 +8226,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="51"/>
       <source>Creates a window object from a selected object (wire, rectangle or sketch)</source>
-      <translation type="unfinished">Creates a window object from a selected object (wire, rectangle or sketch)</translation>
+      <translation>Vytvoří objekt okna z vybraného objektu (křivka, obdélník nebo náčrt)</translation>
     </message>
   </context>
   <context>
@@ -7943,7 +8239,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="72"/>
       <source>Creates an axis system from a set of axes</source>
-      <translation type="unfinished">Creates an axis system from a set of axes</translation>
+      <translation>Vytvoří osový systém ze skupiny os</translation>
     </message>
   </context>
   <context>
@@ -7969,7 +8265,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimStairs.py" line="46"/>
       <source>Creates a flight of stairs</source>
-      <translation type="unfinished">Creates a flight of stairs</translation>
+      <translation>Vytvoří úsek schodiště</translation>
     </message>
   </context>
   <context>
@@ -7982,7 +8278,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimSpace.py" line="46"/>
       <source>Creates a space object from selected boundary objects</source>
-      <translation type="unfinished">Creates a space object from selected boundary objects</translation>
+      <translation>Vytvoří objekt prostoru z vybraných objektů hranice</translation>
     </message>
   </context>
   <context>
@@ -7995,40 +8291,40 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimFence.py" line="43"/>
       <source>Creates a fence object from a selected section, post and path</source>
-      <translation type="unfinished">Creates a fence object from a selected section, post and path</translation>
+      <translation>Vytvoří objekt plotu z vybrané sekce, sloupku nebo trasy</translation>
     </message>
   </context>
   <context>
     <name>Arch_Material</name>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="560"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="563"/>
       <source>Material</source>
       <translation>Materiál</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="564"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="567"/>
       <source>Creates or edits the material definition of a selected object.</source>
-      <translation type="unfinished">Creates or edits the material definition of a selected object.</translation>
+      <translation>Vytvoří nebo upraví definici materiálu vybraného objektu.</translation>
     </message>
   </context>
   <context>
     <name>Arch_MultiMaterial</name>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="591"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="594"/>
       <source>Multi-Material</source>
-      <translation type="unfinished">Multi-Material</translation>
+      <translation>Multimateriál</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="595"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="598"/>
       <source>Creates or edits multi-materials</source>
-      <translation type="unfinished">Creates or edits multi-materials</translation>
+      <translation>Vytvoří nebo upraví multimateriály</translation>
     </message>
   </context>
   <context>
     <name>Arch_MaterialTools</name>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="620"/>
       <location filename="../../bimcommands/BimMaterial.py" line="623"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="626"/>
       <source>Material tools</source>
       <translation>Výběr materiálu</translation>
     </message>
@@ -8043,17 +8339,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="107"/>
       <source>Creates a customizable grid object</source>
-      <translation type="unfinished">Creates a customizable grid object</translation>
+      <translation>Vytvoří upravitelný objekt mřížky</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="63"/>
       <source>The number of rows</source>
-      <translation type="unfinished">The number of rows</translation>
+      <translation>Počet řad</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="65"/>
       <source>The number of columns</source>
-      <translation type="unfinished">The number of columns</translation>
+      <translation>Počet sloupců</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="67"/>
@@ -8063,12 +8359,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchGrid.py" line="69"/>
       <source>The sizes of columns</source>
-      <translation type="unfinished">The sizes of columns</translation>
+      <translation>Velikost sloupců</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="71"/>
       <source>The span ranges of cells that are merged together</source>
-      <translation type="unfinished">The span ranges of cells that are merged together</translation>
+      <translation>Rozsah rozpětí buněk, které jsou sloučeny dohromady</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="73"/>
@@ -8088,12 +8384,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchGrid.py" line="80"/>
       <source>Creates automatic column divisions (set to 0 to disable)</source>
-      <translation type="unfinished">Creates automatic column divisions (set to 0 to disable)</translation>
+      <translation>Vytvoří automatické rozdělení sloupců (nast. 0 pro vypnutí)</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="82"/>
       <source>Creates automatic row divisions (set to 0 to disable)</source>
-      <translation type="unfinished">Creates automatic row divisions (set to 0 to disable)</translation>
+      <translation>Vytvoří automatické rozdělení řádků (nast. 0 pro vypnutí)</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="84"/>
@@ -8111,12 +8407,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="54"/>
       <source>Panel</source>
-      <translation type="unfinished">Panel</translation>
+      <translation>Panel</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="58"/>
       <source>Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</source>
-      <translation type="unfinished">Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</translation>
+      <translation>Vytvoří objekt panelu od základu nebo z vybraného objektu (náčrt, křivka, plocha nebo těleso)</translation>
     </message>
   </context>
   <context>
@@ -8172,12 +8468,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimCurtainwall.py" line="43"/>
       <source>Curtain Wall</source>
-      <translation type="unfinished">Curtain Wall</translation>
+      <translation>Stěna opláštění</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCurtainwall.py" line="47"/>
       <source>Creates a curtain wall object from selected line or from scratch</source>
-      <translation type="unfinished">Creates a curtain wall object from selected line or from scratch</translation>
+      <translation>Vytvoří objekt závěsné stěny (opláštění) z vybrané čáry či od základu</translation>
     </message>
   </context>
   <context>
@@ -8190,7 +8486,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="46"/>
       <source>Creates a pipe object from a given Wire or Line</source>
-      <translation type="unfinished">Creates a pipe object from a given Wire or Line</translation>
+      <translation>Vytvoří objekt potrubí z dané křivky nebo čáry</translation>
     </message>
   </context>
   <context>
@@ -8198,7 +8494,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="81"/>
       <source>Connector</source>
-      <translation type="unfinished">Connector</translation>
+      <translation>Propojka</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="85"/>
@@ -8220,7 +8516,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimSchedule.py" line="41"/>
       <source>Schedule</source>
-      <translation type="unfinished">Schedule</translation>
+      <translation>Plán</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSchedule.py" line="44"/>
@@ -8233,7 +8529,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchFloor.py" line="118"/>
       <source>Level</source>
-      <translation type="unfinished">Level</translation>
+      <translation>Podlaží</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="122"/>
@@ -8251,7 +8547,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="46"/>
       <source>Creates a set of axes</source>
-      <translation type="unfinished">Creates a set of axes</translation>
+      <translation>Vytvoří sadu os</translation>
     </message>
   </context>
   <context>
@@ -8260,7 +8556,7 @@ Building creation aborted.</translation>
       <location filename="../../bimcommands/BimAxis.py" line="129"/>
       <location filename="../../bimcommands/BimAxis.py" line="133"/>
       <source>Axis tools</source>
-      <translation type="unfinished">Axis tools</translation>
+      <translation>Nástroje osy</translation>
     </message>
   </context>
   <context>
@@ -8268,7 +8564,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimRebar.py" line="42"/>
       <source>Custom Rebar</source>
-      <translation type="unfinished">Custom Rebar</translation>
+      <translation>Vlastní výztuž</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimRebar.py" line="46"/>
@@ -8281,7 +8577,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimSectionPlane.py" line="43"/>
       <source>Section Plane</source>
-      <translation type="unfinished">Section Plane</translation>
+      <translation>Rovina řezu</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSectionPlane.py" line="46"/>
@@ -8300,12 +8596,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuilding.py" line="225"/>
       <source>Creates a building object including selected objects.</source>
-      <translation type="unfinished">Creates a building object including selected objects.</translation>
+      <translation>Vytvoří objekt budovy včetně vybraných objektů.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBuildingPart.py" line="77"/>
       <source>Creates a building object.</source>
-      <translation type="unfinished">Creates a building object.</translation>
+      <translation>Vytvoří objekt budovy.</translation>
     </message>
   </context>
   <context>
@@ -8313,25 +8609,25 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="52"/>
       <source>Wall</source>
-      <translation type="unfinished">Wall</translation>
+      <translation>Stěna</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="56"/>
       <source>Creates a wall object from scratch or from a selected object (wire, face or solid)</source>
-      <translation type="unfinished">Creates a wall object from scratch or from a selected object (wire, face or solid)</translation>
+      <translation>Vytvoří objekt stěny od základu nebo z vybraného objektu (křivka, plocha nebo těleso)</translation>
     </message>
   </context>
   <context>
     <name>Arch_MergeWalls</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="428"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="436"/>
       <source>Merge Walls</source>
-      <translation type="unfinished">Merge Walls</translation>
+      <translation>Sloučit stěny</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="431"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="439"/>
       <source>Merges the selected walls, if possible</source>
-      <translation type="unfinished">Merges the selected walls, if possible</translation>
+      <translation>Sloučí vybrané stěny, je-li to možné</translation>
     </message>
   </context>
   <context>
@@ -8339,49 +8635,49 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="42"/>
       <source>Add component</source>
-      <translation type="unfinished">Add component</translation>
+      <translation>Vložit komponentu</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="45"/>
       <source>Adds the selected components to the active object</source>
-      <translation type="unfinished">Adds the selected components to the active object</translation>
+      <translation>Vloží vybrané komponenty do aktivního objektu</translation>
     </message>
   </context>
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="78"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="82"/>
       <source>Remove component</source>
       <translation>Odstranit komponentu</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="81"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="85"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
-      <translation type="unfinished">Remove the selected components from their parents, or create a hole in a component</translation>
+      <translation>Odstranit vybrané komponenty z jim nadřazených, nebo vytvořit otvor v komponentu</translation>
     </message>
   </context>
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="116"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="124"/>
       <source>Split Mesh</source>
-      <translation type="unfinished">Split Mesh</translation>
+      <translation>Rozdělit síť</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="119"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="127"/>
       <source>Splits selected meshes into independent components</source>
-      <translation type="unfinished">Splits selected meshes into independent components</translation>
+      <translation>Rozdělí vybrané sítě na nezávislé komponenty</translation>
     </message>
   </context>
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="144"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="152"/>
       <source>Mesh to Shape</source>
-      <translation type="unfinished">Mesh to Shape</translation>
+      <translation>Síť na Tvar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="147"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="155"/>
       <source>Turns selected meshes into Part Shape objects</source>
       <translation type="unfinished">Turns selected meshes into Part Shape objects</translation>
     </message>
@@ -8389,12 +8685,12 @@ Building creation aborted.</translation>
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="182"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="190"/>
       <source>Select non-manifold meshes</source>
       <translation type="unfinished">Select non-manifold meshes</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="185"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="193"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation type="unfinished">Selects all non-manifold meshes from the document or from the selected groups</translation>
     </message>
@@ -8402,12 +8698,12 @@ Building creation aborted.</translation>
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="230"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="238"/>
       <source>Close holes</source>
       <translation type="unfinished">Close holes</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="233"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="241"/>
       <source>Closes holes in open shapes, turning them solids</source>
       <translation type="unfinished">Closes holes in open shapes, turning them solids</translation>
     </message>
@@ -8415,12 +8711,12 @@ Building creation aborted.</translation>
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="249"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="257"/>
       <source>Check</source>
       <translation type="unfinished">Check</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="252"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="260"/>
       <source>Checks the selected objects for problems</source>
       <translation type="unfinished">Checks the selected objects for problems</translation>
     </message>
@@ -8428,12 +8724,12 @@ Building creation aborted.</translation>
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="273"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="281"/>
       <source>Survey</source>
       <translation>Prohlížení</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="276"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="284"/>
       <source>Starts survey</source>
       <translation type="unfinished">Starts survey</translation>
     </message>
@@ -8441,12 +8737,12 @@ Building creation aborted.</translation>
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="308"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="316"/>
       <source>Component</source>
-      <translation type="unfinished">Component</translation>
+      <translation>Součást</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="312"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="320"/>
       <source>Creates an undefined architectural component</source>
       <translation type="unfinished">Creates an undefined architectural component</translation>
     </message>
@@ -8454,12 +8750,12 @@ Building creation aborted.</translation>
   <context>
     <name>Arch_CloneComponent</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="335"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="343"/>
       <source>Clone component</source>
       <translation>Klonovat komponentu</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="339"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="347"/>
       <source>Clones an object as an undefined architectural component</source>
       <translation type="unfinished">Clones an object as an undefined architectural component</translation>
     </message>
@@ -8467,12 +8763,12 @@ Building creation aborted.</translation>
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="362"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="370"/>
       <source>Create IFC spreadsheet...</source>
       <translation type="unfinished">Create IFC spreadsheet...</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="366"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="374"/>
       <source>Creates a spreadsheet to store IFC properties of an object.</source>
       <translation type="unfinished">Creates a spreadsheet to store IFC properties of an object.</translation>
     </message>
@@ -8480,12 +8776,12 @@ Building creation aborted.</translation>
   <context>
     <name>Arch_ToggleSubs</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="390"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="398"/>
       <source>Toggle subcomponents</source>
-      <translation type="unfinished">Toggle subcomponents</translation>
+      <translation>Přepnout podsoučásti</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="393"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="401"/>
       <source>Shows or hides the subcomponents of this object</source>
       <translation type="unfinished">Shows or hides the subcomponents of this object</translation>
     </message>
@@ -8493,9 +8789,9 @@ Building creation aborted.</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../ArchSite.py" line="878"/>
-      <location filename="../../ArchIFCView.py" line="68"/>
-      <location filename="../../ArchAxis.py" line="593"/>
+      <location filename="../../ArchSite.py" line="882"/>
+      <location filename="../../ArchIFCView.py" line="70"/>
+      <location filename="../../ArchAxis.py" line="625"/>
       <source>Transform</source>
       <translation>Transformace</translation>
     </message>
@@ -8503,17 +8799,17 @@ Building creation aborted.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../InitGui.py" line="448"/>
+      <location filename="../../InitGui.py" line="450"/>
       <source>BIM</source>
       <translation type="unfinished">BIM</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="449"/>
+      <location filename="../../InitGui.py" line="451"/>
       <source>Draft</source>
       <translation>Návrh</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="675"/>
+      <location filename="../../InitGui.py" line="677"/>
       <source>Import-Export</source>
       <translation>Import-Export</translation>
     </message>
@@ -8535,22 +8831,22 @@ Building creation aborted.</translation>
       <translation>Automaticky</translation>
     </message>
     <message>
-      <location filename="../../BimStatus.py" line="137"/>
+      <location filename="../../BimStatus.py" line="139"/>
       <source>Toggle report panels on/off (Ctrl+0)</source>
       <translation type="unfinished">Toggle report panels on/off (Ctrl+0)</translation>
     </message>
     <message>
-      <location filename="../../BimStatus.py" line="156"/>
+      <location filename="../../BimStatus.py" line="158"/>
       <source>Toggle BIM views panel on/off (Ctrl+9)</source>
       <translation type="unfinished">Toggle BIM views panel on/off (Ctrl+9)</translation>
     </message>
     <message>
-      <location filename="../../BimStatus.py" line="174"/>
+      <location filename="../../BimStatus.py" line="176"/>
       <source>Toggle 3D view background between simple and gradient</source>
       <translation type="unfinished">Toggle 3D view background between simple and gradient</translation>
     </message>
     <message>
-      <location filename="../../BimStatus.py" line="201"/>
+      <location filename="../../BimStatus.py" line="203"/>
       <source>The value of the nudge movement (rotation is always 45°).CTRL+arrows to move
 CTRL+, to rotate leftCTRL+. to rotate right
 CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch between auto and manual mode</source>
@@ -8565,12 +8861,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     </message>
     <message>
       <location filename="../../InitGui.py" line="40"/>
-      <location filename="../../bimcommands/BimViews.py" line="136"/>
+      <location filename="../../bimcommands/BimViews.py" line="138"/>
       <source>BIM</source>
       <translation type="unfinished">BIM</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="641"/>
+      <location filename="../../InitGui.py" line="643"/>
       <source>Snapping</source>
       <translation type="unfinished">Snapping</translation>
     </message>
@@ -8580,36 +8876,36 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation type="unfinished">Box dimensions</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="44"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="46"/>
       <location filename="../../bimcommands/BimBox.py" line="151"/>
       <source>Length</source>
       <translation>Délka</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="45"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="47"/>
       <location filename="../../bimcommands/BimBox.py" line="160"/>
       <source>Width</source>
       <translation>Šířka</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="46"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="48"/>
       <location filename="../../bimcommands/BimBox.py" line="169"/>
       <source>Height</source>
       <translation>Výška</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimClassification.py" line="74"/>
-      <location filename="../../bimcommands/BimMaterial.py" line="100"/>
+      <location filename="../../bimcommands/BimClassification.py" line="75"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="103"/>
       <source>Search...</source>
       <translation>Hledat...</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimClassification.py" line="75"/>
+      <location filename="../../bimcommands/BimClassification.py" line="76"/>
       <source>Searches classes</source>
       <translation type="unfinished">Searches classes</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimClassification.py" line="94"/>
+      <location filename="../../bimcommands/BimClassification.py" line="96"/>
       <source>Editing</source>
       <translation type="unfinished">Editing</translation>
     </message>
@@ -8676,29 +8972,29 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcElements.py" line="86"/>
       <location filename="../../bimcommands/BimIfcElements.py" line="468"/>
-      <location filename="../../bimcommands/BimMaterial.py" line="124"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="127"/>
       <source>Create new material</source>
-      <translation type="unfinished">Create new material</translation>
+      <translation>Vytvořit nový materiál</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcElements.py" line="87"/>
       <location filename="../../bimcommands/BimIfcElements.py" line="471"/>
-      <location filename="../../bimcommands/BimMaterial.py" line="132"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="135"/>
       <source>Create new multi-material</source>
-      <translation type="unfinished">Create new multi-material</translation>
+      <translation>Vytvořit nový multimateriál</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="145"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="237"/>
       <location filename="../../bimcommands/BimIfcElements.py" line="136"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="201"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="204"/>
       <source>Label</source>
-      <translation>Štítek</translation>
+      <translation>Popisek</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcElements.py" line="137"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="202"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="205"/>
       <source>IFC type</source>
-      <translation type="unfinished">IFC type</translation>
+      <translation>Typ IFC</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcElements.py" line="138"/>
@@ -8708,12 +9004,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="57"/>
       <source>IfcOpenShell was not found on this system. IFC support is disabled</source>
-      <translation type="unfinished">IfcOpenShell was not found on this system. IFC support is disabled</translation>
+      <translation>IfcOpenShell nebyl na tomto systému nalezen. Podpora IFC je zakázána</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="79"/>
       <source>Objects structure</source>
-      <translation type="unfinished">Objects structure</translation>
+      <translation>Struktura objektů</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="89"/>
@@ -8795,7 +9091,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="227"/>
       <source>IfcSite element was not found in %s. Unable to explore.</source>
-      <translation type="unfinished">IfcSite element was not found in %s. Unable to explore.</translation>
+      <translation>Prvek IfcSite nebyl nalezen v %s. Nelze prozkoumat.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="491"/>
@@ -8810,12 +9106,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="130"/>
       <source>Add property...</source>
-      <translation type="unfinished">Add property...</translation>
+      <translation>Vložit vlastnost...</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="133"/>
       <source>Add property set...</source>
-      <translation type="unfinished">Add property set...</translation>
+      <translation>Vložit sadu vlastností...</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="134"/>
@@ -8823,52 +9119,62 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation>Nový...</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="203"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="206"/>
       <source>Search results</source>
       <translation type="unfinished">Search results</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="396"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="382"/>
       <source>Warning: object %1 has old-styled IfcProperties and cannot be updated</source>
       <translation type="unfinished">Warning: object %1 has old-styled IfcProperties and cannot be updated</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="668"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="681"/>
       <source>Please select or create a property set first in which the new property should be placed.</source>
       <translation type="unfinished">Please select or create a property set first in which the new property should be placed.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="683"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="696"/>
       <source>New property set</source>
-      <translation type="unfinished">New property set</translation>
+      <translation>Nová sada vlastností</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="684"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="697"/>
       <source>Property set name:</source>
       <translation type="unfinished">Property set name:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="47"/>
-      <source>Area</source>
-      <translation>Oblast</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="48"/>
-      <source>Horizontal Area</source>
-      <translation type="unfinished">Horizontal Area</translation>
-    </message>
-    <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="49"/>
-      <source>Vertical Area</source>
-      <translation type="unfinished">Vertical Area</translation>
+      <source>Area</source>
+      <translation>Obsah</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="50"/>
+      <source>Horizontal Area</source>
+      <translation>Horizontální povrch</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="51"/>
+      <source>Vertical Area</source>
+      <translation>Vertikální povrch</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="52"/>
       <source>Volume</source>
       <translation>Objem</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="304"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="177"/>
+      <source>Add quantity set...</source>
+      <translation type="unfinished">Add quantity set...</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="193"/>
+      <source>Adding quantity set</source>
+      <translation type="unfinished">Adding quantity set</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="440"/>
       <source>Cannot save quantities settings for object %1</source>
       <translation type="unfinished">Cannot save quantities settings for object %1</translation>
     </message>
@@ -8900,7 +9206,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="321"/>
       <source>Name</source>
-      <translation>Jméno</translation>
+      <translation>Název</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="322"/>
@@ -8920,7 +9226,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="325"/>
       <source>Face color</source>
-      <translation>Barva obličeje</translation>
+      <translation>Barva plochy</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="326"/>
@@ -8938,7 +9244,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation>Nová vrstva</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLeader.py" line="93"/>
+      <location filename="../../bimcommands/BimLeader.py" line="53"/>
+      <source>Leader</source>
+      <translation type="unfinished">Leader</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimLeader.py" line="95"/>
       <source>Create Leader</source>
       <translation>Vytvořit odkaz</translation>
     </message>
@@ -9063,80 +9374,80 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation type="unfinished">Warning, this can take several minutes!</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="79"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="82"/>
       <source>Select material</source>
       <translation type="unfinished">Select material</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="101"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="104"/>
       <source>Searches object labels</source>
       <translation>Vyhledávání popisků objektů</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="115"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="118"/>
       <source>Clears the search field</source>
       <translation>Vymaže pole hledání</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="142"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="145"/>
       <source>Merge duplicates</source>
       <translation>Sloučit duplikáty</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="150"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="153"/>
       <source>Delete unused</source>
       <translation type="unfinished">Delete unused</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="89"/>
-      <location filename="../../bimcommands/BimMaterial.py" line="169"/>
+      <location filename="../../bimcommands/BimViews.py" line="90"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="172"/>
       <source>Rename</source>
       <translation>Přejmenovat</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="171"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="174"/>
       <source>Duplicate</source>
       <translation>Duplikovat</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="173"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="176"/>
       <source>Merge to...</source>
       <translation type="unfinished">Merge to...</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="85"/>
-      <location filename="../../bimcommands/BimMaterial.py" line="175"/>
+      <location filename="../../bimcommands/BimViews.py" line="86"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="178"/>
       <source>Delete</source>
       <translation>Odstranit</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="242"/>
-      <location filename="../../bimcommands/BimMaterial.py" line="255"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="245"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="258"/>
       <source>Merging duplicate material</source>
       <translation type="unfinished">Merging duplicate material</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="266"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="269"/>
       <source>Unable to delete material</source>
       <translation type="unfinished">Unable to delete material</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="270"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="273"/>
       <source>InList not empty</source>
       <translation type="unfinished">InList not empty</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="300"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="303"/>
       <source>Deleting unused material</source>
       <translation type="unfinished">Deleting unused material</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="356"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="359"/>
       <source>Select material to merge to</source>
       <translation type="unfinished">Select material to merge to</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="406"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="409"/>
       <source>This material is used by:</source>
       <translation type="unfinished">This material is used by:</translation>
     </message>
@@ -9289,7 +9600,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="1139"/>
       <source>Tip: The results are best viewed in Wireframe mode (menu Views -&gt; Draw Style -&gt; Wireframe)</source>
-      <translation type="unfinished">Tip: The results are best viewed in Wireframe mode (menu Views -&gt; Draw Style -&gt; Wireframe)</translation>
+      <translation>Tip: Výsledky jsou nejlépe vidět v režimu drátěného modelu (menu Zobrazit -&gt; Styl kreslení -&gt; Drátěný)</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="114"/>
@@ -9297,82 +9608,82 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation type="unfinished">No active document, aborting.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="159"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="154"/>
       <source>Building Layout</source>
       <translation type="unfinished">Building Layout</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="163"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="158"/>
       <source>Building Outline</source>
       <translation type="unfinished">Building Outline</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="180"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="175"/>
       <source>Building Label</source>
       <translation type="unfinished">Building Label</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="190"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="185"/>
       <source>Vertical Axes</source>
       <translation type="unfinished">Vertical Axes</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="213"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="208"/>
       <source>Horizontal Axes</source>
       <translation type="unfinished">Horizontal Axes</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="235"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="230"/>
       <source>Axes</source>
       <translation>Osy</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="249"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="244"/>
       <source>Level</source>
-      <translation type="unfinished">Level</translation>
+      <translation>Podlaží</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="272"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="267"/>
       <source>Level Axes</source>
       <translation type="unfinished">Level Axes</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="319"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="314"/>
       <source>New Group</source>
       <translation type="unfinished">New Group</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="334"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="329"/>
       <source>Save preset</source>
-      <translation type="unfinished">Save preset</translation>
+      <translation>Uložit předvolbu</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="335"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="330"/>
       <source>Preset name:</source>
       <translation type="unfinished">Preset name:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="400"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="395"/>
       <source>User preset...</source>
       <translation type="unfinished">User preset...</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="568"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="563"/>
       <source>Save template file</source>
       <translation type="unfinished">Save template file</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="578"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="573"/>
       <source>Template saved successfully</source>
       <translation type="unfinished">Template saved successfully</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="590"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="585"/>
       <source>Open template file</source>
       <translation type="unfinished">Open template file</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="712"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="707"/>
       <source>Template successfully loaded into current document</source>
       <translation type="unfinished">Template successfully loaded into current document</translation>
     </message>
@@ -9427,12 +9738,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation type="unfinished">Slab</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTDPage.py" line="61"/>
+      <location filename="../../bimcommands/BimTDPage.py" line="62"/>
       <source>Select page template</source>
       <translation type="unfinished">Select page template</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTDPage.py" line="76"/>
+      <location filename="../../bimcommands/BimTDPage.py" line="77"/>
       <source>Template</source>
       <translation>Šablona</translation>
     </message>
@@ -9449,95 +9760,95 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimTutorial.py" line="161"/>
       <source>Downloading images...</source>
-      <translation type="unfinished">Downloading images...</translation>
+      <translation>Stahování obrázků...</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="247"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="248"/>
       <source>BIM Tutorial - step</source>
       <translation>BIM tutoriál - krok</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUnclone.py" line="134"/>
+      <location filename="../../bimcommands/BimUnclone.py" line="133"/>
       <source>Draft Clones are not supported yet!</source>
-      <translation type="unfinished">Draft Clones are not supported yet!</translation>
+      <translation>Klony návrhu zatím nejsou podporovány!</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUnclone.py" line="138"/>
+      <location filename="../../bimcommands/BimUnclone.py" line="137"/>
       <source>The selected object is not a clone</source>
-      <translation type="unfinished">The selected object is not a clone</translation>
+      <translation>Vybraný objekt není klonem</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUnclone.py" line="142"/>
+      <location filename="../../bimcommands/BimUnclone.py" line="141"/>
       <source>Please select exactly one object</source>
-      <translation type="unfinished">Please select exactly one object</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimViews.py" line="83"/>
-      <source>Add level</source>
-      <translation type="unfinished">Add level</translation>
+      <translation>Prosím vyberte právě jeden objekt</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="84"/>
+      <source>Add level</source>
+      <translation>Vložit úroveň</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="85"/>
       <source>Add proxy</source>
       <translation type="unfinished">Add proxy</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="86"/>
+      <location filename="../../bimcommands/BimViews.py" line="87"/>
       <source>Toggle on/off</source>
       <translation>Zapnout/vypnout</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="87"/>
+      <location filename="../../bimcommands/BimViews.py" line="88"/>
       <source>Isolate</source>
       <translation>Izolovat</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="88"/>
+      <location filename="../../bimcommands/BimViews.py" line="89"/>
       <source>Save view position</source>
       <translation type="unfinished">Save view position</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="106"/>
+      <location filename="../../bimcommands/BimViews.py" line="107"/>
       <source>Creates a new level</source>
-      <translation type="unfinished">Creates a new level</translation>
+      <translation>Vytvořit novou úroveň</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="107"/>
+      <location filename="../../bimcommands/BimViews.py" line="108"/>
       <source>Creates a new Working Plane Proxy</source>
       <translation type="unfinished">Creates a new Working Plane Proxy</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="108"/>
+      <location filename="../../bimcommands/BimViews.py" line="109"/>
       <source>Deletes the selected item</source>
       <translation type="unfinished">Deletes the selected item</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="109"/>
+      <location filename="../../bimcommands/BimViews.py" line="110"/>
       <source>Toggles selected items on/off</source>
       <translation type="unfinished">Toggles selected items on/off</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="110"/>
+      <location filename="../../bimcommands/BimViews.py" line="111"/>
       <source>Turns all items off except the selected ones</source>
       <translation type="unfinished">Turns all items off except the selected ones</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="111"/>
+      <location filename="../../bimcommands/BimViews.py" line="112"/>
       <source>Saves the current camera position to the selected items</source>
       <translation type="unfinished">Saves the current camera position to the selected items</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="112"/>
+      <location filename="../../bimcommands/BimViews.py" line="113"/>
       <source>Renames the selected item</source>
-      <translation type="unfinished">Renames the selected item</translation>
+      <translation>Přejmenuje vybranou položku</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="267"/>
+      <location filename="../../bimcommands/BimViews.py" line="271"/>
       <source>2D Views</source>
-      <translation type="unfinished">2D Views</translation>
+      <translation>2D pohledy</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="281"/>
+      <location filename="../../bimcommands/BimViews.py" line="285"/>
       <source>Sheets</source>
       <translation type="unfinished">Sheets</translation>
     </message>
@@ -9553,13 +9864,18 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     </message>
     <message>
       <location filename="../../nativeifc/ifc_diff.py" line="66"/>
+      <source>The IFC file is not saved. Please save once to have an existing IFC file to compare with. Then, run this command again.</source>
+      <translation type="unfinished">The IFC file is not saved. Please save once to have an existing IFC file to compare with. Then, run this command again.</translation>
+    </message>
+    <message>
+      <location filename="../../nativeifc/ifc_diff.py" line="77"/>
       <source>No changes to display.</source>
-      <translation type="unfinished">No changes to display.</translation>
+      <translation>Žádné změny k zobrazení.</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="71"/>
       <source>IfcOpenShell update</source>
-      <translation type="unfinished">IfcOpenShell update</translation>
+      <translation>Aktualizace IfcOpenShell</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="72"/>
@@ -9569,74 +9885,134 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="74"/>
       <source>An update to your installed IfcOpenShell version is available</source>
-      <translation type="unfinished">An update to your installed IfcOpenShell version is available</translation>
+      <translation>Je dostupná aktualizace nainstalované verze IfcOpenShell</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="76"/>
       <source>Would you like to install that update?</source>
-      <translation type="unfinished">Would you like to install that update?</translation>
+      <translation>Přejete si nainstalovat tuto aktualizaci?</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="80"/>
       <source>Your version of IfcOpenShell is already up to date</source>
-      <translation type="unfinished">Your version of IfcOpenShell is already up to date</translation>
+      <translation>Vaše verze IfcOpenShell je již aktuální</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="83"/>
       <source>No existing IfcOpenShell installation found on this system.</source>
-      <translation type="unfinished">No existing IfcOpenShell installation found on this system.</translation>
+      <translation>Na tomto systému nebyla nalezena žádná instalace IfcOpenShell.</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="85"/>
       <source>Would you like to install the most recent version?</source>
-      <translation type="unfinished">Would you like to install the most recent version?</translation>
+      <translation>Přejete si nainstalovat nejnovější verzi?</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="89"/>
       <source>IfcOpenShell is not installed, and FreeCAD failed to find a suitable version to install. You can still install IfcOpenShell manually, visit https://wiki.freecad.org/IfcOpenShell for further instructions.</source>
-      <translation type="unfinished">IfcOpenShell is not installed, and FreeCAD failed to find a suitable version to install. You can still install IfcOpenShell manually, visit https://wiki.freecad.org/IfcOpenShell for further instructions.</translation>
+      <translation>Knihovna IfcOpenShell není nainstalována a FreeCAD nenalezl vhodnou verzi pro instalaci. Můžete si ale nainstalovat IfcOpenShell ručně, navštivte https://wiki.freecad.org/IfcOpenShell pro další informace.</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="96"/>
       <source>IfcOpenShell update successfully installed.</source>
-      <translation type="unfinished">IfcOpenShell update successfully installed.</translation>
+      <translation>Aktualizace IfcOpenShell úspěšně nainstalována.</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="125"/>
       <source>Unable to run pip. Please ensure pip is installed on your system.</source>
-      <translation type="unfinished">Unable to run pip. Please ensure pip is installed on your system.</translation>
+      <translation>Nelze spustit "pip". Ujistěte se, že je "pip" nainstalován na vašem systému.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="34"/>
+      <location filename="../../nativeifc/ifc_status.py" line="36"/>
       <source>Strict IFC mode is ON (all objects are IFC)</source>
-      <translation type="unfinished">Strict IFC mode is ON (all objects are IFC)</translation>
+      <translation>Mód Striktní IFC je zapnutý (všechny objekty jsou IFC)</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="37"/>
+      <location filename="../../nativeifc/ifc_status.py" line="39"/>
       <source>Strict IFC mode is OFF (IFC and non-IFC objects allowed)</source>
-      <translation type="unfinished">Strict IFC mode is OFF (IFC and non-IFC objects allowed)</translation>
+      <translation>Mód Striktní IFC je vypnutý (povoleny IFC i ne-IFC objekty)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTDView.py" line="73"/>
+      <location filename="../../nativeifc/ifc_status.py" line="78"/>
+      <source>Add IFC property...</source>
+      <translation type="unfinished">Add IFC property...</translation>
+    </message>
+    <message>
+      <location filename="../../nativeifc/ifc_status.py" line="83"/>
+      <source>Add standard IFC Property Set...</source>
+      <translation type="unfinished">Add standard IFC Property Set...</translation>
+    </message>
+    <message>
+      <location filename="../../nativeifc/ifc_status.py" line="139"/>
+      <source>No Property set provided</source>
+      <translation type="unfinished">No Property set provided</translation>
+    </message>
+    <message>
+      <location filename="../../nativeifc/ifc_status.py" line="145"/>
+      <source>add property</source>
+      <translation type="unfinished">add property</translation>
+    </message>
+    <message>
+      <location filename="../../nativeifc/ifc_status.py" line="208"/>
+      <source>Property set already exists</source>
+      <translation type="unfinished">Property set already exists</translation>
+    </message>
+    <message>
+      <location filename="../../nativeifc/ifc_status.py" line="212"/>
+      <source>add property set</source>
+      <translation type="unfinished">add property set</translation>
+    </message>
+    <message>
+      <location filename="../../nativeifc/ifc_status.py" line="220"/>
+      <source>Property already exists</source>
+      <translation type="unfinished">Property already exists</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimTDView.py" line="74"/>
       <source>No section view or Draft objects selected, or no page selected, or no page found in document</source>
       <translation type="unfinished">No section view or Draft objects selected, or no page selected, or no page found in document</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimDrawingView.py" line="66"/>
+      <source>Viewed lines</source>
+      <translation type="unfinished">Viewed lines</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimDrawingView.py" line="75"/>
+      <source>Cut lines</source>
+      <translation type="unfinished">Cut lines</translation>
+    </message>
+    <message>
+      <location filename="../../nativeifc/ifc_psets.py" line="376"/>
+      <source>Removing property</source>
+      <translation type="unfinished">Removing property</translation>
+    </message>
+    <message>
+      <location filename="../../nativeifc/ifc_psets.py" line="380"/>
+      <source>Removing property set</source>
+      <translation type="unfinished">Removing property set</translation>
+    </message>
+    <message>
+      <location filename="../../nativeifc/ifc_types.py" line="109"/>
+      <source>Error: Incompatible type</source>
+      <translation type="unfinished">Error: Incompatible type</translation>
     </message>
   </context>
   <context>
     <name>BIM_GenericTools</name>
     <message>
-      <location filename="../../InitGui.py" line="261"/>
+      <location filename="../../InitGui.py" line="263"/>
       <source>Generic 3D tools</source>
-      <translation type="unfinished">Generic 3D tools</translation>
+      <translation>Obecné 3D nástroje</translation>
     </message>
   </context>
   <context>
     <name>Arch_RebarTools</name>
     <message>
-      <location filename="../../InitGui.py" line="284"/>
-      <location filename="../../InitGui.py" line="287"/>
+      <location filename="../../InitGui.py" line="286"/>
+      <location filename="../../InitGui.py" line="289"/>
       <source>Reinforcement tools</source>
-      <translation type="unfinished">Reinforcement tools</translation>
+      <translation>Nástroje armatury</translation>
     </message>
   </context>
   <context>
@@ -9644,7 +10020,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimBackground.py" line="39"/>
       <source>Toggle background</source>
-      <translation type="unfinished">Toggle background</translation>
+      <translation>Přepnout pozadí</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBackground.py" line="43"/>
@@ -9662,7 +10038,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimBeam.py" line="50"/>
       <source>Creates a beam between two points</source>
-      <translation type="unfinished">Creates a beam between two points</translation>
+      <translation>Vytvoří nosník mezi dvěma body</translation>
     </message>
   </context>
   <context>
@@ -9696,7 +10072,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimBuildingPart.py" line="44"/>
       <source>Level</source>
-      <translation type="unfinished">Level</translation>
+      <translation>Podlaží</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBuildingPart.py" line="48"/>
@@ -9740,7 +10116,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimColumn.py" line="50"/>
       <source>Creates a column at a specified location</source>
-      <translation type="unfinished">Creates a column at a specified location</translation>
+      <translation>Vytvoří sloup na určeném místě</translation>
     </message>
   </context>
   <context>
@@ -9774,22 +10150,22 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimConvert.py" line="39"/>
       <source>Convert to BIM</source>
-      <translation type="unfinished">Convert to BIM</translation>
+      <translation>Převést na BIM</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimConvert.py" line="42"/>
       <source>Converts any object to a BIM component</source>
-      <translation type="unfinished">Converts any object to a BIM component</translation>
+      <translation>Převede jakýkoli objekt na BIM součást</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimUngroup.py" line="39"/>
       <source>Remove from group</source>
-      <translation type="unfinished">Remove from group</translation>
+      <translation>Odstranit ze skupiny</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimUngroup.py" line="42"/>
       <source>Removes this object from its parent group</source>
-      <translation type="unfinished">Removes this object from its parent group</translation>
+      <translation>Odstraní objekt z jeho nadřazené skupiny</translation>
     </message>
   </context>
   <context>
@@ -9802,7 +10178,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimCopy.py" line="46"/>
       <source>Copies selected objects to another location</source>
-      <translation type="unfinished">Copies selected objects to another location</translation>
+      <translation>Zkopíruje vybrané objekty na jiné místo</translation>
     </message>
   </context>
   <context>
@@ -9815,7 +10191,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimCut.py" line="41"/>
       <source>Make a difference between two shapes</source>
-      <translation type="unfinished">Make a difference between two shapes</translation>
+      <translation>Vytvoří rozdíl mezi dvěma objekty (odečte je)</translation>
     </message>
   </context>
   <context>
@@ -9823,12 +10199,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="37"/>
       <source>IFC Diff</source>
-      <translation type="unfinished">IFC Diff</translation>
+      <translation>IFC Diff</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="40"/>
       <source>Shows the difference between two IFC-based documents</source>
-      <translation type="unfinished">Shows the difference between two IFC-based documents</translation>
+      <translation>Ukáže rozdíl mezi dvěma dokumenty, založenými na IFC</translation>
     </message>
   </context>
   <context>
@@ -10013,12 +10389,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
   <context>
     <name>BIM_IfcQuantities</name>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="61"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="72"/>
       <source>Manage IFC quantities...</source>
       <translation type="unfinished">Manage IFC quantities...</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="65"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="76"/>
       <source>Manage how the quantities of different elements of of your BIM project will be exported to IFC</source>
       <translation type="unfinished">Manage how the quantities of different elements of of your BIM project will be exported to IFC</translation>
     </message>
@@ -10078,12 +10454,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
   <context>
     <name>BIM_Material</name>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="56"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="59"/>
       <source>Material</source>
       <translation>Materiál</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="60"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="63"/>
       <source>Sets or creates a material for selected objects</source>
       <translation type="unfinished">Sets or creates a material for selected objects</translation>
     </message>
@@ -10269,12 +10645,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimRewire.py" line="40"/>
       <source>Rewire</source>
-      <translation type="unfinished">Rewire</translation>
+      <translation>Přepojit</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimRewire.py" line="43"/>
       <source>Recreates wires from selected objects</source>
-      <translation type="unfinished">Recreates wires from selected objects</translation>
+      <translation>Vytvoří znovu křivky z vybraných objektů</translation>
     </message>
   </context>
   <context>
@@ -10291,17 +10667,9 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     </message>
   </context>
   <context>
-    <name>BIM_Shape2DView</name>
-    <message>
-      <location filename="../../bimcommands/BimShape2DView.py" line="42"/>
-      <source>Shape-based view</source>
-      <translation type="unfinished">Shape-based view</translation>
-    </message>
-  </context>
-  <context>
     <name>draft</name>
     <message>
-      <location filename="../../bimcommands/BimShape2DView.py" line="85"/>
+      <location filename="../../bimcommands/BimShape2DView.py" line="86"/>
       <source>Create 2D view</source>
       <translation>Vytvořte 2D pohled</translation>
     </message>
@@ -10311,12 +10679,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimSimpleCopy.py" line="39"/>
       <source>Create simple copy</source>
-      <translation>Vytvoří kopii</translation>
+      <translation>Vytvořit jednoduchou kopii</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSimpleCopy.py" line="42"/>
       <source>Create a simple non-parametric copy</source>
-      <translation>Vytvořit jednoduchou neparametrickou kopii</translation>
+      <translation>Vytvoří jednoduchou, neparametrickou kopii</translation>
     </message>
   </context>
   <context>
@@ -10356,19 +10724,6 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <location filename="../../bimcommands/BimTDPage.py" line="43"/>
       <source>Creates a new TechDraw page from a template</source>
       <translation type="unfinished">Creates a new TechDraw page from a template</translation>
-    </message>
-  </context>
-  <context>
-    <name>BIM_TDView</name>
-    <message>
-      <location filename="../../bimcommands/BimTDView.py" line="39"/>
-      <source>View</source>
-      <translation>Pohled</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimTDView.py" line="43"/>
-      <source>Creates a TechDraw view from a section plane or 2D objects</source>
-      <translation type="unfinished">Creates a TechDraw view from a section plane or 2D objects</translation>
     </message>
   </context>
   <context>
@@ -10615,7 +10970,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="41"/>
       <source>IfcOpenShell update</source>
-      <translation type="unfinished">IfcOpenShell update</translation>
+      <translation>Aktualizace IfcOpenShell</translation>
     </message>
   </context>
   <context>
@@ -10663,7 +11018,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <location filename="../ui/dialogSetup.ui" line="489"/>
       <location filename="../ui/dialogSetup.ui" line="546"/>
       <source>0 </source>
-      <translation type="unfinished">0 </translation>
+      <translation>0 </translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="152"/>
@@ -11029,12 +11384,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="212"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="220"/>
       <source>Remove Shape from BIM</source>
       <translation type="unfinished">Remove Shape from BIM</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="215"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="223"/>
       <source>Removes cubic shapes from BIM components</source>
       <translation type="unfinished">Removes cubic shapes from BIM components</translation>
     </message>
@@ -11042,14 +11397,53 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="290"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="298"/>
       <source>Toggle IFC B-rep flag</source>
       <translation type="unfinished">Toggle IFC B-rep flag</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="293"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="301"/>
       <source>Force an object to be exported as B-rep or not</source>
       <translation type="unfinished">Force an object to be exported as B-rep or not</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_DrawingView</name>
+    <message>
+      <location filename="../../bimcommands/BimDrawingView.py" line="43"/>
+      <source>2D Drawing</source>
+      <translation type="unfinished">2D Drawing</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimDrawingView.py" line="47"/>
+      <source>Creates a drawing container to contain elements of a 2D view</source>
+      <translation type="unfinished">Creates a drawing container to contain elements of a 2D view</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_Shape2DView</name>
+    <message>
+      <location filename="../../bimcommands/BimShape2DView.py" line="42"/>
+      <source>Section view</source>
+      <translation type="unfinished">Section view</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimShape2DView.py" line="97"/>
+      <source>Section cut</source>
+      <translation type="unfinished">Section cut</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_TDView</name>
+    <message>
+      <location filename="../../bimcommands/BimTDView.py" line="39"/>
+      <source>Insert view</source>
+      <translation type="unfinished">Insert view</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimTDView.py" line="43"/>
+      <source>Inserts a drawing view on a page</source>
+      <translation type="unfinished">Inserts a drawing view on a page</translation>
     </message>
   </context>
 </TS>

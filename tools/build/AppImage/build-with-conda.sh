@@ -64,9 +64,9 @@
 # make sure you have a gpg key for this email
 gpg_key="yorik@freecad.org"
 # the FreeCAD version we're looking for
-target_version="0.21.0"
+target_version="1.1.0"
 # make sure target_python matches the one FreeCAD is built with! Check with
-# conda search "freecad=0.21.0" -c adrianinsaval/label/dev -c freecad -c conda-forge
+# conda search "freecad=1.1.0" -c adrianinsaval/label/dev -c freecad -c conda-forge
 target_python="3.10"
 
 # end config

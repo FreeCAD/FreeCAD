@@ -90,7 +90,7 @@ App::DocumentObjectExecReturn* RuledSurface::getShape(const App::PropertyLinkSub
                                                       TopoDS_Shape& shape) const
 {
     App::DocumentObject* obj = link.getValue();
-    const Part::TopoShape part = Part::Feature::getTopoShape(obj);
+    const Part::TopoShape part = Part::Feature::getTopoShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform);
     if (part.isNull()) {
         return new App::DocumentObjectExecReturn("No shape linked.");
     }
@@ -127,7 +127,7 @@ App::DocumentObjectExecReturn* RuledSurface::execute()
         std::array<App::PropertyLinkSub*, 2> links = {&Curve1, &Curve2};
         for (auto link : links) {
             App::DocumentObject* obj = link->getValue();
-            const Part::TopoShape part = Part::Feature::getTopoShape(obj);
+            const Part::TopoShape part = Part::Feature::getTopoShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform);
             if (part.isNull()) {
                 return new App::DocumentObjectExecReturn("No shape linked.");
             }
@@ -140,7 +140,11 @@ App::DocumentObjectExecReturn* RuledSurface::execute()
                 return new App::DocumentObjectExecReturn("Not exactly one sub-shape linked.");
             }
             else {
-                shapes.push_back(getTopoShape(link->getValue(), subs.front().c_str(), true));
+                shapes.push_back(getTopoShape(link->getValue(),
+                                                 ShapeOption::NeedSubElement
+                                               | ShapeOption::ResolveLink
+                                               | ShapeOption::Transform,
+                                              subs.front().c_str()));
             }
             if (shapes.back().isNull()) {
                 return new App::DocumentObjectExecReturn("Invalid link.");
@@ -173,7 +177,7 @@ Loft::Loft()
 {
     ADD_PROPERTY_TYPE(Sections, (nullptr), "Loft", App::Prop_None, "List of sections");
     Sections.setSize(0);
-    ADD_PROPERTY_TYPE(Solid, (false), "Loft", App::Prop_None, "Create solid");
+    ADD_PROPERTY_TYPE(Solid, (true), "Loft", App::Prop_None, "Create solid");
     ADD_PROPERTY_TYPE(Ruled, (false), "Loft", App::Prop_None, "Ruled surface");
     ADD_PROPERTY_TYPE(Closed, (false), "Loft", App::Prop_None, "Close Last to First Profile");
     ADD_PROPERTY_TYPE(MaxDegree, (5), "Loft", App::Prop_None, "Maximum Degree");
@@ -216,7 +220,7 @@ App::DocumentObjectExecReturn* Loft::execute()
     try {
         std::vector<TopoShape> shapes;
         for (auto& obj : Sections.getValues()) {
-            shapes.emplace_back(getTopoShape(obj));
+            shapes.emplace_back(getTopoShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform));
             if (shapes.back().isNull()) {
                 return new App::DocumentObjectExecReturn("Invalid section link");
             }
@@ -239,12 +243,6 @@ App::DocumentObjectExecReturn* Loft::execute()
     }
 }
 
-void Part::Loft::setupObject()
-{
-    Feature::setupObject();
-//    Linearize.setValue(PartParams::getLinearizeExtrusionDraft()); // TODO: Resolve after PartParams
-}
-
 // ----------------------------------------------------------------------------
 
 const char* Part::Sweep::TransitionEnums[] = {"Transformed",
@@ -259,7 +257,7 @@ Sweep::Sweep()
     ADD_PROPERTY_TYPE(Sections, (nullptr), "Sweep", App::Prop_None, "List of sections");
     Sections.setSize(0);
     ADD_PROPERTY_TYPE(Spine, (nullptr), "Sweep", App::Prop_None, "Path to sweep along");
-    ADD_PROPERTY_TYPE(Solid, (false), "Sweep", App::Prop_None, "Create solid");
+    ADD_PROPERTY_TYPE(Solid, (true), "Sweep", App::Prop_None, "Create solid");
     ADD_PROPERTY_TYPE(Frenet, (true), "Sweep", App::Prop_None, "Frenet");
     ADD_PROPERTY_TYPE(Transition, (long(1)), "Sweep", App::Prop_None, "Transition mode");
     ADD_PROPERTY_TYPE(Linearize,(false), "Sweep", App::Prop_None,
@@ -300,7 +298,7 @@ App::DocumentObjectExecReturn* Sweep::execute()
     if (!Spine.getValue()) {
         return new App::DocumentObjectExecReturn("No spine");
     }
-    TopoShape spine = getTopoShape(Spine.getValue());
+    TopoShape spine = getTopoShape(Spine.getValue(), ShapeOption::ResolveLink | ShapeOption::Transform);
     const auto& subs = Spine.getSubValues();
     if (spine.isNull()) {
         return new App::DocumentObjectExecReturn("Invalid spine");
@@ -319,7 +317,7 @@ App::DocumentObjectExecReturn* Sweep::execute()
     std::vector<TopoShape> shapes;
     shapes.push_back(spine);
     for (auto& obj : Sections.getValues()) {
-        shapes.emplace_back(getTopoShape(obj));
+        shapes.emplace_back(getTopoShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform));
         if (shapes.back().isNull()) {
             return new App::DocumentObjectExecReturn("Invalid section link");
         }
@@ -343,12 +341,6 @@ App::DocumentObjectExecReturn* Sweep::execute()
     catch (...) {
         return new App::DocumentObjectExecReturn("A fatal error occurred when making the sweep");
     }
-}
-
-void Part::Sweep::setupObject()
-{
-    Feature::setupObject();
-//    Linearize.setValue(PartParams::getLinearizeExtrusionDraft()); // TODO: Resolve after PartParams
 }
 
 // ----------------------------------------------------------------------------
@@ -415,7 +407,7 @@ void Thickness::handleChangedPropertyType(Base::XMLReader& reader,
 App::DocumentObjectExecReturn* Thickness::execute()
 {
     std::vector<TopoShape> shapes;
-    auto base = getTopoShape(Faces.getValue());
+    auto base = getTopoShape(Faces.getValue(), ShapeOption::ResolveLink | ShapeOption::Transform);
     if (base.isNull()) {
         return new App::DocumentObjectExecReturn("Invalid source shape");
     }
@@ -485,7 +477,7 @@ Reverse::Reverse()
 App::DocumentObjectExecReturn* Reverse::execute()
 {
     App::DocumentObject* source = Source.getValue<App::DocumentObject*>();
-    Part::TopoShape topoShape = Part::Feature::getTopoShape(source);
+    Part::TopoShape topoShape = Part::Feature::getTopoShape(source, ShapeOption::ResolveLink | ShapeOption::Transform);
     if (topoShape.isNull()) {
         return new App::DocumentObjectExecReturn("No part object linked.");
     }

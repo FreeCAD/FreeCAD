@@ -1,15 +1,15 @@
 {
-  "problemMatcher": [
-    {
-      "owner": "black-warning",
-      "severity": "warning",
-      "pattern": [
+    "problemMatcher": [
         {
-          "regexp": "^(would reformat (.*))$",
-          "file": 2,
-          "message": 1
+            "owner": "black-warning",
+            "severity": "warning",
+            "pattern": [
+                {
+                    "regexp": "^(would reformat (.*))$",
+                    "file": 2,
+                    "message": 1
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }

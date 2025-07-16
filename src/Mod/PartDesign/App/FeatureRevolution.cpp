@@ -80,11 +80,8 @@ short Revolution::mustExecute() const
 
 App::DocumentObjectExecReturn* Revolution::execute()
 {
-    if (onlyHasToRefine()){
-        TopoShape result = refineShapeIfActive(rawShape);
-        Shape.setValue(result);
-        return App::DocumentObject::StdReturn;
-    }
+    if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
+
 
     // Validate parameters
     // All angles are in radians unless explicitly stated
@@ -231,7 +228,11 @@ App::DocumentObjectExecReturn* Revolution::execute()
                 this->rawShape = result;
                 result = refineShapeIfActive(result);
             }
-            this->Shape.setValue(getSolid(result));
+            if (!isSingleSolidRuleSatisfied(result.getShape())) {
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+            }
+            result = getSolid(result);
+            this->Shape.setValue(result);
         }
         else {
             return new App::DocumentObjectExecReturn(

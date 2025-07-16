@@ -2558,7 +2558,7 @@ Efaces
 
 ***********************************************************
 ** Sections
-*SHELL SECTION, ELSET=FemMaterialShellThickness, MATERIAL=FemMaterial
+*SHELL SECTION, ELSET=FemMaterialShellThickness, MATERIAL=FemMaterial, OFFSET=0
 15
 
 ***********************************************************

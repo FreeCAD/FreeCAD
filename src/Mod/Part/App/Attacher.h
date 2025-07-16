@@ -108,6 +108,7 @@ enum eMapMode {
     mmOYX,
 
     mmParallelPlane,
+    mmMidpoint,
 
     mmDummy_NumberOfModes//a value useful to check the validity of mode value
 };//see also eMapModeStrings[] definition in .cpp
@@ -363,7 +364,7 @@ public://helper functions that may be useful outside of the class
 
     static eRefType getRefTypeByName(const std::string &typeName);
 
-    static GProp_GProps getInertialPropsOfShape(const std::vector<const TopoDS_Shape*> &shapes);
+    static GProp_GProps getInertialPropsOfShape(const std::vector<const Part::TopoShape*> &shapes);
 
     std::vector<App::DocumentObject*> getRefObjects() const;
     const std::vector<std::string> &getSubValues() const {return subnames;}
@@ -430,11 +431,36 @@ protected:
     }
     static void readLinks(const std::vector<App::DocumentObject*> &objs,
                           const std::vector<std::string> &subs,
-                          std::vector<const TopoDS_Shape*>& shapes, std::vector<TopoDS_Shape> &storage,
+
+                          std::vector<const Part::TopoShape*>& shapes,
+                          std::vector<Part::TopoShape> &storage,
                           std::vector<eRefType> &types);
 
     static void throwWrongMode(eMapMode mmode);
 
+    /**
+     * Extracts GeoFeature instance from given DocumentObject.
+     *
+     * In case of object itself being GeoFeature it returns itself, in other cases (like links)
+     * the method should return pointer to associated GeoFeature or nullptr if none is available.
+     *
+     * @param obj The document object to extract the GeoFeature.
+     *
+     * @return App::GeoFeature pointer associated with this document object
+     */
+    static App::GeoFeature* extractGeoFeature(App::DocumentObject* obj);
+
+    /**
+     * Tries to extract sub shape from document object with given subname.
+     *
+     * @param obj       DocumentObject containing the sub shape
+     * @param subname   Name of the sub shape to extract
+     *
+     * @return Extracted sub shape. Can be null.
+     *
+     * @throws AttachEngineException If given sub shape does not exist or is impossible to obtain.
+     */
+    static Part::TopoShape extractSubShape(App::DocumentObject* obj, const std::string& subname);
 };
 
 

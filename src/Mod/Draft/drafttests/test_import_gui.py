@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *   Copyright (c) 2025 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -21,29 +22,22 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 """Unit tests for the Draft Workbench, GUI import tests."""
+
 ## @package test_import_gui
 # \ingroup drafttests
 # \brief Unit tests for the Draft Workbench, GUI import tests.
 
 ## \addtogroup drafttests
 # @{
-import unittest
 
-import drafttests.auxiliary as aux
+from drafttests import auxiliary as aux
+from drafttests import test_base
 
 
-class DraftGuiImport(unittest.TestCase):
+class DraftGuiImport(test_base.DraftTestCaseNoDoc):
     """Import the Draft graphical modules."""
-
-    def setUp(self):
-        """Draw the header.
-
-        This is executed before every test.
-        No document is needed to test the import of modules so no document
-        is created, and `tearDown` isn't defined.
-        """
-        aux.draw_header()
 
     def test_import_gui_draftgui(self):
         """Import Draft TaskView GUI tools."""

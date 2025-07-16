@@ -52,7 +52,7 @@ fc_target_copy_resource(StartScripts
         ${CMAKE_BINARY_DIR}/Mod/Start
         ${Start_Scripts})
 
-INSTALL(
+install(
         FILES
         ${Start_Scripts}
         DESTINATION

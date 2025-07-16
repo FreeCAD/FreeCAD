@@ -43,6 +43,8 @@
 # include <GL/glext.h>
 #endif
 
+#include <QOpenGLFramebufferObject>
+#include <QOpenGLContext>
 #include <QOffscreenSurface>
 
 #include <App/Application.h>
@@ -563,9 +565,9 @@ SoQtOffscreenRenderer::makeFrameBuffer(int width, int height, int samples)
 
     viewport.setWindowSize(width, height);
 
-    QtGLFramebufferObjectFormat fmt;
+    QOpenGLFramebufferObjectFormat fmt;
     fmt.setSamples(samples);
-    fmt.setAttachment(QtGLFramebufferObject::Depth);
+    fmt.setAttachment(QOpenGLFramebufferObject::Depth);
     // With enabled alpha a transparent background is supported but
     // at the same time breaks semi-transparent models. A workaround
     // is to use a certain background color using GL_RGB as texture
@@ -573,7 +575,7 @@ SoQtOffscreenRenderer::makeFrameBuffer(int width, int height, int samples)
     // replaces it with the color requested by the user.
     fmt.setInternalTextureFormat(this->texFormat);
 
-    framebuffer = new QtGLFramebufferObject(width, height, fmt);
+    framebuffer = new QOpenGLFramebufferObject(width, height, fmt);
     cache_context = SoGLCacheContextElement::getUniqueCacheContext(); // unique per pixel buffer object, just to be sure
 }
 

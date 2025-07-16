@@ -171,7 +171,7 @@ void create3dCurve(const TopoDS_Edge& edge)
 }
 }
 
-PyObject* Curve2dPy::toShape(PyObject *args)
+PyObject* Curve2dPy::toShape(PyObject *args) const
 {
     if (PyArg_ParseTuple(args, "")) {
         try {
@@ -285,7 +285,7 @@ PyObject* Curve2dPy::toShape(PyObject *args)
     return nullptr;
 }
 
-PyObject* Curve2dPy::discretize(PyObject *args, PyObject *kwds)
+PyObject* Curve2dPy::discretize(PyObject *args, PyObject *kwds) const
 {
     try {
         Handle(Geom2d_Geometry) g = getGeometry2dPtr()->handle();
@@ -554,7 +554,7 @@ PyObject* Curve2dPy::tangent(PyObject *args)
     return nullptr;
 }
 
-PyObject* Curve2dPy::normal(PyObject *args)
+PyObject* Curve2dPy::normal(PyObject *args) const
 {
     Handle(Geom2d_Geometry) g = getGeometry2dPtr()->handle();
     Handle(Geom2d_Curve) c = Handle(Geom2d_Curve)::DownCast(g);
@@ -579,7 +579,7 @@ PyObject* Curve2dPy::normal(PyObject *args)
     return nullptr;
 }
 
-PyObject* Curve2dPy::curvature(PyObject *args)
+PyObject* Curve2dPy::curvature(PyObject *args) const
 {
     Handle(Geom2d_Geometry) g = getGeometry2dPtr()->handle();
     Handle(Geom2d_Curve) c = Handle(Geom2d_Curve)::DownCast(g);
@@ -602,7 +602,7 @@ PyObject* Curve2dPy::curvature(PyObject *args)
     return nullptr;
 }
 
-PyObject* Curve2dPy::centerOfCurvature(PyObject *args)
+PyObject* Curve2dPy::centerOfCurvature(PyObject *args) const
 {
     Handle(Geom2d_Geometry) g = getGeometry2dPtr()->handle();
     Handle(Geom2d_Curve) c = Handle(Geom2d_Curve)::DownCast(g);
@@ -798,7 +798,7 @@ int Curve2dPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
     return 0;
 }
 
-PyObject* Curve2dPy::intersectCC(PyObject *args)
+PyObject* Curve2dPy::intersectCC(PyObject *args) const
 {
     Handle(Geom2d_Curve) curve1 = Handle(Geom2d_Curve)::DownCast(getGeometry2dPtr()->handle());
     try {

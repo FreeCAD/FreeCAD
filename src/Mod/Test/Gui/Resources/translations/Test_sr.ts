@@ -76,7 +76,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="222"/>
       <source>Errors:</source>
-      <translation>Грешке:</translation>
+      <translation>Поруке о грешкама:</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="239"/>

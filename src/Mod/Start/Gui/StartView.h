@@ -31,6 +31,7 @@
 #include "../App/DisplayedFilesModel.h"
 #include "../App/RecentFilesModel.h"
 #include "../App/ExamplesModel.h"
+#include "../App/CustomFolderModel.h"
 
 class QCheckBox;
 class QEvent;
@@ -86,6 +87,7 @@ protected:
     static void configureFileCardWidget(QListView* fileCardWidget);
     void configureRecentFilesListWidget(QListView* recentFilesListWidget, QLabel* recentFilesLabel);
     void configureExamplesListWidget(QListView* examplesListWidget);
+    void configureCustomFolderListWidget(QListView* customFolderListWidget);
 
     void postStart(PostStartBehavior behavior) const;
 
@@ -98,14 +100,14 @@ protected:
 
 private:
     void retranslateUi();
-
     QStackedWidget* _contents = nullptr;
     Start::RecentFilesModel _recentFilesModel;
     Start::ExamplesModel _examplesModel;
-
+    Start::CustomFolderModel _customFolderModel;
     QLabel* _newFileLabel;
     QLabel* _examplesLabel;
     QLabel* _recentFilesLabel;
+    QLabel* _customFolderLabel;
     QPushButton* _openFirstStart;
     QCheckBox* _showOnStartupCheckBox;
 

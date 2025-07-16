@@ -96,6 +96,6 @@ void FirstStartWidget::retranslateUi()
     _welcomeLabel->setText(QLatin1String("<h1>") + tr("Welcome to %1").arg(application)
                            + QLatin1String("</h1>"));
     _descriptionLabel->setText(
-        tr("To get started, set your basic configuration options below.") + QLatin1String(" ")
-        + tr("These options (and many more) can be changed later in Preferences."));
+        tr("Set your basic configuration options below.") + QLatin1String(" ")
+        + tr("These options (and many more) can be changed later in the preferences."));
 }

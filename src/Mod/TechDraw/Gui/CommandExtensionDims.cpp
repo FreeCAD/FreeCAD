@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QMessageBox>
+# include <cmath>
 # include <sstream>
 # include <BRepGProp.hxx>
 # include <GProp_GProps.hxx>
@@ -33,14 +34,15 @@
 # include <App/DocumentObject.h>
 # include <Base/Console.h>
 # include <Base/Type.h>
+# include <Base/Tools.h>
 # include <Gui/Action.h>
 # include <Gui/Application.h>
 # include <Gui/BitmapFactory.h>
 # include <Gui/Command.h>
 # include <Gui/Control.h>
 # include <Gui/MainWindow.h>
-# include <Gui/Selection.h>
-# include <Gui/SelectionObject.h>
+# include <Gui/Selection/Selection.h>
+# include <Gui/Selection/SelectionObject.h>
 
 # include <Mod/TechDraw/App/Cosmetic.h>
 # include <Mod/TechDraw/App/DrawViewBalloon.h>
@@ -103,43 +105,36 @@ namespace TechDrawGui {
 //===========================================================================
 // TechDraw_ExtensionInsertDiameter
 //===========================================================================
-
-void execInsertPrefixChar(Gui::Command* cmd, std::string prefixFormat, const QAction *action = nullptr) {
+void execInsertPrefixChar(Gui::Command* cmd, const std::string& prefixFormat) {
     // insert a prefix character into the format specifier
     std::vector<Gui::SelectionObject> selection;
-    if (!_checkSelection(cmd, selection, QT_TRANSLATE_NOOP("Command","TechDraw Insert Prefix"))) {
+    if (!_checkSelection(cmd, selection, QObject::tr("TechDraw Insert Prefix").toStdString())) {
         return;
     }
 
     std::string prefixText(prefixFormat);
     if (prefixFormat.find("%s") != std::string::npos) {
-        DlgTemplateField ui;
-        const int MAX_PREFIX_LENGTH = 31;
-
-        if (action) {
-            if (action->objectName() == QString::fromUtf8("TechDraw_ExtensionInsertRepetition")) {
-                ui.setFieldName(QT_TR_NOOP("Repeat Count"));
-            }
-        }
-
-        ui.setFieldLength(MAX_PREFIX_LENGTH);
-        ui.setFieldContent("");
+        DlgTemplateField ui(Gui::getMainWindow());
+        ui.setFieldName(QObject::tr("Repeat Count").toStdString());
+        ui.setFieldContent("1");
         if (ui.exec() != QDialog::Accepted) {
             return;
         }
 
-        char prefixData[(MAX_PREFIX_LENGTH + 1)*4];
-        snprintf(prefixData, sizeof(prefixData), prefixFormat.c_str(), ui.getFieldContent().toUtf8().constData());
-        prefixText = prefixData;
+        QString numberFromDialog = ui.getFieldContent();
+        QString qPrefixText = QStringLiteral("%1× ").arg(numberFromDialog);
+        prefixText = qPrefixText.toStdString();
     }
+    size_t prefixSize = prefixText.capacity();
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert Prefix"));
+    Gui::Command::openCommand(QObject::tr("Insert Prefix").toStdString().c_str());
     for (auto selected : selection) {
         auto object = selected.getObject();
-        if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
+        if (object->isDerivedFrom<TechDraw::DrawViewDimension>()) {
             auto dim = static_cast<TechDraw::DrawViewDimension*>(selected.getObject());
             std::string formatSpec = dim->FormatSpec.getStrValue();
-            formatSpec = prefixText + formatSpec;
+            formatSpec.reserve(formatSpec.capacity() + prefixSize);
+            formatSpec.insert(0, prefixText);
             dim->FormatSpec.setValue(formatSpec);
         }
     }
@@ -232,7 +227,7 @@ void CmdTechDrawExtensionInsertRepetition::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    execInsertPrefixChar(this, "%s× ", this->getAction()->action()); //× Multiplication sign U+00D7
+    execInsertPrefixChar(this, "%s× "); //× Multiplication sign U+00D7
 }
 
 bool CmdTechDrawExtensionInsertRepetition::isActive()
@@ -257,7 +252,7 @@ void execRemovePrefixChar(Gui::Command* cmd) {
     for (auto selected : selection)
     {
         auto object = selected.getObject();
-        if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
+        if (object->isDerivedFrom<TechDraw::DrawViewDimension>()) {
             auto dim = static_cast<TechDraw::DrawViewDimension*>(selected.getObject());
             std::string formatSpec = dim->FormatSpec.getStrValue();
             int pos = formatSpec.find("%.");
@@ -321,7 +316,7 @@ CmdTechDrawExtensionInsertPrefixGroup::CmdTechDrawExtensionInsertPrefixGroup()
 
 void CmdTechDrawExtensionInsertPrefixGroup::activated(int iMsg)
 {
-    //    Base::Console().Message("CMD::ExtensionLinePPGroup - activated(%d)\n", iMsg);
+    //    Base::Console().message("CMD::ExtensionLinePPGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
@@ -339,13 +334,13 @@ void CmdTechDrawExtensionInsertPrefixGroup::activated(int iMsg)
         execInsertPrefixChar(this, "□");
         break;
     case 2:                 //insert "n×" as prefix
-        execInsertPrefixChar(this, "%s× ", pcAction->actions().at(iMsg));
+        execInsertPrefixChar(this, "%s× ");
         break;
     case 3:                 //remove prefix characters
         execRemovePrefixChar(this);
         break;
     default:
-        Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+        Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
     };
 }
 
@@ -357,20 +352,20 @@ Gui::Action* CmdTechDrawExtensionInsertPrefixGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionInsertDiameter"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_ExtensionInsertDiameter"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionInsertDiameter"));
+    p1->setObjectName(QStringLiteral("TechDraw_ExtensionInsertDiameter"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_ExtensionInsertDiameter"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionInsertSquare"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionInsertSquare"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionInsertSquare"));
+    p2->setObjectName(QStringLiteral("TechDraw_ExtensionInsertSquare"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_ExtensionInsertSquare"));
     QAction* p3 = pcAction->addAction(QString());
     p3->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionInsertRepetition"));
-    p3->setObjectName(QString::fromLatin1("TechDraw_ExtensionInsertRepetition"));
-    p3->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionInsertRepetition"));
+    p3->setObjectName(QStringLiteral("TechDraw_ExtensionInsertRepetition"));
+    p3->setWhatsThis(QStringLiteral("TechDraw_ExtensionInsertRepetition"));
     QAction* p4 = pcAction->addAction(QString());
     p4->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionRemovePrefixChar"));
-    p4->setObjectName(QString::fromLatin1("TechDraw_ExtensionRemovePrefixChar"));
-    p4->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionRemovePrefixChar"));
+    p4->setObjectName(QStringLiteral("TechDraw_ExtensionRemovePrefixChar"));
+    p4->setWhatsThis(QStringLiteral("TechDraw_ExtensionRemovePrefixChar"));
 
     _pcAction = pcAction;
     languageChange();
@@ -443,7 +438,7 @@ void execIncreaseDecreaseDecimal(Gui::Command* cmd, int delta) {
     std::string numStr;
     for (auto selected : selection) {
         auto object = selected.getObject();
-        if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
+        if (object->isDerivedFrom<TechDraw::DrawViewDimension>()) {
             auto dim = static_cast<TechDraw::DrawViewDimension*>(selected.getObject());
             std::string formatSpec = dim->FormatSpec.getStrValue();
             std::string searchStr("%.");
@@ -544,7 +539,7 @@ CmdTechDrawExtensionIncreaseDecreaseGroup::CmdTechDrawExtensionIncreaseDecreaseG
 
 void CmdTechDrawExtensionIncreaseDecreaseGroup::activated(int iMsg)
 {
-    //    Base::Console().Message("CMD::ExtensionIncreaseDecreaseGroup - activated(%d)\n", iMsg);
+    //    Base::Console().message("CMD::ExtensionIncreaseDecreaseGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
@@ -562,7 +557,7 @@ void CmdTechDrawExtensionIncreaseDecreaseGroup::activated(int iMsg)
         execIncreaseDecreaseDecimal(this, -1);
         break;
     default:
-        Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+        Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
     };
 }
 
@@ -574,12 +569,12 @@ Gui::Action* CmdTechDrawExtensionIncreaseDecreaseGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionIncreaseDecimal"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_ExtensionIncreaseDecimal"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionIncreaseDecimal"));
+    p1->setObjectName(QStringLiteral("TechDraw_ExtensionIncreaseDecimal"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_ExtensionIncreaseDecimal"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionDecreaseDecimal"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionDecreaseDecimal"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionDecreaseDecimal"));
+    p2->setObjectName(QStringLiteral("TechDraw_ExtensionDecreaseDecimal"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_ExtensionDecreaseDecimal"));
 
     _pcAction = pcAction;
     languageChange();
@@ -804,7 +799,7 @@ void CmdTechDrawExtensionPosObliqueChainDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     execPosObliqueChainDimension(this);
-    ///Base::Console().Message("TechDraw_ExtensionPosObliqueChainDimension started\n");
+    ///Base::Console().message("TechDraw_ExtensionPosObliqueChainDimension started\n");
 }
 
 bool CmdTechDrawExtensionPosObliqueChainDimension::isActive()
@@ -836,7 +831,7 @@ CmdTechDrawExtensionPosChainDimensionGroup::CmdTechDrawExtensionPosChainDimensio
 
 void CmdTechDrawExtensionPosChainDimensionGroup::activated(int iMsg)
 {
-    //    Base::Console().Message("CMD::ExtensionPosChainDimensionGroup - activated(%d)\n", iMsg);
+    //    Base::Console().message("CMD::ExtensionPosChainDimensionGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
@@ -857,7 +852,7 @@ void CmdTechDrawExtensionPosChainDimensionGroup::activated(int iMsg)
         execPosObliqueChainDimension(this);
         break;
     default:
-        Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+        Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
     };
 }
 
@@ -869,16 +864,16 @@ Gui::Action* CmdTechDrawExtensionPosChainDimensionGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionPosHorizChainDimension"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_ExtensionPosHorizChainDimension"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionPosHorizChainDimension"));
+    p1->setObjectName(QStringLiteral("TechDraw_ExtensionPosHorizChainDimension"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_ExtensionPosHorizChainDimension"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionPosVertChainDimension"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionPosVertChainDimension"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionPosVertChainDimension"));
+    p2->setObjectName(QStringLiteral("TechDraw_ExtensionPosVertChainDimension"));
+    p2->setWhatsThis(QStringLiteral("sion"));
     QAction* p3 = pcAction->addAction(QString());
     p3->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionPosObliqueChainDimension"));
-    p3->setObjectName(QString::fromLatin1("TechDraw_ExtensionPosObliqueChainDimension"));
-    p3->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionPosObliqueChainDimension"));
+    p3->setObjectName(QStringLiteral("TechDraw_ExtensionPosObliqueChainDimension"));
+    p3->setWhatsThis(QStringLiteral("TechDraw_ExtensionPosObliqueChainDimension"));
 
     _pcAction = pcAction;
     languageChange();
@@ -1131,7 +1126,7 @@ void CmdTechDrawExtensionCascadeObliqueDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     execCascadeObliqueDimension(this);
-    ///Base::Console().Message("TechDraw_ExtensionPosObliqueChainDimension started\n");
+    ///Base::Console().message("TechDraw_ExtensionPosObliqueChainDimension started\n");
 }
 
 bool CmdTechDrawExtensionCascadeObliqueDimension::isActive()
@@ -1164,7 +1159,7 @@ CmdTechDrawExtensionCascadeDimensionGroup::CmdTechDrawExtensionCascadeDimensionG
 
 void CmdTechDrawExtensionCascadeDimensionGroup::activated(int iMsg)
 {
-    //    Base::Console().Message("CMD::ExtensionCascadeDimansionGroup - activated(%d)\n", iMsg);
+    //    Base::Console().message("CMD::ExtensionCascadeDimansionGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
@@ -1185,7 +1180,7 @@ void CmdTechDrawExtensionCascadeDimensionGroup::activated(int iMsg)
         execCascadeObliqueDimension(this);
         break;
     default:
-        Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+        Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
     };
 }
 
@@ -1197,16 +1192,16 @@ Gui::Action* CmdTechDrawExtensionCascadeDimensionGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCascadeHorizDimension"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_ExtensionCascadeHorizDimension"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionCascadeHorizDimension"));
+    p1->setObjectName(QStringLiteral("TechDraw_ExtensionCascadeHorizDimension"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_ExtensionCascadeHorizDimension"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCascadeVertDimension"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionCascadeVertDimension"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionCascadeVertDimension"));
+    p2->setObjectName(QStringLiteral("TechDraw_ExtensionCascadeVertDimension"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_ExtensionCascadeVertDimension"));
     QAction* p3 = pcAction->addAction(QString());
     p3->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCascadeObliqueDimension"));
-    p3->setObjectName(QString::fromLatin1("TechDraw_ExtensionCascadeObliqueDimension"));
-    p3->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionCascadeObliqueDimension"));
+    p3->setObjectName(QStringLiteral("TechDraw_ExtensionCascadeObliqueDimension"));
+    p3->setWhatsThis(QStringLiteral("TechDraw_ExtensionCascadeObliqueDimension"));
 
     _pcAction = pcAction;
     languageChange();
@@ -1468,7 +1463,7 @@ std::vector<DrawViewDimension*> TechDrawGui::makeObliqueChainDimension(std::vect
                 edge->m_format.setStyle(1);
                 edge->m_format.setLineNumber(1);
                 edge->m_format.setWidth(TechDraw::LineGroup::getDefaultWidth("Thin"));
-                edge->m_format.setColor(App::Color(0.0f, 0.0f, 0.0f));
+                edge->m_format.setColor(Base::Color(0.0f, 0.0f, 0.0f));
             }
             else
                 carrierVertexes.push_back(oldVertex);
@@ -1540,7 +1535,7 @@ CmdTechDrawExtensionCreateChainDimensionGroup::CmdTechDrawExtensionCreateChainDi
 
 void CmdTechDrawExtensionCreateChainDimensionGroup::activated(int iMsg)
 {
-    //    Base::Console().Message("CMD::ExtensionCascadeDimansionGroup - activated(%d)\n", iMsg);
+    //    Base::Console().message("CMD::ExtensionCascadeDimansionGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
@@ -1561,7 +1556,7 @@ void CmdTechDrawExtensionCreateChainDimensionGroup::activated(int iMsg)
         execCreateObliqueChainDimension(this);
         break;
     default:
-        Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+        Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
     };
 }
 
@@ -1573,16 +1568,16 @@ Gui::Action* CmdTechDrawExtensionCreateChainDimensionGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCreateHorizChainDimension"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_ExtensionCreateHorizChainDimension"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionCreateHorizChainDimension"));
+    p1->setObjectName(QStringLiteral("TechDraw_ExtensionCreateHorizChainDimension"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_ExtensionCreateHorizChainDimension"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCreateVertChainDimension"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionCreateVertChainDimension"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionCreateVertChainDimension"));
+    p2->setObjectName(QStringLiteral("TechDraw_ExtensionCreateVertChainDimension"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_ExtensionCreateVertChainDimension"));
     QAction* p3 = pcAction->addAction(QString());
     p3->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCreateObliqueChainDimension"));
-    p3->setObjectName(QString::fromLatin1("TechDraw_ExtensionCreateObliqueChainDimension"));
-    p3->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionCreateObliqueChainDimension"));
+    p3->setObjectName(QStringLiteral("TechDraw_ExtensionCreateObliqueChainDimension"));
+    p3->setWhatsThis(QStringLiteral("TechDraw_ExtensionCreateObliqueChainDimension"));
 
     _pcAction = pcAction;
     languageChange();
@@ -1851,7 +1846,7 @@ std::vector<DrawViewDimension*> TechDrawGui::makeObliqueCoordDimension(std::vect
                 edge->m_format.setStyle(1);
                 edge->m_format.setLineNumber(1);
                 edge->m_format.setWidth(TechDraw::LineGroup::getDefaultWidth("Thin"));
-                edge->m_format.setColor(App::Color(0.0, 0.0, 0.0));
+                edge->m_format.setColor(Base::Color(0.0, 0.0, 0.0));
             }
             else {
                 carrierVertexes.push_back(oldVertex);
@@ -1933,7 +1928,7 @@ CmdTechDrawExtensionCreateCoordDimensionGroup::CmdTechDrawExtensionCreateCoordDi
 
 void CmdTechDrawExtensionCreateCoordDimensionGroup::activated(int iMsg)
 {
-    //    Base::Console().Message("CMD::ExtensionCascadeDimansionGroup - activated(%d)\n", iMsg);
+    //    Base::Console().message("CMD::ExtensionCascadeDimansionGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
@@ -1954,7 +1949,7 @@ void CmdTechDrawExtensionCreateCoordDimensionGroup::activated(int iMsg)
         execCreateObliqueCoordDimension(this);
         break;
     default:
-        Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+        Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
     };
 }
 
@@ -1966,16 +1961,16 @@ Gui::Action* CmdTechDrawExtensionCreateCoordDimensionGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCreateHorizCoordDimension"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_ExtensionCreateHorizCoordDimension"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionCreateHorizCoordDimension"));
+    p1->setObjectName(QStringLiteral("TechDraw_ExtensionCreateHorizCoordDimension"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_ExtensionCreateHorizCoordDimension"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCreateVertCoordDimension"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionCreateVertCoordDimension"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionCreateVertCoordDimension"));
+    p2->setObjectName(QStringLiteral("TechDraw_ExtensionCreateVertCoordDimension"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_ExtensionCreateVertCoordDimension"));
     QAction* p3 = pcAction->addAction(QString());
     p3->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCreateObliqueCoordDimension"));
-    p3->setObjectName(QString::fromLatin1("TechDraw_ExtensionCreateObliqueCoordDimension"));
-    p3->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionCreateObliqueCoordDimension"));
+    p3->setObjectName(QStringLiteral("TechDraw_ExtensionCreateObliqueCoordDimension"));
+    p3->setWhatsThis(QStringLiteral("TechDraw_ExtensionCreateObliqueCoordDimension"));
 
     _pcAction = pcAction;
     languageChange();
@@ -2050,7 +2045,6 @@ void execCreateHorizChamferDimension(Gui::Command* cmd) {
     std::vector<dimVertex> allVertexes;
     allVertexes = _getVertexInfo(objFeat, subNames);
     if (!allVertexes.empty() && allVertexes.size() > 1) {
-        const auto Pi180 = 180.0 / M_PI;
         TechDraw::DrawViewDimension* dim;
         dim = _createLinDimension(objFeat, allVertexes[0].name, allVertexes[1].name, "DistanceX");
         float yMax = std::max(abs(allVertexes[0].point.y), abs(allVertexes[1].point.y)) + 7.0;
@@ -2062,7 +2056,7 @@ void execCreateHorizChamferDimension(Gui::Command* cmd) {
         dim->Y.setValue(-yMax);
         float dx = allVertexes[0].point.x - allVertexes[1].point.x;
         float dy = allVertexes[0].point.y - allVertexes[1].point.y;
-        float alpha = round(abs(atan(dy / dx)) * Pi180);
+        float alpha = std::round(Base::toDegrees(std::abs<float>(std::atan(dy / dx))));
         std::string sAlpha = std::to_string((int)alpha);
         std::string formatSpec = dim->FormatSpec.getStrValue();
         formatSpec = formatSpec + " x" + sAlpha + "°";
@@ -2119,7 +2113,6 @@ void execCreateVertChamferDimension(Gui::Command* cmd) {
     std::vector<dimVertex> allVertexes;
     allVertexes = _getVertexInfo(objFeat, subNames);
     if (!allVertexes.empty() && allVertexes.size() > 1) {
-        const auto Pi180 = 180.0 / M_PI;
         TechDraw::DrawViewDimension* dim;
         dim = _createLinDimension(objFeat, allVertexes[0].name, allVertexes[1].name, "DistanceY");
         float xMax = std::max(abs(allVertexes[0].point.x), abs(allVertexes[1].point.x)) + 7.0;
@@ -2131,7 +2124,7 @@ void execCreateVertChamferDimension(Gui::Command* cmd) {
         dim->Y.setValue(-mid.y);
         float dx = allVertexes[0].point.x - allVertexes[1].point.x;
         float dy = allVertexes[0].point.y - allVertexes[1].point.y;
-        float alpha = round(abs(atan(dx / dy)) * Pi180);
+        float alpha = std::round(Base::toDegrees(std::abs<float>(std::atan(dx / dy))));
         std::string sAlpha = std::to_string((int)alpha);
         std::string formatSpec = dim->FormatSpec.getStrValue();
         formatSpec = formatSpec + " x" + sAlpha + "°";
@@ -2192,7 +2185,7 @@ CmdTechDrawExtensionChamferDimensionGroup::CmdTechDrawExtensionChamferDimensionG
 
 void CmdTechDrawExtensionChamferDimensionGroup::activated(int iMsg)
 {
-    //    Base::Console().Message("CMD::ExtensionIncreaseDecreaseGroup - activated(%d)\n", iMsg);
+    //    Base::Console().message("CMD::ExtensionIncreaseDecreaseGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
@@ -2210,7 +2203,7 @@ void CmdTechDrawExtensionChamferDimensionGroup::activated(int iMsg)
         execCreateVertChamferDimension(this);
         break;
     default:
-        Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+        Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
     };
 }
 
@@ -2222,12 +2215,12 @@ Gui::Action* CmdTechDrawExtensionChamferDimensionGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCreateHorizChamferDimension"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_ExtensionCreateHorizChamferDimension"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionCreateHorizChamferDimension"));
+    p1->setObjectName(QStringLiteral("TechDraw_ExtensionCreateHorizChamferDimension"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_ExtensionCreateHorizChamferDimension"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCreateVertChamferDimension"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionCreateVertChamferDimension"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionCreateVertChamferDimension"));
+    p2->setObjectName(QStringLiteral("TechDraw_ExtensionCreateVertChamferDimension"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_ExtensionCreateVertChamferDimension"));
 
     _pcAction = pcAction;
     languageChange();
@@ -2349,8 +2342,8 @@ void CmdTechDrawExtensionCustomizeFormat::activated(int iMsg)
     if (!_checkSelection(this, selected, QT_TRANSLATE_NOOP("QObject","TechDraw Customize Format")))
         return;
     auto object = selected[0].getObject();
-    if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId()) ||
-        object->isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId()))
+    if (object->isDerivedFrom<TechDraw::DrawViewDimension>() ||
+        object->isDerivedFrom<TechDraw::DrawViewBalloon>())
         Gui::Control().showDialog(new TaskDlgCustomizeFormat(object));
 }
 
@@ -2521,7 +2514,7 @@ namespace TechDrawGui {
         std::vector<TechDraw::DrawViewDimension*> validDimension;
         for (auto selected : selection) {
             auto object = selected.getObject();
-            if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
+            if (object->isDerivedFrom<TechDraw::DrawViewDimension>()) {
                 auto dim = static_cast<TechDraw::DrawViewDimension*>(selected.getObject());
                 std::string dimType = dim->Type.getValueAsString();
                 if (dimType == needDimType)

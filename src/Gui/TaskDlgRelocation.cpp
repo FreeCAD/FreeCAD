@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 
-#include "ui_DlgLocationAngle.h"
-#include "ui_DlgLocationPos.h"
+#include "Dialogs/ui_DlgLocationAngle.h"
+#include "Dialogs/ui_DlgLocationPos.h"
 
 #include "TaskDlgRelocation.h"
 #include "BitmapFactory.h"

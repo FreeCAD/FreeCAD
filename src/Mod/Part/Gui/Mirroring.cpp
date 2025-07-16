@@ -24,10 +24,8 @@
 
 #ifndef _PreComp_
 
-// to avoid compiler warnings of redefining contents of basic.h
-// later by #include <Gui/ViewProvider.h>
-# define _USE_MATH_DEFINES
 # include <cmath>
+# include <limits>
 
 # include <gp_Ax2.hxx>
 # include <gp_Circ.hxx>
@@ -40,7 +38,6 @@
 # include <TopoDS_Face.hxx>
 # include <TopExp_Explorer.hxx>
 
-# include <cfloat>
 # include <QMessageBox>
 # include <QRegularExpression>
 # include <QTreeWidget>
@@ -57,13 +54,14 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/Utilities.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
 #include <Mod/Part/App/DatumFeature.h>
+#include <Mod/Part/App/FeatureMirroring.h>
 #include <App/Datums.h>
 
 #include "Mirroring.h"
@@ -93,8 +91,8 @@ public:
     {
         std::string subString(sSubName);
 
-        if (pObj->isDerivedFrom(Part::Plane::getClassTypeId()) || pObj->isDerivedFrom<App::Plane>()
-                || (strstr(pObj->getNameInDocument(), "Plane") && pObj->isDerivedFrom(Part::Datum::getClassTypeId()))) {
+        if (pObj->isDerivedFrom<Part::Plane>() || pObj->isDerivedFrom<App::Plane>()
+                || (strstr(pObj->getNameInDocument(), "Plane") && pObj->isDerivedFrom<Part::Datum>())) {
             return true;
             // reference is an app::link or a part::feature or some subobject
         } else if (pObj->isDerivedFrom<Part::Feature>() || pObj->isDerivedFrom<App::Link>()) {
@@ -102,7 +100,12 @@ public:
             bool isEdge = false; //will be true if user selected edge subobject or if object only has 1 edge
             TopoDS_Shape shape;
             if (subString.length() > 0){
-                shape = Part::Feature::getTopoShape(pObj, subString.c_str(), true).getShape();
+                shape = Part::Feature::getTopoShape(pObj,
+                                                      Part::ShapeOption::NeedSubElement
+                                                    | Part::ShapeOption::ResolveLink
+                                                    | Part::ShapeOption::Transform,
+                                                    sSubName).getShape();                            
+
                 if (strstr(subString.c_str(), "Face")){
                     isFace = true; //was face subobject, e.g. Face3
                 } else {
@@ -111,7 +114,8 @@ public:
                     }
                 }
             } else {
-                shape = Part::Feature::getShape(pObj); //no subobjects were selected, so this is entire shape of feature
+                //no subobjects were selected, so this is entire shape of feature
+                shape = Part::Feature::getShape(pObj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
             }
 
             // if there is only 1 face or 1 edge, then we don't need to force the user to select that face or edge
@@ -181,9 +185,10 @@ Mirroring::Mirroring(QWidget* parent)
   : QWidget(parent), ui(new Ui_Mirroring)
 {
     ui->setupUi(this);
-    ui->baseX->setRange(-DBL_MAX, DBL_MAX);
-    ui->baseY->setRange(-DBL_MAX, DBL_MAX);
-    ui->baseZ->setRange(-DBL_MAX, DBL_MAX);
+    constexpr double max = std::numeric_limits<double>::max();
+    ui->baseX->setRange(-max, max);
+    ui->baseY->setRange(-max, max);
+    ui->baseZ->setRange(-max, max);
     ui->baseX->setUnit(Base::Unit::Length);
     ui->baseY->setUnit(Base::Unit::Length);
     ui->baseZ->setUnit(Base::Unit::Length);
@@ -251,7 +256,7 @@ void Mirroring::findShapes()
     std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
     for (auto obj : objs) {
-        Part::TopoShape shape = Part::Feature::getTopoShape(obj);
+        Part::TopoShape shape = Part::Feature::getTopoShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (!shape.isNull()) {
             QString label = QString::fromUtf8(obj->Label.getValue());
             QString name = QString::fromLatin1(obj->getNameInDocument());
@@ -289,7 +294,7 @@ bool Mirroring::accept()
     }
 
     Gui::WaitCursor wc;
-    unsigned int count = activeDoc->countObjectsOfType(Base::Type::fromName("Part::Mirroring"));
+    unsigned int count = activeDoc->countObjectsOfType<Part::Mirroring>();
     activeDoc->openTransaction("Mirroring");
 
     QString shape, label, selectionString;
@@ -325,9 +330,9 @@ bool Mirroring::accept()
         int pos = label.indexOf(rx);
         if (pos > -1)
             label = label.left(pos);
-        label.append(QString::fromLatin1(" (Mirror #%1)").arg(++count));
+        label.append(QStringLiteral(" (Mirror #%1)").arg(++count));
 
-        QString code = QString::fromLatin1(
+        QString code = QStringLiteral(
             "__doc__=FreeCAD.getDocument(\"%1\")\n"
             "__doc__.addObject(\"Part::Mirroring\")\n"
             "__doc__.ActiveObject.Source=__doc__.getObject(\"%2\")\n"

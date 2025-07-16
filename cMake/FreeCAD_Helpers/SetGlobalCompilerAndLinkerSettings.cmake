@@ -19,18 +19,29 @@ macro(SetGlobalCompilerAndLinkerSettings)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mxgot")
     endif()
 
+    if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
+        # Only add -O0 if no -O* optimization flag exists
+        if (NOT "${CMAKE_C_FLAGS_DEBUG}" MATCHES "-O[a-z0-9]+")
+            set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O0")
+        endif()
+        if (NOT "${CMAKE_CXX_FLAGS_DEBUG}" MATCHES "-O[a-z0-9]+")
+            set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
+        endif()
+    endif()
     if(MSVC)
         # set default compiler settings
         add_definitions(-D_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR -DNOMINMAX)
         add_compile_options(/Zm150 /bigobj)
         set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DFC_DEBUG")
-        # set default libs
-        set (CMAKE_C_STANDARD_LIBRARIES "kernel32.lib user32.lib gdi32.lib winspool.lib SHFolder.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib winmm.lib comsupp.lib Ws2_32.lib dbghelp.lib ")
-        set (CMAKE_CXX_STANDARD_LIBRARIES "${CMAKE_C_STANDARD_LIBRARIES}")
-        # set linker flag /nodefaultlib
-        set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /NODEFAULTLIB")
-        set (CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /NODEFAULTLIB")
-        set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB")
+        if (MSVC_VERSION LESS 1930)  # Anything before VS 2022
+            # set default libs
+            set (CMAKE_C_STANDARD_LIBRARIES "kernel32.lib user32.lib gdi32.lib winspool.lib SHFolder.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib winmm.lib comsupp.lib Ws2_32.lib dbghelp.lib ")
+            set (CMAKE_CXX_STANDARD_LIBRARIES "${CMAKE_C_STANDARD_LIBRARIES}")
+            # set linker flag /nodefaultlib
+            set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /NODEFAULTLIB")
+            set (CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /NODEFAULTLIB")
+            set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB")
+        endif()
         if(FREECAD_RELEASE_PDB)
             set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zi")
             set (CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /DEBUG")

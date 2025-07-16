@@ -27,6 +27,7 @@ __url__ = "https://www.freecad.org"
 
 
 import FreeCAD
+from femtools import constants
 
 
 def write_femelement_material(f, ccxwriter):
@@ -81,11 +82,24 @@ def write_femelement_material(f, ccxwriter):
             if mat_obj.Category == "Solid":
                 TEC = FreeCAD.Units.Quantity(mat_obj.Material["ThermalExpansionCoefficient"])
                 TEC_in_mmK = TEC.getValueAs("mm/mm/K").Value
+                if "ThermalExpansionReferenceTemperature" in mat_obj.Material:
+                    RT = FreeCAD.Units.Quantity(
+                        mat_obj.Material["ThermalExpansionReferenceTemperature"]
+                    )
+                else:
+                    RT = FreeCAD.Units.Quantity("0 K")
+                RT_in_K = RT.getValueAs("K").Value
             elif mat_obj.Category == "Fluid":
                 KV = FreeCAD.Units.Quantity(mat_obj.Material["KinematicViscosity"])
                 KV_in_mm2s = KV.getValueAs("mm^2/s").Value
                 DV_in_tmms = KV_in_mm2s * density_in_tonne_per_mm3
-
+        if (
+            ccxwriter.analysis_type == "electromagnetic"
+            and ccxwriter.solver_obj.ElectromagneticMode == "electrostatic"
+        ):
+            rel_perm = FreeCAD.Units.Quantity(mat_obj.Material["RelativePermittivity"]).Value
+            vacuum_perm = FreeCAD.Units.Quantity(constants.vacuum_permittivity())
+            abs_perm = vacuum_perm.getValueAs("C/(mV*mm)").Value * rel_perm
         # write material properties
         f.write(f"** FreeCAD material name: {mat_info_name}\n")
         f.write(f"** {mat_label}\n")
@@ -100,13 +114,19 @@ def write_femelement_material(f, ccxwriter):
             if mat_obj.Category == "Solid":
                 f.write("*CONDUCTIVITY\n")
                 f.write(f"{TC_in_WmK:.13G}\n")
-                f.write("*EXPANSION\n")
+                f.write(f"*EXPANSION, ZERO={RT_in_K:.13G}\n")
                 f.write(f"{TEC_in_mmK:.13G}\n")
                 f.write("*SPECIFIC HEAT\n")
                 f.write(f"{SH_in_JkgK:.13G}\n")
             elif mat_obj.Category == "Fluid":
                 f.write("*FLUID CONSTANTS\n")
                 f.write(f"{SH_in_JkgK:.13G},{DV_in_tmms:.13G}\n")
+        if (
+            ccxwriter.analysis_type == "electromagnetic"
+            and ccxwriter.solver_obj.ElectromagneticMode == "electrostatic"
+        ):
+            f.write("*CONDUCTIVITY\n")
+            f.write(f"{abs_perm:.13G}\n")
 
         # nonlinear material properties
         if ccxwriter.solver_obj.MaterialNonlinearity == "nonlinear":

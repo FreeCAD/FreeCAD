@@ -210,7 +210,7 @@ void CommandPy::setParameters(Py::Dict arg)
 
 // GCode methods
 
-PyObject* CommandPy::toGCode(PyObject* args)
+PyObject* CommandPy::toGCode(PyObject* args) const
 {
     if (PyArg_ParseTuple(args, "")) {
         return PyUnicode_FromString(getCommandPtr()->toGCode().c_str());
@@ -281,7 +281,7 @@ PyObject* CommandPy::getCustomAttributes(const char* attr) const
     if (satt.length() == 1) {
         if (isalpha(satt[0])) {
             boost::to_upper(satt);
-            if (getCommandPtr()->Parameters.count(satt)) {
+            if (getCommandPtr()->Parameters.contains(satt)) {
                 return PyFloat_FromDouble(getCommandPtr()->Parameters[satt]);
             }
             Py_INCREF(Py_None);

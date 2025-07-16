@@ -61,14 +61,14 @@
 #include "Control.h"
 #include "Clipping.h"
 #include "DemoMode.h"
-#include "DlgSettingsImageImp.h"
+#include "Dialogs/DlgSettingsImageImp.h"
 #include "Document.h"
 #include "FileDialog.h"
 #include "ImageView.h"
 #include "Inventor/SoAxisCrossKit.h"
 #include "Macro.h"
 #include "MainWindow.h"
-#include "NavigationStyle.h"
+#include "Navigation/NavigationStyle.h"
 #include "OverlayParams.h"
 #include "OverlayManager.h"
 #include "SceneInspector.h"
@@ -339,19 +339,19 @@ Action * StdCmdFreezeViews::createAction()
     saveView->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* loadView = pcAction->addAction(QObject::tr("&Load views..."));
     loadView->setWhatsThis(QString::fromLatin1(getWhatsThis()));
-    pcAction->addAction(QString::fromLatin1(""))->setSeparator(true);
+    pcAction->addAction(QStringLiteral(""))->setSeparator(true);
     freezeView = pcAction->addAction(QObject::tr("F&reeze view"));
     freezeView->setShortcut(QString::fromLatin1(getAccel()));
     freezeView->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     clearView = pcAction->addAction(QObject::tr("&Clear views"));
     clearView->setWhatsThis(QString::fromLatin1(getWhatsThis()));
-    separator = pcAction->addAction(QString::fromLatin1(""));
+    separator = pcAction->addAction(QStringLiteral(""));
     separator->setSeparator(true);
     offset = pcAction->actions().count();
 
     // allow up to 50 views
     for (int i=0; i<maxViews; i++)
-        pcAction->addAction(QString::fromLatin1(""))->setVisible(false);
+        pcAction->addAction(QStringLiteral(""))->setVisible(false);
 
     return pcAction;
 }
@@ -394,7 +394,7 @@ void StdCmdFreezeViews::activated(int iMsg)
                 (*it)->setToolTip(QString::fromLatin1(ppReturn));
                 (*it)->setVisible(true);
                 if (index < 10) {
-                    (*it)->setShortcut(QKeySequence(QString::fromLatin1("CTRL+%1").arg(index)));
+                    (*it)->setShortcut(QKeySequence(QStringLiteral("CTRL+%1").arg(index)));
                 }
                 break;
             }
@@ -410,7 +410,7 @@ void StdCmdFreezeViews::activated(int iMsg)
         // Activate a view
         QList<QAction*> acts = pcAction->actions();
         QString data = acts[iMsg]->toolTip();
-        QString send = QString::fromLatin1("SetCamera %1").arg(data);
+        QString send = QStringLiteral("SetCamera %1").arg(data);
         getGuiApplication()->sendMsgToActiveView(send.toLatin1());
     }
 }
@@ -419,7 +419,7 @@ void StdCmdFreezeViews::onSaveViews()
 {
     // Save the views to an XML file
     QString fn = FileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save frozen views"),
-                                             QString(), QString::fromLatin1("%1 (*.cam)").arg(QObject::tr("Frozen views")));
+                                             QString(), QStringLiteral("%1 (*.cam)").arg(QObject::tr("Frozen views")));
     if (fn.isEmpty())
         return;
     QFile file(fn);
@@ -440,11 +440,11 @@ void StdCmdFreezeViews::onSaveViews()
             // remove the first line because it's a comment like '#Inventor V2.1 ascii'
             QString viewPos;
             if (!data.isEmpty()) {
-                QStringList lines = data.split(QString::fromLatin1("\n"));
+                QStringList lines = data.split(QStringLiteral("\n"));
                 if (lines.size() > 1) {
                     lines.pop_front();
                 }
-                viewPos = lines.join(QString::fromLatin1(" "));
+                viewPos = lines.join(QStringLiteral(" "));
             }
 
             str << "    <Camera settings=\"" << viewPos.toLatin1().constData() << "\"/>\n";
@@ -469,7 +469,7 @@ void StdCmdFreezeViews::onRestoreViews()
 
     // Restore the views from an XML file
     QString fn = FileDialog::getOpenFileName(getMainWindow(), QObject::tr("Restore frozen views"),
-                                             QString(), QString::fromLatin1("%1 (*.cam)").arg(QObject::tr("Frozen views")));
+                                             QString(), QStringLiteral("%1 (*.cam)").arg(QObject::tr("Frozen views")));
     if (fn.isEmpty())
         return;
     QFile file(fn);
@@ -500,19 +500,19 @@ void StdCmdFreezeViews::onRestoreViews()
     }
 
     bool ok;
-    int scheme = root.attribute(QString::fromLatin1("SchemaVersion")).toInt(&ok);
+    int scheme = root.attribute(QStringLiteral("SchemaVersion")).toInt(&ok);
     if (!ok)
         return;
     // SchemeVersion "1"
     if (scheme == 1) {
         // read the views, ignore the attribute 'Count'
-        QDomElement child = root.firstChildElement(QString::fromLatin1("Views"));
-        QDomElement views = child.firstChildElement(QString::fromLatin1("Camera"));
+        QDomElement child = root.firstChildElement(QStringLiteral("Views"));
+        QDomElement views = child.firstChildElement(QStringLiteral("Camera"));
         QStringList cameras;
         while (!views.isNull()) {
-            QString setting = views.attribute(QString::fromLatin1("settings"));
+            QString setting = views.attribute(QStringLiteral("settings"));
             cameras << setting;
-            views = views.nextSiblingElement(QString::fromLatin1("Camera"));
+            views = views.nextSiblingElement(QStringLiteral("Camera"));
         }
 
         // use this rather than the attribute 'Count' because it could be
@@ -533,7 +533,7 @@ void StdCmdFreezeViews::onRestoreViews()
             acts[i+offset]->setToolTip(setting);
             acts[i+offset]->setVisible(true);
             if (i < 9) {
-                acts[i+offset]->setShortcut(QKeySequence(QString::fromLatin1("CTRL+%1").arg(i+1)));
+                acts[i+offset]->setShortcut(QKeySequence(QStringLiteral("CTRL+%1").arg(i+1)));
             }
         }
 
@@ -668,44 +668,44 @@ Gui::Action * StdCmdDrawStyle::createAction()
     a0->setCheckable(true);
     a0->setIcon(BitmapFactory().iconFromTheme("DrawStyleAsIs"));
     a0->setChecked(true);
-    a0->setObjectName(QString::fromLatin1("Std_DrawStyleAsIs"));
-    a0->setShortcut(QKeySequence(QString::fromUtf8("V,1")));
+    a0->setObjectName(QStringLiteral("Std_DrawStyleAsIs"));
+    a0->setShortcut(QKeySequence(QStringLiteral("V,1")));
     a0->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* a1 = pcAction->addAction(QString());
     a1->setCheckable(true);
     a1->setIcon(BitmapFactory().iconFromTheme("DrawStylePoints"));
-    a1->setObjectName(QString::fromLatin1("Std_DrawStylePoints"));
-    a1->setShortcut(QKeySequence(QString::fromUtf8("V,2")));
+    a1->setObjectName(QStringLiteral("Std_DrawStylePoints"));
+    a1->setShortcut(QKeySequence(QStringLiteral("V,2")));
     a1->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* a2 = pcAction->addAction(QString());
     a2->setCheckable(true);
     a2->setIcon(BitmapFactory().iconFromTheme("DrawStyleWireFrame"));
-    a2->setObjectName(QString::fromLatin1("Std_DrawStyleWireframe"));
-    a2->setShortcut(QKeySequence(QString::fromUtf8("V,3")));
+    a2->setObjectName(QStringLiteral("Std_DrawStyleWireframe"));
+    a2->setShortcut(QKeySequence(QStringLiteral("V,3")));
     a2->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* a3 = pcAction->addAction(QString());
     a3->setCheckable(true);
     a3->setIcon(BitmapFactory().iconFromTheme("DrawStyleHiddenLine"));
-    a3->setObjectName(QString::fromLatin1("Std_DrawStyleHiddenLine"));
-    a3->setShortcut(QKeySequence(QString::fromUtf8("V,4")));
+    a3->setObjectName(QStringLiteral("Std_DrawStyleHiddenLine"));
+    a3->setShortcut(QKeySequence(QStringLiteral("V,4")));
     a3->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* a4 = pcAction->addAction(QString());
     a4->setCheckable(true);
     a4->setIcon(BitmapFactory().iconFromTheme("DrawStyleNoShading"));
-    a4->setObjectName(QString::fromLatin1("Std_DrawStyleNoShading"));
-    a4->setShortcut(QKeySequence(QString::fromUtf8("V,5")));
+    a4->setObjectName(QStringLiteral("Std_DrawStyleNoShading"));
+    a4->setShortcut(QKeySequence(QStringLiteral("V,5")));
     a4->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* a5 = pcAction->addAction(QString());
     a5->setCheckable(true);
     a5->setIcon(BitmapFactory().iconFromTheme("DrawStyleShaded"));
-    a5->setObjectName(QString::fromLatin1("Std_DrawStyleShaded"));
-    a5->setShortcut(QKeySequence(QString::fromUtf8("V,6")));
+    a5->setObjectName(QStringLiteral("Std_DrawStyleShaded"));
+    a5->setShortcut(QKeySequence(QStringLiteral("V,6")));
     a5->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* a6 = pcAction->addAction(QString());
     a6->setCheckable(true);
     a6->setIcon(BitmapFactory().iconFromTheme("DrawStyleFlatLines"));
-    a6->setObjectName(QString::fromLatin1("Std_DrawStyleFlatLines"));
-    a6->setShortcut(QKeySequence(QString::fromUtf8("V,7")));
+    a6->setObjectName(QStringLiteral("Std_DrawStyleFlatLines"));
+    a6->setShortcut(QKeySequence(QStringLiteral("V,7")));
     a6->setWhatsThis(QString::fromLatin1(getWhatsThis()));
 
     pcAction->setIcon(a0->icon());
@@ -931,7 +931,7 @@ void StdCmdToggleTransparency::activated(int iMsg)
             App::Document* doc = obj->getDocument();
             Gui::ViewProvider* view = Application::Instance->getDocument(doc)->getViewProvider(obj);
             App::Property* prop = view->getPropertyByName("Transparency");
-            if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+            if (prop && prop->isDerivedFrom<App::PropertyInteger>()) {
                 // To prevent toggling the tip of a PD body (see #11353), we check if the parent has a
                 // Tip prop.
                 const std::vector<App::DocumentObject*> parents = obj->getInList();
@@ -942,13 +942,13 @@ void StdCmdToggleTransparency::activated(int iMsg)
                     if (parentProp) {
                         // Make sure it has a transparency prop too
                         parentProp = parentView->getPropertyByName("Transparency");
-                        if (parentProp && parentProp->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+                        if (parentProp && parentProp->isDerivedFrom<App::PropertyInteger>()) {
                             view = parentView;
                         }
                     }
                 }
 
-                if (std::find(views.begin(), views.end(), view) == views.end()) {
+                if (std::ranges::find(views, view) == views.end()) {
                     views.push_back(view);
                 }
             }
@@ -967,7 +967,7 @@ void StdCmdToggleTransparency::activated(int iMsg)
     bool oneTransparent = false;
     for (auto* view : viewsToToggle) {
         App::Property* prop = view->getPropertyByName("Transparency");
-        if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+        if (prop && prop->isDerivedFrom<App::PropertyInteger>()) {
             auto* transparencyProp = dynamic_cast<App::PropertyInteger*>(prop);
             int transparency = transparencyProp->getValue();
             if (transparency != 0) {
@@ -976,11 +976,15 @@ void StdCmdToggleTransparency::activated(int iMsg)
         }
     }
 
-    int transparency = oneTransparent ? 0 : 70;
+    auto hGrp =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    int userTransparency = hGrp->GetInt("ToggleTransparency", 70);
+
+    int transparency = oneTransparent ? 0 : userTransparency;
 
     for (auto* view : viewsToToggle) {
         App::Property* prop = view->getPropertyByName("Transparency");
-        if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+        if (prop && prop->isDerivedFrom<App::PropertyInteger>()) {
             auto* transparencyProp = dynamic_cast<App::PropertyInteger*>(prop);
             transparencyProp->setValue(transparency);
         }
@@ -1029,7 +1033,7 @@ void StdCmdToggleSelectability::activated(int iMsg)
 
         for (const auto & ft : sel) {
             ViewProvider *pr = pcDoc->getViewProviderByName(ft->getNameInDocument());
-            if (pr && pr->isDerivedFrom(ViewProviderGeometryObject::getClassTypeId())){
+            if (pr && pr->isDerivedFrom<ViewProviderGeometryObject>()){
                 if (static_cast<ViewProviderGeometryObject*>(pr)->Selectable.getValue())
                     doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Selectable=False"
                                  , doc->getName(), ft->getNameInDocument());
@@ -1955,7 +1959,7 @@ void StdViewScreenShot::activated(int iMsg)
         QStringList filter;
         QString selFilter;
         for (QStringList::Iterator it = formats.begin(); it != formats.end(); ++it) {
-            filter << QString::fromLatin1("%1 %2 (*.%3)").arg((*it).toUpper(),
+            filter << QStringLiteral("%1 %2 (*.%3)").arg((*it).toUpper(),
                 QObject::tr("files"), (*it).toLower());
             if (ext == *it)
                 selFilter = filter.last();
@@ -2025,11 +2029,8 @@ void StdViewScreenShot::activated(int iMsg)
                 // Replace newline escape sequence through '\\n' string to build one big string,
                 // otherwise Python would interpret it as an invalid command.
                 // Python does the decoding for us.
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
                 QStringList lines = comment.split(QLatin1String("\n"), Qt::KeepEmptyParts);
-#else
-                QStringList lines = comment.split(QLatin1String("\n"), QString::KeepEmptyParts);
-#endif
+
                 comment = lines.join(QLatin1String("\\n"));
                 doCommand(Gui, "Gui.activeDocument().activeView().saveImage('%s',%d,%d,'%s','%s')",
                           fn.toUtf8().constData(), w, h, background, comment.toUtf8().constData());
@@ -2117,8 +2118,8 @@ void StdViewLoadImage::activated(int iMsg)
     QFileDialog dialog(Gui::getMainWindow());
     dialog.setWindowTitle(QObject::tr("Choose an image file to open"));
     dialog.setMimeTypeFilters(mimeTypeFilters);
-    dialog.selectMimeTypeFilter(QString::fromLatin1("image/png"));
-    dialog.setDefaultSuffix(QString::fromLatin1("png"));
+    dialog.selectMimeTypeFilter(QStringLiteral("image/png"));
+    dialog.setDefaultSuffix(QStringLiteral("png"));
     dialog.setAcceptMode(QFileDialog::AcceptOpen);
     dialog.setOption(QFileDialog::DontUseNativeDialog);
 
@@ -2183,7 +2184,7 @@ void StdCmdToggleNavigation::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         SbBool toggle = viewer->isRedirectedToSceneGraph();
         viewer->setRedirectToSceneGraph(!toggle);
@@ -2199,7 +2200,7 @@ bool StdCmdToggleNavigation::isActive()
     if (Gui::Control().activeDialog())
         return false;
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         return viewer->isEditing() && viewer->isRedirectToSceneGraphEnabled();
     }
@@ -2522,7 +2523,7 @@ void StdCmdViewIvIssueCamPos::activated(int iMsg)
     Temp += Temp2;
     Temp += "\")";
 
-    Base::Console().Message("%s\n",Temp2.c_str());
+    Base::Console().message("%s\n",Temp2.c_str());
     getGuiApplication()->macroManager()->addLine(MacroManager::Gui,Temp.c_str());
 }
 
@@ -2611,7 +2612,7 @@ public:
     {
         if (currentSelectionHandler)
         {
-            Base::Console().Message("SelectionCallbackHandler: A selection handler already active.");
+            Base::Console().message("SelectionCallbackHandler: A selection handler already active.");
             return;
         }
 
@@ -2685,22 +2686,19 @@ public:
         currentSelectionHandler = nullptr;
     }
 
-    static QCursor makeCursor(QWidget* widget, const QSize& size, const char* svgFile, int hotX, int hotY)
+    static QCursor makeCursor([[maybe_unused]] QWidget* widget, const QSize& size, const char* svgFile, int hotX, int hotY)
     {
-        qreal pRatio = widget->devicePixelRatioF();
         qreal hotXF = hotX;
         qreal hotYF = hotY;
 #if !defined(Q_OS_WIN32) && !defined(Q_OS_MACOS)
         if (qApp->platformName() == QLatin1String("xcb")) {
+            qreal pRatio = widget->devicePixelRatioF();
             hotXF *= pRatio;
             hotYF *= pRatio;
         }
 #endif
-        qreal cursorWidth = size.width() * pRatio;
-        qreal cursorHeight = size.height() * pRatio;
-        QPixmap px(Gui::BitmapFactory().pixmapFromSvg(svgFile, QSizeF(cursorWidth, cursorHeight)));
-        px.setDevicePixelRatio(pRatio);
-        return QCursor(px, hotXF, hotYF);
+        QPixmap px(Gui::BitmapFactory().pixmapFromSvg(svgFile, size));
+        return QCursor(px, static_cast<int>(hotXF), static_cast<int>(hotYF));
     }
 };
 }
@@ -2867,7 +2865,7 @@ static std::vector<std::string> getBoxSelection(
         if(!vis)
             continue;
 
-        auto svp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(sobj));
+        auto svp = freecad_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(sobj));
         if(!svp)
             continue;
 
@@ -2930,7 +2928,7 @@ static void doSelect(void* ud, SoEventCallback * cb)
             if(App::GeoFeatureGroupExtension::getGroupOfObject(obj))
                 continue;
 
-            auto vp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
+            auto vp = freecad_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
             if (!vp || !vp->isVisible())
                 continue;
 
@@ -3112,7 +3110,7 @@ bool StdCmdTreeSelectAllInstances::isActive()
     auto obj = sels[0].getObject();
     if(!obj || !obj->isAttachedToDocument())
         return false;
-    return dynamic_cast<ViewProviderDocumentObject*>(
+    return freecad_cast<ViewProviderDocumentObject*>(
             Application::Instance->getViewProvider(obj)) != nullptr;
 }
 
@@ -3125,7 +3123,7 @@ void StdCmdTreeSelectAllInstances::activated(int iMsg)
     auto obj = sels[0].getObject();
     if(!obj || !obj->isAttachedToDocument())
         return;
-    auto vpd = dynamic_cast<ViewProviderDocumentObject*>(
+    auto vpd = freecad_cast<ViewProviderDocumentObject*>(
             Application::Instance->getViewProvider(obj));
     if(!vpd)
         return;
@@ -3199,7 +3197,7 @@ void StdCmdTextureMapping::activated(int iMsg)
 bool StdCmdTextureMapping::isActive()
 {
     Gui::MDIView* view = getMainWindow()->activeWindow();
-    return view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())
+    return view && view->isDerivedFrom<Gui::View3DInventor>()
                 && (!(Gui::Control().activeDialog()));
 }
 
@@ -3303,7 +3301,7 @@ bool StdCmdSelForward::isActive()
 DEF_STD_CMD_AC(StdTree##_name) \
 void StdTree##_name::activated(int){ \
     TreeParams::setDocumentMode(_v);\
-    if(_pcAction) _pcAction->setChecked(true,true);\
+    if(_pcAction) _pcAction->setBlockedChecked(true);\
 }\
 Action * StdTree##_name::createAction(void) {\
     Action *pcAction = Command::createAction();\
@@ -3316,7 +3314,7 @@ Action * StdTree##_name::createAction(void) {\
 bool StdTree##_name::isActive() {\
     bool checked = TreeParams::getDocumentMode()==_v;\
     if(_pcAction && _pcAction->isChecked()!=checked)\
-        _pcAction->setChecked(checked,true);\
+        _pcAction->setBlockedChecked(checked);\
     return true;\
 }
 
@@ -3376,9 +3374,9 @@ DEF_STD_CMD_AC(StdTree##_name) \
 void StdTree##_name::activated(int){ \
     auto checked = !TreeParams::get##_name();\
     TreeParams::set##_name(checked);\
-    if(_pcAction) _pcAction->setChecked(checked,true);\
+    if(_pcAction) _pcAction->setBlockedChecked(checked);\
 }\
-Action * StdTree##_name::createAction(void) {\
+Action * StdTree##_name::createAction() {\
     Action *pcAction = Command::createAction();\
     pcAction->setCheckable(true);\
     pcAction->setIcon(QIcon());\
@@ -3389,7 +3387,7 @@ Action * StdTree##_name::createAction(void) {\
 bool StdTree##_name::isActive() {\
     bool checked = TreeParams::get##_name();\
     if(_pcAction && _pcAction->isChecked()!=checked)\
-        _pcAction->setChecked(checked,true);\
+        _pcAction->setBlockedChecked(checked);\
     return true;\
 }
 
@@ -3453,7 +3451,7 @@ StdTreePreSelection::StdTreePreSelection()
   : Command("Std_TreePreSelection")
 {
     sGroup       = "TreeView";
-    sMenuText    = QT_TR_NOOP("&4 Pre-selection");
+    sMenuText    = QT_TR_NOOP("&4 Preselection");
     sToolTipText = QT_TR_NOOP("Preselect the object in 3D view when hovering the cursor over the tree item");
     sStatusTip   = sToolTipText;
     sWhatsThis   = "Std_TreePreSelection";
@@ -3578,7 +3576,7 @@ void StdCmdSelBoundingBox::activated(int iMsg)
     if(checked != ViewParams::instance()->getShowSelectionBoundingBox()) {
         ViewParams::instance()->setShowSelectionBoundingBox(checked);
         if(_pcAction)
-            _pcAction->setChecked(checked,true);
+            _pcAction->setBlockedChecked(checked);
     }
 }
 
@@ -3587,7 +3585,7 @@ bool StdCmdSelBoundingBox::isActive()
     if(_pcAction) {
         bool checked = _pcAction->isChecked();
         if(checked != ViewParams::instance()->getShowSelectionBoundingBox())
-            _pcAction->setChecked(!checked,true);
+            _pcAction->setBlockedChecked(!checked);
     }
     return true;
 }
@@ -3712,7 +3710,7 @@ StdCmdDockOverlayToggleLeft::StdCmdDockOverlayToggleLeft()
     sWhatsThis    = "Std_DockOverlayToggleLeft";
     sStatusTip    = sToolTipText;
     sAccel        = "Ctrl+Left";
-    sPixmap       = "qss:overlay/icons/close.svg";
+    sPixmap       = "Std_DockOverlayToggleLeft";
     eType         = 0;
 }
 
@@ -3737,7 +3735,7 @@ StdCmdDockOverlayToggleRight::StdCmdDockOverlayToggleRight()
     sWhatsThis    = "Std_DockOverlayToggleRight";
     sStatusTip    = sToolTipText;
     sAccel        = "Ctrl+Right";
-    sPixmap       = "qss:overlay/icons/close.svg";
+    sPixmap       = "Std_DockOverlayToggleRight";
     eType         = 0;
 }
 
@@ -3762,7 +3760,7 @@ StdCmdDockOverlayToggleTop::StdCmdDockOverlayToggleTop()
     sWhatsThis    = "Std_DockOverlayToggleTop";
     sStatusTip    = sToolTipText;
     sAccel        = "Ctrl+Up";
-    sPixmap       = "qss:overlay/icons/close.svg";
+    sPixmap       = "Std_DockOverlayToggleTop";
     eType         = 0;
 }
 
@@ -3787,7 +3785,7 @@ StdCmdDockOverlayToggleBottom::StdCmdDockOverlayToggleBottom()
     sWhatsThis    = "Std_DockOverlayToggleBottom";
     sStatusTip    = sToolTipText;
     sAccel        = "Ctrl+Down";
-    sPixmap       = "qss:overlay/icons/close.svg";
+    sPixmap       = "Std_DockOverlayToggleBottom";
     eType         = 0;
 }
 
@@ -3821,10 +3819,10 @@ void StdCmdDockOverlayMouseTransparent::activated(int iMsg)
     bool checked = !OverlayManager::instance()->isMouseTransparent();
     OverlayManager::instance()->setMouseTransparent(checked);
     if(_pcAction)
-        _pcAction->setChecked(checked,true);
+        _pcAction->setBlockedChecked(checked);
 }
 
-Action * StdCmdDockOverlayMouseTransparent::createAction(void) {
+Action * StdCmdDockOverlayMouseTransparent::createAction() {
     Action *pcAction = Command::createAction();
     pcAction->setCheckable(true);
     pcAction->setIcon(QIcon());
@@ -3836,7 +3834,7 @@ Action * StdCmdDockOverlayMouseTransparent::createAction(void) {
 bool StdCmdDockOverlayMouseTransparent::isActive() {
     bool checked = OverlayManager::instance()->isMouseTransparent();
     if(_pcAction && _pcAction->isChecked()!=checked)
-        _pcAction->setChecked(checked,true);
+        _pcAction->setBlockedChecked(checked);
     return true;
 }
 
@@ -3849,8 +3847,8 @@ public:
         :GroupCommand("Std_DockOverlay")
     {
         sGroup        = "View";
-        sMenuText     = QT_TR_NOOP("Dock window overlay");
-        sToolTipText  = QT_TR_NOOP("Setting docked window overlay mode");
+        sMenuText     = QT_TR_NOOP("Dock panel overlay");
+        sToolTipText  = QT_TR_NOOP("Setting docked panel overlay mode");
         sWhatsThis    = "Std_DockOverlay";
         sStatusTip    = sToolTipText;
         eType         = 0;

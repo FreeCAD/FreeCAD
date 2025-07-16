@@ -29,7 +29,7 @@
 
 // INCLUDE YOUR PREFERENCE PAGES HERE
 //
-#include "DlgPreferencesImp.h"
+#include "Dialogs/DlgPreferencesImp.h"
 #include "PreferencePages/DlgSettings3DViewImp.h"
 #include "PreferencePages/DlgSettingsCacheDirectory.h"
 #include "PreferencePages/DlgSettingsDocumentImp.h"
@@ -46,14 +46,15 @@
 #include "PreferencePages/DlgSettingsViewColor.h"
 #include "PreferencePages/DlgSettingsWorkbenchesImp.h"
 #include "PreferencePages/DlgSettingsAdvanced.h"
+#include "PreferencePages/DlgSettingsPDF.h"
 
-#include "DlgToolbarsImp.h"
-#include "DlgActionsImp.h"
-#include "DlgKeyboardImp.h"
+#include "Dialogs/DlgToolbarsImp.h"
+#include "Dialogs/DlgActionsImp.h"
+#include "Dialogs/DlgKeyboardImp.h"
 
 #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
-#include "DlgCustomizeSpaceball.h"
-#include "DlgCustomizeSpNavSettings.h"
+#include "Dialogs/DlgCustomizeSpaceball.h"
+#include "Dialogs/DlgCustomizeSpNavSettings.h"
 #endif
 
 #include "InputField.h"
@@ -88,6 +89,7 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new PrefPageProducer<DlgSettingsAdvanced>         ( QT_TRANSLATE_NOOP("QObject","Display") );
     DlgSettingsUI::attachObserver();
     new PrefPageProducer<DlgSettingsWorkbenchesImp>   ( QT_TRANSLATE_NOOP("QObject","Workbenches") );
+    new PrefPageProducer<DlgSettingsPDF>              ( QT_TRANSLATE_NOOP("QObject","Import-Export") );
     new PrefPageProducer<DlgSettingsMacroImp>         ( QT_TRANSLATE_NOOP("QObject", "Python"));
     new PrefPageProducer<DlgSettingsPythonConsole>    ( QT_TRANSLATE_NOOP("QObject", "Python"));
     new PrefPageProducer<DlgSettingsEditor>           ( QT_TRANSLATE_NOOP("QObject", "Python"));
@@ -113,6 +115,7 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new WidgetProducer<Gui::PrefComboBox>;
     new WidgetProducer<Gui::PrefFontBox>;
     new WidgetProducer<Gui::PrefCheckBox>;
+    new WidgetProducer<Gui::PrefCheckableGroupBox>;
     new WidgetProducer<Gui::PrefRadioButton>;
     new WidgetProducer<Gui::PrefSlider>;
     new WidgetProducer<Gui::PrefFileChooser>;

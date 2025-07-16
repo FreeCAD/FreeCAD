@@ -361,6 +361,32 @@ public:
     ~PropertyElectricCharge() override = default;
 };
 
+/** SurfaceChargeDensity property
+ * This is a property for representing surface charge density. It is basically a float
+ * property. On the Gui it has a quantity like C/m^2.
+ */
+class AppExport PropertySurfaceChargeDensity: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertySurfaceChargeDensity();
+    ~PropertySurfaceChargeDensity() override = default;
+};
+
+/** VolumeChargeDensity property
+ * This is a property for representing volume charge density. It is basically a float
+ * property. On the Gui it has a quantity like C/m^3.
+ */
+class AppExport PropertyVolumeChargeDensity: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyVolumeChargeDensity();
+    ~PropertyVolumeChargeDensity() override = default;
+};
+
 /** ElectricCurrent property
  * This is a property for representing electric currents. It is basically a
  * float property. On the Gui it has a quantity like A.

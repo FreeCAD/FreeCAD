@@ -32,7 +32,7 @@
 namespace Part
 {
 
-class RuledSurface : public Part::Feature
+class PartExport RuledSurface : public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::RuledSurface);
 
@@ -50,7 +50,6 @@ public:
     short mustExecute() const override;
     const char* getViewProviderName() const override {
         return "PartGui::ViewProviderRuledSurface";
-    void setupObject();
     }
     //@}
 
@@ -64,7 +63,7 @@ private:
     static const char* OrientationEnums[];
 };
 
-class Loft : public Part::Feature
+class PartExport Loft : public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Loft);
 
@@ -86,7 +85,6 @@ public:
     const char* getViewProviderName() const override {
         return "PartGui::ViewProviderLoft";
     }
-    void setupObject() override;
     //@}
 
 protected:
@@ -96,7 +94,7 @@ private:
     static App::PropertyIntegerConstraint::Constraints Degrees;
 };
 
-class Sweep : public Part::Feature
+class PartExport Sweep : public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Sweep);
 
@@ -118,7 +116,6 @@ public:
     const char* getViewProviderName() const override {
         return "PartGui::ViewProviderSweep";
     }
-    void setupObject() override;
     //@}
 
 protected:
@@ -128,7 +125,7 @@ private:
     static const char* TransitionEnums[];
 };
 
-class Thickness : public Part::Feature
+class PartExport Thickness : public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Thickness);
 

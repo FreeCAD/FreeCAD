@@ -1,3 +1,5 @@
+add_library(Sketcher SHARED)
+
 # Uncomment this code if you want to try Eigen's multithread
 #find_package(OpenMP)
 #if (OPENMP_FOUND)
@@ -14,28 +16,28 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/..
     ${CMAKE_CURRENT_BINARY_DIR}/..
-    ${Boost_INCLUDE_DIRS}
-    ${OCC_INCLUDE_DIR}
-    ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
+)
+
+target_include_directories(
+    Sketcher
+    SYSTEM
+    PUBLIC
     ${EIGEN3_INCLUDE_DIR}
 )
-link_directories(${OCC_LIBRARY_DIR})
 
 set(Sketcher_LIBS
     Part
     FreeCADApp
 )
 
-generate_from_xml(SketchObjectSFPy)
-generate_from_xml(SketchObjectPy)
-generate_from_xml(SketchGeometryExtensionPy)
-generate_from_xml(ExternalGeometryExtensionPy)
-generate_from_xml(GeometryFacadePy)
-generate_from_xml(ExternalGeometryFacadePy)
-generate_from_xml(ConstraintPy)
-generate_from_xml(SketchPy)
+generate_from_py(SketchObjectSF)
+generate_from_py(SketchObject)
+generate_from_py(SketchGeometryExtension)
+generate_from_py(ExternalGeometryExtension)
+generate_from_py(GeometryFacade)
+generate_from_py(ExternalGeometryFacade)
+generate_from_py(Constraint)
+generate_from_py(Sketch)
 
 
 SET(Properties_SRCS
@@ -81,21 +83,21 @@ SET(Datatypes_SRCS
 SOURCE_GROUP("Datatypes" FILES ${Datatypes_SRCS})
 
 SET(Python_SRCS
-    SketchObjectSFPy.xml
+    SketchObjectSF.pyi
     SketchObjectSFPyImp.cpp
-    SketchObjectPy.xml
+    SketchObject.pyi
     SketchObjectPyImp.cpp
-    SketchGeometryExtensionPy.xml
+    SketchGeometryExtension.pyi
     SketchGeometryExtensionPyImp.cpp
-    ExternalGeometryExtensionPy.xml
+    ExternalGeometryExtension.pyi
     ExternalGeometryExtensionPyImp.cpp
-    GeometryFacadePy.xml
+    GeometryFacade.pyi
     GeometryFacadePyImp.cpp
-    ExternalGeometryFacadePy.xml
+    ExternalGeometryFacade.pyi
     ExternalGeometryFacadePyImp.cpp
     ConstraintPyImp.cpp
-    ConstraintPy.xml
-    SketchPy.xml
+    Constraint.pyi
+    Sketch.pyi
     SketchPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
@@ -143,7 +145,7 @@ SET(Sketcher_PCH_SRCS
     ${Datatypes_SRCS}
 )
 
-add_library(Sketcher SHARED ${Sketcher_SRCS})
+target_sources(Sketcher PRIVATE ${Sketcher_SRCS})
 target_link_libraries(Sketcher ${Sketcher_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Sketcher)

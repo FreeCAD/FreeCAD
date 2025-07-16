@@ -29,7 +29,7 @@
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
-
+#include <Gui/InputHint.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "DrawSketchDefaultWidgetController.h"
@@ -95,6 +95,10 @@ public:
     }
 
 private:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return lookupBSplineHints(constructionMethod(), state());
+    }
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
         prevCursorPosition = onSketchPos;
@@ -251,13 +255,12 @@ private:
                 Gui::Command::runCommand(Gui::Command::Gui, "_bsps = []");
                 for (auto& controlpoints : controlpointses) {
                     // TODO: variable degrees?
-                    QString cmdstr =
-                        QString::fromLatin1("_bsps.append(Part.BSplineCurve())\n"
-                                            "_bsps[-1].interpolate(%1, PeriodicFlag=%2)\n"
-                                            "_bsps[-1].increaseDegree(%3)")
-                            .arg(QString::fromLatin1(controlpoints.c_str()))
-                            .arg(QString::fromLatin1(periodic ? "True" : "False"))
-                            .arg(myDegree);
+                    QString cmdstr = QStringLiteral("_bsps.append(Part.BSplineCurve())\n"
+                                                    "_bsps[-1].interpolate(%1, PeriodicFlag=%2)\n"
+                                                    "_bsps[-1].increaseDegree(%3)")
+                                         .arg(QString::fromLatin1(controlpoints.c_str()))
+                                         .arg(QString::fromLatin1(periodic ? "True" : "False"))
+                                         .arg(myDegree);
                     Gui::Command::runCommand(Gui::Command::Gui, cmdstr.toLatin1());
                     // Adjust internal knots here (raise multiplicity)
                     // How this contributes to the final B-spline
@@ -414,19 +417,18 @@ private:
     {
         if (constructionMethod() == ConstructionMethod::ControlPoints) {
             if (periodic) {
-                return QString::fromLatin1("Sketcher_Pointer_Create_Periodic_BSpline");
+                return QStringLiteral("Sketcher_Pointer_Create_Periodic_BSpline");
             }
             else {
-                return QString::fromLatin1("Sketcher_Pointer_Create_BSpline");
+                return QStringLiteral("Sketcher_Pointer_Create_BSpline");
             }
         }
         else {
             if (periodic) {
-                return QString::fromLatin1(
-                    "Sketcher_Pointer_Create_Periodic_BSplineByInterpolation");
+                return QStringLiteral("Sketcher_Pointer_Create_Periodic_BSplineByInterpolation");
             }
             else {
-                return QString::fromLatin1("Sketcher_Pointer_Create_BSplineByInterpolation");
+                return QStringLiteral("Sketcher_Pointer_Create_BSplineByInterpolation");
             }
         }
     }
@@ -786,10 +788,25 @@ private:
                 // Since it happens very frequently that the interpolation fails
                 // it's sufficient to report this as log message to avoid to pollute
                 // the output window
-                Base::Console().Log(std::string("drawBSplineToPosition"), "interpolation failed\n");
+                Base::Console().log(std::string("drawBSplineToPosition"), "interpolation failed\n");
             }
         }
     }
+
+private:
+    struct HintEntry
+    {
+        ConstructionMethod method;
+        SelectMode state;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static Gui::InputHint switchModeHint();
+    static HintTable getBSplineHintTable();
+    static std::list<Gui::InputHint> lookupBSplineHints(ConstructionMethod method,
+                                                        SelectMode state);
 };
 
 template<>
@@ -941,19 +958,25 @@ void DSHBSplineControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (onViewParameters[OnViewParameter::First]->isSet) {
-                onSketchPos.x = onViewParameters[OnViewParameter::First]->getValue();
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+            auto& secondParam = onViewParameters[OnViewParameter::Second];
+
+            if (firstParam->isSet) {
+                onSketchPos.x = firstParam->getValue();
             }
 
-            if (onViewParameters[OnViewParameter::Second]->isSet) {
-                onSketchPos.y = onViewParameters[OnViewParameter::Second]->getValue();
+            if (secondParam->isSet) {
+                onSketchPos.y = secondParam->getValue();
             }
         } break;
         case SelectMode::SeekSecond: {
+            auto& thirdParam = onViewParameters[OnViewParameter::Third];
+            auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
+
             if (handler->resetSeekSecond) {
                 handler->resetSeekSecond = false;
-                unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
-                unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
+                unsetOnViewParameter(thirdParam.get());
+                unsetOnViewParameter(fourthParam.get());
                 setFocusToOnViewParameter(OnViewParameter::Third);
                 return;
             }
@@ -966,10 +989,10 @@ void DSHBSplineControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
             }
             double length = dir.Length();
 
-            if (onViewParameters[OnViewParameter::Third]->isSet) {
-                length = onViewParameters[OnViewParameter::Third]->getValue();
+            if (thirdParam->isSet) {
+                length = thirdParam->getValue();
                 if (length < Precision::Confusion()) {
-                    unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
+                    unsetOnViewParameter(thirdParam.get());
                     return;
                 }
 
@@ -983,18 +1006,16 @@ void DSHBSplineControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
                 }
             }
 
-            if (onViewParameters[OnViewParameter::Fourth]->isSet) {
-                double angle =
-                    Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
+            if (fourthParam->isSet) {
+                double angle = Base::toRadians(fourthParam->getValue());
                 onSketchPos.x = prevPoint.x + cos(angle) * length;
                 onSketchPos.y = prevPoint.y + sin(angle) * length;
             }
 
-            if (onViewParameters[OnViewParameter::Third]->isSet
-                && onViewParameters[OnViewParameter::Fourth]->isSet
+            if (thirdParam->isSet && fourthParam->isSet
                 && (onSketchPos - prevPoint).Length() < Precision::Confusion()) {
-                unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
-                unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
+                unsetOnViewParameter(thirdParam.get());
+                unsetOnViewParameter(fourthParam.get());
             }
         } break;
         default:
@@ -1007,23 +1028,27 @@ void DSHBSplineController::adaptParameters(Base::Vector2d onSketchPos)
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (!onViewParameters[OnViewParameter::First]->isSet) {
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+            auto& secondParam = onViewParameters[OnViewParameter::Second];
+
+            if (!firstParam->isSet) {
                 setOnViewParameterValue(OnViewParameter::First, onSketchPos.x);
             }
 
-            if (!onViewParameters[OnViewParameter::Second]->isSet) {
+            if (!secondParam->isSet) {
                 setOnViewParameterValue(OnViewParameter::Second, onSketchPos.y);
             }
 
             bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
-            onViewParameters[OnViewParameter::First]->setLabelAutoDistanceReverse(!sameSign);
-            onViewParameters[OnViewParameter::Second]->setLabelAutoDistanceReverse(sameSign);
-            onViewParameters[OnViewParameter::First]->setPoints(Base::Vector3d(),
-                                                                toVector3d(onSketchPos));
-            onViewParameters[OnViewParameter::Second]->setPoints(Base::Vector3d(),
-                                                                 toVector3d(onSketchPos));
+            firstParam->setLabelAutoDistanceReverse(!sameSign);
+            secondParam->setLabelAutoDistanceReverse(sameSign);
+            firstParam->setPoints(Base::Vector3d(), toVector3d(onSketchPos));
+            secondParam->setPoints(Base::Vector3d(), toVector3d(onSketchPos));
         } break;
         case SelectMode::SeekSecond: {
+            auto& thirdParam = onViewParameters[OnViewParameter::Third];
+            auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
+
             Base::Vector2d prevPoint;
             if (!handler->points.empty()) {
                 prevPoint = handler->getLastPoint();
@@ -1033,20 +1058,20 @@ void DSHBSplineController::adaptParameters(Base::Vector2d onSketchPos)
             Base::Vector3d end = toVector3d(onSketchPos);
             Base::Vector3d vec = end - start;
 
-            if (!onViewParameters[OnViewParameter::Third]->isSet) {
+            if (!thirdParam->isSet) {
                 setOnViewParameterValue(OnViewParameter::Third, vec.Length());
             }
 
             double range = (onSketchPos - prevPoint).Angle();
-            if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
+            if (!fourthParam->isSet) {
                 setOnViewParameterValue(OnViewParameter::Fourth,
                                         Base::toDegrees(range),
                                         Base::Unit::Angle);
             }
 
-            onViewParameters[OnViewParameter::Third]->setPoints(start, end);
-            onViewParameters[OnViewParameter::Fourth]->setPoints(start, Base::Vector3d());
-            onViewParameters[OnViewParameter::Fourth]->setLabelRange(range);
+            thirdParam->setPoints(start, end);
+            fourthParam->setPoints(start, Base::Vector3d());
+            fourthParam->setLabelRange(range);
         } break;
         default:
             break;
@@ -1058,20 +1083,24 @@ void DSHBSplineController::doChangeDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (onViewParameters[OnViewParameter::First]->isSet
-                && onViewParameters[OnViewParameter::Second]->isSet) {
-                double x = onViewParameters[OnViewParameter::First]->getValue();
-                double y = onViewParameters[OnViewParameter::Second]->getValue();
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+            auto& secondParam = onViewParameters[OnViewParameter::Second];
+
+            if (firstParam->hasFinishedEditing || secondParam->hasFinishedEditing) {
+                double x = firstParam->getValue();
+                double y = secondParam->getValue();
                 handler->onButtonPressed(Base::Vector2d(x, y));
             }
         } break;
         case SelectMode::SeekSecond: {
-            if (onViewParameters[OnViewParameter::Third]->isSet
-                && onViewParameters[OnViewParameter::Fourth]->isSet) {
+            auto& thirdParam = onViewParameters[OnViewParameter::Third];
+            auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
+
+            if (thirdParam->hasFinishedEditing && fourthParam->hasFinishedEditing) {
                 handler->canGoToNextMode();  // its not going to next mode
 
-                unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
-                unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
+                unsetOnViewParameter(thirdParam.get());
+                unsetOnViewParameter(fourthParam.get());
             }
         } break;
         default:
@@ -1088,6 +1117,8 @@ void DSHBSplineController::doConstructionMethodChanged()
     syncConstructionMethodComboboxToHandler();
     bool byCtrlPoints = handler->constructionMethod() == ConstructionMethod::ControlPoints;
     toolWidget->setParameterVisible(WParameter::First, byCtrlPoints);
+
+    handler->updateHint();
 }
 
 
@@ -1195,9 +1226,54 @@ void DSHBSplineController::addConstraints()
     }
 }
 
+Gui::InputHint DrawSketchHandlerBSpline::switchModeHint()
+{
+    return {QObject::tr("%1 switch mode"), {Gui::InputHint::UserInput::KeyM}};
+}
+
+DrawSketchHandlerBSpline::HintTable DrawSketchHandlerBSpline::getBSplineHintTable()
+{
+    const auto switchHint = switchModeHint();
+    return {
+        // Structure: {ConstructionMethod, SelectMode, {hints...}}
+
+        // ControlPoints method
+        {ConstructionMethod::ControlPoints,
+         SelectMode::SeekFirst,
+         {{QObject::tr("%1 pick first control point"), {Gui::InputHint::UserInput::MouseLeft}},
+          switchHint}},
+        {ConstructionMethod::ControlPoints,
+         SelectMode::SeekSecond,
+         {{QObject::tr("%1 pick next control point"), {Gui::InputHint::UserInput::MouseLeft}},
+          {QObject::tr("%1 finish B-spline"), {Gui::InputHint::UserInput::MouseRight}},
+          switchHint}},
+
+        // Knots method
+        {ConstructionMethod::Knots,
+         SelectMode::SeekFirst,
+         {{QObject::tr("%1 pick first knot"), {Gui::InputHint::UserInput::MouseLeft}}, switchHint}},
+        {ConstructionMethod::Knots,
+         SelectMode::SeekSecond,
+         {{QObject::tr("%1 pick next knot"), {Gui::InputHint::UserInput::MouseLeft}},
+          {QObject::tr("%1 finish B-spline"), {Gui::InputHint::UserInput::MouseRight}},
+          switchHint}}};
+}
+
+std::list<Gui::InputHint> DrawSketchHandlerBSpline::lookupBSplineHints(ConstructionMethod method,
+                                                                       SelectMode state)
+{
+    const auto bSplineHintTable = getBSplineHintTable();
+
+    auto it = std::find_if(bSplineHintTable.begin(),
+                           bSplineHintTable.end(),
+                           [method, state](const HintEntry& entry) {
+                               return entry.method == method && entry.state == state;
+                           });
+
+    return (it != bSplineHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
+}
 // TODO: On pressing, say, W, modify last pole's weight
 // TODO: On pressing, say, M, modify next knot's multiplicity
-
 
 }  // namespace SketcherGui
 

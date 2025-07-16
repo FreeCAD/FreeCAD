@@ -101,7 +101,7 @@ void DocumentObserverPython::slotCreatedDocument(const Gui::Document& Doc)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -115,7 +115,7 @@ void DocumentObserverPython::slotDeletedDocument(const Gui::Document& Doc)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -129,7 +129,7 @@ void DocumentObserverPython::slotRelabelDocument(const Gui::Document& Doc)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -143,7 +143,7 @@ void DocumentObserverPython::slotRenameDocument(const Gui::Document& Doc)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -157,7 +157,7 @@ void DocumentObserverPython::slotActivateDocument(const Gui::Document& Doc)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -171,7 +171,7 @@ void DocumentObserverPython::slotCreatedObject(const Gui::ViewProvider& Obj)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -185,7 +185,7 @@ void DocumentObserverPython::slotDeletedObject(const Gui::ViewProvider& Obj)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -206,7 +206,7 @@ void DocumentObserverPython::slotBeforeChangeObject(const Gui::ViewProvider& Obj
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -227,7 +227,7 @@ void DocumentObserverPython::slotChangedObject(const Gui::ViewProvider& Obj,
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -241,7 +241,7 @@ void DocumentObserverPython::slotInEdit(const Gui::ViewProviderDocumentObject& O
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -255,6 +255,6 @@ void DocumentObserverPython::slotResetEdit(const Gui::ViewProviderDocumentObject
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }

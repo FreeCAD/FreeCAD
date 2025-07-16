@@ -35,8 +35,9 @@
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/Command.h>
+#include <Gui/Tools.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureAddSub.h>
 #include <Mod/PartDesign/App/FeatureTransformed.h>
@@ -102,11 +103,8 @@ void TaskTransformedParameters::setupUI()
 
     // Create context menu
     auto action = new QAction(tr("Remove"), this);
-    {
-        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
-        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
-        action->setShortcut(QKeySequence(shortcut));
-    }
+    action->setShortcut(Gui::QtTools::deleteKeySequence());
+
     // display shortcut behind the context menu entry
     action->setShortcutVisibleInContextMenu(true);
     ui->listWidgetFeatures->addAction(action);
@@ -131,11 +129,7 @@ void TaskTransformedParameters::setupUI()
     ui->buttonGroupMode->setId(ui->radioTransformToolShapes, static_cast<int>(Mode::TransformToolShapes));
 
     connect(ui->buttonGroupMode,
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-            qOverload<int>(&QButtonGroup::buttonClicked),
-#else
             &QButtonGroup::idClicked,
-#endif
             this,
             &TaskTransformedParameters::onModeChanged);
 
@@ -238,7 +232,7 @@ bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& ms
 
             // Do the same like in TaskDlgTransformedParameters::accept() but without doCommand
             std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
-            auto or_iter = std::find(originals.begin(), originals.end(), selectedObject);
+            const auto or_iter = std::ranges::find(originals, selectedObject);
             if (selectionMode == SelectionMode::AddFeature) {
                 if (or_iter == originals.end()) {
                     originals.push_back(selectedObject);
@@ -378,7 +372,7 @@ void TaskTransformedParameters::onFeatureDeleted()
     std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
     int currentRow = ui->listWidgetFeatures->currentRow();
     if (currentRow < 0) {
-        Base::Console().Error("PartDesign Pattern: No feature selected for removing.\n");
+        Base::Console().error("PartDesign Pattern: No feature selected for removing.\n");
         return;  // no current row selected
     }
     originals.erase(originals.begin() + currentRow);
@@ -428,7 +422,7 @@ void TaskTransformedParameters::fillAxisCombo(ComboLinks& combolinks, Part::Part
             combolinks.addLink(orig->getZ(), "", tr("Base Z axis"));
         }
         catch (const Base::Exception& ex) {
-            Base::Console().Error("%s\n", ex.what());
+            Base::Console().error("%s\n", ex.what());
         }
     }
 
@@ -464,7 +458,7 @@ void TaskTransformedParameters::fillPlanesCombo(ComboLinks& combolinks, Part::Pa
             combolinks.addLink(orig->getXZ(), "", tr("Base XZ plane"));
         }
         catch (const Base::Exception& ex) {
-            Base::Console().Error("%s\n", ex.what());
+            Base::Console().error("%s\n", ex.what());
         }
     }
 
@@ -535,7 +529,7 @@ void TaskTransformedParameters::hideObject()
         FCMD_OBJ_HIDE(getTopTransformedObject());
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -545,7 +539,7 @@ void TaskTransformedParameters::showObject()
         FCMD_OBJ_SHOW(getTopTransformedObject());
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -555,7 +549,7 @@ void TaskTransformedParameters::hideBase()
         FCMD_OBJ_HIDE(getBaseObject());
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -565,7 +559,7 @@ void TaskTransformedParameters::showBase()
         FCMD_OBJ_SHOW(getBaseObject());
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -578,7 +572,7 @@ void TaskTransformedParameters::exitSelectionMode()
         showObject();
     }
     catch (Base::Exception& exc) {
-        exc.ReportException();
+        exc.reportException();
     }
 }
 

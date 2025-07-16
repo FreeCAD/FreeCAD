@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskPostCalculator</class>
+ <widget class="QWidget" name="TaskPostCalculator">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>250</width>
+    <height>115</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="vertica_layout">
+   <item>
+    <widget class="QGroupBox" name="gpb_function">
+     <property name="title">
+      <string></string>
+     </property>
+     <layout class="QVBoxLayout" name="vbl_function">
+      <item>
+       <layout class="QFormLayout" name="form_layout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="lbl_field_name">
+          <property name="text">
+           <string>Field name</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="let_field_name">
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="let_function">
+        <property name="toolTip">
+         <string>Mathematical expression</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gpb_fields">
+     <property name="title">
+      <string></string>
+     </property>
+     <property name="toolTip">
+      <string>Available fields</string>
+     </property>
+     <layout class="QVBoxLayout" name="vbl_fields">
+      <item>
+       <layout class="QFormLayout" name="fl_fields">
+        <item row="0" column="0">
+         <widget class="QLabel" name="lbl_scalars">
+          <property name="text">
+           <string>Scalars</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="cb_scalars"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="lbl_vectors">
+          <property name="text">
+           <string>Vectors</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QComboBox" name="cb_vectors"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="lbl_operators">
+          <property name="text">
+           <string>Operators</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="cb_operators"/>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gpb_replacement">
+     <layout class="QVBoxLayout" name="vbl_replacement">
+      <item>
+       <layout class="QFormLayout" name="fl_replacement">
+        <item row="0" column="0">
+         <widget class="QCheckBox" name="ckb_replace_invalid">
+          <property name="text">
+           <string>Replace invalid data</string>
+          </property>
+          <property name="toolTip">
+           <string>Replacement value for invalid operations</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Gui::DoubleSpinBox" name="dsb_replacement_value">
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::DoubleSpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/SpinBox.h</header>
+  </customwidget>
+ </customwidgets>
+</ui>

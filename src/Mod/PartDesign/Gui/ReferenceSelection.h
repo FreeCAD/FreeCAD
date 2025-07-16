@@ -24,7 +24,7 @@
 #ifndef GUI_ReferenceSelection_H
 #define GUI_ReferenceSelection_H
 
-#include <Gui/SelectionFilter.h>
+#include <Gui/Selection/SelectionFilter.h>
 #include <Mod/PartDesign/Gui/EnumFlags.h>
 
 namespace App {

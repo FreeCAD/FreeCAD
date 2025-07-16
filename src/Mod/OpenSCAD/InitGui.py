@@ -155,8 +155,7 @@ class OpenSCADWorkbench(Workbench):
         self.appendToolbar(
             QT_TRANSLATE_NOOP("Workbench", "Frequently-used Part WB tools"), parttoolbarcommands
         )
-        # self.appendMenu('OpenSCAD',["AddOpenSCADElement"])
-        ###self.appendCommandbar("&Generic Tools",["ColorCodeShape"])
+
         FreeCADGui.addIconPath(":/icons")
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addPreferencePage(":/ui/openscadprefs-base.ui", "OpenSCAD")

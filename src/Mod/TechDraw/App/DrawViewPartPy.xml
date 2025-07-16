@@ -15,22 +15,26 @@
     </Documentation>
     <Methode Name="getVisibleEdges">
       <Documentation>
-        <UserDocu>getVisibleEdges() - get the visible edges in the View as Part::TopoShapeEdges</UserDocu>
+        <UserDocu>getVisibleEdges([conventionalCoords]) - get the visible edges in the View as Part::TopoShapeEdges. Edges are returned\
+        in conventional coordinates if conventionalCoords is True.  The default is to return Qt inverted Y coordinates.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getVisibleVertexes">
       <Documentation>
-        <UserDocu>getVisibleVertexes() - get the visible vertexes as App.Vector in the View's coordinate system.</UserDocu>
+        <UserDocu>getVisibleVertexes() - get the visible vertexes as App.Vector in the View's coordinate system.  App.Vectors are returned\
+        in conventional coordinates if conventionalCoords is True.  The default is to return Qt inverted Y coordinates.</UserDocu>
       </Documentation>
     </Methode>
    <Methode Name="getHiddenEdges">
       <Documentation>
-        <UserDocu>getHiddenEdges() - get the hidden edges in the View as Part::TopoShapeEdges</UserDocu>
+        <UserDocu>getHiddenEdges([conventionalCoords]) - get the hidden edges in the View as Part::TopoShapeEdges.  Edges are returned\
+        in conventional coordinates if conventionalCoords is True.  The default is to return Qt inverted Y coordinates.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getHiddenVertexes">
       <Documentation>
-        <UserDocu>getHiddenVertexes() - get the hidden vertexes as App.Vector in the View's coordinate system.</UserDocu>
+        <UserDocu>getHiddenVertexes() - get the hidden vertexes as App.Vector in the View's coordinate system.  App.Vectors are returned\
+        in conventional coordinates if conventionalCoords is True.  The default is to return Qt inverted Y coordinates.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="makeCosmeticVertex">

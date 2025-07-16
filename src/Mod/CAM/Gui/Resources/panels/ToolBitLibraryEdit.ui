@@ -88,27 +88,7 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="QPushButton" name="libraryOpen">
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Select a working path for the tool library editor.</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset resource="../../../../../Gui/Icons/resource.qrc">
-            <normaloff>:/icons/document-open.svg</normaloff>:/icons/document-open.svg</iconset>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="addToolTable">
+         <widget class="QPushButton" name="addLibrary">
           <property name="maximumSize">
            <size>
             <width>16777215</width>
@@ -133,8 +113,9 @@
           </property>
          </widget>
         </item>
+        <!-- The libraryOpen button item was here -->
         <item>
-         <widget class="QPushButton" name="libraryExport">
+         <widget class="QPushButton" name="exportLibrary">
           <property name="toolTip">
            <string>Save the selected library with a new name or export to another format</string>
           </property>
@@ -143,9 +124,35 @@
           </property>
           <property name="icon">
            <iconset resource="../../../../../Gui/Icons/resource.qrc">
-            <normaloff>:/icons/document-save.svg</normaloff>:/icons/document-save.svg</iconset>
+            <normaloff>:/icons/Std_Export.svg</normaloff>:/icons/Std_Export.svg</iconset>
           </property>
          </widget>
+        </item>
+        <item>
+          <widget class="QPushButton" name="saveLibrary">
+          <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+            <size>
+            <width>16777215</width>
+            <height>16777215</height>
+            </size>
+          </property>
+          <property name="toolTip">
+            <string>Save the current Library</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+            <iconset resource="../../../../../Gui/Icons/resource.qrc">
+            <normaloff>:/icons/document-save.svg</normaloff>:/icons/document-save.svg</iconset>
+          </property>
+          </widget>
         </item>
         <item>
          <spacer name="verticalSpacer">
@@ -252,7 +259,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="librarySave">
+      <widget class="QPushButton" name="okButton">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -266,7 +273,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Save the current Library</string>
+        <string>Close the library editor</string>
        </property>
        <property name="text">
         <string>Close</string>

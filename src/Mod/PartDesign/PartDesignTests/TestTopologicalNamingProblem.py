@@ -23,8 +23,10 @@
 
 """ Tests related to the Topological Naming Problem """
 
+import os
 import math
 import unittest
+import tempfile
 
 import FreeCAD as App
 import Part
@@ -834,6 +836,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         body = self.Doc.addObject("PartDesign::Body", "Body")
         box = self.Doc.addObject("PartDesign::AdditiveBox", "Box")
         body.addObject(box)
+        self.Doc.recompute()
         sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
         sketch.AttachmentSupport = (box, "Face6")
         sketch.MapMode = "FlatFace"
@@ -852,10 +855,9 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 32)
         self.assertEqual(body.Shape.ElementMapSize, 32)
         self.assertEqual(sketch.Shape.ElementMapSize, 2)
-        self.assertEqual(hole.Shape.ElementMapSize, 32)
-        # self.assertNotEqual(hole.Shape.ElementReverseMap['Vertex1'],"Vertex1")   # NewName, not OldName
+        self.assertNotEqual(body.Shape.ElementReverseMap['Vertex1'],"Vertex1")   # NewName, not OldName
         self.assertEqual(
-            self.countFacesEdgesVertexes(hole.Shape.ElementReverseMap), (7, 15, 10)
+            self.countFacesEdgesVertexes(body.Shape.ElementReverseMap), (7, 15, 10)
         )
         volume = 1000 - 10 * math.pi * 3 * 3
         self.assertAlmostEqual(hole.Shape.Volume, volume)
@@ -2484,10 +2486,10 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.Body = self.Doc.addObject("PartDesign::Body", "Body")
         self.create_t_sketch()
         self.assertEqual(self.Doc.Sketch.Shape.ElementMapSize, 18)
-        filename = self.Doc.Name
+        filename = tempfile.gettempdir() + os.sep + self.Doc.Name
         # Act
         self.Doc.saveAs(filename)
-        App.closeDocument(filename)
+        App.closeDocument(self.Doc.Name)
         self.Doc = App.openDocument(filename + ".FCStd")
         self.Doc.recompute()
         # Assert

@@ -153,12 +153,12 @@ PropertiesDialog::PropertiesDialog(Sheet* _sheet,
 
 void PropertiesDialog::foregroundColorChanged(const QColor& color)
 {
-    foregroundColor = App::Color(color.redF(), color.greenF(), color.blueF(), color.alphaF());
+    foregroundColor = Base::Color(color.redF(), color.greenF(), color.blueF(), color.alphaF());
 }
 
 void PropertiesDialog::backgroundColorChanged(const QColor& color)
 {
-    backgroundColor = App::Color(color.redF(), color.greenF(), color.blueF(), color.alphaF());
+    backgroundColor = Base::Color(color.redF(), color.greenF(), color.blueF(), color.alphaF());
 }
 
 void PropertiesDialog::alignmentChanged()

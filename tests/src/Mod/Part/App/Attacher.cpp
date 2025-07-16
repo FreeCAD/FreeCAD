@@ -79,8 +79,8 @@ TEST_F(AttacherTest, TestGetShapeType)
 TEST_F(AttacherTest, TestGetInertialPropsOfShape)
 {
     auto& attacher = _boxes[1]->attacher();
-    std::vector<const TopoDS_Shape*> result;
-    auto faces = _boxes[1]->Shape.getShape().getSubShapes(TopAbs_FACE);
+    std::vector<const TopoShape*> result;
+    auto faces = _boxes[1]->Shape.getShape().getSubTopoShapes(TopAbs_FACE);
     result.emplace_back(&faces[0]);
     auto shapeType = attacher.getInertialPropsOfShape(result);
     EXPECT_EQ(result.size(), 1);

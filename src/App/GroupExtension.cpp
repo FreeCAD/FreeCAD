@@ -236,7 +236,7 @@ bool GroupExtension::hasObject(const DocumentObject* obj, bool recursive) const
         return false;
     }
     catch (const Base::RuntimeError& e) {
-        e.ReportException();
+        e.reportException();
         return false;
     }
 }
@@ -268,7 +268,7 @@ bool GroupExtension::recursiveHasObject(const DocumentObject* obj,
 
             auto ext = child->getExtensionByType<GroupExtension>();
 
-            if (std::find(history.begin(), history.end(), ext) != history.end()) {
+            if (std::ranges::find(history, ext) != history.end()) {
                 throw Base::RuntimeError(
                     "Cyclic dependencies detected: Search cannot be performed");
             }
@@ -296,7 +296,7 @@ std::vector<DocumentObject*> GroupExtension::getObjectsOfType(const Base::Type& 
     std::vector<DocumentObject*> type;
     const std::vector<DocumentObject*>& grp = Group.getValues();
     for (auto it : grp) {
-        if (it->getTypeId().isDerivedFrom(typeId)) {
+        if (it->isDerivedFrom(typeId)) {
             type.push_back(it);
         }
     }
@@ -309,7 +309,7 @@ int GroupExtension::countObjectsOfType(const Base::Type& typeId) const
     int type = 0;
     const std::vector<DocumentObject*>& grp = Group.getValues();
     for (auto it : grp) {
-        if (it->getTypeId().isDerivedFrom(typeId)) {
+        if (it->isDerivedFrom(typeId)) {
             type++;
         }
     }
@@ -414,7 +414,7 @@ bool GroupExtension::extensionGetSubObject(DocumentObject*& ret,
 {
     const char* dot;
     if (!subname || *subname == 0) {
-        auto obj = Base::freecad_dynamic_cast<const DocumentObject>(getExtendedContainer());
+        auto obj = freecad_cast<const DocumentObject*>(getExtendedContainer());
         ret = const_cast<DocumentObject*>(obj);
         return true;
     }

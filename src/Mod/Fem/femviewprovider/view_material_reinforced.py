@@ -39,4 +39,4 @@ class VPMaterialReinforced(view_base_femmaterial.VPBaseFemMaterial):
     """
 
     def setEdit(self, vobj, mode=0):
-        super().setEdit(vobj, mode, task_material_reinforced._TaskPanel)
+        return super().setEdit(vobj, mode, task_material_reinforced._TaskPanel)

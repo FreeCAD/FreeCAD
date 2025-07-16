@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="281"/>
+      <location filename="../../Command.cpp" line="273"/>
       <source>MeshPart</source>
       <translation>Netz-Formteil</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="282"/>
+      <location filename="../../Command.cpp" line="274"/>
       <source>Cross-sections...</source>
       <translation>Schnitte...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="283"/>
+      <location filename="../../Command.cpp" line="275"/>
       <source>Cross-sections</source>
       <translation>Schnitte</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="317"/>
+      <location filename="../../Command.cpp" line="309"/>
       <source>Mesh</source>
       <translation>Netz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="318"/>
+      <location filename="../../Command.cpp" line="310"/>
       <source>Curve on mesh...</source>
       <translation>Kurve auf Netz...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="319"/>
+      <location filename="../../Command.cpp" line="311"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
       <translation>Erstellt eine angenäherte Kurve auf einem Netz.
@@ -60,17 +60,17 @@ Dieser Befehl funktioniert nur mit einem 'mesh'-Objekt.</translation>
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="192"/>
+      <location filename="../../Command.cpp" line="188"/>
       <source>Mesh</source>
       <translation>Netz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="193"/>
+      <location filename="../../Command.cpp" line="189"/>
       <source>Create section from mesh and plane</source>
       <translation>Schnitt aus Netz und Fläche erstellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="194"/>
+      <location filename="../../Command.cpp" line="190"/>
       <source>Section</source>
       <translation>Schnitt</translation>
     </message>
@@ -102,7 +102,7 @@ Dieser Befehl funktioniert nur mit einem 'mesh'-Objekt.</translation>
       <translation>An Ebene trimmen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="217"/>
+      <location filename="../../Command.cpp" line="213"/>
       <source>Section with plane</source>
       <translation>Mit Ebene schneiden</translation>
     </message>
@@ -198,12 +198,12 @@ Dieser Befehl funktioniert nur mit einem 'mesh'-Objekt.</translation>
       <translation>Abbrechen</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="624"/>
+      <location filename="../../CurveOnMesh.cpp" line="623"/>
       <source>Wrong mesh picked</source>
       <translation>Falsches Netz ausgewählt</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="663"/>
+      <location filename="../../CurveOnMesh.cpp" line="662"/>
       <source>No point was picked</source>
       <translation>Es wurde kein Punkt ausgewählt</translation>
     </message>
@@ -290,7 +290,7 @@ Dieser Befehl funktioniert nur mit einem Netz-Objekt, nicht mit einer normalen F
     <message>
       <location filename="../../Tessellation.ui" line="33"/>
       <source>Use the standard mesher</source>
-      <translation>Standardnetzgenerator verwenden</translation>
+      <translation>Standard Netzgenerator verwenden</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="41"/>
@@ -489,27 +489,27 @@ Ein Wert im Bereich von 0.2-10.</translation>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="237"/>
-      <location filename="../../Tessellation.cpp" line="243"/>
+      <location filename="../../Tessellation.cpp" line="240"/>
+      <location filename="../../Tessellation.cpp" line="246"/>
       <source>No active document</source>
       <translation>Kein aktives Dokument</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="273"/>
+      <location filename="../../Tessellation.cpp" line="279"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation>Es wurde ein Körper ohne TIP ausgewählt.
 Bitte TIP des Körpers festlegen oder eine andere Form auswählen.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="279"/>
+      <location filename="../../Tessellation.cpp" line="285"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation>Es wurde eine Form ohne Flächen ausgewählt.
 Bitte eine andere Form auswählen.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="283"/>
+      <location filename="../../Tessellation.cpp" line="289"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Zuerst eine Form für die Vernetzung auswählen.</translation>
     </message>
@@ -517,12 +517,12 @@ Bitte eine andere Form auswählen.</translation>
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="206"/>
+      <location filename="../../Command.cpp" line="202"/>
       <source>Select plane</source>
       <translation>Ebene auswählen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="207"/>
+      <location filename="../../Command.cpp" line="203"/>
       <source>Please select a plane at which you section the mesh.</source>
       <translation>Bitte eine Ebene auswählen, an der das Netz geteilt werden soll.</translation>
     </message>

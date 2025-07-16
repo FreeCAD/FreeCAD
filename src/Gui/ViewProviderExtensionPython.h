@@ -30,7 +30,7 @@
 namespace Gui {
 
 /**
- * Generic Python extension class which allows to behave every extension
+ * Generic Python extension class which allows one to behave every extension
  * derived class as Python extension -- simply by subclassing.
  */
 template <class ExtensionT>

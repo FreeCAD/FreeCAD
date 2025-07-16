@@ -60,46 +60,51 @@ class ViewProviderWire(ViewProviderDraft):
         super(ViewProviderWire, self)._set_properties(vobj)
 
         if not hasattr(vobj, "EndArrow"):
-            _tip = "Displays a Dimension symbol at the end of the wire."
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Displays a Dimension symbol at the end of the wire.")
             vobj.addProperty("App::PropertyBool",
                              "EndArrow",
                              "Draft",
-                             QT_TRANSLATE_NOOP("App::Property", _tip))
+                             _tip,
+                             locked=True)
             vobj.EndArrow = False
 
         if not hasattr(vobj, "ArrowSizeStart"):
-            _tip = "Arrow size"
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Arrow size")
             vobj.addProperty("App::PropertyLength",
                              "ArrowSizeStart",
                              "Draft",
-                             QT_TRANSLATE_NOOP("App::Property", _tip))
-            vobj.ArrowSizeStart = params.get_param("arrowsizestart")
-
-        if not hasattr(vobj, "ArrowTypeStart"):
-            _tip = "Arrow type"
-            vobj.addProperty("App::PropertyEnumeration",
-                             "ArrowTypeStart",
-                             "Draft",
-                             QT_TRANSLATE_NOOP("App::Property", _tip))
-            vobj.ArrowTypeStart = utils.ARROW_TYPES
-            vobj.ArrowTypeStart = utils.ARROW_TYPES[params.get_param("dimsymbolstart")]
+                             _tip,
+                             locked=True)
+            vobj.ArrowSize = params.get_param("arrowsizestart")
 
         if not hasattr(vobj, "ArrowSizeEnd"):
-            _tip = "Arrow size"
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Arrow size")
             vobj.addProperty("App::PropertyLength",
                              "ArrowSizeEnd",
                              "Draft",
-                             QT_TRANSLATE_NOOP("App::Property", _tip))
-            vobj.ArrowSizeEnd = params.get_param("arrowsizeend")
+                             _tip,
+                             locked=True)
+            vobj.ArrowSize = params.get_param("arrowsizeend")
+
+        if not hasattr(vobj, "ArrowTypeStart"):
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Arrow type")
+            vobj.addProperty("App::PropertyEnumeration",
+                             "ArrowTypeStart",
+                             "Draft",
+                             _tip,
+                             locked=True)
+            vobj.ArrowTypeStart = utils.ARROW_TYPES
+            vobj.ArrowTypeStart = utils.ARROW_TYPES[params.get_param("dimsymbolstart")]
 
         if not hasattr(vobj, "ArrowTypeEnd"):
-            _tip = "Arrow type"
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Arrow type")
             vobj.addProperty("App::PropertyEnumeration",
                              "ArrowTypeEnd",
                              "Draft",
-                             QT_TRANSLATE_NOOP("App::Property", _tip))
-            vobj.ArrowTypeEnd = utils.ARROW_TYPES
-            vobj.ArrowTypeEnd = utils.ARROW_TYPES[params.get_param("dimsymbolend")]
+                             _tip,
+                             locked=True)
+            vobj.ArrowTypeStart = utils.ARROW_TYPES
+            vobj.ArrowTypeStart = utils.ARROW_TYPES[params.get_param("dimsymbolend")]
 
     def attach(self, vobj):
         self.Object = vobj.Object

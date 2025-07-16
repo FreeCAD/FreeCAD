@@ -234,7 +234,7 @@
          <text x="127" y="289" fill="#000000" font-size="5" text-align="center" freecad:editable="OF_SHEET"><tspan> 1 </tspan></text>
 	
   <!-- -->
-         <text x="137" y="280" fill="#000000" font-size="5" text-align="center" freecad:editable="SCALE"><tspan>M x:x</tspan></text>
+         <text x="137" y="280" fill="#000000" font-size="5" text-align="center" freecad:editable="scale"><tspan>M x:x</tspan></text>
          <text x="101" y="280" fill="#000000" font-size="5" text-align="center" freecad:editable="STAGE-S"><tspan/></text>
          <text x="107" y="280" fill="#000000" font-size="5" text-align="center" freecad:editable="STAGE-A"><tspan/></text>
          <text x="113.5" y="280" fill="#000000" font-size="5" text-align="center" freecad:editable="STAGE-B"><tspan/></text>

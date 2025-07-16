@@ -82,10 +82,10 @@ struct MeshExport Material
     MeshIO::Binding binding {MeshIO::OVERALL};
     mutable std::string library;
 
-    std::vector<App::Color> ambientColor;  /**< Defines the ambient color. */
-    std::vector<App::Color> diffuseColor;  /**< Defines the diffuse color. */
-    std::vector<App::Color> specularColor; /**< Defines the specular color. */
-    std::vector<App::Color> emissiveColor; /**< Defines the emissive color. */
+    std::vector<Base::Color> ambientColor;  /**< Defines the ambient color. */
+    std::vector<Base::Color> diffuseColor;  /**< Defines the diffuse color. */
+    std::vector<Base::Color> specularColor; /**< Defines the specular color. */
+    std::vector<Base::Color> emissiveColor; /**< Defines the emissive color. */
     std::vector<float> shininess;
     std::vector<float> transparency;
 

@@ -28,17 +28,21 @@
 #include <FCGlobal.h>
 
 #include <Base/BoundBoxPy.h>
-#include <Base/Matrix.h>
 #include <Base/MatrixPy.h>
-#include <Base/Rotation.h>
 #include <Base/RotationPy.h>
-#include <Base/Placement.h>
 #include <Base/PlacementPy.h>
-#include <Base/Vector3D.h>
 
 
 namespace Base
 {
+class Matrix4D;
+class Rotation;
+class Placement;
+template<typename T>
+class Vector3;
+using Vector3d = Vector3<double>;
+using Vector3f = Vector3<float>;
+
 template<typename T>
 inline Vector3<T> getVectorFromTuple(PyObject* py)
 {

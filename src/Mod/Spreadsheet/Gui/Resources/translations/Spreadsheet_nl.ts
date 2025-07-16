@@ -4,17 +4,17 @@
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
-      <location filename="../../Command.cpp" line="944"/>
+      <location filename="../../Command.cpp" line="946"/>
       <source>Spreadsheet</source>
       <translation>Rekenblad</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="945"/>
-      <source>Create spreadsheet</source>
-      <translation>Rekenblad aanmaken</translation>
+      <location filename="../../Command.cpp" line="947"/>
+      <source>&amp;Create spreadsheet</source>
+      <translation type="unfinished">&amp;Create spreadsheet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="946"/>
+      <location filename="../../Command.cpp" line="948"/>
       <source>Create a new spreadsheet</source>
       <translation>Een nieuw rekenblad aanmaken</translation>
     </message>
@@ -22,125 +22,125 @@
   <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
-      <location filename="../../Command.cpp" line="510"/>
+      <location filename="../../Command.cpp" line="509"/>
       <source>Spreadsheet</source>
       <translation>Rekenblad</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="511"/>
-      <source>Align bottom</source>
-      <translation>Onderzijde uitlijnen</translation>
+      <location filename="../../Command.cpp" line="510"/>
+      <source>Align &amp;bottom</source>
+      <translation type="unfinished">Align &amp;bottom</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="512"/>
+      <location filename="../../Command.cpp" line="511"/>
       <source>Bottom-align contents of selected cells</source>
-      <translation>Eigenschappen 'onderzijde uitlijnen' van geselecteerde cellen</translation>
+      <translation>Inhoud van geselecteerde cellen onderaan uitlijnen</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="339"/>
+      <location filename="../../Command.cpp" line="338"/>
       <source>Spreadsheet</source>
       <translation>Rekenblad</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="340"/>
-      <source>Align center</source>
-      <translation>Midden uitlijnen</translation>
+      <location filename="../../Command.cpp" line="339"/>
+      <source>Align &amp;center</source>
+      <translation type="unfinished">Align &amp;center</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="341"/>
+      <location filename="../../Command.cpp" line="340"/>
       <source>Center-align contents of selected cells</source>
-      <translation>Eigenschappen 'midden uitlijnen' van geselecteerde cellen</translation>
+      <translation>De inhoud van geselecteerde cellen centreren</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
-      <location filename="../../Command.cpp" line="282"/>
+      <location filename="../../Command.cpp" line="281"/>
       <source>Spreadsheet</source>
       <translation>Rekenblad</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="283"/>
-      <source>Align left</source>
-      <translation>Links uitlijnen</translation>
+      <location filename="../../Command.cpp" line="282"/>
+      <source>Align &amp;left</source>
+      <translation type="unfinished">Align &amp;left</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="284"/>
+      <location filename="../../Command.cpp" line="283"/>
       <source>Left-align contents of selected cells</source>
-      <translation>Eigenschappen 'links uitlijnen' van geselecteerde cellen</translation>
+      <translation>Inhoud van geselecteerde cellen links uitlijnen</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignRight</name>
     <message>
-      <location filename="../../Command.cpp" line="396"/>
+      <location filename="../../Command.cpp" line="395"/>
       <source>Spreadsheet</source>
       <translation>Rekenblad</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="397"/>
-      <source>Align right</source>
-      <translation>Rechts uitlijnen</translation>
+      <location filename="../../Command.cpp" line="396"/>
+      <source>Align &amp;right</source>
+      <translation type="unfinished">Align &amp;right</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="398"/>
+      <location filename="../../Command.cpp" line="397"/>
       <source>Right-align contents of selected cells</source>
-      <translation>Eigenschappen 'rechts uitlijnen' van geselecteerde cellen</translation>
+      <translation>Inhoud van geselecteerde cellen rechts uitlijnen</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignTop</name>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="452"/>
       <source>Spreadsheet</source>
       <translation>Rekenblad</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="454"/>
-      <source>Align top</source>
-      <translation>Bovenaan uitlijnen</translation>
+      <location filename="../../Command.cpp" line="453"/>
+      <source>Align &amp;top</source>
+      <translation type="unfinished">Align &amp;top</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="455"/>
+      <location filename="../../Command.cpp" line="454"/>
       <source>Top-align contents of selected cells</source>
-      <translation>Eigenschappen 'bovenzijde uitlijnen' van geselecteerde cellen</translation>
+      <translation>Inhoud van geselecteerde cellen bovenaan uitlijnen</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="567"/>
+      <location filename="../../Command.cpp" line="566"/>
       <source>Spreadsheet</source>
       <translation>Rekenblad</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="568"/>
-      <source>Vertically center-align</source>
-      <translation>Verticaal centreren</translation>
+      <location filename="../../Command.cpp" line="567"/>
+      <source>&amp;Vertically center-align</source>
+      <translation type="unfinished">&amp;Vertically center-align</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="569"/>
+      <location filename="../../Command.cpp" line="568"/>
       <source>Vertically center-align contents of selected cells</source>
-      <translation>Eigenschappen 'vertikaal uitlijnen' van geselecteerde cellen</translation>
+      <translation>Inhoud van geselecteerde cellen verticaal centreren</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetExport</name>
     <message>
-      <location filename="../../Command.cpp" line="236"/>
+      <location filename="../../Command.cpp" line="235"/>
       <source>Spreadsheet</source>
       <translation>Rekenblad</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="237"/>
-      <source>Export spreadsheet</source>
-      <translation>Rekenblad exporteren</translation>
+      <location filename="../../Command.cpp" line="236"/>
+      <source>&amp;Export spreadsheet</source>
+      <translation type="unfinished">&amp;Export spreadsheet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="238"/>
+      <location filename="../../Command.cpp" line="237"/>
       <source>Export spreadsheet to CSV file</source>
       <translation>Het rekenblad naar CSV-bestand exporteren</translation>
     </message>
@@ -154,8 +154,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="184"/>
-      <source>Import spreadsheet</source>
-      <translation>Rekenblad importeren</translation>
+      <source>&amp;Import spreadsheet</source>
+      <translation type="unfinished">&amp;Import spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="185"/>
@@ -172,8 +172,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="61"/>
-      <source>Merge cells</source>
-      <translation>Cellen samenvoegen</translation>
+      <source>&amp;Merge cells</source>
+      <translation type="unfinished">&amp;Merge cells</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="62"/>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
-      <location filename="../../Command.cpp" line="873"/>
+      <location filename="../../Command.cpp" line="875"/>
       <source>Spreadsheet</source>
       <translation>Rekenblad</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="874"/>
+      <location filename="../../Command.cpp" line="876"/>
       <source>Set alias</source>
       <translation>Alias instellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="875"/>
+      <location filename="../../Command.cpp" line="877"/>
       <source>Set alias for selected cell</source>
       <translation>Een alias instellen voor de geselecteerde cel</translation>
     </message>
@@ -208,8 +208,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="122"/>
-      <source>Split cell</source>
-      <translation>Cel splitsen</translation>
+      <source>Sp&amp;lit cell</source>
+      <translation type="unfinished">Sp&amp;lit cell</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="123"/>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
-      <location filename="../../Command.cpp" line="624"/>
+      <location filename="../../Command.cpp" line="623"/>
       <source>Spreadsheet</source>
       <translation>Rekenblad</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="625"/>
-      <source>Bold text</source>
-      <translation>Vette tekst</translation>
+      <location filename="../../Command.cpp" line="624"/>
+      <source>&amp;Bold text</source>
+      <translation type="unfinished">&amp;Bold text</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="626"/>
+      <location filename="../../Command.cpp" line="625"/>
       <source>Set text in selected cells bold</source>
       <translation>Tekst in geselecteerde cellen vet instellen</translation>
     </message>
@@ -244,8 +244,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="708"/>
-      <source>Italic text</source>
-      <translation>Cursieve tekst</translation>
+      <source>&amp;Italic text</source>
+      <translation type="unfinished">&amp;Italic text</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="709"/>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
-      <location filename="../../Command.cpp" line="790"/>
+      <location filename="../../Command.cpp" line="791"/>
       <source>Spreadsheet</source>
       <translation>Rekenblad</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="791"/>
-      <source>Underline text</source>
-      <translation>Tekst onderlijnen</translation>
+      <location filename="../../Command.cpp" line="792"/>
+      <source>&amp;Underline text</source>
+      <translation type="unfinished">&amp;Underline text</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="792"/>
+      <location filename="../../Command.cpp" line="793"/>
       <source>Underline text in selected cells</source>
       <translation>Tekst met onderstreping in geselecteerde cellen instellen</translation>
     </message>
@@ -288,36 +288,36 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="143"/>
-      <source>Split cell</source>
-      <translation>Cel splitsen</translation>
+      <source>Sp&amp;lit cell</source>
+      <translation type="unfinished">Sp&amp;lit cell</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="305"/>
+      <location filename="../../Command.cpp" line="304"/>
       <source>Left-align cell</source>
       <translation>Links uitlijnen cel</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="362"/>
+      <location filename="../../Command.cpp" line="361"/>
       <source>Center cell</source>
       <translation>Centreer cel</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="419"/>
+      <location filename="../../Command.cpp" line="418"/>
       <source>Right-align cell</source>
       <translation>Rechts uitlijnen cel</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="476"/>
+      <location filename="../../Command.cpp" line="475"/>
       <source>Top-align cell</source>
       <translation>Boven uitlijnen cel</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="533"/>
+      <location filename="../../Command.cpp" line="532"/>
       <source>Bottom-align cell</source>
       <translation>Onder uitlijnen cel</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="590"/>
+      <location filename="../../Command.cpp" line="589"/>
       <source>Vertically center cells</source>
       <translation>Cellen verticaal centreren</translation>
     </message>
@@ -327,17 +327,17 @@
       <translation>Tekst vet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="747"/>
+      <location filename="../../Command.cpp" line="748"/>
       <source>Set italic text</source>
       <translation>Cursieve tekst instellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="830"/>
+      <location filename="../../Command.cpp" line="832"/>
       <source>Set underline text</source>
       <translation>Tekst onderstrepen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="957"/>
+      <location filename="../../Command.cpp" line="959"/>
       <source>Create Spreadsheet</source>
       <translation>Rekenblad aanmaken</translation>
     </message>
@@ -347,41 +347,41 @@
       <translation>Celeigenschappen instellen</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="546"/>
+      <location filename="../../SheetModel.cpp" line="556"/>
       <source>Edit cell</source>
       <translation>Cel bewerken</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="340"/>
-      <location filename="../../SheetTableView.cpp" line="373"/>
+      <location filename="../../SheetTableView.cpp" line="354"/>
+      <location filename="../../SheetTableView.cpp" line="387"/>
       <source>Insert rows</source>
       <translation>Rijen invoegen</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="393"/>
-      <location filename="../../SheetTableView.cpp" line="471"/>
+      <location filename="../../SheetTableView.cpp" line="407"/>
+      <location filename="../../SheetTableView.cpp" line="485"/>
       <source>Remove rows</source>
       <translation>Rijen verwijderen</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="415"/>
-      <location filename="../../SheetTableView.cpp" line="448"/>
+      <location filename="../../SheetTableView.cpp" line="429"/>
+      <location filename="../../SheetTableView.cpp" line="462"/>
       <source>Insert columns</source>
       <translation>Kolommen invoegen</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="675"/>
-      <location filename="../../SpreadsheetView.cpp" line="186"/>
+      <location filename="../../SheetTableView.cpp" line="689"/>
+      <location filename="../../SpreadsheetView.cpp" line="190"/>
       <source>Clear cell(s)</source>
       <translation>Wis cel(len)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="143"/>
-      <source>Set foreground color</source>
-      <translation>Voorgrondkleur instellen</translation>
+      <location filename="../../Workbench.cpp" line="142"/>
+      <source>Set text color</source>
+      <translation type="unfinished">Set text color</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="177"/>
+      <location filename="../../Workbench.cpp" line="176"/>
       <source>Set background color</source>
       <translation>Achtergrondkleur instellen</translation>
     </message>
@@ -669,7 +669,7 @@ switch the design configuration. The property will be created if not exist.</sou
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="116"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="107"/>
       <location filename="../../Command.cpp" line="195"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;Alle (*)</translation>
@@ -680,49 +680,49 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>Bestand importeren</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="118"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="109"/>
       <source>Export file</source>
       <translation>Bestand exporteren</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="143"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="134"/>
       <source>Show spreadsheet</source>
       <translation>Rekenblad tonen</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="94"/>
-      <location filename="../../Workbench.cpp" line="97"/>
-      <source>Set cell(s) foreground color</source>
-      <translation>Zet de voorgrondkleur van de cel(len) op</translation>
-    </message>
-    <message>
       <location filename="../../Workbench.cpp" line="96"/>
-      <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation>Stelt de voorgrondkleur van de Spreadsheet-cel(len) op</translation>
+      <source>Set cell(s) text color</source>
+      <translation type="unfinished">Set cell(s) text color</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="115"/>
-      <location filename="../../Workbench.cpp" line="118"/>
+      <location filename="../../Workbench.cpp" line="95"/>
+      <source>Sets the Spreadsheet cell(s) text color</source>
+      <translation type="unfinished">Sets the Spreadsheet cell(s) text color</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="114"/>
+      <location filename="../../Workbench.cpp" line="117"/>
       <source>Set cell(s) background color</source>
       <translation>Zet de achtergrondkleur van de cel(len) op</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="117"/>
+      <location filename="../../Workbench.cpp" line="116"/>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Stelt de achtergrondkleur van de Spreadsheet-cel(len) op</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="804"/>
+      <location filename="../../SheetTableView.cpp" line="822"/>
       <source>Copy &amp; Paste failed</source>
       <translation>Kopiëren en plakken mislukt</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="488"/>
+      <location filename="../../SpreadsheetView.cpp" line="493"/>
       <source>Alias contains invalid characters!</source>
       <translation>Alias bevat ongeldige tekens!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="494"/>
+      <location filename="../../SpreadsheetView.cpp" line="499"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Verwijs naar cel met een alias, bijvoorbeeld
@@ -864,16 +864,31 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Verwijs naar cel met een alias, bijvoorbeeld
 Spreadsheet.mijn_alias_naam in plaats van Spreadsheet.B1</translation>
     </message>
+    <message>
+      <location filename="../../Sheet.ui" line="131"/>
+      <source>Zoom</source>
+      <translation>Inzoomen</translation>
+    </message>
+    <message>
+      <location filename="../../Sheet.ui" line="147"/>
+      <source>-</source>
+      <translation type="unfinished">-</translation>
+    </message>
+    <message>
+      <location filename="../../Sheet.ui" line="197"/>
+      <source>+</source>
+      <translation type="unfinished">+</translation>
+    </message>
   </context>
   <context>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="226"/>
+      <location filename="../../DlgBindSheet.cpp" line="223"/>
       <source>Bind cells</source>
       <translation>Verbind cellen</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="227"/>
+      <location filename="../../DlgBindSheet.cpp" line="224"/>
       <source>Source and target cell count mismatch. Partial binding may still work.
 
 Do you want to continue?</source>
@@ -882,19 +897,19 @@ Do you want to continue?</source>
 Wilt u doorgaan?</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="275"/>
+      <location filename="../../DlgBindSheet.cpp" line="272"/>
       <source>Bind Spreadsheet Cells</source>
       <translation>Verbind spreadsheet cellen</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="276"/>
+      <location filename="../../DlgBindSheet.cpp" line="273"/>
       <source>Error:
 </source>
       <translation>Fout:
 </translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="303"/>
+      <location filename="../../DlgBindSheet.cpp" line="300"/>
       <source>Unbind cells</source>
       <translation>Verbinding verwijderen</translation>
     </message>
@@ -922,7 +937,22 @@ Wilt u doorgaan?</translation>
       <translation>Toon de alias in de cel (inclusief opmaak)</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="64"/>
+      <location filename="../../DlgSettings.ui" line="48"/>
+      <source>Set a zoom level for table view from 60% to 160%.</source>
+      <translation type="unfinished">Set a zoom level for table view from 60% to 160%.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="51"/>
+      <source>%</source>
+      <translation>%</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="76"/>
+      <source>Default zoom level:</source>
+      <translation type="unfinished">Default zoom level:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="83"/>
       <source>The format of the custom cell string presentation.
 Defaults to: %V = %A
 
@@ -935,42 +965,42 @@ waarbij:
 %V - waarde in de cel</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="84"/>
+      <location filename="../../DlgSettings.ui" line="119"/>
       <source>Import/Export Settings</source>
       <translation>Import/Export Instellingen</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="96"/>
+      <location filename="../../DlgSettings.ui" line="131"/>
       <source>Delimiter Character:</source>
       <translation>Scheidingsteken:</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="156"/>
+      <location filename="../../DlgSettings.ui" line="191"/>
       <source>Quote Character:</source>
       <translation>Aanhalingsteken:</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="188"/>
+      <location filename="../../DlgSettings.ui" line="223"/>
       <source>Escape Character:</source>
       <translation>Escape-teken:</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="116"/>
+      <location filename="../../DlgSettings.ui" line="151"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Teken om te gebruiken als veldscheidingsteken. Standaard is de -tab-, maar ook vaak gebruikt is de komma (,) en puntkomma (;). Selecteer uit de lijst of voer uw eigen teken in het veld in. Moet een enkel teken zijn of de woorden -tab-, -comma- of -semicolon-</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="132"/>
+      <location filename="../../DlgSettings.ui" line="167"/>
       <source>tab</source>
       <translation>tab</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="163"/>
+      <location filename="../../DlgSettings.ui" line="198"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Teken dat wordt gebruikt om tekenreeksen te scheiden, meestal is het een enkele aanhalingsteken (') of een dubbel aanhalingsteken ("). Het moet een enkel teken zijn</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="195"/>
+      <location filename="../../DlgSettings.ui" line="230"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>-Escape- teken, meestal de backslash (\), gebruikt om speciale niet af te drukken tekens aan te geven, bijvoorbeeld: \t = tab. Moet een enkel teken zijn.</translation>
     </message>
@@ -978,12 +1008,12 @@ waarbij:
   <context>
     <name>SpreadsheetGui::DlgSheetConf</name>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="283"/>
+      <location filename="../../DlgSheetConf.cpp" line="280"/>
       <source>Setup configuration table</source>
       <translation>Opzet van de configuratie tabel</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="341"/>
+      <location filename="../../DlgSheetConf.cpp" line="338"/>
       <source>Unsetup configuration table</source>
       <translation>Configuratie tabel verwijderen</translation>
     </message>
@@ -991,7 +1021,7 @@ waarbij:
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="129"/>
+      <location filename="../../SheetTableView.cpp" line="142"/>
       <source>Insert %n row(s) above</source>
       <translation>
         <numerusform>Voeg %n rij(en) hierboven in</numerusform>
@@ -999,7 +1029,7 @@ waarbij:
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="134"/>
+      <location filename="../../SheetTableView.cpp" line="147"/>
       <source>Insert %n row(s) below</source>
       <translation>
         <numerusform>Voeg %n rij(en) hieronder in</numerusform>
@@ -1007,15 +1037,15 @@ waarbij:
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="139"/>
+      <location filename="../../SheetTableView.cpp" line="152"/>
       <source>Insert %n non-contiguous rows</source>
       <translation type="unfinished">
-        <numerusform>%n Afzonderlijke rijen invoegen</numerusform>
+        <numerusform>%n niet-aaneengesloten rijen invoegen</numerusform>
         <numerusform>Insert %n non-contiguous rows</numerusform>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="142"/>
+      <location filename="../../SheetTableView.cpp" line="155"/>
       <source>Remove row(s)</source>
       <translation>
         <numerusform>Rij(en) verwijderen</numerusform>
@@ -1023,7 +1053,7 @@ waarbij:
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="155"/>
+      <location filename="../../SheetTableView.cpp" line="169"/>
       <source>Insert %n column(s) left</source>
       <translation>
         <numerusform>%n kolom(men) links invoegen</numerusform>
@@ -1031,7 +1061,7 @@ waarbij:
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="160"/>
+      <location filename="../../SheetTableView.cpp" line="174"/>
       <source>Insert %n column(s) right</source>
       <translation>
         <numerusform>Rechts %n kolom(men) invoegen</numerusform>
@@ -1039,15 +1069,15 @@ waarbij:
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="169"/>
+      <location filename="../../SheetTableView.cpp" line="183"/>
       <source>Insert %n non-contiguous columns</source>
       <translation type="unfinished">
-        <numerusform>%n Afzonderlijke kolommen invoegen</numerusform>
+        <numerusform>%n niet-aaneengesloten kolommen invoegen</numerusform>
         <numerusform>Insert %n non-contiguous columns</numerusform>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="172"/>
+      <location filename="../../SheetTableView.cpp" line="186"/>
       <source>Remove column(s)</source>
       <translation>
         <numerusform>Kolom verwijderen</numerusform>
@@ -1055,62 +1085,62 @@ waarbij:
       </translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="177"/>
-      <location filename="../../SheetTableView.cpp" line="656"/>
+      <location filename="../../SheetTableView.cpp" line="191"/>
+      <location filename="../../SheetTableView.cpp" line="670"/>
       <source>Properties...</source>
       <translation>Eigenschappen...</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="189"/>
-      <location filename="../../SheetTableView.cpp" line="657"/>
+      <location filename="../../SheetTableView.cpp" line="203"/>
+      <location filename="../../SheetTableView.cpp" line="671"/>
       <source>Recompute</source>
       <translation>Herberekenen</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="193"/>
-      <location filename="../../SheetTableView.cpp" line="665"/>
+      <location filename="../../SheetTableView.cpp" line="207"/>
+      <location filename="../../SheetTableView.cpp" line="679"/>
       <source>Bind...</source>
       <translation>Bind...</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="197"/>
-      <location filename="../../SheetTableView.cpp" line="658"/>
+      <location filename="../../SheetTableView.cpp" line="211"/>
+      <location filename="../../SheetTableView.cpp" line="672"/>
       <source>Configuration table...</source>
       <translation>Configuratie tabel...</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="205"/>
-      <location filename="../../SheetTableView.cpp" line="659"/>
+      <location filename="../../SheetTableView.cpp" line="219"/>
+      <location filename="../../SheetTableView.cpp" line="673"/>
       <source>Merge cells</source>
       <translation>Cellen samenvoegen</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="207"/>
-      <location filename="../../SheetTableView.cpp" line="660"/>
+      <location filename="../../SheetTableView.cpp" line="221"/>
+      <location filename="../../SheetTableView.cpp" line="674"/>
       <source>Split cells</source>
       <translation>Splits cellen</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="211"/>
-      <location filename="../../SheetTableView.cpp" line="663"/>
+      <location filename="../../SheetTableView.cpp" line="225"/>
+      <location filename="../../SheetTableView.cpp" line="677"/>
       <source>Cut</source>
       <translation>Knippen</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="213"/>
-      <location filename="../../SheetTableView.cpp" line="661"/>
+      <location filename="../../SheetTableView.cpp" line="227"/>
+      <location filename="../../SheetTableView.cpp" line="675"/>
       <source>Copy</source>
       <translation>Kopie</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="215"/>
-      <location filename="../../SheetTableView.cpp" line="662"/>
+      <location filename="../../SheetTableView.cpp" line="229"/>
+      <location filename="../../SheetTableView.cpp" line="676"/>
       <source>Paste</source>
       <translation>Plakken</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="217"/>
-      <location filename="../../SheetTableView.cpp" line="664"/>
+      <location filename="../../SheetTableView.cpp" line="231"/>
+      <location filename="../../SheetTableView.cpp" line="678"/>
       <source>Delete</source>
       <translation>Verwijderen</translation>
     </message>
@@ -1118,12 +1148,12 @@ waarbij:
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="297"/>
+      <location filename="../../SpreadsheetView.cpp" line="301"/>
       <source>Export PDF</source>
       <translation>Exporteren als PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="299"/>
+      <location filename="../../SpreadsheetView.cpp" line="303"/>
       <source>PDF file</source>
       <translation>PDF-bestand</translation>
     </message>
@@ -1158,6 +1188,19 @@ waarbij:
       <location filename="../../AppSpreadsheetGui.cpp" line="111"/>
       <source>Unnamed</source>
       <translation>Naamloos</translation>
+    </message>
+  </context>
+  <context>
+    <name>ZoomableView</name>
+    <message>
+      <location filename="../../ZoomableView.cpp" line="112"/>
+      <source>Zoom level</source>
+      <translation type="unfinished">Zoom level</translation>
+    </message>
+    <message>
+      <location filename="../../ZoomableView.cpp" line="112"/>
+      <source>New zoom level:</source>
+      <translation type="unfinished">New zoom level:</translation>
     </message>
   </context>
 </TS>

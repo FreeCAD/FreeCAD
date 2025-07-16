@@ -26,7 +26,7 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/TechDraw/App/DrawView.h>
@@ -98,6 +98,10 @@ public:
     virtual int getZ() {return StackOrder.getValue();}
 
     const char* whoAmI() const;
+
+    virtual void fixSceneDependencies();
+    std::vector<App::DocumentObject*> claimChildren() const override;
+
 
 private:
     void multiParentPaint(std::vector<TechDraw::DrawPage*>& pages);

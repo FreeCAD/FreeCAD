@@ -112,11 +112,10 @@ App::Property* DlgSheetConf::prepare(CellAddress& from,
             expr.reset(App::Expression::parse(sheet, exprTxt));
         }
         catch (Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
             FC_THROWM(Base::RuntimeError, "Failed to parse expression for property");
         }
-        if (expr->hasComponent()
-            || !expr->isDerivedFrom(App::VariableExpression::getClassTypeId())) {
+        if (expr->hasComponent() || !expr->isDerivedFrom<App::VariableExpression>()) {
             FC_THROWM(Base::RuntimeError, "Invalid property expression: " << expr->toString());
         }
 
@@ -130,7 +129,7 @@ App::Property* DlgSheetConf::prepare(CellAddress& from,
         auto prop = path.getProperty(&pseudoType);
         if (pseudoType
             || (prop
-                && (!prop->isDerivedFrom(App::PropertyEnumeration::getClassTypeId())
+                && (!prop->isDerivedFrom<App::PropertyEnumeration>()
                     || !prop->testStatus(App::Property::PropDynamic)))) {
             FC_THROWM(Base::RuntimeError, "Invalid property referenced in: " << expr->toString());
         }
@@ -140,8 +139,8 @@ App::Property* DlgSheetConf::prepare(CellAddress& from,
     Cell* cell = sheet->getCell(from);
     if (cell && cell->getExpression()) {
         auto expr = cell->getExpression();
-        if (expr->isDerivedFrom(FunctionExpression::getClassTypeId())) {
-            auto fexpr = Base::freecad_dynamic_cast<FunctionExpression>(cell->getExpression());
+        if (expr->isDerivedFrom<FunctionExpression>()) {
+            auto fexpr = freecad_cast<FunctionExpression*>(cell->getExpression());
             if (fexpr
                 && (fexpr->getFunction() == FunctionExpression::HREF
                     || fexpr->getFunction() == FunctionExpression::HIDDENREF)
@@ -149,12 +148,11 @@ App::Property* DlgSheetConf::prepare(CellAddress& from,
                 expr = fexpr->getArgs().front();
             }
         }
-        auto vexpr = Base::freecad_dynamic_cast<VariableExpression>(expr);
+        auto vexpr = freecad_cast<VariableExpression*>(expr);
         if (vexpr) {
-            auto prop =
-                Base::freecad_dynamic_cast<PropertyEnumeration>(vexpr->getPath().getProperty());
+            auto prop = freecad_cast<PropertyEnumeration*>(vexpr->getPath().getProperty());
             if (prop) {
-                auto obj = Base::freecad_dynamic_cast<DocumentObject>(prop->getContainer());
+                auto obj = freecad_cast<DocumentObject*>(prop->getContainer());
                 if (obj && prop->hasName()) {
                     path = ObjectIdentifier(sheet);
                     path.setDocumentObjectName(obj, true);
@@ -184,7 +182,7 @@ void DlgSheetConf::accept()
             auto cell = sheet->getCell(*r);
             if (cell && cell->getExpression()) {
                 ExpressionPtr expr(cell->getExpression()->eval());
-                if (expr->isDerivedFrom(StringExpression::getClassTypeId())) {
+                if (expr->isDerivedFrom<StringExpression>()) {
                     continue;
                 }
             }
@@ -196,8 +194,7 @@ void DlgSheetConf::accept()
 
         std::string exprTxt(ui->lineEditProp->text().trimmed().toUtf8().constData());
         App::ExpressionPtr expr(App::Expression::parse(sheet, exprTxt));
-        if (expr->hasComponent()
-            || !expr->isDerivedFrom(App::VariableExpression::getClassTypeId())) {
+        if (expr->hasComponent() || !expr->isDerivedFrom<App::VariableExpression>()) {
             FC_THROWM(Base::RuntimeError, "Invalid property expression: " << expr->toString());
         }
 
@@ -279,7 +276,7 @@ void DlgSheetConf::accept()
         QDialog::accept();
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         QMessageBox::critical(this, tr("Setup configuration table"), QString::fromUtf8(e.what()));
         if (commandActive) {
             Gui::Command::abortCommand();
@@ -337,7 +334,7 @@ void DlgSheetConf::onDiscard()
         QDialog::accept();
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         QMessageBox::critical(this, tr("Unsetup configuration table"), QString::fromUtf8(e.what()));
         if (commandActive) {
             Gui::Command::abortCommand();

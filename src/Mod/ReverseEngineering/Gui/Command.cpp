@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 #include <QApplication>
 #include <QMessageBox>
+#include <limits>
 #include <sstream>
 
 #include <BRepBuilderAPI_MakePolygon.hxx>
@@ -40,7 +41,7 @@
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/Core/Approximation.h>
 #include <Mod/Mesh/App/MeshFeature.h>
@@ -67,8 +68,8 @@ CmdApproxCurve::CmdApproxCurve()
 {
     sAppModule = "Reen";
     sGroup = QT_TR_NOOP("Reverse Engineering");
-    sMenuText = QT_TR_NOOP("Approximate B-spline curve...");
-    sToolTipText = QT_TR_NOOP("Approximate a B-spline curve");
+    sMenuText = QT_TR_NOOP("Approximate B-Spline Curve…");
+    sToolTipText = QT_TR_NOOP("Approximates a B-spline curve");
     sWhatsThis = "Reen_ApproxCurve";
     sStatusTip = sToolTipText;
 }
@@ -77,10 +78,10 @@ void CmdApproxCurve::activated(int)
 {
     App::DocumentObjectT objT;
     auto obj = Gui::Selection().getObjectsOfType(App::GeoFeature::getClassTypeId());
-    if (obj.size() != 1 || !(obj.at(0)->isDerivedFrom(Points::Feature::getClassTypeId()))) {
+    if (obj.size() != 1 || !(obj.at(0)->isDerivedFrom<Points::Feature>())) {
         QMessageBox::warning(Gui::getMainWindow(),
                              qApp->translate("Reen_ApproxSurface", "Wrong selection"),
-                             qApp->translate("Reen_ApproxSurface", "Please select a point cloud."));
+                             qApp->translate("Reen_ApproxSurface", "Select a point cloud."));
         return;
     }
 
@@ -100,8 +101,8 @@ CmdApproxSurface::CmdApproxSurface()
 {
     sAppModule = "Reen";
     sGroup = QT_TR_NOOP("Reverse Engineering");
-    sMenuText = QT_TR_NOOP("Approximate B-spline surface...");
-    sToolTipText = QT_TR_NOOP("Approximate a B-spline surface");
+    sMenuText = QT_TR_NOOP("Approximate B-Spline Surface…");
+    sToolTipText = QT_TR_NOOP("Approximates a B-spline surface");
     sWhatsThis = "Reen_ApproxSurface";
     sStatusTip = sToolTipText;
     sPixmap = "actions/FitSurface";
@@ -113,12 +114,12 @@ void CmdApproxSurface::activated(int)
     std::vector<App::DocumentObject*> obj =
         Gui::Selection().getObjectsOfType(App::GeoFeature::getClassTypeId());
     if (obj.size() != 1
-        || !(obj.at(0)->isDerivedFrom(Points::Feature::getClassTypeId())
-             || obj.at(0)->isDerivedFrom(Mesh::Feature::getClassTypeId()))) {
+        || !(obj.at(0)->isDerivedFrom<Points::Feature>()
+             || obj.at(0)->isDerivedFrom<Mesh::Feature>())) {
         QMessageBox::warning(
             Gui::getMainWindow(),
             qApp->translate("Reen_ApproxSurface", "Wrong selection"),
-            qApp->translate("Reen_ApproxSurface", "Please select a point cloud or mesh."));
+            qApp->translate("Reen_ApproxSurface", "Select a point cloud or mesh."));
         return;
     }
 
@@ -139,7 +140,7 @@ CmdApproxPlane::CmdApproxPlane()
     sAppModule = "Reen";
     sGroup = QT_TR_NOOP("Reverse Engineering");
     sMenuText = QT_TR_NOOP("Plane");
-    sToolTipText = QT_TR_NOOP("Approximate a plane");
+    sToolTipText = QT_TR_NOOP("Approximates a plane");
     sWhatsThis = "Reen_ApproxPlane";
     sStatusTip = sToolTipText;
 }
@@ -207,11 +208,11 @@ void CmdApproxPlane::activated(int)
             double q0, q1, q2, q3;
             pm.getRotation().getValue(q0, q1, q2, q3);
 
-            Base::Console().Log("RMS value for plane fit with %lu points: %.4f\n",
+            Base::Console().log("RMS value for plane fit with %lu points: %.4f\n",
                                 aData.size(),
                                 sigma);
-            Base::Console().Log("  Plane base(%.4f, %.4f, %.4f)\n", base.x, base.y, base.z);
-            Base::Console().Log("  Plane normal(%.4f, %.4f, %.4f)\n", norm.x, norm.y, norm.z);
+            Base::Console().log("  Plane base(%.4f, %.4f, %.4f)\n", base.x, base.y, base.z);
+            Base::Console().log("  Plane normal(%.4f, %.4f, %.4f)\n", norm.x, norm.y, norm.z);
 
             std::stringstream str;
             str << "from FreeCAD import Base" << std::endl;
@@ -233,7 +234,7 @@ void CmdApproxPlane::activated(int)
 
 bool CmdApproxPlane::isActive()
 {
-    if (getSelection().countObjectsOfType(App::GeoFeature::getClassTypeId()) > 0) {
+    if (getSelection().countObjectsOfType<App::GeoFeature>() > 0) {
         return true;
     }
     return false;
@@ -247,7 +248,7 @@ CmdApproxCylinder::CmdApproxCylinder()
     sAppModule = "Reen";
     sGroup = QT_TR_NOOP("Reverse Engineering");
     sMenuText = QT_TR_NOOP("Cylinder");
-    sToolTipText = QT_TR_NOOP("Approximate a cylinder");
+    sToolTipText = QT_TR_NOOP("Approximates a cylinder");
     sWhatsThis = "Reen_ApproxCylinder";
     sStatusTip = sToolTipText;
 }
@@ -272,7 +273,7 @@ void CmdApproxCylinder::activated(int)
             fit.SetInitialValues(base, axis);
         }
 
-        if (fit.Fit() < FLOAT_MAX) {
+        if (fit.Fit() < std::numeric_limits<float>::max()) {
             Base::Vector3f base, top;
             fit.GetBounding(base, top);
             float height = Base::Distance(base, top);
@@ -301,7 +302,7 @@ void CmdApproxCylinder::activated(int)
 
 bool CmdApproxCylinder::isActive()
 {
-    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0) {
+    if (getSelection().countObjectsOfType<Mesh::Feature>() > 0) {
         return true;
     }
     return false;
@@ -315,7 +316,7 @@ CmdApproxSphere::CmdApproxSphere()
     sAppModule = "Reen";
     sGroup = QT_TR_NOOP("Reverse Engineering");
     sMenuText = QT_TR_NOOP("Sphere");
-    sToolTipText = QT_TR_NOOP("Approximate a sphere");
+    sToolTipText = QT_TR_NOOP("Approximates a sphere");
     sWhatsThis = "Reen_ApproxSphere";
     sStatusTip = sToolTipText;
 }
@@ -329,7 +330,7 @@ void CmdApproxSphere::activated(int)
         const MeshCore::MeshKernel& kernel = mesh.getKernel();
         MeshCore::SphereFit fit;
         fit.AddPoints(kernel.GetPoints());
-        if (fit.Fit() < FLOAT_MAX) {
+        if (fit.Fit() < std::numeric_limits<float>::max()) {
             Base::Vector3f base = fit.GetCenter();
 
             std::stringstream str;
@@ -349,7 +350,7 @@ void CmdApproxSphere::activated(int)
 
 bool CmdApproxSphere::isActive()
 {
-    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0) {
+    if (getSelection().countObjectsOfType<Mesh::Feature>() > 0) {
         return true;
     }
     return false;
@@ -362,8 +363,8 @@ CmdApproxPolynomial::CmdApproxPolynomial()
 {
     sAppModule = "Reen";
     sGroup = QT_TR_NOOP("Reverse Engineering");
-    sMenuText = QT_TR_NOOP("Polynomial surface");
-    sToolTipText = QT_TR_NOOP("Approximate a polynomial surface");
+    sMenuText = QT_TR_NOOP("Polynomial Surface");
+    sToolTipText = QT_TR_NOOP("Approximates a polynomial surface");
     sWhatsThis = "Reen_ApproxPolynomial";
     sStatusTip = sToolTipText;
 }
@@ -378,7 +379,7 @@ void CmdApproxPolynomial::activated(int)
         const MeshCore::MeshKernel& kernel = mesh.getKernel();
         MeshCore::SurfaceFit fit;
         fit.AddPoints(kernel.GetPoints());
-        if (fit.Fit() < FLOAT_MAX) {
+        if (fit.Fit() < std::numeric_limits<float>::max()) {
             Base::BoundBox3f bbox = fit.GetBoundings();
             std::vector<Base::Vector3d> poles =
                 fit.toBezier(bbox.MinX, bbox.MaxX, bbox.MinY, bbox.MaxY);
@@ -407,7 +408,7 @@ void CmdApproxPolynomial::activated(int)
 
 bool CmdApproxPolynomial::isActive()
 {
-    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0) {
+    if (getSelection().countObjectsOfType<Mesh::Feature>() > 0) {
         return true;
     }
     return false;
@@ -420,8 +421,8 @@ CmdSegmentation::CmdSegmentation()
 {
     sAppModule = "Reen";
     sGroup = QT_TR_NOOP("Reverse Engineering");
-    sMenuText = QT_TR_NOOP("Mesh segmentation...");
-    sToolTipText = QT_TR_NOOP("Create mesh segments");
+    sMenuText = QT_TR_NOOP("Mesh Segmentation…");
+    sToolTipText = QT_TR_NOOP("Creates separate mesh segments based on surface types");
     sWhatsThis = "Reen_Segmentation";
     sStatusTip = sToolTipText;
 }
@@ -442,7 +443,7 @@ bool CmdSegmentation::isActive()
     if (Gui::Control().activeDialog()) {
         return false;
     }
-    return Gui::Selection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 1;
+    return Gui::Selection().countObjectsOfType<Mesh::Feature>() == 1;
 }
 
 DEF_STD_CMD_A(CmdSegmentationManual)
@@ -452,8 +453,8 @@ CmdSegmentationManual::CmdSegmentationManual()
 {
     sAppModule = "Reen";
     sGroup = QT_TR_NOOP("Reverse Engineering");
-    sMenuText = QT_TR_NOOP("Manual segmentation...");
-    sToolTipText = QT_TR_NOOP("Create mesh segments manually");
+    sMenuText = QT_TR_NOOP("Manual Segmentation…");
+    sToolTipText = QT_TR_NOOP("Creates mesh segments manually");
     sWhatsThis = "Reen_SegmentationManual";
     sStatusTip = sToolTipText;
 }
@@ -482,8 +483,8 @@ CmdSegmentationFromComponents::CmdSegmentationFromComponents()
 {
     sAppModule = "Reen";
     sGroup = QT_TR_NOOP("Reverse Engineering");
-    sMenuText = QT_TR_NOOP("From components");
-    sToolTipText = QT_TR_NOOP("Create mesh segments from components");
+    sMenuText = QT_TR_NOOP("From Components");
+    sToolTipText = QT_TR_NOOP("Creates mesh segments from components");
     sWhatsThis = "Reen_SegmentationFromComponents";
     sStatusTip = sToolTipText;
 }
@@ -497,8 +498,7 @@ void CmdSegmentationFromComponents::activated(int)
     for (auto it : sel) {
         std::string internalname = "Segments_";
         internalname += it->getNameInDocument();
-        App::DocumentObjectGroup* group = static_cast<App::DocumentObjectGroup*>(
-            doc->addObject("App::DocumentObjectGroup", internalname.c_str()));
+        auto* group = doc->addObject<App::DocumentObjectGroup>(internalname.c_str());
         std::string labelname = "Segments ";
         labelname += it->Label.getValue();
         group->Label.setValue(labelname);
@@ -507,8 +507,7 @@ void CmdSegmentationFromComponents::activated(int)
         std::vector<std::vector<MeshCore::FacetIndex>> comps = mesh.getComponents();
         for (const auto& jt : comps) {
             std::unique_ptr<Mesh::MeshObject> segment(mesh.meshFromSegment(jt));
-            Mesh::Feature* feaSegm =
-                static_cast<Mesh::Feature*>(group->addObject("Mesh::Feature", "Segment"));
+            auto* feaSegm = group->addObject<Mesh::Feature>("Segment");
             Mesh::MeshObject* feaMesh = feaSegm->Mesh.startEditing();
             feaMesh->swap(*segment);
             feaSegm->Mesh.finishEditing();
@@ -521,7 +520,7 @@ void CmdSegmentationFromComponents::activated(int)
 
 bool CmdSegmentationFromComponents::isActive()
 {
-    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0) {
+    if (getSelection().countObjectsOfType<Mesh::Feature>() > 0) {
         return true;
     }
     return false;
@@ -534,8 +533,8 @@ CmdMeshBoundary::CmdMeshBoundary()
 {
     sAppModule = "Reen";
     sGroup = QT_TR_NOOP("Reverse Engineering");
-    sMenuText = QT_TR_NOOP("Wire from mesh boundary...");
-    sToolTipText = QT_TR_NOOP("Create wire from mesh boundaries");
+    sMenuText = QT_TR_NOOP("Wire From Mesh Boundary…");
+    sToolTipText = QT_TR_NOOP("Creates a wire from mesh boundaries");
     sWhatsThis = "Reen_Segmentation";
     sStatusTip = sToolTipText;
 }
@@ -576,13 +575,11 @@ void CmdMeshBoundary::activated(int)
         }
 
         if (!shape.IsNull()) {
-            Part::Feature* shapeFea =
-                static_cast<Part::Feature*>(document->addObject("Part::Feature", "Face from mesh"));
+            Part::Feature* shapeFea = document->addObject<Part::Feature>("Face from mesh");
             shapeFea->Shape.setValue(shape);
         }
         else {
-            Part::Feature* shapeFea =
-                static_cast<Part::Feature*>(document->addObject("Part::Feature", "Wire from mesh"));
+            Part::Feature* shapeFea = document->addObject<Part::Feature>("Wire from mesh");
             shapeFea->Shape.setValue(compound);
         }
     }
@@ -591,7 +588,7 @@ void CmdMeshBoundary::activated(int)
 
 bool CmdMeshBoundary::isActive()
 {
-    return Gui::Selection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0;
+    return Gui::Selection().countObjectsOfType<Mesh::Feature>() > 0;
 }
 
 DEF_STD_CMD_A(CmdPoissonReconstruction)
@@ -601,8 +598,8 @@ CmdPoissonReconstruction::CmdPoissonReconstruction()
 {
     sAppModule = "Reen";
     sGroup = QT_TR_NOOP("Reverse Engineering");
-    sMenuText = QT_TR_NOOP("Poisson...");
-    sToolTipText = QT_TR_NOOP("Poisson surface reconstruction");
+    sMenuText = QT_TR_NOOP("Poisson…");
+    sToolTipText = QT_TR_NOOP("Performs Poisson surface reconstruction");
     sWhatsThis = "Reen_PoissonReconstruction";
     sStatusTip = sToolTipText;
 }
@@ -613,10 +610,9 @@ void CmdPoissonReconstruction::activated(int)
     std::vector<App::DocumentObject*> obj =
         Gui::Selection().getObjectsOfType(Points::Feature::getClassTypeId());
     if (obj.size() != 1) {
-        QMessageBox::warning(
-            Gui::getMainWindow(),
-            qApp->translate("Reen_ApproxSurface", "Wrong selection"),
-            qApp->translate("Reen_ApproxSurface", "Please select a single point cloud."));
+        QMessageBox::warning(Gui::getMainWindow(),
+                             qApp->translate("Reen_ApproxSurface", "Wrong selection"),
+                             qApp->translate("Reen_ApproxSurface", "Select a single point cloud."));
         return;
     }
 
@@ -636,8 +632,8 @@ CmdViewTriangulation::CmdViewTriangulation()
 {
     sAppModule = "Reen";
     sGroup = QT_TR_NOOP("Reverse Engineering");
-    sMenuText = QT_TR_NOOP("Structured point clouds");
-    sToolTipText = QT_TR_NOOP("Triangulation of structured point clouds");
+    sMenuText = QT_TR_NOOP("Structured Point Clouds");
+    sToolTipText = QT_TR_NOOP("Triangulates structured point clouds");
     sStatusTip = QT_TR_NOOP("Triangulation of structured point clouds");
     sWhatsThis = "Reen_ViewTriangulation";
 }
@@ -654,11 +650,11 @@ void CmdViewTriangulation::activated(int)
             QString document = QString::fromStdString(objT.getDocumentPython());
             QString object = QString::fromStdString(objT.getObjectPython());
 
-            QString command = QString::fromLatin1("%1.addObject('Mesh::Feature', 'View mesh').Mesh "
-                                                  "= ReverseEngineering.viewTriangulation("
-                                                  "Points=%2.Points,"
-                                                  "Width=%2.Width,"
-                                                  "Height=%2.Height)")
+            QString command = QStringLiteral("%1.addObject('Mesh::Feature', 'View mesh').Mesh "
+                                             "= ReverseEngineering.viewTriangulation("
+                                             "Points=%2.Points,"
+                                             "Width=%2.Width,"
+                                             "Height=%2.Height)")
                                   .arg(document, object);
             runCommand(Doc, command.toLatin1());
         }
@@ -676,7 +672,7 @@ void CmdViewTriangulation::activated(int)
 
 bool CmdViewTriangulation::isActive()
 {
-    return (Gui::Selection().countObjectsOfType(Points::Structured::getClassTypeId()) > 0);
+    return (Gui::Selection().countObjectsOfType<Points::Structured>() > 0);
 }
 
 void CreateReverseEngineeringCommands()

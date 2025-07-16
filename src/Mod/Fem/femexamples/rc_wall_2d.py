@@ -128,7 +128,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # material
     matrixprop = {}
-    matrixprop["Name"] = "Concrete-EN-C35/45"
+    matrixprop["Name"] = "Concrete-EN-C35_45"
     matrixprop["YoungsModulus"] = "32000 MPa"
     matrixprop["PoissonRatio"] = "0.17"
     matrixprop["CompressiveStrength"] = "15.75 MPa"
@@ -158,7 +158,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_force)
 
     # constraint displacement
-    con_disp = ObjectsFem.makeConstraintDisplacement(doc, "ConstraintDisplacmentPrescribed")
+    con_disp = ObjectsFem.makeConstraintDisplacement(doc, "ConstraintDisplacementPrescribed")
     con_disp.References = [(geom_obj, "Face1")]
     con_disp.zFree = False
     con_disp.zDisplacement = 0

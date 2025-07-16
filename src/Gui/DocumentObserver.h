@@ -24,7 +24,7 @@
 #define GUI_DOCUMENTOBSERVER_H
 
 #include <Base/BaseClass.h>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 
 namespace App { class Property; }
@@ -120,7 +120,7 @@ public:
     template<typename T>
     inline T* getObjectAs() const
     {
-        return Base::freecad_dynamic_cast<T>(getViewProvider());
+        return freecad_cast<T*>(getViewProvider());
     }
 
 private:
@@ -215,7 +215,7 @@ public:
     template<typename T>
     inline T* get() const noexcept
     {
-        return Base::freecad_dynamic_cast<T>(_get());
+        return freecad_cast<T*>(_get());
     }
 
 private:
@@ -306,6 +306,11 @@ private:
     ViewProviderWeakPtrT ptr;
 };
 
+#ifdef _MSC_VER
+#  pragma warning(push)
+#  pragma warning(disable: 4251)  // MSVC emits warning C4251 too conservatively for our use-case
+#endif
+
 /**
  * The DocumentObserver class simplifies the step to write classes that listen
  * to what happens inside a document.
@@ -367,6 +372,10 @@ private:
     Connection connectDocumentRedo;
     Connection connectDocumentDelete;
 };
+
+#ifdef _MSC_VER
+#  pragma warning(pop)
+#endif
 
 } //namespace Gui
 

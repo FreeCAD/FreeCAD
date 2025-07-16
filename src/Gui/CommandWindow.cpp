@@ -34,7 +34,7 @@
 #include "MainWindow.h"
 #include "View.h"
 #include "Document.h"
-#include "DlgActivateWindowImp.h"
+#include "Dialogs/DlgActivateWindowImp.h"
 #include "DockWindowManager.h"
 #include "ToolBarManager.h"
 
@@ -362,7 +362,7 @@ Action* StdCmdToggleToolBarLock::createAction()
     Action* action = Command::createAction();
 
     action->setCheckable(true);
-    action->setChecked(ToolBarManager::getInstance()->areToolBarsLocked(), true);
+    action->setBlockedChecked(ToolBarManager::getInstance()->areToolBarsLocked());
 
     return action;
 }
@@ -420,7 +420,7 @@ Action * StdCmdStatusBar::createAction()
 {
     Action *pcAction = Command::createAction();
     pcAction->setCheckable(true);
-    pcAction->setChecked(false, true);
+    pcAction->setBlockedChecked(false);
     auto fsb = new FilterStatusBar(pcAction);
     getMainWindow()->statusBar()->installEventFilter(fsb);
 
@@ -475,7 +475,7 @@ bool StdCmdWindowsMenu::isActive()
 
 Action * StdCmdWindowsMenu::createAction()
 {
-    // Allow to show 10 menu items in the 'Window' menu and one separator.
+    // Allow one to show 10 menu items in the 'Window' menu and one separator.
     // If we have more windows then the user can use the 'Windows...' item.
     WindowAction *pcAction;
     pcAction = new WindowAction(this, getMainWindow());

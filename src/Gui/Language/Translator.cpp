@@ -45,7 +45,7 @@ using namespace Gui;
  * The internationalization of FreeCAD makes heavy use of the internationalization
  * support of Qt. For more details refer to your Qt documentation.
  *
- * \section stepbystep Step by step
+ * \section stepbystep_language Step by step
  * To integrate a new language into FreeCAD or one of its application modules
  * you have to perform the following steps:
  *
@@ -115,6 +115,48 @@ public:
 };
 }
 
+class Translator::ParameterObserver : public ParameterGrp::ObserverType
+{
+public:
+    ParameterObserver(Translator* client) : client(client)
+    {
+        hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
+        hGrp->Attach(this);
+    }
+
+    void OnChange(Base::Subject<const char*>& caller, const char* creason) override
+    {
+        (void) caller;
+
+        std::string_view reason = creason;
+        if (reason == "UseLocaleFormatting") {
+            int format = hGrp->GetInt("UseLocaleFormatting");
+            if (format == 0) {
+                client->setLocale(); // Defaults to system locale
+            }
+            else if (format == 1) {
+                // Language must need to be set before locale. How do we ensure this?
+                std::string language = hGrp->GetASCII("Language");
+                client->setLocale(language);
+            }
+            else if (format == 2) {
+                client->setLocale("C");
+            }
+            else {
+                throw Base::ValueError("Parameter \"UseLocaleFormatting\" value out of bounds for Translator::formattingOptions");
+            }
+        }
+        else if (reason == "SubstituteDecimalSeparator") {
+            bool value = hGrp->GetBool("SubstituteDecimal");
+            client->enableDecimalPointConversion(value);
+        }
+    }
+
+    Translator* client;
+    static ParameterGrp::handle hGrp;
+};
+ParameterGrp::handle Translator::ParameterObserver::hGrp;  // definition for export
+
 Translator* Translator::instance()
 {
     if (!_pcSingleton)
@@ -131,7 +173,10 @@ void Translator::destruct ()
 
 Translator::Translator()
 {
+    observer = std::make_unique<Translator::ParameterObserver>(this);
+
     // This is needed for Qt's lupdate
+    // clang-format off
     d = new TranslatorP;
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Afrikaans"            )] = "af";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Arabic"               )] = "ar";
@@ -143,6 +188,7 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Chinese Traditional"  )] = "zh-TW";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Croatian"             )] = "hr";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Czech"                )] = "cs";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Danish"               )] = "da";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Dutch"                )] = "nl";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("English"              )] = "en";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Filipino"             )] = "fil";
@@ -176,13 +222,13 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Ukrainian"            )] = "uk";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Valencian"            )] = "val-ES";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Vietnamese"           )] = "vi";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Danish")] = "da";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Malay")] = "ms";
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
     auto entries = hGrp->GetASCII("AdditionalLanguageDomainEntries", "");
     // The format of the entries is "Language Name 1"="code1";"Language Name 2"="code2";...
     // Example: <FCText Name="AdditionalLanguageDomainEntries">"Romanian"="ro";"Polish"="pl";</FCText>
-    QRegularExpression matchingRE(QString::fromUtf8("\"(.*[^\\s]+.*)\"\\s*=\\s*\"([^\\s]+)\";?"));
+    QRegularExpression matchingRE(QStringLiteral("\"(.*[^\\s]+.*)\"\\s*=\\s*\"([^\\s]+)\";?"));
     auto matches = matchingRE.globalMatch(QString::fromStdString(entries));
     while (matches.hasNext()) {
         QRegularExpressionMatch match = matches.next();
@@ -190,6 +236,7 @@ Translator::Translator()
         QString tld = match.captured(2);
         d->mapLanguageTopLevelDomain[language.toStdString()] = tld.toStdString();
     }
+    // clang-format on
 
     d->activatedLanguage = "English";
 
@@ -223,7 +270,7 @@ TStringMap Translator::supportedLocales() const
     for (const auto& domainMap : d->mapLanguageTopLevelDomain) {
         for (const auto& directoryName : std::as_const(d->paths)) {
             QDir dir(directoryName);
-            QString filter = QString::fromLatin1("*_%1.qm").arg(QString::fromStdString(domainMap.second));
+            QString filter = QStringLiteral("*_%1.qm").arg(QString::fromStdString(domainMap.second));
             QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
             if (!fileNames.isEmpty()) {
                 d->mapSupportedLocales[domainMap.first] = domainMap.second;
@@ -240,7 +287,7 @@ void Translator::activateLanguage (const char* lang)
     removeTranslators(); // remove the currently installed translators
     d->activatedLanguage = lang;
     TStringList languages = supportedLanguages();
-    if (std::find(languages.begin(), languages.end(), lang) != languages.end()) {
+    if (std::ranges::find(languages, lang) != languages.end()) {
         refresh();
     }
 }
@@ -275,7 +322,7 @@ void Translator::setLocale(const std::string& language) const
     updateLocaleChange();
 
 #ifdef FC_DEBUG
-    Base::Console().Log("Locale changed to %s => %s\n", qPrintable(loc.bcp47Name()), qPrintable(loc.name()));
+    Base::Console().log("Locale changed to %s => %s\n", qPrintable(loc.bcp47Name()), qPrintable(loc.name()));
 #endif
 }
 
@@ -309,7 +356,7 @@ void Translator::addPath(const QString& path)
 
 void Translator::installQMFiles(const QDir& dir, const char* locale)
 {
-    QString filter = QString::fromLatin1("*_%1.qm").arg(QLatin1String(locale));
+    QString filter = QStringLiteral("*_%1.qm").arg(QLatin1String(locale));
     QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
     for (const auto &it : fileNames){
         bool ok=false;
@@ -407,7 +454,7 @@ void Translator::enableDecimalPointConversion(bool on)
     }
 #if FC_DEBUG
     if (on && decimalPointConverter) {
-        Base::Console().Instance().Warning("Translator: decimal point converter is already installed\n");
+        Base::Console().instance().warning("Translator: decimal point converter is already installed\n");
     }
 #endif
     if (on && !decimalPointConverter) {

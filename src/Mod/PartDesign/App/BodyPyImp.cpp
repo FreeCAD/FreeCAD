@@ -87,7 +87,7 @@ PyObject* BodyPy::insertObject(PyObject *args)
 
 Py::Object BodyPy::getVisibleFeature() const {
     for(auto obj : getBodyPtr()->Group.getValues()) {
-        if(obj->Visibility.getValue() && obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+        if(obj->Visibility.getValue() && obj->isDerivedFrom<PartDesign::Feature>())
             return Py::Object(obj->getPyObject(),true);
     }
     return Py::Object();

@@ -74,8 +74,10 @@ def RePopulateIcons():
     a6.setIcon(QtGui.QIcon(":/icons/NavigationOpenInventor_" + StyleSheetType + ".svg"))
     a7.setIcon(QtGui.QIcon(":/icons/NavigationOpenSCAD_" + StyleSheetType + ".svg"))
     a8.setIcon(QtGui.QIcon(":/icons/NavigationRevit_" + StyleSheetType + ".svg"))
-    a9.setIcon(QtGui.QIcon(":/icons/NavigationTinkerCAD_" + StyleSheetType + ".svg"))
-    a10.setIcon(QtGui.QIcon(":/icons/NavigationTouchpad_" + StyleSheetType + ".svg"))
+    a9.setIcon(QtGui.QIcon(":/icons/NavigationSiemensNX_" + StyleSheetType + ".svg"))
+    a10.setIcon(QtGui.QIcon(":/icons/NavigationSolidWorks_" + StyleSheetType + ".svg"))
+    a11.setIcon(QtGui.QIcon(":/icons/NavigationTinkerCAD_" + StyleSheetType + ".svg"))
+    a12.setIcon(QtGui.QIcon(":/icons/NavigationTouchpad_" + StyleSheetType + ".svg"))
 
 
 def retranslateUi():
@@ -473,6 +475,86 @@ def retranslateUi():
 
     global t9
     t9 = (
+        "<p align='center'><b>Siemens NX</b> "
+        + text06
+        + """</p>
+    <table>
+     <tr>
+      <th><small>"""
+        + text01
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
+        <th><small>"""
+        + text04
+        + """</small></th>
+     </tr>
+     <tr>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_MiddleLeft.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_MiddleRight.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_ShiftMiddle.svg'></td>
+     </tr>
+    </table>
+    <b>"""
+        + text08
+        + ":</b> "
+        + text10
+        + "</small></p>"
+    )
+
+    global t10
+    t10 = (
+        "<p align='center'><b>SolidWorks</b> "
+        + text06
+        + """</p>
+    <table>
+     <tr>
+      <th><small>"""
+        + text01
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
+     </tr>
+     <tr>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_ShiftMiddle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_CtrlMiddle.svg'></td>
+     </tr>
+    </table>
+    <b>"""
+        + text08
+        + ":</b> "
+        + text10
+        + "</small></p>"
+    )
+
+    global t11
+    t11 = (
         "<p align='center'><b>TinkerCAD</b> "
         + text06
         + """</p>
@@ -500,8 +582,8 @@ def retranslateUi():
     </table>"""
     )
 
-    global t10
-    t10 = (
+    global t12
+    t12 = (
         "<p align='center'><b>Touchpad</b> "
         + text06
         + """</p>
@@ -573,6 +655,8 @@ def retranslateUi():
     aTurntable.setText(translate("NavigationIndicator", "Turntable"))
     aFreeTurntable.setText(translate("NavigationIndicator", "Free Turntable"))
     aTrackball.setText(translate("NavigationIndicator", "Trackball"))
+    aTrackballClassic.setText(translate("NavigationIndicator", "Trackball Classic"))
+    aRoundedArcball.setText(translate("NavigationIndicator", "Rounded Arcball"))
     a0.setText(translate("NavigationIndicator", "Undefined"))
 
 
@@ -580,6 +664,12 @@ indicator = IndicatorButton(statusBar)
 indicator.setFlat(True)
 indicator.adjustSize()
 indicator.setObjectName("NavigationIndicator")
+text = QtGui.QApplication.translate(
+    "NavigationIndicator",
+    "Navigation indicator",
+    "A context menu action used to show or hide the 'Navigation indicator' toolbar widget",
+)
+indicator.setWindowTitle(text)
 
 menu = QtGui.QMenu(indicator)
 indicator.setMenu(menu)
@@ -603,9 +693,17 @@ aTrackball.setCheckable(True)
 aFreeTurntable = QtGui.QAction(gOrbit)
 aFreeTurntable.setObjectName("NavigationIndicator_FreeTurntable")
 aFreeTurntable.setCheckable(True)
+aTrackballClassic = QtGui.QAction(gOrbit)
+aTrackballClassic.setObjectName("NavigationIndicator_TrackballClassic")
+aTrackballClassic.setCheckable(True)
+aRoundedArcball = QtGui.QAction(gOrbit)
+aRoundedArcball.setObjectName("NavigationIndicator_RoundedArcball")
+aRoundedArcball.setCheckable(True)
 
-menuOrbit.addAction(aTurntable)
+menuOrbit.addAction(aRoundedArcball)
 menuOrbit.addAction(aTrackball)
+menuOrbit.addAction(aTrackballClassic)
+menuOrbit.addAction(aTurntable)
 menuOrbit.addAction(aFreeTurntable)
 
 menuSettings.addMenu(menuOrbit)
@@ -661,14 +759,24 @@ a8.setData("Gui::RevitNavigationStyle")
 a8.setObjectName("Indicator_NavigationRevit")
 
 a9 = QtGui.QAction(gStyle)
-a9.setText("TinkerCAD  ")
-a9.setData("Gui::TinkerCADNavigationStyle")
-a9.setObjectName("Indicator_NavigationTinkerCAD")
+a9.setText("Siemens NX  ")
+a9.setData("Gui::SiemensNXNavigationStyle")
+a9.setObjectName("Indicator_NavigationSiemensNX")
 
 a10 = QtGui.QAction(gStyle)
-a10.setText("Touchpad  ")
-a10.setData("Gui::TouchpadNavigationStyle")
-a10.setObjectName("Indicator_NavigationTouchpad")
+a10.setText("SolidWorks  ")
+a10.setData("Gui::SolidWorksNavigationStyle")
+a10.setObjectName("Indicator_NavigationSolidWorks")
+
+a11 = QtGui.QAction(gStyle)
+a11.setText("TinkerCAD  ")
+a11.setData("Gui::TinkerCADNavigationStyle")
+a11.setObjectName("Indicator_NavigationTinkerCAD")
+
+a12 = QtGui.QAction(gStyle)
+a12.setText("Touchpad  ")
+a12.setData("Gui::TouchpadNavigationStyle")
+a12.setObjectName("Indicator_NavigationTouchpad")
 
 RePopulateIcons()
 
@@ -685,6 +793,8 @@ menu.addAction(a7)
 menu.addAction(a8)
 menu.addAction(a9)
 menu.addAction(a10)
+menu.addAction(a11)
+menu.addAction(a12)
 
 pView.Attach(indicator)
 
@@ -725,6 +835,8 @@ def onTooltip():
         a8.setToolTip(t8)
         a9.setToolTip(t9)
         a10.setToolTip(t10)
+        a11.setToolTip(t11)
+        a12.setToolTip(t12)
         p.SetBool("Tooltip", 1)
     else:
         for i in gStyle.actions():
@@ -743,12 +855,16 @@ def onOrbit():
         pView.SetInt("OrbitStyle", 1)
     elif aFreeTurntable.isChecked():
         pView.SetInt("OrbitStyle", 2)
+    elif aTrackballClassic.isChecked():
+        pView.SetInt("OrbitStyle", 3)
+    elif aRoundedArcball.isChecked():
+        pView.SetInt("OrbitStyle", 4)
 
 
 def onOrbitShow():
     """Set turntable or trackball orbit style."""
 
-    OrbitStyle = pView.GetInt("OrbitStyle", 1)
+    OrbitStyle = pView.GetInt("OrbitStyle", 4)
     gOrbit.blockSignals(True)
     if OrbitStyle == 0:
         aTurntable.setChecked(True)
@@ -756,6 +872,10 @@ def onOrbitShow():
         aTrackball.setChecked(True)
     elif OrbitStyle == 2:
         aFreeTurntable.setChecked(True)
+    elif OrbitStyle == 3:
+        aTrackballClassic.setChecked(True)
+    elif OrbitStyle == 4:
+        aRoundedArcball.setChecked(True)
     gOrbit.blockSignals(False)
 
 

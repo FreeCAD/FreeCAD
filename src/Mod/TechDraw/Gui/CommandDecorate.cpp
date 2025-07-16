@@ -36,8 +36,8 @@
 #include <Gui/Document.h>
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
@@ -53,6 +53,7 @@
 #include "ViewProviderGeomHatch.h"
 #include "ViewProviderPage.h"
 #include "MDIViewPage.h"
+#include "CommandHelpers.h"
 
 
 using namespace TechDrawGui;
@@ -125,8 +126,7 @@ void CmdTechDrawHatch::activated(int iMsg)
             std::vector<std::string> hatchSubs = h->Source.getSubValues();
             for (auto& hs: hatchSubs) {        //all the Faces in this hatch object
                 int hatchFace = TechDraw::DrawUtil::getIndexFromName(hs);
-                std::vector<int>::iterator it = std::find(selFaces.begin(), selFaces.end(), hatchFace);
-                if (it != selFaces.end()) {
+                if (auto it = std::ranges::find(selFaces, hatchFace); it != selFaces.end()) {
                     std::pair< int, TechDraw::DrawHatch*> removeItem;
                     removeItem.first = hatchFace;
                     removeItem.second = h;
@@ -268,11 +268,20 @@ void CmdTechDrawImage::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("Image");
     fileName = Base::Tools::escapeEncodeFilename(fileName);
     auto filespec = DU::cleanFilespecBackslash(fileName.toStdString());
+
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Image"));
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewImage', '%s')", FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewImage', 'Image', '%s')",
               FeatName.c_str(), FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.ImageFile = '%s'", FeatName.c_str(), filespec.c_str());
+
+    auto baseView = CommandHelpers::firstViewInSelection(this);
+    if (baseView) {
+        auto baseName = baseView->getNameInDocument();
+        doCommand(Doc, "App.activeDocument().%s.Owner = App.activeDocument().%s",
+                  FeatName.c_str(), baseName);
+    }
+
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
     updateActive();
     commitCommand();
@@ -319,7 +328,7 @@ void CmdTechDrawToggleFrame::activated(int iMsg)
 
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(page);
-    ViewProviderPage* vpPage = dynamic_cast<ViewProviderPage*>(vp);
+    ViewProviderPage* vpPage = freecad_cast<ViewProviderPage*>(vp);
 
     if (!vpPage) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No TechDraw Page"),
@@ -331,7 +340,7 @@ void CmdTechDrawToggleFrame::activated(int iMsg)
 
     Gui::Action *action = this->getAction();
     if (action) {
-        action->setChecked(!vpPage->getFrameState(), true);
+        action->setBlockedChecked(!vpPage->getFrameState());
     }
 }
 
@@ -340,7 +349,7 @@ void CmdTechDrawToggleFrame::activated(int iMsg)
 // currently looking at that page
 bool CmdTechDrawToggleFrame::isActive()
 {
-    auto mvp = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+    auto mvp = qobject_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
     if (!mvp) {
         return false;
     }
@@ -349,7 +358,7 @@ bool CmdTechDrawToggleFrame::isActive()
 
     Gui::Action* action = this->getAction();
     if (action) {
-        action->setChecked(vpp && !vpp->getFrameState(), true);
+        action->setBlockedChecked(vpp && !vpp->getFrameState());
     }
 
     return true;

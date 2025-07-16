@@ -22,7 +22,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cfloat>
 
 #include <QCursor>
 #include <QLocale>
@@ -34,7 +33,7 @@
 #include <Base/UnitsApi.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -182,7 +181,7 @@ bool SketcherGui::ReleaseHandler(Gui::Document* doc)
 {
     if (doc) {
         if (doc->getInEdit()
-            && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
             SketcherGui::ViewProviderSketch* vp =
                 static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
 
@@ -432,7 +431,7 @@ double SketcherGui::GetPointAngle(const Base::Vector2d& p1, const Base::Vector2d
 {
     double dX = p2.x - p1.x;
     double dY = p2.y - p1.y;
-    return dY >= 0 ? atan2(dY, dX) : atan2(dY, dX) + 2 * M_PI;
+    return dY >= 0 ? atan2(dY, dX) : atan2(dY, dX) + 2 * std::numbers::pi;
 }
 
 // Set the two points on circles at minimal distance
@@ -479,7 +478,7 @@ void SketcherGui::ActivateHandler(Gui::Document* doc, std::unique_ptr<DrawSketch
 {
     if (doc) {
         if (doc->getInEdit()
-            && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
             SketcherGui::ViewProviderSketch* vp =
                 static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
             vp->purgeHandler();
@@ -510,10 +509,7 @@ bool SketcherGui::isCommandActive(Gui::Document* doc, bool actsOnSelection)
             if (!actsOnSelection) {
                 return true;
             }
-            else if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId())
-                     > 0) {
-                return true;
-            }
+            return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0;
         }
     }
 
@@ -525,17 +521,13 @@ bool SketcherGui::isSketcherBSplineActive(Gui::Document* doc, bool actsOnSelecti
     if (doc) {
         // checks if a Sketch Viewprovider is in Edit and is in no special mode
         if (doc->getInEdit()
-            && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
             if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode()
                 == ViewProviderSketch::STATUS_NONE) {
                 if (!actsOnSelection) {
                     return true;
                 }
-                else if (Gui::Selection().countObjectsOfType(
-                             Sketcher::SketchObject::getClassTypeId())
-                         > 0) {
-                    return true;
-                }
+                return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0;
             }
         }
     }
@@ -676,6 +668,59 @@ void SketcherGui::ConstraintToAttachment(Sketcher::GeoElementId element,
     }
 }
 
+void SketcherGui::ConstraintLineByAngle(int geoId, double angle, App::DocumentObject* obj)
+{
+    using std::numbers::pi;
+    double angleModPi = std::fmod(angle, pi);
+    double angleModHalfPi = std::fmod(angle, pi / 2);
+
+    if (fabs(angleModPi - pi) < Precision::Confusion()
+        || fabs(angleModPi + pi) < Precision::Confusion()
+        || fabs(angleModPi) < Precision::Confusion()) {
+        Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('Horizontal',%d)) ", geoId);
+    }
+    else if (fabs(angleModHalfPi - pi / 2) < Precision::Confusion()
+             || fabs(angleModHalfPi + pi / 2) < Precision::Confusion()) {
+        Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('Vertical',%d)) ", geoId);
+    }
+    else {
+        Gui::cmdAppObjectArgs(obj,
+                              "addConstraint(Sketcher.Constraint('Angle',%d,%d,%f)) ",
+                              Sketcher::GeoEnum::HAxis,
+                              geoId,
+                              angle);
+    }
+}
+
+void SketcherGui::Constraint2LinesByAngle(int geoId1,
+                                          int geoId2,
+                                          double angle,
+                                          App::DocumentObject* obj)
+{
+    using std::numbers::pi;
+    double angleModPi = std::fmod(angle, pi);
+    double angleModHalfPi = std::fmod(angle, pi / 2);
+
+    if (fabs(angleModPi) < Precision::Confusion()) {
+        Gui::cmdAppObjectArgs(obj,
+                              "addConstraint(Sketcher.Constraint('Parallel',%d,%d)) ",
+                              geoId1,
+                              geoId2);
+    }
+    else if (fabs(angleModHalfPi) < Precision::Confusion()) {
+        Gui::cmdAppObjectArgs(obj,
+                              "addConstraint(Sketcher.Constraint('Perpendicular',%d,%d)) ",
+                              geoId1,
+                              geoId2);
+    }
+    else {
+        Gui::cmdAppObjectArgs(obj,
+                              "addConstraint(Sketcher.Constraint('Angle',%d,%d,%f)) ",
+                              geoId1,
+                              geoId2,
+                              angle);
+    }
+}
 
 // convenience functions for cursor display
 bool SketcherGui::hideUnits()
@@ -733,7 +778,7 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
 
     // get the numeric part of the user string
     QRegularExpression rxNoUnits(
-        QString::fromUtf8("(.*) \\D*$"));  // text before space + any non digits at end of string
+        QStringLiteral("(.*) \\D*$"));  // text before space + any non digits at end of string
     QRegularExpressionMatch match = rxNoUnits.match(QString::fromStdString(userString));
     if (!match.hasMatch()) {
         // no units in userString?
@@ -783,10 +828,10 @@ std::string SketcherGui::angleToDisplayFormat(double value, int digits)
     if (Base::UnitsApi::isMultiUnitAngle()) {
         // just return the user string
         // Coin SbString doesn't handle utf8 well, so we convert to ascii
-        QString schemeMinute = QString::fromUtf8("\xE2\x80\xB2");  // prime symbol
-        QString schemeSecond = QString::fromUtf8("\xE2\x80\xB3");  // double prime symbol
-        QString escapeMinute = QString::fromLatin1("\'");          // substitute ascii single quote
-        QString escapeSecond = QString::fromLatin1("\"");          // substitute ascii double quote
+        QString schemeMinute = QStringLiteral("\xE2\x80\xB2");  // prime symbol
+        QString schemeSecond = QStringLiteral("\xE2\x80\xB3");  // double prime symbol
+        QString escapeMinute = QStringLiteral("\'");            // substitute ascii single quote
+        QString escapeSecond = QStringLiteral("\"");            // substitute ascii double quote
         QString displayString = qUserString.replace(schemeMinute, escapeMinute);
         displayString = displayString.replace(schemeSecond, escapeSecond);
         return displayString.toStdString();
@@ -798,7 +843,7 @@ std::string SketcherGui::angleToDisplayFormat(double value, int digits)
     auto decimalSep = QLocale().decimalPoint();
 
     // get the numeric part of the user string
-    QRegularExpression rxNoUnits(QString::fromUtf8("(\\d*\\%1?\\d*)(\\D*)$")
+    QRegularExpression rxNoUnits(QStringLiteral("(\\d*\\%1?\\d*)(\\D*)$")
                                      .arg(decimalSep));  // number + non digits at end of string
     QRegularExpressionMatch match = rxNoUnits.match(qUserString);
     if (!match.hasMatch()) {

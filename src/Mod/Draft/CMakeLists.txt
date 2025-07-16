@@ -23,6 +23,7 @@ SET(Draft_import
     importDWG.py
     importOCA.py
     importSVG.py
+    SVGPath.py
 )
 
 SET (Draft_geoutils
@@ -49,37 +50,38 @@ SET (Draft_geoutils
 SET(Draft_tests
     drafttests/__init__.py
     drafttests/auxiliary.py
+    drafttests/draft_test_objects.py
+    drafttests/test_airfoildat.py
+    drafttests/test_array.py
+    drafttests/test_base.py
+    drafttests/test_creation.py
+    drafttests/test_draftgeomutils.py
+    drafttests/test_dwg.py
+    drafttests/test_dxf.py
     drafttests/test_import.py
     drafttests/test_import_gui.py
     drafttests/test_import_tools.py
-    drafttests/test_pivy.py
-    drafttests/test_array.py
-    drafttests/test_creation.py
     drafttests/test_modification.py
-    drafttests/test_svg.py
-    drafttests/test_dxf.py
-    drafttests/test_dwg.py
     drafttests/test_oca.py
-    drafttests/test_airfoildat.py
-    drafttests/test_draftgeomutils.py
-    drafttests/draft_test_objects.py
+    drafttests/test_pivy.py
+    drafttests/test_svg.py
     drafttests/README.md
 )
 
 SET(Draft_utilities
     draftutils/__init__.py
+    draftutils/grid_observer.py
     draftutils/groups.py
-    draftutils/init_tools.py
-    draftutils/init_draft_statusbar.py
-    draftutils/params.py
-    draftutils/units.py
-    draftutils/utils.py
     draftutils/gui_utils.py
+    draftutils/init_draft_statusbar.py
+    draftutils/init_tools.py
+    draftutils/messages.py
+    draftutils/params.py
     draftutils/todo.py
     draftutils/translate.py
-    draftutils/messages.py
+    draftutils/units.py
+    draftutils/utils.py
     draftutils/README.md
-    draftutils/grid_observer.py
 )
 
 SET(Draft_functions

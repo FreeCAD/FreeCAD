@@ -1,29 +1,30 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
 
 """The BIM Box command"""
 
-import os
 import FreeCAD
 import FreeCADGui
 
@@ -46,8 +47,12 @@ class BIM_Box:
         return v
 
     def Activated(self):
+        import WorkingPlane
         import draftguitools.gui_trackers as DraftTrackers
 
+        FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
+        self.doc = FreeCAD.ActiveDocument
+        self.wp = WorkingPlane.get_working_plane()
         # here we will store our points
         self.points = []
         # we build a special cube tracker which is a list of 4 rectangle trackers
@@ -141,7 +146,7 @@ class BIM_Box:
     def taskbox(self):
         "sets up a taskbox widget"
 
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         wid = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
@@ -246,19 +251,12 @@ class BIM_Box:
         # finally we turn all rectangles on
         for r in self.cubetracker:
             r.on()
-        if hasattr(FreeCAD, "DraftWorkingPlane"):
-            FreeCAD.DraftWorkingPlane.save()
-            FreeCAD.DraftWorkingPlane.position = self.cubetracker[0].p3()
-            FreeCAD.DraftWorkingPlane.u = (
-                self.cubetracker[0].p3().sub(self.cubetracker[0].p4())
-            ).normalize()
-            FreeCAD.DraftWorkingPlane.v = self.normal
-            FreeCAD.DraftWorkingPlane.axis = (
-                self.cubetracker[0].p2().sub(self.cubetracker[0].p3())
-            ).normalize()
-            FreeCADGui.Snapper.setGrid()
+        point = self.cubetracker[0].p3()
+        axis = self.cubetracker[0].p2().sub(self.cubetracker[0].p3())
+        self.wp._save()
+        self.wp.align_to_point_and_axis(point, axis, upvec=self.normal, _hist_add=False)
         FreeCADGui.Snapper.getPoint(
-            last=self.cubetracker[0].p3(),
+            last=point,
             callback=self.PointCallback,
             movecallback=self.MoveCallback,
             extradlg=self.taskbox(),
@@ -279,26 +277,21 @@ class BIM_Box:
             if self.HeightValue > 0.0:
                 pla = DraftGeomUtils.placement_from_points(p1, p3, p2)
                 self.LengthValue, self.WidthValue = self.WidthValue, self.LengthValue
-        doc = FreeCAD.ActiveDocument
-        doc.openTransaction(translate("Arch","Create Box"))
-        cube = doc.addObject("Part::Box", "Cube")
+        self.doc.openTransaction(translate("Arch","Create Box"))
+        cube = self.doc.addObject("Part::Box", "Box")
         cube.Placement = pla
         cube.Length = self.LengthValue
         cube.Width = self.WidthValue
         cube.Height = abs(self.HeightValue)
-        doc.commitTransaction()
-        doc.recompute()
+        self.doc.commitTransaction()
+        self.doc.recompute()
 
     def _finish(self):
-        FreeCADGui.Snapper.getPoint()
+        self.wp._restore()
+        FreeCAD.activeDraftCommand = None
         FreeCADGui.Snapper.off()
         for c in self.cubetracker:
             c.finalize()
-        if hasattr(FreeCADGui, "draftToolBar"):
-            FreeCADGui.draftToolBar.offUi()
-        if hasattr(FreeCAD, "DraftWorkingPlane"):
-            FreeCAD.DraftWorkingPlane.restore()
-        FreeCADGui.Snapper.setGrid()
 
 
 FreeCADGui.addCommand("BIM_Box", BIM_Box())

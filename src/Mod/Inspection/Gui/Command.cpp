@@ -46,9 +46,9 @@ CmdVisualInspection::CmdVisualInspection()
 {
     sAppModule = "Inspection";
     sGroup = QT_TR_NOOP("Inspection");
-    sMenuText = QT_TR_NOOP("Visual inspection...");
-    sToolTipText = QT_TR_NOOP("Visual inspection");
-    sStatusTip = QT_TR_NOOP("Visual inspection");
+    sMenuText = QT_TR_NOOP("Visual Inspection…");
+    sToolTipText = QT_TR_NOOP("Inspects the objects visually");
+    sStatusTip = sToolTipText;
     sWhatsThis = "Inspection_VisualInspection";
 }
 
@@ -72,8 +72,8 @@ CmdInspectElement::CmdInspectElement()
 {
     sAppModule = "Inspection";
     sGroup = QT_TR_NOOP("Inspection");
-    sMenuText = QT_TR_NOOP("Inspection...");
-    sToolTipText = QT_TR_NOOP("Get distance information");
+    sMenuText = QT_TR_NOOP("Inspection…");
+    sToolTipText = QT_TR_NOOP("Inspects distance information");
     sWhatsThis = "Inspection_InspectElement";
     sStatusTip = sToolTipText;
     sPixmap = "inspect_pipette";
@@ -99,12 +99,12 @@ void CmdInspectElement::activated(int)
 bool CmdInspectElement::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc || doc->countObjectsOfType(Inspection::Feature::getClassTypeId()) == 0) {
+    if (!doc || doc->countObjectsOfType<Inspection::Feature>() == 0) {
         return false;
     }
 
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         return !viewer->isEditing();
     }

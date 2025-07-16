@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <limits>
 # include <QApplication>
 # include <QDebug>
 # include <QFocusEvent>
@@ -44,11 +45,12 @@
 #include <Base/Exception.h>
 #include <Base/UnitsApi.h>
 #include <Base/Tools.h>
+#include <Base/UnitsSchema.h>
 
 #include "QuantitySpinBox.h"
 #include "QuantitySpinBox_p.h"
 #include "Command.h"
-#include "DlgExpressionInput.h"
+#include "Dialogs/DlgExpressionInput.h"
 #include "Tools.h"
 
 
@@ -64,10 +66,11 @@ public:
     QuantitySpinBoxPrivate(QuantitySpinBox *q) :
       validInput(true),
       pendingEmit(false),
+      normalize(true),
       checkRangeInExpression(false),
       unitValue(0),
-      maximum(DOUBLE_MAX),
-      minimum(-DOUBLE_MAX),
+      maximum(std::numeric_limits<double>::max()),
+      minimum(-std::numeric_limits<double>::max()),
       singleStep(1.0),
       q_ptr(q)
     {
@@ -138,7 +141,7 @@ public:
             if (expr) {
 
                 std::unique_ptr<Expression> res(expr->eval());
-                NumberExpression * n = Base::freecad_dynamic_cast<NumberExpression>(res.get());
+                NumberExpression * n = freecad_cast<NumberExpression*>(res.get());
                 if (n){
                     result = n->getQuantity();
                     value = result.getValue();
@@ -173,7 +176,7 @@ public:
 
         //Prep for expression parser
         //This regex matches chunks between +,-,$,^ accounting for matching parenthesis.
-        QRegularExpression chunkRe(QString::fromUtf8("(?<=^|[\\+\\-])((\\((?>[^()]|(?2))*\\))|[^\\+\\-\n])*(?=$|[\\+\\-])"));
+        QRegularExpression chunkRe(QStringLiteral("(?<=^|[\\+\\-])((\\((?>[^()]|(?2))*\\))|[^\\+\\-\n])*(?=$|[\\+\\-])"));
         QRegularExpressionMatchIterator expressionChunk = chunkRe.globalMatch(copy);
         unsigned int lengthOffset = 0;
         while (expressionChunk.hasNext()) {
@@ -198,7 +201,7 @@ public:
                 if (fixUnitsMatch.lastCapturedIndex() == 2 || (fixUnitsMatch.lastCapturedIndex() == 3 && fixUnitsMatch.captured(3).isEmpty())){
                     QString matchUnits = fixUnitsMatch.captured(1);
                     QString matchNumbers = fixUnitsMatch.captured(2);
-                    copyChunk.replace(matchUnits+matchNumbers, QString::fromUtf8(")")+matchUnits+QString::fromUtf8("1(*")+matchNumbers);
+                    copyChunk.replace(matchUnits+matchNumbers, QStringLiteral(")")+matchUnits+QStringLiteral("1(*")+matchNumbers);
                 }
             }
 
@@ -208,7 +211,7 @@ public:
 
                 QRegularExpressionMatch match = unitsRe.match(copyChunk);
                 if (!match.hasMatch() && !copyChunk.isEmpty()) //If no units are found, use default units
-                    copyChunk.prepend(QString::fromUtf8(")")+reverseUnitStr+QString::fromUtf8("1(*")); // Add units to the end of chunk *(1unit)
+                    copyChunk.prepend(QStringLiteral(")")+reverseUnitStr+QStringLiteral("1(*")); // Add units to the end of chunk *(1unit)
             }
 
             std::reverse(copyChunk.begin(), copyChunk.end());
@@ -221,7 +224,7 @@ public:
         ok = parseString(copy, res, value, path);
 
         // If result does not have unit: add default unit
-        if (res.getUnit().isEmpty()){
+        if (res.isDimensionless()) {
             res.setUnit(unit);
         }
 
@@ -253,6 +256,7 @@ public:
     QLocale locale;
     bool validInput;
     bool pendingEmit;
+    bool normalize;
     bool checkRangeInExpression;
     QString validStr;
     Base::Quantity quantity;
@@ -282,14 +286,6 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
             this, [&]{
         this->handlePendingEmit(true);
     });
-
-    // When a style sheet is set the text margins for top/bottom must be set to avoid to squash the widget
-#ifndef Q_OS_MAC
-    lineEdit()->setTextMargins(0, 2, 0, 2);
-#else
-    // https://forum.freecad.org/viewtopic.php?f=8&t=50615
-    lineEdit()->setTextMargins(0, 2, 0, 0);
-#endif
 }
 
 QuantitySpinBox::~QuantitySpinBox() = default;
@@ -405,10 +401,24 @@ void QuantitySpinBox::resizeEvent(QResizeEvent * event)
     resizeWidget();
 }
 
-void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent *event)
+void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent* event)
 {
-    if (!handleKeyEvent(event->text()))
+    Q_D(QuantitySpinBox);
+
+    const auto isEnter = event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return;
+
+    if (d->normalize && isEnter && !isNormalized()) {
+        normalize();
+        return;
+    }
+
+    if (!handleKeyEvent(event->text())) {
         QAbstractSpinBox::keyPressEvent(event);
+    }
+
+    if (isEnter) {
+        returnPressed();
+    }
 }
 
 void Gui::QuantitySpinBox::paintEvent(QPaintEvent*)
@@ -441,7 +451,7 @@ void QuantitySpinBox::updateEdit(const QString& text)
 
     edit->setText(text);
 
-    cursor = qBound(0, cursor, edit->displayText().size() - d->unitStr.size());
+    cursor = qBound(0, cursor, qMax(0, edit->displayText().size() - d->unitStr.size()));
     if (selsize > 0) {
         edit->setSelection(0, cursor);
     }
@@ -477,6 +487,30 @@ double QuantitySpinBox::rawValue() const
     return d->quantity.getValue();
 }
 
+void QuantitySpinBox::normalize()
+{
+    // this does not really change the value, only the representation
+    QSignalBlocker blocker(this);
+
+    Q_D(const QuantitySpinBox);
+    return setValue(d->quantity);
+}
+
+bool QuantitySpinBox::isNormalized()
+{
+    static const QRegularExpression operators(QStringLiteral("[+\\-/*]"),
+                                              QRegularExpression::CaseInsensitiveOption);
+
+    Q_D(const QuantitySpinBox);
+
+    // this check is two level
+    // 1. We consider every string that does not contain operators as normalized
+    // 2. If it does contain operators we check if it differs from normalized input - as some
+    //    operators like - can be allowed even in normalized case.
+    return !d->validStr.contains(operators)
+        || d->validStr.toStdString() == d->quantity.getUserString();
+}
+
 void QuantitySpinBox::setValue(const Base::Quantity& value)
 {
     Q_D(QuantitySpinBox);
@@ -503,6 +537,18 @@ void QuantitySpinBox::setValue(double value)
     setValue(quantity);
 }
 
+bool QuantitySpinBox::autoNormalize() const
+{
+    Q_D(const QuantitySpinBox);
+    return d->normalize;
+}
+
+void QuantitySpinBox::setAutoNormalize(bool normalize)
+{
+    Q_D(QuantitySpinBox);
+    d->normalize = normalize;
+}
+
 bool QuantitySpinBox::hasValidInput() const
 {
     Q_D(const QuantitySpinBox);
@@ -525,6 +571,18 @@ void QuantitySpinBox::userInput(const QString & text)
     }
     else {
         d->validInput = false;
+
+        // only emit signal to reset EditableDatumLabel if the input is truly empty or has
+        // no meaningful number don't emit for partially typed numbers like "71." which are
+        // temporarily invalid
+        const QString trimmedText = text.trimmed();
+        static const QRegularExpression partialNumberRegex(QStringLiteral(R"([+-]?(\d+)?(\.,\d*)?)"));
+        if (trimmedText.isEmpty() || !trimmedText.contains(partialNumberRegex)) {
+            // we have to emit here signal explicitly as validator will not pass
+            // this value further but we want to check it to disable isSet flag if
+            // it has been set previously
+            Q_EMIT valueChanged(d->quantity.getValue());
+        }
         return;
     }
 
@@ -695,7 +753,7 @@ void QuantitySpinBox::setDecimals(int v)
     updateText(d->quantity);
 }
 
-void QuantitySpinBox::setSchema(const Base::UnitSystem& s)
+void QuantitySpinBox::setSchema(const int s)
 {
     Q_D(QuantitySpinBox);
     d->scheme = Base::UnitsApi::createSchema(s);
@@ -713,7 +771,7 @@ QString QuantitySpinBox::getUserString(const Base::Quantity& val, double& factor
 {
     Q_D(const QuantitySpinBox);
     std::string unitStr;
-    std::string str = d->scheme ? val.getUserString(d->scheme.get(), factor, unitStr)
+    const std::string str = d->scheme ? val.getUserString(d->scheme.get(), factor, unitStr)
                                 : val.getUserString(factor, unitStr);
     unitString = QString::fromStdString(unitStr);
     return QString::fromStdString(str);
@@ -808,7 +866,7 @@ QSize QuantitySpinBox::sizeHintCalculator(int h) const
 
     const QFontMetrics fm(fontMetrics());
     int w = 0;
-    constexpr int maxStrLen = 12;
+    constexpr int maxStrLen = 9;
 
     QString s;
     QString fixedContent = QLatin1String(" ");
@@ -883,7 +941,13 @@ void QuantitySpinBox::focusInEvent(QFocusEvent * event)
 
 void QuantitySpinBox::focusOutEvent(QFocusEvent * event)
 {
+    Q_D(const QuantitySpinBox);
+
     validateInput();
+
+    if (d->normalize) {
+        normalize();
+    }
 
     QToolTip::hideText();
     QAbstractSpinBox::focusOutEvent(event);
@@ -896,7 +960,7 @@ void QuantitySpinBox::clear()
 
 void QuantitySpinBox::selectNumber()
 {
-    QString expr = QString::fromLatin1("^([%1%2]?[0-9\\%3]*)\\%4?([0-9]+(%5[%1%2]?[0-9]+)?)")
+    QString expr = QStringLiteral("^([%1%2]?[0-9\\%3]*)\\%4?([0-9]+(%5[%1%2]?[0-9]+)?)")
                    .arg(locale().negativeSign())
                    .arg(locale().positiveSign())
                    .arg(locale().groupSeparator())

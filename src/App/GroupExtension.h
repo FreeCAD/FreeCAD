@@ -51,6 +51,11 @@ public:
      * append it to this group as well.
      */
     virtual DocumentObject* addObject(const char* sType, const char* pObjectName);
+    /** Adds an object of \a T with \a pObjectName to the document this group belongs to and
+     * append it to this group as well.
+     */
+    template<typename T>
+    T* addObject(const char* pObjectName);
     /* Adds the object \a obj to this group. Returns all objects that have been added.
      */
     virtual std::vector<DocumentObject*> addObject(DocumentObject* obj);
@@ -150,6 +155,13 @@ private:
     std::unordered_map<const App::DocumentObject*, boost::signals2::scoped_connection> _Conns;
 };
 
+
+template<typename T>
+T* GroupExtension::addObject(const char* pObjectName)
+{
+    static_assert(std::is_base_of<DocumentObject, T>::value, "T must be derived from DocumentObject");
+    return static_cast<T*>(addObject(T::getClassName(), pObjectName));
+}
 
 template<typename ExtensionT>
 class GroupExtensionPythonT: public ExtensionT

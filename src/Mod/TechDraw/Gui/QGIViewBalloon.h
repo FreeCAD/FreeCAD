@@ -36,12 +36,14 @@
 
 #include "QGCustomText.h"
 #include "QGIView.h"
+#include "QGIUserTypes.h"
 
 
 namespace TechDraw
 {
 class DrawViewBalloon;
 class DrawView;
+enum class ArrowType : int;
 }// namespace TechDraw
 
 namespace TechDraw
@@ -64,10 +66,7 @@ public:
     QGIBalloonLabel();
     ~QGIBalloonLabel() override = default;
 
-    enum
-    {
-        Type = QGraphicsItem::UserType + 141
-    };
+    enum {Type = UserType::QGIBalloonLabel};
     int type() const override
     {
         return Type;
@@ -169,10 +168,7 @@ class TechDrawGuiExport QGIViewBalloon: public QGIView
     Q_OBJECT
 
 public:
-    enum
-    {
-        Type = QGraphicsItem::UserType + 140
-    };
+    enum {Type = UserType::QGIViewBalloon};
 
     explicit QGIViewBalloon();
     ~QGIViewBalloon() override = default;
@@ -203,7 +199,7 @@ public:
 
     void setNormalColorAll();
     QColor prefNormalColor();
-    int prefDefaultArrow() const;
+    TechDraw::ArrowType prefDefaultArrow() const;
     bool prefOrthoPyramid() const;
 
     TechDraw::DrawViewBalloon* getBalloonFeat()

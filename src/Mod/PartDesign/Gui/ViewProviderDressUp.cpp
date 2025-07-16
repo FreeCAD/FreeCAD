@@ -108,7 +108,7 @@ void ViewProviderDressUp::highlightReferences(const bool on)
             vp->setHighlightedFaces(materials);
         }
         if (!edges.empty()) {
-            std::vector<App::Color> colors = vp->LineColorArray.getValues();
+            std::vector<Base::Color> colors = vp->LineColorArray.getValues();
 
             PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), LineColor.getValue());
             highlighter.getEdgeColors(edges, colors);

@@ -71,15 +71,16 @@ public:
     bool onDelete(const std::vector<std::string> &) override;
     bool canDelete(App::DocumentObject* obj) const override;
     bool setEdit(int ModNum) override;
+    bool setDetailEdit(int ModNum, TechDraw::DrawViewDetail* dvd);
     bool doubleClicked(void) override;
     void onChanged(const App::Property *prop) override;
     void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
-    App::Color prefSectionColor(void);
-    App::Color prefHighlightColor(void);
+    Base::Color prefSectionColor(void);
+    Base::Color prefHighlightColor(void);
     int prefHighlightStyle(void);
 
     std::vector<App::DocumentObject*> claimChildren(void) const override;
-    void fixSceneDependencies();
+    void fixSceneDependencies() override;
 
     TechDraw::DrawViewPart* getViewObject() const override;
     TechDraw::DrawViewPart* getViewPart() const;

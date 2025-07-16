@@ -1,23 +1,24 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
@@ -25,13 +26,16 @@ from __future__ import print_function
 
 """The BIM library tool"""
 
-import sys
 import os
+import sys
+import tempfile
+
 import FreeCAD
 import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
+
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 FILTERS = [
@@ -101,14 +105,16 @@ class BIM_Library:
                 # save file paths with forward slashes even on windows
                 pr.SetString("destination", addondir.replace("\\", "/"))
                 libok = True
-        FreeCADGui.Control.showDialog(BIM_Library_TaskPanel(offlinemode=libok))
+        task = FreeCADGui.Control.showDialog(BIM_Library_TaskPanel(offlinemode=libok))
+        task.setDocumentName(FreeCAD.ActiveDocument.Name)
+        task.setAutoCloseOnDeletedDocument(True)
 
 
 class BIM_Library_TaskPanel:
 
     def __init__(self, offlinemode=False):
 
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         self.mainDocName = FreeCAD.Gui.ActiveDocument.Document.Name
         self.previewDocName = "Viewer"
@@ -345,7 +351,9 @@ class BIM_Library_TaskPanel:
     def addtolibrary(self):
         # DISABLED
 
-        import Part, Mesh, os
+        import os
+        import Mesh
+        import Part
 
         self.fileDialog = QtGui.QFileDialog.getSaveFileName(
             None, "Save As", self.librarypath
@@ -380,7 +388,6 @@ class BIM_Library_TaskPanel:
 
     def setSearchModel(self, text):
 
-        import PartGui
         from PySide import QtGui
 
         def add_line(f, dp):
@@ -445,7 +452,6 @@ class BIM_Library_TaskPanel:
     def setOnlineModel(self):
 
         from PySide import QtGui
-        import PartGui
 
         def addItems(root, d, path):
             for k, v in d.items():
@@ -649,6 +655,7 @@ class BIM_Library_TaskPanel:
     def place(self, path):
 
         import Part
+        import WorkingPlane
 
         self.shape = Part.read(path)
         if hasattr(FreeCADGui, "Snapper"):
@@ -662,8 +669,7 @@ class BIM_Library_TaskPanel:
             self.delta = self.shape.BoundBox.Center
             self.box.move(self.delta)
             self.box.on()
-            if hasattr(FreeCAD, "DraftWorkingPlane"):
-                FreeCAD.DraftWorkingPlane.setup()
+            WorkingPlane.get_working_plane()
             self.origin = self.makeOriginWidget()
             FreeCADGui.Snapper.getPoint(
                 movecallback=self.mouseMove,
@@ -773,48 +779,11 @@ class BIM_Library_TaskPanel:
                 )
             )
 
-    def getOnlineContentsWEB(self, url):
-        """Returns a dirs,files pair representing files found from a github url. OBSOLETE"""
-
-        # obsolete code - now using getOnlineContentsAPI
-        import urllib.request
-        result = {}
-        u = urllib.request.urlopen(url)
-        if u:
-            p = u.read()
-            if sys.version_info.major >= 3:
-                p = str(p)
-            dirs = re.findall(r"<.*?octicon-file-directory.*?href.*?>(.*?)</a>", p)
-            files = re.findall(r'<.*?octicon-file".*?href.*?>(.*?)</a>', p)
-            nfiles = []
-            for f in files:
-                for ft in self.getFilters():
-                    if f.endswith(ft[1:]):
-                        nfiles.append(f)
-                        break
-            files = nfiles
-            for d in dirs:
-                # <spans>
-                if "</span" in d:
-                    d1 = re.findall(r"<span.*?>(.*?)<", d)
-                    d2 = re.findall(r"</span>(.*?)$", d)
-                    if d1 and d2:
-                        d = d1[0] + "/" + d2[0]
-                r = self.getOnlineContentsWEB(url + "/" + d.replace(" ", "%20"))
-                result[d] = r
-            for f in files:
-                result[f] = f
-        else:
-            FreeCAD.Console.PrintError(
-                translate("BIM", "Cannot open URL") + ":" + url + "\n"
-            )
-        return result
-
     def getOnlineContentsAPI(self, url):
         """same as getOnlineContents but uses github API (faster)"""
 
-        import requests
         import json
+        import requests
 
         result = {}
         count = 0
@@ -903,8 +872,6 @@ class BIM_Library_TaskPanel:
         def writeOfflineLib():
             if USE_API:
                 rootfiles = self.getOnlineContentsAPI(LIBRARYURL)
-            else:
-                rootfiles = self.getOnlineContentsWEB(LIBRARYURL)
             if rootfiles:
                 templibfile = os.path.join(TEMPLIBPATH, LIBINDEXFILE)
                 os.makedirs(TEMPLIBPATH, exist_ok=True)

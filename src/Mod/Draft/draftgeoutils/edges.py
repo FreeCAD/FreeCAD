@@ -205,7 +205,7 @@ def get_referenced_edges(property_value):
         property_value = [property_value]
     for element in property_value:
         if hasattr(element, "Shape") and element.Shape:
-            edges += shape.Edges
+            edges += element.Shape.Edges
         elif isinstance(element, tuple) and len(element) == 2:
             object, subelement_names = element
             if hasattr(object, "Shape") and object.Shape:

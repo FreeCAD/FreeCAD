@@ -24,14 +24,10 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepBuilderAPI_MakeEdge.hxx>
-# include <boost/random.hpp>
-# include <boost/uuid/uuid_generators.hpp>
-# include <boost/uuid/uuid_io.hpp>
 #endif
-#include <boost/thread/mutex.hpp>
-#include <boost/thread/thread.hpp>
 
 #include <App/Application.h>
+#include <Base/Converter.h>
 #include <Base/Vector3D.h>
 #include <Mod/TechDraw/App/CosmeticEdgePy.h>
 #include <Mod/TechDraw/App/GeomFormatPy.h>
@@ -45,10 +41,6 @@
 using namespace TechDraw;
 using namespace std;
 using DU = DrawUtil;
-
-#define GEOMETRYEDGE 0
-#define COSMETICEDGE 1
-#define CENTERLINE   2
 
 TYPESYSTEM_SOURCE(TechDraw::CosmeticEdge, Base::Persistence)
 
@@ -84,18 +76,18 @@ CosmeticEdge::CosmeticEdge(const TopoDS_Edge& e) :
 
 CosmeticEdge::CosmeticEdge(const TechDraw::BaseGeomPtr g)
 {
-//    Base::Console().Message("CE::CE(bg)\n");
+//    Base::Console().message("CE::CE(bg)\n");
     m_geometry = g;
     //we assume input edge is already in Yinverted coordinates
     permaStart = m_geometry->getStartPoint();
     permaEnd   = m_geometry->getEndPoint();
-    if ((g->getGeomType() == TechDraw::GeomType::CIRCLE) ||
-       (g->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE)) {
+    if ((g->getGeomType() == GeomType::CIRCLE) ||
+       (g->getGeomType() == GeomType::ARCOFCIRCLE)) {
        TechDraw::CirclePtr circ = std::static_pointer_cast<TechDraw::Circle>(g);
        permaStart  = circ->center;
        permaEnd    = circ->center;
        permaRadius = circ->radius;
-       if (g->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE) {
+       if (g->getGeomType() == GeomType::ARCOFCIRCLE) {
            TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(circ);
            aoc->clockwiseAngle(g->clockwiseAngle());
            aoc->startPnt = g->getStartPoint();
@@ -115,12 +107,10 @@ CosmeticEdge::~CosmeticEdge()
 
 void CosmeticEdge::initialize()
 {
-    m_geometry->setClassOfEdge(ecHARD);
+    m_geometry->setClassOfEdge(EdgeClass::HARD);
     m_geometry->setHlrVisible( true);
     m_geometry->setCosmetic(true);
-    m_geometry->source(COSMETICEDGE);
-
-    createNewTag();
+    m_geometry->source(SourceType::COSMETICEDGE);
     m_geometry->setCosmeticTag(getTagAsString());
 }
 
@@ -137,10 +127,10 @@ TechDraw::BaseGeomPtr CosmeticEdge::scaledGeometry(const double scale)
     TopoDS_Shape s = ShapeUtils::scaleShape(e, scale);
     TopoDS_Edge newEdge = TopoDS::Edge(s);
     TechDraw::BaseGeomPtr newGeom = TechDraw::BaseGeom::baseFactory(newEdge);
-    newGeom->setClassOfEdge(ecHARD);
+    newGeom->setClassOfEdge(EdgeClass::HARD);
     newGeom->setHlrVisible( true);
     newGeom->setCosmetic(true);
-    newGeom->source(COSMETICEDGE);
+    newGeom->source(SourceType::COSMETICEDGE);
     newGeom->setCosmeticTag(getTagAsString());
     return newGeom;
 }
@@ -156,10 +146,10 @@ TechDraw::BaseGeomPtr CosmeticEdge::scaledAndRotatedGeometry(const double scale,
     s = ShapeUtils::mirrorShape(s);
     TopoDS_Edge newEdge = TopoDS::Edge(s);
     TechDraw::BaseGeomPtr newGeom = TechDraw::BaseGeom::baseFactory(newEdge);
-    newGeom->setClassOfEdge(ecHARD);
+    newGeom->setClassOfEdge(EdgeClass::HARD);
     newGeom->setHlrVisible( true);
     newGeom->setCosmetic(true);
-    newGeom->source(COSMETICEDGE);
+    newGeom->source(SourceType::COSMETICEDGE);
     newGeom->setCosmeticTag(getTagAsString());
     newGeom->clockwiseAngle(saveCW);
     return newGeom;
@@ -171,8 +161,8 @@ TechDraw::BaseGeomPtr CosmeticEdge::makeCanonicalLine(DrawViewPart* dvp, Base::V
 {
     Base::Vector3d cStart = CosmeticVertex::makeCanonicalPoint(dvp, start);
     Base::Vector3d cEnd   = CosmeticVertex::makeCanonicalPoint(dvp, end);
-    gp_Pnt gStart  = DU::togp_Pnt(cStart);
-    gp_Pnt gEnd    = DU::togp_Pnt(cEnd);
+    gp_Pnt gStart  = Base::convertTo<gp_Pnt>(cStart);
+    gp_Pnt gEnd    = Base::convertTo<gp_Pnt>(cEnd);
     TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(gStart, gEnd);
     return TechDraw::BaseGeom::baseFactory(edge);
 }
@@ -180,8 +170,8 @@ TechDraw::BaseGeomPtr CosmeticEdge::makeCanonicalLine(DrawViewPart* dvp, Base::V
 //! makes an unscaled, unrotated line from two canonical points.
 TechDraw::BaseGeomPtr CosmeticEdge::makeLineFromCanonicalPoints(Base::Vector3d start, Base::Vector3d end)
 {
-    gp_Pnt gStart  = DU::togp_Pnt(start);
-    gp_Pnt gEnd    = DU::togp_Pnt(end);
+    gp_Pnt gStart  = Base::convertTo<gp_Pnt>(start);
+    gp_Pnt gEnd    = Base::convertTo<gp_Pnt>(end);
     TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(gStart, gEnd);
     return TechDraw::BaseGeom::baseFactory(edge);
 }
@@ -202,8 +192,8 @@ std::string CosmeticEdge::toString() const
 
 void CosmeticEdge::dump(const char* title) const
 {
-    Base::Console().Message("CE::dump - %s \n", title);
-    Base::Console().Message("CE::dump - %s \n", toString().c_str());
+    Base::Console().message("CE::dump - %s \n", title);
+    Base::Console().message("CE::dump - %s \n", toString().c_str());
 }
 
 // Persistence implementers
@@ -223,17 +213,17 @@ void CosmeticEdge::Save(Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
 
     writer.Stream() << writer.ind() << "<GeometryType value=\"" << m_geometry->getGeomType() <<"\"/>" << endl;
-    if (m_geometry->getGeomType() == TechDraw::GeomType::GENERIC) {
+    if (m_geometry->getGeomType() == GeomType::GENERIC) {
         GenericPtr gen = std::static_pointer_cast<Generic>(m_geometry);
         gen->Save(writer);
-    } else if (m_geometry->getGeomType() == TechDraw::GeomType::CIRCLE) {
+    } else if (m_geometry->getGeomType() == GeomType::CIRCLE) {
         TechDraw::CirclePtr circ = std::static_pointer_cast<TechDraw::Circle>(m_geometry);
         circ->Save(writer);
-    } else if (m_geometry->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE) {
+    } else if (m_geometry->getGeomType() == GeomType::ARCOFCIRCLE) {
         TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(m_geometry);
         aoc->inverted()->Save(writer);
     } else {
-        Base::Console().Warning("CE::Save - unimplemented geomType: %d\n", static_cast<int>(m_geometry->getGeomType()));
+        Base::Console().warning("CE::Save - unimplemented geomType: %d\n", static_cast<int>(m_geometry->getGeomType()));
     }
 
     writer.Stream() << writer.ind() << "<LineNumber value=\"" <<  m_format.getLineNumber() << "\"/>" << endl;
@@ -245,30 +235,30 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
     if (!CosmeticVertex::restoreCosmetic()) {
         return;
     }
-//    Base::Console().Message("CE::Restore - reading elements\n");
+//    Base::Console().message("CE::Restore - reading elements\n");
     reader.readElement("Style");
-    m_format.setStyle(reader.getAttributeAsInteger("value"));
+    m_format.setStyle(reader.getAttribute<long>("value"));
     reader.readElement("Weight");
-    m_format.setWidth(reader.getAttributeAsFloat("value"));
+    m_format.setWidth(reader.getAttribute<double>("value"));
     reader.readElement("Color");
-    std::string tempHex = reader.getAttribute("value");
-    App::Color tempColor;
+    std::string tempHex = reader.getAttribute<const char*>("value");
+    Base::Color tempColor;
     tempColor.fromHexString(tempHex);
     m_format.setColor(tempColor);
     reader.readElement("Visible");
-    m_format.setVisible(reader.getAttributeAsInteger("value") != 0);
+    m_format.setVisible(reader.getAttribute<long>("value") != 0);
 
     reader.readElement("GeometryType");
-    TechDraw::GeomType gType = static_cast<TechDraw::GeomType>(reader.getAttributeAsInteger("value"));
+    GeomType gType = reader.getAttribute<GeomType>("value");
 
-    if (gType == TechDraw::GeomType::GENERIC) {
+    if (gType == GeomType::GENERIC) {
         TechDraw::GenericPtr gen = std::make_shared<TechDraw::Generic> ();
         gen->Restore(reader);
         gen->setOCCEdge(GeometryUtils::edgeFromGeneric(gen));
         m_geometry = gen;
         permaStart = gen->getStartPoint();
         permaEnd   = gen->getEndPoint();
-    } else if (gType == TechDraw::GeomType::CIRCLE) {
+    } else if (gType == GeomType::CIRCLE) {
         TechDraw::CirclePtr circ = std::make_shared<TechDraw::Circle> ();
         circ->Restore(reader);
         circ->setOCCEdge(GeometryUtils::edgeFromCircle(circ));
@@ -276,7 +266,7 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
         permaRadius = circ->radius;
         permaStart  = circ->center;
         permaEnd    = circ->center;
-    } else if (gType == TechDraw::GeomType::ARCOFCIRCLE) {
+    } else if (gType == GeomType::ARCOFCIRCLE) {
         TechDraw::AOCPtr aoc = std::make_shared<TechDraw::AOC> ();
         aoc->Restore(reader);
         aoc->setOCCEdge(GeometryUtils::edgeFromCircleArc(aoc));
@@ -285,7 +275,7 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
         permaEnd   = aoc->center;
         permaRadius = aoc->radius;
     } else {
-        Base::Console().Warning("CE::Restore - unimplemented geomType: %d\n", static_cast<int>(gType));
+        Base::Console().warning("CE::Restore - unimplemented geomType: %d\n", static_cast<int>(gType));
     }
     // older documents may not have the LineNumber element, so we need to check the
     // next entry.  if it is a start element, then we check if it is a start element
@@ -293,7 +283,7 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
     if (reader.readNextElement()) {
         if(strcmp(reader.localName(),"LineNumber") == 0 ) {
             // this CosmeticEdge has an LineNumber attribute
-            m_format.setLineNumber(reader.getAttributeAsInteger("value"));
+            m_format.setLineNumber(reader.getAttribute<long>("value"));
         } else {
             // LineNumber not found.
             // TODO: line number should be set to DashedLineGenerator.fromQtStyle(m_format.m_style)
@@ -302,51 +292,13 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
     }
 }
 
-boost::uuids::uuid CosmeticEdge::getTag() const
-{
-    return tag;
-}
-
-std::string CosmeticEdge::getTagAsString() const
-{
-    return boost::uuids::to_string(getTag());
-}
-
-void CosmeticEdge::createNewTag()
-{
-    // Initialize a random number generator, to avoid Valgrind false positives.
-    // The random number generator is not threadsafe so we guard it.  See
-    // https://www.boost.org/doc/libs/1_62_0/libs/uuid/uuid.html#Design%20notes
-    static boost::mt19937 ran;
-    static bool seeded = false;
-    static boost::mutex random_number_mutex;
-
-    boost::lock_guard<boost::mutex> guard(random_number_mutex);
-
-    if (!seeded) {
-        ran.seed(static_cast<unsigned int>(std::time(nullptr)));
-        seeded = true;
-    }
-    static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
-
-    tag = gen();
-}
-
-void CosmeticEdge::assignTag(const TechDraw::CosmeticEdge* ce)
-{
-    if(ce->getTypeId() == this->getTypeId())
-        this->tag = ce->tag;
-    else
-        throw Base::TypeError("CosmeticEdge tag can not be assigned as types do not match.");
-}
-
 CosmeticEdge* CosmeticEdge::clone() const
 {
-    Base::Console().Message("CE::clone()\n");
+    Base::Console().message("CE::clone()\n");
     CosmeticEdge* cpy = new CosmeticEdge();
     cpy->m_geometry = m_geometry->copy();
     cpy->m_format = m_format;
-    cpy->tag = this->tag;
+    cpy->setTag(this->getTag());
     return cpy;
 }
 
@@ -371,8 +323,6 @@ GeomFormat::GeomFormat() :
     m_format.setColor(LineFormat::getDefEdgeColor());
     m_format.setVisible(true);
     m_format.setLineNumber(LineFormat::InvalidLine);
-
-    createNewTag();
 }
 
 GeomFormat::GeomFormat(const GeomFormat* gf)
@@ -383,8 +333,6 @@ GeomFormat::GeomFormat(const GeomFormat* gf)
     m_format.setColor(gf->m_format.getColor());
     m_format.setVisible(gf->m_format.getVisible());
     m_format.setLineNumber(gf->m_format.getLineNumber());
-
-    createNewTag();
 }
 
 GeomFormat::GeomFormat(const int idx,
@@ -396,8 +344,6 @@ GeomFormat::GeomFormat(const int idx,
     m_format.setColor(fmt.getColor());
     m_format.setVisible(fmt.getVisible());
     m_format.setLineNumber(fmt.getLineNumber());
-
-    createNewTag();
 }
 
 GeomFormat::~GeomFormat()
@@ -406,8 +352,8 @@ GeomFormat::~GeomFormat()
 
 void GeomFormat::dump(const char* title) const
 {
-    Base::Console().Message("GF::dump - %s \n", title);
-    Base::Console().Message("GF::dump - %s \n", toString().c_str());
+    Base::Console().message("GF::dump - %s \n", title);
+    Base::Console().message("GF::dump - %s \n", toString().c_str());
 }
 
 std::string GeomFormat::toString() const
@@ -445,21 +391,21 @@ void GeomFormat::Restore(Base::XMLReader &reader)
     // read my Element
     reader.readElement("GeomIndex");
     // get the value of my Attribute
-    m_geomIndex = reader.getAttributeAsInteger("value");
+    m_geomIndex = reader.getAttribute<long>("value");
 
     // style is deprecated in favour of line number, but we still save and restore it
     // to avoid problems with old documents.
     reader.readElement("Style");
-    m_format.setStyle(reader.getAttributeAsInteger("value"));
+    m_format.setStyle(reader.getAttribute<long>("value"));
     reader.readElement("Weight");
-    m_format.setWidth(reader.getAttributeAsFloat("value"));
+    m_format.setWidth(reader.getAttribute<double>("value"));
     reader.readElement("Color");
-    std::string tempHex = reader.getAttribute("value");
-    App::Color tempColor;
+    std::string tempHex = reader.getAttribute<const char*>("value");
+    Base::Color tempColor;
     tempColor.fromHexString(tempHex);
     m_format.setColor(tempColor);
     reader.readElement("Visible");
-    m_format.setVisible((int)reader.getAttributeAsInteger("value") == 0 ? false : true);
+    m_format.setVisible(reader.getAttribute<bool>("value"));
     // older documents may not have the LineNumber element, so we need to check the
     // next entry.  if it is a start element, then we check if it is a start element
     // for LineNumber.
@@ -468,7 +414,7 @@ void GeomFormat::Restore(Base::XMLReader &reader)
     if (reader.readNextElement()) {
         if(strcmp(reader.localName(),"LineNumber") == 0 ||
            strcmp(reader.localName(),"ISOLineNumber") == 0 ) {            // this GeomFormat has an LineNumber attribute
-            m_format.setLineNumber(reader.getAttributeAsInteger("value"));
+            m_format.setLineNumber(reader.getAttribute<long>("value"));
         } else {
             // LineNumber not found.
             // TODO: line number should be set to DashedLineGenerator.fromQtStyle(m_format.m_style),
@@ -478,48 +424,10 @@ void GeomFormat::Restore(Base::XMLReader &reader)
     }
 }
 
-boost::uuids::uuid GeomFormat::getTag() const
-{
-    return tag;
-}
-
-std::string GeomFormat::getTagAsString() const
-{
-    return boost::uuids::to_string(getTag());
-}
-
-void GeomFormat::createNewTag()
-{
-    // Initialize a random number generator, to avoid Valgrind false positives.
-    // The random number generator is not threadsafe so we guard it.  See
-    // https://www.boost.org/doc/libs/1_62_0/libs/uuid/uuid.html#Design%20notes
-    static boost::mt19937 ran;
-    static bool seeded = false;
-    static boost::mutex random_number_mutex;
-
-    boost::lock_guard<boost::mutex> guard(random_number_mutex);
-
-    if (!seeded) {
-        ran.seed(static_cast<unsigned int>(std::time(nullptr)));
-        seeded = true;
-    }
-    static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
-
-    tag = gen();
-}
-
-void GeomFormat::assignTag(const TechDraw::GeomFormat* ce)
-{
-    if(ce->getTypeId() == this->getTypeId())
-        this->tag = ce->tag;
-    else
-        throw Base::TypeError("GeomFormat tag can not be assigned as types do not match.");
-}
-
 GeomFormat *GeomFormat::clone() const
 {
     GeomFormat* cpy = this->copy();
-    cpy->tag = this->tag;
+    cpy->setTag(this->getTag());
     return cpy;
 }
 

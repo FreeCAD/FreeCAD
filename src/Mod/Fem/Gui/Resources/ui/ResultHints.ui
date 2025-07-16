@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Hints user defined equations</string>
+   <string>Hints User-Defined Equations</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="gb_displacement_2">
      <property name="title">
-      <string>Available result types:</string>
+      <string>Available Result Types</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>

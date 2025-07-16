@@ -73,7 +73,7 @@ class CommandCreateJointFixed:
             "Pixmap": "Assembly_CreateJointFixed",
             "MenuText": QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointFixed",
-                "Create a Fixed Joint",
+                "Create Fixed Joint",
             ),
             "Accel": "F",
             "ToolTip": "<p>"
@@ -225,7 +225,7 @@ class CommandCreateJointDistance:
             + "</p><p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointDistance",
-                "Create one of several different joints based on the selection."
+                "Create one of several different joints based on the selection. "
                 "For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.",
             )
             + "</p>",
@@ -392,7 +392,7 @@ class CommandCreateJointGears:
         return {
             "Pixmap": "Assembly_CreateJointGears",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointGears", "Create Gears Joint"),
-            "Accel": "X",
+            "Accel": "T",
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointGears",
@@ -423,7 +423,7 @@ class CommandCreateJointBelt:
         return {
             "Pixmap": "Assembly_CreateJointPulleys",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointBelt", "Create Belt Joint"),
-            "Accel": "P",
+            "Accel": "L",
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointBelt",

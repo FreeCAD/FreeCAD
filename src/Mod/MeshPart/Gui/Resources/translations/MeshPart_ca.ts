@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="281"/>
+      <location filename="../../Command.cpp" line="273"/>
       <source>MeshPart</source>
       <translation>Mallat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="282"/>
+      <location filename="../../Command.cpp" line="274"/>
       <source>Cross-sections...</source>
       <translation>Interseccions...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="283"/>
+      <location filename="../../Command.cpp" line="275"/>
       <source>Cross-sections</source>
       <translation>Interseccions</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="317"/>
+      <location filename="../../Command.cpp" line="309"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="318"/>
+      <location filename="../../Command.cpp" line="310"/>
       <source>Curve on mesh...</source>
       <translation>Corba en malla...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="319"/>
+      <location filename="../../Command.cpp" line="311"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
       <translation>Crea una corba aproximada damunt d'una malla.
@@ -60,17 +60,17 @@ Aquesta comanda només funciona amb objectes 'malla'.</translation>
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="192"/>
+      <location filename="../../Command.cpp" line="188"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="193"/>
+      <location filename="../../Command.cpp" line="189"/>
       <source>Create section from mesh and plane</source>
       <translation>Crea una secció a partir d'una malla i un pla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="194"/>
+      <location filename="../../Command.cpp" line="190"/>
       <source>Section</source>
       <translation>Secció</translation>
     </message>
@@ -102,7 +102,7 @@ Aquesta comanda només funciona amb objectes 'malla'.</translation>
       <translation>Retalla amb el pla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="217"/>
+      <location filename="../../Command.cpp" line="213"/>
       <source>Section with plane</source>
       <translation>Secció amb un pla</translation>
     </message>
@@ -198,12 +198,12 @@ Aquesta comanda només funciona amb objectes 'malla'.</translation>
       <translation>Cancel·la</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="624"/>
+      <location filename="../../CurveOnMesh.cpp" line="623"/>
       <source>Wrong mesh picked</source>
       <translation>S'ha seleccionat una malla incorrecta</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="663"/>
+      <location filename="../../CurveOnMesh.cpp" line="662"/>
       <source>No point was picked</source>
       <translation>No s'ha seleccionat cap punt.</translation>
     </message>
@@ -485,27 +485,27 @@ A value in the range of 0.2-10.</source>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="237"/>
-      <location filename="../../Tessellation.cpp" line="243"/>
+      <location filename="../../Tessellation.cpp" line="240"/>
+      <location filename="../../Tessellation.cpp" line="246"/>
       <source>No active document</source>
       <translation>Document no Actiu</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="273"/>
+      <location filename="../../Tessellation.cpp" line="279"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation>Heu seleccionat un cos sense punta
 Posa la punta del cos o selecciona una forma diferent, si us plau.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="279"/>
+      <location filename="../../Tessellation.cpp" line="285"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation>Heu seleccionat una forma sense cares.
 Seleccioneu una forma diferent, si us plau.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="283"/>
+      <location filename="../../Tessellation.cpp" line="289"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Seleccioneu primer una forma per al mallat</translation>
     </message>
@@ -513,12 +513,12 @@ Seleccioneu una forma diferent, si us plau.</translation>
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="206"/>
+      <location filename="../../Command.cpp" line="202"/>
       <source>Select plane</source>
       <translation>Seleccioneu un pla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="207"/>
+      <location filename="../../Command.cpp" line="203"/>
       <source>Please select a plane at which you section the mesh.</source>
       <translation>Seleccioneu un pla a partir del qual seccionat la malla</translation>
     </message>

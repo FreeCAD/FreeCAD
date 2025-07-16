@@ -55,29 +55,30 @@ struct PieceLimitEntry {
 };
 using PieceLimitList = std::vector<PieceLimitEntry>;
 
+// NOLINTBEGIN
 class TechDrawExport DrawBrokenView: public TechDraw::DrawViewPart
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawBrokenView);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawBrokenView);    // NOLINT
+
+// NOLINTEND
 
 public:
-    enum BreakType
-    {
+    enum class BreakType : int {
         NONE,
         ZIGZAG,
         SIMPLE
     };
-    static const char* BreakTypeEnums[];
+    static const char* BreakTypeEnums[];    // NOLINT
 
     DrawBrokenView();
-    ~DrawBrokenView() override;
+    ~DrawBrokenView() override = default;
 
-    App::PropertyLinkList Breaks;
-    App::PropertyLength   Gap;
+    App::PropertyLinkList Breaks;   // NOLINT
+    App::PropertyLength   Gap;      // NOLINT
 
     App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
-    PyObject *getPyObject(void) override;
-//    void onChanged(const App::Property* prop) override;
+    PyObject *getPyObject() override;
     const char* getViewProviderName() const override
     {
         return "TechDrawGui::ViewProviderViewPart";
@@ -92,8 +93,9 @@ public:
 
     static bool isBreakObject(const App::DocumentObject& breakObj);
     static bool isBreakObjectSketch(const App::DocumentObject& breakObj);
-    static std::vector<App::DocumentObject*> removeBreakObjects(std::vector<App::DocumentObject*> breaks, std::vector<App::DocumentObject*> shapes);
-    static std::vector<TopoDS_Edge> edgesFromCompound(TopoDS_Shape compound);
+    static std::vector<App::DocumentObject*> removeBreakObjects(std::vector<App::DocumentObject*> breaks,
+                                                                std::vector<App::DocumentObject*> shapes);
+    static std::vector<TopoDS_Edge> edgesFromCompound(const TopoDS_Shape& compound);
 
     Base::Vector3d mapPoint3dToView(Base::Vector3d point3d) const;
     Base::Vector3d mapPoint2dFromView(Base::Vector3d point2d) const;
@@ -107,7 +109,9 @@ private:
     TopoDS_Shape    breakShape(const TopoDS_Shape& shapeToBreak) const;
     TopoDS_Shape    compressShape(const TopoDS_Shape& shapeToCompress) const;
     TopoDS_Shape    apply1Break(const App::DocumentObject& breakObj, const TopoDS_Shape& inShape) const;
-    TopoDS_Shape    makeHalfSpace(Base::Vector3d point, Base::Vector3d direction, Base::Vector3d pointInSpace) const;
+    TopoDS_Shape    makeHalfSpace(const Base::Vector3d& point,
+                                  const Base::Vector3d& direction,
+                                  const Base::Vector3d& pointInSpace) const;
     std::pair<Base::Vector3d, Base::Vector3d>
                     breakPointsFromSketch(const App::DocumentObject& breakObj) const;
     std::pair<Base::Vector3d, Base::Vector3d>
@@ -121,9 +125,9 @@ private:
     double          breaklineLengthFromEdge(const App::DocumentObject& breakObj) const;
 
 
-    bool isVertical(TopoDS_Edge edge,  bool projected = false) const;
+    bool isVertical(const TopoDS_Edge& edge, const bool projected = false) const;
     bool isVertical(std::pair<Base::Vector3d, Base::Vector3d>, bool projected = false) const;
-    bool isHorizontal(TopoDS_Edge edge,  bool projected = false) const;
+    bool isHorizontal(const TopoDS_Edge& edge, const bool projected = false) const;
 
     TopoDS_Shape compressHorizontal(const TopoDS_Shape& inShape) const;
     TopoDS_Shape compressVertical(const TopoDS_Shape& inShape) const;
@@ -136,14 +140,19 @@ private:
                          std::vector<size_t>& fullGaps,
                          int& partialGapIndex) const;
 
-    BreakList makeSortedBreakList(const std::vector<App::DocumentObject*>& breaks, Base::Vector3d direction, bool descend = false) const;
-    BreakList makeSortedBreakListCompressed(const std::vector<App::DocumentObject*>& breaks, Base::Vector3d moveDirection, bool descend = false) const;
-     static std::vector<TopoDS_Shape> getPieces(TopoDS_Shape brokenShape);
+    BreakList makeSortedBreakList(const std::vector<App::DocumentObject*>& breaks,
+                                  const Base::Vector3d& direction,
+                                  const bool descend = false) const;
+
+    BreakList makeSortedBreakListCompressed(const std::vector<App::DocumentObject*>& breaks,
+                                            const Base::Vector3d& moveDirection,
+                                            const bool descend = false) const;
+
+    static std::vector<TopoDS_Shape> getPieces(const TopoDS_Shape& brokenShape);
     static BreakList sortBreaks(BreakList& inList, bool descend = false);
     static bool breakLess(const BreakListEntry& entry0, const BreakListEntry& entry1);
 
     double shiftAmountShrink(double pointCoord, Base::Vector3d direction, const BreakList& sortedBreaks) const;
-    // double shiftAmountExpand(double pointCoord, Base::Vector3d direction, const BreakList& sortedBreaks) const;
 
     void printBreakList(const std::string& text, const BreakList& inBreaks) const;
 

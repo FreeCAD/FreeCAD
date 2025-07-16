@@ -65,7 +65,7 @@
     <message>
       <location filename="../../Command.cpp" line="301"/>
       <source>From Shape</source>
-      <translation>Ze tvaru</translation>
+      <translation>Z Tvaru</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="302"/>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="114"/>
       <source>Create Path Area</source>
-      <translation>Vytvořit dráhu oblasti</translation>
+      <translation>Vytvořit oblast dráhy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="209"/>
       <source>Select Workplane for Path Area</source>
-      <translation>Vybrat pracovní rovinu pro dráhu oblasti</translation>
+      <translation>Vybrat Pracovní rovinu pro oblast dráhy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="268"/>
@@ -149,9 +149,19 @@
       <translation>Export šablony úlohy</translation>
     </message>
     <message>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="20"/>
+      <source>If enabled, include all post processing settings in the template.</source>
+      <translation type="unfinished">If enabled, include all post processing settings in the template.</translation>
+    </message>
+    <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="23"/>
       <source>Post Processing</source>
       <translation>Postprocesování</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="48"/>
+      <source>If enabled, tool controller definitions are stored in the template.</source>
+      <translation type="unfinished">If enabled, tool controller definitions are stored in the template.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="51"/>
@@ -161,22 +171,12 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="75"/>
       <source>Setup Sheet</source>
-      <translation>Tabulka nastavení</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="20"/>
-      <source>If enabled include all post processing settings in the template.</source>
-      <translation>Pokud je povoleno, uveďte všechna nastavení postprocesoru do šablony.</translation>
+      <translation>Konfigurační list</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="38"/>
       <source>Hint about the current post processing configuration.</source>
       <translation>Nápověda k aktuální konfiguraci postprocesoru.</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="48"/>
-      <source>If enabled tool controller definitions are stored in the template.</source>
-      <translation>Jsou-li definice řadiče nástrojů povoleny, jsou uloženy v šabloně.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="60"/>
@@ -188,7 +188,8 @@
       <source>Enable to include values of the SetupSheet in the template.
 
 Any values of the SetupSheet that are changed from their default are preselected. If this field not selected the current SetupSheet was not modified.</source>
-      <translation>Povolit, aby se do šablony zahrnuly hodnoty tabulky nastavení. Všechny hodnoty tabulky nastavení, které se změní oproti výchozím hodnotám, jsou předem vybrány. Pokud toto pole není vybráno, nebyla aktuální tabulka nastavení změněna.</translation>
+      <translation>Povolit, aby se do šablony zahrnuly hodnoty z Konfiguračního listu.
+Všechny hodnoty z Konfiguračního listu, které jsou změněny z výchozích hodnot, jsou předvybrány. Pokud toto pole není vybráno, aktuální Konfigurační list nebyl změněn.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="84"/>
@@ -216,27 +217,22 @@ Any values of the SetupSheet that are changed from their default are preselected
       <translation>Povolit zahrnutí výchozího režimu chlazení do šablony.</translation>
     </message>
     <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="145"/>
-      <source>If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object&apos;s bounding box).
+      <location filename="../panels/DlgJobTemplateExport.ui" line="161"/>
+      <source>If enabled, the current size settings for the stock object are included in the template.
 
-This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
+For Box and Cylinder stocks this means the actual size of the stock solid being created.
 
-Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</source>
-      <translation>Je-li povoleno, v šabloně je zahrnuto vytvoření polotovaru. Pokud šablona neobsahuje definici polotovaru, bude použit výchozí algoritmus pro tvorbu polotovaru (tvorba z ohraničení Základního objektu)
+For stock from the Base object&apos;s bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job&apos;s Base object and apply the stored extra settings.</source>
+      <translation type="unfinished">If enabled, the current size settings for the stock object are included in the template.
 
-Tato možnost je nejužitečnější tehdy, je-li polotovarem Kvádr nebo Válec, anebo je-li na stroji definované standardní umístění pro obrábění.
+For Box and Cylinder stocks this means the actual size of the stock solid being created.
 
-Všimněte si, že volba je nedostupná, pokud je v úloze použit objekt polotovaru ze stávajícího tělesa - tyto nemohou být uloženy do šablony.</translation>
+For stock from the Base object&apos;s bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job&apos;s Base object and apply the stored extra settings.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="184"/>
       <source>Hint about the current stock extent setting.</source>
       <translation>Nápověda k aktuálnímu nastavení rozšíření polotovaru.</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="191"/>
-      <source>If enabled the current placement of the stock solid is stored in the template.</source>
-      <translation>Pokud je tato možnost povolena, uloží se do šablony aktuální umístění tělesa polotovaru.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="210"/>
@@ -263,27 +259,32 @@ Note that only operations which currently have configuration values set are list
 Všimněte si, že jsou uvedeny pouze operace, které momentálně mají nastavené konfigurační hodnoty.</translation>
     </message>
     <message>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="145"/>
+      <source>If enabled, the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object&apos;s bounding box).
+
+This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
+
+Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</source>
+      <translation type="unfinished">If enabled, the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object&apos;s bounding box).
+
+This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
+
+Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</translation>
+    </message>
+    <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="152"/>
       <source>Stock</source>
       <translation>Polotovar</translation>
     </message>
     <message>
-      <location filename="../panels/DlgJobTemplateExport.ui" line="161"/>
-      <source>If enabled the current size settings for the stock object are included in the template.
-
-For Box and Cylinder stocks this means the actual size of the stock solid being created.
-
-For stock from the Base object&apos;s bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job&apos;s Base object and apply the stored extra settings.</source>
-      <translation>Je-li povoleno, aktuální nastavení velikosti objektu polotovaru bude zahrnuto v šabloně.
-
-Pro polotovary typu Kvádr a Válec to znamená skutečnou velikost vytvářeného polotovaru.
-
-Pro polotovary z ohraničení Základního objektu to znamená přídavek materiálu ve všech směrech. Objekt polotovaru vytvořený ze šablony pak dostane základní rozměry z nového Základního objektu úlohy a použije uložené nastavení přídavku.</translation>
-    </message>
-    <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="168"/>
       <source>Extent</source>
       <translation>Rozloha</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgJobTemplateExport.ui" line="191"/>
+      <source>If enabled, the current placement of the stock solid is stored in the template.</source>
+      <translation type="unfinished">If enabled, the current placement of the stock solid is stored in the template.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="194"/>
@@ -308,17 +309,17 @@ Pro polotovary z ohraničení Základního objektu to znamená přídavek materi
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="14"/>
       <source>Tool Controller Editor</source>
-      <translation>Editor řízení nástrojů</translation>
+      <translation>Editor Řadiče nástrojů</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="29"/>
       <source>Controller</source>
-      <translation>Řídící systém</translation>
+      <translation>Řadič nástrojů</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="35"/>
       <source>Controller Name /  Tool Number</source>
-      <translation>Název řídícího systému / Číslo nástroje</translation>
+      <translation>Název Řadiče nástrojů / Číslo nástroje</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="67"/>
@@ -348,7 +349,7 @@ Pro polotovary z ohraničení Základního objektu to znamená přídavek materi
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="196"/>
       <source>Forward</source>
-      <translation>Vpřed</translation>
+      <translation>Dopředu</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="201"/>
@@ -363,7 +364,7 @@ Pro polotovary z ohraničení Základního objektu to znamená přídavek materi
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="293"/>
       <source>Any modifications only affect this ToolController!</source>
-      <translation>Jakékoli úpravy se týkají pouze tohoto řízení nástrojů!</translation>
+      <translation>Jakékoli úpravy se týkají pouze tohoto Řadiče nástrojů!</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolEdit.ui" line="14"/>
@@ -383,7 +384,7 @@ Pro polotovary z ohraničení Základního objektu to znamená přídavek materi
     <message>
       <location filename="../panels/PropertyCreate.ui" line="27"/>
       <source>Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces &quot;Mixed Case&quot;</source>
-      <translation type="unfinished">Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces &quot;Mixed Case&quot;</translation>
+      <translation>Název vlastnosti. Může obsahovat pouze písmena, čísla a podtržítka. KapitálkamiOddělené názvy budou zobrazeny takto: &quot;Kapitálkami Oddělené&quot;</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="34"/>
@@ -398,12 +399,12 @@ Pro polotovary z ohraničení Základního objektu to znamená přídavek materi
     <message>
       <location filename="../panels/PropertyCreate.ui" line="72"/>
       <source>ToolTip to be displayed when user hovers mouse over property.</source>
-      <translation>Tip, který se zobrazí, když uživatel najede myší na vlastnost.</translation>
+      <translation>Ukázat ToolTip, když uživatel najede myší na vlastnost.</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="117"/>
       <source>Check if you want to create several properties in a batch.</source>
-      <translation>Zaškrtněte, pokud chcete vytvořit několik vlastností v dávce.</translation>
+      <translation>Zaškrtněte, pokud chcete vytvořit několik vlastností najednou.</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="44"/>
@@ -428,7 +429,7 @@ Pro polotovary z ohraničení Základního objektu to znamená přídavek materi
     <message>
       <location filename="../panels/PropertyCreate.ui" line="89"/>
       <source>ToolTip</source>
-      <translation>Špička nástroje</translation>
+      <translation>ToolTip</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="120"/>
@@ -443,12 +444,12 @@ Pro polotovary z ohraničení Základního objektu to znamená přídavek materi
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="35"/>
       <source>Create Toolbit</source>
-      <translation>Vytvořit sadu nástrojů</translation>
+      <translation>Vytvořit nástroj</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="52"/>
       <source>Add existing Tool Bit to this library.</source>
-      <translation>Přidat existující sadu nástrojů do této knihovny.</translation>
+      <translation>Vložit existující nástroj do této knihovny.</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="72"/>
@@ -463,7 +464,7 @@ Pro polotovary z ohraničení Základního objektu to znamená přídavek materi
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="119"/>
       <source>Add New Tool Table</source>
-      <translation>Přidat novou tabulku nástrojů</translation>
+      <translation>Vložit novou tabulku nástrojů</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="139"/>
@@ -473,7 +474,7 @@ Pro polotovary z ohraničení Základního objektu to znamená přídavek materi
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="190"/>
       <source>Table of Tool Bits of the library.</source>
-      <translation>Tabulka sad nástrojů v knihovně.</translation>
+      <translation>Tabulka nástrojů v knihovně.</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="269"/>
@@ -483,7 +484,7 @@ Pro polotovary z ohraničení Základního objektu to znamená přídavek materi
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="55"/>
       <source>Add Existing</source>
-      <translation>Přidat existující</translation>
+      <translation>Vložit existující</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="75"/>
@@ -501,12 +502,12 @@ Pro polotovary z ohraničení Základního objektu to znamená přídavek materi
     <message>
       <location filename="../panels/DlgTCChooser.ui" line="23"/>
       <source>Choose a Tool Controller</source>
-      <translation>Vybrat správce nástrojů</translation>
+      <translation>Vybrat Řadič nástrojů</translation>
     </message>
     <message>
       <location filename="../panels/DlgTCChooser.ui" line="29"/>
       <source>Tool Controller</source>
-      <translation>Správce nástrojů</translation>
+      <translation>Řadič nástrojů</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolCopy.ui" line="23"/>
@@ -645,14 +646,9 @@ Pro polotovary z ohraničení Základního objektu to znamená přídavek materi
       <translation>Výška kvádru</translation>
     </message>
     <message>
-      <location filename="../panels/DressupPathBoundary.ui" line="257"/>
-      <source>If checked the path is constrained by the solid. Otherwise the volume of the solid describes a &apos;keep out&apos; zone</source>
-      <translation>Je-li zaškrtnuto, cesta je zavazbena tělesem. V opačném případě objem tělesa popisuje &apos;zakázanou&apos; zónu</translation>
-    </message>
-    <message>
       <location filename="../panels/DressupPathBoundary.ui" line="55"/>
       <source>Extend Model&apos;s Bounding Box</source>
-      <translation>Rozšířit ohraničující kvádr Modelu</translation>
+      <translation>Rozšířený kvádr ohraničující Model</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="175"/>
@@ -676,6 +672,11 @@ Pro polotovary z ohraničení Základního objektu to znamená přídavek materi
       <translation>Šířka</translation>
     </message>
     <message>
+      <location filename="../panels/DressupPathBoundary.ui" line="257"/>
+      <source>If checked, the path is constrained by the solid. Otherwise the volume of the solid describes a &apos;keep out&apos; zone</source>
+      <translation type="unfinished">If checked, the path is constrained by the solid. Otherwise the volume of the solid describes a &apos;keep out&apos; zone</translation>
+    </message>
+    <message>
       <location filename="../panels/DressupPathBoundary.ui" line="260"/>
       <source>Constrained to Inside</source>
       <translation>Omezeno na vnitřní prostor</translation>
@@ -683,7 +684,7 @@ Pro polotovary z ohraničení Základního objektu to znamená přídavek materi
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="36"/>
       <source>List of operations with Base Geometry in current Job</source>
-      <translation>Seznam operací se základní geometrií v aktuální úloze</translation>
+      <translation>Seznam operací se Základní geometrií v aktuální úloze</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="43"/>
@@ -692,18 +693,18 @@ Pro polotovary z ohraničení Základního objektu to znamená přídavek materi
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="59"/>
-      <source>Select one or more features in the 3d view and press &apos;Add&apos; to add them as the base items for this operation. Selected features can be deleted entirely.</source>
-      <translation type="unfinished">Select one or more features in the 3d view and press &apos;Add&apos; to add them as the base items for this operation. Selected features can be deleted entirely.</translation>
+      <source>Select one or more features in the 3D view and press &apos;Add&apos; to add them as the base items for this operation. Selected features can be deleted entirely.</source>
+      <translation type="unfinished">Select one or more features in the 3D view and press &apos;Add&apos; to add them as the base items for this operation. Selected features can be deleted entirely.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="69"/>
       <source>Add selected features to the list of base geometries for this operation</source>
-      <translation>Přidat vybrané funkce do seznamu základních geometrií pro tuto operaci</translation>
+      <translation>Vložit vybrané prvky do seznamu základních geometrií pro tuto operaci</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="79"/>
       <source>Remove the selected list items from the list of base geometries. The operation will not be applied to them.</source>
-      <translation>Odstranit položky vybraného seznamu ze seznamu základních geometrií. Operace na ně nebude použita.</translation>
+      <translation>Odstranit vybrané položky seznamu ze seznamu základních geometrií. Operace na ně nebude použita.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="89"/>
@@ -729,7 +730,7 @@ Pro polotovary z ohraničení Základního objektu to znamená přídavek materi
       <location filename="../panels/PageBaseGeometryEdit.ui" line="92"/>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="149"/>
       <source>Clear</source>
-      <translation>Vyčistit</translation>
+      <translation>Vymazat</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="22"/>
@@ -738,11 +739,11 @@ Pro polotovary z ohraničení Základního objektu to znamená přídavek materi
 You can add feature for processing by selecting them and then pressing Add. If a feature is accidentally added to the list it can be removed through Remove and will no longer be processed.
 
 Reset deletes all current items from the list and fills the list with all circular holes eligible for the operation from the model. You can again refine the list afterwards by enabling/disabling, removing and adding features.</source>
-      <translation>Tabulka prvků otvoru a určený poloměr souvisejícího otvoru.
+      <translation>Tabulka prvků otvoru a určený poloměr příslušného otvoru.
 
-Prvek můžete přidat ke zpracování tak, že jej vyberete a stisknete tlačítko Přidat. Pokud je prvek omylem přidán do seznamu, lze jej odstranit tlačítkem Odebrat a nebude již zpracováván.
+Prvek ke zpracování můžete přidat tak, že jej vyberete a pak stisknete tlačítko Přidat. Pokud je prvek přidán do seznamu omylem, lze jej odstranit tlačítkem Odebrat a nebude již zpracováván.
 
-Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam všemi kruhovými otvory způsobilými pro operaci z modelu. Poté můžete seznam opět zpřesnit povolením/zakázáním, odebráním a přidáním prvků.</translation>
+Funkce Reset odstraní ze seznamu všechny aktuální prvky a doplní seznam všemi kruhovými, pro operaci vhodnými, otvory z modelu. Poté můžete seznam opět zpřesnit povolením/zakázáním, odebráním a přidáním prvků.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="33"/>
@@ -757,18 +758,18 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="46"/>
-      <source>Add selected items from 3d view to the list of base geometries</source>
-      <translation>Přidat vybrané položky z 3D pohledu do seznamu základních geometrií</translation>
+      <source>Add selected items from 3D view to the list of base geometries</source>
+      <translation type="unfinished">Add selected items from 3D view to the list of base geometries</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="56"/>
       <source>Remove selected list items from the list of base geometries. The operation is no longer applied to them.</source>
-      <translation>Odstranit vybrané položky ze seznamu základních geometrií. Operace se na ně již nevztahuje.</translation>
+      <translation>Odstranit vybrané položky ze seznamu základních geometrií. Operace už se na ně nepoužije.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="66"/>
       <source>Remove all list items and fill list with all eligible features from the job&apos;s base object.</source>
-      <translation type="unfinished">Remove all list items and fill list with all eligible features from the job&apos;s base object.</translation>
+      <translation>Odstranit všechny položky seznamu a doplnit seznam všemi vhodnými prvky Základního objektu úlohy.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="69"/>
@@ -784,7 +785,7 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="20"/>
       <source>List of locations to be processed.</source>
-      <translation>Seznam míst, která mají být zpracována.</translation>
+      <translation>Seznam oblastí, které mají být zpracovány.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="24"/>
@@ -799,17 +800,17 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="40"/>
       <source>Opens a dialog to add arbitrary locations.</source>
-      <translation>Otevře dialogové okno pro přidání libovolných míst.</translation>
+      <translation>Otevře dialogové okno pro přidání libovolných oblastí.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="50"/>
       <source>Remove selected location from the list. The operation is no longer applied to them.</source>
-      <translation>Odstranit vybrané umístění ze seznamu. Operace na ně nebude použita.</translation>
+      <translation>Odstranit vybranou oblast ze seznamu. Operace se na ni nepoužije.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="60"/>
       <source>Edit selected location.</source>
-      <translation>Upravit vybrané místo.</translation>
+      <translation>Upravit vybranou oblast.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="63"/>
@@ -819,7 +820,7 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="70"/>
       <source>All locations will be processed using the same operation properties.</source>
-      <translation>Všechna místa budou zpracována za použití stejných vlastností operace.</translation>
+      <translation>Všechny oblasti budou zpracovány za použití stejných vlastností operace.</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="36"/>
@@ -831,13 +832,13 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
       <location filename="../panels/PageDiametersEdit.ui" line="27"/>
       <location filename="../panels/PageDepthsEdit.ui" line="46"/>
       <source>Start Depth of the operation. The highest point in Z-axis the operation needs to process.</source>
-      <translation>Počáteční hloubka operace. Nejvyšší bod v ose Z, kterou musí operace zpracovat.</translation>
+      <translation>Počáteční hloubka operace. Nejvyšší bod v ose Z, kterou má operace zpracovat.</translation>
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="43"/>
       <location filename="../panels/PageDepthsEdit.ui" line="59"/>
       <source>Transfer the Z value of the selected feature as the Start Depth for the operation.</source>
-      <translation>Přenést hodnotu Z vybraného prvku jako počáteční hloubku operace.</translation>
+      <translation>Převzít hodnotu osy Z vybraného prvku jako Počáteční hloubku operace.</translation>
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="64"/>
@@ -849,7 +850,7 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
       <location filename="../panels/PageDiametersEdit.ui" line="80"/>
       <location filename="../panels/PageDepthsEdit.ui" line="105"/>
       <source>Transfer the Z value of the selected feature as the Final Depth for the operation.</source>
-      <translation>Přenést hodnotu Z vybraného prvku jako konečnou hloubku operace.</translation>
+      <translation>Převzít hodnotu osy Z vybraného prvku jako Konečnou hloubku operace.</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="138"/>
@@ -859,7 +860,7 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="170"/>
       <source>Depth of the final cut of the operation. Can be used to produce a cleaner finish.</source>
-      <translation>Hloubka posledního řezu operace. Může být použita k dosažení kvalitnějšího povrchu.</translation>
+      <translation>Hloubka posledního (dokončovacího) řezu operace. Může být použita k dosažení kvalitnějšího povrchu.</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="52"/>
@@ -896,7 +897,7 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="31"/>
       <source>The height above which it is safe to move the tool bit with rapid movements. Below this height all lateral and downward movements are performed with feed rate speeds.</source>
-      <translation>Výška, nad kterou je bezpečné pohybovat nástrojem rychloposuvem. Pod touto výškou se všechny pohyby do stran a dolů provádějí rychlostí posuvu.</translation>
+      <translation>Výška, nad kterou je bezpečné pohybovat nástrojem rychloposuvem. Pod touto výškou se všechny pohyby do stran a dolů provádějí rychlostí feed posuvu.</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="54"/>
@@ -931,6 +932,7 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
       <location filename="../panels/PageOpCustomEdit.ui" line="49"/>
       <location filename="../panels/PageOpEngraveEdit.ui" line="43"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="52"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="96"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="43"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="49"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="43"/>
@@ -957,7 +959,7 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
       <location filename="../panels/PageOpVcarveEdit.ui" line="29"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="23"/>
       <source>Tool Controller</source>
-      <translation>Správa nástroje</translation>
+      <translation>Řadič nástrojů</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="249"/>
@@ -967,124 +969,152 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
       <translation>Chladivo</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="76"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="115"/>
       <source>Type of adaptive operation</source>
       <translation>Typ adaptivní operace</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="83"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="254"/>
       <source>Cut Region</source>
       <translation>Oříznout oblast</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="118"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="196"/>
       <source>Operation Type</source>
       <translation>Typ operace</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="178"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="90"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="165"/>
       <source>Step Over Percent</source>
       <translation>Krok procentem</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="148"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="64"/>
       <source>Accuracy vs Performance</source>
       <translation>Přesnost vs. výkon</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="125"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="71"/>
+      <source>Influences calculation performance vs stability and accuracy.
+
+Larger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.</source>
+      <translation type="unfinished">Influences calculation performance vs stability and accuracy.
+
+Larger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="129"/>
+      <source>How much material to leave in the XY plane (i.e. for finishing operation)</source>
+      <translation type="unfinished">How much material to leave in the XY plane (i.e. for finishing operation)</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="139"/>
+      <source>XY Stock to Leave</source>
+      <translation type="unfinished">XY Stock to Leave</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="182"/>
       <source>Helix Ramp Angle</source>
       <translation>Úhel nájezdu šroubovice</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="190"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="230"/>
       <source>Helix Cone Angle</source>
       <translation>Úhel kuželu šroubovice</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="69"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="271"/>
       <source>Helix Max Diameter</source>
       <translation>Max. průměr šroubovice</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="104"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="247"/>
       <source>Lift Distance</source>
-      <translation>Vzdálenost zdvihu</translation>
+      <translation>Vzdálenost zdvihu/odjezdu</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="62"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="213"/>
       <source>Keep Tool Down Ratio</source>
       <translation>Poměr Držení nástroje dole</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="111"/>
-      <source>Stock to Leave</source>
-      <translation>Polotovar k ponechání</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="97"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="101"/>
       <source>Force Clearing Inside-out</source>
       <translation>Vynutit odstraňování zevnitř-ven</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="132"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="122"/>
       <source>Finishing Profile</source>
       <translation>Dokončování profilu</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="237"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="55"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="189"/>
       <source>Use Outline</source>
       <translation>Použít obrys</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="155"/>
-      <source>Influences calculation performance vs stability and accuracy</source>
-      <translation>Vliv výkonu výpočtu na stabilitu a přesnost</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="183"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="108"/>
       <source>Cut inside or outside of the selected shapes</source>
-      <translation>Řez uvnitř nebo vně vybraných tvarů</translation>
+      <translation>Řezat uvnitř nebo vně vybraných tvarů</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="197"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="220"/>
       <source>If greater than zero it limits the helix ramp diameter, otherwise 75 percent of tool diameter is used</source>
       <translation>Pokud je větší než nula, omezuje průměr nájezdu šroubovice, jinak se použije 75 % průměru nástroje</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="207"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="203"/>
       <source>How much to lift the tool up during the rapid linking moves over cleared regions. If linking path is not clear tool is raised to clearance height.</source>
-      <translation>Jak moc zvednout nástroj při přejezdu přes obrobené oblasti. Pokud není dráha propojení volná, zvedne se nástroj do bezpečné výšky.</translation>
+      <translation>Jak moc zvednout nástroj při propojovacích rychlopřejezdech přes obrobené oblasti. Pokud není dráha propojení volná, zvedne se nástroj do Přejezdové výšky.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="217"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="261"/>
       <source>Max length of keep-tool-down linking path compared to direct distance between points. If exceeded link will be done by raising the tool to clearance height.</source>
-      <translation>Maximální délka přejezdu Keep-tool-down v porovnání s přímou vzdáleností mezi body. Při překročení se propojení provede zvednutím nástroje do bezpečné výšky.</translation>
+      <translation>Maximální délka propojovací trasy v Keep-tool-down módu v porovnání s přímou vzdáleností mezi body. Při překročení této délky se propojení provede zvednutím nástroje do Přejezdové výšky.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="227"/>
-      <source>How much material to leave (i.e. for finishing operation)</source>
-      <translation>Kolik materiálu ponechat (např. pro dokončovací operace)</translation>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="146"/>
+      <source>The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter. A step over of 100% results in no overlap between two different cycles.</source>
+      <translation>Velikost bočního posunu nástroje v každém průchodu cyklu, zadaný v % průměru nástroje. Krok přes 100% vede k tomu, že se dva různé průchody nepřekrývají.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="237"/>
-      <source>The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter. A step over of 100% results in no overlap between two different cycles.</source>
-      <translation>Velikost bočního posunu nástroje v každém průchodu cyklu, zadaný v % průměru nástroje. Krok přes 100 % vede k tomu, že se dva různé průchody nepřekrývají.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="256"/>
       <source>Angle of the helix ramp entry</source>
       <translation>Úhel nájezdu na šroubovici</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="266"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="172"/>
       <source>Angle of the helix entry cone</source>
       <translation>Úhel vstupního kužele šroubovice</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="279"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="278"/>
+      <source>After calculating toolpaths, the default cut order is by depth- all regions at a given stepdown are cleared before moving to the next stepdown.
+
+This option changes that behavior to cut each discrete area to its full depth before moving on to the next.</source>
+      <translation type="unfinished">After calculating toolpaths, the default cut order is by depth- all regions at a given stepdown are cleared before moving to the next stepdown.
+
+This option changes that behavior to cut each discrete area to its full depth before moving on to the next.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="283"/>
+      <source>Order cuts by region</source>
+      <translation type="unfinished">Order cuts by region</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="290"/>
+      <source>Z Stock to Leave</source>
+      <translation type="unfinished">Z Stock to Leave</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="297"/>
+      <source>How much material to leave along the Z axis (i.e. for finishing operation)</source>
+      <translation type="unfinished">How much material to leave along the Z axis (i.e. for finishing operation)</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="307"/>
       <source>Stop</source>
       <translation>Stop</translation>
     </message>
@@ -1099,7 +1129,18 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="138"/>
       <source>The direction in which the profile is performed, clockwise or counterclockwise.</source>
-      <translation>Směr, ve kterém se obrábí kontura, vpravo nebo vlevo.</translation>
+      <translation>Směr, ve kterém je obráběna kontura, pravotočivě nebo levotočivě.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="141"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="148"/>
+      <source>CW</source>
+      <translation>Pravotočivý</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="153"/>
+      <source>CCW</source>
+      <translation>Levotočivý</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="195"/>
@@ -1109,7 +1150,7 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="222"/>
       <source>Extra depth of tool immersion.</source>
-      <translation>Extra hloubka nástroje ponoření.</translation>
+      <translation>Extra hloubka "ponoření" nástroje.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="289"/>
@@ -1162,6 +1203,7 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
       <translation>Odjezd</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpTappingEdit.ui" line="32"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="135"/>
       <source>Dwell</source>
       <translation>Prodleva</translation>
@@ -1169,7 +1211,7 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="63"/>
       <source>Don&apos;t retract after every hole</source>
-      <translation type="unfinished">Don&apos;t retract after every hole</translation>
+      <translation>Neodjíždět po zpracování každého otvoru</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="66"/>
@@ -1177,16 +1219,45 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
       <translation>Držet nástroj dole</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpTappingEdit.ui" line="14"/>
+      <source>Form</source>
+      <translation>Návrh</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpTappingEdit.ui" line="25"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="88"/>
       <source>Time</source>
       <translation>Čas</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpTappingEdit.ui" line="45"/>
+      <source>Tap Tip</source>
+      <translation type="unfinished">Tap Tip</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpTappingEdit.ui" line="50"/>
+      <source>2x Tap Tip</source>
+      <translation type="unfinished">2x Tap Tip</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpTappingEdit.ui" line="65"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="95"/>
       <source>Extend Depth</source>
       <translation>Prodloužit hloubku</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpTappingEdit.ui" line="89"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="110"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpTappingEdit.ui" line="103"/>
+      <source>ToolController</source>
+      <translation>Ovladač nástrojů</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpTappingEdit.ui" line="40"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="110"/>
       <source>None</source>
       <translation>Žádný</translation>
@@ -1234,7 +1305,7 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="70"/>
       <source>Specify if the helix operation should start at the inside and work its way outwards, or start at the outside and work its way to the center.</source>
-      <translation>Určete, zda má operace se šroubovicí začínat uvnitř a postupovat směrem ven, nebo začínat vně a postupovat do středu.</translation>
+      <translation>Určete, zda má operace šroubovicí začít uvnitř a postupovat směrem ven, nebo začínat vně a postupovat do středu.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="74"/>
@@ -1254,7 +1325,7 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="118"/>
       <source>Specify the percent of the tool diameter each helix will be offset to the previous one. A step over of 100% means no overlap of the individual cuts.</source>
-      <translation>Zadejte procento průměru nástroje, o které bude každá šroubovice posunuta vůči předchozí. Překročení o 100 % znamená, že se jednotlivé řezy nepřekrývají.</translation>
+      <translation>Zadejte procento průměru nástroje, o které bude každá šroubovice odsazena vůči předchozí. Odsazení o více než 100% znamená, že se jednotlivé řezy nepřekrývají.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="111"/>
@@ -1265,7 +1336,7 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
       <location filename="../panels/PageOpHelixEdit.ui" line="137"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="101"/>
       <source>Extra Offset</source>
-      <translation>Další posun</translation>
+      <translation>Extra odsazení</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="22"/>
@@ -1280,7 +1351,7 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="55"/>
       <source>If selected all potential extensions are visualised. Enabled extensions in purple and not enabled extensions in yellow</source>
-      <translation>Po výběru se zobrazí všechna potenciální prodloužení. Povolená prodloužení jsou znázorněna fialově a nepovolená žlutě</translation>
+      <translation>Je-li vybráno, zobrazí se všechna potenciální rozšíření. Povolená rozšíření jsou znázorněna fialově a nepovolená žlutě</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="68"/>
@@ -1295,7 +1366,7 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="85"/>
       <source>Set the extent of the dimension -the default value is half the tool diameter</source>
-      <translation>Nastavení rozsahu rozměru - výchozí hodnota je polovina průměru nástroje</translation>
+      <translation>Nastavení rozšíření rozměrů - výchozí hodnota je polovina průměru nástroje</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="101"/>
@@ -1310,12 +1381,12 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="136"/>
       <source>Disable the currently selected pocket extension</source>
-      <translation>Povolit aktuálně vybrané rozšíření kapsy</translation>
+      <translation>Zakázat aktuálně vybrané rozšíření kapsy</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="146"/>
       <source>Remove all currently enabled extensions - leaving the plain pocket operation</source>
-      <translation>Odstranit všechna aktuálně povolená rozšíření - ponechání operace prosté kapsy</translation>
+      <translation>Odstranit všechna aktuálně povolená rozšíření - ponechání prosté operace kapsy</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="129"/>
@@ -1345,15 +1416,12 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="98"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="99"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="141"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="148"/>
       <source>Climb</source>
       <translation>Sousledně</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="103"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="104"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="153"/>
       <source>Conventional</source>
       <translation>Nesousledně</translation>
     </message>
@@ -1378,14 +1446,14 @@ Funkce Obnovit odstraní ze seznamu všechny aktuální prvky a doplní seznam v
       <source>Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.
 
 The latter can be used to face of the entire stock area to ensure uniform heights for the following operations</source>
-      <translation>Určete, zda má být ohraničení omezeno skutečným tvarem vybrané plochy (nebo dílu, pokud není vybrána žádná plocha), nebo zda má být ohraničující kvádr omezen.
+      <translation>Určete, zda má být frézování čela omezeno skutečným tvarem vybrané plochy (nebo dílem, pokud není vybrána žádná plocha), nebo zda má být frézován celý ohraničující kvádr.
 
-Poslední možnost lze použít k zajištění rovnoměrných výšek celého polotovaru pro následující operace</translation>
+Toto lze použít k ofrézování celé plochy polotovaru, k zajištění rovnoměrné výšky polotovaru pro následující operace</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="95"/>
       <source>The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on. Climb mode is when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bit&apos;s rotation and the tool&apos;s lateral movement are in the same direction</source>
-      <translation type="unfinished">The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on. Climb mode is when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bit&apos;s rotation and the tool&apos;s lateral movement are in the same direction</translation>
+      <translation>Režim řezu - předpokládejme na jedné straně nástroje řez, představující výsledný díl, a na druhé straně nástroje buď již ofrézovanou část nebo materiál odstraňovaný až následně. V Climb módu břit nástroje postupuje s každou otáčkou od plného materiálu směrem k řezu (sousledně), zatímco v Conventional módu postupuje břit nástroje od řezu do plného materiálu (nesousledně)</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="119"/>
@@ -1395,7 +1463,7 @@ Poslední možnost lze použít k zajištění rovnoměrných výšek celého po
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="126"/>
       <source>ZigZag</source>
-      <translation>Pendlování</translation>
+      <translation>Pendlovat</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="136"/>
@@ -1405,7 +1473,7 @@ Poslední možnost lze použít k zajištění rovnoměrných výšek celého po
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="141"/>
       <source>ZigZagOffset</source>
-      <translation>Ofset pendlování</translation>
+      <translation>Pendlovat s ofsetem</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="146"/>
@@ -1455,7 +1523,7 @@ Poslední možnost lze použít k zajištění rovnoměrných výšek celého po
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="258"/>
       <source>Check to skip machining regions that have already been cleared by previous operations</source>
-      <translation>Zaškrtněte, zda chcete vynechat oblasti obrábění, které již byly zpracovány předchozími operacemi.</translation>
+      <translation>Zaškrtněte, zda chcete vynechat oblasti obrábění, které již byly zpracovány předchozími operacemi</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="261"/>
@@ -1468,7 +1536,7 @@ Poslední možnost lze použít k zajištění rovnoměrných výšek celého po
       <translation>Přídavek materiálu</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="130"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="167"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="257"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="227"/>
       <source>Use Start Point</source>
@@ -1537,12 +1605,12 @@ Poslední možnost lze použít k zajištění rovnoměrných výšek celého po
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="63"/>
       <source>Cut Side</source>
-      <translation>Strana řezu</translation>
+      <translation>Řezaná strana</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="70"/>
       <source>Specify if the profile should be performed inside or outside the base geometry features. This only matters if Use Compensation is checked (the default)</source>
-      <translation>Určit, zda má být profil proveden uvnitř nebo vně základních geometrických prvků. To je důležité pouze v případě, že je zaškrtnuto Použít kompenzaci (výchozí nastavení).</translation>
+      <translation>Určuje, zda má být profil proveden uvnitř nebo vně základních geometrických prvků. To je důležité pouze v případě, že je zaškrtnuto Použít kompenzaci (výchozí nastavení).</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="74"/>
@@ -1561,47 +1629,67 @@ Poslední možnost lze použít k zajištění rovnoměrných výšek celého po
       <translation>Množství zbytkového materiálu, které zůstane po této operaci ve vztahu k cílovému tvaru</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="127"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="121"/>
+      <source>Number of Passes</source>
+      <translation type="unfinished">Number of Passes</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="131"/>
+      <source>The number of passes to do. If more than one, requires a non-zero value for Pass Stepover.</source>
+      <translation type="unfinished">The number of passes to do. If more than one, requires a non-zero value for Pass Stepover.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="138"/>
+      <source>Pass Stepover</source>
+      <translation type="unfinished">Pass Stepover</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="151"/>
+      <source>If doing multiple passes, the extra offset of each additional pass.</source>
+      <translation type="unfinished">If doing multiple passes, the extra offset of each additional pass.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="164"/>
       <source>Check if this operation should use a starting point</source>
       <translation>Zaškrtnout, jestli má tato operace používat počáteční bod</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="137"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="174"/>
       <source>Check if this profile operation should also process holes in the base geometry. Found holes are automatically offset on the opposite cut side and performed in the opposite direction as perimeters. Note that this does not include cylindrical holes, the assumption being that they will get drilled</source>
-      <translation>Zaškrtnout, jestli má tato profilová operace zpracovávat také otvory v základní geometrii. Nalezené otvory jsou automaticky odsazeny na opačnou stranu řezu a provedeny v opačném směru jako obvody. Všimněte si, že se to netýká válcových otvorů, protože se předpokládá, že se budou vrtat</translation>
+      <translation>Zaškrtnout, jestli má tato profilová operace zpracovávat také otvory v základní geometrii. Nalezené otvory jsou automaticky odsazeny na opačnou stranu řezu a provedeny v opačném směru jako obvody. Všimněte si, že se toto netýká válcových otvorů, protože se předpokládá, že se budou vrtat</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="147"/>
-      <source>If checked the profile operation is offset by the tool radius. The offset direction is determined by the Cut Side</source>
-      <translation>Pokud je zaškrtnuto, operace profilu je posunuta o poloměr nástroje. Směr odsazení je určen stranou řezu</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="157"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="194"/>
       <source>Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don&apos;t warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values</source>
-      <translation type="unfinished">Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don&apos;t warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values</translation>
+      <translation>Zatrhněte, pokud si přejete tuto profilovací operaci aplikovat i na válcové otvory, které se normálně vrtají. Toto může být užitečné, pokud není k dispozici vrták příslušné velikosti anebo počet otvorů nevyžaduje změnu nástroje. Pozn.: strana řezu a směr budou obráceny vzhledem ke specifikovaným hodnotám</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="167"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="204"/>
       <source>Check if this profile operation should also process the outside perimeter of the base geometry shapes</source>
       <translation>Zaškrtnout, pokud má tato profilová operace zpracovávat také vnější obvod základních geometrických tvarů</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="140"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="177"/>
       <source>Process Holes</source>
       <translation>Zpracovat otvory</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="150"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="184"/>
+      <source>If checked, the profile operation is offset by the tool radius. The offset direction is determined by the Cut Side</source>
+      <translation type="unfinished">If checked, the profile operation is offset by the tool radius. The offset direction is determined by the Cut Side</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="187"/>
       <source>Use Compensation</source>
       <translation>Použít kompenzaci</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="160"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="197"/>
       <source>Process Circles</source>
       <translation>Zpracovat kružnice</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="170"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="207"/>
       <source>Process Perimeter</source>
       <translation>Zpracovat obvod</translation>
     </message>
@@ -1658,27 +1746,27 @@ Poslední možnost lze použít k zajištění rovnoměrných výšek celého po
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="141"/>
       <source>End Feature Reference</source>
-      <translation>Konec refence prvku</translation>
+      <translation>Konec reference prvku</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="90"/>
       <source>Choose what point to use on the first selected feature</source>
-      <translation>Vybrat, který bod se má použít u prvního vybraného prvku</translation>
+      <translation>Vyberte, který bod se má použít na prvním vybraném prvku</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="162"/>
       <source>Choose what point to use on the second selected feature</source>
-      <translation>Vybrat, který bod chcete použít na druhém vybraném prvku</translation>
+      <translation>Vyberte, který bod se má použít na druhém vybraném prvku</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="222"/>
       <source>No Base Geometry selected</source>
-      <translation>Není vybrána základní geometrie</translation>
+      <translation>Není vybrána Základní geometrie</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="228"/>
       <source>No Base Geometry selected.</source>
-      <translation>Není vybrána základní geometrie.</translation>
+      <translation>Není vybrána Základní geometrie.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="241"/>
@@ -1720,7 +1808,7 @@ Poslední možnost lze použít k zajištění rovnoměrných výšek celého po
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="357"/>
       <source>Complete the operation in a single pass at depth, or multiple passes to final depth</source>
-      <translation>Dokončit operaci jedním průchodem v hloubce, nebo více průchody do konečné hloubky</translation>
+      <translation>Dokončit operaci jedním průchodem v dané hloubce, nebo více průchody do konečné hloubky</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="361"/>
@@ -1740,7 +1828,7 @@ Poslední možnost lze použít k zajištění rovnoměrných výšek celého po
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="381"/>
       <source>Choose the path orientation with regard to the feature(s) selected</source>
-      <translation>Vyberat orientaci dráhy s ohledem na vybraný prvek (prvky)</translation>
+      <translation>Vybrat orientaci dráhy s ohledem na vybraný prvek (prvky)</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="385"/>
@@ -1765,7 +1853,7 @@ Poslední možnost lze použít k zajištění rovnoměrných výšek celého po
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="77"/>
       <source>Scan Type</source>
-      <translation>Skenovat typ</translation>
+      <translation>Typ skenu</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="117"/>
@@ -1776,7 +1864,7 @@ Poslední možnost lze použít k zajištění rovnoměrných výšek celého po
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="119"/>
       <source>Profile Edges</source>
-      <translation>Hrany profilu</translation>
+      <translation>Profilovat hrany</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="133"/>
@@ -1804,7 +1892,7 @@ Poslední možnost lze použít k zajištění rovnoměrných výšek celého po
       <location filename="../panels/PageOpWaterlineEdit.ui" line="110"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="98"/>
       <source>Complete the operation in a single pass at depth, or multiple passes to final depth.</source>
-      <translation>Dokončit operaci jedním průchodem v hloubce nebo několika průchody do konečné hloubky.</translation>
+      <translation>Dokončit operaci jedním průchodem v dané hloubce nebo několika průchody do konečné hloubky.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="129"/>
@@ -1815,7 +1903,7 @@ Poslední možnost lze použít k zajištění rovnoměrných výšek celého po
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="126"/>
       <source>Profile the edges of the selection.</source>
-      <translation>Profil hran ve výběru.</translation>
+      <translation>Profilovat hrany ve výběru.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="140"/>
@@ -1825,7 +1913,7 @@ Poslední možnost lze použít k zajištění rovnoměrných výšek celého po
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="147"/>
       <source>Bounding box extra offset X, Y</source>
-      <translation>Dodatečný posun X, Y ohraničujícího kvádru</translation>
+      <translation>Dodatečné X, Y odsazení ohraničujícího kvádru</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="191"/>
@@ -1836,7 +1924,7 @@ Poslední možnost lze použít k zajištění rovnoměrných výšek celého po
       <location filename="../panels/PageOpWaterlineEdit.ui" line="149"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="205"/>
       <source>Set the Z-axis depth offset from the target surface.</source>
-      <translation>Nastavit hloubkový posun osy Z od cílového povrchu.</translation>
+      <translation>Nastavit odsazení od cílového povrchu v ose Z.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="194"/>
@@ -1889,7 +1977,7 @@ Poslední možnost lze použít k zajištění rovnoměrných výšek celého po
       <location filename="../panels/PageOpWaterlineEdit.ui" line="159"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="215"/>
       <source>Step over</source>
-      <translation>Krok</translation>
+      <translation>Překrytí kroků</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="172"/>
@@ -1897,9 +1985,9 @@ Poslední možnost lze použít k zajištění rovnoměrných výšek celého po
       <source>The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.
 
 A step over of 100% results in no overlap between two different cycles.</source>
-      <translation>Velikost bočního posunu nástroje v každém průchodu cyklu, zadaný v procentech průměru nástroje.
+      <translation>Velikost stranového posunu nástroje v každém cyklu vzoru, zadaný v procentech průměru nástroje.
 
-Krok 100 % vede k tomu, že se dva různé cykly nepřekrývají.</translation>
+Krok 100% vede k tomu, že se dva různé cykly nepřekrývají.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="187"/>
@@ -1921,7 +2009,7 @@ Krok 100 % vede k tomu, že se dva různé cykly nepřekrývají.</translation>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="290"/>
       <source>Optimize StepOver Transitions</source>
-      <translation>Optimalizovat přechody kroku</translation>
+      <translation>Optimalizovat přechody mezi kroky</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="14"/>
@@ -1985,7 +2073,7 @@ Výchozí: OpToolDiameter</translation>
       <source>Expression set as ClearanceHeight for new operations.
 
 Default: &quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&quot;</source>
-      <translation>Výraz nastavený jako Světlá výška pro nové operace.
+      <translation>Výraz nastavený jako Přejezdová výška pro nové operace.
 
 Výchozí:
 &quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&quot;</translation>
@@ -2029,7 +2117,7 @@ Výchozí: &quot;5mm&quot;</translation>
       <source>ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.
 
 Default: 3 mm</source>
-      <translation>ClearanceHeightOffset - lze pomocí výrazů nastavit výchozí hodnotu ClearanceHeight pro nové operace.
+      <translation>ClearanceHeightOffset - může bý použit ve výrazech pro nastavení výchozí Přejezdové výšky pro nové operace.
 
 Výchozí: 3 mm</translation>
     </message>
@@ -2041,7 +2129,7 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="192"/>
       <source>Horizontal</source>
-      <translation>Vodorovně</translation>
+      <translation>Horizontálně</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="212"/>
@@ -2112,8 +2200,8 @@ Výchozí: 3 mm</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="72"/>
-      <source>This value is used in discretizing arcs into segments. Smaller values will result in larger gcode. Larger values may cause unwanted segments in the medial line path.</source>
-      <translation>Tato hodnota se používá při diskretizaci oblouků na segmenty. Menší hodnoty budou mít za následek větší G kód. Větší hodnoty mohou způsobit nežádoucí segmenty v dráze středních čar.</translation>
+      <source>This value is used in discretizing arcs into segments. Smaller values will result in larger G-code. Larger values may cause unwanted segments in the medial line path.</source>
+      <translation type="unfinished">This value is used in discretizing arcs into segments. Smaller values will result in larger G-code. Larger values may cause unwanted segments in the medial line path.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="104"/>
@@ -2128,12 +2216,12 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="124"/>
       <source>Endmill offset for the finishing pass run. Use small value like -0.2 mm to help clean &quot;fuzzy skin&quot; or other artefacts.</source>
-      <translation type="unfinished">Endmill offset for the finishing pass run. Use small value like -0.2 mm to help clean &quot;fuzzy skin&quot; or other artefacts.</translation>
+      <translation>Ofset frézy při dokončovacím průchodu. Použijte malou hodnotu jako -0,2 mm, která pomůže odstranit &quot;chlupatý povrch&quot; nebo jiné artefakty.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="140"/>
-      <source>After carving travel again the path to remove artifacts and imperfections</source>
-      <translation type="unfinished">After carving travel again the path to remove artifacts and imperfections</translation>
+      <source>After carving, travel again the path to remove artifacts and imperfections</source>
+      <translation type="unfinished">After carving, travel again the path to remove artifacts and imperfections</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="146"/>
@@ -2143,7 +2231,7 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="153"/>
       <source>Optimize path to avoid raising endmill when moving to adjacent edges. May result in sub-millimeter inaccuracies. </source>
-      <translation type="unfinished">Optimize path to avoid raising endmill when moving to adjacent edges. May result in sub-millimeter inaccuracies. </translation>
+      <translation>Optimalizovat trasu tak, aby se fréza při přesunu k přilehlým hranám nezvedala. Může vést k pod-milimetrovým nepřesnostem. </translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="156"/>
@@ -2153,7 +2241,7 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="97"/>
       <source>Filter Colinear lines</source>
-      <translation>Filtr Kolineární čáry</translation>
+      <translation>Filtr Kolineárních čar</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="59"/>
@@ -2213,12 +2301,12 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../panels/ToolEditor.ui" line="26"/>
       <source>Name</source>
-      <translation>Jméno</translation>
+      <translation>Název</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="36"/>
       <source>Display Name</source>
-      <translation>Zobrazit jméno</translation>
+      <translation>Zobrazit název</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="57"/>
@@ -2295,7 +2383,7 @@ Pokud je zadaná výška 0, dressup použije polovinu výšky dílu. Pokud je v�
       <translation>Úhel zanoření pro výstup a sestup upevňovací značky.</translation>
     </message>
     <message>
-      <location filename="../preferences/PathDressupHoldingTags.ui" line="91"/>
+      <location filename="../preferences/PathDressupHoldingTags.ui" line="94"/>
       <source>Radius of the fillet on the tag&apos;s top edge.
 
 If the radius is bigger than that which the tag shape itself supports, the resulting shape will be that of a dome.</source>
@@ -2304,12 +2392,12 @@ If the radius is bigger than that which the tag shape itself supports, the resul
 Pokud je poloměr větší než ten, který podporuje samotný tvar štítku, výsledným tvarem bude kopule.</translation>
     </message>
     <message>
-      <location filename="../preferences/PathDressupHoldingTags.ui" line="109"/>
+      <location filename="../preferences/PathDressupHoldingTags.ui" line="112"/>
       <source>Initial # Tags</source>
       <translation>Počáteční # Značka</translation>
     </message>
     <message>
-      <location filename="../preferences/PathDressupHoldingTags.ui" line="116"/>
+      <location filename="../preferences/PathDressupHoldingTags.ui" line="119"/>
       <source>Specify the number of tags generated when a new dressup is created.</source>
       <translation>Zadate počet značek generovaných při vytváření nového dressupu.</translation>
     </message>
@@ -2324,12 +2412,12 @@ Pokud je poloměr větší než ten, který podporuje samotný tvar štítku, v�
       <translation>Výchozí úhel</translation>
     </message>
     <message>
-      <location filename="../preferences/PathDressupHoldingTags.ui" line="84"/>
+      <location filename="../preferences/PathDressupHoldingTags.ui" line="87"/>
       <source>Default Radius</source>
       <translation>Výchozí poloměr</translation>
     </message>
     <message>
-      <location filename="../preferences/PathDressupHoldingTags.ui" line="103"/>
+      <location filename="../preferences/PathDressupHoldingTags.ui" line="106"/>
       <source>Tag Generation</source>
       <translation>Generování značek</translation>
     </message>
@@ -2390,7 +2478,7 @@ Pokud je poloměr větší než ten, který podporuje samotný tvar štítku, v�
       <location filename="../preferences/PathJob.ui" line="154"/>
       <location filename="../preferences/PathJob.ui" line="279"/>
       <source>Post Processor</source>
-      <translation>Následné zpracování</translation>
+      <translation>Postprocesor</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="166"/>
@@ -2486,36 +2574,34 @@ if %S is included, you can specify where the number occurs.  Without it, the num
 The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
 &amp;quot;/home/cnc/%d.g-code&amp;quot;
 See the file save policy below on how to deal with name conflicts.</source>
-      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
-The following substitutions are performed before the name is resolved at the time of the post processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
+      <translation>Zadejte umístění a, volitelně, název souboru (viz níže), který bude použit jako výchozí pro export postprocesoru.
+Pro vyhodnocení názvu souboru jsou při vyvolání samotného postprocesingu k dispozici následující substituce:
+%D ... adresář aktivního dokumentu
+%d ... název aktivního dokumentu (včetně přípony)
+%M ... adresář uživatelských maker
+%j ... název objektu aktivní Úlohy
 
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
+Pokud je výstup dělen do více souborů, je možné použít následující (pokud není výstup dělený, budou volby ignorovány).
+%T ... číslo nástroje
+%t ... popisek Tool Controlleru
 
-%W ... Work Coordinate System
-%O ... Operation Label
+%W ... pracovní souřadnicový systém
+%O ... popisek operace
 
-When splitting output, a sequence number will always be added.
+Při děleném výstupu je vždy automaticky přidáno pořadové číslo.
 
-if %S is included, you can specify where the number occurs.  Without it, the number will be added to the end of the string.
+Parametr %S určuje, kde se pořadové číslo v názvu umístí. Bez tohoto parametru bude číslo na konci řetězce.
 
-%S ... Sequence Number
+%S ... pořadové číslo
 
-The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
+Následující příklad uloží všechny soubory pod názvem dokumentu do adresáře /home/freecad (prosím nezahrnujte uvozovky):
 &amp;quot;/home/cnc/%d.g-code&amp;quot;
-See the file save policy below on how to deal with name conflicts.</translation>
+Informace o řešení konfliktů názvů naleznete v zásadách ukládání souborů níže.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="247"/>
       <source>Choose how to deal with potential file name conflicts. Always open a dialog, only open a dialog if the output file already exists, overwrite any existing file or add a unique (3 digit) sequential ID to the file name.</source>
-      <translation>Zvolte, jak se vypořádat s potenciálními konflikty názvů souborů. Vždy otevírejte dialog, otevřete dialog pouze v případě, že výstupní soubor již existuje, přepište jakýkoli existující soubor nebo přidejte k názvu souboru jedinečné (3místné) sekvenční ID.</translation>
+      <translation>Zvolte, jak se vypořádat s potenciálními konflikty názvů souborů. Vždy zobrazit dialog, zobrazit dialog pouze v případě, že výstupní soubor již existuje, přepsat existující soubor nebo přidat k názvu souboru jedinečné (3-místné) pořadové ID.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="288"/>
@@ -2525,7 +2611,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="298"/>
       <source>It doesn&apos;t seem there are any post processor scripts installed. Please add some into your macro directory and make sure the file name ends with &amp;quot;_post.py&amp;quot;.</source>
-      <translation type="unfinished">It doesn&apos;t seem there are any post processor scripts installed. Please add some into your macro directory and make sure the file name ends with &amp;quot;_post.py&amp;quot;.</translation>
+      <translation>Zdá se, že nejsou nainstalované žádné postprocesorové skripty. Prosím přidejte nějaké do vašeho adresáře maker a ujistěte se, že soubor končí na &amp;quot;_post.py&amp;quot;.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="312"/>
@@ -2535,7 +2621,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="332"/>
       <source>Optional arguments passed to the default Post Processor specified above. See the Post Processor&apos;s documentation for supported arguments.</source>
-      <translation type="unfinished">Optional arguments passed to the default Post Processor specified above. See the Post Processor&apos;s documentation for supported arguments.</translation>
+      <translation>Volitelné argumenty předávané postprocesoru, specifikované výše. Postprocesorem podporované argumenty naleznete v jeho dokumentaci.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="370"/>
@@ -2550,7 +2636,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="395"/>
       <source>Create Box</source>
-      <translation>Vytvoř kvadr</translation>
+      <translation>Vytvořit kvádr</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="400"/>
@@ -2560,7 +2646,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="405"/>
       <source>Extend Model&apos;s Bounding Box</source>
-      <translation>Rozšířit ohraničující kvádr Modelu</translation>
+      <translation>Rozšířený kvádr ohraničující Model</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="429"/>
@@ -2700,11 +2786,6 @@ Pokud existuje více nástrojů nebo tvarů nástrojů se stejným názvem v rů
       <translation>Výchozí tloušťka čáry pro nové tvary</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="45"/>
-      <source>px</source>
-      <translation>px</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsPathColor.ui" line="228"/>
       <source>Default path marker color</source>
       <translation>Výchozí barva značky cesty</translation>
@@ -2828,7 +2909,7 @@ Pokud existuje více nástrojů nebo tvarů nástrojů se stejným názvem v rů
     <message>
       <location filename="../preferences/Advanced.ui" line="117"/>
       <source>If OpenCAMLib is installed with Python bindings it can be used by some additional 3D operations. NOTE: Enabling OpenCAMLib here requires a restart of FreeCAD to take effect.</source>
-      <translation>Pokud je OpenCAMLib nainstalován s vazbou na Python, lze jej použít pro některé další 3D operace. POZNÁMKA: Povolení OpenCAMLib zde vyžaduje restart FreeCADu, aby se projevil.</translation>
+      <translation>Pokud je nainstalován OpenCAMLib s vazbou na Python, lze jej použít pro některé doplňkové 3D operace. POZNÁMKA: Povolení OpenCAMLib zde vyžaduje restart FreeCADu, aby se změna projevila.</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="86"/>
@@ -2939,7 +3020,7 @@ Pokud existuje více nástrojů nebo tvarů nástrojů se stejným názvem v rů
       <location filename="../panels/DogboneEdit.ui" line="35"/>
       <location filename="../panels/ZCorrectEdit.ui" line="35"/>
       <source>Dressup</source>
-      <translation>Obleč se</translation>
+      <translation>Dodatečná úprava</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="41"/>
@@ -3003,8 +3084,8 @@ Pokud existuje více nástrojů nebo tvarů nástrojů se stejným názvem v rů
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="114"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determines the incision length of the bone to be inserted into the profile.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;adaptive&lt;/span&gt; ... the length is adapted to cover the corner based on the angle of its edges, taking the current tool radius into account (default)&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;fixed&lt;/span&gt; ... is the same as adaptive for straight angles. For T-bones it&apos;s the radius of the tool (R) and for dogbones it&apos;s R * (2/√2 - 1).&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;custom&lt;/span&gt; ... let&apos;s you specify a custom (fixed) length below&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determines the incision length of the bone to be inserted into the profile.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;adaptive&lt;/span&gt; ... the length is adapted to cover the corner based on the angle of its edges, taking the current tool radius into account (default)&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;fixed&lt;/span&gt; ... is the same as adaptive for straight angles. For T-bones it&apos;s the radius of the tool (R) and for dogbones it&apos;s R * (2/√2 - 1).&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;custom&lt;/span&gt; ... let&apos;s you specify a custom (fixed) length below&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determines the incision length of the bone to be inserted into the profile.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;adaptive&lt;/span&gt; ... the length is adapted to cover the corner based on the angle of its edges, taking the current tool radius into account (default)&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;fixed&lt;/span&gt; ... is the same as adaptive for straight angles. For T-bones it&apos;s the radius of the tool (R) and for dogbones it&apos;s R * (2/√2 - 1).&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;custom&lt;/span&gt; ... lets you specify a custom (fixed) length below&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determines the incision length of the bone to be inserted into the profile.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;adaptive&lt;/span&gt; ... the length is adapted to cover the corner based on the angle of its edges, taking the current tool radius into account (default)&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;fixed&lt;/span&gt; ... is the same as adaptive for straight angles. For T-bones it&apos;s the radius of the tool (R) and for dogbones it&apos;s R * (2/√2 - 1).&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;custom&lt;/span&gt; ... lets you specify a custom (fixed) length below&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="121"/>
@@ -3099,12 +3180,12 @@ Pokud existuje více nástrojů nebo tvarů nástrojů se stejným názvem v rů
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="54"/>
       <source>Height of holding tag. Note that resulting tag might be smaller if the tag&apos;s width and angle result in a triangular shape.</source>
-      <translation type="unfinished">Height of holding tag. Note that resulting tag might be smaller if the tag&apos;s width and angle result in a triangular shape.</translation>
+      <translation>Výška upínací značky (tagu). Pozn.: výsledný tag může být nižší, pokud šířka tagu a jeho úhel vytvoří trojúhelníkový tvar.</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="61"/>
       <source>Plunge angle for ascent and descent of holding tag.</source>
-      <translation>Úhel zanoření pro výstup a sestup upevňovací značky.</translation>
+      <translation>Úhel zanoření pro stoupání a klesání upevňovacího tagu.</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="87"/>
@@ -3114,7 +3195,7 @@ Pokud existuje více nástrojů nebo tvarů nástrojů se stejným názvem v rů
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="97"/>
       <source>List of current tags. Edit coordinates by double click or Edit button. Tags are automatically disabled if they overlap with the previous tag, or don&apos;t lie on the base wire.</source>
-      <translation type="unfinished">List of current tags. Edit coordinates by double click or Edit button. Tags are automatically disabled if they overlap with the previous tag, or don&apos;t lie on the base wire.</translation>
+      <translation>Seznam aktuálních upínacích značek (tagů). Souřadnice upravte dvojklikem nebo tlačítkem Edit. Tagy jsou automaticky zakázány, pokud přesahují přes již existující tag nebo neleží na čáře základny.</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="116"/>
@@ -3165,12 +3246,12 @@ Pokud existuje více nástrojů nebo tvarů nástrojů se stejným názvem v rů
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="67"/>
       <source>Add item selected in window.</source>
-      <translation>Přidat položku vybranou v okně.</translation>
+      <translation>Vložit položku vybranou v okně.</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="70"/>
       <source>add</source>
-      <translation>přidat</translation>
+      <translation>vložit</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="77"/>
@@ -3220,7 +3301,7 @@ Pokud existuje více nástrojů nebo tvarů nástrojů se stejným názvem v rů
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="178"/>
       <source>Finish Step Down</source>
-      <translation>Dokončit krok dolů</translation>
+      <translation>Dokončovací krok dolů</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="198"/>
@@ -3235,7 +3316,7 @@ Pokud existuje více nástrojů nebo tvarů nástrojů se stejným názvem v rů
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="228"/>
       <source>Clearance Height</source>
-      <translation>Volná výška</translation>
+      <translation>Výška přejezdu</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="248"/>
@@ -3245,7 +3326,7 @@ Pokud existuje více nástrojů nebo tvarů nástrojů se stejným názvem v rů
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="263"/>
       <source>Tool Controller</source>
-      <translation>Správce nástrojů</translation>
+      <translation>Řadič nástrojů</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="280"/>
@@ -3389,12 +3470,12 @@ Pokud existuje více nástrojů nebo tvarů nástrojů se stejným názvem v rů
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="68"/>
       <source>Launch CAMotics</source>
-      <translation type="unfinished">Launch CAMotics</translation>
+      <translation>Spustit CAMotics</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="75"/>
       <source>Make CAMotics File</source>
-      <translation type="unfinished">Make CAMotics File</translation>
+      <translation>Vytvořit soubor CAMotics</translation>
     </message>
   </context>
   <context>
@@ -3417,12 +3498,12 @@ Pokud existuje více nástrojů nebo tvarů nástrojů se stejným názvem v rů
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="48"/>
       <source>Name</source>
-      <translation>Jméno</translation>
+      <translation>Název</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="61"/>
       <source>Display Name</source>
-      <translation>Zobrazit jméno</translation>
+      <translation>Zobrazit název</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="68"/>
@@ -3495,7 +3576,7 @@ Pokud existuje více nástrojů nebo tvarů nástrojů se stejným názvem v rů
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="51"/>
       <source>Library editor...</source>
-      <translation type="unfinished">Library editor...</translation>
+      <translation>Editor knihovny...</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="75"/>
@@ -3505,12 +3586,12 @@ Pokud existuje více nástrojů nebo tvarů nástrojů se stejným názvem v rů
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="98"/>
       <source>Create ToolControllers for the selected toolbits and add them to the Job</source>
-      <translation>Vytvořte ToolControllers pro vybrané nástroje a přidejte je do úlohy</translation>
+      <translation>Vytvořte Řadiče nástrojů pro vybrané nástroje a přidejte je do Úlohy</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="101"/>
       <source>Add To Job</source>
-      <translation>Přidat do úlohy</translation>
+      <translation>Vložit do Úlohy</translation>
     </message>
   </context>
   <context>
@@ -3533,7 +3614,7 @@ Pokud existuje více nástrojů nebo tvarů nástrojů se stejným názvem v rů
     <message>
       <location filename="../panels/PathEdit.ui" line="45"/>
       <source>Label</source>
-      <translation>Štítek</translation>
+      <translation>Popisek</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="57"/>
@@ -3565,7 +3646,7 @@ Pokud existuje více nástrojů nebo tvarů nástrojů se stejným názvem v rů
     <message>
       <location filename="../panels/PathEdit.ui" line="134"/>
       <source>Output File</source>
-      <translation>Výstupní s&amp;oubor</translation>
+      <translation>Výstupní soubor</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="141"/>
@@ -3594,31 +3675,29 @@ if %S is included, you can specify where the number occurs.  Without it, the num
 The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
 &quot;/home/cnc/%d.g-code&quot;
 See the file save policy below on how to deal with name conflicts.</source>
-      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
-The following substitutions are performed before the name is resolved at the time of the post processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
+      <translation>Zadejte umístění a, volitelně, název souboru (viz níže), který bude použit jako výchozí pro export postprocesoru.
+Pro vyhodnocení názvu souboru jsou při vyvolání samotného postprocesingu k dispozici následující substituce:
+%D ... adresář aktivního dokumentu
+%d ... název aktivního dokumentu (včetně přípony)
+%M ... adresář uživatelských maker
+%j ... název objektu aktivní Úlohy
 
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
+Pokud je výstup dělen do více souborů, je možné použít následující (pokud není výstup dělený, budou volby ignorovány).
+%T ... číslo nástroje
+%t ... popisek Tool Controlleru
 
-%W ... Work Coordinate System
-%O ... Operation Label
+%W ... pracovní souřadnicový systém
+%O ... popisek operace
 
-When splitting output, a sequence number will always be added.
+Při děleném výstupu je vždy automaticky přidáno pořadové číslo.
 
-if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.
+Parametr %S určuje, kde se pořadové číslo v názvu umístí. Bez tohoto parametru bude číslo na konci řetězce.
 
-%S ... Sequence Number
+%S ... pořadové číslo
 
-The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
+Následující příklad uloží všechny soubory pod názvem dokumentu do adresáře /home/freecad (prosím nezahrnujte uvozovky):
 &quot;/home/cnc/%d.g-code&quot;
-See the file save policy below on how to deal with name conflicts.</translation>
+Informace o řešení konfliktů názvů naleznete v zásadách ukládání souborů níže.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="179"/>
@@ -3659,20 +3738,25 @@ This is useful if the operator can safely load work into one coordinate system w
 Ordering by Tool, will minimize the Tool Changes. A tool change will be done, then all operations in all coordinate systems before changing tools.
 
 Ordering by operation will do each operation in all coordinate systems before moving to the next operation. This is especially useful in conjunction with the &apos;split output&apos; even with only a single work coordinate system since it will put each operation into a separate file.</source>
-      <translation type="unfinished">Ordering by Fixture, will cause all operations to be performed in the first coordinate system before switching to the second. Then all operations will be performed there in the same order.
+      <translation>Seřazením podle Upínače znamená, že všechny operace v prvním souřadnicovém systému budou provedeny před přechodem do druhého souř. systému. Tam budou poté všechny operace provedeny ve stejném pořadí.
 
-This is useful if the operator can safely load work into one coordinate system while the machine is doing work in another.
+To je užitečné, pokud může operátor bezpečně nahrát práci do jednoho souřad. systému, zatímco stroj pracuje v jiném.
 
-Ordering by Tool, will minimize the Tool Changes. A tool change will be done, then all operations in all coordinate systems before changing tools.
+Seřazením podle Nástroje se minimalizuje počet výměn nástroje. Bude provedena výměna nástroje a poté všechny operace v souřad. systému před další výměnou nástroje.
 
-Ordering by operation will do each operation in all coordinate systems before moving to the next operation. This is especially useful in conjunction with the &apos;split output&apos; even with only a single work coordinate system since it will put each operation into a separate file.</translation>
+Seřazením podle Operace se provede jednotlivá operace na všech souřad. systémech, a poté se přesune na další operaci. Toto je užitečné zvláště v kombinaci s &apos;dělený výstup&apos; i pouze s jedním pracovním souřad. systémem, protože každá operace bude uložena do samostatného souboru.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="254"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
 FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your G-code output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
-FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your G-code output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Pracovní souřadnicové systémy&lt;/span&gt; také zvané &lt;span style=&quot; font-style:italic;&quot;&gt;Pracovní offsety&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Upínací offsety&lt;/span&gt; nebo &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtury &lt;/span&gt;jsou užitečné pro sestavování účinných výrobních úloh, kdy je stejný díl zpracováván na stroji mnohokrát.
+FreeCAD nemá povědomí, kde se konkrétní souřadnicový systém na stroji nachází, takže přidání dalších souřadnicových systémů do vaší Úlohy nemá žádný viditelný efekt. Změní to ovšem váš výstupní G-kód. Přesný způsob, jakým je výstup G-kódu ovlivněn je řízen nastavením &apos;seřadit podle&apos;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../panels/PathEdit.ui" line="397"/>
+      <source>If multiple coordinate systems are in use, setting this to TRUE will cause the G-code to be written to multiple output files as controlled by the &apos;order by&apos; property. For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</source>
+      <translation type="unfinished">If multiple coordinate systems are in use, setting this to TRUE will cause the G-code to be written to multiple output files as controlled by the &apos;order by&apos; property. For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="409"/>
@@ -3697,7 +3781,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="478"/>
       <source>Create Box</source>
-      <translation>Vytvoř kvadr</translation>
+      <translation>Vytvořit kvádr</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="483"/>
@@ -3707,7 +3791,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="488"/>
       <source>Extend Model&apos;s Bounding Box</source>
-      <translation>Rozšířit ohraničující kvádr Modelu</translation>
+      <translation>Rozšířený kvádr ohraničující Model</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="493"/>
@@ -3722,7 +3806,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="514"/>
       <source>Assign Stock Material</source>
-      <translation type="unfinished">Assign Stock Material</translation>
+      <translation>Přiřadit materiál polotovaru</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="558"/>
@@ -3793,12 +3877,12 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="715"/>
       <source>X-Axis</source>
-      <translation>Osa x</translation>
+      <translation>Osa X</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="722"/>
       <source>Y-Axis</source>
-      <translation>Osa y</translation>
+      <translation>Osa Y</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="729"/>
@@ -3861,7 +3945,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
       <source>Expression set as ClearanceHeight for new operations.
 
 Default: &quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&quot;</source>
-      <translation>Výraz nastavený jako Světlá výška pro nové operace.
+      <translation>Výraz nastavený jako Přejezdová výška pro nové operace.
 
 Výchozí:
 &quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&quot;</translation>
@@ -3916,11 +4000,6 @@ Výchozí: &quot;5mm&quot;</translation>
       <translation>Konečná hloubka</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="397"/>
-      <source>If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the &apos;order by&apos; property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</source>
-      <translation type="unfinished">If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the &apos;order by&apos; property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</translation>
-    </message>
-    <message>
       <location filename="../panels/PathEdit.ui" line="400"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If True, post processing will create multiple output files based on the &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; setting.
 
@@ -3929,13 +4008,11 @@ For example, if &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/s
 
 
 If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is set to &lt;span style=&quot; font-style:italic;&quot;&gt;operation&lt;/span&gt; and &lt;span style=&quot; font-style:italic;&quot;&gt;split output&lt;/span&gt; is true, each operation will be written to a separate file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If True, post processing will create multiple output files based on the &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; setting.
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Je-li nastaveno, postprocesing vytvoří více výstupních souborů  na základě nastavení v &lt;span style=&quot; font-style:italic;&quot;&gt;seřadit podle&lt;/span&gt;.
 
+Například, pokud je &lt;span style=&quot; font-style:italic;&quot;&gt;seřadit podle&lt;/span&gt; nastaveno na Nástroj, první výstupní soubor bude obsahovat první změnu nástroje a všechny operace ve všech souřadnicových systémech, které je možné zpracovat tímto nástrojem, budou provedeny před další změnou nástroje.
 
-For example, if &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is set to Tool, the first output file will contain the first tool change and all operations, in all coordinate systems, that can be done with that tool before the next tool change is called.
-
-
-If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is set to &lt;span style=&quot; font-style:italic;&quot;&gt;operation&lt;/span&gt; and &lt;span style=&quot; font-style:italic;&quot;&gt;split output&lt;/span&gt; is true, each operation will be written to a separate file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+Pokud je &lt;span style=&quot; font-style:italic;&quot;&gt;seřadit podle&lt;/span&gt; nastaveno na &lt;span style=&quot; font-style:italic;&quot;&gt;Operace&lt;/span&gt; a &lt;span style=&quot; font-style:italic;&quot;&gt;dělený výstup&lt;/span&gt; je aktivní, každá operace bude zapsána do samostat. souboru.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1060"/>
@@ -4022,7 +4099,7 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="1257"/>
       <source>Name</source>
-      <translation>Jméno</translation>
+      <translation>Název</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1262"/>
@@ -4084,60 +4161,60 @@ Výchozí: 3 mm</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="195"/>
+      <location filename="../../../InitGui.py" line="211"/>
       <source>Project Setup</source>
       <translation>Nastavení projektu</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="196"/>
+      <location filename="../../../InitGui.py" line="212"/>
       <source>Tool Commands</source>
       <translation>Příkazy nástroje</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="198"/>
+      <location filename="../../../InitGui.py" line="214"/>
       <source>New Operations</source>
       <translation>Nová operace</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="201"/>
-      <location filename="../../../InitGui.py" line="235"/>
+      <location filename="../../../InitGui.py" line="218"/>
+      <location filename="../../../InitGui.py" line="254"/>
       <source>Path Modification</source>
       <translation>Úprava dráhy</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="203"/>
+      <location filename="../../../InitGui.py" line="221"/>
       <source>Helpful Tools</source>
       <translation>Užitečné nástroje</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="206"/>
-      <location filename="../../../InitGui.py" line="220"/>
-      <location filename="../../../InitGui.py" line="227"/>
-      <location filename="../../../InitGui.py" line="234"/>
-      <location filename="../../../InitGui.py" line="242"/>
-      <location filename="../../../InitGui.py" line="248"/>
-      <location filename="../../../InitGui.py" line="250"/>
+      <location filename="../../../InitGui.py" line="224"/>
+      <location filename="../../../InitGui.py" line="239"/>
+      <location filename="../../../InitGui.py" line="246"/>
       <location filename="../../../InitGui.py" line="253"/>
+      <location filename="../../../InitGui.py" line="261"/>
+      <location filename="../../../InitGui.py" line="267"/>
+      <location filename="../../../InitGui.py" line="269"/>
+      <location filename="../../../InitGui.py" line="272"/>
       <source>&amp;CAM</source>
       <translation>&amp;CAM</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="221"/>
+      <location filename="../../../InitGui.py" line="240"/>
       <source>Path Dressup</source>
       <translation>Path Dressup</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="228"/>
+      <location filename="../../../InitGui.py" line="247"/>
       <source>Supplemental Commands</source>
       <translation>Doplňkové příkazy</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="243"/>
+      <location filename="../../../InitGui.py" line="262"/>
       <source>Specialty Operations</source>
       <translation>Speciální operace</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="254"/>
+      <location filename="../../../InitGui.py" line="273"/>
       <source>Utils</source>
       <translation>Nástroje</translation>
     </message>
@@ -4147,7 +4224,7 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../../../Path/Base/Gui/IconViewProvider.py" line="97"/>
       <source>Edit</source>
-      <extracomment>int = field(default=None)</extracomment>
+      <extracomment>float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=None) bool = field(default=False) str = field(default=&quot;G54&quot;) str = field(default=&quot;off&quot;) int = field(default=0) int = field(default=None)</extracomment>
       <translation>Upravit</translation>
     </message>
     <message>
@@ -4163,37 +4240,37 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="84"/>
       <source>CAMotics Project (*.camotics)</source>
-      <translation type="unfinished">CAMotics Project (*.camotics)</translation>
+      <translation>Projekt CAMotics (*.camotics)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="706"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="689"/>
       <source>H</source>
       <comment>H is horizontal feed rate. Must be as short as possible</comment>
       <translation>H</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="709"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="692"/>
       <source>V</source>
       <comment>V is vertical feed rate. Must be as short as possible</comment>
       <translation>V</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="712"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="695"/>
       <source>Tool number</source>
       <translation>Číslo nástroje</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="715"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="698"/>
       <source>Horizontal feedrate</source>
       <translation>Horizontální posuv</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="718"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="701"/>
       <source>Vertical feedrate</source>
       <translation>Vertikální posuv</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="721"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="704"/>
       <source>Spindle RPM</source>
       <translation>Otáčky vřetena</translation>
     </message>
@@ -4205,7 +4282,7 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../../../PathScripts/PathUtils.py" line="542"/>
       <source>Invalid Cutting Edge Angle %.2f, must be &gt;0° and &lt;=180°</source>
-      <translation type="unfinished">Invalid Cutting Edge Angle %.2f, must be &gt;0° and &lt;=180°</translation>
+      <translation>Neplatný úhel řezné hrany %.2f, musí být &gt;0° a &lt;=180°</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathUtils.py" line="552"/>
@@ -4215,22 +4292,22 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../../../Path/Main/Gui/SanityCmd.py" line="75"/>
       <source>Save Sanity Check Report</source>
-      <translation type="unfinished">Save Sanity Check Report</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Deburr.py" line="181"/>
-      <source>Climb</source>
-      <translation>sousledně</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Deburr.py" line="182"/>
-      <source>Conventional</source>
-      <translation>nesousledně</translation>
+      <translation>Uložit report kontroly sanity</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathUtilsGui.py" line="89"/>
       <source>Choose a CAM Job</source>
       <translation>Vyberte CAM úlohu</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Deburr.py" line="181"/>
+      <source>CW</source>
+      <translation>Pravotočivý</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Deburr.py" line="182"/>
+      <source>CCW</source>
+      <translation>Levotočivý</translation>
     </message>
   </context>
   <context>
@@ -4298,7 +4375,7 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../../../Path/Base/SetupSheet.py" line="142"/>
       <source>The usage of this field depends on SafeHeightExpression - by default its value is added to the start depth and used for the safe height of an operation.</source>
-      <translation>The usage of this field depends on SafeHeightExpression - by default its value is added to the start depth and used for the safe height of an operation.</translation>
+      <translation>Použití tohoto pole závisí na SafeHeightExpression - ve výchozím stavu je hodnota pole přidána do startovní výšky a je použita jako Bezpečná výška v operaci.</translation>
     </message>
     <message>
       <location filename="../../../Path/Base/SetupSheet.py" line="148"/>
@@ -4308,7 +4385,7 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../../../Path/Base/SetupSheet.py" line="157"/>
       <source>The usage of this field depends on ClearanceHeightExpression - by default is value is added to the start depth and used for the clearance height of an operation.</source>
-      <translation>The usage of this field depends on ClearanceHeightExpression - by default is value is added to the start depth and used for the clearance height of an operation.</translation>
+      <translation>Použití tohoto pole závisí na ClearanceHeightExpression - ve výchozím stavu je hodnota pole přidána do startovní výšky a je použita jako Přejezdová výška v operaci.</translation>
     </message>
     <message>
       <location filename="../../../Path/Base/SetupSheet.py" line="166"/>
@@ -4347,6 +4424,12 @@ Výchozí: 3 mm</translation>
       <location filename="../../../Path/Dressup/Boundary.py" line="73"/>
       <source>Determines if Boundary describes an inclusion or exclusion mask.</source>
       <translation>Určuje, zda Hranice popisuje masku zahrnutí nebo vyloučení.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Boundary.py" line="83"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="107"/>
+      <source>Keep tool down.</source>
+      <translation type="unfinished">Keep tool down.</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/DogboneII.py" line="203"/>
@@ -4429,12 +4512,13 @@ Výchozí: 3 mm</translation>
       <translation>The radius of the wrapped axis</translation>
     </message>
     <message>
+      <location filename="../../../Path/Dressup/Array.py" line="42"/>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="58"/>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="61"/>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="57"/>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="62"/>
       <source>The base toolpath to modify</source>
-      <translation type="unfinished">The base toolpath to modify</translation>
+      <translation>Základní dráha pro k úpravě</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="67"/>
@@ -4464,27 +4548,27 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="67"/>
       <source>Calculate roll-on to toolpath</source>
-      <translation type="unfinished">Calculate roll-on to toolpath</translation>
+      <translation>Vypočítat příjezd k dráze nástroje</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="73"/>
       <source>Calculate roll-off from toolpath</source>
-      <translation type="unfinished">Calculate roll-off from toolpath</translation>
+      <translation>Vypočítat odjezd od dráhy nástroje</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="79"/>
       <source>Keep the Tool Down in toolpath</source>
-      <translation type="unfinished">Keep the Tool Down in toolpath</translation>
+      <translation>Držet nástroj dole v dráze nástroje</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="97"/>
       <source>The Style of motion into the toolpath</source>
-      <translation type="unfinished">The Style of motion into the toolpath</translation>
+      <translation>Styl pohybu k dráze nástroje</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="104"/>
       <source>The Style of motion out of the toolpath</source>
-      <translation type="unfinished">The Style of motion out of the toolpath</translation>
+      <translation>Styl pohybu od dráhy nástroje</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="111"/>
@@ -4638,6 +4722,9 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Base.py" line="186"/>
       <location filename="../../../Path/Op/Base.py" line="440"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="147"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="220"/>
+      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="79"/>
       <location filename="../../../Path/Main/Job.py" line="479"/>
       <source>Operations Cycle Time Estimation</source>
       <translation>Operations Cycle Time Estimation</translation>
@@ -4715,102 +4802,119 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Fixture.py" line="38"/>
       <source>Fixture Offset Number</source>
-      <translation>Číslo offsetu zařízení</translation>
+      <translation>Číslo offsetu upínače</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="168"/>
+      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="58"/>
       <location filename="../../../Path/Main/Gui/Fixture.py" line="63"/>
       <source>Make False, to prevent operation from generating code</source>
-      <translation>Make False, to prevent operation from generating code</translation>
+      <translation>Pro zabránění operaci v generování kódu, přepněte na False</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="908"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1392"/>
       <source>Side of selected faces that tool should cut</source>
       <translation>Side of selected faces that tool should cut</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="922"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1401"/>
       <source>Type of adaptive operation</source>
       <translation>Typ adaptivní operace</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="936"/>
-      <source>Influences accuracy and performance</source>
-      <translation>Influences accuracy and performance</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Helix.py" line="123"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="945"/>
+      <location filename="../../../Path/Op/Helix.py" line="169"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1419"/>
       <location filename="../../../Path/Op/PocketBase.py" line="152"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>Percent of cutter diameter to step over on each pass</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="954"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1428"/>
       <source>Lift distance for rapid moves</source>
       <translation>Vzdálenost zdvihu pro rychlé pohyby</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="963"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1437"/>
       <source>Max length of keep tool down path compared to direct distance between points</source>
       <translation>Max length of keep tool down path compared to direct distance between points</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="972"/>
-      <source>How much stock to leave (i.e. for finishing operation)</source>
-      <translation>Kolik zásob ponechat (tj. pro dokončovací operaci)</translation>
+      <location filename="../../../Path/Op/Adaptive.py" line="1410"/>
+      <source>Influences calculation performance vs stability and accuracy.
+
+Larger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.</source>
+      <translation type="unfinished">Influences calculation performance vs stability and accuracy.
+
+Larger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="981"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1446"/>
+      <source>How much stock to leave in the XY plane (eg for finishing operation)</source>
+      <translation type="unfinished">How much stock to leave in the XY plane (eg for finishing operation)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1455"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1655"/>
+      <source>How much stock to leave along the Z axis (eg for finishing operation)</source>
+      <translation type="unfinished">How much stock to leave along the Z axis (eg for finishing operation)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1464"/>
       <source>Force plunging into material inside and clearing towards the edges</source>
       <translation>Silové zanoření do materiálu uvnitř a čištění směrem k okrajům</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="990"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1473"/>
       <source>To take a finishing profile path at the end</source>
       <translation>To take a finishing profile path at the end</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="996"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1007"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1479"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1489"/>
       <source>Stop processing</source>
       <translation>Stop processing</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1018"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1499"/>
       <source>Use Arcs (G2) for helix ramp</source>
       <translation>Použijte Arcs (G2) pro spirálovou rampu</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1028"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1508"/>
       <source>Internal input state</source>
       <translation>Internal input state</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1037"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1517"/>
       <source>Internal output state</source>
       <translation>Internal output state</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1048"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1528"/>
       <source>Helix ramp entry angle (degrees)</source>
       <translation>Nájezdový úhel šroubovice (ve stupních)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1057"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1537"/>
       <source>Helix cone angle (degrees)</source>
       <translation>Úhel kužele šroubovice (stupně)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1066"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1546"/>
       <source>Limit helix entry diameter, if limit larger than tool diameter or 0, tool diameter is used</source>
       <translation>Limit helix entry diameter, if limit larger than tool diameter or 0, tool diameter is used</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1076"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1555"/>
       <location filename="../../../Path/Op/PocketShape.py" line="66"/>
       <source>Uses the outline of the base geometry.</source>
       <translation>Používá obrys základní geometrie.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1564"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1644"/>
+      <source>Orders cuts by region instead of depth.</source>
+      <translation type="unfinished">Orders cuts by region instead of depth.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Area.py" line="97"/>
@@ -4820,6 +4924,7 @@ Výchozí: 3 mm</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="115"/>
+      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="143"/>
       <source>The base geometry for this operation</source>
       <translation>The base geometry for this operation</translation>
     </message>
@@ -4835,6 +4940,7 @@ Výchozí: 3 mm</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="140"/>
+      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="101"/>
       <source>Holds the diameter of the tool</source>
       <translation>Drží průměr nástroje</translation>
     </message>
@@ -4850,11 +4956,13 @@ Výchozí: 3 mm</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="174"/>
+      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="65"/>
       <source>An optional comment for this Operation</source>
       <translation>Volitelný komentář pro tuto operaci</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="180"/>
+      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="72"/>
       <source>User Assigned Label</source>
       <translation>Uživatelem přiřazený štítek</translation>
     </message>
@@ -4865,6 +4973,7 @@ Výchozí: 3 mm</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="211"/>
+      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="95"/>
       <source>The tool controller that will be used to calculate the path</source>
       <translation>The tool controller that will be used to calculate the path</translation>
     </message>
@@ -4934,11 +5043,12 @@ Výchozí: 3 mm</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="420"/>
+      <location filename="../../../CAMTests/TestRefactoredTestPost.py" line="664"/>
       <source>Coolant option for this operation</source>
       <translation>Možnost chlazení pro tuto operaci</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="80"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="81"/>
       <source>List of disabled features</source>
       <translation>List of disabled features</translation>
     </message>
@@ -4955,22 +5065,22 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="131"/>
       <source>The additional depth of the toolpath</source>
-      <translation type="unfinished">The additional depth of the toolpath</translation>
+      <translation>Přídavná hloubka dráhy nástroje</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="145"/>
       <source>Direction of toolpath</source>
-      <translation type="unfinished">Direction of toolpath</translation>
+      <translation>Směr dráhy nástroje</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="152"/>
       <source>Side of base object</source>
-      <translation type="unfinished">Side of base object</translation>
+      <translation>Strana základního objektu</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="160"/>
       <source>The segment where the toolpath starts</source>
-      <translation type="unfinished">The segment where the toolpath starts</translation>
+      <translation>Segment, kde začíná dráha nástroje</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="137"/>
@@ -4987,7 +5097,7 @@ Výchozí: 3 mm</translation>
       <location filename="../../../Path/Op/Drilling.py" line="110"/>
       <location filename="../../../Path/Op/Drilling.py" line="194"/>
       <source>Use G85 boring cycle with feed out</source>
-      <translation type="unfinished">Use G85 boring cycle with feed out</translation>
+      <translation>Použít G85 vyvrtávací cyklus s feed out</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="122"/>
@@ -5006,11 +5116,13 @@ Výchozí: 3 mm</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="146"/>
+      <location filename="../../../Path/Op/Tapping.py" line="109"/>
       <source>Enable dwell</source>
       <translation>Povolit setrvání</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="155"/>
+      <location filename="../../../Path/Op/Tapping.py" line="118"/>
       <source>Calculate the tip length and subtract from final depth</source>
       <translation>Vypočítejte délku hrotu a odečtěte od konečné hloubky</translation>
     </message>
@@ -5042,12 +5154,12 @@ Výchozí: 3 mm</translation>
       <location filename="../../../Path/Op/Engrave.py" line="69"/>
       <location filename="../../../Path/Op/Engrave.py" line="77"/>
       <source>Additional base objects to be engraved</source>
-      <translation>Další základní předměty, které mají být vyryty</translation>
+      <translation>Dodatečné základní objekty ke gravírování</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Engrave.py" line="87"/>
       <source>The vertex index to start the toolpath from</source>
-      <translation type="unfinished">The vertex index to start the toolpath from</translation>
+      <translation>Index vrcholu, od kterého začíná dráha nástroje</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/FeatureExtension.py" line="477"/>
@@ -5065,25 +5177,31 @@ Výchozí: 3 mm</translation>
       <translation>When enabled connected extension edges are combined to wires.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="107"/>
+      <location filename="../../../Path/Op/Helix.py" line="160"/>
+      <location filename="../../../Path/Op/Helix.py" line="222"/>
       <source>The direction of the circular cuts, ClockWise (Climb), or CounterClockWise (Conventional)</source>
-      <translation type="unfinished">The direction of the circular cuts, ClockWise (Climb), or CounterClockWise (Conventional)</translation>
+      <translation>Orientace kruhových výřezů, sousledně (Climb) nebo nesousledně (Conventional)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="114"/>
+      <location filename="../../../Path/Op/Helix.py" line="149"/>
       <source>Start cutting from the inside or outside</source>
       <translation>Start cutting from the inside or outside</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="129"/>
-      <location filename="../../../Path/Op/Helix.py" line="152"/>
+      <location filename="../../../Path/Op/Helix.py" line="140"/>
+      <source>The direction of the circular cuts, ClockWise (CW), or CounterClockWise (CCW)</source>
+      <translation type="unfinished">The direction of the circular cuts, ClockWise (CW), or CounterClockWise (CCW)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Helix.py" line="175"/>
+      <location filename="../../../Path/Op/Helix.py" line="198"/>
       <source>Starting Radius</source>
       <translation>Starting Radius</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="141"/>
-      <location filename="../../../Path/Op/Helix.py" line="138"/>
-      <location filename="../../../Path/Op/Helix.py" line="163"/>
+      <location filename="../../../Path/Op/Helix.py" line="184"/>
+      <location filename="../../../Path/Op/Helix.py" line="209"/>
       <source>Extra value to stay away from final profile- good for roughing toolpath</source>
       <translation>Mimořádná hodnota pro udržení vzdálenosti od konečného profilu – dobré pro hrubování dráhy nástroje</translation>
     </message>
@@ -5195,8 +5313,8 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="106"/>
       <location filename="../../../Path/Op/PocketBase.py" line="129"/>
-      <source>The direction that the toolpath should go around the part ClockWise (Climb) or CounterClockWise (Conventional)</source>
-      <translation type="unfinished">The direction that the toolpath should go around the part ClockWise (Climb) or CounterClockWise (Conventional)</translation>
+      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
+      <translation type="unfinished">The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="124"/>
@@ -5234,6 +5352,22 @@ Výchozí: 3 mm</translation>
       <translation>Make True, if using Cutter Radius Compensation</translation>
     </message>
     <message>
+      <location filename="../../../Path/Op/Profile.py" line="182"/>
+      <source>The number of passes to do. If more than one, requires a non-zero value for Stepover</source>
+      <translation type="unfinished">The number of passes to do. If more than one, requires a non-zero value for Stepover</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Profile.py" line="191"/>
+      <location filename="../../../Path/Op/Profile.py" line="336"/>
+      <source>If doing multiple passes, the extra offset of each additional pass</source>
+      <translation type="unfinished">If doing multiple passes, the extra offset of each additional pass</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Profile.py" line="326"/>
+      <source>The number of passes to do. Requires a non-zero value for Stepover</source>
+      <translation type="unfinished">The number of passes to do. Requires a non-zero value for Stepover</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Op/Surface.py" line="125"/>
       <location filename="../../../Path/Op/Waterline.py" line="203"/>
       <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
@@ -5256,32 +5390,32 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="122"/>
       <source>Show the temporary toolpath construction objects when module is in DEBUG mode.</source>
-      <translation type="unfinished">Show the temporary toolpath construction objects when module is in DEBUG mode.</translation>
+      <translation>Zobrazit dočasné konstrukční objekty dráhy nástroje, když je module v DEBUG módu.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="130"/>
       <source>Enter custom start point for slot toolpath.</source>
-      <translation type="unfinished">Enter custom start point for slot toolpath.</translation>
+      <translation>Zadat vlastní počátek pro dráhu drážky.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="138"/>
       <source>Enter custom end point for slot toolpath.</source>
-      <translation type="unfinished">Enter custom end point for slot toolpath.</translation>
+      <translation>Zadat vlastní koncový bod pro dráhu drážky.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="156"/>
       <source>Positive extends the beginning of the toolpath, negative shortens.</source>
-      <translation type="unfinished">Positive extends the beginning of the toolpath, negative shortens.</translation>
+      <translation>Kladná hodnota prodlouží začátek dráhy, záporná jej zkrátí.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="165"/>
       <source>Positive extends the end of the toolpath, negative shortens.</source>
-      <translation type="unfinished">Positive extends the end of the toolpath, negative shortens.</translation>
+      <translation>Kladná hodnota prodlouží konec dráhy, záporná jej zkrátí.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="183"/>
       <source>Choose the toolpath orientation with regard to the feature(s) selected.</source>
-      <translation type="unfinished">Choose the toolpath orientation with regard to the feature(s) selected.</translation>
+      <translation>Zvolte orientaci dráhy nástroje vzhledem v vybraným prvkům.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="192"/>
@@ -5296,17 +5430,17 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="210"/>
       <source>For arcs/circular edges, offset the radius for the toolpath.</source>
-      <translation type="unfinished">For arcs/circular edges, offset the radius for the toolpath.</translation>
+      <translation>Odsadit poloměr dráhy nástroje pro obloukové/kruhové hrany.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="219"/>
       <source>Enable to reverse the cut direction of the slot toolpath.</source>
-      <translation type="unfinished">Enable to reverse the cut direction of the slot toolpath.</translation>
+      <translation>Povolit obrácení směru řezu pro dráhu drážky.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="228"/>
       <source>The custom start point for the toolpath of this operation</source>
-      <translation type="unfinished">The custom start point for the toolpath of this operation</translation>
+      <translation>Vlastní počátek dráhy nástroje pro tuto operaci</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="409"/>
@@ -5419,7 +5553,7 @@ Výchozí: 3 mm</translation>
       <location filename="../../../Path/Op/Surface.py" line="307"/>
       <location filename="../../../Path/Op/Waterline.py" line="353"/>
       <source>Set the Z-axis depth offset from the target surface.</source>
-      <translation>Nastavit hloubkový posun osy Z od cílového povrchu.</translation>
+      <translation>Nastavit odsazení od cílového povrchu v ose Z.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="322"/>
@@ -5436,7 +5570,7 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="337"/>
       <source>Profile the edges of the selection.</source>
-      <translation>Profil hran ve výběru.</translation>
+      <translation>Profilovat hrany ve výběru.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="346"/>
@@ -5448,7 +5582,7 @@ Výchozí: 3 mm</translation>
       <location filename="../../../Path/Op/Surface.py" line="355"/>
       <location filename="../../../Path/Op/Waterline.py" line="401"/>
       <source>Set the stepover percentage, based on the tool&apos;s diameter.</source>
-      <translation type="unfinished">Set the stepover percentage, based on the tool&apos;s diameter.</translation>
+      <translation>Nastavit procento překrytí na základě průměru nástroje.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="364"/>
@@ -5497,22 +5631,22 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="347"/>
       <source>Set thread&apos;s major diameter</source>
-      <translation type="unfinished">Set thread&apos;s major diameter</translation>
+      <translation>Nastavit hlavní průměr závitu (přes vrcholy závitu)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="353"/>
       <source>Set thread&apos;s minor diameter</source>
-      <translation type="unfinished">Set thread&apos;s minor diameter</translation>
+      <translation>Nastavit vedlejší průměr závitu (přes základny závitu)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="359"/>
       <source>Set thread&apos;s pitch - used for metric threads</source>
-      <translation type="unfinished">Set thread&apos;s pitch - used for metric threads</translation>
+      <translation>Nastavit stoupání závitu - použito pro metrické závity</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="368"/>
       <source>Set thread&apos;s TPI (turns per inch) - used for imperial threads</source>
-      <translation type="unfinished">Set thread&apos;s TPI (turns per inch) - used for imperial threads</translation>
+      <translation>Nastavit TPI (turns per inch) - použito pro imperiální závity</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="377"/>
@@ -5540,34 +5674,34 @@ Výchozí: 3 mm</translation>
       <translation>Operation to clear the inside of the thread</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="291"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="293"/>
       <source>Optimize movements</source>
       <translation>Optimalizuj pohyby</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="298"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="302"/>
       <source>Add finishing pass</source>
-      <translation type="unfinished">Add finishing pass</translation>
+      <translation>Vložit dokončovací průchod</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="305"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="311"/>
       <source>Finishing pass Z offset</source>
       <translation>Z-offset Dokončovacího průchodu</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="317"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="322"/>
       <source>The deflection value for discretizing arcs</source>
       <translation>The deflection value for discretizing arcs</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="327"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="332"/>
       <source>Cutoff for removing colinear segments (degrees).
                         default=10.0.</source>
       <translation>Cutoff pro odstranění kolineárních segmentů (stupňů).
                         výchozí = 10,0.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="333"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="338"/>
       <source>Vcarve Tolerance</source>
       <translation>Vcarve Tolerance</translation>
     </message>
@@ -5597,68 +5731,79 @@ Výchozí: 3 mm</translation>
       <translation>Vnější čáry ponoru nad touto výškou ignorujte.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="45"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="48"/>
       <source>The toolpath(s) to array</source>
       <translation>Dráha(y) nástroje do pole</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="51"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="54"/>
+      <location filename="../../../Path/Dressup/Array.py" line="48"/>
       <source>Pattern method</source>
       <translation>Pattern method</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="60"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="63"/>
+      <location filename="../../../Path/Dressup/Array.py" line="57"/>
       <source>The spacing between the array copies in Linear pattern</source>
       <translation>The spacing between the array copies in Linear pattern</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="68"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="71"/>
+      <location filename="../../../Path/Dressup/Array.py" line="65"/>
       <source>The number of copies in X direction in Linear pattern</source>
       <translation>The number of copies in X direction in Linear pattern</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="76"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="79"/>
+      <location filename="../../../Path/Dressup/Array.py" line="73"/>
       <source>The number of copies in Y direction in Linear pattern</source>
       <translation>The number of copies in Y direction in Linear pattern</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="82"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="85"/>
+      <location filename="../../../Path/Dressup/Array.py" line="79"/>
       <source>Total angle in Polar pattern</source>
       <translation>Total angle in Polar pattern</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="90"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="93"/>
+      <location filename="../../../Path/Dressup/Array.py" line="87"/>
       <source>The number of copies in Linear 1D and Polar pattern</source>
       <translation>The number of copies in Linear 1D and Polar pattern</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="96"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="99"/>
+      <location filename="../../../Path/Dressup/Array.py" line="93"/>
       <source>The centre of rotation in Polar pattern</source>
       <translation>The centre of rotation in Polar pattern</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="105"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="108"/>
+      <location filename="../../../Path/Dressup/Array.py" line="102"/>
       <source>Make copies in X direction before Y in Linear 2D pattern</source>
       <translation>Make copies in X direction before Y in Linear 2D pattern</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="111"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="114"/>
+      <location filename="../../../Path/Dressup/Array.py" line="108"/>
       <source>Percent of copies to randomly offset</source>
       <translation>Percent of copies to randomly offset</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="117"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="120"/>
+      <location filename="../../../Path/Dressup/Array.py" line="114"/>
       <source>Maximum random offset of copies</source>
       <translation>Maximum random offset of copies</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="123"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="169"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="126"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="211"/>
+      <location filename="../../../Path/Dressup/Array.py" line="120"/>
       <source>Seed value for jitter randomness</source>
       <translation>Seed value for jitter randomness</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="132"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="135"/>
       <location filename="../../../Path/Op/Gui/Copy.py" line="50"/>
       <source>The tool controller that will be used to calculate the toolpath</source>
       <translation>Zásobník nástrojů, který bude použit pro výpočet dráhy</translation>
@@ -5671,7 +5816,7 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Stop.py" line="40"/>
       <source>Add Optional or Mandatory Stop to the program</source>
-      <translation>Přidejte do programu volitelné nebo povinné zastavení</translation>
+      <translation>Vložit do programu volitelné nebo povinné zastavení</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Bit.py" line="144"/>
@@ -5744,18 +5889,38 @@ Výchozí: 3 mm</translation>
       <source>The toolpath to be copied</source>
       <translation>Kopírovaná dráha</translation>
     </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="103"/>
+      <source>The time to dwell at bottom of tapping cycle</source>
+      <translation type="unfinished">The time to dwell at bottom of tapping cycle</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="124"/>
+      <source>Controls how tool retracts Default=G98</source>
+      <translation type="unfinished">Controls how tool retracts Default=G98</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="133"/>
+      <source>The height where feed starts and height during retract tool when path is finished while in a peck operation</source>
+      <translation type="unfinished">The height where feed starts and height during retract tool when path is finished while in a peck operation</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="139"/>
+      <source>How far the tap depth is extended</source>
+      <translation type="unfinished">How far the tap depth is extended</translation>
+    </message>
   </context>
   <context>
     <name>PathJob</name>
     <message>
       <location filename="../../../Path/Dressup/Gui/Boundary.py" line="160"/>
       <source>Unsupported stock object %s</source>
-      <translation>Unsupported stock object %s</translation>
+      <translation>Nepodporovaný polotovar %s</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Boundary.py" line="176"/>
       <source>Unsupported stock type %s (%d)</source>
-      <translation>Unsupported stock type %s (%d)</translation>
+      <translation>Nepodporovaný typ polotovaru %s (%d)</translation>
     </message>
   </context>
   <context>
@@ -5771,12 +5936,12 @@ Výchozí: 3 mm</translation>
       <translation type="unfinished">Stock Material property is deprecated. Removing the Material property. Please use native material system to assign a ShapeMaterial</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="591"/>
+      <location filename="../../../Path/Main/Stock.py" line="592"/>
       <source>Unsupported stock type named {}</source>
       <translation>Unsupported stock type named {}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="595"/>
+      <location filename="../../../Path/Main/Stock.py" line="596"/>
       <source>Unsupported PathStock template version {}</source>
       <translation>Unsupported PathStock template version {}</translation>
     </message>
@@ -5817,64 +5982,64 @@ Výchozí: 3 mm</translation>
   <context>
     <name>PathProfile</name>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="204"/>
-      <location filename="../../../Path/Op/Helix.py" line="75"/>
+      <location filename="../../../Path/Op/Profile.py" line="222"/>
+      <location filename="../../../Path/Op/Helix.py" line="104"/>
       <source>Outside</source>
       <translation>Vně</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="205"/>
-      <location filename="../../../Path/Op/Helix.py" line="76"/>
+      <location filename="../../../Path/Op/Profile.py" line="223"/>
+      <location filename="../../../Path/Op/Helix.py" line="105"/>
       <source>Inside</source>
       <translation>Uvnitř</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="191"/>
-      <source>Climb</source>
-      <translation>sousledně</translation>
+      <location filename="../../../Path/Op/Profile.py" line="209"/>
+      <source>CW</source>
+      <translation>Pravotočivý</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="192"/>
-      <source>Conventional</source>
-      <translation>nesousledně</translation>
+      <location filename="../../../Path/Op/Profile.py" line="210"/>
+      <source>CCW</source>
+      <translation>Levotočivý</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="195"/>
+      <location filename="../../../Path/Op/Profile.py" line="213"/>
       <source>Collectively</source>
       <translation>Dohromady</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="196"/>
+      <location filename="../../../Path/Op/Profile.py" line="214"/>
       <source>Individually</source>
       <translation>Jednotlivě</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="199"/>
+      <location filename="../../../Path/Op/Profile.py" line="217"/>
       <source>Round</source>
       <translation>Kruh</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="200"/>
+      <location filename="../../../Path/Op/Profile.py" line="218"/>
       <source>Square</source>
       <translation>Čtverec</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="201"/>
+      <location filename="../../../Path/Op/Profile.py" line="219"/>
       <source>Miter</source>
       <translation>Miter</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="380"/>
+      <location filename="../../../Path/Op/Profile.py" line="442"/>
       <source>The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</source>
       <translation>The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="480"/>
+      <location filename="../../../Path/Op/Profile.py" line="542"/>
       <source>Unable to create path for face(s).</source>
       <translation>Unable to create path for face(s).</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="619"/>
+      <location filename="../../../Path/Op/Profile.py" line="685"/>
       <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
       <translation>Zkontrolujte výběr hran a požadavky na konečnou hloubku pro profilování otevřených hran.</translation>
     </message>
@@ -5897,7 +6062,7 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="42"/>
       <source>This operation requires OpenCamLib to be installed.</source>
-      <translation>This operation requires OpenCamLib to be installed.</translation>
+      <translation>Tato operace vyžaduje instalaci OpenCamLib.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="544"/>
@@ -5912,7 +6077,7 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="768"/>
       <source>No job</source>
-      <translation type="unfinished">No job</translation>
+      <translation>Žádná úloha</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="793"/>
@@ -6021,7 +6186,7 @@ Výchozí: 3 mm</translation>
   <context>
     <name>PathVcarve</name>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="571"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="584"/>
       <source>The Job Base Object has no engraveable element. Engraving operation will produce no output.</source>
       <translation>The Job Base Object has no engraveable element. Engraving operation will produce no output.</translation>
     </message>
@@ -6031,7 +6196,7 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="42"/>
       <source>This operation requires OpenCamLib to be installed.</source>
-      <translation>This operation requires OpenCamLib to be installed.</translation>
+      <translation>Tato operace vyžaduje instalaci OpenCamLib.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="96"/>
@@ -6056,12 +6221,12 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="104"/>
       <source>CenterOfMass</source>
-      <translation>CenterOfMass</translation>
+      <translation>Těžiště</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="105"/>
       <source>CenterOfBoundBox</source>
-      <translation>CenterOfBoundBox</translation>
+      <translation>Střed opsaného kvádru</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="106"/>
@@ -6100,7 +6265,7 @@ Výchozí: 3 mm</translation>
       <location filename="../../../Path/Op/Waterline.py" line="114"/>
       <location filename="../../../Path/Op/Waterline.py" line="127"/>
       <source>Offset</source>
-      <translation>Odstup</translation>
+      <translation>Odsazení</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="115"/>
@@ -6155,7 +6320,7 @@ Výchozí: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="187"/>
       <source>New property added to</source>
-      <translation>New property added to</translation>
+      <translation>Nová vlastnost vložena do</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="189"/>
@@ -6217,10 +6382,10 @@ Výchozí: 3 mm</translation>
   <context>
     <name>PathOp</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="138"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="199"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="141"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="202"/>
       <source>Make False, to prevent operation from generating code</source>
-      <translation>Make False, to prevent operation from generating code</translation>
+      <translation>Pro zabránění operaci v generování kódu, přepněte na False</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="189"/>
@@ -6228,72 +6393,72 @@ Výchozí: 3 mm</translation>
       <translation>Upravit</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="501"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="504"/>
       <source>Base Geometry</source>
       <translation>Základní geometrie</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="620"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="623"/>
       <source>Multiple operations are labeled as</source>
       <translation>Multiple operations are labeled as</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="693"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="696"/>
       <source>Base Location</source>
       <translation>Umístění základny</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="806"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="809"/>
       <source>Heights</source>
       <translation>Výšky</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="876"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="879"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>FinalDepth nelze pro tuto operaci upravit.
 Pokud je nutné nastavit FinalDepth ručně, vyberte prosím jinou operaci.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="899"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="902"/>
       <source>Depths</source>
       <translation>Hloubky</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1000"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1003"/>
       <source>Diameters</source>
       <translation>Průměry</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1032"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1035"/>
       <source>AreaOp Operation</source>
       <translation>Operace AreaOp</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1093"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1096"/>
       <source>Operation</source>
       <translation>Operace</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1158"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1161"/>
       <source>Uncreate AreaOp Operation</source>
       <translation>Uncreate AreaOp Operation</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1292"/>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1293"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1295"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1296"/>
       <source>Pick Start Point</source>
       <translation>Vybrat počáteční bod</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1334"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1343"/>
       <source>No suitable tool controller found.
 Aborting op creation</source>
       <translation>No suitable tool controller found.
 Aborting op creation</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1338"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1347"/>
       <source>No tool controller, aborting op creation</source>
       <translation>No tool controller, aborting op creation</translation>
     </message>
@@ -6301,14 +6466,20 @@ Aborting op creation</translation>
   <context>
     <name>PathArray</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="301"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="341"/>
+      <location filename="../../../Path/Dressup/Array.py" line="295"/>
       <source>No base objects for PathArray.</source>
       <translation>No base objects for PathArray.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="322"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="362"/>
       <source>Arrays of toolpaths having different tool controllers are handled according to the tool controller of the first path.</source>
       <translation>Pole drah, které mají různé zásobníky nástrojů, se zpracovávají podle zásobníku nástroje první dráhy.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Array.py" line="214"/>
+      <source>Base is empty or an invalid object.</source>
+      <translation type="unfinished">Base is empty or an invalid object.</translation>
     </message>
   </context>
   <context>
@@ -6339,7 +6510,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="186"/>
       <source>Invalid G-code line: %s</source>
-      <translation type="unfinished">Invalid G-code line: %s</translation>
+      <translation>Neplatný řádek G-kódu: %s</translation>
     </message>
   </context>
   <context>
@@ -6347,7 +6518,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../InitGui.py" line="88"/>
       <location filename="../../../InitGui.py" line="92"/>
-      <location filename="../../../InitGui.py" line="271"/>
+      <location filename="../../../InitGui.py" line="290"/>
       <location filename="../../AppPathGui.cpp" line="91"/>
       <source>CAM</source>
       <translation>CAM</translation>
@@ -6356,7 +6527,7 @@ Aborting op creation</translation>
   <context>
     <name>CAM_EngraveTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="145"/>
+      <location filename="../../../InitGui.py" line="146"/>
       <source>Engraving Operations</source>
       <translation>Operace obrábění po křivce</translation>
     </message>
@@ -6364,7 +6535,7 @@ Aborting op creation</translation>
   <context>
     <name>CAM_3dTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="188"/>
+      <location filename="../../../InitGui.py" line="204"/>
       <source>3D Operations</source>
       <translation>3D Operace</translation>
     </message>
@@ -6524,7 +6695,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="454"/>
       <source>LeadInOut</source>
-      <translation>LeadInInut</translation>
+      <translation>Zajetí/Vyjetí</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="458"/>
@@ -6544,7 +6715,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="482"/>
       <source>Please select a Profile object</source>
-      <translation>Vyberte objekt profilu</translation>
+      <translation>Vyberte objekt Profilování</translation>
     </message>
   </context>
   <context>
@@ -6563,7 +6734,7 @@ Aborting op creation</translation>
   <context>
     <name>CAM_DressupPathBoundary</name>
     <message>
-      <location filename="../../../Path/Dressup/Boundary.py" line="290"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="332"/>
       <source>The selected object is not a path</source>
       <translation>Vybraný objekt není dráha</translation>
     </message>
@@ -6598,22 +6769,22 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Dressup/Tags.py" line="1310"/>
       <source>Please select a Profile object</source>
-      <translation>Vyberte objekt profilu</translation>
+      <translation>Vyberte objekt Profilování</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/TagPreferences.py" line="82"/>
       <source>Holding Tag</source>
-      <translation>Podržte štítek</translation>
+      <translation>Upínací výstupek</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Tags.py" line="550"/>
       <source>Tag</source>
-      <translation>Štítek</translation>
+      <translation>Výstupek</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Tags.py" line="553"/>
       <source>Creates a Tag Dress-up object from a selected toolpath</source>
-      <translation type="unfinished">Creates a Tag Dress-up object from a selected toolpath</translation>
+      <translation>Vytvoří objekt tagu (sloupku) z vybrané trajektorie</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Tags.py" line="567"/>
@@ -6671,7 +6842,7 @@ Aborting op creation</translation>
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="1326"/>
       <location filename="../../../Path/Dressup/Gui/DogboneII.py" line="327"/>
       <source>Creates a Dogbone Dress-up object from a selected toolpath</source>
-      <translation type="unfinished">Creates a Dogbone Dress-up object from a selected toolpath</translation>
+      <translation>Vytvoří dress-up objekt "Psí kost" (vybrání rohů) z vybrané trajektorie</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="1342"/>
@@ -6696,7 +6867,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="583"/>
       <source>Modifies a toolpath to add dragknife corner actions</source>
-      <translation type="unfinished">Modifies a toolpath to add dragknife corner actions</translation>
+      <translation>Upraví dráhu nástroje pro vložení rohových akcí taženého nože.</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="599"/>
@@ -6767,12 +6938,12 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="864"/>
       <source>RampEntry</source>
-      <translation>vstup po rampě</translation>
+      <translation>Vstup po rampě</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="868"/>
       <source>Creates a Ramp Entry Dress-up object from a selected toolpath</source>
-      <translation type="unfinished">Creates a Ramp Entry Dress-up object from a selected toolpath</translation>
+      <translation>Vytvoří dress-up objekt Nájezd po rampě z vybrané trajektorie</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="883"/>
@@ -6787,7 +6958,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="893"/>
       <source>Please select a Profile object</source>
-      <translation>Vyberte objekt profilu</translation>
+      <translation>Vyberte objekt Profilování</translation>
     </message>
   </context>
   <context>
@@ -6806,7 +6977,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Probe.py" line="104"/>
       <source>Select Output File</source>
-      <translation>Select Output File</translation>
+      <translation>Vyberte výstupní soubor</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Probe.py" line="118"/>
@@ -6851,7 +7022,7 @@ Aborting op creation</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="254"/>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="85"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="63"/>
       <source>2D</source>
       <translation>2D</translation>
     </message>
@@ -6871,76 +7042,75 @@ Aborting op creation</translation>
       <translation>Víceosé</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="346"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="320"/>
       <source>Edit</source>
       <translation>Upravit</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="615"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="592"/>
       <source>Stock not a cylinder!</source>
       <translation>Polotovar není válec!</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1012"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="995"/>
       <source>Select Output File</source>
-      <translation>Select Output File</translation>
+      <translation>Vyberte výstupní soubor</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1014"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="997"/>
       <source>All Files (*.*)</source>
       <translation>Všechny soubory (*.*)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1370"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1353"/>
       <source>Unsupported stock object %s</source>
-      <translation>Unsupported stock object %s</translation>
+      <translation>Nepodporovaný polotovar %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1386"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1369"/>
       <source>Unsupported stock type %s (%d)</source>
-      <translation>Unsupported stock type %s (%d)</translation>
+      <translation>Nepodporovaný typ polotovaru %s (%d)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1477"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1460"/>
       <source>Model Selection</source>
       <translation>Výběr modelu</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="71"/>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1632"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1615"/>
       <source>Warning</source>
       <translation>Varování</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1633"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1616"/>
       <source>Please add one.</source>
-      <translation>Please add one.</translation>
+      <translation>Prosím vložte jednu.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="73"/>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1634"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="116"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1617"/>
       <source>Ok</source>
       <translation>Budiž</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1636"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1619"/>
       <source>Add</source>
       <translation>Přidat</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1647"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1630"/>
       <source>This job has no base model.</source>
       <translation>This job has no base model.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1654"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1637"/>
       <source>This job has no tool.</source>
       <translation>This job has no tool.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobCmd.py" line="57"/>
       <source>Job</source>
-      <translation>úloha</translation>
+      <translation>Úloha</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobCmd.py" line="59"/>
@@ -6948,72 +7118,52 @@ Aborting op creation</translation>
       <translation>Vytvořit CAM operaci</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="69"/>
-      <source>The currently selected unit schema:
-     &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values.
-
-CNC machines require feed rate to be expressed in
-unit/minute. To ensure correct G-code:
-Select a minute-based schema in preferences.
-For example:
-    &apos;Metric, Small Parts &amp; CNC&apos;
-    &apos;US Customary&apos;
-    &apos;Imperial Decimal&apos;</source>
-      <translation type="unfinished">The currently selected unit schema:
-     &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values.
-
-CNC machines require feed rate to be expressed in
-unit/minute. To ensure correct G-code:
-Select a minute-based schema in preferences.
-For example:
-    &apos;Metric, Small Parts &amp; CNC&apos;
-    &apos;US Customary&apos;
-    &apos;Imperial Decimal&apos;</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="75"/>
-      <source>Don&apos;t Show This Anymore</source>
-      <translation type="unfinished">Don&apos;t Show This Anymore</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="84"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="62"/>
       <source>Solids</source>
       <translation>Tělesa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="86"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="64"/>
       <source>Jobs</source>
       <translation>Úlohy</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="183"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="86"/>
+      <source>Warning: Incompatible Unit Schema</source>
+      <translation type="unfinished">Warning: Incompatible Unit Schema</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="118"/>
+      <source>Don&apos;t show this warning again</source>
+      <translation type="unfinished">Don&apos;t show this warning again</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="214"/>
       <source>Model</source>
       <translation>Model</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="184"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="215"/>
       <source>Count</source>
       <translation>Počet</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="266"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="297"/>
       <source>&lt;none&gt;</source>
       <translation type="unfinished">&lt;none&gt;</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="348"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="379"/>
       <source>Base -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f</source>
       <translation>Základ -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="358"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="389"/>
       <source>Box: %.2f x %.2f x %.2f</source>
       <translation>Pole: %.2f x %.2f x %.2f</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="373"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="404"/>
       <source>Unsupported stock type</source>
       <translation>Unsupported stock type</translation>
     </message>
@@ -7028,7 +7178,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Gui/Fixture.py" line="154"/>
       <source>Creates a Fixture Offset</source>
-      <translation>Vytvoří odsazení zařízení</translation>
+      <translation>Vytvoří offset upínače</translation>
     </message>
   </context>
   <context>
@@ -7037,8 +7187,8 @@ For example:
       <location filename="../../../Path/Main/Gui/Inspect.py" line="132"/>
       <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
  Values will be converted to the desired unit during post processing.</source>
-      <translation type="unfinished">&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
- Values will be converted to the desired unit during post processing.</translation>
+      <translation>&lt;b&gt;Poznámka&lt;/b&gt;: Tento dialog zobrazuje příkazy dráhy v základních jednotkách FreeCADu (mm/s).
+ Hodnoty budou převedeny na požadované jednotky během postprocesingu.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="255"/>
@@ -7073,7 +7223,7 @@ For example:
   <context>
     <name>CAM_Job:</name>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="364"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="395"/>
       <source>Cylinder: %.2f x %.2f</source>
       <translation>Válec: %.2f x %.2f</translation>
     </message>
@@ -7114,7 +7264,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="62"/>
       <source>Fixtures</source>
-      <translation>Upínky</translation>
+      <translation>Upínače</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="86"/>
@@ -7159,7 +7309,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="77"/>
       <source>Output (G-code)</source>
-      <translation type="unfinished">Output (G-code)</translation>
+      <translation>Výstup (G-kód)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="79"/>
@@ -7169,7 +7319,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="89"/>
       <source>Surface Speed HSS</source>
-      <translation type="unfinished">Surface Speed HSS</translation>
+      <translation>Řezná rychlost HSS</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="94"/>
@@ -7184,7 +7334,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="91"/>
       <source>Tool Controller</source>
-      <translation>Správce nástrojů</translation>
+      <translation>Řadič nástrojů</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="60"/>
@@ -7214,7 +7364,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="88"/>
       <source>Surface Speed Carbide</source>
-      <translation type="unfinished">Surface Speed Carbide</translation>
+      <translation>Řezná rychlost Karbid</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="95"/>
@@ -7249,7 +7399,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="102"/>
       <source>Part</source>
-      <translation>Díl</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="103"/>
@@ -7349,7 +7499,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="231"/>
       <source>The Job&apos;s last post-processed file is missing</source>
-      <translation type="unfinished">The Job&apos;s last post-processed file is missing</translation>
+      <translation>Poslední postprocesovaný soubor úlohy chybí</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="364"/>
@@ -7371,17 +7521,17 @@ For example:
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="419"/>
       <source>Tool Controller &apos;{}&apos; has no feedrate</source>
-      <translation type="unfinished">Tool Controller &apos;{}&apos; has no feedrate</translation>
+      <translation>Tool Controller &apos;{}&apos; nemá rychlost posuvu</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="431"/>
       <source>Tool Controller &apos;{}&apos; has no spindlespeed</source>
-      <translation type="unfinished">Tool Controller &apos;{}&apos; has no spindlespeed</translation>
+      <translation>Tool Controller &apos;{}&apos; nemá otáčky vřetena</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="457"/>
       <source>Tool Controller &apos;{}&apos; is not used</source>
-      <translation type="unfinished">Tool Controller &apos;{}&apos; is not used</translation>
+      <translation>Tool Controller &apos;{}&apos; není použit</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="335"/>
@@ -7410,53 +7560,53 @@ For example:
     <message>
       <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="307"/>
       <source>High</source>
-      <translation type="unfinished">High</translation>
+      <translation>Vysoký</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="309"/>
       <source>Low</source>
-      <translation type="unfinished">Low</translation>
+      <translation>Nízký</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="311"/>
       <source>Medium</source>
-      <translation type="unfinished">Medium</translation>
+      <translation>Střední</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="350"/>
       <source>New CAM Simulator</source>
-      <translation type="unfinished">New CAM Simulator</translation>
+      <translation>Nový CAM simulátor</translation>
     </message>
   </context>
   <context>
     <name>CAM_Adaptive</name>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="875"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1359"/>
       <source>Outside</source>
       <translation>Vně</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="876"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1360"/>
       <source>Inside</source>
-      <translation>uvnitř</translation>
+      <translation>Uvnitř</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="879"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1363"/>
       <source>Clearing</source>
       <translation>Čištění</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="880"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1364"/>
       <source>Profiling</source>
       <translation>Profiling</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Adaptive.py" line="159"/>
+      <location filename="../../../Path/Op/Gui/Adaptive.py" line="170"/>
       <source>Adaptive</source>
       <translation>Adaptivní</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Adaptive.py" line="160"/>
+      <location filename="../../../Path/Op/Gui/Adaptive.py" line="171"/>
       <source>Adaptive clearing and profiling</source>
       <translation>Adaptivní clearing a profilování</translation>
     </message>
@@ -7489,7 +7639,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Base.py" line="616"/>
       <source>Parent job %s doesn&apos;t have a base object</source>
-      <translation type="unfinished">Parent job %s doesn&apos;t have a base object</translation>
+      <translation>Nadřazená úloha %s nemá základní objekt</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="758"/>
@@ -7502,52 +7652,52 @@ For example:
       <translation>Nebyl nalezen žádný nástroj nebo má nulový průměr. Potřebujeme nástroj pro sestavení dráhy.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="805"/>
+      <location filename="../../../Path/Op/Base.py" line="842"/>
       <source>No Tool Controller selected.</source>
       <translation>Není vybrán žádný správce nástrojů.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="808"/>
+      <location filename="../../../Path/Op/Base.py" line="845"/>
       <source>Tool Error</source>
       <translation>Chyba nástroje</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="819"/>
+      <location filename="../../../Path/Op/Base.py" line="857"/>
       <source>Tool Controller feedrates required to calculate the cycle time.</source>
       <translation>Posuvy správce nástroje potřebné pro výpočet délky cyklu.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="822"/>
-      <source>Feedrate Error</source>
-      <translation>Chyba rychlosti posuvu</translation>
+      <location filename="../../../Path/Op/Base.py" line="860"/>
+      <source>Tool Feedrate Error</source>
+      <translation type="unfinished">Tool Feedrate Error</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="830"/>
+      <location filename="../../../Path/Op/Base.py" line="866"/>
       <source>Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</source>
-      <translation>Přidejte rychlé otáčky ve správci nástroje na SetupSheet pro přesnější dobu cyklů.</translation>
+      <translation>Zadejte rychloposuvy Řadiče nástrojů na záložce SetupSheet pro přesnější výpočet doby cyklu.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="839"/>
+      <location filename="../../../Path/Op/Base.py" line="875"/>
       <source>Cycletime Error</source>
       <translation>Chyba doby cyklu</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="860"/>
+      <location filename="../../../Path/Op/Base.py" line="817"/>
       <source>Base object %s.%s already in the list</source>
       <translation>Základní objekty %s.% jsou již v seznamu</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="870"/>
+      <location filename="../../../Path/Op/Base.py" line="827"/>
       <source>Base object %s.%s rejected by operation</source>
       <translation>Základní objekt %s.% byl operací odmítnut</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="115"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="116"/>
       <source>Hole diameter may be inaccurate due to tessellation on face. Consider selecting hole edge.</source>
       <translation>Průměr otvoru může být nepřesný kvůli mozaikování na líci. Zvažte výběr okraje otvoru.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="147"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="148"/>
       <source>Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.</source>
       <translation>Prvek %s.% nelze zpracovat jako kruhovou díru – odstraňte ji ze seznamu Základní geometrie.</translation>
     </message>
@@ -7578,12 +7728,12 @@ For example:
       <location filename="../../../Path/Op/Gui/Probe.py" line="69"/>
       <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="112"/>
       <source>No valid toolcontroller</source>
-      <translation type="unfinished">No valid toolcontroller</translation>
+      <translation>Žádný platný řadič nástrojů</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Vcarve.py" line="181"/>
       <source>This operation requires a tool controller with a v-bit tool</source>
-      <translation type="unfinished">This operation requires a tool controller with a v-bit tool</translation>
+      <translation>Tato operace vyžaduje řadič nástrojů s V-bit nástrojem</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Engrave.py" line="80"/>
@@ -7598,22 +7748,27 @@ For example:
     <message>
       <location filename="../../../Path/Post/scripts/generic_post.py" line="44"/>
       <source>Generic post processor</source>
-      <translation type="unfinished">Generic post processor</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="647"/>
-      <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
-      <translation type="unfinished">Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</translation>
+      <translation>Obecný postprocesor</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Probe.py" line="74"/>
       <source>This operation requires a tool controller with a probe tool</source>
-      <translation type="unfinished">This operation requires a tool controller with a probe tool</translation>
+      <translation>Tato operace vyžaduje řadič nástrojů se sondou</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="117"/>
       <source>This operation requires a tool controller with a threadmilling tool</source>
-      <translation type="unfinished">This operation requires a tool controller with a threadmilling tool</translation>
+      <translation>Tato operace vyžaduje řadič nástrojů s nástrojem pro řezání závitů</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/refactored_masso_g3_post.py" line="55"/>
+      <source>Refactored Masso G3 post processor</source>
+      <translation type="unfinished">Refactored Masso G3 post processor</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/snapmaker_post.py" line="245"/>
+      <source>Snapmaker post processor</source>
+      <translation type="unfinished">Snapmaker post processor</translation>
     </message>
   </context>
   <context>
@@ -7651,7 +7806,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Drilling.py" line="216"/>
       <source>Creates a Drilling toolpath from the features of a base object</source>
-      <translation type="unfinished">Creates a Drilling toolpath from the features of a base object</translation>
+      <translation>Vytvoří dráhu vrtání z prvků základního objektu</translation>
     </message>
   </context>
   <context>
@@ -7664,15 +7819,25 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Helix.py" line="111"/>
       <source>Creates a Helical toolpath from the features of a base object</source>
-      <translation type="unfinished">Creates a Helical toolpath from the features of a base object</translation>
+      <translation>Vytvoří dráhu šroubovice z prvků základního objektu</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="71"/>
+      <location filename="../../../Path/Op/Helix.py" line="100"/>
+      <source>CW</source>
+      <translation>Pravotočivý</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Helix.py" line="101"/>
+      <source>CCW</source>
+      <translation>Levotočivý</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Helix.py" line="108"/>
       <source>Climb</source>
       <translation>sousledně</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="72"/>
+      <location filename="../../../Path/Op/Helix.py" line="109"/>
       <source>Conventional</source>
       <translation>nesousledně</translation>
     </message>
@@ -7732,7 +7897,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="69"/>
       <source>ZigZag</source>
-      <translation>Pendlování</translation>
+      <translation>Pendlovat</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="70"/>
@@ -7742,7 +7907,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="71"/>
       <source>ZigZagOffset</source>
-      <translation>Ofset pendlování</translation>
+      <translation>Pendlovat s ofsetem</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="72"/>
@@ -7772,7 +7937,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/FeatureExtension.py" line="185"/>
       <source>Extensions</source>
-      <translation type="unfinished">Extensions</translation>
+      <translation>Rozšíření</translation>
     </message>
   </context>
   <context>
@@ -7780,7 +7945,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Slot.py" line="105"/>
       <source>New property added to</source>
-      <translation>New property added to</translation>
+      <translation>Nová vlastnost vložena do</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="107"/>
@@ -7795,7 +7960,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Slot.py" line="253"/>
       <source>ZigZag</source>
-      <translation>Pendlování</translation>
+      <translation>Pendlovat</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="256"/>
@@ -7805,7 +7970,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Slot.py" line="257"/>
       <source>Multi-pass</source>
-      <translation>Vícenásobný</translation>
+      <translation>Více průchodů</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="260"/>
@@ -7865,12 +8030,12 @@ For example:
     <message>
       <location filename="../../../Path/Op/Slot.py" line="607"/>
       <source>Custom points are identical. No slot path will be generated</source>
-      <translation type="unfinished">Custom points are identical. No slot path will be generated</translation>
+      <translation>Vlastní body jsou shodné. Dráha drážky nebude vygenerována.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="616"/>
       <source>Custom points not at same Z height. No slot path will be generated</source>
-      <translation type="unfinished">Custom points not at same Z height. No slot path will be generated</translation>
+      <translation>Vlastní body nejsou ve stejné Z výšce. Dráha drážky nebude vygenerována</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="670"/>
@@ -7981,12 +8146,12 @@ For example:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="437"/>
       <source>CenterOfMass</source>
-      <translation>CenterOfMass</translation>
+      <translation>Těžiště</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="438"/>
       <source>CenterOfBoundBox</source>
-      <translation>CenterOfBoundBox</translation>
+      <translation>Střed opsaného kvádru</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="439"/>
@@ -8036,7 +8201,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="452"/>
       <source>ZigZag</source>
-      <translation>Pendlování</translation>
+      <translation>Pendlovat</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="455"/>
@@ -8068,7 +8233,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="464"/>
       <source>Multi-pass</source>
-      <translation>Vícenásobný</translation>
+      <translation>Více průchodů</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="467"/>
@@ -8192,14 +8357,14 @@ For example:
   <context>
     <name>CAM_Vcarve</name>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="535"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="548"/>
       <source>VCarve requires an engraving cutter with a cutting edge angle</source>
       <translation>VCarve requires an engraving cutter with a cutting edge angle</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="541"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="554"/>
       <source>Engraver cutting edge angle must be &lt; 180 degrees.</source>
-      <translation type="unfinished">Engraver cutting edge angle must be &lt; 180 degrees.</translation>
+      <translation>Úhel břitu gravír. nástroje musí být &lt; 180 stupňů.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Vcarve.py" line="221"/>
@@ -8209,25 +8374,25 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Vcarve.py" line="222"/>
       <source>Creates a medial line engraving toolpath</source>
-      <translation type="unfinished">Creates a medial line engraving toolpath</translation>
+      <translation>Vytvoří gravír. dráhu podél středové čáry</translation>
     </message>
   </context>
   <context>
     <name>CAM_Array</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="448"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="488"/>
       <source>Array</source>
       <translation>Pole</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="449"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="489"/>
       <source>Creates an array from selected toolpath(s)</source>
-      <translation type="unfinished">Creates an array from selected toolpath(s)</translation>
+      <translation>Vytvoří pole z vybrané dráhy (drah)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="467"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="507"/>
       <source>Arrays can be created only from toolpath operations.</source>
-      <translation type="unfinished">Arrays can be created only from toolpath operations.</translation>
+      <translation>Pole mohou být vytvořena pouze z operací drah nástrojů.</translation>
     </message>
   </context>
   <context>
@@ -8253,7 +8418,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Copy.py" line="94"/>
       <source>Creates a linked copy of another toolpath</source>
-      <translation type="unfinished">Creates a linked copy of another toolpath</translation>
+      <translation>Vytvoří propojenou kopii jiné dráhy</translation>
     </message>
   </context>
   <context>
@@ -8279,7 +8444,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Deburr.py" line="142"/>
       <source>Creates a Deburr toolpath along Edges or around Faces</source>
-      <translation type="unfinished">Creates a Deburr toolpath along Edges or around Faces</translation>
+      <translation>Vytvoří dráhu odjehlení podél hran anebo okolo ploch</translation>
     </message>
   </context>
   <context>
@@ -8292,7 +8457,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Engrave.py" line="170"/>
       <source>Creates an Engraving toolpath around a Draft ShapeString</source>
-      <translation type="unfinished">Creates an Engraving toolpath around a Draft ShapeString</translation>
+      <translation>Vytvoří gravírovací dráhu okolo Draft ShapeString</translation>
     </message>
   </context>
   <context>
@@ -8318,7 +8483,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Pocket.py" line="58"/>
       <source>Creates a 3D Pocket toolpath from a face or faces</source>
-      <translation type="unfinished">Creates a 3D Pocket toolpath from a face or faces</translation>
+      <translation>Vytvoří dráhu 3D kapsy z plochy nebo ploch</translation>
     </message>
   </context>
   <context>
@@ -8331,7 +8496,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/PocketShape.py" line="73"/>
       <source>Creates a pocket toolpath from a face or faces</source>
-      <translation type="unfinished">Creates a pocket toolpath from a face or faces</translation>
+      <translation>Vytvoří dráhu kapsy z plochy nebo ploch</translation>
     </message>
   </context>
   <context>
@@ -8344,13 +8509,13 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/SimpleCopy.py" line="41"/>
       <source>Creates a non-parametric copy of another toolpath</source>
-      <translation type="unfinished">Creates a non-parametric copy of another toolpath</translation>
+      <translation>Vytvoří neparametrickou kopii jiné dráhy</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/SimpleCopy.py" line="58"/>
       <location filename="../../../Path/Op/Gui/SimpleCopy.py" line="63"/>
       <source>Please select exactly one toolpath object</source>
-      <translation type="unfinished">Please select exactly one toolpath object</translation>
+      <translation>Prosím vyberte právě jeden objekt dráhy nástroje</translation>
     </message>
   </context>
   <context>
@@ -8363,7 +8528,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Stop.py" line="111"/>
       <source>Add Optional or Mandatory Stop to the program</source>
-      <translation>Přidejte do programu volitelné nebo povinné zastavení</translation>
+      <translation>Vložit do programu volitelné nebo povinné zastavení</translation>
     </message>
   </context>
   <context>
@@ -8376,7 +8541,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Waterline.py" line="172"/>
       <source>Create a Waterline toolpath from a model</source>
-      <translation type="unfinished">Create a Waterline toolpath from a model</translation>
+      <translation>Vytvořit vodorovnou dráhu nástroje z modelu</translation>
     </message>
   </context>
   <context>
@@ -8410,12 +8575,12 @@ For example:
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="129"/>
       <source>Forward</source>
-      <translation>Vpřed</translation>
+      <translation>Dopředu</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="130"/>
       <source>Reverse</source>
-      <translation>Obrátit</translation>
+      <translation>Zpětný chod</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="131"/>
@@ -8423,14 +8588,14 @@ For example:
       <translation>Žádný</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/Controller.py" line="142"/>
+      <location filename="../../../Path/Tool/Gui/Controller.py" line="145"/>
       <source>Add Tool Controller to the Job</source>
-      <translation>Přidejte nástrojový ovladač do úlohy</translation>
+      <translation>Přidejte Řadič nástrojů do Úlohy</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/Controller.py" line="143"/>
+      <location filename="../../../Path/Tool/Gui/Controller.py" line="146"/>
       <source>Add Tool Controller</source>
-      <translation>Přidat nástrojový ovladač</translation>
+      <translation>Přidat Řadič nástrojů</translation>
     </message>
   </context>
   <context>
@@ -8483,17 +8648,17 @@ For example:
   <context>
     <name>CAM_ToolBit</name>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="80"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="81"/>
       <source>Toolbit working directory not set up. Do that now?</source>
       <translation>Toolbit working directory not set up. Do that now?</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="88"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="89"/>
       <source>Choose a writable location for your toolbits</source>
       <translation>Vyberte místo pro zápis pro vaše nástroje</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="126"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="128"/>
       <source>Toolbit Working directory {} needs these sudirectories:
  {}
  Create them?</source>
@@ -8502,41 +8667,41 @@ For example:
  Create them?</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="143"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="145"/>
       <source>Copy example files to new {} directory?</source>
       <translation>Kopírovat ukázkové soubory do nového adresáře {}?</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="726"/>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="851"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="764"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="893"/>
       <source>Tooltable JSON (*.fctl)</source>
       <translation>Tooltable JSON (*.fctl)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="728"/>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="856"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="766"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="898"/>
       <source>Save toolbit library</source>
       <translation>Save toolbit library</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="783"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="823"/>
       <source>Tool</source>
       <translation>Nástroj</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="784"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="824"/>
       <source>Shape</source>
       <translation>Útvar</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="852"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="894"/>
       <source>LinuxCNC tooltable (*.tbl)</source>
       <translation>LinuxCNC tooltable (*.tbl)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="854"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="896"/>
       <source>CAMotics tooltable (*.json)</source>
-      <translation type="unfinished">CAMotics tooltable (*.json)</translation>
+      <translation>Tabulka nástrojů CAMotics (*.json)</translation>
     </message>
   </context>
   <context>
@@ -8568,14 +8733,14 @@ For example:
   <context>
     <name>CAM_Profile</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Profile.py" line="163"/>
+      <location filename="../../../Path/Op/Gui/Profile.py" line="174"/>
       <source>Profile</source>
-      <translation>Profil</translation>
+      <translation>Profilování</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Profile.py" line="164"/>
+      <location filename="../../../Path/Op/Gui/Profile.py" line="175"/>
       <source>Profile entire model, selected face(s) or selected edge(s)</source>
-      <translation type="unfinished">Profile entire model, selected face(s) or selected edge(s)</translation>
+      <translation>Profilovat celý model, vybranou plochu(-y) nebo hranu(-y)</translation>
     </message>
   </context>
   <context>
@@ -8583,7 +8748,7 @@ For example:
     <message>
       <location filename="../../../Path/Tool/Gui/Bit.py" line="116"/>
       <source>Toolbit cannot be edited: Shapefile not found</source>
-      <translation type="unfinished">Toolbit cannot be edited: Shapefile not found</translation>
+      <translation>Nástroj nelze upravit: Shapefile nebyl nalezen</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/Bit.py" line="192"/>
@@ -8593,22 +8758,22 @@ For example:
     <message>
       <location filename="../../../Path/Tool/Gui/Bit.py" line="198"/>
       <source>Invalid Filename</source>
-      <translation type="unfinished">Invalid Filename</translation>
+      <translation>Neplatný název souboru</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/Bit.py" line="241"/>
       <source>Select Tool Shape</source>
-      <translation type="unfinished">Select Tool Shape</translation>
+      <translation>Vyberte tvar nástroje</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="465"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="489"/>
       <source>Select a library</source>
-      <translation type="unfinished">Select a library</translation>
+      <translation>Vyberte knihovnu</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="467"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="491"/>
       <source>No library selected</source>
-      <translation type="unfinished">No library selected</translation>
+      <translation>Nebyla vybrána knihovna</translation>
     </message>
   </context>
   <context>
@@ -8616,12 +8781,192 @@ For example:
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="310"/>
       <source>CAMotics</source>
-      <translation type="unfinished">CAMotics</translation>
+      <translation>CAMotics</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="312"/>
       <source>Simulate using CAMotics</source>
-      <translation type="unfinished">Simulate using CAMotics</translation>
+      <translation>Simulovat pomocí CAMotics</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_DrillingTools</name>
+    <message>
+      <location filename="../../../InitGui.py" line="154"/>
+      <source>Drilling Operations</source>
+      <translation type="unfinished">Drilling Operations</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_Tapping</name>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="69"/>
+      <source>G98</source>
+      <translation>G98</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="70"/>
+      <source>G99</source>
+      <translation>G99</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="73"/>
+      <source>None</source>
+      <translation>Žádný</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="74"/>
+      <source>Drill Tip</source>
+      <translation>Špička vrtáku</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="75"/>
+      <source>2x Drill Tip</source>
+      <translation>2x špička vrtáku</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Tapping.py" line="179"/>
+      <source>Tapping</source>
+      <translation type="unfinished">Tapping</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Tapping.py" line="183"/>
+      <source>Creates a Tapping toolpath from the features of a base object</source>
+      <translation type="unfinished">Creates a Tapping toolpath from the features of a base object</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Tapping</name>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="158"/>
+      <source>Tapping Operation requires a Tap tool with Pitch or TPI</source>
+      <translation type="unfinished">Tapping Operation requires a Tap tool with Pitch or TPI</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_DressupTools</name>
+    <message>
+      <location filename="../../../InitGui.py" line="162"/>
+      <source>Dressup Operations</source>
+      <translation type="unfinished">Dressup Operations</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_ArrayOp</name>
+    <message>
+      <location filename="../../../Path/Op/Gui/Array.py" line="233"/>
+      <source>Operation is deprecated</source>
+      <translation type="unfinished">Operation is deprecated</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_PathShapeTC</name>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="183"/>
+      <source>Path from Shape TC</source>
+      <translation type="unfinished">Path from Shape TC</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="186"/>
+      <source>Creates path from selected shapes with tool controller</source>
+      <translation type="unfinished">Creates path from selected shapes with tool controller</translation>
+    </message>
+  </context>
+  <context>
+    <name>DressupArray</name>
+    <message>
+      <location filename="../../../Path/Dressup/Array.py" line="184"/>
+      <source>Removing CoolantMode property from {} as base operation&apos;s CoolantMode is now used.</source>
+      <translation type="unfinished">Removing CoolantMode property from {} as base operation&apos;s CoolantMode is now used.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Array.py" line="194"/>
+      <source>Removing ToolController property from {} as base operation&apos;s ToolController is now used.</source>
+      <translation type="unfinished">Removing ToolController property from {} as base operation&apos;s ToolController is now used.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_DressupArray</name>
+    <message>
+      <location filename="../../../Path/Dressup/Array.py" line="400"/>
+      <source>The selected object is not a path</source>
+      <translation>Vybraný objekt není dráha</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Array.py" line="57"/>
+      <source>Array</source>
+      <translation>Pole</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Array.py" line="61"/>
+      <source>Creates an array from a selected toolpath</source>
+      <translation type="unfinished">Creates an array from a selected toolpath</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Array.py" line="76"/>
+      <source>Please select one toolpath object</source>
+      <translation>Vyberte prosím jeden objekt dráhy</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM:Simulator:Tooltips</name>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="270"/>
+      <source>Pause simulation</source>
+      <translation>Pozastavit simulaci</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="272"/>
+      <source>Play simulation</source>
+      <translation type="unfinished">Play simulation</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="274"/>
+      <source>Single step simulation</source>
+      <translation>Simulace po kroku</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="276"/>
+      <source>Decrease simulation speed</source>
+      <translation type="unfinished">Decrease simulation speed</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="278"/>
+      <source>Increase simulation speed</source>
+      <translation type="unfinished">Increase simulation speed</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="280"/>
+      <source>Show/Hide tool path</source>
+      <translation type="unfinished">Show/Hide tool path</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="281"/>
+      <source>Toggle turn table animation</source>
+      <translation type="unfinished">Toggle turn table animation</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="285"/>
+      <source>Toggle ambient oclusion</source>
+      <translation type="unfinished">Toggle ambient oclusion</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="286"/>
+      <source>Toggle view simulation/model</source>
+      <translation type="unfinished">Toggle view simulation/model</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="290"/>
+      <source>Reset camera</source>
+      <translation type="unfinished">Reset camera</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAMSimulator::DlgCAMSimulator</name>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/DlgCAMSimulator.cpp" line="335"/>
+      <source>%1 - New CAM Simulator</source>
+      <translation type="unfinished">%1 - New CAM Simulator</translation>
     </message>
   </context>
 </TS>

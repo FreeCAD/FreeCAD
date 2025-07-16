@@ -25,6 +25,9 @@
 
 #ifndef _PreComp_
 #include <cassert>
+#include <vector>
+#include <map>
+#include <string>
 #endif
 
 #include <Base/PyObjectBase.h>
@@ -54,11 +57,11 @@ App::PropertyData App::Extension::propertyData;
 
 void App::Extension::init()
 {
-    assert(Extension::classTypeId == Base::Type::badType() && "don't init() twice!");
+    assert(Extension::classTypeId.isBad() && "don't init() twice!");
 
     /* Set up entry in the type system. */
     Extension::classTypeId =
-        Base::Type::createType(Base::Type::badType(), "App::Extension", Extension::create);
+        Base::Type::createType(Base::Type::BadType, "App::Extension", Extension::create);
 }
 
 using namespace App;
@@ -181,17 +184,21 @@ void Extension::extensionGetPropertyMap(std::map<std::string, Property*>& Map) c
     extensionGetPropertyData().getPropertyMap(this, Map);
 }
 
+void Extension::extensionVisitProperties(const std::function<void(Property*)>& visitor) const
+{
+    extensionGetPropertyData().visitProperties(this, visitor);
+}
 void Extension::initExtensionSubclass(Base::Type& toInit,
                                       const char* ClassName,
                                       const char* ParentName,
                                       Base::Type::instantiationMethod method)
 {
     // don't init twice!
-    assert(toInit == Base::Type::badType());
+    assert(toInit.isBad());
     // get the parent class
     Base::Type parentType(Base::Type::fromName(ParentName));
     // forgot init parent!
-    assert(parentType != Base::Type::badType());
+    assert(!parentType.isBad());
 
     // create the new type
     toInit = Base::Type::createType(parentType, ClassName, method);

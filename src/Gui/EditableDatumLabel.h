@@ -26,6 +26,7 @@
 
 #include <QObject>
 #include <QPointer>
+#include <QLabel>
 #include <Gui/QuantitySpinBox.h>
 
 #include "SoDatumLabel.h"
@@ -34,6 +35,8 @@
 
 class SoNodeSensor;
 class SoTransform;
+class SoAnnotation;
+class SoSwitch;
 
 namespace Gui {
 
@@ -70,6 +73,7 @@ public:
     void setPoints(SbVec3f p1, SbVec3f p2);
     void setPoints(Base::Vector3d p1, Base::Vector3d p2);
     void setFocusToSpinbox();
+    void clearSelection(); ///< Clears text selection in the spinbox
     void setLabelType(SoDatumLabel::Type type, Function function = Function::Positioning);
     void setLabelDistance(double val);
     void setLabelStartAngle(double val);
@@ -77,12 +81,15 @@ public:
     void setLabelRecommendedDistance();
     void setLabelAutoDistanceReverse(bool val);
     void setSpinboxVisibleToMouse(bool val);
+    void setLockedAppearance(bool locked); ///< Sets visual appearance to indicate locked state (finished editing)
+    void resetLockedState(); ///< Resets both hasFinishedEditing flag and locked appearance
 
     Function getFunction();
 
     // NOLINTBEGIN
     SoDatumLabel* label;
-    bool isSet;
+    bool isSet; ///< used to differentiate when user has started typing inside the label
+    bool hasFinishedEditing; ///< flag to know when user has finished editing, i.e. pressed enter
     bool autoDistance;
     bool autoDistanceReverse;
     bool avoidMouseCursor;
@@ -91,16 +98,23 @@ public:
 
 Q_SIGNALS:
     void valueChanged(double val);
+    void parameterUnset();
+    void finishEditingOnAllOVPs(); ///< Emitted when Ctrl+Enter is pressed to finish editing on all visible OVPs
+
+protected:
+    bool eventFilter(QObject* watched, QEvent* event) override;
 
 private:
     void positionSpinbox();
     SbVec3f getTextCenterPoint() const;
 
 private:
-    SoSeparator* root;
+    SoSwitch* root;
+    SoAnnotation* annotation;
     SoTransform* transform;
     QPointer<View3DInventorViewer> viewer;
     QuantitySpinBox* spinBox;
+    QLabel* lockIconLabel; ///< Label to display lock icon next to spinbox
     SoNodeSensor* cameraSensor;
     SbVec3f midpos;
 

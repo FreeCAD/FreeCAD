@@ -24,6 +24,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <limits>
 #include <QApplication>
 #include <QLabel>
 #include <QObject>
@@ -39,8 +40,6 @@
 #endif
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
-
-#include <limits>
 
 #include <Base/Console.h>
 #include <Base/UnitsApi.h>
@@ -61,7 +60,7 @@ VectorEditWidget::VectorEditWidget(QWidget* parent) : QWidget(parent),
     m_blockNotify(false)
 {
     m_size = QSize(m_minimumWidth, m_minimumHeight);
-    setObjectName(QString::fromUtf8("VectorEdit"));
+    setObjectName(QStringLiteral("VectorEdit"));
     buildWidget();
 
     connect(tbExpand, &QToolButton::toggled, this, &VectorEditWidget::slotExpandButtonToggled);
@@ -106,7 +105,7 @@ void VectorEditWidget::setLabel(QString newLabel)
 
 void VectorEditWidget::setValue(Base::Vector3d newValue)
 {
-//    Base::Console().Message("VEW::setValue(%.6f, %.6f, %.6f)\n", newValue.x, newValue.y, newValue.z);
+//    Base::Console().message("VEW::setValue(%.6f, %.6f, %.6f)\n", newValue.x, newValue.y, newValue.z);
     m_value = newValue;
     dsbX->setValue(m_value.x);
     dsbY->setValue(m_value.y);
@@ -116,7 +115,7 @@ void VectorEditWidget::setValue(Base::Vector3d newValue)
 
 void VectorEditWidget::setValueNoNotify(Base::Vector3d newValue)
 {
-//    Base::Console().Message("VEW::setValueNoNotify(%.6f, %.6f, %.6f)\n", newValue.x, newValue.y, newValue.z);
+//    Base::Console().message("VEW::setValueNoNotify(%.6f, %.6f, %.6f)\n", newValue.x, newValue.y, newValue.z);
     m_value = newValue;
     m_blockNotify = true;
     dsbX->setValue(m_value.x);
@@ -128,7 +127,7 @@ void VectorEditWidget::setValueNoNotify(Base::Vector3d newValue)
 
 void VectorEditWidget::slotExpandButtonToggled(bool checked)
 {
-//    Base::Console().Message("VEW::slotExpand - checked: %d\n", checked);
+//    Base::Console().message("VEW::slotExpand - checked: %d\n", checked);
     if (checked) {
         vectorEditLayout->addLayout(VectorEditItemLayout);
         vectorEditLayout->addItem(verticalSpacer);
@@ -145,7 +144,7 @@ void VectorEditWidget::slotExpandButtonToggled(bool checked)
 //to tell the world about the change if it comes from the Ui.
 void VectorEditWidget::slotXValueChanged(double newValue)
 {
-//    Base::Console().Message("VEW::xValueChanged(%.6f) - m_value.x: %.6f\n", newValue, m_value.x);
+//    Base::Console().message("VEW::xValueChanged(%.6f) - m_value.x: %.6f\n", newValue, m_value.x);
     if (!m_blockNotify) {
         //this is a change from the dsb
         m_value.x = newValue;
@@ -155,7 +154,7 @@ void VectorEditWidget::slotXValueChanged(double newValue)
 }
 void VectorEditWidget::slotYValueChanged(double newValue)
 {
-//    Base::Console().Message("VEW::yValueChanged(%.6f) - m_value.y: %.6f\n", newValue, m_value.y);
+//    Base::Console().message("VEW::yValueChanged(%.6f) - m_value.y: %.6f\n", newValue, m_value.y);
     if (!m_blockNotify) {
         //this is a change from the dsb
         m_value.y = newValue;
@@ -165,7 +164,7 @@ void VectorEditWidget::slotYValueChanged(double newValue)
 }
 void VectorEditWidget::slotZValueChanged(double newValue)
 {
-//    Base::Console().Message("VEW::zValueChanged(%.6f)\n", newValue);
+//    Base::Console().message("VEW::zValueChanged(%.6f)\n", newValue);
     if (!m_blockNotify) {
         //this is a change from the dsb
         m_value.z = newValue;
@@ -176,7 +175,7 @@ void VectorEditWidget::slotZValueChanged(double newValue)
 
 void VectorEditWidget::updateDisplay()
 {
-//    Base::Console().Message("VEW::updateDisplay() - m_value: %s\n", DrawUtil::formatVector(m_value).c_str());
+//    Base::Console().message("VEW::updateDisplay() - m_value: %s\n", DrawUtil::formatVector(m_value).c_str());
     QString qNewDisplayString = QString::fromStdString(DrawUtil::formatVector(m_value));
     leVectorDisplay->setText(qNewDisplayString);
 }
@@ -189,28 +188,28 @@ QSize VectorEditWidget::minimumSizeHint() const
 void VectorEditWidget::buildWidget()
 {
     if (objectName().isEmpty())
-        setObjectName(QString::fromUtf8("VectorEdit"));
+        setObjectName(QStringLiteral("VectorEdit"));
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
     setSizePolicy(sizePolicy);
 
     vectorEditLayout = new QVBoxLayout(this);
-    vectorEditLayout->setObjectName(QString::fromUtf8("vectorEditLayout"));
+    vectorEditLayout->setObjectName(QStringLiteral("vectorEditLayout"));
     vectorEditLayout->setContentsMargins(0, 0, 0, 0);
     VectorEditButtonLayout = new QHBoxLayout();
     VectorEditButtonLayout->setSpacing(0);
-    VectorEditButtonLayout->setObjectName(QString::fromUtf8("VectorEditButtonLayout"));
+    VectorEditButtonLayout->setObjectName(QStringLiteral("VectorEditButtonLayout"));
 
     lvectorName = new QLabel(this);
-    lvectorName->setObjectName(QString::fromUtf8("lvectorName"));
+    lvectorName->setObjectName(QStringLiteral("lvectorName"));
     VectorEditButtonLayout->addWidget(lvectorName);
 
     leVectorDisplay = new QLineEdit(this);
-    leVectorDisplay->setObjectName(QString::fromUtf8("leVectorDisplay"));
+    leVectorDisplay->setObjectName(QStringLiteral("leVectorDisplay"));
     VectorEditButtonLayout->addWidget(leVectorDisplay);
 
     tbExpand = new QToolButton(this);
-    tbExpand->setObjectName(QString::fromUtf8("tbExpand"));
-    tbExpand->setText(QString::fromUtf8("..."));
+    tbExpand->setObjectName(QStringLiteral("tbExpand"));
+    tbExpand->setText(QStringLiteral("..."));
     tbExpand->setCheckable(true);
     VectorEditButtonLayout->addWidget(tbExpand);
 
@@ -219,15 +218,15 @@ void VectorEditWidget::buildWidget()
     vectorEditLayout->addLayout(VectorEditButtonLayout);
 
     VectorEditItemLayout = new QGridLayout();
-    VectorEditItemLayout->setObjectName(QString::fromUtf8("VectorEditItemLayout"));
+    VectorEditItemLayout->setObjectName(QStringLiteral("VectorEditItemLayout"));
 
     lX = new QLabel();
-    lX->setObjectName(QString::fromUtf8("lX"));
-    lX->setText(QString::fromUtf8("X:"));
+    lX->setObjectName(QStringLiteral("lX"));
+    lX->setText(QStringLiteral("X:"));
     VectorEditItemLayout->addWidget(lX, 0, 0, 1, 1);
 
     dsbX = new Gui::DoubleSpinBox();
-    dsbX->setObjectName(QString::fromUtf8("dsbX"));
+    dsbX->setObjectName(QStringLiteral("dsbX"));
     dsbX->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
     dsbX->setKeyboardTracking(false);
     dsbX->setMaximum(std::numeric_limits<double>::max());
@@ -236,12 +235,12 @@ void VectorEditWidget::buildWidget()
     VectorEditItemLayout->addWidget(dsbX, 0, 1, 1, 1);
 
     lY = new QLabel();
-    lY->setObjectName(QString::fromUtf8("lY"));
-    lY->setText(QString::fromUtf8("Y:"));
+    lY->setObjectName(QStringLiteral("lY"));
+    lY->setText(QStringLiteral("Y:"));
     VectorEditItemLayout->addWidget(lY, 1, 0, 1, 1);
 
     dsbY = new Gui::DoubleSpinBox();
-    dsbY->setObjectName(QString::fromUtf8("dsbY"));
+    dsbY->setObjectName(QStringLiteral("dsbY"));
     dsbY->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
     dsbY->setKeyboardTracking(false);
     dsbY->setMaximum(std::numeric_limits<double>::max());
@@ -250,12 +249,12 @@ void VectorEditWidget::buildWidget()
     VectorEditItemLayout->addWidget(dsbY, 1, 1, 1, 1);
 
     lZ = new QLabel();
-    lZ->setObjectName(QString::fromUtf8("lZ"));
-    lZ->setText(QString::fromUtf8("Z:"));
+    lZ->setObjectName(QStringLiteral("lZ"));
+    lZ->setText(QStringLiteral("Z:"));
     VectorEditItemLayout->addWidget(lZ, 2, 0, 1, 1);
 
     dsbZ = new Gui::DoubleSpinBox();
-    dsbZ->setObjectName(QString::fromUtf8("dsbZ"));
+    dsbZ->setObjectName(QStringLiteral("dsbZ"));
     dsbZ->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
     dsbZ->setKeyboardTracking(false);
     dsbZ->setMaximum(std::numeric_limits<double>::max());

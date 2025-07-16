@@ -52,6 +52,8 @@ DrawViewImage::DrawViewImage()
                       "Embedded image file. System use only.");// n/a to end users
     ADD_PROPERTY_TYPE(Width, (100), vgroup, App::Prop_None, "The width of cropped image");
     ADD_PROPERTY_TYPE(Height, (100), vgroup, App::Prop_None, "The height of cropped image");
+    ADD_PROPERTY_TYPE(Owner, (nullptr), vgroup, (App::PropertyType)(App::Prop_None),
+                      "Feature to which this symbol is attached");
 
     ScaleType.setValue("Custom");
     Scale.setStatus(App::Property::Hidden, false);
@@ -86,7 +88,7 @@ QRectF DrawViewImage::getRect() const { return {0.0, 0.0, Width.getValue(), Heig
 
 void DrawViewImage::replaceImageIncluded(std::string newImageFile)
 {
-    //    Base::Console().Message("DVI::replaceImageIncluded(%s)\n", newImageFile.c_str());
+    //    Base::Console().message("DVI::replaceImageIncluded(%s)\n", newImageFile.c_str());
     if (newImageFile.empty()) {
         return;
     }
@@ -102,7 +104,7 @@ void DrawViewImage::replaceImageIncluded(std::string newImageFile)
 
 void DrawViewImage::setupObject()
 {
-    //    Base::Console().Message("DVI::setupObject()\n");
+    //    Base::Console().message("DVI::setupObject()\n");
     replaceImageIncluded(ImageFile.getValue());
 }
 

@@ -11,19 +11,19 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Select Mirror Axis/Point</string>
+   <string>Select Mirror Axis or Point</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Select Mirror Axis/Point</string>
+      <string>Select Mirror Axis or Point</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QRadioButton" name="XAxisRadioButton">
         <property name="text">
-         <string>X-Axis</string>
+         <string>X-axis</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -33,7 +33,7 @@
       <item>
        <widget class="QRadioButton" name="YAxisRadioButton">
         <property name="text">
-         <string>Y-Axis</string>
+         <string>Y-axis</string>
         </property>
        </widget>
       </item>

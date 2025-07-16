@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <QOpenGLFramebufferObject>
 #include <QPixmap>
 #include <QMenu>
 #include <Inventor/SbBox.h>
@@ -575,7 +576,7 @@ void RubberbandSelection::initialize()
     rubberband.setViewer(_pcView3D);
     rubberband.setWorking(false);
     _pcView3D->addGraphicsItem(&rubberband);
-    if (QtGLFramebufferObject::hasOpenGLFramebufferObjects()) {
+    if (QOpenGLFramebufferObject::hasOpenGLFramebufferObjects()) {
         _pcView3D->setRenderType(View3DInventorViewer::Image);
     }
     _pcView3D->redraw();
@@ -586,7 +587,7 @@ void RubberbandSelection::terminate(bool abort)
     Q_UNUSED(abort)
 
     _pcView3D->removeGraphicsItem(&rubberband);
-    if (QtGLFramebufferObject::hasOpenGLFramebufferObjects()) {
+    if (QOpenGLFramebufferObject::hasOpenGLFramebufferObjects()) {
         _pcView3D->setRenderType(View3DInventorViewer::Native);
     }
     _pcView3D->redraw();

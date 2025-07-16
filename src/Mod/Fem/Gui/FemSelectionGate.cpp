@@ -22,6 +22,8 @@
 
 #include "PreCompiled.h"
 
+#include <Base/Tools.h>
+
 #include "FemSelectionGate.h"
 
 
@@ -32,7 +34,7 @@ bool FemSelectionGate::allow(App::Document* /*pDoc*/,
                              App::DocumentObject* /*pObj*/,
                              const char* sSubName)
 {
-    if (!sSubName || sSubName[0] == '\0') {
+    if (Base::Tools::isNullOrEmpty(sSubName)) {
         return false;
     }
 

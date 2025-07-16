@@ -24,11 +24,11 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <boost_signals2.hpp>
+#include <limits>
+#include <boost/signals2.hpp>
 #include <boost/signals2/connection.hpp>
 #endif
 
-#include <climits>
 
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
@@ -39,6 +39,8 @@
 
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawView.h>
+#include <Mod/TechDraw/App/DrawViewBalloon.h>
+#include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include "ViewProviderDrawingView.h"
@@ -57,7 +59,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingView, Gui::ViewProviderDocumentO
 ViewProviderDrawingView::ViewProviderDrawingView() :
     m_myName(std::string())
 {
-//    Base::Console().Message("VPDV::VPDV\n");
+//    Base::Console().message("VPDV::VPDV\n");
     initExtension(this);
 
     sPixmap = "TechDraw_TreeView";
@@ -78,7 +80,7 @@ ViewProviderDrawingView::~ViewProviderDrawingView()
 
 void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
 {
-//    Base::Console().Message("VPDV::attach(%s)\n", pcFeat->getNameInDocument());
+//    Base::Console().message("VPDV::attach(%s)\n", pcFeat->getNameInDocument());
     ViewProviderDocumentObject::attach(pcFeat);
 
     //NOLINTBEGIN
@@ -99,7 +101,7 @@ void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
         // but parent page might.  we may not be part of the document yet though!
         // :( we're not part of the page yet either!
     } else {
-        Base::Console().Warning("VPDV::attach has no Feature!\n");
+        Base::Console().warning("VPDV::attach has no Feature!\n");
     }
 }
 
@@ -272,7 +274,7 @@ ViewProviderPage* ViewProviderDrawingView::getViewProviderPage() const
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
     if (guiDoc) {
         Gui::ViewProvider* vp = guiDoc->getViewProvider(getViewObject()->findParentPage());
-        return dynamic_cast<ViewProviderPage*>(vp);
+        return freecad_cast<ViewProviderPage*>(vp);
     }
     return nullptr;
 }
@@ -293,7 +295,7 @@ Gui::MDIView *ViewProviderDrawingView::getMDIView() const
 
 void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv)
 {
-//    Base::Console().Message("VPDV::onGuiRepaint(%s) - this: %x\n", dv->getNameInDocument(), this);
+//    Base::Console().message("VPDV::onGuiRepaint(%s) - this: %x\n", dv->getNameInDocument(), this);
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
     if (!guiDoc)
         return;
@@ -362,16 +364,16 @@ void ViewProviderDrawingView::onProgressMessage(const TechDraw::DrawView* dv,
 
 void ViewProviderDrawingView::showProgressMessage(const std::string featureName, const std::string text) const
 {
-    QString msg = QString::fromUtf8("%1 %2")
+    QString msg = QStringLiteral("%1 %2")
             .arg(QString::fromStdString(featureName),
                  QString::fromStdString(text));
     if (Gui::getMainWindow()) {
-        //neither of these work! Base::Console().Message() output preempts these messages??
+        //neither of these work! Base::Console().message() output preempts these messages??
 //        Gui::getMainWindow()->showMessage(msg, 3000);
 //        Gui::getMainWindow()->showStatus(Gui::MainWindow::Msg, msg);
         //Temporary implementation. This works, but the messages are queued up and
         //not displayed in the report window in real time??
-        Base::Console().Message("%s\n", qPrintable(msg));
+        Base::Console().message("%s\n", qPrintable(msg));
     }
 }
 
@@ -404,7 +406,7 @@ void ViewProviderDrawingView::stackTop()
         //no view, nothing to stack
         return;
     }
-    int maxZ = INT_MIN;
+    int maxZ = std::numeric_limits<int>::min();
     auto parent = qView->parentItem();
     if (parent) {
         //if we have a parentItem, we have to stack within the parentItem, not within the page
@@ -439,7 +441,7 @@ void ViewProviderDrawingView::stackBottom()
         //no view, nothing to stack
         return;
     }
-    int minZ = INT_MAX;
+    int minZ = std::numeric_limits<int>::max();
     auto parent = qView->parentItem();
     if (parent) {
         //if we have a parentItem, we have to stack within the parentItem, not within the page
@@ -477,3 +479,55 @@ TechDraw::DrawView* ViewProviderDrawingView::getViewObject() const
 {
     return dynamic_cast<TechDraw::DrawView*>(pcObject);
 }
+
+
+//! it can happen that child graphic items can lose their parent item if the
+//! the parent is deleted, then undo is invoked.  The linkages on the App side are
+//! handled by the undo mechanism, but the QGraphicsScene parentage is not reset.
+void ViewProviderDrawingView::fixSceneDependencies()
+{
+    Base::Console().message("VPDV::fixSceneDependencies()\n");
+    auto page = getViewProviderPage();
+    if (!page) {
+        return;
+    }
+
+    auto scene = page->getQGSPage();
+    auto ourQView = getQView();
+
+    // this is the logic for items other than Dimensions and Balloons
+    auto children = getViewObject()->getUniqueChildren();
+    for (auto& child : children) {
+        if (child->isDerivedFrom<DrawViewDimension>() ||
+            child->isDerivedFrom<DrawViewBalloon>() ) {
+            // these are handled by ViewProviderViewPart
+            continue;
+        }
+        auto* childQView = scene->findQViewForDocObj(child);
+        auto* childGraphicParent = scene->findParent(childQView);
+        if (childGraphicParent != ourQView) {
+            scene->addItemToParent(childQView, ourQView);
+        }
+    }
+}
+
+
+std::vector<App::DocumentObject*> ViewProviderDrawingView::claimChildren() const
+{
+    std::vector<App::DocumentObject*> temp;
+    const std::vector<App::DocumentObject *> &potentialChildren = getViewObject()->getInList();
+    try {
+      for(auto& child : potentialChildren) {
+          auto* view = freecad_cast<DrawView *>(child);
+          if (view && view->claimParent() == getViewObject()) {
+              temp.push_back(view);
+              continue;
+          }
+      }
+    }
+    catch (...) {
+        return {};
+    }
+    return temp;
+}
+

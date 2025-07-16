@@ -23,6 +23,7 @@
 #ifndef MESH_GRID_H
 #define MESH_GRID_H
 
+#include <limits>
 #include <set>
 
 #include <Base/BoundBox.h>
@@ -45,7 +46,7 @@ class MeshGrid;
 static constexpr float MESHGRID_BBOX_EXTENSION = 10.0F;
 
 /**
- * The MeshGrid allows to divide a global mesh object into smaller regions
+ * The MeshGrid allows one to divide a global mesh object into smaller regions
  * of elements (e.g. facets, points or edges) depending on the resolution
  * of the grid. All grid elements in the grid structure have the same size.
  *
@@ -447,7 +448,7 @@ private:
     Base::Vector3f _clPt;     /**< Base point of search ray. */
     Base::Vector3f _clDir;    /**< Direction of search ray. */
     bool _bValidRay {false};  /**< Search ray ok? */
-    float _fMaxSearchArea {FLOAT_MAX};
+    float _fMaxSearchArea {std::numeric_limits<float>::max()};
     /** Checks if a grid position is already visited by NextOnRay(). */
     struct GridElement
     {

@@ -64,7 +64,7 @@ private:
     void highlightReferences(Part::Feature*, const std::vector<std::string>&, bool);
 
 private:
-    std::map<long, std::vector<App::Color>> originalLineColors;
+    std::map<long, std::vector<Base::Color>> originalLineColors;
 };
 
 

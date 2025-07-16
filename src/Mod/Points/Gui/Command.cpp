@@ -39,7 +39,7 @@
 #include <Gui/Document.h>
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProviderDocumentObject.h>
@@ -66,10 +66,10 @@ CmdPointsImport::CmdPointsImport()
 {
     sAppModule = "Points";
     sGroup = QT_TR_NOOP("Points");
-    sMenuText = QT_TR_NOOP("Import points...");
+    sMenuText = QT_TR_NOOP("Import Points…");
     sToolTipText = QT_TR_NOOP("Imports a point cloud");
     sWhatsThis = "Points_Import";
-    sStatusTip = QT_TR_NOOP("Imports a point cloud");
+    sStatusTip = sToolTipText;
     sPixmap = "Points_Import_Point_cloud";
 }
 
@@ -81,7 +81,7 @@ void CmdPointsImport::activated(int iMsg)
         Gui::getMainWindow(),
         QString(),
         QString(),
-        QString::fromLatin1("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
+        QStringLiteral("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
             .arg(QObject::tr("Point formats"), QObject::tr("All Files")));
     if (fn.isEmpty()) {
         return;
@@ -112,12 +112,12 @@ void CmdPointsImport::activated(int iMsg)
             auto center = bbox.GetCenter();
 
             if (!bbox.IsInBox(Base::Vector3d(0, 0, 0))) {
-                QMessageBox msgBox;
+                QMessageBox msgBox(Gui::getMainWindow());
                 msgBox.setIcon(QMessageBox::Question);
                 msgBox.setWindowTitle(QObject::tr("Points not at Origin"));
                 msgBox.setText(QObject::tr(
-                    "The Bounding Box of the imported points does not contain the origin.  "
-                    "Do you want to translate it to the origin?"));
+                    "The bounding box of the imported points does not contain the origin. "
+                    "Translate it to the origin?"));
                 msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
                 msgBox.setDefaultButton(QMessageBox::Yes);
                 auto ret = msgBox.exec();
@@ -151,7 +151,7 @@ CmdPointsExport::CmdPointsExport()
 {
     sAppModule = "Points";
     sGroup = QT_TR_NOOP("Points");
-    sMenuText = QT_TR_NOOP("Export points...");
+    sMenuText = QT_TR_NOOP("Export Points…");
     sToolTipText = QT_TR_NOOP("Exports a point cloud");
     sWhatsThis = "Points_Export";
     sStatusTip = QT_TR_NOOP("Exports a point cloud");
@@ -170,7 +170,7 @@ void CmdPointsExport::activated(int iMsg)
             Gui::getMainWindow(),
             QString(),
             QString(),
-            QString::fromLatin1("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
+            QStringLiteral("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
                 .arg(QObject::tr("Point formats"), QObject::tr("All Files")));
         if (fn.isEmpty()) {
             break;
@@ -188,7 +188,7 @@ void CmdPointsExport::activated(int iMsg)
 
 bool CmdPointsExport::isActive()
 {
-    return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 0;
+    return getSelection().countObjectsOfType<Points::Feature>() > 0;
 }
 
 DEF_STD_CMD_A(CmdPointsTransform)
@@ -199,9 +199,9 @@ CmdPointsTransform::CmdPointsTransform()
     sAppModule = "Points";
     sGroup = QT_TR_NOOP("Points");
     sMenuText = QT_TR_NOOP("Transform Points");
-    sToolTipText = QT_TR_NOOP("Test to transform a point cloud");
+    sToolTipText = QT_TR_NOOP("Performs tests to transform a point cloud");
     sWhatsThis = "Points_Transform";
-    sStatusTip = QT_TR_NOOP("Test to transform a point cloud");
+    sStatusTip = sToolTipText;
     sPixmap = "Test1";
 }
 
@@ -227,7 +227,7 @@ void CmdPointsTransform::activated(int iMsg)
 
 bool CmdPointsTransform::isActive()
 {
-    return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 0;
+    return getSelection().countObjectsOfType<Points::Feature>() > 0;
 }
 
 DEF_STD_CMD_A(CmdPointsConvert)
@@ -237,10 +237,10 @@ CmdPointsConvert::CmdPointsConvert()
 {
     sAppModule = "Points";
     sGroup = QT_TR_NOOP("Points");
-    sMenuText = QT_TR_NOOP("Convert to points...");
-    sToolTipText = QT_TR_NOOP("Convert to points");
+    sMenuText = QT_TR_NOOP("Convert to Points…");
+    sToolTipText = QT_TR_NOOP("Converts to points");
     sWhatsThis = "Points_Convert";
-    sStatusTip = QT_TR_NOOP("Convert to points");
+    sStatusTip = sToolTipText;
     sPixmap = "Points_Convert";
 }
 
@@ -309,13 +309,13 @@ void CmdPointsConvert::activated(int iMsg)
     catch (const Py::Exception&) {
         abortCommand();
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
     }
 }
 
 bool CmdPointsConvert::isActive()
 {
-    return getSelection().countObjectsOfType(Base::Type::fromName("App::GeoFeature")) > 0;
+    return getSelection().countObjectsOfType<App::GeoFeature>() > 0;
 }
 
 DEF_STD_CMD_A(CmdPointsPolyCut)
@@ -325,10 +325,10 @@ CmdPointsPolyCut::CmdPointsPolyCut()
 {
     sAppModule = "Points";
     sGroup = QT_TR_NOOP("Points");
-    sMenuText = QT_TR_NOOP("Cut point cloud");
-    sToolTipText = QT_TR_NOOP("Cuts a point cloud with a picked polygon");
+    sMenuText = QT_TR_NOOP("Cut Point Cloud");
+    sToolTipText = QT_TR_NOOP("Cuts a point cloud with a selected polygon");
     sWhatsThis = "Points_PolyCut";
-    sStatusTip = QT_TR_NOOP("Cuts a point cloud with a picked polygon");
+    sStatusTip = sToolTipText;
     sPixmap = "PolygonPick";
 }
 
@@ -363,7 +363,7 @@ void CmdPointsPolyCut::activated(int iMsg)
 bool CmdPointsPolyCut::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
-    return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 0;
+    return getSelection().countObjectsOfType<Points::Feature>() > 0;
 }
 
 DEF_STD_CMD_A(CmdPointsMerge)
@@ -373,10 +373,10 @@ CmdPointsMerge::CmdPointsMerge()
 {
     sAppModule = "Points";
     sGroup = QT_TR_NOOP("Points");
-    sMenuText = QT_TR_NOOP("Merge point clouds");
-    sToolTipText = QT_TR_NOOP("Merge several point clouds into one");
+    sMenuText = QT_TR_NOOP("Merge Point Clouds");
+    sToolTipText = QT_TR_NOOP("Merges several point clouds into one");
     sWhatsThis = "Points_Merge";
-    sStatusTip = QT_TR_NOOP("Merge several point clouds into one");
+    sStatusTip = sToolTipText;
     sPixmap = "Points_Merge";
 }
 
@@ -386,8 +386,7 @@ void CmdPointsMerge::activated(int iMsg)
 
     App::Document* doc = App::GetApplication().getActiveDocument();
     doc->openTransaction("Merge point clouds");
-    Points::Feature* pts =
-        static_cast<Points::Feature*>(doc->addObject("Points::Feature", "Merged Points"));
+    Points::Feature* pts = doc->addObject<Points::Feature>("Merged Points");
     Points::PointKernel* kernel = pts->Points.startEditing();
 
     std::vector<App::DocumentObject*> docObj =
@@ -426,7 +425,7 @@ void CmdPointsMerge::activated(int iMsg)
 
 bool CmdPointsMerge::isActive()
 {
-    return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 1;
+    return getSelection().countObjectsOfType<Points::Feature>() > 1;
 }
 
 DEF_STD_CMD_A(CmdPointsStructure)
@@ -436,10 +435,10 @@ CmdPointsStructure::CmdPointsStructure()
 {
     sAppModule = "Points";
     sGroup = QT_TR_NOOP("Points");
-    sMenuText = QT_TR_NOOP("Structured point cloud");
-    sToolTipText = QT_TR_NOOP("Convert points to structured point cloud");
+    sMenuText = QT_TR_NOOP("Structured Point Cloud");
+    sToolTipText = QT_TR_NOOP("Converts points to a structured point cloud");
     sWhatsThis = "Points_Structure";
-    sStatusTip = QT_TR_NOOP("Convert points to structured point cloud");
+    sStatusTip = sToolTipText;
     sPixmap = "Points_Structure";
 }
 
@@ -455,8 +454,7 @@ void CmdPointsStructure::activated(int iMsg)
     for (auto it : docObj) {
         std::string name = it->Label.getValue();
         name += " (Structured)";
-        Points::Structured* output =
-            static_cast<Points::Structured*>(doc->addObject("Points::Structured", name.c_str()));
+        Points::Structured* output = doc->addObject<Points::Structured>(name.c_str());
         output->Label.setValue(name);
 
         // Already sorted, so just make a copy
@@ -537,7 +535,7 @@ void CmdPointsStructure::activated(int iMsg)
 
 bool CmdPointsStructure::isActive()
 {
-    return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) == 1;
+    return getSelection().countObjectsOfType<Points::Feature>() == 1;
 }
 
 void CreatePointsCommands()

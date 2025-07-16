@@ -499,12 +499,10 @@ void ViewProviderDocumentObject::setActiveMode()
 
 bool ViewProviderDocumentObject::canDelete(App::DocumentObject* obj) const
 {
-    Q_UNUSED(obj)
-    if (getObject()->hasExtension(App::GroupExtension::getExtensionClassTypeId()))
-        return true;
-    if (getObject()->isDerivedFrom(App::Origin::getClassTypeId()))
-        return true;
-    return false;
+    Q_UNUSED(obj);
+    auto* o = getObject();
+    return o->hasExtension(App::GroupExtension::getExtensionClassTypeId())
+           || o->isDerivedFrom<App::Origin>();
 }
 
 PyObject* ViewProviderDocumentObject::getPyObject()
@@ -549,7 +547,7 @@ int ViewProviderDocumentObject::replaceObject(
     std::vector<App::Property*> props;
     obj->getPropertyList(props);
     for(auto prop : props) {
-        auto linkProp = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
+        auto linkProp = freecad_cast<App::PropertyLinkBase*>(prop);
         if(!linkProp)
             continue;
         std::unique_ptr<App::Property> copy(linkProp->CopyOnLinkReplace(obj, oldObj,newObj));
@@ -569,7 +567,7 @@ int ViewProviderDocumentObject::replaceObject(
             std::vector<App::Property*> props;
             o->getPropertyList(props);
             for(auto prop : props) {
-                auto linkProp = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
+                auto linkProp = freecad_cast<App::PropertyLinkBase*>(prop);
                 if(!linkProp)
                     continue;
                 std::unique_ptr<App::Property> copy(linkProp->CopyOnLinkReplace(obj,oldObj,newObj));
@@ -693,7 +691,7 @@ ViewProviderDocumentObject *ViewProviderDocumentObject::getLinkedViewProvider(
     auto linked = pcObject->getLinkedObject(recursive);
     if(!linked || linked == pcObject)
         return self;
-    auto res = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+    auto res = freecad_cast<ViewProviderDocumentObject*>(
             Application::Instance->getViewProvider(linked));
     if(!res)
         res = self;

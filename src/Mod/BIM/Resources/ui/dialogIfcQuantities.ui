@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>852</width>
-    <height>471</height>
+    <width>680</width>
+    <height>512</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -41,6 +41,16 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_6">
      <item>
+      <widget class="QComboBox" name="comboQto"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonApply">
+       <property name="text">
+        <string>Apply</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -54,9 +64,24 @@
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="buttonRefresh">
+       <property name="text">
+        <string>Refresh</string>
+       </property>
+       <property name="icon">
+        <iconset theme="reload">
+         <normaloff>.</normaloff>.</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="buttonSelectAll">
        <property name="text">
         <string>Select all</string>
+       </property>
+       <property name="icon">
+        <iconset theme="edit-select-all">
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>

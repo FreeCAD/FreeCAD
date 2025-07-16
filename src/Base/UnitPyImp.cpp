@@ -21,38 +21,25 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <algorithm>
+#include <ranges>
+#endif
 
-#include <Base/Unit.h>
+#include "Unit.h"
 
-// inclusion of the generated files (generated out of UnitPy.xml)
-#include <Base/UnitPy.h>
-#include <Base/QuantityPy.h>
-#include <Base/UnitPy.cpp>
+// generated out of Unit.pyi
+#include "UnitPy.h"
+#include "UnitPy.cpp"
+
+#include "QuantityPy.h"
 
 using namespace Base;
 
 // returns a string which represents the object e.g. when printed in python
 std::string UnitPy::representation() const
 {
-    std::stringstream ret;
-    Unit* self = getUnitPtr();
-
-    ret << "Unit: ";
-    ret << self->getString() << " (";
-    ret << (*self).length() << ",";
-    ret << (*self).mass() << ",";
-    ret << (*self).time() << ",";
-    ret << (*self).electricCurrent() << ",";
-    ret << (*self).thermodynamicTemperature() << ",";
-    ret << (*self).amountOfSubstance() << ",";
-    ret << (*self).luminousIntensity() << ",";
-    ret << (*self).angle() << ")";
-
-    std::string type = self->getTypeString();
-    if (!type.empty()) {
-        ret << " [" << type << "]";
-    }
-    return ret.str();
+    return getUnitPtr()->representation();
 }
 
 PyObject* UnitPy::PyMake(PyTypeObject* /*unused*/, PyObject* /*unused*/, PyObject* /*unused*/)
@@ -68,15 +55,15 @@ int UnitPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     Unit* self = getUnitPtr();
 
     // get quantity
-    if (PyArg_ParseTuple(args, "O!", &(Base::QuantityPy::Type), &object)) {
-        *self = static_cast<Base::QuantityPy*>(object)->getQuantityPtr()->getUnit();
+    if (PyArg_ParseTuple(args, "O!", &(QuantityPy::Type), &object)) {
+        *self = static_cast<QuantityPy*>(object)->getQuantityPtr()->getUnit();
         return 0;
     }
     PyErr_Clear();  // set by PyArg_ParseTuple()
 
     // get unit
-    if (PyArg_ParseTuple(args, "O!", &(Base::UnitPy::Type), &object)) {
-        *self = *(static_cast<Base::UnitPy*>(object)->getUnitPtr());
+    if (PyArg_ParseTuple(args, "O!", &(UnitPy::Type), &object)) {
+        *self = *(static_cast<UnitPy*>(object)->getUnitPtr());
         return 0;
     }
     PyErr_Clear();  // set by PyArg_ParseTuple()
@@ -90,27 +77,31 @@ int UnitPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             *self = Quantity::parse(str).getUnit();
             return 0;
         }
-        catch (const Base::ParserError& e) {
+        catch (const ParserError& e) {
             PyErr_SetString(PyExc_ValueError, e.what());
             return -1;
         }
     }
     PyErr_Clear();  // set by PyArg_ParseTuple()
 
-    int i1 = 0;
-    int i2 = 0;
-    int i3 = 0;
-    int i4 = 0;
-    int i5 = 0;
-    int i6 = 0;
-    int i7 = 0;
-    int i8 = 0;
+    int i1 {0};
+    int i2 {0};
+    int i3 {0};
+    int i4 {0};
+    int i5 {0};
+    int i6 {0};
+    int i7 {0};
+    int i8 {0};
     if (PyArg_ParseTuple(args, "|iiiiiiii", &i1, &i2, &i3, &i4, &i5, &i6, &i7, &i8)) {
         try {
             *self = Unit(i1, i2, i3, i4, i5, i6, i7, i8);
             return 0;
         }
-        catch (const Base::OverflowError& e) {
+        catch (const OverflowError& e) {
+            PyErr_SetString(PyExc_OverflowError, e.what());
+            return -1;
+        }
+        catch (const UnderflowError& e) {
             PyErr_SetString(PyExc_OverflowError, e.what());
             return -1;
         }
@@ -131,8 +122,8 @@ PyObject* UnitPy::number_add_handler(PyObject* self, PyObject* other)
         PyErr_SetString(PyExc_TypeError, "Second arg must be Unit");
         return nullptr;
     }
-    Base::Unit* a = static_cast<UnitPy*>(self)->getUnitPtr();
-    Base::Unit* b = static_cast<UnitPy*>(other)->getUnitPtr();
+    Unit* a = static_cast<UnitPy*>(self)->getUnitPtr();
+    Unit* b = static_cast<UnitPy*>(other)->getUnitPtr();
 
     if (*a != *b) {
         PyErr_SetString(PyExc_TypeError, "Units not matching!");
@@ -152,8 +143,8 @@ PyObject* UnitPy::number_subtract_handler(PyObject* self, PyObject* other)
         PyErr_SetString(PyExc_TypeError, "Second arg must be Unit");
         return nullptr;
     }
-    Base::Unit* a = static_cast<UnitPy*>(self)->getUnitPtr();
-    Base::Unit* b = static_cast<UnitPy*>(other)->getUnitPtr();
+    Unit* a = static_cast<UnitPy*>(self)->getUnitPtr();
+    Unit* b = static_cast<UnitPy*>(other)->getUnitPtr();
 
     if (*a != *b) {
         PyErr_SetString(PyExc_TypeError, "Units not matching!");
@@ -171,8 +162,8 @@ PyObject* UnitPy::number_multiply_handler(PyObject* self, PyObject* other)
     }
 
     if (PyObject_TypeCheck(other, &(UnitPy::Type))) {
-        Base::Unit* a = static_cast<UnitPy*>(self)->getUnitPtr();
-        Base::Unit* b = static_cast<UnitPy*>(other)->getUnitPtr();
+        Unit* a = static_cast<UnitPy*>(self)->getUnitPtr();
+        Unit* b = static_cast<UnitPy*>(other)->getUnitPtr();
 
         return new UnitPy(new Unit((*a) * (*b)));
     }
@@ -212,13 +203,11 @@ Py::String UnitPy::getType() const
 
 Py::Tuple UnitPy::getSignature() const
 {
-    Py::Tuple tuple(8);
-    Unit* self = getUnitPtr();
-
-    for (auto i = 0; i < tuple.size(); i++) {
-        tuple.setItem(i, Py::Long((*self)[i]));
-    }
-
+    Py::Tuple tuple {unitNumExponents};
+    auto exps = getUnitPtr()->exponents();
+    std::ranges::for_each(exps, [&, pos {0}](auto exp) mutable {
+        tuple.setItem(pos++, Py::Long {exp});
+    });
     return tuple;
 }
 

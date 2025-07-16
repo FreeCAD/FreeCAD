@@ -20,17 +20,13 @@ endif ()
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
-    ${Boost_INCLUDE_DIRS}
-    ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
-    ${ZLIB_INCLUDE_DIR}
-    ${EIGEN3_INCLUDE_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${PCL_INCLUDE_DIRS}
     ${FLANN_INCLUDE_DIRS}
 )
-
-link_directories(${OCC_LIBRARY_DIR})
 
 set(Reen_LIBS
     Part

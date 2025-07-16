@@ -43,7 +43,7 @@ ViewProviderSketchBased::~ViewProviderSketchBased() = default;
 std::vector<App::DocumentObject*> ViewProviderSketchBased::claimChildren() const {
     std::vector<App::DocumentObject*> temp;
     App::DocumentObject* sketch = getObject<PartDesign::ProfileBased>()->Profile.getValue();
-    if (sketch && !sketch->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+    if (sketch && !sketch->isDerivedFrom<PartDesign::Feature>())
         temp.push_back(sketch);
 
     return temp;

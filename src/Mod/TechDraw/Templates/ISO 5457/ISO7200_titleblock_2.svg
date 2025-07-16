@@ -61,7 +61,7 @@
     <text id="owner_2_data_field" x="160" y="13.1" freecad:editable="legal_owner_2" style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan> </tspan></text>
     <text id="owner_3_data_field" x="160" y="17.1" freecad:editable="legal_owner_3" style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan> </tspan></text>
     <text id="owner_4_data_field" x="160" y="21.1" freecad:editable="legal_owner_4" style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan> </tspan></text>
-    <text id="identification_number_data_field" y="33.2" x="1" freecad:editable="identification_number"><tspan>DN</tspan></text>
+    <text id="identification_number_data_field" y="33.2" x="1" freecad:editable="drawing_number"><tspan>DN</tspan></text>
     <text id="revision_index_data_field" x="110" y="33.2" freecad:editable="revision_index" style="text-align:center;text-anchor:middle"><tspan>AAA</tspan></text>
     <text id="date_of_issue_data_field" x="61" y="33.2" freecad:editable="date_of_issue" freecad:autofill="date"><tspan>YYYY-MM-DD</tspan></text>
     <text id="sheet_number_data_field" x="130" y="33.2" freecad:editable="sheet_number" freecad:autofill="sheet" style="text-align:center;text-anchor:middle"><tspan>X / Y</tspan></text>
@@ -69,6 +69,6 @@
     <text id="responsible_department_data_field" x="141" y="33.2" freecad:editable="responsible_department"><tspan>RD</tspan></text>
     <text id="approval_person_data_field" x="81" y="21.2" freecad:editable="approval_person"><tspan>B. Hecate</tspan></text>
     <text id="creator_data_field" x="81" y="9.2" freecad:editable="creator" freecad:autofill="author"><tspan>A. Nemesis</tspan></text>
-    <text id="document_type_data_field" x="1" y="21.2" freecad:editable="document_type"><tspan>Assembly Drawing</tspan></text>
+    <text id="document_type_data_field" x="1" y="21.2" freecad:editable="document_type"><tspan>Component Drawing</tspan></text>
   </g>
 </svg>

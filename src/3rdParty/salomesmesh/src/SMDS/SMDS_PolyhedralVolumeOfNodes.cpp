@@ -69,7 +69,7 @@ bool SMDS_PolyhedralVolumeOfNodes::ChangeNodes (const vector<const SMDS_MeshNode
   myNodesByFaces = nodes;
   myQuantities = quantities;
 
-  // Init fields of parent class, it allows to get only unique nodes(?)
+  // Init fields of parent class, it allows one to get only unique nodes(?)
 
   set<const SMDS_MeshNode *> aSet;
   aSet.insert( nodes.begin(), nodes.end());

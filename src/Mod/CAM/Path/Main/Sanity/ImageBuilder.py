@@ -88,17 +88,17 @@ class GuiImageBuilder(ImageBuilder):
     def prepare_view(self, obj):
         # Create a new view
         Path.Log.debug("CAM - Preparing view\n")
-        FreeCADGui.runCommand("Std_ViewCreate", 0)
 
-        # Get the activeview and configure it
-        aview = FreeCADGui.ActiveDocument.ActiveView
-        aview.setAnimationEnabled(False)
-        aview.viewIsometric()
-
-        FreeCADGui.SendMsgToActiveView("PerspectiveCamera")
-
-        # resize the window
         mw = FreeCADGui.getMainWindow()
+        num_windows = len(mw.getWindows())
+
+        # Create and configure the view
+        view = FreeCADGui.ActiveDocument.createView("Gui::View3DInventor")
+        view.setAnimationEnabled(False)
+        view.viewIsometric()
+        view.setCameraType("Perspective")
+
+        # Resize the window
         mdi = mw.findChild(QtGui.QMdiArea)
         view_window = mdi.activeSubWindow()
         view_window.resize(500, 500)
@@ -109,17 +109,19 @@ class GuiImageBuilder(ImageBuilder):
         self.record_visibility()
         obj.Visibility = True
 
+        # Return the index of the new window (= old number of windows)
+        return num_windows
+
     def record_visibility(self):
         self.visible = [o for o in self.doc.Document.Objects if o.Visibility]
         for o in self.doc.Document.Objects:
             o.Visibility = False
 
-    def destroy_view(self):
+    def destroy_view(self, idx):
         Path.Log.debug("CAM - destroying view\n")
         mw = FreeCADGui.getMainWindow()
         windows = mw.getWindows()
-        toRemove = windows[1]
-        mw.removeWindow(toRemove)
+        mw.removeWindow(windows[idx])
 
     def restore_visibility(self):
         Path.Log.debug("CAM - Restoring visibility\n")
@@ -134,10 +136,10 @@ class GuiImageBuilder(ImageBuilder):
 
         file_path = os.path.join(self.file_path, image_name)
 
-        self.prepare_view(obj)
+        idx = self.prepare_view(obj)
 
         self.capture_image(file_path)
-        self.destroy_view()
+        self.destroy_view(idx)
 
         result = f"{file_path}_t.png"
 

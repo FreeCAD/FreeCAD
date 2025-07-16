@@ -46,7 +46,7 @@ class ColorWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit ColorWidget(const App::Color& color, QWidget* parent = nullptr);
+    explicit ColorWidget(const Base::Color& color, QWidget* parent = nullptr);
     ~ColorWidget() override = default;
 
     QSize sizeHint() const override { return {75,23}; }

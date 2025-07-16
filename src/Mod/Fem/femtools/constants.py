@@ -20,7 +20,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-""" Collection of natural constants for the Fem module.
+"""Collection of natural constants for the Fem module.
 
 This module contains natural constants for the Fem module.
 All constants are in SI units.

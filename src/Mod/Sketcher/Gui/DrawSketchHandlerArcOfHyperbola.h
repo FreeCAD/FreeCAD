@@ -28,6 +28,7 @@
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
+#include <Gui/InputHint.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -103,7 +104,7 @@ public:
             if (!boost::math::isnan(b)) {
                 for (int i = 15; i >= -15; i--) {
                     // P(U) = O + MajRad*Cosh(U)*XDir + MinRad*Sinh(U)*YDir
-                    // double angle = i*M_PI/16.0;
+                    // double angle = i*std::numbers::pi/16.0;
                     double angle = i * angleatpoint / 15;
                     double rx = a * cosh(angle) * cos(phi) - b * sinh(angle) * sin(phi);
                     double ry = a * cosh(angle) * sin(phi) + b * sinh(angle) * cos(phi);
@@ -150,7 +151,7 @@ public:
 
             /*double angle1 = angleatpoint - startAngle;
 
-            double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI ;
+            double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * std::numbers::pi ;
             arcAngle = abs(angle1-arcAngle) < abs(angle2-arcAngle) ? angle1 : angle2;*/
 
             arcAngle = angleatpoint - startAngle;
@@ -210,6 +211,8 @@ public:
 
             Mode = STATUS_Close;
         }
+
+        updateHint();
         return true;
     }
 
@@ -290,8 +293,8 @@ public:
                 perp.Scale(abs(b));
                 majAxisPoint = centerPoint + perp;
                 minAxisPoint = centerPoint + minAxisDir;
-                endAngle += M_PI / 2;
-                startAngle += M_PI / 2;
+                endAngle += std::numbers::pi / 2;
+                startAngle += std::numbers::pi / 2;
             }
 
             int currentgeoid = getHighestCurveIndex();
@@ -391,13 +394,14 @@ public:
                                             // ViewProvider
             }
         }
+        updateHint();
         return true;
     }
 
 private:
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Create_ArcOfHyperbola");
+        return QStringLiteral("Sketcher_Pointer_Create_ArcOfHyperbola");
     }
 
 
@@ -407,8 +411,52 @@ protected:
     Base::Vector2d centerPoint, axisPoint, startingPoint, endPoint;
     double arcAngle, arcAngle_t;
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3, sugConstr4;
+
+private:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return lookupArcOfHyperbolaHints(Mode);
+    }
+
+private:
+    struct HintEntry
+    {
+        int mode;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static HintTable getArcOfHyperbolaHintTable();
+    static std::list<Gui::InputHint> lookupArcOfHyperbolaHints(int mode);
 };
 
+DrawSketchHandlerArcOfHyperbola::HintTable
+DrawSketchHandlerArcOfHyperbola::getArcOfHyperbolaHintTable()
+{
+    return {// Structure: {mode, {hints...}}
+            {STATUS_SEEK_First,
+             {{QObject::tr("%1 pick center point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {STATUS_SEEK_Second,
+             {{QObject::tr("%1 pick axis point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {STATUS_SEEK_Third,
+             {{QObject::tr("%1 pick arc start point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {STATUS_SEEK_Fourth,
+             {{QObject::tr("%1 pick arc end point"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+}
+
+std::list<Gui::InputHint> DrawSketchHandlerArcOfHyperbola::lookupArcOfHyperbolaHints(int mode)
+{
+    const auto arcOfHyperbolaHintTable = getArcOfHyperbolaHintTable();
+
+    auto it = std::find_if(arcOfHyperbolaHintTable.begin(),
+                           arcOfHyperbolaHintTable.end(),
+                           [mode](const HintEntry& entry) {
+                               return entry.mode == mode;
+                           });
+
+    return (it != arcOfHyperbolaHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
+}
 
 }  // namespace SketcherGui
 

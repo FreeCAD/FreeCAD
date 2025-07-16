@@ -21,7 +21,7 @@ protected:
     void SetUp() override
     {
         createTestDoc();
-        _mirror = dynamic_cast<Part::Mirroring*>(_doc->addObject("Part::Mirroring"));
+        _mirror = _doc->addObject<Part::Mirroring>();
         _mirror->Source.setValue(_boxes[0]);
         _mirror->Base.setValue(1, 0, 0);
         _mirror->execute();
@@ -61,7 +61,7 @@ TEST_F(FeatureMirroringTest, testYMirrorWithExistingElementMap)
 {
     // Arrange
     Part::Fuse* _fuse = nullptr;  // NOLINT Can't be private in a test framework
-    _fuse = dynamic_cast<Part::Fuse*>(_doc->addObject("Part::Fuse"));
+    _fuse = _doc->addObject<Part::Fuse>();
     _fuse->Base.setValue(_boxes[0]);
     _fuse->Tool.setValue(_boxes[1]);
     // Act

@@ -27,6 +27,7 @@
 #include <mutex>
 #include <vector>
 #include <algorithm>
+#include <cstdio>
 #endif
 
 #include "Sequencer.h"
@@ -50,8 +51,7 @@ struct SequencerP
     }
     static void removeInstance(SequencerBase* sb)
     {
-        std::vector<SequencerBase*>::iterator it;
-        it = std::find(_instances.begin(), _instances.end(), sb);
+        const auto it = std::ranges::find(_instances, sb);
         _instances.erase(it);
     }
     static SequencerBase& getInstance()

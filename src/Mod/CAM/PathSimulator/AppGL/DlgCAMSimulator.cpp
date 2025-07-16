@@ -29,6 +29,7 @@
 #include <QDateTime>
 #include <QSurfaceFormat>
 #include <QPoint>
+#include <App/Document.h>
 
 QOpenGLContext* gOpenGlContext;
 
@@ -44,6 +45,11 @@ DlgCAMSimulator::DlgCAMSimulator(QWindow* parent)
 {
     setSurfaceType(QWindow::OpenGLSurface);
     mMillSimulator = new MillSimulation();
+}
+
+DlgCAMSimulator::~DlgCAMSimulator()
+{
+    delete mMillSimulator;
 }
 
 void DlgCAMSimulator::render(QPainter* painter)
@@ -231,7 +237,6 @@ void DlgCAMSimulator::initialize()
 
     const qreal retinaScale = devicePixelRatio();
     glViewport(0, 0, width() * retinaScale, height() * retinaScale);
-    glEnable(GL_MULTISAMPLE);
 }
 
 void DlgCAMSimulator::checkInitialization()
@@ -325,6 +330,9 @@ DlgCAMSimulator* DlgCAMSimulator::GetInstance()
         mInstance->setModality(Qt::ApplicationModal);
         mInstance->setMinimumWidth(700);
         mInstance->setMinimumHeight(400);
+
+        App::Document* doc = App::GetApplication().getActiveDocument();
+        mInstance->setTitle(tr("%1 - New CAM Simulator").arg(QString::fromUtf8(doc->getName())));
     }
     return mInstance;
 }

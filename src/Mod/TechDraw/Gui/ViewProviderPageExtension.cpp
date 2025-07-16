@@ -61,7 +61,7 @@ bool ViewProviderPageExtension::extensionCanDropObjects() const { return true; }
 bool ViewProviderPageExtension::extensionCanDropObject(App::DocumentObject* obj) const
 {
     // Accept links to views as well.
-    if (obj->isDerivedFrom(App::Link::getClassTypeId())) {
+    if (obj->isDerivedFrom<App::Link>()) {
         auto* link = static_cast<App::Link*>(obj);
         obj = link->getLinkedObject();
     }
@@ -107,14 +107,14 @@ bool ViewProviderPageExtension::extensionCanDropObjectEx(App::DocumentObject* ob
 void ViewProviderPageExtension::extensionDropObject(App::DocumentObject* obj)
 {
     bool linkToView = false;
-    if (obj->isDerivedFrom(App::Link::getClassTypeId())) {
+    if (obj->isDerivedFrom<App::Link>()) {
         auto* link = static_cast<App::Link*>(obj);
-        if (link->getLinkedObject()->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+        if (link->getLinkedObject()->isDerivedFrom<TechDraw::DrawView>()) {
             linkToView = true;
         }
     }
 
-    if (obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId()) || linkToView) {
+    if (obj->isDerivedFrom<TechDraw::DrawView>() || linkToView) {
         dropObject(obj);
         return;
     }

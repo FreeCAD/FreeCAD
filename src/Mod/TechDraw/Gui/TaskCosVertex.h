@@ -103,7 +103,7 @@ private:
     QPushButton* m_btnOK;
     QPushButton* m_btnCancel;
 
-    int m_pbTrackerState;
+    TrackerAction m_pbTrackerState;
     QPointF m_savePoint;
     bool pointFromTracker;
 

@@ -113,7 +113,7 @@
           <item row="0" column="0">
            <widget class="QLabel" name="label_4">
             <property name="text">
-             <string>X:</string>
+             <string>X</string>
             </property>
            </widget>
           </item>
@@ -130,7 +130,7 @@
           <item row="1" column="0">
            <widget class="QLabel" name="label_10">
             <property name="text">
-             <string>Y:</string>
+             <string>Y</string>
             </property>
            </widget>
           </item>
@@ -147,7 +147,7 @@
           <item row="2" column="0">
            <widget class="QLabel" name="label_11">
             <property name="text">
-             <string>Z:</string>
+             <string>Z</string>
             </property>
            </widget>
           </item>
@@ -164,7 +164,7 @@
           <item row="3" column="0">
            <widget class="QLabel" name="lb_angle">
             <property name="text">
-             <string>Angle:</string>
+             <string>Angle</string>
             </property>
            </widget>
           </item>
@@ -187,7 +187,7 @@
        <item>
         <widget class="QGroupBox" name="groupBox">
          <property name="title">
-          <string>Transformable surfaces</string>
+          <string>Transformable Surfaces</string>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
@@ -206,7 +206,7 @@
        <item>
         <widget class="QGroupBox" name="groupBox_2">
          <property name="title">
-          <string>Transformable surfaces</string>
+          <string>Transformable Surfaces</string>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>

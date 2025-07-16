@@ -56,6 +56,7 @@ public:
     App::PropertyEnumeration    ThreadClass;
     App::PropertyEnumeration    ThreadFit;
     App::PropertyLength         Diameter;
+    App::PropertyLength         ThreadDiameter;
     App::PropertyEnumeration    ThreadDirection;
     App::PropertyEnumeration    HoleCutType;
     App::PropertyBool           HoleCutCustomValues;
@@ -73,6 +74,19 @@ public:
     App::PropertyAngle          TaperedAngle;
     App::PropertyBool           UseCustomThreadClearance;
     App::PropertyLength         CustomThreadClearance;
+    App::PropertyInteger        BaseProfileType;
+
+    enum BaseProfileTypeOptions {
+        OnPoints    = 1 << 0,
+        OnCircles   = 1 << 1,
+        OnArcs      = 1 << 2,
+
+        // Common combos
+        OnPointsCirclesArcs = OnPoints | OnCircles | OnArcs,
+        OnCirclesArcs = OnCircles | OnArcs
+    };
+    static int baseProfileOption_idxToBitmask(int index);
+    static int baseProfileOption_bitmaskToIdx(int bitmask);
 
     /** @name methods override feature */
     //@{
@@ -92,7 +106,7 @@ public:
         double pitch;
         double TapDrill;
     };
-    static const ThreadDescription threadDescription[][171];
+    static const std::vector<Hole::ThreadDescription> threadDescription[];
 
     static const double metricHoleDiameters[51][4];
 
@@ -102,72 +116,68 @@ public:
         double normal;
         double loose;
     };
-    static const UTSClearanceDefinition UTSHoleDiameters[22];
+    static const UTSClearanceDefinition UTSHoleDiameters[23];
 
     void Restore(Base::XMLReader & reader) override;
 
     virtual void updateProps();
+    bool isDynamicCounterbore(const std::string &thread, const std::string &holeCutType);
+    bool isDynamicCountersink(const std::string &thread, const std::string &holeCutType);
 
 protected:
     void onChanged(const App::Property* prop) override;
+    void setupObject() override;
+
     static const App::PropertyAngle::Constraints floatAngle;
 
 private:
     static const char* DepthTypeEnums[];
     static const char* ThreadDepthTypeEnums[];
     static const char* ThreadTypeEnums[];
+    static const char* ClearanceNoneEnums[];
     static const char* ClearanceMetricEnums[];
     static const char* ClearanceUTSEnums[];
+    static const char* ClearanceOtherEnums[];
     static const char* DrillPointEnums[];
     static const char* ThreadDirectionEnums[];
 
     /* "None" thread profile */
     static const char* HoleCutType_None_Enums[];
-    static const char* ThreadSize_None_Enums[];
     static const char* ThreadClass_None_Enums[];
 
     /* ISO metric coarse profile */
     static std::vector<std::string> HoleCutType_ISOmetric_Enums;
-    static const char* ThreadSize_ISOmetric_Enums[];
     static const char* ThreadClass_ISOmetric_Enums[];
     static const double ThreadClass_ISOmetric_data[ThreadClass_ISOmetric_data_size][2];
 
     /* ISO metric fine profile */
     static std::vector<std::string> HoleCutType_ISOmetricfine_Enums;
-    static const char* ThreadSize_ISOmetricfine_Enums[];
     static const char* ThreadClass_ISOmetricfine_Enums[];
 
     /* UNC profile */
     static const char* HoleCutType_UNC_Enums[];
-    static const char* ThreadSize_UNC_Enums[];
     static const char* ThreadClass_UNC_Enums[];
 
     /* UNF profile */
     static const char* HoleCutType_UNF_Enums[];
-    static const char* ThreadSize_UNF_Enums[];
     static const char* ThreadClass_UNF_Enums[];
 
     /* UNEF profile */
     static const char* HoleCutType_UNEF_Enums[];
-    static const char* ThreadSize_UNEF_Enums[];
     static const char* ThreadClass_UNEF_Enums[];
 
     /* NPT profile */
     static const char* HoleCutType_NPT_Enums[];
-    static const char* ThreadSize_NPT_Enums[];
 
     /* BSP profile */
     static const char* HoleCutType_BSP_Enums[];
-    static const char* ThreadSize_BSP_Enums[];
 
     /* BSW profile */
     static const char* HoleCutType_BSW_Enums[];
-    static const char* ThreadSize_BSW_Enums[];
     static const char* ThreadClass_BSW_Enums[];
 
     /* BSF profile */
     static const char* HoleCutType_BSF_Enums[];
-    static const char* ThreadSize_BSF_Enums[];
     static const char* ThreadClass_BSF_Enums[];
 
     static const double ThreadRunout[ThreadRunout_size][2];
@@ -228,9 +238,9 @@ private:
     const CutDimensionSet& find_cutDimensionSet(const CutDimensionKey &k);
 
     void addCutType(const CutDimensionSet& dimensions);
-    bool isDynamicCounterbore(const std::string &thread, const std::string &holeCutType);
-    bool isDynamicCountersink(const std::string &thread, const std::string &holeCutType);
     void updateHoleCutParams();
+    void calculateAndSetCounterbore();
+    void calculateAndSetCountersink();
     std::optional<double> determineDiameter() const;
     void updateDiameterParam();
     void updateThreadDepthParam();
@@ -241,6 +251,7 @@ private:
     double getThreadRunout(int mode = 1) const;
     double getThreadPitch() const;
     double getThreadProfileAngle();
+    void findClosestDesignation();
     void rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, TopoDS_Shape& helixShape) const;
     gp_Vec computePerpendicular(const gp_Vec&) const;
     TopoDS_Shape makeThread(const gp_Vec&, const gp_Vec&, double);

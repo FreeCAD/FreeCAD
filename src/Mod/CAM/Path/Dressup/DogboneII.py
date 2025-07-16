@@ -271,6 +271,8 @@ class Proxy(object):
         return PathDressup.toolController(obj.Base).Tool.Diameter.Value / 2
 
     def createBone(self, obj, move0, move1):
+        if move0.isRapid() and move1.isRapid():
+            return None
         kink = dogboneII.Kink(move0, move1)
         Path.Log.debug(f"{obj.Label}.createBone({kink})")
         if insertBone(obj, kink):

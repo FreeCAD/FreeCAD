@@ -27,16 +27,13 @@
 #undef _PreComp_
 #endif
 
-#ifdef FC_OS_LINUX
-#include <unistd.h>
-#endif
-
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif  // HAVE_CONFIG_H
 
 #include <cstdio>
-#include <sstream>
+#include <ostream>
+#include <QString>
 
 // FreeCAD Base header
 #include <Base/Console.h>
@@ -51,7 +48,7 @@ using App::Application;
 using Base::Console;
 
 const char sBanner[] =
-    "(C) 2001-2024 FreeCAD contributors\n"
+    "(C) 2001-2025 FreeCAD contributors\n"
     "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n\n";
 
 int main(int argc, char** argv)
@@ -91,36 +88,44 @@ int main(int argc, char** argv)
         exit(1);
     }
     catch (const Base::ProgramInformation& e) {
+        if (std::strcmp(e.what(), App::Application::verboseVersionEmitMessage) == 0) {
+            QString data;
+            QTextStream str(&data);
+            const std::map<std::string, std::string> config = App::Application::Config();
+
+            App::Application::getVerboseCommonInfo(str, config);
+            App::Application::getVerboseAddOnsInfo(str, config);
+
+            std::cout << data.toStdString();
+            exit(0);
+        }
         std::cout << e.what();
         exit(0);
     }
     catch (const Base::Exception& e) {
         std::string appName = App::Application::Config()["ExeName"];
-        std::stringstream msg;
-        msg << "While initializing " << appName << " the following exception occurred: '"
-            << e.what() << "'\n\n";
-        msg << "Python is searching for its runtime files in the following directories:\n"
-            << Py_EncodeLocale(Py_GetPath(), nullptr) << "\n\n";
-        msg << "Python version information:\n" << Py_GetVersion() << "\n";
+        std::cout << "While initializing " << appName << " the following exception occurred: '"
+                  << e.what() << "'\n\n";
+        std::cout << "Python is searching for its runtime files in the following directories:\n"
+                  << Base::Interpreter().getPythonPath() << "\n\n";
+        std::cout << "Python version information:\n" << Py_GetVersion() << "\n";
         const char* pythonhome = getenv("PYTHONHOME");
         if (pythonhome) {
-            msg << "\nThe environment variable PYTHONHOME is set to '" << pythonhome << "'.";
-            msg << "\nSetting this environment variable might cause Python to fail. Please contact "
-                   "your administrator to unset it on your system.\n\n";
+            std::cout << "\nThe environment variable PYTHONHOME is set to '" << pythonhome << "'.";
+            std::cout << "\nSetting this environment variable might cause Python to fail. "
+                         "Please contact your administrator to unset it on your system.";
         }
         else {
-            msg << "\nPlease contact the application's support team for more information.\n\n";
+            std::cout << "\nPlease contact the application's support team for more information.";
         }
-
-        printf("Initialization of %s failed:\n%s", appName.c_str(), msg.str().c_str());
+        std::cout << std::endl;
         exit(100);
     }
     catch (...) {
         std::string appName = App::Application::Config()["ExeName"];
-        std::stringstream msg;
-        msg << "Unknown runtime error occurred while initializing " << appName << ".\n\n";
-        msg << "Please contact the application's support team for more information.\n\n";
-        printf("Initialization of %s failed:\n%s", appName.c_str(), msg.str().c_str());
+        std::cout << "Unknown runtime error occurred while initializing " << appName << ".\n\n";
+        std::cout << "Please contact the application's support team for more information.";
+        std::cout << std::endl;
         exit(101);
     }
 
@@ -132,16 +137,16 @@ int main(int argc, char** argv)
         exit(e.getExitCode());
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         exit(1);
     }
     catch (...) {
-        Console().Error("Application unexpectedly terminated\n");
+        Console().error("Application unexpectedly terminated\n");
         exit(1);
     }
 
     // Destruction phase ===========================================================
-    Console().Log("FreeCAD terminating...\n");
+    Console().log("FreeCAD terminating...\n");
 
     try {
         // close open documents
@@ -153,7 +158,7 @@ int main(int argc, char** argv)
     // cleans up
     Application::destruct();
 
-    Console().Log("FreeCAD completely terminated\n");
+    Console().log("FreeCAD completely terminated\n");
 
     return 0;
 }

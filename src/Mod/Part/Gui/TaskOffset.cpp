@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <limits>
 # include <QMessageBox>
 #endif
 
@@ -63,11 +64,12 @@ OffsetWidget::OffsetWidget(Part::Offset* offset, QWidget* parent)
     setupConnections();
 
     d->ui.spinOffset->setUnit(Base::Unit::Length);
-    d->ui.spinOffset->setRange(-INT_MAX, INT_MAX);
+    d->ui.spinOffset->setRange(-std::numeric_limits<int>::max(),
+                                std::numeric_limits<int>::max());
     d->ui.spinOffset->setSingleStep(0.1);
     d->ui.facesButton->hide();
 
-    bool is_2d = d->offset->isDerivedFrom(Part::Offset2D::getClassTypeId());
+    bool is_2d = d->offset->isDerivedFrom<Part::Offset2D>();
     d->ui.selfIntersection->setVisible(!is_2d);
     if(is_2d)
         d->ui.modeType->removeItem(2);//remove Recto-Verso mode, not supported by 2d offset

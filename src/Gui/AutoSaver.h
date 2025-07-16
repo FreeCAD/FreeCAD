@@ -29,7 +29,7 @@
 #include <map>
 #include <set>
 #include <string>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <Base/Writer.h>
 
 namespace App {

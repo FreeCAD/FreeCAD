@@ -32,9 +32,7 @@ These modifications are Copyright (c) 2019 Zheng Lei (realthunder.dev@gmail.com)
 #define BASE_BASE64_H
 
 #include <array>
-#include <memory>
 #include <string>
-#include <vector>
 
 #include "FCGlobal.h"
 

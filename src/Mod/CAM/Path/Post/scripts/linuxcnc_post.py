@@ -27,6 +27,7 @@ import Path
 import argparse
 import datetime
 import shlex
+import Path.Base.Util as PathUtil
 import Path.Post.Utils as PostUtils
 import PathScripts.PathUtils as PathUtils
 from builtins import open as pyopen
@@ -56,11 +57,11 @@ parser.add_argument(
 parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
 parser.add_argument(
     "--preamble",
-    help='set commands to be issued before the first command, default="G17\nG90"',
+    help='set commands to be issued before the first command, default="G17 G54 G40 G49 G80 G90\\n"',
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command, default="M05\nG17 G90\nM2"',
+    help='set commands to be issued after the last command, default="M05\\nG17 G54 G90 G80 G40\\nM2\\n"',
 )
 parser.add_argument(
     "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
@@ -148,9 +149,9 @@ def processArguments(argstring):
         print("Show editor = %d" % SHOW_EDITOR)
         PRECISION = args.precision
         if args.preamble is not None:
-            PREAMBLE = args.preamble
+            PREAMBLE = args.preamble.replace("\\n", "\n")
         if args.postamble is not None:
-            POSTAMBLE = args.postamble
+            POSTAMBLE = args.postamble.replace("\\n", "\n")
         if args.inches:
             UNITS = "G20"
             UNIT_SPEED_FORMAT = "in/min"
@@ -196,19 +197,15 @@ def export(objectslist, filename, argstring):
     # Write the preamble
     if OUTPUT_COMMENTS:
         gcode += linenumber() + "(begin preamble)\n"
-    for line in PREAMBLE.splitlines(False):
+    for line in PREAMBLE.splitlines():
         gcode += linenumber() + line + "\n"
     gcode += linenumber() + UNITS + "\n"
 
     for obj in objectslist:
 
         # Skip inactive operations
-        if hasattr(obj, "Active"):
-            if not obj.Active:
-                continue
-        if hasattr(obj, "Base") and hasattr(obj.Base, "Active"):
-            if not obj.Base.Active:
-                continue
+        if not PathUtil.activeForOp(obj):
+            continue
 
         # do the pre_op
         if OUTPUT_COMMENTS:
@@ -218,12 +215,7 @@ def export(objectslist, filename, argstring):
             gcode += linenumber() + line
 
         # get coolant mode
-        coolantMode = "None"
-        if hasattr(obj, "CoolantMode") or hasattr(obj, "Base") and hasattr(obj.Base, "CoolantMode"):
-            if hasattr(obj, "CoolantMode"):
-                coolantMode = obj.CoolantMode
-            else:
-                coolantMode = obj.Base.CoolantMode
+        coolantMode = PathUtil.coolantModeForOp(obj)
 
         # turn coolant on if required
         if OUTPUT_COMMENTS:
@@ -252,8 +244,8 @@ def export(objectslist, filename, argstring):
     # do the post_amble
     if OUTPUT_COMMENTS:
         gcode += "(begin postamble)\n"
-    for line in POSTAMBLE.splitlines(True):
-        gcode += linenumber() + line
+    for line in POSTAMBLE.splitlines():
+        gcode += linenumber() + line + "\n"
 
     if FreeCAD.GuiUp and SHOW_EDITOR:
         final = gcode
@@ -355,7 +347,7 @@ def parse(pathobj):
                 if command == lastcommand:
                     outstring.pop(0)
 
-            if c.Name[0] == "(" and not OUTPUT_COMMENTS:  # command is a comment
+            if c.Name.startswith("(") and not OUTPUT_COMMENTS:  # command is a comment
                 continue
 
             # Now add the remaining parameters in order

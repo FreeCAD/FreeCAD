@@ -111,7 +111,7 @@ wbListItem::wbListItem(const QString& wbName, bool enabled, bool startupWb, bool
     textLabel->setEnabled(enableCheckBox->isChecked());
 
     // 4: shortcut
-    shortcutLabel = new QLabel(QString::fromLatin1("(W, %1)").arg(index + 1), this);
+    shortcutLabel = new QLabel(QStringLiteral("(W, %1)").arg(index + 1), this);
     shortcutLabel->setToolTip(tr("Shortcut to activate this workbench."));
     shortcutLabel->setEnabled(enableCheckBox->isChecked());
     shortcutLabel->setVisible(index < 9);
@@ -188,7 +188,7 @@ void wbListItem::setStartupWb(bool val)
 
 void wbListItem::setShortcutLabel(int index)
 {
-    shortcutLabel->setText(QString::fromLatin1("(W, %1)").arg(index + 1));
+    shortcutLabel->setText(QStringLiteral("(W, %1)").arg(index + 1));
     shortcutLabel->setVisible(index < 9);
 }
 
@@ -270,7 +270,7 @@ void DlgSettingsWorkbenchesImp::saveSettings()
     };
 
     for (int i = 0; i < ui->wbList->count(); i++) {
-        wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
+        wbListItem* wbItem = qobject_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
         if (!wbItem)
             continue;
         std::string wbName = wbItem->objectName().toStdString();
@@ -400,12 +400,12 @@ void DlgSettingsWorkbenchesImp::buildWorkbenchList()
 
 void DlgSettingsWorkbenchesImp::addWorkbench(const QString& wbName, bool enabled)
 {
-    bool isStartupWb = wbName.toStdString() == _startupModule;
-    bool autoLoad = std::find(_backgroundAutoloadedModules.begin(), _backgroundAutoloadedModules.end(),
-        wbName.toStdString()) != _backgroundAutoloadedModules.end();
-    wbListItem* widget = new wbListItem(wbName, enabled, isStartupWb, autoLoad, ui->wbList->count(), this);
+    const bool isStartupWb = wbName.toStdString() == _startupModule;
+    const bool autoLoad = std::ranges::find(_backgroundAutoloadedModules, wbName.toStdString())
+        != _backgroundAutoloadedModules.end();
+    const auto widget = new wbListItem(wbName, enabled, isStartupWb, autoLoad, ui->wbList->count(), this);
     connect(widget, &wbListItem::wbToggled, this, &DlgSettingsWorkbenchesImp::wbToggled);
-    auto wItem = new QListWidgetItem();
+    const auto wItem = new QListWidgetItem();
     wItem->setSizeHint(widget->sizeHint());
     ui->wbList->addItem(wItem);
     ui->wbList->setItemWidget(wItem, widget);
@@ -421,11 +421,8 @@ QStringList DlgSettingsWorkbenchesImp::getEnabledWorkbenches()
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
     wbs_ordered = QString::fromStdString(hGrp->GetASCII("Ordered", ""));
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+
     wbs_ordered_list = wbs_ordered.split(QLatin1String(","), Qt::SkipEmptyParts);
-#else
-    wbs_ordered_list = wbs_ordered.split(QLatin1String(","), QString::SkipEmptyParts);
-#endif
 
     QStringList workbenches = Application::Instance->workbenches();
     workbenches.sort();
@@ -436,7 +433,7 @@ QStringList DlgSettingsWorkbenchesImp::getEnabledWorkbenches()
             enabled_wbs_list.append(wbName);
         }
         else {
-            Base::Console().Log("Ignoring unknown %s workbench found in user preferences.\n", wbName.toStdString().c_str());
+            Base::Console().log("Ignoring unknown %s workbench found in user preferences.\n", wbName.toStdString().c_str());
         }
     }
 
@@ -458,11 +455,8 @@ QStringList DlgSettingsWorkbenchesImp::getDisabledWorkbenches()
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
     disabled_wbs = QString::fromStdString(hGrp->GetASCII("Disabled", "NoneWorkbench,TestWorkbench"));
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+
     unfiltered_disabled_wbs_list = disabled_wbs.split(QLatin1String(","), Qt::SkipEmptyParts);
-#else
-    unfiltered_disabled_wbs_list = disabled_wbs.split(QLatin1String(","), QString::SkipEmptyParts);
-#endif
 
     QStringList workbenches = Application::Instance->workbenches();
 
@@ -471,7 +465,7 @@ QStringList DlgSettingsWorkbenchesImp::getDisabledWorkbenches()
             disabled_wbs_list.append(wbName);
         }
         else {
-            Base::Console().Log("Ignoring unknown %s workbench found in user preferences.\n", wbName.toStdString().c_str());
+            Base::Console().log("Ignoring unknown %s workbench found in user preferences.\n", wbName.toStdString().c_str());
         }
     }
 
@@ -552,7 +546,7 @@ void DlgSettingsWorkbenchesImp::wbToggled(const QString& wbName, bool enabled)
     //reorder the list of items.
     int wbIndex = 0;
     for (int i = 0; i < ui->wbList->count(); i++) {
-        wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
+        wbListItem* wbItem = qobject_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
         if (wbItem && wbItem->objectName() == wbName) {
             wbIndex = i;
         }
@@ -561,7 +555,7 @@ void DlgSettingsWorkbenchesImp::wbToggled(const QString& wbName, bool enabled)
     int destinationIndex = ui->wbList->count();
 
     for (int i = 0; i < ui->wbList->count(); i++) {
-        wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
+        wbListItem* wbItem = qobject_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
         if (wbItem && !wbItem->isEnabled() && (enabled || ((wbItem->objectName()).toStdString() > wbName.toStdString()))) {
             //If the wb was enabled, then it was in the disabled wbs. So it moves to the row of the currently first disabled wb
             //If the wb was disabled. Then it goes to the disabled wb where it belongs alphabetically.
@@ -580,7 +574,7 @@ void DlgSettingsWorkbenchesImp::setStartWorkbenchComboItems()
     // fills the combo box with activated workbenches.
     QStringList enabledWbs;
     for (int i = 0; i < ui->wbList->count(); i++) {
-        wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
+        wbListItem* wbItem = qobject_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
         if (wbItem && wbItem->isEnabled()) {
             enabledWbs << wbItem->objectName();
         }
@@ -593,9 +587,9 @@ void DlgSettingsWorkbenchesImp::setStartWorkbenchComboItems()
     }
 
     {   // add special workbench to selection
-        QPixmap px = Application::Instance->workbenchIcon(QString::fromLatin1("NoneWorkbench"));
-        QString key = QString::fromLatin1("<last>");
-        QString value = QString::fromLatin1("$LastModule");
+        QPixmap px = Application::Instance->workbenchIcon(QStringLiteral("NoneWorkbench"));
+        QString key = QStringLiteral("<last>");
+        QString value = QStringLiteral("$LastModule");
         if (px.isNull()) {
             ui->AutoloadModuleCombo->addItem(key, QVariant(value));
         }
@@ -620,7 +614,7 @@ void DlgSettingsWorkbenchesImp::setStartWorkbenchComboItems()
 void DlgSettingsWorkbenchesImp::wbItemMoved()
 {
     for (int i = 0; i < ui->wbList->count(); i++) {
-        wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
+        wbListItem* wbItem = qobject_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
         if (wbItem) {
             wbItem->setShortcutLabel(i);
         }
@@ -636,7 +630,7 @@ void DlgSettingsWorkbenchesImp::onStartWbChanged(int index)
 
     //Change wb that user can't deactivate.
     for (int i = 0; i < ui->wbList->count(); i++) {
-        wbListItem* wbItem = dynamic_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
+        wbListItem* wbItem = qobject_cast<wbListItem*>(ui->wbList->itemWidget(ui->wbList->item(i)));
         if (wbItem) {
             wbItem->setStartupWb(wbItem->objectName() == wbName);
         }

@@ -3,26 +3,6 @@ configure_file(freecad.rc.cmake ${CMAKE_CURRENT_BINARY_DIR}/freecad.rc)
 configure_file(freecadCmd.rc.cmake ${CMAKE_CURRENT_BINARY_DIR}/freecadCmd.rc)
 file(COPY icon.ico DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
-if(BUILD_GUI)
-    include_directories(
-        ${Boost_INCLUDE_DIRS}
-        ${COIN3D_INCLUDE_DIRS}
-        ${ZLIB_INCLUDE_DIR}
-        ${QtWidgets_INCLUDE_DIRS}
-        ${QT_INCLUDE_DIR}
-        ${PYTHON_INCLUDE_DIRS}
-        ${XercesC_INCLUDE_DIRS}
-    )
-else(BUILD_GUI)
-    include_directories(
-        ${Boost_INCLUDE_DIRS}
-        ${ZLIB_INCLUDE_DIR}
-        ${QT_INCLUDE_DIR}
-        ${PYTHON_INCLUDE_DIRS}
-        ${XercesC_INCLUDE_DIRS}
-    )
-endif(BUILD_GUI)
-
 ######################## FreeCADMain ########################
 if(BUILD_GUI)
 
@@ -40,7 +20,7 @@ if(BUILD_GUI)
         # executables have to be linked against python libraries,
         # because extension modules are not.
         list(APPEND FreeCAD_LIBS
-            ${PYTHON_LIBRARIES}
+            ${Python3_LIBRARIES}
         )
     endif(NOT BUILD_DYNAMIC_LINK_PYTHON)
 
@@ -88,7 +68,7 @@ if(NOT BUILD_DYNAMIC_LINK_PYTHON)
     # executables have to be linked against python libraries,
     # because extension modules are not.
     list(APPEND FreeCADMainCmd_LIBS
-        ${PYTHON_LIBRARIES}
+        ${Python3_LIBRARIES}
     )
 endif(NOT BUILD_DYNAMIC_LINK_PYTHON)
 

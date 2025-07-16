@@ -23,7 +23,7 @@
 #ifndef GUI_TASKVIEW_TaskSketcherMessages_H
 #define GUI_TASKVIEW_TaskSketcherMessages_H
 
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <Gui/TaskView/TaskView.h>
 

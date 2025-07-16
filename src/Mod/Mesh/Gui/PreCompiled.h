@@ -39,7 +39,6 @@
 
 // standard
 #include <ios>
-#include <cfloat>
 
 // STL
 #include <algorithm>
@@ -52,14 +51,10 @@
 #include <vector>
 
 // Qt Toolkit
-#ifndef __QtAll__
 #include <Gui/QtAll.h>
-#endif
 
 // Inventor
-#ifndef __InventorAll__
 #include <Gui/InventorAll.h>
-#endif
 
 #elif defined(FC_OS_WIN32)
 #ifndef NOMINMAX

@@ -1,16 +1,16 @@
 {
-  "problemMatcher": [
-    {
-      "owner": "cpplint",
-      "severity": "warning",
-      "pattern": [
+    "problemMatcher": [
         {
-          "regexp": "^(.+):([0-9]+):  (.+)$",
-          "file": 1,
-          "line": 2,
-          "message": 3
+            "owner": "cpplint",
+            "severity": "warning",
+            "pattern": [
+                {
+                    "regexp": "^(.+):([0-9]+):  (.+)$",
+                    "file": 1,
+                    "line": 2,
+                    "message": 3
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }

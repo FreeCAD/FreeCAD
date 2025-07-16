@@ -28,11 +28,11 @@ protected:
         _boxes[1]->Length.setValue(1);
         _boxes[1]->Width.setValue(2);
         _boxes[1]->Height.setValue(3);
-        _fused = dynamic_cast<Part::Fuse*>(_doc->addObject("Part::Fuse"));
+        _fused = _doc->addObject<Part::Fuse>();
         _fused->Base.setValue(_boxes[0]);
         _fused->Tool.setValue(_boxes[1]);
         _fused->execute();
-        _chamfer = dynamic_cast<Part::Chamfer*>(_doc->addObject("Part::Chamfer"));
+        _chamfer = _doc->addObject<Part::Chamfer>();
     }
 
     void TearDown() override

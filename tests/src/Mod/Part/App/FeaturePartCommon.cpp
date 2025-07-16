@@ -19,7 +19,7 @@ protected:
     void SetUp() override
     {
         createTestDoc();
-        _common = dynamic_cast<Part::Common*>(_doc->addObject("Part::Common"));
+        _common = _doc->addObject<Part::Common>();
     }
 
     void TearDown() override

@@ -25,7 +25,6 @@
 #define BASE_TRANSLATE_H
 
 #include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
 #include <QTranslator>
 #include <memory>
 #include <list>
@@ -33,6 +32,11 @@
 #include <FCGlobal.h>
 #endif
 
+namespace Py
+{
+class Object;
+class Tuple;
+}  // namespace Py
 
 namespace Base
 {

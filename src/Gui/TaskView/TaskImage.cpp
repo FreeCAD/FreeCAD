@@ -182,7 +182,7 @@ View3DInventorViewer* TaskImage::getViewer() const
     if (!feature.expired()) {
         auto vp = Application::Instance->getViewProvider(feature.get());
         auto doc = static_cast<ViewProviderDocumentObject*>(vp)->getDocument();  // NOLINT
-        auto view = dynamic_cast<View3DInventor*>(doc->getViewOfViewProvider(vp));
+        auto view = qobject_cast<View3DInventor*>(doc->getViewOfViewProvider(vp));
         if (view) {
             return view->getViewer();
         }
@@ -573,7 +573,7 @@ void InteractiveScale::collectPoint(const SbVec3f& pos3d)
             Q_EMIT enableApplyBtn();
         }
         else {
-            Base::Console().Warning(std::string("Image scale"),
+            Base::Console().warning(std::string("Image scale"),
                                     "The second point is too close. Retry!\n");
         }
     }
@@ -633,7 +633,7 @@ bool InteractiveScale::eventFilter(QObject* object, QEvent* event)
 
         /* If user press enter in the spinbox, then we validate the tool.*/
         if ((keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return)
-            && dynamic_cast<QuantitySpinBox*>(object)) {
+            && qobject_cast<QuantitySpinBox*>(object)) {
             Q_EMIT scaleRequired();
         }
 

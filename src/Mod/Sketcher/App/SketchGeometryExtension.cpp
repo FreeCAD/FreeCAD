@@ -32,10 +32,6 @@
 using namespace Sketcher;
 
 //---------- Geometry Extension
-constexpr std::array<const char*, InternalType::NumInternalGeometryType>
-    SketchGeometryExtension::internaltype2str;
-constexpr std::array<const char*, GeometryMode::NumGeometryMode>
-    SketchGeometryExtension::geometrymode2str;
 
 TYPESYSTEM_SOURCE(Sketcher::SketchGeometryExtension, Part::GeometryMigrationPersistenceExtension)
 
@@ -69,16 +65,15 @@ void SketchGeometryExtension::restoreAttributes(Base::XMLReader& reader)
     Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
     if (reader.hasAttribute("id")) {
-        Id = reader.getAttributeAsInteger("id");
+        Id = reader.getAttribute<long>("id");
     }
 
-    InternalGeometryType = static_cast<InternalType::InternalType>(
-        reader.getAttributeAsInteger("internalGeometryType"));
+    InternalGeometryType = reader.getAttribute<InternalType::InternalType>("internalGeometryType");
 
-    GeometryModeFlags = GeometryModeFlagType(reader.getAttribute("geometryModeFlags"));
+    GeometryModeFlags = GeometryModeFlagType(reader.getAttribute<const char*>("geometryModeFlags"));
 
     if (reader.hasAttribute("geometryLayer")) {
-        GeometryLayer = reader.getAttributeAsInteger("geometryLayer");
+        GeometryLayer = reader.getAttribute<long>("geometryLayer");
     }
 }
 
@@ -107,12 +102,7 @@ std::unique_ptr<Part::GeometryExtension> SketchGeometryExtension::copy() const
     auto cpy = std::make_unique<SketchGeometryExtension>();
 
     copyAttributes(cpy.get());
-
-#if defined(__GNUC__) && (__GNUC__ <= 4)
-    return std::move(cpy);
-#else
     return cpy;
-#endif
 }
 
 PyObject* SketchGeometryExtension::getPyObject()

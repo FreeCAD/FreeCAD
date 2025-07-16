@@ -29,7 +29,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>x</string>
+         <string>X</string>
         </property>
        </widget>
       </item>
@@ -58,7 +58,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>y</string>
+         <string>Y</string>
         </property>
        </widget>
       </item>
@@ -81,7 +81,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="zLabel">
         <property name="text">
-         <string>z</string>
+         <string>Z</string>
         </property>
        </widget>
       </item>

@@ -67,7 +67,8 @@ class PointArray(DraftLink):
             obj.addProperty("App::PropertyLink",
                             "Base",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Base = None
 
         if "PointObject" not in properties:
@@ -75,7 +76,8 @@ class PointArray(DraftLink):
             obj.addProperty("App::PropertyLink",
                             "PointObject",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.PointObject = None
 
         if "Fuse" not in properties:
@@ -86,7 +88,8 @@ class PointArray(DraftLink):
             obj.addProperty("App::PropertyBool",
                             "Fuse",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Fuse = False
 
         if "Count" not in properties:
@@ -94,7 +97,8 @@ class PointArray(DraftLink):
             obj.addProperty("App::PropertyInteger",
                             "Count",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Count = 0
             obj.setEditorMode("Count", 1)  # Read only
 
@@ -103,7 +107,8 @@ class PointArray(DraftLink):
             obj.addProperty("App::PropertyPlacement",
                             "ExtraPlacement",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.ExtraPlacement = App.Placement()
 
         if self.use_link and "ExpandArray" not in properties:
@@ -111,8 +116,20 @@ class PointArray(DraftLink):
             obj.addProperty("App::PropertyBool",
                             "ExpandArray",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.setPropertyStatus('Shape', 'Transient')
+
+        if not self.use_link:
+            if "PlacementList" not in properties:
+                _tip = QT_TRANSLATE_NOOP("App::Property",
+                                         "The placement for each array element")
+                obj.addProperty("App::PropertyPlacementList",
+                                "PlacementList",
+                                "Objects",
+                                _tip,
+                                locked=True)
+                obj.PlacementList = []
 
     def execute(self, obj):
         """Run when the object is created or recomputed."""
@@ -132,18 +149,25 @@ class PointArray(DraftLink):
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
-        # Fuse property was added in v1.0, obj should be OK if it is present:
-        if hasattr(obj, "Fuse"):
+        # Fuse property was added in v1.0 and PlacementList property was added
+        # for non-link arrays in v1.1, obj should be OK if both are present:
+        if hasattr(obj, "Fuse") and hasattr(obj, "PlacementList"):
             return
+
         if not hasattr(obj, "ExtraPlacement"):
             _wrn("v0.19, " + obj.Label + ", " + translate("draft", "added 'ExtraPlacement' property"))
-        self.set_properties(obj)
         if hasattr(obj, "PointList"):
             _wrn("v0.19, " + obj.Label + ", " + translate("draft", "migrated 'PointList' property to 'PointObject'"))
+        if not hasattr(obj, "Fuse"):
+            _wrn("v1.0, " + obj.Label + ", " + translate("draft", "added 'Fuse' property"))
+        if not hasattr(obj, "PlacementList"):
+            _wrn("v1.1, " + obj.Label + ", " + translate("draft", "added hidden property 'PlacementList'"))
+
+        self.set_properties(obj)
+        if hasattr(obj, "PointList"):
             obj.PointObject = obj.PointList
             obj.removeProperty("PointList")
-        _wrn("v1.0, " + obj.Label + ", " + translate("draft", "added 'Fuse' property"))
-
+        self.execute(obj) # Required to update PlacementList.
 
 def remove_equal_vecs (vec_list):
     """Remove equal vectors from a list.

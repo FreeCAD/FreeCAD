@@ -29,7 +29,7 @@
 
 #include <QColor>
 
-#include <App/Color.h>
+#include <Base/Color.h>
 
 
 namespace TechDraw {
@@ -43,13 +43,13 @@ public:
     LineFormat();
     LineFormat(const int style,
                const double weight,
-               const App::Color& color,
+               const Base::Color& color,
                const bool visible,
                const int lineNumber);
    // TODO: phase out the old 4 parameter constructor
    LineFormat(const int style,
                const double weight,
-               const App::Color& color,
+               const Base::Color& color,
                const bool visible);
     ~LineFormat() = default;
 
@@ -60,8 +60,8 @@ public:
     double getWidth() const { return m_weight; }
     void setWidth(double width) {m_weight = width; }
 
-    App::Color getColor() const { return m_color; }
-    void setColor(App::Color color) { m_color = color; }
+    Base::Color getColor() const { return m_color; }
+    void setColor(Base::Color color) { m_color = color; }
     QColor getQColor() const { return m_color.asValue<QColor>(); }
     void setQColor(QColor qColor) { m_color.set(qColor.redF(), qColor.greenF(), qColor.blueF(), 1.0 - qColor.alphaF()); }
 
@@ -72,7 +72,7 @@ public:
     void setLineNumber(int number) { m_lineNumber = number; }
 
     static double getDefEdgeWidth();
-    static App::Color getDefEdgeColor();
+    static Base::Color getDefEdgeColor();
     static int getDefEdgeStyle();
 
     void dump(const char* title);
@@ -85,7 +85,7 @@ public:
 private:
     int m_style;
     double m_weight;
-    App::Color m_color;
+    Base::Color m_color;
     bool m_visible;
     int m_lineNumber {1};
 };

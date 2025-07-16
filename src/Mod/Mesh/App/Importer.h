@@ -48,9 +48,9 @@ public:
     void load(const std::string& fileName);
 
 private:
-    void addVertexColors(Feature*, const std::vector<App::Color>&);
-    void addFaceColors(Feature*, const std::vector<App::Color>&);
-    void addColors(Feature*, const std::string& property, const std::vector<App::Color>&);
+    void addVertexColors(Feature*, const std::vector<Base::Color>&);
+    void addFaceColors(Feature*, const std::vector<Base::Color>&);
+    void addColors(Feature*, const std::string& property, const std::vector<Base::Color>&);
     Feature* createMesh(const std::string& name, MeshObject&);
     void createMeshFromSegments(const std::string& name, MeshCore::Material& mat, MeshObject& mesh);
 

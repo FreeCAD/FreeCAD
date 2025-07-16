@@ -63,7 +63,7 @@ Pad::Pad()
     ADD_PROPERTY_TYPE(TaperAngle2, (0.0), "Pad", App::Prop_None, "Taper angle for 2nd direction");
     TaperAngle2.setConstraints(&floatAngle);
 
-    // Remove the constraints and keep the type to allow to accept negative values
+    // Remove the constraints and keep the type to allow one to accept negative values
     // https://forum.freecad.org/viewtopic.php?f=3&t=52075&p=448410#p447636
     Length2.setConstraints(nullptr);
 }

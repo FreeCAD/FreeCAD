@@ -52,7 +52,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="57"/>
       <source>Create a new empty trajectory</source>
-      <translation type="unfinished">Create a new empty trajectory</translation>
+      <translation>Luo uusi liikerata</translation>
     </message>
   </context>
   <context>
@@ -296,7 +296,7 @@
     <message>
       <location filename="../../Command.cpp" line="213"/>
       <source>Run a simulation on a trajectory</source>
-      <translation>Aja liikerata simulaatio</translation>
+      <translation>Aja liikeradan simulaatio</translation>
     </message>
   </context>
   <context>

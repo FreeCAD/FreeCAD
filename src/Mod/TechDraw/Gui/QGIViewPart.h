@@ -32,6 +32,7 @@
 #include <QStyleOptionGraphicsItem>
 
 #include "QGIView.h"
+#include "QGIUserTypes.h"
 
 class QColor;
 
@@ -63,7 +64,7 @@ public:
     explicit QGIViewPart();
     ~QGIViewPart() override;
 
-    enum {Type = QGraphicsItem::UserType + 102};
+    enum {Type = UserType::QGIViewPart};
     int type() const override { return Type;}
     void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
@@ -124,6 +125,9 @@ public:
 
     virtual bool removeSelectedCosmetic() const;
 
+    virtual double getLineWidth();
+    virtual double getVertexSize();
+
 protected:
     QPainterPath drawPainterPath(TechDraw::BaseGeomPtr baseGeom) const;
     void drawViewPart();
@@ -138,7 +142,7 @@ protected:
     void removeDecorations();
     bool prefFaceEdges();
     bool prefPrintCenters();
-    App::Color prefBreaklineColor();
+    Base::Color prefBreaklineColor();
 
     bool formatGeomFromCosmetic(std::string cTag, QGIEdge* item);
     bool formatGeomFromCenterLine(std::string cTag, QGIEdge* item);

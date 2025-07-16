@@ -46,15 +46,16 @@ std::string PythonConverter::convert(const Part::Geometry* geo, Mode mode)
     command = boost::str(boost::format("addGeometry(%s,%s)\n") % sg.creation
                          % (sg.construction ? "True" : "False"));
 
-    if ((geo->getTypeId() != Part::GeomEllipse::getClassTypeId()
-         || geo->getTypeId() != Part::GeomArcOfEllipse::getClassTypeId()
-         || geo->getTypeId() != Part::GeomArcOfHyperbola::getClassTypeId()
-         || geo->getTypeId() != Part::GeomArcOfParabola::getClassTypeId()
-         || geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
-        && mode == Mode::CreateInternalGeometry) {
+    // clang-format off: keep line breaks for readability
+    if ((!geo->is<Part::GeomEllipse>()
+         || !geo->is<Part::GeomArcOfEllipse>()
+         || !geo->is<Part::GeomArcOfHyperbola>()
+         || !geo->is<Part::GeomArcOfParabola>()
+         || !geo->is<Part::GeomBSplineCurve>()) && mode == Mode::CreateInternalGeometry) {
         command +=
             boost::str(boost::format("exposeInternalGeometry(len(ActiveSketch.Geometry))\n"));
     }
+    // clang-format on
 
     return command;
 }
@@ -149,15 +150,17 @@ std::string PythonConverter::convert(const std::string& doc,
     if (mode == Mode::CreateInternalGeometry) {
         for (auto geo : geos) {
             index++;
-            if (geo->getTypeId() != Part::GeomEllipse::getClassTypeId()
-                || geo->getTypeId() != Part::GeomArcOfEllipse::getClassTypeId()
-                || geo->getTypeId() != Part::GeomArcOfHyperbola::getClassTypeId()
-                || geo->getTypeId() != Part::GeomArcOfParabola::getClassTypeId()
-                || geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId()) {
+            // clang-format off: keep line breaks for readability
+            if (!geo->is<Part::GeomEllipse>()
+                || !geo->is<Part::GeomArcOfEllipse>()
+                || !geo->is<Part::GeomArcOfHyperbola>()
+                || !geo->is<Part::GeomArcOfParabola>()
+                || !geo->is<Part::GeomBSplineCurve>()) {
                 std::string newcommand =
                     boost::str(boost::format("exposeInternalGeometry(lastGeoId + %d)\n") % (index));
                 command += newcommand;
             }
+            // clang-format on
         }
     }
 
@@ -190,6 +193,29 @@ std::string PythonConverter::convert(const std::string& doc,
     }
 
     return constraintlist;
+}
+
+template<typename T>
+std::string makeSplineInfoArrayString(const std::vector<T>& rInfoVec)
+{
+    std::stringstream stream;
+    if constexpr (std::is_same_v<T, Base::Vector3d>) {
+        for (const auto& rInfo : rInfoVec) {
+            stream << "App.Vector(" << rInfo.x << ", " << rInfo.y << "), ";
+        }
+    }
+    else {
+        for (const auto& rInfo : rInfoVec) {
+            stream << rInfo << ", ";
+        }
+    }
+
+    std::string res = stream.str();
+    // remove last comma and add brackets
+    int index = res.rfind(',');
+    res.resize(index);
+    return fmt::format("[{}]", res);
+    ;
 }
 
 PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* geo)
@@ -304,23 +330,17 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
              [](const Part::Geometry* geo) {
                  auto bSpline = static_cast<const Part::GeomBSplineCurve*>(geo);
 
-                 std::stringstream stream;
-                 std::vector<Base::Vector3d> poles = bSpline->getPoles();
-                 for (auto& pole : poles) {
-                     stream << "App.Vector(" << pole.x << "," << pole.y << "),";
-                 }
-                 std::string controlpoints = stream.str();
-                 // remove last comma and add brackets
-                 int index = controlpoints.rfind(',');
-                 controlpoints.resize(index);
-                 controlpoints.insert(0, 1, '[');
-                 controlpoints.append(1, ']');
+                 std::string controlpoints = makeSplineInfoArrayString(bSpline->getPoles());
+                 std::string mults = makeSplineInfoArrayString(bSpline->getMultiplicities());
+                 std::string knots = makeSplineInfoArrayString(bSpline->getKnots());
+                 std::string weights = makeSplineInfoArrayString(bSpline->getWeights());
 
                  SingleGeometry sg;
-                 sg.creation = boost::str(
-                     boost::format("Part.BSplineCurve (%s, None, None, %s, %d, None, False)")
-                     % controlpoints.c_str() % (bSpline->isPeriodic() ? "True" : "False")
-                     % bSpline->getDegree());
+                 sg.creation =
+                     boost::str(boost::format("Part.BSplineCurve(%s, %s, %s, %s, %d, %s, False)")
+                                % controlpoints.c_str() % mults.c_str() % knots.c_str()
+                                % (bSpline->isPeriodic() ? "True" : "False") % bSpline->getDegree()
+                                % weights.c_str());
                  sg.construction = Sketcher::GeometryFacade::getConstruction(geo);
                  return sg;
              }},

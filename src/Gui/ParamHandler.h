@@ -24,7 +24,7 @@
 
 #include <map>
 #include <memory>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <QTimer>
 
 #include <FCGlobal.h>

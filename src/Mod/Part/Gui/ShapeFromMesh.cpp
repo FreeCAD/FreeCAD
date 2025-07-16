@@ -27,7 +27,7 @@
 
 #include <Base/UnitsApi.h>
 #include <Gui/CommandT.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/WaitCursor.h>
 
 #include "ShapeFromMesh.h"
@@ -97,7 +97,7 @@ void ShapeFromMesh::accept()
         perform();
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 
     QDialog::accept();

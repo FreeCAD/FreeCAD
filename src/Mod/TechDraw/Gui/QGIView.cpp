@@ -1,5 +1,6 @@
 ﻿/***************************************************************************
  *   Copyright (c) 2012-2013 Luke Parry <l.parry@warwick.ac.uk>            *
+ *   Copyright (c) 2024 Benjamin Bræstrup Sayoc <benj5378@outlook.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -37,7 +38,7 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/Tools.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/TechDraw/App/DrawPage.h>
@@ -56,8 +57,10 @@
 #include "QGCustomImage.h"
 #include "QGCustomLabel.h"
 #include "QGICaption.h"
+#include "QGIEdge.h"
 #include "QGIVertex.h"
 #include "QGIViewClip.h"
+#include "QGIUserTypes.h"
 #include "QGSPage.h"
 #include "QGVPage.h"
 #include "Rez.h"
@@ -103,7 +106,7 @@ QGIView::QGIView()
     addToGroup(m_caption);
     m_lock = new QGCustomImage();
     m_lock->setParentItem(m_border);
-    m_lock->load(QString::fromUtf8(":/icons/TechDraw_Lock.svg"));
+    m_lock->load(QStringLiteral(":/icons/TechDraw_Lock.svg"));
     QSize sizeLock = m_lock->imageSize();
     m_lockWidth = (double) sizeLock.width();
     m_lockHeight = (double) sizeLock.height();
@@ -160,7 +163,7 @@ void QGIView::alignTo(QGraphicsItem*item, const QString &alignment)
 
 QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    //    Base::Console().Message("QGIV::itemChange(%d)\n", change);
+    //    Base::Console().message("QGIV::itemChange(%d)\n", change);
     if(change == ItemPositionChange && scene()) {
         QPointF newPos = value.toPointF();            //position within parent!
 
@@ -171,10 +174,10 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
             if(alignHash.size() == 1) {   //if aligned.
                 QGraphicsItem* item = alignHash.begin().value();
                 QString alignMode   = alignHash.begin().key();
-                if(alignMode == QString::fromLatin1("Vertical")) {
+                if(alignMode == QStringLiteral("Vertical")) {
                     newPos.setX(item->pos().x());
                 }
-                else if(alignMode == QString::fromLatin1("Horizontal")) {
+                else if(alignMode == QStringLiteral("Horizontal")) {
                     newPos.setY(item->pos().y());
                 }
             }
@@ -223,7 +226,7 @@ void QGIView::snapPosition(QPointF& newPosition)
         return;
     }
 
-    auto dvp = dynamic_cast<DrawViewPart*>(feature);
+    auto dvp = freecad_cast<DrawViewPart*>(feature);
     if (dvp  &&
         !dvp->hasGeometry()) {
         // too early. wait for updates to finish.
@@ -260,7 +263,7 @@ void QGIView::snapPosition(QPointF& newPosition)
             continue;
         }
         auto viewFeature = view->getViewObject();
-        auto viewDvp = dynamic_cast<DrawViewPart*>(viewFeature);
+        auto viewDvp = freecad_cast<DrawViewPart*>(viewFeature);
 
         auto viewScenePos = view->scenePos();
         if (viewDvp &&
@@ -314,7 +317,7 @@ void QGIView::snapSectionView(const TechDraw::DrawViewSection* sectionView,
     if (!baseView) {
         return;
     }
-    auto* vpdv = dynamic_cast<ViewProviderDrawingView*>(getViewProvider(baseView));
+    auto* vpdv = freecad_cast<ViewProviderDrawingView*>(getViewProvider(baseView));
     if (!vpdv) {
         return;
     }
@@ -446,7 +449,7 @@ void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 
 void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
-    //    Base::Console().Message("QGIV::hoverEnterEvent()\n");
+    //    Base::Console().message("QGIV::hoverEnterEvent()\n");
     Q_UNUSED(event);
     // TODO don't like this but only solution at the minute (MLP)
     if (isSelected()) {
@@ -472,7 +475,7 @@ void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 //sets position in /Gui(graphics), not /App
 void QGIView::setPosition(qreal xPos, qreal yPos)
 {
-    //    Base::Console().Message("QGIV::setPosition(%.3f, %.3f) (gui)\n", x, y);
+    //    Base::Console().message("QGIV::setPosition(%.3f, %.3f) (gui)\n", x, y);
     double newX = xPos;
     double newY = -yPos;
     double oldX = pos().x();
@@ -501,7 +504,7 @@ QGIViewClip* QGIView::getClipGroup()
 
 void QGIView::updateView(bool forceUpdate)
 {
-    //    Base::Console().Message("QGIV::updateView() - %s\n", getViewObject()->getNameInDocument());
+    //    Base::Console().message("QGIV::updateView() - %s\n", getViewObject()->getNameInDocument());
 
             //allow/prevent dragging
     if (getViewObject()->isLocked()) {
@@ -568,7 +571,7 @@ void QGIView::setViewFeature(TechDraw::DrawView *obj)
     viewName = obj->getNameInDocument();
 
             //mark the actual QGraphicsItem so we can check what's in the scene later
-    setData(0, QString::fromUtf8("QGIV"));
+    setData(0, QStringLiteral("QGIV"));
     setData(1, QString::fromUtf8(obj->getNameInDocument()));
 }
 
@@ -582,7 +585,7 @@ void QGIView::toggleCache(bool state)
 
 void QGIView::draw()
 {
-    //    Base::Console().Message("QGIV::draw()\n");
+    //    Base::Console().message("QGIV::draw()\n");
     double xFeat, yFeat;
     if (getViewObject()) {
         xFeat = Rez::guiX(getViewObject()->X.getValue());
@@ -601,7 +604,7 @@ void QGIView::draw()
 
 void QGIView::drawCaption()
 {
-    //    Base::Console().Message("QGIV::drawCaption()\n");
+    //    Base::Console().message("QGIV::drawCaption()\n");
     prepareGeometryChange();
     QRectF displayArea = customChildrenBoundingRect();
     m_caption->setDefaultTextColor(m_colCurrent);
@@ -627,7 +630,7 @@ void QGIView::drawCaption()
 
 void QGIView::drawBorder()
 {
-    //    Base::Console().Message("QGIV::drawBorder() - %s\n", getViewName());
+    //    Base::Console().message("QGIV::drawBorder() - %s\n", getViewName());
     auto feat = getViewObject();
     if (!feat)
         return;
@@ -718,31 +721,21 @@ QRectF QGIView::customChildrenBoundingRect() const
 {
     QList<QGraphicsItem*> children = childItems();
     // exceptions not to be included in determining the frame rectangle
-    int dimItemType = QGraphicsItem::UserType + 106;  // TODO: Get magic number from include by name
-    int borderItemType = QGraphicsItem::UserType + 136;  // TODO: Magic number warning
-    int labelItemType = QGraphicsItem::UserType + 135;  // TODO: Magic number warning
-    int captionItemType = QGraphicsItem::UserType + 180;  // TODO: Magic number warning
-    int leaderItemType = QGraphicsItem::UserType + 232;  // TODO: Magic number warning
-    int textLeaderItemType = QGraphicsItem::UserType + 233;  // TODO: Magic number warning
-    int editablePathItemType = QGraphicsItem::UserType + 301;  // TODO: Magic number warning
-    int movableTextItemType = QGraphicsItem::UserType + 300;
-    int weldingSymbolItemType = QGraphicsItem::UserType + 340;
-    int centerMarkItemType = QGraphicsItem::UserType + 171;
     QRectF result;
     for (auto& child : children) {
         if (!child->isVisible()) {
             continue;
         }
-        if ( (child->type() != dimItemType) &&
-            (child->type() != leaderItemType) &&
-            (child->type() != textLeaderItemType) &&
-            (child->type() != editablePathItemType) &&
-            (child->type() != movableTextItemType) &&
-            (child->type() != borderItemType) &&
-            (child->type() != labelItemType)  &&
-            (child->type() != weldingSymbolItemType)  &&
-            (child->type() != captionItemType)  &&
-            (child->type() != centerMarkItemType)) {
+        if (child->type() != UserType::QGIViewDimension &&
+            child->type() != UserType::QGILeaderLine &&
+            child->type() != UserType::QGIRichAnno &&
+            child->type() != UserType::QGEPath &&
+            child->type() != UserType::QGMText &&
+            child->type() != UserType::QGCustomBorder &&
+            child->type() != UserType::QGCustomLabel &&
+            child->type() != UserType::QGIWeldSymbol &&
+            child->type() != UserType::QGICaption &&
+            child->type() != UserType::QGICMark) {
             QRectF childRect = mapFromItem(child, child->boundingRect()).boundingRect();
             result = result.united(childRect);
         }
@@ -808,7 +801,7 @@ ViewProviderPage* QGIView::getViewProviderPage(TechDraw::DrawView* dView)
         return nullptr;
     }
 
-    return dynamic_cast<ViewProviderPage*>(activeGui->getViewProvider(page));
+    return freecad_cast<ViewProviderPage*>(activeGui->getViewProvider(page));
 }
 
 //remove a child of this from scene while keeping scene indexes valid
@@ -822,7 +815,7 @@ void QGIView::removeChild(QGIView* child)
 
 bool QGIView::getFrameState()
 {
-    //    Base::Console().Message("QGIV::getFrameState() - %s\n", getViewName());
+    //    Base::Console().message("QGIV::getFrameState() - %s\n", getViewName());
     TechDraw::DrawView* dv = getViewObject();
     if (!dv) return true;
 
@@ -831,7 +824,7 @@ bool QGIView::getFrameState()
 
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(page);
-    ViewProviderPage* vpp = dynamic_cast<ViewProviderPage*>(vp);
+    ViewProviderPage* vpp = freecad_cast<ViewProviderPage*>(vp);
     if (!vpp) return true;
 
     return vpp->getFrameState();
@@ -930,7 +923,7 @@ int QGIView::calculateFontPixelWidth(const QFont &font)
 const double QGIView::DefaultFontSizeInMM = 5.0;
 
 void QGIView::dumpRect(const char* text, QRectF rect) {
-    Base::Console().Message("DUMP - %s - rect: (%.3f, %.3f) x (%.3f, %.3f)\n", text,
+    Base::Console().message("DUMP - %s - rect: (%.3f, %.3f) x (%.3f, %.3f)\n", text,
                             rect.left(), rect.top(), rect.right(), rect.bottom());
 }
 
@@ -971,5 +964,32 @@ void QGIView::makeMark(QPointF pos, QColor color)
 {
     makeMark(pos.x(), pos.y(), color);
 }
+
+//! Retrieves objects of type T with given indexes
+template <typename T>
+std::vector<T> QGIView::getObjects(std::vector<int> indexes)
+{
+    QList<QGraphicsItem*> children = childItems();
+    std::vector<T> result;
+    for (QGraphicsItem*& child : children) {
+        //                   Convert QGIVertex* (as T) to QGIVertex
+        if (child->type() != std::remove_pointer<T>::type::Type) {
+            continue;
+        }
+
+        // Get index of child item
+        T object = static_cast<T>(child);
+        int target = object->getProjIndex();
+        // If child item's index in indexes, then add to results
+        if (std::ranges::find(indexes, target) != indexes.end()) {
+            result.push_back(object);
+        }
+    }
+    return result;
+}
+
+template std::vector<QGIVertex*> QGIView::getObjects<QGIVertex*>(std::vector<int>);
+template std::vector<QGIEdge*> QGIView::getObjects<QGIEdge*>(std::vector<int>);
+
 
 #include <Mod/TechDraw/Gui/moc_QGIView.cpp>

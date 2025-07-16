@@ -23,7 +23,7 @@
 #ifndef ROBOT_ViewProviderTrajectory_H
 #define ROBOT_ViewProviderTrajectory_H
 
-#include <Gui/SoFCSelection.h>
+#include <Gui/Selection/SoFCSelection.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Mod/Robot/RobotGlobal.h>
 

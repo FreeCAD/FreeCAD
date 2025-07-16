@@ -39,4 +39,4 @@ class VPElementGeometry1D(view_base_femelement.VPBaseFemElement):
     """
 
     def setEdit(self, vobj, mode=0):
-        super().setEdit(vobj, mode, task_element_geometry1D._TaskPanel)
+        return super().setEdit(vobj, mode, task_element_geometry1D._TaskPanel)

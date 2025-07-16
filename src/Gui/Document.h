@@ -26,7 +26,7 @@
 #include <list>
 #include <map>
 #include <string>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <QString>
 
 #include <Base/Persistence.h>
@@ -94,6 +94,7 @@ protected:
     void slotSkipRecompute(const App::Document &doc, const std::vector<App::DocumentObject*> &objs);
     void slotTouchedObject(const App::DocumentObject &);
     void slotChangePropertyEditor(const App::Document&, const App::Property &);
+    void callSignalBeforeRecompute();
     //@}
 
 public:
