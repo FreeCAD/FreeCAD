@@ -130,6 +130,7 @@ public:
     bool completerActive() const;
     void hideCompleter();
     void setExactMatch(bool enabled=true);
+    QSize sizeHint() const override;
 protected:
     void keyPressEvent(QKeyEvent * event) override;
     void contextMenuEvent(QContextMenuEvent * event) override;

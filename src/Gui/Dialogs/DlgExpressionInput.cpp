@@ -74,22 +74,22 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     initializeVarSets();
 
     // Connect signal(s)
-    connect(ui->expression, &ExpressionLineEdit::textChanged,
+    connect(ui->expression, &ExpressionTextEdit::textChanged,
         this, &DlgExpressionInput::textChanged);
     connect(discardBtn, &QPushButton::clicked,
         this, &DlgExpressionInput::setDiscarded);
 
     if (expression) {
-        ui->expression->setText(QString::fromStdString(expression->toString()));
+        ui->expression->setPlainText(QString::fromStdString(expression->toString()));
     }
     else {
         QVariant text = parent->property("text");
         if (text.canConvert<QString>()) {
-            ui->expression->setText(text.toString());
+            ui->expression->setPlainText(text.toString());
         }
     }
 
-    // Set document object on line edit to create auto completer
+    // Set document object on text edit to create auto completer
     DocumentObject * docObj = path.getDocumentObject();
     ui->expression->setDocumentObject(docObj);
 
@@ -109,7 +109,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
         setAttribute(Qt::WA_TranslucentBackground, true);
     }
     else {
-        ui->expression->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        ui->expression->setMinimumHeight(50);
         ui->horizontalSpacer_3->changeSize(0, 2);
         ui->verticalLayout->setContentsMargins(9, 9, 9, 9);
         this->adjustSize();
@@ -336,8 +336,10 @@ void DlgExpressionInput::checkExpression(const QString& text)
 
 static const bool NO_CHECK_EXPR = false;
 
-void DlgExpressionInput::textChanged(const QString &text)
+void DlgExpressionInput::textChanged()
 {
+    const QString& text = ui->expression->toPlainText();
+
     if (text.isEmpty()) {
         okBtn->setDisabled(true);
         discardBtn->setDefault(true);
@@ -347,17 +349,6 @@ void DlgExpressionInput::textChanged(const QString &text)
     okBtn->setDefault(true);
 
     try {
-        //resize the input field according to text size
-        QFontMetrics fm(ui->expression->font());
-        int width = QtTools::horizontalAdvance(fm, text) + 15;
-        if (width < minimumWidth)
-            ui->expression->setMinimumWidth(minimumWidth);
-        else
-            ui->expression->setMinimumWidth(width);
-
-        if(this->width() < ui->expression->minimumWidth())
-            setMinimumWidth(ui->expression->minimumWidth());
-
         checkExpression(text);
         if (varSetsVisible) {
             // If varsets are visible, check whether the varset info also
@@ -757,7 +748,7 @@ void DlgExpressionInput::updateVarSetInfo(bool checkExpr)
         if (checkExpr) {
             // We have to check the text of the expression as well
             try {
-                checkExpression(ui->expression->text());
+                checkExpression(ui->expression->toPlainText());
                 okBtn->setEnabled(true);
             }
             catch (Base::Exception&) {
