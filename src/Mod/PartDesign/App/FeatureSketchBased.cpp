@@ -1239,8 +1239,9 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
 
     Base::Vector3d SketchVector(0, 0, 1);
     auto obj = getVerifiedObject(true);
-    if (!obj)
+    if (!obj) {
         return SketchVector;
+    }
 
     // get the Sketch plane
     if (obj->isDerivedFrom<Part::Part2DObject>()) {
@@ -1252,7 +1253,7 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
 
     // For newer version, do not do fitting, as it may flip the face normal for
     // some reason.
-    TopoShape shape = getTopoShapeVerifiedFace(true);  //, _ProfileBasedVersion.getValue() <= 0);
+    TopoShape shape = getTopoShapeVerifiedFace(true, true, true);  //, _ProfileBasedVersion.getValue() <= 0);
 
     gp_Pln pln;
     if (shape.findPlane(pln)) {

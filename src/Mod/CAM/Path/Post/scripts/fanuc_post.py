@@ -409,7 +409,7 @@ def parse(pathobj):
 
             # if it's a tap, we rigid tap, so don't start the spindle yet...
             if command == "M03" or command == "M3":
-                if pathobj.Tool.ToolType == "Tap":
+                if pathobj.Tool.ShapeID.lower() == "tap":
                     tapSpeed = int(pathobj.SpindleSpeed)
                     continue
 
@@ -417,7 +417,7 @@ def parse(pathobj):
             if command == "G81" or command == "G83":
                 if (
                     hasattr(pathobj, "ToolController")
-                    and pathobj.ToolController.Tool.ToolType == "Tap"
+                    and pathobj.ToolController.Tool.ShapeID.lower() == "tap"
                 ):
                     command = "G84"
                     out += linenumber() + "G95\n"

@@ -893,6 +893,7 @@ public:
 
 public:  // geometry extension functionalities for single element sketch object user convenience
     int setGeometryId(int GeoId, long id);
+    int setGeometryIds(std::vector<std::pair<int, long>> GeoIdsToIds);
     int getGeometryId(int GeoId, long& id) const;
 
 protected:

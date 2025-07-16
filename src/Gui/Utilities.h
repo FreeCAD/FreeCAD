@@ -446,9 +446,16 @@ private:
 #define FC_SET_SWITCH(__name__, __state__) \
 do { \
     SoSwitch* sw = SO_GET_ANY_PART(this, __name__, SoSwitch); \
+    assert(sw); \
     sw->whichChild = __state__; \
 } while (0)
 
+#define FC_SET_TOGGLE_SWITCH(__name__, __state__) \
+do { \
+    SoToggleSwitch* sw = SO_GET_ANY_PART(this, __name__, SoToggleSwitch); \
+    assert(sw); \
+    sw->on = __state__; \
+} while (0)
 
 struct RotationComponents {
     float angle;

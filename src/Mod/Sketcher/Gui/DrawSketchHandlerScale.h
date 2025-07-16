@@ -110,6 +110,7 @@ public:
 
             if (deleteOriginal) {
                 deleteOriginalGeos();
+                reassignFacadeIds();
             }
 
             Gui::Command::commitCommand();
@@ -226,6 +227,7 @@ private:
 
 private:
     std::vector<int> listOfGeoIds;
+    std::vector<long> listOfFacadeIds;
     Base::Vector2d referencePoint, startPoint, endPoint;
     bool deleteOriginal;
     bool abortOnFail;  // When the scale operation is part of a larger transaction, one might want
@@ -261,6 +263,24 @@ private:
             Base::Console().error("%s\n", e.what());
         }
     }
+    void reassignFacadeIds()
+    {
+        std::stringstream stream;
+        int geoId = getHighestCurveIndex() - listOfFacadeIds.size() + 1;
+        for (size_t j = 0; j < listOfFacadeIds.size() - 1; j++) {
+            stream << "(" << geoId << "," << listOfFacadeIds[j] << "),";
+            geoId++;
+        }
+        stream << "(" << geoId << "," << listOfFacadeIds.back() << ")";
+        try {
+            Gui::cmdAppObjectArgs(sketchgui->getObject(),
+                                  "setGeometryIds([%s])",
+                                  stream.str().c_str());
+        }
+        catch (const Base::Exception& e) {
+            Base::Console().error("%s\n", e.what());
+        }
+    }
 
     void createShape(bool onlyeditoutline) override
     {
@@ -281,7 +301,11 @@ private:
 
         for (auto& geoId : listOfGeoIds) {
             const Part::Geometry* pGeo = Obj->getGeometry(geoId);
-            auto geoUniquePtr = std::unique_ptr<Part::Geometry>(pGeo->copy());
+            long facadeId;
+
+            Obj->getGeometryId(geoId, facadeId);
+            listOfFacadeIds.push_back(facadeId);
+            auto geoUniquePtr = std::unique_ptr<Part::Geometry>(pGeo->clone());
             Part::Geometry* geo = geoUniquePtr.get();
 
             if (isCircle(*geo)) {
