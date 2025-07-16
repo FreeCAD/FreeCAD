@@ -21,8 +21,6 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "App/GroupExtension.h"
-#include "App/Origin.h"
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <cmath>
@@ -233,17 +231,26 @@ void AssemblyLink::synchronizeComponents()
             // Add a link or a AssemblyLink to it in the AssemblyLink.
             if (obj->isDerivedFrom<AssemblyLink>()) {
                 auto* asmLink = static_cast<AssemblyLink*>(obj);
-                auto* subAsmLink = new AssemblyLink();
+                // auto* subAsmLink = new AssemblyLink();
 
-                doc->addObject(subAsmLink, obj->getNameInDocument());
-                subAsmLink->Origin.setValue(asmLink->Origin.getValue());
-                subAsmLink->LinkedObject.setValue(obj);
-                subAsmLink->Rigid.setValue(asmLink->Rigid.getValue());
-                subAsmLink->Label.setValue(obj->Label.getValue());
+                // doc->addObject(subAsmLink, obj->getNameInDocument());
+                // subAsmLink->Origin.setValue(asmLink->Origin.getValue());
+                // subAsmLink->LinkedObject.setValue(obj);
+                // subAsmLink->Rigid.setValue(asmLink->Rigid.getValue());
+                // subAsmLink->Label.setValue(obj->Label.getValue());
 
-                addObject(subAsmLink);
+                // addObject(subAsmLink);
 
-                link = subAsmLink;
+                // link = subAsmLink;
+
+
+                App::DocumentObject* newObj = doc->addObject("Assembly::AssemblyLink", obj->getNameInDocument());  
+                auto* subAsmLink = static_cast<AssemblyLink*>(newObj);  
+                subAsmLink->LinkedObject.setValue(obj);  
+                subAsmLink->Rigid.setValue(asmLink->Rigid.getValue());  
+                subAsmLink->Label.setValue(obj->Label.getValue());  
+                addObject(subAsmLink);  
+                link = subAsmLink; 
             }
             else {
                 auto* appLink = new App::Link();
