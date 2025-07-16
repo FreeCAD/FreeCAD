@@ -230,7 +230,7 @@ void AssemblyLink::synchronizeComponents()
             // Add a link or a AssemblyLink to it in the AssemblyLink.
             if (obj->isDerivedFrom<AssemblyLink>()) {
                 auto* asmLink = static_cast<AssemblyLink*>(obj);
-                
+
                 App::DocumentObject* newObj =
                     doc->addObject("Assembly::AssemblyLink", obj->getNameInDocument());
                 auto* subAsmLink = static_cast<AssemblyLink*>(newObj);
