@@ -822,14 +822,16 @@ class _ViewProviderSite:
         if not "ShowSunPosition" in pl:
             vobj.addProperty("App::PropertyBool", "ShowSunPosition", "Sun", QT_TRANSLATE_NOOP("App::Property", "Show the sun position for a specific date and time"), locked=True)
         if not "SunDateMonth" in pl:
-            vobj.addProperty("App::PropertyInteger", "SunDateMonth", "Sun", QT_TRANSLATE_NOOP("App::Property", "The month of the year to show the sun position"), locked=True)
-            vobj.SunDateMonth = 6 # Default to June
+            vobj.addProperty("App::PropertyIntegerConstraint", "SunDateMonth", "Sun", QT_TRANSLATE_NOOP("App::Property", "The month of the year to show the sun position"), locked=True)
+            vobj.SunDateMonth = (6, 1, 12, 1) # Default to June
         if not "SunDateDay" in pl:
-            vobj.addProperty("App::PropertyInteger", "SunDateDay", "Sun", QT_TRANSLATE_NOOP("App::Property", "The day of the month to show the sun position"), locked=True)
-            vobj.SunDateDay = 21 # Default to the 21st (solstice)
+            vobj.addProperty("App::PropertyIntegerConstraint", "SunDateDay", "Sun", QT_TRANSLATE_NOOP("App::Property", "The day of the month to show the sun position"), locked=True)
+            # 31 is a safe maximum; the datetime object will handle invalid dates like Feb 31.
+            vobj.SunDateDay =  (21, 1, 31, 1) # Default to the 21st (solstice)
         if not "SunTimeHour" in pl:
-            vobj.addProperty("App::PropertyFloat", "SunTimeHour", "Sun", QT_TRANSLATE_NOOP("App::Property", "The hour of the day to show the sun position"), locked=True)
-            vobj.SunTimeHour = 12.0 # Default to noon
+            vobj.addProperty("App::PropertyFloatConstraint", "SunTimeHour", "Sun", QT_TRANSLATE_NOOP("App::Property", "The hour of the day to show the sun position"), locked=True)
+            # Use 23.99 to avoid issues with hour 24
+            vobj.SunTimeHour = (12.0, 0.0, 23.5, 0.5) # Default to noon
         if not "ShowHourLabels" in pl:
             vobj.addProperty("App::PropertyBool", "ShowHourLabels", "Sun", QT_TRANSLATE_NOOP("App::Property", "Show text labels for key hours on the sun path"), locked=True)
             vobj.ShowHourLabels = True # Show hour labels by default
