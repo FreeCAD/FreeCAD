@@ -177,7 +177,6 @@ void AssemblyLink::updateContents()
     purgeTouched();
 }
 
-
 void AssemblyLink::synchronizeComponents()
 {
     App::Document* doc = getDocument();
