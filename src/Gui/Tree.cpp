@@ -487,6 +487,8 @@ public:
         const QStyleOptionViewItem& option,
         const QModelIndex& index
     ) const;
+
+    virtual void setEditorData(QWidget* editor, const QModelIndex& index) const override;
 };
 
 }  // namespace Gui
@@ -656,6 +658,39 @@ QSize TreeWidgetItemDelegate::sizeHint(const QStyleOptionViewItem& option, const
     int spacing = std::max(0, static_cast<int>(TreeParams::getItemSpacing()));
     size.setHeight(size.height() + spacing);
     return size;
+}
+
+void TreeWidgetItemDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
+{
+    // For expression-enabled labels, the binding handles everything, so we can
+    // let the default implementation run.
+    if (TreeParams::getLabelExpression() || (index.column() != 0)) {
+        inherited::setEditorData(editor, index);
+        return;
+    }
+
+    // For regular text labels, we take control to handle the suffix.
+    auto ti = static_cast<QTreeWidgetItem*>(index.internalPointer());
+    if (ti->type() == TreeWidget::ObjectType) {
+        auto item = static_cast<DocumentObjectItem*>(ti);
+        App::DocumentObject* obj = item->object()->getObject();
+
+        QString rawValue = QString::fromUtf8(obj->Label.getValue());
+
+        // Cast the editor and set its text to the raw value.
+        auto* lineEdit = static_cast<DynamicQLineEdit*>(editor);
+        if (lineEdit) {
+            lineEdit->setText(rawValue);
+        }
+        else {
+            // Fallback for safety, though it shouldn't be needed.
+            inherited::setEditorData(editor, index);
+        }
+    }
+    else {
+        // For any other item type (like documents), use the default behavior.
+        inherited::setEditorData(editor, index);
+    }
 }
 // ---------------------------------------------------------------------------
 
@@ -3584,6 +3619,11 @@ void TreeWidget::onUpdateStatus()
         scrollToItem(errItem);
     }
 
+    // Visually disambiguate any items that have the same label.
+    for (auto& v : DocumentMap) {
+        v.second->updateDuplicateLabels();
+    }
+
     updateGeometries();
     statusTimer->stop();
 
@@ -6379,7 +6419,17 @@ void DocumentObjectItem::setData(int column, int role, const QVariant& value)
         label.setValue(value.toString().toUtf8().constData());
         doc->commitTransaction();
 
-        myValue = QString::fromUtf8(label.getValue());
+        // Instead of letting the base class update this single item's text,
+        // we immediately tell the owner DocumentItem to re-run the disambiguation
+        // logic for all of its items. This ensures the suffix is reapplied
+        // correctly right away if necessary.
+        if (getOwnerDocument()) {
+            getOwnerDocument()->updateDuplicateLabels();
+        }
+
+        // We explicitly `return` here to prevent the call to the base class below,
+        // which would overwrite our carefully managed display text with the raw label.
+        return;
     }
     QTreeWidgetItem::setData(column, role, myValue);
 }
@@ -6505,6 +6555,95 @@ bool DocumentItem::isObjectShowable(App::DocumentObject* obj)
         showable = false;
     }
     return showable;
+}
+
+void DocumentItem::updateDuplicateLabels()
+{
+    // Step 1: Group unique objects by their label.
+    std::map<std::string, std::set<App::DocumentObject*>> labelToObjectSet;
+
+    for (const auto& pair : ObjectMap) {
+        App::DocumentObject* obj = pair.first;
+        const auto& data = pair.second;
+        if (data && !data->label.empty()) {
+            labelToObjectSet[data->label].insert(obj);
+        }
+    }
+
+    // Step 2: Iterate through the grouped labels and apply disambiguation conditionally.
+    for (const auto& pair : labelToObjectSet) {
+        const std::string& label = pair.first;
+        const std::set<App::DocumentObject*>& objects = pair.second;
+
+        // Partition the objects into two groups based on the new ViewProvider function.
+        std::vector<App::DocumentObject*> objectsToNumber;
+        std::vector<App::DocumentObject*> objectsToKeepAsIs;
+
+        for (App::DocumentObject* obj : objects) {
+            auto vp = getViewProvider(obj);
+            if (vp && vp->showIndentationSuffixInLabel()) {
+                objectsToNumber.push_back(obj);
+            }
+            else {
+                objectsToKeepAsIs.push_back(obj);
+            }
+        }
+
+        // First, reset all objects that should NOT have a suffix to their original label.
+        // This clears any old suffixes from previous updates.
+        QString originalLabel = QString::fromStdString(label);
+        for (App::DocumentObject* obj : objectsToKeepAsIs) {
+            auto& data = ObjectMap.at(obj);
+            for (DocumentObjectItem* item : data->items) {
+                if (item->text(0) != originalLabel) {
+                    item->setText(0, originalLabel);
+                }
+            }
+        }
+
+        // Now, handle the objects that DO need a potential suffix.
+        // A suffix is only needed if there's an ambiguity. An ambiguity exists if:
+        // 1. There is more than one object that needs a suffix (e.g., two Links to the same thing).
+        // 2. There is at least one object that DOESN'T need a suffix (e.g., the original Body).
+        if (objectsToNumber.size() > 1 || !objectsToKeepAsIs.empty()) {
+            // Sort the objects that need numbering by their tree rank to ensure consistent order.
+            std::sort(
+                objectsToNumber.begin(),
+                objectsToNumber.end(),
+                [this](App::DocumentObject* a, App::DocumentObject* b) {
+                    auto vpA = getViewProvider(a);
+                    auto vpB = getViewProvider(b);
+                    if (!vpA || !vpB) {
+                        return a < b;
+                    }
+                    return vpA->getTreeRank() < vpB->getTreeRank();
+                }
+            );
+
+            // Apply the numbered suffix.
+            int counter = 1;
+            for (App::DocumentObject* obj : objectsToNumber) {
+                auto& data = ObjectMap.at(obj);
+                QString newLabel = originalLabel + QString::fromStdString(" <%1>").arg(counter);
+                for (DocumentObjectItem* item : data->items) {
+                    item->setText(0, newLabel);
+                }
+                counter++;
+            }
+        }
+        else {
+            // This is the case where there is only one object that wants a suffix
+            // and no other objects share its label. No suffix is needed. Reset it.
+            for (App::DocumentObject* obj : objectsToNumber) {
+                auto& data = ObjectMap.at(obj);
+                for (DocumentObjectItem* item : data->items) {
+                    if (item->text(0) != originalLabel) {
+                        item->setText(0, originalLabel);
+                    }
+                }
+            }
+        }
+    }
 }
 
 int DocumentObjectItem::isParentGroup() const

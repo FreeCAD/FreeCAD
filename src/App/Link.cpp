@@ -2714,6 +2714,11 @@ bool Link::isLinkGroup() const
     return ElementCount.getValue() > 0;
 }
 
+bool Link::allowDuplicateLabel() const
+{
+    return true;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////
 
 namespace App

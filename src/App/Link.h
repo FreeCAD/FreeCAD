@@ -709,6 +709,8 @@ public:
     bool isLink() const override;
 
     bool isLinkGroup() const override;
+
+    bool allowDuplicateLabel() const override;
 };
 
 using LinkPython = App::FeaturePythonT<Link>;

@@ -354,6 +354,8 @@ public:
 
     bool isObjectShowable(App::DocumentObject* obj);
 
+    void updateDuplicateLabels();
+
     unsigned int getMemSize() const override;
     void Save(Base::Writer&) const override;
     void Restore(Base::XMLReader&) override;
