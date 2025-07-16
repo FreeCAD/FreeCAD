@@ -162,8 +162,9 @@ TaskMeasure::TaskMeasure()
     // engage the selectionObserver
     attachSelection();
 
-    if (!App::GetApplication().getActiveTransaction()) {
-        App::GetApplication().setActiveTransaction("Add Measurement");
+    mTargetDoc = Gui::Application::Instance->activeDocument();
+    if (mTargetDoc) {
+        mTargetDoc->openCommand("Add Measurement");
     }
 
     setAutoCloseOnDeletedDocument(true);
@@ -404,8 +405,10 @@ bool TaskMeasure::apply(bool reset)
     }
 
     // Commit transaction
-    App::GetApplication().closeActiveTransaction();
-    App::GetApplication().setActiveTransaction("Add Measurement");
+    if (mTargetDoc) {
+        mTargetDoc->commitCommand();
+        mTargetDoc->openCommand("Add Measurement");
+    }
     return false;
 }
 
@@ -415,7 +418,9 @@ bool TaskMeasure::reject()
     close();
 
     // Abort transaction
-    App::GetApplication().closeActiveTransaction(true);
+    if (mTargetDoc) {
+        mTargetDoc->abortCommand();
+    }
     return false;
 }
 
