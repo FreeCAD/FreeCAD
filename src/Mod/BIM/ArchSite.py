@@ -1290,7 +1290,6 @@ class _ViewProviderSite:
         import Part
         import datetime
         from pivy import coin
-        import Draft
 
         obj = vobj.Object
 
