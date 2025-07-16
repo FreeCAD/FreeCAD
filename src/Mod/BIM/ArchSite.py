@@ -968,6 +968,22 @@ class _ViewProviderSite:
         # Add the entire sun assembly to the object's annotation node
         vobj.Annotation.addChild(self.sunSwitch)
 
+        # Add a separator to hold the path geometry. This keeps it separate from the sphere.
+        self.sunPathSep = coin.SoSeparator()
+
+        # Add a material to control the color of the path line.
+        self.sunPathMaterial = coin.SoMaterial()
+        self.sunPathMaterial.diffuseColor.setValue(0.7, 0.7, 0) # A dimmer yellow
+
+        # This is the node that will contain the line geometry itself.
+        self.sunPathNode = coin.SoSeparator()
+
+        self.sunPathSep.addChild(self.sunPathMaterial)
+        self.sunPathSep.addChild(self.sunPathNode)
+
+        # Add the path separator to the main switch so it can be toggled on/off
+        self.sunSwitch.addChild(self.sunPathSep)
+
     def updateData(self,obj,prop):
         """Method called when the host object has a property changed.
 
@@ -1045,6 +1061,16 @@ class _ViewProviderSite:
             switch.whichChild = idx
 
     def onChanged(self,vobj,prop):
+        from pivy import coin
+
+        if prop == 'Visibility':
+            if vobj.Visibility:
+                # When the site becomes visible, check if the sun elements should also be shown.
+                if vobj.ShowSunPosition:
+                    self.sunSwitch.whichChild = coin.SO_SWITCH_ALL
+            else:
+                # When the site is hidden, always hide the sun elements.
+                self.sunSwitch.whichChild = coin.SO_SWITCH_NONE
 
         # onChanged is called multiple times when a document is opened.
         # Some display mode nodes can be missing during initial calls.
@@ -1219,127 +1245,122 @@ class _ViewProviderSite:
         return None
 
     def updateSunPosition(self, vobj):
-        """Calculates sun position and updates the sphere and ray object."""
+        """Calculates sun position and updates the sphere, path arc, and ray object."""
         import math
-        from pivy import coin
         import Part
+        import datetime
+        from pivy import coin
+        import Draft
 
         obj = vobj.Object
 
-        # Handle the visibility switch
+        # Handle the visibility toggle for all elements
+        self.sunPathNode.removeAllChildren() # Clear the old path arc
         if not vobj.ShowSunPosition:
-            self.sunSwitch.whichChild = -1 # Hide the Pivy sphere
+            self.sunSwitch.whichChild = -1 # Hide the Pivy sphere and path
             if obj.SunRay and hasattr(obj.SunRay, "ViewObject"):
                 obj.SunRay.ViewObject.Visibility = False
             return
 
-        self.sunSwitch.whichChild = 0 # Show the Pivy sphere
+        self.sunSwitch.whichChild = coin.SO_SWITCH_ALL # Show sphere and path
 
-        altitude_deg = 0.0
-        azimuth_deg = 0.0
-        dt_object = None
+        path_points = []
+        dt_object_for_label = None
 
         try:
             from ladybug import location, sunpath
             loc = location.Location(latitude=obj.Latitude, longitude=obj.Longitude, time_zone=obj.TimeZone)
             sp = sunpath.Sunpath.from_location(loc)
-
-            # Create a datetime object for labeling and potential future use
-            # Use a fixed year like 2023 for consistency
-            dt_object = datetime.datetime(2023, int(vobj.SunDateMonth), int(vobj.SunDateDay), int(vobj.SunTimeHour), int((vobj.SunTimeHour % 1)*60))
-
-            sun = sp.calculate_sun(month=dt_object.month, day=dt_object.day, hour=vobj.SunTimeHour)
-            altitude_deg = sun.altitude
-            azimuth_deg = sun.azimuth # Ladybug: 0 is North, clockwise
-
+            is_ladybug = True
         except ImportError:
             try:
                 import pysolar.solar as solar
-                tz = datetime.timezone(datetime.timedelta(hours=obj.TimeZone))
-                # Use a fixed year like 2023 for consistency
-                dt_object = datetime.datetime(2023, int(vobj.SunDateMonth), int(vobj.SunDateDay), int(vobj.SunTimeHour), int((vobj.SunTimeHour % 1)*60), tzinfo=tz)
-
-                altitude_deg = solar.get_altitude(obj.Latitude, obj.Longitude, dt_object)
-                azimuth_deg = solar.get_azimuth(obj.Latitude, obj.Longitude, dt_object) # Pysolar: 0 is North, clockwise
+                is_ladybug = False
             except ImportError:
-                FreeCAD.Console.PrintError("Pysolar or Ladybug module not found. Cannot calculate sun position.\n")
+                FreeCAD.Console.PrintError("Ladybug or Pysolar module not found. Cannot calculate sun position.\n")
                 return
 
-        # Convert spherical coordinates (astronomical convention) to Cartesian 3D space
-        # for rendering (mathematical convention).
-        scale = vobj.SolarDiagramScale
-        altitude_rad = math.radians(altitude_deg)
-        # Convert azimuth (0=N, clockwise) to mathematical angle (0=E, counter-clockwise)
-        azimuth_rad = math.radians(90 - azimuth_deg)
+        for hour_float in [h / 2.0 for h in range(48)]: # Loop from 0.0 to 23.5
+            if is_ladybug:
+                sun = sp.calculate_sun(month=vobj.SunDateMonth, day=vobj.SunDateDay, hour=hour_float)
+                alt = sun.altitude
+                az = sun.azimuth
+            else:
+                tz = datetime.timezone(datetime.timedelta(hours=obj.TimeZone))
+                dt = datetime.datetime(2023, vobj.SunDateMonth, vobj.SunDateDay, int(hour_float), int((hour_float % 1)*60), tzinfo=tz)
+                alt = solar.get_altitude(obj.Latitude, obj.Longitude, dt)
+                az = solar.get_azimuth(obj.Latitude, obj.Longitude, dt)
 
-        xy_proj = math.cos(altitude_rad) * scale
+            if alt > 0:
+                alt_rad = math.radians(alt)
+                az_rad = math.radians(90 - az)
+                xy_proj = math.cos(alt_rad) * vobj.SolarDiagramScale
+                x = math.cos(az_rad) * xy_proj
+                y = math.sin(az_rad) * xy_proj
+                z = math.sin(alt_rad) * vobj.SolarDiagramScale
+                path_points.append(FreeCAD.Vector(x, y, z))
+
+        if len(path_points) > 1:
+            path_b_spline = Part.BSplineCurve()
+            path_b_spline.buildFromPoles(path_points)
+            self.sunPathNode.addChild(toNode(path_b_spline.toShape()))
+
+        # Sun sphere and sun ray logic
+        if is_ladybug:
+            sun = sp.calculate_sun(month=vobj.SunDateMonth, day=vobj.SunDateDay, hour=vobj.SunTimeHour)
+            altitude_deg, azimuth_deg = sun.altitude, sun.azimuth
+            dt_object_for_label = datetime.datetime(2023, vobj.SunDateMonth, vobj.SunDateDay, int(vobj.SunTimeHour), int((vobj.SunTimeHour % 1)*60))
+        else:
+            tz = datetime.timezone(datetime.timedelta(hours=obj.TimeZone))
+            dt_object_for_label = datetime.datetime(2023, vobj.SunDateMonth, vobj.SunDateDay, int(vobj.SunTimeHour), int((vobj.SunTimeHour % 1)*60), tzinfo=tz)
+            altitude_deg = solar.get_altitude(obj.Latitude, obj.Longitude, dt_object_for_label)
+            azimuth_deg = solar.get_azimuth(obj.Latitude, obj.Longitude, dt_object_for_label)
+
+        altitude_rad = math.radians(altitude_deg)
+        azimuth_rad = math.radians(90 - azimuth_deg)
+        xy_proj = math.cos(altitude_rad) * vobj.SolarDiagramScale
         x = math.cos(azimuth_rad) * xy_proj
         y = math.sin(azimuth_rad) * xy_proj
-        z = math.sin(altitude_rad) * scale
-        sun_pos_3d = FreeCAD.Vector(x, y, z)
+        z = math.sin(altitude_rad) * vobj.SolarDiagramScale
+        sun_pos_3d = vobj.SolarDiagramPosition.add(FreeCAD.Vector(x, y, z)) # Final absolute position
 
-        # Update the Pivy sphere's position and radius
         self.sunTransform.translation.setValue(sun_pos_3d.x, sun_pos_3d.y, sun_pos_3d.z)
-        self.sunSphere.radius = scale * 0.02
+        self.sunSphere.radius = vobj.SolarDiagramScale * 0.02
 
-        # Create or update the selectable sun ray line object
-        ray_origin = vobj.SolarDiagramPosition # The center of the diagram
-        ray_target = ray_origin.add(sun_pos_3d)
-
-        # Handle cases where the ray object might have been deleted
         try:
             ray_object = obj.SunRay
             if not ray_object: raise AttributeError
+            ray_object.Start = sun_pos_3d
+            ray_object.End = vobj.SolarDiagramPosition
+            ray_object.ViewObject.Visibility = True
         except (AttributeError, ReferenceError):
-            ray_object = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "SunRay")
-            _SunRay(ray_object)
-            if FreeCAD.GuiUp:
-                _ViewProviderSunRay(ray_object.ViewObject)
-            ray_object.Label = "Sun Ray"
+            ray_object = Draft.make_line(sun_pos_3d, vobj.SolarDiagramPosition)
+            vo = ray_object.ViewObject
+            vo.LineColor = (1.0, 1.0, 0.0)
+            vo.DrawStyle = "Dashed"
+            vo.ArrowType = "Arrow"
+            vo.LineWidth = 2
+            vo.EndArrow = True
+            vo.ArrowSize = vobj.SolarDiagramScale * 0.015
+
             if hasattr(obj, "addObject"):
                 obj.addObject(ray_object)
-            ray_object.ViewObject.LineColor = (1.0, 1.0, 0.0) # Yellow
-            ray_object.ViewObject.LineWidth = 2.0
-            ray_object.ViewObject.PointSize = 1
-            obj.SunRay = ray_object # Re-link the property
+            obj.SunRay = ray_object
 
-        if ray_object:
-            # Set the shape of the ray
-            ray_object.Shape = Part.makeLine(ray_target, ray_origin) # Direction from sun to origin
-            ray_object.ViewObject.Visibility = True
+        ray_object.recompute()
 
-            # Note: The property expects the angle in radians, FreeCAD displays it in degrees.
-            ray_object.Altitude = math.radians(altitude_deg)
-            ray_object.Azimuth = math.radians(azimuth_deg)
+        # Add and update custom data properties
+        if not hasattr(ray_object, "Altitude"):
+            ray_object.addProperty("App::PropertyAngle", "Altitude", "Sun Data", QT_TRANSLATE_NOOP("App::Property", "The altitude of the sun above the horizon"), locked=True)
+            ray_object.setEditorMode("Altitude", ["ReadOnly", "Hidden"])
+            ray_object.addProperty("App::PropertyAngle", "Azimuth", "Sun Data", QT_TRANSLATE_NOOP("App::Property", "The compass direction of the sun (0° is North)"), locked=True)
+            ray_object.setEditorMode("Azimuth", ["ReadOnly", "Hidden"])
+            ray_object.addProperty("App::PropertyString", "Time", "Sun Data", QT_TRANSLATE_NOOP("App::Property", "The date and time for this sun position"), locked=True)
+            ray_object.setEditorMode("Time", ["ReadOnly", "Hidden"])
 
-            # Update the custom properties on the ray object
-            if dt_object:
-                time_string = dt_object.strftime("%B %d, %H:%M") # e.g., "June 21, 12:30"
-                ray_object.Time = time_string
-                ray_object.Label = f"Sun Ray ({time_string})"
+        ray_object.Altitude = math.radians(altitude_deg)
+        ray_object.Azimuth = math.radians(azimuth_deg)
+        time_string = dt_object_for_label.strftime("%B %d, %H:%M")
+        ray_object.Time = time_string
+        ray_object.Label = f"Sun Ray ({time_string})"
 
-class _SunRay:
-    "A simple proxy for the SunRay object"
-    def __init__(self, obj):
-        obj.Proxy = self
-        self.Type = "SunRay"
-
-        obj.addProperty("App::PropertyAngle", "Altitude", "Sun Data", QT_TRANSLATE_NOOP("App::Property", "The altitude of the sun above the horizont"), locked=True)
-        obj.addProperty("App::PropertyAngle", "Azimuth", "Sun Data", QT_TRANSLATE_NOOP("App::Property", "The compass direction of the sun"), locked=True)
-        obj.addProperty("App::PropertyString", "Time", "Sun Data", QT_TRANSLATE_NOOP("App::Property", "The date and time for this sun position"), locked=True)
-        obj.setEditorMode("Altitude", ["ReadOnly"])
-        obj.setEditorMode("Azimuth", ["ReadOnly"])
-        obj.setEditorMode("Time", ["ReadOnly"])
-
-    # No execute method is needed as its Shape is set externally by the Site
-    def execute(self, obj):
-        pass
-
-class _ViewProviderSunRay:
-    "A view provider for the SunRay object to give it a custom icon"
-    def __init__(self, vobj):
-        vobj.Proxy = self
-
-    def getIcon(self):
-        # Use the icon from the Draft Line tool for now
-        return ":/icons/Draft_N-Linear.svg"
