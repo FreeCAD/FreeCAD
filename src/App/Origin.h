@@ -52,6 +52,11 @@ public:
     {
         return true;
     }
+
+    bool allowDuplicateLabel() const override
+    {
+        return true;
+    }
 };
 
 }  // namespace App
