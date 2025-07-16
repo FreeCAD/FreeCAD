@@ -195,11 +195,10 @@ void AssemblyLink::synchronizeComponents()
     // We check if a component needs to be added to the AssemblyLink
     for (auto* obj : assemblyGroup) {
         if (!obj->isDerivedFrom<App::Part>() && !obj->isDerivedFrom<PartApp::Feature>()
-            && !obj->isDerivedFrom<App::Link>()
-        ) {
+            && !obj->isDerivedFrom<App::Link>()) {
             continue;
         }
-        
+
         // Note, the user can have nested sub-assemblies.
         // In which case we need to add an AssemblyLink and not a Link.
         App::DocumentObject* link = nullptr;
