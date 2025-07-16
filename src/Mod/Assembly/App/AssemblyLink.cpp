@@ -179,6 +179,7 @@ void AssemblyLink::updateContents()
     purgeTouched();
 }
 
+
 void AssemblyLink::synchronizeComponents()
 {
     App::Document* doc = getDocument();
@@ -193,20 +194,14 @@ void AssemblyLink::synchronizeComponents()
     std::vector<App::DocumentObject*> assemblyGroup = assembly->Group.getValues();
     std::vector<App::DocumentObject*> assemblyLinkGroup = Group.getValues();
 
-
     // We check if a component needs to be added to the AssemblyLink
     for (auto* obj : assemblyGroup) {
         if (!obj->isDerivedFrom<App::Part>() && !obj->isDerivedFrom<PartApp::Feature>()
             && !obj->isDerivedFrom<App::Link>()
-            // && !obj->isDerivedFrom<App::DocumentObjectGroup>()
         ) {
             continue;
         }
-
-        // if (obj->isDerivedFrom<JointGroup>() || obj->getGroup() != nullptr) {
-        //     continue;
-        // }
-
+        
         // Note, the user can have nested sub-assemblies.
         // In which case we need to add an AssemblyLink and not a Link.
         App::DocumentObject* link = nullptr;
@@ -239,8 +234,6 @@ void AssemblyLink::synchronizeComponents()
             if (obj->isDerivedFrom<AssemblyLink>()) {
                 auto* asmLink = static_cast<AssemblyLink*>(obj);
                 auto* subAsmLink = new AssemblyLink();
-                // auto* origin = new App::Origin();
-
 
                 doc->addObject(subAsmLink, obj->getNameInDocument());
                 subAsmLink->Origin.setValue(asmLink->Origin.getValue());
@@ -248,13 +241,7 @@ void AssemblyLink::synchronizeComponents()
                 subAsmLink->Rigid.setValue(asmLink->Rigid.getValue());
                 subAsmLink->Label.setValue(obj->Label.getValue());
 
-                // origin->Label.setValue("Origin");
-                // auto* test = dynamic_cast<App::PropertyPlacement*>(
-                //     subAsmLink->getPropertyByName("Placement"));
-                // origin->Placement.setValue(test->getValue());
-
                 addObject(subAsmLink);
-
 
                 link = subAsmLink;
             }
