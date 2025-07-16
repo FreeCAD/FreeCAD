@@ -198,12 +198,18 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False,tz=None):
                                 h = "SUMMER"
                     hourpos.append((h,ep))
         if i < 7:
-            sunpaths.append(Part.makePolygon(pts))
+            if len(pts) > 1:
+                b_spline = Part.BSplineCurve()
+                b_spline.buildFromPoles(pts)
+                sunpaths.append(b_spline.toShape())
 
     for h in hpts:
         if complete:
             h.append(h[0])
-        hourpaths.append(Part.makePolygon(h))
+        if len(h) > 1:
+            b_spline = Part.BSplineCurve()
+            b_spline.buildFromPoles(h)
+            hourpaths.append(b_spline.toShape())
 
     # cut underground lines
     sz = 2.1*scale
