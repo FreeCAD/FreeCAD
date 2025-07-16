@@ -36,7 +36,8 @@ import PySide.QtGui as QtGui
 import PySide.QtWidgets as QtWidgets
 
 import FreeCAD as App
-import FreeCADGui as Gui
+if App.GuiUp:
+    import FreeCADGui as Gui
 from draftutils import params
 from draftutils.init_tools import get_draft_snap_commands
 from draftutils.translate import translate

@@ -28,7 +28,10 @@ import PySide.QtCore as QtCore
 import xml.etree.ElementTree as ET
 
 import FreeCAD as App
-import Draft_rc
+try:
+    import Draft_rc
+except ModuleNotFoundError:
+    pass
 try:
     import Arch_rc
 except ModuleNotFoundError:

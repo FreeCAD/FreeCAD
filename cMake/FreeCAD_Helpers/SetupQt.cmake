@@ -83,7 +83,7 @@ configure_file(${CMAKE_SOURCE_DIR}/src/QtWidgets.h.cmake ${CMAKE_BINARY_DIR}/src
 function(qt_find_and_add_translation _qm_files _tr_dir _qm_dir)
     file(GLOB _ts_files ${_tr_dir})
     set_source_files_properties(${_ts_files} PROPERTIES OUTPUT_LOCATION ${_qm_dir})
-    qt_add_translation("${_qm_files}" ${_ts_files})
+    # qt_add_translation("${_qm_files}" ${_ts_files})
     set("${_qm_files}" "${${_qm_files}}" PARENT_SCOPE)
 endfunction()
 
