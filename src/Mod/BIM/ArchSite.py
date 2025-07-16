@@ -1235,33 +1235,47 @@ class _ViewProviderSite:
 
         self.sunSwitch.whichChild = 0 # Show the Pivy sphere
 
+        altitude_deg = 0.0
+        azimuth_deg = 0.0
+        dt_object = None
+
         try:
             from ladybug import location, sunpath
             loc = location.Location(latitude=obj.Latitude, longitude=obj.Longitude, time_zone=obj.TimeZone)
             sp = sunpath.Sunpath.from_location(loc)
-            sun = sp.calculate_sun(month=vobj.SunDateMonth, day=vobj.SunDateDay, hour=vobj.SunTimeHour)
-            altitude = math.radians(sun.altitude)
-            # Ladybug azimuth: 0 is North, clockwise. We need 0 as East, counter-clockwise.
-            azimuth = math.radians(90 - sun.azimuth)
+
+            # Create a datetime object for labeling and potential future use
+            # Use a fixed year like 2023 for consistency
+            dt_object = datetime.datetime(2023, int(vobj.SunDateMonth), int(vobj.SunDateDay), int(vobj.SunTimeHour), int((vobj.SunTimeHour % 1)*60))
+
+            sun = sp.calculate_sun(month=dt_object.month, day=dt_object.day, hour=vobj.SunTimeHour)
+            altitude_deg = sun.altitude
+            azimuth_deg = sun.azimuth # Ladybug: 0 is North, clockwise
+
         except ImportError:
             try:
                 import pysolar.solar as solar
-                import datetime
                 tz = datetime.timezone(datetime.timedelta(hours=obj.TimeZone))
-                dt = datetime.datetime(vobj.Object.Document.CreationDate.year, vobj.SunDateMonth, vobj.SunDateDay, int(vobj.SunTimeHour), int((vobj.SunTimeHour % 1)*60), tzinfo=tz)
-                altitude = math.radians(solar.get_altitude(obj.Latitude, obj.Longitude, dt))
-                # Pysolar azimuth: 0 is North, clockwise.
-                azimuth = math.radians(90 - solar.get_azimuth(obj.Latitude, obj.Longitude, dt))
+                # Use a fixed year like 2023 for consistency
+                dt_object = datetime.datetime(2023, int(vobj.SunDateMonth), int(vobj.SunDateDay), int(vobj.SunTimeHour), int((vobj.SunTimeHour % 1)*60), tzinfo=tz)
+
+                altitude_deg = solar.get_altitude(obj.Latitude, obj.Longitude, dt_object)
+                azimuth_deg = solar.get_azimuth(obj.Latitude, obj.Longitude, dt_object) # Pysolar: 0 is North, clockwise
             except ImportError:
                 FreeCAD.Console.PrintError("Pysolar or Ladybug module not found. Cannot calculate sun position.\n")
                 return
 
-        # Convert spherical coordinates to Cartesian 3D space
+        # Convert spherical coordinates (astronomical convention) to Cartesian 3D space
+        # for rendering (mathematical convention).
         scale = vobj.SolarDiagramScale
-        xy_proj = math.cos(altitude) * scale
-        x = math.cos(azimuth) * xy_proj
-        y = math.sin(azimuth) * xy_proj
-        z = math.sin(altitude) * scale
+        altitude_rad = math.radians(altitude_deg)
+        # Convert azimuth (0=N, clockwise) to mathematical angle (0=E, counter-clockwise)
+        azimuth_rad = math.radians(90 - azimuth_deg)
+
+        xy_proj = math.cos(altitude_rad) * scale
+        x = math.cos(azimuth_rad) * xy_proj
+        y = math.sin(azimuth_rad) * xy_proj
+        z = math.sin(altitude_rad) * scale
         sun_pos_3d = FreeCAD.Vector(x, y, z)
 
         # Update the Pivy sphere's position and radius
@@ -1277,7 +1291,10 @@ class _ViewProviderSite:
             ray_object = obj.SunRay
             if not ray_object: raise AttributeError
         except (AttributeError, ReferenceError):
-            ray_object = FreeCAD.ActiveDocument.addObject("Part::Feature", "SunRay")
+            ray_object = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "SunRay")
+            _SunRay(ray_object)
+            if FreeCAD.GuiUp:
+                _ViewProviderSunRay(ray_object.ViewObject)
             ray_object.Label = "Sun Ray"
             if hasattr(obj, "addObject"):
                 obj.addObject(ray_object)
@@ -1286,6 +1303,43 @@ class _ViewProviderSite:
             ray_object.ViewObject.PointSize = 1
             obj.SunRay = ray_object # Re-link the property
 
-        # Set the shape of the ray
-        ray_object.Shape = Part.makeLine(ray_target, ray_origin) # Direction from sun to origin
-        ray_object.ViewObject.Visibility = True
+        if ray_object:
+            # Set the shape of the ray
+            ray_object.Shape = Part.makeLine(ray_target, ray_origin) # Direction from sun to origin
+            ray_object.ViewObject.Visibility = True
+
+            # Note: The property expects the angle in radians, FreeCAD displays it in degrees.
+            ray_object.Altitude = math.radians(altitude_deg)
+            ray_object.Azimuth = math.radians(azimuth_deg)
+
+            # Update the custom properties on the ray object
+            if dt_object:
+                time_string = dt_object.strftime("%B %d, %H:%M") # e.g., "June 21, 12:30"
+                ray_object.Time = time_string
+                ray_object.Label = f"Sun Ray ({time_string})"
+
+class _SunRay:
+    "A simple proxy for the SunRay object"
+    def __init__(self, obj):
+        obj.Proxy = self
+        self.Type = "SunRay"
+
+        obj.addProperty("App::PropertyAngle", "Altitude", "Sun Data", QT_TRANSLATE_NOOP("App::Property", "The altitude of the sun above the horizont"), locked=True)
+        obj.addProperty("App::PropertyAngle", "Azimuth", "Sun Data", QT_TRANSLATE_NOOP("App::Property", "The compass direction of the sun"), locked=True)
+        obj.addProperty("App::PropertyString", "Time", "Sun Data", QT_TRANSLATE_NOOP("App::Property", "The date and time for this sun position"), locked=True)
+        obj.setEditorMode("Altitude", ["ReadOnly"])
+        obj.setEditorMode("Azimuth", ["ReadOnly"])
+        obj.setEditorMode("Time", ["ReadOnly"])
+
+    # No execute method is needed as its Shape is set externally by the Site
+    def execute(self, obj):
+        pass
+
+class _ViewProviderSunRay:
+    "A view provider for the SunRay object to give it a custom icon"
+    def __init__(self, vobj):
+        vobj.Proxy = self
+
+    def getIcon(self):
+        # Use the icon from the Draft Line tool for now
+        return ":/icons/Draft_N-Linear.svg"
