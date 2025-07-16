@@ -111,7 +111,7 @@ private:
                           QString& message) const;
 
 private Q_SLOTS:
-    void textChanged(const QString & text);
+    void textChanged();
     void setDiscarded();
     void onCheckVarSets(int state);
     void onVarSetSelected(int index);

@@ -1085,6 +1085,11 @@ void ExpressionTextEdit::setExactMatch(bool enabled)
     }
 }
 
+QSize ExpressionTextEdit::sizeHint() const
+{
+    return QSize(200, 30);
+}
+
 void ExpressionTextEdit::setDocumentObject(const App::DocumentObject* currentDocObj)
 {
     if (completer) {
