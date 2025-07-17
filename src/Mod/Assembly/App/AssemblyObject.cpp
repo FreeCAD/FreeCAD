@@ -1739,7 +1739,7 @@ bool AssemblyObject::isMbDJointValid(App::DocumentObject* joint)
     if (getMbDPart(part1) == getMbDPart(part2)) {
         Base::Console().warning(
             "Assembly: Ignoring joint (%s) because its parts are connected by a fixed "
-            "joint bundle. This may indicate a conflicting or redundant constraint.\n",
+            "joint bundle. This joint is a conflicting or redundant constraint.\n",
             joint->getFullName());
         return false;
     }
