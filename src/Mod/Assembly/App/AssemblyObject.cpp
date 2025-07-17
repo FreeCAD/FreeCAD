@@ -1327,7 +1327,7 @@ std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointDistance(App::DocumentObj
 std::vector<std::shared_ptr<MbD::ASMTJoint>>
 AssemblyObject::makeMbdJoint(App::DocumentObject* joint)
 {
-    if (!joint) {
+    if (!joint || !isMbDJointValid(joint)) {
         return {};
     }
 
@@ -1722,6 +1722,28 @@ int AssemblyObject::slidingPartIndex(App::DocumentObject* joint)
         }
     }
     return slidingFound;
+}
+
+bool AssemblyObject::isMbDJointValid(App::DocumentObject* joint)
+{
+    // When dragging a part, we are bundling fixed parts together.
+    // This may lead to a conflicting joint that is self referencing a MbD part.
+    // The solver crash when fed such a bad joint. So we make sure it does not happen.
+    App::DocumentObject* part1 = getMovingPartFromRef(this, joint, "Reference1");
+    App::DocumentObject* part2 = getMovingPartFromRef(this, joint, "Reference2");
+    if (!part1 || !part2) {
+        return false;
+    }
+
+    // If this joint is self-referential it must be ignored.
+    if (getMbDPart(part1) == getMbDPart(part2)) {
+        Base::Console().warning(
+            "Assembly: Ignoring joint (%s) because its parts are connected by a fixed "
+            "joint bundle. This may indicate a conflicting or redundant constraint.\n",
+            joint->getFullName());
+        return false;
+    }
+    return true;
 }
 
 AssemblyObject::MbDPartData AssemblyObject::getMbDData(App::DocumentObject* part)
