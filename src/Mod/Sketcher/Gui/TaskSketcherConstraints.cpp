@@ -1101,7 +1101,6 @@ void TaskSketcherConstraints::onListWidgetConstraintsEmitShowSelection3DVisibili
 void TaskSketcherConstraints::changeFilteredVisibility(bool show, ActionTarget target)
 {
     assert(sketchView);
-    const Sketcher::SketchObject* sketch = sketchView->getSketchObject();
 
     auto selecteditems = ui->listWidgetConstraints->selectedItems();
 
