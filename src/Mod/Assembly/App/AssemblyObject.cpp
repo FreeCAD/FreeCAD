@@ -1327,14 +1327,14 @@ std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointDistance(App::DocumentObj
 std::vector<std::shared_ptr<MbD::ASMTJoint>>
 AssemblyObject::makeMbdJoint(App::DocumentObject* joint)
 {
-    if (!joint || !isMbDJointValid(joint)) {
+    if (!joint) {
         return {};
     }
 
     JointType jointType = getJointType(joint);
 
     std::shared_ptr<ASMTJoint> mbdJoint = makeMbdJointOfType(joint, jointType);
-    if (!mbdJoint) {
+    if (!mbdJoint || !isMbDJointValid(joint)) {
         return {};
     }
 
@@ -1740,7 +1740,7 @@ bool AssemblyObject::isMbDJointValid(App::DocumentObject* joint)
         Base::Console().warning(
             "Assembly: Ignoring joint (%s) because its parts are connected by a fixed "
             "joint bundle. This joint is a conflicting or redundant constraint.\n",
-            joint->getFullName());
+            joint->getFullLabel());
         return false;
     }
     return true;
