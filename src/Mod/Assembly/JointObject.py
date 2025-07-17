@@ -174,6 +174,8 @@ class Joint:
     def __init__(self, joint, type_index):
         joint.Proxy = self
 
+        joint.addExtension("App::SuppressibleExtensionPython")
+
         joint.addProperty(
             "App::PropertyEnumeration",
             "JointType",
@@ -196,6 +198,7 @@ class Joint:
         self.migrationScript2(joint)
         self.migrationScript3(joint)
         self.migrationScript4(joint)
+        self.migrationScript5(joint)
 
         # First Joint Connector
         if not hasattr(joint, "Reference1"):
@@ -313,19 +316,6 @@ class Joint:
                 ),
                 locked=True,
             )
-
-        if not hasattr(joint, "Activated"):
-            joint.addProperty(
-                "App::PropertyBool",
-                "Activated",
-                "Joint",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "This indicates if the joint is active.",
-                ),
-                locked=True,
-            )
-            joint.Activated = True
 
         if not hasattr(joint, "EnableLengthMin"):
             joint.addProperty(
@@ -563,6 +553,19 @@ class Joint:
         processReference("Reference1")
         processReference("Reference2")
 
+    def migrationScript5(self, joint):
+        if not joint.hasExtension("App::SuppressibleExtensionPython"):
+            joint.addExtension("App::SuppressibleExtensionPython")
+
+        if App.GuiUp:
+            if not joint.ViewObject.hasExtension("Gui::ViewProviderSuppressibleExtensionPython"):
+                joint.ViewObject.addExtension("Gui::ViewProviderSuppressibleExtensionPython")
+
+        if hasattr(joint, "Activated"):
+            activated = joint.Activated
+            joint.removeProperty("Activated")
+            joint.Suppressed = not activated
+
     def dumps(self):
         return None
 
@@ -740,10 +743,10 @@ class Joint:
 
         isAssembly = assembly.Type == "Assembly"
         if isAssembly:
-            joint.Activated = False
+            joint.Suppressed = True
             part1Connected = assembly.isPartConnected(part1)
             part2Connected = assembly.isPartConnected(part2)
-            joint.Activated = True
+            joint.Suppressed = False
         else:
             part1Connected = True
             part2Connected = False
@@ -845,6 +848,8 @@ class ViewProviderJoint:
         """Set this object to the proxy object of the actual view provider"""
 
         vobj.Proxy = self
+
+        vobj.addExtension("Gui::ViewProviderSuppressibleExtensionPython")
 
     def attach(self, vobj):
         """Setup the scene sub-graph of the view provider, this method is mandatory"""
