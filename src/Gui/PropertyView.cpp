@@ -116,6 +116,9 @@ PropertyView::PropertyView(QWidget *parent)
     this->connectPropRemove =
     App::GetApplication().signalRemoveDynamicProperty.connect(std::bind
         (&PropertyView::slotRemoveDynamicProperty, this, sp::_1));
+    this->connectPropRename =
+    App::GetApplication().signalRenameDynamicProperty.connect(std::bind
+        (&PropertyView::slotRenameDynamicProperty, this, sp::_1, sp::_2));
     this->connectPropChange =
     App::GetApplication().signalChangePropertyEditor.connect(std::bind
         (&PropertyView::slotChangePropertyEditor, this, sp::_1, sp::_2));
@@ -255,6 +258,23 @@ void PropertyView::slotRemoveDynamicProperty(const App::Property& prop)
         propertyEditorView->removeProperty(prop);
     else
         return;
+    timer->start(ViewParams::instance()->getPropertyViewTimer());
+}
+
+void PropertyView::slotRenameDynamicProperty(const App::Property& prop,
+                                             const char* /*oldName*/)
+{
+    App::PropertyContainer* parent = prop.getContainer();
+    if (propertyEditorData->propOwners.contains(parent)) {
+        propertyEditorData->renameProperty(prop);
+    }
+    else if (propertyEditorView->propOwners.contains(parent)) {
+        propertyEditorView->renameProperty(prop);
+    }
+    else {
+        return;
+    }
+    clearPropertyItemSelection();
     timer->start(ViewParams::instance()->getPropertyViewTimer());
 }
 

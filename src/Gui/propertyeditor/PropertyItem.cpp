@@ -221,6 +221,14 @@ bool PropertyItem::removeProperty(const App::Property* prop)
     return propertyItems.empty();
 }
 
+bool PropertyItem::renameProperty(const App::Property* prop)
+{
+    setPropertyData({const_cast<App::Property*>(prop)});
+    QString name = QString::fromLatin1(prop->getName());
+    setPropertyName(name, name);
+    return true;
+}
+
 App::Property* PropertyItem::getFirstProperty()
 {
     if (propertyItems.empty()) {
