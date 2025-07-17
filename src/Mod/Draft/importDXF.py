@@ -5112,9 +5112,6 @@ def _write_text_entities(obj, writer_proxy):
     if not hasattr(obj, "ViewObject"):
         return None
 
-    # For multi-line text, we export each line as a separate TEXT entity
-    # This tuple structure will be handled line-by-line in C++
-    text_data_list = []
     height = float(obj.ViewObject.FontSize)
     justify_map = {"Left": 0, "Center": 1, "Right": 2}
     justification = justify_map.get(obj.ViewObject.Justification, 0)
