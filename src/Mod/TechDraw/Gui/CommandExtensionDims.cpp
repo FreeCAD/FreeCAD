@@ -127,7 +127,7 @@ void execInsertPrefixChar(Gui::Command* cmd, const std::string& prefixFormat) {
     }
     size_t prefixSize = prefixText.capacity();
 
-    Gui::Command::openCommand(QObject::tr("Insert Prefix").toStdString().c_str());
+    cmd->openSelf(QObject::tr("Insert Prefix").toStdString().c_str());
     for (auto selected : selection) {
         auto object = selected.getObject();
         if (object->isDerivedFrom<TechDraw::DrawViewDimension>()) {
@@ -138,7 +138,7 @@ void execInsertPrefixChar(Gui::Command* cmd, const std::string& prefixFormat) {
             dim->FormatSpec.setValue(formatSpec);
         }
     }
-    Gui::Command::commitCommand();
+    cmd->commitSelf();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionInsertDiameter)
@@ -248,7 +248,7 @@ void execRemovePrefixChar(Gui::Command* cmd) {
         return;
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Remove Prefix"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Remove Prefix"));
     for (auto selected : selection)
     {
         auto object = selected.getObject();
@@ -263,7 +263,7 @@ void execRemovePrefixChar(Gui::Command* cmd) {
             }
         }
     }
-    Gui::Command::commitCommand();
+    cmd->commitSelf();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionRemovePrefixChar)
@@ -434,7 +434,7 @@ void execIncreaseDecreaseDecimal(Gui::Command* cmd, int delta) {
         return;
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Increase/Decrease Decimal"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Increase/Decrease Decimal"));
     std::string numStr;
     for (auto selected : selection) {
         auto object = selected.getObject();
@@ -453,7 +453,7 @@ void execIncreaseDecreaseDecimal(Gui::Command* cmd, int delta) {
             }
         }
     }
-    Gui::Command::commitCommand();
+    cmd->commitSelf();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionIncreaseDecimal)
@@ -629,7 +629,7 @@ void execPosHorizChainDimension(Gui::Command* cmd) {
         return;
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Pos Horiz Chain Dim"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Pos Horiz Chain Dim"));
     std::vector<TechDraw::DrawViewDimension*> validDimension;
     validDimension = _getDimensions(selection, "DistanceX");
     if (validDimension.empty()) {
@@ -646,7 +646,7 @@ void execPosHorizChainDimension(Gui::Command* cmd) {
         Base::Vector3d p2 = pp.second();
         dim->X.setValue((p1.x + p2.x) / 2.0);
     }
-    Gui::Command::commitCommand();
+    cmd->commitSelf();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionPosHorizChainDimension)
@@ -690,7 +690,7 @@ void execPosVertChainDimension(Gui::Command* cmd) {
         return;
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Pos Vert Chain Dim"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Pos Vert Chain Dim"));
     std::vector<TechDraw::DrawViewDimension*> validDimension;
     validDimension = _getDimensions(selection, "DistanceY");
     if (validDimension.empty()) {
@@ -708,7 +708,7 @@ void execPosVertChainDimension(Gui::Command* cmd) {
         Base::Vector3d p2 = pp.second();
         dim->Y.setValue((p1.y + p2.y) / -2.0 + 0.5 * fontSize);
     }
-    Gui::Command::commitCommand();
+    cmd->commitSelf();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionPosVertChainDimension)
@@ -752,7 +752,7 @@ void execPosObliqueChainDimension(Gui::Command* cmd) {
         return;
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Pos Oblique Chain Dim"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Pos Oblique Chain Dim"));
     std::vector<TechDraw::DrawViewDimension*> validDimension;
     validDimension = _getDimensions(selection, "Distance");
     if (validDimension.empty()) {
@@ -775,7 +775,7 @@ void execPosObliqueChainDimension(Gui::Command* cmd) {
         dim->X.setValue(p3.x);
         dim->Y.setValue(p3.y);
     }
-    Gui::Command::commitCommand();
+    cmd->commitSelf();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionPosObliqueChainDimension)
@@ -938,7 +938,7 @@ void execCascadeHorizDimension(Gui::Command* cmd) {
         return;
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cascade Horiz Dim"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Cascade Horiz Dim"));
     std::vector<TechDraw::DrawViewDimension*> validDimension;
     validDimension = _getDimensions(selection, "DistanceX");
     if (validDimension.empty()) {
@@ -959,7 +959,7 @@ void execCascadeHorizDimension(Gui::Command* cmd) {
         dim->X.setValue((p1.x + p2.x) / 2.0);
         yMaster = yMaster + dimDistance;
     }
-    Gui::Command::commitCommand();
+    cmd->commitSelf();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionCascadeHorizDimension)
@@ -1004,7 +1004,7 @@ void execCascadeVertDimension(Gui::Command* cmd) {
         return;
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cascade Vert Dim"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Cascade Vert Dim"));
     std::vector<TechDraw::DrawViewDimension*> validDimension;
     validDimension = _getDimensions(selection, "DistanceY");
     if (validDimension.empty()) {
@@ -1026,7 +1026,7 @@ void execCascadeVertDimension(Gui::Command* cmd) {
         dim->Y.setValue((p1.y + p2.y) / -2.0 + 0.5 * fontSize);
         xMaster = xMaster + dimDistance;
     }
-    Gui::Command::commitCommand();
+    cmd->commitSelf();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionCascadeVertDimension)
@@ -1071,7 +1071,7 @@ void execCascadeObliqueDimension(Gui::Command* cmd) {
         return;
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cascade Oblique Dim"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Cascade Oblique Dim"));
     std::vector<TechDraw::DrawViewDimension*> validDimension;
     validDimension = _getDimensions(selection, "Distance");
     if (validDimension.empty()) {
@@ -1101,7 +1101,7 @@ void execCascadeObliqueDimension(Gui::Command* cmd) {
         dim->Y.setValue(p3.y);
         i = i + 1;
     }
-    Gui::Command::commitCommand();
+    cmd->commitSelf();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionCascadeObliqueDimension)
@@ -1270,7 +1270,7 @@ void execCreateHorizChainDimension(Gui::Command* cmd) {
         return;
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Horiz Chain Dim"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Create Horiz Chain Dim"));
     const std::vector<std::string> subNames = selection[0].getSubNames();
     std::vector<dimVertex> allVertexes;
     allVertexes = _getVertexInfo(objFeat, subNames);
@@ -1291,7 +1291,7 @@ void execCreateHorizChainDimension(Gui::Command* cmd) {
     objFeat->refreshCEGeoms();
     objFeat->requestPaint();
     cmd->getSelection().clearSelection();
-    Gui::Command::commitCommand();
+    cmd->commitSelf();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionCreateHorizChainDimension)
@@ -1336,7 +1336,7 @@ void execCreateVertChainDimension(Gui::Command* cmd) {
         return;
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Vert Chain Dim"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Create Vert Chain Dim"));
     const std::vector<std::string> subNames = selection[0].getSubNames();
     std::vector<dimVertex> allVertexes;
     allVertexes = _getVertexInfo(objFeat, subNames);
@@ -1358,7 +1358,7 @@ void execCreateVertChainDimension(Gui::Command* cmd) {
     objFeat->refreshCEGeoms();
     objFeat->requestPaint();
     cmd->getSelection().clearSelection();
-    Gui::Command::commitCommand();
+    cmd->commitSelf();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionCreateVertChainDimension)
@@ -1402,7 +1402,7 @@ void execCreateObliqueChainDimension(Gui::Command* cmd) {
         return;
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Oblique Chain Dim"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Create Oblique Chain Dim"));
 
     std::vector<TechDraw::ReferenceEntry> refs;
     for (auto& subName : selection[0].getSubNames()) {
@@ -1411,13 +1411,13 @@ void execCreateObliqueChainDimension(Gui::Command* cmd) {
 
     auto dims = makeObliqueChainDimension(refs);
     if(dims.empty()){
-        Gui::Command::abortCommand();
+        cmd->abortSelf();
     }
     else {
         objFeat->refreshCEGeoms();
         objFeat->requestPaint();
         cmd->getSelection().clearSelection();
-        Gui::Command::commitCommand();
+        cmd->commitSelf();
     }
 }
 
@@ -1641,7 +1641,7 @@ void execCreateHorizCoordDimension(Gui::Command* cmd) {
         return;
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Horiz Coord Dim"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Create Horiz Coord Dim"));
     const std::vector<std::string> subNames = selection[0].getSubNames();
     std::vector<dimVertex> allVertexes;
     allVertexes = _getVertexInfo(objFeat, subNames);
@@ -1668,7 +1668,7 @@ void execCreateHorizCoordDimension(Gui::Command* cmd) {
     objFeat->refreshCEGeoms();
     objFeat->requestPaint();
     cmd->getSelection().clearSelection();
-    Gui::Command::commitCommand();
+    cmd->commitSelf();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionCreateHorizCoordDimension)
@@ -1713,7 +1713,7 @@ void execCreateVertCoordDimension(Gui::Command* cmd) {
     if (!_checkSelObjAndSubs(cmd, selection, objFeat, QT_TRANSLATE_NOOP("QObject","TechDraw Create Vertical Coord Dimension"))) {
         return;
     }
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Vert Coord Dim"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Create Vert Coord Dim"));
     const std::vector<std::string> subNames = selection[0].getSubNames();
     std::vector<dimVertex> allVertexes;
     allVertexes = _getVertexInfo(objFeat, subNames);
@@ -1741,7 +1741,7 @@ void execCreateVertCoordDimension(Gui::Command* cmd) {
     objFeat->refreshCEGeoms();
     objFeat->requestPaint();
     cmd->getSelection().clearSelection();
-    Gui::Command::commitCommand();
+    cmd->commitSelf();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionCreateVertCoordDimension)
@@ -1787,7 +1787,7 @@ void execCreateObliqueCoordDimension(Gui::Command* cmd) {
         return;
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Oblique Coord Dim"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Create Oblique Coord Dim"));
 
     std::vector<TechDraw::ReferenceEntry> refs;
     for (auto& subName : selection[0].getSubNames()) {
@@ -1796,13 +1796,13 @@ void execCreateObliqueCoordDimension(Gui::Command* cmd) {
 
     auto dims = makeObliqueCoordDimension(refs);
     if (dims.empty()) {
-        Gui::Command::abortCommand();
+        cmd->abortSelf();
     }
     else {
         objFeat->refreshCEGeoms();
         objFeat->requestPaint();
         cmd->getSelection().clearSelection();
-        Gui::Command::commitCommand();
+        cmd->commitSelf();
     }
 }
 
@@ -2040,7 +2040,7 @@ void execCreateHorizChamferDimension(Gui::Command* cmd) {
         return;
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Horiz Chamfer Dim"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Create Horiz Chamfer Dim"));
     const std::vector<std::string> subNames = selection[0].getSubNames();
     std::vector<dimVertex> allVertexes;
     allVertexes = _getVertexInfo(objFeat, subNames);
@@ -2064,7 +2064,7 @@ void execCreateHorizChamferDimension(Gui::Command* cmd) {
         objFeat->requestPaint();
         cmd->getSelection().clearSelection();
     }
-    Gui::Command::commitCommand();
+    cmd->commitSelf();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionCreateHorizChamferDimension)
@@ -2108,7 +2108,7 @@ void execCreateVertChamferDimension(Gui::Command* cmd) {
         return;
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Vert Chamfer Dim"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Create Vert Chamfer Dim"));
     const std::vector<std::string> subNames = selection[0].getSubNames();
     std::vector<dimVertex> allVertexes;
     allVertexes = _getVertexInfo(objFeat, subNames);
@@ -2132,7 +2132,7 @@ void execCreateVertChamferDimension(Gui::Command* cmd) {
         objFeat->requestPaint();
         cmd->getSelection().clearSelection();
     }
-    Gui::Command::commitCommand();
+    cmd->commitSelf();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionCreateVertChamferDimension)
@@ -2293,7 +2293,7 @@ void CmdTechDrawExtensionCreateLengthArc::activated(int iMsg) {
         return;
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Arc Length Dim"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Create Arc Length Dim"));
     ReferenceEntry ref(objFeat, selection[0].getSubNames()[0]);
 
     TechDraw::DrawViewDimension* dim = makeArcLengthDimension(ref);
@@ -2301,10 +2301,10 @@ void CmdTechDrawExtensionCreateLengthArc::activated(int iMsg) {
     if (dim) {
         objFeat->refreshCEGeoms();
         objFeat->requestPaint();
-        Gui::Command::commitCommand();
+        commitSelf();
     }
     else {
-        Gui::Command::abortCommand();
+        abortSelf();
     }
 }
 

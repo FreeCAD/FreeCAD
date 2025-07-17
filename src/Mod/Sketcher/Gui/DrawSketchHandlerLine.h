@@ -127,18 +127,18 @@ private:
         try {
             createShape(false);
 
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch line"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch line"));
 
             commandAddShapeGeometryAndConstraints();
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception&) {
             Gui::NotifyError(sketchgui,
                              QT_TRANSLATE_NOOP("Notifications", "Error"),
                              QT_TRANSLATE_NOOP("Notifications", "Failed to add line"));
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(Base::RuntimeError,
                    QT_TRANSLATE_NOOP(
                        "Notifications",
