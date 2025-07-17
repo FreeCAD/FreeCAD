@@ -1719,8 +1719,22 @@ bool LinkBaseExtension::extensionGetLinkedObject(DocumentObject*& ret,
 void LinkBaseExtension::extensionOnChanged(const Property* prop)
 {
     auto parent = getContainer();
-    if (parent && !parent->isRestoring() && prop && !prop->testStatus(Property::User3)) {
-        update(parent, prop);
+    if (parent && !parent->isRestoring() && prop) {
+        if (!prop->testStatus(Property::User3)) {
+            update(parent, prop);
+        }
+
+        if (prop == &parent->Label) {
+            std::string linkLabel = parent->Label.getValue();
+            std::string linkedObjLabel = parent->getLinkedObject()->Label.getValue();
+            std::string tempsStr = "blockExtensionOnChanged";
+
+            if (linkLabel != linkedObjLabel && linkLabel != tempsStr) {
+                // temp value so that linkLabel is available for the linked obj
+                parent->Label.setValue(tempsStr);
+                parent->getLinkedObject()->Label.setValue(linkLabel);
+            }
+        }
     }
     inherited::extensionOnChanged(prop);
 }
@@ -2717,6 +2731,13 @@ bool Link::isLinkGroup() const
 bool Link::allowDuplicateLabel() const
 {
     return true;
+}
+
+void Link::onParentLabelChanged(const char* newParentLabel)
+{
+    if (strcmp(Label.getValue(), newParentLabel) != 0) {
+        Label.setValue(newParentLabel);
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

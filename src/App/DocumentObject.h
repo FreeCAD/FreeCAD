@@ -1330,6 +1330,9 @@ protected:
      */
     void onPropertyStatusChanged(const Property& prop, unsigned long oldStatus) override;
 
+    /// get called when a parent object had its Label updated
+    virtual void onParentLabelChanged(const char* newParentLabel);
+
 private:
     void printInvalidLinks() const;
 
