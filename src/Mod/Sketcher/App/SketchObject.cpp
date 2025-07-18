@@ -3578,6 +3578,8 @@ bool SketchObject::deriveConstraintsForPieces(const int oldId,
         conPos = con->SecondPos;
     }
 
+    bool newGeosLikelyNotCreated = std::ranges::find(newGeos, nullptr) != newGeos.end();
+
     bool transferToAll = false;
     switch (con->Type) {
         case Horizontal:
@@ -3596,6 +3598,11 @@ bool SketchObject::deriveConstraintsForPieces(const int oldId,
             const Part::Geometry* conGeo = getGeometry(conId);
             if (!(conGeo && conGeo->isDerivedFrom<Part::GeomCurve>())) {
                 return false;
+            }
+
+            // no use going forward if newGeos aren't ready
+            if (newGeosLikelyNotCreated) {
+                break;
             }
 
             // For now: just transfer to the first intersection
@@ -3632,10 +3639,11 @@ bool SketchObject::deriveConstraintsForPieces(const int oldId,
                 return true;
             }
 
-            if (conId == GeoEnum::GeoUndef) {
+            if (conId == GeoEnum::GeoUndef || newGeosLikelyNotCreated) {
                 // nothing further to do
                 return false;
             }
+
             Base::Vector3d conPoint(getPoint(conId, conPos));
             double conParam;
             auto* geoAsCurve = static_cast<const Part::GeomCurve*>(geo);
