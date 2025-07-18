@@ -189,3 +189,16 @@ void WaitCursor::setIgnoreEvents(FilterEventsFlags flags)
 {
     WaitCursorP::getInstance()->setIgnoreEvents(flags);
 }
+
+void WaitCursor::suspend()
+{
+    // Calling setBusy(false) will restore the cursor and remove the event filter.
+    WaitCursorP::getInstance()->setBusy(false);
+}
+
+void WaitCursor::resume()
+{
+    // Calling setBusy(true) will set the wait cursor and reinstall the event filter.
+    // The WaitCursorP's internal state `isOn` correctly handles this call.
+    WaitCursorP::getInstance()->setBusy(true);
+}
