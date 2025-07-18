@@ -1,4 +1,4 @@
-from typing import Any, Dict, Final, List
+from typing import Any, Final
 
 from Base import PyObjectBase
 from Base.Metadata import constmethod, export
@@ -38,7 +38,7 @@ class CenterLinePy(PyObjectBase):
     Mode: int
     """0 - vert/ 1 - horiz/ 2 - aligned."""
 
-    Format: Dict[str, Any]
+    Format: dict[str, Any]
     """The appearance attributes (style, color, weight, visible) for this CenterLine."""
 
     HorizShift: float
@@ -56,11 +56,11 @@ class CenterLinePy(PyObjectBase):
     Flip: bool
     """Reverse the order of points for 2 point CenterLine."""
 
-    Edges: List[Any]
+    Edges: list[Any]
     """The names of source edges for this CenterLine."""
 
-    Faces: List[Any]
+    Faces: list[Any]
     """The names of source Faces for this CenterLine."""
 
-    Points: List[Any]
+    Points: list[Any]
     """The names of source Points for this CenterLine."""
