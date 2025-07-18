@@ -1,4 +1,4 @@
-from typing import Final, List
+from typing import Final
 from App import object
 from Base.Metadata import export
 
@@ -18,5 +18,5 @@ class AssemblyLinkPy(object):
     This class handles document objects in Assembly
     """
 
-    Joints: Final[List]  # ReadOnly
+    Joints: Final[list]  # ReadOnly
     """A list of all joints this assembly link has."""

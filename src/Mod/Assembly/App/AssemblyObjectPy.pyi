@@ -1,4 +1,4 @@
-from typing import Final, List, Any
+from typing import Final, Any
 from App import object
 from Base.Metadata import export
 from Base.Metadata import constmethod
@@ -154,5 +154,5 @@ class AssemblyObjectPy(object):
         Args:
         fileName: The name of the file where the ASMT will be exported."""
         ...
-    Joints: Final[List]  # ReadOnly
+    Joints: Final[list]  # ReadOnly
     """A list of all joints this assembly has."""
