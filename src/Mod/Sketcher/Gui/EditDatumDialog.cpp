@@ -409,8 +409,15 @@ void EditDatumDialog::performAutoScale(double newDatum)
          || (autoScaleMode
                  == static_cast<int>(SketcherGui::AutoScaleMode::WhenNoScaleFeatureIsVisible)
              && !hasVisualFeature(sketch, nullptr, Gui::Application::Instance->activeDocument())))
-        && sketch->getExternalGeometryCount() <= 2 && sketch->hasSingleScaleDefiningConstraint()) {
+        && sketch->getExternalGeometryCount() <= 2) {
         try {
+            // Handle the case where multiple datum constraints are present but only one is scale
+            // defining e.g. a bunch of angle constraints and a single length constraint
+            int scaleDefiningConstraint = sketch->getSingleScaleDefiningConstraint();
+            if (scaleDefiningConstraint != ConstrNbr) {
+                return;
+            }
+
             double oldDatum = sketch->getDatum(ConstrNbr);
             double scaleFactor = newDatum / oldDatum;
             float initLabelDistance = sketch->Constraints[ConstrNbr]->LabelDistance;

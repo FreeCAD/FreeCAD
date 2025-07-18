@@ -4884,10 +4884,17 @@ bool GeomSurface::normal(double u, double v, gp_Dir& dir) const
 
     Tools::getNormal(s, u, v, Precision::Confusion(), dir, done);
 
-    if (done)
+    if (done) {
         return true;
+    }
 
     return false;
+}
+
+std::optional<Base::Vector3d> GeomSurface::point(double u, double v) const
+{
+    Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(handle());
+    return Base::convertTo<Base::Vector3d>(s->Value(u, v));
 }
 
 gp_Vec GeomSurface::getDN(double u, double v, int Nu, int Nv) const
