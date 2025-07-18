@@ -25,7 +25,6 @@
 #ifndef _PreComp_
 #include <bitset>
 #include <stack>
-#include <boost/filesystem.hpp>
 #include <deque>
 #include <iostream>
 #include <utility>
@@ -1188,6 +1187,14 @@ Document::ExportStatus Document::isExporting(const DocumentObject* obj) const
         return exportStatus.status;
     }
     return Document::NotExporting;
+}
+ExportInfo Document::exportInfo() const
+{
+    return d->exportInfo;
+}
+void Document::setExportInfo(const ExportInfo& info)
+{
+    d->exportInfo = info;
 }
 
 void Document::exportObjects(const std::vector<DocumentObject*>& obj, std::ostream& out)

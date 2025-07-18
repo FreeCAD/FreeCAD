@@ -16,6 +16,7 @@
 
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
+#include <boost/io/ios_state.hpp>
 
 
 FC_LOG_LEVEL_INIT("ElementMap", true, 2);  // NOLINT

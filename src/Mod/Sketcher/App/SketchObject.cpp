@@ -7600,21 +7600,21 @@ int SketchObject::getGeoIdFromCompleteGeometryIndex(int completeGeometryIndex) c
     else
         return (completeGeometryIndex - completeGeometryCount);
 }
-bool SketchObject::hasSingleScaleDefiningConstraint() const
+int SketchObject::getSingleScaleDefiningConstraint() const
 {
     const std::vector<Constraint*>& vals = this->Constraints.getValues();
 
-    bool foundOne = false;
-    for (auto val : vals) {
+    int found = -1;
+    for (size_t i = 0; i < vals.size(); ++i) {
         // An angle does not define scale
-        if (val->isDimensional() && val->Type != Angle) {
-            if (foundOne) {
-                return false;
+        if (vals[i]->isDimensional() && vals[i]->Type != Angle) {
+            if (found != -1) { // More than one scale defining constraint
+                return -1;
             }
-            foundOne = true;
+            found = i;
         }
     }
-    return foundOne;
+    return found;
 }
 
 std::unique_ptr<const GeometryFacade> SketchObject::getGeometryFacade(int GeoId) const
@@ -11631,6 +11631,24 @@ std::vector<Base::Vector3d> SketchObject::getOpenVertices() const
 
 // SketchGeometryExtension interface
 
+size_t setGeometryIdHelper(int GeoId, long id, std::vector<Part::Geometry*>& newVals, size_t searchOffset = 0, bool returnOnMatch = false)
+{
+    // deep copy
+    for (size_t i = searchOffset; i < newVals.size(); i++) {
+        newVals[i] = newVals[i]->clone();
+
+        if ((int)i == GeoId) {
+            auto gf = GeometryFacade::getFacade(newVals[i]);
+
+            gf->setId(id);
+
+            if (returnOnMatch) {
+                return i;
+            }
+        }
+    }
+    return 0;
+}
 int SketchObject::setGeometryId(int GeoId, long id)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
@@ -11641,18 +11659,34 @@ int SketchObject::setGeometryId(int GeoId, long id)
 
     const std::vector<Part::Geometry*>& vals = getInternalGeometry();
 
+    std::vector<Part::Geometry*> newVals(vals);
+    setGeometryIdHelper(GeoId, id, newVals);
+
+    // There is not actual internal transaction going on here, however neither the geometry indices
+    // nor the vertices need to be updated so this is a convenient way of preventing it.
+    {
+        Base::StateLocker lock(internaltransaction, true);
+        this->Geometry.setValues(std::move(newVals));
+    }
+
+    return 0;
+}
+int SketchObject::setGeometryIds(std::vector<std::pair<int, long>> GeoIdsToIds)
+{
+    Base::StateLocker lock(managedoperation, true);
+
+    std::sort(GeoIdsToIds.begin(), GeoIdsToIds.end());
+
+    size_t searchOffset = 0;
+
+    const std::vector<Part::Geometry*>& vals = getInternalGeometry();
 
     std::vector<Part::Geometry*> newVals(vals);
 
-    // deep copy
-    for (size_t i = 0; i < newVals.size(); i++) {
-        newVals[i] = newVals[i]->clone();
-
-        if ((int)i == GeoId) {
-            auto gf = GeometryFacade::getFacade(newVals[i]);
-
-            gf->setId(id);
-        }
+    for (size_t i = 0; i < GeoIdsToIds.size(); ++i) {
+        int GeoId = GeoIdsToIds[i].first;
+        long id = GeoIdsToIds[i].second;
+        searchOffset = setGeometryIdHelper(GeoId, id, newVals, searchOffset, i != GeoIdsToIds.size()-1);
     }
 
     // There is not actual internal transaction going on here, however neither the geometry indices
