@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 #include <QBuffer>
 #include <QIODevice>
+#include <CXX/Objects.hxx>
 #ifdef __GNUC__
 #include <cstdint>
 #endif
@@ -33,7 +34,6 @@
 
 #include "Stream.h"
 #include "Swap.h"
-#include <CXX/Objects.hxx>
 
 
 using namespace Base;
