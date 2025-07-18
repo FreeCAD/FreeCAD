@@ -208,7 +208,8 @@ TEST_F(BackupPolicyTest, StandardWithTwoFilesOnePreviousBackupOutOfSequenceNumbe
     EXPECT_TRUE(std::filesystem::exists(backup));
     bool check1 = std::filesystem::exists(target.string() + "2");
     bool check2 = std::filesystem::exists(weird);
-    EXPECT_NE(check1, check2);  // Only one or the other can exist (we don't know which because it depends on file modification date)
+    EXPECT_NE(check1, check2);  // Only one or the other can exist (we don't know which because it
+                                // depends on file modification date)
 }
 
 TEST_F(BackupPolicyTest, StandardWithFCBakSet)
@@ -224,4 +225,3 @@ TEST_F(BackupPolicyTest, StandardWithFCBakSet)
     // Assert
     EXPECT_TRUE(std::filesystem::exists(target.string() + "1"));  // No FCBak extension for Standard
 }
-
