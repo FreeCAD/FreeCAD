@@ -5,18 +5,18 @@ from Base.Metadata import constmethod
 
 @export(
     Father="DocumentObjectPy",
-    Name="DrawHatchPy",
-    Twin="DrawHatch",
-    TwinPointer="DrawHatch",
-    Include="Mod/TechDraw/App/DrawHatch.h",
+    Name="DrawGeomHatchPy",
+    Twin="DrawGeomHatch",
+    TwinPointer="DrawGeomHatch",
+    Include="Mod/TechDraw/App/DrawGeomHatch.h",
     Namespace="TechDraw",
     FatherInclude="App/DocumentObjectPy.h",
     FatherNamespace="App",
 
 )
-class DrawHatchPy(object):
+class DrawGeomHatchPy(object):
     """
-        Feature for creating and manipulating Technical Drawing Hatch areas
+        Feature for creating and manipulating Technical Drawing GeomHatch areas
     """
 
     def translateLabel(self) -> Any:
