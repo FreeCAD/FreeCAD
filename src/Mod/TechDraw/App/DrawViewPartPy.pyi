@@ -20,26 +20,34 @@ class DrawViewPartPy(object):
     """
 
     def getVisibleEdges(self) -> Any:
-        """getVisibleEdges([conventionalCoords]) - get the visible edges in the View as Part::TopoShapeEdges. Edges are returned
-in conventional coordinates if conventionalCoords is True.  The default is to return Qt inverted Y coordinates."""
+        """
+        getVisibleEdges([conventionalCoords]) - get the visible edges in the View as Part::TopoShapeEdges. Edges are returned
+        in conventional coordinates if conventionalCoords is True.  The default is to return Qt inverted Y coordinates.
+        """
         ...
 
 
     def getVisibleVertexes(self) -> Any:
-        """getVisibleVertexes() - get the visible vertexes as App.Vector in the View's coordinate system.  App.Vectors are returned
-in conventional coordinates if conventionalCoords is True.  The default is to return Qt inverted Y coordinates."""
+        """
+        getVisibleVertexes() - get the visible vertexes as App.Vector in the View's coordinate system.  App.Vectors are returned
+        in conventional coordinates if conventionalCoords is True.  The default is to return Qt inverted Y coordinates.
+        """
         ...
 
 
     def getHiddenEdges(self) -> Any:
-        """getHiddenEdges([conventionalCoords]) - get the hidden edges in the View as Part::TopoShapeEdges.  Edges are returned
-in conventional coordinates if conventionalCoords is True.  The default is to return Qt inverted Y coordinates."""
+        """
+        getHiddenEdges([conventionalCoords]) - get the hidden edges in the View as Part::TopoShapeEdges.  Edges are returned
+        in conventional coordinates if conventionalCoords is True.  The default is to return Qt inverted Y coordinates.
+        """
         ...
 
 
     def getHiddenVertexes(self) -> Any:
-        """getHiddenVertexes() - get the hidden vertexes as App.Vector in the View's coordinate system.  App.Vectors are returned
-in conventional coordinates if conventionalCoords is True.  The default is to return Qt inverted Y coordinates."""
+        """
+        getHiddenVertexes() - get the hidden vertexes as App.Vector in the View's coordinate system.  App.Vectors are returned
+        in conventional coordinates if conventionalCoords is True.  The default is to return Qt inverted Y coordinates.
+        """
         ...
 
 
@@ -179,9 +187,11 @@ in conventional coordinates if conventionalCoords is True.  The default is to re
 
 
     def projectPoint(self) -> Any:
-        """projectPoint(vector3d point, [bool invert]). Returns the projection of point in the
-projection coordinate system of this DrawViewPart. Optionally inverts the Y coordinate of the
-result."""
+        """
+        projectPoint(vector3d point, [bool invert]). Returns the projection of point in the
+        projection coordinate system of this DrawViewPart. Optionally inverts the Y coordinate of the
+        result.
+        """
         ...
 
 

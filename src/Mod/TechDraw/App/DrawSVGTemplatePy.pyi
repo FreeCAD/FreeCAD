@@ -30,8 +30,10 @@ class DrawSVGTemplatePy(object):
 
 
     def translateLabel(self) -> Any:
-        """translateLabel(translationContext, objectBaseName, objectUniqueName).
-No return value.  Replace the current label with a translated version where possible."""
+        """
+        translateLabel(translationContext, objectBaseName, objectUniqueName).
+        No return value.  Replace the current label with a translated version where possible.
+        """
         ...
 
 
