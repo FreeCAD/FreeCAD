@@ -212,6 +212,36 @@ public:
 
 
 private:
+    // struct to hold all information needed for complexFind checks
+    struct ComplexFindData {
+        std::string originalName;
+        std::vector<std::string> unfilteredMajorSections;
+        std::vector<std::string> majorSections;
+        std::vector<std::string> looseSections;
+        std::vector<std::string> geometryOpCodes;
+        std::vector<std::string> geometryDefSections;
+        std::map<int, std::vector<std::string>> parenthesesMap;
+        std::vector<int> postfixNumbers;
+        std::vector<int> unfilteredPostfixNumbers;
+        bool isHashed = false;
+
+        void cleanup() {
+            originalName.clear();
+            majorSections.clear();
+            majorSections.shrink_to_fit();
+            looseSections.clear();
+            looseSections.shrink_to_fit();
+            geometryOpCodes.clear();
+            geometryOpCodes.shrink_to_fit();
+            geometryDefSections.clear();
+            geometryDefSections.shrink_to_fit();
+            parenthesesMap.clear();
+        }
+    };
+
+    // Helper to populate ComplexFindData from a MappedName
+    ComplexFindData compileComplexFindData(const MappedName& name) const;
+
     /** Serialize this map
      * @param stream: serialized stream
      * @param childMapSet: where all child element maps are stored
@@ -230,7 +260,12 @@ private:
     
     std::vector<std::string> splitNameIntoSections(
               const std::string &name,
-              const bool &filterSections) const;
+              const bool &filterSections,
+              const bool &findSmallSections,
+              std::map<int, std::vector<std::string>> *parenMapPtr,
+              std::vector<int> *postfixNumbersPtr = nullptr) const;
+    
+    MappedName fullDehashElementName(const MappedName& name) const;
     
     std::vector<std::string> findGeometryOpCodes(
               const std::vector<std::string> &name) const;
