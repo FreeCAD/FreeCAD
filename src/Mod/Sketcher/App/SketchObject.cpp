@@ -3247,6 +3247,7 @@ void createNewConstraintsForTrim(const SketchObject* obj,
                                  const std::array<int, 2>& cuttingGeoIds,
                                  const std::array<Base::Vector3d, 2>& cutPoints,
                                  const std::vector<int>& newIds,
+                                 const std::vector<const Part::Geometry*> newGeos,
                                  std::vector<int>& idsOfOldConstraints,
                                  std::vector<Constraint*>& newConstraints,
                                  std::set<int, std::greater<>>& geoIdsToBeDeleted)
@@ -3291,7 +3292,7 @@ void createNewConstraintsForTrim(const SketchObject* obj,
             continue;
         }
         // constraint has not yet been changed
-        obj->deriveConstraintsForPieces(GeoId, newIds, con, newConstraints);
+        obj->deriveConstraintsForPieces(GeoId, newIds, newGeos, con, newConstraints);
     }
 
     // Add point-on-object/coincidence constraints with the newly exposed points.
@@ -3374,6 +3375,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     //****************************************//
     std::vector<int> newIds;
     std::vector<Part::Geometry*> newGeos;
+    std::vector<const Part::Geometry*> newGeosAsConsts;
 
     switch (paramsOfNewGeos.size()) {
         case 0: {
@@ -3395,6 +3397,9 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     }
 
     createArcsFromGeoWithLimits(geoAsCurve, paramsOfNewGeos, newGeos);
+    for (const auto* geo : newGeos) {
+        newGeosAsConsts.push_back(geo);
+    }
 
     //******************* Step C => Creation of new constraints
     //****************************************//
@@ -3432,6 +3437,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                                 cuttingGeoIds,
                                 cutPoints,
                                 newIds,
+                                newGeosAsConsts,
                                 idsOfOldConstraints,
                                 newConstraints,
                                 geoIdsToBeDeleted);
