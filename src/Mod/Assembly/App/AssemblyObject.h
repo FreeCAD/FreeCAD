@@ -245,6 +245,8 @@ public:
     std::vector<AssemblyLink*> getSubAssemblies();
     void updateGroundedJointsPlacements();
 
+    bool isMbDJointValid(App::DocumentObject* joint);
+
 private:
     std::shared_ptr<MbD::ASMTAssembly> mbdAssembly;
 
