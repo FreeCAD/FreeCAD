@@ -188,55 +188,27 @@ class ObjectDressup:
         if obj.PercentageRadiusOut < 1:
             obj.PercentageRadiusOut = 1
 
+        limit_angle_in = 1 if "Arc" in obj.StyleIn or "Helix" == obj.StyleIn else 0
+        limit_angle_out = 1 if "Arc" in obj.StyleOut or "Helix" == obj.StyleOut else 0
         if obj.AngleIn > 180:
             obj.AngleIn = 180
-        if obj.AngleIn < 1:
-            obj.AngleIn = 1
+        if obj.AngleIn < limit_angle_in:
+            obj.AngleIn = limit_angle_in
 
         if obj.AngleOut > 180:
             obj.AngleOut = 180
-        if obj.AngleOut < 1:
-            obj.AngleOut = 1
+        if obj.AngleOut < limit_angle_out:
+            obj.AngleOut = limit_angle_out
 
-        if obj.StyleIn in ["None", "Vertical"]:
-            obj.setEditorMode("AngleIn", 2)
-        else:
-            obj.setEditorMode("AngleIn", 0)
-
-        if obj.StyleIn in ["None", "ArcZ", "LineZ", "Vertical"]:
-            obj.setEditorMode("InvertIn", 2)
-        else:
-            obj.setEditorMode("InvertIn", 0)
-
-        if obj.StyleIn in ["None"]:
-            obj.setEditorMode("OffsetIn", 2)
-        else:
-            obj.setEditorMode("OffsetIn", 0)
-
-        if obj.StyleIn in ["None", "Vertical"]:
-            obj.setEditorMode("PercentageRadiusIn", 2)
-        else:
-            obj.setEditorMode("PercentageRadiusIn", 0)
-
-        if obj.StyleOut in ["None", "Vertical"]:
-            obj.setEditorMode("AngleOut", 2)
-        else:
-            obj.setEditorMode("AngleOut", 0)
-
-        if obj.StyleOut in ["None", "ArcZ", "LineZ", "Vertical"]:
-            obj.setEditorMode("InvertOut", 2)
-        else:
-            obj.setEditorMode("InvertOut", 0)
-
-        if obj.StyleOut in ["None"]:
-            obj.setEditorMode("OffsetOut", 2)
-        else:
-            obj.setEditorMode("OffsetOut", 0)
-
-        if obj.StyleOut in ["None", "Vertical"]:
-            obj.setEditorMode("PercentageRadiusOut", 2)
-        else:
-            obj.setEditorMode("PercentageRadiusOut", 0)
+        hideModes = {
+            "Angle": ["None", "Vertical"],
+            "Invert": ["None", "ArcZ", "LineZ", "Vertical"],
+            "Offset": ["None"],
+            "PercentageRadius": ["None", "Vertical"],
+        }
+        for k, v in hideModes.items():
+            obj.setEditorMode(k + "In", 2 if obj.StyleIn in v else 0)
+            obj.setEditorMode(k + "Out", 2 if obj.StyleOut in v else 0)
 
         self.wire, self.rapids = wireForPath(PathUtils.getPathWithPlacement(obj.Base))
         obj.Path = self.generateLeadInOutCurve(obj)
@@ -1078,17 +1050,52 @@ class TaskDressupLeadInOut(SimpleEditPanel):
     _ui_file = ":/panels/DressUpLeadInOutEdit.ui"
 
     def setupUi(self):
-        # self.connectWidget("InvertIn", self.form.chkInvertLeadIn)
-        # self.connectWidget("InvertOut", self.form.chkInvertLeadOut)
-        # self.connectWidget("PercentageRadiusIn", self.form.dspPercentageRadiusIn)
-        # self.connectWidget("LengthOut", self.form.dspLenOut)
-        # self.connectWidget("ExtendLeadIn", self.form.dspExtendIn)
-        # self.connectWidget("ExtendLeadOut", self.form.dspExtendOut)
-        # self.connectWidget("StyleIn", self.form.cboStyleIn)
-        # self.connectWidget("StyleOut", self.form.cboStyleOut)
-        # self.connectWidget("RapidPlunge", self.form.chkRapidPlunge)
-        # self.connectWidget("IncludeLayers", self.form.chkLayers)
+        self.connectWidget("InvertIn", self.form.chkInvertDirectionIn)
+        self.connectWidget("InvertOut", self.form.chkInvertDirectionOut)
+        self.connectWidget("PercentageRadiusIn", self.form.dspPercentageRadiusIn)
+        self.connectWidget("PercentageRadiusOut", self.form.dspPercentageRadiusOut)
+        self.connectWidget("StyleIn", self.form.cboStyleIn)
+        self.connectWidget("StyleOut", self.form.cboStyleOut)
+        self.connectWidget("AngleIn", self.form.dspAngleIn)
+        self.connectWidget("AngleOut", self.form.dspAngleOut)
+        self.connectWidget("OffsetIn", self.form.dspOffsetIn)
+        self.connectWidget("OffsetOut", self.form.dspOffsetOut)
+        self.connectWidget("RapidPlunge", self.form.chkRapidPlunge)
+        self.connectWidget("IncludeLayers", self.form.chkLayers)
         self.setFields()
+
+        styleEnum = self.obj.getEnumerationsOfProperty("StyleIn")
+
+        def updateStyleFromCheckbox():
+            if self.form.groupBoxIn.isChecked():
+                if styleEnum[self.form.cboStyleIn.currentIndex()] == "None":
+                    self.form.cboStyleIn.setCurrentIndex(styleEnum.index("Arc"))
+            else:
+                self.form.cboStyleIn.setCurrentIndex(styleEnum.index("None"))
+
+            if self.form.groupBoxOut.isChecked():
+                if styleEnum[self.form.cboStyleOut.currentIndex()] == "None":
+                    self.form.cboStyleOut.setCurrentIndex(styleEnum.index("Arc"))
+            else:
+                self.form.cboStyleOut.setCurrentIndex(styleEnum.index("None"))
+
+        def updateCheckboxFromStyle():
+            if styleEnum[self.form.cboStyleIn.currentIndex()] == "None":
+                self.form.groupBoxIn.setChecked(False)
+            else:
+                self.form.groupBoxIn.setChecked(True)
+
+            if styleEnum[self.form.cboStyleOut.currentIndex()] == "None":
+                self.form.groupBoxOut.setChecked(False)
+            else:
+                self.form.groupBoxOut.setChecked(True)
+
+        updateCheckboxFromStyle()
+
+        self.form.groupBoxIn.clicked.connect(updateStyleFromCheckbox)
+        self.form.cboStyleIn.currentIndexChanged.connect(updateCheckboxFromStyle)
+        self.form.groupBoxOut.clicked.connect(updateStyleFromCheckbox)
+        self.form.cboStyleOut.currentIndexChanged.connect(updateCheckboxFromStyle)
 
 
 class ViewProviderDressup:
