@@ -1,0 +1,48 @@
+from typing import Dict
+from Base import PersistencePy  # Use the correct parent class
+from Base.Metadata import export
+from Base.Metadata import constmethod, class_declarations
+from Base.Placement import Placement  # Import Placement explicitly
+
+@export(
+    Father="PersistencePy",
+    Name="CommandPy",
+    Twin="Command",
+    TwinPointer="Command",
+    Include="Mod/CAM/App/Command.h",
+    Namespace="Path",
+    FatherInclude="Base/PersistencePy.h",
+    FatherNamespace="Base",
+    Delete=True,
+    Constructor=True,  # Allow constructing this object
+)
+@class_declarations("mutable Py::Dict parameters_copy_dict;")
+class CommandPy(PersistencePy):
+    """
+    Command([name],[parameters]): Represents a basic Gcode command
+    name (optional) is the name of the command, ex. G1
+    parameters (optional) is a dictionary containing string:number
+    pairs, or a placement, or a vector
+    """
+
+    @constmethod
+    def toGCode(self) -> str:
+        """toGCode(): returns a GCode representation of the command"""
+        ...
+
+    def setFromGCode(self, gcode: str) -> None:
+        """setFromGCode(): sets the path from the contents of the given GCode string"""
+        ...
+
+    def transform(self, placement: Placement) -> "CommandPy":
+        """transform(Placement): returns a copy of this command transformed by the given placement"""
+        ...
+    # Define properties as attributes, not methods
+    Name: str
+    """The name of the command"""
+
+    Parameters: Dict[str, float]
+    """The parameters of the command"""
+
+    Placement: Placement
+    """The coordinates of the endpoint of the command"""
