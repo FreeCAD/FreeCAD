@@ -1,18 +1,6 @@
-from typing import (
-    ClassVar,
-    Final,
-    List,
-    Dict,
-    Tuple,
-    TypeVar,
-    Any,
-    Optional,
-    Union,
-    overload,
-)
-from App import object
 from Base.Metadata import export
-from Base.Metadata import constmethod
+
+from App import object
 
 @export(
     Father="DocumentObjectPy",

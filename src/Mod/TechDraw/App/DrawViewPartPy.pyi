@@ -1,18 +1,7 @@
-from typing import (
-    ClassVar,
-    Final,
-    List,
-    Dict,
-    Tuple,
-    TypeVar,
-    Any,
-    Optional,
-    Union,
-    overload,
-)
-from TechDraw import object
+from typing import Any
+
 from Base.Metadata import export
-from Base.Metadata import constmethod
+from TechDraw import object
 
 @export(
     Father="DrawViewPy",
