@@ -1,6 +1,18 @@
-target_sources(
-    Tests_run
-        PRIVATE
-            ${CMAKE_CURRENT_SOURCE_DIR}/collectioncollection.cpp
-            ${CMAKE_CURRENT_SOURCE_DIR}/zipfile.cpp
+add_executable(Zipios_tests_run
+        collectioncollection.cpp
+        zipfile.cpp
+)
+
+
+target_link_libraries(Zipios_tests_run PRIVATE
+    GTest::gtest_main
+    GTest::gmock_main
+    ${Google_Tests_LIBS}
+    FreeCADApp
+)
+
+target_include_directories(
+    Zipios_tests_run PRIVATE
+    ${ZIPIOS_INCLUDES}
+    ${ZLIB_INCLUDE_DIR}
 )
