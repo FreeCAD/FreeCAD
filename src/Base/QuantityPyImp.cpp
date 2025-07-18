@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <cmath>
+#include <functional>
 #include <limits>
 #include <optional>
 #include <sstream>

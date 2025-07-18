@@ -21,7 +21,7 @@ requirements:
     - ninja
     - noqt5
     - python>=3.11,<3.12
-    - qt6-main>=6.7,<6.8
+    - qt6-main>=6.8,<6.9
     - swig
 
     - if: linux and x86_64
@@ -101,7 +101,7 @@ requirements:
     - libboost-devel
     - matplotlib-base
     - noqt5
-    - numpy
+    - numpy>=1.26,<2
     - occt>=7.8,<7.9
     - pcl
     - pivy
@@ -109,7 +109,7 @@ requirements:
     - pybind11
     - pyside6
     - python>=3.11,<3.12
-    - qt6-main>=6.7,<6.8
+    - qt6-main>=6.8,<6.9
     - six
     - smesh
     - vtk
@@ -150,7 +150,7 @@ requirements:
     - matplotlib-base
     - nine
     - noqt5
-    - numpy
+    - numpy>=1.26,<2
     - occt>=7.8,<7.9
     - olefile
     - opencamlib
@@ -164,7 +164,7 @@ requirements:
     - python>=3.11,<3.12
     - pythonocc-core
     - pyyaml
-    - qt6-main>=6.7,<6.8
+    - qt6-main>=6.8,<6.9
     - requests
     - scipy
     - sympy
