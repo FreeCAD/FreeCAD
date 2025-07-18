@@ -1812,13 +1812,15 @@ bool Feature::getCameraAlignmentDirection(Base::Vector3d& directionZ, Base::Vect
                 longestEdge = std::tuple<TopoDS_Shape, Standard_Real>(edge, length);
             }
         }
-        if (longestEdge.has_value()) {
-            if (const std::unique_ptr<Geometry> geometry = Geometry::fromShape(std::get<0>(longestEdge.value()), true)) {
-                if (const std::unique_ptr<GeomLine> geomLine(static_cast<GeomCurve*>(geometry.get())->toLine()); geomLine) {
-                    directionX = geomLine->getDir().Normalize();
-                }
+        if (!longestEdge.has_value()) {
+            return true;
+        }
+        if (const std::unique_ptr<Geometry> geometry = Geometry::fromShape(std::get<0>(longestEdge.value()), true)) {
+            if (const auto geomLine = static_cast<GeomCurve*>(geometry.get())->toLine()) {
+                directionX = geomLine->getDir().Normalize();
             }
         }
+
         return true;
     }
 
@@ -1827,13 +1829,13 @@ bool Feature::getCameraAlignmentDirection(Base::Vector3d& directionZ, Base::Vect
     if (edgeCount == 1) {
         if (topoShape.isLinearEdge()) {
             if (const std::unique_ptr<Geometry> geometry = Geometry::fromShape(topoShape.getSubShape(TopAbs_EDGE, 1), true)) {
-                const std::unique_ptr<GeomLine> geomLine(static_cast<GeomCurve*>(geometry.get())->toLine());
-                if (geomLine) {
+                if (const auto geomLine = static_cast<GeomCurve*>(geometry.get())->toLine()) {
                     directionZ = geomLine->getDir().Normalize();
                     return true;
                 }
             }
-        } else {
+        }
+        else {
             // Planar curves
             if (gp_Pln plane; topoShape.findPlane(plane)) {
                 directionZ = Base::Vector3d(plane.Axis().Direction().X(), plane.Axis().Direction().Y(), plane.Axis().Direction().Z()).Normalize();
