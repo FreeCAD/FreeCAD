@@ -1,4 +1,15 @@
-from typing import ClassVar, Final, List, Dict, Tuple, TypeVar, Any, Optional, Union, overload
+from typing import (
+    ClassVar,
+    Final,
+    List,
+    Dict,
+    Tuple,
+    TypeVar,
+    Any,
+    Optional,
+    Union,
+    overload,
+)
 from App import object
 from Base.Metadata import export
 from Base.Metadata import constmethod
@@ -12,11 +23,10 @@ from Base.Metadata import constmethod
     Namespace="TechDraw",
     FatherInclude="App/DocumentObjectPy.h",
     FatherNamespace="App",
-
 )
 class DrawViewPy(object):
     """
-        Feature for creating and manipulating Technical Drawing Views
+    Feature for creating and manipulating Technical Drawing Views
     """
 
     def translateLabel(self) -> Any:
@@ -26,12 +36,9 @@ class DrawViewPy(object):
         """
         ...
 
-
     def getScale(self) -> Any:
         """
         float scale = getScale().  Returns the correct scale for this view.  Handles whether to
         use this view's scale property or a parent's view (as in a projection group).
         """
         ...
-
-

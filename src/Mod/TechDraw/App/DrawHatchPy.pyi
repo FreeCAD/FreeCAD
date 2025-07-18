@@ -1,4 +1,15 @@
-from typing import ClassVar, Final, List, Dict, Tuple, TypeVar, Any, Optional, Union, overload
+from typing import (
+    ClassVar,
+    Final,
+    List,
+    Dict,
+    Tuple,
+    TypeVar,
+    Any,
+    Optional,
+    Union,
+    overload,
+)
 from App import object
 from Base.Metadata import export
 from Base.Metadata import constmethod
@@ -12,11 +23,10 @@ from Base.Metadata import constmethod
     Namespace="TechDraw",
     FatherInclude="App/DocumentObjectPy.h",
     FatherNamespace="App",
-
 )
 class DrawHatchPy(object):
     """
-        Feature for creating and manipulating Technical Drawing Hatch areas
+    Feature for creating and manipulating Technical Drawing Hatch areas
     """
 
     def translateLabel(self) -> Any:
@@ -25,5 +35,3 @@ class DrawHatchPy(object):
         No return value.  Replace the current label with a translated version where possible.
         """
         ...
-
-

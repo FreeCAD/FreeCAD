@@ -1,4 +1,15 @@
-from typing import ClassVar, Final, List, Dict, Tuple, TypeVar, Any, Optional, Union, overload
+from typing import (
+    ClassVar,
+    Final,
+    List,
+    Dict,
+    Tuple,
+    TypeVar,
+    Any,
+    Optional,
+    Union,
+    overload,
+)
 from TechDraw import object
 from Base.Metadata import export
 from Base.Metadata import constmethod
@@ -12,15 +23,12 @@ from Base.Metadata import constmethod
     Namespace="TechDraw",
     FatherInclude="Mod/TechDraw/App/DrawViewDimensionPy.h",
     FatherNamespace="TechDraw",
-
 )
 class DrawViewDimExtentPy(object):
     """
-        Feature for creating and manipulating Technical Drawing DimExtents
+    Feature for creating and manipulating Technical Drawing DimExtents
     """
 
     def tbd(self) -> Any:
         """tbd() - returns tbd."""
         ...
-
-

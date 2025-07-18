@@ -1,4 +1,15 @@
-from typing import ClassVar, Final, List, Dict, Tuple, TypeVar, Any, Optional, Union, overload
+from typing import (
+    ClassVar,
+    Final,
+    List,
+    Dict,
+    Tuple,
+    TypeVar,
+    Any,
+    Optional,
+    Union,
+    overload,
+)
 from App import object
 from Base.Metadata import export
 from Base.Metadata import constmethod
@@ -12,11 +23,8 @@ from Base.Metadata import constmethod
     Namespace="TechDraw",
     FatherInclude="App/DocumentObjectPy.h",
     FatherNamespace="App",
-
 )
 class DrawTemplatePy(object):
     """
-        Feature for creating and manipulating Technical Drawing Templates
+    Feature for creating and manipulating Technical Drawing Templates
     """
-
-

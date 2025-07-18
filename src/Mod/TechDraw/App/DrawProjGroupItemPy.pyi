@@ -1,4 +1,15 @@
-from typing import ClassVar, Final, List, Dict, Tuple, TypeVar, Any, Optional, Union, overload
+from typing import (
+    ClassVar,
+    Final,
+    List,
+    Dict,
+    Tuple,
+    TypeVar,
+    Any,
+    Optional,
+    Union,
+    overload,
+)
 from TechDraw import object
 from Base.Metadata import export
 from Base.Metadata import constmethod
@@ -12,15 +23,12 @@ from Base.Metadata import constmethod
     Namespace="TechDraw",
     FatherInclude="Mod/TechDraw/App/DrawViewPartPy.h",
     FatherNamespace="TechDraw",
-
 )
 class DrawProjGroupItemPy(object):
     """
-        Feature for creating and manipulating component Views Technical Drawing Projection Groups
+    Feature for creating and manipulating component Views Technical Drawing Projection Groups
     """
 
     def autoPosition(self) -> Any:
         """autoPosition() - Move to AutoDistribute/Unlocked position on Page. Returns none."""
         ...
-
-

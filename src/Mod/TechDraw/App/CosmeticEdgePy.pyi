@@ -1,4 +1,15 @@
-from typing import ClassVar, Final, List, Dict, Tuple, TypeVar, Any, Optional, Union, overload
+from typing import (
+    ClassVar,
+    Final,
+    List,
+    Dict,
+    Tuple,
+    TypeVar,
+    Any,
+    Optional,
+    Union,
+    overload,
+)
 from Base import PyObjectBase
 from Base.Vector import Vector
 from Base.Metadata import export
@@ -16,11 +27,11 @@ from Base.Metadata import constmethod
     ReadOnly=["Tag"],
     Constructor=True,
     Delete=True,
-    ExtraIncludes=["Base/Vector3D.h"]  # Add Vector3D.h include
+    ExtraIncludes=["Base/Vector3D.h"],  # Add Vector3D.h include
 )
 class CosmeticEdgePy(PyObjectBase):
     """
-        CosmeticEdge specifies an extra (cosmetic) edge in Views
+    CosmeticEdge specifies an extra (cosmetic) edge in Views
     """
 
     Tag: Final[str]  # Only Tag is read-only
@@ -36,9 +47,8 @@ class CosmeticEdgePy(PyObjectBase):
     Center: Vector
     """Gives the position of center point of this CosmeticEdge as vector."""
 
-    Radius: float  
+    Radius: float
     """Gives the radius of CosmeticEdge in mm."""
 
-    Format: dict  
+    Format: dict
     """The appearance attributes (style, weight, color, visible) for this CosmeticEdge."""
-

@@ -1,4 +1,15 @@
-from typing import ClassVar, Final, List, Dict, Tuple, TypeVar, Any, Optional, Union, overload
+from typing import (
+    ClassVar,
+    Final,
+    List,
+    Dict,
+    Tuple,
+    TypeVar,
+    Any,
+    Optional,
+    Union,
+    overload,
+)
 from TechDraw import object
 from Base.Metadata import export
 from Base.Metadata import constmethod
@@ -12,20 +23,16 @@ from Base.Metadata import constmethod
     Namespace="TechDraw",
     FatherInclude="Mod/TechDraw/App/DrawViewPy.h",
     FatherNamespace="TechDraw",
-
 )
 class DrawViewCollectionPy(object):
     """
-        Feature for creating and manipulating Technical Drawing View Collections
+    Feature for creating and manipulating Technical Drawing View Collections
     """
 
     def addView(self) -> Any:
         """addView(DrawView object) - Add a new View to this Group. Returns count of views."""
         ...
 
-
     def removeView(self) -> Any:
         """removeView(DrawView object) - Remove specified Viewfrom this Group. Returns count of views in Group."""
         ...
-
-

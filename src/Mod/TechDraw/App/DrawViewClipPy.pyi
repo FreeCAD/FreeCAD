@@ -1,4 +1,15 @@
-from typing import ClassVar, Final, List, Dict, Tuple, TypeVar, Any, Optional, Union, overload
+from typing import (
+    ClassVar,
+    Final,
+    List,
+    Dict,
+    Tuple,
+    TypeVar,
+    Any,
+    Optional,
+    Union,
+    overload,
+)
 from TechDraw import object
 from Base.Metadata import export
 from Base.Metadata import constmethod
@@ -12,25 +23,20 @@ from Base.Metadata import constmethod
     Namespace="TechDraw",
     FatherInclude="Mod/TechDraw/App/DrawViewPy.h",
     FatherNamespace="TechDraw",
-
 )
 class DrawViewClipPy(object):
     """
-        Feature for creating and manipulating Technical Drawing Clip Views
+    Feature for creating and manipulating Technical Drawing Clip Views
     """
 
     def addView(self) -> Any:
         """addView(DrawView) - Add a View to this ClipView"""
         ...
 
-
     def removeView(self) -> Any:
         """removeView(DrawView) - Remove specified View to this ClipView"""
         ...
 
-
     def getChildViewNames(self) -> Any:
         """getChildViewNames() - get a list of the DrawViews in this ClipView"""
         ...
-
-

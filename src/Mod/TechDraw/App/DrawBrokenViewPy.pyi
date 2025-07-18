@@ -1,4 +1,15 @@
-from typing import ClassVar, Final, List, Dict, Tuple, TypeVar, Any, Optional, Union, overload
+from typing import (
+    ClassVar,
+    Final,
+    List,
+    Dict,
+    Tuple,
+    TypeVar,
+    Any,
+    Optional,
+    Union,
+    overload,
+)
 from TechDraw import object
 from Base.Metadata import export
 from Base.Metadata import constmethod
@@ -12,25 +23,20 @@ from Base.Metadata import constmethod
     Namespace="TechDraw",
     FatherInclude="Mod/TechDraw/App/DrawViewPartPy.h",
     FatherNamespace="TechDraw",
-
 )
 class DrawBrokenViewPy(object):
     """
-        Feature for creating and manipulating Technical Drawing broken views
+    Feature for creating and manipulating Technical Drawing broken views
     """
 
     def mapPoint3dToView(self) -> Any:
         """point2d = mapPoint3dToView(point3d) - returns the position of the 3d point within the broken view."""
         ...
 
-
     def mapPoint2dFromView(self) -> Any:
         """point2d = mapPoint2dFromView(point3d) - returns the position of the 2d point within an unbroken view."""
         ...
 
-
     def getCompressedCenter(self) -> Any:
         """point3d = getCompressedCenter() - returns the geometric center of the source shapes after break cuts and gap compression."""
         ...
-
-

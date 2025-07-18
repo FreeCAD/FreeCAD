@@ -1,4 +1,15 @@
-from typing import ClassVar, Final, List, Dict, Tuple, TypeVar, Any, Optional, Union, overload
+from typing import (
+    ClassVar,
+    Final,
+    List,
+    Dict,
+    Tuple,
+    TypeVar,
+    Any,
+    Optional,
+    Union,
+    overload,
+)
 from TechDraw import object
 from Base.Metadata import export
 from Base.Metadata import constmethod
@@ -12,11 +23,8 @@ from Base.Metadata import constmethod
     Namespace="TechDraw",
     FatherInclude="Mod/TechDraw/App/DrawViewPy.h",
     FatherNamespace="TechDraw",
-
 )
 class DrawViewAnnotationPy(object):
     """
-        Feature for creating and manipulating Technical Drawing Annotation Views
+    Feature for creating and manipulating Technical Drawing Annotation Views
     """
-
-
