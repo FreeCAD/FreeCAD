@@ -22,6 +22,7 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#include <qmdisubwindow.h>
 
 #ifndef _PreComp_
 #include <QApplication>
@@ -278,13 +279,13 @@ void StartView::configureCustomFolderListWidget(QListView* customFolderListWidge
 }
 
 
-void StartView::newEmptyFile() const
+void StartView::newEmptyFile()
 {
     Gui::Application::Instance->commandManager().runCommandByName("Std_New");
     postStart(PostStartBehavior::switchWorkbench);
 }
 
-void StartView::newPartDesignFile() const
+void StartView::newPartDesignFile()
 {
     Gui::Application::Instance->commandManager().runCommandByName("Std_New");
     Gui::Application::Instance->activateWorkbench("PartDesignWorkbench");
@@ -292,7 +293,7 @@ void StartView::newPartDesignFile() const
     postStart(PostStartBehavior::doNotSwitchWorkbench);
 }
 
-void StartView::openExistingFile() const
+void StartView::openExistingFile()
 {
     auto originalDocument = Gui::Application::Instance->activeDocument();
     Gui::Application::Instance->commandManager().runCommandByName("Std_Open");
@@ -304,7 +305,7 @@ void StartView::openExistingFile() const
     }
 }
 
-void StartView::newAssemblyFile() const
+void StartView::newAssemblyFile()
 {
     Gui::Application::Instance->commandManager().runCommandByName("Std_New");
     Gui::Application::Instance->activateWorkbench("AssemblyWorkbench");
@@ -313,7 +314,7 @@ void StartView::newAssemblyFile() const
     postStart(PostStartBehavior::doNotSwitchWorkbench);
 }
 
-void StartView::newDraftFile() const
+void StartView::newDraftFile()
 {
     Gui::Application::Instance->commandManager().runCommandByName("Std_New");
     Gui::Application::Instance->activateWorkbench("DraftWorkbench");
@@ -321,7 +322,7 @@ void StartView::newDraftFile() const
     postStart(PostStartBehavior::doNotSwitchWorkbench);
 }
 
-void StartView::newArchFile() const
+void StartView::newArchFile()
 {
     Gui::Application::Instance->commandManager().runCommandByName("Std_New");
     try {
@@ -347,7 +348,7 @@ bool StartView::onHasMsg(const char* pMsg) const
     return MDIView::onHasMsg(pMsg);
 }
 
-void StartView::postStart(PostStartBehavior behavior) const
+void StartView::postStart(PostStartBehavior behavior)
 {
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
@@ -365,7 +366,14 @@ void StartView::postStart(PostStartBehavior behavior) const
     }
     auto closeStart = hGrp->GetBool("closeStart", false);
     if (closeStart) {
-        this->window()->close();
+        for (QWidget* w = this; w != nullptr; w = w->parentWidget()) {
+            auto mdiSub = qobject_cast<QMdiSubWindow*>(w);
+            if (mdiSub == nullptr) {
+                continue;
+            }
+            mdiSub->close();
+            return;
+        }
     }
 }
 

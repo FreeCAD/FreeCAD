@@ -64,12 +64,12 @@ public:
         return "StartView";
     }
 
-    void newEmptyFile() const;
-    void newPartDesignFile() const;
-    void openExistingFile() const;
-    void newAssemblyFile() const;
-    void newDraftFile() const;
-    void newArchFile() const;
+    void newEmptyFile();
+    void newPartDesignFile();
+    void openExistingFile();
+    void newAssemblyFile();
+    void newDraftFile();
+    void newArchFile();
 
     bool onHasMsg(const char* pMsg) const override;
 
@@ -89,7 +89,7 @@ protected:
     void configureExamplesListWidget(QListView* examplesListWidget);
     void configureCustomFolderListWidget(QListView* customFolderListWidget);
 
-    void postStart(PostStartBehavior behavior) const;
+    void postStart(PostStartBehavior behavior);
 
     void fileCardSelected(const QModelIndex& index);
     void showOnStartupChanged(bool checked);
