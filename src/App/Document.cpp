@@ -25,7 +25,6 @@
 #ifndef _PreComp_
 #include <bitset>
 #include <stack>
-#include <boost/filesystem.hpp>
 #include <deque>
 #include <iostream>
 #include <utility>
