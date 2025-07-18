@@ -31,15 +31,59 @@ class Ui_GuiDisplay;
 
 class GuiDisplay: public QWidget
 {
+    Q_OBJECT
+
 public:
     explicit GuiDisplay(QWidget* parent = nullptr);
     ~GuiDisplay();
 
+    void setPlaying(bool b);
+    void setSpeed(int s);
+    void setStage(float f, int total);
+
+    void setStockVisible(bool b);
+    void setBaseVisible(bool b);
+    void setPathVisible(bool b);
+    void setSsaoEnabled(bool b);
+
+Q_SIGNALS:
+    void play(bool b);
+    void singleStep();
+    void speedChanged(int s);
+    void stageChanged(float f);
+
+    void viewAll();
+    void stockVisibleChanged(bool b);
+    void baseVisibleChanged(bool b);
+    void pathVisibleChanged(bool b);
+    void ssaoEnableChanged(bool b);
+
 protected:
     void resizeEvent(QResizeEvent* event) override;
 
+private Q_SLOTS:
+    void on_playButton_clicked();
+    void on_singleStepButton_clicked();
+
+    void onSlowerFasterButtonClicked();
+    void on_stageSlider_sliderMoved(int value);
+
+    void on_viewAllButton_clicked();
+    void on_stockModelButton_clicked();
+    void on_pathButton_clicked();
+    void on_ssaoButton_clicked();
+
 private:
     Ui_GuiDisplay* ui;
+
+    bool playing = true;
+    int speed = 1;
+
+    bool stockVisible = true;
+    bool baseVisible = false;
+    bool pathVisible = false;
+
+    bool ssaoEnabled = false;
 };
 
 }  // namespace CAMSimulator

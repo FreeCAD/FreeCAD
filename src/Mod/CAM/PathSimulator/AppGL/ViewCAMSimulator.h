@@ -10,6 +10,8 @@
 
 #include <Gui/MDIView.h>
 
+class SoCamera;
+
 namespace Gui
 {
 class View3DSettings;
@@ -33,10 +35,18 @@ public:
 
     ViewCAMSimulator* clone() override;
 
+    static ViewCAMSimulator& instance();
     DlgCAMSimulator& dlg();
+
+    bool onMsg(const char* pMsg, const char** ppReturn) override;
+    bool onHasMsg(const char* pMsg) const override;
+
+private Q_SLOTS:
+    void onSimulationStarted();
 
 private:
     void initCamera();
+    void cloneCamera(SoCamera& camera);
     void applySettings();
 
 protected:
