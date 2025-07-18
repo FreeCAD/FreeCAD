@@ -25,7 +25,7 @@
     </spacer>
    </item>
    <item>
-    <widget class="QSlider" name="horizontalSlider">
+    <widget class="QSlider" name="stageSlider">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
      </property>
@@ -79,26 +79,16 @@
      </item>
      <item>
       <widget class="QLabel" name="speedLabel">
+       <property name="styleSheet">
+        <string notr="true">color:white</string>
+       </property>
        <property name="text">
         <string>x1</string>
        </property>
       </widget>
      </item>
      <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QToolButton" name="fitAllButton">
+      <widget class="QToolButton" name="viewAllButton">
        <property name="icon">
         <iconset resource="../../Gui/Resources/Path.qrc">
          <normaloff>:/gl_simulator/Home.png</normaloff>:/gl_simulator/Home.png</iconset>
@@ -142,7 +132,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="ambientOcclusionButton">
+      <widget class="QToolButton" name="ssaoButton">
        <property name="icon">
         <iconset resource="../../Gui/Resources/Path.qrc">
          <normaloff>:/gl_simulator/AmbientOclusion.png</normaloff>:/gl_simulator/AmbientOclusion.png</iconset>
