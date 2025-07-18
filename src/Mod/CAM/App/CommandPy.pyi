@@ -1,4 +1,3 @@
-from typing import Dict
 from Base import PersistencePy  # Use the correct parent class
 from Base.Metadata import export
 from Base.Metadata import constmethod, class_declarations
@@ -41,7 +40,7 @@ class CommandPy(PersistencePy):
     Name: str
     """The name of the command"""
 
-    Parameters: Dict[str, float]
+    Parameters: dict[str, float]
     """The parameters of the command"""
 
     Placement: Placement

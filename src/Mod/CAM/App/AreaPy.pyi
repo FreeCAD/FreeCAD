@@ -1,4 +1,4 @@
-from typing import Final, List, Any
+from typing import Final, Any
 from Base import object
 from Base.Metadata import export
 
@@ -96,11 +96,11 @@ class AreaPy(object):
     def abort(self, **kwargs) -> Any:
         """Abort the current operation."""
         ...
-    Sections: Final[List]  # ReadOnly
+    Sections: Final[list]  # ReadOnly
     """List of sections in this area."""
 
     Workplane: Any
     """The current workplane. If no plane is set, it is derived from the added shapes."""
 
-    Shapes: Final[List]  # ReadOnly
+    Shapes: Final[list]  # ReadOnly
     """A list of tuple: [(shape,op), ...] containing the added shapes together with their operation code"""

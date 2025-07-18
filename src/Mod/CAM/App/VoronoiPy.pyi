@@ -1,4 +1,4 @@
-from typing import Final, List, Any
+from typing import Final, Any
 from Base import object
 from Base.Metadata import export
 from Base.Metadata import constmethod
@@ -83,11 +83,11 @@ class VoronoiPy(object):
     def numSegments(self) -> Any:
         """Return number of input segments"""
         ...
-    Cells: Final[List]  # ReadOnly
+    Cells: Final[list]  # ReadOnly
     """List of all cells of the voronoi diagram"""
 
-    Edges: Final[List]  # ReadOnly
+    Edges: Final[list]  # ReadOnly
     """List of all edges of the voronoi diagram"""
 
-    Vertices: Final[List]  # ReadOnly
+    Vertices: Final[list]  # ReadOnly
     """List of all vertices of the voronoi diagram"""

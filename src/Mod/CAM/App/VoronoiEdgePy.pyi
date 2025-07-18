@@ -1,4 +1,4 @@
-from typing import Final, List, Any
+from typing import Final, Any
 from Base import object
 from Base.Metadata import export
 from Base.Metadata import constmethod
@@ -90,7 +90,7 @@ class VoronoiEdgePy(object):
     Cell: Final[Any]  # ReadOnly
     """cell the edge belongs to"""
 
-    Vertices: Final[List]  # ReadOnly
+    Vertices: Final[list]  # ReadOnly
     """Begin and End voronoi vertex"""
 
     Next: Final[Any]  # ReadOnly

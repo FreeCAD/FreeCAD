@@ -1,4 +1,4 @@
-from typing import Final, List, Any
+from typing import Final, Any
 from Base import object
 from Base.Metadata import export
 from Base.Metadata import constmethod
@@ -60,7 +60,7 @@ class PathPy(object):
     Size: Final[int]  # ReadOnly
     """the number of commands in this path"""
 
-    Commands: List
+    Commands: list
     """the list of commands of this path"""
 
     Center: Any
