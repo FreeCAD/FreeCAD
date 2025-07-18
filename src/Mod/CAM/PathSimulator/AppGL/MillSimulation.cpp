@@ -21,9 +21,14 @@
  ***************************************************************************/
 
 #include "MillSimulation.h"
-#include "OpenGlWrapper.h"
+
 #include <vector>
 #include <iostream>
+#include <algorithm>
+
+#include "OpenGlWrapper.h"
+
+using namespace std::literals;
 
 #define DRAG_ZOOM_FACTOR 10
 
@@ -63,27 +68,6 @@ void MillSimulation::Clear()
     mNTotalSteps = 0;
 }
 
-void MillSimulation::SimNext()
-{
-    static int simDecim = 0;
-
-    simDecim++;
-    if (simDecim < 1) {
-        return;
-    }
-
-    simDecim = 0;
-
-    if (mCurStep < mNTotalSteps) {
-        mCurStep += mSimSpeed;
-        if (mCurStep > mNTotalSteps) {
-            mCurStep = mNTotalSteps;
-        }
-        CalcSegmentPositions();
-        simDisplay.updateDisplay = true;
-    }
-}
-
 void MillSimulation::InitSimulation(float quality, float maxStockDimension)
 {
     ClearMillPathSegments();
@@ -97,7 +81,9 @@ void MillSimulation::InitSimulation(float quality, float maxStockDimension)
     mNTotalSteps = 0;
     mSimPlaying = false;
     mSimSpeed = 1;
+    mTotalElapsed = 0s;
 
+    std::cerr << "quality: " << quality << " maxStockDimension: " << maxStockDimension << std::endl;
     MillPathSegment::SetQuality(quality, maxStockDimension);
 
     int nOperations = (int)mCodeParser.Operations.size();
@@ -397,42 +383,54 @@ void MillSimulation::Render()
            p->render(mDebug);
        }*/
 
-    float progress = (float)mCurStep / mNTotalSteps;
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    // guiDisplay.Render(progress);
 }
 
-void MillSimulation::ProcessSim(unsigned int time_ms)
+void MillSimulation::ProcessSim(const clock::duration& elapsed)
 {
-    static int ancient = 0;
-    static unsigned int last = 0;
-    static unsigned int msec = 0xFFFFFFFF;
-    static int fps = 0;
-    static int renderTime = 0;
+    SimNext(elapsed);
+    Render();
+}
 
-    last = msec == 0xFFFFFFFF ? time_ms : msec;
-    msec = time_ms;
-    /* if (guiDisplay.IsChecked(eGuiItemRotate)) {
-        simDisplay.RotateEye((msec - last) / 4600.0f);
-    }	*/
+void MillSimulation::SimNext(const clock::duration& elapsed)
+{
+    // calculate number of steps based on elapsed time
 
-    if (last / 1000 != msec / 1000) {
-        float calcFps = 1000.0f * fps / (msec - ancient);
-        mFpsStream.str("");
-        mFpsStream << "fps: " << calcFps << "    rendertime:" << renderTime
-                   << "    zpos:" << mDestMotion.z << std::ends;
-        ancient = msec;
-        fps = 0;
+    int numSteps = 0;
+
+    if (mSimPlaying) {
+        mTotalElapsed += elapsed;
+
+        const float seconds =
+            std::chrono::duration_cast<std::chrono::duration<float>>(mTotalElapsed).count();
+
+        const float secondsToSteps = mSimSpeed * 60;
+        numSteps = seconds * secondsToSteps;
+
+        const std::chrono::duration<float> processed {(float)numSteps / secondsToSteps};
+        mTotalElapsed -= std::chrono::duration_cast<clock::duration>(processed);
     }
+    else if (mSingleStep) {
+        numSteps = 1;
 
-    if (true /* mSimPlaying || mSingleStep */) {
-        SimNext();
+        mTotalElapsed = 0s;
         mSingleStep = false;
     }
+    else {
+        return;
+    }
 
-    Render();
+    // advance simulation
 
-    ++fps;
+    const int oldStep = mCurStep;
+
+    mCurStep += numSteps;
+    mCurStep = std::clamp(mCurStep, 0, mNTotalSteps);
+
+    if (mCurStep != oldStep) {
+        CalcSegmentPositions();
+        simDisplay.updateDisplay = true;
+    }
 }
 
 /* void MillSimulation::HandleGuiAction(eGuiItems actionItem, bool checked)
@@ -540,10 +538,40 @@ void MillSimulation::SetArbitraryStock(const std::vector<Vertex>& verts,
     simDisplay.ScaleViewToStock(&mStockObject);
 }
 
+void MillSimulation::SetStockVisible(bool b)
+{
+    if (b == IsStockVisible()) {
+        return;
+    }
+
+    mViewItems ^= VIEWITEM_SIMULATION;
+    simDisplay.updateDisplay = true;
+}
+
+bool MillSimulation::IsStockVisible() const
+{
+    return mViewItems & VIEWITEM_SIMULATION;
+}
+
 void MillSimulation::SetBaseObject(const std::vector<Vertex>& verts,
                                    const std::vector<GLushort>& indices)
 {
     mBaseShape.GenerateSolid(verts, indices);
+}
+
+void MillSimulation::SetBaseVisible(bool b)
+{
+    if (b == IsBaseVisible()) {
+        return;
+    }
+
+    mViewItems ^= VIEWITEM_BASE_SHAPE;
+    simDisplay.updateDisplay = true;
+}
+
+bool MillSimulation::IsBaseVisible() const
+{
+    return mViewItems & VIEWITEM_BASE_SHAPE;
 }
 
 void MillSimulation::UpdateWindowScale(int width, int height)
@@ -556,6 +584,26 @@ void MillSimulation::UpdateWindowScale(int width, int height)
     mHeight = height;
 
     simDisplay.UpdateWindowScale(width, height);
+}
+
+void MillSimulation::SetPathVisible(bool b)
+{
+    if (b == mViewPath) {
+        return;
+    }
+
+    mViewPath = b;
+    simDisplay.updateDisplay = true;
+}
+
+void MillSimulation::EnableSsao(bool b)
+{
+    if (b == mViewSSAO) {
+        return;
+    }
+
+    mViewSSAO = b;
+    simDisplay.updateDisplay = true;
 }
 
 void MillSimulation::UpdateCamera(const SoCamera& camera)
@@ -577,29 +625,57 @@ bool MillSimulation::AddGcodeLine(const char* line)
     return mCodeParser.AddLine(line);
 }
 
+void MillSimulation::SetPlaying(bool b)
+{
+    if (b == mSimPlaying) {
+        return;
+    }
+
+    mSimPlaying = b;
+    simDisplay.updateDisplay = true;
+}
+
+void MillSimulation::SingleStep()
+{
+    if (!mSimPlaying && mSingleStep) {
+        return;
+    }
+
+    mSimPlaying = false;
+    mSingleStep = true;
+    simDisplay.updateDisplay = true;
+}
+
+void MillSimulation::SetSpeed(int s)
+{
+    mSimSpeed = s;
+}
+
 void MillSimulation::SetSimulationStage(float stage)
 {
-    int newStep = (int)((float)mNTotalSteps * stage);
+    const int newStep = (int)((float)mNTotalSteps * stage);
     if (newStep == mCurStep) {
         return;
     }
+
     mCurStep = newStep;
-    simDisplay.updateDisplay = true;
     mSingleStep = true;
     CalcSegmentPositions();
+
+    simDisplay.updateDisplay = true;
 }
 
 void MillSimulation::SetState(const MillSimulationState& state)
 {
-    mSimPlaying = state.mSimPlaying;
-    mSingleStep = state.mSingleStep;
-    // guiDisplay.UpdatePlayState(mSimPlaying);
+    SetPlaying(state.mSimPlaying);
+    if (state.mSingleStep) {
+        SingleStep();
+    }
 
     const float stage = (float)state.mCurStep / state.mNTotalSteps;
     SetSimulationStage(stage);
 
-    mSimSpeed = state.mSimSpeed;
-    // guiDisplay.UpdateSimSpeed(mSimSpeed);
+    SetSpeed(state.mSimSpeed);
 
     mViewItems = state.mViewItems;
     mViewPath = state.mViewPath;

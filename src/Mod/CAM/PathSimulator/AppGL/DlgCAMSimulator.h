@@ -29,8 +29,8 @@
 
 #include <queue>
 #include <functional>
+#include <chrono>
 
-#include <Mod/Part/App/TopoShape.h>
 #include <QOpenGLWidget>
 #include <QOpenGLExtraFunctions>
 #include <QPainter>
@@ -39,6 +39,8 @@
 #include <QResizeEvent>
 #include <QMouseEvent>
 #include <QOpenGLContext>
+
+#include <Mod/Part/App/TopoShape.h>
 
 class SoCamera;
 
@@ -59,6 +61,8 @@ namespace CAMSimulator
 {
 
 class ViewCAMSimulator;
+class GuiDisplay;
+class Dummy3DViewer;
 
 struct SimShape
 {
@@ -84,15 +88,17 @@ class DlgCAMSimulator: public QOpenGLWidget, public QOpenGLExtraFunctions
 {
     Q_OBJECT
 
+    typedef std::chrono::steady_clock clock;
+
 public:
-    explicit DlgCAMSimulator(ViewCAMSimulator& view, QWidget* parent = nullptr);
+    explicit DlgCAMSimulator(QWidget* parent = nullptr);
     ~DlgCAMSimulator() override;
 
+    void connectTo(GuiDisplay& gui, Dummy3DViewer& dv);
     void cloneFrom(const DlgCAMSimulator& from);
 
     static DlgCAMSimulator* instance();
 
-    void setCamera(const SoCamera& camera);
     void setAnimating(bool animating);
     void startSimulation(const Part::TopoShape& stock, float quality);
     void resetSimulation();
@@ -104,11 +110,12 @@ public:
                  float resolution);
 
     void setStockShape(const Part::TopoShape& shape, float resolution);
+    void setStockVisible(bool b);
     void setBaseShape(const Part::TopoShape& shape, float resolution);
+    void setBaseVisible(bool b);
 
 Q_SIGNALS:
-    void stockChanged(const Part::TopoShape& shape);
-    void baseChanged(const Part::TopoShape& shape);
+    void simulationStarted();
 
 protected:
     void timerEvent(QTimerEvent* event) override;
@@ -120,6 +127,8 @@ protected:
     void initializeGL() override;
     void paintGL() override;
     void resizeGL(int w, int h) override;
+
+    void updateGui();
 
 private:
     bool mNeedsInitialize = false;
@@ -135,13 +144,15 @@ private:
 
     std::vector<SimTool> mTools;
 
+    const SoCamera* mCamera = nullptr;
     SimShape mStock;
     SimShape mBase;
 
-    const SoCamera* mCamera = nullptr;
-    ViewCAMSimulator& mView;
-
     std::unique_ptr<MillSim::MillSimulationState> mState;
+    clock::time_point mLastProcessSim = clock::time_point::min();
+
+    GuiDisplay* mGui = nullptr;
+    Dummy3DViewer* mDummyViewer = nullptr;
 };
 
 }  // namespace CAMSimulator

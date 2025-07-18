@@ -23,21 +23,28 @@
 #include "PreCompiled.h"
 
 #include "DlgCAMSimulator.h"
-#include "ViewCAMSimulator.h"
-#include "MillSimulation.h"
-#include "Gui/View3DInventorViewer.h"
+
+#include <queue>
+#include <numeric>
+
+#include <Gui/View3DInventorViewer.h>
 #include <Mod/Part/App/BRepMesh.h>
 #include <QDateTime>
 #include <QSurfaceFormat>
 #include <QPoint>
 #include <QTimerEvent>
-#include <App/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MDIView.h>
 #include <QHBoxLayout>
 #include <QPointer>
 #include <Inventor/nodes/SoCamera.h>
 
+#include "ViewCAMSimulator.h"
+#include "MillSimulation.h"
+#include "GuiDisplay.h"
+#include "Dummy3DViewer.h"
+
+using namespace std::literals;
 using namespace MillSim;
 
 namespace CAMSimulator
@@ -65,17 +72,11 @@ float SimShape::maxDimension() const
     return std::max(std::max(xsize, ysize), zsize);
 }
 
-static QPointer<ViewCAMSimulator> viewCAMSimulator;
+QPointer<ViewCAMSimulator> viewCAMSimulator;
 
-DlgCAMSimulator::DlgCAMSimulator(ViewCAMSimulator& view, QWidget* parent)
+DlgCAMSimulator::DlgCAMSimulator(QWidget* parent)
     : QOpenGLWidget(parent)
-    , mView(view)
 {
-    // Under certain conditions, e.g. when docking/undocking the cam simulator, we need to create a
-    // new widget (due to some OpenGL bug). The new widget becomes THE cam simulator.
-
-    viewCAMSimulator = &view;
-
     QSurfaceFormat format;
     format.setVersion(4, 1);                         // Request OpenGL 4.1 - for MacOS
     format.setProfile(QSurfaceFormat::CoreProfile);  // Use the core profile = for MacOS
@@ -97,10 +98,78 @@ DlgCAMSimulator::~DlgCAMSimulator()
 {
     makeCurrent();
     mMillSimulator = nullptr;
+}
 
-    if (mCamera) {
-        mCamera->unref();
+void DlgCAMSimulator::connectTo(GuiDisplay& gui, Dummy3DViewer& dv)
+{
+    // connect to gui
+
+    mGui = &gui;
+    updateGui();
+
+    connect(&gui, &GuiDisplay::play, this, [this](bool b) {
+        mMillSimulator->SetPlaying(b);
+    });
+
+    connect(&gui, &GuiDisplay::singleStep, this, [this] {
+        mMillSimulator->SingleStep();
+    });
+
+    connect(&gui, &GuiDisplay::speedChanged, this, [this](int speed) {
+        mMillSimulator->SetSpeed(speed);
+    });
+
+    connect(&gui, &GuiDisplay::stageChanged, this, [this](float f) {
+        mMillSimulator->SetSimulationStage(f);
+    });
+
+    connect(&gui, &GuiDisplay::pathVisibleChanged, this, [this](bool b) {
+        mMillSimulator->SetPathVisible(b);
+    });
+
+    connect(&gui, &GuiDisplay::ssaoEnableChanged, this, [this](bool b) {
+        mMillSimulator->EnableSsao(b);
+    });
+
+    // clang-format off
+    connect(&gui, &GuiDisplay::stockVisibleChanged, this, &DlgCAMSimulator::setStockVisible);
+    connect(&gui, &GuiDisplay::baseVisibleChanged, this, &DlgCAMSimulator::setBaseVisible);
+    // clang-format on
+
+    // connect to dummy viewer
+
+    mDummyViewer = &dv;
+
+    mDummyViewer->setStockVisible(mMillSimulator->IsStockVisible());
+    mDummyViewer->setBaseVisible(mMillSimulator->IsBaseVisible());
+
+    // connect gui and dummy viewer
+
+    // clang-format off
+    connect(&gui,  &GuiDisplay::viewAll,
+            &dv, static_cast<void (Dummy3DViewer::*)()>(&Dummy3DViewer::viewAll));
+    // clang-format on
+}
+
+void DlgCAMSimulator::updateGui()
+{
+    if (!mGui) {
+        return;
     }
+
+    const auto state = mMillSimulator->GetState();
+
+    mGui->setPlaying(state.mSimPlaying);
+    mGui->setSpeed(state.mSimSpeed);
+
+    const float stage = (float)state.mCurStep / state.mNTotalSteps;
+    mGui->setStage(stage, state.mNTotalSteps);
+
+    mGui->setStockVisible(state.mViewItems & VIEWITEM_SIMULATION);
+    mGui->setBaseVisible(state.mViewItems & VIEWITEM_BASE_SHAPE);
+
+    mGui->setPathVisible(state.mViewPath);
+    mGui->setSsaoEnabled(state.mViewSSAO);
 }
 
 void DlgCAMSimulator::cloneFrom(const DlgCAMSimulator& from)
@@ -126,24 +195,7 @@ void DlgCAMSimulator::cloneFrom(const DlgCAMSimulator& from)
 
 DlgCAMSimulator* DlgCAMSimulator::instance()
 {
-    if (!viewCAMSimulator) {
-        auto view = new ViewCAMSimulator(nullptr, nullptr);
-        viewCAMSimulator = view;
-
-        Gui::getMainWindow()->addWindow(view);
-    }
-
-    return &viewCAMSimulator->dlg();
-}
-
-void DlgCAMSimulator::setCamera(const SoCamera& camera)
-{
-    if (mCamera) {
-        mCamera->unref();
-    }
-
-    mCamera = &camera;
-    mCamera->ref();
+    return &ViewCAMSimulator::instance().dlg();
 }
 
 void DlgCAMSimulator::setAnimating(bool animating)
@@ -165,17 +217,13 @@ void DlgCAMSimulator::setAnimating(bool animating)
 
 void DlgCAMSimulator::startSimulation(const Part::TopoShape& stock, float quality)
 {
-    App::Document* doc = App::GetApplication().getActiveDocument();
-    mView.setWindowTitle(tr("%1 - New CAM Simulator").arg(QString::fromUtf8(doc->getName())));
-
     mQuality = quality;
     mNeedsInitialize = true;
 
     setStockShape(stock, 1);
     setAnimating(true);
 
-    Gui::getMainWindow()->setActiveWindow(&mView);
-    mView.show();
+    Q_EMIT simulationStarted();
 }
 
 void DlgCAMSimulator::resetSimulation()
@@ -258,13 +306,45 @@ static SimShape getMeshData(const Part::TopoShape& shape, float resolution)
 void DlgCAMSimulator::setStockShape(const Part::TopoShape& shape, float resolution)
 {
     mStock = getMeshData(shape, resolution);
-    Q_EMIT stockChanged(shape);
+
+    if (mDummyViewer) {
+        mDummyViewer->setStockShape(shape);
+    }
+}
+
+void DlgCAMSimulator::setStockVisible(bool b)
+{
+    if (b == mMillSimulator->IsStockVisible()) {
+        return;
+    }
+
+    mMillSimulator->SetStockVisible(b);
+
+    if (mDummyViewer) {
+        mDummyViewer->setStockVisible(b);
+    }
 }
 
 void DlgCAMSimulator::setBaseShape(const Part::TopoShape& shape, float resolution)
 {
     mBase = getMeshData(shape, resolution);
-    Q_EMIT baseChanged(shape);
+
+    if (mDummyViewer) {
+        mDummyViewer->setBaseShape(shape);
+    }
+}
+
+void DlgCAMSimulator::setBaseVisible(bool b)
+{
+    if (b == mMillSimulator->IsBaseVisible()) {
+        return;
+    }
+
+    mMillSimulator->SetBaseVisible(b);
+
+    if (mDummyViewer) {
+        mDummyViewer->setBaseVisible(b);
+    }
 }
 
 void DlgCAMSimulator::timerEvent(QTimerEvent* event)
@@ -272,6 +352,10 @@ void DlgCAMSimulator::timerEvent(QTimerEvent* event)
     (void)event;
 
     update();
+
+    // TODO: keep things simple for now, should probably only update gui if something changed
+
+    updateGui();
 }
 
 void DlgCAMSimulator::updateResources()
@@ -309,6 +393,8 @@ void DlgCAMSimulator::updateResources()
 
         mMillSimulator->InitSimulation(mQuality, maxStockDimension);
         mNeedsInitialize = false;
+
+        mLastProcessSim = clock::time_point::min();
     }
 
     // update stock and base
@@ -326,6 +412,8 @@ void DlgCAMSimulator::updateResources()
     // update state
 
     if (mState) {
+        // TODO: update gui and dummy viewer?
+
         mMillSimulator->SetState(*mState);
         mState = nullptr;
     }
@@ -339,11 +427,12 @@ void DlgCAMSimulator::updateWindowScale()
 
 void DlgCAMSimulator::updateCamera()
 {
-    if (!mCamera) {
+    if (!mDummyViewer) {
         return;
     }
 
-    mMillSimulator->UpdateCamera(*mCamera);
+    const SoCamera& camera = *mDummyViewer->getCamera();
+    mMillSimulator->UpdateCamera(camera);
 }
 
 void DlgCAMSimulator::initializeGL()
@@ -361,7 +450,31 @@ void DlgCAMSimulator::paintGL()
     updateWindowScale();
     updateCamera();
 
-    mMillSimulator->ProcessSim((unsigned int)(QDateTime::currentMSecsSinceEpoch()));
+    const auto now = clock::now();
+    const auto elapsed = mLastProcessSim != clock::time_point::min() ? now - mLastProcessSim : 0s;
+
+#if 0
+
+    static std::deque<clock::duration> q;
+    while (q.size() >= 60) {
+        q.pop_front();
+    }
+
+    q.push_back(elapsed);
+
+    const auto average = std::accumulate(q.begin(), q.end(), clock::duration()) / (float)q.size();
+
+    std::cerr
+        << "elapsed: "
+        << std::chrono::duration_cast<std::chrono::duration<float, std::milli>>(average).count()
+        << "ms" << std::endl;
+
+#endif
+
+
+    mMillSimulator->ProcessSim(elapsed);
+
+    mLastProcessSim = now;
 }
 
 void DlgCAMSimulator::resizeGL(int w, int h)

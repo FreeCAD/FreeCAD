@@ -30,8 +30,6 @@ SET(CAMSimulator_SRCS_Module
     DlgCAMSimulator.h
     PreCompiled.cpp
     PreCompiled.h
-    ViewCAMSimulator.cpp
-    ViewCAMSimulator.h
 )
 
 SET(CAMSimulator_SRCS_Core
@@ -66,6 +64,14 @@ SET(CAMSimulator_SRCS_Core
     Texture.h
     TextureLoader.cpp
     TextureLoader.h
+    ViewCAMSimulator.cpp
+    ViewCAMSimulator.h
+    Dummy3DViewer.cpp
+    Dummy3DViewer.h
+    TopoShapeViewProvider.cpp
+    TopoShapeViewProvider.h
+    CAMSimulatorSettings.cpp
+    CAMSimulatorSettings.h
 )
 
 
