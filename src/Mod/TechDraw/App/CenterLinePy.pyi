@@ -35,32 +35,32 @@ class CenterLinePy(PyObjectBase):
     Type: Final[int]  # Read-only attribute
     """0 - face, 1 - 2 line, 2 - 2 point."""
 
-    Mode: int  #
+    Mode: int
     """0 - vert/ 1 - horiz/ 2 - aligned."""
 
-    Format: Dict[str, Any]  #
+    Format: Dict[str, Any]
     """The appearance attributes (style, color, weight, visible) for this CenterLine."""
 
-    HorizShift: float  #
+    HorizShift: float
     """The left/right offset for this CenterLine."""
 
-    VertShift: float  #
+    VertShift: float
     """The up/down offset for this CenterLine."""
 
-    Rotation: float  #
+    Rotation: float
     """The rotation of the Centerline in degrees."""
 
-    Extension: float  #
+    Extension: float
     """The additional length to be added to this CenterLine."""
 
-    Flip: bool  #
+    Flip: bool
     """Reverse the order of points for 2 point CenterLine."""
 
-    Edges: List[Any]  #
+    Edges: List[Any]
     """The names of source edges for this CenterLine."""
 
-    Faces: List[Any]  #
+    Faces: List[Any]
     """The names of source Faces for this CenterLine."""
 
-    Points: List[Any]  #
+    Points: List[Any]
     """The names of source Points for this CenterLine."""

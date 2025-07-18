@@ -32,7 +32,7 @@ class CosmeticVertexPy(object):
     Tag: Final[str]  # ReadOnly
     """Gives the tag of the CosmeticVertex as string."""
 
-    Point: Any  #
+    Point: Any
     """Gives the position of this CosmeticVertex as vector."""
 
     Show: bool
