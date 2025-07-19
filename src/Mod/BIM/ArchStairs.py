@@ -542,6 +542,8 @@ class _Stairs(ArchComponent.Component):
                     if railingLeftObject.Base:
                         doc.removeObject(railingLeftObject.Base.Name)
                     railingLeftWireObject = doc.addObject("Part::Feature","RailingWire")
+                    if FreeCAD.GuiUp:
+                        railingLeftWireObject.ViewObject.hide()
                     railingLeftObject.Base = railingLeftWireObject
                 # update the Base object shape
                 railingLeftObject.Base.Shape = railWireL
@@ -562,6 +564,8 @@ class _Stairs(ArchComponent.Component):
                     if railingRightObject.Base:
                         doc.removeObject(railingRightObject.Base.Name)
                     railingRightWireObject = doc.addObject("Part::Feature","RailingWire")
+                    if FreeCAD.GuiUp:
+                        railingRightWireObject.ViewObject.hide()
                     railingRightObject.Base = railingRightWireObject
                 # update the Base object shape
                 railingRightObject.Base.Shape = railWireR
@@ -1706,5 +1710,3 @@ class _ViewProviderStairs(ArchComponent.ViewProviderComponent):
                 lst.extend(obj.Subtractions)
             return lst
         return []
-
-
