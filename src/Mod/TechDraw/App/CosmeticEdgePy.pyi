@@ -13,10 +13,8 @@ from Base.Vector import Vector
     Namespace="TechDraw",
     FatherInclude="Base/GeometryPyCXX.h",
     FatherNamespace="Base",
-    ReadOnly=["Tag"],
     Constructor=True,
     Delete=True,
-    ExtraIncludes=["Base/Vector3D.h"],
 )
 class CosmeticEdgePy(PyObjectBase):
     """
