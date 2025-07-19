@@ -11,20 +11,16 @@ from Base.Metadata import export
     Namespace="FemGui",
     FatherInclude="Gui/ViewProviderDocumentObjectPy.h",
     FatherNamespace="Gui",
-
 )
 class ViewProviderFemPostFilterPy(object):
     """
-        ViewProviderFemPostPipeline class
+    ViewProviderFemPostPipeline class
     """
 
     def createDisplayTaskWidget(self) -> Any:
         """Returns the display option task panel for a post processing edit task dialog."""
         ...
 
-
     def createExtractionTaskWidget(self) -> Any:
         """Returns the data extraction task panel for a post processing edit task dialog."""
         ...
-
-
