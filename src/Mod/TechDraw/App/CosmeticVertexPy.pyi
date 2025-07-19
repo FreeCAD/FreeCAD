@@ -29,7 +29,7 @@ class CosmeticVertexPy(object):
     def copy(self) -> Any:
         """Create a copy of this CosmeticVertex"""
         ...
-    Tag: Final[str]  # ReadOnly
+    Tag: Final[str]
     """Gives the tag of the CosmeticVertex as string."""
 
     Point: Any

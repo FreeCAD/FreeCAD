@@ -45,11 +45,11 @@ class DrawPagePy(object):
     def requestPaint(self) -> Any:
         """Ask the Gui to redraw this page"""
         ...
-    PageWidth: Final[float]  # ReadOnly
+    PageWidth: Final[float]
     """Returns the width of this page"""
 
-    PageHeight: Final[float]  # ReadOnly
+    PageHeight: Final[float]
     """Returns the height of this page"""
 
-    PageOrientation: Final[str]  # ReadOnly
+    PageOrientation: Final[str]
     """Returns the orientation of this page"""

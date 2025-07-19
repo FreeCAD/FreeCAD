@@ -22,5 +22,5 @@ class DrawParametricTemplatePy(object):
     def drawLine(self) -> Any:
         """Draw a line"""
         ...
-    GeometryCount: Final[int]  # ReadOnly
+    GeometryCount: Final[int]
     """Number of geometry in template"""

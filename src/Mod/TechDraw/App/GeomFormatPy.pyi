@@ -13,7 +13,7 @@ from Base.Metadata import constmethod, export
     FatherInclude="Base/PyObjectBase.h",
     FatherNamespace="Base",
     ReadOnly=["Tag"],
-    Constructor=True,  # Allow constructing this object
+    Constructor=True,
     Delete=True,
 )
 class GeomFormatPy(object):
@@ -30,5 +30,5 @@ class GeomFormatPy(object):
     def copy(self) -> Any:
         """Create a copy of this geomformat"""
         ...
-    Tag: Final[str]  # ReadOnly
+    Tag: Final[str]
     """Gives the tag of the GeomFormat as string."""

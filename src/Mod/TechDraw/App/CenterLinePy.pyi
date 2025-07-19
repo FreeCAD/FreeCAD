@@ -12,7 +12,7 @@ from Base.Metadata import constmethod, export
     Namespace="TechDraw",
     FatherInclude="Base/PyObjectBase.h",
     FatherNamespace="Base",
-    Constructor=True,  # Allow constructing this object
+    Constructor=True,
     Delete=True,
 )
 class CenterLinePy(PyObjectBase):
@@ -29,10 +29,10 @@ class CenterLinePy(PyObjectBase):
     def copy(self) -> Any:
         """Create a copy of this centerline"""
         ...
-    Tag: Final[str]  # Read-only attribute
+    Tag: Final[str]
     """Gives the tag of the CenterLine as string."""
 
-    Type: Final[int]  # Read-only attribute
+    Type: Final[int]
     """0 - face, 1 - 2 line, 2 - 2 point."""
 
     Mode: int

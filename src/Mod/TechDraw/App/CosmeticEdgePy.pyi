@@ -16,17 +16,17 @@ from Base.Vector import Vector
     ReadOnly=["Tag"],
     Constructor=True,
     Delete=True,
-    ExtraIncludes=["Base/Vector3D.h"],  # Add Vector3D.h include
+    ExtraIncludes=["Base/Vector3D.h"],
 )
 class CosmeticEdgePy(PyObjectBase):
     """
     CosmeticEdge specifies an extra (cosmetic) edge in Views
     """
 
-    Tag: Final[str]  # Only Tag is read-only
+    Tag: Final[str]
     """Gives the tag of the CosmeticEdge as string."""
 
-    # Remove @con decorator which is causing issues
+  
     Start: Vector
     """Gives the position of one end of this CosmeticEdge as vector."""
 
