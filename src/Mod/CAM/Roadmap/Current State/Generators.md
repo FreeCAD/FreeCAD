@@ -28,4 +28,5 @@ For example, creating a helical move may be done
 | Line              |                                              |
 | Linking           | Generate linking moves between cutting paths |
 | vcarve            |                                              |
-|                   |                                              |
+| Dragknife corner action                  |                                              |
+
