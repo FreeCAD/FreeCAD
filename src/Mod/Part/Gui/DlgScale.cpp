@@ -218,7 +218,7 @@ void DlgScale::apply()
 
             if (Part::Feature::getTopoShape(sourceObj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform).isNull()){
                 FC_ERR("Object " << sourceObj->getFullName()
-                        << " is not Part object (has no OCC shape). Can't scale it.");
+                        << " is not a shape object. Scaling is not possible.");
                 continue;
             }
 
@@ -251,13 +251,13 @@ void DlgScale::apply()
     catch (Base::Exception &err){
         QMessageBox::critical(this,
                               windowTitle(),
-                              tr("Creating Scale failed.\n%1")
+                              tr("Creating scale failed.\n%1")
                                   .arg(QCoreApplication::translate("Exception", err.what())));
         return;
     }
     catch(...) {
         QMessageBox::critical(this, windowTitle(),
-            tr("Creating Scale failed.\n%1").arg(QStringLiteral("Unknown error")));
+            tr("Creating scale failed.\n%1").arg(QStringLiteral("Unknown error")));
         return;
     }
 }

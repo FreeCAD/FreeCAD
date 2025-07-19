@@ -62,7 +62,7 @@
       <item row="1" column="0" colspan="3">
        <widget class="QGroupBox" name="groupBox_3">
         <property name="title">
-         <string>Export solids and shells as</string>
+         <string>Export Solids and Shells As</string>
         </property>
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
@@ -81,10 +81,10 @@
          <item row="1" column="0">
           <widget class="QRadioButton" name="radioButtonBRepOn">
            <property name="toolTip">
-            <string>Solids will be exported as manifold solid B-Rep object, shells as shell</string>
+            <string>Solids will be exported as manifold solid B-rep object, shells as shell</string>
            </property>
            <property name="text">
-            <string>Solids (type 186) and Shells (type 514) / B-REP mode</string>
+            <string>Solids (type 186) and shells (type 514) / B-rep mode</string>
            </property>
           </widget>
          </item>

@@ -98,7 +98,7 @@ void ViewProviderAttachExtension::extensionSetupContextMenu(QMenu* menu, QObject
     if (attach) {
         // toggle command to display components
         Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-        QAction* act = menu->addAction(QObject::tr("Attachment editor"));
+        QAction* act = menu->addAction(QObject::tr("Attachment Editor"));
         if (Gui::Control().activeDialog())
             act->setDisabled(true);
         func->trigger(act, [this](){

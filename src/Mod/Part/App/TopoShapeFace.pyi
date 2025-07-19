@@ -31,7 +31,7 @@ class TopoShapeFace(TopoShape):
     Wire: Final[object] = ...
     """
     The outer wire of this face
-    deprecated -- please use OuterWire
+    deprecated -- use OuterWire
     """
 
     OuterWire: Final[object] = ...
