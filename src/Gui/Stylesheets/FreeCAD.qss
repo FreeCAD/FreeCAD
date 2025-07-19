@@ -1787,6 +1787,7 @@ QTabBar#mdiAreaTabBar::tab:bottom:selected {
 
 QTabBar {
   qproperty-drawBase: 1;/*tabbar for files. */
+   background-color: @PrimaryColor;
 }
 
 QTabWidget::tab-bar {
