@@ -128,6 +128,8 @@ def getAssetPath() -> pathlib.Path:
 
 def setAssetPath(path: pathlib.Path):
     assert path.is_dir(), f"Cannot put a non-initialized asset directory into preferences: {path}"
+    if str(path) == str(getAssetPath()):
+        return
     pref = tool_preferences()
     pref.SetString(ToolPath, str(path))
     _emit_change(ToolGroup, ToolPath, path)
