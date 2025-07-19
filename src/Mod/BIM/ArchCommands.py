@@ -707,7 +707,7 @@ def download(url,force=False):
     if os.path.exists(filepath) and not(force):
         return filepath
     try:
-        FreeCAD.Console.PrintMessage("downloading "+url+" ...\n")
+        FreeCAD.Console.PrintMessage("Downloading "+url+" …\n")
         response = urlopen(url)
         s = response.read()
         f = open(filepath,'wb')
@@ -734,7 +734,7 @@ def check(objectslist,includehidden=False):
             elif not s.isValid():
                 bad.append([o,translate("Arch","is not valid")])
             elif (not s.Solids) and (not (Draft.getType(o) == "Axis")):
-                bad.append([o,translate("Arch","doesn't contain any solid")])
+                bad.append([o,translate("Arch","does not contain any solid")])
             else:
                 f = 0
                 for sol in s.Solids:
@@ -1315,7 +1315,7 @@ def toggleIfcBrepFlag(obj):
     """toggleIfcBrepFlag(obj): toggles the IFC brep flag of the given object, forcing it
     to be exported as brep geometry or not."""
     if not hasattr(obj,"IfcData"):
-        FreeCAD.Console.PrintMessage(translate("Arch","Object doesn't have settable IFC attributes"))
+        FreeCAD.Console.PrintMessage(translate("Arch","Object does not have settable IFC attributes"))
     else:
         d = obj.IfcData
         if "FlagForceBrep" in d:
@@ -1525,7 +1525,7 @@ def makeIfcSpreadsheet(archobj=None):
             archobj.IfcProperties = ifc_spreadsheet
             return ifc_spreadsheet
         else :
-            FreeCAD.Console.PrintWarning(translate("Arch", "The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:")+ ' ' + archobj.Label)
+            FreeCAD.Console.PrintWarning(translate("Arch", "The object does not have an IfcProperties attribute. Cancel spreadsheet creation for object:")+ ' ' + archobj.Label)
             FreeCAD.ActiveDocument.removeObject(ifc_spreadsheet)
     else :
         return ifc_spreadsheet

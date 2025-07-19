@@ -40,7 +40,7 @@ class Arch_Reference:
     def GetResources(self):
 
         return {'Pixmap'  : 'Arch_Reference',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Reference","External reference"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Reference","External Reference"),
                 'Accel': "E, X",
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Reference","Creates an external reference object")}
 

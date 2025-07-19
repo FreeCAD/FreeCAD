@@ -121,7 +121,7 @@ def getIfcOpenShell():
         try:
             import ifc_wrapper as IfcImport
         except ImportError:
-            FreeCAD.Console.PrintMessage(translate("Arch","Couldn't locate IfcOpenShell")+"\n")
+            FreeCAD.Console.PrintMessage(translate("Arch","Could not locate IfcOpenShell")+"\n")
             return False
         else:
             IFCOPENSHELL5 = True
@@ -730,7 +730,7 @@ def getShape(obj,objid):
             except Exception:
                 if DEBUG: print("    failed to retrieve solid from object ",objid)
         else:
-            if DEBUG: print("    object ", objid, " doesn't contain any geometry")
+            if DEBUG: print("    object ", objid, " does not contain any geometry")
     if not IFCOPENSHELL5:
         m = obj.matrix
         mat = FreeCAD.Matrix(m[0], m[3], m[6], m[9],
@@ -947,7 +947,7 @@ def export(exportList,filename):
 
     if (not hasattr(ifcw,"IfcFile")) and (not hasattr(ifcw,"file")):
         FreeCAD.Console.PrintError(translate("Arch","Error: your IfcOpenShell version is too old")+"\n")
-        print("""importIFC: The version of IfcOpenShell installed on this system doesn't
+        print("""importIFC: The version of IfcOpenShell installed on this system does not
                  have IFC export capabilities. IFC export currently requires an experimental
                  version of IfcOpenShell available from https://github.com/aothms/IfcOpenShell""")
         return
