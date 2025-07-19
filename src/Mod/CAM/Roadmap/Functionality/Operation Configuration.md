@@ -26,7 +26,7 @@
 finishing pass
 - Allow the user to add holding tags to keep the part retained
 
-### Drilling
+### Circular Holes
 Capable of generating canned cycle drilling actions which correspond to
 
 | Gcode | Canned Cycle                      |     |
@@ -59,24 +59,26 @@ Capable of generating canned cycle drilling actions which correspond to
 - Permit multiple pass or kerf widening passes
 - Allow user to customize the size and shape of holding tags
 
-### Drilling
-- Automatically optimize target order for efficiency
-
 ### Engraving
 
-### Boring
-Capable of generating canned cycle boring actions which correspond to
+### Circular Holes
+- Automatically optimize target order for efficiency
+- Canned cycles should be as efficient as possible with minimal wasted travel
 
-| Gcode | Canned Cycle                               |     |
-|-------|-----------------------------------|-----|
-| G85   | Boring Cycle, Feed Out                     |     |
-| G86   | Boring Cycle, Spindle Stop, Rapid Move Out |     |
-| G87   | Back Boring Cycle                          |     |
-| G88   | Boring Cycle, Spindle Stop, Manual Out     |     |
-| G89   | Boring Cycle, Dwell, Feed Out              |     |
 
-### Tapping
-Capable of generating canned cycle tapping actions which correspond to
+Capable of generating canned cycle drilling actions which correspond to
+all basic canned cycles above and
+
+#### Boring
+| Gcode | Canned Cycle                               |   |
+|-------|--------------------------------------------|---|
+| G85   | Boring Cycle, Feed Out                     |   |
+| G86   | Boring Cycle, Spindle Stop, Rapid Move Out |   |
+| G87   | Back Boring Cycle                          |   |
+| G88   | Boring Cycle, Spindle Stop, Manual Out     |   |
+| G89   | Boring Cycle, Dwell, Feed Out              |   |
+
+#### Tapping
 
 | Gcode | Canned Cycle                       |     |
 |-------|-----------------------------------|-----|
