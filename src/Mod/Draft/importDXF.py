@@ -69,6 +69,7 @@ from draftobjects.dimension import _Dimension
 from draftutils import params
 from draftutils import utils
 from draftutils.utils import pyopen
+from PySide import QtCore, QtGui
 
 gui = FreeCAD.GuiUp
 draftui = None
@@ -78,6 +79,13 @@ if gui:
         draftui = FreeCADGui.draftToolBar
     except (AttributeError, NameError):
         draftui = None
+    try:
+        from draftviewproviders.view_base import ViewProviderDraft
+        from draftviewproviders.view_wire import ViewProviderWire
+        from draftviewproviders.view_dimension import ViewProviderLinearDimension
+    except ImportError:
+        ViewProviderDraft = None
+        ViewProviderWire = None
     from draftutils.translate import translate
     from PySide import QtWidgets
 else:
@@ -444,29 +452,49 @@ def getACI(ob, text=False):
         It returns 256 (`BYLAYER`) if `ob` is inside a Draft Layer,
         and the layer's `OverrideChildren` view property is `True`.
     """
-    if not gui:
-        return 0
+    _ensure_helpers_initialized()
+
+    # Check which exporter is active
+    if not dxfUseLegacyExporter:
+        try:
+            import ImportGui
+            # Delegate to the C++ implementation
+            return ImportGui.getDXFAci(ob, text)
+        except Exception as e:
+            # Fallback if C++ call fails for any reason
+            FCC.PrintError(f"Call to C++ ACI color helper failed: {e}\n")
+            return 0
     else:
-        # detect if we need to set "BYLAYER"
-        for parent in ob.InList:
-            if Draft.getType(parent) == "Layer":
-                if ob in parent.Group:
-                    if hasattr(parent, "ViewObject") and hasattr(parent.ViewObject, "OverrideChildren"):
-                        if parent.ViewObject.OverrideChildren:
-                            return 256  # BYLAYER
-        if text:
-            col = ob.ViewObject.TextColor
+        if dxfColorMap is None:
+            # The legacy path is responsible for loading its own libraries
+            getDXFlibs()
+            if dxfColorMap is None:
+                FCC.PrintError("Legacy DXF libraries (dxfColorMap) could not be loaded.\n")
+                return 0
+
+        if not gui:
+            return 0
         else:
-            col = ob.ViewObject.LineColor
-        aci = [0, 442]
-        for i in range(255, -1, -1):
-            ref = dxfColorMap.color_map[i]
-            dist = ((ref[0]-col[0])**2
-                    + (ref[1]-col[1])**2
-                    + (ref[2]-col[2])**2)
-            if dist <= aci[1]:
-                aci = [i, dist]
-        return aci[0]
+            # detect if we need to set "BYLAYER"
+            for parent in ob.InList:
+                if Draft.getType(parent) == "Layer":
+                    if ob in parent.Group:
+                        if hasattr(parent, "ViewObject") and hasattr(parent.ViewObject, "OverrideChildren"):
+                            if parent.ViewObject.OverrideChildren:
+                                return 256  # BYLAYER
+            if text:
+                col = ob.ViewObject.TextColor
+            else:
+                col = ob.ViewObject.LineColor
+            aci = [0, 442]
+            for i in range(255, -1, -1):
+                ref = dxfColorMap.color_map[i]
+                dist = ((ref[0]-col[0])**2
+                        + (ref[1]-col[1])**2
+                        + (ref[2]-col[2])**2)
+                if dist <= aci[1]:
+                    aci = [i, dist]
+            return aci[0]
 
 
 def rawValue(entity, code):
@@ -587,6 +615,7 @@ def getGroupColor(dxfobj, index=False):
     -----
     Use local variables, not global variables.
     """
+    _ensure_helpers_initialized()
     name = dxfobj.layer
     for table in drawing.tables.get_type("table"):
         if table.name == "layer":
@@ -2789,12 +2818,109 @@ def warn(dxfobject, num=None):
     badobjects.append(dxfobject)
 
 
+def _import_dxf_file(filename, doc_name=None):
+    """
+    Internal helper to handle the core logic for both open and insert.
+    """
+    hGrp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+    use_legacy = hGrp.GetBool("dxfUseLegacyImporter", False)
+    readPreferences()
+
+    # --- Dialog Workflow ---
+    try:
+        if gui:
+            FreeCADGui.suspendWaitCursor()
+
+        if gui and not use_legacy and hGrp.GetBool("dxfShowDialog", True):
+            try:
+                import ImportGui
+                entity_counts = ImportGui.preScanDxf(filename)
+            except Exception:
+                entity_counts = {}
+
+            from DxfImportDialog import DxfImportDialog
+            dlg = DxfImportDialog(entity_counts)
+
+            if dlg.exec_():
+                # Save the integer mode from the pop-up dialog.
+                hGrp.SetInt("DxfImportMode", dlg.get_selected_mode())
+
+                # Keep the main preferences booleans
+                # in sync with the choice just made in the pop-up dialog.
+                mode = dlg.get_selected_mode()
+                params.set_param("dxfImportAsDraft", mode == 0)
+                params.set_param("dxfImportAsPrimitives", mode == 1)
+                params.set_param("dxfImportAsShapes", mode == 2)
+                params.set_param("dxfImportAsFused", mode == 3)
+                hGrp.SetBool("dxfShowDialog", dlg.get_show_dialog_again())
+            else:
+                return None, None, None, None # Return None to indicate cancellation
+    finally:
+        if gui:
+            FreeCADGui.resumeWaitCursor()
+
+    import_mode = hGrp.GetInt("DxfImportMode", 2)
+
+    # --- Document Handling ---
+    if doc_name: # INSERT operation
+        try:
+            doc = FreeCAD.getDocument(doc_name)
+        except NameError:
+            doc = FreeCAD.newDocument(doc_name)
+        FreeCAD.setActiveDocument(doc_name)
+    else: # OPEN operation
+        docname = os.path.splitext(os.path.basename(filename))[0]
+        doc = FreeCAD.newDocument(docname)
+        doc.Label = docname
+        FreeCAD.setActiveDocument(doc.Name)
+
+    # --- Core Import Execution ---
+    processing_start_time = time.perf_counter()
+
+    # Take snapshot of objects before import
+    objects_before = set(doc.Objects)
+
+    stats = None # For C++ importer stats
+    if use_legacy:
+        getDXFlibs()
+        if dxfReader:
+            processdxf(doc, filename)
+        else:
+            errorDXFLib(gui)
+            return None, None
+    else: # Modern C++ Importer
+        if gui:
+            import ImportGui
+            stats = ImportGui.readDXF(filename)
+        else:
+            import Import
+            stats = Import.readDXF(filename)
+
+    # Find the newly created objects
+    objects_after = set(doc.Objects)
+    newly_created_objects = objects_after - objects_before
+
+    # --- Post-processing step ---
+    if not use_legacy and newly_created_objects:
+        draft_postprocessor = DxfDraftPostProcessor(doc, newly_created_objects, import_mode)
+        draft_postprocessor.run()
+
+    Draft.convert_draft_texts() # This is a general utility that should run for both importers
+    doc.recompute()
+
+    processing_end_time = time.perf_counter()
+
+    # Return the results for the reporter
+    return doc, stats, processing_start_time, processing_end_time
+
+
 def open(filename):
     """Open a file and return a new document.
 
-    If the global variable `dxfUseLegacyImporter` exists,
-    it will process `filename` with `processdxf`.
-    Otherwise, it will use the `Import` module, `Import.readDXF(filename)`.
+    This function handles the import of a DXF file into a new document.
+    It shows an import dialog for the modern C++ importer if configured to do so.
+    It manages the import workflow, including pre-processing, calling the
+    correct backend (legacy or modern C++), and post-processing.
 
     Parameters
     ----------
@@ -2803,96 +2929,38 @@ def open(filename):
 
     Returns
     -------
-    App::Document
-        The new document object with objects and shapes built from `filename`.
-
-    To do
-    -----
-    Use local variables, not global variables.
+    App::Document or None
+        The new document object with imported content, or None if the
+        operation was cancelled or failed.
     """
-    readPreferences()
-    total_start_time = time.perf_counter()
+    doc, stats, start_time, end_time = _import_dxf_file(filename, doc_name=None)
 
-    if dxfUseLegacyImporter:
-        getDXFlibs()
-        if dxfReader:
-            docname = os.path.splitext(os.path.basename(filename))[0]
-            doc = FreeCAD.newDocument(docname)
-            doc.Label = docname
-            processdxf(doc, filename)
-            return doc
-        else:
-            errorDXFLib(gui)
-    else:
-        docname = os.path.splitext(os.path.basename(filename))[0]
-        doc = FreeCAD.newDocument(docname)
-        doc.Label = docname
-        FreeCAD.setActiveDocument(doc.Name)
-        stats = None
-        if gui:
-            import ImportGui
-            stats = ImportGui.readDXF(filename)
-        else:
-            import Import
-            stats = Import.readDXF(filename)
+    if doc and stats:
+        reporter = DxfImportReporter(filename, stats, end_time - start_time)
+        reporter.report_to_console()
 
-        total_end_time = time.perf_counter()
-        if stats:
-            reporter = DxfImportReporter(filename, stats, total_end_time - total_start_time)
-            reporter.report_to_console()
-
-        Draft.convert_draft_texts() # convert annotations to Draft texts
-        doc.recompute()
-
+    return doc
 
 def insert(filename, docname):
     """Import a file into the specified document.
+
+    This function handles the import of a DXF file into a specified document.
+    If the document does not exist, it will be created. It shows an import
+    dialog for the modern C++ importer if configured to do so.
 
     Parameters
     ----------
     filename : str
         The path to the file to import.
-
     docname : str
-        The name of an `App::Document` instance into which
-        the objects and shapes from `filename` will be imported.
-
-        If the document doesn't exist, it is created
-        and set as the active document.
-
-    To do
-    -----
-    Use local variables, not global variables.
+        The name of an App::Document instance to import the content into.
     """
-    readPreferences()
-    total_start_time = time.perf_counter()
-    try:
-        doc = FreeCAD.getDocument(docname)
-    except NameError:
-        doc = FreeCAD.newDocument(docname)
-    FreeCAD.setActiveDocument(docname)
-    if dxfUseLegacyImporter:
-        getDXFlibs()
-        if dxfReader:
-            processdxf(doc, filename)
-        else:
-            errorDXFLib(gui)
-    else:
-        stats = None
-        if gui:
-            import ImportGui
-            stats = ImportGui.readDXF(filename)
-        else:
-            import Import
-            stats = Import.readDXF(filename)
+    doc, stats, start_time, end_time = _import_dxf_file(filename, doc_name=docname)
 
-        total_end_time = time.perf_counter()
-        if stats:
-            reporter = DxfImportReporter(filename, stats, total_end_time - total_start_time)
-            reporter.report_to_console()
+    if doc and stats:
+        reporter = DxfImportReporter(filename, stats, end_time - start_time)
+        reporter.report_to_console()
 
-        Draft.convert_draft_texts() # convert annotations to Draft texts
-        doc.recompute()
 
 def getShapes(filename):
     """Read a DXF file, and return a list of shapes from its contents.
@@ -3060,6 +3128,7 @@ def getSplineSegs(edge):
         If the `segmentlength` variable is zero in the parameters database,
         then it only returns the first and the last point of the `edge`.
     """
+    _ensure_helpers_initialized()
     seglength = params.get_param("maxsegmentlength")
     points = []
     if seglength == 0:
@@ -3625,13 +3694,23 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
     Use local variables, not global variables.
     """
     readPreferences()
+
     if not dxfUseLegacyExporter:
-        import Import
-        version = 14
-        if nospline:
-            version = 12
-        Import.writeDXFObject(objectslist, filename, version, lwPoly)
+        version = 12 if nospline else 14
+
+        # Get a handle to the current module (importDXF)
+        import sys
+        helpers = sys.modules[__name__]
+
+        if gui:
+            import ImportGui as DxfExporterModule
+        else:
+            import Import as DxfExporterModule
+
+        DxfExporterModule.exportDxf(obj=objectslist, name=filename, version=version, lwPoly=lwPoly,
+                                    helpers=helpers)
         return
+
     getDXFlibs()
     if dxfLibrary:
         global exportList
@@ -4181,41 +4260,77 @@ def readPreferences():
     -----
     Use local variables, not global variables.
     """
-    # reading parameters
-    if gui and params.get_param("dxfShowDialog"):
-        FreeCADGui.showPreferencesByName("Import-Export", ":/ui/preferences-dxf.ui")
     global dxfCreatePart, dxfCreateDraft, dxfCreateSketch
-    global dxfDiscretizeCurves, dxfStarBlocks
-    global dxfMakeBlocks, dxfJoin, dxfRenderPolylineWidth
-    global dxfImportTexts, dxfImportLayouts
-    global dxfImportPoints, dxfImportHatches, dxfUseStandardSize
-    global dxfGetColors, dxfUseDraftVisGroups
-    global dxfMakeFaceMode, dxfBrightBackground, dxfDefaultColor
-    global dxfUseLegacyImporter, dxfExportBlocks, dxfScaling
-    global dxfUseLegacyExporter
-    dxfCreatePart = params.get_param("dxfCreatePart")
-    dxfCreateDraft = params.get_param("dxfCreateDraft")
-    dxfCreateSketch = params.get_param("dxfCreateSketch")
-    dxfDiscretizeCurves = params.get_param("DiscretizeEllipses")
-    dxfStarBlocks = params.get_param("dxfstarblocks")
-    dxfMakeBlocks = params.get_param("groupLayers")
-    dxfJoin = params.get_param("joingeometry")
-    dxfRenderPolylineWidth = params.get_param("renderPolylineWidth")
-    dxfImportTexts = params.get_param("dxftext")
-    dxfImportLayouts = params.get_param("dxflayout")
-    dxfImportPoints = params.get_param("dxfImportPoints")
-    dxfImportHatches = params.get_param("importDxfHatches")
-    dxfUseStandardSize = params.get_param("dxfStdSize")
-    dxfGetColors = params.get_param("dxfGetOriginalColors")
-    dxfUseDraftVisGroups = params.get_param("dxfUseDraftVisGroups")
-    dxfMakeFaceMode = params.get_param("MakeFaceMode")
-    dxfUseLegacyImporter = params.get_param("dxfUseLegacyImporter")
-    dxfUseLegacyExporter = params.get_param("dxfUseLegacyExporter")
+    global dxfDiscretizeCurves, dxfStarBlocks, dxfMakeBlocks, dxfJoin, dxfRenderPolylineWidth
+    global dxfImportTexts, dxfImportLayouts, dxfImportPoints, dxfImportHatches, dxfUseStandardSize
+    global dxfGetColors, dxfUseDraftVisGroups, dxfMakeFaceMode, dxfBrightBackground, dxfDefaultColor
+    global dxfUseLegacyImporter, dxfExportBlocks, dxfScaling, dxfUseLegacyExporter
+
+    # Use the direct C++ API via Python for all parameter access
+    hGrp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+
+    dxfUseLegacyImporter = hGrp.GetBool("dxfUseLegacyImporter", False)
+
+    # Synchronization Bridge (Booleans -> Integer)
+    # Read the boolean parameters from the main preferences dialog. Based on which one is true, set
+    # the single 'DxfImportMode' integer parameter that the C++ importer and legacy importer logic
+    # rely on. This ensures the setting from the main preferences is always respected at the start
+    # of an import.
+    if hGrp.GetBool("dxfImportAsDraft", False):
+        import_mode = 0
+    elif hGrp.GetBool("dxfImportAsPrimitives", False):
+        import_mode = 1
+    elif hGrp.GetBool("dxfImportAsFused", False):
+        import_mode = 3
+    else: # Default to "Individual part shapes"
+        import_mode = 2
+    hGrp.SetInt("DxfImportMode", import_mode)
+
+    # The legacy importer logic now reads the unified import_mode integer.
+    # The modern importer reads its settings directly in C++.
+    if dxfUseLegacyImporter:
+        # Legacy override for sketch creation takes highest priority
+        dxfCreateSketch = hGrp.GetBool("dxfCreateSketch", False)
+
+        if dxfCreateSketch: # dxfCreateSketch overrides the import mode for the legacy importer
+            dxfCreatePart = False
+            dxfCreateDraft = False
+            dxfMakeBlocks = False
+        # The 'import_mode' variable is now set by the UI synchronization bridge that runs just
+        # before this block. We now translate the existing 'import_mode' variable into the old
+        # flags.
+        elif import_mode == 0:  # Editable draft objects
+            dxfMakeBlocks = False
+            dxfCreatePart = False
+            dxfCreateDraft = True
+        elif import_mode == 3:  # Fused part shapes
+            dxfMakeBlocks = True
+            dxfCreatePart = False
+            dxfCreateDraft = False
+        else:  # Individual part shapes or Primitives (modes 1 and 2)
+            dxfMakeBlocks = False
+            dxfCreatePart = True
+            dxfCreateDraft = False
+
+    # The legacy importer still uses these global variables, so we read them all.
+    dxfDiscretizeCurves = hGrp.GetBool("DiscretizeEllipses", True)
+    dxfStarBlocks = hGrp.GetBool("dxfstarblocks", False)
+    dxfJoin = hGrp.GetBool("joingeometry", False)
+    dxfRenderPolylineWidth = hGrp.GetBool("renderPolylineWidth", False)
+    dxfImportTexts = hGrp.GetBool("dxftext", False)
+    dxfImportLayouts = hGrp.GetBool("dxflayout", False)
+    dxfImportPoints = hGrp.GetBool("dxfImportPoints", True)
+    dxfImportHatches = hGrp.GetBool("importDxfHatches", False)
+    dxfUseStandardSize = hGrp.GetBool("dxfStdSize", False)
+    dxfGetColors = hGrp.GetBool("dxfGetOriginalColors", True)
+    dxfUseDraftVisGroups = hGrp.GetBool("dxfUseDraftVisGroups", True)
+    dxfMakeFaceMode = hGrp.GetBool("MakeFaceMode", False)
+    dxfUseLegacyExporter = hGrp.GetBool("dxfUseLegacyExporter", False)
+    dxfExportBlocks = hGrp.GetBool("dxfExportBlocks", True)
+    dxfScaling = hGrp.GetFloat("dxfScaling", 1.0)
+
     dxfBrightBackground = isBrightBackground()
     dxfDefaultColor = getColor()
-    dxfExportBlocks = params.get_param("dxfExportBlocks")
-    dxfScaling = params.get_param("dxfScaling")
-
 
 class DxfImportReporter:
     """Formats and reports statistics from a DXF import process."""
@@ -4346,3 +4461,897 @@ class DxfImportReporter:
         """
         output_string = self.to_console_string()
         FCC.PrintMessage(output_string)
+
+
+class DxfDraftPostProcessor:
+    """
+    Handles the post-processing of DXF files imported as Part objects,
+    converting them into fully parametric Draft objects while preserving
+    the block and layer hierarchy.
+    """
+    def __init__(self, doc, new_objects, import_mode):
+        self.doc = doc
+        self.all_imported_objects = new_objects
+        self.import_mode = import_mode
+        self.all_originals_to_delete = set()
+        self.newly_created_draft_objects = []
+
+    def _categorize_objects(self):
+        """
+        Scans newly created objects from the C++ importer and categorizes them.
+        """
+        block_definitions = {}
+        for group_name in ["_BlockDefinitions", "_UnreferencedBlocks"]:
+            block_group = self.doc.getObject(group_name)
+            if block_group:
+                for block_def_obj in block_group.Group:
+                    if block_def_obj.isValid() and block_def_obj.isDerivedFrom("Part::Compound"):
+                        block_definitions[block_def_obj] = [
+                            child for child in block_def_obj.Links
+                            if child.isValid()
+                        ]
+
+        all_block_internal_objects_set = set()
+        for block_def, children in block_definitions.items():
+            all_block_internal_objects_set.add(block_def)
+            all_block_internal_objects_set.update(children)
+
+        top_level_geometry = []
+        placeholders = []
+        for obj in self.all_imported_objects:
+            if not obj.isValid() or obj in all_block_internal_objects_set:
+                continue
+
+            if obj.isDerivedFrom("App::FeaturePython") and hasattr(obj, "DxfEntityType"):
+                placeholders.append(obj)
+            elif obj.isDerivedFrom("Part::Feature") or obj.isDerivedFrom("App::Link"):
+                top_level_geometry.append(obj)
+
+        return block_definitions, top_level_geometry, placeholders
+
+    def _create_draft_object_from_part(self, part_obj):
+        """
+        Converts an intermediate Part object (from C++ importer) to a final Draft object,
+        ensuring correct underlying C++ object typing and property management.
+        Returns a tuple: (new_draft_object, type_string) or (None, None).
+        """
+        if self.import_mode != 0:
+            # In non-Draft modes, do not convert geometry. Return it as is.
+            return part_obj, "KeptAsIs"
+
+        # Skip invalid objects or objects that are block definitions themselves (their
+        # links/children will be converted)
+        if not part_obj.isValid() or \
+           (part_obj.isDerivedFrom("Part::Compound") and hasattr(part_obj, "Links")):
+            return None, None
+
+        new_obj = None
+        obj_type_str = None # Will be set based on converted type
+
+        # Handle specific Part primitives (created directly by C++ importer as Part::Line,
+        # Part::Circle, Part::Vertex) These C++ primitives (Part::Line, Part::Circle) inherently
+        # have Shape and Placement. Part::Vertex is special, handled separately below.
+        if part_obj.isDerivedFrom("Part::Line"):
+            # Input `part_obj` is Part::Line. Create a Part::Part2DObjectPython as the
+            # Python-extensible base for Draft Line. Part::Part2DObjectPython (via Part::Feature)
+            # inherently has Shape and Placement, and supports .Proxy.
+            new_obj = self.doc.addObject("Part::Part2DObjectPython",
+                                         self.doc.getUniqueObjectName("Line"))
+            # Transfer the TopoDS_Shape from the original Part::Line to the new object's Shape
+            # property.
+            new_obj.Shape = part_obj.Shape
+            Draft.Wire(new_obj) # Attach the Python proxy. It will find Shape, Placement.
+
+            # Manually transfer the parametric data from the Part::Line primitive
+            # to the new Draft.Wire's 'Points' property.
+            start_point = FreeCAD.Vector(part_obj.X1.Value, part_obj.Y1.Value, part_obj.Z1.Value)
+            end_point = FreeCAD.Vector(part_obj.X2.Value, part_obj.Y2.Value, part_obj.Z2.Value)
+            new_obj.Points = [start_point, end_point]
+
+            obj_type_str = "Line"
+
+        elif part_obj.isDerivedFrom("Part::Circle"):
+            # Input `part_obj` is Part::Circle. Create a Part::Part2DObjectPython.
+            new_obj = self.doc.addObject("Part::Part2DObjectPython",
+                                         self.doc.getUniqueObjectName("Circle"))
+            # Transfer the TopoDS_Shape from the original Part::Circle. This needs to happen
+            # *before* proxy attach.
+            new_obj.Shape = part_obj.Shape
+
+            # Attach the Python proxy
+            # This call will add properties like Radius, FirstAngle, LastAngle to new_obj.
+            Draft.Circle(new_obj)
+
+            # Transfer  data *after* proxy attachment.
+            # Now that Draft.Circle(new_obj) has run and added the properties, we can assign values
+            # to them.
+            # Part::Circle has Radius, Angle1, Angle2 properties.
+            # Draft.Circle proxy uses FirstAngle and LastAngle instead of Angle1 and Angle2.
+            if hasattr(part_obj, 'Radius'):
+                new_obj.Radius = FreeCAD.Units.Quantity(part_obj.Radius.Value, "mm")
+
+            # Calculate and transfer angles
+            if hasattr(part_obj, 'Angle1') and hasattr(part_obj, 'Angle2'):
+                start_angle, end_angle = self._get_canonical_angles(
+                    part_obj.Angle1.Value,
+                    part_obj.Angle2.Value,
+                    part_obj.Radius.Value
+                )
+
+                new_obj.FirstAngle = FreeCAD.Units.Quantity(start_angle, "deg")
+                new_obj.LastAngle = FreeCAD.Units.Quantity(end_angle, "deg")
+
+            # Determine the final object type string based on the canonical angles
+            is_full_circle = (abs(new_obj.FirstAngle.Value - 0.0) < 1e-7 and
+                              abs(new_obj.LastAngle.Value - 360.0) < 1e-7)
+
+            obj_type_str = "Circle" if is_full_circle else "Arc"
+
+
+        elif part_obj.isDerivedFrom("Part::Vertex"): # Input `part_obj` is Part::Vertex (C++ primitive for a point location).
+            # For Draft.Point, the proxy expects an App::FeaturePython base.
+            new_obj = self.doc.addObject("App::FeaturePython", self.doc.getUniqueObjectName("Point"))
+            new_obj.addExtension("Part::AttachExtensionPython") # Needed to provide Placement for App::FeaturePython.
+            # Transfer Placement explicitly from the original Part::Vertex.
+            if hasattr(part_obj, 'Placement'):
+                new_obj.Placement = part_obj.Placement
+            else:
+                new_obj.Placement = FreeCAD.Placement()
+            Draft.Point(new_obj) # Attach the Python proxy.
+            obj_type_str = "Point"
+
+        elif part_obj.isDerivedFrom("Part::Ellipse"):
+            # Determine if it's a full ellipse or an arc
+            # The span check handles cases like (0, 360) or (-180, 180)
+            span = abs(part_obj.Angle2.Value - part_obj.Angle1.Value)
+            is_full_ellipse = abs(span % 360.0) < 1e-6
+
+            if is_full_ellipse:
+                # Create the C++ base object that has .Shape and .Placement.
+                new_obj = self.doc.addObject("Part::Part2DObjectPython", self.doc.getUniqueObjectName("Ellipse"))
+
+                # Attach the parametric Draft.Ellipse Python proxy.
+                Draft.Ellipse(new_obj)
+
+                # Transfer the parametric properties from the imported primitive to the new Draft
+                # object. The proxy will handle recomputing the shape.
+                new_obj.MajorRadius = part_obj.MajorRadius
+                new_obj.MinorRadius = part_obj.MinorRadius
+                new_obj.Placement = part_obj.Placement
+
+                obj_type_str = "Ellipse"
+            else:
+                # Fallback for elliptical arcs.
+
+                new_obj = self.doc.addObject("Part::Part2DObjectPython", self.doc.getUniqueObjectName("EllipticalArc"))
+                Draft.Wire(new_obj) # Attach proxy.
+
+                # Re-create geometry at the origin using parametric properties.
+                # Convert degrees back to radians for the geometry kernel.
+                center_at_origin = FreeCAD.Vector(0, 0, 0)
+                geom = Part.Ellipse(center_at_origin, part_obj.MajorRadius.Value, part_obj.MinorRadius.Value)
+                shape_at_origin = geom.toShape(math.radians(part_obj.Angle1.Value),
+                                               math.radians(part_obj.Angle2.Value))
+
+                # Assign the un-transformed shape and the separate placement.
+                new_obj.Shape = shape_at_origin
+                new_obj.Placement = part_obj.Placement
+                obj_type_str = "Shape"
+
+        # --- Handle generic Part::Feature objects (from C++ importer, wrapping TopoDS_Shapes like Wires, Splines, Ellipses) ---
+        elif part_obj.isDerivedFrom("Part::Feature"): # Input `part_obj` is a generic Part::Feature (from C++ importer).
+            shape = part_obj.Shape # This is the underlying TopoDS_Shape (Wire, Edge, Compound, Face etc.).
+            if not shape.isValid():
+                return None, None
+
+            # Determine specific Draft object type based on the ShapeType of the TopoDS_Shape.
+            if shape.ShapeType == "Wire": # If the TopoDS_Shape is a Wire (from DXF POLYLINE).
+                # Create a Part::Part2DObjectPython as the Python-extensible base for Draft Wire.
+                new_obj = self.doc.addObject("Part::Part2DObjectPython", self.doc.getUniqueObjectName("Wire"))
+                new_obj.Shape = shape # Transfer the TopoDS_Wire from the original Part::Feature.
+                Draft.Wire(new_obj) # Attach Python proxy. It will find Shape, Placement.
+
+                # Check if all segments of the wire are straight lines.
+                # If so, we can safely populate the .Points property to make it parametric.
+                # Otherwise, we do nothing, leaving it as a non-parametric but geometrically correct shape.
+                is_all_lines = True
+
+                for edge in shape.Edges:
+                    if edge.Curve.TypeId == "Part::GeomLine":
+                        continue # This is a straight segment
+                    else:
+                        is_all_lines = False
+                        break # Found a curve, no need to check further
+
+                if is_all_lines and shape.OrderedVertexes:
+                    # All segments are straight, so we can make it an editable wire
+                    points = [v.Point for v in shape.OrderedVertexes]
+                    new_obj.Points = points
+
+                new_obj.Closed = shape.isClosed() # Transfer specific properties expected by Draft.Wire.
+                obj_type_str = "Wire"
+
+            # Fallback for other Part::Feature shapes (e.g., 3DFACE, SOLID, or unsupported Edge types).
+            else: # If the TopoDS_Shape is not a recognized primitive (e.g., Compound, Face, Solid).
+                # Wrap it in a Part::FeaturePython to allow Python property customization if needed.
+                new_obj = self.doc.addObject("Part::FeaturePython", self.doc.getUniqueObjectName("Shape"))
+                new_obj.addExtension("Part::AttachExtensionPython") # Add extension for Placement for App::FeaturePython.
+                new_obj.Shape = shape # Assign the TopoDS_Shape from the original Part::Feature.
+                # Explicitly set Placement for App::FeaturePython.
+                if hasattr(part_obj, 'Placement'):
+                    new_obj.Placement = part_obj.Placement
+                else:
+                    new_obj.Placement = FreeCAD.Placement()
+                # No specific Draft proxy for generic "Shape", but it's Python extensible.
+                obj_type_str = "Shape"
+
+        # --- Handle App::Link objects (block instances from C++ importer) ---
+        elif part_obj.isDerivedFrom("App::Link"): # Input `part_obj` is an App::Link.
+            # App::Link objects are already suitable as a base for Draft.Clone/Array links.
+            # They natively have Placement and Link properties, and support .Proxy.
+            new_obj = part_obj # Reuse the object directly.
+            obj_type_str = "Link"
+
+        # --- Handle App::FeaturePython placeholder objects (Text, Dimension from C++ importer) ---
+        elif part_obj.isDerivedFrom("App::FeaturePython"): # Input `part_obj` is an App::FeaturePython placeholder.
+            # These are specific placeholders the C++ importer created (`DxfEntityType` property).
+            # They are processed later in `_create_from_placeholders` to become proper Draft.Text/Dimension objects.
+            return None, None # Don't process them here; let the dedicated function handle them.
+
+        # --- Final Common Steps for Newly Created Draft Objects ---
+        if new_obj:
+            new_obj.Label = part_obj.Label # Always transfer label.
+
+            # If `new_obj` was freshly created (not `part_obj` reused), and `part_obj` had a Placement,
+            # ensure `new_obj`'s Placement is correctly set from `part_obj`.
+            # For `Part::*` types, Placement is set implicitly by the `addObject` call based on their `Shape`.
+            # For `App::FeaturePython` (like for Point and generic Shape fallback), explicit assignment is needed.
+            if new_obj is not part_obj:
+                if hasattr(part_obj, "Placement") and hasattr(new_obj, "Placement"):
+                    new_obj.Placement = part_obj.Placement
+                elif not hasattr(new_obj, "Placement"):
+                    # This should ideally not happen with the corrected logic above.
+                    FCC.PrintWarning(f"Created object '{new_obj.Label}' of type '{obj_type_str}' does not have a 'Placement' property even after intended setup. This is unexpected.\n")
+
+            # Add the original object (from C++ importer) to the list for deletion.
+            if new_obj is not part_obj:
+                self.all_originals_to_delete.add(part_obj)
+
+            return new_obj, obj_type_str
+
+        # If no conversion could be made (e.g., unsupported DXF entity not falling into a handled case),
+        # mark original for deletion and return None.
+        self.all_originals_to_delete.add(part_obj)
+        FCC.PrintWarning(f"DXF Post-Processor: Failed to convert object '{part_obj.Label}'. Discarding.\n")
+        return None, None
+
+    def _parent_object_to_layer(self, new_obj, original_obj):
+        """Finds the correct layer from the original object and parents the new object to it."""
+        if hasattr(original_obj, "OriginalLayer"):
+            layer_name = original_obj.OriginalLayer
+
+            found_layers = self.doc.getObjectsByLabel(layer_name)
+
+            layer_obj = None
+            if found_layers:
+                for l_obj in found_layers:
+                    if Draft.get_type(l_obj) == 'Layer':
+                        layer_obj = l_obj
+                        break
+
+            if layer_obj:
+                layer_obj.Proxy.addObject(layer_obj, new_obj)
+            else:
+                FCC.PrintWarning(f"DXF Post-Processor: Could not find a valid Draft Layer with label '{layer_name}' for object '{new_obj.Label}'.\n")
+
+    def _create_and_parent_geometry(self, intermediate_obj):
+        """High-level helper to convert, name, and parent a single geometric object."""
+        new_draft_obj, obj_type_str = self._create_draft_object_from_part(intermediate_obj)
+        if new_draft_obj:
+            label = intermediate_obj.Label
+            if not label or "__Feature" in label:
+                label = self.doc.getUniqueObjectName(obj_type_str)
+            new_draft_obj.Label = label
+            self._parent_object_to_layer(new_draft_obj, intermediate_obj)
+            self.newly_created_draft_objects.append(new_draft_obj)
+        else:
+            FCC.PrintWarning(f"DXF Post-Processor: Failed to convert object '{intermediate_obj.Label}'. Discarding.\n")
+        return new_draft_obj
+
+    def _create_from_placeholders(self, placeholders):
+        """Creates final Draft objects from text/dimension placeholders."""
+        if not placeholders:
+            return
+
+        for placeholder in placeholders:
+            if not placeholder.isValid():
+                continue
+            new_obj = None
+            try:
+                if placeholder.DxfEntityType == "DIMENSION":
+                    # 1. Create the base object and attach the proxy, which adds the needed properties.
+                    dim = self.doc.addObject("App::FeaturePython", "Dimension")
+                    _Dimension(dim)
+
+                    if FreeCAD.GuiUp:
+                        ViewProviderLinearDimension(dim.ViewObject)
+
+                    # 2. Get the transformation from the placeholder's Placement property.
+                    plc = placeholder.Placement
+
+                    # 3. Transform the defining points from the placeholder's local coordinate system
+                    #    into the world coordinate system.
+                    p_start = plc.multVec(placeholder.Start)
+                    p_end = plc.multVec(placeholder.End)
+                    p_dimline = plc.multVec(placeholder.Dimline)
+
+                    # 4. Assign these new, transformed points to the final dimension object.
+                    dim.Start = p_start
+                    dim.End = p_end
+                    dim.Dimline = p_dimline
+
+                    # Do NOT try to set dim.Placement, as it does not exist.
+
+                    new_obj = dim
+
+                    # Check for and apply the dimension type (horizontal, vertical, etc.)
+                    # This information is now plumbed through from the C++ importer.
+                    if hasattr(placeholder, "DxfDimensionType"):
+                        # The lower bits of the type flag define the dimension's nature.
+                        # 0 = Rotated, Horizontal, or Vertical
+                        # 1 = Aligned
+                        # Other values are for angular, diameter, etc., not handled here.
+                        dim_type = placeholder.DxfDimensionType & 0x0F
+
+                        # A type of 0 indicates that the dimension is projected. The
+                        # projection direction is given by its rotation angle.
+                        if dim_type == 0 and hasattr(placeholder, "DxfRotation"):
+                            angle = placeholder.DxfRotation.Value # Angle is in radians
+
+                            # The Direction property on a Draft.Dimension controls its
+                            # projection. Setting it here ensures the ViewProvider
+                            # will draw it correctly as horizontal, vertical, or rotated.
+                            direction_vector = FreeCAD.Vector(math.cos(angle), math.sin(angle), 0)
+                            dim.Direction = direction_vector
+
+                elif placeholder.DxfEntityType == "TEXT":
+                    text_obj = Draft.make_text(placeholder.Text)
+                    text_obj.Placement = placeholder.Placement
+                    if FreeCAD.GuiUp:
+                        text_obj.addProperty("App::PropertyFloat", "DxfTextHeight", "Internal")
+                        text_obj.DxfTextHeight = placeholder.DxfTextHeight
+                    new_obj = text_obj
+
+                if new_obj:
+                    new_obj.Label = placeholder.Label
+                    self._parent_object_to_layer(new_obj, placeholder)
+                    self.newly_created_draft_objects.append(new_obj)
+            except Exception as e:
+                FCC.PrintWarning(f"Could not create Draft object from placeholder '{placeholder.Label}': {e}\n")
+
+        self.all_originals_to_delete.update(placeholders)
+
+    def _apply_gui_styles(self):
+        """Attaches correct ViewProviders and styles to new Draft objects."""
+        if not FreeCAD.GuiUp:
+            return
+
+        # We style all newly created Draft objects, which are collected in this list.
+        # This now includes block children, top-level geometry, and placeholders.
+        all_objects_to_style = self.newly_created_draft_objects
+
+        for obj in all_objects_to_style:
+            if obj.isValid() and hasattr(obj, "ViewObject") and hasattr(obj, "Proxy"):
+                try:
+                    proxy_name = obj.Proxy.__class__.__name__
+                    if proxy_name in ("Wire", "Line"):
+                        if ViewProviderWire: ViewProviderWire(obj.ViewObject)
+                    elif proxy_name == "Circle":
+                        if ViewProviderDraft: ViewProviderDraft(obj.ViewObject)
+                    elif proxy_name == "Text":
+                        if hasattr(obj, "DxfTextHeight"):
+                            obj.ViewObject.FontSize = obj.DxfTextHeight * TEXTSCALING
+                except Exception as e:
+                    FCC.PrintWarning(f"Failed to set ViewProvider for {obj.Name}: {e}\n")
+
+    def _delete_objects_in_batch(self):
+        """Safely deletes all objects marked for removal."""
+        if not self.all_originals_to_delete:
+            return
+        for obj in self.all_originals_to_delete:
+            if obj.isValid() and self.doc.getObject(obj.Name) is not None:
+                try:
+                    if not obj.isDerivedFrom("App::DocumentObjectGroup") and not obj.isDerivedFrom("App::Link"):
+                        self.doc.removeObject(obj.Name)
+                except Exception as e:
+                    FCC.PrintWarning(f"Failed to delete object '{getattr(obj, 'Label', obj.Name)}': {e}\n")
+
+    def _cleanup_organizational_groups(self):
+        """Removes empty organizational groups after processing."""
+        for group_name in ["_BlockDefinitions", "_UnreferencedBlocks"]:
+            group = self.doc.getObject(group_name)
+            if group and not group.Group:
+                try:
+                    self.doc.removeObject(group.Name)
+                except Exception as e:
+                    FCC.PrintWarning(
+                        "DXF Post-Processor: Could not remove temporary group "
+                        f"'{group.Name}': {e}\n"
+                    )
+
+    def _get_canonical_angles(self, start_angle_deg, end_angle_deg, radius_mm):
+        """
+        Calculates canonical start and end angles for a Draft Arc/Circle that are
+        both geometrically equivalent to the input and syntactically valid for
+        FreeCAD's App::PropertyAngle, which constrains values to [-360, 360].
+
+        This is necessary because the C++ importer may provide angles outside this
+        range (e.g., end_angle > 360) to unambiguously define an arc's span and
+        distinguish between minor and major arcs. This function finds an
+        equivalent angle pair that respects the C++ constraints while preserving
+        the original geometry (span and direction).
+        """
+        # Calculate the original angular span.
+        span = end_angle_deg - start_angle_deg
+
+        # Handle degenerate and full-circle cases first.
+        # Case: A zero-radius, zero-span arc is a point.
+        if abs(radius_mm) < 1e-9 and abs(span) < 1e-9:
+            return 0.0, 0.0
+
+        # A span that is a multiple of 360 degrees is a full circle.
+        # Use a tolerance for floating point inaccuracies.
+        if abs(span % 360.0) < 1e-6 and abs(span) > 1e-7:
+            # Return the canonical representation for a full circle in Draft.
+            return 0.0, 360.0
+
+        # Normalize the start angle to a canonical [0, 360] range.
+        canonical_start = start_angle_deg % 360.0
+        if canonical_start < 0:
+            canonical_start += 360.0
+
+        # Calculate the geometrically correct end angle based on the preserved span.
+        canonical_end = canonical_start + span
+
+        # Find a valid representation within the [-360, 360] constraints.
+        # We can shift both start and end by multiples of 360 without changing the geometry.
+        # This "slides" the angular window until it fits within the allowed range.
+        # This handles cases where the calculated end > 360 or start is very negative.
+        while canonical_start > 360.0 or canonical_end > 360.0:
+            canonical_start -= 360.0
+            canonical_end -= 360.0
+
+        while canonical_start < -360.0 or canonical_end < -360.0:
+            canonical_start += 360.0
+            canonical_end += 360.0
+
+        # At this point, the pair (canonical_start, canonical_end) is both
+        # geometrically correct and should be valid for App::PropertyAngle.
+        return canonical_start, canonical_end
+
+    def run(self):
+        """Executes the entire post-processing workflow."""
+        FCC.PrintMessage("\n--- DXF DRAFT POST-PROCESSING ---\n")
+        if not self.all_imported_objects:
+            return
+
+        self.doc.openTransaction("DXF Post-processing")
+        try:
+            block_defs, top_geo, placeholders = self._categorize_objects()
+
+            # Process geometry inside block definitions
+            for block_def_obj, original_children in block_defs.items():
+                new_draft_children = [self._create_and_parent_geometry(child) for child in original_children]
+                block_def_obj.Links = [obj for obj in new_draft_children if obj]
+                self.all_originals_to_delete.update(set(original_children) - set(new_draft_children))
+
+            # Process top-level geometry
+            converted_top_geo = []
+            for part_obj in top_geo:
+                new_obj = self._create_and_parent_geometry(part_obj)
+                if new_obj:
+                    converted_top_geo.append(new_obj)
+            self.all_originals_to_delete.update(set(top_geo) - set(converted_top_geo))
+
+            # Process placeholders like Text and Dimensions
+            self._create_from_placeholders(placeholders)
+
+            # Perform all deletions at once
+            self._delete_objects_in_batch()
+
+        except Exception as e:
+            self.doc.abortTransaction()
+            FCC.PrintError(f"Aborting DXF post-processing due to an error: {e}\n")
+            import traceback
+            traceback.print_exc()
+            return
+        finally:
+            self.doc.commitTransaction()
+
+        self._apply_gui_styles()
+        self._cleanup_organizational_groups()
+
+        self.doc.recompute()
+        FCC.PrintMessage("--- Draft post-processing finished. ---\n")
+
+# #####################################################################
+# ## C++ Exporter Helper Functions
+# #####################################################################
+
+def _write_text_entities(obj, writer_proxy):
+    """Writes DXF TEXT entities for an Annotation object."""
+    if not hasattr(obj, "ViewObject"):
+        return None
+
+    height = float(obj.ViewObject.FontSize)
+    justify_map = {"Left": 0, "Center": 1, "Right": 2}
+    justification = justify_map.get(obj.ViewObject.Justification, 0)
+
+    # Base position and rotation
+    placement = obj.Placement
+    rotation = placement.Rotation.Angle * 180 / math.pi
+
+    # Handle multi-line text by adjusting position for each line
+    for i, text_line in enumerate(obj.Text):
+        # Y-offset for subsequent lines. DXF text origin is bottom-left.
+        # FreeCAD's text position is top-left, so we adjust.
+        # A line height of 1.2 * font size is a reasonable approximation.
+        y_offset = -height * 1.2 * i
+
+        # Create a vector for the offset and rotate it
+        offset_vec = FreeCAD.Vector(0, y_offset, 0)
+        rotated_offset = placement.Rotation.multVec(offset_vec)
+
+        pos = placement.Base + rotated_offset
+
+        # The second alignment point is needed for certain justifications
+        # For simplicity, we can often reuse the insertion point
+        p1 = (pos.x, pos.y, pos.z)
+        p2 = p1 # Simplification for now
+
+        writer_proxy.addText(text_line, p1_tuple, p2_tuple, dxf_height, justification, rotation)
+
+
+def _write_dimension_entity(obj, writer_proxy):
+    """
+    Internal helper to extract data for a DXF DIMENSION entity.
+    Called from C++. Returns a tuple of data.
+    """
+    # Using properties directly
+    p1 = obj.Start
+    p2 = obj.End
+    dim_line_pt = obj.Dimline
+
+    # The text is implicitly calculated by the DIMENSION entity in DXF,
+    # but we can provide an override. "<>" is the code for the measurement.
+    dim_text_override = "<>"
+
+    # Determine dimension type (simplified)
+    # 0=Aligned, 1=Horizontal, 2=Vertical in our C++ writer
+    # A more robust check would analyze the vectors, but this is a start.
+    if abs(p1.x - p2.x) < 1e-7:
+        dim_type = 2 # Vertical
+    elif abs(p1.y - p2.y) < 1e-7:
+        dim_type = 1 # Horizontal
+    else:
+        dim_type = 0 # Aligned
+
+    # Package the data to be returned to C++
+    text_mid_point = (dim_line_pt.x, dim_line_pt.y, dim_line_pt.z)
+    p1_tuple = (p1.x, p1.y, p1.z)
+    p2_tuple = (p2.x, p2.y, p2.z)
+
+    writer_proxy.writeLinearDim(text_mid_point,
+                                dim_line_pt,
+                                p1_tuple,
+                                p2_tuple,
+                                dim_text_override,
+                                dim_type)
+
+
+def _export_techdraw_page(page, writer_proxy):
+    """
+    Internal helper for the C++ exporter to handle TechDraw::DrawPage objects.
+    """
+    # This logic is adapted from the legacy exportPage function
+    import TechDraw
+
+    # First, define all views as blocks
+    for view in page.Views:
+        view_name = view.Name
+        # All block definitions are relative to (0,0,0)
+        base_point = (0.0, 0.0, 0.0)
+
+        writer_proxy.writeBlock(view_name, base_point)
+
+        # Set layer and color for the geometry inside the block
+        # Blocks typically define geometry on layer "0" with color BYBLOCK
+        writer_proxy.setLayerName("0")
+        writer_proxy.setColor(0) # 0 = BYBLOCK
+
+        # Project the source shapes for this view
+        if hasattr(TechDraw, "projectToDXF"): # Check for modern TechDraw API
+            for source_obj in view.Source:
+                # projectToDXF returns a TopoShape, which we can export
+                projected_shape = TechDraw.projectToDXF(source_obj.Shape, view.Direction)
+                if projected_shape:
+                    writer_proxy.exportShape(projected_shape)
+        # Note: Add handlers for Draft, Arch views if needed, similar to legacy exporter
+
+        writer_proxy.writeEndBlock(view_name)
+
+    # Second, insert all the created blocks into the model space
+    for view in page.Views:
+        # Set the layer and color for the INSERT entity itself
+        layer_name = getGroup(view) # Use the view's layer
+        aci_color = 256 # 256 = BYLAYER for inserts
+        writer_proxy.setLayerName(layer_name)
+        writer_proxy.setColor(aci_color)
+
+        # Get placement info
+        insertion_point = (view.X, view.Y, 0.0)
+        scale = view.Scale
+        rotation = view.Rotation
+
+        writer_proxy.writeInsert(view.Name, insertion_point, scale, rotation)
+
+    FreeCAD.Console.PrintMessage(f"Exported TechDraw page '{page.Label}' to DXF.\n")
+
+
+def _write_arch_axis_entities(obj, writer_proxy):
+    """
+    Specific helper to export an Arch::AxisSystem object.
+    This is called by the master dispatcher.
+    """
+    if not hasattr(obj, "Proxy") or not hasattr(obj, "ViewObject"):
+        return
+
+    try:
+        # Set the layer and color for all parts of this object
+        layer_name = getGroup(obj)
+        aci_color = getACI(obj)
+        writer_proxy.setLayerName(layer_name)
+        writer_proxy.setColor(aci_color)
+
+        # 1. Export the axis lines
+        axis_data = obj.Proxy.getAxisData(obj)
+        if not axis_data:
+            return
+
+        for axis_line in axis_data:
+            start_point = axis_line[0]
+            end_point = axis_line[1]
+            writer_proxy.addLine(start_point, end_point)
+
+        # 2. Export the text labels and bubbles
+        vobj = obj.ViewObject
+        if hasattr(vobj, "Proxy"):
+            font_size = float(vobj.FontSize)
+
+            for text_info in vobj.Proxy.getTextData():
+                text_string = text_info[0]
+                pos = text_info[1] + FreeCAD.Vector(0, -font_size / 2, 0)
+                p1 = (pos.x, pos.y, pos.z)
+                p2 = p1
+                writer_proxy.addText(text_string, p1, p2, font_size * 0.8, 1)
+
+            for shape in vobj.Proxy.getShapeData():
+                writer_proxy.exportShape(shape)
+
+    except Exception as e:
+        FreeCAD.Console.PrintError(f"Error exporting Arch AxisSystem {obj.Name}: {e}\n")
+
+def _write_arch_space_entities(obj, writer_proxy):
+    """
+    Specific helper to export an Arch::Space object.
+    Exports the space's label and area as text.
+    """
+    if not hasattr(obj, "ViewObject"):
+        return
+
+    try:
+        # This logic is adapted from the legacy exporter
+        vobj = obj.ViewObject
+        if not hasattr(vobj, "Proxy"):
+            return
+
+        # Set layer and color
+        layer_name = getGroup(obj)
+        aci_color = getACI(obj, text=True) # Get text color
+        writer_proxy.setLayerName(layer_name)
+        writer_proxy.setColor(aci_color)
+
+        # Get all the text data from the Space's ViewObject proxy
+        rotation = obj.Placement.Rotation.Angle * 180.0 / math.pi
+        text1 = "".join(vobj.Proxy.text1.string.getValues())
+        text2 = "".join(vobj.Proxy.text2.string.getValues())
+        h1 = vobj.FirstLine.Value
+        h2 = vobj.FontSize.Value
+
+        # Calculate text positions
+        p2 = obj.Placement.multVec(vobj.Proxy.coords.translation.getValue())
+        lspc = obj.Placement.multVec(vobj.Proxy.header.translation.getValue())
+        p1 = p2 + lspc
+
+        # Write the first line of text (e.g., "Room")
+        writer_proxy.addText(text1, (p1.x, p1.y, p1.z), (p1.x, p1.y, p1.z), h1 * 0.8, 1, rotation)
+
+        # Write the second line of text (e.g., "12.34 m2")
+        if text2:
+            ofs = obj.Placement.Rotation.multVec(FreeCAD.Vector(0, -lspc.Length, 0))
+            p2_pos = p1 + ofs
+            writer_proxy.addText(text2, (p2_pos.x, p2_pos.y, p2_pos.z), (p2_pos.x, p2_pos.y, p2_pos.z), h2 * 0.8, 1, rotation)
+
+    except Exception as e:
+        FreeCAD.Console.PrintError(f"Error exporting Arch Space {obj.Name}: {e}\n")
+
+def _write_arch_panel_cut_entities(obj, writer_proxy):
+    """
+    Specific helper for Arch::PanelCut objects.
+    Exports the panel's outline and cuts on specific layers.
+    """
+    if not hasattr(obj, "Proxy") or not hasattr(obj.Proxy, "outline"):
+        return
+
+    try:
+        # The outline shape is stored in the object's proxy
+        outline_shape = obj.Proxy.outline.copy()
+        outline_shape.Placement = obj.Placement.multiply(outline_shape.Placement)
+
+        # In a Panel, the outline is the largest wire, inner shapes are cuts.
+        # This logic finds the main outline and separates it from the cutouts.
+        outline_wire = None
+        cut_wires = []
+        max_diag = 0
+
+        if len(outline_shape.Wires) > 0:
+            for w in outline_shape.Wires:
+                if w.BoundBox.DiagonalLength > max_diag:
+                    max_diag = w.BoundBox.DiagonalLength
+                    if outline_wire:
+                        cut_wires.append(outline_wire)
+                    outline_wire = w
+                else:
+                    cut_wires.append(w)
+
+        # Export the main outline on the "Outlines" layer in blue
+        if outline_wire:
+            writer_proxy.setLayerName("Outlines")
+            writer_proxy.setColor(5) # ACI color 5 = blue
+            writer_proxy.exportShape(outline_wire)
+
+        # Export the cutouts on the "Cuts" layer in cyan
+        if cut_wires:
+            writer_proxy.setLayerName("Cuts")
+            writer_proxy.setColor(4) # ACI color 4 = cyan
+            for cut in cut_wires:
+                writer_proxy.exportShape(cut)
+
+    except Exception as e:
+        FreeCAD.Console.PrintError(f"Error exporting Arch PanelCut {obj.Name}: {e}\n")
+
+def _write_arch_panel_sheet_entities(obj, writer_proxy):
+    """
+    Specific helper for Arch::PanelSheet objects.
+    Exports the sheet's border and tag, then processes its child PanelCut objects.
+    """
+    if not hasattr(obj, "Proxy"):
+        return
+
+    try:
+        # Execute the object if needed to generate its geometry
+        if not hasattr(obj.Proxy, "sheetborder"):
+            obj.Proxy.execute(obj)
+
+        # 1. Export the sheet's own border geometry
+        if hasattr(obj.Proxy, "sheetborder") and obj.Proxy.sheetborder:
+            border_shape = obj.Proxy.sheetborder.copy()
+            border_shape.Placement = obj.Placement
+            writer_proxy.setLayerName("Sheets")
+            writer_proxy.setColor(1) # ACI color 1 = red
+            writer_proxy.exportShape(border_shape)
+
+        # 2. Export the sheet's tag
+        if hasattr(obj.Proxy, "sheettag") and obj.Proxy.sheettag:
+            tag_shape = obj.Proxy.sheettag.copy()
+            tag_shape.Placement = obj.Placement.multiply(tag_shape.Placement)
+            writer_proxy.setLayerName("SheetTags")
+            writer_proxy.setColor(1) # ACI color 1 = red
+            writer_proxy.exportShape(tag_shape)
+
+        # 3. Process all child objects of the PanelSheet
+        for child in obj.Group:
+            if Draft.getType(child) == "PanelCut":
+                # Call the existing handler for PanelCut objects
+                _export_arch_panel_cut(child, writer_proxy)
+            elif child.isDerivedFrom("Part::Feature"):
+                # Handle other generic Part features within the sheet
+                layer_name = getGroup(child)
+                aci_color = getACI(child)
+                writer_proxy.setLayerName(layer_name)
+                writer_proxy.setColor(aci_color)
+
+                shape_copy = child.Shape.copy()
+                shape_copy.Placement = obj.Placement.multiply(shape_copy.Placement)
+                writer_proxy.exportShape(shape_copy)
+
+    except Exception as e:
+        FreeCAD.Console.PrintError(f"Error exporting Arch PanelSheet {obj.Name}: {e}\n")
+
+
+def _write_generic_shape_entity(obj, writer_proxy):
+    """
+    Handles the export of any object with a .Shape property.
+    This includes Part::Feature, Sketcher::Sketch, etc.
+    It also handles the projection and meshing options.
+    """
+    shape_to_export = obj.Shape
+
+    # Check for sketches, which need special handling to be flattened
+    if Draft.getType(obj) == 'Sketch':
+        # This assumes a helper exists to correctly get a flat shape from a sketch
+        # In a real implementation, we might need Sketcher.getExportShape(obj)
+        pass # For now, we just use the default shape
+
+    # The projection/meshing options are checked in C++, but we could
+    # also check them here if needed. The C++ check is more efficient.
+    # The C++ side will have already processed the projection if the option was set.
+
+    writer_proxy.exportShape(shape_to_export)
+
+
+def _export_object(obj, writer_proxy):
+    """
+    Master dispatcher for all objects. Called once per object from C++.
+    It identifies the object type and calls the appropriate writing logic.
+    """
+    # 1. Set Layer and Color for the object
+    # For text-based objects (Annotations, Dimensions), we get the text color
+    is_text_obj = hasattr(obj, 'ViewObject') and hasattr(obj.ViewObject, 'TextColor')
+    layer_name = getGroup(obj)
+    aci_color = getACI(obj, text=is_text_obj)
+    writer_proxy.setLayerName(layer_name)
+    writer_proxy.setColor(aci_color)
+
+    # 2. Get the object's type
+    obj_type = Draft.getType(obj)
+
+    # 3. Dispatch to the correct handler
+    try:
+        if obj_type == 'Annotation':
+            _write_text_entities(obj, writer_proxy)
+        elif obj_type == 'Dimension':
+            _write_dimension_entity(obj, writer_proxy)
+        elif obj_type == 'AxisSystem':
+            _write_arch_axis_entities(obj, writer_proxy)
+        elif obj_type == 'Space':
+            _write_arch_space_entities(obj, writer_proxy)
+        elif obj_type == 'PanelCut':
+            _write_arch_panel_cut_entities(obj, writer_proxy)
+        elif obj_type == 'PanelSheet':
+            _write_arch_panel_sheet_entities(obj, writer_proxy)
+        elif hasattr(obj, "Shape") and obj.Shape.isValid():
+            # This is the fallback for any other object with a valid Shape property
+            _write_generic_shape_entity(obj, writer_proxy)
+        else:
+            # Object has no shape and no special handler, so we skip it.
+            pass
+
+    except Exception as e:
+        FreeCAD.Console.PrintError(f"Error exporting object {obj.Name} of type {obj_type}: {e}\n")
+
+def _ensure_helpers_initialized():
+    """
+    Initializes global resources needed by helper functions (getACI, getGroup)
+    when they are called from either the legacy or the C++ exporter.
+    This function is idempotent and safe to call multiple times.
+    """
+    # 1. Load preferences if they haven't been loaded yet.
+    # We check for a variable that is guaranteed to be set by readPreferences.
+    if "dxfUseLegacyExporter" not in globals():
+        readPreferences()
+
+    # 2. If using the legacy exporter, ensure its libraries are loaded.
+    # This is not needed for the new C++ exporter.
+    if dxfUseLegacyExporter and (dxfColorMap is None):
+        getDXFlibs()
