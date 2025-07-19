@@ -82,8 +82,8 @@ class BIM_Box:
                     self.points[-1].sub(point).Length,  FreeCAD.Units.Length
                 ).UserString
             )
-            self.Length.selectAll()
             self.Length.setFocus()
+            self.Length.setSelection(0,FreeCADGui.draftToolBar.number_length(self.Length.text()))
         elif len(self.points) == 2:
             # now we already have our base line, we update the 1st rectangle
             p = point
@@ -100,8 +100,8 @@ class BIM_Box:
                     self.cubetracker[0].getSize()[1], FreeCAD.Units.Length
                 ).UserString
             )
-            self.Width.selectAll()
             self.Width.setFocus()
+            self.Width.setSelection(0,FreeCADGui.draftToolBar.number_length(self.Width.text()))
         elif len(self.points) == 3:
             h = DraftGeomUtils.distance_to_plane(point, self.cubetracker[0].p3(), self.normal)
             w = self.normal * h
@@ -111,8 +111,8 @@ class BIM_Box:
             self.cubetracker[3].p1((self.cubetracker[0].p1()).add(w))
             self.cubetracker[3].p3((self.cubetracker[0].p3()).add(w))
             self.Height.setText(FreeCAD.Units.Quantity(h, FreeCAD.Units.Length).UserString)
-            self.Height.selectAll()
             self.Height.setFocus()
+            self.Height.setSelection(0,FreeCADGui.draftToolBar.number_length(self.Height.text()))
 
     def PointCallback(self, point, snapinfo):
         if not point:
@@ -180,12 +180,16 @@ class BIM_Box:
         if not self.WidthValue:
             self.Height.setEnabled(False)
 
+        self.Length.textEdited.connect(FreeCADGui.draftToolBar.checkSpecialChars)
+        self.Width.textEdited.connect(FreeCADGui.draftToolBar.checkSpecialChars)
+        self.Height.textEdited.connect(FreeCADGui.draftToolBar.checkSpecialChars)
         self.Length.valueChanged.connect(self.setLength)
         self.Width.valueChanged.connect(self.setWidth)
         self.Height.valueChanged.connect(self.setHeight)
         self.Length.returnPressed.connect(self.setLengthUI)
         self.Width.returnPressed.connect(self.setWidthUI)
         self.Height.returnPressed.connect(self.setHeightUI)
+
         return wid
 
     def setLength(self, d):
