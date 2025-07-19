@@ -17,8 +17,7 @@
    <item>
     <widget class="QToolButton" name="buttonRefSel">
      <property name="toolTip">
-      <string>Click button to enter selection mode,
-click again to end selection</string>
+      <string>Toggles between selection and preview mode</string>
      </property>
      <property name="text">
       <string>Select</string>
@@ -91,7 +90,7 @@ click again to end selection</string>
        </item>
        <item>
         <property name="text">
-         <string>Recto Verso</string>
+         <string>Recto verso</string>
         </property>
        </item>
       </widget>
@@ -99,7 +98,7 @@ click again to end selection</string>
      <item row="2" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Join Type</string>
+        <string>Join type</string>
        </property>
       </widget>
      </item>

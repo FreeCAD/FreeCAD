@@ -60,12 +60,12 @@
       <widget class="QComboBox" name="comboMode">
        <item>
         <property name="text">
-         <string>Overall Angle</string>
+         <string>Overall angle</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Offset Angle</string>
+         <string>Offset angle</string>
         </property>
        </item>
       </widget>

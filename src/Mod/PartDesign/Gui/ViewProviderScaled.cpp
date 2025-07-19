@@ -36,7 +36,7 @@ TaskDlgFeatureParameters *ViewProviderScaled::getEditDialog() {
 
 void ViewProviderScaled::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    addDefaultAction(menu, QObject::tr("Edit scaled"));
+    addDefaultAction(menu, QObject::tr("Edit Scale"));
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 

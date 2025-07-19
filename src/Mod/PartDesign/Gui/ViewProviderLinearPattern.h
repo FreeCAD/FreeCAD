@@ -34,7 +34,7 @@ class PartDesignGuiExport ViewProviderLinearPattern : public ViewProviderTransfo
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderLinearPattern);
 public:
     ViewProviderLinearPattern()
-        { menuName = tr("LinearPattern parameters");
+        { menuName = tr("Linear Pattern Parameters");
           sPixmap = "PartDesign_LinearPattern.svg"; }
 
     const std::string & featureName() const override;
