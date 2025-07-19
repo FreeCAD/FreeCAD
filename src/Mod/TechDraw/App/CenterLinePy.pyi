@@ -1,6 +1,6 @@
 from typing import Any, Final
 
-from Base import PyObjectBase
+from Base.PyObjectBase import PyObjectBase
 from Base.Metadata import constmethod, export
 
 @export(
