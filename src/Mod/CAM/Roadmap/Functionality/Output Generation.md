@@ -30,3 +30,6 @@
 - Support splitting gcode into multiple files 
 - Automatic tool wear compensation output (D offsets or tool tables)
 - Integration with machine feedback loop (closed-loop post)
+- Direct-to-machine fabrication.  The entire pipeline of CAM->Gcode->machine
+  should be reconsidered.  The workflow should feel more like 3D printing with a direct closed loop process
+
