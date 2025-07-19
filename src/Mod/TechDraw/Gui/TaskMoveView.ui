@@ -33,14 +33,14 @@
      <item row="0" column="2">
       <widget class="QPushButton" name="pbView">
        <property name="text">
-        <string notr="true">...</string>
+        <string notr="true">…</string>
        </property>
       </widget>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="lFromPage">
        <property name="text">
-        <string>From Page</string>
+        <string>From page</string>
        </property>
       </widget>
      </item>
@@ -54,14 +54,14 @@
      <item row="1" column="2">
       <widget class="QPushButton" name="pbFromPage">
        <property name="text">
-        <string notr="true">...</string>
+        <string notr="true">…</string>
        </property>
       </widget>
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="lToPage">
        <property name="text">
-        <string>To Page</string>
+        <string>To page</string>
        </property>
       </widget>
      </item>
@@ -75,7 +75,7 @@
      <item row="2" column="2">
       <widget class="QPushButton" name="pbToPage">
        <property name="text">
-        <string notr="true">...</string>
+        <string notr="true">…</string>
        </property>
       </widget>
      </item>

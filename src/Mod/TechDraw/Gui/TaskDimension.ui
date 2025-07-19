@@ -25,10 +25,10 @@
         <item row="0" column="0">
          <widget class="QCheckBox" name="cbTheoreticallyExact">
           <property name="toolTip">
-           <string>If theoretical exact (basic) dimension</string>
+           <string>If theoretically exact (basic) dimension</string>
           </property>
           <property name="text">
-           <string>Theoretically Exact</string>
+           <string>Theoretically exact</string>
           </property>
          </widget>
         </item>
@@ -38,14 +38,14 @@
            <string>Assign same value to over and under tolerance</string>
           </property>
           <property name="text">
-           <string>Equal Tolerance</string>
+           <string>Equal tolerance</string>
           </property>
          </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Overtolerance:</string>
+           <string>Overtolerance</string>
           </property>
          </widget>
         </item>
@@ -59,8 +59,8 @@
           </property>
           <property name="toolTip">
            <string>Overtolerance value
-If 'Equal Tolerance' is checked this is also
-the negated value for 'Under Tolerance'.</string>
+If 'Equal tolerance' is checked this is also
+the negated value for 'Undertolerance'.</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -90,8 +90,8 @@ the negated value for 'Under Tolerance'.</string>
           </property>
           <property name="toolTip">
            <string>Undertolerance value
-If 'Equal Tolerance' is checked it will be replaced
-by negative value of 'Over Tolerance'.</string>
+If 'Equal tolerance' is checked it will be replaced
+by negative value of 'Overtolerance'.</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -120,7 +120,7 @@ by negative value of 'Over Tolerance'.</string>
         <item row="0" column="0">
          <widget class="QLabel" name="label_11">
           <property name="text">
-           <string>Format Specifier:</string>
+           <string>Format specifier</string>
           </property>
          </widget>
         </item>
@@ -134,18 +134,17 @@ by negative value of 'Over Tolerance'.</string>
         <item row="1" column="0">
          <widget class="QCheckBox" name="cbArbitrary">
           <property name="toolTip">
-           <string>If checked, the content of 'Format Spec' will
-be used instead of the dimension value</string>
+           <string>Sets use of 'Format spec' instead of the dimension value</string>
           </property>
           <property name="text">
-           <string>Arbitrary Text</string>
+           <string>Arbitrary text</string>
           </property>
          </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>OverTolerance Format Specifier:</string>
+           <string>Overtolerance format specifier</string>
           </property>
          </widget>
         </item>
@@ -159,7 +158,7 @@ be used instead of the dimension value</string>
         <item row="3" column="0">
          <widget class="QLabel" name="label_12">
           <property name="text">
-           <string>UnderTolerance Format Specifier:</string>
+           <string>Undertolerance format specifier</string>
           </property>
          </widget>
         </item>
@@ -173,10 +172,10 @@ be used instead of the dimension value</string>
         <item row="4" column="0">
          <widget class="QCheckBox" name="cbArbitraryTolerances">
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the content of tolerance format spec  will&lt;/p&gt;&lt;p&gt;be used instead of the tolerance value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Uses the tolerance format spec&lt;/p&gt;&lt;p&gt;instead of the tolerance value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
-           <string>Arbitrary Tolerance Text</string>
+           <string>Arbitrary tolerance text</string>
           </property>
          </widget>
         </item>
@@ -199,7 +198,7 @@ be used instead of the dimension value</string>
            <string>Reverses usual direction of dimension line terminators</string>
           </property>
           <property name="text">
-           <string>Flip Arrowheads</string>
+           <string>Flip arrowheads</string>
           </property>
          </widget>
         </item>
@@ -227,7 +226,7 @@ be used instead of the dimension value</string>
         <item row="2" column="0">
          <widget class="QLabel" name="label_7">
           <property name="text">
-           <string>Font Size:</string>
+           <string>Font size</string>
           </property>
          </widget>
         </item>
@@ -246,7 +245,7 @@ be used instead of the dimension value</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>Fontsize for 'Text'</string>
+           <string>Font size for text</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -258,7 +257,7 @@ be used instead of the dimension value</string>
            <double>4.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>FontSize</cstring>
+           <cstring>Font size</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>/Mod/TechDraw/Dimensions</cstring>
@@ -268,7 +267,7 @@ be used instead of the dimension value</string>
         <item row="3" column="0">
          <widget class="QLabel" name="label_4">
           <property name="text">
-           <string>Drawing Style:</string>
+           <string>Drawing style</string>
           </property>
          </widget>
         </item>
@@ -279,22 +278,22 @@ be used instead of the dimension value</string>
           </property>
           <item>
            <property name="text">
-            <string>ISO Oriented</string>
+            <string>ISO oriented</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>ISO Referencing</string>
+            <string>ISO referencing</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>ASME Inlined</string>
+            <string>ASME inlined</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>ASME Referencing</string>
+            <string>ASME referencing</string>
            </property>
           </item>
          </widget>
@@ -348,20 +347,20 @@ be used instead of the dimension value</string>
         <item row="2" column="0">
          <widget class="QPushButton" name="pbDimUseDefault">
           <property name="toolTip">
-           <string>Set dimension line angle to default (ortho view).</string>
+           <string>Set dimension line angle to default (orthographic view)</string>
           </property>
           <property name="text">
-           <string>Use default</string>
+           <string>Use Default</string>
           </property>
          </widget>
         </item>
         <item row="2" column="1">
          <widget class="QPushButton" name="pbDimUseSelection">
           <property name="toolTip">
-           <string>Set dimension line angle to match selected edge or vertices.</string>
+           <string>Set dimension line angle to match selected edge or vertices</string>
           </property>
           <property name="text">
-           <string>Use selection</string>
+           <string>Use Selection</string>
           </property>
          </widget>
         </item>
@@ -391,20 +390,20 @@ be used instead of the dimension value</string>
         <item row="4" column="0">
          <widget class="QPushButton" name="pbExtUseDefault">
           <property name="toolTip">
-           <string>Set extension line angle to default (ortho).</string>
+           <string>Set extension line angle to default (orthographic)</string>
           </property>
           <property name="text">
-           <string>Use default</string>
+           <string>Use Default</string>
           </property>
          </widget>
         </item>
         <item row="4" column="1">
          <widget class="QPushButton" name="pbExtUseSelection">
           <property name="toolTip">
-           <string>Set extension line angle to match selected edge or vertices.</string>
+           <string>Set extension line angle to match selected edge or vertices</string>
           </property>
           <property name="text">
-           <string>Use selection</string>
+           <string>Use Selection</string>
           </property>
          </widget>
         </item>
