@@ -101,7 +101,7 @@ class CommandPathComment:
         return {
             "Pixmap": "CAM_Comment",
             "MenuText": QT_TRANSLATE_NOOP("CAM_Comment", "Comment"),
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_Comment", "Add a Comment to your CNC program"),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_Comment", "Adds a Comment to the CNC program"),
         }
 
     def IsActive(self):
@@ -112,7 +112,7 @@ class CommandPathComment:
         return False
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create a Comment in your CNC program")
+        FreeCAD.ActiveDocument.openTransaction("Create a Comment in the CNC program")
         FreeCADGui.addModule("Path.Op.Gui.Comment")
         snippet = """
 import Path
@@ -134,4 +134,4 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand("CAM_Comment", CommandPathComment())
 
 
-FreeCAD.Console.PrintLog("Loading PathComment... done\n")
+FreeCAD.Console.PrintLog("Loading PathComment… done\n")

@@ -34,7 +34,7 @@
    <item row="1" column="0">
     <widget class="QLabel" name="lblAxisMapInput">
      <property name="text">
-      <string>Axis Mapping</string>
+      <string>Axis mapping</string>
      </property>
     </widget>
    </item>

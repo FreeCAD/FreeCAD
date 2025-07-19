@@ -127,7 +127,7 @@ class GCodeEditorDialog(QtGui.QDialog):
         lab.setText(
             translate(
                 "CAM_Inspect",
-                "<b>Note</b>: This dialog shows Path Commands in FreeCAD base units (mm/s). \n Values will be converted to the desired unit during post processing.",
+                "<b>Note</b>: This dialog shows path commands in FreeCAD base units (mm/s). \n Values will be converted to the desired unit during post processing.",
             )
         )
         lab.setWordWrap(True)
@@ -252,7 +252,7 @@ class CommandPathInspect:
     def GetResources(self):
         return {
             "Pixmap": "CAM_Inspect",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_Inspect", "Inspect toolPath Commands"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_Inspect", "Inspect Toolpath"),
             "Accel": "P, I",
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_Inspect", "Inspects the contents of a toolpath object"
@@ -271,12 +271,12 @@ class CommandPathInspect:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("CAM_Inspect", "Please select exactly one path object") + "\n"
+                translate("CAM_Inspect", "Select exactly one path object") + "\n"
             )
             return
         if not (selection[0].isDerivedFrom("Path::Feature")):
             FreeCAD.Console.PrintError(
-                translate("CAM_Inspect", "Please select exactly one path object") + "\n"
+                translate("CAM_Inspect", "Select exactly one path object") + "\n"
             )
             return
 
