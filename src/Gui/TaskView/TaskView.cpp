@@ -948,20 +948,21 @@ TaskDialog* TaskView::dialog(App::Document* doc)
 void TaskView::setShownTaskInfo(int index)
 {
     int stackedIndex = 0;
+    int initIndex = currentIndex();
     if (index < 0 || index >= taskInfos.size()) {
         stackedIndex = 0; // Show task watcher
     } else {
         stackedIndex = index + 1;
     }
-    if (stackedIndex == currentIndex()) {
+    if (stackedIndex == initIndex) {
         return; // Nothing to be done
     }
 
-    if (currentIndex() != 0) {
-        taskInfos[currentIndex() - 1].ActiveDialog->deactivate();
+    if (initIndex > 0) {
+        taskInfos[initIndex - 1].ActiveDialog->deactivate();
     }
     
-    if (stackedIndex != 0) {
+    if (stackedIndex > 0) {
         taskInfos[stackedIndex - 1].ActiveDialog->activate();
     }
     setCurrentIndex(stackedIndex);
