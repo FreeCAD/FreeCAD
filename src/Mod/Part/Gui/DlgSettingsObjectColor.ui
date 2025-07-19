@@ -481,6 +481,13 @@ will be used or black.</string>
           </property>
          </widget>
         </item>
+        <item row="13" column="0" colspan="3" alignment="Qt::AlignmentFlag::AlignLeft">
+         <widget class="QPushButton" name="btnTVApply">
+          <property name="text">
+           <string>Apply to existing bodies</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item>
