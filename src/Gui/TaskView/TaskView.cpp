@@ -762,6 +762,7 @@ void TaskView::removeDialog(std::vector<TaskInfo>::iterator infoIt)
     removeWidget(infoIt->taskPanel);
 
     // put the watcher back in control
+    removeTaskWatcher();
     addTaskWatcher();
 
     if (remove) {
@@ -790,7 +791,7 @@ void TaskView::updateWatcher()
 
     if (ActiveWatcher.empty()) {
         auto panel = Gui::Control().taskPanel();
-        if (panel && panel->ActiveWatcher.size())
+        if (panel && !panel->ActiveWatcher.empty())
             takeTaskWatcher(panel);
     }
 
@@ -959,6 +960,7 @@ void TaskView::setShownTaskInfo(int index)
     if (currentIndex() != 0) {
         taskInfos[currentIndex() - 1].ActiveDialog->deactivate();
     }
+    
     if (stackedIndex != 0) {
         taskInfos[stackedIndex - 1].ActiveDialog->activate();
     }
