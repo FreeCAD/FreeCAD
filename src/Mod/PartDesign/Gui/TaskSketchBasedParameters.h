@@ -72,6 +72,9 @@ protected:
     /// or the subelement's name if the object is a solid.
     QString make2DLabel(const App::DocumentObject* section,
                         const std::vector<std::string>& subValues);
+
+private:
+    Gui::ViewProvider* previouslyVisibleViewProvider {nullptr};
 };
 
 class TaskDlgSketchBasedParameters : public PartDesignGui::TaskDlgFeatureParameters

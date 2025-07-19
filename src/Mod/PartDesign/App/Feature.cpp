@@ -44,6 +44,8 @@
 #include "Body.h"
 #include "ShapeBinder.h"
 
+#include <BRep_Builder.hxx>
+
 FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
 
@@ -70,6 +72,7 @@ Feature::Feature()
     BaseFeature.setStatus(App::Property::Hidden, true);
 
     App::SuppressibleExtension::initExtension(this);
+    Part::PreviewExtension::initExtension(this);
 }
 
 App::DocumentObjectExecReturn* Feature::recompute()
@@ -103,7 +106,15 @@ App::DocumentObjectExecReturn* Feature::recompute()
     if (!failed) {
         updateSuppressedShape();
     }
+
     return App::DocumentObject::StdReturn;
+}
+
+App::DocumentObjectExecReturn* Feature::recomputePreview()
+{
+    updatePreviewShape();
+
+    return StdReturn;
 }
 
 void Feature::setMaterialToBodyMaterial()
@@ -172,7 +183,8 @@ void Feature::onChanged(const App::Property *prop)
 {
     if (!this->isRestoring()
         && this->getDocument()
-        && !this->getDocument()->isPerformingTransaction()) {
+        && !this->getDocument()->isPerformingTransaction()
+    ) {
         if (prop == &Visibility || prop == &BaseFeature) {
             auto body = Body::findBodyOf(this);
             if (body) {
@@ -341,6 +353,52 @@ Part::TopoShape Feature::getBaseTopoShape(bool silent) const
         }
     }
     return result;
+}
+
+void Feature::getGeneratedShapes(std::vector<int>& faces,
+                                 std::vector<int>& edges,
+                                 std::vector<int>& vertices) const
+{
+    Part::TopoShape shape = Shape.getShape();
+
+    std::set<int> edgeSet;
+    std::set<int> vertexSet;
+
+    unsigned count = shape.countSubShapes(TopAbs_FACE);
+
+    for (unsigned faceId = 1; faceId <= count; ++faceId) {
+        Data::MappedName mapped = shape.getMappedName(Data::IndexedName::fromConst("Face", faceId));
+
+        if (mapped && shape.isElementGenerated(mapped)) {
+            faces.push_back(faceId);
+
+            Part::TopoShape face = shape.getSubTopoShape(TopAbs_FACE, faceId);
+
+            for (auto &edge : face.getSubShapes(TopAbs_EDGE)) {
+                int edgeId = shape.findShape(edge);
+
+                if (edgeId > 0) {
+                    edgeSet.insert(edgeId);
+                }
+            }
+
+            for (auto &vertex : face.getSubShapes(TopAbs_VERTEX)) {
+                int vertexId = shape.findShape(vertex);
+
+                if (vertexId > 0) {
+                    vertexSet.insert(vertexId);
+                }
+            }
+        }
+    }
+
+    std::ranges::copy(edgeSet, std::back_inserter(edges));
+    std::ranges::copy(vertexSet, std::back_inserter(vertices));
+}
+
+void Feature::updatePreviewShape()
+{
+    // no-op
 }
 
 PyObject* Feature::getPyObject()

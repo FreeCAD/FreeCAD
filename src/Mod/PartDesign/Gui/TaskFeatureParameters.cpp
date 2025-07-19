@@ -34,6 +34,8 @@
 #include <Mod/PartDesign/App/Feature.h>
 #include <Mod/PartDesign/App/Body.h>
 
+#include "ui_TaskPreviewParameters.h"
+
 #include "TaskFeatureParameters.h"
 #include "TaskSketchBasedParameters.h"
 
@@ -43,6 +45,55 @@ using namespace Gui;
 /*********************************************************************
  *                      Task Feature Parameters                      *
  *********************************************************************/
+
+TaskPreviewParameters::TaskPreviewParameters(ViewProvider* vp, QWidget* parent)
+    : TaskBox(BitmapFactory().pixmap("tree-pre-sel"), tr("Preview"), true, parent)
+    , vp(vp)
+    , ui(std::make_unique<Ui_TaskPreviewParameters>())
+{
+    vp->showPreviousFeature(!hGrp->GetBool("ShowFinal", false));
+    vp->showPreview(hGrp->GetBool("ShowTransparentPreview", true));
+
+    auto* proxy = new QWidget(this);
+    ui->setupUi(proxy);
+
+    ui->showFinalCheckBox->setChecked(vp->isVisible());
+    ui->showTransparentPreviewCheckBox->setChecked(vp->isPreviewEnabled());
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
+    connect(ui->showTransparentPreviewCheckBox,
+            &QCheckBox::checkStateChanged,
+            this,
+            &TaskPreviewParameters::onShowPreviewChanged);
+    connect(ui->showFinalCheckBox,
+            &QCheckBox::checkStateChanged,
+            this,
+            &TaskPreviewParameters::onShowFinalChanged);
+#else
+    connect(ui->showTransparentPreviewCheckBox,
+            &QCheckBox::stateChanged,
+            this,
+            &TaskPreviewParameters::onShowPreviewChanged);
+    connect(ui->showFinalCheckBox,
+            &QCheckBox::stateChanged,
+            this,
+            &TaskPreviewParameters::onShowFinalChanged);
+#endif
+
+    groupLayout()->addWidget(proxy);
+}
+
+TaskPreviewParameters::~TaskPreviewParameters() = default;
+
+void TaskPreviewParameters::onShowFinalChanged(bool show)
+{
+    vp->showPreviousFeature(!show);
+}
+
+void TaskPreviewParameters::onShowPreviewChanged(bool show)
+{
+    vp->showPreview(show);
+}
 
 TaskFeatureParameters::TaskFeatureParameters(PartDesignGui::ViewProvider *vp, QWidget *parent,
                                              const std::string& pixmapname, const QString& parname)
@@ -80,7 +131,8 @@ void TaskFeatureParameters::recomputeFeature()
  *                            Task Dialog                            *
  *********************************************************************/
 TaskDlgFeatureParameters::TaskDlgFeatureParameters(PartDesignGui::ViewProvider *vp)
-    : vp(vp)
+    : preview(new TaskPreviewParameters(vp))
+    , vp(vp)
 {
     assert(vp);
 }

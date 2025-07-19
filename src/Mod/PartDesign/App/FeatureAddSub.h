@@ -26,12 +26,15 @@
 
 #include "FeatureRefine.h"
 
+#include <QtCore>
+
 /// Base class of all additive features in PartDesign
 namespace PartDesign
 {
 
 class PartDesignExport FeatureAddSub : public PartDesign::FeatureRefine
 {
+    Q_DECLARE_TR_FUNCTIONS(PartDesign::FeatureAddSub)
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::FeatureAddSub);
 
 public:
@@ -42,11 +45,14 @@ public:
 
     FeatureAddSub();
 
+    void onChanged(const App::Property *) override;
     Type getAddSubType();
 
     short mustExecute() const override;
 
     virtual void getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape);
+
+    void updatePreviewShape() override;
 
     Part::PropertyPartShape   AddSubShape;
 
