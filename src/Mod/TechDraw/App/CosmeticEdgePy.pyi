@@ -24,7 +24,6 @@ class CosmeticEdgePy(PyObjectBase):
     Tag: Final[str]
     """Gives the tag of the CosmeticEdge as string."""
 
-  
     Start: Vector
     """Gives the position of one end of this CosmeticEdge as vector."""
 
