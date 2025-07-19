@@ -1942,7 +1942,7 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
         auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
 
         if (features.empty()) {
-            FCMD_OBJ_CMD(Feat, "TransformMode = \"Transform body\"");
+            FCMD_OBJ_CMD(Feat, "TransformMode = \"Whole shape\"");
         } else {
             std::stringstream str;
             str << "Originals = [";
@@ -2064,6 +2064,7 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
             Part::Part2DObject *sketch = (static_cast<PartDesign::ProfileBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
             if (sketch) {
                 FCMD_OBJ_CMD(Feat,"Direction = ("<<Gui::Command::getObjectCmd(sketch)<<", ['H_Axis'])");
+                FCMD_OBJ_CMD(Feat,"Direction2 = ("<<Gui::Command::getObjectCmd(sketch)<<", ['V_Axis'])");
                 direction = true;
             }
         }
