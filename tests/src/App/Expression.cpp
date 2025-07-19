@@ -3,6 +3,11 @@
 #include "App/ExpressionParser.h"
 #include "App/ExpressionTokenizer.h"
 
+// +------------------------------------------------+
+// | Note: For more expression related tests, see:  |
+// |       src/Mod/Spreadsheet/TestSpreadsheet.py   |
+// +------------------------------------------------+
+
 // clang-format off
 TEST(Expression, tokenize)
 {
