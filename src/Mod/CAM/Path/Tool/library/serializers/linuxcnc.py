@@ -58,10 +58,11 @@ class LinuxCNCSerializer(AssetSerializer):
                 continue
             diameter = bit.get_diameter()
             pocket = "P0"  # TODO: is there a better way?
+
             # Format diameter to one decimal place and remove units
             diameter_value = diameter.Value if hasattr(diameter, "Value") else diameter
             line = f"T{bit_no} {pocket} D{diameter_value:.3f} ;{bit.label}\n"
-            output.write(line.encode("ascii", "ignore"))
+            output.write(line.encode("utf-8"))
 
         return output.getvalue()
 
