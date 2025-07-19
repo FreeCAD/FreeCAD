@@ -68,24 +68,43 @@ class ViewProviderWire(ViewProviderDraft):
                              locked=True)
             vobj.EndArrow = False
 
-        if not hasattr(vobj, "ArrowSize"):
+        if not hasattr(vobj, "ArrowSizeStart"):
             _tip = QT_TRANSLATE_NOOP("App::Property", "Arrow size")
             vobj.addProperty("App::PropertyLength",
-                             "ArrowSize",
+                             "ArrowSizeStart",
                              "Draft",
                              _tip,
                              locked=True)
-            vobj.ArrowSize = params.get_param("arrowsize")
+            vobj.ArrowSize = params.get_param("arrowsizestart")
 
-        if not hasattr(vobj, "ArrowType"):
+        if not hasattr(vobj, "ArrowSizeEnd"):
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Arrow size")
+            vobj.addProperty("App::PropertyLength",
+                             "ArrowSizeEnd",
+                             "Draft",
+                             _tip,
+                             locked=True)
+            vobj.ArrowSize = params.get_param("arrowsizeend")
+
+        if not hasattr(vobj, "ArrowTypeStart"):
             _tip = QT_TRANSLATE_NOOP("App::Property", "Arrow type")
             vobj.addProperty("App::PropertyEnumeration",
-                             "ArrowType",
+                             "ArrowTypeStart",
                              "Draft",
                              _tip,
                              locked=True)
-            vobj.ArrowType = utils.ARROW_TYPES
-            vobj.ArrowType = utils.ARROW_TYPES[params.get_param("dimsymbol")]
+            vobj.ArrowTypeStart = utils.ARROW_TYPES
+            vobj.ArrowTypeStart = utils.ARROW_TYPES[params.get_param("dimsymbolstart")]
+
+        if not hasattr(vobj, "ArrowTypeEnd"):
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Arrow type")
+            vobj.addProperty("App::PropertyEnumeration",
+                             "ArrowTypeEnd",
+                             "Draft",
+                             _tip,
+                             locked=True)
+            vobj.ArrowTypeStart = utils.ARROW_TYPES
+            vobj.ArrowTypeStart = utils.ARROW_TYPES[params.get_param("dimsymbolend")]
 
     def attach(self, vobj):
         self.Object = vobj.Object
@@ -95,8 +114,10 @@ class ViewProviderWire(ViewProviderDraft):
         self.pt = coin.SoSeparator()
         self.pt.addChild(col)
         self.pt.addChild(self.coords)
-        self.symbol = gui_utils.dim_symbol()
-        self.pt.addChild(self.symbol)
+        self.startSymbol = gui_utils.dim_symbol()
+        self.endSymbol = gui_utils.dim_symbol()
+        self.pt.addChild(self.startSymbol)
+        self.pt.addChild(self.endSymbol)
         super(ViewProviderWire, self).attach(vobj)
         self.onChanged(vobj,"EndArrow")
 
@@ -116,25 +137,31 @@ class ViewProviderWire(ViewProviderDraft):
         return
 
     def onChanged(self, vobj, prop):
-        if prop in ["EndArrow","ArrowSize","ArrowType","Visibility"]:
+        if prop in ["EndArrow","ArrowSizeStart","ArrowTypeStart","ArrowSizeEnd","ArrowTypeEnd","Visibility"]:
             rn = vobj.RootNode
             if hasattr(self,"pt") and hasattr(vobj,"EndArrow"):
                 if vobj.EndArrow and vobj.Visibility:
-                    self.pt.removeChild(self.symbol)
-                    s = utils.ARROW_TYPES.index(vobj.ArrowType)
-                    self.symbol = gui_utils.dim_symbol(s)
-                    self.pt.addChild(self.symbol)
+                    self.pt.removeChild(self.startSymbol)
+                    self.pt.removeChild(self.endSymbol)
+                    startS = utils.ARROW_TYPES.index(vobj.ArrowTypeStart)
+                    endS = utils.ARROW_TYPES.index(vobj.ArrowTypeEnd)
+                    self.startSymbol = gui_utils.dim_symbol(startS)
+                    self.endSymbol = gui_utils.dim_symbol(endS)
+                    self.pt.addChild(self.startSymbol)
+                    self.pt.addChild(self.endSymbol)
                     self.updateData(vobj.Object,"Points")
-                    if hasattr(vobj,"ArrowSize"):
-                        s = vobj.ArrowSize
+                    if hasattr(vobj,"ArrowSizeStart"):
+                        s = vobj.ArrowSizeStart
                     else:
-                        s = params.get_param("arrowsize")
+                        s = params.get_param("arrowsizestart")
                     self.coords.scaleFactor.setValue((s,s,s))
                     rn.addChild(self.pt)
                 else:
-                    if self.symbol:
-                        if self.pt.findChild(self.symbol) != -1:
-                            self.pt.removeChild(self.symbol)
+                    if (self.startSymbol or self.endSymbol):
+                        if self.pt.findChild(self.startSymbol) != -1:
+                            self.pt.removeChild(self.startSymbol)
+                        if self.pt.findChild(self.endSymbol) != -1:
+                            self.pt.removeChild(self.endSymbol)
                         if rn.findChild(self.pt) != -1:
                             rn.removeChild(self.pt)
 

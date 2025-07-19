@@ -56,17 +56,20 @@ if App.GuiUp:
     True if Draft_rc else False
 
 
-ARROW_TYPES = ["Dot", "Circle", "Arrow", "Tick", "Tick-2"]
+ARROW_TYPES = ["Dot", "Circle", "Arrow", "Tick", "Tick-2", "None"]
 DISPLAY_MODES = ["Flat Lines", "Shaded", "Wireframe", "Points"]
 DRAW_STYLES = ["Solid", "Dashed", "Dotted", "Dashdot"]
 arrowtypes = ARROW_TYPES
 
 
 def get_default_annotation_style():
-    arrow_type_index = params.get_param("dimsymbol")
+    arrow_start_type_index = params.get_param("dimsymbolstart")
+    arrow_end_type_index = params.get_param("dimsymbolend")
     return {
-        "ArrowSize":       ("float", params.get_param("arrowsize")),
-        "ArrowType":       ("index", arrow_type_index, ARROW_TYPES[arrow_type_index]),
+        "ArrowSizeStart":  ("float", params.get_param("arrowsizestart")),
+        "ArrowTypeStart":  ("index", arrow_start_type_index, ARROW_TYPES[arrow_start_type_index]),
+        "ArrowSizeEnd":    ("float", params.get_param("arrowsizeend")),
+        "ArrowTypeEnd":    ("index", arrow_end_type_index, ARROW_TYPES[arrow_end_type_index]),
         "Decimals":        ("int",   params.get_param("dimPrecision")),
         "DimOvershoot":    ("float", params.get_param("dimovershoot")),
         "ExtLines":        ("float", params.get_param("extlines")),
