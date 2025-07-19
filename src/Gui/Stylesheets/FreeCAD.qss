@@ -1785,8 +1785,14 @@ QTabBar#mdiAreaTabBar::tab:bottom:selected {
   border-top: @3DViewBackgroundRefColor;
 }
 
-QTabBar {
+/*tabbar for files. */
+QTabBar#mdiAreaTabBar {
   qproperty-drawBase: 1;/*tabbar for files. */
+  background-color: @PrimaryColor;
+}
+
+QTabBar {
+  qproperty-drawBase: 0;/*tabbar for files. */
 }
 
 QTabWidget::tab-bar {
