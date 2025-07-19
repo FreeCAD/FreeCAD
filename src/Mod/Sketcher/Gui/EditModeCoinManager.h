@@ -211,8 +211,8 @@ public:
     //@{
     void drawEditMarkers(const std::vector<Base::Vector2d>& EditMarkers,
                          unsigned int augmentationlevel);
-    void drawEdit(const std::vector<Base::Vector2d>& EditCurve);
-    void drawEdit(const std::list<std::vector<Base::Vector2d>>& list);
+    void drawEdit(const std::vector<Base::Vector2d>& EditCurve, bool isConstruction);
+    void drawEdit(const std::list<std::vector<Base::Vector2d>>& list, bool isConstruction);
     void setPositionText(const Base::Vector2d& Pos, const SbString& txt);
     void setPositionText(const Base::Vector2d& Pos);
     void resetPositionText();
@@ -277,6 +277,8 @@ private:
 
     // causes the ViewProvider to draw
     void redrawViewProvider();
+
+    void setEditDrawStyle(bool isConstruction);
 
     int defaultApplicationFontSizePixels() const;
 
