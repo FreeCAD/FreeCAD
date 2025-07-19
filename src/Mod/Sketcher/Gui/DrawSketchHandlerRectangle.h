@@ -111,23 +111,121 @@ public:
 private:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        return lookupRectangleHints(constructionMethod(), state());
+        using State = std::pair<ConstructionMethod, SelectMode>;
+        using enum Gui::InputHint::UserInput;
+
+        const Gui::InputHint switchHint {.message = tr("%1 switch mode"), .sequences = {KeyM}};
+
+        return Gui::lookupHints<State>(
+            {constructionMethod(), state()},
+            {
+                // Diagonal method
+                {.state = {ConstructionMethod::Diagonal, SelectMode::SeekFirst},
+                 .hints =
+                     {
+                         {tr("%1 pick first corner"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::Diagonal, SelectMode::SeekSecond},
+                 .hints =
+                     {
+                         {tr("%1 pick opposite corner"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::Diagonal, SelectMode::SeekThird},
+                 .hints =
+                     {
+                         {tr("%1 set corner radius or frame thickness"), {MouseMove}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::Diagonal, SelectMode::SeekFourth},
+                 .hints =
+                     {
+                         {tr("%1 set frame thickness"), {MouseMove}},
+                         switchHint,
+                     }},
+
+                // CenterAndCorner method
+                {.state = {ConstructionMethod::CenterAndCorner, SelectMode::SeekFirst},
+                 .hints =
+                     {
+                         {tr("%1 pick center"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::CenterAndCorner, SelectMode::SeekSecond},
+                 .hints =
+                     {
+                         {tr("%1 pick corner"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::CenterAndCorner, SelectMode::SeekThird},
+                 .hints =
+                     {
+                         {tr("%1 set corner radius or frame thickness"), {MouseMove}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::CenterAndCorner, SelectMode::SeekFourth},
+                 .hints =
+                     {
+                         {tr("%1 set frame thickness"), {MouseMove}},
+                         switchHint,
+                     }},
+
+                // ThreePoints method
+                {.state = {ConstructionMethod::ThreePoints, SelectMode::SeekFirst},
+                 .hints =
+                     {
+                         {tr("%1 pick first corner"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::ThreePoints, SelectMode::SeekSecond},
+                 .hints =
+                     {
+                         {tr("%1 pick second corner"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::ThreePoints, SelectMode::SeekThird},
+                 .hints =
+                     {
+                         {tr("%1 pick third corner"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::ThreePoints, SelectMode::SeekFourth},
+                 .hints =
+                     {
+                         {tr("%1 set corner radius or frame thickness"), {MouseMove}},
+                         switchHint,
+                     }},
+
+                // CenterAnd3Points method
+                {.state = {ConstructionMethod::CenterAnd3Points, SelectMode::SeekFirst},
+                 .hints =
+                     {
+                         {tr("%1 pick center"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::CenterAnd3Points, SelectMode::SeekSecond},
+                 .hints =
+                     {
+                         {tr("%1 pick first corner"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::CenterAnd3Points, SelectMode::SeekThird},
+                 .hints =
+                     {
+                         {tr("%1 pick second corner"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::CenterAnd3Points, SelectMode::SeekFourth},
+                 .hints =
+                     {
+                         {tr("%1 set corner radius or frame thickness"), {MouseMove}},
+                         switchHint,
+                     }},
+            });
     }
 
 private:
-    struct HintEntry
-    {
-        ConstructionMethods::RectangleConstructionMethod method;
-        SelectMode state;
-        std::list<Gui::InputHint> hints;
-    };
-
-    using HintTable = std::vector<HintEntry>;
-
-    static Gui::InputHint switchModeHint();
-    static HintTable getRectangleHintTable();
-    static std::list<Gui::InputHint>
-    lookupRectangleHints(ConstructionMethods::RectangleConstructionMethod method, SelectMode state);
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
         using std::numbers::pi;
@@ -605,7 +703,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Rectangle parameters"));
+        return QString(tr("Rectangle parameters"));
     }
 
     void angleSnappingControl() override
@@ -2675,104 +2773,6 @@ void DSHRectangleController::doConstructionMethodChanged()
     handler->updateHint();
 }
 
-Gui::InputHint DrawSketchHandlerRectangle::switchModeHint()
-{
-    return {QObject::tr("%1 switch mode"), {Gui::InputHint::UserInput::KeyM}};
-}
-
-DrawSketchHandlerRectangle::HintTable DrawSketchHandlerRectangle::getRectangleHintTable()
-{
-    const auto switchHint = switchModeHint();
-    return {// Structure: {ConstructionMethod, SelectMode, {hints...}}
-
-            // Diagonal method
-            {ConstructionMethods::RectangleConstructionMethod::Diagonal,
-             SelectMode::SeekFirst,
-             {{QObject::tr("%1 pick first corner"), {Gui::InputHint::UserInput::MouseLeft}},
-              switchHint}},
-            {ConstructionMethods::RectangleConstructionMethod::Diagonal,
-             SelectMode::SeekSecond,
-             {{QObject::tr("%1 pick opposite corner"), {Gui::InputHint::UserInput::MouseLeft}},
-              switchHint}},
-            {ConstructionMethods::RectangleConstructionMethod::Diagonal,
-             SelectMode::SeekThird,
-             {{QObject::tr("%1 set corner radius or frame thickness"),
-               {Gui::InputHint::UserInput::MouseMove}},
-              switchHint}},
-            {ConstructionMethods::RectangleConstructionMethod::Diagonal,
-             SelectMode::SeekFourth,
-             {{QObject::tr("%1 set frame thickness"), {Gui::InputHint::UserInput::MouseMove}},
-              switchHint}},
-
-            // CenterAndCorner method
-            {ConstructionMethods::RectangleConstructionMethod::CenterAndCorner,
-             SelectMode::SeekFirst,
-             {{QObject::tr("%1 pick center"), {Gui::InputHint::UserInput::MouseLeft}}, switchHint}},
-            {ConstructionMethods::RectangleConstructionMethod::CenterAndCorner,
-             SelectMode::SeekSecond,
-             {{QObject::tr("%1 pick corner"), {Gui::InputHint::UserInput::MouseLeft}}, switchHint}},
-            {ConstructionMethods::RectangleConstructionMethod::CenterAndCorner,
-             SelectMode::SeekThird,
-             {{QObject::tr("%1 set corner radius or frame thickness"),
-               {Gui::InputHint::UserInput::MouseMove}},
-              switchHint}},
-            {ConstructionMethods::RectangleConstructionMethod::CenterAndCorner,
-             SelectMode::SeekFourth,
-             {{QObject::tr("%1 set frame thickness"), {Gui::InputHint::UserInput::MouseMove}},
-              switchHint}},
-
-            // ThreePoints method
-            {ConstructionMethods::RectangleConstructionMethod::ThreePoints,
-             SelectMode::SeekFirst,
-             {{QObject::tr("%1 pick first corner"), {Gui::InputHint::UserInput::MouseLeft}},
-              switchHint}},
-            {ConstructionMethods::RectangleConstructionMethod::ThreePoints,
-             SelectMode::SeekSecond,
-             {{QObject::tr("%1 pick second corner"), {Gui::InputHint::UserInput::MouseLeft}},
-              switchHint}},
-            {ConstructionMethods::RectangleConstructionMethod::ThreePoints,
-             SelectMode::SeekThird,
-             {{QObject::tr("%1 pick third corner"), {Gui::InputHint::UserInput::MouseLeft}},
-              switchHint}},
-            {ConstructionMethods::RectangleConstructionMethod::ThreePoints,
-             SelectMode::SeekFourth,
-             {{QObject::tr("%1 set corner radius or frame thickness"),
-               {Gui::InputHint::UserInput::MouseMove}},
-              switchHint}},
-
-            // CenterAnd3Points method
-            {ConstructionMethods::RectangleConstructionMethod::CenterAnd3Points,
-             SelectMode::SeekFirst,
-             {{QObject::tr("%1 pick center"), {Gui::InputHint::UserInput::MouseLeft}}, switchHint}},
-            {ConstructionMethods::RectangleConstructionMethod::CenterAnd3Points,
-             SelectMode::SeekSecond,
-             {{QObject::tr("%1 pick first corner"), {Gui::InputHint::UserInput::MouseLeft}},
-              switchHint}},
-            {ConstructionMethods::RectangleConstructionMethod::CenterAnd3Points,
-             SelectMode::SeekThird,
-             {{QObject::tr("%1 pick second corner"), {Gui::InputHint::UserInput::MouseLeft}},
-              switchHint}},
-            {ConstructionMethods::RectangleConstructionMethod::CenterAnd3Points,
-             SelectMode::SeekFourth,
-             {{QObject::tr("%1 set corner radius or frame thickness"),
-               {Gui::InputHint::UserInput::MouseMove}},
-              switchHint}}};
-}
-
-std::list<Gui::InputHint> DrawSketchHandlerRectangle::lookupRectangleHints(
-    ConstructionMethods::RectangleConstructionMethod method,
-    SelectMode state)
-{
-    const auto rectangleHintTable = getRectangleHintTable();
-
-    auto it = std::find_if(rectangleHintTable.begin(),
-                           rectangleHintTable.end(),
-                           [method, state](const HintEntry& entry) {
-                               return entry.method == method && entry.state == state;
-                           });
-
-    return (it != rectangleHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
-}
 }  // namespace SketcherGui
 
 
