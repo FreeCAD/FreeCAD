@@ -32,13 +32,24 @@ def make_hatch(baseobject, filename, pattern, scale, rotation, translate=True):
     """make_hatch(baseobject, filename, pattern, scale, rotation, translate): Creates and returns a
     hatch object made by applying the given pattern of the given PAT file to the faces of
     the given base object. Given scale, rotation and translate factors are applied to the hatch object.
-    The result is a Part-based object created in the active document."""
+    The result is a Part-based object created in the active document.
+    Baseobject can be either an object or a list of SelectionObject results from getSelectionEx()
+    or a list of (obj, (list_of_subnames)) sequences suited for App::PropertySubList"""
 
     if not FreeCAD.ActiveDocument:
         return
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Hatch")
     Hatch(obj)
-    obj.Base = baseobject
+    if isinstance(baseobject, (list, tuple)):
+        bases = []
+        for o in baseobject:
+            if isinstance(o, (tuple, list)):
+                bases.append(o)
+            else:
+                bases.append((o.Object,o.SubElementNames))
+        obj.Base = bases
+    else:
+        obj.Base = baseobject
     obj.File = filename
     obj.Pattern = pattern
     obj.Scale = scale
