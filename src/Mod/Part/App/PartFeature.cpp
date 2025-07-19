@@ -1773,18 +1773,68 @@ bool Feature::getCameraAlignmentDirection(Base::Vector3d& directionZ, Base::Vect
         }
     }
 
+     // Single non-planar face (average normal of a curved surface)
+    const TopoDS_Shape shape = topoShape.getShape();
+    if (shape.ShapeType() == TopAbs_FACE && !topoShape.isPlanar()) {
+        const auto face = TopoDS::Face(shape);
+        BRepGProp_Face faceProp(face);
+        Standard_Real u1, u2, v1, v2;
+        faceProp.Bounds(u1, u2, v1, v2);
+        Standard_Real uMid = (u1 + u2) / 2.0, vMid = (v1 + v2) / 2.0;
+        gp_Pnt p;
+        gp_Vec n;
+        faceProp.Normal(uMid, vMid, p, n);
+        if (n.Magnitude() <= Precision::Confusion()) {
+            // If center point is problematic (e.g. on seam), try corners of param bounds
+            Standard_Real uTest[4] = {u1, u2, u1, u2};
+            Standard_Real vTest[4] = {v1, v2, v2, v1};
+            for (int i = 0; i < 4; ++i) {
+                faceProp.Normal(uTest[i], vTest[i], p, n);
+                if (n.Magnitude() > Precision::Confusion()) break;
+            }
+            if (n.Magnitude() <= Precision::Confusion()) {
+                return false;
+            }
+        }
+        n.Normalize();
+        directionZ = Base::Vector3d(n.X(), n.Y(), n.Z());
+        // Use longest straight edge on this face (if any) for orientation reference
+        std::optional<std::tuple<TopoDS_Shape, Standard_Real>> longestEdge;
+        for (TopExp_Explorer Ex(face, TopAbs_EDGE); Ex.More(); Ex.Next()) {
+            const auto edge = TopoDS::Edge(Ex.Current());
+            const auto edgeTopoShape = TopoShape(edge);
+            if (!edgeTopoShape.isLinearEdge()) continue;
+            GProp_GProps props;
+            BRepGProp::LinearProperties(edge, props);
+            const auto length = props.Mass();
+            if (!longestEdge.has_value() || length > std::get<1>(longestEdge.value())) {
+                longestEdge = std::tuple<TopoDS_Shape, Standard_Real>(edge, length);
+            }
+        }
+        if (!longestEdge.has_value()) {
+            return true;
+        }
+        if (const std::unique_ptr<Geometry> geometry = Geometry::fromShape(std::get<0>(longestEdge.value()), true)) {
+            if (const auto geomLine = static_cast<GeomCurve*>(geometry.get())->toLine()) {
+                directionX = geomLine->getDir().Normalize();
+            }
+        }
+
+        return true;
+    }
+
     // Edge direction
     const size_t edgeCount = topoShape.countSubShapes(TopAbs_EDGE);
     if (edgeCount == 1) {
         if (topoShape.isLinearEdge()) {
             if (const std::unique_ptr<Geometry> geometry = Geometry::fromShape(topoShape.getSubShape(TopAbs_EDGE, 1), true)) {
-                const std::unique_ptr<GeomLine> geomLine(static_cast<GeomCurve*>(geometry.get())->toLine());
-                if (geomLine) {
+                if (const auto geomLine = static_cast<GeomCurve*>(geometry.get())->toLine()) {
                     directionZ = geomLine->getDir().Normalize();
                     return true;
                 }
             }
-        } else {
+        }
+        else {
             // Planar curves
             if (gp_Pln plane; topoShape.findPlane(plane)) {
                 directionZ = Base::Vector3d(plane.Axis().Direction().X(), plane.Axis().Direction().Y(), plane.Axis().Direction().Z()).Normalize();
