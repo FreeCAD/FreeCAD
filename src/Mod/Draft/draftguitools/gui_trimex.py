@@ -201,6 +201,8 @@ class Trimex(gui_base_original.Modifier):
         if arg["Type"] == "SoKeyboardEvent":
             if arg["Key"] == "ESCAPE":
                 self.finish()
+        elif not self.ui.mouse:
+            pass
         elif arg["Type"] == "SoLocation2Event":  # mouse movement detection
             self.shift = gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_constrain_key())
             self.alt = gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key())
