@@ -510,7 +510,7 @@ private:
     static void drawSingleBackground(const QColor&);
     void setCursorRepresentation(int mode);
     void aboutToDestroyGLContext();
-    void createStandardCursors(double);
+    void createStandardCursors();
 
 private:
     NaviCube* naviCube;
