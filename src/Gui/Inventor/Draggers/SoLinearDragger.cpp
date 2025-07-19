@@ -99,10 +99,10 @@ SoArrowGeometry::SoArrowGeometry()
     SO_KIT_ADD_CATALOG_ENTRY(_arrowBodyTranslation, SoTranslation, false, this, arrowBody, false);
     SO_KIT_ADD_CATALOG_ENTRY(_arrowTipTranslation, SoTranslation, false, this, arrowTip, false);
 
-    SO_KIT_ADD_FIELD(coneBottomRadius, (0.8));
-    SO_KIT_ADD_FIELD(coneHeight, (2.5));
-    SO_KIT_ADD_FIELD(cylinderHeight, (10.0));
-    SO_KIT_ADD_FIELD(cylinderRadius, (0.1));
+    SO_KIT_ADD_FIELD(coneBottomRadius, (0.8f));
+    SO_KIT_ADD_FIELD(coneHeight, (2.5f));
+    SO_KIT_ADD_FIELD(cylinderHeight, (10.0f));
+    SO_KIT_ADD_FIELD(cylinderRadius, (0.1f));
 
     SO_KIT_INIT_INSTANCE();
 

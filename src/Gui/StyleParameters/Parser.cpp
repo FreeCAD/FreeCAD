@@ -416,7 +416,7 @@ std::unique_ptr<Expr> Parser::parseNumber()
         std::string unit = parseUnit();
         return std::make_unique<Number>(value, unit);
     }
-    catch (std::invalid_argument& e) {
+    catch (std::invalid_argument&) {
         THROWM(Base::ParserError, fmt::format("Invalid number: {}", number));
     }
 }
