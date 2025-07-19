@@ -76,6 +76,12 @@ if(BUILD_FEM_VTK)
     generate_from_xml(FemPostPipelinePy)
     generate_from_xml(FemPostFilterPy)
     generate_from_xml(FemPostBranchFilterPy)
+
+    generate_from_py_(FemPostObjectPy)
+    generate_from_py_(FemPostPipelinePy)
+    generate_from_py_(FemPostFilterPy)
+    generate_from_py_(FemPostBranchFilterPy)
+
 endif(BUILD_FEM_VTK)
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 

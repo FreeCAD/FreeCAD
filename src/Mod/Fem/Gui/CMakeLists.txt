@@ -38,6 +38,11 @@ generate_from_xml(ViewProviderFemMeshPy)
 generate_from_xml(ViewProviderFemPostPipelinePy)
 generate_from_xml(ViewProviderFemPostFilterPy)
 
+generate_from_py_(ViewProviderFemConstraintPy)
+generate_from_py_(ViewProviderFemMeshPy)
+generate_from_py_(ViewProviderFemPostPipelinePy)
+generate_from_py_(ViewProviderFemPostFilterPy)
+
 SET(Python_SRCS
     ViewProviderFemConstraintPy.xml
     ViewProviderFemConstraintPyImp.cpp
