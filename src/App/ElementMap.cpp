@@ -1204,8 +1204,8 @@ IndexedName ElementMap::complexFind(const MappedName& name) const
     std::vector<std::string> loopMajorKeys;
     std::vector<std::string> looseLargestVec;
     std::vector<std::string> looseSmallestVec;
-    __gnu_cxx::__normal_iterator<std::pair<std::basic_string<char>, char> *, std::vector<std::pair<std::basic_string<char>, char>>> origUnfilteredEnd = std::prev(originalData.unfilteredMajorSections.end());
-    __gnu_cxx::__normal_iterator<std::pair<std::basic_string<char>, char> *, std::vector<std::pair<std::basic_string<char>, char>>> loopCheckUnfilteredEnd;
+    auto origUnfilteredEnd = std::prev(originalData.unfilteredMajorSections.end());
+    auto loopCheckUnfilteredEnd = origUnfilteredEnd; // set it to this to fix the type checking
     std::string largeVecSection;
     std::string smallVecSection;
     std::vector<double> avgDifferenceVec;
