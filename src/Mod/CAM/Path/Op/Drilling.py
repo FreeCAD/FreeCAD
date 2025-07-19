@@ -212,7 +212,6 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         machine.addCommand(command)
         self.commandlist.append(command)
 
-
         # Calculate offsets to add to target edge
         endoffset = 0.0
         if obj.ExtraOffset == "Drill Tip":
@@ -281,7 +280,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             machine.addCommand(command)
 
             # rapid to safe height for first edge only //Dimitrios
-            if (safeHeight is True):
+            if safeHeight is True:
                 command = Path.Command("G0", {"Z": obj.SafeHeight.Value})
                 self.commandlist.append(command)
                 machine.addCommand(command)
