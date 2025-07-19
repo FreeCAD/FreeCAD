@@ -1,6 +1,6 @@
 from typing import Final
 
-from Base import PyObjectBase
+from Base.PyObjectBase import PyObjectBase
 from Base.Metadata import export
 from Base.Vector import Vector
 
