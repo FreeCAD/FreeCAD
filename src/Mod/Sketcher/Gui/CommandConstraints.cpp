@@ -1700,7 +1700,7 @@ public:
                         else
                             pointWhereToMove.x = Obj->getPoint(selPoints[0].GeoId, selPoints[0].PosId).x;
                     }
-                    moveConstraint(index, pointWhereToMove);
+                    moveConstraint(index, pointWhereToMove, OffsetConstraint);
                     oneMoved = true;
                 }
             }

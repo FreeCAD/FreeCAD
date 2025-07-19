@@ -43,6 +43,7 @@
 #include "PropertyVisualLayerList.h"
 
 #include "ShortcutListener.h"
+#include "Utils.h"
 
 
 class TopoDS_Shape;
@@ -810,8 +811,11 @@ private:
     /** @name miscelanea utilities */
     //@{
     /// moves a selected constraint
-    void moveConstraint(int constNum, const Base::Vector2d& toPos);
-    void moveConstraint(Sketcher::Constraint*, int constNum, const Base::Vector2d& toPos);
+    void moveConstraint(int constNum, const Base::Vector2d& toPos, OffsetMode offset = NoOffset);
+    void moveConstraint(Sketcher::Constraint*,
+                        int constNum,
+                        const Base::Vector2d& toPos,
+                        OffsetMode offset = NoOffset);
     void moveAngleConstraint(Sketcher::Constraint*, int constNum, const Base::Vector2d& toPos);
 
     /// returns whether the sketch is in edit mode.
