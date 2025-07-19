@@ -12,7 +12,7 @@ A robust, intuitive, and industry-ready CAM solution that:
 - Integrates seamlessly with the FreeCAD modeling workflow, unit schemas, and translation
 - Supports professional CNC workflows
 - Is usable and intuitive for hobbyist and non-professionals
-- Embraces open standards 
+- Embraces open standards
 - Encourages extensibility and script-ability via Python
 
 ## ⚙️ Functionality
@@ -111,5 +111,3 @@ Perennial complaints from users:
 
 # 🧠 Open Questions
     -
-
-

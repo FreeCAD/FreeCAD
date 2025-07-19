@@ -1,7 +1,7 @@
 ## Generator
 
 Generators are low-level functions that compute the cutting moves for a single target.
-They have no user interface and are implemented as pure functions.  
+They have no user interface and are implemented as pure functions.
 Generators should have 100% test coverage at all times because they may be called from multiple operation contexts.
 
 For example, creating a helical move may be done
@@ -29,4 +29,3 @@ For example, creating a helical move may be done
 | Linking           | Generate linking moves between cutting paths |
 | vcarve            |                                              |
 | Dragknife corner action                  |                                              |
-

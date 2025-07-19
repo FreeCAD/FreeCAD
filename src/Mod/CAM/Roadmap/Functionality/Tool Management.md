@@ -19,10 +19,8 @@ _Features Necessary to do perform the required function_
 - Ability to define probe tools and control them appropriately
 	- Don't turn on the spindle when a probe is loaded
 - Ability to define a drag-knife tool which cuts at a point that follows the spindle position.
-	- Ability to generate toolpaths that account for the unique characteristics of a drag knife.  	 
+	- Ability to generate toolpaths that account for the unique characteristics of a drag knife.
 
 
 # 🟦 Next-Level CAM
 *Features that would exceed industry standard*
-
-

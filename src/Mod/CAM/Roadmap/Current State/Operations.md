@@ -134,7 +134,7 @@ graph TD
     Base.TaskPanelBaseGeometryPage --> Vcarve.TaskPanelBaseGeometryPage
 ```
 
-Notes: 
+Notes:
  - Array.py is non-standard and should be refactored or eliminated
  - Comment.py is non-standard and should be refactored or eliminated
  - Copy.py is non-standard and should be refactored or eliminated
@@ -144,7 +144,7 @@ Notes:
 
 
 ### Command
-User-facing functionality is triggered by a GUI command that is registered when the workbench is activated.  The commands should be 
+User-facing functionality is triggered by a GUI command that is registered when the workbench is activated.  The commands should be
 
 ### Task Panel
 The task panel is the primary place where a user interacts with the operation.
@@ -155,7 +155,7 @@ This has the benefit of keeping the task panels clean and efficient while provid
 
 ## Operation
 The operation is responsible for managing the state (properties) of the operation and calculating the Path Commands. Specifically,
-it 
+it
 
 - manages the targets (geometry to be acted upon). Determines the order to act
   on them.
@@ -164,11 +164,3 @@ it
   libraries)
 - Moves the cutter to an appropriate location at the end of the last cutting
   move.
-
-
-
-
-
-
-
-

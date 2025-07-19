@@ -18,4 +18,3 @@ Features present in the state-of-the art applications and expected
 
 # 🟦 Next-Level CAM
 Features that would exceed industry standard
-

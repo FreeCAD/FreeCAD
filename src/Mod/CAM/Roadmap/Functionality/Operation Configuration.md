@@ -103,4 +103,3 @@ Capable of generating canned cycle tapping actions which correspond to
 
 ## 🟦 Next-Level CAM
 *Features that would exceed industry standard*
-
