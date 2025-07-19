@@ -318,7 +318,7 @@ private Q_SLOTS:
     /**
      * \internal
      */
-    void onSetActiveSubWindow(QWidget *window);
+    void setActiveSubWindow(QWidget*);
     /**
      * Activates the associated tab to this widget.
      */
