@@ -1747,14 +1747,14 @@ void ViewProviderSketch::commitDragMove(double x, double y)
     resetPositionText();
 }
 
-void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d& toPos, bool offset)
+void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d& toPos, OffsetMode offset)
 {
     if (auto constr = getConstraint(constNum)) {
         moveConstraint(constr, constNum, toPos, offset);
     }
 }
 
-void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constNum, const Base::Vector2d& toPos, bool offset)
+void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constNum, const Base::Vector2d& toPos, OffsetMode offset)
 {
     // are we in edit?
     if (!isInEditMode())
@@ -1937,9 +1937,8 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
             dir = Base::Vector3d(0, (p2.y - p1.y >= std::numeric_limits<float>::epsilon()) ? 1 : -1, 0);
 
         double offsetVal = 0.0;
-        if (offset) {
-            auto* view = qobject_cast<Gui::View3DInventor*>(this->getActiveView());
-            if (view) {
+        if (offset == OffsetConstraint) {
+            if (auto* view = qobject_cast<Gui::View3DInventor*>(this->getActiveView())) {
                 Gui::View3DInventorViewer* viewer = view->getViewer();
                 float fHeight = -1.0;
                 float fWidth = -1.0;

@@ -38,6 +38,7 @@
 #include <Mod/Sketcher/App/Constraint.h>
 
 #include "AutoConstraint.h"
+#include "Utils.h"
 
 class QWidget;
 
@@ -84,7 +85,6 @@ private:
     int curvedEdgeCountSegments;
 };
 
-
 /**
  * In order to enforce a certain degree of encapsulation and promote a not
  * too tight coupling, while still allowing well defined collaboration,
@@ -120,7 +120,7 @@ private:
     static inline void moveConstraint(ViewProviderSketch& vp,
                                       int constNum,
                                       const Base::Vector2d& toPos,
-                                      bool offset = false);
+                                      OffsetMode offset = NoOffset);
 
     static inline void signalToolChanged(const ViewProviderSketch& vp, const std::string& toolname);
 
@@ -276,7 +276,7 @@ protected:
 
     void setAngleSnapping(bool enable, Base::Vector2d referencePoint = Base::Vector2d(0., 0.));
 
-    void moveConstraint(int constNum, const Base::Vector2d& toPos, bool offset = false);
+    void moveConstraint(int constNum, const Base::Vector2d& toPos, OffsetMode offset = NoOffset);
 
     void signalToolChanged() const;
 
