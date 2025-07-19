@@ -215,9 +215,9 @@ private:
     // struct to hold all information needed for complexFind checks
     struct ComplexFindData {
         std::string originalName;
-        std::vector<std::string> unfilteredMajorSections;
-        std::vector<std::string> majorSections;
-        std::vector<std::string> looseSections;
+        std::vector<std::pair<std::string, char>> unfilteredMajorSections;
+        std::vector<std::pair<std::string, char>> majorSections;
+        std::vector<std::pair<std::string, char>> looseSections;
         std::vector<std::string> geometryOpCodes;
         std::vector<std::string> geometryDefSections;
         std::map<int, std::vector<std::string>> parenthesesMap;
@@ -228,13 +228,9 @@ private:
         void cleanup() {
             originalName.clear();
             majorSections.clear();
-            majorSections.shrink_to_fit();
             looseSections.clear();
-            looseSections.shrink_to_fit();
             geometryOpCodes.clear();
-            geometryOpCodes.shrink_to_fit();
             geometryDefSections.clear();
-            geometryDefSections.shrink_to_fit();
             parenthesesMap.clear();
         }
     };
@@ -258,12 +254,13 @@ private:
     IndexedName complexFind(
               const MappedName& name) const;
     
-    std::vector<std::string> splitNameIntoSections(
+    std::vector<std::pair<std::string, char>> splitNameIntoSections(
               const std::string &name,
               const bool &filterSections,
               const bool &findSmallSections,
               std::map<int, std::vector<std::string>> *parenMapPtr,
-              std::vector<int> *postfixNumbersPtr = nullptr) const;
+              std::vector<int> *postfixNumbersPtr = nullptr,
+              std::vector<std::pair<std::string, char>> *outputVecPtr = nullptr) const;
     
     MappedName fullDehashElementName(const MappedName& name) const;
     
