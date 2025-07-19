@@ -12,43 +12,35 @@ from Base.Metadata import export
     FatherInclude="Gui/ViewProviderGeometryObjectPy.h",
     FatherNamespace="Gui",
     ReadOnly=["VisibleElementFaces"],
-
 )
 class ViewProviderFemMeshPy(object):
     """
-        ViewProviderFemMesh class
+    ViewProviderFemMesh class
     """
 
     def applyDisplacement(self) -> Any:
         """"""
         ...
 
-
     def resetNodeColor(self) -> Any:
         """Reset color set by method setNodeColorByScalars."""
         ...
-
 
     def resetNodeDisplacement(self) -> Any:
         """Reset displacements set by method setNodeDisplacementByVectors."""
         ...
 
-
     def resetHighlightedNodes(self) -> Any:
         """Reset highlighted nodes."""
         ...
-
 
     def setNodeColorByScalars(self) -> Any:
         """Sets mesh node colors using element list and value list."""
         ...
 
-
     def setNodeDisplacementByVectors(self) -> Any:
         """"""
         ...
-
-
     NodeColor: dict
     """Postprocessing color of the nodes. The faces between the nodes get interpolated."""
 
@@ -63,4 +55,3 @@ class ViewProviderFemMeshPy(object):
 
     VisibleElementFaces: Final[list]  # ReadOnly
     """List of elements and faces which are actually shown. These are all surface faces of the mesh."""
-
