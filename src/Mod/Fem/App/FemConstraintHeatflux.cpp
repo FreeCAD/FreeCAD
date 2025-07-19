@@ -50,6 +50,12 @@ ConstraintHeatflux::ConstraintHeatflux()
                       App::Prop_None,
                       "Type of constraint, surface convection, radiation or surface heat flux");
     ConstraintType.setEnums(ConstraintTypes);
+    ADD_PROPERTY_TYPE(CavityRadiation,
+                      (false),
+                      "ConstraintHeatflux",
+                      App::Prop_None,
+                      "Cavity radiation");
+    ADD_PROPERTY_TYPE(CavityName, ("cav"), "ConstraintHeatflux", App::Prop_None, "Cavity name");
 }
 
 App::DocumentObjectExecReturn* ConstraintHeatflux::execute()
