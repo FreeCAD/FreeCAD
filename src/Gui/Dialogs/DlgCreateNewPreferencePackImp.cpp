@@ -160,7 +160,7 @@ void DlgCreateNewPreferencePackImp::onLineEditTextEdited(const QString& text)
 
 void DlgCreateNewPreferencePackImp::onBrowseButtonClicked()
 {
-    _cfgFileDirectory = FileDialog::getExistingDirectory(this, tr("Export Config"), _cfgFileDirectory);
+    _cfgFileDirectory = FileDialog::getExistingDirectory(this, tr("Export configuration"), _cfgFileDirectory);
 }
 
 void Gui::Dialog::DlgCreateNewPreferencePackImp::accept()
@@ -169,7 +169,7 @@ void Gui::Dialog::DlgCreateNewPreferencePackImp::accept()
     if (const auto chosenName = ui->lineEdit->text().toStdString();
         std::ranges::find(_existingPackNames, chosenName) != _existingPackNames.end()) {
         const auto result = QMessageBox::warning(this, tr("Pack already exists"),
-                                           tr("A preference pack with that name already exists. Do you want to overwrite it?"),
+                                           tr("A preference pack with that name already exists. Overwrite it?"),
                                            QMessageBox::Yes | QMessageBox::Cancel);
         if (result == QMessageBox::Cancel)
             return;

@@ -2466,9 +2466,9 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
         if (!src) src = ext->getLinkedObjectValue();
         if (src && !ext->getOnChangeCopyObjects(nullptr, src).empty()) {
             QAction *act = menu->addAction(
-                    QObject::tr("Setup configurable object"));
+                    QObject::tr("Setup Configurable Object"));
             act->setToolTip(QObject::tr(
-                        "Select which object to copy or exclude when configuration changes. "
+                        "Selects which object to copy or exclude when configuration changes. "
                         "All external linked objects are excluded by default."));
             act->setData(-1);
             if (!func) func = new Gui::ActionFunction(menu);
@@ -2483,10 +2483,9 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                         return;
                     DlgObjectSelection dlg({src}, excludes, getMainWindow());
                     dlg.setMessage(QObject::tr(
-                                "Please select which objects to copy when the configuration is changed"));
+                                "Select which objects to copy when the configuration is changed"));
                     auto box = new QCheckBox(QObject::tr("Apply to all"), &dlg);
-                    box->setToolTip(QObject::tr("Apply the setting to all links. Or, uncheck this\n"
-                                                "option to apply only to this link."));
+                    box->setToolTip(QObject::tr("Applies the setting to all links"));
                     box->setChecked(App::LinkParams::getCopyOnChangeApplyToAll());
                     dlg.addCheckBox(box);
                     if(dlg.exec()!=QDialog::Accepted)
@@ -2530,7 +2529,7 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
         }
 
         if (ext->getLinkCopyOnChangeValue() == 0) {
-            auto submenu = menu->addMenu(QObject::tr("Copy on change"));
+            auto submenu = menu->addMenu(QObject::tr("Copy on Change"));
             auto act = submenu->addAction(QObject::tr("Enable"));
             act->setToolTip(QObject::tr(
                         "Enable auto copy of linked object when its configuration is changed"));
@@ -2547,7 +2546,7 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
             });
             act = submenu->addAction(QObject::tr("Tracking"));
             act->setToolTip(QObject::tr(
-                        "Copy the linked object when its configuration is changed.\n"
+                        "Copies the linked object when its configuration is changed.\n"
                         "Also auto redo the copy if the original linked object is changed.\n"));
             act->setData(-1);
             func->trigger(act, [ext](){
@@ -2565,7 +2564,7 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     if (ext->getLinkCopyOnChangeValue() != 2
             && ext->getLinkCopyOnChangeValue() != 0) {
         QAction *act = menu->addAction(
-                QObject::tr("Disable copy on change"));
+                QObject::tr("Disable Copy on Change"));
         act->setData(-1);
         if (!func) func = new Gui::ActionFunction(menu);
         func->trigger(act, [ext](){
@@ -2580,10 +2579,10 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     }
 
     if (ext->isLinkMutated()) {
-        QAction* act = menu->addAction(QObject::tr("Refresh configurable object"));
+        QAction* act = menu->addAction(QObject::tr("Refresh Configurable Object"));
         act->setToolTip(QObject::tr(
-                    "Synchronize the original configurable source object by\n"
-                    "creating a new deep copy. Note that any changes made to\n"
+                    "Synchronizes the original configurable source object by\n"
+                    "creating a new deep copy. Any changes made to\n"
                     "the current copy will be lost.\n"));
         act->setData(-1);
         if (!func) func = new Gui::ActionFunction(menu);
@@ -2613,7 +2612,7 @@ void ViewProviderLink::_setupContextMenu(
             && ext->_getShowElementProperty()
             && ext->_getElementCountValue() > 1)
     {
-        auto action = menu->addAction(QObject::tr("Toggle array elements"), [ext] {
+        auto action = menu->addAction(QObject::tr("Toggle Array Elements"), [ext] {
             try {
                 App::AutoTransaction guard(QT_TRANSLATE_NOOP("Command", "Toggle array elements"));
                 ext->getShowElementProperty()->setValue(!ext->getShowElementValue());
@@ -2623,7 +2622,7 @@ void ViewProviderLink::_setupContextMenu(
             }
         });
         action->setToolTip(QObject::tr(
-                    "Change whether show each link array element as individual objects"));
+                    "Changes whether to show each link array element as individual objects"));
     }
 
     if((ext->getPlacementProperty() && !ext->getPlacementProperty()->isReadOnly())
@@ -2640,7 +2639,7 @@ void ViewProviderLink::_setupContextMenu(
         if (!found) {
             QIcon iconObject = mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap("Std_TransformManip.svg"));
             QAction* act = menu->addAction(iconObject, QObject::tr("Transform"), receiver, member);
-            act->setToolTip(QObject::tr("Transform at the origin of the placement"));
+            act->setToolTip(QObject::tr("Transforms the object at the origin of the placement"));
             act->setData(QVariant((int)ViewProvider::Transform));
         }
     }
@@ -2650,13 +2649,13 @@ void ViewProviderLink::_setupContextMenu(
         const auto actions = menu->actions();
         for(auto action : actions) {
             if(action->data().toInt() == ViewProvider::Color) {
-                action->setText(QObject::tr("Override colors..."));
+                action->setText(QObject::tr("Override Colors…"));
                 found = true;
                 break;
             }
         }
         if(!found) {
-            QAction* act = menu->addAction(QObject::tr("Override colors..."), receiver, member);
+            QAction* act = menu->addAction(QObject::tr("Override Colors…"), receiver, member);
             act->setData(QVariant((int)ViewProvider::Color));
         }
     }
