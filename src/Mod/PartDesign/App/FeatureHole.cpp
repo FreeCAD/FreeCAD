@@ -778,6 +778,8 @@ Hole::Hole()
 
     ADD_PROPERTY_TYPE(ModelThread, (false), "Hole", App::Prop_None, "Model actual thread");
 
+    ADD_PROPERTY_TYPE(CosmeticThread, (true), "Hole", App::Prop_None, "Texture the thread");
+
     ADD_PROPERTY_TYPE(ThreadType, (0L), "Hole", App::Prop_None, "Thread type");
     ThreadType.setEnums(ThreadTypeEnums);
 
@@ -1409,7 +1411,7 @@ double Hole::getThreadProfileAngle()
 void Hole::findClosestDesignation()
 {
     int threadType = ThreadType.getValue();
-    const int numTypes = static_cast<int>(std::size(threadDescription)); 
+    const int numTypes = static_cast<int>(std::size(threadDescription));
 
     if (threadType < 0 || threadType >= numTypes) {
         throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread type is invalid"));
@@ -1586,6 +1588,8 @@ void Hole::onChanged(const App::Property* prop)
         // thread class and direction are only sensible if threaded
         // fit only sensible if not threaded
         if (Threaded.getValue()) {
+            CosmeticThread.setValue(!ModelThread.getValue());
+            CosmeticThread.setReadOnly(ModelThread.getValue());
             ThreadClass.setReadOnly(false);
             ThreadDirection.setReadOnly(false);
             ThreadFit.setReadOnly(true);
@@ -1598,6 +1602,8 @@ void Hole::onChanged(const App::Property* prop)
                 TaperedAngle.setValue(getThreadProfileAngle());
         }
         else {
+            CosmeticThread.setValue(false);
+            CosmeticThread.setReadOnly(true);
             ThreadClass.setReadOnly(true);
             ThreadDirection.setReadOnly(true);
             if (type == "None")
@@ -1618,6 +1624,8 @@ void Hole::onChanged(const App::Property* prop)
         // Diameter parameter depends on this
         updateDiameterParam();
         UseCustomThreadClearance.setReadOnly(!ModelThread.getValue());
+        CosmeticThread.setValue(Threaded.getValue() && !ModelThread.getValue());
+        CosmeticThread.setReadOnly(ModelThread.getValue());
     }
     else if (prop == &DrillPoint) {
         if (DrillPoint.getValue() == 1) {
@@ -1757,9 +1765,9 @@ void Hole::setupObject()
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
-    
+
     BaseProfileType.setValue(baseProfileOption_idxToBitmask(hGrp->GetInt("defaultBaseTypeHole", 1)));
-    
+
     ProfileBased::setupObject();
 }
 
@@ -1886,9 +1894,9 @@ static gp_Pnt toPnt(gp_Vec dir)
 App::DocumentObjectExecReturn* Hole::execute()
 {
     TopoShape profileshape =
-        getProfileShape(  Part::ShapeOption::NeedSubElement 
+        getProfileShape(  Part::ShapeOption::NeedSubElement
                         | Part::ShapeOption::ResolveLink
-                        | Part::ShapeOption::Transform 
+                        | Part::ShapeOption::Transform
                         | Part::ShapeOption::DontSimplifyCompound);
 
     // Find the base shape
@@ -2278,7 +2286,7 @@ TopoShape Hole::findHoles(std::vector<TopoShape> &holes,
     int baseProfileType = BaseProfileType.getValue();
 
     // Iterate over edges and filter out non-circle/non-arc types
-    if (baseProfileType & BaseProfileTypeOptions::OnCircles || 
+    if (baseProfileType & BaseProfileTypeOptions::OnCircles ||
        baseProfileType & BaseProfileTypeOptions::OnArcs) {
         for (const auto &profileEdge : profileshape.getSubTopoShapes(TopAbs_EDGE)) {
             TopoDS_Edge edge = TopoDS::Edge(profileEdge.getShape());
@@ -2292,7 +2300,7 @@ TopoShape Hole::findHoles(std::vector<TopoShape> &holes,
             if (!(baseProfileType & BaseProfileTypeOptions::OnCircles) && adaptor.IsClosed()) {
                 continue;
             }
-            
+
             // Filter for arcs
             if (!(baseProfileType & BaseProfileTypeOptions::OnArcs) && !adaptor.IsClosed()) {
                 continue;
@@ -2725,7 +2733,7 @@ int Hole::baseProfileOption_idxToBitmask(int index)
     }
      if (index == 2) {
         return PartDesign::Hole::BaseProfileTypeOptions::OnPoints;
-    } 
+    }
     Base::Console().error("Unexpected hole base profile combobox index: %i", index);
     return 0;
 }
@@ -2733,10 +2741,10 @@ int Hole::baseProfileOption_bitmaskToIdx(int bitmask)
 {
     if (bitmask == PartDesign::Hole::BaseProfileTypeOptions::OnCirclesArcs) {
         return 0;
-    } 
+    }
     if (bitmask == PartDesign::Hole::BaseProfileTypeOptions::OnPointsCirclesArcs) {
         return 1;
-    } 
+    }
     if (bitmask == PartDesign::Hole::BaseProfileTypeOptions::OnPoints) {
         return 2;
     }
