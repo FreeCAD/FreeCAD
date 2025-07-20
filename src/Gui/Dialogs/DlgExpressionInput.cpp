@@ -36,6 +36,7 @@
 #include <App/DocumentObject.h>
 #include <App/ExpressionParser.h>
 #include <App/VarSet.h>
+#include <Base/Console.h>
 #include <Base/Tools.h>
 
 #include "Dialogs/DlgExpressionInput.h"
@@ -49,6 +50,9 @@
 
 using namespace App;
 using namespace Gui::Dialog;
+
+FC_LOG_LEVEL_INIT("DlgExpressionInput", true, true)
+
 
 bool DlgExpressionInput::varSetsVisible = false;
 
@@ -204,9 +208,6 @@ bool DlgExpressionInput::typeOkForVarSet()
 
 void DlgExpressionInput::initializeVarSets()
 {
-    ui->labelInfoActive->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-    ui->labelInfoActive->setWordWrap(true);
-
 #if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
     connect(ui->checkBoxVarSets, &QCheckBox::checkStateChanged,
             this, &DlgExpressionInput::onCheckVarSets);
@@ -441,7 +442,6 @@ static bool isNamePropOk(const QString& nameProp, App::DocumentObject* obj,
 
     std::string name = nameProp.toStdString();
     if (name.empty()) {
-        message << "Provide a name for the property.";
         return false;
     }
 
@@ -688,21 +688,22 @@ static bool isNameGroupOk(const QString& nameGroup,
     return true;
 }
 
-void DlgExpressionInput::reportVarSetInfo(const char* message)
+void DlgExpressionInput::reportVarSetInfo(const std::string& message)
 {
-    ui->labelInfoActive->setText(QString::fromUtf8(message));
+    if (!message.empty()) {
+        FC_ERR(message);
+    }
 }
 
 bool DlgExpressionInput::reportGroup(QString& nameGroup)
 {
     if (nameGroup.isEmpty()) {
-        reportVarSetInfo("Provide a group.");
         return true;
     }
 
     std::stringstream message;
     if (!isNameGroupOk(nameGroup, message)) {
-        reportVarSetInfo(message.str().c_str());
+        reportVarSetInfo(message.str());
         return true;
     }
 
@@ -718,7 +719,7 @@ bool DlgExpressionInput::reportName(QTreeWidgetItem* item)
     App::DocumentObject* obj = doc->getObject(nameVarSet.toUtf8());
     std::stringstream message;
     if (!isNamePropOk(nameProp, obj, message)) {
-        reportVarSetInfo(message.str().c_str());
+        reportVarSetInfo(message.str());
         return true;
     }
 
@@ -743,17 +744,17 @@ void DlgExpressionInput::updateVarSetInfo(bool checkExpr)
             return;
         }
 
-        QString nameProp = ui->lineEditPropNew->text();
-        QString labelVarSet = getValue(selected, ROLE_VARSET_LABEL);
-        QString nameDoc = getValue(selected, ROLE_DOC);
-        std::stringstream message;
-        message << "Adding property " << nameProp.toStdString() << std::endl
-                << "of type " << getType() << std::endl
-                << "to variable set " << labelVarSet.toStdString() << std::endl
-                << "in group " << nameGroup.toStdString() << std::endl
-                << "in document " << nameDoc.toStdString() << ".";
+        // QString nameProp = ui->lineEditPropNew->text();
+        // QString labelVarSet = getValue(selected, ROLE_VARSET_LABEL);
+        // QString nameDoc = getValue(selected, ROLE_DOC);
+        // std::stringstream message;
+        // message << "Adding property " << nameProp.toStdString() << std::endl
+        //         << "of type " << getType() << std::endl
+        //         << "to variable set " << labelVarSet.toStdString() << std::endl
+        //         << "in group " << nameGroup.toStdString() << std::endl
+        //         << "in document " << nameDoc.toStdString() << ".";
 
-        reportVarSetInfo(message.str().c_str());
+        // reportVarSetInfo(message.str().c_str());
         if (checkExpr) {
             // We have to check the text of the expression as well
             try {
@@ -767,7 +768,6 @@ void DlgExpressionInput::updateVarSetInfo(bool checkExpr)
     }
     else {
         okBtn->setEnabled(false);
-        reportVarSetInfo("Select a variable set.");
     }
 }
 
