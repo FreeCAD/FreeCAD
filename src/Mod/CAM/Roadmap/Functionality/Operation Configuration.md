@@ -65,6 +65,7 @@
 | Feature                     | Description                                                | Assessment |
 | --------------------------- | ---------------------------------------------------------- | ---------- |
 | Model-Based Depth Selection | Set relevant depths by clicking features of model or stock | DONE       |
+| Tool selection | Only allow selecting tools that function with the operation| INCOMPLETE|
 
 ### Pocketing
 
