@@ -751,15 +751,13 @@ void TaskView::removeDialog(std::vector<TaskInfo>::iterator infoIt)
             remove = infoIt->ActiveDialog;
             infoIt->ActiveDialog = nullptr;
             taskInfos.erase(infoIt);
+            infoIt->taskPanel->actionPanel->removeStretch();
+            removeWidget(infoIt->taskPanel);
         }
         else {
             infoIt->ActiveDialog->setProperty("taskview_remove_dialog", true);
         }
     }
-
-    infoIt->taskPanel->actionPanel->removeStretch();
-
-    removeWidget(infoIt->taskPanel);
 
     // put the watcher back in control
     removeTaskWatcher();
