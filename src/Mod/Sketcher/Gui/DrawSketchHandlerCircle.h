@@ -266,7 +266,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Circle parameters"));
+        return QObject::tr("Circle parameters");
     }
 
     bool canGoToNextMode() override

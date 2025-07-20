@@ -51,7 +51,7 @@ QString ExpressionTokenizer::perform(const QString& prefix, int pos)
             [&](const std::tuple<int, int, std::string>& item) {
                 return std::make_tuple(
                     std::get<0>(item),
-                    QString::fromStdString(expr.toStdString().substr(0, std::get<1>(item))).size(),
+                    expr.mid(0, std::get<1>(item)).size(),
                     QString::fromStdString(std::get<2>(item)));
             });
         return tokens;

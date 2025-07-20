@@ -170,7 +170,7 @@ DlgProjectionOnSurface::DlgProjectionOnSurface(QWidget* parent)
     if (!m_projectionObject) {
         throw Base::ValueError(tr("Can not create a projection object!!!").toStdString());
     }
-    m_projectionObject->Label.setValue(std::string(m_projectionObjectName.toUtf8()).c_str());
+    m_projectionObject->Label.setValue(m_projectionObjectName.toUtf8().constData());
     onRadioButtonShowAllClicked();
     m_lastDepthVal = ui->doubleSpinBoxSolidDepth->value();
 }

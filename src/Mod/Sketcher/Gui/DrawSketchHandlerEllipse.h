@@ -291,7 +291,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Ellipse parameters"));
+        return QObject::tr("Ellipse parameters");
     }
 
     bool canGoToNextMode() override

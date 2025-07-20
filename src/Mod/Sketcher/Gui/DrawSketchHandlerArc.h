@@ -342,7 +342,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Arc parameters"));
+        return QObject::tr("Arc parameters");
     }
 
     bool canGoToNextMode() override
