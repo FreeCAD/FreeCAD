@@ -1,7 +1,8 @@
-from typing import Final, Any
-from Data import object
-from Base.Metadata import export
-from Base.Metadata import constmethod
+from typing import Any, Final
+
+from Base.Metadata import constmethod, export
+
+from App.ComplexGeoData import ComplexGeoData
 
 @export(
     Father="ComplexGeoDataPy",
@@ -12,32 +13,8 @@ from Base.Metadata import constmethod
     Namespace="Fem",
     FatherInclude="App/ComplexGeoDataPy.h",
     FatherNamespace="Data",
-    ReadOnly=[
-        "Nodes",
-        "NodeCount",
-        "Edges",
-        "EdgesOnly",
-        "EdgeCount",
-        "Faces",
-        "FacesOnly",
-        "FaceCount",
-        "TriangleCount",
-        "QuadrangleCount",
-        "PolygonCount",
-        "Volumes",
-        "VolumeCount",
-        "TetraCount",
-        "HexaCount",
-        "PyramidCount",
-        "PrismCount",
-        "PolyhedronCount",
-        "SubMeshCount",
-        "GroupCount",
-        "Groups",
-        "Volume",
-    ],
 )
-class FemMeshPy(object):
+class FemMeshPy(ComplexGeoData):
     """
     FemMesh class
     """
@@ -268,68 +245,68 @@ class FemMeshPy(object):
     def getIdByElementType(self) -> Any:
         """Return a tuple of IDs to a given element type"""
         ...
-    Nodes: Final[Any]  # ReadOnly
+    Nodes: Final[Any]
     """Dictionary of Nodes by ID (int ID:Vector())"""
 
-    NodeCount: Final[Any]  # ReadOnly
+    NodeCount: Final[Any]
     """Number of nodes in the Mesh."""
 
-    Edges: Final[Any]  # ReadOnly
+    Edges: Final[Any]
     """Tuple of edge IDs"""
 
-    EdgesOnly: Final[Any]  # ReadOnly
+    EdgesOnly: Final[Any]
     """Tuple of edge IDs which does not belong to any face (and thus not belong to any volume too)"""
 
-    EdgeCount: Final[Any]  # ReadOnly
+    EdgeCount: Final[Any]
     """Number of edges in the Mesh."""
 
-    Faces: Final[Any]  # ReadOnly
+    Faces: Final[Any]
     """Tuple of face IDs"""
 
-    FacesOnly: Final[Any]  # ReadOnly
+    FacesOnly: Final[Any]
     """Tuple of face IDs which does not belong to any volume"""
 
-    FaceCount: Final[Any]  # ReadOnly
+    FaceCount: Final[Any]
     """Number of Faces in the Mesh."""
 
-    TriangleCount: Final[Any]  # ReadOnly
+    TriangleCount: Final[Any]
     """Number of Triangles in the Mesh."""
 
-    QuadrangleCount: Final[Any]  # ReadOnly
+    QuadrangleCount: Final[Any]
     """Number of Quadrangles in the Mesh."""
 
-    PolygonCount: Final[Any]  # ReadOnly
+    PolygonCount: Final[Any]
     """Number of Quadrangles in the Mesh."""
 
-    Volumes: Final[Any]  # ReadOnly
+    Volumes: Final[Any]
     """Tuple of volume IDs"""
 
-    VolumeCount: Final[Any]  # ReadOnly
+    VolumeCount: Final[Any]
     """Number of Volumes in the Mesh."""
 
-    TetraCount: Final[Any]  # ReadOnly
+    TetraCount: Final[Any]
     """Number of Tetras in the Mesh."""
 
-    HexaCount: Final[Any]  # ReadOnly
+    HexaCount: Final[Any]
     """Number of Hexas in the Mesh."""
 
-    PyramidCount: Final[Any]  # ReadOnly
+    PyramidCount: Final[Any]
     """Number of Pyramids in the Mesh."""
 
-    PrismCount: Final[Any]  # ReadOnly
+    PrismCount: Final[Any]
     """Number of Prisms in the Mesh."""
 
-    PolyhedronCount: Final[Any]  # ReadOnly
+    PolyhedronCount: Final[Any]
     """Number of Polyhedrons in the Mesh."""
 
-    SubMeshCount: Final[Any]  # ReadOnly
+    SubMeshCount: Final[Any]
     """Number of SubMeshs in the Mesh."""
 
-    GroupCount: Final[Any]  # ReadOnly
+    GroupCount: Final[Any]
     """Number of Groups in the Mesh."""
 
-    Groups: Final[Any]  # ReadOnly
+    Groups: Final[Any]
     """Tuple of Group IDs."""
 
-    Volume: Final[Any]  # ReadOnly
+    Volume: Final[Any]
     """Volume of the mesh."""

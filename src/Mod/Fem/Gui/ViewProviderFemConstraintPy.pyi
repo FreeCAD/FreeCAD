@@ -1,6 +1,8 @@
-from typing import Final, Any
-from Gui import object
+from typing import Any, Final
+
 from Base.Metadata import export
+
+from Gui.ViewProviderGeometryObject import ViewProviderGeometryObject
 
 @export(
     Father="ViewProviderGeometryObjectPy",
@@ -11,9 +13,8 @@ from Base.Metadata import export
     Namespace="FemGui",
     FatherInclude="Gui/ViewProviderGeometryObjectPy.h",
     FatherNamespace="Gui",
-    ReadOnly=["SymbolNode", "ExtraSymbolNode"],
 )
-class ViewProviderFemConstraintPy(object):
+class ViewProviderFemConstraintPy(ViewProviderGeometryObject):
     """
     This is the ViewProviderFemConstraint class
     """
@@ -30,10 +31,10 @@ class ViewProviderFemConstraintPy(object):
         filename : str
             Open Inventor file."""
         ...
-    SymbolNode: Final[Any]  # ReadOnly
+    SymbolNode: Final[Any]
     """A pivy SoSeparator with the nodes of the constraint symbols"""
 
-    ExtraSymbolNode: Final[Any]  # ReadOnly
+    ExtraSymbolNode: Final[Any]
     """A pivy SoSeparator with the nodes of the constraint extra symbols"""
 
     RotateSymbol: bool

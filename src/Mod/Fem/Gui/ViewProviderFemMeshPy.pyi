@@ -1,6 +1,8 @@
-from typing import Final, Any
-from Gui import object
+from typing import Any, Final
+
 from Base.Metadata import export
+
+from Gui.ViewProviderGeometryObject import ViewProviderGeometryObject
 
 @export(
     Father="ViewProviderGeometryObjectPy",
@@ -13,7 +15,7 @@ from Base.Metadata import export
     FatherNamespace="Gui",
     ReadOnly=["VisibleElementFaces"],
 )
-class ViewProviderFemMeshPy(object):
+class ViewProviderFemMeshPy(ViewProviderGeometryObject):
     """
     ViewProviderFemMesh class
     """
@@ -53,5 +55,5 @@ class ViewProviderFemMeshPy(object):
     HighlightedNodes: list
     """List of nodes which get highlighted."""
 
-    VisibleElementFaces: Final[list]  # ReadOnly
+    VisibleElementFaces: Final[list]
     """List of elements and faces which are actually shown. These are all surface faces of the mesh."""

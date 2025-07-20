@@ -1,6 +1,8 @@
 from typing import Any
-from App import object
+
 from Base.Metadata import export
+
+from App.GeoFeature import GeoFeature
 
 @export(
     Father="GeoFeaturePy",
@@ -12,7 +14,7 @@ from Base.Metadata import export
     FatherInclude="App/GeoFeaturePy.h",
     FatherNamespace="App",
 )
-class FemPostObjectPy(object):
+class FemPostObjectPy(GeoFeature):
     """
     The FemPostObject class.
     """

@@ -1,6 +1,8 @@
 from typing import Any
-from Fem import object
+
 from Base.Metadata import export
+
+from Fem.FemPostObject import FemPostObject
 
 @export(
     Father="FemPostObjectPy",
@@ -12,7 +14,7 @@ from Base.Metadata import export
     FatherInclude="Mod/Fem/App/FemPostObjectPy.h",
     FatherNamespace="Fem",
 )
-class FemPostPipelinePy(object):
+class FemPostPipelinePy(FemPostObject):
     """
     The FemPostPipeline class.
     """

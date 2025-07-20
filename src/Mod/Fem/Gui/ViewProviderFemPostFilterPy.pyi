@@ -1,6 +1,8 @@
 from typing import Any
-from Gui import object
+
 from Base.Metadata import export
+
+from Gui.ViewProviderDocumentObject import ViewProviderDocumentObject
 
 @export(
     Father="ViewProviderDocumentObjectPy",
@@ -12,7 +14,7 @@ from Base.Metadata import export
     FatherInclude="Gui/ViewProviderDocumentObjectPy.h",
     FatherNamespace="Gui",
 )
-class ViewProviderFemPostFilterPy(object):
+class ViewProviderFemPostFilterPy(ViewProviderDocumentObject):
     """
     ViewProviderFemPostPipeline class
     """
