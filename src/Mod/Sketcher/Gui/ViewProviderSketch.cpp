@@ -1862,15 +1862,15 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
             }
             else if (geo->is<Part::GeomArcOfCircle>()) {
                 auto* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
-                double radius = arc->getRadius();
                 Base::Vector3d center = arc->getCenter();
                 double startangle, endangle;
                 arc->getRange(startangle, endangle, /*emulateCCW=*/true);
 
                 if (Constr->Type == Distance && Constr->Second == GeoEnum::GeoUndef){
-                    //arc length
-                    Base::Vector3d dir = Base::Vector3d(toPos.x, toPos.y, 0.) - arc->getCenter();
-                    Constr->LabelDistance = dir.Length();
+                    double arcAngle = (startangle + endangle) / 2.;
+                    Base::Vector2d arcDirection(std::cos(arcAngle), std::sin(arcAngle));
+                    Base::Vector2d centerToToPos = toPos - Base::Vector2d(center.x, center.y);
+                    Constr->LabelDistance = centerToToPos * arcDirection;
 
                     cleanAndDraw();
                     return;
@@ -1886,8 +1886,10 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
                         Base::Vector3d tmpDir = Base::Vector3d(toPos.x, toPos.y, 0) - p1;
                         angle = atan2(tmpDir.y, tmpDir.x);
                     }
-                    if (Constr->Type == Sketcher::Diameter)
+                    double radius = arc->getRadius();
+                    if (Constr->Type == Sketcher::Diameter) {
                         p1 = center - radius * Base::Vector3d(cos(angle), sin(angle), 0.);
+                    }
 
                     p2 = center + radius * Base::Vector3d(cos(angle), sin(angle), 0.);
                 }
@@ -2070,7 +2072,14 @@ void ViewProviderSketch::moveAngleConstraint(Sketcher::Constraint* constr, int c
         }
         else if (isArcOfCircle(*geo)) {
             const auto* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
-            p0 = arc->getCenter();
+            Base::Vector3d center = arc->getCenter();
+            double startangle, endangle;
+            arc->getRange(startangle, endangle, /*emulateCCW=*/true);
+            double arcAngle = (startangle + endangle) / 2.;
+            Base::Vector2d arcDirection(std::cos(arcAngle), std::sin(arcAngle));
+            Base::Vector2d centerToToPos = toPos - Base::Vector2d(center.x, center.y);
+            constr->LabelDistance = centerToToPos * arcDirection;
+            return;
         }
         else {
             return;

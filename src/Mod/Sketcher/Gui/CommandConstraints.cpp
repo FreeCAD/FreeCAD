@@ -5055,7 +5055,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair>& selSe
 
         const Part::Geometry* geom = Obj->getGeometry(GeoId1);
 
-        if (isLineSegment(*geom)) {
+        if (isLineSegment(*geom) || isArcOfCircle(*geom)) {
             auto lineSeg = static_cast<const Part::GeomLineSegment*>(geom);
             double ActLength = (lineSeg->getEndPoint() - lineSeg->getStartPoint()).Length();
 
