@@ -1377,7 +1377,7 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
                 else {
                     TopLoc_Location loc;
                     Handle(Geom_Surface) surf = BRep_Tool::Surface(face, loc);
-                    GeomLib_IsPlanarSurface check(surf);
+                    GeomLib_IsPlanarSurface check(surf, precision);
                     if (check.IsPlanar()) {
                         plane = check.Plan();
                     }
@@ -2095,9 +2095,15 @@ Base::Placement AttachEnginePlane::_calculateAttachedPlacement(
     //reuse Attacher3d
     Base::Placement plm;
     AttachEngine3D attacher3D;
+    attacher3D.precision = precision;
     attacher3D.setUp(*this);
     plm = attacher3D._calculateAttachedPlacement(objs,subs,origPlacement);
     return plm;
+}
+
+double AttachEnginePlane::planarPrecision()
+{
+    return 2.0e-7;  // NOLINT
 }
 
 //=================================================================================

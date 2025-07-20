@@ -52,7 +52,6 @@ namespace sp = std::placeholders;
 TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* parent)
     : TaskSketchBasedParameters(HoleView, parent, "PartDesign_Hole", tr("Hole parameters"))
     , observer(new Observer(this, getObject<PartDesign::Hole>()))
-    , isApplying(false)
     , ui(new Ui_TaskHoleParameters)
 {
     // we need a separate container widget to add all controls to
@@ -1072,8 +1071,6 @@ void TaskHoleParameters::apply()
 {
     auto hole = getObject<PartDesign::Hole>();
 
-    isApplying = true;
-
     ui->Diameter->apply();
     ui->HoleCutDiameter->apply();
     ui->HoleCutDepth->apply();
@@ -1137,8 +1134,6 @@ void TaskHoleParameters::apply()
     if (!hole->BaseProfileType.isReadOnly()) {
         FCMD_OBJ_CMD(hole, "BaseProfileType = " << getBaseProfileType());
     }
-
-    isApplying = false;
 }
 
 void TaskHoleParameters::updateHoleCutLimits(PartDesign::Hole* hole)

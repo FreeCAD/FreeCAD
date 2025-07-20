@@ -356,6 +356,14 @@ public:
   virtual const char* getPropertyName(const Property* prop) const;
 
   /**
+   * @brief Get the label of a property.
+   *
+   * @param[in] prop The property to get the label for.
+   * @return The label of the property.
+   */
+  virtual const char* getPropertyLabel(const Property* prop) const;
+
+  /**
    * Get all properties of the property container.
    *
    * This includes the properties of the parent container.
