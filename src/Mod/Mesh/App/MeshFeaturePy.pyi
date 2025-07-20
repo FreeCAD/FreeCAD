@@ -2,7 +2,7 @@ from typing import Any
 
 from Base.Metadata import export
 
-from App import object
+from App.GeoFeature import GeoFeature
 
 @export(
     Father="GeoFeaturePy",
@@ -14,7 +14,7 @@ from App import object
     FatherInclude="App/GeoFeaturePy.h",
     FatherNamespace="App",
 )
-class MeshFeaturePy(object):
+class MeshFeaturePy(GeoFeature):
     """
     The Mesh::Feature class handles meshes.
     The Mesh.MeshFeature() function is for internal use only and cannot be used to create instances of this class.
