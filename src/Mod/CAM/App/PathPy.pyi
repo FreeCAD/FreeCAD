@@ -13,8 +13,8 @@ from Base.Metadata import constmethod
     FatherInclude="Base/PersistencePy.h",
     FatherNamespace="Base",
     ReadOnly=["Length", "Size", "BoundBox"],
-    Delete=True,  # Allow deleting this object
-    Constructor=True,  # Allow constructing this object
+    Delete=True,
+    Constructor=True,
 )
 class PathPy(object):
     """
@@ -54,10 +54,10 @@ class PathPy(object):
     def getCycleTime(self) -> Any:
         """return the cycle time estimation for this path in s"""
         ...
-    Length: Final[float]  # ReadOnly
+    Length: Final[float]
     """the total length of this path in mm"""
 
-    Size: Final[int]  # ReadOnly
+    Size: Final[int]
     """the number of commands in this path"""
 
     Commands: list
@@ -66,5 +66,5 @@ class PathPy(object):
     Center: Any
     """the center position for all rotational parameters"""
 
-    BoundBox: Final[Any]  # ReadOnly
+    BoundBox: Final[Any]
     """the extent of this path"""

@@ -27,17 +27,17 @@ class VoronoiVertexPy(object):
     def toPoint(self) -> Any:
         """Returns a Vector - or None if not possible"""
         ...
-    Index: Final[int]  # ReadOnly
+    Index: Final[int]
     """Internal id of the element."""
 
     Color: int
     """Assigned color of the receiver."""
 
-    X: Final[float]  # ReadOnly
+    X: Final[float]
     """X position"""
 
-    Y: Final[float]  # ReadOnly
+    Y: Final[float]
     """Y position"""
 
-    IncidentEdge: Final[Any]  # ReadOnly
+    IncidentEdge: Final[Any]
     """Y position"""

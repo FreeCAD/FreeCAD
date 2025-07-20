@@ -81,29 +81,29 @@ class VoronoiEdgePy(object):
     def getSegmentAngle(self) -> Any:
         """Returns the angle (in degree) of the segments if the edge was formed by two segments"""
         ...
-    Index: Final[int]  # ReadOnly
+    Index: Final[int]
     """Internal id of the element."""
 
     Color: int
     """Assigned color of the receiver."""
 
-    Cell: Final[Any]  # ReadOnly
+    Cell: Final[Any]
     """cell the edge belongs to"""
 
-    Vertices: Final[list]  # ReadOnly
+    Vertices: Final[list]
     """Begin and End voronoi vertex"""
 
-    Next: Final[Any]  # ReadOnly
+    Next: Final[Any]
     """CCW next edge within voronoi cell"""
 
-    Prev: Final[Any]  # ReadOnly
+    Prev: Final[Any]
     """CCW previous edge within voronoi cell"""
 
-    RotNext: Final[Any]  # ReadOnly
+    RotNext: Final[Any]
     """Rotated CCW next edge within voronoi cell"""
 
-    RotPrev: Final[Any]  # ReadOnly
+    RotPrev: Final[Any]
     """Rotated CCW previous edge within voronoi cell"""
 
-    Twin: Final[Any]  # ReadOnly
+    Twin: Final[Any]
     """Twin edge"""

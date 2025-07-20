@@ -1,7 +1,7 @@
-from Base import PersistencePy  # Use the correct parent class
+from Base import PersistencePy
 from Base.Metadata import export
 from Base.Metadata import constmethod, class_declarations
-from Base.Placement import Placement  # Import Placement explicitly
+from Base.Placement import Placement
 
 @export(
     Father="PersistencePy",
@@ -13,7 +13,7 @@ from Base.Placement import Placement  # Import Placement explicitly
     FatherInclude="Base/PersistencePy.h",
     FatherNamespace="Base",
     Delete=True,
-    Constructor=True,  # Allow constructing this object
+    Constructor=True,
 )
 @class_declarations("mutable Py::Dict parameters_copy_dict;")
 class CommandPy(PersistencePy):
@@ -36,7 +36,6 @@ class CommandPy(PersistencePy):
     def transform(self, placement: Placement) -> "CommandPy":
         """transform(Placement): returns a copy of this command transformed by the given placement"""
         ...
-    # Define properties as attributes, not methods
     Name: str
     """The name of the command"""
 

@@ -48,20 +48,20 @@ class VoronoiCellPy(object):
     def getSource(self) -> Any:
         """Returns the Source for the cell"""
         ...
-    Index: Final[int]  # ReadOnly
+    Index: Final[int]
     """Internal id of the element."""
 
     Color: int
     """Assigned color of the receiver."""
 
-    SourceIndex: Final[int]  # ReadOnly
+    SourceIndex: Final[int]
     """Returns the index of the cell's source"""
 
-    SourceCategory: Final[int]  # ReadOnly
+    SourceCategory: Final[int]
     """Returns the cell's category as an integer"""
 
-    SourceCategoryName: Final[str]  # ReadOnly
+    SourceCategoryName: Final[str]
     """Returns the cell's category as a string"""
 
-    IncidentEdge: Final[Any]  # ReadOnly
+    IncidentEdge: Final[Any]
     """Incident edge of the cell - if exists"""

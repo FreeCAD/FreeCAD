@@ -12,8 +12,8 @@ from Base.Metadata import export
     FatherInclude="Base/BaseClassPy.h",
     FatherNamespace="Base",
     ReadOnly=["Sections", "Shapes"],
-    Constructor=True,  # Allow constructing this object
-    Delete=True,  # Allow deleting this object
+    Constructor=True,
+    Delete=True,
 )
 class AreaPy(object):
     """
@@ -96,11 +96,11 @@ class AreaPy(object):
     def abort(self, **kwargs) -> Any:
         """Abort the current operation."""
         ...
-    Sections: Final[list]  # ReadOnly
+    Sections: Final[list]
     """List of sections in this area."""
 
     Workplane: Any
     """The current workplane. If no plane is set, it is derived from the added shapes."""
 
-    Shapes: Final[list]  # ReadOnly
+    Shapes: Final[list]
     """A list of tuple: [(shape,op), ...] containing the added shapes together with their operation code"""

@@ -83,11 +83,11 @@ class VoronoiPy(object):
     def numSegments(self) -> Any:
         """Return number of input segments"""
         ...
-    Cells: Final[list]  # ReadOnly
+    Cells: Final[list]
     """List of all cells of the voronoi diagram"""
 
-    Edges: Final[list]  # ReadOnly
+    Edges: Final[list]
     """List of all edges of the voronoi diagram"""
 
-    Vertices: Final[list]  # ReadOnly
+    Vertices: Final[list]
     """List of all vertices of the voronoi diagram"""
