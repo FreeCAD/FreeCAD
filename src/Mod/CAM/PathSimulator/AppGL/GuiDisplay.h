@@ -66,7 +66,7 @@ struct GuiItem
     unsigned int flags {};
     bool mouseOver {};
     TextureItem texItem {};
-    QString toolTip;
+    QString toolTip {};
 
     int posx()
     {
