@@ -165,4 +165,4 @@
 
 | Feature | Description | Assessment |
 |--------|-------------|------------|
-| *(placeholder)* | *(Add high-end, futuristic CAM ideas here)* | |
+| framework to support extremely esoteric strategies | -Jeweling, fluting, guilloche | |
