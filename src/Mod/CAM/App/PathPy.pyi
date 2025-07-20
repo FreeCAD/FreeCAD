@@ -1,7 +1,7 @@
-from typing import Final, Any
-from Base import object
-from Base.Metadata import export
-from Base.Metadata import constmethod
+from typing import Any, Final
+
+from Base.Metadata import constmethod, export
+from Base.Persistence import Persistence
 
 @export(
     Father="PersistencePy",
@@ -16,7 +16,7 @@ from Base.Metadata import constmethod
     Delete=True,
     Constructor=True,
 )
-class PathPy(object):
+class PathPy(Persistence):
     """
     Path([commands]): Represents a basic Gcode path
     commands (optional) is a list of Path commands

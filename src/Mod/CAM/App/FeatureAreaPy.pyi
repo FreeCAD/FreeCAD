@@ -1,6 +1,8 @@
 from typing import Any
-from App import object
+
 from Base.Metadata import export
+
+from App.DocumentObject import DocumentObject
 
 @export(
     Father="DocumentObjectPy",
@@ -12,7 +14,7 @@ from Base.Metadata import export
     FatherInclude="App/DocumentObjectPy.h",
     FatherNamespace="App",
 )
-class FeatureAreaPy(object):
+class FeatureAreaPy(DocumentObject):
     """
     This class handles Path Area features
     """

@@ -1,5 +1,6 @@
-from typing import Final, Any
-from Base import object
+from typing import Any, Final
+
+from Base.BaseClass import BaseClass
 from Base.Metadata import export
 
 @export(
@@ -15,7 +16,7 @@ from Base.Metadata import export
     Constructor=True,
     Delete=True,
 )
-class AreaPy(object):
+class AreaPy(BaseClass):
     """
     FreeCAD python wrapper of libarea
 

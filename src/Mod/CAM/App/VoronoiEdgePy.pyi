@@ -1,7 +1,7 @@
-from typing import Final, Any
-from Base import object
-from Base.Metadata import export
-from Base.Metadata import constmethod
+from typing import Any, Final
+
+from Base.BaseClass import BaseClass
+from Base.Metadata import constmethod, export
 
 @export(
     Father="BaseClassPy",
@@ -13,21 +13,11 @@ from Base.Metadata import constmethod
     Namespace="Path",
     FatherInclude="Base/BaseClassPy.h",
     FatherNamespace="Base",
-    ReadOnly=[
-        "Index",
-        "Cell",
-        "Vertices",
-        "Next",
-        "Prev",
-        "RotNext",
-        "RotPrev",
-        "Twin",
-    ],
     RichCompare=True,
     Constructor=True,
     Delete=True,
 )
-class VoronoiEdgePy(object):
+class VoronoiEdgePy(BaseClass):
     """
     Edge of a Voronoi diagram
     """

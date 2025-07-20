@@ -1,7 +1,7 @@
-from typing import Final, Any
-from Base import object
-from Base.Metadata import export
-from Base.Metadata import constmethod
+from typing import Any, Final
+
+from Base.BaseClass import BaseClass
+from Base.Metadata import constmethod, export
 
 @export(
     Father="BaseClassPy",
@@ -16,7 +16,7 @@ from Base.Metadata import constmethod
     Constructor=True,
     Delete=True,
 )
-class VoronoiPy(object):
+class VoronoiPy(BaseClass):
     """
     Voronoi([segments]): Create voronoi for given collection of line segments
     """
