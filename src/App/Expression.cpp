@@ -1756,6 +1756,10 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
         if (args.size() != 1 && args.size() != 3)
             ARGUMENT_THROW("exactly one or three required.");
         break;
+    case IF:
+        if (args.size() != 3)
+            ARGUMENT_THROW("exactly three required.");
+        break;
     case ATAN2:
     case MOD:
     case MROTATEX:
@@ -2378,6 +2382,11 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
             return Py::asObject(new Base::VectorPy(vector1));
         }
     }
+    case IF: {
+        Py::Object condObj = args[0]->getPyValue();
+        int select = pyToQuantity(condObj, expr, "Invalid condition.").getValue() != 0.0 ? 1 : 2;
+        return args[select]->getPyValue();
+    }
     }
 
     Py::Object e1 = args[0]->getPyValue();
@@ -2691,6 +2700,8 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
         ss << "tanh("; break;;
     case TRUNC:
         ss << "trunc("; break;;
+    case IF:
+        ss << "if("; break;;
     case VANGLE:
         ss << "vangle("; break;;
     case VCROSS:
@@ -3623,6 +3634,7 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["tan"] = FunctionExpression::TAN;
         registered_functions["tanh"] = FunctionExpression::TANH;
         registered_functions["trunc"] = FunctionExpression::TRUNC;
+        registered_functions["if"] = FunctionExpression::IF;
         registered_functions["vangle"] = FunctionExpression::VANGLE;
         registered_functions["vcross"] = FunctionExpression::VCROSS;
         registered_functions["vdot"] = FunctionExpression::VDOT;
