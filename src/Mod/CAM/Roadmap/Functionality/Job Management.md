@@ -1,25 +1,29 @@
 # 🟩 Core Essentials
 *Features present or expected in a basic CAM package and necessary to perform the required tasks*
 
-| Feature | Description | Assessment |
-|--------|-------------|------------|
-| Operation Grouping | Group operations into jobs or setups | |
-| Operation Ordering | Define the order in which operations are executed | |
+| Feature                | Description                                                                        | Assessment                                  |
+| ------------------     | -------------------------------------------------                                  | -------------------                         |
+| Operation Grouping     | Group operations into jobs or setups                                               | COMPLETE                                    |
+| Operation Ordering     | Define the order in which operations are executed                                  | COMPLETE (Workplan)                         |
+| Intuitive Job Creation | The job setup process should help the user set up stock, tools, models, and origin | Current functionality is confusing and weak |
 
 ---
 
 # 🟨 Professional Grade
 *Features usually present or expected in the state-of-the art applications*
 
-| Feature | Description | Assessment |
-|--------|-------------|------------|
-| Machine Type Selection | Choose machine type: milling, lathe, multi-axis, or laser/plasma/waterjet | |
-| Multi-Setup Workflow | Organize workflows with multiple parts or setups | |
-| Fixture Selection | Choose WCS for output based on fixture definition | |
-| Fixture Configuration | Configure how fixtures are used across operations | |
-| ‑ Minimize Tool Changes | Optimize across fixtures to reduce tool changes | |
-| ‑ Stock Clearing/Reset | Allow stock clearing and reset while other fixture is active | |
-| ‑ Inter-Op Inspection | Allow for inspection between operations | |
+| Feature                 | Description                                                                                                                                                                                                                 | Assessment                                                                                                                                                                                                                                                                          |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Setup                   | UI should allow dragging parts within the stock. It should allow selecting planes and elements from the model as reference points.<br>Parts should 'drop' onto the work plane much like placing parts works in a 3D slicer. | Orienting parts within stock is clunky.  <br>No automatic bin-packing <br>No.                                                                                                                                                                                                       |
+| Machine Type Selection  | Choose machine type: milling, lathe, multi-axis, or laser/plasma/waterjet                                                                                                                                                   | NONE                                                                                                                                                                                                                                                                                |
+| Multi-Setup Workflow    | Organize workflows with multiple parts in  one job and jobs that process the same part in different setups.  <br><br>This item needs more work.<br><br>                                                                     | Multiple parts are supported in one job.<br>No support for multi-setup jobs.                                                                                                                                                                                                        |
+| Fixture Selection       | Choose WCS for output based on fixture definition                                                                                                                                                                           | COMPLETE                                                                                                                                                                                                                                                                            |
+| Fixture Configuration   | Configure how fixtures are used across operations                                                                                                                                                                           | COMPLETE                                                                                                                                                                                                                                                                            |
+| ‑ Minimize Tool Changes | Optimize across fixtures to reduce tool changes                                                                                                                                                                             | COMPLETE                                                                                                                                                                                                                                                                            |
+| ‑ Stock Clearing/Reset  | Allow stock clearing and reset while other fixture is active                                                                                                                                                                | COMPLETE                                                                                                                                                                                                                                                                            |
+ ‑ Inter-Op Inspection   | Allow for inspection between operations                                                                                                                                                                                     | COMPLETE                                                                                                                                                                                                                                                                            |
+| job templates           | Work spent configuring a job should be reusable on future jobs                                                                                                                                                              | Existing functionality is very good but is not apparent to users.<br>The functionality is under utilized.  Good examples are not shipped with FreeCAD.                                                                                                                              |
+| Job Defaults            | Experienced users want certain values to always default in particular ways.<br>Example:  "I always want my drilling retract depth to be 2mm above the start depth"                                                          | opDefaults allow full customizaton.  The functionality is very good but poorly exposed to users. <br>The SetupSheet is confusing and the functionality overlaps with OpDefaults in Job setup.<br>The functionality doesn't appear where users might prefer it - in CAM preferences. |
 
 ---
 
