@@ -227,9 +227,7 @@ bool ViewProviderAssembly::setEdit(int mode)
                                 PARTKEY,
                                 this->getObject()->getNameInDocument());
 
-        setDragger();
-
-        attachSelection();
+        setupActiveAndInEdit();
 
         return true;
     }
@@ -243,8 +241,7 @@ void ViewProviderAssembly::unsetEdit(int mode)
         partMoving = false;
         docsToMove.clear();
 
-        unsetDragger();
-        detachSelection();
+        unsetupActiveAndInEdit();
 
         // Check if the view is still active before trying to deactivate the assembly.
         auto activeView = getDocument()->getActiveView();
@@ -303,6 +300,26 @@ bool ViewProviderAssembly::isInEditMode() const
 {
     return asmDragger != nullptr;
 }
+void ViewProviderAssembly::setupActiveAndInEdit()
+{
+    setDragger();
+    attachSelection();
+}
+void ViewProviderAssembly::unsetupActiveAndInEdit()
+{
+    unsetDragger();
+    detachSelection();
+}
+void ViewProviderAssembly::setActive(bool active)
+{
+    bool inEdit = isInEditMode();
+    if (active && inEdit) {
+        setupActiveAndInEdit();
+    } else {
+        unsetupActiveAndInEdit();
+    }
+}
+
 
 App::DocumentObject* ViewProviderAssembly::getActivePart() const
 {
