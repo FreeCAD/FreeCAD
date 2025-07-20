@@ -118,7 +118,7 @@ private:
 
     int minimumWidth;
 
-    static bool varSetsVisible;
+    bool varSetsVisible;
     std::unique_ptr<QTreeWidget> treeWidget;
     QPushButton* okBtn = nullptr;
     QPushButton* discardBtn = nullptr;

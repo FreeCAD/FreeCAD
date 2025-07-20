@@ -53,9 +53,6 @@ using namespace Gui::Dialog;
 
 FC_LOG_LEVEL_INIT("DlgExpressionInput", true, true)
 
-
-bool DlgExpressionInput::varSetsVisible = false;
-
 DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
                                        std::shared_ptr<const Expression> _expression,
                                        const Base::Unit & _impliedUnit, QWidget *parent)
@@ -66,6 +63,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
   , discarded(false)
   , impliedUnit(_impliedUnit)
   , minimumWidth(10)
+  , varSetsVisible(false)
 {
     assert(path.getDocumentObject());
 
@@ -225,15 +223,11 @@ void DlgExpressionInput::initializeVarSets()
     std::vector<App::VarSet*> varSets = getAllVarSets();
     if (!varSets.empty() && typeOkForVarSet()) {
         ui->checkBoxVarSets->setVisible(true);
-        ui->checkBoxVarSets->setCheckState(varSetsVisible ? Qt::Checked : Qt::Unchecked);
-        ui->groupBoxVarSets->setVisible(varSetsVisible);
-        if (varSetsVisible) {
-            setupVarSets();
-        }
+        ui->checkBoxVarSets->setCheckState(Qt::Unchecked);
+        ui->groupBoxVarSets->setVisible(false);
     }
     else {
         // The dialog is shown without any VarSet options.
-        varSetsVisible = false;
         ui->checkBoxVarSets->setVisible(false);
         ui->groupBoxVarSets->setVisible(false);
     }
