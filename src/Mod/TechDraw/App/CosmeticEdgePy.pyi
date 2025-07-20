@@ -1,6 +1,6 @@
-from typing import TypeAlias,Final
+from typing import Final
 
-from Base.GeometryPyCXX import PyObjectBase
+from Base.PyObjectBase import PyObjectBase
 from Base.Metadata import export
 
 @export(
@@ -23,13 +23,13 @@ class CosmeticEdgePy(PyObjectBase):
     Tag: Final[str]
     """Gives the tag of the CosmeticEdge as string."""
 
-    Start: VectorCompat
+    Start: PyCXXVector
     """Gives the position of one end of this CosmeticEdge as vector."""
 
-    End: VectorCompat
+    End: PyCXXVector
     """Gives the position of one end of this CosmeticEdge as vector."""
 
-    Center: VectorCompat
+    Center: PyCXXVector
     """Gives the position of center point of this CosmeticEdge as vector."""
 
     Radius: float

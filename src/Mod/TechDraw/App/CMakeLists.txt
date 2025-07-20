@@ -87,7 +87,7 @@ generate_from_py_(DrawTileWeldPy)
 generate_from_py_(DrawWeldSymbolPy)
 generate_from_py_(CosmeticExtensionPy)
 generate_from_py_(DrawBrokenViewPy)
-generate_from_py_(CosmeticEdgePy) # Currently not working.
+generate_from_py_(CosmeticEdgePy)
 
 SET(Draw_SRCS
     DrawPage.cpp
