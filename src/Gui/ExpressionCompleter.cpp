@@ -921,15 +921,15 @@ ExpressionLineEdit::ExpressionLineEdit(QWidget* parent,
     , noProperty(noProperty)
     , exactMatch(false)
     , checkInList(checkInList)
-    , checkPrefix(checkPrefix)
 {
-    setValidator(new ExpressionValidator(this));
+    setPrefix(checkPrefix);
     connect(this, &QLineEdit::textEdited, this, &ExpressionLineEdit::slotTextChanged);
 }
 
 void ExpressionLineEdit::setPrefix(char prefix)
 {
     checkPrefix = prefix;
+    setValidator(checkPrefix == '=' ? nullptr : new ExpressionValidator(this));
 }
 
 void ExpressionLineEdit::setDocumentObject(const App::DocumentObject* currentDocObj,

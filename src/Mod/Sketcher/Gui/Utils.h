@@ -33,7 +33,6 @@
 #include "ViewProviderSketchGeometryExtension.h"
 #include "GeometryCreationMode.h"
 
-
 namespace App
 {
 class DocumentObject;
@@ -200,6 +199,9 @@ void ConstraintToAttachment(Sketcher::GeoElementId element,
                             double distance,
                             App::DocumentObject* obj);
 
+void ConstraintLineByAngle(int geoId, double angle, App::DocumentObject* obj);
+void Constraint2LinesByAngle(int geoId1, int geoId2, double angle, App::DocumentObject* obj);
+
 // convenience functions for cursor coordinates
 bool hideUnits();
 bool showCursorCoords();
@@ -209,6 +211,8 @@ std::string angleToDisplayFormat(double value, int digits);
 
 bool areCollinear(const Base::Vector2d& p1, const Base::Vector2d& p2, const Base::Vector2d& p3);
 
+// Returns the index of the element in the vector, GeoUndef if the element is GeoUndef and -1 if not
+// found
 int indexOfGeoId(const std::vector<int>& vec, int elem);
 
 inline void scrollTo(QListWidget* list, int i, bool select)

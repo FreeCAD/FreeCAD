@@ -624,6 +624,8 @@ class Joint:
         if (
             hasattr(joint, "Reference1")
             and joint.Reference1 is not None
+            and len(joint.Reference1) == 2
+            and len(joint.Reference1[1]) != 0
             and (joint.Reference1[1][0].find("?") != -1)
         ):
             raise Exception(errStr + "Reference1")
@@ -631,6 +633,8 @@ class Joint:
         if (
             hasattr(joint, "Reference2")
             and joint.Reference2 is not None
+            and len(joint.Reference2) == 2
+            and len(joint.Reference2[1]) != 0
             and (joint.Reference2[1][0].find("?") != -1)
         ):
             raise Exception(errStr + "Reference2")

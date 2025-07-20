@@ -41,6 +41,7 @@ public:
 
 protected:
     void ApplyGuiStyles(Part::Feature* object) const override;
+    void ApplyGuiStyles(App::Link* object) const override;
     void ApplyGuiStyles(App::FeaturePython* object) const override;
 
 private:

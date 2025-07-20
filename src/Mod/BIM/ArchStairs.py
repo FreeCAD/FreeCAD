@@ -67,6 +67,7 @@ class _Stairs(ArchComponent.Component):
     def __init__(self,obj):
 
         ArchComponent.Component.__init__(self,obj)
+        self.Type = "Stairs"
         self.setProperties(obj)
         obj.IfcType = "Stair"
 
@@ -226,8 +227,6 @@ class _Stairs(ArchComponent.Component):
         if not hasattr(self,"ArchSkPropSetListPrev"):
             self.ArchSkPropSetListPrev = []
 
-        self.Type = "Stairs"
-
 
     def dumps(self):  # Supercede Arch.Component.dumps()
         dump = super().dumps()
@@ -249,6 +248,7 @@ class _Stairs(ArchComponent.Component):
         elif state[0] != 'Stairs':  # model before merging super.dumps/loads()
             self.ArchSkPropSetPickedUuid = state[0]
             self.ArchSkPropSetListPrev = state[1]
+        self.Type = "Stairs"
 
 
     def onDocumentRestored(self,obj):
@@ -337,7 +337,7 @@ class _Stairs(ArchComponent.Component):
 
         self.pseudosteps = []
         self.pseudorisers = []
-        
+
         self.structures = []
         pl = obj.Placement
         landings = 0 # TODO Any use? 2018.7.15
@@ -1306,7 +1306,7 @@ class _Stairs(ArchComponent.Component):
                 lProfile[-1] = lProfile[-1].add(-vRiserThickness)
                 resHeight1 = structureThickness/math.cos(ang)
                 dh = s2 - float(hgt)/numOfSteps
-                
+
                 resHeight2 = ((numOfSteps-1)*vHeight.Length) - dh
 
                 if endstairsup == "toFlightThickness":
@@ -1362,7 +1362,7 @@ class _Stairs(ArchComponent.Component):
                 struct = struct.extrude(evec)
 
         elif structure in ["One stringer","Two stringers"]:
-            # setup stringerWidth 
+            # setup stringerWidth
             if not stringerWidth:
                 stringerWidth = obj.StringerWidth.Value
 

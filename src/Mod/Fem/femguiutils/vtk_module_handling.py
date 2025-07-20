@@ -47,6 +47,10 @@ __title__ = "FEM GUI vtk python module check"
 __author__ = "Stefan Tröger"
 __url__ = "https://www.freecad.org"
 
+
+# Note: This file is imported from FreeCAD App files. Do not import any FreeCADGui
+#       directly to support cmd line use.
+
 __user_input_received = False
 
 

@@ -210,6 +210,7 @@ class BuildingPart(ArchIFC.IfcProduct):
     def __init__(self,obj):
 
         obj.Proxy = self
+        self.Type = "BuildingPart"
         obj.addExtension('App::GroupExtensionPython')
         #obj.addExtension('App::OriginGroupExtensionPython')
         self.setProperties(obj)
@@ -242,8 +243,6 @@ class BuildingPart(ArchIFC.IfcProduct):
         if not "MaterialsTable" in pl:
             obj.addProperty("App::PropertyMap","MaterialsTable","BuildingPart",QT_TRANSLATE_NOOP("App::Property","A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files"), locked=True)
 
-        self.Type = "BuildingPart"
-
     def onDocumentRestored(self,obj):
 
         self.setProperties(obj)
@@ -254,7 +253,7 @@ class BuildingPart(ArchIFC.IfcProduct):
 
     def loads(self,state):
 
-        return None
+        self.Type = "BuildingPart"
 
     def onBeforeChange(self,obj,prop):
 
@@ -861,7 +860,7 @@ class ViewProviderBuildingPart:
     def activate(self, action=None):
         from draftutils.utils import toggle_working_plane
         vobj = self.Object.ViewObject
-        
+
         if (not hasattr(vobj,"DoubleClickActivates")) or vobj.DoubleClickActivates:
             if toggle_working_plane(self.Object, action, restore=True):
                 print("Setting active working plane to: ", self.Object.Label)

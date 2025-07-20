@@ -47,6 +47,8 @@
         <file>icons/NavigationOpenSCAD_dark.svg</file>
         <file>icons/NavigationRevit_light.svg</file>
         <file>icons/NavigationRevit_dark.svg</file>
+        <file>icons/NavigationSiemensNX_light.svg</file>
+        <file>icons/NavigationSiemensNX_dark.svg</file>
         <file>icons/NavigationSolidWorks_light.svg</file>
         <file>icons/NavigationSolidWorks_dark.svg</file>
         <file>icons/NavigationTinkerCAD_light.svg</file>

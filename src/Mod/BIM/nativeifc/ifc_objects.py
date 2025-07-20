@@ -65,6 +65,7 @@ class ifc_object:
         elif prop == "Schema":
             self.edit_schema(obj, obj.Schema)
         elif prop == "Type":
+            self.edit_type(obj)
             self.assign_classification(obj)
         elif prop == "Classification":
             self.edit_classification(obj)
@@ -122,7 +123,7 @@ class ifc_object:
         the object references a Type that has a Classification property,
         so we move copy the Type's property to our actual object.
         """
-        
+
         if not getattr(obj, "Type", None):
             return
 
@@ -169,9 +170,8 @@ class ifc_object:
         return getattr(self, "Type", None)
 
     def loads(self, state):
-        if state and hasattr(state, "Type"):
+        if state:
             self.Type = state
-        return None
 
     def execute(self, obj):
         from . import ifc_generator  # lazy import

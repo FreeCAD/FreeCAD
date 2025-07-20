@@ -115,8 +115,8 @@ public:
 
     App::PropertyLinkList Source;
     App::PropertyXLinkList XSource;
-    App::PropertyDirection Direction;  // the projection direction
-    App::PropertyDirection XDirection;
+    App::PropertyVector Direction;  // the projection direction.  where you are looking from.
+    App::PropertyVector XDirection;
     App::PropertyBool Perspective;
     App::PropertyDistance Focus;
 
@@ -242,6 +242,9 @@ public:
     bool isCosmeticVertex(const std::string& element);
     bool isCosmeticEdge(const std::string& element);
     bool isCenterLine(const std::string& element);
+
+    Base::Vector3d snapHighlightToVertex(Base::Vector3d newAnchorPoint, double radius) const;
+
 
 public Q_SLOTS:
     void onHlrFinished(void);

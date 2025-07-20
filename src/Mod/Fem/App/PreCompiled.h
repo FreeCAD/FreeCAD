@@ -186,6 +186,7 @@
 #include <vtkStreamingDemandDrivenPipeline.h>
 #include <vtkStringArray.h>
 #include <vtkStructuredGrid.h>
+#include <vtkTable.h>
 #include <vtkTetra.h>
 #include <vtkTransform.h>
 #include <vtkTriangle.h>
@@ -200,6 +201,8 @@
 #include <vtkXMLPolyDataReader.h>
 #include <vtkXMLRectilinearGridReader.h>
 #include <vtkXMLStructuredGridReader.h>
+#include <vtkXMLTableReader.h>
+#include <vtkXMLTableWriter.h>
 #include <vtkXMLUnstructuredGridReader.h>
 #include <vtkXMLUnstructuredGridWriter.h>
 

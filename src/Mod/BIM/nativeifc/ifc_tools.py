@@ -350,6 +350,7 @@ def create_children(
                 ]
                 for window in windows:
                     subresult.extend(create_child(child, window))
+
             if recursive:
                 subresult.extend(
                     create_children(
@@ -1598,7 +1599,7 @@ def get_orphan_elements(ifcfile):
 
     products = ifcfile.by_type("IfcProduct")
     products = [p for p in products if not p.Decomposes]
-    products = [p for p in products if not p.ContainedInStructure]
+    products = [p for p in products if not getattr(p, "ContainedInStructure", [])]
     products = [
         p for p in products if not hasattr(p, "VoidsElements") or not p.VoidsElements
     ]

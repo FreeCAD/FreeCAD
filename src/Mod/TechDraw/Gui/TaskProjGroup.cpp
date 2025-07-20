@@ -575,10 +575,13 @@ void TaskProjGroup::spacingChanged()
     if (blockUpdate || !multiView) {
         return;
     }
+
     multiView->spacingX.setValue(ui->sbXSpacing->value().getValue());
     multiView->spacingY.setValue(ui->sbYSpacing->value().getValue());
-    multiView->recomputeFeature();
+
+    multiView->autoPositionChildren();
 }
+
 
 void TaskProjGroup::updateTask()
 {
@@ -774,12 +777,10 @@ QString TaskProjGroup::formatVector(Base::Vector3d vec)
 }
 
 void TaskProjGroup::saveButtons(QPushButton* btnOK,
-                             QPushButton* btnCancel,
-                             QPushButton* btnApply)
+                             QPushButton* btnCancel)
 {
     m_btnOK = btnOK;
     m_btnCancel = btnCancel;
-    m_btnApply = btnApply;
 }
 
 
@@ -847,6 +848,10 @@ bool TaskProjGroup::reject()
         if (Gui::Command::hasPendingCommand()) {
             Gui::Command::abortCommand();
         }
+        // Restore views to initial spacing
+        if (multiView) {
+            multiView->autoPositionChildren();
+        }
     }
     Gui::Command::runCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     return false;
@@ -880,8 +885,7 @@ void TaskDlgProjGroup::modifyStandardButtons(QDialogButtonBox* box)
 {
     QPushButton* btnOK = box->button(QDialogButtonBox::Ok);
     QPushButton* btnCancel = box->button(QDialogButtonBox::Cancel);
-    QPushButton* btnApply = box->button(QDialogButtonBox::Apply);
-    widget->saveButtons(btnOK, btnCancel, btnApply);
+    widget->saveButtons(btnOK, btnCancel);
 }
 
 //==== calls from the TaskView ===============================================================

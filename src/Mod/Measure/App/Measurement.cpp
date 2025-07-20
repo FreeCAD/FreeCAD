@@ -239,7 +239,7 @@ MeasureType Measurement::findType()
     }
     else if (edges > 0) {
         if (verts > 0) {
-            if (verts > 1 && edges > 0) {
+            if (verts > 1) {
                 mode = MeasureType::Invalid;
             }
             else {

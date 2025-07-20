@@ -474,16 +474,18 @@ Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const
             joiner.getResultWires(result, "SKF");
             result = result.makeElementFace(result.getSubTopoShapes(TopAbs_WIRE),
                     /*op*/"",
-                    /*maker*/"Part::FaceMakerBullseye",
+                    /*maker*/"Part::FaceMakerRing",
                     /*pln*/nullptr
             );
         }
         Part::TopoShape openWires(getID(), getDocument()->getStringHasher());
         joiner.getOpenWires(openWires, "SKF");
-        if (openWires.isNull())
+        if (openWires.isNull()) {
             return result;  // No open wires, return either face or empty toposhape
-        if (result.isNull())
+        }
+        if (result.isNull()) {
             return openWires;   // No face, but we have open wires to return as a shape
+        }
         return result.makeElementCompound({result, openWires}); // Compound and return both
     } catch (Base::Exception &e) {
         FC_WARN("Failed to make face for sketch: " << e.what());
@@ -613,13 +615,6 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
                 Geometry.moveValues(std::move(tmp));
             }
         }
-    }
-    else if (err < 0) {
-        // if solver failed, invalid constraints were likely added before solving
-        // (see solve in addConstraint), so solver information is definitely invalid.
-        //
-        // Update: ViewProviderSketch shall now rely on the signalSolverUpdate below for update
-        // this->Constraints.touch();
     }
 
     signalSolverUpdate();
@@ -885,6 +880,13 @@ int SketchObject::setDatum(int ConstrId, double Datum)
         this->Constraints.getValues()[ConstrId]->setValue(oldDatum);// newVals is a shell now
 
     return err;
+}
+double SketchObject::getDatum(int ConstrId) const
+{
+    if (!this->Constraints[ConstrId]->isDimensional()) {
+        return 0.0;
+    }
+    return this->Constraints[ConstrId]->getValue();
 }
 
 int SketchObject::setDriving(int ConstrId, bool isdriving)
@@ -1782,8 +1784,9 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
     Base::StateLocker lock(managedoperation, true);
 
     const std::vector<Part::Geometry*>& vals = getInternalGeometry();
-    if (GeoId < 0 || GeoId >= int(vals.size()))
+    if (GeoId >= int(vals.size())) {
         return -1;
+    }
 
     if (deleteinternalgeo && hasInternalGeometry(getGeometry(GeoId))) {
         // Only for supported types
@@ -3902,7 +3905,7 @@ int SketchObject::join(int geoId1, Sketcher::PointPos posId1, int geoId2, Sketch
 
     if (Sketcher::PointPos::start != posId1 && Sketcher::PointPos::end != posId1
         && Sketcher::PointPos::start != posId2 && Sketcher::PointPos::end != posId2) {
-        THROWM(ValueError, "Invalid position(s): points must be start or end points of a curve.");
+        THROWM(ValueError, "Invalid positions: points must be start or end points of a curve.");
         return -1;
     }
 
@@ -7650,8 +7653,9 @@ const Part::Geometry* SketchObject::_getGeometry(int GeoId) const
         if (GeoId < int(geomlist.size()))
             return geomlist[GeoId];
     }
-    else if (GeoId < 0 && -GeoId-1 < ExternalGeo.getSize())
+    else if (-GeoId-1 < ExternalGeo.getSize()) {
         return ExternalGeo[-GeoId-1];
+    }
 
     return nullptr;
 }
@@ -7679,6 +7683,22 @@ int SketchObject::getGeoIdFromCompleteGeometryIndex(int completeGeometryIndex) c
         return completeGeometryIndex;
     else
         return (completeGeometryIndex - completeGeometryCount);
+}
+int SketchObject::getSingleScaleDefiningConstraint() const
+{
+    const std::vector<Constraint*>& vals = this->Constraints.getValues();
+
+    int found = -1;
+    for (size_t i = 0; i < vals.size(); ++i) {
+        // An angle does not define scale
+        if (vals[i]->isDimensional() && vals[i]->Type != Angle) {
+            if (found != -1) { // More than one scale defining constraint
+                return -1;
+            }
+            found = i;
+        }
+    }
+    return found;
 }
 
 std::unique_ptr<const GeometryFacade> SketchObject::getGeometryFacade(int GeoId) const
@@ -8696,9 +8716,6 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
     auto SubElements = ExternalGeometry.getSubValues();
     assert(externalGeoRef.size() == Objects.size());
     auto keys = externalGeoRef;
-    if (Types.size() != Objects.size()) {
-        Types.resize(Objects.size(), 0);
-    }
 
     // re-check for any missing geometry element. The code here has a side
     // effect that the linked external geometry will continue to work even if
@@ -8758,6 +8775,10 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
     Handle(Geom_Plane) gPlane = new Geom_Plane(sketchPlane);
     BRepBuilderAPI_MakeFace mkFace(sketchPlane);
     TopoDS_Shape aProjFace = mkFace.Shape();
+
+    if (Types.size() != Objects.size()) {
+        Types.resize(Objects.size(), 0);
+    }
 
     std::set<std::string> refSet;
     // We use a vector here to keep the order (roughly) the same as ExternalGeometry
@@ -9509,16 +9530,16 @@ void SketchObject::getConstraintIndices(int GeoId, std::vector<int>& constraintL
 void SketchObject::appendConflictMsg(const std::vector<int>& conflicting, std::string& msg)
 {
     appendConstraintsMsg(conflicting,
-                         "Please remove the following conflicting constraint:\n",
-                         "Please remove at least one of the following conflicting constraints:\n",
+                         "Remove the following conflicting constraint:",
+                         "Remove at least one of the following conflicting constraints:",
                          msg);
 }
 
 void SketchObject::appendRedundantMsg(const std::vector<int>& redundant, std::string& msg)
 {
     appendConstraintsMsg(redundant,
-                         "Please remove the following redundant constraint:",
-                         "Please remove the following redundant constraints:",
+                         "Remove the following redundant constraint:",
+                         "Remove the following redundant constraints:",
                          msg);
 }
 
@@ -9526,8 +9547,8 @@ void SketchObject::appendMalformedConstraintsMsg(const std::vector<int>& malform
                                                  std::string& msg)
 {
     appendConstraintsMsg(malformed,
-                         "Please remove the following malformed constraint:",
-                         "Please remove the following malformed constraints:",
+                         "Remove the following malformed constraint:",
+                         "Remove the following malformed constraints:",
                          msg);
 }
 
@@ -11694,6 +11715,24 @@ std::vector<Base::Vector3d> SketchObject::getOpenVertices() const
 
 // SketchGeometryExtension interface
 
+size_t setGeometryIdHelper(int GeoId, long id, std::vector<Part::Geometry*>& newVals, size_t searchOffset = 0, bool returnOnMatch = false)
+{
+    // deep copy
+    for (size_t i = searchOffset; i < newVals.size(); i++) {
+        newVals[i] = newVals[i]->clone();
+
+        if ((int)i == GeoId) {
+            auto gf = GeometryFacade::getFacade(newVals[i]);
+
+            gf->setId(id);
+
+            if (returnOnMatch) {
+                return i;
+            }
+        }
+    }
+    return 0;
+}
 int SketchObject::setGeometryId(int GeoId, long id)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
@@ -11704,18 +11743,34 @@ int SketchObject::setGeometryId(int GeoId, long id)
 
     const std::vector<Part::Geometry*>& vals = getInternalGeometry();
 
+    std::vector<Part::Geometry*> newVals(vals);
+    setGeometryIdHelper(GeoId, id, newVals);
+
+    // There is not actual internal transaction going on here, however neither the geometry indices
+    // nor the vertices need to be updated so this is a convenient way of preventing it.
+    {
+        Base::StateLocker lock(internaltransaction, true);
+        this->Geometry.setValues(std::move(newVals));
+    }
+
+    return 0;
+}
+int SketchObject::setGeometryIds(std::vector<std::pair<int, long>> GeoIdsToIds)
+{
+    Base::StateLocker lock(managedoperation, true);
+
+    std::sort(GeoIdsToIds.begin(), GeoIdsToIds.end());
+
+    size_t searchOffset = 0;
+
+    const std::vector<Part::Geometry*>& vals = getInternalGeometry();
 
     std::vector<Part::Geometry*> newVals(vals);
 
-    // deep copy
-    for (size_t i = 0; i < newVals.size(); i++) {
-        newVals[i] = newVals[i]->clone();
-
-        if ((int)i == GeoId) {
-            auto gf = GeometryFacade::getFacade(newVals[i]);
-
-            gf->setId(id);
-        }
+    for (size_t i = 0; i < GeoIdsToIds.size(); ++i) {
+        int GeoId = GeoIdsToIds[i].first;
+        long id = GeoIdsToIds[i].second;
+        searchOffset = setGeometryIdHelper(GeoId, id, newVals, searchOffset, i != GeoIdsToIds.size()-1);
     }
 
     // There is not actual internal transaction going on here, however neither the geometry indices

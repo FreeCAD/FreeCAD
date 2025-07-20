@@ -741,6 +741,7 @@ def makePipe(baseobj=None, diameter=0, length=0, placement=None, name=None):
         baseClassName="_ArchPipe",
         internalName="Pipe",
         defaultLabel=name if name else translate("Arch", "Pipe"),
+        viewProviderName="_ViewProviderPipe",
     )
 
     # Initialize all relevant properties
@@ -793,7 +794,12 @@ def makePipeConnector(pipes, radius=0, name=None):
 
     # Initialize all relevant properties
     pipeConnector.Pipes = pipes
-    pipeConnector.Radius = radius if radius else pipes[0].Diameter
+    if radius:
+        pipeConnector.Radius = radius
+    elif pipes[0].ProfileType == "Circle":
+        pipeConnector.Radius = pipes[0].Diameter
+    else:
+        pipeConnector.Radius = max(pipes[0].Height, pipes[0].Width)
 
     return pipeConnector
 
@@ -1200,7 +1206,7 @@ def makeSectionPlane(objectslist=None, name=None):
     from WorkingPlane import get_working_plane
 
     sectionPlane = _initializeArchObject(
-        "Part::FeaturePython",
+        "App::FeaturePython",
         baseClassName="_SectionPlane",
         internalName="Section",
         defaultLabel=name if name else translate("Arch", "Section"),
@@ -1685,7 +1691,7 @@ def makeWall(
     return wall
 
 
-def joinWalls(walls, delete=False):
+def joinWalls(walls, delete=False, deletebase=False):
     """Join the given list of walls into one sketch-based wall.
 
     Take the first wall in the list, and adds on the other walls in the list.
@@ -1701,6 +1707,9 @@ def joinWalls(walls, delete=False):
         be based off a base object.
     delete : bool, optional
         If True, deletes the other walls in the list. Defaults to False.
+    deletebase : bool, optional
+        If True, and delete is True, the base of the other walls is also deleted
+        Defaults to False.
 
     Returns
     -------
@@ -1739,14 +1748,39 @@ def joinWalls(walls, delete=False):
             else:
                 sk = base.Base
     for w in walls:
-        if w.Base:
-            if not w.Base.Shape.Faces:
-                for e in w.Base.Shape.Edges:
-                    l = e.Curve
-                    if isinstance(l, Part.Line):
-                        l = Part.LineSegment(e.Vertexes[0].Point, e.Vertexes[-1].Point)
-                    sk.addGeometry(l)
-                    deleteList.append(w.Name)
+        if w.Base and not w.Base.Shape.Faces:
+            for hostedObj in w.Proxy.getHosts(w):
+                if hasattr(hostedObj, "Host"):
+                    hostedObj.Host = base
+                else:
+                    tmp = hostedObj.Hosts
+                    if delete:
+                        tmp.remove(w)
+                    if not base in tmp:
+                        tmp.append(base)
+                    hostedObj.Hosts = tmp
+            tmp = []
+            for add in w.Additions:
+                if not add in base.Additions:
+                    tmp.append(add)
+            if delete:
+                w.Additions = None
+            base.Additions += tmp
+            tmp = []
+            for sub in w.Subtractions:
+                if not sub in base.Subtractions:
+                    tmp.append(sub)
+            if delete:
+                w.Subtractions = None
+            base.Subtractions += tmp
+            for e in w.Base.Shape.Edges:
+                l = e.Curve
+                if isinstance(l, Part.Line):
+                    l = Part.LineSegment(e.Vertexes[0].Point, e.Vertexes[-1].Point)
+                sk.addGeometry(l)
+                deleteList.append(w.Name)
+                if deletebase:
+                    deleteList.append(w.Base.Name)
     if delete:
         for n in deleteList:
             FreeCAD.ActiveDocument.removeObject(n)

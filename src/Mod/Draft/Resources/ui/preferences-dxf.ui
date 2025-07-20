@@ -394,11 +394,11 @@ Note that this can take a while!</string>
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox_groupLayers">
           <property name="toolTip">
-           <string>Objects from the same layers will be joined into Draft Blocks,
+           <string>Objects from the same layers will be joined into Part Compounds,
 turning the display faster, but making them less easily editable.</string>
           </property>
           <property name="text">
-           <string>Group layers into blocks</string>
+           <string>Merge layer contents into blocks</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>groupLayers</cstring>

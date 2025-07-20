@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Mesh view</string>
+   <string>Mesh View</string>
   </property>
   <layout class="QGridLayout">
    <property name="leftMargin">
@@ -32,7 +32,7 @@
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Default appearance for new meshes</string>
+      <string>Default Appearance for New Meshes</string>
      </property>
      <layout class="QGridLayout">
       <property name="leftMargin">

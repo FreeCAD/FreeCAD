@@ -272,6 +272,10 @@ public:
 
     int getGeoIdFromCompleteGeometryIndex(int completeGeometryIndex) const;
 
+    // Returns the index of the scale defining constraint if
+    // there is only one and -1 otherwise
+    int getSingleScaleDefiningConstraint() const;
+
     /// returns non zero if the sketch contains conflicting constraints
     int hasConflicts() const;
     /**
@@ -299,6 +303,8 @@ public:
     int solve(bool updateGeoAfterSolving = true);
     /// set the datum of a Distance or Angle constraint and solve
     int setDatum(int ConstrId, double Datum);
+    /// get the datum of a Distance or Angle constraint
+    double getDatum(int ConstrId) const;
     /// set the driving status of this constraint and solve
     int setDriving(int ConstrId, bool isdriving);
     /// get the driving status of this constraint
@@ -889,6 +895,7 @@ public:
 
 public:  // geometry extension functionalities for single element sketch object user convenience
     int setGeometryId(int GeoId, long id);
+    int setGeometryIds(std::vector<std::pair<int, long>> GeoIdsToIds);
     int getGeometryId(int GeoId, long& id) const;
 
 protected:

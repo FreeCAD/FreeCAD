@@ -103,10 +103,6 @@
             "type": "BOOL",
             "value": "ON"
           },
-          "FREECAD_QT_VERSION": {
-            "type": "STRING",
-            "value": "6"
-          },
           "OCCT_CMAKE_FALLBACK": {
             "type": "BOOL",
             "value": "ON"
@@ -125,7 +121,6 @@
             "lhs": "${hostSystemName}",
             "rhs": "Linux"
         },
-        "cmakeExecutable": "${sourceDir}/conda/cmake.sh",
         "cacheVariables": {
           "CMAKE_C_COMPILER": {
             "type": "STRING",
@@ -165,7 +160,6 @@
             "lhs": "${hostSystemName}",
             "rhs": "Darwin"
         },
-        "cmakeExecutable": "${sourceDir}/conda/cmake.sh",
         "cacheVariables": {
           "CMAKE_IGNORE_PREFIX_PATH": {
             "type": "STRING",
@@ -193,7 +187,6 @@
             "lhs": "${hostSystemName}",
             "rhs": "Windows"
         },
-        "cmakeExecutable": "${sourceDir}/conda/cmake.cmd",
         "cacheVariables": {
           "CMAKE_INSTALL_PREFIX": {
             "type": "FILEPATH",

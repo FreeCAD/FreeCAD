@@ -26,6 +26,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QFontComboBox>
+#include <QGroupBox>
 #include <QRadioButton>
 #include <QTextEdit>
 
@@ -424,6 +425,31 @@ protected:
   // restore from/save to parameters
   void restorePreferences() override;
   void savePreferences() override;
+};
+
+/**
+ * The PrefCheckableGroupBox class allows a QGroupBox to act as a boolean preference.
+ * Its 'checked' state is saved to and restored from the FreeCAD parameter system
+ * using the 'prefEntry' and 'prefPath' dynamic properties set in the .ui file.
+ * When the GroupBox is checked, its children are enabled; when unchecked, disabled (standard
+ * QGroupBox behavior).
+ */
+class GuiExport PrefCheckableGroupBox : public QGroupBox, public PrefWidget
+{
+    Q_OBJECT
+
+    Q_PROPERTY(QByteArray prefEntry READ entryName    WRITE setEntryName)    // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(QByteArray prefPath  READ paramGrpPath WRITE setParamGrpPath) // clazy:exclude=qproperty-without-notify
+
+public:
+    explicit PrefCheckableGroupBox(QWidget* parent = nullptr);
+    ~PrefCheckableGroupBox() override;
+
+protected:
+  // restore from/save to parameters
+    void restorePreferences() override;
+    void savePreferences() override;
+
 };
 
 } // namespace Gui

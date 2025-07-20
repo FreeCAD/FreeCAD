@@ -82,6 +82,7 @@ class CurtainWall(ArchComponent.Component):
     def __init__(self,obj):
 
         ArchComponent.Component.__init__(self,obj)
+        self.Type = "CurtainWall"
         self.setProperties(obj)
         obj.IfcType = "Curtain Wall"
 
@@ -184,12 +185,14 @@ class CurtainWall(ArchComponent.Component):
         if not "OverrideEdges" in pl:  # PropertyStringList
             obj.addProperty("App::PropertyStringList","OverrideEdges","CurtainWall",QT_TRANSLATE_NOOP("App::Property","Input are index numbers of edges of Base ArchSketch/Sketch geometries (in Edit mode).  Selected edges are used to create the shape of this Arch Curtain Wall (instead of using all edges by default).  [ENHANCED by ArchSketch] GUI 'Edit Curtain Wall' Tool is provided in external Add-on ('SketchArch') to let users to select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used. Property is ignored if Base ArchSketch provided the selected edges."), locked=True)
 
-        self.Type = "CurtainWall"
-
     def onDocumentRestored(self,obj):
 
         ArchComponent.Component.onDocumentRestored(self,obj)
         self.setProperties(obj)
+
+    def loads(self,state):
+
+        self.Type = "CurtainWall"
 
     def onChanged(self,obj,prop):
 
@@ -279,16 +282,52 @@ class CurtainWall(ArchComponent.Component):
             if not vdir.Length:
                 vdir = FreeCAD.Vector(0,0,1)
             vdir.normalize()
-            basevector = face.valueAt(fp[1],fp[3]).sub(face.valueAt(fp[0],fp[2]))
-            a = basevector.getAngle(vdir)
-            if (a <= math.pi/2+ANGLETOLERANCE) and (a >= math.pi/2-ANGLETOLERANCE):
-                facedir = True
-                vertsec = obj.VerticalSections
-                horizsec = obj.HorizontalSections
-            else:
-                facedir = False
-                vertsec = obj.HorizontalSections
-                horizsec = obj.VerticalSections
+
+            # Check if face if vertical in the first place
+            # Fix issue in 'Curtain wall vertical/horizontal mullion mix-up'
+            # https://github.com/FreeCAD/FreeCAD/issues/21845
+            #
+            face_plane = face.findPlane()  # Curve face (surface) seems return no Plane
+            if face_plane:
+                if -0.001 < face_plane.Axis[2] < 0.001:  # i.e. face is vertical (normal pointing horizon)
+                    faceVert = True
+                    # Support 'Swap Horizontal Vertical'
+                    # See issue 'Swap Horizontal Vertical does not work'
+                    # https://github.com/FreeCAD/FreeCAD/issues/21866
+                    if obj.SwapHorizontalVertical:
+                        vertsec = obj.HorizontalSections
+                        horizsec = obj.VerticalSections
+                    else:
+                        vertsec = obj.VerticalSections
+                        horizsec = obj.HorizontalSections
+                else:
+                    faceVert = False
+
+            # Guess algorithm if face is not vertical
+            if not faceVert:
+                # TODO 2025.6.15 : Need a more robust algorithm below
+                # See issue 'Curtain wall vertical/horizontal mullion mix-up'
+                # https://github.com/FreeCAD/FreeCAD/issues/21845
+                # Partially improved by checking 'if face is vertical' above
+                #
+                basevector = face.valueAt(fp[1],fp[3]).sub(face.valueAt(fp[0],fp[2]))
+                bv_angle = basevector.getAngle(vdir)
+                if (bv_angle <= math.pi/2+ANGLETOLERANCE) and (bv_angle >= math.pi/2-ANGLETOLERANCE):
+                    facedir = True
+                    if obj.SwapHorizontalVertical:
+                        vertsec = obj.HorizontalSections
+                        horizsec = obj.VerticalSections
+                    else:
+                        vertsec = obj.VerticalSections
+                        horizsec = obj.HorizontalSections
+                else:
+                    facedir = False
+                    if obj.SwapHorizontalVertical:
+                        vertsec = obj.VerticalSections
+                        horizsec = obj.HorizontalSections
+                    else:
+                        vertsec = obj.HorizontalSections
+                        horizsec = obj.VerticalSections
 
             hstep = (fp[1]-fp[0])
             if vertsec:

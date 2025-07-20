@@ -394,7 +394,7 @@ class Node:
                     try:
                         f = edgestofaces(edges)
                     except Part.OCCError:
-                        FreeCAD.Console.PrintError('processing of dxf import failed\nPlease rework \'%s\' manually\n' % layera)
+                        FreeCAD.Console.PrintError('processing of dxf import failed\nRework \'%s\' manually\n' % layera)
                         f = Part.Shape() #empty Shape
                     obj = doc.addObject("Part::FeaturePython",'import_dxf_%s_%s'%(objname,layera))
                     ImportObject(obj,groupobj[0]) #This object is not mutable from the GUI

@@ -47,4 +47,4 @@ from bimtests.TestArchReference import TestArchReference
 from bimtests.TestArchSchedule import TestArchSchedule
 from bimtests.TestArchTruss import TestArchTruss
 from bimtests.TestArchComponent import TestArchComponent
-
+from bimtests.TestWebGLExport import TestWebGLExport

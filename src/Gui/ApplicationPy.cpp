@@ -1293,23 +1293,35 @@ PyObject* ApplicationPy::sAddCommand(PyObject * /*self*/, PyObject *args)
     std::string group;
     try {
         Base::PyGILStateLocker lock;
-        Py::Module mod(PyImport_ImportModule("inspect"), true);
-        if (mod.isNull()) {
-            PyErr_SetString(PyExc_ImportError, "Cannot load inspect module");
+
+        // Get the traceback module.
+        Py::Module tb(PyImport_ImportModule("traceback"), true);
+        if (tb.isNull()) {
+            PyErr_SetString(PyExc_ImportError, "Cannot load traceback module");
             return nullptr;
         }
-        Py::Callable inspect(mod.getAttr("stack"));
-        Py::List list(inspect.apply());
 
-        std::string file;
-        // usually this is the file name of the calling script
-        Py::Object info = list.getItem(0);
-        PyObject *pyfile = PyStructSequence_GET_ITEM(*info,1);
-        if(!pyfile) {
-            throw Py::Exception();
+        // Extract the stack information.
+        Py::Callable extract(tb.getAttr("extract_stack"));
+        Py::List stack = extract.apply();
+        if (stack.size() <= 0) {
+            PyErr_SetString(PyExc_RuntimeError, "traceback.extract_stack() returned empty result");
+            return nullptr;
         }
 
-        file = Py::Object(pyfile).as_string();
+        // Extract the filename and line number.
+        Py::Tuple entry(stack.getItem(0));
+        Py::Object filename_obj = entry[0];
+        if (!filename_obj.isString()) {
+            throw Py::Exception();
+        }
+        std::string file = Py::String(filename_obj).as_std_string();
+        if (file.empty()) {
+            PyErr_SetString(PyExc_RuntimeError, "Failed to identify caller from stack");
+            return nullptr;
+        }
+
+        // Split path into file and module name.
         Base::FileInfo fi(file);
         // convert backslashes to slashes
         file = fi.filePath();

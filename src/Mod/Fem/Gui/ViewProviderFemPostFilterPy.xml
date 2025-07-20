@@ -20,5 +20,10 @@
         <UserDocu>Returns the display option task panel for a post processing edit task dialog.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="createExtractionTaskWidget">
+      <Documentation>
+        <UserDocu>Returns the data extraction task panel for a post processing edit task dialog.</UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>

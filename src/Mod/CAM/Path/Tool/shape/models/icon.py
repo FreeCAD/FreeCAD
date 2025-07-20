@@ -20,6 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 import pathlib
+import re
 import xml.etree.ElementTree as ET
 from typing import Mapping, Optional
 from functools import cached_property
@@ -235,8 +236,7 @@ class ToolBitShapeSvgIcon(ToolBitShapeIcon):
         Returns:
             The abbreviation string, or None if not found.
         """
-        normalized_param_name = param_name.lower().replace(" ", "_")
-        return self.abbreviations.get(normalized_param_name)
+        return self.abbreviations.get(param_name)
 
     @staticmethod
     def get_abbreviations_from_svg(svg: bytes) -> Mapping[str, str]:
@@ -254,15 +254,23 @@ class ToolBitShapeSvgIcon(ToolBitShapeIcon):
             if id is None or not isinstance(id, str):
                 continue
 
+            # Backward compatibility: Normalize to match FreeCAD property
+            # name structure:
+            # Old: property_name New: PropertyName
+            def _upper(match):
+                return match.group(1).upper()
+
+            id = re.sub(r"_(\w)", _upper, id.capitalize())
+
             abbr = text_elem.text
             if abbr is not None:
-                result[id.lower()] = abbr
+                result[id] = abbr
 
             span_elem = text_elem.find(".//s:tspan", _svg_ns)
             if span_elem is None:
                 continue
             abbr = span_elem.text
-            result[id.lower()] = abbr
+            result[id] = abbr
 
         return result
 

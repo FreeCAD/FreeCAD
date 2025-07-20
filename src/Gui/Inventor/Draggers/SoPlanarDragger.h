@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TPLANAR_DRAGGER_H
-#define GUI_TPLANAR_DRAGGER_H
+#ifndef GUI_PLANAR_DRAGGER_H
+#define GUI_PLANAR_DRAGGER_H
 
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/fields/SoSFColor.h>
@@ -88,4 +88,4 @@ private:
 
 }
 
-#endif /* TPLANAR_DRAGGER */
+#endif /* GUI_PLANAR_DRAGGER_H */

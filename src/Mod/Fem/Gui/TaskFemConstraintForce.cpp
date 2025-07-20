@@ -89,7 +89,7 @@ TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce* C
     ui->checkReverse->setChecked(reversed);
 
     // create a context menu for the listview of the references
-    createDeleteAction(ui->listReferences);
+    createActions(ui->listReferences);
     connect(deleteAction, &QAction::triggered, this, &TaskFemConstraintForce::onReferenceDeleted);
     connect(ui->buttonDirection,
             &QToolButton::clicked,
@@ -308,7 +308,7 @@ void TaskFemConstraintForce::onButtonDirection(const bool pressed)
 
     auto link = getDirection(Gui::Selection().getSelectionEx());
     if (!link.first) {
-        QMessageBox::warning(this, tr("Wrong selection"), tr("Select an edge or a face, please."));
+        QMessageBox::warning(this, tr("Wrong selection"), tr("Select an edge or a face."));
         return;
     }
 

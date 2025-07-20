@@ -121,7 +121,6 @@ void EditModeConstraintCoinManager::processConstraints(const GeoListFacade& geol
 
     auto zConstrH = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
         * drawingParameters.zConstr;
-
     // After an undo/redo it can happen that we have an empty geometry list but a non-empty
     // constraint list In this case just ignore the constraints. (See bug #0000421)
     if (geolistfacade.geomlist.size() <= 2 && !constrlist.empty()) {
@@ -1976,12 +1975,8 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                 text->size.setValue(drawingParameters.labelFontSize);
                 text->lineWidth = 2 * drawingParameters.pixelScalingFactor;
                 text->useAntialiasing = false;
-                SoAnnotation* anno = new SoAnnotation();
-                anno->renderCaching = SoSeparator::OFF;
-                anno->addChild(text);
-                // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
                 sep->addChild(text);
-                editModeScenegraphNodes.constrGroup->addChild(anno);
+                editModeScenegraphNodes.constrGroup->addChild(sep);
                 vConstrType.push_back((*it)->Type);
                 // nodes not needed
                 sep->unref();

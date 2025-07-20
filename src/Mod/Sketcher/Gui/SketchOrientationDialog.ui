@@ -11,19 +11,19 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Choose orientation</string>
+   <string>Choose Orientation</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Sketch orientation</string>
+      <string>Sketch Orientation</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QRadioButton" name="XY_radioButton">
         <property name="text">
-         <string>XY-Plane</string>
+         <string>XY-plane</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -33,14 +33,14 @@
       <item>
        <widget class="QRadioButton" name="XZ_radioButton">
         <property name="text">
-         <string>XZ-Plane</string>
+         <string>XZ-plane</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QRadioButton" name="YZ_radioButton">
         <property name="text">
-         <string>YZ-Plane</string>
+         <string>YZ-plane</string>
         </property>
        </widget>
       </item>
@@ -78,7 +78,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Offset:</string>
+        <string>Offset</string>
        </property>
       </widget>
      </item>

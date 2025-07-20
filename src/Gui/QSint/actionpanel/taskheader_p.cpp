@@ -25,7 +25,6 @@ TaskHeader::TaskHeader(const QIcon &icon, const QString &title, bool expandable,
   m_over(false),
   m_buttonOver(false),
   m_fold(true),
-  m_opacity(0.1),
   myButton(nullptr)
 {
     setProperty("class", "header");
@@ -118,71 +117,6 @@ void TaskHeader::setScheme(ActionPanelScheme *scheme)
     setFixedHeight(scheme->headerSize);
     update();
   }
-}
-
-void TaskHeader::paintEvent ( QPaintEvent * event )
-{
-  QPainter p(this);
-
-  if (myScheme->headerAnimation) {
-    p.setOpacity(m_opacity+0.7);
-  }
-
-  BaseClass::paintEvent(event);
-}
-
-void TaskHeader::animate()
-{
-  if (!myScheme->headerAnimation) {
-    return;
-  }
-
-  if (!isEnabled()) {
-    m_opacity = 0.1;
-    update();
-    return;
-  }
-
-  if (m_over) {
-    if (m_opacity >= 0.3) {
-      m_opacity = 0.3;
-      return;
-    }
-    m_opacity += 0.05;
-  } else {
-    if (m_opacity <= 0.1) {
-      m_opacity = 0.1;
-      return;
-    }
-    m_opacity = qMax(0.1, m_opacity-0.05);
-  }
-
-  QTimer::singleShot(100, this, &TaskHeader::animate);
-  update();
-}
-
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-void TaskHeader::enterEvent ( QEvent * /*event*/ )
-#else
-void TaskHeader::enterEvent ( QEnterEvent * /*event*/ )
-#endif
-{
-  m_over = true;
-
-  if (isEnabled()) {
-    QTimer::singleShot(100, this, &TaskHeader::animate);
-  }
-  update();
-}
-
-void TaskHeader::leaveEvent ( QEvent * /*event*/ )
-{
-  m_over = false;
-
-  if (isEnabled()) {
-    QTimer::singleShot(100, this, &TaskHeader::animate);
-  }
-  update();
 }
 
 void TaskHeader::fold()

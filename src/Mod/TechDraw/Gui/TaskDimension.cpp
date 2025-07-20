@@ -57,7 +57,11 @@ TaskDimension::TaskDimension(QGIViewDimension *parent, ViewProviderDimension *di
 
     // Tolerancing
     ui->cbTheoreticallyExact->setChecked(parent->getDimFeat()->TheoreticalExact.getValue());
+#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+    connect(ui->cbTheoreticallyExact, &QCheckBox::checkStateChanged, this, &TaskDimension::onTheoreticallyExactChanged);
+#else
     connect(ui->cbTheoreticallyExact, &QCheckBox::stateChanged, this, &TaskDimension::onTheoreticallyExactChanged);
+#endif
     // if TheoreticalExact disable tolerances
     if (parent->getDimFeat()->TheoreticalExact.getValue()) {
         ui->cbEqualTolerance->setDisabled(true);
@@ -67,7 +71,11 @@ TaskDimension::TaskDimension(QGIViewDimension *parent, ViewProviderDimension *di
         ui->leFormatSpecifierUnderTolerance->setDisabled(true);
     }
     ui->cbEqualTolerance->setChecked(parent->getDimFeat()->EqualTolerance.getValue());
+#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+    connect(ui->cbEqualTolerance, &QCheckBox::checkStateChanged, this, &TaskDimension::onEqualToleranceChanged);
+#else
     connect(ui->cbEqualTolerance, &QCheckBox::stateChanged, this, &TaskDimension::onEqualToleranceChanged);
+#endif
     // if EqualTolerance overtolernace must not be negative
     if (parent->getDimFeat()->EqualTolerance.getValue())
         ui->qsbOvertolerance->setMinimum(0.0);
@@ -96,7 +104,11 @@ TaskDimension::TaskDimension(QGIViewDimension *parent, ViewProviderDimension *di
     ui->leFormatSpecifier->setText(qs);
     connect(ui->leFormatSpecifier, &QLineEdit::textChanged, this, &TaskDimension::onFormatSpecifierChanged);
     ui->cbArbitrary->setChecked(parent->getDimFeat()->Arbitrary.getValue());
+#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+    connect(ui->cbArbitrary, &QCheckBox::checkStateChanged, this, &TaskDimension::onArbitraryChanged);
+#else
     connect(ui->cbArbitrary, &QCheckBox::stateChanged, this, &TaskDimension::onArbitraryChanged);
+#endif
     StringValue = parent->getDimFeat()->FormatSpecOverTolerance.getValue();
     qs = QString::fromUtf8(StringValue.data(), StringValue.size());
     ui->leFormatSpecifierOverTolerance->setText(qs);
@@ -106,12 +118,20 @@ TaskDimension::TaskDimension(QGIViewDimension *parent, ViewProviderDimension *di
     connect(ui->leFormatSpecifierOverTolerance, &QLineEdit::textChanged, this, &TaskDimension::onFormatSpecifierOverToleranceChanged);
     connect(ui->leFormatSpecifierUnderTolerance, &QLineEdit::textChanged, this, &TaskDimension::onFormatSpecifierUnderToleranceChanged);
     ui->cbArbitraryTolerances->setChecked(parent->getDimFeat()->ArbitraryTolerances.getValue());
+#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+    connect(ui->cbArbitraryTolerances, &QCheckBox::checkStateChanged, this, &TaskDimension::onArbitraryTolerancesChanged);
+#else
     connect(ui->cbArbitraryTolerances, &QCheckBox::stateChanged, this, &TaskDimension::onArbitraryTolerancesChanged);
+#endif
 
     // Display Style
     if (dimensionVP) {
         ui->cbArrowheads->setChecked(dimensionVP->FlipArrowheads.getValue());
+#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+        connect(ui->cbArrowheads, &QCheckBox::checkStateChanged, this, &TaskDimension::onFlipArrowheadsChanged);
+#else
         connect(ui->cbArrowheads, &QCheckBox::stateChanged, this, &TaskDimension::onFlipArrowheadsChanged);
+#endif
         ui->dimensionColor->setColor(dimensionVP->Color.getValue().asValue<QColor>());
         connect(ui->dimensionColor, &ColorButton::changed, this, &TaskDimension::onColorChanged);
         ui->qsbFontSize->setValue(dimensionVP->Fontsize.getValue());

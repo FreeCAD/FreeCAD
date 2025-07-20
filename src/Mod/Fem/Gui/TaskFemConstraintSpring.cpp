@@ -54,7 +54,7 @@ TaskFemConstraintSpring::TaskFemConstraintSpring(ViewProviderFemConstraintSpring
     QMetaObject::connectSlotsByName(this);
 
     // create a context menu for the listview of the references
-    createDeleteAction(ui->lw_references);
+    createActions(ui->lw_references);
     connect(deleteAction, &QAction::triggered, this, &TaskFemConstraintSpring::onReferenceDeleted);
 
     connect(ui->lw_references,

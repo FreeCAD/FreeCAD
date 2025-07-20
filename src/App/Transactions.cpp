@@ -148,7 +148,8 @@ bool Transaction::hasObject(const TransactionalObject* Obj) const
 #endif
 }
 
-void Transaction::addOrRemoveProperty(TransactionalObject* Obj, const Property* pcProp, bool add)
+void Transaction::changeProperty(TransactionalObject* Obj,
+                                 std::function<void(TransactionObject* to)> changeFunc)
 {
     auto& index = _Objects.get<1>();
     auto pos = index.find(Obj);
@@ -164,7 +165,21 @@ void Transaction::addOrRemoveProperty(TransactionalObject* Obj, const Property* 
         index.emplace(Obj, To);
     }
 
-    To->addOrRemoveProperty(pcProp, add);
+    changeFunc(To);
+}
+
+void Transaction::renameProperty(TransactionalObject* Obj, const Property* pcProp, const char* oldName)
+{
+    changeProperty(Obj, [pcProp, oldName](TransactionObject* to) {
+        to->renameProperty(pcProp, oldName);
+    });
+}
+
+void Transaction::addOrRemoveProperty(TransactionalObject* Obj, const Property* pcProp, bool add)
+{
+    changeProperty(Obj, [pcProp, add](TransactionObject* to) {
+        to->addOrRemoveProperty(pcProp, add);
+    });
 }
 
 //**************************************************************************
@@ -294,7 +309,13 @@ TransactionObject::TransactionObject() = default;
 TransactionObject::~TransactionObject()
 {
     for (auto& v : _PropChangeMap) {
-        delete v.second.property;
+        auto& data = v.second;
+        // If nameOrig is used, it means it is a transaction of a rename
+        // operation.  This operation does not interact with v.second.property,
+        // so it should not be deleted in that case.
+	if (data.nameOrig.empty()) {
+	    delete v.second.property;
+	}
     }
 }
 
@@ -311,6 +332,15 @@ void TransactionObject::applyChn(Document& /*Doc*/, TransactionalObject* pcObj, 
         for (auto& v : _PropChangeMap) {
             auto& data = v.second;
             auto prop = const_cast<Property*>(data.propertyOrig);
+
+            if (!data.nameOrig.empty()) {
+                // This means we are undoing/redoing a rename operation
+                Property* currentProp = pcObj->getDynamicPropertyByName(data.name.c_str());
+                if (currentProp) {
+                    pcObj->renameDynamicProperty(currentProp, data.nameOrig.c_str());
+                }
+                continue;
+            }
 
             if (!data.property) {
                 // here means we are undoing/redoing and property add operation
@@ -391,6 +421,21 @@ void TransactionObject::setProperty(const Property* pcProp)
         data.propertyType = pcProp->getTypeId();
         data.property->setStatusValue(pcProp->getStatus());
     }
+}
+
+void TransactionObject::renameProperty(const Property* pcProp, const char* oldName)
+{
+    if (!pcProp || !pcProp->getContainer()) {
+        return;
+    }
+
+    auto& data = _PropChangeMap[pcProp->getID()];
+
+    if (data.name.empty()) {
+        static_cast<DynamicProperty::PropData&>(data) =
+            pcProp->getContainer()->getDynamicPropertyData(pcProp);
+    }
+    data.nameOrig = oldName;
 }
 
 void TransactionObject::addOrRemoveProperty(const Property* pcProp, bool add)

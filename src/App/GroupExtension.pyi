@@ -70,3 +70,9 @@ class GroupExtension(DocumentObjectExtension):
         @param recursive  if true check also if the obj is child of some sub group (default is false).
         """
         ...
+
+    def allowObject(self, obj: Any) -> bool:
+        """
+        Returns true if obj is allowed in the group extension.
+        """
+        ...

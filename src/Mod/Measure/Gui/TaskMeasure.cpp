@@ -85,8 +85,11 @@ TaskMeasure::TaskMeasure()
     showDelta = new QCheckBox();
     showDelta->setChecked(delta);
     showDeltaLabel = new QLabel(tr("Show Delta:"));
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
+    connect(showDelta, &QCheckBox::checkStateChanged, this, &TaskMeasure::showDeltaChanged);
+#else
     connect(showDelta, &QCheckBox::stateChanged, this, &TaskMeasure::showDeltaChanged);
-
+#endif
     autoSaveAction = new QAction(tr("Auto Save"));
     autoSaveAction->setCheckable(true);
     autoSaveAction->setChecked(mAutoSave);
@@ -220,7 +223,9 @@ Measure::MeasureBase* TaskMeasure::createObject(const App::MeasureType* measureT
         auto pyMeasureClass = measureType->pythonClass;
 
         // Create a MeasurePython instance
-        _mMeasureObject = doc->addObject<Measure::MeasurePython>(measureType->label.c_str());
+        // Measure::MeasurePython is an alias so we need to use the string based addObject for now.
+        auto featurePython = doc->addObject("Measure::MeasurePython", measureType->label.c_str());
+        _mMeasureObject = dynamic_cast<Measure::MeasureBase*>(featurePython);
 
         // Create an instance of the pyMeasureClass, the classe's initializer sets the object as
         // proxy

@@ -27,10 +27,13 @@
 
 #include <Geom_Surface.hxx>
 #include <gp_Pln.hxx>
+#include <Bnd_Box.hxx>
 
 
 namespace Part
 {
+
+class WireJoiner;
 
 /**
  * @brief The FaceMakerBullseye class is a tool to make planar faces with holes,
@@ -45,14 +48,15 @@ class PartExport FaceMakerBullseye: public FaceMakerPublic
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    FaceMakerBullseye() = default;
+    FaceMakerBullseye():
+        planeSupplied(false){}
     /**
      * @brief setPlane: sets the plane to use when making faces. This is
      * optional. If the plane was set, it is not tested that the wires are
      * planar or on the supplied plane, potentially speeding things up.
      * @param plane FIXME: the plane is not propagated if processing compounds.
      */
-    void setPlane(const gp_Pln& plane) override;
+    virtual void setPlane(const gp_Pln& plane) override;
 
     std::string getUserFriendlyName() const override;
     std::string getBriefExplanation() const override;
@@ -62,7 +66,22 @@ protected:
 
 protected:
     gp_Pln myPlane; //externally supplied plane (if any)
-    bool planeSupplied{false};
+    bool planeSupplied {false};
+    bool reuseInnerWire {false};
+
+    struct WireInfo
+    {
+        TopoShape wire;
+        Bnd_Box bound;
+        double extent;
+        WireInfo(const TopoShape& s, const Bnd_Box& b)
+            : wire(s)
+            , bound(b)
+        {
+            extent = bound.SquareExtent();
+        }
+        bool operator<(const WireInfo& other) const;
+    };
 
     /**
      * @brief The FaceDriller class is similar to BRepBuilderAPI_MakeFace,
@@ -74,13 +93,26 @@ protected:
     public:
         FaceDriller(const gp_Pln& plane, TopoDS_Wire outerWire);
 
+        /// Hit test result
+        enum class HitTest
+        {
+            /// Not hitting
+            HitNone = 0,
+            /// Hit inside face
+            Hit = 1,
+            /// Hit inside the out wire bound
+            HitOuter = 2,
+        };
+
         /**
-         * @brief hitTest: returns True if point is on the face
-         * @param point
+         * @brief hitTest: returns True if a shape is on the face
+         * @param shape
          */
-        bool hitTest(const gp_Pnt& point) const;
+        HitTest hitTest(const TopoShape& shape) const;
 
         void addHole(TopoDS_Wire w);
+        void addHole(const WireInfo& info, std::vector<TopoShape>& sources);
+        void copyFaceBound(TopoDS_Face& f, TopoShape& tf, const TopoShape& source);
 
         const TopoDS_Face& Face() const {return myFace;}
     public:
@@ -94,10 +126,35 @@ protected:
     private:
         gp_Pln myPlane;
         TopoDS_Face myFace;
+        TopoDS_Face myFaceBound;
+        TopoShape myTopoFace;
+        TopoShape myTopoFaceBound;
+        std::vector<WireInfo> myHoles;
         Handle(Geom_Surface) myHPlane;
+        std::unique_ptr<WireJoiner> myJoiner;
     };
 };
 
+/**
+ * The FaceMakerRing is a tool to make faces with holes.
+ *
+ * The tool assumes the wires are closed and do not intersect with each other.
+ * Each wire will be used to as an outer wire to make a face, with inner wire as
+ * holes. Only the first level inner wire will be used for holes. Nested inner
+ * wires are ignored. Note that each inner wire will also be used as outer wire
+ * for making face, with the second level inner wires as holes, so on and so
+ * forth.
+ */
+class PartExport FaceMakerRing: public FaceMakerBullseye
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    FaceMakerRing();
+
+    virtual std::string getUserFriendlyName() const override;
+    virtual std::string getBriefExplanation() const override;
+};
 
 }//namespace Part
 #endif // PART_FACEMAKER_BULLSEYE_H

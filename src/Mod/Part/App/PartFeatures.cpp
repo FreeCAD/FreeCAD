@@ -177,7 +177,7 @@ Loft::Loft()
 {
     ADD_PROPERTY_TYPE(Sections, (nullptr), "Loft", App::Prop_None, "List of sections");
     Sections.setSize(0);
-    ADD_PROPERTY_TYPE(Solid, (false), "Loft", App::Prop_None, "Create solid");
+    ADD_PROPERTY_TYPE(Solid, (true), "Loft", App::Prop_None, "Create solid");
     ADD_PROPERTY_TYPE(Ruled, (false), "Loft", App::Prop_None, "Ruled surface");
     ADD_PROPERTY_TYPE(Closed, (false), "Loft", App::Prop_None, "Close Last to First Profile");
     ADD_PROPERTY_TYPE(MaxDegree, (5), "Loft", App::Prop_None, "Maximum Degree");
@@ -243,12 +243,6 @@ App::DocumentObjectExecReturn* Loft::execute()
     }
 }
 
-void Part::Loft::setupObject()
-{
-    Feature::setupObject();
-//    Linearize.setValue(PartParams::getLinearizeExtrusionDraft()); // TODO: Resolve after PartParams
-}
-
 // ----------------------------------------------------------------------------
 
 const char* Part::Sweep::TransitionEnums[] = {"Transformed",
@@ -263,7 +257,7 @@ Sweep::Sweep()
     ADD_PROPERTY_TYPE(Sections, (nullptr), "Sweep", App::Prop_None, "List of sections");
     Sections.setSize(0);
     ADD_PROPERTY_TYPE(Spine, (nullptr), "Sweep", App::Prop_None, "Path to sweep along");
-    ADD_PROPERTY_TYPE(Solid, (false), "Sweep", App::Prop_None, "Create solid");
+    ADD_PROPERTY_TYPE(Solid, (true), "Sweep", App::Prop_None, "Create solid");
     ADD_PROPERTY_TYPE(Frenet, (true), "Sweep", App::Prop_None, "Frenet");
     ADD_PROPERTY_TYPE(Transition, (long(1)), "Sweep", App::Prop_None, "Transition mode");
     ADD_PROPERTY_TYPE(Linearize,(false), "Sweep", App::Prop_None,
@@ -347,12 +341,6 @@ App::DocumentObjectExecReturn* Sweep::execute()
     catch (...) {
         return new App::DocumentObjectExecReturn("A fatal error occurred when making the sweep");
     }
-}
-
-void Part::Sweep::setupObject()
-{
-    Feature::setupObject();
-//    Linearize.setValue(PartParams::getLinearizeExtrusionDraft()); // TODO: Resolve after PartParams
 }
 
 // ----------------------------------------------------------------------------

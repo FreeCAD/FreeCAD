@@ -131,6 +131,11 @@ public:
      * of all opaque pixels to a higher value.
      */
     QPixmap disabled(const QPixmap& p) const;
+
+    /** Creates an empty pixmap, takes care of DPI and clearing out the image.
+     */
+    QPixmap empty(QSize size) const;
+
     /** Converts a QImage into a SoSFImage to use it inside a SoImage node.
      */
     void convert(const QImage& img, SoSFImage& out) const;

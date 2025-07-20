@@ -400,6 +400,13 @@ void DrawViewDetail::postHlrTasks(void)
         Scale.purgeTouched();
         detailExec(m_saveShape, m_saveDvp, m_saveDvs);
     }
+
+    auto* baseView = freecad_cast<DrawViewPart*>(BaseView.getValue());
+    if (!baseView) {
+        throw Base::RuntimeError("Detail has no base view!");
+    }
+    baseView->requestPaint();   // repaint the highlight on the base view.
+
     overrideKeepUpdated(false);
 }
 
@@ -475,8 +482,8 @@ bool DrawViewDetail::debugDetail() const
 void DrawViewDetail::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
 {
     if (prop == &AnchorPoint) {
-        // AnchorPoint was PropertyVector but is now PropertyPosition
-        App::PropertyVector tmp;
+        // AnchorPoint was PropertyVector, then briefly PropertyPosition, now back to PropertyVector
+        App::PropertyPosition tmp;
         if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
             tmp.setContainer(this);
             tmp.Restore(reader);
@@ -487,7 +494,7 @@ void DrawViewDetail::handleChangedPropertyType(Base::XMLReader &reader, const ch
     }
 
     if (prop == &Radius) {
-        // Radius was PropertyFloat but is now PropertyLength
+        // Radius was PropertyFloat, then briefly PropertyLength, now back to PropertyFloat
         App::PropertyLength tmp;
         if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
             tmp.setContainer(this);

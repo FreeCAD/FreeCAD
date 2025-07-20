@@ -164,7 +164,7 @@ DrawViewSection::DrawViewSection()
                       "2D View source for this Section");
     BaseView.setScope(App::LinkScope::Global);
 
-    // default of (0, -1, 0) matches 'Front' direction in DVP
+    // default of (0, -1, 0) matches default 'Front' direction in DVP
     ADD_PROPERTY_TYPE(SectionNormal,
                       (0, -1, 0),
                       sgroup,
@@ -182,6 +182,8 @@ DrawViewSection::DrawViewSection()
                       sgroup,
                       App::Prop_None,
                       "Orientation of this Section in the Base View");
+    SectionDirection.setStatus(App::Property::Hidden, true);
+    SectionDirection.setStatus(App::Property::ReadOnly, true);
 
     // properties related to the cut operation
     ADD_PROPERTY_TYPE(FuseBeforeCut,
@@ -259,8 +261,6 @@ DrawViewSection::DrawViewSection()
     Direction.setStatus(App::Property::ReadOnly, true);
     Direction.setValue(SectionNormal.getValue());
 
-    SectionDirection.setStatus(App::Property::Hidden, true);
-    SectionDirection.setStatus(App::Property::ReadOnly, true);
 }
 
 DrawViewSection::~DrawViewSection()
@@ -1231,8 +1231,8 @@ void DrawViewSection::setupObject()
 void DrawViewSection::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
 {
     if (prop == &SectionOrigin) {
-        // SectionOrigin was PropertyVector but is now PropertyPosition
-        App::PropertyVector tmp;
+        // SectionOrigin was PropertyVector then briefly PropertyPosition, now back to PropertyVector
+        App::PropertyPosition tmp;
         if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
             tmp.setContainer(this);
             tmp.Restore(reader);
@@ -1243,8 +1243,8 @@ void DrawViewSection::handleChangedPropertyType(Base::XMLReader &reader, const c
     }
 
     if (prop == &SectionNormal) {
-        // Radius was PropertyVector but is now PropertyDirection
-        App::PropertyVector tmp;
+        // Radius was PropertyVector, then briefly PropertyDirection, then PropertyVector
+        App::PropertyDirection tmp;
         if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
             tmp.setContainer(this);
             tmp.Restore(reader);

@@ -63,7 +63,6 @@ ActionPanelScheme::ActionPanelScheme()
 {
     QFontMetrics fm(QApplication::font());
     headerSize = fm.height() + 10;
-    headerAnimation = true;
 
     QPalette p = QApplication::palette();
 

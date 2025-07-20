@@ -32,6 +32,7 @@
 #include <vtkLineSource.h>
 #include <vtkPointSource.h>
 #include <vtkProbeFilter.h>
+#include <vtkAppendArcLength.h>
 #include <vtkSmartPointer.h>
 #include <vtkTableBasedClipDataSet.h>
 #include <vtkVectorNorm.h>
@@ -181,6 +182,7 @@ protected:
 
 private:
     vtkSmartPointer<vtkLineSource> m_line;
+    vtkSmartPointer<vtkAppendArcLength> m_arclength;
     vtkSmartPointer<vtkProbeFilter> m_probe;
 };
 

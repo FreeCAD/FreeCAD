@@ -13,6 +13,7 @@ if(BUILD_GUI)
     elseif (FREECAD_QT_MAJOR_VERSION EQUAL 6)
         list (APPEND FREECAD_QT_COMPONENTS GuiTools)
         list (APPEND FREECAD_QT_COMPONENTS SvgWidgets)
+        list (APPEND FREECAD_QT_COMPONENTS OpenGLWidgets)
     endif()
 
     list (APPEND FREECAD_QT_COMPONENTS OpenGL PrintSupport Svg UiTools Widgets LinguistTools)
