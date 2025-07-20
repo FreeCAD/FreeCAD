@@ -1,4 +1,4 @@
-# 🟩 Core Essentials  
+# 🟩 Core Essentials
 *Features necessary to perform the required function*
 
 | Feature | Description | Assessment |
@@ -9,7 +9,7 @@
 
 ---
 
-# 🟨 Professional Grade  
+# 🟨 Professional Grade
 *Features present in the state-of-the-art applications and expected*
 
 | Feature | Description | Assessment |
@@ -20,10 +20,9 @@
 
 ---
 
-# 🟦 Next-Level CAM  
+# 🟦 Next-Level CAM
 *Features that would exceed industry standard*
 
 | Feature | Description | Assessment |
 |--------|-------------|------------|
 | *(placeholder)* | *(Add advanced stock/setup ideas here)* | |
-
