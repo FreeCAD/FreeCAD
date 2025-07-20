@@ -1,40 +1,35 @@
-# 🟩 Core Essentials
+  
+# 🟩 Core Essentials  
 *Features present or expected in a basic CAM package and necessary to perform the required tasks*
 
-- Translate the internal tool path representation to G-code
-	- Generate Machine-specific gcode dialect
-- Allow customization of output
-	- line numbers
-	- comments
-	- Output gcode in either mm or inches (G20/G21)
+| Feature | Description | Assessment |
+|--------|-------------|------------|
+| G-code Generation | Translate internal tool path to machine-specific G-code dialect | |
+| Output Customization | Line numbers, comments, units (G20/G21) | |
 
-# 🟨 Professional Grade
-*Features usually present or expected in the state-of-the art applications*
+---
 
-- Catch and flag obvious problems before generating output
-- Customize the Post-processor
-	- Modal vs explicit axis output
-    - Tool change pre/post blocks
-    - Custom header/footer
-- Generate gcode with subprograms and subroutines
-- Produce a 'setup page' for machine operator
-	- setup instructions
-	- check list
-	- warnings and errors
-- Decomposition of gcodes into simpler elements
-	- Break arcs into segments
-	- Break canned cycles into individual moves
-- Conversion of coordinate systems for jobs or blocks of gcode
-	- Convert absolute coordinates to relative (G91)
-	- Convert absolute center arcs to relative center (G91.1)
+# 🟨 Professional Grade  
+*Features usually present or expected in the state-of-the-art applications*
 
+| Feature | Description | Assessment |
+|--------|-------------|------------|
+| Preflight Checks | Catch and flag obvious problems before generating output | |
+| Post-Processor Customization | Control modal vs explicit axes, tool change blocks, headers/footers | |
+| Subprogram Support | Generate G-code with subprograms and subroutines | |
+| Setup Page Generation | Instructions, checklists, warnings, and errors for the operator | |
+| G-code Decomposition | Break arcs/canned cycles into linear segments or explicit moves | |
+| Coordinate Conversion | Convert absolute to relative (G91), center arcs to relative (G91.1) | |
 
-# 🟦 Next-Level CAM
+---
+
+# 🟦 Next-Level CAM  
 *Features that would exceed industry standard*
 
-- On Machine inspection
-- Support splitting gcode into multiple files
-- Automatic tool wear compensation output (D offsets or tool tables)
-- Integration with machine feedback loop (closed-loop post)
-- Direct-to-machine fabrication.  The entire pipeline of CAM->Gcode->machine
-  should be reconsidered.  The workflow should feel more like 3D printing with a direct closed loop process
+| Feature | Description | Assessment |
+|--------|-------------|------------|
+| On-Machine Inspection | Generate code or triggers for probing/inspection routines | |
+| Multi-File Output | Support splitting G-code into multiple files | |
+| Tool Wear Compensation | Output tool wear adjustments via offsets or tables | |
+| Feedback Loop Integration | Closed-loop post processing using machine state | |
+| Direct-to-Machine Fabrication | Reimagine CAM → G-code → Machine as a seamless pipeline | |

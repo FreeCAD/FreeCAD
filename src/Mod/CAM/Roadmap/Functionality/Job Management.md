@@ -1,24 +1,31 @@
-# 🟩 Core Essentials
+# 🟩 Core Essentials  
 *Features present or expected in a basic CAM package and necessary to perform the required tasks*
 
-- Grouping of operations into jobs/setups
-- Define order of operation
+| Feature | Description | Assessment |
+|--------|-------------|------------|
+| Operation Grouping | Group operations into jobs or setups | |
+| Operation Ordering | Define the order in which operations are executed | |
 
-# 🟨 Professional Grade
+---
+
+# 🟨 Professional Grade  
 *Features usually present or expected in the state-of-the art applications*
 
-- Select machine type
-	- Milling machine
-	- Lathe
-	- multi-axis
-	- laser/plasma/waterjet
-- Organizes multi-part or multi-setup workflows
-- Select fixtures (WCS for output)
-- Configure how fixtures are used
-	- Minimize tool changes
-	- Allow for stock clearing and reset while operating in other fixture
-	- Allow for inspection between operations
+| Feature | Description | Assessment |
+|--------|-------------|------------|
+| Machine Type Selection | Choose machine type: milling, lathe, multi-axis, or laser/plasma/waterjet | |
+| Multi-Setup Workflow | Organize workflows with multiple parts or setups | |
+| Fixture Selection | Choose WCS for output based on fixture definition | |
+| Fixture Configuration | Configure how fixtures are used across operations | |
+| ‑ Minimize Tool Changes | Optimize across fixtures to reduce tool changes | |
+| ‑ Stock Clearing/Reset | Allow stock clearing and reset while other fixture is active | |
+| ‑ Inter-Op Inspection | Allow for inspection between operations | |
 
+---
 
-# 🟦 Next-Level CAM
+# 🟦 Next-Level CAM  
 *Features that would exceed industry standard*
+
+| Feature | Description | Assessment |
+|--------|-------------|------------|
+| *(placeholder)* | *(Add future-facing or experimental features here)* | |

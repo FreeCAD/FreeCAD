@@ -1,107 +1,162 @@
 # Requirements
-## 🟩 Core Essentials
+
+## 🟩 Core Essentials  
 *Features present or expected in a basic CAM package and necessary to perform the required tasks*
 
-### All operations
-- Configure key operation Parameters
-	- spindle speed
-	- feed rate
-    - Allow user to set the start and end depth
-    - Tool to use
+### All Operations
+
+| Feature | Description | Assessment |
+|--------|-------------|------------|
+| Operation Parameters | Configure spindle speed, feed rate, start/end depth, tool selection | |
 
 ### Pocketing
-- provide helical and ramp entry
-- Allow user to specify entry start point
-- Allow user to configure the clearing strategy
-    - zigzag
-    - offset
-    - Adaptive
-- Allow the user to set remaining material to leave to be removed in a
-  finishing pass
-- Allow the user to control the amount of material removed per pass (stepover)
+
+| Feature | Description | Assessment |
+|--------|-------------|------------|
+| Entry Strategies | Provide helical and ramp entry | |
+| Entry Start Point | Allow user to specify entry point | |
+| Clearing Strategies | zigzag, offset, adaptive | |
+| Stock to Leave | Set material to leave for finishing pass | |
+| Stepover Control | Set amount of material removed per pass | |
 
 ### Contouring (Profile)
-- Specify entry/exit strategies
-- Allow the user to set remaining material to leave to be removed in a
-finishing pass
-- Allow the user to add holding tags to keep the part retained
+
+| Feature | Description | Assessment |
+|--------|-------------|------------|
+| Entry/Exit Strategies | Specify entry/exit paths | |
+| Stock to Leave | Set material to leave for finishing | |
+| Holding Tags | Add tags to retain part | |
 
 ### Circular Holes
-Capable of generating canned cycle drilling actions which correspond to
 
-| Gcode | Canned Cycle                      |     |
-|-------|-----------------------------------|-----|
-| G81   | Drilling Cycle                    |     |
-| G82   | Drilling Cycle, Dwell             |     |
-| G83   | Peck Drilling Cycle               |     |
-| G73   | Drilling Cycle with Chip Breaking |     |
+| Feature | Description | Assessment |
+|--------|-------------|------------|
+| Canned Cycles | Support G81, G82, G83, G73 | |
+| Multiple Targets | Handle multiple drill locations in one op | |
+| Drill Ordering | Allow user-defined target order | |
+| Obstructed Faces | Support targets across obstructions | |
 
-- Capable of handling multiple drill targets in the same operation
-- Allow the user to sort the drill target order
-- Support drill targets in faces that are separated by an obstruction
-
+| Gcode | Canned Cycle                      | Assessment |
+|-------|-----------------------------------|------------|
+| G81   | Drilling Cycle                    | |
+| G82   | Drilling Cycle, Dwell             | |
+| G83   | Peck Drilling Cycle               | |
+| G73   | Chip Breaking Drill               | |
 
 ### Engraving
 
+| Feature | Description | Assessment |
+|--------|-------------|------------|
+| *(placeholder)* | *(To be defined)* | |
 
-## 🟨 Professional Grade
-*Features usually present or expected in the state-of-the art applications*
+---
 
-### All operations
-- Allow user to set relevent depths by clicking on features of the model or
-  stock
+## 🟨 Professional Grade  
+*Features usually present or expected in the state-of-the-art applications*
+
+### All Operations
+
+| Feature | Description | Assessment |
+|--------|-------------|------------|
+| Model-Based Depth Selection | Set relevant depths by clicking features of model or stock | |
 
 ### Pocketing
-- Functionality to configure pocketing operations that target material left
-  behind by previous operations.  (REST milling)
 
-### Contour (profile)
-- Permit multiple pass or kerf widening passes
-- Allow user to customize the size and shape of holding tags
+| Feature | Description | Assessment |
+|--------|-------------|------------|
+| REST Milling | Target leftover material from previous ops | |
+
+### Contouring (Profile)
+
+| Feature | Description | Assessment |
+|--------|-------------|------------|
+| Multiple Passes | Support multi-pass or kerf-widening | |
+| Holding Tag Shape | Customize size/shape of holding tabs | |
 
 ### Engraving
 
+| Feature | Description | Assessment |
+|--------|-------------|------------|
+| *(placeholder)* | *(To be defined)* | |
+
 ### Circular Holes
-- Automatically optimize target order for efficiency
-- Canned cycles should be as efficient as possible with minimal wasted travel
 
+| Feature | Description | Assessment |
+|--------|-------------|------------|
+| Order Optimization | Automatically sort drill order for efficiency | |
+| Efficient Cycles | Minimize wasted travel in canned cycles | |
 
-Capable of generating canned cycle drilling actions which correspond to
-all basic canned cycles above and
+#### Boring Cycles
 
-#### Boring
-| Gcode | Canned Cycle                               |   |
-|-------|--------------------------------------------|---|
-| G85   | Boring Cycle, Feed Out                     |   |
-| G86   | Boring Cycle, Spindle Stop, Rapid Move Out |   |
-| G87   | Back Boring Cycle                          |   |
-| G88   | Boring Cycle, Spindle Stop, Manual Out     |   |
-| G89   | Boring Cycle, Dwell, Feed Out              |   |
+| Gcode | Canned Cycle                               | Assessment |
+|-------|--------------------------------------------|------------|
+| G85   | Boring Cycle, Feed Out                     | |
+| G86   | Spindle Stop, Rapid Out                    | |
+| G87   | Back Boring Cycle                          | |
+| G88   | Spindle Stop, Manual Out                   | |
+| G89   | Dwell, Feed Out                            | |
 
-#### Tapping
+#### Tapping Cycles
 
-| Gcode | Canned Cycle                       |     |
-|-------|-----------------------------------|-----|
-| G33.1 | Rigid Tapping                      |     |
-| G74   | Left-hand Tapping Cycle with Dwell |     |
-| G84   | Right-hand Tapping Cycle, Dwell    |     |
-|       |                                    |     |
+| Gcode | Canned Cycle                                | Assessment |
+|-------|---------------------------------------------|------------|
+| G33.1 | Rigid Tapping                               | |
+| G74   | Left-hand Tapping with Dwell                | |
+| G84   | Right-hand Tapping with Dwell               | |
 
-### threadmilling
+### Threadmilling
 
-### Vcarving
+| Feature | Description | Assessment |
+|--------|-------------|------------|
+| *(placeholder)* | *(To be defined)* | |
+
+### V-Carving
+
+| Feature | Description | Assessment |
+|--------|-------------|------------|
+| *(placeholder)* | *(To be defined)* | |
 
 ### Deburring
 
-### Helical clearing
+| Feature | Description | Assessment |
+|--------|-------------|------------|
+| *(placeholder)* | *(To be defined)* | |
 
-### Adaptive clearing
+### Helical Clearing
 
-### Lathe operations
+| Feature | Description | Assessment |
+|--------|-------------|------------|
+| *(placeholder)* | *(To be defined)* | |
 
-### Indexed Multi-Axis operations
+### Adaptive Clearing
+
+| Feature | Description | Assessment |
+|--------|-------------|------------|
+| *(placeholder)* | *(To be defined)* | |
+
+### Lathe Operations
+
+| Feature | Description | Assessment |
+|--------|-------------|------------|
+| *(placeholder)* | *(To be defined)* | |
+
+### Indexed Multi-Axis
+
+| Feature | Description | Assessment |
+|--------|-------------|------------|
+| *(placeholder)* | *(To be defined)* | |
 
 ### Continuous 4th and 5th Axis
 
-## 🟦 Next-Level CAM
+| Feature | Description | Assessment |
+|--------|-------------|------------|
+| *(placeholder)* | *(To be defined)* | |
+
+---
+
+## 🟦 Next-Level CAM  
 *Features that would exceed industry standard*
+
+| Feature | Description | Assessment |
+|--------|-------------|------------|
+| *(placeholder)* | *(Add high-end, futuristic CAM ideas here)* | |
