@@ -52,7 +52,7 @@ using namespace Gui;
 
 TaskSketchBasedParameters::TaskSketchBasedParameters(PartDesignGui::ViewProvider *vp, QWidget *parent,
                                                      const std::string& pixmapname, const QString& parname)
-    : TaskFeatureParameters(vp, parent, pixmapname, parname)
+    : TaskAddSubParameters(vp, parent, pixmapname, parname)
 {
     // disable selection
     this->blockSelection(true);
@@ -262,7 +262,7 @@ TaskSketchBasedParameters::~TaskSketchBasedParameters()
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgSketchBasedParameters::TaskDlgSketchBasedParameters(PartDesignGui::ViewProvider *vp)
-    : TaskDlgFeatureParameters(vp)
+    : TaskDlgAddSubParameters(vp)
 {
 }
 
