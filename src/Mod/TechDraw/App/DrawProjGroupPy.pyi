@@ -1,7 +1,7 @@
 from typing import Any
 
 from Base.Metadata import export
-from TechDraw import object
+from TechDraw.DrawViewCollection import DrawViewCollection
 
 @export(
     Father="DrawViewCollectionPy",
@@ -13,7 +13,7 @@ from TechDraw import object
     FatherInclude="Mod/TechDraw/App/DrawViewCollectionPy.h",
     FatherNamespace="TechDraw",
 )
-class DrawProjGroupPy(object):
+class DrawProjGroupPy(DrawViewCollection):
     """
     Feature for creating and manipulating Technical Drawing Projection Groups
     """

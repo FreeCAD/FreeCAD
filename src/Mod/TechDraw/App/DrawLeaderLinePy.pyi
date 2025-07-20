@@ -1,5 +1,5 @@
 from Base.Metadata import export
-from TechDraw import object
+from DrawView import DrawView
 
 @export(
     Father="DrawViewPy",
@@ -11,7 +11,7 @@ from TechDraw import object
     FatherInclude="Mod/TechDraw/App/DrawViewPy.h",
     FatherNamespace="TechDraw",
 )
-class DrawLeaderLinePy(object):
+class DrawLeaderLinePy(DrawView):
     """
     Feature for adding leaders to Technical Drawings
     """

@@ -1,5 +1,5 @@
 from Base.Metadata import export
-from TechDraw import object
+from TechDraw.DrawView import DrawView
 
 @export(
     Father="DrawViewPy",
@@ -11,7 +11,7 @@ from TechDraw import object
     FatherInclude="Mod/TechDraw/App/DrawViewPy.h",
     FatherNamespace="TechDraw",
 )
-class DrawWeldSymbolPy(object):
+class DrawWeldSymbolPy(DrawView):
     """
     Feature for adding welding tiles to leader lines
     """

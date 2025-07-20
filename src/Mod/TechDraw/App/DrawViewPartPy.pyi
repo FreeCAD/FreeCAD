@@ -1,7 +1,7 @@
 from typing import Any
 
 from Base.Metadata import export
-from TechDraw import object
+from TechDraw.rawView import DrawView
 
 @export(
     Father="DrawViewPy",
@@ -13,7 +13,7 @@ from TechDraw import object
     FatherInclude="Mod/TechDraw/App/DrawViewPy.h",
     FatherNamespace="TechDraw",
 )
-class DrawViewPartPy(object):
+class DrawViewPartPy(DrawView):
     """
     Feature for creating and manipulating Technical Drawing Part Views
     """

@@ -2,7 +2,7 @@ from typing import Any
 
 from Base.Metadata import export
 
-from App import object
+from App.DocumentObject import DocumentObject
 
 @export(
     Father="DocumentObjectPy",
@@ -14,7 +14,7 @@ from App import object
     FatherInclude="App/DocumentObjectPy.h",
     FatherNamespace="App",
 )
-class DrawViewPy(object):
+class DrawViewPy(DocumentObject):
     """
     Feature for creating and manipulating Technical Drawing Views
     """

@@ -1,6 +1,6 @@
 from typing import Any, Final
 
-from Base import object
+from Base.PyObjectBase import PyObjectBase
 from Base.Metadata import constmethod, export
 
 @export(
@@ -15,7 +15,7 @@ from Base.Metadata import constmethod, export
     Constructor=True,
     Delete=True,
 )
-class CosmeticVertexPy(object):
+class CosmeticVertexPy(PyObjectBase):
     """
     CosmeticVertex specifies an extra (cosmetic) vertex in Views
     """

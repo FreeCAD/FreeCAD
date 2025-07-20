@@ -1,7 +1,7 @@
 from typing import Any
 
 from Base.Metadata import export
-from TechDraw import object
+from TechDraw.DrawView import DrawView
 
 @export(
     Father="DrawViewPy",
@@ -13,7 +13,7 @@ from TechDraw import object
     FatherInclude="Mod/TechDraw/App/DrawViewPy.h",
     FatherNamespace="TechDraw",
 )
-class DrawViewSymbolPy(object):
+class DrawViewSymbolPy(DrawView):
     """
     Feature for creating and manipulating Drawing SVG Symbol Views
     """

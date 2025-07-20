@@ -1,5 +1,5 @@
 from Base.Metadata import export
-from TechDraw import object
+from TechDraw.Drawview import DrawView
 
 @export(
     Father="DrawViewPy",
@@ -11,7 +11,7 @@ from TechDraw import object
     FatherInclude="Mod/TechDraw/App/DrawViewPy.h",
     FatherNamespace="TechDraw",
 )
-class DrawViewAnnotationPy(object):
+class DrawViewAnnotationPy(DrawView):
     """
     Feature for creating and manipulating Technical Drawing Annotation Views
     """

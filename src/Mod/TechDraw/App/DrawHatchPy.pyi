@@ -1,8 +1,6 @@
 from typing import Any
-
 from Base.Metadata import export
-
-from App import object
+from App.DocumentObject import DocumentObject
 
 @export(
     Father="DocumentObjectPy",
@@ -14,7 +12,7 @@ from App import object
     FatherInclude="App/DocumentObjectPy.h",
     FatherNamespace="App",
 )
-class DrawHatchPy(object):
+class DrawHatchPy(DocumentObject):
     """
     Feature for creating and manipulating Technical Drawing Hatch areas
     """

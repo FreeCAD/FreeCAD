@@ -1,6 +1,6 @@
 from Base.Metadata import export
 
-from App import object
+from App.DocumentObject import DocumentObject
 
 @export(
     Father="DocumentObjectPy",
@@ -12,7 +12,7 @@ from App import object
     FatherInclude="App/DocumentObjectPy.h",
     FatherNamespace="App",
 )
-class DrawTilePy(object):
+class DrawTilePy(DocumentObject):
     """
     Feature for adding tiles to leader lines
     """

@@ -1,7 +1,7 @@
 from typing import Any, Final
 
 from Base.Metadata import export
-from TechDraw import object
+from DrawTemplate import DrawTemplate
 
 @export(
     Father="DrawTemplatePy",
@@ -12,9 +12,8 @@ from TechDraw import object
     Namespace="TechDraw",
     FatherInclude="DrawTemplatePy.h",
     FatherNamespace="TechDraw",
-    ReadOnly=["GeometryCount"],
 )
-class DrawParametricTemplatePy(object):
+class DrawParametricTemplatePy(DrawTemplate):
     """
     Feature for creating and manipulating Technical Drawing Templates
     """

@@ -1,7 +1,7 @@
 from typing import Any
 
 from Base.Metadata import export
-from TechDraw import object
+from DrawTemplate import DrawTemplate
 
 @export(
     Father="DrawTemplatePy",
@@ -13,7 +13,7 @@ from TechDraw import object
     FatherInclude="DrawTemplatePy.h",
     FatherNamespace="TechDraw",
 )
-class DrawSVGTemplatePy(object):
+class DrawSVGTemplatePy(DrawTemplate):
     """
     Feature for creating and manipulating Technical Drawing SVG Templates
     """

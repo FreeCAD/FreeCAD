@@ -1,7 +1,7 @@
 from typing import Any
 
 from Base.Metadata import export
-from TechDraw import object
+from TechDraw.DrawViewDimension import DrawViewDimension
 
 @export(
     Father="DrawViewDimensionPy",
@@ -13,7 +13,7 @@ from TechDraw import object
     FatherInclude="Mod/TechDraw/App/DrawViewDimensionPy.h",
     FatherNamespace="TechDraw",
 )
-class DrawViewDimExtentPy(object):
+class DrawViewDimExtentPy(DrawViewDimension):
     """
     Feature for creating and manipulating Technical Drawing DimExtents
     """

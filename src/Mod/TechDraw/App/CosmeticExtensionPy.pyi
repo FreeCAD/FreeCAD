@@ -1,6 +1,6 @@
 from Base.Metadata import export
 
-from App import object
+from App.DocumentObjectExtension import DocumentObjectExtension
 
 @export(
     Father="DocumentObjectExtensionPy",
@@ -12,7 +12,7 @@ from App import object
     FatherInclude="App/DocumentObjectExtensionPy.h",
     FatherNamespace="App",
 )
-class CosmeticExtensionPy(object):
+class CosmeticExtensionPy(DocumentObjectExtension):
     """
     This object represents cosmetic features for a DrawViewPart.
     """

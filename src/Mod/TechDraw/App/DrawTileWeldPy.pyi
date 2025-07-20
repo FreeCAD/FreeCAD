@@ -1,5 +1,5 @@
 from Base.Metadata import export
-from TechDraw import object
+from TechDraw.DrawTile import DrawTile
 
 @export(
     Father="DrawTilePy",
@@ -11,7 +11,7 @@ from TechDraw import object
     FatherInclude="Mod/TechDraw/App/DrawTilePy.h",
     FatherNamespace="TechDraw",
 )
-class DrawTileWeldPy(object):
+class DrawTileWeldPy(DrawTile):
     """
     Feature for adding welding tiles to leader lines
     """

@@ -1,6 +1,6 @@
 from typing import Any, Final
 
-from Base import object
+from Base.PyObjectBase import PyObjectBase
 from Base.Metadata import constmethod, export
 
 @export(
@@ -12,11 +12,10 @@ from Base.Metadata import constmethod, export
     Namespace="TechDraw",
     FatherInclude="Base/PyObjectBase.h",
     FatherNamespace="Base",
-    ReadOnly=["Tag"],
     Constructor=True,
     Delete=True,
 )
-class GeomFormatPy(object):
+class GeomFormatPy(PyObjectBase):
     """
     GeomFormat specifies appearance parameters for TechDraw Geometry objects
     """

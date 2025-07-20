@@ -1,7 +1,7 @@
 from typing import Any
 
 from Base.Metadata import export
-from TechDraw import object
+from TechDraw.DrawViewPart import DrawViewPart
 
 @export(
     Father="DrawViewPartPy",
@@ -13,7 +13,7 @@ from TechDraw import object
     FatherInclude="Mod/TechDraw/App/DrawViewPartPy.h",
     FatherNamespace="TechDraw",
 )
-class DrawProjGroupItemPy(object):
+class DrawProjGroupItemPy(DrawViewPart):
     """
     Feature for creating and manipulating component Views Technical Drawing Projection Groups
     """
