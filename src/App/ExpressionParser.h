@@ -321,6 +321,7 @@ public:
         TAN,
         TANH,
         TRUNC,
+        IF,
 
         // Vector
         VANGLE,
