@@ -217,15 +217,6 @@ def export(objectslist, filename, argstring):
         # get coolant mode
         coolantMode = PathUtil.coolantModeForOp(obj)
 
-        # turn coolant on if required
-        if OUTPUT_COMMENTS:
-            if not coolantMode == "None":
-                gcode += linenumber() + "(Coolant On:" + coolantMode + ")\n"
-        if coolantMode == "Flood":
-            gcode += linenumber() + "M8" + "\n"
-        if coolantMode == "Mist":
-            gcode += linenumber() + "M7" + "\n"
-
         # process the operation gcode
         gcode += parse(obj)
 
@@ -336,6 +327,10 @@ def parse(pathobj):
         # change here until we can figure out what it going on.
         #
         # for c in PathUtils.getPathWithPlacement(pathobj).Commands:
+
+        coolantMode = PathUtil.coolantModeForOp(pathobj)
+        isCoolantOn = False  # flag to add coolant command only once for operation
+
         for c in pathobj.Path.Commands:
 
             outstring = []
@@ -413,6 +408,20 @@ def parse(pathobj):
                 if USE_TLO:
                     tool_height = "\nG43 H" + str(int(c.Parameters["T"]))
                     outstring.append(tool_height)
+
+            # turn coolant on if required but only before first mill movement
+            if (
+                coolantMode != "None"
+                and not isCoolantOn
+                and command in ["G1", "G01", "G2", "G02", "G3", "G03"]
+            ):
+                isCoolantOn = True
+                if OUTPUT_COMMENTS:
+                    out += linenumber() + "(Coolant On:" + coolantMode + ")\n"
+                if coolantMode == "Flood":
+                    out += linenumber() + "M8" + "\n"
+                elif coolantMode == "Mist":
+                    out += linenumber() + "M7" + "\n"
 
             if command == "message":
                 if OUTPUT_COMMENTS is False:
