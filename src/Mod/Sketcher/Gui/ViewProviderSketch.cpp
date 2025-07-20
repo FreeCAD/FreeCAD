@@ -3341,8 +3341,6 @@ bool ViewProviderSketch::setEdit(int ModNum)
     Gui::Selection().clearSelection();
     Gui::Selection().rmvPreselect();
 
-    this->attachSelection();
-
     auto gridnode = getGridNode();
     Base::Placement plm = getEditingPlacement();
     setGridOrientation(plm.getPosition(), plm.getRotation());
@@ -3473,6 +3471,7 @@ void ViewProviderSketch::setupActiveAndInEdit()
 
         Gui::getMainWindow()->installEventFilter(listener);
     }
+    attachSelection();
 
     Workbench::enterEditMode();
 
@@ -3487,6 +3486,8 @@ void ViewProviderSketch::unsetupActiveAndInEdit()
         delete listener;
         listener = nullptr;
     }
+    detachSelection();
+
     Workbench::leaveEditMode();
 }
 void ViewProviderSketch::setActive(bool active)
@@ -3645,7 +3646,6 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         snapManager = nullptr;
         preselection.reset();
         selection.reset();
-        this->detachSelection();
 
         App::AutoTransaction trans("Sketch recompute");
         try {
