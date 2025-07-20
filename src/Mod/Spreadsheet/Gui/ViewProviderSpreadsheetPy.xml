@@ -23,22 +23,22 @@
       <Methode Name="showSheetMdi">
         <Documentation>
           <UserDocu>
-            Create (if necessary) and switch to the Spreadsheet MDI.
+Create (if necessary) and switch to the Spreadsheet MDI.
 
-            showSheetMdi()
+showSheetMdi()
 
-            Returns: None
+Returns: None
           </UserDocu>
         </Documentation>
       </Methode>
       <Methode Name="exportAsFile">
         <Documentation>
           <UserDocu>
-            Export the sheet as a file.
+Export the sheet as a file.
 
-            exportAsFile()
+exportAsFile()
 
-            Returns: None
+Returns: None
           </UserDocu>
         </Documentation>
       </Methode>
