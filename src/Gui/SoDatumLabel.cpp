@@ -1326,7 +1326,7 @@ void SoDatumLabel::drawRadiusOrDiameter(const SbVec3f* points, float& angle, SbV
 
     SbVec3f dir = (p2-p1);
     SbVec3f center = p1;
-    double radius = (p2 - p1).length();
+    float radius = (p2 - p1).length();
     if (this->datumtype.getValue() == DIAMETER) {
         center = (p1 + p2) / 2;
         radius = radius / 2;

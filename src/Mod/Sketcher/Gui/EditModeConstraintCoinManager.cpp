@@ -1523,10 +1523,10 @@ Restart:
                     asciiText->datumtype = SoDatumLabel::DIAMETER;
                     asciiText->param1 = Constr->LabelDistance;
                     asciiText->param2 = Constr->LabelPosition;
-                    asciiText->param3 = startHelperAngle;
-                    asciiText->param4 = startHelperRange;
-                    asciiText->param5 = endHelperAngle;
-                    asciiText->param6 = endHelperRange;
+                    asciiText->param3 = static_cast<float>(startHelperAngle);
+                    asciiText->param4 = static_cast<float>(startHelperRange);
+                    asciiText->param5 = static_cast<float>(endHelperAngle);
+                    asciiText->param6 = static_cast<float>(endHelperRange);
 
                     asciiText->pnts.setNum(2);
                     SbVec3f* verts = asciiText->pnts.startEditing();
