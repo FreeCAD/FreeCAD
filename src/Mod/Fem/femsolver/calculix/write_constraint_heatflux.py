@@ -73,6 +73,9 @@ def write_meshdata_constraint(f, femobj, heatflux_obj, ccxwriter):
         heatflux_facesubtype = ""
         heatflux_values = "{:.13G}".format(heatflux_obj.DFlux.getValueAs("t/s^3").Value)
 
+    else:
+        return
+
     f.write(f"*{heatflux_key_word}\n")
     for ref_shape in femobj["HeatFluxFaceTable"]:
         elem_string = ref_shape[0]
