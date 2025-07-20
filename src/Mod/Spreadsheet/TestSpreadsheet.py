@@ -284,6 +284,19 @@ class SpreadsheetFunction(unittest.TestCase):
         self.assertEqual(self.sheet.C3, 5)
         self.assertEqual(self.sheet.C4, 10)
 
+        self.sheet.set("E1", "-5")
+        self.sheet.set("E2", "=if(E1 > 1; 10; -10)")
+        self.sheet.set("E3", "=if(E1 < 1; 10; -10)")
+        self.doc.recompute()
+        print(self.sheet.E2)
+        self.assertEqual(self.sheet.E2, -10)
+        self.assertEqual(self.sheet.E3, 10)
+
+        self.sheet.set("E1", "50")
+        self.doc.recompute()
+        self.assertEqual(self.sheet.E2, 10)
+        self.assertEqual(self.sheet.E3, -10)
+
     def test_cos(self):
         self.sheet.set("A1", "=cos(60)")
         self.sheet.set("B1", "=cos(60deg)")
