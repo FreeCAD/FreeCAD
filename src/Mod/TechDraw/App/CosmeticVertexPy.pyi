@@ -38,7 +38,7 @@ class CosmeticVertexPy(PyObjectBase):
     Show: bool
     """Show/hide the vertex."""
 
-    Color: Any[float, float, float, float]
+    Color: Any # type: tuple[float, float, float, float]]
     """set/return the vertex's colour using a tuple (rgba)."""
 
     Size: Any
