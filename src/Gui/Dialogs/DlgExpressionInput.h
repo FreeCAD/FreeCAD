@@ -94,7 +94,7 @@ private:
     void checkExpression(const QString& text);
     void setupVarSets();
     std::string getType();
-    void reportVarSetInfo(const char* message);
+    void reportVarSetInfo(const std::string& message);
     bool reportName(QTreeWidgetItem* item);
     bool reportGroup(QString& nameGroup);
     void updateVarSetInfo(bool checkExpr = true);
