@@ -1,5 +1,6 @@
-from App import object
 from Base.Metadata import export
+
+from App.DocumentObjectGroup import DocumentObjectGroup
 
 @export(
     Father="DocumentObjectGroupPy",
@@ -11,7 +12,7 @@ from Base.Metadata import export
     FatherInclude="App/DocumentObjectGroupPy.h",
     FatherNamespace="App",
 )
-class JointGroupPy(object):
+class JointGroupPy(DocumentObjectGroup):
     """
     This class is a group subclass for joints.
     """

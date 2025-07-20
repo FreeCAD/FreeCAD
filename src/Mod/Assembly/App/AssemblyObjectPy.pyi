@@ -1,7 +1,8 @@
-from typing import Final, Any
-from App import object
-from Base.Metadata import export
-from Base.Metadata import constmethod
+from typing import Any, Final
+
+from Base.Metadata import constmethod, export
+
+from App.Part import Part
 
 @export(
     Father="PartPy",
@@ -12,9 +13,8 @@ from Base.Metadata import constmethod
     Namespace="Assembly",
     FatherInclude="App/PartPy.h",
     FatherNamespace="App",
-    ReadOnly=["Joints"],
 )
-class AssemblyObjectPy(object):
+class AssemblyObjectPy(Part):
     """
     This class handles document objects in Assembly
     """
@@ -154,5 +154,5 @@ class AssemblyObjectPy(object):
         Args:
         fileName: The name of the file where the ASMT will be exported."""
         ...
-    Joints: Final[list]  # ReadOnly
+    Joints: Final[list]
     """A list of all joints this assembly has."""

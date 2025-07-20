@@ -1,6 +1,8 @@
 from typing import Final
-from App import object
+
 from Base.Metadata import export
+
+from App.Part import Part
 
 @export(
     Father="PartPy",
@@ -11,12 +13,11 @@ from Base.Metadata import export
     Namespace="Assembly",
     FatherInclude="App/PartPy.h",
     FatherNamespace="App",
-    ReadOnly=["Joints"],
 )
-class AssemblyLinkPy(object):
+class AssemblyLinkPy(Part):
     """
     This class handles document objects in Assembly
     """
 
-    Joints: Final[list]  # ReadOnly
+    Joints: Final[list]
     """A list of all joints this assembly link has."""
