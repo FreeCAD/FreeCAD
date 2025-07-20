@@ -21,6 +21,12 @@
 	- setup instructions
 	- check list
 	- warnings and errors
+- Decomposition of gcodes into simpler elements
+	- Break arcs into segments
+	- Break canned cycles into individual moves
+- Conversion of coordinate systems for jobs or blocks of gcode
+	- Convert absolute coordinates to relative (G91)
+	- Convert absolute center arcs to relative center (G91.1)
 
 
 # 🟦 Next-Level CAM
