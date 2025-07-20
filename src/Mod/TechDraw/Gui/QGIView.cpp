@@ -36,6 +36,7 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
+#include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection/Selection.h>
@@ -165,6 +166,7 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     //    Base::Console().message("QGIV::itemChange(%d)\n", change);
     if(change == ItemPositionChange && scene()) {
+        m_isDragging = true;
         QPointF newPos = value.toPointF();            //position within parent!
 
         TechDraw::DrawView *viewObj = getViewObject();
@@ -188,15 +190,7 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
                 snapPosition(newPos);
             }
         }
-
-                // tell the feature that we have moved
-        Gui::ViewProvider *vp = getViewProvider(viewObj);
-        if (vp && !vp->isRestoring()) {
-            snapping = true; // avoid triggering updateView by the VP updateData
-            viewObj->setPosition(Rez::appX(newPos.x()), Rez::appX(-newPos.y()));
-            snapping = false;
-        }
-
+        m_dragPosition = newPos;
         return newPos;
     }
 
@@ -278,8 +272,8 @@ void QGIView::snapPosition(QPointF& newPosition)
         auto xerror = fabs(newScenePos.x() - viewScenePos.x());
         auto yerror = fabs(newScenePos.y() - viewScenePos.y());
 
-                // if the smaller of vertical and horizontal errors is within the acceptable
-                // window, snap to position.
+        // if the smaller of vertical and horizontal errors is within the acceptable
+        // window, snap to position.
         if (xerror <= yerror  &&
             xerror <= xwindow) {
             newScenePos.setX(viewScenePos.x());
@@ -440,6 +434,24 @@ void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
         }
 
         m_multiselectActivated = false;
+    }
+    if ((event->button() & Qt::LeftButton) && m_isDragging) {
+        std::cerr << "End drag!\n";
+        m_isDragging = false;
+        // tell the feature that we have moved
+        Gui::ViewProvider *vp = getViewProvider(viewObj);
+        if (vp && !vp->isRestoring()) {
+            std::cerr << "End drag do command!\n";
+
+            snapping = true; // avoid triggering updateView by the VP updateData
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Drag view"));
+            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.X = %f",
+                                    viewObj->getNameInDocument(), pos().x());
+            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Y = %f",
+                                    viewObj->getNameInDocument(), -pos().y());
+            Gui::Command::commitCommand();
+            snapping = false;
+        }
     }
 
     QGraphicsItemGroup::mouseReleaseEvent(event);
