@@ -226,12 +226,19 @@ class ObjectDressup:
             QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Vertical"),
             QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "None"),
         ]
+
+        leadIn = leadOut = None
         if hasattr(obj, "LeadIn"):
+            leadIn = obj.LeadIn
             obj.removeProperty("LeadIn")
         if hasattr(obj, "LeadOut"):
+            leadOut = obj.LeadOut
             obj.removeProperty("LeadOut")
+
+        styleOn = styleOff = None
         if hasattr(obj, "StyleOn"):
             # Replace StyleOn by StyleIn
+            styleOn = obj.StyleOn
             obj.addProperty(
                 "App::PropertyEnumeration",
                 "StyleIn",
@@ -240,8 +247,10 @@ class ObjectDressup:
             )
             obj.StyleIn = lead_styles
             obj.removeProperty("StyleOn")
+            obj.StyleIn = "Arc"
         if hasattr(obj, "StyleOff"):
             # Replace StyleOff by StyleOut
+            styleOff = obj.StyleOff
             obj.addProperty(
                 "App::PropertyEnumeration",
                 "StyleOut",
@@ -250,35 +259,8 @@ class ObjectDressup:
             )
             obj.StyleOut = lead_styles
             obj.removeProperty("StyleOff")
-            obj.StyleIn = "Arc"
             obj.StyleOut = "Arc"
 
-        if hasattr(obj, "Length"):
-            # Replace Length by PercentageRadiusIn
-            obj.addProperty(
-                "App::PropertyInteger",
-                "PercentageRadiusIn",
-                "Path Lead-in",
-                QT_TRANSLATE_NOOP("App::Property", "Determine length of the Lead-In"),
-            )
-            obj.PercentageRadiusIn = 150
-            obj.removeProperty("Length")
-        if hasattr(obj, "LengthOut"):
-            # Replace Length by PercentageRadiusOut
-            obj.addProperty(
-                "App::PropertyInteger",
-                "PercentageRadiusOut",
-                "Path Lead-out",
-                QT_TRANSLATE_NOOP("App::Property", "Determine length of the Lead-Out"),
-            )
-            obj.PercentageRadiusOut = 150
-            obj.removeProperty("LengthOut")
-        if hasattr(obj, "ExtendLeadIn"):
-            # Remove ExtendLeadIn property
-            obj.removeProperty("ExtendLeadIn")
-        if hasattr(obj, "ExtendLeadOut"):
-            # Remove ExtendLeadOut property
-            obj.removeProperty("ExtendLeadOut")
         if not hasattr(obj, "AngleIn"):
             obj.addProperty(
                 "App::PropertyAngle",
@@ -295,6 +277,56 @@ class ObjectDressup:
                 QT_TRANSLATE_NOOP("App::Property", "Angle of the Lead-Out (1..90)"),
             )
             obj.AngleOut = 45
+
+        if leadIn is not None and not leadIn:
+            obj.StyleIn = "None"
+        elif styleOn:
+            if styleOn == "Arc":
+                obj.StyleIn = "Arc"
+                obj.AngleIn = 90
+            elif styleOn in ["Perpendicular", "Tangent"]:
+                obj.StyleIn = "Line"
+                obj.AngleIn = 90 if styleOn == "Perpendicular" else 0
+        if leadOut is not None and not leadOut:
+            obj.StyleOut = "None"
+        elif styleOff:
+            if styleOff == "Arc":
+                obj.StyleOut = "Arc"
+                obj.AngleOut = 90
+            elif styleOff in ["Perpendicular", "Tangent"]:
+                obj.StyleOut = "Line"
+                obj.AngleOut = 90 if styleOff == "Perpendicular" else 0
+
+        toolRadius = PathDressup.toolController(obj.Base).Tool.Diameter.Value / 2
+        if hasattr(obj, "Length"):
+            # Replace Length by PercentageRadiusIn
+            obj.addProperty(
+                "App::PropertyInteger",
+                "PercentageRadiusIn",
+                "Path Lead-in",
+                QT_TRANSLATE_NOOP("App::Property", "Determine length of the Lead-In"),
+            )
+            obj.PercentageRadiusIn = int(obj.Length / toolRadius * 100)
+            obj.removeProperty("Length")
+        if hasattr(obj, "LengthOut"):
+            # Replace LengthOut by PercentageRadiusOut
+            obj.addProperty(
+                "App::PropertyInteger",
+                "PercentageRadiusOut",
+                "Path Lead-out",
+                QT_TRANSLATE_NOOP("App::Property", "Determine length of the Lead-Out"),
+            )
+            obj.PercentageRadiusOut = int(obj.LengthOut / toolRadius * 100)
+            obj.removeProperty("LengthOut")
+
+        # The new features do not have a good analog for ExtendLeadIn/Out, so these old values will be ignored
+        if hasattr(obj, "ExtendLeadIn"):
+            # Remove ExtendLeadIn property
+            obj.removeProperty("ExtendLeadIn")
+        if hasattr(obj, "ExtendLeadOut"):
+            # Remove ExtendLeadOut property
+            obj.removeProperty("ExtendLeadOut")
+
         if not hasattr(obj, "InvertIn"):
             obj.addProperty(
                 "App::PropertyBool",
@@ -334,6 +366,8 @@ class ObjectDressup:
                 ),
             )
         if hasattr(obj, "KeepToolDown"):
+            if obj.KeepToolDown:
+                obj.RetractThreshold = 999999
             obj.removeProperty("KeepToolDown")
 
     # Get direction for lead-in/lead-out in XY plane
