@@ -1086,7 +1086,9 @@ bool ViewProviderAssembly::canDelete(App::DocumentObject* objBeingDeleted) const
             // List its joints
             std::vector<App::DocumentObject*> joints = assemblyPart->getJointsOfObj(obj);
             for (auto* joint : joints) {
-                objToDel.push_back(joint);
+                if (std::ranges::find(objToDel, joint) == objToDel.end()) {
+                    objToDel.push_back(joint);
+                }
             }
             joints = assemblyPart->getJointsOfPart(obj);
             for (auto* joint : joints) {
