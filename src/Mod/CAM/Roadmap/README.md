@@ -90,7 +90,7 @@ Perennial complaints from users:
 | Work Unit | Why it should be a priority | Issue(s) |
 | -------| -----------------------------| -----------|
 | Handle linking moves consistently | abstracting the generation of linking moves (rapid moves into, out of, and between parts of a toolpath) to a generator would allow us to factor this logic out of the individual operations.  The ops would get more consistent and easier to maintain. It will allow us to build a more intuitive drilling operation.| #22599, #9405 #16205 |
-| Adaptive generator| factoring out the adaptive algorithm to a generator would allow us to move the adaptive operation into pocket and 3D pocket as a strategy.| |
+| Pocketing Strategies| The adaptive clearing strategy need not be a separate operation type.  Factoring out the adaptive algorithm to a generator would allow us to move the adaptive operation into pocket and 3D pocket as a strategy. This would let users switch strategies without deleting and recreating whole operations. | |
 | split sanity tests and report generation| Current the sanity command runs the tests and generates the setup page output.  Splitting them would allow us to run the tests without generating the output.  The tests could be run indepedently to flag common problems for users| |
 | stabilize the BTL tool implementation| Incorporating the BTL approach to tools has caused some regressions. |  |
 | Document schema for CNC | Users are still confused by the warning dialog when creating a CAM Job. Improving the dialog should be possible to allow them to change the schema and set future defaults right at that time.| #22549|
