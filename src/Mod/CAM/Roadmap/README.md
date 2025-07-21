@@ -94,6 +94,7 @@ Perennial complaints from users:
 | split sanity tests and report generation| Current the sanity command runs the tests and generates the setup page output.  Splitting them would allow us to run the tests without generating the output.  The tests could be run indepedently to flag common problems for users| |
 | stabilize the BTL tool implementation| Incorporating the BTL approach to tools has caused some regressions. |  |
 | Document schema for CNC | Users are still confused by the warning dialog when creating a CAM Job. Improving the dialog should be possible to allow them to change the schema and set future defaults right at that time.| #22549|
+| Overhaul the Entry dressup(s)| We currently hav both ramp and leadin/out dressup.  These could be consolidated into a single dressup with multiple strategies possible. Ramp lacks a UI task panel. Ramp also has a helical entry strategy that duplicates code from helix and from adaptive operation.  Adaptive operation has its own helix entry method.  The result is a confusing jumble of functionality and code that is hard to work on | |
 
 
 
