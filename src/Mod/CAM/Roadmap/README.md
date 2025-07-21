@@ -53,7 +53,8 @@ Additionally, as software developers we desire the source code to excel in these
 |-------------------------------|----------------------------------------|
 | [ADR-001](<./ADR/ADR-001.md>) | Use Dressups to modify base operations |
 | [ADR-002](<./ADR/ADR-002.md>) | Internal representation of tool path   |
-|                               |                                        |
+| [ADR-003](<./ADR/ADR-003.md>) | ADR-003: Safe height and Clearance height in operations  |
+| [ADR-004](<./ADR/ADR-004.md>) | Standardized vocabulary around rotation of cutter, direction of cut, and conventional vs. climb operations |
 
 
 # 📊 Current State
