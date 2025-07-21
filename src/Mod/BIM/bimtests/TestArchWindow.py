@@ -344,6 +344,222 @@ class TestArchWindow(TestArchBase.TestArchBase):
         self.assertAlmostEqual(bb.YLength, 60.0, places=5,
                             msg="Window thickness (YLength) is incorrect.")
 
+    def test_opening_property_rotates_component(self):
+        """Test that setting the Opening property rotates a hinged component."""
+        # Create a window from a preset with a hinge
+        window = Arch.makeWindowPreset("Open 1-pane", width=1000, height=1200,
+                                       h1=50, h2=50, h3=0, w1=100, w2=50, o1=0, o2=50)
+        self.document.recompute()
+
+        # The preset creates an outer frame, an inner opening frame, and glass.
+        self.assertEqual(len(window.Shape.Solids), 3, "Preset should create three solids.")
+
+        # Solid[1] is the inner, opening frame.
+        opening_pane = window.Shape.Solids[1]
+
+        # Get initial position
+        initial_center = opening_pane.CenterOfMass
+
+        # Set opening to 50%. The 'Opening' property is App::PropertyPercent, which expects an integer.
+        window.Opening = 50
+
+        self.document.recompute()
+
+        # Get new position of the same component
+        new_opening_pane = window.Shape.Solids[1]
+        new_center = new_opening_pane.CenterOfMass
+
+        # Assert that the Z-coordinate has changed, indicating rotation around a horizontal hinge.
+        self.assertNotAlmostEqual(initial_center.z, new_center.z, places=3,
+                                  msg="The Z-coordinate of the opening pane's center should change upon rotation.")
+        # The Y-coordinate should remain largely unchanged for a bottom-hinged (awning-style) window.
+        self.assertAlmostEqual(initial_center.y, new_center.y, places=3)
+
+    def test_symbol_plan_creates_wire_geometry(self):
+        """Test that enabling SymbolPlan adds 2D wire geometry to the window's shape."""
+        # Create a window with an opening mode
+        window = Arch.makeWindowPreset("Open 1-pane", width=1000, height=1200,
+                                       h1=50, h2=50, h3=0, w1=100, w2=50, o1=0, o2=50)
+
+        # SymbolPlan is True by default for presets with hinges, but we set it explicitly
+        window.SymbolPlan = True
+
+        self.document.recompute()
+
+        # Assert that the shape contains both solids and the 2D symbol edges.
+        self.assertIsInstance(window.Shape, Part.Compound, "Window shape should be a compound.")
+
+        # Find symbol edges by finding edges that do not belong to any face in the shape
+        face_edge_hashes = {e.hashCode() for face in window.Shape.Faces for e in face.Edges}
+        all_edge_hashes = {e.hashCode() for e in window.Shape.Edges}
+        symbol_edge_hashes = all_edge_hashes - face_edge_hashes
+
+        self.assertEqual(len(window.Shape.Solids), 3, "Window shape should contain 3 solids.")
+        self.assertEqual(len(symbol_edge_hashes), 2, "Expected 2 edges for the plan symbol (arc and line).")
+
+    def test_custom_subvolume_creates_opening(self):
+        """Test that a custom Subvolume shape correctly creates an opening in a host wall."""
+        # Create a wall and store its initial state
+        wall_base = Draft.makeLine(FreeCAD.Vector(0,0,0), FreeCAD.Vector(4000,0,0))
+        wall = Arch.makeWall(wall_base, width=200, height=3000, align="Left")
+        self.document.recompute()
+        initial_wall_volume = wall.Shape.Volume
+        initial_wall_shape = wall.Shape.copy() # Store initial shape for accurate intersection calculation
+
+        # Create a simple window
+        window_sketch = self._create_sketch_with_wires("WinSketch", [(0,0,10,10)])
+        window = Arch.makeWindow(window_sketch)
+
+        # Create a custom cutting box as the window's Subvolume
+        cutting_box = self.document.addObject("Part::Box", "CuttingBox")
+        cutting_box.Length = 800
+        cutting_box.Width = 300 # Wider than wall
+        cutting_box.Height = 1000
+        cutting_box.Placement.Base = FreeCAD.Vector(1600, -50, 800)
+        self.document.recompute()
+
+        window.Subvolume = cutting_box
+
+        # Add window to wall to create opening using Arch.addComponents
+        Arch.addComponents(window, host=wall)
+        self.document.recompute()
+
+        # Assert volume has decreased by the intersecting part of the box's volume
+        expected_volume_change = cutting_box.Shape.common(initial_wall_shape).Volume
+        final_wall_volume = wall.Shape.Volume
+        self.assertAlmostEqual(final_wall_volume, initial_wall_volume - expected_volume_change, places=3,
+                               msg="Wall volume did not decrease correctly after applying custom Subvolume.")
+
+    def test_door_preset_sets_ifctype_door(self):
+        """Test that creating a window from a 'door' preset correctly sets its IfcType to 'Door'."""
+        # Create a door using a preset with non-zero values for all required parameters
+        door = Arch.makeWindowPreset("Simple door", width=900, height=2100,
+                                     h1=50, h2=50, h3=0, w1=100, w2=40, o1=0, o2=0)
+        self.assertIsNotNone(door, "makeWindowPreset for a door should create an object.")
+        self.document.recompute()
+
+        # Assert IfcType is "Door"
+        self.assertEqual(door.IfcType, "Door", "IfcType should be 'Door' for a door preset.")
+
+        # Assert component count
+        # A simple door preset has an outer frame and a solid door panel
+        self.assertEqual(len(door.Shape.Solids), 2, "A simple door should have 2 solid components (frame and panel).")
+
+    def test_cloned_window_in_wall_creates_opening(self):
+        """Tests if a cloned Arch.Window, when hosted in a wall, creates a geometric opening."""
+
+        # Create the host wall
+        wall_length = 3000.0
+        wall_thickness = 200.0
+        wall_height = 2500.0
+        wall_base = Draft.makeLine(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(wall_length, 0, 0))
+        wall = Arch.makeWall(wall_base, width=wall_thickness, height=wall_height, name="WallForClonedWindow")
+        self.document.recompute()
+        initial_wall_volume = wall.Shape.Volume
+        self.assertGreater(initial_wall_volume, 0, "Wall should have a positive volume initially.")
+
+        # Create the original window's sketch
+        window_width = 800.0
+        window_height = 1200.0
+        original_sketch = self._create_sketch_with_wires("OriginalWinSketch", [(0, 0, window_width, window_height)])
+
+        # Orient the sketch to be vertical before creating the window
+        # This mimics the behavior of the interactive Arch_Window tool.
+        original_sketch.Placement.Rotation = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 90)
+        self.document.recompute()
+
+        # Create the original window from the now-oriented sketch
+        original_window = Arch.makeWindow(baseobj=original_sketch, name="OriginalWindow")
+        original_window.Width = window_width   # Explicitly set properties
+        original_window.Height = window_height
+        self.document.recompute()
+        self.assertFalse(original_window.Shape.isNull(), "Original window shape should not be null.")
+
+        # Create the clone
+        cloned_window = Draft.clone(original_window)
+        cloned_window.Label = "ClonedWindow"
+
+        # Position the clone inside the wall
+        clone_x = 1100.0  # Center of the clone in the wall's length
+        clone_y = wall_thickness / 2  # Center of the clone in the wall's thickness
+        clone_z = 800.0   # Sill height
+        cloned_window.Placement.Base = FreeCAD.Vector(clone_x, clone_y, clone_z)
+        self.document.recompute()
+
+        self.assertIsNotNone(cloned_window.CloneOf, "Cloned window should have CloneOf property set.")
+        self.assertEqual(cloned_window.CloneOf, original_window, "CloneOf should point to the original window.")
+        self.assertAlmostEqual(cloned_window.Shape.Volume, original_window.Shape.Volume, delta=1e-5)
+
+        # Add the clone to the wall's hosts
+        Arch.addComponents(cloned_window, host=wall)
+        self.document.recompute()
+
+        self.assertIn(wall, cloned_window.Hosts, "Wall should be in the cloned window's Hosts list.")
+
+        final_wall_volume = wall.Shape.Volume
+        self.assertLess(final_wall_volume, initial_wall_volume,
+                        "Wall volume should have decreased after hosting the cloned window.")
+
+        expected_removed_volume = window_width * window_height * wall.Width.Value
+        self.assertAlmostEqual(initial_wall_volume - final_wall_volume, expected_removed_volume, delta=1e-5,
+                            msg="The volume removed from the wall by the cloned window is incorrect.")
+
+    def test_addComponents_window_to_wall(self):
+        """
+        Tests the Arch.addComponents function for adding a window to a wall.
+        Verifies that the Hosts, InList, and OutList properties are correctly
+        updated, and that the geometric opening is created.
+        """
+        self.printTestMessage("Testing Arch.addComponents for window-wall hosting...")
+
+        # Create the wall and window
+        wall_base = Draft.makeLine(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(3000, 0, 0))
+        wall = Arch.makeWall(wall_base, width=200, height=2500, name="HostWall")
+        self.document.recompute()
+        initial_wall_volume = wall.Shape.Volume
+
+        window_width = 800.0
+        window_height = 1200.0
+        window_sketch = self._create_sketch_with_wires("WindowSketchForAdd", [(0, 0, window_width, window_height)])
+        window_sketch.Placement.Rotation = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 90)
+        window_sketch.Placement.Base = FreeCAD.Vector(1100, 100, 800) # Position it within the wall
+        self.document.recompute()
+
+        window = Arch.makeWindow(baseobj=window_sketch, name="HostedWindow")
+        window.Width = window_width
+        window.Height = window_height
+        self.document.recompute()
+
+        # Initial state verification
+        self.assertEqual(len(window.Hosts), 0, "Window.Hosts should be empty initially.")
+        self.assertNotIn(window, wall.InList, "Window should not be in wall's InList initially.")
+
+        # Add the window to the wall
+        Arch.addComponents(window, wall)
+        self.document.recompute()
+
+        # Check all relationships and the final geometry
+        # Property assertions
+        self.assertIn(wall, window.Hosts, "Wall should be in window.Hosts after addComponents.")
+        self.assertEqual(len(window.Hosts), 1, "Window.Hosts should contain exactly one host.")
+
+        # Dependency graph assertions
+        self.assertIn(window, wall.InList, "Window should be in wall's InList after hosting.")
+        self.assertIn(wall, window.OutList, "Wall should be in window's OutList after hosting.")
+
+        # Negative assertion
+        self.assertNotIn(window, wall.Subtractions,
+                        "Window should not be in wall's Subtractions list for this hosting mechanism.")
+
+        # Geometric assertion
+        final_wall_volume = wall.Shape.Volume
+        self.assertLess(final_wall_volume, initial_wall_volume,
+                        "Wall volume should decrease after hosting the window.")
+
+        expected_removed_volume = window_width * window_height * wall.Width.Value
+        self.assertAlmostEqual(initial_wall_volume - final_wall_volume, expected_removed_volume, delta=1e-5,
+                            msg="The volume removed from the wall is incorrect.")
+
     def _create_sketch_with_wires(self, name: str, wire_definitions: list[tuple[float, float, float, float]]) -> "FreeCAD.DocumentObject":
         """
         Helper to create a sketch with one or more specified rectangular wires.
