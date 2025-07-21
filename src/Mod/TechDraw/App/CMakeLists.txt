@@ -81,13 +81,13 @@ generate_from_py_(DrawLeaderLinePy)
 generate_from_py_(DrawRichAnnoPy)
 generate_from_py_(GeomFormatPy)
 generate_from_py_(CenterLinePy)
+generate_from_py_(CosmeticEdgePy)
 generate_from_py_(CosmeticVertexPy)
 generate_from_py_(DrawTilePy)
 generate_from_py_(DrawTileWeldPy)
 generate_from_py_(DrawWeldSymbolPy)
 generate_from_py_(CosmeticExtensionPy)
 generate_from_py_(DrawBrokenViewPy)
-generate_from_py_(CosmeticEdgePy)
 
 SET(Draw_SRCS
     DrawPage.cpp
