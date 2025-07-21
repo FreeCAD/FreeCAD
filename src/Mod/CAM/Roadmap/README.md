@@ -92,6 +92,8 @@ Perennial complaints from users:
 | Linking generator | abstracting the generation of linking moves to a generator would allow us to factor this logic out of the individual operations.  The ops would get more consistent and easier to maintain. It will allow us to build a more intuitive drilling operation.| sliptonic| 
 | Adaptive generator| factoring out the adaptive algorithm to a generator would allow us to move the adaptive operation into pocket and 3D pocket as a strategy.| sliptonic| 
 | split sanity tests and report generation| Current the sanity command runs the tests and generates the setup page output.  Splitting them would allow us to run the tests without generating the output.  The tests could be run indepedently to flag common problems for users| sliptonic|
+| stabilize the BTL tool implementation| Incorporating the BTL approach to tools has caused some regressions. | sliptonic |
+| Document schema for CNC | Users are still confused by the warning dialog when creating a CAM Job. Improving the dialog should be possible to allow them to change the schema and set future defaults right at that time.| sliptonic|
 
 
 # 🧱 Mid-Term Goals (3-12 months)
