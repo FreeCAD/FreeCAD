@@ -95,6 +95,7 @@ Perennial complaints from users:
 | stabilize the BTL tool implementation| Incorporating the BTL approach to tools has caused some regressions. | #21430 #21855 #18598 #9466 #22228 |
 | Document schema for CNC | Users are still confused by the warning dialog when creating a CAM Job. Improving the dialog should be possible to allow them to change the schema and set future defaults right at that time.| #22549|
 | Overhaul the Entry dressup(s)| We currently hav both ramp and leadin/out dressup.  These could be consolidated into a single dressup with multiple strategies possible. Ramp lacks a UI task panel. Ramp also has a helical entry strategy that duplicates code from helix and from adaptive operation.  Adaptive operation has its own helix entry method.  The result is a confusing jumble of functionality and code that is hard to work on | #16897 #10621 #22137 #8150 #14380 #16144 |
+| Helix work| Helices are used in at least three different places; Helix Op, Ramp entry, and Adaptive clearing.  This is a lot of duplicated code with inconsistent features. Centralizing the logic to a helix generator would allow us to first put it under unit tests and then incrmentally replace the duplicated logic in each place where it is used. This will provice a more robust solution that is easier to extend and maintain and also give the users a consistent set of features related to helices everywhere |#22469, #13455, #22357, #8149, #17737, PR #21971 | 
 
 
 
