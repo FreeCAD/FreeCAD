@@ -1,6 +1,4 @@
-from typing import Any
-
-from Base.Metadata import export, sequence_protocol
+from Base.Metadata import export
 from Base.Persistence import Persistence
 
 @export(

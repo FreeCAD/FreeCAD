@@ -1,5 +1,3 @@
-from typing import Any
-
 from Base.Metadata import export, sequence_protocol
 from Base.Persistence import Persistence
 
