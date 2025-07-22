@@ -17,6 +17,7 @@ from .models.slittingsaw import ToolBitSlittingSaw
 from .models.tap import ToolBitTap
 from .models.threadmill import ToolBitThreadMill
 from .models.vbit import ToolBitVBit
+from .models.isoshape import ToolBitIso
 
 # Define __all__ for explicit public interface
 __all__ = [
@@ -35,4 +36,5 @@ __all__ = [
     "ToolBitTap",
     "ToolBitThreadMill",
     "ToolBitVBit",
+    "ToolBitIso",
 ]
