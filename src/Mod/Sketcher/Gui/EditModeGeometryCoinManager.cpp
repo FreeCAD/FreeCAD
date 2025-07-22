@@ -203,6 +203,10 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
 
         // colors of the point set
         for (int i = 0; i < PtNum; i++) {
+            if (!coinMapping.isValidPointId(i, l)) {
+                continue;
+            }
+
             int GeoId = coinMapping.getPointGeoId(i, l);
             Sketcher::PointPos PosId = coinMapping.getPointPosId(i, l);
             bool isExternal = GeoId < -1;
@@ -303,6 +307,10 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
                 pverts[i].setValue(0, 0, viewOrientationFactor * drawingParameters.zRootPoint);
             }
             else {
+                if (!coinMapping.isValidPointId(i, l)) {
+                    continue;
+                }
+
                 int GeoId = coinMapping.getPointGeoId(i, l);
                 Sketcher::PointPos PosId = coinMapping.getPointPosId(i, l);
                 pverts[i].getValue(x, y, z);
@@ -405,6 +413,10 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
 
             int j = 0;  // vertexindex
             for (int i = 0; i < CurvNum; i++) {
+                if (!coinMapping.isValidCurveId(i, l, t)) {
+                    continue;
+                }
+
                 int GeoId = coinMapping.getCurveGeoId(i, l, t);
                 // CurvId has several vertices associated to 1 material
                 // edit->CurveSet->numVertices => [i] indicates number of vertex for line i.

@@ -541,6 +541,7 @@ void AssemblyObject::recomputeJointPlacements(std::vector<App::DocumentObject*> 
             Py::Tuple args(1);
             args.setItem(0, Py::asObject(joint->getPyObject()));
             Py::Callable(attr).apply(args);
+            joint->purgeTouched();
         }
     }
 }
