@@ -143,6 +143,8 @@ public:
 
     virtual void refreshViews();
 
+    ViewProviderPage* getViewProviderPage() {return m_vpPage;}
+
     /// Renders the page to SVG with filename.
     void saveSvg(QString filename);
     void postProcessXml(QTemporaryFile& temporaryFile, QString filename, QString pagename);
