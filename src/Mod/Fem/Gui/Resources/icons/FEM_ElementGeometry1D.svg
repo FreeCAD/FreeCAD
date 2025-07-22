@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64px"
+   height="64px"
+   id="svg2860"
+   version="1.1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2862" />
+  <metadata
+     id="metadata2865">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[Bernd Hahnebach]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:date>2015-09-18</dc:date>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1">
+    <g
+       id="g3808"
+       transform="translate(44,-4)">
+      <path
+         style="display:inline;opacity:1;fill:#fce94f;fill-opacity:1;stroke:#302b00;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+         d="M 3,19 29,3 61,11 35,27 Z"
+         id="path3856"
+         transform="translate(-44,4)" />
+      <path
+         id="rect3011"
+         d="M -9,31 V 65 L -41,57 V 23 Z"
+         style="font-variation-settings:normal;display:inline;opacity:1;vector-effect:none;fill:#edd400;fill-opacity:1;stroke:#302b00;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+      <path
+         style="display:inline;opacity:1;fill:#c4a000;fill-opacity:1;stroke:#302b00;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+         d="M 35,61 V 27 L 61,11 v 34 z"
+         id="path3858"
+         transform="translate(-44,4)" />
+      <path
+         id="ellipse6"
+         style="display:inline;fill:#cc0000;stroke:#660c0c;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+         d="m 1.0061495,22.610293 c -0.89027186,1.1e-4 -1.71848902,0.260347 -2.4174166,0.703185 v 0 l -26.1613349,16.353867 -0.06107,0.27191 c -1.364915,0.769957 -2.288047,2.225666 -2.288408,3.897071 5.34e-4,2.474174 2.018299,4.479697 4.50735,4.480002 0.887948,-1.09e-4 1.713657,-0.258375 2.411463,-0.699108 l 0.002,0.0041 0.107177,-0.0693 25.9325496,-16.450497 -0.00595,-0.01223 c 1.4697018,-0.738048 2.4805511,-2.248411 2.4809284,-3.996944 5.985e-4,-2.47497 -2.0174989,-4.481734 -4.5073507,-4.48204 z" />
+      <path
+         style="display:inline;opacity:1;fill:none;stroke:#302b00;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+         d="M 45,54.846154 45,21 14,13"
+         id="path3886"
+         transform="translate(-44,4)" />
+      <path
+         style="display:inline;opacity:1;fill:none;stroke:#302b00;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+         d="M 53,49.923077 V 16 L 21,8"
+         id="path3888"
+         transform="translate(-44,4)" />
+      <path
+         style="display:inline;opacity:1;fill:none;stroke:#edd400;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="M -7,61.4 V 32.2 L 15,18.6 v 29.2 z"
+         id="path3858-6" />
+      <path
+         id="rect3011-3"
+         d="m -11,32.6 v 29.8 l -28,-7 V 25.6 Z"
+         style="display:inline;opacity:1;fill:none;stroke:#fce94f;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4" />
+      <circle
+         style="display:inline;fill:#ef2929;stroke:#660c0c;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+         id="path2"
+         cx="-25.403816"
+         cy="43.610233"
+         r="4.5" />
+      <path
+         style="opacity:1;fill:none;fill-opacity:1;stroke:#302b00;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+         d="M -41,23 -9,31 17,15"
+         id="path11" />
+      <path
+         style="opacity:1;fill:none;fill-opacity:1;stroke:#302b00;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+         d="M -9,31 V 65"
+         id="path12" />
+    </g>
+  </g>
+</svg>

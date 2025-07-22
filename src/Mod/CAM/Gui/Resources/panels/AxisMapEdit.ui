@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskPanel</class>
+ <widget class="QWidget" name="TaskPanel">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>376</width>
+    <height>387</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>AxisMap Dressup</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="lblRadius">
+     <property name="text">
+      <string>Radius</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2" colspan="2">
+    <widget class="Gui::QuantitySpinBox" name="radius">
+     <property name="toolTip">
+      <string>The radius of the wrapped axis</string>
+     </property>
+     <property name="unit" stdset="0">
+      <string notr="true">mm</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="lblAxisMapInput">
+     <property name="text">
+      <string>Axis Mapping</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2" colspan="2">
+    <widget class="QComboBox" name="axisMapInput">
+     <property name="toolTip">
+      <string>The input mapping axis. Coordinates of the first axis will be mapped to the second.</string>
+     </property>
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <item>
+      <property name="text">
+       <string>X-&gt;A</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Y-&gt;A</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>X-&gt;B</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Y-&gt;B</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>X-&gt;C</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Y-&gt;C</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+  <item row="3" column="2">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>275</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="PyObjectBase"
+      Name="CosmeticEdgePy"
+      Twin="CosmeticEdge"
+      TwinPointer="CosmeticEdge"
+      Include="Mod/TechDraw/App/Cosmetic.h"
+      Namespace="TechDraw"
+      FatherInclude="Base/GeometryPyCXX.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
+      <UserDocu>CosmeticEdge specifies an extra (cosmetic) edge in Views</UserDocu>
+    </Documentation>
+    <Attribute Name="Tag" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Gives the tag of the CosmeticEdge as string.</UserDocu>
+      </Documentation>
+      <Parameter Name="Tag" Type="String"/>
+    </Attribute>
+<!--    <Attribute Name="Owner" ReadOnly="true">-->
+<!--      <Documentation>-->
+<!--        <UserDocu>Gives the name of the View which owns this CosmeticEdge as string.</UserDocu>-->
+<!--      </Documentation>-->
+<!--      <Parameter Name="Owner" Type="String"/>-->
+<!--    </Attribute> -->
+    <Attribute Name="Start">
+      <Documentation>
+        <UserDocu>Gives the position of one end of this CosmeticEdge as vector.</UserDocu>
+      </Documentation>
+      <Parameter Name="Start" Type="Vector"/>
+    </Attribute>
+    <Attribute Name="End">
+      <Documentation>
+        <UserDocu>Gives the position of one end of this CosmeticEdge as vector.</UserDocu>
+      </Documentation>
+      <Parameter Name="End" Type="Vector"/>
+    </Attribute>
+    <Attribute Name="Center">
+      <Documentation>
+        <UserDocu>Gives the position of center point of this CosmeticEdge as vector.</UserDocu>
+      </Documentation>
+      <Parameter Name="Center" Type="Vector"/>
+    </Attribute>
+    <Attribute Name="Radius">
+      <Documentation>
+        <UserDocu>Gives the radius of CosmeticEdge in mm.</UserDocu>
+      </Documentation>
+      <Parameter Name="Radius" Type="Float"/>
+    </Attribute>
+
+
+<!--    <Attribute Name="Geometry">-->
+<!--      <Documentation>-->
+<!--        <UserDocu>The edge geometry for this CosmeticEdge.</UserDocu>-->
+<!--      </Documentation>-->
+<!--      <Parameter Name="Geometry" Type="Object"/>-->
+<!--    </Attribute> -->
+    <Attribute Name="Format">
+      <Documentation>
+        <UserDocu>The appearance attributes (style, weight, color, visible) for this CosmeticEdge.</UserDocu>
+      </Documentation>
+      <Parameter Name="Format" Type="Dict"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

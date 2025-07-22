@@ -1,0 +1,26 @@
+================================================
+ FCGear: an Involute Gear Generator for FreeCAD
+================================================
+
+This is a simple gear generation tool usable in FreeCAD. The tooth
+profiles are approximations of the ideal involutes by Bezier curves,
+according the paper:
+
+  Approximation of Involute Curves for CAD-System Processing
+  Higuchi et al. approximation to an involute.
+  ref: YNU Digital Eng Lab Memorandum 05-1
+  http://maekawalab-ynu.com/papers.html
+
+This code is based on the JavaScript implementation of the published
+method provided by A.R. Collins in his gearUtils.js tool:
+
+  Based on gearUtils-03.js by Dr A.R.Collins
+  Latest version:  <www.arc.id.au/gearDrawing.html>
+
+Also took inspirations from the Inkscape extension provided by Matthew
+Dockrey on
+
+  https://github.com/attoparsec/inkscape-extensions.git
+
+Copyright 2014 David Douard <david.douard@gmail.com>.
+Distributed under the LGPL licence.

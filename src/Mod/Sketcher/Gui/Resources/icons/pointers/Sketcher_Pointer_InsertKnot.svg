@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   height="64"
+   width="64"
+   id="svg10"
+   sodipodi:docname="Sketcher_Pointer_InsertKnot.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="7.296875"
+     inkscape:cx="31.931478"
+     inkscape:cy="31.931478"
+     inkscape:window-width="1368"
+     inkscape:window-height="842"
+     inkscape:window-x="-6"
+     inkscape:window-y="-6"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg10" />
+  <title
+     id="title839">Sketcher_PointerInsertKnot</title>
+  <metadata
+     id="metadata16">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Sketcher_PointerInsertKnot</dc:title>
+        <dc:date>17-02-2022</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>bitacovir</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs14" />
+  <g
+     id="g1"
+     inkscape:label="symbol">
+    <path
+       style="display:inline;fill:none;stroke:#cc0000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 53.080401,28.249148 c -1.43085,26.470727 -26.470692,0 -28.616967,28.617002"
+       id="path3266-9-2" />
+    <circle
+       cx="46.92411"
+       cy="40.59425"
+       id="circle8-8"
+       style="fill:#cc0000;stroke:#cc0000;stroke-width:2;fill-opacity:1"
+       r="4" />
+  </g>
+  <g
+     id="crosshair"
+     style="stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter;">
+    <path
+       d="m16,3v9m0,8v9m-13-13h9m8,0h9"
+       id="path7" />
+  </g>
+  <path
+     id="path1"
+     style="fill:none;stroke:#cc0000;stroke-width:2"
+     d="m 55.92411,40.59425 a 9,9 0 0 1 -9,9" />
+  <path
+     id="path1-4"
+     style="fill:none;stroke:#cc0000;stroke-width:2"
+     d="M 38.230778,38.264878 A 9,9 0 0 1 49.253482,31.900917"
+     inkscape:transform-center-x="3.1819804"
+     inkscape:transform-center-y="-5.664686" />
+</svg>

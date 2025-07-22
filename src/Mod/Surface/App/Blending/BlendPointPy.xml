@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport
+		Father="PyObjectBase"
+		FatherInclude="Base/BaseClassPy.h"
+		FatherNamespace="Base"
+		Name="BlendPointPy"
+		PythonName="Surface.BlendPoint"
+		Twin="BlendPoint"
+		TwinPointer="BlendPoint"
+		Include="Mod/Surface/App/Blending/BlendPoint.h"
+		Namespace="Surface"
+		Constructor="true"
+		Delete="true">
+		<Documentation>
+		</Documentation>
+		<Documentation>
+			<Author Licence="LGPL" Name="Mattéo Grellier" EMail="matteogrellier@gmail.com" />
+			<UserDocu>
+				Create BlendPoint from a point and some derivatives.
+				myBlendPoint = BlendPoint([Point, D1, D2, ..., DN])
+				BlendPoint can also be constructed from an edge
+				myBlendPoint = BlendPoint(Edge, parameter = float, continuity = int)
+			</UserDocu>
+		</Documentation>
+		<Attribute Name="Vectors" ReadOnly="true">
+			<Documentation>
+				<UserDocu>The list of vectors of this BlendPoint.</UserDocu>
+			</Documentation>
+			<Parameter Name="vectors" Type="List"/>
+		</Attribute>
+		<Methode Name="getSize" Const="true">
+			<Documentation>
+				<UserDocu>
+					Return BlendPoint first derivative length.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="setSize">
+			<Documentation>
+				<UserDocu>
+					Resizes the BlendPoint vectors,
+					by setting the length of the first derivative.
+					theBlendPoint.setSize(new_size)
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="setvectors">
+			<Documentation>
+				<UserDocu>
+					Set the vectors of BlendPoint.
+					BlendPoint.setvectors([Point, D1, D2, ..., DN])
+				</UserDocu>
+			</Documentation>
+		</Methode>
+	</PythonExport>
+</GenerateModel>

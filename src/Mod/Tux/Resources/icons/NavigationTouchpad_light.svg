@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64" height="64" version="1.1" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+ <g transform="translate(0 -988.36)" fill="none" stroke="#d1cbc9">
+  <path d="m32 1043.4v-15" stroke-width="6"/>
+  <path d="m8 1028.4h48" stroke-width="4"/>
+  <rect x="8" y="997.36" width="48" height="46" ry="7" color="#000000" stroke-width="6"/>
+ </g>
+</svg>

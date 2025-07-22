@@ -1,0 +1,161 @@
+<RCC>
+    <qresource>
+        <!-- copy from other workbenches -->
+        <file>icons/Arch_Material_Group.svg</file>
+
+        <!-- gui command icons -->
+        <file>icons/FEM_Analysis.svg</file>
+        <file>icons/FEM_ClippingPlaneAdd.svg</file>
+        <file>icons/FEM_ClippingPlaneRemoveAll.svg</file>
+
+        <!-- gui command icons: constraints -->
+        <file>icons/FEM_ConstraintBearing.svg</file>
+        <file>icons/FEM_ConstraintBodyHeatSource.svg</file>
+        <file>icons/FEM_ConstraintCentrif.svg</file>
+        <file>icons/FEM_ConstraintContact.svg</file>
+        <file>icons/FEM_ConstraintCurrentDensity.svg</file>
+        <file>icons/FEM_ConstraintDisplacement.svg</file>
+        <file>icons/FEM_ConstraintElectricChargeDensity.svg</file>
+        <file>icons/FEM_ConstraintElectrostaticPotential.svg</file>
+        <file>icons/FEM_ConstraintFixed.svg</file>
+        <file>icons/FEM_ConstraintFlowVelocity.svg</file>
+        <file>icons/FEM_ConstraintFluidBoundary.svg</file>
+        <file>icons/FEM_ConstraintForce.svg</file>
+        <file>icons/FEM_ConstraintGear.svg</file>
+        <file>icons/FEM_ConstraintHeatflux.svg</file>
+        <file>icons/FEM_ConstraintInitialFlowVelocity.svg</file>
+        <file>icons/FEM_ConstraintInitialPressure.svg</file>
+        <file>icons/FEM_ConstraintInitialTemperature.svg</file>
+        <file>icons/FEM_ConstraintMagnetization.svg</file>
+        <file>icons/FEM_ConstraintPlaneRotation.svg</file>
+        <file>icons/FEM_ConstraintPressure.svg</file>
+        <file>icons/FEM_ConstraintPulley.svg</file>
+        <file>icons/FEM_ConstraintRigidBody.svg</file>
+        <file>icons/FEM_ConstraintSectionPrint.svg</file>
+        <file>icons/FEM_ConstraintSelfWeight.svg</file>
+        <file>icons/FEM_ConstraintSpring.svg</file>
+        <file>icons/FEM_ConstraintTemperature.svg</file>
+        <file>icons/FEM_ConstraintTie.svg</file>
+        <file>icons/FEM_ConstraintTransform.svg</file>
+
+        <!-- gui command icons: element geometries -->
+        <file>icons/FEM_ElementFluid1D.svg</file>
+        <file>icons/FEM_ElementGeometry1D.svg</file>
+        <file>icons/FEM_ElementGeometry2D.svg</file>
+        <file>icons/FEM_ElementRotation1D.svg</file>
+        <file>icons/FEM_EquationDeformation.svg</file>
+        <file>icons/FEM_EquationElasticity.svg</file>
+        <file>icons/FEM_EquationElectricforce.svg</file>
+        <file>icons/FEM_EquationElectrostatic.svg</file>
+        <file>icons/FEM_EquationFlow.svg</file>
+        <file>icons/FEM_EquationFlux.svg</file>
+        <file>icons/FEM_EquationHeat.svg</file>
+        <file>icons/FEM_EquationMagnetodynamic.svg</file>
+        <file>icons/FEM_EquationMagnetodynamic2D.svg</file>
+        <file>icons/FEM_EquationStaticCurrent.svg</file>
+
+        <!-- gui command icons: meshes -->
+        <file>icons/FEM_CreateElementsSet.svg</file>
+        <file>icons/FEM_CreateNodesSet.svg</file>
+        <file>icons/FEM_FEMMesh2Mesh.svg</file>
+        <file>icons/FEM_MeshBoundaryLayer.svg</file>
+        <file>icons/FEM_MeshClear.svg</file>
+        <file>icons/FEM_MeshDisplayInfo.svg</file>
+        <file>icons/FEM_MeshGmshFromShape.svg</file>
+        <file>icons/FEM_MeshGroup.svg</file>
+        <file>icons/FEM_MeshNetgenFromShape.svg</file>
+        <file>icons/FEM_MeshRegion.svg</file>
+
+        <!-- gui command icons: materials -->
+        <file>icons/FEM_MaterialFluid.svg</file>
+        <file>icons/FEM_MaterialMechanicalNonlinear.svg</file>
+        <file>icons/FEM_MaterialReinforced.svg</file>
+        <file>icons/FEM_MaterialSolid.svg</file>
+
+        <!-- gui command icons: post processing -->
+        <file>icons/FEM_PostFilterCalculator.svg</file>
+        <file>icons/FEM_PostFilterClipRegion.svg</file>
+        <file>icons/FEM_PostFilterClipScalar.svg</file>
+        <file>icons/FEM_PostFilterContours.svg</file>
+        <file>icons/FEM_PostFilterCutFunction.svg</file>
+        <file>icons/FEM_PostFilterDataAlongLine.svg</file>
+        <file>icons/FEM_PostFilterDataAtPoint.svg</file>
+        <file>icons/FEM_PostFilterLinearizedStresses.svg</file>
+        <file>icons/FEM_PostFilterWarp.svg</file>
+        <file>icons/FEM_PostFilterGlyph.svg</file>
+        <file>icons/FEM_PostFrames.svg</file>
+        <file>icons/FEM_PostBranchFilter.svg</file>
+        <file>icons/FEM_PostPipelineFromResult.svg</file>
+        <file>icons/FEM_PostLineplot.svg</file>
+        <file>icons/FEM_PostHistogram.svg</file>
+        <file>icons/FEM_PostSpreadsheet.svg</file>
+        <file>icons/FEM_PostField.svg</file>
+        <file>icons/FEM_PostIndex.svg</file>
+        <file>icons/FEM_ResultShow.svg</file>
+        <file>icons/FEM_ResultsPurge.svg</file>
+
+        <!-- gui command icons: solver -->
+        <file>icons/FEM_SolverControl.svg</file>
+        <file>icons/FEM_SolverElmer.svg</file>
+        <file>icons/FEM_SolverMystran.svg</file>
+        <file>icons/FEM_SolverRun.svg</file>
+        <file>icons/FEM_SolverStandard.svg</file>
+        <file>icons/FEM_SolverZ88.svg</file>
+
+        <!-- object icons without gui command -->
+        <file>icons/fem-femmesh-from-shape.svg</file>
+        <file>icons/FEM_MeshResult.svg</file>
+
+        <!-- object icons without gui command but with task panel action -->
+        <file>icons/fem-post-geo-box.svg</file>
+        <file>icons/fem-post-geo-cylinder.svg</file>
+        <file>icons/fem-post-geo-isosurface.svg</file>
+        <file>icons/fem-post-geo-plane.svg</file>
+        <file>icons/fem-post-geo-sphere.svg</file>
+
+        <!-- main wb icon and preferences icons -->
+        <file>icons/FemWorkbench.svg</file>
+        <file>icons/fem-solver-analysis-buckling.svg</file>
+        <file>icons/fem-solver-analysis-checkmesh.svg</file>
+        <file>icons/fem-solver-analysis-frequency.svg</file>
+        <file>icons/fem-solver-analysis-static.svg</file>
+        <file>icons/fem-solver-analysis-thermomechanical.svg</file>
+        <file>icons/fem-solver-inp-editor.svg</file>
+        <file>icons/preferences-fem.svg</file>
+
+        <!-- more icons, not used ATM -->
+        <file>icons/fem-add-fem-mesh.svg</file>
+        <file>icons/fem-add-material.svg</file>
+        <file>icons/fem-add-part.svg</file>
+
+        <!-- task panels -->
+        <file>ui/BodyHeatSource.ui</file>
+        <file>ui/ConstraintCentrif.ui</file>
+        <file>ui/ConstraintSectionPrint.ui</file>
+        <file>ui/ConstraintTie.ui</file>
+        <file>ui/CurrentDensity.ui</file>
+        <file>ui/DlgSettingsNetgen.ui</file>
+        <file>ui/ElectricChargeDensity.ui</file>
+        <file>ui/ElectrostaticPotential.ui</file>
+        <file>ui/ElementFluid1D.ui</file>
+        <file>ui/ElementGeometry1D.ui</file>
+        <file>ui/ElementGeometry2D.ui</file>
+        <file>ui/ElementRotation1D.ui</file>
+        <file>ui/FlowVelocity.ui</file>
+        <file>ui/InitialFlowVelocity.ui</file>
+        <file>ui/InitialPressure.ui</file>
+        <file>ui/Magnetization.ui</file>
+        <file>ui/Material.ui</file>
+        <file>ui/MaterialReinforcement.ui</file>
+        <file>ui/MeshBoundaryLayer.ui</file>
+        <file>ui/MeshGmsh.ui</file>
+        <file>ui/MeshGroup.ui</file>
+        <file>ui/MeshGroupXDMFExport.ui</file>
+        <file>ui/MeshRegion.ui</file>
+        <file>ui/ResultHints.ui</file>
+        <file>ui/ResultShow.ui</file>
+        <file>ui/SolverCalculiX.ui</file>
+        <file>ui/SolverCcxTools.ui</file>
+        <file>ui/TaskPostGlyph.ui</file>
+    </qresource>
+</RCC>

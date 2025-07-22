@@ -1,0 +1,11 @@
+CreatedByChkLst,ScaleChkLst,LabelChkLst,CommentChkLst,CompanyChkLst,LicenseChkLst,CreatedDateChkLst,LastModifiedDateChkLst
+"author_name","fc-sc","drawing_title","freecad_drawing","nomsuperviseur","copyright","datedecreation","fc-date"
+"nomauteur","echelle","title","titleline-1","companyname","rights","fecha2","date"
+"authorname","масштаб","titre","sous_titre","compagnyname",,"date-1","dateverification"
+"designed_by_name","escala","название","subtitulo","compagny",,"creationdate","дата"
+"designed by name","scale","titulo", "subtitle",,,,"fecha3"
+"nom auteur","fc-scale","drawing_name","supplementary_title_1",,,,"date-2"
+"creator",,"fc-title",,,,,"checkdate"
+,,"titleline-1",,,,,"date_of_issue"
+,,"freecad",,,,,
+,,"document_type",,,,,

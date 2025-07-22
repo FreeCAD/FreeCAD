@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="DocumentObjectPy"
+    Name="DrawPagePy"
+    Twin="DrawPage"
+    TwinPointer="DrawPage"
+    Include="Mod/TechDraw/App/DrawPage.h"
+    Namespace="TechDraw"
+    FatherInclude="App/DocumentObjectPy.h"
+    FatherNamespace="App">
+    <Documentation>
+      <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
+      <UserDocu>Feature for creating and manipulating Technical Drawing Pages</UserDocu>
+    </Documentation>
+    <Methode Name="addView">
+      <Documentation>
+        <UserDocu>addView(DrawView) - Add a View to this Page</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeView">
+      <Documentation>
+        <UserDocu>removeView(DrawView) - Remove a View to this Page</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getViews">
+      <Documentation>
+        <UserDocu>getViews() - returns a list of all the views on page excluding Views inside Collections</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getAllViews">
+      <Documentation>
+        <UserDocu>getAllViews() - returns a list of all the views on page including Views inside Collections</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="translateLabel">
+      <Documentation>
+        <UserDocu>translateLabel(translationContext, objectBaseName, objectUniqueName).
+         No return value.  Replace the current label with a translated version where possible.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="PageWidth" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Returns the width of this page</UserDocu>
+      </Documentation>
+      <Parameter Name="PageWidth" Type="Float"/>
+    </Attribute>
+    <Attribute Name="PageHeight" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Returns the height of this page</UserDocu>
+      </Documentation>
+      <Parameter Name="PageHeight" Type="Float"/>
+    </Attribute>
+    <Attribute Name="PageOrientation" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Returns the orientation of this page</UserDocu>
+      </Documentation>
+      <Parameter Name="PageOrientation" Type="String"/>
+    </Attribute>
+    <Methode Name="requestPaint">
+      <Documentation>
+        <UserDocu>Ask the Gui to redraw this page</UserDocu>
+      </Documentation>
+    </Methode>
+    <CustomAttributes />
+  </PythonExport>
+</GenerateModel>

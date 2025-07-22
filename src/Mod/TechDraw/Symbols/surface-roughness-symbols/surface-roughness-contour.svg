@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+<!-- https://tamirov.ru edited -->
+<title>Surface roughness: all surfaces in that view. Technical drawing chars (FreeCAD) https://freecad-gost.ru</title>
+<g>
+ <path d="m5,39 l12,21 24,-42 h22" fill="none" stroke="#000" stroke-width="2"/>
+ <circle cx="41" cy="18" r="6" fill="none" stroke="#000" stroke-width="2"/>
+</g>
+</svg>

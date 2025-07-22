@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="DrawViewCollectionPy"
+    Name="DrawProjGroupPy"
+    Twin="DrawProjGroup"
+    TwinPointer="DrawProjGroup"
+    Include="Mod/TechDraw/App/DrawProjGroup.h"
+    Namespace="TechDraw"
+    FatherInclude="Mod/TechDraw/App/DrawViewCollectionPy.h"
+    FatherNamespace="TechDraw">
+    <Documentation>
+      <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
+      <UserDocu>Feature for creating and manipulating Technical Drawing Projection Groups</UserDocu>
+    </Documentation>
+    <Methode Name="addProjection">
+      <Documentation>
+        <UserDocu>addProjection(string projectionType) - Add a new Projection Item to this Group. Returns DocObj.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeProjection">
+      <Documentation>
+        <UserDocu>removeProjection(string projectionType) - Remove specified Projection Item from this Group. Returns int number of views in Group.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="purgeProjections">
+      <Documentation>
+        <UserDocu>purgeProjections() - Remove all Projection Items from this Group. Returns int number of views in Group (0).</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getItemByLabel">
+      <Documentation>
+        <UserDocu>getItemByLabel(string projectionType) - return specified Projection Item</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getXYPosition">
+      <Documentation>
+        <UserDocu>getXYPosition(string projectionType) - return the AutoDistribute position for specified Projection Item</UserDocu>
+      </Documentation>
+    </Methode>
+    <CustomAttributes />
+  </PythonExport>
+</GenerateModel>

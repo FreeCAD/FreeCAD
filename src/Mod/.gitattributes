@@ -1,0 +1,138 @@
+JtReader    export-ignore
+
+
+# ****************************************************************************
+# line endings
+
+# to suppress line ending changes in github, add ?w=1 at link end of a diff
+
+# for more information see forum topic and a specific pull request
+# https://forum.freecadweb.org/viewtopic.php?f=17&t=41117
+# https://github.com/FreeCAD/FreeCAD/pull/2752
+
+
+# get all used file types
+
+# in a directory in a bash use
+# find . -type f -name '*.*' | sed 's|.*\.||' | sort -u
+
+# in Mod directory for normalized modules
+# find AddonManager Arch Complete Draft Idf Fem Material OpenSCAD Show Tux -type f -name '*.*' | sed 's|.*\.||' | sort -u
+
+# search for a specific file ending in normalized folders
+# find AddonManager Arch Complete Draft Idf Fem Material OpenSCAD Show Tux -type f -name '*.emn'
+
+
+# normalize the line endings of the following files
+
+# standard files
+*.bat text
+*.cpp text
+*.csv text
+*.dox text
+*.h text
+*.json text
+*.md text
+*.py text
+*.qrc text
+*.sh text
+*.ts text
+*.txt text
+*.ui text
+*.xml text
+*.yml text
+
+# Fem specific files
+*.dat text
+*.frd text
+*.geo text
+*.inp text
+*.sif text
+*.unv text
+*.vtk text
+*.z88 text
+
+# files which are human readable
+# but for which it is not sure if normalize is ok
+# emn
+# emp
+# igs
+# stp
+# svg
+
+# binary files
+# FCMat
+# FCStd
+# ods
+# qm
+
+
+# line endings of the modules commented will be normalized
+
+# AddonManager/** -text
+# Arch/** -text
+# Draft/** -text
+# Fem/** -text
+# Idf/** -text
+# Material/** -text
+# OpenSCAD/** -text
+# Path/** -text
+# Show/** -text
+# Tux/** -text
+
+
+# line endings of the modules NOT commented will NOT be normalized
+# Be carefully changes here could affect a lot of files automatically!
+
+Cloud/** -text
+Drawing/** -text
+Import/** -text
+Inspection/** -text
+JtReader/** -text
+Measure/** -text
+Mesh/** -text
+MeshPart/** -text
+Part/** -text
+PartDesign/** -text
+Plot/** -text
+Points/** -text
+ReverseEngineering/** -text
+Robot/** -text
+Sandbox/** -text
+Sketcher/** -text
+Spreadsheet/** -text
+Start/** -text
+Surface/** -text
+TechDraw/** -text
+TemplatePyMod/** -text
+Test/** -text
+Web/** -text
+
+
+# this would let git manage the file endings automatically
+# to be save this will be commented
+# * text=auto
+# if used it has to be at beginning of all line ending commands in this file
+# furthermore if used it is very important to set the file types
+# which should not be normalized manually (like svg, jpg, etc)
+# they should be set to binary
+
+# These files should be ignored as it pertains to line-endings
+# because they are binary or should be treated as binary
+# Since auto normalize is deactivated all these could be commented too.
+# needed if * text=auto is used
+# *.FCStd binary
+# *.jpg binary
+# *.png binary
+# *.pyc binary
+# *.qm binary
+# *.svg binary
+
+
+# These files will always be checked out with CRLF, i.e. windows-style line endings. This
+# really should not be needed...
+# *.SomeWindowsFileExtensionThatReallyRequiresCRLFEvenInLinux eol=crlf
+
+
+# use git to manually correct the file endings
+# git add --renormalize .

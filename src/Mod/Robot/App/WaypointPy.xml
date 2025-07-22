@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="PersistencePy"
+      Name="WaypointPy"
+      Twin="Waypoint"
+      TwinPointer="Waypoint"
+      Include="Mod/Robot/App/Waypoint.h"
+      Namespace="Robot"
+      FatherInclude="Base/PersistencePy.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
+      <UserDocu>Waypoint class</UserDocu>
+    </Documentation>
+	  <Attribute Name="Name" ReadOnly="false">
+		  <Documentation>
+			  <UserDocu>Name of the waypoint</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Name" Type="String"/>
+	  </Attribute>
+	  <Attribute Name="Type" ReadOnly="false">
+		  <Documentation>
+			  <UserDocu>Type of the waypoint[PTP|LIN|CIRC|WAIT]</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Type" Type="String"/>
+	  </Attribute>
+	  <Attribute Name="Pos" ReadOnly="false">
+		  <Documentation>
+			  <UserDocu>End position (destination) of the waypoint</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Pos" Type="Object"/>
+	  </Attribute>
+	  <Attribute Name="Cont" ReadOnly="false">
+		  <Documentation>
+			  <UserDocu>Control the continuity to the next waypoint in the trajectory</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Cont" Type="Boolean"/>
+	  </Attribute>
+	  <Attribute Name="Velocity" ReadOnly="false">
+		  <Documentation>
+			  <UserDocu>Control the velocity to the next waypoint in the trajectory
+In Case of PTP 0-100% Axis speed
+In Case of LIN m/s
+In Case of WAIT s wait time
+</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Velocity" Type="Float"/>
+	  </Attribute>
+	  <Attribute Name="Tool" ReadOnly="false">
+		  <Documentation>
+			  <UserDocu>Describe which tool frame to use for that point</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Tool" Type="Long"/>
+	  </Attribute>
+	  <Attribute Name="Base" ReadOnly="false">
+		  <Documentation>
+			  <UserDocu>Describe which Base frame to use for that point</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Base" Type="Long"/>
+	  </Attribute>
+  </PythonExport>
+</GenerateModel>

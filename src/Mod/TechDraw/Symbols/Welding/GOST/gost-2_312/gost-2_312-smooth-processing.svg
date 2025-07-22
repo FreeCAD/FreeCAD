@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+<!-- https://tamirov.ru edited -->
+<title>Наплывы и неровности шва обработать. Smooth processing - tech drawing chars (FreeCAD) https://freecad-gost.ru</title>
+<g>
+ <path d="m5,60 h58" fill="none" stroke="#000" stroke-width="2" />
+ <path d="m10 48 a12 12, 0, 0, 0, 24 0 a12 12, 0, 0, 0, 24 0" fill="none" stroke="#000" stroke-width="2" />
+</g>
+</svg>

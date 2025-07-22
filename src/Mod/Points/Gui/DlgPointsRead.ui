@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PointsGui::DlgPointsRead</class>
+ <widget class="QDialog" name="PointsGui::DlgPointsRead">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>394</width>
+    <height>631</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>ASCII Points Import</string>
+  </property>
+  <layout class="QVBoxLayout">
+   <property name="spacing">
+    <number>6</number>
+   </property>
+   <property name="margin">
+    <number>9</number>
+   </property>
+   <item>
+    <layout class="QHBoxLayout">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="margin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="textLabel1">
+       <property name="text">
+        <string>Template</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBoxTrmplate"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox1">
+     <property name="title">
+      <string>Special Lines</string>
+     </property>
+     <layout class="QGridLayout">
+      <property name="margin">
+       <number>6</number>
+      </property>
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QGroupBox" name="groupBox">
+        <property name="title">
+         <string>First Line</string>
+        </property>
+        <layout class="QHBoxLayout">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <property name="margin">
+          <number>6</number>
+         </property>
+         <item>
+          <widget class="QRadioButton" name="radioButtonIgnore">
+           <property name="text">
+            <string>Ignore</string>
+           </property>
+           <property name="autoExclusive">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="radioButtonNbrOfPoints">
+           <property name="text">
+            <string>Number of points</string>
+           </property>
+           <property name="autoExclusive">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     <item row="1" column="0">
+       <layout class="QGridLayout">
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="textLabel3">
+          <property name="text">
+           <string>Cluster by lines starting with</string>
+          </property>
+         </widget>
+        </item>
+       <item row="0" column="1">
+         <widget class="QLineEdit" name="lineEditClusterStart"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="textLabel4">
+          <property name="text">
+           <string>Ignore lines starting with</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="lineEditComments"/>
+        </item>
+        </layout>
+      </item>
+      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox2">
+     <property name="title">
+      <string>Point Format</string>
+     </property>
+     <layout class="QGridLayout">
+      <property name="margin">
+       <number>6</number>
+      </property>
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item row="0" column="0">
+       <layout class="QGridLayout">
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="textLabel6">
+          <property name="text">
+           <string>Number separator</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="comboBoxSeparator">
+          <property name="editable">
+           <bool>true</bool>
+          </property>
+          <item>
+           <property name="text">
+            <string notr="true">,</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">;</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>\t</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>\w</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="textLabel7">
+          <property name="text">
+           <string>Points format</string>
+          </property>
+         </widget>
+        </item>
+       <item row="1" column="1">
+         <widget class="QComboBox" name="comboBoxPointsFormat">
+          <item>
+           <property name="text">
+            <string>X,Y,Z</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>X,Y</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="textLabel8">
+          <property name="text">
+           <string>Next block</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="comboBoxNextBlock1">
+          <item>
+           <property name="text">
+            <string>None</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>I,J,K (normal vector)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>I,K (normal vector 2D)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>R,G,B (color)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>I (gray value)</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="textLabel8_2">
+          <property name="text">
+           <string>Next block</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QComboBox" name="comboBoxNextBlock2">
+          <item>
+           <property name="text">
+            <string>None</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>I,J,K (normal vector)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>I,K (normal vector 2D)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>R,G,B (color)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>I (gray value)</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="textLabel8_2_2">
+          <property name="text">
+           <string>Next block</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QComboBox" name="comboBoxNextBlock3">
+          <item>
+           <property name="text">
+            <string>None</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>I,J,K (normal vector)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>I,K (normal vector 2D)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>R,G,B (color)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>I (gray value)</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox3">
+     <property name="title">
+      <string>Preview</string>
+     </property>
+     <layout class="QVBoxLayout">
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <property name="margin">
+       <number>6</number>
+      </property>
+      <item>
+       <widget class="QLineEdit" name="lineEditFileName">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="textLabel5">
+          <property name="text">
+           <string>Number of previewed lines</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEditPreviewLines">
+          <property name="text">
+           <string notr="true">100</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QTextEdit" name="textEditPreview"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>comboBoxTrmplate</tabstop>
+  <tabstop>radioButtonIgnore</tabstop>
+  <tabstop>radioButtonNbrOfPoints</tabstop>
+  <tabstop>lineEditClusterStart</tabstop>
+  <tabstop>lineEditComments</tabstop>
+  <tabstop>comboBoxSeparator</tabstop>
+  <tabstop>comboBoxPointsFormat</tabstop>
+  <tabstop>comboBoxNextBlock1</tabstop>
+  <tabstop>comboBoxNextBlock2</tabstop>
+  <tabstop>comboBoxNextBlock3</tabstop>
+  <tabstop>lineEditFileName</tabstop>
+  <tabstop>lineEditPreviewLines</tabstop>
+  <tabstop>textEditPreview</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

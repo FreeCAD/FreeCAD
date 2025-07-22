@@ -1,0 +1,113 @@
+# Add 'source' label to any change to src files within the source dir EXCEPT for the docs sub-folder
+# source:
+# - any: ['src/**/*', '!src/docs/*']
+
+# 'Mod' related labels
+
+"Mod: Core":
+- changed-files:
+  - any-glob-to-any-file: ['src/App/**/*', 'src/Base/**/*', 'src/Gui/**/*']
+
+:octocat::
+- changed-files:
+  - any-glob-to-any-file:  ['.github/**/*']
+
+"Mod: Addon Manager":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/AddonManager/**/*']
+
+"Mod: Materials":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Material/**/*']
+
+"Mod: Measurement":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Measure/**/*']
+
+"Mod: BIM":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/BIM/**/*']
+
+"Mod: Assembly":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Assembly/**/*']
+
+"Mod: Draft":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Draft/**/*']
+
+"Mod: FEM":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Fem/**/*']
+
+"Mod: Mesh":
+- changed-files:
+  - any-glob-to-any-file: ['src/Mod/Mesh/**/*']
+
+"Mod: MeshPart":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/MeshPart/**/*']
+
+"Mod: OpenSCAD":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/OpenSCAD/**/*']
+
+"Mod: Part":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Part/**/*']
+
+"Mod: Part Design":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/PartDesign/**/*']
+
+"Mod: CAM":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/CAM/**/*']
+
+"Mod: Points":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Points/**/*']
+
+"Mod: Reverse Engineering":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/ReverseEngineering/**/*']
+
+"Mod: Sketcher":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Sketcher/**/*']
+
+"Mod: Spreadsheet":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Spreadsheet/**/*']
+
+"Mod: Start":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Start/**/*']
+
+"Mod: Surface":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Surface/**/*']
+
+"Mod: TechDraw":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/TechDraw/**/*']
+
+"Mod: Test":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Test/**/*']
+
+# 'Packaging' related labels
+
+"Packaging/building":
+- changed-files:
+  - any-glob-to-any-file:  ['cMake/**/*']
+
+"3rd party component":
+- changed-files:
+  - any-glob-to-any-file:  ['src/3rdParty/**/*']
+
+# 'Topic' related labels
+
+"Topic: Stylesheets":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Gui/Stylesheets/**/*']

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport
+		Father="PyObjectBase"
+		FatherInclude="Base/BaseClassPy.h"
+		FatherNamespace="Base"
+		Name="BlendCurvePy"
+		PythonName="Surface.BlendCurve"
+		Twin="BlendCurve"
+		TwinPointer="BlendCurve"
+		Include="Mod/Surface/App/Blending/BlendCurve.h"
+		Namespace="Surface"
+		Constructor="true"
+		Delete="true">
+		<Documentation>
+		</Documentation>
+		<Documentation>
+			<Author Licence="LGPL" Name="Mattéo Grellier" EMail="matteogrellier@gmail.com" />
+			<UserDocu>
+				Create a BlendCurve that interpolate 2 BlendPoints.
+				curve = BlendCurve(BlendPoint1, BlendPoint2)
+			</UserDocu>
+		</Documentation>
+		<Methode Name="compute">
+			<Documentation>
+				<UserDocu>
+					Return the BezierCurve that interpolate the input BlendPoints.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="setSize">
+			<Documentation>
+				<UserDocu>
+					Set the tangent size of the blendpoint at given index.
+					If relative is true, the size is considered relative to the distance between the two blendpoints.
+					myBlendCurve.setSize(idx, size, relative)
+				</UserDocu>
+			</Documentation>
+		</Methode>
+	</PythonExport>
+</GenerateModel>

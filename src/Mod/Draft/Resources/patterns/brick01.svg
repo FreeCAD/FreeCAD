@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" version="1.1" id="svg2" height="64" width="64">
+  <defs id="defs4">
+    <clipPath id="clip1">
+      <path d="M 12.539062,411 68,411 l 0,2 -55.460938,0 z m 0,0" id="path8148" />
+    </clipPath>
+    <clipPath id="clip2">
+      <path d="M 12.539062,468 124,468 l 0,2 -111.460938,0 z m 0,0" id="path8151" />
+    </clipPath>
+    <clipPath id="clip3">
+      <path d="M 12.539062,525 68,525 l 0,2 -55.460938,0 z m 0,0" id="path8154" />
+    </clipPath>
+    <clipPath id="clip4">
+      <path d="M 12.539062,408 124,408 l 0,2 -111.460938,0 z m 0,0" id="path8157" />
+    </clipPath>
+    <clipPath id="clip5">
+      <path d="M 12.539062,465 68,465 l 0,2 -55.460938,0 z m 0,0" id="path8160" />
+    </clipPath>
+    <clipPath id="clip6">
+      <path d="M 12.539062,522 124,522 l 0,2 -111.460938,0 z m 0,0" id="path8163" />
+    </clipPath>
+    <clipPath id="clip7">
+      <path d="M 12.539062,579 68,579 l 0,2 -55.460938,0 z m 0,0" id="path8166" />
+    </clipPath>
+    <clipPath id="clip8">
+      <path d="M 12.539062,354 241,354 l 0,228.5 -228.460938,0 z m 0,0" id="path8169" />
+    </clipPath>
+  </defs>
+  <metadata id="metadata7">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Pablo Gil</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>SVG</rdf:li>
+            <rdf:li>template</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g id="layer2">
+    <path id="path8461" d="m 31.2566,0 0,15.23976 L 0,15.23976 0,0 Z" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.37795275;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path id="path8463" d="m 31.99908,0 0,15.23976 31.2566,0 0,-15.23976 z" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.37795275;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path id="path8467" d="m 63.99926,31.25606 -16.00009,0 0,-15.25624 16.00009,0" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.37795276;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path id="path8469" d="m 0,15.99982 15.23892,0 0,15.25624 -15.23892,0" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.37795276;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
+    <path id="path8471" d="m 0,31.99963 31.2566,0 0,15.25625 -31.2566,0 z" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.37795275;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path id="path8473" d="m 0,47.99944 15.23892,0 0,15.25625 -15.23892,0" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.37795276;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
+    <path id="rect8477" d="m 16.00008,15.99982 31.256611,0 0,15.25624 -31.256611,0 z" style="opacity:1;fill:none;fill-opacity:0.61872146;fill-rule:nonzero;stroke:#000000;stroke-width:0.37795276;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path id="rect8479" d="m 31.999081,31.99963 31.256599,0 0,15.25625 -31.256599,0 z" style="opacity:1;fill:none;fill-opacity:0.61872146;fill-rule:nonzero;stroke:#000000;stroke-width:0.37795276;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path id="rect8481" d="m 16.00008,47.999439 31.256611,0 0,15.256251 -31.256611,0 z" style="opacity:1;fill:none;fill-opacity:0.61872146;fill-rule:nonzero;stroke:#000000;stroke-width:0.37795276;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.37795276;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="m 63.99926,63.25569 -16.00009,0 0,-15.25625 16.00009,0" id="path8486" />
+  </g>
+</svg>

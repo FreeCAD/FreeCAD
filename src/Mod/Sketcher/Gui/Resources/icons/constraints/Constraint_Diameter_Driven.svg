@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64px"
+   height="64px"
+   version="1.1"
+   id="svg275"
+   sodipodi:docname="Constraint_Diameter_Driven.svg"
+   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="true"
+     showguides="true"
+     inkscape:zoom="12.860505"
+     inkscape:cx="54.119183"
+     inkscape:cy="34.291034"
+     inkscape:window-width="2560"
+     inkscape:window-height="1368"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg275">
+    <inkscape:grid
+       id="grid2"
+       units="px"
+       originx="0"
+       originy="0"
+       spacingx="1"
+       spacingy="1"
+       empcolor="#0099e5"
+       empopacity="0.30196078"
+       color="#0099e5"
+       opacity="0.14901961"
+       empspacing="5"
+       dotted="false"
+       gridanglex="30"
+       gridanglez="30"
+       visible="true" />
+    <sodipodi:guide
+       position="32,49"
+       orientation="1,0"
+       id="guide2"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="19,32"
+       orientation="0,-1"
+       id="guide3"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
+  <defs
+     id="defs279" />
+  <metadata
+     id="metadata255">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[wmayer]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:date>2011-10-10</dc:date>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Sketcher/Gui/Resources/icons/Constraint_Radius.svg</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path
+     d="M 8.0130037,55.999654 55.86104,7.9368774"
+     stroke="#280000"
+     stroke-width="8"
+     id="path257"
+     style="fill:none;stroke-linecap:round" />
+  <g
+     stroke-dashoffset="10.8"
+     stroke-linejoin="round"
+     id="g12"
+     transform="matrix(0.92592116,0,0,0.92592119,2.3674951,2.3991903)"
+     style="fill:none;fill-opacity:1;stroke-width:1.08001">
+    <path
+       transform="matrix(0.86667,0,0,0.86667,4.2667,4.2667)"
+       d="M 62,32 A 30,30 0 1 1 2,32 30,30 0 1 1 62,32 Z"
+       stroke="#0b1521"
+       stroke-width="9.96931"
+       id="path6"
+       style="fill:none;fill-opacity:1" />
+    <circle
+       transform="matrix(0.86667,0,0,0.86667,4.2667,4.2667)"
+       stroke="#cc0000"
+       stroke-width="4.98466"
+       id="circle8"
+       cx="0"
+       cy="0"
+       r="0"
+       style="fill:none;fill-opacity:1" />
+    <path
+       d="m 58.000044,32.00014 c 0,14.359 -11.641,26 -26.000004,26 -14.359,0 -26,-11.641 -26,-26 0,-14.359 11.641,-26.0000003 26,-26.0000003 14.359004,0 26.000004,11.6410003 26.000004,26.0000003 z"
+       stroke="#3465a4"
+       stroke-width="4.32002"
+       id="path10"
+       style="fill:none;fill-opacity:1;stroke:#cc0000;stroke-opacity:1" />
+  </g>
+  <circle
+     stroke-dashoffset="10.8"
+     stroke-linejoin="round"
+     stroke-width="4.00003"
+     id="circle261"
+     cx="4.2666998"
+     cy="4.2666998"
+     r="0"
+     style="fill:none;stroke:#cc0000;stroke-linecap:round" />
+  <path
+     d="m 56.070933,32.028687 c 0,13.295302 -10.778648,24.073951 -24.07395,24.073951 -13.295302,0 -24.0739503,-10.778649 -24.0739503,-24.073951 0,-13.295302 10.7786483,-24.0739487 24.0739503,-24.0739487 13.295302,0 24.07395,10.7786467 24.07395,24.0739487 z"
+     stroke-dashoffset="10.8"
+     stroke-linejoin="round"
+     stroke-width="4"
+     id="path263"
+     style="fill:none;stroke:#3465a4;stroke-linecap:round;stroke-opacity:1" />
+  <path
+     style="color:#000000;fill:#3465a4;stroke-width:1;stroke-linecap:round;-inkscape-stroke:none;fill-opacity:1"
+     d="m 57.131363,6.4544845 a 2.0891182,2.0890512 0.17219196 0 0 -2.954241,0.00669 L 6.3863171,54.454997 a 2.0891182,2.0890512 0.17219196 0 0 0.0067,2.95414 2.0891182,2.0890512 0.17219196 0 0 2.9542365,-0.0067 L 57.138052,9.4086221 a 2.0891182,2.0890512 0.17219196 0 0 -0.0067,-2.9541418 z"
+     id="path265" />
+  <path
+     d="m 56.194072,5.9163671 a 2.0891182,2.0890512 0.17219196 0 0 -2.01695,0.5448084 L 6.3863171,54.454997 a 2.0891182,2.0890512 0.17219196 0 0 0.0067,2.95414 L 57.131363,6.4544845 A 2.0891182,2.0890512 0.17219196 0 0 56.194072,5.9163671 Z"
+     style="fill:#729fcf;stroke-width:1;stroke-linecap:round;fill-opacity:1"
+     id="path2" />
+  <path
+     style="fill:none;fill-opacity:1;stroke:#729fcf;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:100;stroke-dasharray:none;stroke-dashoffset:3.45;stroke-opacity:1"
+     id="path3-6"
+     sodipodi:type="arc"
+     sodipodi:cx="31.997017"
+     sodipodi:cy="32.028816"
+     sodipodi:rx="24.999872"
+     sodipodi:ry="24.999872"
+     sodipodi:start="0.54000736"
+     sodipodi:end="0.53893106"
+     sodipodi:arc-type="arc"
+     d="M 53.43953,44.882308 A 24.999872,24.999872 0 0 1 19.149295,53.474787 24.999872,24.999872 0 0 1 10.54759,19.186865 24.999872,24.999872 0 0 1 44.833196,10.575935 24.999872,24.999872 0 0 1 53.453352,44.859222"
+     sodipodi:open="true" />
+</svg>

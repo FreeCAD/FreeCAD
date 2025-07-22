@@ -1,0 +1,73 @@
+============= English Contents =================
+Author: LiFeng <felix@95839.com>
+Date: 22,July 2020 18:16:50 (GMT +0800)
+version: 0.0.2
+
+There are new version templates which used by People's Republic of China national drawing standard. This version obey rules of GB/T 14689-2008.
+
+The version changed next things:
+
+1) A0 and A1 Landscape template margin distance error. The old version use 5 mm distance. The GB/T 14689-2008 define the standard distance are 20 mm for no clip edge  and 25 mm for left side clip edge and 10 mm for other edges for clip edges drawing template.
+
+2) add some clip mark information for templates which own clip edge. The staff can using the clip mark to help do binding work for all drawing.
+
+3) add all size landscape template files which one type owns clip edges and another type have clip edges.
+
+4) filename define rules changed for difference types template. The file own "_CLIP.svg" mean the template has clip edge. The one own "_NO_CLIP.svg" mean that file not has clip edge.
+
+5) fix line length error for metric reference graduation mark. The right vertical distance is 5 mm, the old version use 4 mm vertical distance.
+
+6) fix line width error for some size drawing template. e,g Metric reference graduation  line width need set 0.5 mm
+
+7) add editable marks for engineering manufacture stages in title block part of drawing.
+	a) The left side stage mark can fill character 'S'. This mean drawing state is trial-manufacture;
+	b) The second stage mark can fill character 'A'. This mean the drawing state is small batch production;
+	c) The third stage mark can fill character 'B'. This mean the drawing state is mass production;
+	d) The last stage mark can fill character 'C'. This mean the drawing have clean all errors for product and can be do mass production working;
+
+8) Change some font size and location for title block parts than old version
+
+9) add template version information for template.
+
+10) add A4 and A3 portrait type template. The portrait type template will be used by desktop prints.
+
+11) delete copyright editable mark in template. due to it's location need place some technical list.
+
+
+
+=============== English Contents ================
+Author: LiFeng <felix@95839.com>
+Date:   2nd, July 2019 15:41:50 (GMT+08)
+version: 0.001
+
+These files are to bring drawing rules into compliance with the People's Republic of China national standard.
+This version only supplies serial page size 'A'. Please use font-family:HYSWLongFangSong
+The file will be used for the FreeCAD project TechDraw Workbench PRC users.
+
+
+=============== Chinese Contents ================
+作者：李峰 <felix@95839.com>
+日期：2019年7月2日 15:41:50 (GMT+08)
+版本：0.001
+
+这些文件是用于自由软件项目FreeCAD 的 TechDraw Mod 中，供中华人民共和国用户使用。这些文件遵从国标国家标准，请使用汉仪长仿宋字体(字体名:HYSWLongFangSong)。目前只提供 A 系列图纸部分。
+
+
+
+
+=============== English Contents ================
+Author: LiFeng <felix@95839.com>
+Date:   2nd, July 2019 15:41:50 (GMT+08)
+version: 0.001
+
+These files are to bring drawing rules into compliance with the People's Republic of China national standard.
+This version only supplies serial page size 'A'. Please use font-family:HYSWLongFangSong
+The file will be used for the FreeCAD project TechDraw Workbench PRC users.
+
+
+=============== Chinese Contents ================
+作者：李峰 <felix@95839.com>
+日期：2019年7月2日 15:41:50 (GMT+08)
+版本：0.001
+
+这些文件是用于自由软件项目FreeCAD 的 TechDraw Mod 中，供中华人民共和国用户使用。这些文件遵从国标国家标准，请使用汉仪长仿宋字体(字体名:HYSWLongFangSong)。目前只提供 A 系列图纸部分。

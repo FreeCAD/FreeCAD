@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="DrawViewPy"
+    Name="DrawViewAnnotationPy"
+    Twin="DrawViewAnnotation"
+    TwinPointer="DrawViewAnnotation"
+    Include="Mod/TechDraw/App/DrawViewAnnotation.h"
+    Namespace="TechDraw"
+    FatherInclude="Mod/TechDraw/App/DrawViewPy.h"
+    FatherNamespace="TechDraw">
+    <Documentation>
+      <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
+      <UserDocu>Feature for creating and manipulating Technical Drawing Annotation Views</UserDocu>
+    </Documentation>
+   <CustomAttributes />
+  </PythonExport>
+</GenerateModel>

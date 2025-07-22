@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<svg
+   width="594mm"
+   height="420mm"
+   viewBox="0 0 594 420"
+   version="1.1"
+   id="svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:freecad="https://www.freecad.org/wiki/index.php?title=Svg_Namespace">
+  <title id="title">Drawing sheet ISO 5457 - A2T</title>
+  <metadata id="metadata">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <cc:license rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
+        <dc:title>Drawing sheet ISO 5457 - A2T</dc:title>
+      </cc:Work>
+      <cc:License rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <rect id="drawing_space_frame" x="20" y="10" width="564" height="400" style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round" />
+  <g id="centring_marks" style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round">
+    <path id="top_centering" d="m 297,5 v 10" />
+    <path id="right_centering" d="m 589,210 h -10" />
+    <path id="bottom_centering" d="m 297,415 v -10" />
+    <path id="left_centering" d="m 15,210 h 10" />
+  </g>
+  <g id="grid_reference_system">
+    <g id="grid_reference_borders" style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round">
+      <rect id="grid_reference_border"  x="15" y="5" width="574" height="410" />
+      <path id="upper_border_1" d="m 47,5 v 5"/>
+      <path id="upper_border_2" d="m 97,5 v 5"/>
+      <path id="upper_border_3" d="m 147,5 v 5"/>
+      <path id="upper_border_4" d="m 197,5 v 5"/>
+      <path id="upper_border_5" d="m 247,5 v 5"/>
+      <path id="upper_border_7" d="m 347,5 v 5"/>
+      <path id="upper_border_8" d="m 397,5 v 5"/>
+      <path id="upper_border_9" d="m 447,5 v 5"/>
+      <path id="upper_border_10" d="m 497,5 v 5"/>
+      <path id="upper_border_11" d="m 547,5 v 5"/>
+      <path id="right_border_1" d="m 589,60 h -5"/>
+      <path id="right_border_2" d="m 589,110 h -5"/>
+      <path id="right_border_3" d="m 589,160 h -5"/>
+      <path id="right_border_5" d="m 589,260 h -5"/>
+      <path id="right_border_6" d="m 589,310 h -5"/>
+      <path id="right_border_7" d="m 589,360 h -5"/>
+      <path id="lower_border_1" d="m 47,415 v -5"/>
+      <path id="lower_border_2" d="m 97,415 v -5"/>
+      <path id="lower_border_3" d="m 147,415 v -5"/>
+      <path id="lower_border_4" d="m 197,415 v -5"/>
+      <path id="lower_border_5" d="m 247,415 v -5"/>
+      <path id="lower_border_7" d="m 347,415 v -5"/>
+      <path id="lower_border_8" d="m 397,415 v -5"/>
+      <path id="lower_border_9" d="m 447,415 v -5"/>
+      <path id="lower_border_10" d="m 497,415 v -5"/>
+      <path id="lower_border_11" d="m 547,415 v -5"/>
+      <path id="left_border_1" d="m 15,60 h 5"/>
+      <path id="left_border_2" d="m 15,110 h 5"/>
+      <path id="left_border_3" d="m 15,160 h 5"/>
+      <path id="left_border_5" d="m 15,260 h 5"/>
+      <path id="left_border_6" d="m 15,310 h 5"/>
+      <path id="left_border_7" d="m 15,360 h 5"/>
+    </g>
+    <g id="grid_reference_markers" style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">
+      <text id="upper_marker_1" x="22" y="8.8">1</text>
+      <text id="upper_marker_2" x="72" y="8.8">2</text>
+      <text id="upper_marker_3" x="122" y="8.8">3</text>
+      <text id="upper_marker_4" x="172" y="8.8">4</text>
+      <text id="upper_marker_5" x="222" y="8.8">5</text>
+      <text id="upper_marker_6" x="272" y="8.8">6</text>
+      <text id="upper_marker_7" x="322" y="8.8">7</text>
+      <text id="upper_marker_8" x="372" y="8.8">8</text>
+      <text id="upper_marker_9" x="422" y="8.8">9</text>
+      <text id="upper_marker_10" x="472" y="8.8">10</text>
+      <text id="upper_marker_11" x="522" y="8.8">11</text>
+      <text id="upper_marker_12" x="572" y="8.8">12</text>
+      <text id="right_marker_1" x="586.5" y="36.3">A</text>
+      <text id="right_marker_2" x="586.5" y="86.3">B</text>
+      <text id="right_marker_3" x="586.5" y="136.3">C</text>
+      <text id="right_marker_4" x="586.5" y="186.3">D</text>
+      <text id="right_marker_5" x="586.5" y="236.3">E</text>
+      <text id="right_marker_6" x="586.5" y="286.3">F</text>
+      <text id="right_marker_7" x="586.5" y="336.3">G</text>
+      <text id="right_marker_8" x="586.5" y="386.3">H</text>
+      <text id="lower_marker_1" x="22" y="413.8">1</text>
+      <text id="lower_marker_2" x="72" y="413.8">2</text>
+      <text id="lower_marker_3" x="122" y="413.8">3</text>
+      <text id="lower_marker_4" x="172" y="413.8">4</text>
+      <text id="lower_marker_5" x="222" y="413.8">5</text>
+      <text id="lower_marker_6" x="272" y="413.8">6</text>
+      <text id="lower_marker_7" x="322" y="413.8">7</text>
+      <text id="lower_marker_8" x="372" y="413.8">8</text>
+      <text id="lower_marker_9" x="422" y="413.8">9</text>
+      <text id="lower_marker_10" x="472" y="413.8">10</text>
+      <text id="lower_marker_11" x="522" y="413.8">11</text>
+      <text id="lower_marker_12" x="572" y="413.8">A2</text>
+      <text id="left_marker_1" x="17.5" y="36.3">A</text>
+      <text id="left_marker_2" x="17.5" y="86.3">B</text>
+      <text id="left_marker_3" x="17.5" y="136.3">C</text>
+      <text id="left_marker_4" x="17.5" y="186.3">D</text>
+      <text id="left_marker_5" x="17.5" y="236.3">E</text>
+      <text id="left_marker_6" x="17.5" y="286.3">F</text>
+      <text id="left_marker_7" x="17.5" y="336.3">G</text>
+      <text id="left_marker_8" x="17.5" y="386.3">H</text>
+    </g>
+  </g>
+  <g id="trimming_marks" style="fill:#000000;stroke:none">
+    <path id="top_left_trimming" d="m 0,0 h 10 v 5 h -5 v 5 h -5 z" />
+    <path id="top_right_trimming" d="m 594,0 h -10 v 5 h 5 v 5 h 5 z" />
+    <path id="bottom_right_trimming" d="m 594,420 h -10 v -5 h 5 v -5 h 5 z" />
+    <path id="bottom_left_trimming" d="m 0,420 h 10 v -5 h -5 v -5 h -5 z" />
+  </g>
+</svg>

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="SheetPy"
+      Name="BomObjectPy"
+      Twin="BomObject"
+      TwinPointer="BomObject"
+      Include="Mod/Assembly/App/BomObject.h"
+      Namespace="Assembly"
+      FatherInclude="Mod/Spreadsheet/App/SheetPy.h"
+      FatherNamespace="Spreadsheet">
+    <Documentation>
+      <Author Licence="LGPL" Name="Ondsel" EMail="development@ondsel.com" />
+      <UserDocu>This class is the BOM object of assemblies, it derives from Spreadsheet::Sheet.</UserDocu>
+    </Documentation>
+
+    <CustomAttributes />
+  </PythonExport>
+</GenerateModel>

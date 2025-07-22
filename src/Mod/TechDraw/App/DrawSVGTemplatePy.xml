@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="DrawTemplatePy"
+    Name="DrawSVGTemplatePy"
+    Twin="DrawSVGTemplate"
+    TwinPointer="DrawSVGTemplate"
+    Include="Mod/TechDraw/App/DrawSVGTemplate.h"
+    Namespace="TechDraw"
+    FatherInclude="DrawTemplatePy.h"
+    FatherNamespace="TechDraw">
+    <Documentation>
+      <Author Licence="LGPL" Name="Luke Parry" EMail="l.parry@warwick.ac.uk" />
+      <UserDocu>Feature for creating and manipulating Technical Drawing SVG Templates</UserDocu>
+    </Documentation>
+    <Methode Name="getEditFieldContent">
+      <Documentation>
+        <UserDocu>getEditFieldContent(EditFieldName) - returns the content of a specific Editable Text Field</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setEditFieldContent">
+      <Documentation>
+        <UserDocu>setEditFieldContent(EditFieldName, NewContent) - sets a specific Editable Text Field to a new value</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="translateLabel">
+      <Documentation>
+        <UserDocu>translateLabel(translationContext, objectBaseName, objectUniqueName).
+         No return value.  Replace the current label with a translated version where possible.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>

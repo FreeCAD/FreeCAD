@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg id="svg4199" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" height="64" width="64" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64.000001 64.000001" xmlns:dc="http://purl.org/dc/elements/1.1/">
+ <defs id="defs4201">
+  <radialGradient id="radialGradient4373" gradientUnits="userSpaceOnUse" cy="1026.8" cx="33.81" gradientTransform="matrix(.90441 -.42666 .78339 1.6606 -802.48 -664.03)" r="11.356">
+   <stop id="stop4367" stop-color="#8ae234" offset="0"/>
+   <stop id="stop4369" stop-color="#8ae234" stop-opacity="0" offset="1"/>
+  </radialGradient>
+ </defs>
+ <metadata id="metadata4204">
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <g id="layer1" transform="translate(0 -988.36)">
+  <rect id="rect4140" style="color:#000000" fill-rule="evenodd" ry="10" height="56" width="56" y="992.36" x="4" fill="#eeeeec"/>
+  <g id="g4383" transform="translate(-.056787 -2.4616)">
+   <path id="path4317" d="m23.562 1007.7s2.5537 8.4857 4.7478 12.29c2.5316 4.3896 9.5304 11.844 9.5304 11.844" stroke="url(#radialGradient4373)" stroke-width="10" fill="none"/>
+   <g id="g4348" fill="#729fcf" transform="translate(49.333 10.148)">
+    <g id="g4350" transform="translate(-43.493 1.3512)">
+     <g id="g4352" fill="#729fcf" transform="matrix(0.5 0 0 0.5 20.237 506.39)">
+      <ellipse id="ellipse4354" rx="5.7143" transform="matrix(2.625 0 0 2.6667 -17.723 791.04)" ry="5.625" cy="88.839" cx="15.714" fill="#729fcf"/>
+     </g>
+    </g>
+    <g id="g4356" transform="matrix(.56104 0 0 -.55886 -29.446 1592)" stroke="#eeeeec" stroke-width="2.8574">
+     <g id="g4358" transform="matrix(0.5 0 0 0.5 20.237 506.39)" stroke="#eeeeec" stroke-width="5.7148" fill="#729fcf">
+      <ellipse id="ellipse4360" rx="5.7143" ry="5.625" stroke="#eeeeec" transform="matrix(2.625 0 0 2.6667 -17.723 791.04)" cy="88.839" cx="15.714" stroke-width="2.16" fill="#729fcf"/>
+     </g>
+    </g>
+   </g>
+  </g>
+  <g id="g4393" transform="translate(.40006 -.62946)" stroke="#2e3436" stroke-width="1.6" fill="none">
+   <path id="path4375" d="m13.593 1017.9s2.0583 5.1195 3.5166 7.4444c2.507 4 8.89 11.1 8.89 11.1"/>
+   <path id="path4381" d="m24 1029.4 2 7-7-3"/>
+  </g>
+ </g>
+</svg>

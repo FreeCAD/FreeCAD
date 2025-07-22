@@ -1,0 +1,49 @@
+import string
+
+row = 2
+
+def add_test(expression, expected_result):
+	global row
+	App.ActiveDocument.Spreadsheet.set('A{0}'.format(row), expression)
+	App.ActiveDocument.Spreadsheet.set('B{}'.format(row), expected_result)
+	App.ActiveDocument.Spreadsheet.set('C{}'.format(row), '=A{0} == B{0} ? <<OK>> : <<NOT OK>>'.format(row))
+	row = row + 1
+
+App.newDocument("Unnamed")
+App.setActiveDocument("Unnamed")
+App.ActiveDocument=App.getDocument("Unnamed")
+Gui.ActiveDocument=Gui.getDocument("Unnamed")
+
+App.activeDocument().addObject('Spreadsheet::Sheet','Spreadsheet')
+App.ActiveDocument.Spreadsheet.setColumnWidth('B', 159)
+App.ActiveDocument.Spreadsheet.set('A1', 'Expression')
+App.ActiveDocument.Spreadsheet.set('B1', 'Expected result')
+App.ActiveDocument.Spreadsheet.set('C1', 'Status')
+
+# Plus and minus signs
+add_test('=5 - 4', '1')
+add_test('=-5 - 4', '-9')
+add_test('=-5 - -4', '-1')
+add_test('=5 - -4', '9')
+
+add_test('=5 + 4', '9')
+add_test('=-5 + 4', '-1')
+add_test('=-5 + -4', '-9')
+add_test('=5 + -4', '1')
+
+add_test('=+5 + +4', '9')
+add_test('=-5 + +4', '-1')
+add_test('=-5 + -4', '-9')
+add_test('=+5 + -4', '1')
+
+add_test('=4*5', '20')
+add_test('=8/2', '4')
+add_test('=sqrt(4)', '2')
+add_test('=sin(0)', '0')
+add_test('=cos(0)', '1')
+
+# Exponentiation
+add_test('=(3^2 + 4^2) ^ .5', '5')
+
+App.ActiveDocument.recompute()
+Gui.ActiveDocument.setEdit(App.ActiveDocument.ActiveObject.Name)

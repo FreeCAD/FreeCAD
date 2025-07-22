@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport
+        Father="FemPostObjectPy"
+        Name="FemPostFilterPy"
+        Twin="FemPostFilter"
+        TwinPointer="FemPostFilter"
+        Include="Mod/Fem/App/FemPostFilter.h"
+        Namespace="Fem"
+        FatherInclude="Mod/Fem/App/FemPostObjectPy.h"
+        FatherNamespace="Fem">
+        <Documentation>
+            <Author Licence="LGPL" Name="Stefan Tröger" EMail="stefantroeger@gmx.net" />
+            <UserDocu>The FemPostFilter class.</UserDocu>
+        </Documentation>
+        <Methode Name="addFilterPipeline">
+            <Documentation>
+                <UserDocu>Registers a new vtk filter pipeline for data processing. Arguments are (name, source algorithm, target algorithm).</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setActiveFilterPipeline">
+            <Documentation>
+                <UserDocu>Sets the filter pipeline that shall be used for data processing. Argument is the name of the filter pipeline to activate.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getParentPostGroup">
+            <Documentation>
+                <UserDocu>Returns the postprocessing group the filter is in (e.g. a pipeline or branch object). None is returned if not in any.</UserDocu>
+            </Documentation>
+        </Methode>
+                <Methode Name="getInputData">
+            <Documentation>
+                <UserDocu>
+Returns the dataset available at the filter's input.
+Note: Can lead to a full recompute of the whole pipeline, hence best to call this only in "execute", where the user expects long calculation cycles.
+</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getInputVectorFields">
+            <Documentation>
+                <UserDocu>
+Returns the names of all vector fields available on this filter's input.
+Note: Can lead to a full recompute of the whole pipeline, hence best to call this only in "execute", where the user expects long calculation cycles.
+</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getInputScalarFields">
+            <Documentation>
+                <UserDocu>
+Returns the names of all scalar fields available on this filter's input.
+Note: Can lead to a full recompute of the whole pipeline, hence best to call this only in "execute", where the user expects long calculation cycles.
+</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getOutputAlgorithm">
+            <Documentation>
+                <UserDocu>
+Returns the filters vtk algorithm currently used as output (the one generating the Data field). Note that the output algorithm may change depending on filter settings.
+</UserDocu>
+            </Documentation>
+        </Methode>"
+    </PythonExport>
+</GenerateModel>

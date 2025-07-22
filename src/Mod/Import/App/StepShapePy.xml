@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="PyObjectBase"
+      Name="StepShapePy"
+      Twin="StepShape"
+      TwinPointer="StepShape"
+      Include="Mod/Import/App/StepShape.h"
+      FatherInclude="Base/PyObjectBase.h"
+      Namespace="Import"
+      Constructor="true"
+      Delete="true"
+      FatherNamespace="Base">
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
+		<DeveloperDocu>StepShape in a Import</DeveloperDocu>
+		<UserDocu>StepShape in Import
+This class gives a interface to retrieve TopoShapes out of an loaded STEP file of any kind.
+		</UserDocu>
+	</Documentation>
+	  <Methode Name="read">
+		  <Documentation>
+			  <UserDocu>method read()
+Read a STEP file into memory and make it accessible
+			  </UserDocu>
+		  </Documentation>
+	  </Methode>
+
+	</PythonExport>
+</GenerateModel>

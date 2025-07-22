@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   width="128"
+   height="128"
+   viewBox="0 0 128 127.99999"
+   version="1.1"
+   id="svg8">
+  <defs
+     id="defs2">
+    <linearGradient
+       gradientTransform="translate(80)"
+       gradientUnits="userSpaceOnUse"
+       y2="994.36218"
+       x2="-55"
+       y1="1044.3622"
+       x1="-45"
+       id="linearGradient3877"
+       xlink:href="#linearGradient3879" />
+    <linearGradient
+       id="linearGradient3879">
+      <stop
+         style="stop-color:#a40000;stop-opacity:1"
+         offset="0"
+         id="stop3881" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1"
+         offset="1"
+         id="stop3883" />
+    </linearGradient>
+    <linearGradient
+       y2="994.36218"
+       x2="-55"
+       y1="1044.3622"
+       x1="-45"
+       gradientTransform="translate(80)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient2499"
+       xlink:href="#linearGradient3879" />
+  </defs>
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="g2444"
+     transform="matrix(1.5625,0,0,1.5625,14,-1530.3159)">
+    <path
+       style="fill:none;stroke:#280000;stroke-width:16;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 10,998.36218 44,44.00002"
+       id="path3002" />
+    <path
+       style="fill:none;stroke:#280000;stroke-width:16;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 54,998.36218 10,1042.3622"
+       id="path3002-6" />
+    <path
+       style="fill:none;stroke:#ef2929;stroke-width:12;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 10,998.36218 44,44.00002"
+       id="path3002-7" />
+    <path
+       style="fill:none;stroke:#ef2929;stroke-width:12;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 54,998.36218 10,1042.3622"
+       id="path3002-6-5" />
+    <path
+       style="fill:none;stroke:url(#linearGradient2499);stroke-width:8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 10,998.36218 44,44.00002"
+       id="path3002-7-6" />
+    <path
+       style="fill:none;stroke:url(#linearGradient3877);stroke-width:8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 54,998.36218 10,1042.3622"
+       id="path3002-6-5-2" />
+  </g>
+</svg>

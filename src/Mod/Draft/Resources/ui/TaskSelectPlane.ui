@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>210</width>
+    <height>568</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Working plane setup</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Select 3 vertices, one or more shapes or a WP Proxy. Then confirm by clicking in the 3D view.
+Or choose one of the options below.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="buttonTop">
+     <property name="toolTip">
+      <string>Sets the working plane to the XY plane (ground plane)</string>
+     </property>
+     <property name="text">
+      <string>Top (XY)</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="buttonFront">
+     <property name="toolTip">
+      <string>Sets the working plane to the XZ plane (front plane)</string>
+     </property>
+     <property name="text">
+      <string>Front (XZ)</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="buttonSide">
+     <property name="toolTip">
+      <string>Sets the working plane to the YZ plane (side plane)</string>
+     </property>
+     <property name="text">
+      <string>Side (YZ)</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="buttonAlign">
+     <property name="toolTip">
+      <string>Sets the working plane facing the current view</string>
+     </property>
+     <property name="text">
+      <string>Align to view</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="buttonAuto">
+     <property name="toolTip">
+      <string>The working plane will align to the current
+view each time a command is started</string>
+     </property>
+     <property name="statusTip">
+      <string/>
+     </property>
+     <property name="text">
+      <string>Automatic</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Offset</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="Gui::InputField" name="fieldOffset">
+       <property name="toolTip">
+        <string>An optional offset to give to the working plane
+above its base position. Use this together with one
+of the buttons above</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="toolTip">
+        <string>If this is selected, the working plane will be
+centered on the current view when pressing one
+of the buttons above</string>
+       </property>
+       <property name="text">
+        <string>Center plane on view</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QCheckBox" name="checkCenter">
+       <property name="toolTip">
+        <string>If this is selected, the working plane will be
+centered on the current view when pressing one
+of the buttons above</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_7">
+     <property name="text">
+      <string>Or select a single vertex to move the current working plane without changing its orientation. Then press the button below.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="buttonMove">
+     <property name="toolTip">
+      <string>Moves the working plane without changing its
+orientation. If no point is selected, the plane
+will be moved to the center of the view.</string>
+     </property>
+     <property name="text">
+      <string>Move working plane</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_9">
+       <property name="toolTip">
+        <string>The color of the grid</string>
+       </property>
+       <property name="text">
+        <string>Grid color</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="Gui::ColorButton" name="buttonColor">
+       <property name="toolTip">
+        <string>The color of the grid</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="toolTip">
+        <string>The distance between grid lines</string>
+       </property>
+       <property name="text">
+        <string>Grid spacing</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="Gui::InputField" name="fieldGridSpacing">
+       <property name="toolTip">
+        <string>The distance between grid lines</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="toolTip">
+        <string>The number of squares between major grid lines</string>
+       </property>
+       <property name="text">
+        <string>Major lines every</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QSpinBox" name="fieldGridMainLine">
+       <property name="toolTip">
+        <string>The number of squares between major grid lines</string>
+       </property>
+       <property name="suffix">
+        <string> squares</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_8">
+       <property name="toolTip">
+        <string>The number of squares in the X and Y direction of the grid</string>
+       </property>
+       <property name="text">
+        <string>Grid size</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QSpinBox" name="fieldGridExtension">
+       <property name="toolTip">
+        <string>The number of squares in the X and Y direction of the grid</string>
+       </property>
+       <property name="suffix">
+        <string> squares</string>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>9999</number>
+       </property>
+      </widget>
+     </item>
+    <item row="4" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="toolTip">
+        <string>The distance at which a point can be snapped to</string>
+       </property>
+       <property name="text">
+        <string>Snapping radius</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QSpinBox" name="fieldSnapRadius">
+       <property name="toolTip">
+        <string>The distance at which a point can be snapped to</string>
+       </property>
+       <property name="suffix">
+        <string> px</string>
+       </property>
+      </widget>
+     </item>
+     </layout>
+   </item>
+   <item>
+    <widget class="QPushButton" name="buttonCenter">
+     <property name="toolTip">
+      <string>Centers the view on the current working plane</string>
+     </property>
+     <property name="text">
+      <string>Center view</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_3">
+     <item row="0" column="0">
+      <widget class="QPushButton" name="buttonPrevious">
+       <property name="toolTip">
+        <string>Resets the working plane to its previous position</string>
+       </property>
+       <property name="text">
+        <string>Previous</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="buttonNext">
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="toolTip">
+        <string>Resets the working plane to its next position</string>
+       </property>
+       <property name="text">
+        <string>Next</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::InputField</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/InputField.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="64px"
+   height="64px"
+   id="svg2860"
+   version="1.1"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2862">
+    <linearGradient
+       id="linearGradient15">
+      <stop
+         style="stop-color:#edd400;stop-opacity:1"
+         offset="0"
+         id="stop15" />
+      <stop
+         style="stop-color:#fce94f;stop-opacity:1"
+         offset="1"
+         id="stop16" />
+    </linearGradient>
+    <linearGradient
+       gradientTransform="translate(0,-4)"
+       xlink:href="#linearGradient3767"
+       id="linearGradient3773"
+       x1="22.116516"
+       y1="55.717518"
+       x2="17.328547"
+       y2="21.31134"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       id="linearGradient3767">
+      <stop
+         style="stop-color:#edd400;stop-opacity:1"
+         offset="0"
+         id="stop3769" />
+      <stop
+         style="stop-color:#fce94f;stop-opacity:1"
+         offset="1"
+         id="stop3771" />
+    </linearGradient>
+    <linearGradient
+       gradientTransform="translate(0,-4)"
+       xlink:href="#linearGradient3777"
+       id="linearGradient3783"
+       x1="53.896763"
+       y1="51.179787"
+       x2="47.502235"
+       y2="21.83742"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       id="linearGradient3777">
+      <stop
+         style="stop-color:#c4a000;stop-opacity:1"
+         offset="0"
+         id="stop3779" />
+      <stop
+         style="stop-color:#edd400;stop-opacity:1"
+         offset="1"
+         id="stop3781" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient15"
+       id="linearGradient16"
+       x1="47.292618"
+       y1="55.621109"
+       x2="26.019403"
+       y2="13.989433"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,1.0035921,-2e-7,-0.1149476)" />
+  </defs>
+  <metadata
+     id="metadata2865">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[bitacobir]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:date>2020-03-16</dc:date>
+        <dc:relation />
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier />
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title />
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <rect
+     style="fill:#fce94f;stroke:#231f0b;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     id="rect1"
+     width="52.810295"
+     height="53"
+     x="5.5948524"
+     y="5.5" />
+  <path
+     style="fill:url(#linearGradient16);stroke:#fce94f;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     id="rect15"
+     width="52.810295"
+     height="52.810299"
+     x="5.5948524"
+     y="5.5948505"
+     d="M 7.5957029,7.5080401 H 56.404297 V 56.49196 H 7.5957029 Z" />
+  <path
+     style="fill:#cc0000;stroke:#ef2929;stroke-width:2.00001;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     id="path20"
+     width="52.810299"
+     height="13.202576"
+     x="5.5948524"
+     y="5.5948505"
+     d="M 7.5957027,45.348595 H 56.404294 V 56.49196 H 7.5957027 Z" />
+  <path
+     style="fill:#cc0000;stroke:#ef2929;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     id="rect19"
+     width="52.810299"
+     height="13.202576"
+     x="5.5948524"
+     y="5.5948505"
+     d="M 7.595703,7.5080401 H 56.404298 V 18.662384 H 7.595703 Z" />
+  <path
+     style="fill:none;stroke:#231f0b;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     d="M 23.198284,5.5000002 V 58.500001"
+     id="path8" />
+  <path
+     style="fill:none;stroke:#231f0b;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     d="M 40.801716,5.4999995 V 58.5"
+     id="path12" />
+  <path
+     style="fill:none;stroke:#231f0b;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     d="M 5.5948499,32 H 58.405151"
+     id="path13" />
+  <path
+     style="fill:none;stroke:#231f0b;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     d="M 5.5948492,45.249999 H 58.40515"
+     id="path14" />
+  <path
+     style="fill:none;stroke:#231f0b;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     d="M 5.5948492,18.750001 H 58.40515"
+     id="path15" />
+  <path
+     style="fill:none;stroke:#230b0b;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     d="M 5.5948492,14.132185 H 58.40515"
+     id="path16" />
+  <path
+     style="fill:none;stroke:#230b0b;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     d="M 5.5948492,53.882183 H 58.40515"
+     id="path19" />
+  <path
+     style="fill:none;stroke:#230b0b;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     d="M 5.5948492,10.117816 H 58.40515"
+     id="path1" />
+  <path
+     style="fill:none;stroke:#230b0b;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     d="M 5.5948492,49.867814 H 58.40515"
+     id="path2" />
+</svg>

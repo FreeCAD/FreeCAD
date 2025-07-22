@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>287</width>
+    <height>945</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Style settings</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_1">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_1">
+     <item>
+      <widget class="QComboBox" name="comboPresets">
+       <property name="toolTip">
+        <string>Fill the values below from a stored style preset</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>Load preset</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="saveButton">
+       <property name="maximumSize">
+        <size>
+         <width>32</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Save the current style as a preset...</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset theme="gtk-save">
+         <normaloff>.</normaloff>.</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QTabWidget" name="tabs">
+     <widget class="QWidget" name="tab_Shape">
+      <attribute name="title">
+       <string>Shape</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QGroupBox" name="groupBox_1">
+         <property name="title">
+          <string>Shape appearance</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_1" columnstretch="1,0" columnminimumwidth="0,100">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_ShapeColor">
+            <property name="text">
+             <string>Shape color</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="Gui::ColorButton" name="ShapeColor">
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_AmbientColor">
+            <property name="text">
+             <string>Ambient shape color</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="Gui::ColorButton" name="AmbientColor">
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_EmissiveColor">
+            <property name="text">
+             <string>Emissive shape color</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="Gui::ColorButton" name="EmissiveColor">
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_SpecularColor">
+            <property name="text">
+             <string>Specular shape color</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="Gui::ColorButton" name="SpecularColor">
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_Transparency">
+            <property name="text">
+             <string>Shape transparency</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QSpinBox" name="Transparency">
+            <property name="suffix">
+             <string notr="true"> %</string>
+            </property>
+            <property name="maximum">
+             <number>100</number>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_Shininess">
+            <property name="text">
+             <string>Shape shininess</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QSpinBox" name="Shininess">
+            <property name="suffix">
+             <string notr="true"> %</string>
+            </property>
+            <property name="maximum">
+             <number>100</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>Other</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_2" columnstretch="1,0" columnminimumwidth="0,100">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_LineColor">
+            <property name="text">
+             <string>Line color</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="Gui::ColorButton" name="LineColor">
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_LineWidth">
+            <property name="text">
+             <string>Line width</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="LineWidth">
+            <property name="suffix">
+             <string> px</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_PointColor">
+            <property name="text">
+             <string>Point color</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="Gui::ColorButton" name="PointColor">
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_PointSize">
+            <property name="text">
+             <string>Point size</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QSpinBox" name="PointSize">
+            <property name="suffix">
+             <string> px</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_DrawStyle">
+            <property name="text">
+             <string>Draw style</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QComboBox" name="DrawStyle">
+            <item>
+             <property name="text">
+              <string>Solid</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Dashed</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Dotted</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>DashDot</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_DisplayMode">
+            <property name="text">
+             <string>Display mode</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QComboBox" name="DisplayMode">
+            <item>
+             <property name="text">
+              <string>Flat Lines</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Shaded</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Wireframe</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Points</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_1">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_Annotation">
+      <attribute name="title">
+       <string>Annotation</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="title">
+          <string>Annotations</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,0" columnminimumwidth="0,100">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_ScaleMultiplier">
+            <property name="text">
+             <string>Scale multiplier</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QDoubleSpinBox" name="ScaleMultiplier">
+            <property name="toolTip">
+             <string>The annotation scale multiplier is the inverse of the scale set in the
+Annotation scale widget. If the scale is 1:100 the multiplier is 100.</string>
+            </property>
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>10000</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_4">
+         <property name="title">
+          <string>Texts</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_4" columnstretch="1,0" columnminimumwidth="0,100">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_TextFont">
+            <property name="text">
+             <string>Font name</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QFontComboBox" name="TextFont">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>The font for texts, dimensions and labels</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_TextSize">
+            <property name="text">
+             <string>Font size</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="Gui::InputField" name="TextSize">
+            <property name="toolTip">
+             <string>The height for texts, dimension texts and label texts</string>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_LineSpacing">
+            <property name="text">
+             <string>Line spacing factor</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QDoubleSpinBox" name="LineSpacing">
+            <property name="toolTip">
+             <string>The line spacing for multi-line texts and labels (relative to the font size)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_TextColor">
+            <property name="text">
+             <string>Text color</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="Gui::ColorButton" name="TextColor">
+            <property name="toolTip">
+             <string>The color for texts, dimension texts and label texts</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_5">
+         <property name="title">
+          <string>Lines and arrows</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_5" columnstretch="1,0" columnminimumwidth="0,100">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_AnnoLineWidth">
+            <property name="text">
+             <string>Line width</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="AnnoLineWidth">
+            <property name="suffix">
+             <string> px</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_ArrowStyle">
+            <property name="text">
+             <string>Arrow type</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="ArrowStyle">
+            <item>
+             <property name="text">
+              <string>Dot</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Circle</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Arrow</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Tick</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Tick-2</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_ArrowSize">
+            <property name="text">
+             <string>Arrow size</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="Gui::InputField" name="ArrowSize">
+            <property name="unit" stdset="0">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_AnnoLineColor">
+            <property name="text">
+             <string>Line and arrow color</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="Gui::ColorButton" name="AnnoLineColor">
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_6">
+         <property name="title">
+          <string>Dimensions</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_6" columnstretch="1,0" columnminimumwidth="0,100">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_ShowUnit">
+            <property name="text">
+             <string>Show unit</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QCheckBox" name="ShowUnit">
+            <property name="toolTip">
+             <string>If checked, a unit symbol is added to dimension texts</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_UnitOverride">
+            <property name="text">
+             <string>Unit override</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="UnitOverride">
+            <property name="toolTip">
+             <string>The unit override for dimensions. Leave blank to use the current FreeCAD unit.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_DimOvershoot">
+            <property name="text">
+             <string>Dim line overshoot</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="Gui::InputField" name="DimOvershoot">
+            <property name="toolTip">
+             <string>The distance the dimension line is extended past the extension lines</string>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_ExtLines">
+            <property name="text">
+             <string>Ext line length</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="Gui::InputField" name="ExtLines">
+            <property name="toolTip">
+             <string>The length of extension lines. Use 0 for full extension lines. A negative value
+defines the gap between the ends of the extension lines and the measured points.
+A positive value defines the maximum length of the extension lines. Only used
+for linear dimensions.</string>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_ExtOvershoot">
+            <property name="text">
+             <string>Ext line overshoot</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="Gui::InputField" name="ExtOvershoot">
+            <property name="toolTip">
+             <string>The length of extension lines above the dimension line</string>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_TextSpacing">
+            <property name="text">
+             <string>Text spacing</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="Gui::InputField" name="TextSpacing">
+            <property name="toolTip">
+             <string>The space between the dimension line and the dimension text</string>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QPushButton" name="applyButton">
+       <property name="toolTip">
+        <string>Apply the above style to selected object(s)</string>
+       </property>
+       <property name="text">
+        <string>Selected</string>
+       </property>
+       <property name="icon">
+        <iconset theme="gtk-apply">
+         <normaloff>.</normaloff>.</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="annotButton">
+       <property name="toolTip">
+        <string>Apply the above style to all annotations (texts, dimensions and labels)</string>
+       </property>
+       <property name="text">
+        <string>Annotations</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::InputField</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/InputField.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

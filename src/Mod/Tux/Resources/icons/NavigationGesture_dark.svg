@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg id="svg2" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" height="64" viewBox="0 0 64 64" width="64" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+ <metadata id="metadata7">
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <g id="layer1" transform="translate(0 -988.36)">
+  <ellipse id="ellipse8166" rx="12" ry="12" transform="rotate(74.789)" cy="214.74" cx="980.37" fill="#2e3436"/>
+  <path id="path4268" style="color:#000000" d="m28.48 1042.5a17.03 17.03 0 0 1 -12.042 -4.988 17.03 17.03 0 0 1 -4.988 -12.042" stroke-width="0" fill="none"/>
+  <g fill="#2e3436">
+   <ellipse id="circle4270" rx="12" transform="rotate(74.789)" ry="12" cy="258.93" cx="1005.7"/>
+   <path id="path8184" style="color-rendering:auto;text-decoration-color:#000000;color:#000000;font-variant-numeric:normal;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;font-variant-position:normal;mix-blend-mode:normal;block-progression:tb;font-feature-settings:normal;shape-padding:0;font-variant-alternates:normal;text-indent:0;font-variant-caps:normal;image-rendering:auto;white-space:normal;text-decoration-style:solid;font-variant-ligatures:none;isolation:auto;text-transform:none" d="m31.98 2.0273v0.002c-7.595 0.005-15.19 2.8617-21 8.5667a5.0005 5.0005 0 1 0 7.006 7.134c5.495-5.395 13.24-6.984 20.076-4.796a12 12 74.789 0 1 5.09 -8.7738c-3.575-1.4233-7.374-2.1354-11.172-2.1329z" fill-opacity=".62745" transform="translate(0 988.36)"/>
+   <path id="circle8192" style="color-rendering:auto;text-decoration-color:#000000;color:#000000;font-variant-numeric:normal;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;font-variant-position:normal;mix-blend-mode:normal;block-progression:tb;font-feature-settings:normal;shape-padding:0;font-variant-alternates:normal;text-indent:0;font-variant-caps:normal;image-rendering:auto;white-space:normal;text-decoration-style:solid;font-variant-ligatures:none;isolation:auto;text-transform:none" d="m49.529 44.699a5.0005 5.0005 0 0 0 -3.443 1.5c-5.495 5.451-13.279 7.064-20.148 4.865a12 12 74.789 0 1 -5.088 8.774c10.777 4.287 23.568 2.101 32.279-6.541a5.0005 5.0005 0 0 0 -3.6 -8.598z" fill-opacity=".62745" transform="translate(0 988.36)"/>
+  </g>
+ </g>
+</svg>

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="DrawTemplatePy"
+    Name="DrawParametricTemplatePy"
+    Twin="DrawParametricTemplate"
+    TwinPointer="DrawParametricTemplate"
+    Include="Mod/TechDraw/App/DrawParametricTemplate.h"
+    Namespace="TechDraw"
+    FatherInclude="DrawTemplatePy.h"
+    FatherNamespace="TechDraw">
+    <Documentation>
+      <Author Licence="LGPL" Name="Luke Parry" EMail="l.parry@warwick.ac.uk" />
+      <UserDocu>Feature for creating and manipulating Technical Drawing Templates</UserDocu>
+    </Documentation>
+     <Methode Name="drawLine">
+      <Documentation>
+        <UserDocu>Draw a line</UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="GeometryCount" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Number of geometry in template</UserDocu>
+      </Documentation>
+      <Parameter Name="GeometryCount" Type="Long"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

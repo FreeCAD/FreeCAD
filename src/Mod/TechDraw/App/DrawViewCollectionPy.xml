@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="DrawViewPy"
+    Name="DrawViewCollectionPy"
+    Twin="DrawViewCollection"
+    TwinPointer="DrawViewCollection"
+    Include="Mod/TechDraw/App/DrawViewCollection.h"
+    Namespace="TechDraw"
+    FatherInclude="Mod/TechDraw/App/DrawViewPy.h"
+    FatherNamespace="TechDraw">
+    <Documentation>
+      <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
+      <UserDocu>Feature for creating and manipulating Technical Drawing View Collections</UserDocu>
+    </Documentation>
+    <Methode Name="addView">
+      <Documentation>
+        <UserDocu>addView(DrawView object) - Add a new View to this Group. Returns count of views.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeView">
+      <Documentation>
+        <UserDocu>removeView(DrawView object) - Remove specified Viewfrom this Group. Returns count of views in Group.</UserDocu>
+      </Documentation>
+    </Methode>
+    <CustomAttributes />
+  </PythonExport>
+</GenerateModel>

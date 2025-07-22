@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64.000001 64.000001" version="1.1" id="svg2" height="64" width="64">
+  <defs id="defs4">
+    <clipPath id="clip1">
+      <path d="M 12.539062 12.5 L 13 12.5 L 13 13 L 12.539062 13 Z M 12.539062 12.5 " id="path8169" />
+    </clipPath>
+    <clipPath id="clip2">
+      <path d="M 12.539062 12.5 L 298 12.5 L 298 298 L 12.539062 298 Z M 12.539062 12.5 " id="path8172" />
+    </clipPath>
+    <clipPath id="clip3">
+      <path d="M 12.539062 154 L 441 154 L 441 582.5 L 12.539062 582.5 Z M 12.539062 154 " id="path8175" />
+    </clipPath>
+    <clipPath id="clip4">
+      <path d="M 582 12.5 L 583 12.5 L 583 13 L 582 13 Z M 582 12.5 " id="path8178" />
+    </clipPath>
+    <clipPath id="clip5">
+      <path d="M 581 12.5 L 584 12.5 L 584 14 L 581 14 Z M 581 12.5 " id="path8181" />
+    </clipPath>
+    <clipPath id="clip6">
+      <path d="M 582 12.5 L 583 12.5 L 583 13 L 582 13 Z M 582 12.5 " id="path8184" />
+    </clipPath>
+    <clipPath id="clip7">
+      <path d="M 581 12.5 L 584 12.5 L 584 14 L 581 14 Z M 581 12.5 " id="path8187" />
+    </clipPath>
+    <clipPath id="clip8">
+      <path d="M 582 12.5 L 583 12.5 L 583 13 L 582 13 Z M 582 12.5 " id="path8190" />
+    </clipPath>
+    <clipPath id="clip9">
+      <path d="M 581 12.5 L 584 12.5 L 584 14 L 581 14 Z M 581 12.5 " id="path8193" />
+    </clipPath>
+    <clipPath id="clip10">
+      <path d="M 582 12.5 L 583 12.5 L 583 13 L 582 13 Z M 582 12.5 " id="path8196" />
+    </clipPath>
+    <clipPath id="clip11">
+      <path d="M 581 12.5 L 584 12.5 L 584 14 L 581 14 Z M 581 12.5 " id="path8199" />
+    </clipPath>
+    <clipPath id="clip12">
+      <path d="M 582 12.5 L 583 12.5 L 583 13 L 582 13 Z M 582 12.5 " id="path8202" />
+    </clipPath>
+    <clipPath id="clip13">
+      <path d="M 581 12.5 L 584 12.5 L 584 14 L 581 14 Z M 581 12.5 " id="path8205" />
+    </clipPath>
+    <clipPath id="clip14">
+      <path d="M 582 12.5 L 583 12.5 L 583 13 L 582 13 Z M 582 12.5 " id="path8208" />
+    </clipPath>
+    <clipPath id="clip15">
+      <path d="M 297 439 L 441 439 L 441 582.5 L 297 582.5 Z M 297 439 " id="path8211" />
+    </clipPath>
+    <clipPath id="clip16">
+      <path d="M 582 582 L 583 582 L 583 582.5 L 582 582.5 Z M 582 582 " id="path8214" />
+    </clipPath>
+    <clipPath id="clip17">
+      <path d="M 581 581 L 584 581 L 584 582.5 L 581 582.5 Z M 581 581 " id="path8217" />
+    </clipPath>
+    <clipPath id="clip18">
+      <path d="M 582 582 L 583 582 L 583 582.5 L 582 582.5 Z M 582 582 " id="path8220" />
+    </clipPath>
+    <clipPath id="clip19">
+      <path d="M 581 581 L 584 581 L 584 582.5 L 581 582.5 Z M 581 581 " id="path8223" />
+    </clipPath>
+    <clipPath id="clip20">
+      <path d="M 582 582 L 583 582 L 583 582.5 L 582 582.5 Z M 582 582 " id="path8226" />
+    </clipPath>
+    <clipPath id="clip21">
+      <path d="M 581 581 L 584 581 L 584 582.5 L 581 582.5 Z M 581 581 " id="path8229" />
+    </clipPath>
+    <clipPath id="clip22">
+      <path d="M 582 582 L 583 582 L 583 582.5 L 582 582.5 Z M 582 582 " id="path8232" />
+    </clipPath>
+    <clipPath id="clip23">
+      <path d="M 581 581 L 584 581 L 584 582.5 L 581 582.5 Z M 581 581 " id="path8235" />
+    </clipPath>
+    <clipPath id="clip24">
+      <path d="M 582 582 L 583 582 L 583 582.5 L 582 582.5 Z M 582 582 " id="path8238" />
+    </clipPath>
+    <clipPath id="clip25">
+      <path d="M 297 582 L 298 582 L 298 582.5 L 297 582.5 Z M 297 582 " id="path8241" />
+    </clipPath>
+    <clipPath id="clip26">
+      <path d="M 296 581 L 299 581 L 299 582.5 L 296 582.5 Z M 296 581 " id="path8244" />
+    </clipPath>
+    <clipPath id="clip27">
+      <path d="M 297 582 L 298 582 L 298 582.5 L 297 582.5 Z M 297 582 " id="path8247" />
+    </clipPath>
+    <clipPath id="clip28">
+      <path d="M 296 581 L 299 581 L 299 582.5 L 296 582.5 Z M 296 581 " id="path8250" />
+    </clipPath>
+    <clipPath id="clip29">
+      <path d="M 297 582 L 298 582 L 298 582.5 L 297 582.5 Z M 297 582 " id="path8253" />
+    </clipPath>
+    <clipPath id="clip30">
+      <path d="M 296 581 L 299 581 L 299 582.5 L 296 582.5 Z M 296 581 " id="path8256" />
+    </clipPath>
+    <clipPath id="clip31">
+      <path d="M 297 582 L 298 582 L 298 582.5 L 297 582.5 Z M 297 582 " id="path8259" />
+    </clipPath>
+    <clipPath id="clip32">
+      <path d="M 296 581 L 299 581 L 299 582.5 L 296 582.5 Z M 296 581 " id="path8262" />
+    </clipPath>
+    <clipPath id="clip33">
+      <path d="M 297 582 L 298 582 L 298 582.5 L 297 582.5 Z M 297 582 " id="path8265" />
+    </clipPath>
+    <clipPath id="clip34">
+      <path d="M 296 581 L 299 581 L 299 582.5 L 296 582.5 Z M 296 581 " id="path8268" />
+    </clipPath>
+    <clipPath id="clip35">
+      <path d="M 297 582 L 298 582 L 298 582.5 L 297 582.5 Z M 297 582 " id="path8271" />
+    </clipPath>
+    <clipPath id="clip36">
+      <path d="M 12.539062 297 L 156 297 L 156 441 L 12.539062 441 Z M 12.539062 297 " id="path8274" />
+    </clipPath>
+    <clipPath id="clip37">
+      <path d="M 297 297 L 583 297 L 583 582.5 L 297 582.5 Z M 297 297 " id="path8277" />
+    </clipPath>
+    <clipPath id="clip38">
+      <path d="M 12.539062 12.5 L 156 12.5 L 156 156 L 12.539062 156 Z M 12.539062 12.5 " id="path8280" />
+    </clipPath>
+    <clipPath id="clip39">
+      <path d="M 297 12.5 L 583 12.5 L 583 298 L 297 298 Z M 297 12.5 " id="path8283" />
+    </clipPath>
+    <clipPath id="clip40">
+      <path d="M 12.539062 12.5 L 583 12.5 L 583 582.5 L 12.539062 582.5 Z M 12.539062 12.5 " id="path8286" />
+    </clipPath>
+    <clipPath id="clip41">
+      <path d="M 12.539062 12.5 L 13 12.5 L 13 582.5 L 12.539062 582.5 Z M 12.539062 12.5 " id="path8289" />
+    </clipPath>
+  </defs>
+  <metadata id="metadata7">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Pablo Gil</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>SVG</rdf:li>
+            <rdf:li>template</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g transform="translate(-240.06625,-450.59799)" id="layer1">
+    <path id="path8652" d="m 240.06625,450.59799 16,16" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path id="path8654" d="m 240.06625,482.59799 32,-32 16,16 -32,32 z" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path id="path8656" d="m 304.06625,482.59799 -16,-16" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path id="path8658" d="m 304.06625,514.59799 -32,-32" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path id="path8660" d="m 288.06625,498.59799 -16,16" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path id="path8662" d="m 240.06625,514.59799 16,-16" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+  </g>
+</svg>

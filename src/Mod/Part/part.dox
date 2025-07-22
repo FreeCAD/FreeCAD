@@ -1,0 +1,8 @@
+/** \defgroup PART Part
+ *  \ingroup CWORKBENCHES
+ *  \brief Main anchor point with OpenCasCade functionality, base geometry tools
+
+See \ref src/Mod/Draft/draft.dox as an example of how to populate this page
+
+*/
+

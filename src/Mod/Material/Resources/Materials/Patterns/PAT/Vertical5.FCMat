@@ -1,0 +1,16 @@
+﻿---
+# File created by FreeCAD 0.22.0 Revision: 35279 +19 (Git)
+General:
+  UUID: "eaa335a5-3bee-4da7-9e26-0ebbdac2e182"
+  Name: "Vertical5"
+  Author: "David Carter"
+  License: "All rights reserved"
+AppearanceModels:
+  PAT:
+    UUID: "0326c759-4e3d-46ca-bb7d-146ebebea65e"
+    Hatch Color: "(0,0,0,1)"
+    Hatch Pattern: |2
+      *Vertical5, vertical lines, Solid, 5.0 separation
+      90,0,0,0,5.0
+    Hatch Scale: "1"
+    Hatch Weight: "1"

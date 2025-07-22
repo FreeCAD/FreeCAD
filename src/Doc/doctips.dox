@@ -1,0 +1,44 @@
+/** \page doctips Documenting FreeCAD's code
+
+Below are a few remarks and notes about Doxygen usage for FreeCAD,
+gathered after examining and removing most of the warnings emitted
+by Doxygen.  For information on (re)building the source docs, see
+\ref makingdocs
+
+- Pay attention to warnings emitted by doxygen when building the doc.
+  The item giving rise to the warning will be skipped and will not be
+  documented !
+
+- Most of the problems you can run in are documented in the Troubleshooting
+  page of doxygen documentation.
+
+- As a general rule, doxygen parser tries to identify unique names in the
+  whole project. In particular, if the same identifier is found in several 
+  namespaces, you'll have to use full qualified names (with  
+  namespace_name:: prepended) to suppress warnings, in the code or with a 
+  header to the comment block. (see the various Workbenches classes as an 
+  example)
+
+- The parser tries to match declarations an definitions. You'll sometimes
+  need to help a bit.
+
+- Albeit quite powerful, doxygen is not yet really clever with nested
+  namespaces. Again you'll need to use fully qualified names.
+
+- The parsing is done on a file by file basis, and is not very happy with .inl files containing inline functions definitions, meant to be included from a header file inside a namespace block. 
+Fix: take the include directive out of the namespace block in .h or .hpp file and put the whole .inl content in a namespace block.
+
+- Watch out for macros:
+   - Qualifiers like __dllexport or AppExport must be put in the PREDEFINED section of src/Doc/BuildDevDoc.cfg.in to be replaced by an empty string. It otherwise hinders doxygen names resolution.
+   - Macros which need to be defined for correct code coverage should also be listed in the PREDEFINED section, without the = sign (will be expanded as = 1)
+   - Function macros and macros which must be expanded should be listed in the EXPAND_AS_DEFINED section of src/Doc/BuildDevDoc.cfg.in
+   - Doxygen seems sensitive to the order of directories in input list,
+regarding macro definitions which must appear before they are used.
+
+- Templates specializations are not really well documented for now and generate warnings. Better skip the specialized redefinitions enclosing them in a /// \@cond DOXERR /// \@endcond block.
+
+- JAVADOC_AUTOBRIEF is enabled, so more brief comments are generated, with or without explicit \\brief tag.
+
+\date 2010
+\author Pascal Moucheront (midgetfc at free dot fr)
+*/

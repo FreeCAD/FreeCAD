@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+<!-- https://tamirov.ru edited -->
+<title>Допуск полного радиального биения. Total runout – tech drawing chars (FreeCAD) https://freecad-gost.ru</title>
+<defs>
+ <marker id="arrow" viewBox="0 0 10 6" refX="5" refY="3" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+  <path d="M 0 0 L 10 3 L 0 6 z" />
+ </marker>
+</defs>
+<polyline points="30,30 5,60 35,60 60,30" fill="none" stroke="#000" stroke-width="2" stroke-linejoin="round" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+</svg>

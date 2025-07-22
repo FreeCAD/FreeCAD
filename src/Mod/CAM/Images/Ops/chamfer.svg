@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   id="svg8"
+   version="1.1"
+   viewBox="0 0 79.2398 73.751632"
+   height="73.751633mm"
+   width="79.239799mm">
+  <defs
+     id="defs2">
+    <linearGradient
+       id="linearGradient2319">
+      <stop
+         id="stop2315"
+         offset="0"
+         style="stop-color:#000000;stop-opacity:1;" />
+      <stop
+         id="stop2317"
+         offset="1"
+         style="stop-color:#000000;stop-opacity:0;" />
+    </linearGradient>
+    <radialGradient
+       r="35.06625"
+       fy="155.52975"
+       fx="110"
+       cy="155.52975"
+       cx="110"
+       gradientTransform="matrix(-0.60520109,0.28928568,-0.52994357,-1.1359633,196.36433,315.3263)"
+       gradientUnits="userSpaceOnUse"
+       id="radialGradient2323"
+       xlink:href="#linearGradient2319" />
+  </defs>
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-12,-126.31502)"
+     id="layer1">
+    <path
+       id="path817"
+       d="m 56.21278,139.4424 v 18.49819 H 43.833202 l 17.685112,17.90148 h 7.074045 L 86.277471,157.94059 H 74.487396 v -26.85221 c -7.074044,10.14417 -13.558586,1.19343 -18.274616,8.35402 z"
+       style="fill:none;fill-opacity:0.1372549;stroke:#c8c8c8;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       id="path2475"
+       d="M 43.833202,157.94059 H 86.277471 L 68.592359,175.84207 H 61.518314 Z"
+       style="fill:#c8c8c8;fill-opacity:1;stroke:#c8c8c8;stroke-width:4.14631748;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       id="path819"
+       d="m 12,163.90775 h 35.370224 l 10.105779,9.35885 v 26.80005"
+       style="fill:url(#radialGradient2323);fill-opacity:1;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       id="path2327"
+       d="M 47.370224,163.90775 V 142.65324"
+       style="fill:none;stroke:#000000;stroke-width:0.99999994;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <path
+       id="path2329"
+       d="M 57.897077,173.2666 V 142.65324"
+       style="fill:none;stroke:#000000;stroke-width:0.99999994;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <path
+       id="path2331"
+       d="M 36.422297,147.02658 H 70.5293"
+       style="fill:none;stroke:#000000;stroke-width:0.99999994;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <path
+       id="path2333"
+       d="M 57.476003,173.2666 H 82.740449"
+       style="fill:none;stroke:#000000;stroke-width:0.99999994;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <path
+       id="path2335"
+       d="m 78.529708,164.51993 v 21.86669"
+       style="fill:none;stroke:#000000;stroke-width:0.99999994;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <path
+       id="path2337"
+       d="m 43.159483,145.71458 3.789667,1.312 -3.789667,1.312 z"
+       style="fill:#000000;fill-opacity:0.98746081;stroke:#000000;stroke-width:1.38210571;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       id="path2337-8"
+       d="m 62.528892,148.33858 -3.789667,-1.312 3.789667,-1.312 z"
+       style="fill:#000000;fill-opacity:0.98746081;stroke:#000000;stroke-width:1.38210571;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       id="path2337-8-9"
+       d="m 79.727036,168.85904 -1.179007,3.58029 -1.179008,-3.58029 z"
+       style="fill:#000000;fill-opacity:0.98746081;stroke:#000000;stroke-width:1.38210571;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       id="path2337-8-9-6"
+       d="m 79.727036,181.10439 -1.179007,-3.5803 -1.179008,3.5803 z"
+       style="fill:#000000;fill-opacity:0.98746081;stroke:#000000;stroke-width:1.38210571;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       id="path2333-6"
+       d="m 65.055337,176.76528 17.685112,-1e-5"
+       style="fill:none;stroke:#000000;stroke-width:0.99999994;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <path
+       id="path2412"
+       d="m 65.055337,128.1048 v 56.68801"
+       style="fill:none;stroke:#000000;stroke-width:0.99999994;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:8.00000007, 2.00000002, 1.00000001, 2.00000002;stroke-dashoffset:0;stroke-opacity:1" />
+    <text
+       transform="scale(0.9939385,1.0060985)"
+       id="text2446"
+       y="150.24792"
+       x="20.17198"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.98725796px;line-height:1.25;font-family:'URW Bookman L';-inkscape-font-specification:'URW Bookman L, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.36568213"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.98725796px;font-family:'URW Bookman L';-inkscape-font-specification:'URW Bookman L, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.36568213"
+         y="150.24792"
+         x="20.17198"
+         id="tspan2444">W</tspan></text>
+    <text
+       transform="scale(0.9939385,1.0060985)"
+       id="text2473"
+       y="197.62198"
+       x="73.103851"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.98725796px;line-height:1.25;font-family:'URW Bookman L';-inkscape-font-specification:'URW Bookman L, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.36568213"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.98725796px;font-family:'URW Bookman L';-inkscape-font-specification:'URW Bookman L, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.36568213"
+         y="197.62198"
+         x="73.103851"
+         id="tspan2471">h</tspan></text>
+  </g>
+</svg>

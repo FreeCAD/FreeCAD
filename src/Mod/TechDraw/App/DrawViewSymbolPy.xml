@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="DrawViewPy"
+    Name="DrawViewSymbolPy"
+    Twin="DrawViewSymbol"
+    TwinPointer="DrawViewSymbol"
+    Include="Mod/TechDraw/App/DrawViewSymbol.h"
+    Namespace="TechDraw"
+    FatherInclude="Mod/TechDraw/App/DrawViewPy.h"
+    FatherNamespace="TechDraw">
+    <Documentation>
+      <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
+      <UserDocu>Feature for creating and manipulating Drawing SVG Symbol Views</UserDocu>
+    </Documentation>
+    <Methode Name="dumpSymbol">
+      <Documentation>
+        <UserDocu>dumpSymbol(fileSpec) - dump the contents of Symbol to a file</UserDocu>
+      </Documentation>
+    </Methode>
+    <CustomAttributes />
+  </PythonExport>
+</GenerateModel>

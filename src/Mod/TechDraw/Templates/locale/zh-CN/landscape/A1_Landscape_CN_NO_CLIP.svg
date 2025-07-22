@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="841mm" height="594mm" version="1.1" viewBox="0 0 841 594" xmlns="http://www.w3.org/2000/svg" xmlns:freecad="https://www.freecad.org/wiki/index.php?title=Svg_Namespace">
+ <g id="orientation-border" fill="none" stroke="#000" stroke-linecap="miter" stroke-width=".35">
+  <path d="m16 16h809"/>
+  <!-- Top outside border -->
+  <path d="m16 16v562"/>
+  <!-- Left outside border -->
+  <path d="m825 16v562"/>
+  <!-- Right outside border -->
+  <path d="m16 578h337.32"/>
+  <path d="m487.67 578h337.32"/>
+  <!-- orientation separators top -->
+  <path d="m83.417 16v4"/>
+  <!-- space 67.4166666 -->
+  <path d="m150.83 16v4"/>
+  <path d="m218.25 16v4"/>
+  <path d="m285.67 16v4"/>
+  <path d="m353.08 16v4"/>
+  <path d="m420.5 16v4"/>
+  <!-- center mark place -->
+  <path d="m487.92 16v4"/>
+  <path d="m555.33 16v4"/>
+  <path d="m622.75 16v4"/>
+  <path d="m690.17 16v4"/>
+  <path d="m757.58 16v4"/>
+  <!-- orientation separators left -->
+  <!-- space 56.2 -->
+  <path d="m16 72.2h4"/>
+  <path d="m16 128.4h4"/>
+  <path d="m16 184.6h4"/>
+  <path d="m16 240.8h4"/>
+  <path d="m16 297h4"/>
+  <!-- center mark place -->
+  <path d="m16 353.2h4"/>
+  <path d="m16 409.4h4"/>
+  <path d="m16 465.6h4"/>
+  <path d="m16 521.8h4"/>
+  <!-- orientation separators right -->
+  <path d="m821 72.2h4"/>
+  <path d="m821 128.4h4"/>
+  <path d="m821 184.6h4"/>
+  <path d="m821 240.8h4"/>
+  <path d="m821 297h4"/>
+  <!-- center mark place -->
+  <path d="m821 353.2h4"/>
+  <path d="m821 409.4h4"/>
+  <path d="m821 465.6h4"/>
+  <path d="m821 521.8h4"/>
+  <!-- orientation separators bottom -->
+  <path d="m83.417 574v4"/>
+  <!-- space 67.4166666 -->
+  <path d="m150.83 574v4"/>
+  <path d="m218.25 574v4"/>
+  <path d="m285.67 574v4"/>
+  <path d="m353.08 574v4"/>
+  <path d="m487.92 574v4"/>
+  <path d="m555.33 574v4"/>
+  <path d="m622.75 574v4"/>
+  <path d="m690.17 574v4"/>
+  <path d="m757.58 574v4"/>
+ </g>
+ <g id="orientation-text" font-family="tahoma" font-size="3.5" xml:space="preserve">
+    
+  <!-- orientation char top -->
+    <text x="47.20" y="19">1</text>
+    <text x="111.6" y="19">2</text>
+    <text x="179.6" y="19">3</text>
+    <text x="248.02" y="19">4</text>
+    <text x="316.44" y="19">5</text>
+    <text x="384.86" y="19">6</text>
+    <text x="453.28" y="19">7</text>
+    <text x="521.7" y="19">8</text>
+    <text x="588.12" y="19">9</text>
+    <text x="655.54" y="19">10</text>
+    <text x="722.96" y="19">11</text>
+    <text x="791.38" y="19">12</text>
+    
+  <!-- orientation char Left -->
+    <text x="17" y="44.1">A</text>
+    <text x="17" y="100.3">B</text>
+    <text x="17" y="156.5">C</text>
+    <text x="17" y="212.7">D</text>
+    <text x="17" y="268.9">E</text>
+    <text x="17" y="325.1">F</text>
+    <text x="17" y="381.3">G</text>
+    <text x="17" y="437.5">H</text>
+    <text x="17" y="493.7">I</text>
+    <text x="17" y="549.9">J</text>
+    
+  <!-- orientation char Right -->
+    <text x="822" y="44.1">A</text>
+    <text x="822" y="100.3">B</text>
+    <text x="822" y="156.5">C</text>
+    <text x="822" y="212.7">D</text>
+    <text x="822" y="268.9">E</text>
+    <text x="822" y="325.1">F</text>
+    <text x="822" y="381.3">G</text>
+    <text x="822" y="437.5">H</text>
+    <text x="822" y="493.7">I</text>
+    <text x="822" y="549.9">J</text>
+
+    
+  <!-- orientation char bottom -->
+    <text x="47.20" y="577.5">1</text>
+    <text x="111.6" y="577.5">2</text>
+    <text x="179.6" y="577.5">3</text>
+    <text x="248.02" y="577.5">4</text>
+    <text x="316.44" y="577.5">5</text>
+    <text x="521.7" y="577.5">8</text>
+    <text x="588.12" y="577.5">9</text>
+    <text x="655.54" y="577.5">10</text>
+    <text x="722.96" y="577.5">11</text>
+    <text x="791.38" y="577.5">12</text>
+
+  </g>
+ <g id="drawing-border" fill="none" stroke="#000" stroke-linecap="miter" stroke-width=".7">
+  <rect x="20" y="20" width="801" height="554"/>
+ </g>
+ <g id="titleblock-structure" fill="none" stroke="#000" stroke-linecap="miter" stroke-width=".7">
+  <rect x="641" y="518" width="180" height="56"/>
+  <path d="m641 525h80"/>
+  <!-- left up 1st horizon line  Titleblock -->
+  <path d="m641 532h80"/>
+  <!-- left up 2nd horizon line  Titleblock -->
+  <path d="m641 539h80"/>
+  <!-- left up 3rd horizon line  Titleblock -->
+  <path d="m641 546h130"/>
+  <!-- left up 4th horizon line  Titleblock -->
+  <path d="m641 553h80"/>
+  <!-- left up 5th horizon line  Titleblock -->
+  <path d="m641 560h80"/>
+  <!-- left up 6th horizon line  Titleblock -->
+  <path d="m641 567h80"/>
+  <!-- left up 7th horizon line  Titleblock -->
+  <path d="m651 518v28"/>
+  <!-- left up 1st vertical line  Titleblock -->
+  <path d="m661 518v28"/>
+  <!-- left up 2nd vertical line  Titleblock -->
+  <path d="m677 518v28"/>
+  <!-- left up 3th vertical line  Titleblock -->
+  <path d="m693 518v56"/>
+  <!-- left up 4th vertical line  Titleblock -->
+  <path d="m705 518v56"/>
+  <!-- left up 5th vertical line  Titleblock -->
+  <path d="m721 518v56"/>
+  <!-- left up 6th vertical line  Titleblock -->
+  <path d="m771 518v56"/>
+  <!-- left up 7th vertical line  Titleblock -->
+  <path d="m653 546v28"/>
+  <!-- left down 1st vertical line  Titleblock -->
+  <path d="m665 546v28"/>
+  <!-- left down 2nd vertical line  Titleblock -->
+  <path d="m681 546v28"/>
+  <!-- left down 3rd vertical line  Titleblock -->
+  <path d="m721 556h50"/>
+  <!-- middle up 2nd horizon line  Titleblock -->
+  <path d="m721 565h50"/>
+  <!-- middle up 3rd horizon line  Titleblock -->
+  <path d="m771 533h50"/>
+  <!-- right up 1st horizon line  Titleblock -->
+  <path d="m771 554h50"/>
+  <!-- right up 2nd horizon line  Titleblock -->
+  <path d="m727.5 556v9"/>
+  <!-- middle down 1st vertical line  Titleblock -->
+  <path d="m734 556v9"/>
+  <!-- middle down 2nd vertical line  Titleblock -->
+  <path d="m740.5 556v9"/>
+  <!-- middle down 3rd vertical line  Titleblock -->
+  <path d="m747 546v19"/>
+  <!-- middle down 4th vertical line  Titleblock -->
+  <path d="m759 546v19"/>
+  <!-- middle down 5th vertical line  Titleblock -->
+ </g>
+ <g id="titleblock-text-non-editable" font-family="HYSWLongFangSong" font-size="5" xml:space="preserv e">
+  <text x="643" y="551">设计</text>
+  <text x="654" y="551">(签名)</text>
+  <text x="666" y="551">(年月日)</text>
+  <text x="682" y="551">标准化</text>
+  <text x="694" y="551">(签名)</text>
+  <text x="706" y="551">(年月日)</text>
+  <text x="683.5" y="565">制图</text>
+  <text x="643" y="565">审核</text>
+  <text x="643" y="572">工艺</text>
+  <text x="683.5" y="572">批准</text>
+  <text x="726" y="552">阶段标记</text>
+  <text x="749" y="552">重量</text>
+  <text x="761" y="552">比例</text>
+  <text x="722" y="571">共</text>
+  <text x="741" y="571">张</text>
+  <text x="747" y="571">第</text>
+  <text x="766" y="571">张</text>
+  <text x="642.5" y="544">标记</text>
+  <text x="652.5" y="544">处数</text>
+  <text x="665" y="544">分区</text>
+  <text x="677" y="544">更</text>
+  <text x="680" y="544">改</text>
+  <text x="683" y="544">文</text>
+  <text x="686" y="544">件</text>
+  <text x="689" y="544">号</text>
+  <text x="695.5" y="544">签名</text>
+  <text x="706" y="544">(年月日)</text>
+  <text x="773" y="573" font-size="10">A1</text>
+  <text x="783" y="567.5" font-size="1.8">模板版本:0.0.2</text>
+  <text x="783" y="570" font-size="1.8">模板设计:李峰</text>
+  <text x="783" y="572.5" font-size="1.8">felix@95839.com</text>
+  <text x="737" y="523">材料牌号</text>
+ </g>
+ <g id="titleblock-text-editable" font-family="HYSWLongFangSong" font-size="5" xml:space="preserve">
+                <text x="635" y="558" freecad:editable="AUTHOR_NAME"><tspan>设计人</tspan></text>
+                <text x="687" y="565" freecad:editable="DRAWING_NAME"><tspan>制图人</tspan></text>
+                <text x="687" y="572" freecad:editable="APPROVER_NAME"><tspan>批准人</tspan></text>
+                <text x="646.5" y="572" freecad:editable="CRAFTS_NAME"><tspan>评审人</tspan></text>
+                <text x="647" y="565" freecad:editable="CHECKED_NAME"><tspan>审核人</tspan></text>
+                <text x="719" y="571" freecad:editable="TOTAL_SHEETS"><tspan> 99 </tspan></text>
+                <text x="744" y="571" freecad:editable="OF_SHEET"><tspan> 1 </tspan></text>
+                <text x="753" y="562" freecad:editable="scale"><tspan>M x:x</tspan></text>
+                <text x="716.5" y="562" fill="#000000" text-align="center" freecad:editable="STAGE-S"><tspan/></text>
+                <text x="723" y="562" fill="#000000" text-align="center" freecad:editable="STAGE-A"><tspan/></text>
+                <text x="729.5" y="562" fill="#000000" text-align="center" freecad:editable="STAGE-B"><tspan/></text>
+                <text x="735.5" y="562" fill="#000000" text-align="center" freecad:editable="STAGE-C"><tspan/></text>
+                <text x="741" y="562" freecad:editable="WEIGHT"><tspan>重量</tspan></text>
+                <text x="701" y="558" fill="#000000" font-family="HYSWLongFangSong" font-size="3.5" text-align="center" freecad:editable="DATE-1"><tspan>YYYY-MM-DD</tspan></text>
+                <text x="661" y="558" fill="#000000" font-family="HYSWLongFangSong" font-size="3.5" text-align="center" freecad:editable="DATE-2"><tspan>YYYY-MM-DD</tspan></text>
+                <text x="765" y="522.5" freecad:editable="COMPANYNAME"><tspan>(单位名称/单位代号)</tspan></text>
+                <text x="765" y="527.5" freecad:editable="COMPANYADDR"><tspan>(单位地址)</tspan></text>
+                <text x="765" y="532.5" freecad:editable="COMPANYPHONE"><tspan>(单位电话/电邮)</tspan></text>
+                <text x="742" y="537" font-size="9" text-anchor="middle" freecad:editable="MATERIALMARK"><tspan>(材料标记)</tspan></text>
+                <text x="765" y="538" freecad:editable="PROJECT_TITLE"><tspan>(项目标题)</tspan></text>
+                <text x="765" y="543" freecad:editable="SUBTITLE"><tspan>(子项目标题)</tspan></text>
+                <text x="765" y="548" freecad:editable="PARTNAME"><tspan>(零件名称)</tspan></text>
+                <text x="765" y="553" freecad:editable="VERSION"><tspan>(版本号)</tspan></text>
+                <text x="795" y="562" fill="#000000" font-size="5" text-align="center" text-anchor="middle" freecad:editable="PART_CODE_NAME"><tspan>(图样代号)</tspan></text>
+        </g>
+ <g id="project mark" stroke="#000" stroke-width=".5mm">
+  <!-- project mark begin -->
+  <g stroke-dasharray="2.75,0.25,0.25,0.25,2.75,0.25,0.25,0.25">
+   <line x1="798" x2="808" y1="569" y2="569"/>
+   <line x1="810" x2="820" y1="569" y2="569"/>
+   <line x1="815" x2="815" y1="564" y2="574"/>
+  </g>
+  <g fill="none">
+   <polygon points="799 567 807 565 807 573 799 571"/>
+   <circle cx="815" cy="569" r="2"/>
+   <circle cx="815" cy="569" r="4"/>
+  </g>
+ </g>
+ <g id="center-line" stroke="#000" stroke-width=".5mm">
+  <line x1="420.5" x2="420.5" y1="16" y2="25"/>
+  <line x1="420.5" x2="420.5" y1="565" y2="574"/>
+  <line x1="16" x2="25" y1="297" y2="297"/>
+  <line x1="816" x2="825" y1="297" y2="297"/>
+ </g>
+ <g id="cut-marker" stroke="#000" stroke-width="2">
+  <line x2="10"/>
+  <line y2="10"/>
+  <line x1="831" x2="841"/>
+  <line x1="841" x2="841" y2="10"/>
+  <line y1="584" y2="594"/>
+  <line x2="10" y1="594" y2="594"/>
+  <line x1="831" x2="841" y1="594" y2="594"/>
+  <line x1="841" x2="841" y1="584" y2="594"/>
+ </g>
+ <g id="metric-marker" stroke="#000" stroke-width=".5mm">
+  <line x1="420.5" x2="420.5" y1="574" y2="584"/>
+  <line x1="370.25" x2="470.75" y1="579" y2="579"/>
+  <line x1="370.5" x2="370.5" y1="574" y2="579"/>
+  <line x1="380.5" x2="380.5" y1="574" y2="579"/>
+  <line x1="390.5" x2="390.5" y1="574" y2="579"/>
+  <line x1="400.5" x2="400.5" y1="574" y2="579"/>
+  <line x1="410.5" x2="410.5" y1="574" y2="579"/>
+  <line x1="420.5" x2="420.5" y1="574" y2="579"/>
+  <line x1="430.5" x2="430.5" y1="574" y2="579"/>
+  <line x1="440.5" x2="440.5" y1="574" y2="579"/>
+  <line x1="450.5" x2="450.5" y1="574" y2="579"/>
+  <line x1="460.5" x2="460.5" y1="574" y2="579"/>
+  <line x1="470.5" x2="470.5" y1="574" y2="579"/>
+ </g>
+ <g id="direction-marker" fill="none" stroke="#000" stroke-width=".5">
+  <polygon points="416.5 571 425 571 420.5 577"/>
+ </g>
+</svg>

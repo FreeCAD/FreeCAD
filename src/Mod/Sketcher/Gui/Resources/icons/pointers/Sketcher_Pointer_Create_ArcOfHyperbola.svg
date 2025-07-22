@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   height="64"
+   width="64"
+   id="svg10"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs14" />
+  <g
+     id="symbol"
+     style="fill:none;stroke:#cc0000;stroke-width:2"
+     transform="rotate(-20 41 45)">
+    <ellipse
+       cx="35.280918"
+       cy="23.28476"
+       id="circle4-5"
+       style="fill:none;stroke:#cc0000;stroke-width:2"
+       rx="4.0014977"
+       ry="4.0015597" />
+    <ellipse
+       cx="54.074772"
+       cy="30.125162"
+       id="circle4-5-8"
+       style="fill:none;stroke:#cc0000;stroke-width:2"
+       rx="4.0014977"
+       ry="4.0015597" />
+    <ellipse
+       cx="38.457359"
+       cy="43.795589"
+       id="circle4-5-8-4"
+       style="fill:none;stroke:#cc0000;stroke-width:2"
+       rx="4.0014977"
+       ry="4.0015597" />
+    <ellipse
+       cx="33.937374"
+       cy="56.214138"
+       id="circle4-5-8-4-1"
+       style="fill:none;stroke:#cc0000;stroke-width:2"
+       rx="4.0014977"
+       ry="4.0015597" />
+    <path
+       id="path2"
+       d="M 54.074783,30.125162 C 50.639305,39.564061 43.647152,45.684524 38.457374,43.795599 33.267595,41.906674 31.845453,32.723658 35.280931,23.284759" />
+  </g>
+  <g
+     id="crosshair"
+     style="stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter">
+    <path
+       d="m16,3v9m0,8v9m-13-13h9m8,0h9"
+       id="path7" />
+  </g>
+</svg>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="BaseClassPy"
+      Name="CAMSimPy"
+      Twin="CAMSim"
+      TwinPointer="CAMSim"
+      Include="Mod/CAM/PathSimulator/AppGL/CAMSim.h"
+      Namespace="CAMSimulator"
+      FatherInclude="Base/BaseClassPy.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Shai Seger" EMail="shaise_at_g-mail" />
+      <UserDocu>
+      FreeCAD python wrapper of CAMSimulator
+
+      CAMSimulator.CAMSim():
+
+      Create a path simulator object
+      </UserDocu>
+    </Documentation>
+    <Methode Name="BeginSimulation" Keyword='true'>
+      <Documentation>
+        <UserDocu>
+          BeginSimulation(stock, resolution):
+
+          Start a simulation process on a box shape stock with given resolution
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="ResetSimulation" NoArgs="true">
+      <Documentation>
+        <UserDocu>
+          ResetSimulation():
+
+          Clear the simulation and all gcode commands
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="AddTool" Keyword='true'>
+      <Documentation>
+        <UserDocu>
+          AddTool(shape, toolnumber, diameter, resolution):
+
+          Set the shape of the tool to be used for simulation
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="SetBaseShape" Keyword='true'>
+      <Documentation>
+        <UserDocu>
+          SetBaseShape(shape, resolution):
+
+          Set the shape of the base object of the job
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="AddCommand">
+      <Documentation>
+        <UserDocu>
+          AddCommand(command):
+
+          Add a path command to the simulation.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>

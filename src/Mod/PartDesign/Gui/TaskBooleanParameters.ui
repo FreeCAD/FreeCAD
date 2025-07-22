@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PartDesignGui::TaskBooleanParameters</class>
+ <widget class="QWidget" name="PartDesignGui::TaskBooleanParameters">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>209</width>
+    <height>185</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QToolButton" name="buttonBodyAdd">
+       <property name="text">
+        <string>Add body</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="buttonBodyRemove">
+       <property name="text">
+        <string>Remove body</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QListWidget" name="listWidgetBodies"/>
+   </item>
+   <item>
+    <widget class="QComboBox" name="comboType">
+     <item>
+      <property name="text">
+       <string>Fuse</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Cut</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Common</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>buttonBodyAdd</tabstop>
+  <tabstop>buttonBodyRemove</tabstop>
+  <tabstop>listWidgetBodies</tabstop>
+  <tabstop>comboType</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

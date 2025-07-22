@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64px"
+   height="64px"
+   id="svg3000"
+   version="1.1"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs3002">
+    <linearGradient
+       id="linearGradient3393">
+      <stop
+         style="stop-color:#06989a;stop-opacity:1"
+         offset="0"
+         id="stop3395" />
+      <stop
+         style="stop-color:#34e0e2;stop-opacity:1"
+         offset="1"
+         id="stop3397" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient3393-7"
+       id="linearGradient3399-1"
+       x1="1669.7314"
+       y1="1726.0585"
+       x2="2067.1702"
+       y2="1726.0585"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.98657811,0,0,0.99922078,20.129251,-2.6811697)" />
+    <linearGradient
+       id="linearGradient3393-7">
+      <stop
+         style="stop-color:#003ddd;stop-opacity:1;"
+         offset="0"
+         id="stop3395-4" />
+      <stop
+         style="stop-color:#639ef0;stop-opacity:1;"
+         offset="1"
+         id="stop3397-0" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient3393-4"
+       id="linearGradient3399-4"
+       x1="1699.6969"
+       y1="1840.5964"
+       x2="1959.5931"
+       y2="1675.062"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.25626439,-0.95300302,0.96864752,0.25862871,-291.17162,3042.754)" />
+    <linearGradient
+       id="linearGradient3393-4">
+      <stop
+         style="stop-color:#06989a;stop-opacity:1"
+         offset="0"
+         id="stop3395-3" />
+      <stop
+         style="stop-color:#16d0d2;stop-opacity:1"
+         offset="1"
+         id="stop3397-1" />
+    </linearGradient>
+  </defs>
+  <g
+     id="layer1-7"
+     transform="matrix(-1.008406,0,0,1.1110228,64.449335,-2.6223732)"
+     style="display:inline">
+    <g
+       id="g3405-4"
+       transform="matrix(0.1369365,0,0,0.1369365,-222.21754,-203.36512)">
+      <path
+         id="path2396-94"
+         d="m 1880.6192,1902.8875 c 106.5305,-2.359 190.4943,-89.4933 187.4224,-194.4994 -3.0721,-105.0059 -92.0221,-188.3111 -198.5526,-185.9523 -56.1417,1.2434 -106.0058,26.0297 -140.1736,64.5678 l -44.2785,-35.1074 -37.5953,176.0638 179.2001,-51.2001 -41.6329,-45.5788 c 22.1834,-24.0151 53.9233,-39.3809 89.5558,-40.1701 69.3716,-1.536 127.2873,52.7039 129.2877,121.0831 2.0003,68.3792 -52.6678,125.1432 -122.0395,126.6793 -19.8489,0.4395 -38.7428,-3.703 -55.6747,-11.4241 l -31.5077,57.7776 c 26.1273,11.9969 55.3165,18.4398 85.9888,17.7606 z"
+         style="display:inline;overflow:visible;visibility:visible;fill:#34e0e2;fill-opacity:1;fill-rule:evenodd;stroke:#042a2a;stroke-width:13.7985;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
+      <path
+         id="path1"
+         d="m 1869.793,1536.2305 c 99.057,-2.1934 181.6079,75.2444 184.455,172.5625 2.8436,97.2001 -74.9913,178.1078 -173.9335,180.2988 -23.2633,0.5151 -45.5592,-3.4369 -66.168,-10.9316 l 18.2617,-33.4864 c 15.5521,5.4378 32.2974,8.2801 49.709,7.8946 76.9628,-1.7042 137.7559,-64.6954 135.5273,-140.8789 -2.2287,-76.1836 -66.4264,-136.1767 -143.3847,-134.4727 -39.4741,0.8743 -74.7043,17.8811 -99.3868,44.6016 l -8.5996,9.3105 35.1524,38.4844 -135.6953,38.7715 28.1582,-131.8614 37.0859,29.4063 8.6641,-9.7715 c 31.6564,-35.7055 77.951,-58.7716 130.1543,-59.9277 z"
+         style="display:inline;overflow:visible;visibility:visible;fill:url(#linearGradient3399-4);fill-opacity:1;fill-rule:evenodd;stroke:#34e0e2;stroke-width:13.7985;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
+    </g>
+  </g>
+  <metadata
+     id="metadata5324">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="https://www.gnu.org/licenses/lgpl-3.0.en.html" />
+        <dc:date>Mon Oct 10 13:44:52 2011 +0000</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[wmayer]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Draft_Rotate.svg</dc:identifier>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:description>An arrow in a circular shape with the head curving towards the tail</dc:description>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>arrow</rdf:li>
+            <rdf:li>curved</rdf:li>
+            <rdf:li>refresh</rdf:li>
+            <rdf:li>rotate</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:title>arrow-cw</dc:title>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

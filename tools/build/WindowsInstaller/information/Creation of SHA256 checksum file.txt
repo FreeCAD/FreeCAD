@@ -1,0 +1,17 @@
+1. Take the file 'FreeCAD-filename-SHA256.txt'
+2. Save it to the location of the file you want to checksum
+3. Rename it so that you replace 'filename' with the name of your file you want to checksum.
+   Thereby don't forget that the file ending has to be part of the name.
+4. Open the file in a text editor
+
+5.
+* Either (if you have 7-Zip installed):
+  1. right-click on the file you want to checksum
+  2. select in the context menu "7-Zip -> CRC SHA -> SHA-256"
+  3. copy the content of the appearing dialog to the text file
+  
+* Or
+  1. run Windows' 'certutil' utility in the command line, e.g.:
+     certutil -hashfile FreeCAD-0.20.0-WIN-x64-installer-1.exe SHA256
+  2. Copy the resulting hash from the command line to the file
+  3. Update file size and filename in the file 

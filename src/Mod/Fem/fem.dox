@@ -1,0 +1,8 @@
+/** \defgroup FEM Fem
+ *  \ingroup PYTHONWORKBENCHES
+ *  \brief Finite Elements Analysis workbench
+
+See \ref src/Mod/Draft/draft.dox as an example of how to populate this page
+
+
+ */

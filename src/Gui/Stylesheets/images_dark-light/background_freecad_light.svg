@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="155.83333"
+   height="187"
+   id="svg2"
+   version="1.1"
+   viewBox="0 0 155.83333 187"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs4" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Pablo Gil</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>SVG</rdf:li>
+            <rdf:li>template</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     transform="translate(-1074.0664,-169.59799)">
+    <g
+       id="g2"
+       transform="matrix(7.7916667,0,0,7.7916667,1058.4831,169.59799)">
+      <path
+         d="M 5.9999164,0 2,3.9999164 V 20.000083 24 h 3.9999164 4.0505516 c 0.303258,-1e-6 0.571818,-0.195371 0.665525,-0.48379 l 0.72393,-2.228192 c 0.06925,-0.213086 0.236606,-0.379716 0.449699,-0.448947 l 0.556484,-0.180983 c 0.213107,-0.06926 0.446637,-0.03243 0.627925,0.09926 l 1.894803,1.377172 c 0.245329,0.178231 0.577863,0.178228 0.823195,0 l 1.69878,-1.234542 c 0.245362,-0.178241 0.347893,-0.493907 0.254178,-0.782336 l -0.723931,-2.228443 c -0.06926,-0.213107 -0.03194,-0.446383 0.09977,-0.627673 l 0.344168,-0.473513 c 0.131696,-0.181275 0.341695,-0.288756 0.565759,-0.28877 l 2.342998,5.01e-4 c 0.303276,10e-6 0.57182,-0.195856 0.665524,-0.484291 l 0.649232,-1.996825 c 0.0937,-0.288412 -0.0091,-0.604593 -0.254429,-0.782838 L 19.53877,11.858623 C 19.357488,11.726915 19.250246,11.51694 19.250251,11.292864 v -0.585561 c 1.9e-5,-0.224071 0.107229,-0.43457 0.288519,-0.56626 L 21.711564,8.5623329 C 21.892841,8.4306272 22.000082,8.2198931 22.000083,7.9958222 V 3.9999164 0 h -4.000167 z m 0,3.9999164 H 14 17.999916 V 8.0000835 H 10.000334 V 10.999833 H 14 V 15 h -3.999666 v 4.999833 l -2.5e-4,2.5e-4 H 5.9999164 v -4.000167 z"
+         style="fill:#ffffff;fill-opacity:0.12;fill-rule:evenodd;stroke-width:2.64567;stroke-linecap:square"
+         id="path1" />
+    </g>
+  </g>
+</svg>

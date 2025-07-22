@@ -1,0 +1,37 @@
+General:
+  UUID: "32a4d8c1-89a5-4ca8-8d84-d3b6f5468880"
+  Author: "Jonas Bähr"
+  License: "CC-BY-3.0"
+  Name: "Tool Steel (unhardened)"
+  Description: >-
+    Prototype for normal, unhardened, cold working, tool steels.
+    Surface speeds given for uncoated bits; coated HSS bits can operate 2.3 times faster, carbite 30% faster.
+    Surface speeds given for roughing with a width of cut less than half the bit's diameter.
+    For finishing with woc <= 0.1 * D bits can operatre 30% to 50% faster.
+    For slotting with woc <= D carbite bits should operate 15% slower.
+    NB: Specific alloys can deviate significantly!
+    Source: Tabellenbuch Zerspantechnik, http://www.europa-lehrmittel.de/14733
+Inherits:
+  Steel:
+    UUID: "4b849c55-6b3a-4f75-a055-40c0d0324596"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Metal"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Steel"
+  Machinability:
+    UUID: '9d81fcb2-bf81-48e3-bb57-d45ecf380096'
+    # ISBN 978-3-7585-1315-2, 5. Edition 2022, P. 272
+    # uncoated HSS, contour milling, roughing (woc: < 0.5 D, doc: < 1.5 D)
+    SurfaceSpeedHSS: '15 m/min'
+    # ISBN 978-3-7585-1315-2, 5. Edition 2022, P. 274
+    # uncoated carbide, contour milling, roughing (woc: < 0.5 D, doc: < 1.5 D)
+    SurfaceSpeedCarbide: '40 m/min'
+    # ISBN 978-3-7585-1315-2, 5. Edition 2022, P. 215
+    # Chip compression correction for milling, 1.2, already applied,
+    # base rake angle transformed from gamma_0=6° (steel, cf. P. 216) to 0°
+    # i.e. 2500 * 1.2 / (1 - 6/100) is 3191.489
+    UnitCuttingForce: '3191 N/mm^2'
+    ChipThicknessExponent: 0.27

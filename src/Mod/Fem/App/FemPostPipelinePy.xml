@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport
+        Father="FemPostObjectPy"
+        Name="FemPostPipelinePy"
+        Twin="FemPostPipeline"
+        TwinPointer="FemPostPipeline"
+        Include="Mod/Fem/App/FemPostPipeline.h"
+        Namespace="Fem"
+        FatherInclude="Mod/Fem/App/FemPostObjectPy.h"
+        FatherNamespace="Fem">
+        <Documentation>
+            <Author Licence="LGPL" Name="Stefan Tröger" EMail="stefantroeger@gmx.net" />
+            <UserDocu>The FemPostPipeline class.</UserDocu>
+        </Documentation>
+        <Methode Name="read">
+            <Documentation>
+                <UserDocu>
+read(filepath)
+read([filepaths], [values], unit, frame_type)
+
+Reads in a single vtk file or creates a multiframe result by reading in multiple result files. If multiframe is wanted, 4 argumenhts are needed:
+1. List of result files each being one frame,
+2. List of values valid for each frame (e.g. [s] if time data),
+3. the unit of the value as FreeCAD.Units.Unit,
+4. the Description of the frame type
+</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="scale">
+            <Documentation>
+                <UserDocu>scale the points of a loaded vtk file</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="load">
+            <Documentation>
+                <UserDocu>
+load(result_object)
+load([result_objects], [values], unit, frame_type)
+
+Load a single result object or create a multiframe result by loading multiple result frames. If multiframe is wanted, 4 argumenhts are needed:
+1. List of result files each being one frame,
+2. List of values valid for each frame (e.g. [s] if time data),
+3. the unit of the value as FreeCAD.Units.Unit,
+4. the Description of the frame type
+</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getFilter">
+            <Documentation>
+                <UserDocu>Returns all filters, that this pipeline uses (non recursive, result does not contain branch child filters)</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="recomputeChildren">
+            <Documentation>
+                <UserDocu>Recomputes all children of the pipeline</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getLastPostObject">
+            <Documentation>
+                <UserDocu>Get the last post-processing object</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="holdsPostObject">
+            <Documentation>
+                <UserDocu>Check if this pipeline holds a given post-processing object</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="renameArrays">
+            <Documentation>
+                <UserDocu>Change name of data arrays</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getOutputAlgorithm">
+            <Documentation>
+                <UserDocu>
+Returns the pipeline vtk algorithm, which generates the data passed to the pipelines filters. Note that the output algorithm may change depending on pipeline settings.
+</UserDocu>
+            </Documentation>
+        </Methode>"
+    </PythonExport>
+</GenerateModel>

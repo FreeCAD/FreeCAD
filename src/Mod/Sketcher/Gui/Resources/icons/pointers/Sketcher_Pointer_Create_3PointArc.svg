@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   height="64"
+   width="64"
+   id="svg14"
+   sodipodi:docname="Sketcher_Pointer_Create_3PointArc.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="7.296875"
+     inkscape:cx="31.520343"
+     inkscape:cy="46.458244"
+     inkscape:window-width="1368"
+     inkscape:window-height="842"
+     inkscape:window-x="-6"
+     inkscape:window-y="-6"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="symbol" />
+  <defs
+     id="defs18" />
+  <g
+     id="symbol"
+     style="fill:none;stroke:#cc0000;stroke-width:2">
+    <g
+       id="symbol-9"
+       style="fill:none;stroke:#cc0000;stroke-width:2">
+      <path
+         id="circle2"
+         d="m 27.999996,27.999995 c 16.01626,0 29.000005,12.983745 29.000005,29.000005"
+         sodipodi:nodetypes="cc"
+         style="stroke-width:1.99999" />
+      <circle
+         cx="27.999996"
+         cy="27.999994"
+         r="4"
+         id="circle4-7" />
+      <circle
+         cx="57"
+         cy="57"
+         r="4"
+         id="circle4-8"
+         style="fill:none;stroke:#cc0000;stroke-width:2" />
+      <circle
+         cx="48.506096"
+         cy="36.4939"
+         r="4"
+         id="circle4-8-8"
+         style="fill:none;stroke:#cc0000;stroke-width:2" />
+    </g>
+  </g>
+  <g
+     id="crosshair"
+     style="stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter">
+    <path
+       d="m16,3v9m0,8v9m-13-13h9m8,0h9"
+       id="path11" />
+  </g>
+</svg>

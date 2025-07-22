@@ -1,0 +1,17 @@
+---
+# File created by ConvertFCMat.py
+General:
+  UUID: "5dbb7be6-8b63-479b-ab4c-87be02ead973"
+  Author: "David Carter"
+  License: "GPL-2.0-or-later"
+  Name: "Default"
+  Description: "Defines the default appearance properties"
+AppearanceModels:
+  BasicRendering:
+    UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
+    AmbientColor: "(0.3333, 0.3333, 0.3333, 1.0)"
+    DiffuseColor: "(0.8000, 0.8000, 0.9000, 1.0)"
+    EmissiveColor: "(0.0000, 0.0000, 0.0000, 1.0)"
+    Shininess: "0.9000"
+    SpecularColor: "(0.5333, 0.5333, 0.5333, 1.0)"
+    Transparency: "0.0"

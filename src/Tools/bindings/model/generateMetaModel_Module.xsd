@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mit XMLSpy v2006 rel. 3 U bearbeitet (http://www.altova.com) von juergen Riegel (DCX) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="GenerateModel">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Module" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="PythonExport" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="Documentation" minOccurs="0"/>
+							<xs:element name="Methode" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="Documentation"/>
+										<xs:element ref="Parameter" minOccurs="0" maxOccurs="unbounded"/>
+									</xs:sequence>
+									<xs:attribute name="Name" type="xs:string" use="required"/>
+									<xs:attribute name="Const" type="xs:boolean" use="optional"/>
+									<xs:attribute name="Keyword" type="xs:boolean" use="optional" default="false"/>
+									<xs:attribute name="NoArgs" type="xs:boolean" use="optional" default="false"/>
+									<xs:attribute name="Class" type="xs:boolean" use="optional" default="false"/>
+									<xs:attribute name="Static" type="xs:boolean" use="optional" default="false"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Attribute" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="Documentation"/>
+										<xs:element ref="Parameter"/>
+									</xs:sequence>
+									<xs:attribute name="Name" type="xs:string" use="required"/>
+									<xs:attribute name="ReadOnly" type="xs:boolean" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Sequence" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:attribute name="sq_length" type="xs:boolean" use="required"/>
+									<xs:attribute name="sq_concat" type="xs:boolean" use="required"/>
+									<xs:attribute name="sq_repeat" type="xs:boolean" use="required"/>
+									<xs:attribute name="sq_item" type="xs:boolean" use="required"/>
+									<xs:attribute name="mp_subscript" type="xs:boolean" use="required"/>
+									<xs:attribute name="sq_ass_item" type="xs:boolean" use="required"/>
+									<xs:attribute name="mp_ass_subscript" type="xs:boolean" use="required"/>
+									<xs:attribute name="sq_contains" type="xs:boolean" use="required"/>
+									<xs:attribute name="sq_inplace_concat" type="xs:boolean" use="required"/>
+									<xs:attribute name="sq_inplace_repeat" type="xs:boolean" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="CustomAttributes" minOccurs="0"/>
+							<xs:element name="ClassDeclarations" type="xs:string"/>
+							<xs:element name="ForwardDeclarations" type="xs:string"/>
+						</xs:sequence>
+						<xs:attribute name="Name" type="xs:string" use="required"/>
+						<xs:attribute name="PythonName" type="xs:string" use="optional"/>
+						<xs:attribute name="Include" type="xs:string" use="required"/>
+						<xs:attribute name="Father" type="xs:string" use="required"/>
+						<xs:attribute name="Twin" type="xs:string" use="required"/>
+						<xs:attribute name="Namespace" type="xs:string" use="required"/>
+						<xs:attribute name="FatherInclude" type="xs:string" use="required"/>
+						<xs:attribute name="FatherNamespace" type="xs:string" use="required"/>
+						<xs:attribute name="Constructor" type="xs:boolean" use="optional" default="false"/>
+						<xs:attribute name="NumberProtocol" type="xs:boolean" use="optional" default="false"/>
+						<xs:attribute name="RichCompare" type="xs:boolean" use="optional" default="false"/>
+						<xs:attribute name="TwinPointer" type="xs:string" use="required"/>
+						<xs:attribute name="Delete" type="xs:boolean" use="optional" default="false"/>
+						<xs:attribute name="Reference" type="xs:boolean" use="optional"/>
+						<xs:attribute name="Initialization" type="xs:boolean" use="optional" default="false"/>
+						<xs:attribute name="DisableNotify" type="xs:boolean" use="optional" default="false"/>
+						<xs:attribute name="DescriptorGetter" type="xs:boolean" use="optional" default="false"/>
+						<xs:attribute name="DescriptorSetter" type="xs:boolean" use="optional" default="false"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Module">
+		<xs:annotation>
+			<xs:documentation>This is the module root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Documentation" minOccurs="0"/>
+				<xs:element name="Dependencies" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Module" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Content">
+					<xs:annotation>
+						<xs:documentation>This element holds the content of the module</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Property" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element name="Feature" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Represent a Feature in the module</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="Documentation" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Documentation of this object</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element ref="Property" minOccurs="0" maxOccurs="unbounded"/>
+										<xs:element ref="ViewProvider" minOccurs="0"/>
+									</xs:sequence>
+									<xs:attribute name="Name" type="xs:string" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="DocObject" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Represents a Document Object in the module</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="Documentation" minOccurs="0"/>
+										<xs:element ref="Property" minOccurs="0" maxOccurs="unbounded"/>
+									</xs:sequence>
+									<xs:attribute name="Name" type="xs:string" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="GuiCommand" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Creates a GuiCommand in this module</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="PreferencesPage" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="Name" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Property">
+		<xs:annotation>
+			<xs:documentation>Defines a class property</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Documentation" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="Name" type="xs:string" use="required"/>
+			<xs:attribute name="Type" type="xs:string" use="required"/>
+			<xs:attribute name="StartValue" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Documentation">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Author" minOccurs="0">
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="xs:string">
+								<xs:attribute name="Name" type="xs:string" use="required"/>
+								<xs:attribute name="EMail" type="xs:string" use="required"/>
+								<xs:attribute name="Licence" type="xs:string" use="optional" default="LGPL"/>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="DeveloperDocu" type="xs:string" minOccurs="0"/>
+				<xs:element name="UserDocu" type="xs:string" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ViewProvider">
+		<xs:annotation>
+			<xs:documentation>Defines a ViewProvider for an Object</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Property" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Parameter">
+		<xs:complexType>
+			<xs:attribute name="Name" type="xs:string" use="required"/>
+			<xs:attribute name="Type" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="Int"/>
+						<xs:enumeration value="Long"/>
+						<xs:enumeration value="String"/>
+						<xs:enumeration value="Object"/>
+						<xs:enumeration value="Float"/>
+						<xs:enumeration value="Complex"/>
+						<xs:enumeration value="Char"/>
+						<xs:enumeration value="Tuple"/>
+						<xs:enumeration value="List"/>
+						<xs:enumeration value="Dict"/>
+						<xs:enumeration value="Module"/>
+						<xs:enumeration value="Callable"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

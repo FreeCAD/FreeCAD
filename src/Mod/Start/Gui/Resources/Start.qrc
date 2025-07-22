@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/StartCommandIcon.svg</file>
+        <file>icons/preferences-start.svg</file>
+        <file>icons/PartDesignWorkbench.svg</file>
+        <file>thumbnails/Theme_thumbnail_classic.png</file>
+        <file>thumbnails/Theme_thumbnail_light.png</file>
+        <file>thumbnails/Theme_thumbnail_dark.png</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 START HERE -- FreeCAD Forum
+    url: https://forum.freecad.org/
+    about: You are encouraged to discuss the problem you are seeing on the FreeCAD Forums before opening an issue on GitHub

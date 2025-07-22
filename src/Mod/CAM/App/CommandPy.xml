@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport
+        Father="PersistencePy"
+        Name="CommandPy"
+        Twin="Command"
+        TwinPointer="Command"
+        Include="Mod/CAM/App/Command.h"
+        Namespace="Path"
+        FatherInclude="Base/PersistencePy.h"
+        FatherNamespace="Base"
+        Constructor="true"
+        Delete="true">
+        <Documentation>
+            <Author Licence="LGPL" Name="Yorik van Havre" EMail="yorik@uncreated.net" />
+            <UserDocu>Command([name],[parameters]): Represents a basic Gcode command
+name (optional) is the name of the command, ex. G1
+parameters (optional) is a dictionary containing string:number
+pairs, or a placement, or a vector</UserDocu>
+        </Documentation>
+        <Attribute Name="Name" ReadOnly="false">
+            <Documentation>
+                <UserDocu>The name of the command</UserDocu>
+            </Documentation>
+            <Parameter Name="Name" Type="String"/>
+        </Attribute>
+        <Attribute Name="Parameters" ReadOnly="false">
+            <Documentation>
+                <UserDocu>The parameters of the command</UserDocu>
+            </Documentation>
+            <Parameter Name="Parameters" Type="Dict"/>
+        </Attribute>
+        <Attribute Name="Placement" ReadOnly="false">
+            <Documentation>
+                <UserDocu>The coordinates of the endpoint of the command</UserDocu>
+            </Documentation>
+            <Parameter Name="Placement" Type="Object"/>
+        </Attribute>
+        <Methode Name="toGCode" Const="true">
+            <Documentation>
+                <UserDocu>toGCode(): returns a GCode representation of the command</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setFromGCode">
+            <Documentation>
+                <UserDocu>setFromGCode(): sets the path from the contents of the given GCode string</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="transform">
+            <Documentation>
+                <UserDocu>transform(Placement): returns a copy of this command transformed by the given placement</UserDocu>
+            </Documentation>
+        </Methode>
+        <ClassDeclarations>
+            mutable Py::Dict parameters_copy_dict;
+        </ClassDeclarations>
+    </PythonExport>
+</GenerateModel>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="svg2" width="210mm" height="297mm" version="1.1" viewBox="0 0 210 297" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:freecad="https://www.freecad.org/wiki/index.php?title=Svg_Namespace" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <title id="title13599">RU_Subsequent_Portrait_A4</title>
+ <!-- Working space 10 10 287 200 -->
+ <!-- Title block 147 153 287 200 -->
+ <metadata id="metadata849">
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title>RU_Subsequent_Portrait_A4</dc:title>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by/4.0/"/>
+    <dc:date>09.06.19</dc:date>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Abrosimov Anton</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+   <cc:License rdf:about="http://creativecommons.org/licenses/by/4.0/">
+    <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+    <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+    <cc:requires rdf:resource="http://creativecommons.org/ns#Notice"/>
+    <cc:requires rdf:resource="http://creativecommons.org/ns#Attribution"/>
+    <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+   </cc:License>
+  </rdf:RDF>
+ </metadata>
+ <!-- DrawingContent -->
+ <path id="path7777" d="m20.25 291.75h184.5v-286.5h-184.5z" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
+ <path id="path7779-6" d="m204.75 277.25v14.5h-184.5v-14.5z" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
+ <text id="text985-5" x="169.7002" y="294.99167" fill="#000000" font-family="sans-serif" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5"><tspan id="tspan987-1" x="169.7002" y="294.99167" font-size="3.5278px" stroke-width=".26458" style="line-height:1.5">Формат А4</tspan></text>
+ <path id="path4358-6" d="m20.25 281.76h65" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".25"/>
+ <path id="path4362-6" d="m20.25 286.74h65" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
+ <path id="path4358-5-3" d="m20.25 291.74h65" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
+ <path id="path4374-5-6" d="m85.25 277.24v14.509" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".49962px"/>
+ <path id="path4356-9-9" d="m85.25 291.75h119.5" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
+ <path id="path4358-1-3-7" d="m195.25 283.74h9.5002" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
+ <path id="path4358-1-3-9-87-5-7" d="m75.25 277.24v14.509" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
+ <path id="path4358-1-3-9-87-5-1-73" d="m60.25 277.24v14.509" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
+ <path id="path4358-1-3-9-87-5-1-7-1" d="m27.25 277.24v14.509" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
+ <path id="path4358-1-3-9-87-5-1-7-6-8" d="m37.25 277.24v14.509" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
+ <text id="text4951-0" x="99.640038" y="286.73553" fill="#000000" font-family="sans-serif" font-size="7.0556px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5" freecad:editable="Номер"><tspan id="tspan4949-5" x="99.640038" y="286.73553" font-family="Arial" font-size="7.0556px" stroke-width=".26458" style="line-height:1.5">РИК-35.000000.000-01</tspan></text>
+ <text id="text1056-1" x="195.97714" y="281.64096" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5"><tspan id="tspan1054-9" x="195.97714" y="281.64096" stroke-width=".26458">Лист</tspan></text>
+ <text id="text1064-6" x="20.460224" y="290.48462" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5"><tspan id="tspan1062-8" x="20.460224" y="290.48462" stroke-width=".26458">Изм</tspan></text>
+ <text id="text1068-2" x="28.468403" y="290.48373" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5"><tspan id="tspan1066-3" x="28.468403" y="290.48373" stroke-width=".26458">Лист</tspan></text>
+ <text id="text1072-4" x="41.11256" y="290.13406" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5"><tspan id="tspan1070-6" x="41.11256" y="290.13406" stroke-width=".26458">№ докум.</tspan></text>
+ <text id="text1076-6" x="63.238506" y="290.24603" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5"><tspan id="tspan1074-3" x="63.238506" y="290.24603" stroke-width=".26458">Подп.</tspan></text>
+ <text id="text1080-2" x="76.56089" y="290.21072" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5"><tspan id="tspan1078-1" x="76.56089" y="290.21072" stroke-width=".26458">Дата</tspan></text>
+ <text id="text8200-7" x="198.24115" y="288.84763" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5" freecad:editable="Лист"><tspan id="tspan8198-6" x="198.24115" y="288.84763" stroke-width=".26458">1</tspan></text>
+ <path id="path4374-5-5" d="m195.25 277.24v14.509" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".49962px"/>
+</svg>

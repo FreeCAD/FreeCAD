@@ -1,0 +1,676 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskSketcherSolverAdvanced</class>
+ <widget class="QWidget" name="TaskSketcherSolverAdvanced">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>326</width>
+    <height>630</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QLabel" name="labelDefaultSolver">
+       <property name="toolTip">
+        <string>Default algorithm used for solving the sketch</string>
+       </property>
+       <property name="text">
+        <string>Default solver</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefComboBox" name="comboBoxDefaultSolver">
+       <property name="toolTip">
+        <string>Solver used for solving the geometry.
+LevenbergMarquardt and DogLeg are trust region optimization algorithms.
+BFGS solver uses the Broyden–Fletcher–Goldfarb–Shanno algorithm.</string>
+       </property>
+       <property name="currentIndex">
+        <number>2</number>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>DefaultSolver</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher/SolverAdvanced</cstring>
+       </property>
+       <item>
+        <property name="text">
+         <string>BFGS</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>LevenbergMarquardt</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>DogLeg</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4_2">
+     <item>
+      <widget class="QLabel" name="labelDogLegGaussStep">
+       <property name="toolTip">
+        <string>Type of function to apply in DogLeg for the Gauss step</string>
+       </property>
+       <property name="text">
+        <string>DogLeg Gauss step</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefComboBox" name="comboBoxDogLegGaussStep">
+       <property name="toolTip">
+        <string>Step type used in the DogLeg algorithm</string>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>DogLegGaussStep</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher/SolverAdvanced</cstring>
+       </property>
+       <item>
+        <property name="text">
+         <string>FullPivLU</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>LeastNorm-FullPivLU</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>LeastNorm-LDLT</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="labelMaxIter">
+       <property name="toolTip">
+        <string>Maximum number of iterations of the default algorithm</string>
+       </property>
+       <property name="text">
+        <string>Maximum iterations</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefSpinBox" name="spinBoxMaxIter">
+       <property name="toolTip">
+        <string>Maximum iterations to find convergence before solver is stopped</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="maximum">
+        <number>999</number>
+       </property>
+       <property name="value">
+        <number>100</number>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>MaxIter</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher/SolverAdvanced</cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="labelSketchSizeMultiplier">
+       <property name="toolTip">
+        <string>Scales the maximum iteration count based on the sketch size</string>
+       </property>
+       <property name="text">
+        <string>Sketch size multiplier</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefCheckBox" name="checkBoxSketchSizeMultiplier">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Scales the maximum iteration count based on the number of parameters</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>SketchSizeMultiplier</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher/SolverAdvanced</cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_9">
+     <item>
+      <widget class="QLabel" name="labelSolverConvergence">
+       <property name="toolTip">
+        <string>Error threshold under which convergence is reached</string>
+       </property>
+       <property name="text">
+        <string>Convergence</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefLineEdit" name="lineEditConvergence">
+       <property name="toolTip">
+        <string>Threshold for squared error that is used
+to determine whether a solution converges or not</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string notr="true">1E-10</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>Convergence</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher/SolverAdvanced</cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_10">
+     <item>
+      <widget class="QLabel" name="labelSolverParam1">
+       <property name="text">
+        <string notr="true">Param1</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefLineEdit" name="lineEditSolverParam1">
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>param</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher/SolverAdvanced</cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_11">
+     <item>
+      <widget class="QLabel" name="labelSolverParam2">
+       <property name="text">
+        <string notr="true">Param2</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefLineEdit" name="lineEditSolverParam2">
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>param</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher/SolverAdvanced</cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_12">
+     <item>
+      <widget class="QLabel" name="labelSolverParam3">
+       <property name="text">
+        <string notr="true">Param3</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefLineEdit" name="lineEditSolverParam3">
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>param</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher/SolverAdvanced</cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="labelQRAlgorithm">
+       <property name="toolTip">
+        <string>Algorithm used for the rank revealing QR decomposition</string>
+       </property>
+       <property name="text">
+        <string>QR algorithm</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefComboBox" name="comboBoxQRMethod">
+       <property name="toolTip">
+        <string>During diagnosing the QR rank of matrix is calculated.
+Eigen Dense QR is a dense matrix QR with full pivoting; usually slower
+Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</string>
+       </property>
+       <property name="currentIndex">
+        <number>1</number>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>QRMethod</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher/SolverAdvanced</cstring>
+       </property>
+       <item>
+        <property name="text">
+         <string>Eigen Dense QR</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Eigen Sparse QR</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_18">
+     <item>
+      <widget class="QLabel" name="labelPivotThreshold">
+       <property name="text">
+        <string>Pivot threshold</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefLineEdit" name="lineEditQRPivotThreshold">
+       <property name="toolTip">
+        <string>During a QR, values under the pivot threshold are treated as zero</string>
+       </property>
+       <property name="text">
+        <string>1E-13</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>QRPivotThreshold</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher/SolverAdvanced</cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <item>
+      <widget class="QLabel" name="labelRedundantSolver">
+       <property name="toolTip">
+        <string>Solving algorithm used to detect redundant constraints</string>
+       </property>
+       <property name="text">
+        <string>Redundant solver</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefComboBox" name="comboBoxRedundantDefaultSolver">
+       <property name="toolTip">
+        <string>Solver used to determine whether a group is redundant or conflicting</string>
+       </property>
+       <property name="currentIndex">
+        <number>2</number>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>RedundantDefaultSolver</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher/SolverAdvanced</cstring>
+       </property>
+       <item>
+        <property name="text">
+         <string>BFGS</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>LevenbergMarquardt</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>DogLeg</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_6">
+     <item>
+      <widget class="QLabel" name="labelRedundantSolverMaxIterations">
+       <property name="toolTip">
+        <string>Maximum number of iterations of the solver used to detect redundant constraints</string>
+       </property>
+       <property name="text">
+        <string>Maximum redundant solver iterations</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefSpinBox" name="spinBoxRedundantSolverMaxIterations">
+       <property name="toolTip">
+        <string>Same as 'Maximum iterations', but for redundant solving</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="maximum">
+        <number>999</number>
+       </property>
+       <property name="value">
+        <number>100</number>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>RedundantSolverMaxIterations</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher/SolverAdvanced</cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_7">
+     <item>
+      <widget class="QLabel" name="labelRedundantSketchSizeMultiplier">
+       <property name="toolTip">
+        <string>Multiplies the maximum iterations value for the redundant algorithm by the sketch size</string>
+       </property>
+       <property name="text">
+        <string>Redundant sketch size multiplier</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefCheckBox" name="checkBoxRedundantSketchSizeMultiplier">
+       <property name="toolTip">
+        <string>Same as 'Sketch size multiplier', but for redundant solving</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>RedundantSketchSizeMultiplier</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher/SolverAdvanced</cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_13">
+     <item>
+      <widget class="QLabel" name="labelRedundantConvergence">
+       <property name="toolTip">
+        <string>Error threshold under which convergence is reached for the solving of redundant constraints</string>
+       </property>
+       <property name="text">
+        <string>Redundant convergence</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefLineEdit" name="lineEditRedundantConvergence">
+       <property name="toolTip">
+        <string>Same as 'Convergence', but for redundant solving</string>
+       </property>
+       <property name="text">
+        <string>1E-10</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>RedundantConvergence</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher/SolverAdvanced</cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_14">
+     <item>
+      <widget class="QLabel" name="labelRedundantSolverParam1">
+       <property name="text">
+        <string notr="true">Redundant param1</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefLineEdit" name="lineEditRedundantSolverParam1">
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>param</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher/SolverAdvanced</cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_15">
+     <item>
+      <widget class="QLabel" name="labelRedundantSolverParam2">
+       <property name="text">
+        <string notr="true">Redundant param2</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefLineEdit" name="lineEditRedundantSolverParam2">
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>param</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher/SolverAdvanced</cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_16">
+     <item>
+      <widget class="QLabel" name="labelRedundantSolverParam3">
+       <property name="text">
+        <string notr="true">Redundant param3</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefLineEdit" name="lineEditRedundantSolverParam3">
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>param</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher/SolverAdvanced</cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_8">
+     <item>
+      <widget class="QLabel" name="labelDebugMode">
+       <property name="toolTip">
+        <string>Degree of verbosity of the debug output to the console</string>
+       </property>
+       <property name="text">
+        <string>Console debug mode</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefComboBox" name="comboBoxDebugMode">
+       <property name="toolTip">
+        <string>Verbosity of console output</string>
+       </property>
+       <property name="currentIndex">
+        <number>1</number>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>DebugMode</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher/SolverAdvanced</cstring>
+       </property>
+       <item>
+        <property name="text">
+         <string>None</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Minimum</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Iteration Level</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_17">
+     <item>
+      <widget class="QPushButton" name="pushButtonSolve">
+       <property name="text">
+        <string>Solve</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonDefaults">
+       <property name="toolTip">
+        <string>Resets all solver values to their default values</string>
+       </property>
+       <property name="text">
+        <string>Restore Defaults</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

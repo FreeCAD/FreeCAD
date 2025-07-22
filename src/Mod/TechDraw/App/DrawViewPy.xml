@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="DocumentObjectPy"
+    Name="DrawViewPy"
+    Twin="DrawView"
+    TwinPointer="DrawView"
+    Include="Mod/TechDraw/App/DrawView.h"
+    Namespace="TechDraw"
+    FatherInclude="App/DocumentObjectPy.h"
+    FatherNamespace="App">
+    <Documentation>
+      <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
+      <UserDocu>Feature for creating and manipulating Technical Drawing Views</UserDocu>
+    </Documentation>
+    <Methode Name="translateLabel">
+      <Documentation>
+        <UserDocu>translateLabel(translationContext, objectBaseName, objectUniqueName).
+         No return value.  Replace the current label with a translated version where possible.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getScale">
+      <Documentation>
+        <UserDocu>float scale = getScale().  Returns the correct scale for this view.  Handles whether to
+        use this view's scale property or a parent's view (as in a projection group).
+        </UserDocu>
+      </Documentation>
+    </Methode>
+   <CustomAttributes />
+  </PythonExport>
+</GenerateModel>

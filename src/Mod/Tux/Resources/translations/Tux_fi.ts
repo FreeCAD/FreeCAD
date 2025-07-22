@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="fi" sourcelanguage="en">
+  <context>
+    <name>NavigationIndicator</name>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="86"/>
+      <source>Select</source>
+      <translation>Valitse</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="87"/>
+      <source>Zoom</source>
+      <translation>Zoomaus</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="88"/>
+      <source>Rotate</source>
+      <translation>Pyöritä</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="89"/>
+      <source>Pan</source>
+      <translation>Panoroi</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="90"/>
+      <source>Tilt</source>
+      <translation>Kallistus</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="91"/>
+      <source>Navigation style</source>
+      <translation>Siirtymistyyli</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="92"/>
+      <source>Page Up or Page Down key.</source>
+      <translation>Page Up- tai Page Down -näppäin.</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="93"/>
+      <source>Rotation focus</source>
+      <translation>Kierron kohdistus</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="94"/>
+      <source>Middle mouse button or H key.</source>
+      <translation>Hiiren keskipainike tai H-näppäin.</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="96"/>
+      <source>Middle mouse button.</source>
+      <translation>Hiiren keskipainike.</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="99"/>
+      <source>Navigation style not recognized.</source>
+      <translation>Navigointityyliä ei tunnistettu.</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="608"/>
+      <source>Settings</source>
+      <translation>Asetukset</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="609"/>
+      <source>Orbit style</source>
+      <translation>Kiertoradan tyyli</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="610"/>
+      <source>Compact</source>
+      <translation>Tiivis</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="611"/>
+      <source>Tooltip</source>
+      <translation>Vihje</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="612"/>
+      <source>Turntable</source>
+      <translation>Levypyöritys</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="613"/>
+      <source>Free Turntable</source>
+      <translation>Vapaa kääntöalusta</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="614"/>
+      <source>Trackball</source>
+      <translation>Trackball</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="615"/>
+      <source>Trackball Classic</source>
+      <translation type="unfinished">Trackball Classic</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="616"/>
+      <source>Rounded Arcball</source>
+      <translation type="unfinished">Rounded Arcball</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="617"/>
+      <source>Undefined</source>
+      <translation>Määrittelemätön</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="629"/>
+      <source>Navigation indicator</source>
+      <comment>A context menu action used to show or hide the &apos;Navigation indicator&apos; toolbar widget</comment>
+      <translation type="unfinished">Navigation indicator</translation>
+    </message>
+  </context>
+</TS>

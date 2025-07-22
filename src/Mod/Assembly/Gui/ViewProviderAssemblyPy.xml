@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport
+        Father="ViewProviderPy"
+        Name="ViewProviderAssemblyPy"
+        Twin="ViewProviderAssembly"
+        TwinPointer="ViewProviderAssembly"
+        Include="Mod/Assembly/Gui/ViewProviderAssembly.h"
+        Namespace="AssemblyGui"
+        FatherInclude="Gui/ViewProviderPy.h"
+        FatherNamespace="Gui">
+        <Documentation>
+            <Author Licence="LGPL" Name="Ondsel" EMail="development@ondsel.com" />
+            <UserDocu>This is the ViewProviderAssembly class</UserDocu>
+        </Documentation>
+
+        <Methode Name="isInEditMode">
+          <Documentation>
+            <UserDocu>
+              Return true if the assembly object is currently in edit mode.
+
+              isInEditMode() -> bool
+            </UserDocu>
+          </Documentation>
+        </Methode>
+        <Methode Name="getDragger">
+          <Documentation>
+            <UserDocu>
+              Return the assembly dragger coin object.
+
+              getDragger() -> SoTransformDragger
+
+              Returns: dragger coin object of the assembly
+            </UserDocu>
+          </Documentation>
+        </Methode>
+        <Attribute Name="EnableMovement">
+            <Documentation>
+                <UserDocu>Enable moving the parts by clicking and dragging.</UserDocu>
+            </Documentation>
+            <Parameter Name="EnableMoving" Type="Boolean" />
+        </Attribute>
+        <Attribute Name="MoveOnlyPreselected">
+            <Documentation>
+                <UserDocu>If enabled, only the preselected object will move.</UserDocu>
+            </Documentation>
+            <Parameter Name="MoveOnlyPreselected" Type="Boolean" />
+        </Attribute>
+        <Attribute Name="MoveInCommand">
+            <Documentation>
+                <UserDocu>If enabled, each move will be wrapped in a command.</UserDocu>
+            </Documentation>
+            <Parameter Name="MoveInCommand" Type="Boolean" />
+        </Attribute>
+        <Attribute Name="DraggerVisibility">
+            <Documentation>
+                <UserDocu>Show or hide the assembly dragger.</UserDocu>
+            </Documentation>
+            <Parameter Name="DraggerVisibility" Type="Boolean" />
+        </Attribute>
+        <Attribute Name="DraggerPlacement" ReadOnly="false">
+          <Documentation>
+            <UserDocu>Placement of the assembly dragger object.</UserDocu>
+          </Documentation>
+          <Parameter Name="Placement" Type="Object" />
+        </Attribute>
+    </PythonExport>
+</GenerateModel>

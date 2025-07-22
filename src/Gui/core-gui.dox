@@ -1,0 +1,29 @@
+/** \defgroup GUI Gui
+ *  \ingroup CORE
+ *  \brief The Graphical User Interface of FreeCAD and the 3D View
+ */
+
+/** \namespace Gui
+    \brief The FreeCAD Graphical interface layer
+
+    This namespace includes the graphical interface of FreeCAD such as:
+    - The main window
+    - 3D View
+    - Tree
+
+  and so on......
+*/
+
+
+/** \namespace Gui::Dialog
+    \brief The namespace of the FreeCAD dialogs.
+*/
+
+
+/** \namespace Gui::DockWnd
+    \brief The namespace of the dockable windows of FreeCAD.
+*/
+
+/** \namespace Gui::PropertyEditor
+    \brief The namespace of the property editor for FreeCAD.
+*/

@@ -1,0 +1,82 @@
+name: Build
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: ${{ matrix.config.name }} (${{ matrix.build_type }})
+    runs-on: ${{ matrix.config.os }}
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+
+    strategy:
+      fail-fast: false
+      matrix:
+        build_type: ["Debug", "Release"]
+        config:
+          - {
+              name: "macOS Clang",
+              os: macos-latest,
+            }
+          - {
+              name: "Ubuntu GCC",
+              os: ubuntu-latest,
+            }
+          - {
+              name: "Windows MSVC",
+              os: windows-latest,
+           }
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies (macOS)
+        if: matrix.config.os == 'macos-latest'
+        run: |
+          brew install ninja xerces-c
+
+      - name: Install Dependencies (Ubuntu)
+        if: matrix.config.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+
+          sudo apt-get install -y libxerces-c-dev ninja-build
+
+      - name: Install miniconda (Windows)
+        if: matrix.config.os == 'windows-latest'
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true
+          channels: conda-forge
+          miniconda-version: 'latest'
+
+      - name: Install Dependencies (Windows)
+        if: matrix.config.os == 'windows-latest'
+        run: |
+          conda install -y ninja xerces-c
+
+      - name: Configure MSVC console (Windows)
+        if:  matrix.config.os == 'windows-latest'
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Set environment for MSVC (Windows)
+        if:  matrix.config.os == 'windows-latest'
+        run: |
+          # Set these env vars so cmake picks the correct compiler
+          echo "CXX=cl.exe" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          echo "CC=cl.exe" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Configure
+        run: >
+          mkdir libE57Format-build
+
+          cmake
+          -B libE57Format-build
+          -G "Ninja"
+          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          -DCMAKE_CXX_FLAGS_DEBUG="-g -DE57_MAX_VERBOSE"
+          .
+
+      - name: Build
+        run: |
+          cmake --build libE57Format-build

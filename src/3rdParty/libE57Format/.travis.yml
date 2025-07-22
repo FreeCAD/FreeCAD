@@ -1,0 +1,42 @@
+dist: xenial
+sudo: false
+language: cpp
+
+env:
+  global:
+    # For coverity
+    - secure: "Ddou0BLHkn4V8b/Q6E56lUVz4woSXS8eI0IzRxyYqkDvXtqqjSlxqtu2fuU/awieA6Y5rzEHZrpHnvJU80uC+gnlIfMkIU9O0Cj0rwppKTTTWpXzohrESfXzJc8iZs+3gxpReZhWp6IGrfitdudfpFAgLWBENgzemWsHy7prnDcQQA99FBUhCuhbqhtXRR8wxXUWNQr2RntbFbH22Eqcwbd5a+OYpPSCtV296ZII6/iskMI3OeXCEGnqKBxe2L9oohcrTS/0beCLM7dhCflelns8MTGa1AYmJEwXf3/n4PmwRo7EjTpSBow70n9SCps5mS42+wRDU8FMBTNgqzBNjOdDojrPhijnEPfhRzFygsyfgoEmuZjD2MuXBSIwpYa9mFusVpN2BON3zZLvmw5Y1HuBadf3yLoD0/Vy1K6YBnQRMIm5JhVYj4hY8ogtPNVfjYjckHEPlCRcwzS5rwh/sZ2eYW30LW3IusCB2wu3/iR97jamBu3sEOY67ln3M6EOjnMPHApBqsVhapQv+XtOtxaVPzKVc1u6tlzRRijPCfcN6ssNHzFh1feqFopthapY4erfA+DrjQivW+E49Yv306ig6HVBbrMkOR+TX+bgDmZisLtbJ8d2eym063KuojBRqDlq8wrz0MlUXVIz2H0FhXPIho8z9Uj7fkswM+jQiJc="
+  matrix:
+    - BUILD_TYPE=Debug
+    - BUILD_TYPE=Release
+
+compiler:
+  - clang
+  - gcc
+
+before_install:
+  - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+
+addons:
+  apt:
+    packages:
+      - libxerces-c-dev
+  coverity_scan:
+    project:
+      name: "asmaloney/libE57Format"
+      description: "Library for reading & writing the E57 file format (fork of E57RefImpl) "
+    notification_email: asmaloney@gmail.com
+    build_command_prepend: "cmake -DCMAKE_BUILD_TYPE=Debug ."
+    build_command: "make -j2"
+    branch_pattern: coverity_scan
+
+before_script:
+  - mkdir build-${BUILD_TYPE}
+  - cd build-${BUILD_TYPE}
+  - cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_CXX_FLAGS_DEBUG="-g -DE57_MAX_VERBOSE" ..
+
+script:
+  - if [[ "${COVERITY_SCAN_BRANCH}" != 1 ]]; then
+      $CC_FOR_BUILD -v && $CXX_FOR_BUILD -v && cmake --version;
+      make -j2;
+    fi

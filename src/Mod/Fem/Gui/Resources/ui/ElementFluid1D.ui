@@ -1,0 +1,865 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>590</width>
+    <height>653</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_11">
+   <item>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>1677215</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Fluid Section Parameter</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_5">
+      <item>
+       <widget class="QComboBox" name="cb_section_type"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QStackedWidget" name="sw_section_type">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="page">
+      <layout class="QVBoxLayout" name="verticalLayout_8">
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Liquid section parameter</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="cb_liquid_section_type"/>
+       </item>
+       <item>
+        <widget class="QStackedWidget" name="sw_liquid_section_type">
+         <property name="currentIndex">
+          <number>9</number>
+         </property>
+         <widget class="QWidget" name="page_4">
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <widget class="QLabel" name="label_4">
+               <property name="text">
+                <string>Pipe area</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Gui::InputField" name="if_manning_area">
+               <property name="text">
+                <string>0 mm^2</string>
+               </property>
+               <property name="unit" stdset="0">
+                <string notr="true">mm^2</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QLabel" name="label_5">
+               <property name="text">
+                <string>Hydraulic radius</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Gui::InputField" name="if_manning_radius">
+               <property name="text">
+                <string>0 mm</string>
+               </property>
+               <property name="unit" stdset="0">
+                <string notr="true">mm</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
+              <widget class="QLabel" name="label_6">
+               <property name="text">
+                <string>Manning coefficient</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QDoubleSpinBox" name="sb_manning_coefficient">
+               <property name="decimals">
+                <number>3</number>
+               </property>
+               <property name="maximum">
+                <double>1.000000000000000</double>
+               </property>
+               <property name="singleStep">
+                <double>0.001000000000000</double>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="page_5">
+          <layout class="QVBoxLayout" name="verticalLayout_6">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <item>
+              <widget class="QLabel" name="label_7">
+               <property name="text">
+                <string>Initial area</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Gui::InputField" name="if_enlarge_area1">
+               <property name="text">
+                <string>0 mm^2</string>
+               </property>
+               <property name="unit" stdset="0">
+                <string notr="true">mm^2</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <item>
+              <widget class="QLabel" name="label_8">
+               <property name="text">
+                <string>Enlarged area</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Gui::InputField" name="if_enlarge_area2">
+               <property name="text">
+                <string>0 mm^2</string>
+               </property>
+               <property name="unit" stdset="0">
+                <string notr="true">mm^2</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="page_6">
+          <layout class="QVBoxLayout" name="verticalLayout_7">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_7">
+             <item>
+              <widget class="QLabel" name="label_10">
+               <property name="text">
+                <string>Initial area</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Gui::InputField" name="if_contract_area1">
+               <property name="text">
+                <string>0 mm^2</string>
+               </property>
+               <property name="unit" stdset="0">
+                <string notr="true">mm^2</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_6">
+             <item>
+              <widget class="QLabel" name="label_9">
+               <property name="text">
+                <string>Contracted area</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Gui::InputField" name="if_contract_area2">
+               <property name="text">
+                <string>0 mm^2</string>
+               </property>
+               <property name="unit" stdset="0">
+                <string notr="true">mm^2</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="page_7">
+          <layout class="QVBoxLayout" name="verticalLayout_13">
+           <item>
+            <widget class="QGroupBox" name="gb_inletpressure">
+             <property name="title">
+              <string>Inlet Pressure</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_9">
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_8">
+                <item>
+                 <widget class="QLabel" name="label_11">
+                  <property name="text">
+                   <string>Pressure</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="Gui::InputField" name="if_inletpressure">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="text">
+                   <string>0 MPa</string>
+                  </property>
+                  <property name="unit" stdset="0">
+                   <string notr="true">MPa</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="gb_inletflowrate">
+             <property name="title">
+              <string>Inlet Mass Flow Rate</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_12">
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_10">
+                <item>
+                 <widget class="QLabel" name="label_13">
+                  <property name="text">
+                   <string>Mass flow rate</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="Gui::InputField" name="if_inletflowrate">
+                  <property name="text">
+                   <string>0 kg/s</string>
+                  </property>
+                  <property name="unit" stdset="0">
+                   <string notr="true">kg/s</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="page_8">
+          <layout class="QVBoxLayout" name="verticalLayout_15">
+           <item>
+            <widget class="QGroupBox" name="gb_outletpressure">
+             <property name="title">
+              <string>Outlet Pressure</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_10">
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_9">
+                <item>
+                 <widget class="QLabel" name="label_12">
+                  <property name="text">
+                   <string>Pressure</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="Gui::InputField" name="if_outletpressure">
+                  <property name="text">
+                   <string>0 MPa</string>
+                  </property>
+                  <property name="unit" stdset="0">
+                   <string notr="true">MPa</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="gb_outletflowrate">
+             <property name="title">
+              <string>Outlet Mass Flow Rate</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_14">
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_11">
+                <item>
+                 <widget class="QLabel" name="label_14">
+                  <property name="text">
+                   <string>Mass flow rate</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="Gui::InputField" name="if_outletflowrate">
+                  <property name="text">
+                   <string>0 kg/s</string>
+                  </property>
+                  <property name="unit" stdset="0">
+                   <string notr="true">kg/s</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="page_9">
+          <layout class="QVBoxLayout" name="verticalLayout_16">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_13">
+             <item>
+              <widget class="QLabel" name="label_15">
+               <property name="text">
+                <string>Pipe area</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Gui::InputField" name="if_entrance_pipe_area">
+               <property name="text">
+                <string>0 mm^2</string>
+               </property>
+               <property name="unit" stdset="0">
+                <string notr="true">mm^2</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_14">
+             <item>
+              <widget class="QLabel" name="label_16">
+               <property name="text">
+                <string>Entrance area</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Gui::InputField" name="if_entrance_area">
+               <property name="text">
+                <string>0 mm^2</string>
+               </property>
+               <property name="unit" stdset="0">
+                <string notr="true">mm^2</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="page_10">
+          <layout class="QVBoxLayout" name="verticalLayout_17">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_15">
+             <item>
+              <widget class="QLabel" name="label_17">
+               <property name="text">
+                <string>Pipe area</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Gui::InputField" name="if_diaphragm_pipe_area">
+               <property name="text">
+                <string>0 mm^2</string>
+               </property>
+               <property name="unit" stdset="0">
+                <string notr="true">mm^2</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_16">
+             <item>
+              <widget class="QLabel" name="label_18">
+               <property name="text">
+                <string>Diaphragm area</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Gui::InputField" name="if_diaphragm_area">
+               <property name="text">
+                <string>0 mm^2</string>
+               </property>
+               <property name="unit" stdset="0">
+                <string notr="true">mm^2</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="page_11">
+          <layout class="QVBoxLayout" name="verticalLayout_18">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_17">
+             <item>
+              <widget class="QLabel" name="label_19">
+               <property name="text">
+                <string>Pipe area</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Gui::InputField" name="if_bend_pipe_area">
+               <property name="text">
+                <string>0 mm^2</string>
+               </property>
+               <property name="unit" stdset="0">
+                <string notr="true">mm^2</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_18">
+             <item>
+              <widget class="QLabel" name="label_20">
+               <property name="text">
+                <string>Bend radius / pipe diameter</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QDoubleSpinBox" name="sb_bradius_pdiameter">
+               <property name="decimals">
+                <number>3</number>
+               </property>
+               <property name="minimum">
+                <double>1.000000000000000</double>
+               </property>
+               <property name="maximum">
+                <double>9999999.000000000000000</double>
+               </property>
+               <property name="singleStep">
+                <double>0.100000000000000</double>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_19">
+             <item>
+              <widget class="QLabel" name="label_21">
+               <property name="text">
+                <string>Bend angle</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QDoubleSpinBox" name="sb_bend_angle">
+               <property name="decimals">
+                <number>3</number>
+               </property>
+               <property name="maximum">
+                <double>360.000000000000000</double>
+               </property>
+               <property name="singleStep">
+                <double>1.000000000000000</double>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_20">
+             <item>
+              <widget class="QLabel" name="label_22">
+               <property name="text">
+                <string>Head loss coefficient</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QDoubleSpinBox" name="sb_bend_loss_coefficient">
+               <property name="decimals">
+                <number>3</number>
+               </property>
+               <property name="maximum">
+                <double>1.000000000000000</double>
+               </property>
+               <property name="singleStep">
+                <double>0.001000000000000</double>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="page_12">
+          <layout class="QVBoxLayout" name="verticalLayout_19">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_21">
+             <item>
+              <widget class="QLabel" name="label_23">
+               <property name="text">
+                <string>Pipe area</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Gui::InputField" name="if_gatevalve_pipe_area">
+               <property name="text">
+                <string>0 mm^2</string>
+               </property>
+               <property name="unit" stdset="0">
+                <string notr="true">mm^2</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_22">
+             <item>
+              <widget class="QLabel" name="label_24">
+               <property name="text">
+                <string>Gate valve closing coefficient</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QDoubleSpinBox" name="sb_gatevalve_closing_coeff">
+               <property name="decimals">
+                <number>3</number>
+               </property>
+               <property name="minimum">
+                <double>0.125000000000000</double>
+               </property>
+               <property name="maximum">
+                <double>1.000000000000000</double>
+               </property>
+               <property name="singleStep">
+                <double>0.100000000000000</double>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="page_13">
+          <layout class="QVBoxLayout" name="verticalLayout_21">
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_20">
+             <item>
+              <widget class="QLabel" name="label_25">
+               <property name="text">
+                <string>Pump characteristic</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QTableWidget" name="tw_pump_characteristics">
+               <row>
+                <property name="text">
+                 <string notr="true">1</string>
+                </property>
+               </row>
+               <row>
+                <property name="text">
+                 <string notr="true">2</string>
+                </property>
+               </row>
+               <row>
+                <property name="text">
+                 <string notr="true">3</string>
+                </property>
+               </row>
+               <row>
+                <property name="text">
+                 <string notr="true">4</string>
+                </property>
+               </row>
+               <row>
+                <property name="text">
+                 <string notr="true">5</string>
+                </property>
+               </row>
+               <column>
+                <property name="text">
+                 <string>Flow rate [mm^3/s]</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Head Loss [mm]</string>
+                </property>
+               </column>
+               <item row="0" column="0">
+                <property name="text">
+                 <string/>
+                </property>
+               </item>
+               <item row="0" column="1">
+                <property name="text">
+                 <string/>
+                </property>
+               </item>
+               <item row="1" column="0">
+                <property name="text">
+                 <string/>
+                </property>
+               </item>
+               <item row="1" column="1">
+                <property name="text">
+                 <string/>
+                </property>
+               </item>
+               <item row="2" column="0">
+                <property name="text">
+                 <string/>
+                </property>
+               </item>
+               <item row="2" column="1">
+                <property name="text">
+                 <string/>
+                </property>
+               </item>
+               <item row="3" column="0">
+                <property name="text">
+                 <string/>
+                </property>
+               </item>
+               <item row="3" column="1">
+                <property name="text">
+                 <string/>
+                </property>
+               </item>
+               <item row="4" column="0">
+                <property name="text">
+                 <string/>
+                </property>
+               </item>
+               <item row="4" column="1">
+                <property name="text">
+                 <string/>
+                </property>
+               </item>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="page_14">
+          <layout class="QVBoxLayout" name="verticalLayout_22">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_23">
+             <item>
+              <widget class="QLabel" name="label_26">
+               <property name="text">
+                <string>Pipe area</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Gui::InputField" name="if_colebrooke_pipe_area">
+               <property name="text">
+                <string>0 mm^2</string>
+               </property>
+               <property name="unit" stdset="0">
+                <string notr="true">mm^2</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_24">
+             <item>
+              <widget class="QLabel" name="label_27">
+               <property name="text">
+                <string>Hydraulic radius</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Gui::InputField" name="if_colebrooke_radius">
+               <property name="text">
+                <string>0 mm</string>
+               </property>
+               <property name="unit" stdset="0">
+                <string notr="true">mm</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_25">
+             <item>
+              <widget class="QLabel" name="label_28">
+               <property name="text">
+                <string>Grain diameter</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Gui::InputField" name="if_colebrooke_grain_diameter">
+               <property name="text">
+                <string>0 mm</string>
+               </property>
+               <property name="unit" stdset="0">
+                <string notr="true">mm</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_26">
+             <item>
+              <widget class="QLabel" name="label_29">
+               <property name="text">
+                <string>Cross section form factor</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QDoubleSpinBox" name="sb_colebrooke_form_factor">
+               <property name="decimals">
+                <number>3</number>
+               </property>
+               <property name="minimum">
+                <double>0.000000000000000</double>
+               </property>
+               <property name="maximum">
+                <double>1.000000000000000</double>
+               </property>
+               <property name="singleStep">
+                <double>0.100000000000000</double>
+               </property>
+               <property name="value">
+                <double>1.000000000000000</double>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page_2">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Gas section parameter</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="cb_gas_section_type"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page_3">
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Open channel section parameter</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="cb_channel_section_type"/>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::InputField</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/InputField.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

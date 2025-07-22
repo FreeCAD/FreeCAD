@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="svg9484"
+   height="64"
+   width="64"
+   sodipodi:docname="Mesh_EvaluateFacet.svg"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="640"
+     inkscape:window-height="619"
+     id="namedview30"
+     showgrid="false"
+     inkscape:zoom="3.6875"
+     inkscape:cx="32"
+     inkscape:cy="32"
+     inkscape:window-x="1076"
+     inkscape:window-y="538"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg9484" />
+  <title
+     id="title3749">Mesh_Add_Facet</title>
+  <defs
+     id="defs9486">
+    <linearGradient
+       id="linearGradient1909">
+      <stop
+         id="stop1905"
+         offset="0"
+         style="stop-color:#4e9a06;stop-opacity:1" />
+      <stop
+         id="stop1907"
+         offset="1"
+         style="stop-color:#8ae234;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient1347">
+      <stop
+         id="stop1343"
+         offset="0"
+         style="stop-color:#4e9a06;stop-opacity:1" />
+      <stop
+         id="stop1345"
+         offset="1"
+         style="stop-color:#8ae234;stop-opacity:1" />
+    </linearGradient>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lstart"
+       refX="0.0"
+       refY="0.0"
+       orient="auto">
+      <path
+         transform="scale(0.8) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:none;stroke-width:1pt;stroke-opacity:1;fill:#8ae234;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path1067" />
+    </marker>
+    <linearGradient
+       id="linearGradient12537">
+      <stop
+         id="stop12539"
+         offset="0"
+         style="stop-color:#00fd00;stop-opacity:1;" />
+      <stop
+         id="stop12541"
+         offset="1"
+         style="stop-color:#00fd00;stop-opacity:0;" />
+    </linearGradient>
+    <linearGradient
+       gradientTransform="translate(35,-2)"
+       gradientUnits="userSpaceOnUse"
+       y2="14.755193"
+       x2="30.5"
+       y1="14.755193"
+       x1="4.5"
+       id="linearGradient12547"
+       xlink:href="#linearGradient12537" />
+    <linearGradient
+       xlink:href="#linearGradient1014"
+       id="linearGradient951"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.47516502,-0.46153841,0.47516502,0.46153841,20.184848,45.625688)"
+       x1="29"
+       y1="47"
+       x2="15"
+       y2="17" />
+    <linearGradient
+       id="linearGradient1014">
+      <stop
+         id="stop1010"
+         offset="0"
+         style="stop-color:#204a87;stop-opacity:1" />
+      <stop
+         id="stop1012"
+         offset="1"
+         style="stop-color:#729fcf;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="-19.181715"
+       x2="11.196301"
+       y1="-1.0932833"
+       x1="25.894817"
+       id="linearGradient1349"
+       xlink:href="#linearGradient1347" />
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="-18.27072"
+       x2="12.52975"
+       y1="0.75593823"
+       x1="23.388866"
+       id="linearGradient1911"
+       xlink:href="#linearGradient1909"
+       gradientTransform="translate(0,32)" />
+    <radialGradient
+       r="12.458333"
+       fy="41.446495"
+       fx="43.783218"
+       cy="41.446495"
+       cx="43.783218"
+       gradientTransform="matrix(1.0434787,1.0434783,-1.6856187,1.6856188,40.630437,-98.746773)"
+       gradientUnits="userSpaceOnUse"
+       id="radialGradient3163-3"
+       xlink:href="#linearGradient3857" />
+    <linearGradient
+       id="linearGradient3857">
+      <stop
+         id="stop3859"
+         offset="0"
+         style="stop-color:#34e0e2;stop-opacity:1" />
+      <stop
+         id="stop3861"
+         offset="1"
+         style="stop-color:#06989a;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient
+       r="15.644737"
+       fy="36.421127"
+       fx="24.837126"
+       cy="36.421127"
+       cx="24.837126"
+       gradientTransform="matrix(0.98996505,0,0,0.35413451,-47.950702,-44.576876)"
+       gradientUnits="userSpaceOnUse"
+       id="radialGradient1503-3"
+       xlink:href="#linearGradient2269" />
+    <linearGradient
+       id="linearGradient2269">
+      <stop
+         id="stop5538"
+         offset="0"
+         style="stop-color:#000000;stop-opacity:1;" />
+      <stop
+         id="stop5540"
+         offset="1"
+         style="stop-color:#000000;stop-opacity:0;" />
+    </linearGradient>
+  </defs>
+  <metadata
+     id="metadata9489">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="https://www.gnu.org/copyleft/lesser.html" />
+        <dc:title>Mesh_Add_Facet</dc:title>
+        <dc:description>Triangular mesh face</dc:description>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>Icon based on a wmayer' s design</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>mesh</rdf:li>
+            <rdf:li>triangle</rdf:li>
+            <rdf:li>face</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:relation />
+        <dc:identifier />
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:date>11-06-2020</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[bitacovir]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="g270">
+    <path
+       id="path1903"
+       d="M 7.1155185,6.761271 56.894347,19.026657 4,51 Z"
+       style="fill:url(#linearGradient1911);fill-opacity:1"
+       inkscape:connector-curvature="0" />
+    <path
+       id="path1049"
+       d="M 59.924202,18.245069 4,51 5.4759648,4.826274 Z"
+       style="fill:none;stroke:#172a04;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#8ae234;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 8.3067602,8.631606 7.1698014,45.640775 52.021666,19.397909 Z"
+       id="path1338"
+       inkscape:connector-curvature="0" />
+    <g
+       id="g311"
+       transform="matrix(0.76377729,0,0,0.8010515,16.304747,13.759341)">
+      <ellipse
+         style="opacity:0.20499998;fill:url(#radialGradient3163-3);fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:2.03999996;stroke-opacity:1"
+         id="path3055-5"
+         cx="23.454304"
+         cy="23.803055"
+         rx="21"
+         ry="20.999998" />
+      <path
+         inkscape:connector-curvature="0"
+         style="fill:#babdb6;fill-opacity:1;stroke:#042a2a;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dashoffset:2.03999996;stroke-opacity:1"
+         d="m 32.13132,39.304207 7.172892,-7.172891 21.518673,21.518702 -7.172891,7.172868 z"
+         id="rect3057" />
+      <path
+         inkscape:connector-curvature="0"
+         style="fill:none;stroke:#eeeeec;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="M 58.680934,54.332829 40.748706,36.40061"
+         id="path3865" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path3055"
+         d="M 24,3 A 21,20.999998 0 0 0 3,24 21,20.999998 0 0 0 24,45 21,20.999998 0 0 0 45,24 21,20.999998 0 0 0 24,3 Z m -0.01563,5.255859 a 16,16 0 0 1 16,16 16,16 0 0 1 -16,16 16,16 0 0 1 -16,-16 16,16 0 0 1 16,-16 z"
+         style="fill:#eeeeec;fill-opacity:1;stroke:#042a2a;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:2.03999996;stroke-opacity:1" />
+      <circle
+         style="fill:none;stroke:#babdb6;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:2.03999996;stroke-opacity:1"
+         id="path3055-1"
+         cx="23.999359"
+         cy="23.999367"
+         r="19" />
+      <ellipse
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;opacity:0.25500039;fill:url(#radialGradient1503-3);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;marker:none"
+         id="path8660"
+         transform="scale(-1)"
+         cx="-23.362816"
+         cy="-31.678894"
+         rx="15.487742"
+         ry="5.5403438" />
+    </g>
+  </g>
+</svg>

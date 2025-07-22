@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ButtonMap DeviceName="Default">
+   <Mapping>
+      <Map Description="1"             KeyCode="0"  DownTime="short" Command=""/>
+      <Map Description="2"             KeyCode="1"  DownTime="short" Command=""/>
+      <Map Description="3"             KeyCode="2"  DownTime="short" Command=""/>
+      <Map Description="4"             KeyCode="3"  DownTime="short" Command=""/>
+      <Map Description="5"             KeyCode="4"  DownTime="short" Command=""/>
+      <Map Description="6"             KeyCode="5"  DownTime="short" Command=""/>
+      <Map Description="7"             KeyCode="6"  DownTime="short" Command=""/>
+      <Map Description="8"             KeyCode="7"  DownTime="short" Command=""/>
+      <Map Description="9"             KeyCode="8"  DownTime="short" Command=""/>
+      <Map Description="10"            KeyCode="9"  DownTime="short" Command=""/>
+      <Map Description="11"            KeyCode="10" DownTime="short" Command=""/>
+      <Map Description="12"            KeyCode="11" DownTime="short" Command=""/>
+      <Map Description="13"            KeyCode="12" DownTime="short" Command=""/>
+      <Map Description="14"            KeyCode="13" DownTime="short" Command=""/>
+      <Map Description="15"            KeyCode="14" DownTime="short" Command=""/>
+      <Map Description="16"            KeyCode="15" DownTime="short" Command=""/>
+      <Map Description="17"            KeyCode="16" DownTime="short" Command=""/>
+      <Map Description="18"            KeyCode="17" DownTime="short" Command=""/>
+      <Map Description="19"            KeyCode="18" DownTime="short" Command=""/>
+      <Map Description="20"            KeyCode="19" DownTime="short" Command=""/>
+      <Map Description="21"            KeyCode="20" DownTime="short" Command=""/>
+      <Map Description="22"            KeyCode="21" DownTime="short" Command=""/>
+      <Map Description="23"            KeyCode="22" DownTime="short" Command=""/>
+      <Map Description="24"            KeyCode="23" DownTime="short" Command=""/>
+      <Map Description="25"            KeyCode="24" DownTime="short" Command=""/>
+      <Map Description="26"            KeyCode="25" DownTime="short" Command=""/>
+      <Map Description="27"            KeyCode="26" DownTime="short" Command=""/>
+      <Map Description="28"            KeyCode="27" DownTime="short" Command=""/>
+      <Map Description="29"            KeyCode="28" DownTime="short" Command=""/>
+      <Map Description="30"            KeyCode="29" DownTime="short" Command=""/>
+      <Map Description="31"            KeyCode="30" DownTime="short" Command=""/>
+   </Mapping>
+</ButtonMap>
+
+<ButtonMap DeviceName="SpaceExplorer">
+   <Mapping>
+      <Map Description="1"             KeyCode="0"  DownTime="short" Command=""/>
+      <Map Description="2"             KeyCode="1"  DownTime="short" Command=""/>
+      <Map Description="Top"           KeyCode="2"  DownTime="short" Command="Std_ViewTop"/>
+      <Map Description="Left"          KeyCode="3"  DownTime="short" Command="Std_ViewLeft"/>
+      <Map Description="Right"         KeyCode="4"  DownTime="short" Command="Std_ViewRight"/>
+      <Map Description="Front"         KeyCode="5"  DownTime="short" Command="Std_ViewFront"/>
+      <Map Description="ESC"           KeyCode="6"  DownTime="short" Command=""/>
+      <Map Description="ALT"           KeyCode="7"  DownTime="short" Command=""/>
+      <Map Description="SHIFT"         KeyCode="8"  DownTime="short" Command=""/>
+      <Map Description="CTRL"          KeyCode="9"  DownTime="short" Command=""/>
+      <Map Description="Fit"           KeyCode="10" DownTime="short" Command="Std_ViewFitAll"/>
+      <Map Description="PANEL"         KeyCode="11" DownTime="short" Command=""/>
+      <Map Description="+"             KeyCode="12" DownTime="short" Command=""/>
+      <Map Description="-"             KeyCode="13" DownTime="short" Command=""/>
+      <Map Description="2D"            KeyCode="14" DownTime="short" Command="Std_ViewHome"/>
+   </Mapping>
+</ButtonMap>
+
+<ButtonMap DeviceName="SpaceNavigator">
+   <Mapping>
+      <Map Description="1"             KeyCode="0"  DownTime="short" Command="Std_ViewHome"/>
+      <Map Description="2"             KeyCode="1"  DownTime="short" Command="Std_ViewFitAll"/>
+   </Mapping>
+</ButtonMap>
+
+<ButtonMap DeviceName="SpacePilot">
+   <Mapping>
+      <Map Description="1"             KeyCode="0"  DownTime="short" Command=""/>
+      <Map Description="2"             KeyCode="1"  DownTime="short" Command=""/>
+      <Map Description="3"             KeyCode="2"  DownTime="short" Command=""/>
+      <Map Description="4"             KeyCode="3"  DownTime="short" Command=""/>
+      <Map Description="5"             KeyCode="4"  DownTime="short" Command=""/>
+      <Map Description="6"             KeyCode="5"  DownTime="short" Command=""/>
+      <Map Description="Top"           KeyCode="6"  DownTime="short" Command="Std_ViewTop"/>
+      <Map Description="Left"          KeyCode="7"  DownTime="short" Command="Std_ViewLeft"/>
+      <Map Description="Right"         KeyCode="8"  DownTime="short" Command="Std_ViewRight"/>
+      <Map Description="Front"         KeyCode="9"  DownTime="short" Command="Std_ViewFront"/>
+      <Map Description="ESC"           KeyCode="10" DownTime="short" Command=""/>
+      <Map Description="ALT"           KeyCode="11" DownTime="short" Command=""/>
+      <Map Description="SHIFT"         KeyCode="12" DownTime="short" Command=""/>
+      <Map Description="CTRL"          KeyCode="13" DownTime="short" Command=""/>
+      <Map Description="Fit"           KeyCode="14" DownTime="short" Command="Std_ViewFitAll"/>
+      <Map Description="PANEL"         KeyCode="15" DownTime="short" Command=""/>
+      <Map Description="+"             KeyCode="16" DownTime="short" Command=""/>
+      <Map Description="-"             KeyCode="17" DownTime="short" Command=""/>
+      <Map Description="Dom"           KeyCode="18" DownTime="short" Command=""/>
+      <Map Description="3D"            KeyCode="19" DownTime="short" Command="Std_ViewIsometric"/>
+      <Map Description="CONFIG"        KeyCode="20" DownTime="short" Command=""/>
+   </Mapping>
+</ButtonMap>
+
+<ButtonMap DeviceName="SpacePilot Pro">
+   <Mapping>
+      <Map Description="Menu"          KeyCode="0"  DownTime="short" Command=""/>
+      <Map Description="Fit"           KeyCode="1"  DownTime="short" Command="Std_ViewFitAll"/>
+      <Map Description="Top"           KeyCode="2"  DownTime="short" Command="Std_ViewTop"/>
+      <Map Description="Left"          KeyCode="3"  DownTime="long"  Command="Std_ViewLeft"/>
+      <Map Description="Right"         KeyCode="4"  DownTime="short" Command="Std_ViewRight"/>
+      <Map Description="Front"         KeyCode="5"  DownTime="short" Command="Std_ViewFront"/>
+      <Map Description="Bottom"        KeyCode="6"  DownTime="long"  Command="Std_ViewBottom"/>
+      <Map Description="Rear"          KeyCode="7"  DownTime="long"  Command="Std_ViewRear"/>
+      <Map Description="Clockwise"     KeyCode="8"  DownTime="short" Command="Std_ViewRotateRight"/>
+      <Map Description="AntiClockwise" KeyCode="9"  DownTime="long"  Command="Std_ViewRotateLeft"/>
+      <Map Description="ISO1"          KeyCode="10" DownTime="short" Command="Std_ViewIsometric"/>
+      <Map Description="ISO2"          KeyCode="11" DownTime="long"  Command="Std_ViewDimetric"/>
+      <Map Description="1"             KeyCode="12" DownTime="short" Command=""/>
+      <Map Description="2"             KeyCode="13" DownTime="short" Command=""/>
+      <Map Description="3"             KeyCode="14" DownTime="short" Command=""/>
+      <Map Description="4"             KeyCode="15" DownTime="short" Command=""/>
+      <Map Description="5"             KeyCode="16" DownTime="short" Command=""/>
+      <Map Description="6"             KeyCode="17" DownTime="long"  Command=""/>
+      <Map Description="7"             KeyCode="18" DownTime="long"  Command=""/>
+      <Map Description="8"             KeyCode="19" DownTime="long"  Command=""/>
+      <Map Description="9"             KeyCode="20" DownTime="long"  Command=""/>
+      <Map Description="10"            KeyCode="21" DownTime="long"  Command=""/>
+      <Map Description="ESC"           KeyCode="22" DownTime="short" Command=""/>
+      <Map Description="ALT"           KeyCode="23" DownTime="short" Command=""/>
+      <Map Description="SHIFT"         KeyCode="24" DownTime="short" Command=""/>
+      <Map Description="CTRL"          KeyCode="25" DownTime="short" Command=""/>
+      <Map Description="Rotation"      KeyCode="26" DownTime="short" Command=""/>
+      <Map Description="PanAndZoom"    KeyCode="27" DownTime="short" Command=""/>
+      <Map Description="Dominant"      KeyCode="28" DownTime="short" Command=""/>
+      <Map Description="Plus"          KeyCode="29" DownTime="short" Command=""/>
+      <Map Description="Minus"         KeyCode="30" DownTime="short" Command=""/>
+   </Mapping>
+</ButtonMap>
+
+<ButtonMap DeviceName="SpaceMouse Pro">
+   <Mapping>
+      <Map Description="Menu"          KeyCode="0"  DownTime="short" Command=""/>
+      <Map Description="Fit"           KeyCode="1"  DownTime="short" Command="Std_ViewFitAll"/>
+      <Map Description="Top"           KeyCode="2"  DownTime="short" Command="Std_ViewTop"/>
+      <Map Description=""              KeyCode="3"  DownTime="short" Command=""/>
+      <Map Description="Right"         KeyCode="4"  DownTime="short" Command="Std_ViewRight"/>
+      <Map Description="Front"         KeyCode="5"  DownTime="short" Command="Std_ViewFront"/>
+      <Map Description=""              KeyCode="6"  DownTime="short" Command=""/>
+      <Map Description=""              KeyCode="7"  DownTime="short" Command=""/>
+      <Map Description="Clockwise"     KeyCode="8"  DownTime="short" Command=""/>
+      <Map Description=""              KeyCode="9"  DownTime="short" Command=""/>
+      <Map Description=""              KeyCode="10" DownTime="short" Command=""/>
+      <Map Description=""              KeyCode="11" DownTime="short" Command=""/>
+      <Map Description="1"             KeyCode="12" DownTime="short" Command=""/>
+      <Map Description="2"             KeyCode="13" DownTime="short" Command=""/>
+      <Map Description="3"             KeyCode="14" DownTime="short" Command=""/>
+      <Map Description="4"             KeyCode="15" DownTime="short" Command=""/>
+      <Map Description=""              KeyCode="16" DownTime="short" Command=""/>
+      <Map Description=""              KeyCode="17" DownTime="short" Command=""/>
+      <Map Description=""              KeyCode="18" DownTime="short" Command=""/>
+      <Map Description=""              KeyCode="19" DownTime="short" Command=""/>
+      <Map Description=""              KeyCode="20" DownTime="short" Command=""/>
+      <Map Description=""              KeyCode="21" DownTime="short" Command=""/>
+      <Map Description="ESC"           KeyCode="22" DownTime="short" Command=""/>
+      <Map Description="ALT"           KeyCode="23" DownTime="short" Command=""/>
+      <Map Description="SHIFT"         KeyCode="24" DownTime="short" Command=""/>
+      <Map Description="CTRL"          KeyCode="25" DownTime="short" Command=""/>
+      <Map Description="RotationLock"  KeyCode="26" DownTime="short" Command=""/>
+   </Mapping>
+</ButtonMap>
+
+<ButtonMap DeviceName="SpaceMouse Enterprise">
+   <Mapping>
+      <Map Description="Menu"          KeyCode="0"  DownTime="short" Command=""/>
+      <Map Description="Fit"           KeyCode="1"  DownTime="short" Command=""/>
+      <Map Description="Top"           KeyCode="2"  DownTime="short" Command=""/>
+      <Map Description="Bottom"        KeyCode="3"  DownTime="long"  Command=""/>
+      <Map Description="Right"         KeyCode="4"  DownTime="short" Command=""/>
+      <Map Description="Left"          KeyCode="5"  DownTime="long"  Command=""/>
+      <Map Description="Front"         KeyCode="6"  DownTime="short" Command=""/>
+      <Map Description="Rear"          KeyCode="7"  DownTime="long"  Command=""/>
+      <Map Description="Clockwise"     KeyCode="8"  DownTime="short" Command=""/>
+      <Map Description="AntiClockwise" KeyCode="9"  DownTime="long"  Command=""/>
+      <Map Description="ISO1"          KeyCode="10" DownTime="short" Command=""/>
+      <Map Description="ISO2"          KeyCode="11" DownTime="long"  Command=""/>
+      <Map Description="1"             KeyCode="12" DownTime="short" Command=""/>
+      <Map Description="2"             KeyCode="13" DownTime="short" Command=""/>
+      <Map Description="3"             KeyCode="14" DownTime="short" Command=""/>
+      <Map Description="4"             KeyCode="15" DownTime="short" Command=""/>
+      <Map Description="5"             KeyCode="16" DownTime="short" Command=""/>
+      <Map Description="6"             KeyCode="17" DownTime="short" Command=""/>
+      <Map Description="7"             KeyCode="18" DownTime="short" Command=""/>
+      <Map Description="8"             KeyCode="19" DownTime="short" Command=""/>
+      <Map Description="9"             KeyCode="20" DownTime="short" Command=""/>
+      <Map Description="10"            KeyCode="21" DownTime="short" Command=""/>
+      <Map Description="11"            KeyCode="22" DownTime="short" Command=""/>
+      <Map Description="12"            KeyCode="23" DownTime="short" Command=""/>
+      <Map Description="ESC"           KeyCode="24" DownTime="short" Command=""/>
+      <Map Description="ALT"           KeyCode="25" DownTime="short" Command=""/>
+      <Map Description="SHIFT"         KeyCode="26" DownTime="short" Command=""/>
+      <Map Description="CTRL"          KeyCode="27" DownTime="short" Command=""/>
+      <Map Description="ENTER"         KeyCode="28" DownTime="short" Command=""/>
+      <Map Description="DELETE"        KeyCode="29" DownTime="short" Command=""/>
+      <Map Description="TAB"           KeyCode="30" DownTime="short" Command=""/>
+      <Map Description="SPACE"         KeyCode="31" DownTime="short" Command=""/>
+   </Mapping>
+</ButtonMap>

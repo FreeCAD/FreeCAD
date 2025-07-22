@@ -1,0 +1,137 @@
+Gui--DockWnd--ReportOutput,
+Gui--TaskView--TaskView QScrollArea {
+  border: none;
+ }
+
+ QTabWidget::pane{
+   background-color: transparent;
+   border: transparent;
+ }
+
+ QAbstractItemView {
+   alternate-background-color: rgba(0, 0, 0, 0.119);
+   color: #ffffff;
+   border: 1px solid #252525;
+ }
+
+ Gui--OverlayTitleBar,
+ Gui--OverlaySplitterHandle {
+   background-color: #252525;
+ }
+
+ /* The OverlayTabWidget is named as OverlayLeft, OverlayRight, OverlayTop, OverlayBottom.
+ To customize for each overlay docking site, use the following selector
+
+ Gui--OverlayTabWidget#OverlayLeft {}
+ */
+
+ Gui--OverlayTabWidget {
+   qproperty-effectColor: rgba(25, 25, 25, 220);
+   qproperty-effectBlurRadius: 0;
+   qproperty-effectOffsetX: 0;
+   qproperty-effectOffsetY: 0;
+   qproperty-effectWidth: 1;
+   qproperty-effectHeight: 1;
+   qproperty-enableEffect: 1;
+ }
+
+  Gui--OverlayTabWidget#OverlayBottom {
+   qproperty-effectColor: rgba(100, 100, 100, 220);
+   qproperty-effectBlurRadius: 0;
+   qproperty-effectOffsetX: 0.0;
+   qproperty-effectOffsetY: 0.0;
+   qproperty-effectWidth: 1;
+   qproperty-effectHeight: 1;
+   qproperty-enableEffect: 1;
+ }
+
+Gui--PropertyEditor--PropertyEditor {
+  qproperty-itemBackground: #333333;
+}
+
+ Gui--OverlayTabWidget::pane {
+   background-color: transparent;
+   border: transparent;
+ }
+
+ QSint--ActionGroup QFrame[class="content"] {
+   border-bottom-left-radius: 5px;
+   border-bottom-right-radius: 5px;
+ }
+
+ Gui--OverlayTabWidget::tab-bar:top,
+ Gui--OverlayTabWidget::tab-bar:bottom {
+     left: 10px;
+     alignment: left;
+ }
+
+ Gui--OverlayTabWidget::tab-bar:left,
+ Gui--OverlayTabWidget::tab-bar:right {
+     top: 10px;
+     alignment: top;
+ }
+
+ Gui--OverlayProxyWidget {
+   qproperty-hintColor: rgba(250, 250, 250, 0.6);
+ }
+
+ Gui--OverlayToolButton {
+  border: 1px solid transparent;
+  border-radius: 2px;
+}
+
+Gui--OverlayToolButton:hover {
+  border: 1px solid #000000;
+  background: #000000;
+  border-radius: 2px;
+}
+
+Gui--OverlayToolButton:focus {
+  border: 1px solid #0099ff;
+  border-radius: 2px;
+}
+
+Gui--OverlayToolButton::pressed,
+Gui--OverlayToolButton:checked {
+  border: 1px solid #696969;
+  border-radius: 2px;
+  background-color: #696969;
+}
+
+Gui--OverlayToolButton:checked:hover {
+  border: 1px solid #000000;
+  background: #000000;
+}
+
+Gui--OverlayToolButton{
+  image: url(qss:images_classic/close-lightgray.png) ;
+}
+
+Gui--OverlayToolButton:hover {
+  image: url(qss:images_classic/close-red.png) ;
+}
+
+Gui--OverlayToolButton[objectName="OBTN Transparent"] {
+  image: url(qss:images_classic/transparent-lightgray.png) ;
+  }
+
+Gui--OverlayToolButton[objectName="OBTN Transparent"]:hover {
+  image: url(qss:images_classic/transparent-white.png) ;
+}
+
+Gui--OverlayToolButton[objectName="OBTN Overlay"] {
+  image: url(qss:images_classic/overlay-lightgray.png) ;
+}
+
+Gui--OverlayToolButton[objectName="OBTN Overlay"]:hover {
+  image: url(qss:images_classic/overlay-white.png) ;
+}
+
+Gui--OverlayToolButton[objectName="OBTN AutoMode"] {
+  image: url(qss:images_classic/mode-lightgray.png) ;
+}
+
+Gui--OverlayToolButton[objectName="OBTN AutoMode"]:hover {
+  image: url(qss:images_classic/mode-white.png) ;
+}
+

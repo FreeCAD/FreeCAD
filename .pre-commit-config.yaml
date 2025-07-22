@@ -1,0 +1,71 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+files: |
+    (?x)^(
+        .github|
+        src/Base|
+        src/Main|
+        src/Tools|
+        tests/src|
+        src/Mod/Assembly|
+        src/Mod/CAM|
+        src/Mod/Cloud|
+        src/Mod/Fem|
+        src/Mod/Help|
+        src/Mod/Import|
+        src/Mod/Inspection|
+        src/Mod/JtReader|
+        src/Mod/Measure|
+        src/Mod/Mesh|
+        src/Mod/MeshPart|
+        src/Mod/Plot|
+        src/Mod/Points|
+        src/Mod/ReverseEngineering|
+        src/Mod/Robot|
+        src/Mod/Show|
+        src/Mod/Sketcher|
+        src/Mod/Spreadsheet|
+        src/Mod/Start|
+        src/Mod/Surface|
+        src/Mod/Test|
+        src/Mod/Tux|
+        src/Mod/Web
+    )
+exclude: |
+    (?x)^(
+        .*vcproj.*|
+        .*vcxproj.*|
+        src/App/ExpressionParser.tab.c|
+        src/App/ExpressionParser.tab.h|
+        src/App/ExpressionParser.y|
+        src/App/lex.ExpressionParser.c|
+        src/Gui/3Dconnexion/navlib|
+        src/Gui/QSint|
+        src/Gui/Quarter|
+        src/Mod/Import/App/SCL|
+        src/Mod/Import/App/SCL_output|
+        src/Mod/Mesh/App/TestData|
+        src/Mod/Mesh/App/WildMagic4|
+        src/Mod/Robot/App/kdl_cp|
+        src/Mod/Robot/Lib
+    )
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: cef0300fd0fc4d2a87a85fa2093c6b283ea36f4b # frozen: v5.0.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: check-added-large-files
+    -   id: mixed-line-ending
+-   repo: https://github.com/psf/black
+    rev: 8a737e727ac5ab2f1d4cf5876720ed276dc8dc4b  # frozen: 25.1.0
+    hooks:
+        -   id: black
+            args: ['--line-length', '100']
+-   repo: https://github.com/pre-commit/mirrors-clang-format
+    rev: 182152eb8c5ce1cf5299b956b04392c86bd8a126  # frozen: v20.1.8
+    hooks:
+        -   id: clang-format

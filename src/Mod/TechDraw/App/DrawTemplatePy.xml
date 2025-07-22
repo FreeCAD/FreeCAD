@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="DocumentObjectPy"
+    Name="DrawTemplatePy"
+    Twin="DrawTemplate"
+    TwinPointer="DrawTemplate"
+    Include="Mod/TechDraw/App/DrawTemplate.h"
+    Namespace="TechDraw"
+    FatherInclude="App/DocumentObjectPy.h"
+    FatherNamespace="App">
+    <Documentation>
+      <Author Licence="LGPL" Name="Luke Parry" EMail="l.parry@warwick.ac.uk" />
+      <UserDocu>Feature for creating and manipulating Technical Drawing Templates</UserDocu>
+    </Documentation>
+  </PythonExport>
+</GenerateModel>

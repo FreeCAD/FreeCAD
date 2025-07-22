@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="PyObjectBase"
+      Name="FacetPy"
+      Twin="Facet"
+      TwinPointer="Facet"
+      Include="Mod/Mesh/App/Facet.h"
+      FatherInclude="Base/PyObjectBase.h"
+      Namespace="Mesh"
+      Constructor="true"
+      Delete="true"
+      FatherNamespace="Base">
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
+		<DeveloperDocu>Facet in a Mesh</DeveloperDocu>
+		<UserDocu>Facet in mesh
+This is a facet in a MeshObject. You can get it by e.g. iterating a
+mesh. The facet has a connection to its mesh and allows therefore
+topological operations. It is also possible to create an unbounded facet e.g. to create
+a mesh. In this case the topological operations will fail. The same is
+when you cut the bound to the mesh by calling unbound().
+		</UserDocu>
+	</Documentation>
+	  <Methode Name="unbound">
+		  <Documentation>
+			  <UserDocu>method unbound()
+Cut the connection to a MeshObject. The facet becomes
+free and is more or less a simple facet.
+After calling unbound() no topological operation will
+work!
+			  </UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="intersect">
+		  <Documentation>
+			  <UserDocu>intersect(Facet) -> list
+Get a list of intersection points with another triangle.
+			  </UserDocu>
+		  </Documentation>
+	  </Methode>
+      <Methode Name="isDegenerated">
+          <Documentation>
+              <UserDocu>isDegenerated([float]) -> boolean
+Returns true if the facet is degenerated, otherwise false.
+              </UserDocu>
+          </Documentation>
+      </Methode>
+      <Methode Name="isDeformed">
+          <Documentation>
+              <UserDocu>isDegenerated(MinAngle, MaxAngle) -> boolean
+Returns true if the facet is deformed, otherwise false.
+A triangle is considered deformed if an angle is less than MinAngle
+or higher than MaxAngle.
+The two angles are given in radian.
+              </UserDocu>
+          </Documentation>
+      </Methode>
+      <Methode Name="getEdge">
+          <Documentation>
+              <UserDocu>getEdge(int) -> Edge
+Returns the edge of the facet.
+              </UserDocu>
+          </Documentation>
+      </Methode>
+      <Attribute Name="Index" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>The index of this facet in the MeshObject</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Index" Type="Long"/>
+	  </Attribute>
+	  <Attribute Name="Bound" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Bound state of the facet</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Bound" Type="Boolean"/>
+	  </Attribute>
+	  <Attribute Name="Normal" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>Normal vector of the facet.</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Normal" Type="Object"/>
+	  </Attribute>
+	  <Attribute Name="Points" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>A list of points of the facet</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Points" Type="List"/>
+	  </Attribute>
+	  <Attribute Name="PointIndices" ReadOnly="true">
+		  <Documentation>
+			  <UserDocu>The index tuple of point vertices of the mesh this facet is built of</UserDocu>
+		  </Documentation>
+		  <Parameter Name="PointIndices" Type="Tuple"/>
+	  </Attribute>
+		<Attribute Name="NeighbourIndices" ReadOnly="true">
+			<Documentation>
+				<UserDocu>The index tuple of neighbour facets of the mesh this facet is adjacent with</UserDocu>
+			</Documentation>
+			<Parameter Name="NeighbourIndices" Type="Tuple"/>
+		</Attribute>
+        <Attribute Name="Area" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The area of the facet</UserDocu>
+            </Documentation>
+            <Parameter Name="Area" Type="Float"/>
+        </Attribute>
+        <Attribute Name="AspectRatio" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The aspect ratio of the facet computed by longest edge and its height</UserDocu>
+            </Documentation>
+            <Parameter Name="AspectRatio" Type="Float"/>
+        </Attribute>
+        <Attribute Name="AspectRatio2" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The aspect ratio of the facet computed by radius of circum-circle and in-circle</UserDocu>
+            </Documentation>
+            <Parameter Name="AspectRatio2" Type="Float"/>
+        </Attribute>
+        <Attribute Name="Roundness" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The roundness of the facet</UserDocu>
+            </Documentation>
+            <Parameter Name="Roundness" Type="Float"/>
+        </Attribute>
+        <Attribute Name="CircumCircle" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The center and radius of the circum-circle</UserDocu>
+            </Documentation>
+            <Parameter Name="CircumCircle" Type="Tuple"/>
+        </Attribute>
+        <Attribute Name="InCircle" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The center and radius of the in-circle</UserDocu>
+            </Documentation>
+            <Parameter Name="InCircle" Type="Tuple"/>
+        </Attribute>
+    </PythonExport>
+</GenerateModel>

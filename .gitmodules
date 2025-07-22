@@ -1,0 +1,12 @@
+[submodule "src/3rdParty/OndselSolver"]
+	path = src/3rdParty/OndselSolver
+	url = https://github.com/FreeCAD/OndselSolver.git
+[submodule "tests/lib"]
+	path = tests/lib
+	url = https://github.com/google/googletest
+[submodule "src/3rdParty/GSL"]
+	path = src/3rdParty/GSL
+	url = https://github.com/microsoft/GSL
+[submodule "src/Mod/AddonManager"]
+	path = src/Mod/AddonManager
+	url = https://github.com/FreeCAD/AddonManager.git

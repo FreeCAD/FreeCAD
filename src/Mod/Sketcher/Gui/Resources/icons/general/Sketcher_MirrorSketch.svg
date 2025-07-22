@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg width="64px" height="64px" id="svg5821" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs id="defs5823">
+    <linearGradient id="linearGradient6349">
+      <stop style="stop-color:#000000;stop-opacity:1" offset="0" id="stop6351" />
+      <stop style="stop-color:#000000;stop-opacity:0" offset="1" id="stop6353" />
+    </linearGradient>
+    <linearGradient id="linearGradient3377">
+      <stop style="stop-color:#0019a3;stop-opacity:1" offset="0" id="stop3379" />
+      <stop style="stop-color:#0069ff;stop-opacity:1" offset="1" id="stop3381" />
+    </linearGradient>
+    <linearGradient xlink:href="#linearGradient3377" id="linearGradient3383" x1="901.1875" y1="1190.875" x2="1267.9062" y2="1190.875" gradientUnits="userSpaceOnUse" gradientTransform="matrix(-1,0,0,1,2199.356,0)" />
+    <radialGradient xlink:href="#linearGradient6349" id="radialGradient6355" cx="1103.6399" cy="1424.4465" fx="1103.6399" fy="1424.4465" r="194.40614" gradientTransform="matrix(-1.4307499,-1.3605156e-7,-1.202713e-8,0.1264801,2674.7488,1244.2826)" gradientUnits="userSpaceOnUse" />
+    <linearGradient gradientTransform="matrix(1,0,0,0.5757573,-365.5337,605.49565)" xlink:href="#linearGradient3768-4" id="linearGradient3774-9" x1="1178.153" y1="1453.8708" x2="1105.0463" y2="1059.0945" gradientUnits="userSpaceOnUse" />
+    <linearGradient id="linearGradient3768-4">
+      <stop style="stop-color:#cc0000;stop-opacity:1" offset="0" id="stop3770-8" />
+      <stop style="stop-color:#ef2929;stop-opacity:1" offset="1" id="stop3772-8" />
+    </linearGradient>
+  </defs>
+  <metadata id="metadata5826">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[Abdullah Tahiri]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:date>2015-08-19</dc:date>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Sketcher/Gui/Resources/icons/Sketcher_MirrorSketch.svg</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g id="layer1">
+    <g id="g3360" transform="matrix(0.1367863,0,0,0.1367863,-119.15519,-134.86962)">
+      <rect style="color:#000000;fill:none;stroke:#a40000;stroke-width:43.86404037;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" id="rect3860-36" width="204.69887" height="116.97069" x="951.52222" y="1051.7839" />
+      <path style="color:#000000;fill:none;stroke:#a40000;stroke-width:10.40140915;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" id="path3862-7" d="m 48.363636,33.272728 c 0,10.041541 -8.140277,18.181818 -18.181818,18.181818 C 20.140277,51.454546 12,43.314269 12,33.272728 12,23.231187 20.140277,15.09091 30.181818,15.09091 c 10.041541,0 18.181818,8.140277 18.181818,18.181818 z" transform="matrix(4.4229577,0,0,4.0208706,1044.6602,961.86255)" />
+      <rect style="color:#000000;fill:none;stroke:#ef2929;stroke-width:14.62134361;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" id="rect3860-3" width="204.69887" height="116.97153" x="951.52222" y="1051.7831" />
+      <path style="color:#000000;fill:none;stroke:#ef2929;stroke-width:3.46713686;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" id="path3862-6" d="m 48.363636,33.272728 c 0,10.041541 -8.140277,18.181818 -18.181818,18.181818 C 20.140277,51.454546 12,43.314269 12,33.272728 12,23.231187 20.140277,15.09091 30.181818,15.09091 c 10.041541,0 18.181818,8.140277 18.181818,18.181818 z" transform="matrix(4.4229575,0,0,4.0208705,1044.6602,961.86255)" />
+      <g id="g3187" transform="matrix(1,0,0,-1,438.64043,2717.6642)">
+        <rect y="1329.5896" x="512.88171" height="116.97055" width="204.69887" id="rect3860-36-1" style="color:#000000;fill:none;stroke:#a40000;stroke-width:43.86404037;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+        <path transform="matrix(4.4229577,0,0,4.0208706,606.01966,1239.6681)" d="m 48.363636,33.272728 c 0,10.041541 -8.140277,18.181818 -18.181818,18.181818 C 20.140277,51.454546 12,43.314269 12,33.272728 12,23.231187 20.140277,15.09091 30.181818,15.09091 c 10.041541,0 18.181818,8.140277 18.181818,18.181818 z" id="path3862-7-6" style="color:#000000;fill:none;stroke:#a40000;stroke-width:10.40140915;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+        <rect y="1329.5887" x="512.88171" height="116.97141" width="204.69887" id="rect3860-3-8" style="color:#000000;fill:none;stroke:#ef2929;stroke-width:14.62134361;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+        <path transform="matrix(4.4229575,0,0,4.0208705,606.01966,1239.6681)" d="m 48.363636,33.272728 c 0,10.041541 -8.140277,18.181818 -18.181818,18.181818 C 20.140277,51.454546 12,43.314269 12,33.272728 12,23.231187 20.140277,15.09091 30.181818,15.09091 c 10.041541,0 18.181818,8.140277 18.181818,18.181818 z" id="path3862-6-5" style="color:#000000;fill:none;stroke:#ef2929;stroke-width:3.46713686;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      </g>
+      <path style="fill:none;stroke:#204a87;stroke-width:5.99999996;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:5.99999996, 11.99999993;stroke-dashoffset:2.99999998" d="M 4.9999998,32 58.999999,32" id="path3200" transform="matrix(7.3106737,0,0,7.3106737,871.10471,985.98778)" />
+      <path style="fill:none;stroke:#729fcf;stroke-width:14.62134731;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:43.86404165, 87.72808337;stroke-dashoffset:21.93202082" d="m 907.65808,1219.9293 394.77632,0" id="path3200-8" />
+    </g>
+  </g>
+</svg>

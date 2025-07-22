@@ -1,0 +1,107 @@
+/* FreeCAD sphinx CSS file */
+
+@import url("/freecad.css");
+
+body {
+    background: #191b26;
+    background-attachment: fixed;
+    background-size: cover;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #eee;
+    opacity: 0.9;
+    text-align: justify;
+    /* font-size: 0.9em; */
+}
+
+a {
+    font-weight: bold;
+    text-decoration: none;
+    color: #0F3472;
+}
+
+a img {
+    border: 0;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a.headerlink {
+    display: none;
+}
+
+h1 {
+    font-size: 24px;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #888;
+}
+
+h2 {
+    font-size: 18px;
+    margin: 30px 0 0 0;
+}
+
+ul {
+    margin: 0px 0px 0px;
+}
+
+.document {
+    background-color: #eee;
+    display: table;
+    width: 960px;
+    box-shadow: 0 0 5px #000;
+    padding: 10px;
+    margin: auto;
+    color: #000;
+}
+
+.related {
+    margin: auto;
+    width: 960px;
+}
+
+.related a {
+    color: #1E90FF;
+    font-size: 0.9em;
+}
+
+.related h3 {
+    display: none;
+}
+
+.related li {
+    display: inline;
+}
+
+.footer {
+    margin: auto;
+    width: 960px;
+}
+
+.descname {
+    font-weight: bold;
+}
+
+.function, .attribute, .method {
+    border-bottom: 1px solid #bbb;
+    padding: 10px;
+}
+
+.footer {
+    background: transparent;
+    color: #aaa;
+}
+
+@media print {
+
+.document {
+    box-shadow: none;
+}
+
+.related {
+    display: none;
+}
+
+}
+

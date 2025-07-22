@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.1"
+   id="svg5821"
+   height="64px"
+   width="64px">
+  <defs
+     id="defs5823">
+    <linearGradient
+       id="linearGradient3861">
+      <stop
+         id="stop3863"
+         offset="0"
+         style="stop-color:#d3d7cf;stop-opacity:1;" />
+      <stop
+         id="stop3865"
+         offset="1"
+         style="stop-color:#ffffff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3835">
+      <stop
+         id="stop3837"
+         offset="0"
+         style="stop-color:#d3d7cf;stop-opacity:1;" />
+      <stop
+         id="stop3839"
+         offset="1"
+         style="stop-color:#888a85;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3809">
+      <stop
+         id="stop3811"
+         offset="0"
+         style="stop-color:#d3d7cf;stop-opacity:1;" />
+      <stop
+         id="stop3813"
+         offset="1"
+         style="stop-color:#ffffff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3377">
+      <stop
+         id="stop3379"
+         offset="0"
+         style="stop-color:#ffaa00;stop-opacity:1;" />
+      <stop
+         id="stop3381"
+         offset="1"
+         style="stop-color:#faff2b;stop-opacity:1;" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3377-2">
+      <stop
+         id="stop3379-6"
+         offset="0"
+         style="stop-color:#ffaa00;stop-opacity:1;" />
+      <stop
+         id="stop3381-7"
+         offset="1"
+         style="stop-color:#faff2b;stop-opacity:1;" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient3377-2"
+       id="linearGradient3616"
+       gradientUnits="userSpaceOnUse"
+       x1="901.1875"
+       y1="1190.875"
+       x2="1267.9062"
+       y2="1190.875"
+       gradientTransform="matrix(0.1367863,0,0,0.1367863,-122.45404,-135.82061)" />
+    <linearGradient
+       id="linearGradient3377-28">
+      <stop
+         id="stop3379-2"
+         offset="0"
+         style="stop-color:#ffaa00;stop-opacity:1;" />
+      <stop
+         id="stop3381-9"
+         offset="1"
+         style="stop-color:#faff2b;stop-opacity:1;" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient3377-28"
+       id="linearGradient3616-9"
+       gradientUnits="userSpaceOnUse"
+       x1="901.1875"
+       y1="1190.875"
+       x2="1267.9062"
+       y2="1190.875"
+       gradientTransform="matrix(0.1367863,0,0,0.1367863,-122.45404,-135.82061)" />
+    <linearGradient
+       gradientTransform="matrix(0.92592581,0,0,0.80000035,81.855382,268.84175)"
+       gradientUnits="userSpaceOnUse"
+       y2="1278.4147"
+       x2="1105.0463"
+       y1="1410.0068"
+       x1="1119.6676"
+       id="linearGradient3815"
+       xlink:href="#linearGradient3809" />
+    <linearGradient
+       gradientTransform="matrix(1,0,0,1.9999971,0,-1227.2365)"
+       gradientUnits="userSpaceOnUse"
+       y2="1219.9293"
+       x2="1097.7356"
+       y1="1234.5507"
+       x1="1097.7356"
+       id="linearGradient3841"
+       xlink:href="#linearGradient3835" />
+    <linearGradient
+       gradientTransform="matrix(0.95238128,0,0,0.92307683,52.620955,84.843064)"
+       gradientUnits="userSpaceOnUse"
+       y2="1029.8518"
+       x2="1105.0463"
+       y1="1176.0653"
+       x1="1119.6676"
+       id="linearGradient3867"
+       xlink:href="#linearGradient3861" />
+  </defs>
+  <metadata
+     id="metadata5826">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[triplus]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:title>RobotWorkbench</dc:title>
+        <dc:date>2016-02-26</dc:date>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Robot/Gui/Resources/icons/RobotWorkbench.svg</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1">
+    <g
+       transform="matrix(0.1367863,0,0,0.1367863,-119.15519,-134.86962)"
+       id="g3360">
+      <rect
+         y="1197.9973"
+         x="1024.6289"
+         height="58.485413"
+         width="160.83475"
+         id="rect3679"
+         style="color:#000000;fill:#d3d7cf;fill-opacity:1;fill-rule:evenodd;stroke:#2e3436;stroke-width:14.62135029000000053;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <rect
+         y="1197.9973"
+         x="1039.2502"
+         height="58.485386"
+         width="131.59204"
+         id="rect3679-7"
+         style="color:#000000;fill:url(#linearGradient3841);fill-opacity:1;fill-rule:evenodd;stroke:#d3d7cf;stroke-width:14.62134743;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <rect
+         y="1015.2305"
+         x="958.83276"
+         height="175.45612"
+         width="292.42697"
+         id="rect3675"
+         style="color:#000000;fill:url(#linearGradient3867);fill-opacity:1;fill-rule:evenodd;stroke:#2e3436;stroke-width:29.24269463;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <rect
+         y="1263.7933"
+         x="900.34741"
+         height="160.83482"
+         width="409.39771"
+         id="rect3677"
+         style="color:#000000;fill:#d3d7cf;fill-opacity:1;fill-rule:evenodd;stroke:#2e3436;stroke-width:29.24269485;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <path
+         transform="matrix(8.0417438,0,0,8.0417413,865.2561,965.51789)"
+         d="m 25.272728,16.181818 a 3.6363637,3.6363637 0 1 1 -7.272728,0 3.6363637,3.6363637 0 1 1 7.272728,0 z"
+         id="path3681-6-3"
+         style="color:#000000;fill:#d3d7cf;fill-opacity:1;fill-rule:evenodd;stroke:#2e3436;stroke-width:1.81818163;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <rect
+         y="1285.7253"
+         x="922.27942"
+         height="116.97083"
+         width="365.53369"
+         id="rect3677-6"
+         style="color:#000000;fill:url(#linearGradient3815);fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:14.62134743;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <rect
+         y="1037.1625"
+         x="980.76483"
+         height="131.59213"
+         width="248.56291"
+         id="rect3675-5"
+         style="color:#000000;fill:none;stroke:#ffffff;stroke-width:14.62134743;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <path
+         transform="matrix(4.0208701,0,0,4.0208758,952.25319,1030.5828)"
+         d="m 25.272728,16.181818 a 3.6363637,3.6363637 0 1 1 -7.272728,0 3.6363637,3.6363637 0 1 1 7.272728,0 z"
+         id="path3681-6-3-3"
+         style="color:#000000;fill:#888a85;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:3.63636159999999986;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <path
+         transform="matrix(8.0417439,0,0,8.041741,996.84825,965.51789)"
+         d="m 25.272728,16.181818 a 3.6363637,3.6363637 0 1 1 -7.272728,0 3.6363637,3.6363637 0 1 1 7.272728,0 z"
+         id="path3681-6-3-5"
+         style="color:#000000;fill:#d3d7cf;fill-opacity:1;fill-rule:evenodd;stroke:#2e3436;stroke-width:1.81818163;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <path
+         transform="matrix(4.0208701,0,0,4.0208758,1083.8454,1030.5828)"
+         d="m 25.272728,16.181818 a 3.6363637,3.6363637 0 1 1 -7.272728,0 3.6363637,3.6363637 0 1 1 7.272728,0 z"
+         id="path3681-6-3-3-6"
+         style="color:#000000;fill:#888a85;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:3.6363616;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    </g>
+  </g>
+</svg>

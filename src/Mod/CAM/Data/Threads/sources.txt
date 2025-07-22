@@ -1,0 +1,8 @@
+https://www.amesweb.info/Screws/Internal-Metric-Thread-Dimensions-Chart.aspx
+https://www.engineersedge.com/thread_strength/internal_screw_threads_chart.htm
+  dMajorMax = dMajorMin + 1.01 * (dMinorMax - dMinorMin)
+  formula empirically derived from metric tolerances
+
+https://www.engineersedge.com/hardware/metric-external-thread-sizes1.htm
+https://www.engineersedge.com/hardware/metric-external-thread-sizes2.htm
+  dMinorMin = dPitchMin - (dMajorMax - dPitchMax) * 0.948

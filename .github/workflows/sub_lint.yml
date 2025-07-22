@@ -1,0 +1,371 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 0penBrain.                                         *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
+# This is the lint workflow for CI of FreeCAD
+
+name: Lint
+
+on:
+  workflow_call:
+    inputs:
+      artifactBasename:
+        type: string
+        required: true
+      changedFiles:
+        type: string
+        required: true
+      changedLines:
+        type: string
+        required: false
+      changedCppFiles:
+        type: string
+        required: true
+      changedCppLines:
+        type: string
+        required: false
+      changedPythonFiles:
+        type: string
+        required: true
+      changedPythonLines:
+        type: string
+        required: false
+      checkLineendings:
+        default: false
+        type: boolean
+        required: false
+      lineendingsFailSilent:
+        default: true
+        type: boolean
+        required: false
+      checkWhitespace:
+        default: true
+        type: boolean
+        required: false
+      whitespaceFailSilent:
+        default: true
+        type: boolean
+        required: false
+      checkTabs:
+        default: true
+        type: boolean
+        required: false
+      tabsFailSilent:
+        default: true
+        type: boolean
+        required: false
+      checkQtConnections:
+        default: true
+        type: boolean
+        required: false
+      qtConnectionsFailSilent:
+        default: true
+        type: boolean
+        required: false
+      checkCpplint:
+        default: true
+        type: boolean
+        required: false
+      cpplintFailSilent:
+        default: true
+        type: boolean
+        required: false
+      checkPylint:
+        default: true
+        type: boolean
+        required: false
+      pylintDisable:
+        default: C0302,C0303 # Trailing whitespaces (C0303) are already checked
+        type: string
+        required: false
+      pylintFailSilent:
+        default: true
+        type: boolean
+        required: false
+      checkBlack:
+        default: true
+        type: boolean
+        required: false
+      blackFailSilent:
+        default: true
+        type: boolean
+        required: false
+      checkClangFormat:
+        default: false
+        type: boolean
+        required: false
+      clangStyle:
+        default: file # for .clang-format file
+        type: string
+        required: false
+      clangFormatFailSilent:
+        default: true
+        type: boolean
+        required: false
+      checkSpelling:
+        default: true
+        type: boolean
+        required: false
+      listIgnoredMisspelling:
+        default: .github/codespellignore
+        type: string
+        required: false
+      spellingIgnore:
+        default: ./.git*,*.po,*.ts,*.svg,./src/3rdParty,./src/Base/swig*,./src/Mod/Robot/App/kdl_cp,./src/Mod/Import/App/SCL*,./src/Doc/FreeCAD.uml,./build/
+        type: string
+        required: false
+      codespellFailSilent:
+        default: true
+        type: boolean
+        required: false
+      checkClangTidy:
+        default: true
+        type: boolean
+        required: false
+      clangTidyFailSilent:
+        default: true # warnings or notes will never fail the CI, only errors
+        type: boolean
+        required: false
+      checkClazy: # for the Message codes see: https://invent.kde.org/sdk/clazy#list-of-checks
+        default: false
+        type: boolean
+        required: false
+      clazyChecks:
+        default: level2,no-non-pod-global-static,no-copyable-polymorphic
+        type: string
+        required: false
+      clazyFailSilent:
+        default: true # warnings or notes will never fail the CI, only errors
+        type: boolean
+        required: false
+      checkClazyQT6:
+        default: false
+        type: boolean
+        required: false
+      clazyQT6Checks:
+        default: qt6-deprecated-api-fixes,qt6-header-fixes,qt6-qhash-signature,qt6-fwd-fixes,missing-qobject-macro # for QT6 Porting https://invent.kde.org/sdk/clazy#list-of-checks
+        type: string
+        required: false
+      QT6Branch: # branch to check for QT6 Porting
+        default: main
+        type: string
+        required: false
+      clazyQT6FailSilent:
+        default: true # warnings or notes will never fail the CI, only errors
+        type: boolean
+        required: false
+    outputs:
+      reportFile:
+        value: ${{ jobs.Lint.outputs.reportFile }}
+
+permissions:
+  contents: read
+
+jobs:
+
+  Lint:
+    if: inputs.changedFiles != ''
+    runs-on: ubuntu-latest
+    env:
+      logdir: /tmp/logs/
+      fixesdir: /tmp/fixes/
+      reportdir: /tmp/report/
+      reportfilename: ${{ inputs.artifactBasename }}-report.md
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      reportFile: ${{ steps.Init.outputs.reportFile }}
+
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        with:
+          egress-policy: audit
+
+      - name: Check out code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          submodules: true
+
+      - name: Make needed directories, files and initializations
+        id: Init
+        run: |
+          mkdir -p ${{ env.logdir }}
+          mkdir -p ${{ env.fixesdir }}
+          mkdir -p ${{ env.reportdir }}
+          echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
+
+    # Generic lints steps
+      - name: Check File Case Sensitivity
+        uses: credfeto/action-case-checker@cb652aeab29ed363bbdb7d9ee1bfcc010c46cac5 # v1.3.0
+
+      - name: Check for non Unix line ending
+        if: inputs.checkLineendings && always()
+        continue-on-error: ${{ inputs.lineendingsFailSilent }}
+        run: |
+          python3 tools/lint/generic_checks.py \
+            --lineendings-check \
+            --files "${{ inputs.changedFiles }}" \
+            --report-file "${{ env.reportdir }}${{ env.reportfilename }}" \
+            --log-dir "${{ env.logdir }}"
+
+      - name: Check for trailing whitespaces
+        if: inputs.checkWhitespace && always()
+        continue-on-error: ${{ inputs.whitespaceFailSilent }}
+        run: |
+          python3 tools/lint/generic_checks.py \
+            --whitespace-check \
+            --files "${{ inputs.changedFiles }}" \
+            --report-file "${{ env.reportdir }}${{ env.reportfilename }}" \
+            --log-dir "${{ env.logdir }}"
+
+      - name: Check for Tab usage
+        if: inputs.checkTabs && always()
+        continue-on-error: ${{ inputs.tabsFailSilent }}
+        run: |
+          python3 tools/lint/generic_checks.py \
+            --tabs-check \
+            --files "${{ inputs.changedFiles }}" \
+            --report-file "${{ env.reportdir }}${{ env.reportfilename }}" \
+            --log-dir "${{ env.logdir }}"
+
+    # Python linting steps
+
+      - name: Pylint
+        if: inputs.checkPylint && inputs.changedPythonFiles != '' && always()
+        continue-on-error: ${{ inputs.pylintFailSilent }}
+        run: |
+          python3 tools/lint/pylint.py \
+            --files "${{ inputs.changedPythonFiles }}" \
+            --disable "${{ inputs.pylintDisable }}" \
+            --log-dir "${{ env.logdir }}" \
+            --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
+
+      - name: Black
+        if: inputs.checkBlack && inputs.changedPythonFiles != '' && always()
+        continue-on-error: ${{ inputs.blackFailSilent }}
+        run: |
+          python3 tools/lint/black.py \
+            --files "${{ inputs.changedPythonFiles }}" \
+            --log-dir "${{ env.logdir }}" \
+            --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
+
+    # C++ linting steps
+
+      - name: Install FreeCAD dependencies
+        if: inputs.changedCppFiles != '' && always()
+        run: ./package/ubuntu/install-apt-packages.sh
+
+      - name: Run CMake # This is needed for Clang tools to work correctly
+        if: inputs.changedCppFiles != '' && always()
+        run: |
+          mkdir build && cmake -S ./ -B ./build/ -D CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE
+
+      - name: Check old Qt string-based connections (https://wiki.qt.io/New_Signal_Slot_Syntax)
+        if: inputs.checkQtConnections && inputs.changedCppFiles != '' && always()
+        continue-on-error: ${{ inputs.qtConnectionsFailSilent }}
+        run: |
+          python3 tools/lint/qt_connections.py \
+            --files "${{ inputs.changedFiles }}" \
+            --log-dir "${{ env.logdir }}" \
+            --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
+
+      - name: Cpplint
+        if: inputs.checkCpplint && inputs.changedCppFiles != '' && always()
+        continue-on-error: ${{ inputs.cpplintFailSilent }}
+        run: |
+          python3 tools/lint/cpplint.py \
+            --files "${{ inputs.changedCppFiles }}" \
+            --log-dir "${{ env.logdir }}" \
+            --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
+
+      - name: Clang-format
+        if: inputs.checkClangFormat && inputs.changedCppFiles != '' && always()
+        continue-on-error: ${{ inputs.clangFormatFailSilent }}
+        run: |
+          python3 tools/lint/clang_format.py \
+            --files "${{ inputs.changedCppFiles }}" \
+            --clang-style "${{ inputs.clangStyle }}" \
+            --log-dir "${{ env.logdir }}" \
+            --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
+
+      - name: Codespell
+        if: inputs.checkSpelling && always()
+        continue-on-error: ${{ inputs.codespellFailSilent }}
+        run: |
+          python3 tools/lint/codespell.py \
+            --files ${{ inputs.changedFiles }} \
+            --ignore-words "${{ inputs.listIgnoredMisspelling }}" \
+            --skip "${{ inputs.spellingIgnore }}" \
+            --log-dir "${{ env.logdir }}" \
+            --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
+
+      - name: Clang-tidy
+        if: inputs.checkClangTidy && inputs.changedCppFiles != '' && always()
+        continue-on-error: ${{ inputs.clangTidyFailSilent }}
+        run: |
+          python3 tools/lint/clang_tidy.py \
+            --files "${{ inputs.changedCppFiles }}" \
+            --line-filter '${{ inputs.changedCppLines }}' \
+            --clang-style "${{ inputs.clangStyle }}" \
+            --log-dir "${{ env.logdir }}" \
+            --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
+
+      - name: Clazy
+        if: inputs.checkClazy && inputs.changedCppFiles != '' && always()
+        continue-on-error: ${{ inputs.clazyFailSilent }}
+        run: |
+          python3 tools/lint/clazy.py \
+            --files "${{ inputs.changedCppFiles }}" \
+            --clazy-checks "${{ inputs.clazyChecks }}" \
+            --log-dir "${{ env.logdir }}" \
+            --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
+
+      - name: Clazy-QT6
+        if: inputs.checkClazyQT6 && inputs.changedCppFiles != '' && github.ref == inputs.QT6Branch && always()
+        continue-on-error: ${{ inputs.clazyQT6FailSilent }}
+        run: |
+          python3 tools/lint/clazy_qt6.py \
+            --files "${{ inputs.changedCppFiles }}" \
+            --clazy-qt6-checks "${{ inputs.clazyQT6Checks }}" \
+            --log-dir "${{ env.logdir }}" \
+            --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
+
+    # Upload steps
+
+      - name: Upload logs and fixes
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: ${{ inputs.artifactBasename }}-Logs
+          path: |
+            ${{ env.logdir }}
+            ${{ env.fixesdir }}
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: ${{ env.reportfilename }}
+          path: |
+            ${{env.reportdir}}${{ env.reportfilename }}

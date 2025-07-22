@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="DocumentObjectExtensionPy"
+    Name="CosmeticExtensionPy"
+    Twin="CosmeticExtension"
+    TwinPointer="CosmeticExtension"
+    Include="Mod/TechDraw/App/CosmeticExtension.h"
+    Namespace="TechDraw"
+    FatherInclude="App/DocumentObjectExtensionPy.h"
+    FatherNamespace="App">
+    <Documentation>
+      <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
+      <UserDocu>This object represents cosmetic features for a DrawViewPart.</UserDocu>
+    </Documentation>
+  </PythonExport>
+</GenerateModel>

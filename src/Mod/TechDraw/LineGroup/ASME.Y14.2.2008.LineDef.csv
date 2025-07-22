@@ -1,0 +1,25 @@
+# per ASME Y14.2-2008 Figure 1 Width and Types of Lines
+# NOTE: saving this file from a spreadsheet program (like LibreOffice Calc) may
+# append empty cells to the ends of the lines. this can confuse FreeCAD.
+# line number, line name, dash pattern
+#
+1,Visible,n/a
+2,Hidden,Dash,Gap
+3,Section,n/a
+4,Center,LongDash,Space,Dash,Space
+# Symmetry line is not completely implemented
+5,Symmetry,LongDash,Space,Dash,Space
+6,Dimension,n/a
+7,Extension,n/a
+8,Leader,n/a
+9,Cutting-plane,Dash,Gap
+10,Viewing-plane,Space,Dash,Space,Dash,Space,LongDash,Space
+# noline is not implemented
+11,Other plane,noline
+# Break line is not implemented
+12,Break 1,n/a
+13,Break 2,n/a
+14,Phantom,LongDash,Space,Dash,Space,Dash,Space
+15,Stitch 1,Dash,Space
+16,Stitch 2,Dot,Gap
+17,Chain,LongDash,Space,Dash,Space

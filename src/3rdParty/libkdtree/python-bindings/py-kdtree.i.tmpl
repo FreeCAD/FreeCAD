@@ -1,0 +1,27 @@
+/** \file
+ *
+ * Provides a Python interface for the libkdtree++.
+ *
+ * \author Willi Richert <w.richert@gmx.net>
+ *
+ */
+
+%module kdtree
+
+%{
+#define SWIG_FILE_WITH_INIT
+#include "py-kdtree.hpp"
+%}
+
+
+%ignore record_t::operator[];
+%ignore operator==;
+%ignore operator<<;
+%ignore KDTree::KDTree::operator=;
+%ignore tac;
+
+%%TMPL_BODY%%
+
+%include "py-kdtree.hpp"
+
+%%TMPL_PY_CLASS_DEF%%

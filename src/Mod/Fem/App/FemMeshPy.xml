@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport
+            Father="ComplexGeoDataPy"
+            Name="FemMeshPy"
+            Twin="FemMesh"
+            TwinPointer="FemMesh"
+            Include="Mod/Fem/App/FemMesh.h"
+            Namespace="Fem"
+            FatherInclude="App/ComplexGeoDataPy.h"
+            FatherNamespace="Data"
+            Constructor="true">
+        <Documentation>
+            <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
+            <UserDocu>FemMesh class</UserDocu>
+        </Documentation>
+        <Methode Name="setShape">
+            <Documentation>
+                <UserDocu>Set the Part shape to mesh</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="compute">
+            <Documentation>
+                <UserDocu>Update the internal mesh structure</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="addHypothesis">
+            <Documentation>
+                <UserDocu>Add hypothesis</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setStandardHypotheses">
+            <Documentation>
+                <UserDocu>Set some standard hypotheses for the whole shape</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="addNode">
+            <Documentation>
+                <UserDocu>Add a node by setting (x,y,z).</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="addEdge">
+            <Documentation>
+                <UserDocu>Add an edge by setting two node indices.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="addEdgeList">
+            <Documentation>
+                <UserDocu>Add list of edges by list of node indices and list of nodes per edge.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="addFace">
+            <Documentation>
+                <UserDocu>Add a face by setting three node indices.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="addFaceList">
+            <Documentation>
+                <UserDocu>Add list of faces by list of node indices and list of nodes per face.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="addQuad">
+            <Documentation>
+                <UserDocu>Add a quad by setting four node indices.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="addVolume">
+            <Documentation>
+                <UserDocu>Add a volume by setting an arbitrary number of node indices.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="addVolumeList">
+            <Documentation>
+                <UserDocu>Add list of volumes by list of node indices and list of nodes per volume.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="read">
+            <Documentation>
+                <UserDocu>Read in a various FEM mesh file formats.
+                    read(file.endingToExportTo)
+                    supported formats: DAT, INP, MED, STL, UNV, VTK, Z88</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="write" Const="true">
+            <Documentation>
+                <UserDocu>Write out various FEM mesh file formats.
+                    write(file.endingToExportTo)
+                    supported formats: BDF, DAT, INP, MED, STL, UNV, VTK, Z88
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="writeABAQUS" Const="true" Keyword="true">
+            <Documentation>
+                <UserDocu>Write out as ABAQUS inp
+                    writeABAQUS(file, int elemParam, bool groupParam, str volVariant, str faceVariant, str edgeVariant)
+
+                    elemParam:
+                        0: All elements
+                        1: Highest elements only
+                        2: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)
+
+                    groupParam:
+                        True: Write group data
+                        False: Do not write group data
+
+                    volVariant: Volume elements
+                        "standard": Tetra4 -> C3D4, Penta6 -> C3D6, Hexa8 -> C3D8, Tetra10 -> C3D10, Penta15 -> C3D15, Hexa20 -> C3D20
+                        "reduced": Hexa8 -> C3D8R, Hexa20 -> C3D20R
+                        "incompatible": Hexa8 -> C3D8I
+                        "modified": Tetra10 -> C3D10T
+                        "fluid": Tetra4 -> F3D4, Penta6 -> F3D6, Hexa8  -> F3D8
+
+                    faceVariant: Face elements
+                        "shell": Tria3 -> S3, Quad4 -> S4, Tria6 -> S6, Quad8 -> S8
+                        "shell reduced": Tria3 -> S3, Quad4 -> S4R, Tria6 -> S6, Quad8 -> S8R
+                        "membrane": Tria3 -> M3D3, Quad4 -> M3D4, Tria6 -> M3D6, Quad8 -> M3D8
+                        "membrane reduced": Tria3 -> M3D3, Quad4 -> M3D4R, Tria6 -> M3D6, Quad8 -> M3D8R
+                        "stress": Tria3 -> CPS3, Quad4 -> CPS4, Tria6 -> CPS6, Quad8 -> CPS8
+                        "stress reduced": Tria3 -> CPS3, Quad4 -> CPS4R, Tria6 -> CPS6, Quad8 -> CPS8R
+                        "strain": Tria3 -> CPE3, Quad4 -> CPE4, Tria6 -> CPE6, Quad8 -> CPE8
+                        "strain reduced": Tria3 -> CPE3, Quad4 -> CPE4R, Tria6 -> CPE6, Quad8 -> CPE8R
+                        "axisymmetric": Tria3 -> CAX3, Quad4 -> CAX4, Tria6 -> CAX6, Quad8 -> CAX8
+                        "axisymmetric reduced": Tria3 -> CAX3, Quad4 -> CAX4R, Tria6 -> CAX6, Quad8 -> CAX8R
+
+                    edgeVariant: Edge elements
+                        "beam": Seg2 -> B31, Seg3 -> B32
+                        "beam reduced": Seg2 -> B31R, Seg3 -> B32R
+                        "truss": Seg2 -> T3D2, eg3 -> T3D3
+                        "network": Seg3 -> D
+
+                    Elements are selected according to CalculiX availability.
+                    For example if volume variant "modified" is selected, Tetra10 mesh
+                    elements are assigned to C3D10T and remain elements uses "standard".
+                    Axisymmetric, plane strain and plane stress elements expect nodes in the plane z=0.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setTransform">
+            <Documentation>
+                <UserDocu>Use a Placement object to perform a translation or rotation</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="copy" Const="true">
+            <Documentation>
+                <UserDocu>Make a copy of this FEM mesh.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getFacesByFace" Const="true">
+            <Documentation>
+                <UserDocu>Return a list of face IDs which belong to a TopoFace</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getEdgesByEdge" Const="true">
+            <Documentation>
+                <UserDocu>Return a list of edge IDs which belong to a TopoEdge</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getVolumesByFace" Const="true">
+            <Documentation>
+                <UserDocu>Return a dict of volume IDs and face IDs which belong to a TopoFace</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getccxVolumesByFace" Const="true">
+            <Documentation>
+                <UserDocu>Return a dict of volume IDs and ccx face numbers which belong to a TopoFace</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getNodeById" Const="true">
+            <Documentation>
+                <UserDocu>Get the node position vector by a Node-ID</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getNodesBySolid" Const="true">
+            <Documentation>
+                <UserDocu>Return a list of node IDs which belong to a TopoSolid</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getNodesByFace" Const="true">
+            <Documentation>
+                <UserDocu>Return a list of node IDs which belong to a TopoFace</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getNodesByEdge" Const="true">
+            <Documentation>
+                <UserDocu>Return a list of node IDs which belong to a TopoEdge</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getNodesByVertex" Const="true">
+            <Documentation>
+                <UserDocu>Return a list of node IDs which belong to a TopoVertex</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getElementNodes" Const="true">
+            <Documentation>
+                <UserDocu>Return a tuple of node IDs to a given element ID</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getNodeElements" Const="true">
+            <Documentation>
+                <UserDocu>Return a tuple of specific element IDs associated to a given node ID</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getGroupName" Const="true">
+            <Documentation>
+                <UserDocu>Return a string of group name to a given group ID</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getGroupElementType" Const="true">
+            <Documentation>
+                <UserDocu>Return a string of group element type to a given group ID</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getGroupElements" Const="true">
+            <Documentation>
+                <UserDocu>Return a tuple of ElementIDs to a given group ID</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="addGroup" Const="true">
+            <Documentation>
+                <UserDocu>Add a group to mesh with specific name and type
+                    addGroup(name, typestring, [id])
+                    name: string
+                    typestring: "All", "Node", "Edge", "Face", "Volume", "0DElement", "Ball"
+                    id: int
+                    Optional id is used to force specific id for group, but does
+                    not work, yet.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="addGroupElements" Const="true">
+            <Documentation>
+                <UserDocu>Add a tuple of ElementIDs to a given group ID
+                    addGroupElements(groupid, list_of_elements)
+                    groupid: int
+                    list_of_elements: list of int
+                    Notice that the elements have to be in the mesh.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="removeGroup" Const="true">
+            <Documentation>
+                <UserDocu>Remove a group with a given group ID
+                    removeGroup(groupid)
+                    groupid: int
+                    Returns boolean.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getElementType" Const="true">
+            <Documentation>
+                <UserDocu>Return the element type of a given ID</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getIdByElementType" Const="true">
+            <Documentation>
+                <UserDocu>Return a tuple of IDs to a given element type</UserDocu>
+            </Documentation>
+        </Methode>
+        <Attribute Name="Nodes" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Dictionary of Nodes by ID (int ID:Vector())</UserDocu>
+            </Documentation>
+            <Parameter Name="Nodes" Type="Dict"/>
+        </Attribute>
+        <Attribute Name="NodeCount" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Number of nodes in the Mesh.</UserDocu>
+            </Documentation>
+          <Parameter Name="NodeCount" Type="Long"/>
+        </Attribute>
+        <Attribute Name="Edges" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Tuple of edge IDs</UserDocu>
+            </Documentation>
+            <Parameter Name="Edges" Type="Tuple"/>
+        </Attribute>
+        <Attribute Name="EdgesOnly" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Tuple of edge IDs which does not belong to any face (and thus not belong to any volume too)</UserDocu>
+            </Documentation>
+            <Parameter Name="EdgesOnly" Type="Tuple"/>
+        </Attribute>
+        <Attribute Name="EdgeCount" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Number of edges in the Mesh.</UserDocu>
+            </Documentation>
+            <Parameter Name="EdgeCount" Type="Long"/>
+        </Attribute>
+        <Attribute Name="Faces" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Tuple of face IDs</UserDocu>
+            </Documentation>
+            <Parameter Name="Faces" Type="Tuple"/>
+        </Attribute>
+        <Attribute Name="FacesOnly" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Tuple of face IDs which does not belong to any volume</UserDocu>
+            </Documentation>
+            <Parameter Name="FacesOnly" Type="Tuple"/>
+        </Attribute>
+        <Attribute Name="FaceCount" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Number of Faces in the Mesh.</UserDocu>
+            </Documentation>
+            <Parameter Name="FaceCount" Type="Long"/>
+        </Attribute>
+        <Attribute Name="TriangleCount" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Number of Triangles in the Mesh.</UserDocu>
+            </Documentation>
+            <Parameter Name="TriangleCount" Type="Long"/>
+        </Attribute>
+        <Attribute Name="QuadrangleCount" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Number of Quadrangles in the Mesh.</UserDocu>
+            </Documentation>
+            <Parameter Name="QuadrangleCount" Type="Long"/>
+        </Attribute>
+        <Attribute Name="PolygonCount" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Number of Quadrangles in the Mesh.</UserDocu>
+            </Documentation>
+            <Parameter Name="PolygonCount" Type="Long"/>
+        </Attribute>
+        <Attribute Name="Volumes" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Tuple of volume IDs</UserDocu>
+            </Documentation>
+            <Parameter Name="Volumes" Type="Tuple"/>
+        </Attribute>
+        <Attribute Name="VolumeCount" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Number of Volumes in the Mesh.</UserDocu>
+            </Documentation>
+            <Parameter Name="VolumeCount" Type="Long"/>
+        </Attribute>
+        <Attribute Name="TetraCount" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Number of Tetras in the Mesh.</UserDocu>
+            </Documentation>
+            <Parameter Name="TetraCount" Type="Long"/>
+        </Attribute>
+        <Attribute Name="HexaCount" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Number of Hexas in the Mesh.</UserDocu>
+            </Documentation>
+            <Parameter Name="HexaCount" Type="Long"/>
+        </Attribute>
+        <Attribute Name="PyramidCount" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Number of Pyramids in the Mesh.</UserDocu>
+            </Documentation>
+            <Parameter Name="PyramidCount" Type="Long"/>
+        </Attribute>
+        <Attribute Name="PrismCount" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Number of Prisms in the Mesh.</UserDocu>
+            </Documentation>
+            <Parameter Name="PrismCount" Type="Long"/>
+        </Attribute>
+        <Attribute Name="PolyhedronCount" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Number of Polyhedrons in the Mesh.</UserDocu>
+            </Documentation>
+            <Parameter Name="PolyhedronCount" Type="Long"/>
+        </Attribute>
+        <Attribute Name="SubMeshCount" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Number of SubMeshs in the Mesh.</UserDocu>
+            </Documentation>
+            <Parameter Name="SubMeshCount" Type="Long"/>
+        </Attribute>
+        <Attribute Name="GroupCount" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Number of Groups in the Mesh.</UserDocu>
+            </Documentation>
+            <Parameter Name="GroupCount" Type="Long"/>
+        </Attribute>
+        <Attribute Name="Groups" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Tuple of Group IDs.</UserDocu>
+            </Documentation>
+            <Parameter Name="Groups" Type="Tuple"/>
+        </Attribute>
+        <Attribute Name="Volume" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Volume of the mesh.</UserDocu>
+            </Documentation>
+            <Parameter Name="Volume" Type="Object"/>
+        </Attribute>
+    </PythonExport>
+</GenerateModel>

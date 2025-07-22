@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="DocumentObjectPy"
+    Name="SheetPy"
+    Twin="Sheet"
+    TwinPointer="Sheet"
+    Include="Mod/Spreadsheet/App/Sheet.h"
+    Namespace="Spreadsheet"
+    FatherInclude="App/DocumentObjectPy.h"
+    FatherNamespace="App"
+    Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Eivind Kvedalen" EMail="eivind@kvedalen.name" />
+      <UserDocu>With this object you can manipulate spreadsheets</UserDocu>
+    </Documentation>
+    <Methode Name="set">
+      <Documentation>
+        <UserDocu>Set data into a cell</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="get">
+      <Documentation>
+        <UserDocu>Get evaluated cell contents</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getContents">
+      <Documentation>
+        <UserDocu>Get cell contents</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="clear">
+      <Documentation>
+        <UserDocu>Clear a cell</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="clearAll">
+      <Documentation>
+        <UserDocu>Clear all cells in the spreadsheet</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="importFile">
+      <Documentation>
+        <UserDocu>Import file into spreadsheet</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="exportFile">
+      <Documentation>
+        <UserDocu>Export file from spreadsheet</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="mergeCells">
+      <Documentation>
+        <UserDocu>Merge given cell area into one cell</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="splitCell">
+      <Documentation>
+        <UserDocu>Split a previously merged cell</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="insertColumns">
+      <Documentation>
+        <UserDocu>Insert a given number of columns into the spreadsheet.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeColumns">
+      <Documentation>
+        <UserDocu>Remove a given number of columns from the spreadsheet.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="insertRows">
+      <Documentation>
+        <UserDocu>Insert a given number of rows into the spreadsheet.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeRows">
+      <Documentation>
+        <UserDocu>Remove a given number of rows from the spreadsheet.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setAlignment">
+      <Documentation>
+        <UserDocu>Set alignment of the cell</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getAlignment">
+      <Documentation>
+        <UserDocu>Get alignment of the cell</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setStyle">
+      <Documentation>
+        <UserDocu>Set style of the cell</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getStyle">
+      <Documentation>
+        <UserDocu>Get style of the cell</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setDisplayUnit">
+      <Documentation>
+        <UserDocu>Set display unit for cell</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setAlias">
+      <Documentation>
+        <UserDocu>Set alias for cell address</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getAlias">
+      <Documentation>
+        <UserDocu>Get alias for cell address</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getCellFromAlias">
+      <Documentation>
+        <UserDocu>Get cell address given an alias</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getDisplayUnit">
+      <Documentation>
+        <UserDocu>Get display unit for cell</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setForeground">
+      <Documentation>
+        <UserDocu>Set foreground color of the cell</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getForeground">
+      <Documentation>
+        <UserDocu>Get foreground color of the cell</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setBackground">
+      <Documentation>
+        <UserDocu>Set background color of the cell</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getBackground">
+      <Documentation>
+        <UserDocu>Get background color of the cell</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setColumnWidth">
+      <Documentation>
+        <UserDocu>Set given spreadsheet column to given width</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getColumnWidth">
+      <Documentation>
+        <UserDocu>Get given spreadsheet column width</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setRowHeight">
+      <Documentation>
+        <UserDocu>Set given spreadsheet row to given height</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getRowHeight">
+      <Documentation>
+        <UserDocu>Get given spreadsheet row height</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="touchCells">
+      <Documentation>
+        <UserDocu>touchCells(from, to=None): touch cells in the given range</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="recomputeCells">
+      <Documentation>
+        <UserDocu>
+recomputeCells(from, to=None)
+
+Manually recompute cells in the given range with the given order without
+following dependency order.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+
+    <Methode Name="getUsedCells">
+      <Documentation>
+        <UserDocu>
+getUsedCells()
+
+Get a list of the names of all cells that are marked as used. These cells may
+or may not have a non-empty string content.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+
+    <Methode Name="getNonEmptyCells">
+      <Documentation>
+        <UserDocu>
+getNonEmptyCells()
+
+Get a list of the names of all cells with data in them.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+
+    <Methode Name="getUsedRange">
+      <Documentation>
+        <UserDocu>
+getUsedRange()
+
+Get a the total range of the used cells in a sheet, as a pair of strings
+representing the lowest row and column that are used, and the highest row and
+column that are used (inclusive). Note that the actual first and last cell
+of the block are not necessarily used.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+
+    <Methode Name="getNonEmptyRange">
+      <Documentation>
+        <UserDocu>
+getNonEmptyRange()
+
+Get a the total range of the used cells in a sheet, as a pair of cell addresses
+representing the lowest row and column that contain data, and the highest row and
+column that contain data (inclusive). Note that the actual first and last cell
+of the block do not necessarily contain anything.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+
+  </PythonExport>
+</GenerateModel>

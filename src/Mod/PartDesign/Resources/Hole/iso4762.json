@@ -1,0 +1,31 @@
+{
+    "name": "ISO 4762",
+    "cut_type": "counterbore",
+    "thread_type": "metric",
+    "data": [
+    { "thread": "M1.6x0.35", "diameter":  3.5,  "depth":  1.7 },
+    { "thread": "M2x0.4",    "diameter":  4.3,  "depth":  2.1 },
+    { "thread": "M2.5x0.45", "diameter":  5.0,  "depth":  3.0 },
+    { "thread": "M3x0.5",    "diameter":  6.0,  "depth":  3.4 },
+    { "thread": "M3.5x0.6",  "diameter":  6.5,  "depth":  3.9 },
+    { "thread": "M4x0.7",    "diameter":  8.0,  "depth":  4.4 },
+    { "thread": "M5x0.8",    "diameter": 10.0,  "depth":  5.4 },
+    { "thread": "M6x1.0",    "diameter": 11.0,  "depth":  6.4 },
+    { "thread": "M8x1.25",   "diameter": 15.0,  "depth":  8.6 },
+    { "thread": "M10x1.5",   "diameter": 18.0,  "depth": 10.6 },
+    { "thread": "M12x1.75",  "diameter": 20.0,  "depth": 12.6 },
+    { "thread": "M14x2.0",   "diameter": 24.0,  "depth": 14.6 },
+    { "thread": "M16x2.0",   "diameter": 26.0,  "depth": 16.6 },
+    { "thread": "M18x2.5",   "diameter": 30.0,  "depth": 18.6 },
+    { "thread": "M20x2.5",   "diameter": 33.0,  "depth": 20.6 },
+    { "thread": "M22x2.5",   "diameter": 36.0,  "depth": 22.8 },
+    { "thread": "M24x3.0",   "diameter": 40.0,  "depth": 24.8 },
+    { "thread": "M30x3.5",   "diameter": 50.0,  "depth": 31.0 },
+    { "thread": "M33x3.5",   "diameter": 54.0,  "depth": 34.0 },
+    { "thread": "M36x4.0",   "diameter": 58.0,  "depth": 37.0 },
+    { "thread": "M42x4.5",   "diameter": 69.0,  "depth": 43.0 },
+    { "thread": "M48x5.0",   "diameter": 78.0,  "depth": 49.0 },
+    { "thread": "M56x5.5",   "diameter": 90.0,  "depth": 57.0 },
+    { "thread": "M64x6.0",   "diameter": 103.0, "depth": 65.0 }
+    ]
+}

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   width="64"
+   height="64"
+   id="svg4024"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs4026">
+    <linearGradient
+       xlink:href="#linearGradient3866"
+       id="linearGradient3771"
+       x1="98"
+       y1="1047.3622"
+       x2="81"
+       y2="993.36218"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0,-1,-1,0,1052.3622,124.00001)" />
+    <linearGradient
+       id="linearGradient3866">
+      <stop
+         style="stop-color:#d3d7cf;stop-opacity:1"
+         offset="0"
+         id="stop3868" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1"
+         offset="1"
+         id="stop3870" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient3866"
+       id="linearGradient3781"
+       x1="10"
+       y1="39.999996"
+       x2="53"
+       y2="25.999996"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(-48)" />
+    <linearGradient
+       xlink:href="#linearGradient3891"
+       id="linearGradient3897"
+       x1="130.56519"
+       y1="118.31313"
+       x2="147.897"
+       y2="157.05659"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       id="linearGradient3891">
+      <stop
+         style="stop-color:#a40000;stop-opacity:1"
+         offset="0"
+         id="stop3893" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1"
+         offset="1"
+         id="stop3895" />
+    </linearGradient>
+  </defs>
+  <metadata
+     id="metadata4029">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     style="display:inline"
+     transform="translate(0,16)">
+    <rect
+       style="fill:#d3d7cf;fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect2987"
+       width="45.999996"
+       height="58.000004"
+       x="-38.999996"
+       y="3"
+       transform="rotate(-90)" />
+    <rect
+       style="fill:url(#linearGradient3781);fill-opacity:1;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect2987-1"
+       width="41.999996"
+       height="54.000004"
+       x="-36.999996"
+       y="5"
+       transform="rotate(-90)" />
+    <g
+       transform="matrix(0.83467743,0,0,0.8346775,-83.185485,-99.185496)"
+       id="g3879"
+       style="fill:none;stroke:#280000;stroke-width:9.58454">
+      <circle
+         style="fill:none;stroke:#280000;stroke-width:55.1111"
+         transform="matrix(0.17391304,0,0,0.17391304,114,114)"
+         id="circle3869"
+         r="124"
+         cy="138"
+         cx="138" />
+      <line
+         style="fill:none;stroke:#280000;stroke-width:9.58454"
+         id="line3871"
+         y2="154.17392"
+         x2="154.17392"
+         y1="121.82609"
+         x1="121.82609" />
+    </g>
+    <g
+       transform="matrix(0.83467743,0,0,0.8346775,-83.185485,-99.185496)"
+       id="g3879-5"
+       style="display:inline;fill:none;stroke:url(#linearGradient3897);stroke-width:4.79227">
+      <circle
+         style="display:inline;fill:none;stroke:#ef2929;stroke-width:27.5556"
+         transform="matrix(0.17391304,0,0,0.17391304,114,114)"
+         id="circle3869-3"
+         r="124"
+         cy="138"
+         cx="138" />
+      <line
+         style="display:inline;fill:none;stroke:#ef2929;stroke-width:4.79227"
+         id="line3871-5"
+         y2="154.17392"
+         x2="154.17392"
+         y1="121.82609"
+         x1="121.82609" />
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="PersistencePy"
+      Name="Robot6AxisPy"
+      Twin="Robot6Axis"
+      TwinPointer="Robot6Axis"
+      Include="Mod/Robot/App/Robot6Axis.h"
+      Namespace="Robot"
+      FatherInclude="Base/PersistencePy.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
+      <UserDocu>Robot6Axis class</UserDocu>
+    </Documentation>
+    <Methode Name="check">
+      <Documentation>
+        <UserDocu>Checks the shape and report errors in the shape structure.
+This is a more detailed check as done in isValid().</UserDocu>
+      </Documentation>
+    </Methode>
+	  <Attribute Name="Axis1" ReadOnly="false">
+		  <Documentation>
+			  <UserDocu>Pose of Axis 1 in degrees</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Axis1" Type="Float"/>
+	  </Attribute>
+	  <Attribute Name="Axis2" ReadOnly="false">
+		  <Documentation>
+			  <UserDocu>Pose of Axis 2 in degrees</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Axis2" Type="Float"/>
+	  </Attribute>
+	  <Attribute Name="Axis3" ReadOnly="false">
+		  <Documentation>
+			  <UserDocu>Pose of Axis 3 in degrees</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Axis3" Type="Float"/>
+	  </Attribute>
+	  <Attribute Name="Axis4" ReadOnly="false">
+		  <Documentation>
+			  <UserDocu>Pose of Axis 4 in degrees</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Axis4" Type="Float"/>
+	  </Attribute>
+	  <Attribute Name="Axis5" ReadOnly="false">
+		  <Documentation>
+			  <UserDocu>Pose of Axis 5 in degrees</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Axis5" Type="Float"/>
+	  </Attribute>
+	  <Attribute Name="Axis6" ReadOnly="false">
+		  <Documentation>
+			  <UserDocu>Pose of Axis 6 in degrees</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Axis6" Type="Float"/>
+	  </Attribute>
+	  <Attribute Name="Tcp" ReadOnly="false">
+		  <Documentation>
+			  <UserDocu>Tool center point frame. Where the tool of the robot is</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Tcp" Type="Object"/>
+	  </Attribute>
+	  <Attribute Name="Base" ReadOnly="false">
+		  <Documentation>
+			  <UserDocu>Actual Base system in respect to the robot world system</UserDocu>
+		  </Documentation>
+		  <Parameter Name="Base" Type="Object"/>
+	  </Attribute>
+  </PythonExport>
+</GenerateModel>

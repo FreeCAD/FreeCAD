@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TechDrawGui::TaskBalloon</class>
+ <widget class="QWidget" name="TechDrawGui::TaskBalloon">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>300</width>
+    <height>279</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Balloon</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Text:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="leText">
+       <property name="toolTip">
+        <string>Text to be displayed</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Text Color:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="Gui::ColorButton" name="textColor">
+       <property name="toolTip">
+        <string>Color for 'Text'</string>
+       </property>
+       <property name="color">
+        <color>
+         <red>0</red>
+         <green>0</green>
+         <blue>0</blue>
+        </color>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>Font Size:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="Gui::QuantitySpinBox" name="qsbFontSize">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Fontsize for 'Text'</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="value">
+        <double>4.000000000000000</double>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>BalloonKink</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/TechDraw/Dimensions</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Bubble Shape:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QComboBox" name="comboBubbleShape">
+       <property name="toolTip">
+        <string>Shape of the balloon bubble</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>Circular</string>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/circular.svg</normaloff>:/icons/circular.svg</iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>None</string>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/none.svg</normaloff>:/icons/none.svg</iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Triangle</string>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/triangle.svg</normaloff>:/icons/triangle.svg</iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Inspection</string>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/inspection.svg</normaloff>:/icons/inspection.svg</iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Hexagon</string>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/hexagon.svg</normaloff>:/icons/hexagon.svg</iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Square</string>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/square.svg</normaloff>:/icons/square.svg</iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Rectangle</string>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/rectangle.svg</normaloff>:/icons/rectangle.svg</iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Line</string>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/bottomline.svg</normaloff>:/icons/bottomline.svg</iconset>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Shape Scale:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="Gui::QuantitySpinBox" name="qsbShapeScale">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Bubble shape scale factor</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="minimum">
+        <double>0.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="value">
+        <double>1.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>End Symbol:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QComboBox" name="comboEndSymbol">
+       <property name="toolTip">
+        <string>End symbol for the balloon line</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="label_10">
+       <property name="text">
+        <string>End Symbol Scale:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="Gui::QuantitySpinBox" name="qsbSymbolScale">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>End symbol scale factor</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="minimum">
+        <double>0.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="value">
+        <double>1.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>Line Visible:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QComboBox" name="comboLineVisible">
+       <property name="toolTip">
+        <string>Whether the leader line is visible or not</string>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <item>
+        <property name="text">
+         <string>False</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>True</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="8" column="0">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Line Width:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="1">
+      <widget class="Gui::QuantitySpinBox" name="qsbLineWidth">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Leader line width</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="value">
+        <double>0.350000000000000</double>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>BalloonKink</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/TechDraw/Dimensions</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>Leader Kink Length:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="1">
+      <widget class="Gui::QuantitySpinBox" name="qsbKinkLength">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Length of balloon leader line kink</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="value">
+        <double>5.000000000000000</double>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>BalloonKink</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/TechDraw/Dimensions</cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="Resources/TechDraw.qrc"/>
+ </resources>
+ <connections/>
+</ui>

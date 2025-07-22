@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>446</width>
+    <height>597</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_4">
+   <item row="0" column="0">
+    <widget class="QFrame" name="frame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Tool Controller</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="toolController">
+        <property name="toolTip">
+         <string>The tool and its settings to be used for this operation</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Coolant Mode</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="coolantController">
+        <property name="toolTip">
+         <string>The tool and its settings to be used for this operation</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QWidget" name="widget">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="cutSideLabel">
+        <property name="text">
+         <string>Cut Side</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="cutSide">
+        <property name="toolTip">
+         <string>Specify if the profile should be performed inside or outside the base geometry features. This only matters if Use Compensation is checked (the default)</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>PLACEHOLDER</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="directionLabel">
+        <property name="text">
+         <string>Direction</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="direction">
+        <property name="toolTip">
+         <string>The direction in which the profile is performed, clockwise or counterclockwise</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>PLACEHOLDER</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="extraOffsetLabel">
+        <property name="text">
+         <string>Extra Offset</string>
+        </property>
+       </widget>
+      </item>
+     <item row="2" column="1">
+       <widget class="Gui::InputField" name="extraOffset">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>The amount of extra material left by this operation in relation to the target shape</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="numPassesLabel">
+        <property name="text">
+         <string>Number of Passes</string>
+        </property>
+       </widget>
+      </item>
+     <item row="3" column="1">
+       <widget class="QSpinBox" name="numPasses">
+	    <property name="minimum">
+		 <number>1</number>
+        </property>
+        <property name="toolTip">
+         <string>The number of passes to do. If more than one, requires a non-zero value for Pass Stepover.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="stepoverLabel">
+        <property name="text">
+         <string>Pass Stepover</string>
+        </property>
+       </widget>
+      </item>
+     <item row="4" column="1">
+       <widget class="Gui::InputField" name="stepover">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>If doing multiple passes, the extra offset of each additional pass.</string>
+        </property>
+       </widget>
+      </item>
+      </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QWidget" name="widget_2">
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="useStartPoint">
+        <property name="toolTip">
+         <string>Check if this operation should use a starting point</string>
+        </property>
+        <property name="text">
+         <string>Use Start Point</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QCheckBox" name="processHoles">
+        <property name="toolTip">
+         <string>Check if this profile operation should also process holes in the base geometry. Found holes are automatically offset on the opposite cut side and performed in the opposite direction as perimeters. Note that this does not include cylindrical holes, the assumption being that they will get drilled</string>
+        </property>
+        <property name="text">
+         <string>Process Holes</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="useCompensation">
+        <property name="toolTip">
+         <string>If checked, the profile operation is offset by the tool radius. The offset direction is determined by the Cut Side</string>
+        </property>
+        <property name="text">
+         <string>Use Compensation</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QCheckBox" name="processCircles">
+        <property name="toolTip">
+         <string>Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don't warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values</string>
+        </property>
+        <property name="text">
+         <string>Process Circles</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="processPerimeter">
+        <property name="toolTip">
+         <string>Check if this profile operation should also process the outside perimeter of the base geometry shapes</string>
+        </property>
+        <property name="text">
+         <string>Process Perimeter</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::InputField</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/InputField.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>toolController</tabstop>
+  <tabstop>cutSide</tabstop>
+  <tabstop>direction</tabstop>
+  <tabstop>extraOffset</tabstop>
+  <tabstop>useStartPoint</tabstop>
+  <tabstop>useCompensation</tabstop>
+  <tabstop>processHoles</tabstop>
+  <tabstop>processCircles</tabstop>
+  <tabstop>processPerimeter</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

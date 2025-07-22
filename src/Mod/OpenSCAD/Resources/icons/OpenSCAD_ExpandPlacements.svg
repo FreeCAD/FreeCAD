@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   width="64"
+   height="64"
+   id="svg9484"
+   version="1.1">
+  <title
+     id="title3749">OpenSCAD_ExpandPlacements</title>
+  <defs
+     id="defs9486">
+    <linearGradient
+       id="linearGradient902">
+      <stop
+         style="stop-color:#4e9a06;stop-opacity:1"
+         offset="0"
+         id="stop898" />
+      <stop
+         style="stop-color:#8ae234;stop-opacity:1"
+         offset="1"
+         id="stop900" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient860">
+      <stop
+         id="stop856"
+         offset="0"
+         style="stop-color:#4e9a06;stop-opacity:1" />
+      <stop
+         id="stop858"
+         offset="1"
+         style="stop-color:#8ae234;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient852">
+      <stop
+         id="stop848"
+         offset="0"
+         style="stop-color:#4e9a06;stop-opacity:1" />
+      <stop
+         id="stop850"
+         offset="1"
+         style="stop-color:#8ae234;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient12537">
+      <stop
+         style="stop-color:#00fd00;stop-opacity:1;"
+         offset="0"
+         id="stop12539" />
+      <stop
+         style="stop-color:#00fd00;stop-opacity:0;"
+         offset="1"
+         id="stop12541" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient12537"
+       id="linearGradient12547"
+       x1="4.5"
+       y1="14.755193"
+       x2="30.5"
+       y2="14.755193"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(35,-2)" />
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="-8.7244186"
+       x2="32.826744"
+       y1="21.254169"
+       x1="52.921474"
+       id="linearGradient854"
+       xlink:href="#linearGradient852"
+       gradientTransform="translate(0,32)" />
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="-24.574963"
+       x2="10.95193"
+       y1="-2.0214128"
+       x1="19.954786"
+       id="linearGradient862"
+       xlink:href="#linearGradient860"
+       gradientTransform="translate(0,32)" />
+    <linearGradient
+       xlink:href="#linearGradient902"
+       id="linearGradient904"
+       x1="32.612667"
+       y1="-4.9386253"
+       x2="24.018696"
+       y2="-22.178562"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(-1.7239937,52.951234)" />
+    <linearGradient
+       xlink:href="#linearGradient902"
+       id="linearGradient933"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.96771988,0,0,1.0010237,-0.74343264,54.974156)"
+       x1="32.612667"
+       y1="-4.9386253"
+       x2="26.178202"
+       y2="-18.960089" />
+  </defs>
+  <metadata
+     id="metadata9489">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="https://www.gnu.org/copyleft/lesser.html" />
+        <dc:title>OpenSCAD_ExpandPlacements</dc:title>
+        <dc:description></dc:description>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title></dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag />
+        </dc:subject>
+        <dc:relation />
+        <dc:identifier />
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:date>12-01-2021</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[bitacovir]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path
+     style="fill:url(#linearGradient933);fill-opacity:1;stroke:#172a04;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 3.5465921,51.769177 H 59.078579 L 53.954383,32.785832 C 28.072636,33.388783 9.3491435,30.828556 3.5465921,51.769177 Z"
+     id="path879" />
+  <path
+     style="fill:none;stroke:#8ae234;stroke-width:1.96846;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 55.801476,49.365441 H 7.1216128 C 10.549481,35.175542 31.103651,35.025773 52.94146,35.374471"
+     id="path906" />
+  <path
+     style="fill:none;stroke:#172a04;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 59.078579,50.228321 50.02186,14.85027 H 25.115883"
+     id="path881" />
+  <path
+     id="path881-6"
+     d="M 59.078582,50.22832 50.02186,14.85027 H 25.115887"
+     style="fill:none;stroke:#8ae234;stroke-width:1.96846;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+  <ellipse
+     style="fill:#172a04;fill-rule:evenodd;stroke:#172a04;stroke-width:1.63159;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;paint-order:markers stroke fill"
+     id="path908"
+     cx="26.68532"
+     cy="42.958652"
+     rx="2.0930803"
+     ry="2.333648" />
+  <ellipse
+     ry="2.333648"
+     rx="2.0930803"
+     cy="43.029064"
+     cx="43.800323"
+     id="path908-4"
+     style="fill:#172a04;fill-rule:evenodd;stroke:#172a04;stroke-width:1.63159;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;paint-order:markers stroke fill" />
+  <path
+     style="fill:none;stroke:#172a04;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 26.122449,18.198639 H 43.363265"
+     id="path941" />
+  <path
+     id="path941-4"
+     d="M 27.424836,16.688222 H 42.205788"
+     style="fill:none;stroke:#8ae234;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+</svg>

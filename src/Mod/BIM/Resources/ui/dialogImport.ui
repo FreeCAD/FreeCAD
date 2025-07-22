@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>551</width>
+    <height>340</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>IFC import options</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="1" column="1">
+      <widget class="QComboBox" name="comboStrategy">
+       <property name="toolTip">
+        <string>How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>Only root object (default)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Project structure (levels)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>All individual IFC objects</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Initial import</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QComboBox" name="comboSingleDoc">
+       <property name="toolTip">
+        <string>This defines how the IFC data is stored in the FreeCAD document. 'Single IFC document' means that the FreeCAD document is the IFC document, anything you create in it belongs to the IFC document too. 'Use IFC document object' means that an object will be created inside the FreeCAD document to represent the IFC document. You will be able to add non-IFC objects alongside.</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>Locked (IFC objects only)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Unlocked (non-IFC objects permitted)</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Lock document</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Representation type</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QComboBox" name="comboShapeMode">
+       <property name="toolTip">
+        <string>The type of object created at import. Mesh is faster, but Shapes are more precise. You can convert between the two anytime by right-clicking the object tree</string>
+       </property>
+       <property name="currentIndex">
+        <number>1</number>
+       </property>
+       <item>
+        <property name="text">
+         <string>Load the shape (slower)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Load 3D representation only, no shape (default)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>No 3D representation at all</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkSwitchWB">
+     <property name="toolTip">
+      <string>If this is checked, the workbench specified in Start preferences will be loaded after import</string>
+     </property>
+     <property name="text">
+      <string>Switch workbench after import</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkLoadTypes">
+     <property name="toolTip">
+      <string>Preload IFC types that are connected to the objects. It is also possible to leave this setting disabled and double click later on the object to load the types</string>
+     </property>
+     <property name="text">
+      <string>Preload types</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkLoadPsets">
+     <property name="toolTip">
+      <string>Preload property sets of all objects. It is advised to leave this unchecked and load property sets later, only when needed</string>
+     </property>
+     <property name="text">
+      <string>Preload property sets</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkLoadMaterials">
+     <property name="toolTip">
+      <string>Preload all materials of the file. It is advised to leave this unchecked and load materials later, only when needed</string>
+     </property>
+     <property name="text">
+      <string>Preload materials</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkLoadLayers">
+     <property name="toolTip">
+      <string>Preload all layers of the file. It is advised to leave this unchecked and load layers later, only when needed</string>
+     </property>
+     <property name="text">
+      <string>Preload layers</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkAskAgain">
+     <property name="toolTip">
+      <string>If this is unchecked, these settings will be applied automatically next time. You can change this later under menu Edit -&gt; Preferences -&gt; BIM -&gt; Native IFC</string>
+     </property>
+     <property name="text">
+      <string>Ask me again next time</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>Dialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>Dialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

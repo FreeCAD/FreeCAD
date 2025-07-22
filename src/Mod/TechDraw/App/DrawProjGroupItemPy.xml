@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="DrawViewPartPy"
+    Name="DrawProjGroupItemPy"
+    Twin="DrawProjGroupItem"
+    TwinPointer="DrawProjGroupItem"
+    Include="Mod/TechDraw/App/DrawProjGroupItem.h"
+    Namespace="TechDraw"
+    FatherInclude="Mod/TechDraw/App/DrawViewPartPy.h"
+    FatherNamespace="TechDraw">
+    <Documentation>
+      <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
+      <UserDocu>Feature for creating and manipulating component Views Technical Drawing Projection Groups</UserDocu>
+    </Documentation>
+    <Methode Name="autoPosition">
+      <Documentation>
+        <UserDocu>autoPosition() - Move to AutoDistribute/Unlocked position on Page. Returns none.</UserDocu>
+      </Documentation>
+    </Methode>
+    <CustomAttributes />
+  </PythonExport>
+</GenerateModel>

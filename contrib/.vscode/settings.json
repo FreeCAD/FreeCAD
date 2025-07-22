@@ -1,0 +1,39 @@
+{
+  // This disables vscode from adding lines to files.associations,
+  // some files might not be recognized though.
+  // This is a vscode issue.
+  "C_Cpp.autoAddFileAssociations": false,
+  "files.associations": {
+    "*.c": "c",
+    "*.h": "cpp",
+    "*.cpp": "cpp",
+    "*.hpp": "cpp",
+    "*.cxx": "cpp",
+    "*.hxx": "cpp",
+    "*.py": "python",
+    "*.FCMacro": "python"
+  },
+
+  "editor.formatOnType": true,
+  "files.autoSave": "afterDelay",
+  "debug.onTaskErrors": "abort", //to not launch the python debugger when waitforport.py fails
+
+  // Does not quick launch the debugger, forces to select debugger config every time
+  // Use the debug panel on the left instead
+  "debug.showInStatusBar": "never",
+
+  "cmake.options.advanced": {
+    "configurePreset": {
+      "statusBarVisibility": "visible"
+    },
+    "build": {
+      "statusBarVisibility": "visible"
+    },
+    "launch": {
+      "statusBarVisibility": "hidden"
+    },
+    "debug": {
+      "statusBarVisibility": "hidden"
+    }
+  }
+}

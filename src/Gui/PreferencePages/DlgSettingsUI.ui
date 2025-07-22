@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Gui::Dialog::DlgSettingsUI</class>
+ <widget class="QWidget" name="Gui::Dialog::DlgSettingsUI">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>405</width>
+    <height>1065</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>UI</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Theme customization</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>This section lets you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QGridLayout" columnstretch="2,1">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label1">
+          <property name="text">
+           <string>Accent color 1</string>
+          </property>
+          <property name="buddy">
+           <cstring>ThemeAccentColor1</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Gui::PrefColorButton" name="ThemeAccentColor1">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>This color might be used by your theme to let you customize it.</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>85</red>
+            <green>123</green>
+            <blue>182</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ThemeAccentColor1</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Themes</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label2">
+          <property name="text">
+           <string>Accent color 2</string>
+          </property>
+          <property name="buddy">
+           <cstring>ThemeAccentColor2</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label3">
+          <property name="text">
+           <string>Accent color 3</string>
+          </property>
+          <property name="buddy">
+           <cstring>ThemeAccentColor3</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="styleSheetLabel">
+          <property name="text">
+           <string>Style sheet (advanced):</string>
+          </property>
+          <property name="buddy">
+           <cstring>StyleSheets</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Overlay style sheet:</string>
+          </property>
+          <property name="buddy">
+           <cstring>OverlayStyleSheets</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::PrefColorButton" name="ThemeAccentColor2">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>This color might be used by your theme to let you customize it.</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>85</red>
+            <green>123</green>
+            <blue>182</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ThemeAccentColor2</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Themes</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::PrefColorButton" name="ThemeAccentColor3">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>This color might be used by your theme to let you customize it.</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>85</red>
+            <green>123</green>
+            <blue>182</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ThemeAccentColor3</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Themes</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="Gui::PrefComboBox" name="StyleSheets">
+          <property name="toolTip">
+           <string>Style sheet how user interface will look like</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>StyleSheet</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>MainWindow</cstring>
+          </property>
+          <property name="prefType" stdset="0">
+           <cstring></cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="Gui::PrefComboBox" name="OverlayStyleSheets">
+          <property name="prefEntry" stdset="0">
+           <cstring>OverlayActiveStyleSheet</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>MainWindow</cstring>
+          </property>
+          <property name="prefType" stdset="0">
+           <cstring></cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QPushButton" name="themeEditorButton">
+        <property name="text">
+         <string>Open Theme Editor</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Tree view</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout1" columnstretch="2,1">
+      <item row="5" column="0" colspan="2">
+       <widget class="Gui::PrefCheckBox" name="hideInternalNamesCheckBox">
+        <property name="toolTip">
+         <string>Hide extra tree view column - Internal Names.</string>
+        </property>
+        <property name="text">
+         <string>Hide Internal Names</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>HideInternalNames</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>TreeView</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::PrefSpinBox" name="iconSizeSpinBox">
+        <property name="toolTip">
+         <string>Icon size override, set to 0 for the default value.</string>
+        </property>
+        <property name="singleStep">
+         <number>1</number>
+        </property>
+        <property name="value">
+         <number>16</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>IconSize</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>TreeView</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="rowSpacingLabel">
+        <property name="text">
+         <string>Additional row spacing</string>
+        </property>
+        <property name="buddy">
+         <cstring>rowSpacingSpinBox</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="Gui::PrefCheckBox" name="resizableColumnsCheckBox">
+        <property name="toolTip">
+         <string>Allow tree view columns to be manually resized.</string>
+        </property>
+        <property name="text">
+         <string>Resizable columns</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ResizableColumn</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>TreeView</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="iconSizeLabel">
+        <property name="text">
+         <string>Icon size</string>
+        </property>
+        <property name="buddy">
+         <cstring>iconSizeSpinBox</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::PrefSpinBox" name="rowSpacingSpinBox">
+        <property name="toolTip">
+         <string>Additional spacing for tree view rows. Bigger values will increase row item heights.</string>
+        </property>
+        <property name="singleStep">
+         <number>1</number>
+        </property>
+        <property name="value">
+         <number>0</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ItemSpacing</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>TreeView</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="Gui::PrefCheckBox" name="showVisibilityIconCheckBox">
+        <property name="toolTip">
+         <string>If enabled, show an eye icon before the tree view items, showing their visibility status. When clicked the visibility is toggled.</string>
+        </property>
+        <property name="text">
+         <string>Show visibility icon</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>VisibilityIcon</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>TreeView</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0" colspan="2">
+       <widget class="Gui::PrefCheckBox" name="hideHeaderCheckBox">
+        <property name="toolTip">
+         <string>Hide header with column names from the tree view.</string>
+        </property>
+        <property name="text">
+         <string>Hide header</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>HideHeaderView</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>TreeView</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0" colspan="2">
+       <widget class="Gui::PrefCheckBox" name="hideTreeViewScrollBarCheckBox">
+        <property name="toolTip">
+         <string>Hide scroll bar from the tree view, scrolling will still be possible using mouse wheel.</string>
+        </property>
+        <property name="text">
+         <string>Hide scroll bar</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>HideScrollBar</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>TreeView</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="Gui::PrefCheckBox" name="hideDescriptionCheckBox">
+        <property name="toolTip">
+         <string>Hide column with object description in tree view.</string>
+        </property>
+        <property name="text">
+         <string>Hide description</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>HideColumn</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>TreeView</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>Overlay</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="hideTabBarCheckBox">
+        <property name="toolTip">
+         <string>Hide tab bar in dock overlay</string>
+        </property>
+        <property name="text">
+         <string>Hide tab bar</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DockOverlayHideTabBar</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="Gui::PrefCheckBox" name="hintShowTabBarCheckBox">
+        <property name="toolTip">
+         <string>Show tab bar on mouse over when auto hide</string>
+        </property>
+        <property name="text">
+         <string>Hint show tab bar</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DockOverlayHintTabBar</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="Gui::PrefCheckBox" name="hidePropertyViewScrollBarCheckBox">
+        <property name="toolTip">
+         <string>Hide property view scroll bar in dock overlay</string>
+        </property>
+        <property name="text">
+         <string>Hide property view scroll bar</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DockOverlayHidePropertyViewScrollBar</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="Gui::PrefCheckBox" name="overlayAutoHideCheckBox">
+        <property name="toolTip">
+         <string>Automatically hide overlaid dock panels when in non 3D view (like TechDraw or Spreadsheet).</string>
+        </property>
+        <property name="text">
+         <string>Auto hide in non 3D view</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DockOverlayAutoView</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="Gui::PrefCheckBox" name="mouseClickPassThroughCheckBox">
+        <property name="toolTip">
+         <string>Auto mouse click through transparent part of dock overlay.</string>
+        </property>
+        <property name="text">
+         <string>Auto mouse pass through</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DockOverlayAutoMouseThrough</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="Gui::PrefCheckBox" name="mouseWheelPassThroughCheckBox">
+        <property name="toolTip">
+         <string>Auto pass through mouse wheel event on transparent dock overlay.</string>
+        </property>
+        <property name="text">
+         <string>Auto mouse wheel pass through</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DockOverlayWheelPassThrough</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="spacer_3">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefColorButton</class>
+   <extends>Gui::ColorButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>ThemeAccentColor1</tabstop>
+  <tabstop>ThemeAccentColor2</tabstop>
+  <tabstop>ThemeAccentColor3</tabstop>
+  <tabstop>StyleSheets</tabstop>
+  <tabstop>OverlayStyleSheets</tabstop>
+  <tabstop>iconSizeSpinBox</tabstop>
+  <tabstop>rowSpacingSpinBox</tabstop>
+  <tabstop>resizableColumnsCheckBox</tabstop>
+  <tabstop>showVisibilityIconCheckBox</tabstop>
+  <tabstop>hideDescriptionCheckBox</tabstop>
+  <tabstop>hideInternalNamesCheckBox</tabstop>
+  <tabstop>hideTreeViewScrollBarCheckBox</tabstop>
+  <tabstop>hideHeaderCheckBox</tabstop>
+  <tabstop>hideTabBarCheckBox</tabstop>
+  <tabstop>hintShowTabBarCheckBox</tabstop>
+  <tabstop>hidePropertyViewScrollBarCheckBox</tabstop>
+  <tabstop>overlayAutoHideCheckBox</tabstop>
+  <tabstop>mouseClickPassThroughCheckBox</tabstop>
+  <tabstop>mouseWheelPassThroughCheckBox</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

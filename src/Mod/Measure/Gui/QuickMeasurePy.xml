@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="PyObjectBase"
+    Name="QuickMeasurePy"
+    Twin="QuickMeasure"
+    TwinPointer="QuickMeasure"
+    Include="Mod/Measure/Gui/QuickMeasure.h"
+    Namespace="MeasureGui"
+    FatherInclude="Base/PyObjectBase.h"
+    Constructor="true"
+    Delete="true"
+    FatherNamespace="Base">
+    <Documentation>
+      <Author Licence="LGPL" Name="Ondsel" EMail="development@ondsel.com" />
+      <UserDocu>Selection Observer for the QuickMeasure label.</UserDocu>
+    </Documentation>
+  </PythonExport>
+</GenerateModel>

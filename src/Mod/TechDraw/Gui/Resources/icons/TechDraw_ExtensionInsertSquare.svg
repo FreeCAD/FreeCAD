@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   style="enable-background:new"
+   id="svg1876"
+   version="1.1"
+   viewBox="0 0 16.933333 16.933334"
+   height="64"
+   width="64"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs1870">
+    <filter
+       id="filter1958"
+       style="color-interpolation-filters:sRGB"
+       x="-0.061574262"
+       y="-0.041955596"
+       width="1.1308433"
+       height="1.1622597">
+      <feBlend
+         id="feBlend1960"
+         in2="BackgroundImage"
+         mode="exclusion" />
+    </filter>
+    <filter
+       id="filter1958-7"
+       style="color-interpolation-filters:sRGB"
+       x="-0.061574262"
+       y="-0.23279332"
+       width="1.1308433"
+       height="1.6508332">
+      <feBlend
+         id="feBlend1960-2"
+         in2="BackgroundImage"
+         mode="exclusion" />
+    </filter>
+  </defs>
+  <metadata
+     id="metadata1873">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer2"
+     style="display:inline;enable-background:new">
+    <path
+       style="enable-background:new;display:inline;fill:#fce94f;stroke:#302b00;stroke-width:0.529167;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;paint-order:normal"
+       d="m 2.3812499,14.552084 2.38125,-1.5875 v 1.058333 h 7.4083331 v -1.058333 l 2.38125,1.5875 -2.38125,1.5875 -3e-6,-1.058333 H 4.7624999 v 1.058333 z"
+       id="path2" />
+    <path
+       d="m 4.4979166,11.377084 h 8.7312494 l 0,-8.7312506 z m -0.79375,-9.5250006 0,8.7312506 8.7312494,-8.7312506 z M 2.6458385,0.79375466 H 14.287496 V 12.435412 H 2.6458385 Z"
+       id="text4"
+       style="font-size:12.7001px;line-height:0px;text-align:end;text-anchor:end;fill:#fce94f;stroke:#302b00;stroke-width:0.529177;stroke-linecap:square;stroke-dashoffset:3;paint-order:normal"
+       aria-label="〼" />
+  </g>
+</svg>

@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="DrawViewPy"
+    Name="DrawViewDimensionPy"
+    Twin="DrawViewDimension"
+    TwinPointer="DrawViewDimension"
+    Include="Mod/TechDraw/App/DrawViewDimension.h"
+    Namespace="TechDraw"
+    FatherInclude="Mod/TechDraw/App/DrawViewPy.h"
+    FatherNamespace="TechDraw">
+    <Documentation>
+      <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
+      <UserDocu>Feature for creating and manipulating Technical Drawing Dimensions</UserDocu>
+    </Documentation>
+    <Methode Name="getRawValue">
+      <Documentation>
+        <UserDocu>getRawValue() - returns Dimension value in mm.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getText">
+      <Documentation>
+        <UserDocu>getText() - returns Dimension text.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getLinearPoints">
+      <Documentation>
+        <UserDocu>getLinearPoints() - returns list of points for linear Dimension</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getArcPoints">
+      <Documentation>
+        <UserDocu>getArcPoints() - returns list of points for circle/arc Dimension</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getAnglePoints">
+      <Documentation>
+        <UserDocu>getAnglePoints() - returns list of points for angle Dimension</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getAreaPoints">
+      <Documentation>
+        <UserDocu>getAreaPoints() - returns list of values (center, filled area, actual area) for area Dimension.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getArrowPositions">
+      <Documentation>
+        <UserDocu>getArrowPositions() - returns list of locations or Dimension Arrowheads. Locations are in unscaled coordinates of parent View </UserDocu>
+      </Documentation>
+    </Methode>
+    <CustomAttributes />
+  </PythonExport>
+</GenerateModel>

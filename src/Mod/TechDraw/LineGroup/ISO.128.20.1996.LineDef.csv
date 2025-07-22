@@ -1,0 +1,19 @@
+# ISO128-20 standard line definitions
+# NOTE: saving this file from a spreadsheet program (like LibreOffice Calc) may
+# append empty cells to the ends of the lines. this can confuse FreeCAD.
+# ISO line number, description, graphical element list
+1,Continuous,n/a
+2,Dashed,Gap,Dash,Gap
+3,DashedSpaced,Dash,Space
+4,LongDashedDotted,LongDash,Gap,Dot,Gap
+5,LongDashedDoubleDotted,LongDash,Gap,Dot,Gap,Dot,Gap
+6,LongDashedTripleDotted,LongDash,Gap,Dot,Gap,Dot,Gap,Dot,Gap
+7,Dotted,Dot,Gap
+8,LongDashShortDash,LongDash,Gap,ShortDash,Gap
+9,LongDashDoubleShortDash,LongDash,Gap,ShortDash,Gap,ShortDash,Gap
+10,DashedDotted,Dash,Gap,Dot,Gap
+11,DoubleDashedDotted,Gap,Dash,Gap,Dash,Gap,Dot,Gap
+12,DashedDoubleDotted,Dash,Gap,Dot,Gap,Dot,Gap
+13,DoubleDashedDoubleDotted,Dash,Gap,Dash,Gap,Dot,Gap,Dot,Gap
+14,DashedTripleDotted,Dash,Gap,Dot,Gap,Dot,Gap,Dot,Gap
+15,DoubleDashedTripleDotted,Dash,Gap,Dash,Gap,Dot,Gap,Dot,Gap,Dot,Gap

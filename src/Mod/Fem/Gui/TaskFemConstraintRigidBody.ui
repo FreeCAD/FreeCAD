@@ -1,0 +1,615 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskFemConstraintRigidBody</class>
+ <widget class="QWidget" name="TaskFemConstraintRigidBody">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>296</width>
+    <height>587</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="lbl_info">
+     <property name="text">
+      <string>Click Add or Remove and select geometric elements</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="hLayout1">
+     <item>
+      <widget class="QToolButton" name="btnAdd">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Add</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="btnRemove">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Remove</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QListWidget" name="lw_references"/>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QGroupBox" name="gpb_ref_mode">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string/>
+       </property>
+       <property name="title">
+        <string>Reference Node</string>
+       </property>
+       <layout class="QFormLayout" name="f_layout_ref_node">
+        <item row="0" column="0">
+         <widget class="QLabel" name="lbl_ref_node_x">
+          <property name="text">
+           <string>X</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Gui::QuantitySpinBox" name="qsb_ref_node_x">
+          <property name="singleStep">
+           <double>1.0</double>
+          </property>
+          <property name="maximum">
+           <double>1000000000.0</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">mm</string>
+          </property>
+          <property name="value" stdset="0">
+           <double>0.0</double>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="lbl_ref_node_y">
+          <property name="text">
+           <string>Y</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::QuantitySpinBox" name="qsb_ref_node_y">
+          <property name="singleStep">
+           <double>1.0</double>
+          </property>
+          <property name="maximum">
+           <double>1000000000.0</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">mm</string>
+          </property>
+          <property name="value" stdset="0">
+           <double>0.0</double>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="lbl_ref_node_z">
+          <property name="text">
+           <string>Z</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::QuantitySpinBox" name="qsb_ref_node_z">
+          <property name="singleStep">
+           <double>1.0</double>
+          </property>
+          <property name="maximum">
+           <double>1000000000.0</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">mm</string>
+          </property>
+          <property name="value" stdset="0">
+           <double>0.0</double>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="gpb_trans_parameter">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string/>
+       </property>
+       <property name="title">
+        <string>Translational Mode</string>
+       </property>
+       <layout class="QFormLayout" name="f_layout_trans_mode">
+        <item row="0" column="0">
+         <widget class="QLabel" name="lbl_trans_x_mode">
+          <property name="text">
+           <string>X</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="lbl_trans_y_mode">
+          <property name="text">
+           <string>Y</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="lbl_trans_z_mode">
+          <property name="text">
+           <string>Z</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="cb_x_trans_mode"/>
+        </item>
+        <item row="1" column="1">
+         <widget class="QComboBox" name="cb_y_trans_mode"/>
+        </item>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="cb_z_trans_mode"/>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="gpb_trans_disp">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string/>
+       </property>
+       <property name="title">
+        <string>Displacement</string>
+       </property>
+       <layout class="QFormLayout" name="f_layout_trans_disp">
+        <item row="0" column="0">
+         <widget class="QLabel" name="lbl_trans_x_disp">
+          <property name="text">
+           <string>X</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="lbl_trans_y_disp">
+          <property name="text">
+           <string>Y</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="lbl_trans_z_disp">
+          <property name="text">
+           <string>Z</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Gui::QuantitySpinBox" name="qsb_disp_x">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
+          <property name="singleStep">
+           <double>1.00000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">mm</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::QuantitySpinBox" name="qsb_disp_y">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
+          <property name="singleStep">
+           <double>1.00000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">mm</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::QuantitySpinBox" name="qsb_disp_z">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
+          <property name="singleStep">
+           <double>1.00000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">mm</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+     <widget class="QGroupBox" name="gpb_trans_force">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="toolTip">
+       <string/>
+      </property>
+      <property name="title">
+       <string>Force</string>
+      </property>
+       <layout class="QFormLayout" name="f_layout_trans_force">
+        <item row="0" column="0">
+         <widget class="QLabel" name="lbl_trans_x_force">
+          <property name="text">
+           <string>X</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="lbl_trans_y_force">
+          <property name="text">
+           <string>Y</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="lbl_trans_z_force">
+          <property name="text">
+           <string>Z</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Gui::QuantitySpinBox" name="qsb_force_x">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
+          <property name="singleStep">
+           <double>1.00000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">N</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::QuantitySpinBox" name="qsb_force_y">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
+          <property name="singleStep">
+           <double>1.00000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">N</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::QuantitySpinBox" name="qsb_force_z">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
+          <property name="singleStep">
+           <double>1.00000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">N</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer1">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="gpb_rot_mode">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string/>
+       </property>
+       <property name="title">
+        <string>Rotational Mode</string>
+       </property>
+       <layout class="QFormLayout" name="f_layout_rot_mode">
+        <item row="0" column="0">
+         <widget class="QLabel" name="lbl_rot_x_mode">
+          <property name="text">
+           <string>X</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="lbl_rot_y_mode">
+          <property name="text">
+           <string>Y</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="lbl_rot_z_mode">
+          <property name="text">
+           <string>Z</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="cb_x_rot_mode"/>
+        </item>
+        <item row="1" column="1">
+         <widget class="QComboBox" name="cb_y_rot_mode"/>
+        </item>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="cb_z_rot_mode"/>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="gpb_rot_rot">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string/>
+       </property>
+       <property name="title">
+        <string>Rotation</string>
+       </property>
+       <layout class="QFormLayout" name="f_layout_rot_rot">
+        <item row="0" column="0">
+         <widget class="QLabel" name="lbl_rot_x_axis">
+          <property name="text">
+           <string>X</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="lbl_rot_y_axis">
+          <property name="text">
+           <string>Y</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="lbl_rot_z_axis">
+          <property name="text">
+           <string>Z</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Gui::DoubleSpinBox" name="spb_rot_axis_x">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
+          <property name="singleStep">
+           <double>0.10000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::DoubleSpinBox" name="spb_rot_axis_y">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::DoubleSpinBox" name="spb_rot_axis_z">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="lbl_rot_angle">
+          <property name="text">
+           <string>Angle</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="Gui::QuantitySpinBox" name="qsb_rot_angle">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
+          <property name="singleStep">
+           <double>1.00000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">deg</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="gpb_rot_moment">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string/>
+       </property>
+       <property name="title">
+        <string>Moment</string>
+       </property>
+       <layout class="QFormLayout" name="f_layout_rot_moment">
+        <item row="0" column="0">
+         <widget class="QLabel" name="lbl_rot_x_moment">
+          <property name="text">
+           <string>X</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="lbl_rot_y_moment">
+          <property name="text">
+           <string>Y</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="lbl_rot_z_rot">
+          <property name="text">
+           <string>Z</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Gui::QuantitySpinBox" name="qsb_moment_x">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
+          <property name="singleStep">
+           <double>1.00000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">N*m</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::QuantitySpinBox" name="qsb_moment_y">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
+          <property name="singleStep">
+           <double>1.00000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">N*m</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::QuantitySpinBox" name="qsb_moment_z">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
+          <property name="singleStep">
+           <double>1.00000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">N*m</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::DoubleSpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/SpinBox.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

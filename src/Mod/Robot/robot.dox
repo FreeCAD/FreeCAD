@@ -1,0 +1,4 @@
+/** \defgroup ROBOT Robot
+ *  \ingroup CWORKBENCHES
+ *  \brief Simulates 6-axis robot movements
+ */

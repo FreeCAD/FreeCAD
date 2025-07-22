@@ -1,0 +1,12 @@
+Stand-alone Python bindings, contributed by Willi Richert <w.richert@gmx.net>
+
+To make them:
+$ cd python-bindings 
+$ make
+You will find then two files kdtree.py _kdtree.so in the current directory.
+These are all you need to use libkdtree++.
+Please examine the test files to get a grip to the usage.
+
+To run the tests, type:
+python py-kdtree_test.py
+

@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Gui::Dialog::DlgSettingsArch</class>
+ <widget class="QWidget" name="Gui::Dialog::DlgSettingsArch">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>519</width>
+    <height>954</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>General settings</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_1">
+   <item>
+    <widget class="QGroupBox" name="groupBox_1">
+     <property name="title">
+      <string>Object creation</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_1">
+      <item row="0" column="0" colspan="3">
+       <widget class="Gui::PrefCheckBox" name="checkBox_autoJoinWalls">
+        <property name="text">
+         <string>Auto-join walls</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>autoJoinWalls</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="3">
+       <widget class="Gui::PrefCheckBox" name="checkBox_joinWallSketches">
+        <property name="toolTip">
+         <string>If this is checked, when 2 similar walls are being connected, their underlying sketches will be joined into one, and the two walls will become one</string>
+        </property>
+        <property name="text">
+         <string>Join base sketches of walls if possible</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>joinWallSketches</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="3">
+       <widget class="Gui::PrefCheckBox" name="checkBox_archRemoveExternal">
+        <property name="toolTip">
+         <string>Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</string>
+        </property>
+        <property name="text">
+         <string>Remove external geometry of base sketches if needed</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>archRemoveExternal</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="3">
+       <widget class="Gui::PrefCheckBox" name="checkBox_UseMaterialColor">
+        <property name="toolTip">
+         <string>If this is checked, when an Arch object has a material, the object will take the color of the material. This can be overridden for each object.</string>
+        </property>
+        <property name="text">
+         <string>Use material color as shape color</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UseMaterialColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="3">
+       <widget class="Gui::PrefCheckBox" name="checkBox_applyconstructionStyle">
+        <property name="toolTip">
+         <string>If this is checked, when an object becomes Subtraction or Addition of an Arch object, it will receive the Draft Construction color.</string>
+        </property>
+        <property name="text">
+         <string>Apply Draft construction style to subcomponents</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>applyconstructionStyle</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0" colspan="3">
+       <widget class="Gui::PrefCheckBox" name="checkBox_MoveWithHost">
+        <property name="toolTip">
+         <string>By default, new objects will have their &quot;Move with host&quot; property set to False, which means they won't move when their host object is moved.</string>
+        </property>
+        <property name="text">
+         <string>Set &quot;Move with host&quot; property to True by default</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>MoveWithHost</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0" colspan="3">
+       <widget class="Gui::PrefCheckBox" name="checkBox_MoveBase">
+        <property name="text">
+         <string>Set &quot;Move base&quot; property to True by default</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>MoveBase</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="label_MaxComputeAreas">
+        <property name="text">
+         <string>Do not compute areas for objects with more than</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="Gui::PrefSpinBox" name="spinBox_MaxComputeAreas">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="suffix">
+         <string> faces</string>
+        </property>
+        <property name="value">
+         <number>20</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>MaxComputeAreas</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="2">
+       <spacer name="horizontalSpacer_1">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="8" column="0">
+       <widget class="QLabel" name="label_ReferenceCheckInterval">
+        <property name="text">
+         <string>Interval between file checks for references</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="Gui::PrefSpinBox" name="spinBox_ReferenceCheckInterval">
+        <property name="suffix">
+         <string> seconds</string>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>9999</number>
+        </property>
+        <property name="value">
+         <number>60</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ReferenceCheckInterval</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="0">
+       <widget class="QLabel" name="label_IfcVersion">
+        <property name="text">
+         <string>IFC version</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1">
+       <widget class="Gui::PrefComboBox" name="comboBox_IfcVersion">
+        <property name="toolTip">
+         <string>The IFC version will change which attributes and products are supported</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>IfcVersion</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+        <item>
+         <property name="text">
+          <string>IFC4</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>IFC2X3</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Mesh to Shape Conversion</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0" colspan="3">
+       <widget class="Gui::PrefCheckBox" name="checkBox_ConversionFast">
+        <property name="toolTip">
+         <string>If this is checked, conversion is faster but the result might still contain triangulated faces</string>
+        </property>
+        <property name="text">
+         <string>Fast conversion</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ConversionFast</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="3">
+       <widget class="Gui::PrefCheckBox" name="checkBox_ConversionFlat">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</string>
+        </property>
+        <property name="text">
+         <string>Force flat faces</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ConversionFlat</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="3">
+       <widget class="Gui::PrefCheckBox" name="checkBox_ConversionCut">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</string>
+        </property>
+        <property name="text">
+         <string>Cut method</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ConversionCut</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_ConversionTolerance">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Tolerance</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::PrefDoubleSpinBox" name="spinBox_ConversionTolerance">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Tolerance value to use when checking if 2 adjacent faces as planar</string>
+        </property>
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="singleStep">
+         <double>0.000100000000000</double>
+        </property>
+        <property name="value">
+         <double>0.001000000000000</double>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ConversionTolerance</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>2D rendering</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0" colspan="3">
+       <widget class="Gui::PrefCheckBox" name="checkBox_ShowVRMDebug">
+        <property name="toolTip">
+         <string>Show debug information during 2D rendering</string>
+        </property>
+        <property name="text">
+         <string>Show renderer debug messages</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowVRMDebug</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_CutLineThickness">
+        <property name="text">
+         <string>Cut areas line thickness ratio</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::PrefDoubleSpinBox" name="spinBox_CutLineThickness">
+        <property name="toolTip">
+         <string>Specifies how many times the viewed line thickness must be applied to cut lines</string>
+        </property>
+        <property name="value">
+         <double>2.000000000000000</double>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>CutLineThickness</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_SymbolLineThickness">
+        <property name="text">
+         <string>Symbol line thickness ratio</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::PrefDoubleSpinBox" name="spinBox_SymbolLineThickness">
+        <property name="value">
+         <double>0.600000000000000</double>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>SymbolLineThickness</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_archHiddenPattern">
+        <property name="text">
+         <string>Hidden geometry pattern</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::PrefLineEdit" name="lineEdit_archHiddenPattern">
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>This is the SVG stroke-dasharray property to apply
+to projections of hidden objects.</string>
+        </property>
+        <property name="text">
+         <string notr="true">30, 10</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>archHiddenPattern</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_patternScale">
+        <property name="text">
+         <string>Pattern scale</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="Gui::PrefDoubleSpinBox" name="spinBox_patternScale">
+        <property name="toolTip">
+         <string>Scaling factor for patterns used by objects that have
+a Footprint display mode</string>
+        </property>
+        <property name="decimals">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <double>9999.989999999999782</double>
+        </property>
+        <property name="singleStep">
+         <double>0.001000000000000</double>
+        </property>
+        <property name="value">
+         <double>0.010000000000000</double>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>patternScale</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_4">
+     <property name="title">
+      <string>BIM server</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_BimServerUrl">
+        <property name="text">
+         <string>Address</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::PrefLineEdit" name="lineEdit_BimServerUrl">
+        <property name="toolTip">
+         <string>The URL of a BIM server instance (www.bimserver.org) to connect to.</string>
+        </property>
+        <property name="text">
+         <string notr="true">http://localhost:8082</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>BimServerUrl</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="Gui::PrefCheckBox" name="checkBox_BimServerBrowser">
+        <property name="toolTip">
+         <string>If this is selected, the &quot;Open BIM Server in browser&quot;
+button will open the BIM Server interface in an external browser
+instead of the FreeCAD web workbench</string>
+        </property>
+        <property name="text">
+         <string>Open in external browser</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>BimServerBrowser</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_5">
+     <property name="title">
+      <string>Survey</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_surveyUnits">
+        <property name="toolTip">
+         <string>If this is checked, the text that gets placed in the clipboard will include the unit. Otherwise, it will be a simple number expressed in internal units (millimeters)</string>
+        </property>
+        <property name="text">
+         <string>Include unit when sending measurements to clipboard</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>surveyUnits</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer_1">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>checkBox_ConversionFast</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox_ConversionFlat</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_ConversionFast</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox_ConversionCut</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_ConversionFast</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>label_ConversionTolerance</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_ConversionFast</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>spinBox_ConversionTolerance</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

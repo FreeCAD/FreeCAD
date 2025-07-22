@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+<!-- https://tamirov.ru edited -->
+<title>Усиление шва снять. Reinforcement removal - tech drawing chars (FreeCAD) https://freecad-gost.ru</title>
+<g>
+ <path d="m5,60 h50" fill="none" stroke="#000" stroke-width="2" />
+ <circle cx="30" cy="45" r="15" fill="none" stroke="#000" stroke-width="2"/>
+</g>
+</svg>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport
+            Father="ViewProviderGeometryObjectPy"
+            Name="ViewProviderFemMeshPy"
+            Twin="ViewProviderFemMesh"
+            TwinPointer="ViewProviderFemMesh"
+            Include="Mod/Fem/Gui/ViewProviderFemMesh.h"
+            Namespace="FemGui"
+            FatherInclude="Gui/ViewProviderGeometryObjectPy.h"
+            FatherNamespace="Gui"
+            Constructor="false"
+            Delete="false">
+        <Documentation>
+            <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
+            <UserDocu>ViewProviderFemMesh class</UserDocu>
+        </Documentation>
+        <Methode Name="applyDisplacement">
+            <Documentation>
+                <UserDocu></UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="resetNodeColor">
+            <Documentation>
+                <UserDocu>Reset color set by method setNodeColorByScalars.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="resetNodeDisplacement">
+            <Documentation>
+                <UserDocu>Reset displacements set by method setNodeDisplacementByVectors.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="resetHighlightedNodes">
+            <Documentation>
+                <UserDocu>Reset highlighted nodes.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setNodeColorByScalars">
+            <Documentation>
+                <UserDocu>Sets mesh node colors using element list and value list.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setNodeDisplacementByVectors">
+            <Documentation>
+                <UserDocu></UserDocu>
+            </Documentation>
+        </Methode>
+        <Attribute Name="NodeColor" ReadOnly="false">
+            <Documentation>
+                <UserDocu>Postprocessing color of the nodes. The faces between the nodes get interpolated.</UserDocu>
+            </Documentation>
+            <Parameter Name="NodeColor" Type="Dict"/>
+        </Attribute>
+        <Attribute Name="ElementColor" ReadOnly="false">
+            <Documentation>
+                <UserDocu>Postprocessing color of the elements. All faces of the element get the same color.</UserDocu>
+            </Documentation>
+            <Parameter Name="ElementColor" Type="Dict"/>
+        </Attribute>
+        <Attribute Name="NodeDisplacement" ReadOnly="false">
+            <Documentation>
+                <UserDocu>Postprocessing color of the nodes. The faces between the nodes get interpolated.</UserDocu>
+            </Documentation>
+            <Parameter Name="NodeDisplacement" Type="Dict"/>
+        </Attribute>
+        <Attribute Name="HighlightedNodes" ReadOnly="false">
+            <Documentation>
+                <UserDocu>List of nodes which get highlighted.</UserDocu>
+            </Documentation>
+            <Parameter Name="HighlightedNodes" Type="List"/>
+        </Attribute>
+        <Attribute Name="VisibleElementFaces" ReadOnly="true">
+            <Documentation>
+                <UserDocu>List of elements and faces which are actually shown. These are all surface faces of the mesh.</UserDocu>
+            </Documentation>
+            <Parameter Name="VisibleElementFaces" Type="List"/>
+        </Attribute>
+    </PythonExport>
+</GenerateModel>

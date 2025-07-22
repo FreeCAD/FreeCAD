@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "name": "90 Deg. V-Bit",
+  "shape": "v-bit.fcstd",
+  "shape-type": "VBit",
+  "parameter": {
+    "CuttingEdgeAngle": "90.0000 \u00b0",
+    "Diameter": "10.0000 mm",
+    "CuttingEdgeHeight": "1.0000 mm",
+    "TipDiameter": "0.1000 mm",
+    "Length": "20.0000 mm",
+    "ShankDiameter": "5.0000 mm"
+  },
+  "attribute": {}
+}

@@ -1,0 +1,4 @@
+/** \defgroup MESHPART MeshPart
+ *  \ingroup CWORKBENCHES
+ *  \brief Part to Mesh (and vice-versa) conversion tools
+ */

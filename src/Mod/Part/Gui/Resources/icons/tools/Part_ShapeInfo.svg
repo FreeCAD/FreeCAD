@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64px" height="64px" id="svg2860" version="1.1">
+  <defs id="defs2862">
+    <linearGradient id="linearGradient3775">
+      <stop style="stop-color:#faff2b;stop-opacity:1" offset="0" id="stop3777" />
+      <stop style="stop-color:#ffaa00;stop-opacity:1" offset="1" id="stop3779" />
+    </linearGradient>
+    <linearGradient id="linearGradient3377">
+      <stop id="stop3379" offset="0" style="stop-color:#faff2b;stop-opacity:1" />
+      <stop id="stop3381" offset="1" style="stop-color:#ffaa00;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient xlink:href="#linearGradient3011-6" id="radialGradient3174-3" gradientUnits="userSpaceOnUse" gradientTransform="matrix(-1.4090915,3.8636359,-0.97565325,-0.35582669,355.44592,-815.80833)" cx="225.93762" cy="91.956673" fx="225.93762" fy="91.956673" r="22" />
+    <linearGradient id="linearGradient3011-6">
+      <stop id="stop3013-7" offset="0" style="stop-color:#fce94f;stop-opacity:1" />
+      <stop id="stop3015-5" offset="1" style="stop-color:#c4a000;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient xlink:href="#linearGradient3777" id="linearGradient3220" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0.79109028,0,0,0.78516507,69.03755,5.1139279)" x1="53.896763" y1="51.179787" x2="47.502235" y2="21.83742" />
+    <linearGradient id="linearGradient3777">
+      <stop style="stop-color:#c4a000;stop-opacity:1" offset="0" id="stop3779-3" />
+      <stop style="stop-color:#edd400;stop-opacity:1" offset="1" id="stop3781" />
+    </linearGradient>
+    <linearGradient xlink:href="#linearGradient3767" id="linearGradient3222" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0.82352937,0,0,0.77272731,68.529413,5.8636358)" x1="22.116516" y1="55.717518" x2="17.328547" y2="21.31134" />
+    <linearGradient id="linearGradient3767">
+      <stop style="stop-color:#edd400;stop-opacity:1" offset="0" id="stop3769" />
+      <stop style="stop-color:#fce94f;stop-opacity:1" offset="1" id="stop3771" />
+    </linearGradient>
+  </defs>
+  <metadata id="metadata2865">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[wmayer]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:title>Part_ShapeInfo</dc:title>
+        <dc:date>2011-10-21</dc:date>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Part/Gui/Resources/icons/Part_ShapeInfo.svg</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g id="layer1">
+    <g id="g3618" transform="translate(-129.7515,-68.681262)">
+      <g id="g3163" transform="translate(71.7515,76.68126)">
+        <path id="path2993" d="m 71,19 28,5 18,-7 -23.84947,-3.42198 z" style="fill:#fce94f;stroke:#302b00;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
+        <path id="path2995" d="m 117,17 0,28 -18,8 0,-30 z" style="fill:url(#linearGradient3220);fill-opacity:1;stroke:#302b00;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
+        <path style="fill:url(#linearGradient3222);fill-opacity:1;fill-rule:evenodd;stroke:#302b00;stroke-width:1.99999988;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" d="m 71,19 28,4 0,30.000002 -28,-4.636365 z" id="path3825" />
+        <path id="path3765" d="M 72.993,21.368254 73,46.6 l 24,4 -0.007,-25.843 z" style="fill:none;stroke:#fce94f;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path id="path3775" d="m 101,24.5 0,25.6 14,-6.4 0,-23.8 z" style="fill:none;stroke:#edd400;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      </g>
+      <g transform="translate(187.7515,67.681262)" id="g3176">
+        <g transform="matrix(0.47285104,0,0,0.47285104,-15.096853,1.7984977)" id="g3170">
+          <path style="fill:url(#radialGradient3174-3);fill-opacity:1;stroke:#302b00;stroke-width:4.22966194;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" d="m -50.551114,4.6558051 -21.14831,50.7559419 c 0,8 42.296619,8 42.296619,0 z" id="path3039" />
+          <path style="fill:none;stroke:#fce94f;stroke-width:4.22966194;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="m -50.551114,15.22996 -16.284198,39.547338 c 6.767459,2.74928 26.858352,2.74928 33.625811,0 z" id="path3817" />
+        </g>
+      </g>
+      <g id="g3866" transform="translate(-0.18097,2.2293053)">
+        <path id="path3074" d="M 147.93247,83.778883 C 148.74484,79.920062 151.44453,76.505368 155.01182,74.824608 C 158.5791,73.143848 162.93111,73.236064 166.42399,75.066422 C 169.91687,76.896781 172.4695,80.422767 173.11769,84.312536 C 173.76587,88.202305 172.49456,92.365507 169.78395,95.229605 C 168.03021,97.082648 165.77496,98.364257 163.60901,99.712592 C 161.44305,101.06093 159.27916,102.5557 157.86394,104.67855 C 157.47268,105.26545 157.14781,105.90207 156.96342,106.58291 C 156.77904,107.26374 156.7515,107.9759 156.7515,108.68126 V 112.68126" style="fill:none;stroke:#042a2a;stroke-width:8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+        <path id="path3011" style="fill:none;stroke:#16d0d2;stroke-width:4;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" d="M 147.93247,84.054862 C 148.57307,80.013553 151.24748,76.347645 154.90028,74.503851 C 158.55309,72.660057 163.09079,72.685566 166.72263,74.570312 C 170.35447,76.455058 172.9875,80.150803 173.58262,84.199058 C 174.17774,88.247314 172.71972,92.54447 169.78395,95.394698 C 167.95537,97.169995 165.65636,98.361835 163.47673,99.682667 C 161.2971,101.0035 159.14081,102.54647 157.86394,104.75214 C 157.15549,105.97593 156.74814,107.36312 156.60369,108.76978 C 156.48362,109.939 156.54232,111.12641 156.77712,112.27808" />
+        <path id="path3011-7" style="fill:none;stroke:#34e0e2;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" d="M 147.44781,82.697555 C 148.31005,78.876209 151.02891,75.519391 154.58781,73.88221 C 158.14671,72.245029 162.46483,72.364668 165.92762,74.196395 C 169.39041,76.028123 171.91923,79.530335 172.56856,83.393561 C 173.21788,87.256788 171.97297,91.393286 169.29929,94.256426 C 167.55167,96.127885 165.29483,97.42647 163.12706,98.7893 C 160.95929,100.15213 158.79309,101.65974 157.37928,103.79461 C 156.57544,105.00841 156.04017,106.40084 155.83793,107.84256 C 155.67117,109.03139 155.73034,110.25152 156.01136,111.41863" />
+      </g>
+      <path style="fill:#34e0e2;fill-opacity:1;stroke:#042a2a;stroke-width:1.49073517;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:20.4" id="path3871" d="m 29.914083,59.130264 a 2.9814701,2.9814701 0 1 1 -5.96294,0 2.9814701,2.9814701 0 1 1 5.96294,0 z" transform="matrix(1.3416199,0,0,1.3416199,120.61817,46.350924)" />
+    </g>
+  </g>
+</svg>

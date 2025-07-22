@@ -1,0 +1,445 @@
+/**
+ * @defgroup APP App
+ * @ingroup CORE
+ * @brief The part of FreeCAD that works without GUI (console or server mode)
+ *
+ * @details It contains the App namespace and defines core concepts such as
+ * @ref DocumentGroup "Document", @ref DocumentObjectGroup "Document Object",
+ * @ref PropertyFramework "Property Framework", @ref ExpressionFramework
+ * "Expression Framework", and the @ref ExtensionFramework "Extension
+ * Framework".
+ *
+ * The largest difference between the functionality in @ref BASE "Base"
+ * compared to %App is that %App introduces the notion of properties, both used
+ * in @ref App::Document "Document" and @ref App::DocumentObject
+ * "DocumentObject".  In addition, %App has a representation of the running
+ * @ref App::Application "Application".
+ */
+
+/**
+ * @defgroup DocumentGroup Document
+ * @ingroup APP
+ * @brief The class that represents a FreeCAD document
+ *
+ * This (besides the App::Application class) is the most important class in FreeCAD.
+ * It contains all the data of the opened, saved, or newly created FreeCAD Document.
+ * The App::Document manages the Undo and Redo mechanism and the linking of documents.
+ *
+ * Note: the documents are not free objects. They are completely handled by the
+ * App::Application. Only the Application can Open or destroy a document.
+ *
+ * \section Exception Exception handling
+ * As the document is the main data structure of FreeCAD we have to take a close
+ * look at how Exceptions affect the integrity of the App::Document.
+ *
+ * \section UndoRedo Undo Redo an Transactions
+ * Undo Redo handling is one of the major mechanism of a document in terms of
+ * user friendliness and speed (no one will wait for Undo too long).
+ *
+ * \section Dependency Graph and dependency handling
+ * The FreeCAD document handles the dependencies of its DocumentObjects with
+ * an adjacency list. This gives the opportunity to calculate the shortest
+ * recompute path. Also, it enables more complicated dependencies beyond trees.
+ *
+ * @see App::Application
+ * @see App::DocumentObject
+ */
+
+/**
+ * @defgroup DocumentObjectGroup Document Object
+ * @ingroup APP
+ * @brief %Base class of all objects handled in the Document.
+ */
+
+/**
+ * @defgroup PropertyFramework Property framework
+ * @ingroup APP
+ * @brief System to access object properties.
+ *
+ * @section propframe_intro Introduction
+ *
+ * The property framework introduces an intricate system to access properties
+ * of objects.  It provides the ability to:
+ * 1. define properties in a class and access them by name,
+ * 2. add properties to a class at runtime and access them by name, and
+ * 3. access properties of a class by name without knowing the class type.
+ *
+ * The first two points are similar to what the dynamic reflection framework of
+ * C# or Java offer.  The third point allows FreeCAD to have App::Property as a
+ * generic interface to access properties.  This is similar to the way that
+ * Python allows to access properties of a class by name.
+ *
+ * This ability is introduced by the @ref App::PropertyContainer
+ * "PropertyContainer" class and can be used by all derived classes.  In
+ * particular, there are two classes that inherit from @ref
+ * App::PropertyContainer "PropertyContainer" which are @ref App::Document
+ * "Document" and @ref App::DocumentObject "DocumentObject".  These two classes
+ * serve different purposes but are both able to hold properties.  @ref
+ * App::PropertyContainer "PropertyContainer" contains the shared logic to do
+ * so.
+ *
+ * @section propframe_static_dynamic_props Static/Dynamic Properties
+ *
+ * In C++, it is possible to define properties as part of the class.  These can
+ * be considered "static" properties but this term is typically not used within
+ * FreeCAD.  Properties created in a class cannot be removed from a @ref
+ * App::PropertyContainer "PropertyContainer".
+ *
+ * However, it is also possible to add properties to a @ref
+ * App::PropertyContainer "PropertyContainer" at runtime.  These properties are
+ * called "dynamic properties" and these properties can be freely added and
+ * removed by users.  In Python, all properties are dynamic properties.
+ *
+ * @section propframe_mechanisms Mechanisms
+ *
+ * The macros `PROPERTY_HEADER` and `PROPERTY_SOURCE` (and variants) are used
+ * to define a private static PropertyData member in the class.  This data
+ * structure contains a multi index that maps 1) the property name to the
+ * property specifications @ref App::PropertyData::PropertySpec "PropertySpec",
+ * allowing access of properties by name, and 2) maps the offset of a property
+ * with respect to its container, allowing access to property specifications.
+ *
+ * The static function @ref App::PropertyContainer::getPropertyDataPtr()
+ * "PropertyContainer::getPropertyDataPtr()" is used to access the class-wide
+ * static @ref App::PropertyData "PropertyData" structure shared by all
+ * instances of the class.  The virtual function @ref
+ * App::PropertyContainer::getPropertyData()
+ * "PropertyContainer::getPropertyData()" allows access to the class-level
+ * static PropertyData based on the dynamic type of the object, even when
+ * downcasted.  This allows for example a @ref App::PropertyInteger
+ * "PropertyInteger*" downcasted to @ref App::Property "Property*" to access
+ * all its properties.
+ *
+ * Since the @ref App::PropertyData "PropertyData" structure is static in the
+ * class and maintains static information of properties, such as the group and
+ * documentation, we need to be able to access a specific instance given a
+ * property name.  This is achieved by looking up the @ref
+ * App::PropertyData::PropertySpec "PropertySpec" in the index based on the
+ * property name.  The property specification stores an offset to the property
+ * address given an @ref App::PropertyData::OffsetBase "OffsetBase" which wraps
+ * the address of a @ref App::PropertyContainer "PropertyContainer".  See @ref
+ * App::PropertyData::findProperty() "PropertyData::findProperty()" and @ref
+ * App::PropertyData::OffsetBase::getOffsetTo() "OffsetBase::getOffsetTo()".
+ * The offset of the property relative to the offset base gives us the address
+ * of the property in the instance.  Note that different values for properties
+ * across property containers are stored in the @ref App::Property "Property" instances.
+ *
+ * The reverse is also needed: Given a property in a property container, it is
+ * possible to compute the offset relative to the base of the property
+ * container.  The index in @ref App::PropertyData "PropertyData" allows us to
+ * acquire the property spec and provides us with the static data associated
+ * with the property.
+ *
+ * Dynamic properties are stored in their own @ref App::DynamicProperty
+ * "DynamicProperty" container.  It can be added with the function @ref
+ * App::PropertyContainer::addDynamicProperty()
+ * "PropertyContainer::addDynamicProperty()" and removed with @ref
+ * App::PropertyContainer::removeDynamicProperty()
+ * "PropertyContainer::removeDynamicProperty()".  The rest of the interface of
+ * dynamic properties is virtually the same.  In general, in FreeCAD, it is
+ * difficult for users to know whether a property is dynamic or static and they
+ * typically do not need to be concerned with this distinction.
+ *
+ * @section Locking Dynamic Properties
+ *
+ * Since in Python all properties are dynamic properties, it is difficult to
+ * understand whether properties are part of a Python class and are necessary
+ * for the functioning of the class, or whether a user has added these
+ * properties.  Therefore, it is possible to indicate that a property is
+ * "locked":
+ *
+ * @code
+ * prop->setStatus(Property::LockDynamic, true);
+ * @endcode
+ *
+ * In Python, this can be indicated in the `addProperty()` function:
+ *
+ * @code
+ * addProperty(type: string, name: string, group="", doc="",
+ *             attr=0, read_only=False, hidden=False,
+ *             locked=False, enum_vals=[])
+ * @endcode
+ *
+ * The Property Framework makes it possible in the first place to make an
+ * automatic mapping to python (e.g. in App::FeaturePy) and abstract editing
+ * properties in Gui::PropertyEditor.
+ *
+ * @section Examples
+ *
+ * Here some little examples how to use the property framework:
+ *
+ * @code
+ * // Acquire a property by name and return the value as a Python object.
+ * Property *prop = feature->getPropertyByName(nameProperty);
+ * if (prop) {
+ *   return prop->getPyObject();
+ * }
+ * @endcode
+ *
+ * or:
+ *
+ * @code
+ * // Restore properties from a reader.
+ * void PropertyContainer::Restore(Base::Reader &reader)
+ * {
+ *   reader.readElement("Properties");
+ *   int Cnt = reader.getAttributeAsInteger("Count");
+ *
+ *   for(int i=0 ;i<Cnt ;i++) {
+ *     reader.readElement("Property");
+ *     string PropName = reader.getAttribute("name");
+ *     Property* prop = getPropertyByName(PropName.c_str());
+ *     if(prop) {
+ *       prop->Restore(reader);
+ *     }
+ *
+ *     reader.readEndElement("Property");
+ *   }
+ *   reader.readEndElement("Properties");
+ * }
+ * @endcode
+ */
+
+/**
+ * @defgroup ExpressionFramework Expressions framework
+ * @ingroup APP
+ * @brief The expression system allows users to write expressions and formulas that produce values
+ */
+
+/**
+ * @defgroup ExtensionFramework Extension framework
+ * @ingroup APP
+ * @brief The extension system provides a way to extend the functionality of Document Objects.
+ *
+ * The concept of extensions provides a way to extend the functionality of
+ * objects in FreeCAD despite Python's limitations with multiple inheritance
+ * (see below for an explanation).  Extensions are FreeCAD objects that act
+ * like regular objects in the sense that they have properties and class
+ * methods to define their functionality.  However, extensions are not exposed
+ * as individual usable entities but are used to extend other objects.  An
+ * extended object obtains all the properties and methods of the extension.
+ *
+ * As such, it is like C++ multiple inheritance, which is indeed used to
+ * achieve this on C++ side, but it provides a few important additional
+ * functionalities as well:
+ *
+ * - Property persistence is handled: save and restore work out of the box.
+ * - The objects Python API gets extended too with the extension Python API.
+ * - Extensions can be added from C++ and Python, even from both together.
+ *
+ * The interoperability with Python is highly important since in FreeCAD, all
+ * functionality should be easily accessible from both Python and C++.  To
+ * ensure this -- as already noted -- extensions can be added to an object from
+ * Python.
+ *
+ * However, this means that it is not clear from the C++ object type whether an
+ * extension was added or not:  If added from C++, it becomes clear in the type
+ * due to the use of multiple inheritance.  If added from Python, it is a
+ * runtime extension and not visible from the type.  Hence, querying existing
+ * extensions of an object and accessing its methods works not by type casting
+ * but by the interface provided in ExtensionContainer.  The default workflow
+ * is to query whether an extension exists and then to get the extension
+ * object.  This interface always works the same, no matter if added from
+ * Python or C++.
+ *
+ * @code
+ * if (object->hasExtension(GroupExtension::getClassTypeId())) {
+ *     App::GroupExtension* group = object->getExtensionByType<GroupExtension>();
+ *     group->hasObject(...);
+ * }
+ * @endcode
+ *
+ * To add an extension to an object, it must comply to a single restriction: it
+ * must be derived from ExtensionContainer.  This is important to allow adding
+ * extensions from Python and also to access the universal extension API. As
+ * DocumentObject itself derives from ExtensionContainer, this should be the
+ * case automatically in most circumstances.
+ *
+ * Note that two small boilerplate changes are needed in addition to the
+ * multiple inheritance when adding extensions from C++.
+ *
+ * 1. It must be ensured that the property and type registration is aware of
+ *    the extensions by using special macros.
+ * 2. The extensions need to be initialised in the constructor.
+ *
+ * Here is a working example:
+ * @code{.cpp}
+ * class AppExport Part : public App::DocumentObject
+ *                      , public App::FirstExtension
+ *                      , public App::SecondExtension
+ * {
+ *     PROPERTY_HEADER_WITH_EXTENSIONS(App::Part);
+ * };
+ *
+ * PROPERTY_SOURCE_WITH_EXTENSIONS(App::Part, App::DocumentObject)
+ *
+ * Part::Part(void)
+ * {
+ *   FirstExtension::initExtension(this);
+ *   SecondExtension::initExtension(this);
+ * }
+ * @endcode
+ *
+ * From Python, adding an extension is easier: It must be simply registered to
+ * a document object at object initialisation like done with properties.  Note
+ * that the special Python extension objects need to be added, not the C++
+ * objects.  Normally the only difference in name is the additional "Python" at
+ * the end of the extension name.
+ *
+ * @code{.py}
+ * class Test():
+ *   __init(self)__:
+ *     registerExtension("App::FirstExtensionPython", self)
+ *     registerExtension("App::SecondExtensionPython", self)
+ * @endcode
+ *
+ * Extensions can provide methods that should be overridden by the extended
+ * object for customisation of the extension behaviour. In C++ this is as
+ * simple as overriding the provided virtual functions. In Python a class
+ * method must be provided which has the same name as the method to override.
+ * This method must not necessarily be in the object that is extended, it must
+ * be in the object which is provided to the "registerExtension" call as second
+ * argument.  This second argument is used as a proxy and queried if the method
+ * to override exists in this proxy before calling it.
+ *
+ * @section SecExtensionFrameworkCreateExtension Create an Extension
+ *
+ * An Extension is like every other FreeCAD object and is based on properties.
+ * All information storage and persistence should be achieved by use of these
+ * properties.  Additionally, any number of methods can be added to provide
+ * functionality related to the properties. There are three small differences
+ * to normal objects:
+ *
+ * 1. They must be derived from this Extension class,
+ * 2. Properties must be handled with special extension macros.
+ * 3. Extensions must be initialised.
+ *
+ * The following code illustrates the basic setup of an extension:
+ *
+ * @code
+ * class MyExtension : public Extension
+ * {
+ *   EXTENSION_PROPERTY_HEADER(MyExtension);
+ *   PropertyInt MyProp;
+ *   virtual bool overridableMethod(DocumentObject* obj) {};
+ * };
+ *
+ * EXTENSION_PROPERTY_SOURCE(App::MyExtension, App::Extension)
+ * MyExtension::MyExtension()
+ * {
+ *     EXTENSION_ADD_PROPERTY(MyProp, (0))
+ *     initExtensionType(MyExtension::getExtensionClassTypeId());
+ * }
+ *
+ * using MyExtensionPython = ExtensionPythonT<MyExtension>;
+ * @endcode
+ *
+ * The special Python extension type created above is important, as only those Python extensions
+ * can be added to an object from Python. It does not work to add the C++ version directly there.
+ *
+ * Note that every method of the extension becomes part of the extended object when added from C++.
+ * This means one should carefully design the API and make only necessary methods public or protected.
+ * Every internal method should be private.
+ *
+ * The automatic availability of methods in the class does not hold for the
+ * Python interface, only for C++ classes.  This is common in the rest of
+ * FreeCAD as well: there is no automatic creation of Python API from C++
+ * classes.
+ *
+ * Hence, the extension creator must also create a custom Python object of its
+ * extension, which is the same for the normal FreeCAD Python object workflow.
+ * There is nothing special at all for Python extension objects: the normal
+ * `.pyi` and `PyImp.cpp` approach is used but note that it is important that
+ * the object's father is the correct extension base class.  Additionally, make
+ * sure the extension returns the correct Python object in its
+ * getExtensionPyObject() call.
+ *
+ * Every method that is created in the extension's Python counterpart will be
+ * later added to the extended object.  This happens automatically for both the
+ * C++ and Python extension if getExtensionPyObject() returns the correct
+ * Python object.  This does not require extra work.
+ *
+ * A special case that needs to be handled for extensions is the possibility of
+ * overridden methods.  Often, it is desired to customise extension behaviour
+ * by allowing the user to override methods provided by the extension.  On the
+ * C++ side, this is trivial: such methods are simply marked as "virtual" and
+ * can then be overridden in any derived class.  This is more involved for the
+ * Python interface and here special care needs to be taken.
+ *
+ * As already shown above, one needs to create a special `ExtensionPythonT<>`
+ * object for extension from Python.  This is done exactly for the purpose of
+ * allowing to have overridable methods.  The ExtensionPythonT wrapper adds a
+ * proxy property that holds a PyObject which itself will contain the
+ * implementations for the overridden methods.  This design is equal to the
+ * ObjectPythonT<> design of normal document objects.  As this wrapper inherits
+ * the C++ extension class it, can also override the virtual functions the user
+ * designed to be overridden.  What it should do at a call of the virtual
+ * method is to check if this method is implemented in the proxy object and if
+ * so, call it, and if not, call the normal C++ version.  It is the extension
+ * creator's responsibility to implement this check and call behaviour for
+ * every overridable method.  This is done by creating a custom wrapper just
+ * like ExtensionPythonT<> and overriding all virtual methods.
+ *
+ * @code
+ * template<typename ExtensionT> class MyExtensionPythonT : public ExtensionT {
+ * public:
+ *
+ *   MyExtensionPythonT() {}
+ *   virtual ~MyExtensionPythonT() {}
+ *
+ *   virtual bool overridableMethod(DocumentObject* obj)  override {
+ *       Py::Object pyobj = Py::asObject(obj->getPyObject());
+ *       EXTENSION_PROXY_ONEARG(allowObject, pyobj);
+ *
+ *       if(result.isNone())
+ *           ExtensionT::allowObject(obj);
+ *
+ *       if(result.isBoolean())
+ *           return result.isTrue();
+ *
+ *       return false;
+ *   };
+ * };
+ * @endcode
+ *
+ * @note As seen in the code there are multiple helper macros to ease the
+ * repetitive work of querying and calling methods of the proxy object. See the
+ * macro documentation for how to use them.
+ *
+ * To ensure that your wrapper is used when a extension is created from Python
+ * the extension type must be exposed as follows:
+ *
+ * @code
+ * using MyExtensionPython = ExtensionPythonT<MyExtensionPythonT<MyExtension>>;
+ * @endcode
+ *
+ * This boilerplate is absolutely necessary to allow overridable methods in
+ * Python and it is the extension creator's responsibility to ensure full
+ * implementation.
+ *
+ * @section SecExtensionLimitiationsPython Limitations of Python
+ *
+ * Without this extension system, it would be challenging to extend
+ * functionality in FreeCAD.  Although C++ supports multiple inheritance, it is
+ * not possible to use it in FreeCAD because it should be possible to expose
+ * all objects to Python.
+ *
+ * However, using multiple parent classes in Python is currently not possible
+ * with the default object approach.  Moreover, it is basically impossible to
+ * handle multiple inheritance in the C-API for Python extensions.
+ */
+
+/**
+ * @namespace App
+ * @ingroup APP
+ * @brief The namespace for the part of FreeCAD that works without GUI.
+ * @details This namespace includes %Application services of FreeCAD that such as:
+ *   - The Application class
+ *   - The Document class
+ *   - The DocumentObject classes
+ *   - The Expression classes
+ *   - The Property classes
+ *
+ * For a more high-level discussion see the topic @ref APP "App".
+ */
+

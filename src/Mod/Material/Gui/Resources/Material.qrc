@@ -1,0 +1,14 @@
+<RCC>
+    <qresource>
+        <file>icons/list.svg</file>
+        <file>icons/MaterialWorkbench.svg</file>
+        <file>icons/Material_Edit.svg</file>
+        <file>icons/multiline.svg</file>
+        <file>icons/preferences-material.svg</file>
+        <file>icons/preview-rendered.svg</file>
+        <file>icons/preview-vector.svg</file>
+        <file>icons/table.svg</file>
+        <file>images/default_image.png</file>
+        <file>ui/materials-editor.ui</file>
+    </qresource>
+</RCC>

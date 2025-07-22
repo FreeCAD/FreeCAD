@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   width="64"
+   height="64"
+   id="svg4024"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs4026">
+    <linearGradient
+       xlink:href="#linearGradient3866"
+       id="linearGradient3771"
+       x1="98"
+       y1="1047.3622"
+       x2="81"
+       y2="993.36218"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0,-1,-1,0,1052.3622,124.00001)" />
+    <linearGradient
+       id="linearGradient3866">
+      <stop
+         style="stop-color:#d3d7cf;stop-opacity:1"
+         offset="0"
+         id="stop3868" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1"
+         offset="1"
+         id="stop3870" />
+    </linearGradient>
+  </defs>
+  <metadata
+     id="metadata4029">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="g2"
+     transform="matrix(1,0,0,-1,0,64)">
+    <path
+       style="fill:none;stroke:#042a2a;stroke-width:8;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none"
+       d="M 9,55 H 55.000469"
+       id="path2" />
+    <path
+       style="fill:none;stroke:#042a2a;stroke-width:5.99995;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none"
+       d="m 7.999975,7.999975 h 30.000092 m -30.000092,11 h 30.000092 m -30.000092,11 h 30.000092 m -30.000092,11 h 30.000092"
+       id="path1" />
+    <path
+       style="display:inline;fill:#34e0e2;stroke:#042a2a;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path3"
+       d="m 57.999892,39 h -16 l 8,10 z" />
+    <path
+       style="fill:none;stroke:#34e0e2;stroke-width:4;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none"
+       d="M 9,55 H 55.000469"
+       id="path4" />
+    <path
+       style="fill:none;stroke:#34e0e2;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none"
+       d="m 7.999975,7.999975 h 30.000092 m -30.000092,11 h 30.000092 m -30.000092,11 h 30.000092 m -30.000092,11 h 30.000092"
+       id="path7" />
+  </g>
+</svg>

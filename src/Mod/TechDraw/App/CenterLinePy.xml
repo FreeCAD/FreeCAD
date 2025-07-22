@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="PyObjectBase"
+      Name="CenterLinePy"
+      Twin="CenterLine"
+      TwinPointer="CenterLine"
+      Include="Mod/TechDraw/App/CenterLine.h"
+      Namespace="TechDraw"
+      FatherInclude="Base/PyObjectBase.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
+      <UserDocu>CenterLine specifies additional mark up edges in a View</UserDocu>
+    </Documentation>
+    <Methode Name="clone" Const="true">
+        <Documentation>
+            <UserDocu>Create a clone of this centerline</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="copy" Const="true">
+        <Documentation>
+            <UserDocu>Create a copy of this centerline</UserDocu>
+        </Documentation>
+    </Methode>
+    <Attribute Name="Tag" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Gives the tag of the CenterLine as string.</UserDocu>
+      </Documentation>
+      <Parameter Name="Tag" Type="String"/>
+    </Attribute>
+    <Attribute Name="Type" ReadOnly="true">
+      <Documentation>
+        <UserDocu>0 - face, 1 - 2 line, 2 - 2 point.</UserDocu>
+      </Documentation>
+      <Parameter Name="Type" Type="Long"/>
+    </Attribute>
+    <Attribute Name="Mode">
+      <Documentation>
+        <UserDocu>0 - vert/ 1 - horiz/ 2 - aligned.</UserDocu>
+      </Documentation>
+      <Parameter Name="Mode" Type="Long"/>
+    </Attribute>
+    <Attribute Name="Format">
+      <Documentation>
+        <UserDocu>The appearance attributes (style, color, weight, visible) for this CenterLine.</UserDocu>
+      </Documentation>
+      <Parameter Name="Format" Type="Dict"/>
+    </Attribute>
+    <Attribute Name="HorizShift">
+      <Documentation>
+        <UserDocu>The left/right offset for this CenterLine.</UserDocu>
+      </Documentation>
+      <Parameter Name="HorizShift" Type="Float"/>
+    </Attribute>
+    <Attribute Name="VertShift">
+      <Documentation>
+        <UserDocu>The up/down offset for this CenterLine.</UserDocu>
+      </Documentation>
+      <Parameter Name="VertShift" Type="Float"/>
+    </Attribute>
+    <Attribute Name="Rotation">
+      <Documentation>
+        <UserDocu>The rotation of the Centerline in degrees.</UserDocu>
+      </Documentation>
+      <Parameter Name="Rotation" Type="Float"/>
+    </Attribute>
+    <Attribute Name="Extension">
+      <Documentation>
+        <UserDocu>The additional length to be added to this CenterLine.</UserDocu>
+      </Documentation>
+      <Parameter Name="Extension" Type="Float"/>
+    </Attribute>
+    <Attribute Name="Flip">
+      <Documentation>
+        <UserDocu>Reverse the order of points for 2 point CenterLine.</UserDocu>
+      </Documentation>
+      <Parameter Name="Flip" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="Edges">
+      <Documentation>
+        <UserDocu>The names of source edges for this CenterLine.</UserDocu>
+      </Documentation>
+      <Parameter Name="Edges" Type="List"/>
+    </Attribute>
+    <Attribute Name="Faces">
+      <Documentation>
+        <UserDocu>The names of source Faces for this CenterLine.</UserDocu>
+      </Documentation>
+      <Parameter Name="Faces" Type="List"/>
+    </Attribute>
+    <Attribute Name="Points">
+      <Documentation>
+        <UserDocu>The names of source Points for this CenterLine.</UserDocu>
+      </Documentation>
+      <Parameter Name="Points" Type="List"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

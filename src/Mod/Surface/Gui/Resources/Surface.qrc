@@ -1,0 +1,16 @@
+<RCC>
+    <qresource>
+        <file>icons/Surface_BezierSurface.svg</file>
+        <file>icons/Surface_BSplineSurface.svg</file>
+        <file>icons/Surface_CurveOnMesh.svg</file>
+        <file>icons/Surface_Cut.svg</file>
+        <file>icons/Surface_BlendCurve.svg</file>
+        <file>icons/Surface_ExtendFace.svg</file>
+        <file>icons/Surface_Filling.svg</file>
+        <file>icons/Surface_GeomFillSurface.svg</file>
+        <file>icons/Surface_Sections.svg</file>
+        <file>icons/Surface_Sewing.svg</file>
+        <file>icons/Surface_Surface.svg</file>
+        <file>icons/Surface_Workbench.svg</file>
+    </qresource>
+</RCC>

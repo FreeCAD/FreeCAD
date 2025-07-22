@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="12"
+   height="12"
+   id="svg2"
+   version="1.1"
+   viewBox="0 0 12 12"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs4" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Pablo Gil</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>SVG</rdf:li>
+            <rdf:li>template</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <ellipse
+     ry="1.9936409"
+     rx="1.9999999"
+     cy="6"
+     cx="6"
+     id="path5584"
+     style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.999992;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:63;stroke-opacity:0.501961" />
+  <path
+     style="color:#000000;fill:#ffffff;stroke-linecap:square;stroke-linejoin:round;stroke-dashoffset:63;-inkscape-stroke:none;fill-opacity:1"
+     d="M 6,1 C 2.7413482,1 0,3.1844528 0,6 0,8.8155472 2.7413482,11 6,11 9.2586518,11 12,8.8155472 12,6 12,3.1844528 9.2586518,1 6,1 Z m 0,1 c 2.8164744,0 5,1.8449894 5,4 0,2.1550106 -2.1835256,4 -5,4 C 3.1835256,10 1,8.1550106 1,6 1,3.8449894 3.1835256,2 6,2 Z"
+     id="path5586" />
+</svg>

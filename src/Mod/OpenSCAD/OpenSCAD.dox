@@ -1,0 +1,5 @@
+/** \defgroup OPENSCAD OpenSCAD
+ *  \ingroup PYTHONWORKBENCHES
+ *  \brief Interface with OpenSCAD
+ */
+

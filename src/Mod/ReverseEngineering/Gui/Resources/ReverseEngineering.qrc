@@ -1,0 +1,6 @@
+<RCC>
+    <qresource>
+        <file>icons/actions/FitSurface.svg</file>
+        <file>icons/ReverseEngineeringWorkbench.svg</file>
+    </qresource>
+</RCC>

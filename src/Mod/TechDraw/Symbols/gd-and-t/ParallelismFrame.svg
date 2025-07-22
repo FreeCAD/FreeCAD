@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" id="svg2718" version="1.2" viewBox="0 0 45.160511 5.922907" height="5.922907pt" width="45.160511pt">
+  <metadata id="metadata2722">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs id="defs2687">
+    <clipPath id="clip1">
+      <path id="path2666" d="M 0 0 L 12 0 L 12 5.921875 L 0 5.921875 Z M 0 0 " />
+    </clipPath>
+    <clipPath id="clip2">
+      <path id="path2669" d="M 2 0 L 7 0 L 7 5.921875 L 2 5.921875 Z M 2 0 " />
+    </clipPath>
+    <clipPath id="clip3">
+      <path id="path2672" d="M 5 0 L 9 0 L 9 5.921875 L 5 5.921875 Z M 5 0 " />
+    </clipPath>
+    <clipPath id="clip4">
+      <path id="path2675" d="M 11 0 L 34 0 L 34 5.921875 L 11 5.921875 Z M 11 0 " />
+    </clipPath>
+    <clipPath id="clip5">
+      <path id="path2678" d="M 11 0 L 35 0 L 35 5.921875 L 11 5.921875 Z M 11 0 " />
+    </clipPath>
+    <clipPath id="clip6">
+      <path id="path2681" d="M 33 0 L 45 0 L 45 5.921875 L 33 5.921875 Z M 33 0 " />
+    </clipPath>
+    <clipPath id="clip7">
+      <path id="path2684" d="M 33 0 L 45.160156 0 L 45.160156 5.921875 L 33 5.921875 Z M 33 0 " />
+    </clipPath>
+  </defs>
+  <g id="surface775860">
+    <g id="g2691" clip-rule="nonzero" clip-path="url(#clip1)">
+      <path id="path2689" transform="matrix(1,0,0,0.506745,0,0)" d="M 0.277344 0.277506 L 11.40625 0.277506 L 11.40625 11.408598 L 0.277344 11.408598 Z M 0.277344 0.277506 " style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:0.557051;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:4;" />
+    </g>
+    <g id="g2695" clip-rule="nonzero" clip-path="url(#clip2)">
+      <path id="path2693" transform="matrix(1,0,0,0.506745,0,0)" d="M 5.9375 1.826917 L 3.136719 9.859187 " style="fill:none;stroke-width:0.55698;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:4;" />
+    </g>
+    <g id="g2699" clip-rule="nonzero" clip-path="url(#clip3)">
+      <path id="path2697" transform="matrix(1,0,0,0.506745,0,0)" d="M 8.550781 1.826917 L 5.746094 9.859187 " style="fill:none;stroke-width:0.55698;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:4;" />
+    </g>
+    <g id="g2703" clip-rule="nonzero" clip-path="url(#clip4)">
+      <path id="path2701" d="M 11.40625 0.140625 L 33.753906 0.140625 L 33.753906 5.78125 L 11.40625 5.78125 Z M 11.40625 0.140625 " style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" />
+    </g>
+    <g id="g2707" clip-rule="nonzero" clip-path="url(#clip5)">
+      <path id="path2705" transform="matrix(1,0,0,0.506745,0,0)" d="M 11.40625 0.277506 L 33.753906 0.277506 L 33.753906 11.408598 L 11.40625 11.408598 Z M 11.40625 0.277506 " style="fill:none;stroke-width:0.554681;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:4;" />
+    </g>
+    <g id="g2711" clip-rule="nonzero" clip-path="url(#clip6)">
+      <path id="path2709" d="M 33.753906 0.140625 L 44.882813 0.140625 L 44.882813 5.78125 L 33.753906 5.78125 Z M 33.753906 0.140625 " style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" />
+    </g>
+    <g id="g2715" clip-rule="nonzero" clip-path="url(#clip7)">
+      <path id="path2713" transform="matrix(1,0,0,0.506745,0,0)" d="M 33.753906 0.277506 L 44.882813 0.277506 L 44.882813 11.408598 L 33.753906 11.408598 Z M 33.753906 0.277506 " style="fill:none;stroke-width:0.557051;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:4;" />
+    </g>
+  </g>
+</svg>

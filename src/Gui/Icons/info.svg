@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64"
+   height="64"
+   id="svg2985"
+   version="1.1"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2987">
+    <linearGradient
+       id="linearGradient3774">
+      <stop
+         style="stop-color:#d3d7cf;stop-opacity:1"
+         offset="0"
+         id="stop3776" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1"
+         offset="1"
+         id="stop3778" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient4082">
+      <stop
+         id="stop4084"
+         offset="0"
+         style="stop-color:#4e9a06;stop-opacity:1" />
+      <stop
+         id="stop4086"
+         offset="1"
+         style="stop-color:#8ae234;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient3774"
+       id="linearGradient3780"
+       x1="30"
+       y1="-2"
+       x2="26"
+       y2="-26"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       xlink:href="#linearGradient3774"
+       id="linearGradient3780-9"
+       x1="30"
+       y1="-2"
+       x2="26"
+       y2="-26"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <metadata
+     id="metadata2990">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     transform="translate(0,48)">
+    <path
+       style="fill:#3465a4;fill-opacity:1;stroke:#172a04;stroke-width:2;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path4250-0"
+       d="M 9.9782835,-34.857935 A 28.992303,28.993136 89.972578 1 1 54.021443,2.8584493 28.992303,28.993136 89.972578 1 1 9.9782835,-34.857935 z" />
+    <path
+       style="fill:#3465a4;fill-opacity:1;stroke:#729fcf;stroke-width:1.99999988;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path4250-7-6"
+       d="M 11.490345,-33.556021 A 26.997584,26.999999 89.926009 1 1 52.50579,1.5653637 26.997584,26.999999 89.926009 0 1 11.490345,-33.556021 z" />
+    <g
+       id="g1433"
+       transform="matrix(-0.70710678,-0.70710678,-0.70710678,0.70710678,-14.170518,-20.824561)">
+      <g
+         id="g837"
+         transform="translate(-51.999999,-37.272656)">
+        <path
+           style="fill:url(#linearGradient3780);fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+           d="m 25.829379,-10.556714 7.889426,7.889426 -7.718806,7.7187945 -7.739743,-8.0204581 c 3.335802,-3.335802 3.326481,-3.3451227 7.569123,-7.5877624 z"
+           id="path4088" />
+        <path
+           style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 20.96529,-2.7920778 c 3.485935,-3.4859355 -0.08089,-0.0046 4.853361,-4.9469367 l 5.079637,5.079637 L 26,2.238911 Z"
+           id="path3004" />
+      </g>
+    </g>
+    <g
+       id="g1433-7"
+       transform="matrix(-0.70710678,-0.70710678,-0.70710678,0.70710678,-14.329804,11.560252)">
+      <g
+         id="g837-0"
+         transform="translate(-51.999999,-37.272656)">
+        <path
+           style="fill:url(#linearGradient3780-9);fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+           d="m 25.999999,-10.727344 11.143089,-11.143079 7.889426,7.889426 -19.032515,19.0325035 -7.739743,-8.0204581 c -0.300196,-0.169656 6.770872,-7.2407234 7.739743,-7.7583924 z"
+           id="path4088-9" />
+        <path
+           style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 20.96529,-2.7920778 c 0,0 5.004242,-4.9671833 5.03471,-5.1123582 l 11.13236,-11.148287 5.079637,5.079637 L 26,2.238911 Z"
+           id="path3004-3" />
+      </g>
+    </g>
+  </g>
+</svg>

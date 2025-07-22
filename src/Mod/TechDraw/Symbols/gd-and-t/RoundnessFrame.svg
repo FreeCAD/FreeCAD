@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" id="svg866" version="1.2" viewBox="0 0 45 15.455864" height="15.455864pt" width="45pt">
+  <metadata id="metadata870">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs id="defs849">
+    <clipPath id="clip1">
+      <path id="path840" d="M 15 0 L 45 0 L 45 15.457031 L 15 15.457031 Z M 15 0 " />
+    </clipPath>
+    <clipPath id="clip2">
+      <path id="path843" d="M 14 0 L 45 0 L 45 15.457031 L 14 15.457031 Z M 14 0 " />
+    </clipPath>
+    <clipPath id="clip3">
+      <path id="path846" d="M 0 0 L 16 0 L 16 15.457031 L 0 15.457031 Z M 0 0 " />
+    </clipPath>
+  </defs>
+  <g id="surface47415">
+    <g id="g853" clip-rule="nonzero" clip-path="url(#clip1)">
+      <path id="path851" d="M 15.085938 0.367188 L 44.632813 0.367188 L 44.632813 15.089844 L 15.085938 15.089844 Z M 15.085938 0.367188 " style="stroke:none;fill-rule:nonzero;fill:rgb(100%, 100%, 100%);fill-opacity:1" />
+    </g>
+    <g id="g857" clip-rule="nonzero" clip-path="url(#clip2)">
+      <path id="path855" d="M 15.085938 0.367188 L 44.632813 0.367188 L 44.632813 15.089844 L 15.085938 15.089844 Z M 15.085938 0.367188 " style="fill:none;stroke-width:0.733486;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%, 0%, 0%);stroke-opacity:1;stroke-miterlimit:4" />
+    </g>
+    <g id="g861" clip-rule="nonzero" clip-path="url(#clip3)">
+      <path id="path859" d="M 0.367188 0.367188 L 15.085938 0.367188 L 15.085938 15.085938 L 0.367188 15.085938 Z M 0.367188 0.367188 " style="fill-rule:nonzero;fill:rgb(100%, 100%, 100%);fill-opacity:1;stroke-width:0.73662;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%, 0%, 0%);stroke-opacity:1;stroke-miterlimit:4" />
+    </g>
+    <path id="path863" d="M 12.84375 7.726563 C 12.84375 10.550781 10.550781 12.84375 7.726563 12.84375 C 4.902344 12.84375 2.609375 10.550781 2.609375 7.726563 C 2.609375 4.902344 4.902344 2.609375 7.726563 2.609375 C 10.550781 2.609375 12.84375 4.902344 12.84375 7.726563 " style="fill-rule:nonzero;fill:rgb(100%, 100%, 100%);fill-opacity:1;stroke-width:0.73662;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%, 0%, 0%);stroke-opacity:1;stroke-miterlimit:4" />
+  </g>
+</svg>

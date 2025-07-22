@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SketcherGui::TaskSketcherValidation</class>
+ <widget class="QWidget" name="SketcherGui::TaskSketcherValidation">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>266</width>
+    <height>684</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Sketch Validation</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_3">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox_0">
+     <property name="title">
+      <string>Open and Non-Manifold Vertices</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_7">
+      <property name="leftMargin">
+       <number>6</number>
+      </property>
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="rightMargin">
+       <number>6</number>
+      </property>
+      <property name="bottomMargin">
+       <number>6</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QPushButton" name="highlightButton">
+        <property name="toolTip">
+         <string>Highlights open and non-manifold vertices that could lead to errors if the sketch is used to generate solids. This is purely based on the topological shape of the sketch and not on its geometry/constraint set.</string>
+        </property>
+        <property name="text">
+         <string>Highlight Troublesome Vertices</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBox_1">
+     <property name="toolTip">
+      <string>Fixes missing coincidences by adding extra coincident constraints</string>
+     </property>
+     <property name="title">
+      <string>Missing Coincidences</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Tolerance</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="comboBoxTolerance">
+        <property name="toolTip">
+         <string>Defines the X/Y tolerance within which missing coincidences are detected</string>
+        </property>
+       </widget>
+      </item>
+     <item row="1" column="0" colspan="2">
+       <widget class="QCheckBox" name="checkBoxIgnoreConstruction">
+        <property name="toolTip">
+         <string>Ignores construction geometry in the search</string>
+        </property>
+        <property name="text">
+         <string>Ignore construction geometry</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="findButton">
+        <property name="toolTip">
+         <string>Finds and displays missing coincidences in the sketch.
+This is done by analyzing the sketch geometries and constraints.</string>
+        </property>
+        <property name="text">
+         <string>Find</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QPushButton" name="fixButton">
+        <property name="text">
+         <string>Fix</string>
+        </property>
+       </widget>
+      </item>
+      </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Invalid Constraints</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QPushButton" name="findConstraint">
+        <property name="toolTip">
+         <string>Finds invalid/malformed constrains in the sketch</string>
+        </property>
+        <property name="text">
+         <string>Find</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="fixConstraint">
+        <property name="toolTip">
+         <string>Tries to fix found invalid constraints</string>
+        </property>
+        <property name="text">
+         <string>Fix</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QPushButton" name="delConstrExtr">
+        <property name="toolTip">
+         <string>Deletes constraints referring to external geometry</string>
+        </property>
+        <property name="text">
+         <string>Delete Constraints Linked to External Geometry</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QGroupBox" name="groupBox_6">
+     <property name="title">
+      <string>Degenerate Geometry</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_6">
+      <item row="0" column="0">
+       <widget class="QPushButton" name="findDegenerated">
+        <property name="toolTip">
+         <string>Finds degenerated geometries in the sketch</string>
+        </property>
+        <property name="text">
+         <string>Find</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="fixDegenerated">
+        <property name="toolTip">
+         <string>Tries to fix found degenerated geometries</string>
+        </property>
+        <property name="text">
+         <string>Fix</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>Reversed External Geometry</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="0" column="0">
+       <widget class="QPushButton" name="findReversed">
+        <property name="toolTip">
+         <string>Finds reversed external geometries</string>
+        </property>
+        <property name="text">
+         <string>Find</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="swapReversed">
+        <property name="toolTip">
+         <string>Fixes found reversed external geometries by swapping their endpoints</string>
+        </property>
+        <property name="text">
+         <string>Swap Endpoints in Constraints</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="6" column="0">
+    <widget class="QGroupBox" name="groupBox_4">
+     <property name="title">
+      <string>Constraint Orientation Locking</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_5">
+      <item row="0" column="0">
+       <widget class="QPushButton" name="orientLockEnable">
+        <property name="toolTip">
+         <string>Enables/updates constraint orientation locking</string>
+        </property>
+        <property name="text">
+         <string>Enable/Update</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="orientLockDisable">
+        <property name="toolTip">
+         <string>Disables constraint orientation locking</string>
+        </property>
+        <property name="text">
+         <string>Disable</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,94 @@
+The Netgen 4.5 from the web location : http://www.hpfem.jku.at/netgen/
+(CVS access) is used in the SMESH Module of Salome3 distribution.
+
+1. How to build Netgen for Salome
+------------------------------
+
+1.1. Download Netgen 4.5 from the NETGEN home site (see above).
+
+1.2. Unpack the downloaded Netgen 4.5 archive 
+     (hereafter we assume that this is netgen45 directory)
+
+1.3. Patch the netgen 4.5 distribution for SALOME:
+
+$ cd netgen45
+$ patch -p1 < patch_directory/netgen45ForSalome.patch
+
+1.4. For 64-bit platform you also need to apply another patch:
+
+$ cd netgen45
+$ patch -p1 < patch_directory/netgen45lib64.patch
+
+1.5. Set CASROOT environment variable to OCCT installation path,
+     since Netgen 4.5 requires Open CASCADE Technology:
+
+$ setenv CASROOT <occt_installation_path>
+
+1.6. Compile and install netgen 4.5. To do this, simply run 
+     makeForSalome.sh script (it is created from the patch):
+
+$ sh makeForSalome.sh
+
+
+2. Additional information for maintainers
+--------------------------------------
+
+The file check_NETGEN.m4 assumes that Netgen is installed in 
+the directory <netgen_installation_path> as follow:
+
+prompt> ls <netgen_installation_path>
+
+include/  lib/
+
+prompt> ls <netgen_installation_path>/include
+
+adfront2.hpp	     explicitcurve2d.hpp  hpref_quad.hpp      myadt.hpp        spbita2d.hpp
+adfront3.hpp	     extrusion.hpp	  hpref_segm.hpp      mydefs.hpp       specials.hpp
+adtree.hpp	     findip.hpp		  hpref_tet.hpp       mystdlib.h       specpoin.hpp
+algprim.hpp	     findip2.hpp	  hpref_trig.hpp      mystring.hpp     spline.hpp
+array.hpp	     flags.hpp		  hprefinement.hpp    ngexception.hpp  spline2d.hpp
+autoptr.hpp	     gencyl.hpp		  identify.hpp	      nglib.h	       spline3d.hpp
+basemat.hpp	     geom2d.hpp		  improve2.hpp	      occgeom.hpp      splinegeometry.hpp
+bisect.hpp	     geom2dmesh.hpp	  improve3.hpp	      occmeshsurf.hpp  splinegeometry2.hpp
+bitarray.hpp	     geom3d.hpp		  linalg.hpp	      opti.hpp	       stack.hpp
+boundarylayer.hpp    geometry2d.hpp	  localh.hpp	      optmem.hpp       stlgeom.hpp
+brick.hpp	     geomfuncs.hpp	  manifold.hpp	      parthreads.hpp   stlline.hpp
+classifyhpel.hpp     geoml.hpp		  meshclass.hpp       polyhedra.hpp    stltool.hpp
+clusters.hpp	     geomobjects.hpp	  meshfunc.hpp	      polynomial.hpp   stltopology.hpp
+csg.hpp		     geomops.hpp	  meshing.hpp	      profiler.hpp     surface.hpp
+csgeom.hpp	     geomsearch.hpp	  meshing2.hpp	      revolution.hpp   symbolta.hpp
+csgparser.hpp	     geomtest3d.hpp	  meshing3.hpp	      ruler2.hpp       table.hpp
+curve2d.hpp	     global.hpp		  meshstlsurface.hpp  ruler3.hpp       template.hpp
+curvedelems.hpp      gprim.hpp		  meshsurf.hpp	      seti.hpp	       topology.hpp
+curvedelems_new.hpp  hashtabl.hpp	  meshtool.hpp	      singularref.hpp  transform3d.hpp
+densemat.hpp	     hpref_hex.hpp	  meshtype.hpp	      solid.hpp        triapprox.hpp
+dynamicmem.hpp	     hpref_prism.hpp	  moveablemem.hpp     sort.hpp	       vector.hpp
+edgeflw.hpp	     hpref_pyramid.hpp	  msghandler.hpp      sparsmat.hpp
+
+prompt> ls <netgen_installation_path>/lib
+
+libcsg.a  libgeom2d.a  libla.a	  libnginterface.a  libopti.a
+libgen.a  libgprim.a   libmesh.a  libocc.a	    libstlgeom.a
+
+The library files can be also installed in the LINUX or LINUX64
+subfolder of the lib directory.
+
+All the libraries *.a should be compiled without the option -DOPENGL.
+netgen45 is assumed to be the directory downloaded from the above web
+location archive of Netgen. The library 
+<netgen_installation_path>/lib/libnginterface.a should contain the objects
+nglib.o (from netgen45/libsrc/interface/nglib.cpp) and ngnewdelete.o
+(from netgen45/ngtcltk/ngnewdelete.cpp).
+
+To have that kind of distribution from the version in the above web location you
+need not to compile Netgen as suggested in the netgen45/README.INSTALL file.
+Simply modify the Makefiles to remove -DOPENGL from compiler flags
+list and to add OCC include dir and flags to compiler flags, add the objects
+nglib.o and ngnewdelete.o to the library libnginterface.a and
+recompile the libraries only.
+All this job is done by applying the patch and running the script makeForSalome.sh.
+
+The suggested patch alters some Netgen sources to compile them.
+
+Michael SAZONOV
+m-sazonov@opencascade.com

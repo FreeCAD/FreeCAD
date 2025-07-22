@@ -1,0 +1,292 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+      "major": 3,
+      "minor": 16,
+      "patch": 3
+    },
+    "configurePresets": [
+      {
+        "name": "common",
+        "hidden": true,
+        "cacheVariables": {
+          "CMAKE_EXPORT_COMPILE_COMMANDS": {
+            "type": "BOOL",
+            "value": "ON"
+          },
+          "CMAKE_JOB_POOL_COMPILE": {
+            "type": "STRING",
+            "value": "compile_jobs"
+          },
+          "CMAKE_JOB_POOL_LINK": {
+            "type": "STRING",
+            "value": "link_jobs"
+          },
+          "CMAKE_POLICY_VERSION_MINIMUM": {
+            "type": "STRING",
+            "value": "3.5"
+          }
+        }
+      },
+      {
+        "name": "debug",
+        "displayName": "Debug",
+        "description": "Default debug profile",
+        "binaryDir": "${sourceDir}/build/debug",
+        "inherits": [
+          "common"
+        ],
+        "cacheVariables": {
+          "CMAKE_BUILD_TYPE": {
+            "type": "STRING",
+            "value": "Debug"
+          }
+        }
+      },
+      {
+        "name": "release",
+        "displayName": "Release",
+        "description": "Default release profile",
+        "binaryDir": "${sourceDir}/build/release",
+        "inherits": [
+          "common"
+        ],
+        "cacheVariables": {
+          "CMAKE_BUILD_TYPE": {
+            "type": "STRING",
+            "value": "Release"
+          }
+        }
+      },
+      {
+        "name": "conda",
+        "hidden": true,
+        "generator": "Ninja",
+        "cacheVariables": {
+          "BUILD_FEM_NETGEN": {
+            "type": "BOOL",
+            "value": "ON"
+          },
+          "BUILD_WITH_CONDA": {
+            "type": "BOOL",
+            "value": "ON"
+          },
+          "BUILD_REVERSEENGINEERING": {
+            "type": "BOOL",
+            "value": "OFF"
+          },
+          "ENABLE_DEVELOPER_TESTS": {
+            "type": "BOOL",
+            "value": "ON"
+          },
+          "FREECAD_LIBPACK_USE": {
+            "type": "BOOL",
+            "value": "OFF"
+          },
+          "FREECAD_USE_EXTERNAL_FMT": {
+            "type": "BOOL",
+            "value": "ON"
+          },
+          "FREECAD_USE_EXTERNAL_SMESH": {
+            "type": "BOOL",
+            "value": "ON"
+          },
+          "FREECAD_USE_PCH": {
+            "type": "BOOL",
+            "value": "OFF"
+          },
+          "FREECAD_USE_PCL": {
+            "type": "BOOL",
+            "value": "ON"
+          },
+          "FREECAD_USE_PYBIND11": {
+            "type": "BOOL",
+            "value": "ON"
+          },
+          "OCCT_CMAKE_FALLBACK": {
+            "type": "BOOL",
+            "value": "ON"
+          },
+          "QT_HOST_PATH": {
+            "type": "PATH",
+            "value": "$env{CONDA_PREFIX}"
+          }
+        }
+      },
+      {
+        "name": "conda-linux",
+        "hidden": true,
+        "condition": {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Linux"
+        },
+        "cacheVariables": {
+          "CMAKE_C_COMPILER": {
+            "type": "STRING",
+            "value": "clang"
+          },
+          "CMAKE_CXX_COMPILER": {
+            "type": "STRING",
+            "value": "clang++"
+          },
+          "CMAKE_EXE_LINKER_FLAGS": {
+            "type": "STRING",
+            "value": "-fuse-ld=mold"
+          },
+          "CMAKE_INSTALL_PREFIX": {
+            "type": "FILEPATH",
+            "value": "$env{CONDA_PREFIX}"
+          },
+          "CMAKE_PREFIX_PATH": {
+            "type": "FILEPATH",
+            "value": "$env{CONDA_PREFIX}"
+          },
+          "CMAKE_SHARED_LINKER_FLAGS": {
+            "type": "STRING",
+            "value": "-fuse-ld=mold"
+          },
+          "OCC_INCLUDE_DIR": {
+            "type": "FILEPATH",
+            "value": "$env{CONDA_PREFIX}/include/opencascade"
+          }
+        }
+      },
+      {
+        "name": "conda-macos",
+        "hidden": true,
+        "condition": {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Darwin"
+        },
+        "cacheVariables": {
+          "CMAKE_IGNORE_PREFIX_PATH": {
+            "type": "STRING",
+            "value": "/opt/homebrew;/usr/local/homebrew"
+          },
+          "CMAKE_INSTALL_PREFIX": {
+            "type": "FILEPATH",
+            "value": "$env{CONDA_PREFIX}"
+          },
+          "CMAKE_PREFIX_PATH": {
+            "type": "FILEPATH",
+            "value": "$env{CONDA_PREFIX}"
+          },
+          "OCC_INCLUDE_DIR": {
+            "type": "FILEPATH",
+            "value": "$env{CONDA_PREFIX}/include/opencascade"
+          }
+        }
+      },
+      {
+        "name": "conda-windows",
+        "hidden": true,
+        "condition": {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+        },
+        "cacheVariables": {
+          "CMAKE_INSTALL_PREFIX": {
+            "type": "FILEPATH",
+            "value": "$env{CONDA_PREFIX}/Library"
+          },
+          "CMAKE_PREFIX_PATH": {
+            "type": "FILEPATH",
+            "value": "$env{CONDA_PREFIX}/Library"
+          },
+          "OCC_INCLUDE_DIR": {
+            "type": "FILEPATH",
+            "value": "$env{CONDA_PREFIX}/Library/include/opencascade"
+          }
+        }
+      },
+      {
+        "name": "conda-debug",
+        "hidden": true,
+        "displayName": "Conda Debug",
+        "description": "Conda debug profile",
+        "inherits": [
+          "debug",
+          "conda"
+        ]
+      },
+      {
+        "name": "conda-release",
+        "hidden": true,
+        "displayName": "Conda Release",
+        "description": "Conda release profile",
+        "inherits": [
+          "release",
+          "conda"
+        ]
+      },
+      {
+        "name": "conda-linux-debug",
+        "displayName": "Conda Debug",
+        "description": "Conda debug profile",
+        "inherits": [
+          "conda-debug",
+          "conda-linux"
+        ]
+      },
+      {
+        "name": "conda-linux-release",
+        "displayName": "Conda Release",
+        "description": "Conda release profile",
+        "inherits": [
+          "conda-release",
+          "conda-linux"
+        ]
+      },
+      {
+        "name": "conda-macos-debug",
+        "displayName": "Conda Debug",
+        "description": "Conda debug profile",
+        "inherits": [
+          "conda-debug",
+          "conda-macos"
+        ]
+      },
+      {
+        "name": "conda-macos-release",
+        "displayName": "Conda Release",
+        "description": "Conda release profile",
+        "inherits": [
+          "conda-release",
+          "conda-macos"
+        ]
+      },
+      {
+        "name": "conda-windows-debug",
+        "displayName": "Conda Debug",
+        "description": "Conda debug profile",
+        "inherits": [
+          "conda-debug",
+          "conda-windows"
+        ],
+        "cacheVariables": {
+          "CMAKE_BUILD_TYPE": {
+            "type": "STRING",
+            "value": "RelWithDebInfo"
+          }
+        }
+      },
+      {
+        "name": "conda-windows-release",
+        "displayName": "Conda Release",
+        "description": "Conda release profile",
+        "inherits": [
+          "conda-release",
+          "conda-windows"
+        ],
+        "cacheVariables": {
+          "FREECAD_RELEASE_PDB": {
+            "type": "BOOL",
+            "value": "OFF"
+          }
+        }
+      }
+    ]
+}

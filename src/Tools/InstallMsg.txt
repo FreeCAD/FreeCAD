@@ -1,0 +1,1 @@
+FreeCAD is distributed under the Gnu General Public Licence.
