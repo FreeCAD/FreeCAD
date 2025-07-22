@@ -212,32 +212,6 @@ bool ViewProviderAssembly::canDragObjectToTarget(App::DocumentObject* obj,
     return true;
 }
 
-void ViewProviderAssembly::updateData(const App::Property* prop)
-{
-    auto* obj = static_cast<Assembly::AssemblyObject*>(pcObject);
-    if (prop == &obj->Group) {
-        // Defer the icon update until the event loop is idle.
-        // This ensures the assembly has had a chance to recompute its
-        // connectivity state before we query it.
-        QTimer::singleShot(0, [obj]() {
-            if (!obj || !obj->isAttachedToDocument()) {
-                return;
-            }
-
-            std::vector<App::DocumentObject*> joints = obj->getJoints(false);
-            for (auto* joint : joints) {
-                Gui::ViewProvider* jointVp = Gui::Application::Instance->getViewProvider(joint);
-                if (jointVp) {
-                    jointVp->signalChangeIcon();
-                }
-            }
-        });
-    }
-    else {
-        Gui::ViewProviderPart::updateData(prop);
-    }
-}
-
 bool ViewProviderAssembly::setEdit(int mode)
 {
     if (mode == ViewProvider::Default) {
@@ -1134,9 +1108,7 @@ bool ViewProviderAssembly::canDelete(App::DocumentObject* objBeingDeleted) const
             // List its joints
             std::vector<App::DocumentObject*> joints = assemblyPart->getJointsOfObj(obj);
             for (auto* joint : joints) {
-                if (std::ranges::find(objToDel, joint) == objToDel.end()) {
-                    objToDel.push_back(joint);
-                }
+                objToDel.push_back(joint);
             }
             joints = assemblyPart->getJointsOfPart(obj);
             for (auto* joint : joints) {
