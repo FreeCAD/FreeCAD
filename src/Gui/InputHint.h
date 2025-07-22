@@ -30,6 +30,7 @@
 #include <QString>
 
 #include <list>
+#include <vector>
 
 namespace Gui
 {
