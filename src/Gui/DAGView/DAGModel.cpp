@@ -647,12 +647,12 @@ void Model::updateSlot()
 
     auto rectangle = (*theGraph)[currentVertex].rectangle.get();
     rectangle->setRect(-rowPadding, 0.0, rowPadding, rowHeight); //calculate actual length later.
-    rectangle->setTransform(QTransform::fromTranslate(0, rowHeight * currentRow));
+    rectangle->setTransform(QTransform::fromTranslate(0, rowHeight * static_cast<qreal>(currentRow)));
     rectangle->setBackgroundBrush(backgroundBrushes[currentRow % backgroundBrushes.size()]);
 
     auto point = (*theGraph)[currentVertex].point.get();
     point->setRect(0.0, 0.0, pointSize, pointSize);
-    point->setTransform(QTransform::fromTranslate(pointSpacing * currentColumn,
+    point->setTransform(QTransform::fromTranslate(pointSpacing * static_cast<qreal>(currentColumn),
       rowHeight * currentRow + rowHeight / 2.0 - pointSize / 2.0));
     point->setBrush(currentBrush);
 
