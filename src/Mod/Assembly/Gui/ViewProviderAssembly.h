@@ -230,6 +230,11 @@ public:
 private:
     bool tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer);
     void tryInitMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer);
+
+    void collectMovableObjects(App::DocumentObject* selRoot,
+                               std::string& subNamePrefix,
+                               App::DocumentObject* currentObject,
+                               bool onlySolids);
 };
 
 }  // namespace AssemblyGui
