@@ -113,12 +113,6 @@ jobs:
         # Change the CodeQL Bundle version
         # tools: https://github.com/github/codeql-action/releases/download/codeql-bundle-v2.20.7/codeql-bundle-linux64.tar.gz
 
-        # Add exclusions
-        config: |
-          paths-ignore:
-            - src/3rdParty/**
-            - '**/ui_*.h'
-
     # If the analyze step fails for one of the languages you are analyzing with
     # "We were unable to automatically build your code", modify the matrix above
     # to set the build mode to "manual" for that language. Then modify this step
@@ -139,3 +133,28 @@ jobs:
       uses: github/codeql-action/analyze@181d5eefc20863364f96762470ba6f862bdef56b # v3.29.2
       with:
         category: "/language:${{matrix.language}}"
+        output: sarif-results
+        upload: failure-only
+
+    - name: filter-sarif
+      uses: advanced-security/filter-sarif@v1
+      with:
+        patterns: |
+          -tests/**/*
+          -src/3rdParty/**/*
+          -**/ui_*.h
+          -**/moc_*.cpp
+        input: sarif-results/cpp.sarif
+        output: sarif-results/cpp.sarif
+
+    - name: Upload SARIF
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: sarif-results/cpp.sarif
+
+    - name: Upload loc as a Build Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: sarif-results
+        path: sarif-results
+        retention-days: 1
