@@ -13,7 +13,6 @@ from Gui.ViewProviderGeometryObject import ViewProviderGeometryObject
     Namespace="FemGui",
     FatherInclude="Gui/ViewProviderGeometryObjectPy.h",
     FatherNamespace="Gui",
-    ReadOnly=["VisibleElementFaces"],
 )
 class ViewProviderFemMeshPy(ViewProviderGeometryObject):
     """
