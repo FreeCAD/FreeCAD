@@ -158,6 +158,36 @@ QIcon ViewProviderFeaturePythonImp::getIcon() const
     return {};
 }
 
+std::vector<std::string> ViewProviderFeaturePythonImp::getOverlayIcons() const
+{
+    std::vector<std::string> overlays;
+    _FC_PY_CALL_CHECK(getOverlayIcons, return overlays);
+
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Object ret(Base::pyCall(py_getOverlayIcons.ptr()));
+        if (ret.isNone()) {
+            return overlays;
+        }
+
+        Py::Sequence list(ret);
+        for (const auto& item : list) {
+            overlays.push_back(Py::String(item).as_std_string("utf-8"));
+        }
+    }
+    catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+        }
+        else {
+            Base::PyException e;
+            e.reportException();
+        }
+    }
+
+    return overlays;
+}
+
 bool ViewProviderFeaturePythonImp::claimChildren(std::vector<App::DocumentObject*> &children) const
 {
     _FC_PY_CALL_CHECK(claimChildren,return(false));

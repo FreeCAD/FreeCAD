@@ -30,6 +30,7 @@
 
 #include "ViewProviderGeometryObject.h"
 #include "Document.h"
+#include "BitmapFactory.h"
 
 class SoSensor;
 class SoDragger;
@@ -55,6 +56,8 @@ public:
 
     // Returns the icon
     QIcon getIcon() const;
+    // returns a vector of icon names to be used in the 4 positions.
+    std::vector<std::string> getOverlayIcons() const;
     bool claimChildren(std::vector<App::DocumentObject*>&) const;
     ValueT useNewSelectionModel() const;
     void onSelectionChanged(const SelectionChanges&);
@@ -138,6 +141,7 @@ private:
 
 #define FC_PY_VIEW_OBJECT \
     FC_PY_ELEMENT(getIcon) \
+    FC_PY_ELEMENT(getOverlayIcons) \
     FC_PY_ELEMENT(claimChildren) \
     FC_PY_ELEMENT(useNewSelectionModel) \
     FC_PY_ELEMENT(getElementPicked) \
@@ -222,6 +226,40 @@ public:
         else
             icon = ViewProviderT::mergeGreyableOverlayIcons(icon);
         return icon;
+    }
+
+    QIcon mergeColorfulOverlayIcons(const QIcon& orig) const override
+    {
+        QIcon currentIcon = orig;
+
+        // Get the list of overlay names from the Python implementation
+        std::vector<std::string> overlayNames = imp->getOverlayIcons();
+
+        if (!overlayNames.empty()) {
+            // Use the static instance of BitmapFactory to perform the merge
+            size_t i = 0;
+            for (const auto& name : overlayNames) {
+                if (name.empty()) {
+                    ++i;
+                    continue;
+                }
+
+                QPixmap overlayPixmap =
+                    Gui::BitmapFactory().pixmapFromSvg(name.c_str(), QSize(10, 10));
+                if (!overlayPixmap.isNull()) {
+                    currentIcon =
+                        Gui::BitmapFactoryInst::mergePixmap(currentIcon,
+                                                            overlayPixmap,
+                                                            static_cast<Gui::BitmapFactoryInst::Position>(i));
+                }
+                ++i;
+                if (i > 3) {
+                    break;
+                }
+            }
+        }
+
+        return ViewProviderT::mergeColorfulOverlayIcons(currentIcon);
     }
 
     std::vector<App::DocumentObject*> claimChildren() const override {
