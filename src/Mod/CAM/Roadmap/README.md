@@ -2,7 +2,7 @@
 
 This document aims to guide the ongoing development of the CAM Workbench. It sets out shared goals, identifies pain points and opportunities, and invites discussion, collaboration, and contributions from the wider community.
 
-FreeCAD is a volunteer-driven project. This roadmap does not prescribe work or enforce deadlines — it is a living document to help focus effort and encourage alignment across developers, users, and stakeholders.  
+FreeCAD is a volunteer-driven project. This roadmap does not prescribe work or enforce deadlines — it is a living document to help focus effort and encourage alignment across developers, users, and stakeholders.
 
 Like everyone, Maintainers only have so much time that they can allocate to FreeCAD. With many contributors submitting changes, it can be difficult to judge the relative importance of an individual contribution.  This document establishes a shared vision of the direction of the workbench so maintainers have a framework for prioritizing review and approval.
 
@@ -105,4 +105,3 @@ These are things that we agree should get attention but are larger than a single
 | 2        | Changes related to the initiatives and projects | Projects are grouping together numerous issues including both features and bug fixes.  Multiple people may be working collectively.  Timely response to changes is necessary to avoid rework and conflict. |
 | 3        | other big fixes                                 | Resolving bugs with existing functionality that is not part of a broader initiative.                                                                                                                       |
 | 4        | other new features                              | One-off features are either small enough to be reviewed independently or are big enough to warrant discussion by a larger group.  This can be time consuming.                                              |
-
