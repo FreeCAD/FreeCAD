@@ -384,7 +384,7 @@ public:
                 if (Rez::guiX(pp.first().y) > scenePos.y())
                     dimDistance = -dimDistance;
 
-                double y = scenePos.y() + i * dimDistance;
+                double y = static_cast<double>(scenePos.y()) + i * static_cast<double>(dimDistance);
                 scenePos = QPointF(curPos.x(), y);
             }
             else if(type == DimensionType::DistanceY) {
@@ -392,7 +392,7 @@ public:
                 if (Rez::guiX(pp.first().x) > scenePos.x())
                     dimDistance = -dimDistance;
 
-                double x = scenePos.x() + i * dimDistance;
+                double x = static_cast<double>(scenePos.x()) + i * static_cast<double>(dimDistance);
                 scenePos = QPointF(x, curPos.y());
             }
         }
