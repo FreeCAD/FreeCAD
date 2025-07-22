@@ -187,13 +187,15 @@ StartView::StartView(QWidget* parent)
     configureExamplesListWidget(examplesListWidget);
     configureRecentFilesListWidget(recentFilesListWidget, _recentFilesLabel);
 
-    QTimer::singleShot(2000, [this, recentFilesListWidget](){
-        auto updateFun = [this, recentFilesListWidget](){
-            configureRecentFilesListWidget(recentFilesListWidget, _recentFilesLabel); };
-        auto recentFiles = Gui::getMainWindow()->findChild <Gui::RecentFilesAction *> ();
-        if (recentFiles != nullptr)
-            connect(recentFiles, &Gui::RecentFilesAction::recentFilesListModified,
-                    this, updateFun); });
+    QTimer::singleShot(2000, [this, recentFilesListWidget]() {
+        auto updateFun = [this, recentFilesListWidget]() {
+            configureRecentFilesListWidget(recentFilesListWidget, _recentFilesLabel);
+        };
+        auto recentFiles = Gui::getMainWindow()->findChild<Gui::RecentFilesAction*>();
+        if (recentFiles != nullptr) {
+            connect(recentFiles, &Gui::RecentFilesAction::recentFilesListModified, this, updateFun);
+        }
+    });
 
     retranslateUi();
 }
