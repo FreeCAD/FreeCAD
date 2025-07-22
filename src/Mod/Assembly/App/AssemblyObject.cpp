@@ -941,9 +941,6 @@ void AssemblyObject::removeUnconnectedJoints(std::vector<App::DocumentObject*>& 
                 App::DocumentObject* obj2 = getMovingPartFromRef(this, joint, "Reference2");
                 if (!isObjInSetOfObjRefs(obj1, connectedParts)
                     || !isObjInSetOfObjRefs(obj2, connectedParts)) {
-                    Base::Console().warning(
-                        "%s is unconnected to a grounded part so it is ignored.\n",
-                        joint->getFullName());
                     return true;  // Remove joint if any connected object is not in connectedParts
                 }
                 return false;

@@ -573,6 +573,9 @@ class Joint:
         for obj in joint.InList:
             if obj.isDerivedFrom("Assembly::AssemblyObject"):
                 return obj
+            elif obj.isDerivedFrom("Assembly::AssemblyLink"):
+                return self.getAssembly(obj)
+
         return None
 
     def setJointType(self, joint, newType):
@@ -945,6 +948,19 @@ class ViewProviderJoint:
             return ":/icons/Assembly_CreateJointPulleys.svg"
 
         return ":/icons/Assembly_CreateJoint.svg"
+
+    def getOverlayIcons(self):
+        """
+        Return a list of overlay icon names to be merged by the C++ framework.
+        """
+        overlays = ["", ""]
+
+        assembly = self.app_obj.Proxy.getAssembly(self.app_obj)
+        part = UtilsAssembly.getMovingPart(assembly, self.app_obj.Reference1)
+        if part is not None and not assembly.isPartConnected(part):
+            overlays.append("Part_Detached")
+
+        return overlays
 
     def dumps(self):
         """When saving the document this object gets stored using Python's json module.\
