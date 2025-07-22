@@ -406,9 +406,6 @@
               <property name="toolTip">
                <string>The main use of this building</string>
               </property>
-              <property name="sizeAdjustPolicy">
-               <enum>QComboBox::AdjustToMinimumContentsLength</enum>
-              </property>
               <property name="minimumContentsLength">
                <number>0</number>
               </property>

@@ -135,7 +135,7 @@ PyMOD_INIT_FUNC(MeshGui)
         PyMOD_Return(nullptr);
     }
     PyObject* mod = MeshGui::initModule();
-    Base::Console().log("Loading GUI of Mesh module... done\n");
+    Base::Console().log("Loading GUI of Mesh module… done\n");
 
     // instantiating the commands
     CreateMeshCommands();

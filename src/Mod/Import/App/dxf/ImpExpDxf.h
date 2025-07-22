@@ -23,12 +23,15 @@
 #ifndef IMPEXPDXF_H
 #define IMPEXPDXF_H
 
+#include <set>
 #include <gp_Pnt.hxx>
 
 #include <App/Document.h>
+#include <App/Link.h>
 #include <TopoDS_Shape.hxx>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/FeatureCompound.h>
 
 #include "dxf.h"
 
@@ -49,6 +52,10 @@ public:
     {
         Py_XDECREF(DraftModule);
     }
+
+    void StartImport() override;
+
+    Py::Object getStatsAsPyObject();
 
     bool ReadEntitiesSection() override;
 
@@ -81,14 +88,6 @@ public:
                       const Base::Vector3d& scale,
                       const std::string& name,
                       double rotation) override;
-    // Expand a block reference; this should only happen when the collector draws to the document
-    // rather than saving things The transform should include the OCS Orientation transform for the
-    // insertion.
-    void ExpandInsert(const std::string& name,
-                      const Base::Matrix4D& transform,
-                      const Base::Vector3d& point,
-                      double rotation,
-                      const Base::Vector3d& scale);
     void OnReadDimension(const Base::Vector3d& start,
                          const Base::Vector3d& end,
                          const Base::Vector3d& point,
@@ -106,6 +105,7 @@ public:
         m_optionSource = sourceName;
     }
     void setOptions();
+    void FinishImport() override;
 
 private:
     bool shouldSkipEntity() const
@@ -121,7 +121,12 @@ private:
     // Combine all the shapes in the given shapes collection into a single shape, and AddObject that
     // to the drawing. unref's all the shapes in the collection, possibly freeing them.
     void CombineShapes(std::list<TopoDS_Shape>& shapes, const char* nameBase) const;
+    TopoDS_Shape CombineShapesToCompound(const std::list<TopoDS_Shape>& shapes) const;
     PyObject* DraftModule = nullptr;
+    std::set<std::string> m_referencedBlocks;
+    void ComposeBlocks();
+    void ComposeParametricBlock(const std::string& blockName, std::set<std::string>& composed);
+    void ComposeFlattenedBlock(const std::string& blockName, std::set<std::string>& composed);
 
 protected:
     PyObject* getDraftModule()
@@ -200,11 +205,22 @@ protected:
 
 private:
     std::map<std::string, Block> Blocks;
+    std::map<std::string, TopoDS_Shape> m_flattenedBlockShapes;
+    std::map<std::string, App::DocumentObject*> m_blockDefinitions;
+    App::DocumentObjectGroup* m_blockDefinitionGroup = nullptr;
+    App::DocumentObjectGroup* m_unreferencedBlocksGroup = nullptr;
     App::Document* document;
     std::string m_optionSource;
 
 protected:
+    friend class DrawingEntityCollector;
+    void IncrementCreatedObjectCount()
+    {
+        m_stats.totalEntitiesCreated++;
+    }
     virtual void ApplyGuiStyles(Part::Feature* /*object*/) const
+    {}
+    virtual void ApplyGuiStyles(App::Link* /*object*/) const
     {}
     virtual void ApplyGuiStyles(App::FeaturePython* /*object*/) const
     {}
@@ -233,12 +249,15 @@ protected:
 
         // Called by OnReadXxxx functions to add Part objects
         virtual void AddObject(const TopoDS_Shape& shape, const char* nameBase) = 0;
+        // Called by OnReadInsert to add App::Link or other C++-created objects
+        virtual void AddObject(App::DocumentObject* obj, const char* nameBase) = 0;
         // Called by OnReadXxxx functions to add FeaturePython (draft) objects.
         // Because we can't readily copy Draft objects, this method instead takes a builder which,
         // when called, creates and returns the object.
         virtual void AddObject(FeaturePythonBuilder shapeBuilder) = 0;
         // Called by OnReadInsert to either remember in a nested block or expand the block into the
         // drawing
+        // This method is now obsolete with the App::Link implementation
         virtual void AddInsert(const Base::Vector3d& point,
                                const Base::Vector3d& scale,
                                const std::string& name,
@@ -259,13 +278,51 @@ protected:
         {}
 
         void AddObject(const TopoDS_Shape& shape, const char* nameBase) override;
+        void AddObject(App::DocumentObject* obj, const char* nameBase) override;
         void AddObject(FeaturePythonBuilder shapeBuilder) override;
         void AddInsert(const Base::Vector3d& point,
                        const Base::Vector3d& scale,
                        const std::string& name,
                        double rotation) override
         {
-            Reader.ExpandInsert(name, Reader.OCSOrientationTransform, point, rotation, scale);
+            // This is the correct place to create top-level App::Link objects for INSERTs.
+
+            // Find the base object from our map of stored block definitions.
+            auto it = Reader.m_blockDefinitions.find(name);
+            if (it == Reader.m_blockDefinitions.end()) {
+                return;
+            }
+            Reader.m_referencedBlocks.insert(name);
+            App::DocumentObject* baseObject = it->second;
+
+            // Create a unique name for the link
+            std::string linkName = "Link_";
+            std::string cleanName = name;
+            if (!cleanName.empty() && std::isdigit(cleanName.back())) {
+                // Add a trailing underscore to prevent the unique name generator
+                // from incrementing the number in the block's name.
+                cleanName += "_";
+            }
+            linkName += cleanName;
+            linkName = Reader.document->getUniqueObjectName(linkName.c_str());
+
+            // Create the App::Link object directly in C++
+            App::Link* link = Reader.document->addObject<App::Link>(linkName.c_str());
+            Reader.IncrementCreatedObjectCount();
+            if (!link) {
+                Reader.ImportError("Failed to create App::Link for block '%s'", name.c_str());
+                return;
+            }
+
+            // Configure the link
+            link->setLink(-1, baseObject);
+            link->LinkTransform.setValue(false);
+            link->Label.setValue(name.c_str());
+            Base::Placement pl(point, Base::Rotation(Base::Vector3d(0, 0, 1), rotation));
+            link->Placement.setValue(pl);
+            link->ScaleVector.setValue(scale);
+
+            this->AddObject(link, "Link");
         }
     };
     class ShapeSavingEntityCollector: public DrawingEntityCollector
@@ -282,6 +339,12 @@ protected:
         void AddObject(const TopoDS_Shape& shape, const char* /*nameBase*/) override
         {
             ShapesList[Reader.m_entityAttributes].push_back(shape);
+        }
+
+        void AddObject(App::DocumentObject* obj, const char* nameBase) override
+        {
+            // A Link is not a shape to be merged, so pass to base class for standard handling.
+            DrawingEntityCollector::AddObject(obj, nameBase);
         }
 
     private:
@@ -335,6 +398,16 @@ protected:
         {
             FeatureBuildersList[Reader.m_entityAttributes].push_back(shapeBuilder);
         }
+
+        void AddObject(App::DocumentObject* /*obj*/, const char* /*nameBase*/) override
+        {
+            // This path should never be executed. Links and other fully-formed DocumentObjects
+            // are created from INSERT entities, not as part of a BLOCK *definition*. If this
+            // warning ever appears, it indicates a logic error in the importer.
+            Reader.ImportError(
+                "Internal logic error: Attempted to add a DocumentObject to a block definition.");
+        }
+
         void AddInsert(const Base::Vector3d& point,
                        const Base::Vector3d& scale,
                        const std::string& name,

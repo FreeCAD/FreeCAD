@@ -537,7 +537,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void* ud, SoEventCallback*
             QAction* fl = menu.addAction(QObject::tr("Annotation"));
             fl->setCheckable(true);
             fl->setChecked(addflag);
-            QAction* cl = menu.addAction(QObject::tr("Leave info mode"));
+            QAction* cl = menu.addAction(QObject::tr("Leave Info Mode"));
             QAction* id = menu.exec(QCursor::pos());
             if (fl == id) {
                 addflag = fl->isChecked();

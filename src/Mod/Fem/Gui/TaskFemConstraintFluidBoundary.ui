@@ -67,7 +67,7 @@
    <item>
     <widget class="QLabel" name="lbl_info">
      <property name="text">
-      <string>Select multiple face(s), click Add or Remove</string>
+      <string>Select multiple faces, click Add or Remove</string>
      </property>
     </widget>
    </item>

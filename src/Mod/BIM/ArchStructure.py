@@ -627,10 +627,9 @@ class _CommandStructure:
                     self.dents.form.hide()
                 params.set_param_arch("StructurePreset",self.Profile)
             else:
-                p=elt[0]-1 # Presets indexes are 1-based
-                self.vLength.setText(FreeCAD.Units.Quantity(float(Presets[p][4]),FreeCAD.Units.Length).UserString)
-                self.vWidth.setText(FreeCAD.Units.Quantity(float(Presets[p][5]),FreeCAD.Units.Length).UserString)
-                self.Profile = Presets[p]
+                self.vLength.setText(FreeCAD.Units.Quantity(float(elt[4]),FreeCAD.Units.Length).UserString)
+                self.vWidth.setText(FreeCAD.Units.Quantity(float(elt[5]),FreeCAD.Units.Length).UserString)
+                self.Profile = elt
                 params.set_param_arch("StructurePreset",";".join([str(i) for i in self.Profile]))
 
     def switchLH(self,bmode):
@@ -667,6 +666,7 @@ class _Structure(ArchComponent.Component):
     def __init__(self,obj):
 
         ArchComponent.Component.__init__(self,obj)
+        self.Type = "Structure"
         self.setProperties(obj)
         obj.IfcType = "Beam"
 
@@ -730,8 +730,6 @@ class _Structure(ArchComponent.Component):
         if not hasattr(self,"ArchSkPropSetListPrev"):
             self.ArchSkPropSetListPrev = []
 
-        self.Type = "Structure"
-
 
     def dumps(self):  # Supercede Arch.Component.dumps()
         dump = super().dumps()
@@ -753,6 +751,7 @@ class _Structure(ArchComponent.Component):
         elif state[0] != 'Structure':  # model before merging super.dumps/loads()
             self.ArchSkPropSetPickedUuid = state[0]
             self.ArchSkPropSetListPrev = state[1]
+        self.Type = "Structure"
 
 
     def onDocumentRestored(self,obj):
@@ -1086,7 +1085,7 @@ class _Structure(ArchComponent.Component):
     def onChanged(self,obj,prop):
 
         # check the flag indicating if we are currently in the process of
-        # restoring document; if not, no further code is run as getExtrusionData() 
+        # restoring document; if not, no further code is run as getExtrusionData()
         # below return error when some properties are not added by onDocumentRestored()
         if FreeCAD.ActiveDocument.Restoring:
             return
@@ -1530,9 +1529,14 @@ class _StructuralSystem(ArchComponent.Component): # OBSOLETE - All Arch objects 
     def __init__(self,obj):
 
         ArchComponent.Component.__init__(self,obj)
+        self.Type = "StructuralSystem"
+
         obj.addProperty("App::PropertyLinkList","Axes","Arch",QT_TRANSLATE_NOOP("App::Property","Axes systems this structure is built on"), locked=True)
         obj.addProperty("App::PropertyIntegerList","Exclude","Arch",QT_TRANSLATE_NOOP("App::Property","The element numbers to exclude when this structure is based on axes"), locked=True)
         obj.addProperty("App::PropertyBool","Align","Arch",QT_TRANSLATE_NOOP("App::Property","If true the element are aligned with axes"), locked=True).Align = False
+
+    def loads(self,state):
+
         self.Type = "StructuralSystem"
 
     def execute(self,obj):

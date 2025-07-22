@@ -116,7 +116,7 @@
         <item row="4" column="0">
          <widget class="QLabel" name="l_editor">
           <property name="text">
-           <string>Input file Editor</string>
+           <string>Input file editor</string>
           </property>
          </widget>
         </item>
@@ -148,7 +148,7 @@
            </size>
           </property>
           <property name="text">
-           <string>External editor:</string>
+           <string>External editor</string>
           </property>
          </widget>
         </item>
@@ -199,7 +199,7 @@
    <item>
     <widget class="QGroupBox" name="gb_02_analysis_param">
      <property name="title">
-      <string>Analysis defaults</string>
+      <string>Analysis Defaults</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
@@ -283,7 +283,7 @@
    <item>
     <widget class="QGroupBox" name="gb_03_solver_param">
      <property name="title">
-      <string>Solver defaults</string>
+      <string>Solver Defaults</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_1">
       <item>
@@ -304,14 +304,14 @@
         <item row="5" column="0">
          <widget class="QLabel" name="l_ccx_initial_time_step">
           <property name="text">
-           <string>Time Initial Step</string>
+           <string>Initial time step</string>
           </property>
          </widget>
         </item>
         <item row="6" column="0">
          <widget class="QLabel" name="l_ccx_analysis_time">
           <property name="text">
-           <string>Time End</string>
+           <string>End time</string>
           </property>
          </widget>
         </item>
@@ -334,7 +334,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="l_ccx_numcpu">
           <property name="text">
-           <string>Number of CPU's to use</string>
+           <string>Number of CPUs to use</string>
           </property>
          </widget>
         </item>
@@ -525,7 +525,7 @@
         <item row="7" column="0">
          <widget class="QLabel" name="l_ccx_minimum_time_step">
           <property name="text">
-           <string>Time Minimum Step</string>
+           <string>Minimum time step</string>
           </property>
          </widget>
         </item>
@@ -655,7 +655,7 @@
         <item row="8" column="0">
          <widget class="QLabel" name="l_ccx_maximum_time_step">
           <property name="text">
-           <string>Time Maximum Step</string>
+           <string>Maximum time step</string>
           </property>
          </widget>
         </item>
@@ -721,7 +721,7 @@ Only takes effect if 'Pipeline only' is enabled</string>
    <item>
     <widget class="QGroupBox" name="gb_04_thermomech_params">
      <property name="title">
-      <string>Thermo mechanical defaults</string>
+      <string>Thermo-Mechanical Defaults</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
@@ -757,7 +757,7 @@ Only takes effect if 'Pipeline only' is enabled</string>
    <item>
     <widget class="QGroupBox" name="gb_05_frequercy_params">
      <property name="title">
-      <string>Frequency defaults</string>
+      <string>Frequency Defaults</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>

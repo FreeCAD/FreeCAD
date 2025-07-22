@@ -49,8 +49,8 @@ CmdRobotSetHomePos::CmdRobotSetHomePos()
 {
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
-    sMenuText = QT_TR_NOOP("Set the home position");
-    sToolTipText = QT_TR_NOOP("Set the home position");
+    sMenuText = QT_TR_NOOP("Set Home Position");
+    sToolTipText = QT_TR_NOOP("Sets the home position");
     sWhatsThis = "Robot_SetHomePos";
     sStatusTip = sToolTipText;
     sPixmap = "Robot_SetHomePos";
@@ -108,8 +108,8 @@ CmdRobotRestoreHomePos::CmdRobotRestoreHomePos()
 {
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
-    sMenuText = QT_TR_NOOP("Move to home");
-    sToolTipText = QT_TR_NOOP("Move to home");
+    sMenuText = QT_TR_NOOP("Move to Home");
+    sToolTipText = QT_TR_NOOP("Moves to the home position");
     sWhatsThis = "Robot_RestoreHomePos";
     sStatusTip = sToolTipText;
     sPixmap = "Robot_RestoreHomePos";
@@ -161,8 +161,9 @@ CmdRobotConstraintAxle::CmdRobotConstraintAxle()
 {
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
-    sMenuText = QT_TR_NOOP("Place robot...");
-    sToolTipText = QT_TR_NOOP("Place a robot (experimental!)");
+    sMenuText = QT_TR_NOOP("Place Robot…");
+    sToolTipText = QT_TR_NOOP("Places a robot in the scene");
+
     sWhatsThis = "Robot_Create";
     sStatusTip = sToolTipText;
     sPixmap = "Robot_CreateRobot";
@@ -209,8 +210,8 @@ CmdRobotSimulate::CmdRobotSimulate()
 {
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
-    sMenuText = QT_TR_NOOP("Simulate a trajectory");
-    sToolTipText = QT_TR_NOOP("Run a simulation on a trajectory");
+    sMenuText = QT_TR_NOOP("Simulate Trajectory");
+    sToolTipText = QT_TR_NOOP("Simulates robot movement along a selected trajectory");
     sWhatsThis = "Robot_Simulate";
     sStatusTip = sToolTipText;
     sPixmap = "Robot_Simulate";

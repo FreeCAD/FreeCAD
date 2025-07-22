@@ -26,6 +26,61 @@
 
 
 using namespace std;
+
+namespace
+{
+
+std::string DxfUnitToString(DxfUnits::eDxfUnits_t unit)
+{
+    switch (unit) {
+        case DxfUnits::eInches:
+            return "Inches";
+        case DxfUnits::eFeet:
+            return "Feet";
+        case DxfUnits::eMiles:
+            return "Miles";
+        case DxfUnits::eMillimeters:
+            return "Millimeters";
+        case DxfUnits::eCentimeters:
+            return "Centimeters";
+        case DxfUnits::eMeters:
+            return "Meters";
+        case DxfUnits::eKilometers:
+            return "Kilometers";
+        case DxfUnits::eMicroinches:
+            return "Microinches";
+        case DxfUnits::eMils:
+            return "Mils";
+        case DxfUnits::eYards:
+            return "Yards";
+        case DxfUnits::eAngstroms:
+            return "Angstroms";
+        case DxfUnits::eNanometers:
+            return "Nanometers";
+        case DxfUnits::eMicrons:
+            return "Microns";
+        case DxfUnits::eDecimeters:
+            return "Decimeters";
+        case DxfUnits::eDekameters:
+            return "Dekameters";
+        case DxfUnits::eHectometers:
+            return "Hectometers";
+        case DxfUnits::eGigameters:
+            return "Gigameters";
+        case DxfUnits::eAstronomicalUnits:
+            return "Astronomical Units";
+        case DxfUnits::eLightYears:
+            return "Light Years";
+        case DxfUnits::eParsecs:
+            return "Parsecs";
+        case DxfUnits::eUnspecified:
+        default:
+            return "Unspecified";
+    }
+}
+
+}  // namespace
+
 static Base::Vector3d MakeVector3d(const double coordinates[3])
 {
     // NOLINTNEXTLINE(readability/nolint)
@@ -1947,6 +2002,9 @@ void CDxfRead::ProcessAllEntityAttributes()
 void CDxfRead::ResolveEntityAttributes()
 {
     m_entityAttributes.ResolveBylayerAttributes(*this);
+    if (m_entityAttributes.m_paperSpace) {
+        m_stats.entityCounts["ENTITIES_IN_PAPERSPACE"]++;
+    }
     // TODO: Look at the space and layer (hidden/frozen?) and options and return false if the entity
     // is not needed.
     // TODO: INSERT must not call this because an INSERT on a hidden layer should always be
@@ -2284,8 +2342,8 @@ bool CDxfRead::ReadDimension()
 
 bool CDxfRead::ReadUnknownEntity()
 {
-    UnsupportedFeature("Entity type '%s'", m_record_data);
     ProcessAllEntityAttributes();
+    UnsupportedFeature("Entity type '%s'", m_current_entity_name.c_str());
     return true;
 }
 
@@ -2344,11 +2402,8 @@ void CDxfRead::UnsupportedFeature(const char* format, args&&... argValuess)
 {
     // NOLINTNEXTLINE(runtime/printf)
     std::string formattedMessage = fmt::sprintf(format, std::forward<args>(argValuess)...);
-    // We place these formatted messages in a map, count their occurrences and not their first
-    // occurrence.
-    if (m_unsupportedFeaturesNoted[formattedMessage].first++ == 0) {
-        m_unsupportedFeaturesNoted[formattedMessage].second = m_line;
-    }
+    m_stats.unsupportedFeatures[formattedMessage].emplace_back(m_current_entity_line_number,
+                                                               m_current_entity_handle);
 }
 
 bool CDxfRead::get_next_record()
@@ -2538,6 +2593,8 @@ bool CDxfRead::ReadVersion()
         m_version = RUnknown;
     }
 
+    m_stats.dxfVersion = m_record_data;
+
     return ResolveEncoding();
 }
 
@@ -2606,6 +2663,9 @@ bool CDxfRead::ResolveEncoding()
         Py_DECREF(pyDecoder);
         Py_DECREF(pyUTF8Decoder);
     }
+
+    m_stats.dxfEncoding = m_encoding;
+
     return !m_encoding.empty();
 }
 
@@ -2664,17 +2724,6 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */)
             }
         }
         FinishImport();
-
-        // Flush out any unsupported features messages
-        if (!m_unsupportedFeaturesNoted.empty()) {
-            ImportError("Unsupported DXF features:\n");
-            for (auto& featureInfo : m_unsupportedFeaturesNoted) {
-                ImportError("%s: %d time(s) first at line %d\n",
-                            featureInfo.first,
-                            featureInfo.second.first,
-                            featureInfo.second.second);
-            }
-        }
     }
     catch (const Base::Exception& e) {
         // This catches specific FreeCAD exceptions and re-throws them.
@@ -2747,8 +2796,12 @@ void CDxfRead::ProcessLayerReference(CDxfRead* object, void* target)
 }
 bool CDxfRead::ReadEntity()
 {
+    m_current_entity_line_number = m_line;
+    m_current_entity_name = m_record_data;
     InitializeAttributes();
     m_entityAttributes.SetDefaults();
+    m_current_entity_handle.clear();
+    SetupStringAttribute(eHandle, m_current_entity_handle);
     EntityNormalVector.Set(0, 0, 1);
     Setup3DVectorAttribute(eExtrusionDirection, EntityNormalVector);
     SetupStringAttribute(eLinetypeName, m_entityAttributes.m_LineType);
@@ -2759,6 +2812,9 @@ bool CDxfRead::ReadEntity()
         m_entityAttributes.m_paperSpace);  // TODO: Ensure the stream is noboolalpha (for that
                                            // matter ensure the stream has the "C" locale
     SetupValueAttribute(eColor, m_entityAttributes.m_Color);
+
+    m_stats.entityCounts[m_record_data]++;
+
     // The entity record is already the current record and is already checked as a type 0 record
     if (IsObjectName("LINE")) {
         return ReadLine();
@@ -2809,13 +2865,11 @@ bool CDxfRead::ReadHeaderSection()
         if (m_record_type == eObjectType && IsObjectName("ENDSEC")) {
             if (m_unitScalingFactor == 0.0) {
                 // Neither INSUNITS nor MEASUREMENT found, assume 1 DXF unit = 1mm
-                // TODO: Perhaps this default should depend on the current measuring units of the
-                // app.
+                // TODO: Perhaps this default should depend on the current project's unit system
                 m_unitScalingFactor = m_additionalScaling;
-                ImportObservation("No INSUNITS or MEASUREMENT; setting scaling to 1 DXF unit = "
-                                  "%gmm based on DXF scaling option\n",
-                                  m_unitScalingFactor);
+                m_stats.fileUnits = "Unspecified (Defaulting to 1:1)";
             }
+            m_stats.finalScalingFactor = m_unitScalingFactor;
             return true;
         }
         if (m_record_type != eVariableName) {
@@ -2843,14 +2897,14 @@ bool CDxfRead::ReadVariable()
         if (!ParseValue<int>(this, &varValue)) {
             ImportError("Failed to get integer from INSUNITS value '%s'\n", m_record_data);
         }
-        else if (auto units = DxfUnits::eDxfUnits_t(varValue); !DxfUnits::IsValid(units)) {
-            ImportError("Unknown value '%d' for INSUNITS\n", varValue);
-        }
         else {
+            auto units = DxfUnits::eDxfUnits_t(varValue);
+            if (!DxfUnits::IsValid(units)) {
+                units = DxfUnits::eUnspecified;
+            }
             m_unitScalingFactor = DxfUnits::Factor(units) * m_additionalScaling;
-            ImportObservation("Setting scaling to 1 DXF unit = %gmm based on INSUNITS and "
-                              "DXF scaling option\n",
-                              m_unitScalingFactor);
+            m_stats.scalingSource = "$INSUNITS";
+            m_stats.fileUnits = DxfUnitToString(units);
         }
         return true;
     }
@@ -2858,12 +2912,10 @@ bool CDxfRead::ReadVariable()
         get_next_record();
         int varValue = 1;
         if (m_unitScalingFactor == 0.0 && ParseValue<int>(this, &varValue)) {
-            m_unitScalingFactor =
-                DxfUnits::Factor(varValue != 0 ? DxfUnits::eMillimeters : DxfUnits::eInches)
-                * m_additionalScaling;
-            ImportObservation("Setting scaling to 1 DXF unit = %gmm based on MEASUREMENT and "
-                              "DXF scaling option\n",
-                              m_unitScalingFactor);
+            auto units = (varValue != 0 ? DxfUnits::eMillimeters : DxfUnits::eInches);
+            m_unitScalingFactor = DxfUnits::Factor(units) * m_additionalScaling;
+            m_stats.scalingSource = "$MEASUREMENT";
+            m_stats.fileUnits = DxfUnitToString(units);
         }
         return true;
     }
@@ -3109,7 +3161,10 @@ Base::Color CDxfRead::ObjectColor(ColorIndex_t index)
         result = wheel((index - 1) * 4, 0x00);
     }
     else if (index == 7) {
-        result = Base::Color(1, 1, 1);
+        // DXF color 7 is "black/white" and should adapt to the background.
+        // Since we cannot easily query the background theme from here, we will use a
+        // neutral mid-gray, which is visible on both light and dark themes.
+        result = Base::Color(0.5f, 0.5f, 0.5f);
     }
     else if (index == 8) {
         result = Base::Color(0.5, 0.5, 0.5);
@@ -3131,3 +3186,5 @@ Base::Color CDxfRead::ObjectColor(ColorIndex_t index)
     return result;
 }
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
+
+template void CDxfRead::UnsupportedFeature<>(const char*);

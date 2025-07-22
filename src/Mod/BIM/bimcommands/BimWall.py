@@ -114,7 +114,7 @@ class Arch_Wall:
         self.tracker = DraftTrackers.boxTracker()
         FreeCADGui.Snapper.getPoint(callback=self.getPoint,
                                     extradlg=self.taskbox(),
-                                    title=translate("Arch","First point of wall")+":")
+                                    title=translate("Arch", "First point of wall"))
         FreeCADGui.draftToolBar.continueCmd.show()
 
     def getPoint(self,point=None,obj=None):
@@ -132,8 +132,6 @@ class Arch_Wall:
         """
 
         import Draft
-        import Part
-        import Arch
         import ArchWall
         from draftutils import gui_utils
         if obj:
@@ -154,40 +152,36 @@ class Arch_Wall:
                                         callback=self.getPoint,
                                         movecallback=self.update,
                                         extradlg=self.taskbox(),
-                                        title=translate("Arch","Next point")+":",mode="line")
+                                        title=translate("Arch", "Next point"),
+                                        mode="line")
 
         elif len(self.points) == 2:
             FreeCAD.activeDraftCommand = None
             FreeCADGui.Snapper.off()
             self.tracker.off()
-            l = Part.LineSegment(self.wp.get_local_coords(self.points[0]),
-                                 self.wp.get_local_coords(self.points[1]))
-            self.doc.openTransaction(translate("Arch","Create Wall"))
-            FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand('import Part')
-            FreeCADGui.doCommand('trace=Part.LineSegment(FreeCAD.'+str(l.StartPoint)+',FreeCAD.'+str(l.EndPoint)+')')
-            if not self.existing:
-                # no existing wall snapped, just add a default wall
-                self.addDefault()
-            else:
-                if self.JOIN_WALLS_SKETCHES:
-                    # join existing subwalls first if possible, then add the new one
-                    w = Arch.joinWalls(self.existing)
-                    if w:
-                        if ArchWall.areSameWallTypes([w,self]):
-                            FreeCADGui.doCommand('FreeCAD.ActiveDocument.'+w.Name+'.Base.addGeometry(trace)')
-                        else:
-                            # if not possible, add new wall as addition to the existing one
-                            self.addDefault()
-                            if self.AUTOJOIN:
-                                FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+self.doc.Objects[-1].Name+',FreeCAD.ActiveDocument.'+w.Name+')')
-                    else:
-                        self.addDefault()
-                else:
-                    # add new wall as addition to the first existing one
-                    self.addDefault()
-                    if self.AUTOJOIN:
-                        FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+self.doc.Objects[-1].Name+',FreeCAD.ActiveDocument.'+self.existing[0].Name+')')
+
+            self.doc.openTransaction(translate("Arch", "Create Wall"))
+
+            # Some code in gui_utils.autogroup requires a wall shape to determine
+            # the target group. We therefore need to create a wall first.
+            self.addDefault()
+            wall = self.doc.Objects[-1]
+            wallGrp = wall.getParentGroup()
+
+            if (self.JOIN_WALLS_SKETCHES or self.AUTOJOIN) \
+                    and self.existing \
+                    and self.existing[-1].getParentGroup() == wallGrp:
+                oldWall = self.existing[-1]
+                if self.JOIN_WALLS_SKETCHES and ArchWall.areSameWallTypes([wall, oldWall]):
+                    FreeCADGui.doCommand(
+                        "Arch.joinWalls([wall, doc." + oldWall.Name + "], "
+                        + "delete=True, deletebase=True)"
+                    )
+                elif self.AUTOJOIN:
+                    if wallGrp is not None:
+                        FreeCADGui.doCommand("wall.getParentGroup().removeObject(wall)")
+                    FreeCADGui.doCommand("Arch.addComponents(wall, doc." + oldWall.Name + ")")
+
             self.doc.commitTransaction()
             self.doc.recompute()
             # gui_utils.end_all_events()  # Causes a crash on Linux.
@@ -200,36 +194,48 @@ class Arch_Wall:
 
         Used solely by _CommandWall.getPoint() when the interactive mode has
         selected two points.
-
-        Relies on the assumption that FreeCADGui.doCommand() has already
-        created a Part.LineSegment assigned as the variable "trace"
         """
-
         from draftutils import params
+
+        sta = self.wp.get_local_coords(self.points[0])
+        end = self.wp.get_local_coords(self.points[1])
+
+        FreeCADGui.doCommand("import Part")
         FreeCADGui.addModule("Draft")
+        FreeCADGui.addModule("Arch")
         FreeCADGui.addModule("WorkingPlane")
+        FreeCADGui.doCommand("doc = FreeCAD.ActiveDocument")
         FreeCADGui.doCommand("wp = WorkingPlane.get_working_plane()")
+        FreeCADGui.doCommand(
+            "trace = Part.LineSegment(FreeCAD." + str(sta) + ", FreeCAD." + str(end) + ")"
+        )
         if params.get_param_arch("WallSketches"):
             # Use ArchSketch if SketchArch add-on is present
             try:
                 import ArchSketchObject
-                FreeCADGui.doCommand('import ArchSketchObject')
-                FreeCADGui.doCommand('base=ArchSketchObject.makeArchSketch()')
+                FreeCADGui.doCommand("import ArchSketchObject")
+                FreeCADGui.doCommand("base = ArchSketchObject.makeArchSketch()")
             except:
-                FreeCADGui.doCommand('base=FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject","WallTrace")')
-            FreeCADGui.doCommand('base.Placement = wp.get_placement()')
-            FreeCADGui.doCommand('base.addGeometry(trace)')
+                FreeCADGui.doCommand(
+                    "base = doc.addObject(\"Sketcher::SketchObject\", \"WallTrace\")"
+                )
+            FreeCADGui.doCommand("base.Placement = wp.get_placement()")
+            FreeCADGui.doCommand("base.addGeometry(trace)")
         else:
-            FreeCADGui.doCommand('base=Draft.make_line(trace)')
+            FreeCADGui.doCommand("base = Draft.make_line(trace)")
             # The created line should not stay selected as this causes an issue in continue mode.
             # Two walls would then be created based on the same line.
             FreeCADGui.Selection.clearSelection()
-            FreeCADGui.doCommand('base.Placement = wp.get_placement()')
-            FreeCADGui.doCommand('FreeCAD.ActiveDocument.recompute()')
-        FreeCADGui.doCommand('wall = Arch.makeWall(base,width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
-        FreeCADGui.doCommand('wall.Normal = wp.axis')
+            FreeCADGui.doCommand("base.Placement = wp.get_placement()")
+            FreeCADGui.doCommand("doc.recompute()")
+        FreeCADGui.doCommand(
+            "wall = Arch.makeWall(base, width=" + str(self.Width)
+            + ", height=" + str(self.Height) + ", align=\"" + str(self.Align) + "\")"
+        )
+        FreeCADGui.doCommand("wall.Normal = wp.axis")
         if self.MultiMat:
-            FreeCADGui.doCommand("wall.Material = FreeCAD.ActiveDocument."+self.MultiMat.Name)
+            FreeCADGui.doCommand("wall.Material = doc." + self.MultiMat.Name)
+        FreeCADGui.doCommand("doc.recompute()")  # required as some autogroup code requires the wall shape
         FreeCADGui.doCommand("Draft.autogroup(wall)")
 
     def update(self,point,info):
@@ -430,11 +436,11 @@ class Arch_Wall:
         self.Offset = d
         params.set_param_arch("WallOffset", d)
 
-    def setUseSketch(self,i):
+    def setUseSketch(self, i):
         """Simple callback to set if walls should based on sketches."""
 
         from draftutils import params
-        params.set_param_arch("WallSketches",bool(i))
+        params.set_param_arch("WallSketches",bool(getattr(i, "value", i)))
 
     def createFromGUI(self):
         """Callback to create wall by using the _CommandWall.taskbox()"""

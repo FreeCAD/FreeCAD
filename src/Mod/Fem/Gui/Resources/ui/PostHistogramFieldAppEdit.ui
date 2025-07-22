@@ -31,7 +31,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Field:</string>
+        <string>Field</string>
        </property>
       </widget>
      </item>
@@ -58,14 +58,14 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Frames:</string>
+        <string>Frames</string>
        </property>
       </widget>
      </item>
      <item row="2" column="1">
       <widget class="QCheckBox" name="Extract">
        <property name="text">
-        <string>One field for each frames</string>
+        <string>One field for each frame</string>
        </property>
       </widget>
      </item>

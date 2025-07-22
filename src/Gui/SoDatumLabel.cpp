@@ -1303,35 +1303,18 @@ void SoDatumLabel::drawDistance(const SbVec3f* points)
     // Draw arc helpers if needed
     float range1 = this->param4.getValue();
     if (range1 != 0.0) {
-        float startangle1 = this->param3.getValue();
+        float startAngle1 = this->param3.getValue();
         float radius1 = this->param5.getValue();
-        SbVec3f center = points[2];
-        int countSegments = std::max(6, abs(int(50.0 * range1 / (2 * std::numbers::pi))));
-        double segment = range1 / (countSegments - 1);
-
-        glBegin(GL_LINE_STRIP);
-        for (int i = 0; i < countSegments; i++) {
-            double theta = startangle1 + segment * i;
-            SbVec3f v1 = center + SbVec3f(radius1 * cos(theta), radius1 * sin(theta), 0);
-            glVertex2f(v1[0], v1[1]);
-        }
-        glEnd();
+        SbVec3f center1 = points[2];
+        glDrawArc(center1, radius1, startAngle1, startAngle1 + range1);
     }
+
     float range2 = this->param7.getValue();
     if (range2 != 0.0) {
-        float startangle2 = this->param6.getValue();
+        float startAngle2 = this->param6.getValue();
         float radius2 = this->param8.getValue();
-        SbVec3f center = points[3];
-        int countSegments = std::max(6, abs(int(50.0 * range2 / (2 * std::numbers::pi))));
-        double segment = range2 / (countSegments - 1);
-
-        glBegin(GL_LINE_STRIP);
-        for (int i = 0; i < countSegments; i++) {
-            double theta = startangle2 + segment * i;
-            SbVec3f v1 = center + SbVec3f(radius2 * cos(theta), radius2 * sin(theta), 0);
-            glVertex2f(v1[0], v1[1]);
-        }
-        glEnd();
+        SbVec3f center2 = points[3];
+        glDrawArc(center2, radius2, startAngle2, startAngle2 + range2);
     }
 }
 
@@ -1343,7 +1326,7 @@ void SoDatumLabel::drawRadiusOrDiameter(const SbVec3f* points, float& angle, SbV
 
     SbVec3f dir = (p2-p1);
     SbVec3f center = p1;
-    double radius = (p2 - p1).length();
+    float radius = (p2 - p1).length();
     if (this->datumtype.getValue() == DIAMETER) {
         center = (p1 + p2) / 2;
         radius = radius / 2;
@@ -1412,20 +1395,17 @@ void SoDatumLabel::drawRadiusOrDiameter(const SbVec3f* points, float& angle, SbV
         glEnd();
     }
 
-    // Draw arc helper if needed
-    float startangle = this->param3.getValue();
-    float range = this->param4.getValue();
-    if (range != 0.0) {
-        int countSegments = std::max(6, abs(int(50.0 * range / (2 * std::numbers::pi))));
-        double segment = range / (countSegments - 1);
+    // Draw arc helpers if needed
+    float startHelperRange = this->param4.getValue();
+    if (startHelperRange != 0.0) {
+        float startHelperAngle = this->param3.getValue();
+        glDrawArc(center, radius, startHelperAngle, startHelperAngle + startHelperRange);
+    }
 
-        glBegin(GL_LINE_STRIP);
-        for (int i = 0; i < countSegments; i++) {
-            double theta = startangle + segment * i;
-            SbVec3f v1 = center + SbVec3f(radius * cos(theta), radius * sin(theta), 0);
-            glVertex2f(v1[0], v1[1]);
-        }
-        glEnd();
+    float endHelperRange = this->param6.getValue();
+    if (endHelperRange != 0.0) {
+        float endHelperAngle = this->param5.getValue();
+        glDrawArc(center, radius, endHelperAngle, endHelperAngle + endHelperRange);
     }
 }
 

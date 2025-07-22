@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Blending curve</string>
+   <string>Blend Curve</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Start edge</string>
+      <string>Start Edge</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
@@ -110,7 +110,7 @@
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>End edge</string>
+      <string>End Edge</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">

@@ -66,6 +66,7 @@ class _Axis:
     def __init__(self,obj):
 
         obj.Proxy = self
+        self.Type = "Axis"
         self.setProperties(obj)
 
     def setProperties(self,obj):
@@ -89,7 +90,6 @@ class _Axis:
         if not "Limit" in pl:
             obj.addProperty("App::PropertyLength","Limit","Axis", QT_TRANSLATE_NOOP("App::Property","If not zero, the axes are not represented as one full line but as two lines of the given length"), locked=True)
             obj.Limit=0
-        self.Type = "Axis"
 
     def onDocumentRestored(self,obj):
 
@@ -139,7 +139,7 @@ class _Axis:
 
     def loads(self,state):
 
-        return None
+        self.Type = "Axis"
 
     def getPoints(self,obj):
 

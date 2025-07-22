@@ -999,7 +999,7 @@ PyMOD_INIT_FUNC(ReverseEngineering)
     }
 
     PyObject* mod = Reen::initModule();
-    Base::Console().log("Loading ReverseEngineering module... done\n");
+    Base::Console().log("Loading Reverse Engineering module… done\n");
     PyMOD_Return(mod);
 }
 // clang-format on

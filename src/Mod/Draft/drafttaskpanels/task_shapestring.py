@@ -86,7 +86,7 @@ class ShapeStringTaskPanel:
         self.form.sbX.valueChanged.connect(self.set_point_x)
         self.form.sbY.valueChanged.connect(self.set_point_y)
         self.form.sbZ.valueChanged.connect(self.set_point_z)
-        if hasattr(self.form.cbGlobalMode.checkbox_fuse, "checkStateChanged"): # Qt version >= 6.7.0
+        if hasattr(self.form.cbGlobalMode, "checkStateChanged"): # Qt version >= 6.7.0
             self.form.cbGlobalMode.checkStateChanged.connect(self.set_global_mode)
         else: # Qt version < 6.7.0
             self.form.cbGlobalMode.stateChanged.connect(self.set_global_mode)
@@ -160,7 +160,7 @@ class ShapeStringTaskPanel:
         params.set_param("ShapeStringFontFile", self.font_file)
 
     def set_global_mode(self, val):
-        self.global_mode = bool(val)
+        self.global_mode = bool(getattr(val, "value", val))
         params.set_param("GlobalMode", self.global_mode)
         self.change_coord_labels()
         self.display_point(self.point)

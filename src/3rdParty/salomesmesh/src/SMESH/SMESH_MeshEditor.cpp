@@ -11348,7 +11348,11 @@ bool SMESH_MeshEditor::DoubleNodesOnGroupBoundaries( const std::vector<TIDSorted
             {
               int oldId = *itn;
               //MESSAGE("     node " << oldId);
+#if VTK_VERSION_NUMBER_QUICK >= 90300000000
+              vtkCellLinks::Link l = static_cast<vtkCellLinks*>(grid->GetLinks())->GetLink(oldId);
+#else
               vtkCellLinks::Link l = static_cast<vtkCellLinks*>(grid->GetCellLinks())->GetLink(oldId);
+#endif
               for (int i=0; i<l.ncells; i++)
                 {
                   int vtkId = l.cells[i];
@@ -11708,7 +11712,11 @@ bool SMESH_MeshEditor::DoubleNodesOnGroupBoundaries( const std::vector<TIDSorted
         {
           int oldId = itnod->first;
           //MESSAGE("     node " << oldId);
+#if VTK_VERSION_NUMBER_QUICK >= 90300000000
+          vtkCellLinks::Link l = static_cast<vtkCellLinks*>(grid->GetLinks())->GetLink(oldId);
+#else
           vtkCellLinks::Link l = static_cast<vtkCellLinks*>(grid->GetCellLinks())->GetLink(oldId);
+#endif
           for (int i = 0; i < l.ncells; i++)
             {
               int vtkId = l.cells[i];

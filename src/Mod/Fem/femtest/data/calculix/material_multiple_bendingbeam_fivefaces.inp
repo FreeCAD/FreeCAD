@@ -2542,11 +2542,11 @@ Efaces
 
 ***********************************************************
 ** Sections
-*SHELL SECTION, ELSET=FemMaterial1ShellThickness, MATERIAL=FemMaterial1
+*SHELL SECTION, ELSET=FemMaterial1ShellThickness, MATERIAL=FemMaterial1, OFFSET=0
 10
-*SHELL SECTION, ELSET=FemMaterial2ShellThickness, MATERIAL=FemMaterial2
+*SHELL SECTION, ELSET=FemMaterial2ShellThickness, MATERIAL=FemMaterial2, OFFSET=0
 10
-*SHELL SECTION, ELSET=FemMaterial3ShellThickness, MATERIAL=FemMaterial3
+*SHELL SECTION, ELSET=FemMaterial3ShellThickness, MATERIAL=FemMaterial3, OFFSET=0
 10
 
 ***********************************************************

@@ -33,6 +33,7 @@
 #include "PropertyContainer.h"
 #include "PropertyLinks.h"
 #include "PropertyStandard.h"
+#include "ExportInfo.h"
 
 #include <map>
 #include <vector>
@@ -246,6 +247,8 @@ public:
         Exporting,
     };
     ExportStatus isExporting(const DocumentObject* obj) const;
+    ExportInfo exportInfo() const;
+    void setExportInfo(const ExportInfo& info);
     void exportObjects(const std::vector<DocumentObject*>&, std::ostream&);
     void exportGraphviz(std::ostream&) const;
     std::vector<DocumentObject*> importObjects(Base::XMLReader& reader);
@@ -518,6 +521,7 @@ public:
     bool isPerformingTransaction() const;
     /// \internal add or remove property from a transactional object
     void addOrRemovePropertyOfObject(TransactionalObject*, const Property* prop, bool add);
+    void renamePropertyOfObject(TransactionalObject*, const Property* prop, const char* newName);
     //@}
 
     /** @name dependency stuff */
@@ -698,6 +702,10 @@ protected:
     void _commitTransaction(bool notify = false);
     /// Internally called by Application to abort the running transaction.
     void _abortTransaction();
+
+private:
+    void changePropertyOfObject(TransactionalObject* obj, const Property* prop,
+                                const std::function<void()>& changeFunc);
 
 private:
     // # Data Member of the document

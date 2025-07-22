@@ -138,7 +138,7 @@ DlgEvaluateMeshImp::DlgEvaluateMeshImp(QWidget* parent, Qt::WindowFlags fl)
     d->showFoldsFunction(d->enableFoldsCheck);
 
     QPushButton* button = d->ui.buttonBox->button(QDialogButtonBox::Open);
-    button->setText(tr("Settings..."));
+    button->setText(tr("Settings…"));
 
     // try to attach to the active document
     this->onRefreshButtonClicked();

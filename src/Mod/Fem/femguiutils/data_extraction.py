@@ -105,7 +105,7 @@ class DataExtraction(_BasePostTaskPanel):
     def showSummary(self):
 
         dialog = QtGui.QDialog(self.widget)
-        dialog.setWindowTitle(f"Data summary of {self.Object.Label}")
+        dialog.setWindowTitle(f"Data Summary of {self.Object.Label}")
         widget = vtk_table_view.VtkTableView(self.summary_model)
         layout = QtGui.QVBoxLayout()
         layout.addWidget(widget)

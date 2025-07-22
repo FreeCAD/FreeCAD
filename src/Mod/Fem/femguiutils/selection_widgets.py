@@ -292,7 +292,7 @@ class GeometryElementsSelection(QtGui.QWidget):
     def initUI(self):
         # ArchPanel is coded without ui-file too
         # title
-        self.setWindowTitle(self.tr("Geometry reference selector"))
+        self.setWindowTitle(self.tr("Geometry Reference Selector"))
         # button
         self.pushButton_Add = QtGui.QPushButton(self.tr("Add"))
         self.pushButton_Remove = QtGui.QPushButton(self.tr("Remove"))
@@ -433,8 +433,8 @@ class GeometryElementsSelection(QtGui.QWidget):
 
     def references_list_right_clicked(self, QPos):
         self.contextMenu = QtGui.QMenu()
-        menu_item_remove_selected = self.contextMenu.addAction("Remove selected geometry")
-        menu_item_remove_all = self.contextMenu.addAction("Clear list")
+        menu_item_remove_selected = self.contextMenu.addAction("Remove Selected Geometry")
+        menu_item_remove_all = self.contextMenu.addAction("Clear List")
         if not self.references:
             menu_item_remove_selected.setDisabled(True)
             menu_item_remove_all.setDisabled(True)

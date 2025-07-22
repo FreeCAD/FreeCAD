@@ -69,8 +69,10 @@
 #include <list>
 #include <map>
 #include <numbers>
+#include <optional>
 #include <queue>
 #include <random>
+#include <ranges>
 #include <set>
 #include <sstream>
 #include <stack>
@@ -86,9 +88,6 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/bind/bind.hpp>
 #include <boost/core/ignore_unused.hpp>
-#include <boost/filesystem/exception.hpp>
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <boost/math/constants/constants.hpp>
 #include <boost/program_options.hpp>

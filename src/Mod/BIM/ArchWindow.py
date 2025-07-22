@@ -98,6 +98,7 @@ class _Window(ArchComponent.Component):
     def __init__(self,obj):
 
         ArchComponent.Component.__init__(self,obj)
+        self.Type = "Window"
         self.setProperties(obj)
         obj.IfcType = "Window"
         obj.MoveWithHost = True
@@ -178,7 +179,6 @@ class _Window(ArchComponent.Component):
         obj.setEditorMode("VerticalArea",2)
         obj.setEditorMode("HorizontalArea",2)
         obj.setEditorMode("PerimeterLength",2)
-        self.Type = "Window"
 
     def onDocumentRestored(self,obj):
 
@@ -194,6 +194,10 @@ class _Window(ArchComponent.Component):
         self.atthOff = None
         if hasattr(obj, 'AttachmentOffsetXyzAndRotation'):
             self.atthOff = obj.AttachmentOffsetXyzAndRotation.Base
+
+    def loads(self,state):
+
+        self.Type = "Window"
 
     def onBeforeChange(self,obj,prop):
 
@@ -635,6 +639,19 @@ class _Window(ArchComponent.Component):
                         widths = host.OverrideWidth
                     elif host.Width:
                         widths = [host.Width.Value]
+
+                    # TODO Below codes copied and adopted from ArchWall.py.
+                    #      Consider adding a variable to store the layer's
+                    #      thickness as deduced, so the figure there could be
+                    #      used directly without re-calculated here below.
+                    if hasattr(host,"Material"):
+                        if host.Material:
+                            if hasattr(host.Material,"Materials"):
+                                thicknesses = [abs(t) for t in host.Material.Thicknesses]
+                                totalThk = sum(thicknesses)
+                                # Append totalThk to widths, find max below
+                                widths.append(totalThk)
+
                 if widths:
                     width = max(widths)
                     # +100mm to ensure subtract is through at the moment

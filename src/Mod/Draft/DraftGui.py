@@ -427,57 +427,55 @@ class DraftToolBar:
                                        QtWidgets.QSizePolicy.Expanding)
         self.layout.addItem(spacerItem)
 
-        QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("valueChanged(double)"),self.changeXValue)
-        QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("valueChanged(double)"),self.changeYValue)
-        QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("valueChanged(double)"),self.changeZValue)
-        QtCore.QObject.connect(self.lengthValue,QtCore.SIGNAL("valueChanged(double)"),self.changeLengthValue)
-        QtCore.QObject.connect(self.angleValue,QtCore.SIGNAL("valueChanged(double)"),self.changeAngleValue)
+        self.xValue.valueChanged.connect(self.changeXValue)
+        self.yValue.valueChanged.connect(self.changeYValue)
+        self.zValue.valueChanged.connect(self.changeZValue)
+        self.lengthValue.valueChanged.connect(self.changeLengthValue)
+        self.angleValue.valueChanged.connect(self.changeAngleValue)
         if hasattr(self.angleLock, "checkStateChanged"): # Qt version >= 6.7.0
-            QtCore.QObject.connect(self.angleLock,QtCore.SIGNAL("checkStateChanged(int)"),self.toggleAngle)
+            self.angleLock.checkStateChanged.connect(self.toggleAngle)
         else: # Qt version < 6.7.0
-            QtCore.QObject.connect(self.angleLock,QtCore.SIGNAL("stateChanged(int)"),self.toggleAngle)
-        QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("valueChanged(double)"),self.changeRadiusValue)
-        QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("returnPressed()"),self.checkx)
-        QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("returnPressed()"),self.checky)
-        QtCore.QObject.connect(self.lengthValue,QtCore.SIGNAL("returnPressed()"),self.checklength)
-        QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
-        QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
-        QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
-        QtCore.QObject.connect(self.lengthValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
-        QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
-        QtCore.QObject.connect(self.angleValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
-        QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("returnPressed()"),self.validatePoint)
-        QtCore.QObject.connect(self.pointButton,QtCore.SIGNAL("clicked()"),self.validatePoint)
-        QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("returnPressed()"),self.validatePoint)
-        QtCore.QObject.connect(self.angleValue,QtCore.SIGNAL("returnPressed()"),self.validatePoint)
-        QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("textChanged()"),self.checkEnterText)
-        QtCore.QObject.connect(self.textOkButton,QtCore.SIGNAL("clicked()"),self.sendText)
-        QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("returnPressed()"),self.setFocus)
+            self.angleLock.stateChanged.connect(self.toggleAngle)
+        self.radiusValue.valueChanged.connect(self.changeRadiusValue)
+        self.xValue.returnPressed.connect(self.checkx)
+        self.yValue.returnPressed.connect(self.checky)
+        self.lengthValue.returnPressed.connect(self.checklength)
+        self.xValue.textEdited.connect(self.checkSpecialChars)
+        self.yValue.textEdited.connect(self.checkSpecialChars)
+        self.zValue.textEdited.connect(self.checkSpecialChars)
+        self.lengthValue.textEdited.connect(self.checkSpecialChars)
+        self.radiusValue.textEdited.connect(self.checkSpecialChars)
+        self.angleValue.textEdited.connect(self.checkSpecialChars)
+        self.zValue.returnPressed.connect(self.validatePoint)
+        self.pointButton.clicked.connect(self.validatePoint)
+        self.radiusValue.returnPressed.connect(self.validatePoint)
+        self.angleValue.returnPressed.connect(self.validatePoint)
+        self.textValue.textChanged.connect(self.checkEnterText)
+        self.textOkButton.clicked.connect(self.sendText)
+        self.zValue.returnPressed.connect(self.setFocus)
 
-        QtCore.QObject.connect(self.finishButton,QtCore.SIGNAL("pressed()"),self.finish)
-        QtCore.QObject.connect(self.closeButton,QtCore.SIGNAL("pressed()"),self.closeLine)
-        QtCore.QObject.connect(self.wipeButton,QtCore.SIGNAL("pressed()"),self.wipeLine)
-        QtCore.QObject.connect(self.orientWPButton,QtCore.SIGNAL("pressed()"),self.orientWP)
-        QtCore.QObject.connect(self.undoButton,QtCore.SIGNAL("pressed()"),self.undoSegment)
-        QtCore.QObject.connect(self.selectButton,QtCore.SIGNAL("pressed()"),self.selectEdge)
+        self.finishButton.clicked.connect(self.finish)
+        self.closeButton.clicked.connect(self.closeLine)
+        self.wipeButton.clicked.connect(self.wipeLine)
+        self.orientWPButton.clicked.connect(self.orientWP)
+        self.undoButton.clicked.connect(self.undoSegment)
+        self.selectButton.clicked.connect(self.selectEdge)
         if hasattr(self.continueCmd, "checkStateChanged"): # Qt version >= 6.7.0
-            QtCore.QObject.connect(self.continueCmd,QtCore.SIGNAL("checkStateChanged(int)"),self.setContinue)
-            QtCore.QObject.connect(self.chainedModeCmd,QtCore.SIGNAL("checkStateChanged(int)"),self.setChainedMode)
-            QtCore.QObject.connect(self.isCopy,QtCore.SIGNAL("checkStateChanged(int)"),self.setCopymode)
-            QtCore.QObject.connect(self.isSubelementMode, QtCore.SIGNAL("checkStateChanged(int)"), self.setSubelementMode)
-            QtCore.QObject.connect(self.isRelative,QtCore.SIGNAL("checkStateChanged(int)"),self.setRelative)
-            QtCore.QObject.connect(self.isGlobal,QtCore.SIGNAL("checkStateChanged(int)"),self.setGlobal)
-            QtCore.QObject.connect(self.makeFace,QtCore.SIGNAL("checkStateChanged(int)"),self.setMakeFace)
+            self.continueCmd.checkStateChanged.connect(self.setContinue)
+            self.chainedModeCmd.checkStateChanged.connect(self.setChainedMode)
+            self.isCopy.checkStateChanged.connect(self.setCopymode)
+            self.isSubelementMode.checkStateChanged.connect(self.setSubelementMode)
+            self.isRelative.checkStateChanged.connect(self.setRelative)
+            self.isGlobal.checkStateChanged.connect(self.setGlobal)
+            self.makeFace.checkStateChanged.connect(self.setMakeFace)
         else: # Qt version < 6.7.0
-            QtCore.QObject.connect(self.continueCmd,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
-            QtCore.QObject.connect(self.chainedModeCmd,QtCore.SIGNAL("stateChanged(int)"),self.setChainedMode)
-            QtCore.QObject.connect(self.isCopy,QtCore.SIGNAL("stateChanged(int)"),self.setCopymode)
-            QtCore.QObject.connect(self.isSubelementMode, QtCore.SIGNAL("stateChanged(int)"), self.setSubelementMode)
-            QtCore.QObject.connect(self.isRelative,QtCore.SIGNAL("stateChanged(int)"),self.setRelative)
-            QtCore.QObject.connect(self.isGlobal,QtCore.SIGNAL("stateChanged(int)"),self.setGlobal)
-            QtCore.QObject.connect(self.makeFace,QtCore.SIGNAL("stateChanged(int)"),self.setMakeFace)
-        QtCore.QObject.connect(self.baseWidget,QtCore.SIGNAL("resized()"),self.relocate)
-        QtCore.QObject.connect(self.baseWidget,QtCore.SIGNAL("retranslate()"),self.retranslateUi)
+            self.continueCmd.stateChanged.connect(self.setContinue)
+            self.chainedModeCmd.stateChanged.connect(self.setChainedMode)
+            self.isCopy.stateChanged.connect(self.setCopymode)
+            self.isSubelementMode.stateChanged.connect(self.setSubelementMode)
+            self.isRelative.stateChanged.connect(self.setRelative)
+            self.isGlobal.stateChanged.connect(self.setGlobal)
+            self.makeFace.stateChanged.connect(self.setMakeFace)
 
     def setupTray(self):
         """sets draft tray buttons up"""
@@ -500,10 +498,10 @@ class DraftToolBar:
         self.autoGroupButton.setText(translate("draft", "None"))
         self.autoGroupButton.setFlat(True)
 
-        QtCore.QObject.connect(self.wplabel,QtCore.SIGNAL("pressed()"),self.selectplane)
-        QtCore.QObject.connect(self.styleButton,QtCore.SIGNAL("pressed()"),self.setstyle)
-        QtCore.QObject.connect(self.constrButton,QtCore.SIGNAL("toggled(bool)"),self.toggleConstrMode)
-        QtCore.QObject.connect(self.autoGroupButton,QtCore.SIGNAL("pressed()"),self.runAutoGroup)
+        self.wplabel.clicked.connect(self.selectplane)
+        self.styleButton.clicked.connect(self.setstyle)
+        self.constrButton.toggled.connect(self.toggleConstrMode)
+        self.autoGroupButton.clicked.connect(self.runAutoGroup)
 
         QtCore.QTimer.singleShot(2000,self.retranslateTray) # delay so translations get a chance to load
 
@@ -784,7 +782,7 @@ class DraftToolBar:
             combo.addItem(translate("Draft", s), userData=s)
         combo.setCurrentIndex(types.index(params.get_param("labeltype")))
         l.addWidget(combo)
-        QtCore.QObject.connect(combo,QtCore.SIGNAL("currentIndexChanged(int)"),callback)
+        combo.currentIndexChanged.connect(callback)
         self.pointUi(title=title, extra=w, icon="Draft_Label")
 
     def extraUi(self):
@@ -921,13 +919,6 @@ class DraftToolBar:
                 self.radiusValue.setFocus()
                 self.radiusValue.selectAll()
 
-    def relocate(self):
-        """relocates the right-aligned buttons depending on the toolbar size"""
-        if self.baseWidget.geometry().width() < 400:
-            self.layout.setDirection(QtWidgets.QBoxLayout.TopToBottom)
-        else:
-            self.layout.setDirection(QtWidgets.QBoxLayout.LeftToRight)
-
     def makeDumbTask(self, extra=None, on_close_call=None):
         """create a dumb taskdialog to prevent deleting the temp object"""
         class TaskPanel:
@@ -951,15 +942,15 @@ class DraftToolBar:
 #---------------------------------------------------------------------------
 
     def setContinue(self, val):
-        params.set_param(FreeCAD.activeDraftCommand.featureName, bool(val), "Mod/Draft/ContinueMode")
-        self.continueMode = bool(val)
-        self.chainedModeCmd.setEnabled(not val)
+        params.set_param(FreeCAD.activeDraftCommand.featureName, bool(getattr(val, "value", val)), "Mod/Draft/ContinueMode")
+        self.continueMode = bool(getattr(val, "value", val))
+        self.chainedModeCmd.setEnabled(not bool(getattr(val, "value", val)))
 
     def setChainedMode(self, val):
-        params.set_param("ChainedMode", bool(val))
-        self.chainedMode = bool(val)
-        self.continueCmd.setEnabled(not val)
-        if val == False:
+        params.set_param("ChainedMode", bool(getattr(val, "value", val)))
+        self.chainedMode = bool(getattr(val, "value", val))
+        self.continueCmd.setEnabled(not bool(getattr(val, "value", val)))
+        if bool(getattr(val, "value", val)) == False:
             # If user has deselected the checkbox, reactive the command
             # which will result in closing it
             FreeCAD.activeDraftCommand.Activated()
@@ -971,15 +962,12 @@ class DraftToolBar:
     #     gui_rectangles.py
     #     gui_stretch.py
     def setRelative(self, val=-1):
+        val = getattr(val, "value", val)
         if val < 0:
             if hasattr(self.isRelative, "checkStateChanged"): # Qt version >= 6.7.0
-                QtCore.QObject.disconnect(self.isRelative,
-                                      QtCore.SIGNAL("checkStateChanged(int)"),
-                                      self.setRelative)
+                self.isRelative.checkStateChanged.disconnect(self.setRelative)
             else: # Qt version < 6.7.0
-                QtCore.QObject.disconnect(self.isRelative,
-                                      QtCore.SIGNAL("stateChanged(int)"),
-                                      self.setRelative)
+                self.isRelative.stateChanged.disconnect(self.setRelative)
             if val == -1:
                 self.isRelative.setChecked(True)
                 self.relativeMode = True
@@ -988,13 +976,9 @@ class DraftToolBar:
                 self.isRelative.setChecked(val)
                 self.relativeMode = val
             if hasattr(self.isRelative, "checkStateChanged"): # Qt version >= 6.7.0
-                QtCore.QObject.disconnect(self.isRelative,
-                                      QtCore.SIGNAL("checkStateChanged(int)"),
-                                      self.setRelative)
+                self.isRelative.checkStateChanged.connect(self.setRelative)
             else: # Qt version < 6.7.0
-                QtCore.QObject.disconnect(self.isRelative,
-                                      QtCore.SIGNAL("stateChanged(int)"),
-                                      self.setRelative)
+                self.isRelative.stateChanged.connect(self.setRelative)
         else:
             params.set_param("RelativeMode", bool(val))
             self.relativeMode = bool(val)
@@ -1003,28 +987,28 @@ class DraftToolBar:
         self.updateSnapper()
 
     def setGlobal(self, val):
-        params.set_param("GlobalMode", bool(val))
-        self.globalMode = bool(val)
+        params.set_param("GlobalMode", bool(getattr(val, "value", val)))
+        self.globalMode = bool(getattr(val, "value", val))
         self.checkLocal()
         self.displayPoint(self.new_point, self.get_last_point())
         self.updateSnapper()
 
     def setMakeFace(self, val):
-        params.set_param("MakeFaceMode", bool(val))
-        self.makeFaceMode = bool(val)
+        params.set_param("MakeFaceMode", bool(getattr(val, "value", val)))
+        self.makeFaceMode = bool(getattr(val, "value", val))
 
     def setCopymode(self, val):
         # special value for offset command
         if self.sourceCmd and self.sourceCmd.featureName == "Offset":
-            params.set_param("OffsetCopyMode", bool(val))
+            params.set_param("OffsetCopyMode", bool(getattr(val, "value", val)))
         else:
-            params.set_param("CopyMode", bool(val))
+            params.set_param("CopyMode", bool(getattr(val, "value", val)))
             # if CopyMode is changed ghosts must be updated.
             # Moveable children should not be included if CopyMode is True.
             self.sourceCmd.set_ghosts()
 
     def setSubelementMode(self, val):
-        params.set_param("SubelementMode", bool(val))
+        params.set_param("SubelementMode", bool(getattr(val, "value", val)))
         self.sourceCmd.set_ghosts()
 
     def checkx(self):
@@ -1456,7 +1440,7 @@ class DraftToolBar:
         if not pos:
             pos = FreeCADGui.getMainWindow().cursor().pos()
         self.groupmenu.popup(pos)
-        QtCore.QObject.connect(self.groupmenu,QtCore.SIGNAL("triggered(QAction *)"),self.popupTriggered)
+        self.groupmenu.triggered.connect(self.popupTriggered)
 
     def getIcon(self,iconpath):
         return QtGui.QIcon(iconpath)
@@ -1540,7 +1524,7 @@ class DraftToolBar:
             return
         if not self.xValue.hasFocus():
             return
-        self.x = d
+        self.x = d.Value
         self.update_spherical_coords()
         self.updateSnapper()
 
@@ -1549,7 +1533,7 @@ class DraftToolBar:
             return
         if not self.yValue.hasFocus():
             return
-        self.y = d
+        self.y = d.Value
         self.update_spherical_coords()
         self.updateSnapper()
 
@@ -1558,7 +1542,7 @@ class DraftToolBar:
             return
         if not self.zValue.hasFocus():
             return
-        self.z = d
+        self.z = d.Value
         self.update_spherical_coords()
         self.updateSnapper()
 
@@ -1567,14 +1551,14 @@ class DraftToolBar:
             return
         if not self.radiusValue.hasFocus():
             return
-        self.radius = d
+        self.radius = d.Value
 
     def changeLengthValue(self, d):
         if self.display_point_active:
             return
         if not self.lengthValue.hasFocus():
             return
-        self.lvalue = d
+        self.lvalue = d.Value
         self.update_cartesian_coords()
         self.updateSnapper()
 
@@ -1583,7 +1567,7 @@ class DraftToolBar:
             return
         if not self.angleValue.hasFocus():
             return
-        self.avalue = d
+        self.avalue = d.Value
         self.update_cartesian_coords()
         self.updateSnapper()
         if self.angleLock.isChecked():
@@ -1746,8 +1730,8 @@ class FacebinderTaskPanel:
         self.delButton.setIcon(QtGui.QIcon(":/icons/Arch_Remove.svg"))
         self.grid.addWidget(self.delButton, 3, 1, 1, 1)
 
-        QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
-        QtCore.QObject.connect(self.delButton, QtCore.SIGNAL("clicked()"), self.removeElement)
+        self.addButton.clicked.connect(self.addElement)
+        self.delButton.clicked.connect(self.removeElement)
         self.update()
 
     def isAllowedAlterSelection(self):

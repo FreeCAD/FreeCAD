@@ -25,7 +25,7 @@
      <item>
       <widget class="QPushButton" name="buttonInitFace">
        <property name="text">
-        <string>Support surface</string>
+        <string>Support Surface</string>
        </property>
       </widget>
      </item>
@@ -41,10 +41,10 @@
    <item row="2" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="toolTip">
-      <string>Add the edges that will limit the surface.</string>
+      <string>Edges that will limit the surface</string>
      </property>
      <property name="title">
-      <string>Boundary edges</string>
+      <string>Boundary Edges</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0" colspan="3">
@@ -108,7 +108,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Drag the items to reorder the list.</string>
+         <string>Drag the items to reorder the list</string>
         </property>
        </widget>
       </item>
@@ -128,7 +128,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Faces:</string>
+         <string>Faces</string>
         </property>
        </widget>
       </item>
@@ -148,7 +148,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Continuity:</string>
+         <string>Continuity</string>
         </property>
        </widget>
       </item>

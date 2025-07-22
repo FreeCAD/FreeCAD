@@ -23,7 +23,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_7">
         <property name="text">
-         <string>x</string>
+         <string>X</string>
         </property>
        </widget>
       </item>
@@ -40,7 +40,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="label_8">
         <property name="text">
-         <string>y</string>
+         <string>Y</string>
         </property>
        </widget>
       </item>
@@ -57,7 +57,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="label_9">
         <property name="text">
-         <string>z</string>
+         <string>Z</string>
         </property>
        </widget>
       </item>
@@ -83,7 +83,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>x</string>
+         <string>X</string>
         </property>
        </widget>
       </item>
@@ -100,7 +100,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>y</string>
+         <string>Y</string>
         </property>
        </widget>
       </item>
@@ -117,7 +117,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>z</string>
+         <string>Z</string>
         </property>
        </widget>
       </item>

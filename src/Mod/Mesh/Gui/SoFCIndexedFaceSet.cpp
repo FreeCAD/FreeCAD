@@ -775,7 +775,7 @@ void SoFCIndexedFaceSet::generateGLArrays(SoGLRenderAction* action)
             if (numcolors != static_cast<int>(numTria)) {
                 SoDebugError::postWarning(
                     "SoFCIndexedFaceSet::generateGLArrays",
-                    "The number of faces (%d) doesn't match with the number of colors (%d).",
+                    "The number of faces (%d) does not match with the number of colors (%d).",
                     numTria,
                     numcolors);
             }
@@ -817,7 +817,7 @@ void SoFCIndexedFaceSet::generateGLArrays(SoGLRenderAction* action)
             if (numcolors != coords->getNum()) {
                 SoDebugError::postWarning(
                     "SoFCIndexedFaceSet::generateGLArrays",
-                    "The number of points (%d) doesn't match with the number of colors (%d).",
+                    "The number of points (%d) does not match with the number of colors (%d).",
                     coords->getNum(),
                     numcolors);
             }

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string notr="true">Glyph settings</string>
+   <string notr="true">Glyph Settings</string>
   </property>
   <property name="layoutDirection">
    <enum>Qt::LeftToRight</enum>
@@ -132,7 +132,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Y Axis</string>
+         <string>Y-axis</string>
         </property>
        </widget>
       </item>
@@ -145,7 +145,7 @@
          <string>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</string>
         </property>
         <property name="text">
-         <string>X Axis</string>
+         <string>X-axis</string>
         </property>
        </widget>
       </item>

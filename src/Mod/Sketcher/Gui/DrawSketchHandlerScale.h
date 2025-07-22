@@ -110,6 +110,7 @@ public:
 
             if (deleteOriginal) {
                 deleteOriginalGeos();
+                reassignFacadeIds();
             }
 
             Gui::Command::commitCommand();
@@ -134,7 +135,22 @@ public:
 
     std::list<Gui::InputHint> getToolHints() const override
     {
-        return lookupScaleHints(state());
+        using enum Gui::InputHint::UserInput;
+
+        return Gui::lookupHints<SelectMode>(
+            state(),
+            {
+                {.state = SelectMode::SeekFirst,
+                 .hints =
+                     {
+                         {tr("%1 pick reference point"), {MouseLeft}},
+                     }},
+                {.state = SelectMode::SeekSecond,
+                 .hints =
+                     {
+                         {tr("%1 set scale factor"), {MouseLeft}},
+                     }},
+            });
     }
 
 private:
@@ -195,7 +211,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Scale parameters"));
+        return QString(tr("Scale parameters"));
     }
 
     void activated() override
@@ -226,24 +242,13 @@ private:
 
 private:
     std::vector<int> listOfGeoIds;
+    std::vector<long> listOfFacadeIds;
     Base::Vector2d referencePoint, startPoint, endPoint;
     bool deleteOriginal;
     bool abortOnFail;  // When the scale operation is part of a larger transaction, one might want
                        // to continue even if the scaling failed
     bool allowOriginConstraint;  // Conserve constraints with origin
     double refLength, length, scaleFactor;
-
-    struct HintEntry
-    {
-        SelectMode state;
-        std::list<Gui::InputHint> hints;
-    };
-
-    using HintTable = std::vector<HintEntry>;
-
-    static HintTable getScaleHintTable();
-    static std::list<Gui::InputHint> lookupScaleHints(SelectMode state);
-
 
     void deleteOriginalGeos()
     {
@@ -255,6 +260,24 @@ private:
         try {
             Gui::cmdAppObjectArgs(sketchgui->getObject(),
                                   "delGeometries([%s])",
+                                  stream.str().c_str());
+        }
+        catch (const Base::Exception& e) {
+            Base::Console().error("%s\n", e.what());
+        }
+    }
+    void reassignFacadeIds()
+    {
+        std::stringstream stream;
+        int geoId = getHighestCurveIndex() - listOfFacadeIds.size() + 1;
+        for (size_t j = 0; j < listOfFacadeIds.size() - 1; j++) {
+            stream << "(" << geoId << "," << listOfFacadeIds[j] << "),";
+            geoId++;
+        }
+        stream << "(" << geoId << "," << listOfFacadeIds.back() << ")";
+        try {
+            Gui::cmdAppObjectArgs(sketchgui->getObject(),
+                                  "setGeometryIds([%s])",
                                   stream.str().c_str());
         }
         catch (const Base::Exception& e) {
@@ -281,7 +304,11 @@ private:
 
         for (auto& geoId : listOfGeoIds) {
             const Part::Geometry* pGeo = Obj->getGeometry(geoId);
-            auto geoUniquePtr = std::unique_ptr<Part::Geometry>(pGeo->copy());
+            long facadeId;
+
+            Obj->getGeometryId(geoId, facadeId);
+            listOfFacadeIds.push_back(facadeId);
+            auto geoUniquePtr = std::unique_ptr<Part::Geometry>(pGeo->clone());
             Part::Geometry* geo = geoUniquePtr.get();
 
             if (isCircle(*geo)) {
@@ -462,30 +489,6 @@ private:
         return pointToScale;
     }
 };
-
-DrawSketchHandlerScale::HintTable DrawSketchHandlerScale::getScaleHintTable()
-{
-    using enum Gui::InputHint::UserInput;
-
-    return {
-        {.state = SelectMode::SeekFirst,
-         .hints = {{QObject::tr("%1 pick reference point", "Sketcher Scale: hint"), {MouseLeft}}}},
-        {.state = SelectMode::SeekSecond,
-         .hints = {{QObject::tr("%1 set reference length", "Sketcher Scale: hint"), {MouseLeft}}}},
-        {.state = SelectMode::SeekThird,
-         .hints = {{QObject::tr("%1 set scale factor", "Sketcher Scale: hint"), {MouseLeft}}}}};
-}
-
-std::list<Gui::InputHint> DrawSketchHandlerScale::lookupScaleHints(SelectMode state)
-{
-    const auto scaleHintTable = getScaleHintTable();
-
-    auto it = std::ranges::find_if(scaleHintTable, [state](const HintEntry& entry) {
-        return entry.state == state;
-    });
-
-    return (it != scaleHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
-}
 
 template<>
 auto DSHScaleControllerBase::getState(int labelindex) const

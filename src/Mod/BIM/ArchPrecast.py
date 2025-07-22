@@ -62,6 +62,7 @@ class _Precast(ArchComponent.Component):
     def __init__(self,obj):
 
         ArchComponent.Component.__init__(self,obj)
+        self.Type = "Precast"
         _Precast.setProperties(self,obj)
 
     def setProperties(self,obj):
@@ -75,12 +76,15 @@ class _Precast(ArchComponent.Component):
             obj.addProperty("App::PropertyDistance","Height","Structure",QT_TRANSLATE_NOOP("App::Property","The height of this element"), locked=True)
         if not "Nodes" in pl:
             obj.addProperty("App::PropertyVectorList","Nodes","Structure",QT_TRANSLATE_NOOP("App::Property","The structural nodes of this element"), locked=True)
-        self.Type = "Precast"
 
     def onDocumentRestored(self,obj):
 
         ArchComponent.Component.onDocumentRestored(self,obj)
         _Precast.setProperties(self,obj)
+
+    def loads(self,state):
+
+        self.Type = "Precast"
 
     def execute(self,obj):
 

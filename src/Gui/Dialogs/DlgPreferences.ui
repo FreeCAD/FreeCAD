@@ -5,7 +5,7 @@
   <property name="styleSheet">
     <string notr="true">#sidebar { background-color: rgba(0, 0, 0, 25); }
       #groupsTreeView { background-color: transparent; }
-      #groupsTreeView::item { padding: 6px 8px; }</string>
+      #groupsTreeView::item { padding: 6px 0px; }</string>
   </property>
   <property name="geometry">
    <rect>

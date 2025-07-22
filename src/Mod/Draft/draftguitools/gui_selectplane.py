@@ -247,7 +247,7 @@ class Draft_SelectPlane:
             self.offset = q.Value
 
     def on_set_center(self, val):
-        self.center = bool(val)
+        self.center = bool(getattr(val, "value", val))
         params.set_param("CenterPlaneOnView", self.center)
 
     def on_set_grid_size(self, text):

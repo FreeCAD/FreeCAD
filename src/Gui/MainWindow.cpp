@@ -451,7 +451,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
             this, &MainWindow::onSetActiveSubWindow);
 #else
     connect(d->windowMapper, &QSignalMapper::mappedObject,
-            this, [=](QObject* object) {
+            this, [=, this](QObject* object) {
         onSetActiveSubWindow(qobject_cast<QWidget*>(object));
     });
 #endif

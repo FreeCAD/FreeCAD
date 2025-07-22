@@ -51,6 +51,8 @@
 #include "Camera.h"
 #include "Flag.h"
 #include "Inventor/Draggers/SoTransformDragger.h"
+#include "Inventor/Draggers/SoLinearDragger.h"
+#include "Inventor/Draggers/SoRotationDragger.h"
 #include "Navigation/GestureNavigationStyle.h"
 #include "Navigation/NavigationStyle.h"
 #include "Navigation/SiemensNXNavigationStyle.h"
@@ -77,6 +79,7 @@
 #include "Inventor/SoFCBoundingBox.h"
 #include "Inventor/SoMouseWheelEvent.h"
 #include "Inventor/SoFCTransform.h"
+#include "Inventor/SoToggleSwitch.h"
 #include "propertyeditor/PropertyItem.h"
 #include "ArcEngine.h"
 
@@ -144,6 +147,11 @@ void Gui::SoFCDB::init()
     SoAutoZoomTranslation           ::initClass();
     MarkerBitmaps                   ::initClass();
     SoTransformDragger              ::initClass();
+    SoLinearGeometryKit             ::initClass();
+    SoArrowGeometry                 ::initClass();
+    SoRotatorGeometryKit            ::initClass();
+    SoRotatorGeometry               ::initClass();
+    SoToggleSwitch                  ::initClass();
     SmSwitchboard                   ::initClass();
     SoFCSeparator                   ::initClass();
     SoFCSelectionRoot               ::initClass();

@@ -59,7 +59,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Data used in:</string>
+        <string>Data used in</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft</set>

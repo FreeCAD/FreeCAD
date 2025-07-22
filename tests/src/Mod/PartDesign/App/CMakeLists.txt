@@ -1,5 +1,5 @@
 
-target_sources(PartDesign_tests_run PRIVATE
+add_executable(PartDesign_tests_run
         BackwardCompatibility.cpp
         DatumPlane.cpp
         ShapeBinder.cpp

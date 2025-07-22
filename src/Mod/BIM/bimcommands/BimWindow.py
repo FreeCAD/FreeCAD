@@ -426,9 +426,9 @@ class Arch_Window:
         else:
             params.set_param_arch("WindowSill",d)
 
-    def setInclude(self,i):
+    def setInclude(self, i):
 
-        self.Include = bool(i)
+        self.Include = bool(getattr(i, "value", i))
 
     def setParams(self,param,d):
 

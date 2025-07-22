@@ -56,6 +56,7 @@
 #include <App/Annotation.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/DocumentObjectGroup.h>
 #include <App/DocumentObjectPy.h>
 #include <App/FeaturePythonPyImp.h>
 #include <Base/Console.h>
@@ -66,6 +67,9 @@
 #include <Base/PlacementPy.h>
 #include <Base/VectorPy.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/FeatureCompound.h>
+#include <App/Link.h>
+#include <Base/Tools.h>
 
 #include "ImpExpDxf.h"
 
@@ -87,8 +91,25 @@ ImpExpDxfRead::ImpExpDxfRead(const std::string& filepath, App::Document* pcDoc)
     setOptions();
 }
 
+void ImpExpDxfRead::StartImport()
+{
+    CDxfRead::StartImport();
+    // Create a hidden group to store the base objects for block definitions
+    m_blockDefinitionGroup = static_cast<App::DocumentObjectGroup*>(
+        document->addObject("App::DocumentObjectGroup", "_BlockDefinitions"));
+    m_blockDefinitionGroup->Visibility.setValue(false);
+    // Create a hidden group to store unreferenced blocks
+    m_unreferencedBlocksGroup = static_cast<App::DocumentObjectGroup*>(
+        document->addObject("App::DocumentObjectGroup", "_UnreferencedBlocks"));
+    m_unreferencedBlocksGroup->Visibility.setValue(false);
+}
+
 bool ImpExpDxfRead::ReadEntitiesSection()
 {
+    // After parsing the BLOCKS section, compose all block definitions
+    // into FreeCAD objects before processing the ENTITIES section.
+    ComposeBlocks();
+
     DrawingEntityCollector collector(*this);
     if (m_mergeOption < SingleShapes) {
         std::map<CDxfRead::CommonEntityAttributes, std::list<TopoDS_Shape>> ShapesToCombine;
@@ -137,26 +158,52 @@ void ImpExpDxfRead::CombineShapes(std::list<TopoDS_Shape>& shapes, const char* n
     }
 }
 
+TopoDS_Shape ImpExpDxfRead::CombineShapesToCompound(const std::list<TopoDS_Shape>& shapes) const
+{
+    if (shapes.empty()) {
+        return TopoDS_Shape();
+    }
+    BRep_Builder builder;
+    TopoDS_Compound comp;
+    builder.MakeCompound(comp);
+    for (const auto& sh : shapes) {
+        if (!sh.IsNull()) {
+            builder.Add(comp, sh);
+        }
+    }
+    return comp;
+}
+
 void ImpExpDxfRead::setOptions()
 {
     ParameterGrp::handle hGrp =
         App::GetApplication().GetParameterGroupByPath(getOptionSource().c_str());
+    m_stats.importSettings.clear();
+
     m_preserveLayers = hGrp->GetBool("dxfUseDraftVisGroups", true);
+    m_stats.importSettings["Use layers"] = m_preserveLayers ? "Yes" : "No";
+
     m_preserveColors = hGrp->GetBool("dxfGetOriginalColors", true);
+    m_stats.importSettings["Use colors from the DXF file"] = m_preserveColors ? "Yes" : "No";
+
     // Default for creation type is to create draft objects.
     // The radio-button structure of the options dialog should generally prevent this condition.
     m_mergeOption = DraftObjects;
+    m_stats.importSettings["Merge option"] = "Create Draft objects";  // Default
     if (hGrp->GetBool("groupLayers", true)) {
         // Group all compatible objects together
         m_mergeOption = MergeShapes;
+        m_stats.importSettings["Merge option"] = "Group layers into blocks";
     }
     else if (hGrp->GetBool("dxfCreatePart", true)) {
         // Create (non-draft) Shape objects when possible
         m_mergeOption = SingleShapes;
+        m_stats.importSettings["Merge option"] = "Create Part shapes";
     }
     else if (hGrp->GetBool("dxfCreateDraft", true)) {
         // Create only Draft objects, making the result closest to drawn-from-scratch
         m_mergeOption = DraftObjects;
+        m_stats.importSettings["Merge option"] = "Create Draft objects";
     }
     // TODO: joingeometry should give an intermediate between MergeShapes and SingleShapes which
     // will merge shapes that happen to join end-to-end. As such it should be in the radio button
@@ -164,43 +211,389 @@ void ImpExpDxfRead::setOptions()
     // this really means is there should be an "Import as sketch" checkbox, and only the
     // MergeShapes, JoinShapes, and SingleShapes radio buttons should be allowed, i.e. Draft Objects
     // would be ignored.
-    SetAdditionalScaling(hGrp->GetFloat("dxfScaling", 1.0));
+    bool joinGeometry = hGrp->GetBool("joingeometry", false);
+    m_stats.importSettings["Join geometry"] = joinGeometry ? "Yes" : "No";
+
+    double scaling = hGrp->GetFloat("dxfScaling", 1.0);
+    SetAdditionalScaling(scaling);
+    m_stats.importSettings["Manual scaling factor"] = std::to_string(scaling);
 
     m_importAnnotations = hGrp->GetBool("dxftext", false);
+    m_stats.importSettings["Import texts and dimensions"] = m_importAnnotations ? "Yes" : "No";
+
     m_importPoints = hGrp->GetBool("dxfImportPoints", true);
+    m_stats.importSettings["Import points"] = m_importPoints ? "Yes" : "No";
+
     m_importPaperSpaceEntities = hGrp->GetBool("dxflayout", false);
+    m_stats.importSettings["Import layout objects"] = m_importPaperSpaceEntities ? "Yes" : "No";
+
     m_importHiddenBlocks = hGrp->GetBool("dxfstarblocks", false);
+    m_stats.importSettings["Import hidden blocks"] = m_importHiddenBlocks ? "Yes" : "No";
+
     // TODO: There is currently no option for this: m_importFrozenLayers =
     // hGrp->GetBool("dxffrozenLayers", false);
     // TODO: There is currently no option for this: m_importHiddenLayers =
     // hGrp->GetBool("dxfhiddenLayers", true);
 }
 
-bool ImpExpDxfRead::OnReadBlock(const std::string& name, int flags)
+void ImpExpDxfRead::ComposeFlattenedBlock(const std::string& blockName,
+                                          std::set<std::string>& composed)
 {
-    if ((flags & 0x04) != 0) {
-        // Note that this doesn't mean there are not entities in the block. I don't
-        // know if the external reference can be cached because there are two other bits
-        // here, 0x10 and 0x20, that seem to handle "resolved" external references.
-        UnsupportedFeature("External (xref) BLOCK");
+    // 1. Base Case: If already composed, do nothing.
+    if (composed.count(blockName)) {
+        return;
     }
-    else if (!m_importHiddenBlocks && (flags & 0x01) != 0) {
-        // It is an anonymous block used to build dimensions, hatches, etc so we don't need it
-        // and don't want to be complaining about unhandled entity types.
-        // Note that if it *is* for a hatch we could actually import it and use it to draw a hatch.
+
+    // 2. Find the raw block data.
+    auto it = this->Blocks.find(blockName);
+    if (it == this->Blocks.end()) {
+        ImportError("Block '%s' is referenced but not defined. Skipping.", blockName.c_str());
+        return;
     }
-    else if (Blocks.contains(name)) {
-        ImportError("Duplicate block name '%s'\n", name);
+    const Block& blockData = it->second;
+
+    // 3. Collect all geometry shapes for this block.
+    std::list<TopoDS_Shape> shapeCollection;
+
+    // 4. Process primitive geometry.
+    for (const auto& [attributes, shapeList] : blockData.Shapes) {
+        shapeCollection.insert(shapeCollection.end(), shapeList.begin(), shapeList.end());
+    }
+
+    // 5. Process nested inserts recursively.
+    for (const auto& insertAttrPair : blockData.Inserts) {
+        for (const auto& nestedInsert : insertAttrPair.second) {
+            // Ensure the nested block is composed first.
+            ComposeFlattenedBlock(nestedInsert.Name, composed);
+            // Mark the nested block as referenced so it's not moved to the "Unreferenced" group.
+            m_referencedBlocks.insert(nestedInsert.Name);
+
+            // Retrieve the final, flattened shape of the nested block.
+            auto shape_it = m_flattenedBlockShapes.find(nestedInsert.Name);
+            if (shape_it != m_flattenedBlockShapes.end()) {
+                if (!shape_it->second.IsNull()) {
+                    // Use the Part::TopoShape wrapper to access the transformShape method.
+                    Part::TopoShape nestedShape(shape_it->second);
+                    // Apply the insert's transformation.
+                    Base::Placement pl(
+                        nestedInsert.Point,
+                        Base::Rotation(Base::Vector3d(0, 0, 1), nestedInsert.Rotation));
+                    Base::Matrix4D transform = pl.toMatrix();
+                    transform.scale(nestedInsert.Scale);
+                    nestedShape.transformShape(transform, true, true);  // Use copy=true
+                    shapeCollection.push_back(nestedShape.getShape());
+                }
+            }
+        }
+    }
+
+    // 6. Build the final merged shape.
+    TopoDS_Shape finalShape = CombineShapesToCompound(shapeCollection);
+    m_flattenedBlockShapes[blockName] = finalShape;  // Cache the result.
+
+    // 7. Create the final Part::Feature object.
+    if (!finalShape.IsNull()) {
+        std::string featureName = "BLOCK_" + blockName;
+        auto blockFeature = document->addObject<Part::Feature>(
+            document->getUniqueObjectName(featureName.c_str()).c_str());
+        blockFeature->Shape.setValue(finalShape);
+        blockFeature->Visibility.setValue(false);
+        m_blockDefinitionGroup->addObject(blockFeature);
+        this->m_blockDefinitions[blockName] = blockFeature;
+    }
+
+    // 8. Mark this block as composed.
+    composed.insert(blockName);
+}
+
+void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName,
+                                           std::set<std::string>& composed)
+{
+    // 1. Base Case: If this block has already been composed, we're done.
+    if (composed.count(blockName)) {
+        return;
+    }
+
+    // 2. Find the raw block data from the parsing phase.
+    auto it = this->Blocks.find(blockName);
+    if (it == this->Blocks.end()) {
+        ImportError("Block '%s' is referenced but not defined. Skipping.", blockName.c_str());
+        return;
+    }
+    const Block& blockData = it->second;
+
+    // 3. Create the master Part::Compound for this block definition.
+    std::string compName = "BLOCK_";
+    compName += blockName;
+    auto blockCompound = document->addObject<Part::Compound>(
+        document->getUniqueObjectName(compName.c_str()).c_str());
+    m_blockDefinitionGroup->addObject(blockCompound);
+    IncrementCreatedObjectCount();
+    blockCompound->Visibility.setValue(false);
+    this->m_blockDefinitions[blockName] = blockCompound;
+
+    std::vector<App::DocumentObject*> linkedObjects;
+
+    // 4. Recursively Compose and Link Nested Inserts.
+    for (const auto& insertAttrPair : blockData.Inserts) {
+        for (const auto& nestedInsert : insertAttrPair.second) {
+            // Ensure the dependency is composed before we try to link to it.
+            ComposeParametricBlock(nestedInsert.Name, composed);
+            // Mark the nested block as referenced so it's not moved to the "Unreferenced" group.
+            m_referencedBlocks.insert(nestedInsert.Name);
+
+            // Create the App::Link for this nested insert.
+            auto baseObjIt = m_blockDefinitions.find(nestedInsert.Name);
+            if (baseObjIt != m_blockDefinitions.end()) {
+                // The link's name should be based on the block it is inserting, not the parent.
+                std::string linkName = "Link_" + nestedInsert.Name;
+                auto link = document->addObject<App::Link>(
+                    document->getUniqueObjectName(linkName.c_str()).c_str());
+                link->setLink(-1, baseObjIt->second);
+                link->LinkTransform.setValue(false);
+
+                // Apply placement and scale to the link itself.
+                Base::Placement pl(nestedInsert.Point,
+                                   Base::Rotation(Base::Vector3d(0, 0, 1), nestedInsert.Rotation));
+                link->Placement.setValue(pl);
+                link->ScaleVector.setValue(nestedInsert.Scale);
+                link->Visibility.setValue(false);
+                IncrementCreatedObjectCount();
+                linkedObjects.push_back(link);
+            }
+        }
+    }
+
+    // 5. Create and Link Primitive Geometry.
+    // Iterate through each attribute group (e.g., each layer within the block).
+    for (const auto& [attributes, shapeList] : blockData.Shapes) {
+        // Then, iterate through each shape in that group and create a separate feature for it.
+        for (const auto& shape : shapeList) {
+            if (!shape.IsNull()) {
+                std::string cleanBlockLabel = blockName;
+                if (!cleanBlockLabel.empty() && std::isdigit(cleanBlockLabel[0])) {
+                    // Workaround for FreeCAD's unique name generator, which prepends an underscore
+                    // to names that start with a digit. We add our own prefix.
+                    cleanBlockLabel.insert(0, "_");
+                }
+                else if (!cleanBlockLabel.empty() && std::isdigit(cleanBlockLabel.back())) {
+                    // Add a trailing underscore to prevent the unique name generator
+                    // from incrementing the number in the block's name.
+                    cleanBlockLabel += "_";
+                }
+                // Determine a more descriptive name for the primitive feature.
+                std::string type_suffix = "Shape";
+                if (shape.ShapeType() == TopAbs_EDGE) {
+                    BRepAdaptor_Curve adaptor(TopoDS::Edge(shape));
+                    switch (adaptor.GetType()) {
+                        case GeomAbs_Line:
+                            type_suffix = "Line";
+                            break;
+                        case GeomAbs_Circle:
+                            type_suffix = "Circle";
+                            break;
+                        case GeomAbs_Ellipse:
+                            type_suffix = "Ellipse";
+                            break;
+                        case GeomAbs_BSplineCurve:
+                            type_suffix = "BSpline";
+                            break;
+                        case GeomAbs_BezierCurve:
+                            type_suffix = "Bezier";
+                            break;
+                        default:
+                            type_suffix = "Edge";
+                            break;
+                    }
+                }
+                else if (shape.ShapeType() == TopAbs_VERTEX) {
+                    type_suffix = "Vertex";
+                }
+                else if (shape.ShapeType() == TopAbs_WIRE) {
+                    type_suffix = "Wire";
+                }
+                else if (shape.ShapeType() == TopAbs_FACE) {
+                    type_suffix = "Face";
+                }
+                else if (shape.ShapeType() == TopAbs_SHELL) {
+                    type_suffix = "Shell";
+                }
+                else if (shape.ShapeType() == TopAbs_SOLID) {
+                    type_suffix = "Solid";
+                }
+                else if (shape.ShapeType() == TopAbs_COMPOUND) {
+                    type_suffix = "Compound";
+                }
+
+                std::string primitive_base_label = cleanBlockLabel + "_" + type_suffix;
+                // Use getStandardObjectLabel to get a unique user-facing label (e.g.,
+                // "block01_Line001") while keeping the internal object name clean.
+                auto geomFeature = document->addObject<Part::Feature>(
+                    document->getStandardObjectLabel(primitive_base_label.c_str(), 3).c_str());
+
+                IncrementCreatedObjectCount();
+                geomFeature->Shape.setValue(shape);
+                geomFeature->Visibility.setValue(false);
+
+                // Apply styling to this primitive feature using its original attributes.
+                this->m_entityAttributes = attributes;
+                this->ApplyGuiStyles(geomFeature);
+
+                linkedObjects.push_back(geomFeature);
+            }
+        }
+    }
+
+    // TODO: Add similar logic for blockData.FeatureBuildersList if needed.
+
+    // 6. Finalize the Part::Compound.
+    if (!linkedObjects.empty()) {
+        blockCompound->Links.setValues(linkedObjects);
+    }
+
+    // 7. Mark this block as composed.
+    composed.insert(blockName);
+}
+
+void ImpExpDxfRead::ComposeBlocks()
+{
+    std::set<std::string> composedBlocks;
+
+    if (m_mergeOption == MergeShapes) {
+        // User wants flattened geometry for performance.
+        for (const auto& pair : this->Blocks) {
+            if (composedBlocks.find(pair.first) == composedBlocks.end()) {
+                ComposeFlattenedBlock(pair.first, composedBlocks);
+            }
+        }
     }
     else {
-        Block& block = Blocks.insert(std::make_pair(name, Block(name, flags))).first->second;
-        BlockDefinitionCollector blockCollector(*this,
-                                                block.Shapes,
-                                                block.FeatureBuildersList,
-                                                block.Inserts);
-        return ReadBlockContents();
+        // User wants a parametric, editable structure.
+        for (const auto& pair : this->Blocks) {
+            if (composedBlocks.find(pair.first) == composedBlocks.end()) {
+                ComposeParametricBlock(pair.first, composedBlocks);
+            }
+        }
     }
-    return SkipBlockContents();
+}
+
+void ImpExpDxfRead::FinishImport()
+{
+    // This function runs after all blocks have been parsed and composed.
+    // It sorts all created block definitions into two groups: those that are
+    // actively referenced in the drawing, and those that are not.
+
+    std::vector<App::DocumentObject*> referenced;
+    std::vector<App::DocumentObject*> unreferenced;
+
+    for (const auto& pair : m_blockDefinitions) {
+        const std::string& blockName = pair.first;
+        App::DocumentObject* blockObj = pair.second;
+
+        bool is_referenced = (m_referencedBlocks.find(blockName) != m_referencedBlocks.end());
+
+        // A block is considered "referenced" if it was explicitly inserted
+        // or if it is an anonymous system block (e.g., for dimensions).
+        // All other named blocks are considered unreferenced if not found in the set.
+        if (is_referenced || (blockName.rfind('*', 0) == 0)) {
+            referenced.push_back(blockObj);
+        }
+        else {
+            unreferenced.push_back(blockObj);
+        }
+    }
+
+    // Re-assign the group contents by setting the PropertyLinkList for each group.
+    // This correctly re-parents the objects in the document's dependency graph.
+    m_blockDefinitionGroup->Group.setValues(referenced);
+    m_unreferencedBlocksGroup->Group.setValues(unreferenced);
+
+    // Final cleanup: If the unreferenced group is empty, remove it to avoid
+    // unnecessary clutter in the document tree. Otherwise, ensure it's hidden.
+    if (unreferenced.empty()) {
+        try {
+            document->removeObject(m_unreferencedBlocksGroup->getNameInDocument());
+        }
+        catch (const Base::Exception& e) {
+            // It's not critical if removal fails, but we should log it.
+            e.reportException();
+        }
+    }
+    else {
+        m_unreferencedBlocksGroup->Visibility.setValue(false);
+    }
+
+    // If no blocks were defined in the file at all, remove the main definitions
+    // group as well to keep the document clean.
+    if (m_blockDefinitionGroup && m_blockDefinitionGroup->Group.getValues().empty()) {
+        try {
+            document->removeObject(m_blockDefinitionGroup->getNameInDocument());
+        }
+        catch (const Base::Exception& e) {
+            e.reportException();
+        }
+    }
+
+    // call the base class implementation if it has one
+    CDxfRead::FinishImport();
+}
+
+bool ImpExpDxfRead::OnReadBlock(const std::string& name, int flags)
+{
+    // Step 1: Check for external references first. This is a critical check.
+    if ((flags & 0x04) != 0) {  // Block is an Xref
+        UnsupportedFeature("External (xref) BLOCK");
+        return SkipBlockContents();
+    }
+
+    // Step 2: Check if the block is anonymous/system.
+    bool isAnonymous = (name.find('*') == 0);
+    if (isAnonymous) {
+        if (name.size() > 1) {
+            char type = std::toupper(name[1]);
+            if (type == 'D') {
+                m_stats.systemBlockCounts["Dimension-related (*D)"]++;
+            }
+            else if (type == 'H' || type == 'X') {
+                m_stats.systemBlockCounts["Hatch-related (*H, *X)"]++;
+            }
+            else {
+                m_stats.systemBlockCounts["Other System Blocks"]++;
+            }
+        }
+        else {
+            m_stats.systemBlockCounts["Other System Blocks"]++;
+        }
+
+        if (!m_importHiddenBlocks) {
+            return SkipBlockContents();
+        }
+    }
+    else {
+        m_stats.entityCounts["BLOCK"]++;
+    }
+
+    // Step 3: Check for duplicates to prevent errors.
+    if (this->Blocks.count(name)) {
+        ImportError("Duplicate block name '%s' found. Ignoring subsequent definition.",
+                    name.c_str());
+        return SkipBlockContents();
+    }
+
+    // Step 4: Use the temporary Block struct and Collector to parse all contents into memory.
+    // The .emplace method is slightly more efficient here.
+    auto& temporaryBlock = Blocks.emplace(std::make_pair(name, Block(name, flags))).first->second;
+    BlockDefinitionCollector blockCollector(*this,
+                                            temporaryBlock.Shapes,
+                                            temporaryBlock.FeatureBuildersList,
+                                            temporaryBlock.Inserts);
+    if (!ReadBlockContents()) {
+        return false;  // Abort on parsing error
+    }
+
+    // That's it. The block is now parsed into this->Blocks.
+    // Composition will happen later in ComposeBlocks().
+    return true;
 }
 
 void ImpExpDxfRead::OnReadLine(const Base::Vector3d& start,
@@ -379,6 +772,10 @@ void ImpExpDxfRead::OnReadSpline(struct SplineData& sd)
     // Flags:
     // 1: Closed, 2: Periodic, 4: Rational, 8: Planar, 16: Linear
 
+    if (shouldSkipEntity()) {
+        return;
+    }
+
     try {
         Handle(Geom_BSplineCurve) geom;
         if (sd.control_points > 0) {
@@ -446,7 +843,7 @@ void ImpExpDxfRead::OnReadText(const Base::Vector3d& point,
             PyObject* draftModule = getDraftModule();
             if (draftModule != nullptr) {
                 Base::Matrix4D localTransform;
-                localTransform.rotZ(rotation);
+                localTransform.rotZ(Base::toRadians(rotation));
                 localTransform.move(point);
                 PyObject* placement =
                     new Base::PlacementPy(Base::Placement(transform * localTransform));
@@ -482,78 +879,10 @@ void ImpExpDxfRead::OnReadInsert(const Base::Vector3d& point,
         return;
     }
 
+    // Delegate the action to the currently active collector.
+    // If the BlockDefinitionCollector is active, it will just store the data.
+    // If the DrawingEntityCollector is active, it will create the App::Link.
     Collector->AddInsert(point, scale, name, rotation);
-}
-void ImpExpDxfRead::ExpandInsert(const std::string& name,
-                                 const Base::Matrix4D& transform,
-                                 const Base::Vector3d& point,
-                                 double rotation,
-                                 const Base::Vector3d& scale)
-{
-    if (!Blocks.contains(name)) {
-        ImportError("Reference to undefined or external block '%s'\n", name);
-        return;
-    }
-    Block& block = Blocks.at(name);
-    // Apply the scaling, rotation, and move before the OCSEnttityTransform and place the result io
-    // BaseEntityTransform,
-    Base::Matrix4D localTransform;
-    localTransform.scale(scale.x, scale.y, scale.z);
-    localTransform.rotZ(rotation);
-    localTransform.move(point[0], point[1], point[2]);
-    localTransform = transform * localTransform;
-    CommonEntityAttributes mainAttributes = m_entityAttributes;
-    for (const auto& [attributes, shapes] : block.Shapes) {
-        // Put attributes into m_entityAttributes after using the latter to set byblock values in
-        // the former.
-        m_entityAttributes = attributes;
-        m_entityAttributes.ResolveByBlockAttributes(mainAttributes);
-
-        for (const TopoDS_Shape& shape : shapes) {
-            // TODO???: See the comment in TopoShape::makeTransform regarding calling
-            // Moved(identityTransform) on the new shape
-            Collector->AddObject(
-                BRepBuilderAPI_Transform(shape,
-                                         Part::TopoShape::convert(localTransform),
-                                         Standard_True)
-                    .Shape(),
-                "InsertPart");  // TODO: The collection should contain the nameBase to use
-        }
-    }
-    for (const auto& [attributes, featureBuilders] : block.FeatureBuildersList) {
-        // Put attributes into m_entityAttributes after using the latter to set byblock values in
-        // the former.
-        m_entityAttributes = attributes;
-        m_entityAttributes.ResolveByBlockAttributes(mainAttributes);
-
-        for (const FeaturePythonBuilder& featureBuilder : featureBuilders) {
-            // TODO: Any non-identity transform from the original entity record needs to be applied
-            // before OCSEntityTransform (which includes this INSERT's transform followed by the
-            // transform for the INSERT's context (i.e. from an outeer INSERT)
-            // TODO: Perhaps pass a prefix ("Insert") to the builder to make the object name so
-            // Draft objects in a block get named similarly to Shapes.
-            App::FeaturePython* feature = featureBuilder(localTransform);
-            if (feature != nullptr) {
-                // Note that the featureBuilder has already placed this object in the drawing as a
-                // top-level object, so we don't have to add them but we must place it in its layer
-                // and set its gui styles
-                MoveToLayer(feature);
-                ApplyGuiStyles(feature);
-            }
-        }
-    }
-    for (const auto& [attributes, inserts] : block.Inserts) {
-        // Put attributes into m_entityAttributes after using the latter to set byblock values in
-        // the former.
-        m_entityAttributes = attributes;
-        m_entityAttributes.ResolveByBlockAttributes(mainAttributes);
-
-        for (const Block::Insert& insert : inserts) {
-            // TODO: Apply the OCSOrientationTransform saved with the Insert statement to
-            // localTransform. (pass localTransform*insert.OCSDirectionTransform)
-            ExpandInsert(insert.Name, localTransform, insert.Point, insert.Rotation, insert.Scale);
-        }
-    }
 }
 
 
@@ -771,13 +1100,35 @@ std::string ImpExpDxfRead::Deformat(const char* text)
 void ImpExpDxfRead::DrawingEntityCollector::AddObject(const TopoDS_Shape& shape,
                                                       const char* nameBase)
 {
+    Reader.IncrementCreatedObjectCount();
     auto pcFeature = Reader.document->addObject<Part::Feature>(nameBase);
     pcFeature->Shape.setValue(shape);
     Reader.MoveToLayer(pcFeature);
     Reader.ApplyGuiStyles(pcFeature);
 }
+
+void ImpExpDxfRead::DrawingEntityCollector::AddObject(App::DocumentObject* obj,
+                                                      const char* /*nameBase*/)
+{
+    // This overload is for C++ created objects like App::Link
+    // The object is already in the document, so we just need to style it and move it to a layer.
+    Reader.MoveToLayer(obj);
+
+    // Safely apply styles by checking the object's actual type
+    if (auto feature = dynamic_cast<Part::Feature*>(obj)) {
+        Reader.ApplyGuiStyles(feature);
+    }
+    else if (auto pyFeature = dynamic_cast<App::FeaturePython*>(obj)) {
+        Reader.ApplyGuiStyles(pyFeature);
+    }
+    else if (auto link = dynamic_cast<App::Link*>(obj)) {
+        Reader.ApplyGuiStyles(link);
+    }
+}
+
 void ImpExpDxfRead::DrawingEntityCollector::AddObject(FeaturePythonBuilder shapeBuilder)
 {
+    Reader.IncrementCreatedObjectCount();
     App::FeaturePython* shape = shapeBuilder(Reader.OCSOrientationTransform);
     if (shape != nullptr) {
         Reader.MoveToLayer(shape);
@@ -1346,4 +1697,57 @@ void ImpExpDxfWrite::exportDiametricDim(Base::Vector3d textLocn,
     arc2[1] = arcPoint2.y;
     arc2[2] = arcPoint2.z;
     writeDiametricDim(text, arc1, arc2, dimText);
+}
+
+Py::Object ImpExpDxfRead::getStatsAsPyObject()
+{
+    // Create a Python dictionary to hold all import statistics.
+    Py::Dict statsDict;
+
+    // Populate the dictionary with general information about the import.
+    statsDict.setItem("dxfVersion", Py::String(m_stats.dxfVersion));
+    statsDict.setItem("dxfEncoding", Py::String(m_stats.dxfEncoding));
+    statsDict.setItem("scalingSource", Py::String(m_stats.scalingSource));
+    statsDict.setItem("fileUnits", Py::String(m_stats.fileUnits));
+    statsDict.setItem("finalScalingFactor", Py::Float(m_stats.finalScalingFactor));
+    statsDict.setItem("importTimeSeconds", Py::Float(m_stats.importTimeSeconds));
+    statsDict.setItem("totalEntitiesCreated", Py::Long(m_stats.totalEntitiesCreated));
+
+    // Create a nested dictionary for the counts of each DXF entity type read.
+    Py::Dict entityCountsDict;
+    for (const auto& pair : m_stats.entityCounts) {
+        entityCountsDict.setItem(pair.first.c_str(), Py::Long(pair.second));
+    }
+    statsDict.setItem("entityCounts", entityCountsDict);
+
+    // Create a nested dictionary for the import settings used for this session.
+    Py::Dict importSettingsDict;
+    for (const auto& pair : m_stats.importSettings) {
+        importSettingsDict.setItem(pair.first.c_str(), Py::String(pair.second));
+    }
+    statsDict.setItem("importSettings", importSettingsDict);
+
+    // Create a nested dictionary for any unsupported DXF features encountered.
+    Py::Dict unsupportedFeaturesDict;
+    for (const auto& pair : m_stats.unsupportedFeatures) {
+        Py::List occurrencesList;
+        for (const auto& occurrence : pair.second) {
+            Py::Tuple infoTuple(2);
+            infoTuple.setItem(0, Py::Long(occurrence.first));
+            infoTuple.setItem(1, Py::String(occurrence.second));
+            occurrencesList.append(infoTuple);
+        }
+        unsupportedFeaturesDict.setItem(pair.first.c_str(), occurrencesList);
+    }
+    statsDict.setItem("unsupportedFeatures", unsupportedFeaturesDict);
+
+    // Create a nested dictionary for the counts of system blocks encountered.
+    Py::Dict systemBlockCountsDict;
+    for (const auto& pair : m_stats.systemBlockCounts) {
+        systemBlockCountsDict.setItem(pair.first.c_str(), Py::Long(pair.second));
+    }
+    statsDict.setItem("systemBlockCounts", systemBlockCountsDict);
+
+    // Return the fully populated statistics dictionary to the Python caller.
+    return statsDict;
 }
