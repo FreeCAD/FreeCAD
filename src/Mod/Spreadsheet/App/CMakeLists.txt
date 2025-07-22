@@ -45,6 +45,11 @@ generate_from_xml(PropertySheetPy)
 generate_from_xml(PropertyColumnWidthsPy)
 generate_from_xml(PropertyRowHeightsPy)
 
+generate_from_py_(SheetPy)
+generate_from_py_(PropertySheetPy)
+generate_from_py_(PropertyColumnWidthsPy)
+generate_from_py_(PropertyRowHeightsPy)
+
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)
     GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Spreadsheet_SRCS})
