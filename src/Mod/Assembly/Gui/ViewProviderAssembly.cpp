@@ -705,9 +705,10 @@ void ViewProviderAssembly::collectMovableObjects(App::DocumentObject* selRoot,
     }
 
     // Base case: This is not a flexible link, process it as a potential movable part.
-    if (onlySolids && !(currentObject->isDerivedFrom<App::Part>()
-                     || currentObject->isDerivedFrom<Part::Feature>()
-                     || currentObject->isDerivedFrom<App::Link>())) {
+    if (onlySolids
+        && !(currentObject->isDerivedFrom<App::Part>()
+             || currentObject->isDerivedFrom<Part::Feature>()
+             || currentObject->isDerivedFrom<App::Link>())) {
         return;
     }
 
