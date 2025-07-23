@@ -60,6 +60,7 @@ class ObjectDressup:
             QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "LineZ"),
             QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Vertical"),
             QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "None"),
+            QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Original"),
         ]
         self.obj = obj
         obj.addProperty(
@@ -796,6 +797,17 @@ class ObjectDressup:
         )
         return result
 
+    # Get direction of non cut movements
+    def getMoveDir(self, instr):
+        if instr.positionBegin().z > instr.positionEnd().z:
+            return "Down"
+        elif instr.positionBegin().z < instr.positionEnd().z:
+            return "Up"
+        else:
+            return "Hor"
+
+        return None
+
     # Get last index of mill command in whole Path
     def findLastCuttingMoveIndex(self, obj, source):
         for i in range(len(source) - 1, -1, -1):
@@ -987,14 +999,25 @@ class ObjectDressup:
         measuredLength = 0  # for negative OffsetIn
         skipCounter = 0  # for negative OffsetIn
         commands = []
+        moveDir = None
+
         # Process all instructions
         for i, instr in enumerate(source):
+
             # Process not mill instruction
             if not self.isCuttingMove(obj, instr):
                 if not instr.isMove():
                     # non-move instruction get added verbatim
                     commands.append(instr)
-                # skip travel and plunge moves
+                else:
+                    moveDir = self.getMoveDir(instr)
+                    if obj.StyleIn == "Original" and (moveDir in ["Down", "Hor"] or first):
+                        # keep original Lead-in movements
+                        commands.append(instr)
+                    elif obj.StyleOut == "Original" and moveDir in ["Up"]:
+                        # keep original Lead-out movements
+                        commands.append(instr)
+                # skip travel and plunge moves if LeadInOut will be process
                 # travel moves will be added in getLeadStart and getLeadEnd
                 continue
 
@@ -1003,7 +1026,9 @@ class ObjectDressup:
                 measuredLength += instr.pathLength()
 
             # Process Lead-In
-            if first or not self.isCuttingMove(obj, source[i - 1 - skipCounter]):
+            if (
+                first or not self.isCuttingMove(obj, source[i - 1 - skipCounter])
+            ) and obj.StyleIn != "Original":
                 # Process negative Offset Lead-In (cut travel from begin)
                 if obj.OffsetIn.Value < 0 and obj.StyleIn != "None":
                     if measuredLength <= abs(obj.OffsetIn.Value):
@@ -1044,7 +1069,7 @@ class ObjectDressup:
 
             # Process Lead-Out
             last = bool(i == lastCuttingMoveIndex)
-            if last or not self.isCuttingMove(obj, source[i + 1]):
+            if (last or not self.isCuttingMove(obj, source[i + 1])) and obj.StyleOut != "Original":
                 measuredLength = 0  # reset measured length for last profile
                 lastMillIndex = i  # index last mill instruction for last profile
 
