@@ -491,7 +491,7 @@ void StdCmdExport::activated(int iMsg)
         // there is one.
         QFileInfo defaultExportFI(defaultFilename);
         QFileInfo thisExportFI(filename);
-        
+
         if (filenameWasGenerated && thisExportFI.completeBaseName() != defaultExportFI.completeBaseName()) {
             filenameWasGenerated = false;
         }
@@ -656,6 +656,7 @@ StdCmdNew::StdCmdNew()
     sStatusTip    = sToolTipText;
     sPixmap       = "document-new";
     sAccel        = keySequenceToAccel(QKeySequence::New);
+    eType         = NoTransaction;
 }
 
 void StdCmdNew::activated(int iMsg)
