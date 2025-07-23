@@ -12,6 +12,7 @@ set "CMAKE_GENERATOR="
 set "CMAKE_GENERATOR_PLATFORM="
 
 cmake ^
+    %CMAKE_ARGS% ^
     --preset conda-windows-release ^
     -D CMAKE_INCLUDE_PATH:FILEPATH="%LIBRARY_PREFIX%/include" ^
     -D CMAKE_INSTALL_LIBDIR:FILEPATH="%LIBRARY_PREFIX%/lib" ^
@@ -25,8 +26,7 @@ cmake ^
     -D Python_EXECUTABLE:FILEPATH="%PYTHON%" ^
     -D Python3_EXECUTABLE:FILEPATH="%PYTHON%" ^
     -B build ^
-    -S . ^
-    ${CMAKE_PLATFORM_FLAGS[@]}
+    -S .
 if %ERRORLEVEL% neq 0 exit 1
 
 ninja -C build install

@@ -23,6 +23,7 @@ unset CMAKE_GENERATOR
 unset CMAKE_GENERATOR_PLATFORM
 
 cmake \
+    ${CMAKE_ARGS} \
     --preset ${CMAKE_PRESET} \
     -D CMAKE_IGNORE_PREFIX_PATH="/opt/homebrew;/usr/local/homebrew" \
     -D CMAKE_INCLUDE_PATH:FILEPATH="$PREFIX/include" \
@@ -37,8 +38,7 @@ cmake \
     -D Python_EXECUTABLE:FILEPATH="$PYTHON" \
     -D Python3_EXECUTABLE:FILEPATH="$PYTHON" \
     -B build \
-    -S . \
-    ${CMAKE_PLATFORM_FLAGS[@]}
+    -S .
 
 cmake --build build
 cmake --install build
