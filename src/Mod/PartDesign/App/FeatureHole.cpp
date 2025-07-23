@@ -2266,15 +2266,11 @@ Base::Vector3d Hole::guessNormalDirection(const TopoShape& profileshape) const
     if (profileshape.hasSubShape(TopAbs_FACE)) {
         BRepAdaptor_Surface sf(TopoDS::Face(profileshape.getSubShape(TopAbs_FACE, 1)));
 
-        if (sf.GetType() == GeomAbs_Cylinder) {
-            Base::Vector3d out;
-            sf.Cylinder().Axis().Direction().Coord(out.x,
-                                                   out.y,
-                                                   out.z);
-            return out;
-        } else {
+        if (sf.GetType() != GeomAbs_Cylinder) {
             throw(Base::Exception("Cannot create hole from non cylindrical face"));
         }
+        
+        return Base::convertTo<Base::Vector3d>(sf.Cylinder().Axis().Direction());
     }
     return getProfileNormal();
 }
