@@ -241,7 +241,7 @@ public:
     void resizeList(int);
 
 Q_SIGNALS:
-    void recentFilesListModified(void);
+    void recentFilesListModified();
 
 private:
     void setFiles(const QStringList&);

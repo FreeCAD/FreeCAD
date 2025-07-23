@@ -869,8 +869,9 @@ RecentFilesAction::RecentFilesAction ( Command* pcCmd, QObject * parent )
     this->groupAction()->addAction(&clearRecentFilesListAction);
 
     auto clearFun = [this, hGrp = _pimpl->handle](){
-        const int recentFilesListSize = hGrp->GetASCIIs("MRU").size();
-        for (int i = 0; i < recentFilesListSize; i++)
+        const size_t recentFilesListSize = hGrp->GetASCIIs("MRU").size();
+        for (size_t i = 0; i < recentFilesListSize; i++)
+
         {
             const QByteArray key = QStringLiteral("MRU%1").arg(i).toLocal8Bit();
             hGrp->SetASCII(key.data(), "");
@@ -951,7 +952,9 @@ void RecentFilesAction::setFiles(const QStringList& files)
     // if less file names than actions
     numRecentFiles = std::min<int>(numRecentFiles, this->visibleItems);
     for (int index = numRecentFiles; index < recentFiles.count(); index++) {
-        if (recentFiles[index] == &sep || recentFiles[index] == &clearRecentFilesListAction) continue;
+        if (recentFiles[index] == &sep || recentFiles[index] == &clearRecentFilesListAction) {
+            continue;
+        }
         recentFiles[index]->setVisible(false);
         recentFiles[index]->setText(QString());
         recentFiles[index]->setToolTip(QString());
