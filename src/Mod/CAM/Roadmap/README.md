@@ -29,27 +29,6 @@ Any CAM application meeting the needs above must provide functionality in these 
 - [Output Generation](<./Functionality/Output Generation.md>)
 - [Scripting and automation](<./Functionality/Scripting and automation.md>)
 
-## 🧼 Code Overview
-*(this section provides a starting point for developers to understand how CAM is organized.)*
-*( It also gives an honest assessment of the code quality and areas of improvement with an eye toward good coding practices)*
-
-Additionally, as software developers we desire the source code to excel in these areas:
-- Modular
-- DRY
-- Extensible
-- Testable
-
-### Introduction to CAM code
-- [Tool Subsystem](<./Current State/Tools.md>)
-- [Job System, templates](<Jobs.md>)
-- [Operations](<./Current State/Operations.md>)
-- [Generators](<./Current State/Generators.md>)
-- [Dressups](<./Current State/Dressups.md>)
-- [Post processing system](<./Current State/PostProcessing.md>)
-- [Sanity Report Generation](<./Current State/Sanity.md>)
-- [Preference System](<./Current State/Preferences.md>)
-- [Path Visualization and Simulator](<./Current State/Visualization.md>)
-
 ### ADR Log
 
 *(ADRs - Architecture Decision Report)*
