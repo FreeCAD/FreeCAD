@@ -674,9 +674,8 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
                     Gui::Selection().clearSelection();
                     docsToMove.clear();
                 }
-                MovingObject movingObj(obj, pPlc->getValue(), selRoot, sub);
 
-                docsToMove.emplace_back(movingObj);
+                docsToMove.emplace_back(obj, pPlc->getValue(), selRoot, sub);
             }
         }
     }
@@ -685,7 +684,7 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
 }
 
 void ViewProviderAssembly::collectMovableObjects(App::DocumentObject* selRoot,
-                                                 std::string& subNamePrefix,
+                                                 const std::string& subNamePrefix,
                                                  App::DocumentObject* currentObject,
                                                  bool onlySolids)
 {
@@ -717,8 +716,7 @@ void ViewProviderAssembly::collectMovableObjects(App::DocumentObject* selRoot,
     if (canDragObjectIn3d(part)) {
         auto* pPlc = dynamic_cast<App::PropertyPlacement*>(part->getPropertyByName("Placement"));
         if (pPlc) {
-            MovingObject movingObj(part, pPlc->getValue(), selRoot, subNamePrefix);
-            docsToMove.emplace_back(movingObj);
+            docsToMove.emplace_back(part, pPlc->getValue(), selRoot, subNamePrefix);
         }
     }
 }
