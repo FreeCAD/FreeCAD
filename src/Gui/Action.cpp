@@ -871,7 +871,6 @@ RecentFilesAction::RecentFilesAction ( Command* pcCmd, QObject * parent )
     auto clearFun = [this, hGrp = _pimpl->handle](){
         const size_t recentFilesListSize = hGrp->GetASCIIs("MRU").size();
         for (size_t i = 0; i < recentFilesListSize; i++)
-
         {
             const QByteArray key = QStringLiteral("MRU%1").arg(i).toLocal8Bit();
             hGrp->SetASCII(key.data(), "");
