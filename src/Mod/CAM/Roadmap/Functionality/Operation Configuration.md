@@ -34,7 +34,7 @@
 | -------------------------------------- | ------------------------------------------------ | ---------------------------- |
 | Canned Cycles                          | Support G81, G82, G83, G73                       | COMPLETE                     |
 | Multiple Targets                       | Handle multiple targets in one op                | COMPLETE                     |
-| Drill Ordering                         | Allow user-defined target order                  | Incomplete                   |
+| Drill Ordering                         | Allow user-defined target order. Don't ignore selected objects                 | Incomplete                   |
 | Obstructed Faces                       | Support targets across intermediate obstructions | Incomplete                   |
 | enable and disable indidvidual targets |                                                  | Requires deleting the target |
 |                                        |                                                  |                              |
