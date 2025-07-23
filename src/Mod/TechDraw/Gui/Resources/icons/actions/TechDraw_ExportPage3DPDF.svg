@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="64"
+   height="64"
+   viewBox="0 0 64 64"
+   version="1.1"
+   xmlns="http://www.w3.org/2000/svg">
+  <g id="layer1">
+    <!-- Document base -->
+    <rect
+       x="12"
+       y="8"
+       width="40"
+       height="48"
+       rx="2"
+       ry="2"
+       style="fill:#ffffff;stroke:#000000;stroke-width:1.5"/>
+    
+    <!-- 3D cube representation -->
+    <g transform="translate(18,14)">
+      <!-- Front face -->
+      <rect x="4" y="8" width="12" height="12" style="fill:#4a90e2;stroke:#000000;stroke-width:1"/>
+      <!-- Top face -->
+      <path d="M4,8 L8,4 L20,4 L16,8 Z" style="fill:#6bb6ff;stroke:#000000;stroke-width:1"/>
+      <!-- Right face -->
+      <path d="M16,8 L20,4 L20,16 L16,20 Z" style="fill:#2e6bb8;stroke:#000000;stroke-width:1"/>
+    </g>
+    
+    <!-- PDF text -->
+    <text
+       x="32"
+       y="45"
+       style="font-family:Arial;font-size:8px;font-weight:bold;text-anchor:middle;fill:#cc0000">PDF</text>
+    
+    <!-- 3D indicator -->
+    <text
+       x="32"
+       y="53"
+       style="font-family:Arial;font-size:6px;font-weight:bold;text-anchor:middle;fill:#000000">3D</text>
+       
+    <!-- Export arrow -->
+    <path
+       d="M46 32 L52 26 L50 24 L46 28 L42 24 L40 26 Z"
+       style="fill:#00aa00;stroke:#006600;stroke-width:1"/>
+  </g>
+</svg> 

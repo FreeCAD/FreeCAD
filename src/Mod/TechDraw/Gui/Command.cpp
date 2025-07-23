@@ -79,6 +79,7 @@
 #include "TaskSectionView.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderDrawingView.h"
+#include "ViewProviderImage.h"
 #include "CommandHelpers.h"
 
 void execSimpleSection(Gui::Command* cmd);
@@ -1900,6 +1901,42 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
 bool CmdTechDrawExportPageDXF::isActive() { return DrawGuiUtil::needPage(this); }
 
 //===========================================================================
+// TechDraw_ExportPage3DPDF
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawExportPage3DPDF)
+
+CmdTechDrawExportPage3DPDF::CmdTechDrawExportPage3DPDF() : Command("TechDraw_ExportPage3DPDF")
+{
+    sGroup = QT_TR_NOOP("File");
+    sMenuText = QT_TR_NOOP("Export Page as 3D PDF");
+    sToolTipText = sMenuText;
+    sWhatsThis = "TechDraw_ExportPage3DPDF";
+    sStatusTip = sToolTipText;
+    sPixmap = "actions/TechDraw_ExportPage3DPDF";
+}
+
+void CmdTechDrawExportPage3DPDF::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+
+    // For now, just log the message as requested
+    Base::Console().message("Export 3d pdf button pressed\n");
+}
+
+bool CmdTechDrawExportPage3DPDF::isActive() 
+{ 
+    if (!DrawGuiUtil::needPage(this)) {
+        return false;
+    }
+    return true;
+}
+
+//===========================================================================
 // TechDraw_ProjectShape
 //===========================================================================
 
@@ -1948,6 +1985,7 @@ void CreateTechDrawCommands()
     rcCmdMgr.addCommand(new CmdTechDrawSymbol());
     rcCmdMgr.addCommand(new CmdTechDrawExportPageSVG());
     rcCmdMgr.addCommand(new CmdTechDrawExportPageDXF());
+    rcCmdMgr.addCommand(new CmdTechDrawExportPage3DPDF());
     rcCmdMgr.addCommand(new CmdTechDrawDraftView());
     rcCmdMgr.addCommand(new CmdTechDrawArchView());
     rcCmdMgr.addCommand(new CmdTechDrawSpreadsheetView());
