@@ -559,9 +559,10 @@ std::shared_ptr<ASMTAssembly> AssemblyObject::makeMbdAssembly()
     return assembly;
 }
 
-App::DocumentObject* AssemblyObject::getJointOfPartConnectingToGround(App::DocumentObject* part,
-                                                 std::string& name,
-                                                 const std::vector<App::DocumentObject*>& excludeJoints)
+App::DocumentObject* AssemblyObject::getJointOfPartConnectingToGround(
+    App::DocumentObject* part,
+    std::string& name,
+    const std::vector<App::DocumentObject*>& excludeJoints)
 {
     if (!part) {
         return nullptr;
@@ -1888,7 +1889,8 @@ std::vector<ObjRef> AssemblyObject::getDownstreamParts(App::DocumentObject* part
     return downstreamParts;
 }
 
-App::DocumentObject* AssemblyObject::getUpstreamMovingPart(App::DocumentObject* part,
+App::DocumentObject*
+AssemblyObject::getUpstreamMovingPart(App::DocumentObject* part,
                                       App::DocumentObject*& joint,
                                       std::string& name,
                                       std::vector<App::DocumentObject*> excludeJoints)

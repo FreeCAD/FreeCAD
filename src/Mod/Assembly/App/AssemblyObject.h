@@ -154,8 +154,9 @@ public:
     std::vector<App::DocumentObject*> getGroundedJoints();
     std::vector<App::DocumentObject*> getJointsOfObj(App::DocumentObject* obj);
     std::vector<App::DocumentObject*> getJointsOfPart(App::DocumentObject* part);
-    App::DocumentObject* getJointOfPartConnectingToGround(App::DocumentObject* part,
-                                                          std::string& name,
+    App::DocumentObject*
+    getJointOfPartConnectingToGround(App::DocumentObject* part,
+                                     std::string& name,
                                      const std::vector<App::DocumentObject*>& excludeJoints = {});
     std::unordered_set<App::DocumentObject*> getGroundedParts();
     std::unordered_set<App::DocumentObject*> fixGroundedParts();
@@ -177,7 +178,8 @@ public:
 
     std::vector<ObjRef> getDownstreamParts(App::DocumentObject* part,
                                            App::DocumentObject* joint = nullptr);
-    App::DocumentObject* getUpstreamMovingPart(App::DocumentObject* part,
+    App::DocumentObject*
+    getUpstreamMovingPart(App::DocumentObject* part,
                           App::DocumentObject*& joint,
                           std::string& name,
                           std::vector<App::DocumentObject*> excludeJoints = {});
