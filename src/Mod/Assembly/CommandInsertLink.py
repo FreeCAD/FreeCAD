@@ -418,7 +418,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
         self.prevScreenCenter = screenCenter
 
-        # We turn it flexible after changing the position so that it uses the logic in 
+        # We turn it flexible after changing the position so that it uses the logic in
         # AssemblyLink::onChanged to handle positioning correctly.
         if selectedPart.isDerivedFrom("Assembly::AssemblyObject"):
             addedObject.Rigid = self.form.CheckBox_RigidSubAsm.isChecked()
