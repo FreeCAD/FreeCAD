@@ -212,8 +212,10 @@ private:
 public:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        return {{QObject::tr("%1 pick edge to trim", "Sketcher Trimming: hint"),
-                 {Gui::InputHint::UserInput::MouseLeft}}};
+        return {
+            {tr("%1 pick edge to trim", "Sketcher Trimming: hint"),
+             {Gui::InputHint::UserInput::MouseLeft}},
+        };
     }
 };
 

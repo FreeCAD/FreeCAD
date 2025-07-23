@@ -927,6 +927,7 @@ void Hole::updateHoleCutParams()
             HoleCutCountersinkAngle.setReadOnly(false);
         }
 
+        // Tag: MIGRATION
         // handle since FreeCAD 0.18 deprecated types that were
         // removed after FreeCAD 0.20
         if (holeCutTypeStr == "Cheesehead (deprecated)") {

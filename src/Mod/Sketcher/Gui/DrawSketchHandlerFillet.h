@@ -277,16 +277,14 @@ private:
             catch (const Base::CADKernelError& e) {
                 if (e.getTranslatable()) {
                     Gui::TranslatedUserError(sketchgui,
-                                             QObject::tr("CAD Kernel Error"),
-                                             QObject::tr(e.getMessage().c_str()));
+                                             tr("CAD Kernel Error"),
+                                             tr(e.getMessage().c_str()));
                 }
                 Gui::Selection().clearSelection();
                 Gui::Command::abortCommand();
             }
             catch (const Base::ValueError& e) {
-                Gui::TranslatedUserError(sketchgui,
-                                         QObject::tr("Value Error"),
-                                         QObject::tr(e.getMessage().c_str()));
+                Gui::TranslatedUserError(sketchgui, tr("Value Error"), tr(e.getMessage().c_str()));
                 Gui::Selection().clearSelection();
                 Gui::Command::abortCommand();
             }
@@ -347,7 +345,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Fillet/Chamfer parameters"));
+        return QString(tr("Fillet/Chamfer parameters"));
     }
 
     bool canGoToNextMode() override
@@ -411,21 +409,23 @@ private:
     int vtId, geoId1, geoId2;
     Base::Vector2d firstPos, secondPos;
 
-    struct HintEntry
-    {
-        SelectMode state;
-        std::list<Gui::InputHint> hints;
-    };
-
-    using HintTable = std::vector<HintEntry>;
-
-    static HintTable getFilletHintTable();
-    static std::list<Gui::InputHint> lookupFilletHints(SelectMode state);
-
 public:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        return lookupFilletHints(state());
+        using enum Gui::InputHint::UserInput;
+
+        return Gui::lookupHints<SelectMode>(
+            state(),
+            {
+                {.state = SelectMode::SeekFirst,
+                 .hints = {{tr("%1 pick first edge or point", "Sketcher Fillet/Chamfer: hint"),
+                            {MouseLeft}}}},
+                {.state = SelectMode::SeekSecond,
+                 .hints = {{tr("%1 pick second edge", "Sketcher Fillet/Chamfer: hint"),
+                            {MouseLeft}}}},
+                {.state = SelectMode::End,
+                 .hints = {{tr("%1 create fillet", "Sketcher Fillet/Chamfer: hint"), {MouseLeft}}}},
+            });
     }
 };
 
@@ -472,33 +472,6 @@ void DSHFilletController::adaptDrawingToCheckboxChange(int checkboxindex, bool v
     }
 
     handler->updateCursor();
-}
-
-
-DrawSketchHandlerFillet::HintTable DrawSketchHandlerFillet::getFilletHintTable()
-{
-    using enum Gui::InputHint::UserInput;
-
-    return {{.state = SelectMode::SeekFirst,
-             .hints = {{QObject::tr("%1 pick first edge or point", "Sketcher Fillet/Chamfer: hint"),
-                        {MouseLeft}}}},
-            {.state = SelectMode::SeekSecond,
-             .hints = {{QObject::tr("%1 pick second edge", "Sketcher Fillet/Chamfer: hint"),
-                        {MouseLeft}}}},
-            {.state = SelectMode::End,
-             .hints = {
-                 {QObject::tr("%1 create fillet", "Sketcher Fillet/Chamfer: hint"), {MouseLeft}}}}};
-}
-
-std::list<Gui::InputHint> DrawSketchHandlerFillet::lookupFilletHints(SelectMode state)
-{
-    const auto filletHintTable = getFilletHintTable();
-
-    auto it = std::ranges::find_if(filletHintTable, [state](const HintEntry& entry) {
-        return entry.state == state;
-    });
-
-    return (it != filletHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
 }
 
 }  // namespace SketcherGui

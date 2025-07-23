@@ -719,15 +719,19 @@ void ConstraintView::swapNamedOfSelectedItems()
 ConstraintFilterList::ConstraintFilterList(QWidget* parent)
     : QListWidget(parent)
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    int filterState = hGrp->GetInt(
-        "ConstraintFilterState",
-        std::numeric_limits<int>::max()); // INT_MAX = 01111111111111111111111111111111 in binary.
-
     normalFilterCount = filterItems.size() - 2;// All filter but selected and associated
     selectedFilterIndex = normalFilterCount;
     associatedFilterIndex = normalFilterCount + 1;
+
+    // default filters are all except for special filters
+    int defaultFilter = 0;
+    for (int i = 0; i < normalFilterCount; i++) {
+        defaultFilter |= 1 << i;
+    }
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    int filterState = hGrp->GetInt("SelectedConstraintFilters", defaultFilter);
 
     for (auto const& filterItem : filterItems) {
         Q_UNUSED(filterItem);
@@ -957,11 +961,17 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
 
     //NOLINTBEGIN
     connectionConstraintsChanged = sketchView->signalConstraintsChanged.connect(
-        std::bind(&SketcherGui::TaskSketcherConstraints::slotConstraintsChanged, this));
+        std::bind(&SketcherGui::TaskSketcherConstraints::updateList, this));
     //NOLINTEND
 
     this->groupLayout()->addWidget(proxy);
 
+    // Initialize special filters
+    for (int i = filterList->normalFilterCount; i < filterList->count(); i++) {
+        if (filterList->item(i)->checkState() == Qt::Checked) {
+            onFilterListItemChanged(filterList->item(i));
+        }
+    }
     multiFilterStatus = filterList->getMultiFilter();
 
     ui->listWidgetConstraints->setStyleSheet(QStringLiteral("margin-top: 0px"));
@@ -972,11 +982,7 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
         std::bind(&TaskSketcherConstraints::onChangedSketchView, this, sp::_1, sp::_2));
     //NOLINTEND
 
-    slotConstraintsChanged();// Populate constraints list
-    // Initialize special filters
-    for (int i = filterList->normalFilterCount; i < filterList->count(); i++) {
-        onFilterListItemChanged(filterList->item(i));
-    }
+    updateList();
 }
 
 TaskSketcherConstraints::~TaskSketcherConstraints()
@@ -1022,9 +1028,7 @@ void TaskSketcherConstraints::onSettingsRestrictVisibilityChanged(bool value)
         hGrp->SetBool("VisualisationTrackingFilter", value);
     }
 
-    // Act
-    if (value)
-        change3DViewVisibilityToTrackFilter();
+    change3DViewVisibilityToTrackFilter(value);
 }
 
 void TaskSketcherConstraints::onSettingsAutoConstraintsChanged(bool value)
@@ -1097,7 +1101,6 @@ void TaskSketcherConstraints::onListWidgetConstraintsEmitShowSelection3DVisibili
 void TaskSketcherConstraints::changeFilteredVisibility(bool show, ActionTarget target)
 {
     assert(sketchView);
-    const Sketcher::SketchObject* sketch = sketchView->getSketchObject();
 
     auto selecteditems = ui->listWidgetConstraints->selectedItems();
 
@@ -1133,35 +1136,7 @@ void TaskSketcherConstraints::changeFilteredVisibility(bool show, ActionTarget t
     }
 
     if (!constrIds.empty()) {
-
-        Gui::Command::openCommand(
-            QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
-
-        std::stringstream stream;
-
-        stream << '[';
-
-        for (size_t i = 0; i < constrIds.size() - 1; i++) {
-            stream << constrIds[i] << ",";
-        }
-        stream << constrIds[constrIds.size() - 1] << ']';
-
-        std::string constrIdList = stream.str();
-
-        try {
-            Gui::cmdAppObjectArgs(
-                sketch, "setVirtualSpace(%s, %s)", constrIdList, show ? "False" : "True");
-        }
-        catch (const Base::Exception&) {
-            Gui::Command::abortCommand();
-
-            Gui::TranslatedUserError(
-                sketch, tr("Error"), tr("Impossible to update visibility tracking"));
-
-            return;
-        }
-
-        Gui::Command::commitCommand();
+        doSetVirtualSpace(constrIds, !show);
     }
 }
 
@@ -1249,22 +1224,8 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemChanged(QListWidgetItem
         }
     }
 
-    // update constraint virtual space status
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
-    try {
-        Gui::cmdAppObjectArgs(
-            sketch,
-            "setVirtualSpace(%d, %s)",
-            it->ConstraintNbr,
-            ((item->checkState() == Qt::Checked) != sketchView->getIsShownVirtualSpace()) ? "False"
-                                                                                          : "True");
-        Gui::Command::commitCommand();
-    }
-    catch (const Base::Exception& e) {
-        Gui::Command::abortCommand();
-
-        Gui::NotifyUserError(sketch, QT_TRANSLATE_NOOP("Notifications", "Value Error"), e.what());
-    }
+    std::vector<int> constraintNum = {it->ConstraintNbr};
+    doSetVirtualSpace(constraintNum, (item->checkState() == Qt::Checked) == sketchView->getIsShownVirtualSpace());
 
     inEditMode = false;
 }
@@ -1325,16 +1286,14 @@ void TaskSketcherConstraints::updateList()
     multiFilterStatus =
         filterList->getMultiFilter();// moved here in case the filter is changed programmatically.
 
+    // new constraints have to be added first
+    slotConstraintsChanged();
+
     // enforce constraint visibility
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher");
     bool visibilityTracksFilter = hGrp->GetBool("VisualisationTrackingFilter", false);
-
-    if (visibilityTracksFilter)
-        change3DViewVisibilityToTrackFilter();// it will call slotConstraintChanged via update
-                                              // mechanism
-    else
-        slotConstraintsChanged();
+    change3DViewVisibilityToTrackFilter(visibilityTracksFilter);
 }
 
 void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -1501,7 +1460,7 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemSelectionChanged()
     this->blockSelection(block);
 }
 
-void TaskSketcherConstraints::change3DViewVisibilityToTrackFilter()
+void TaskSketcherConstraints::change3DViewVisibilityToTrackFilter(bool filterEnabled)
 {
     assert(sketchView);
     // Build up ListView with the constraints
@@ -1513,8 +1472,7 @@ void TaskSketcherConstraints::change3DViewVisibilityToTrackFilter()
 
     for (std::size_t i = 0; i < vals.size(); ++i) {
         ConstraintItem* it = static_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
-
-        bool visible = !isConstraintFiltered(it);
+        bool visible = !filterEnabled || !isConstraintFiltered(it);
 
         // If the constraint is filteredout and it was previously shown in 3D view
         if (!visible && it->isInVirtualSpace() == sketchView->getIsShownVirtualSpace()) {
@@ -1524,58 +1482,58 @@ void TaskSketcherConstraints::change3DViewVisibilityToTrackFilter()
             constrIdsToCurrentSpace.push_back(it->ConstraintNbr);
         }
     }
+    if (!constrIdsToVirtualSpace.empty()) {
+        bool ret = doSetVirtualSpace(constrIdsToVirtualSpace, true);
+        if (!ret) {
+            return;
+        }
+    }
 
-    if (!constrIdsToVirtualSpace.empty() || !constrIdsToCurrentSpace.empty()) {
+    if (!constrIdsToCurrentSpace.empty()) {
+        bool ret = doSetVirtualSpace(constrIdsToCurrentSpace, false);
 
-        Gui::Command::openCommand(
+        if (!ret) {
+            return;
+        }
+    }
+
+    if (constrIdsToVirtualSpace.empty() && constrIdsToCurrentSpace.empty()) {
+        slotConstraintsChanged();
+    }
+}
+
+bool TaskSketcherConstraints::doSetVirtualSpace(const std::vector<int>& constrIds, bool isvirtualspace) {
+    assert(sketchView);
+    const Sketcher::SketchObject* sketch = sketchView->getSketchObject();
+
+    std::stringstream stream;
+
+    stream << '[';
+
+    for (size_t i = 0; i < constrIds.size() - 1; i++) {
+        stream << constrIds[i] << ",";
+    }
+    stream << constrIds[constrIds.size() - 1] << ']';
+
+    std::string constrIdList = stream.str();
+
+    Gui::Command::openCommand(
             QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
-
-        auto doSetVirtualSpace = [&sketch](const std::vector<int>& constrIds, bool isvirtualspace) {
-            std::stringstream stream;
-
-            stream << '[';
-
-            for (size_t i = 0; i < constrIds.size() - 1; i++) {
-                stream << constrIds[i] << ",";
-            }
-            stream << constrIds[constrIds.size() - 1] << ']';
-
-            std::string constrIdList = stream.str();
-
-            try {
-                Gui::cmdAppObjectArgs(sketch,
-                                      "setVirtualSpace(%s, %s)",
-                                      constrIdList,
-                                      isvirtualspace ? "True" : "False");
-            }
-            catch (const Base::Exception&) {
-                Gui::Command::abortCommand();
-
-                Gui::TranslatedUserError(
-                    sketch, tr("Error"), tr("Impossible to update visibility tracking:") + QLatin1String(" "));
-
-                return false;
-            }
-
-            return true;
-        };
-
-
-        if (!constrIdsToVirtualSpace.empty()) {
-            bool ret = doSetVirtualSpace(constrIdsToVirtualSpace, true);
-            if (!ret)
-                return;
-        }
-
-        if (!constrIdsToCurrentSpace.empty()) {
-            bool ret = doSetVirtualSpace(constrIdsToCurrentSpace, false);
-
-            if (!ret)
-                return;
-        }
-
+    try {
+        Gui::cmdAppObjectArgs(sketch,
+            "setVirtualSpace(%s, %s)",
+            constrIdList,
+            isvirtualspace ? "True" : "False");
         Gui::Command::commitCommand();
     }
+    catch (const Base::Exception& e) {
+        Gui::Command::abortCommand();
+
+        Gui::TranslatedUserError(
+            sketch, tr("Error"), tr("Impossible to update visibility tracking:") + QLatin1String(" ") + QLatin1String(e.what()));
+        return false;
+    }
+    return true;
 }
 
 bool TaskSketcherConstraints::isConstraintFiltered(QListWidgetItem* item)
@@ -1760,22 +1718,24 @@ void TaskSketcherConstraints::onFilterListItemChanged(QListWidgetItem* item)
     else if (filterindex == filterList->selectedFilterIndex) {// Selected constraints
         if (item->checkState() == Qt::Checked) {
             specialFilterMode = SpecialFilterType::Selected;
-            filterList->item(filterList->associatedFilterIndex)
-                ->setCheckState(Qt::Unchecked);// Disable 'associated'
             updateSelectionFilter();
         }
-        else
+        else {
             specialFilterMode = SpecialFilterType::None;
+        }
+        filterList->item(filterList->associatedFilterIndex)
+                ->setCheckState(Qt::Unchecked); // Disable 'associated'
     }
     else {// Associated constraints
         if (item->checkState() == Qt::Checked) {
             specialFilterMode = SpecialFilterType::Associated;
-            filterList->item(filterList->selectedFilterIndex)
-                ->setCheckState(Qt::Unchecked);// Disable 'selected'
             updateAssociatedConstraintsFilter();
         }
-        else
+        else {
             specialFilterMode = SpecialFilterType::None;
+        }
+        filterList->item(filterList->selectedFilterIndex)
+                ->setCheckState(Qt::Unchecked); // Disable 'selected'
     }
 
     filterList->blockSignals(tmpBlock);
@@ -1789,7 +1749,7 @@ void TaskSketcherConstraints::onFilterListItemChanged(QListWidgetItem* item)
     }
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    hGrp->SetInt("ConstraintFilterState", filterState);
+    hGrp->SetInt("SelectedConstraintFilters", filterState);
 
     // if tracking, it will call slotConstraintChanged via update mechanism as Multi Filter affects
     // not only visibility, but also filtered list content, if not tracking will still update the
