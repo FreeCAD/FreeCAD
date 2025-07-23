@@ -2269,8 +2269,9 @@ Base::Vector3d Hole::guessNormalDirection(const TopoShape& profileshape) const
         if (sf.GetType() != GeomAbs_Cylinder) {
             throw(Base::Exception("Cannot create hole from non cylindrical face"));
         }
-        
-        return Base::convertTo<Base::Vector3d>(sf.Cylinder().Axis().Direction());
+
+        gp_Dir dir = sf.Cylinder().Axis().Direction();
+        return Base::Vector3d(dir.X(), dir.Y(), dir.Z());
     }
     return getProfileNormal();
 }
