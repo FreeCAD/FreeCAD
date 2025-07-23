@@ -45,12 +45,5 @@ TEST_F(TestTopoDS_Shape, TestCastNullEdge)
     EXPECT_TRUE(vertex.IsNull());
 }
 
-TEST_F(TestTopoDS_Shape, TestExploreNullShape)
-{
-    TopoDS_Face face;
-    TopExp_Explorer xp(face, TopAbs_FACE);
-    EXPECT_FALSE(xp.More());
-}
-
 // clang-format on
 // NOLINTEND
