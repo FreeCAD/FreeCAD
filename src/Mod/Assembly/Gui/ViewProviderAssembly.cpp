@@ -1,4 +1,4 @@
-﻿// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *                                                                          *
  *   Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
@@ -642,24 +642,8 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
                     // In case of sub-assembly, the jointgroup would trigger the dragger.
                     continue;
                 }
-                if (onlySolids
-                    && !(obj->isDerivedFrom<App::Part>() || obj->isDerivedFrom<Part::Feature>()
-                         || obj->isDerivedFrom<App::Link>())) {
-                    continue;
-                }
-                App::DocumentObject* part =
-                    getMovingPartFromRef(assemblyPart, selRoot, subNamesStr);
 
-                if (!canDragObjectIn3d(part)) {
-                    continue;
-                }
-
-                auto* pPlc =
-                    dynamic_cast<App::PropertyPlacement*>(part->getPropertyByName("Placement"));
-
-                MovingObject movingObj(part, pPlc->getValue(), selRoot, subNamesStr);
-
-                docsToMove.emplace_back(movingObj);
+                collectMovableObjects(selRoot, subNamesStr, obj, onlySolids);
             }
         }
     }
@@ -690,14 +674,51 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
                     Gui::Selection().clearSelection();
                     docsToMove.clear();
                 }
-                MovingObject movingObj(obj, pPlc->getValue(), selRoot, sub);
 
-                docsToMove.emplace_back(movingObj);
+                docsToMove.emplace_back(obj, pPlc->getValue(), selRoot, sub);
             }
         }
     }
 
     return !docsToMove.empty();
+}
+
+void ViewProviderAssembly::collectMovableObjects(App::DocumentObject* selRoot,
+                                                 const std::string& subNamePrefix,
+                                                 App::DocumentObject* currentObject,
+                                                 bool onlySolids)
+{
+    // Get the AssemblyObject for context
+    auto* assemblyPart = getObject<AssemblyObject>();
+
+    // Handling of special case: flexible AssemblyLink
+    auto* asmLink = dynamic_cast<Assembly::AssemblyLink*>(currentObject);
+    if (asmLink && !asmLink->isRigid()) {
+        std::vector<App::DocumentObject*> children = asmLink->Group.getValues();
+        for (auto* child : children) {
+            // Recurse on children, appending the child's name to the subName prefix
+            std::string newSubNamePrefix = subNamePrefix + child->getNameInDocument() + ".";
+            collectMovableObjects(selRoot, newSubNamePrefix, child, onlySolids);
+        }
+        return;
+    }
+
+    // Base case: This is not a flexible link, process it as a potential movable part.
+    if (onlySolids
+        && !(currentObject->isDerivedFrom<App::Part>()
+             || currentObject->isDerivedFrom<Part::Feature>()
+             || currentObject->isDerivedFrom<App::Link>())) {
+        return;
+    }
+
+    App::DocumentObject* part = getMovingPartFromRef(assemblyPart, selRoot, subNamePrefix);
+
+    if (canDragObjectIn3d(part)) {
+        auto* pPlc = dynamic_cast<App::PropertyPlacement*>(part->getPropertyByName("Placement"));
+        if (pPlc) {
+            docsToMove.emplace_back(part, pPlc->getValue(), selRoot, subNamePrefix);
+        }
+    }
 }
 
 ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
