@@ -74,6 +74,7 @@ protected:
 
 private Q_SLOTS:
     void onCropChanged();
+    void on3DPDFExportChanged();
 
 private:
     std::unique_ptr<Ui_TaskActiveView> ui;

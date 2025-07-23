@@ -68,6 +68,7 @@ TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat)
 
     setUiPrimary();
     connect(ui->cbCrop, &QCheckBox::clicked, this, &TaskActiveView::onCropChanged);
+    connect(ui->cb3DPDFExport, &QCheckBox::clicked, this, &TaskActiveView::on3DPDFExportChanged);
 }
 
 TaskActiveView::~TaskActiveView() {}
@@ -91,6 +92,8 @@ void TaskActiveView::setUiPrimary()
     //    Base::Console().message("TAV::setUiPrimary()\n");
     setWindowTitle(QObject::tr("ActiveView to TD View"));
     ui->cbCrop->setChecked(false);
+    ui->cb3DPDFExport->setChecked(false);
+
     enableCrop(false);
     // cropping is in mm, but image size is in pixels/scene units
     ui->qsbWidth->setValue(Rez::appX(SXGAWidth));
@@ -198,6 +201,12 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
         imageHeight = Rez::guiX(ui->qsbHeight->rawValue());
     }
 
+    // Get the 3D PDF Export option state
+    bool enable3DPDFExport = ui->cb3DPDFExport->isChecked();
+    if (enable3DPDFExport) {
+        Base::Console().message("3D PDF Export is enabled for this ActiveView\n");
+    }
+
     QImage image(imageWidth, imageHeight,
                  QImage::Format_RGB32);    //arbitrary initial image size.
     image.fill(QColor(Qt::transparent));
@@ -227,6 +236,7 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
             auto vpImage = freecad_cast<ViewProviderImage*>(vp);
             if (vpImage) {
                 vpImage->Crop.setValue(ui->cbCrop->isChecked());
+                vpImage->Enable3DPDFExport.setValue(ui->cb3DPDFExport->isChecked());
             }
         }
     }
@@ -237,6 +247,14 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
 void TaskActiveView::onCropChanged()
 {
     enableCrop(ui->cbCrop->isChecked());
+}
+
+void TaskActiveView::on3DPDFExportChanged()
+{
+    // Handle 3D PDF export option change
+    // For now, just log the state change
+    Base::Console().message("3D PDF Export option changed to: %s\n", 
+                           ui->cb3DPDFExport->isChecked() ? "enabled" : "disabled");
 }
 
 void TaskActiveView::enableCrop(bool state)

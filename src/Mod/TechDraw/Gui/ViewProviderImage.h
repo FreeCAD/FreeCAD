@@ -44,6 +44,7 @@ public:
     ~ViewProviderImage() override;
 
     App::PropertyBool  Crop;              //crop to feature width x height
+    App::PropertyBool  Enable3DPDFExport; //enable 3D PDF export for this view
 
     bool useNewSelectionModel() const override {return false;}
     /// returns a list of all possible modes

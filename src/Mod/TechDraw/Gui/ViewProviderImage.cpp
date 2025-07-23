@@ -39,6 +39,7 @@ ViewProviderImage::ViewProviderImage()
     sPixmap = "actions/TechDraw_Image";
 
     ADD_PROPERTY_TYPE(Crop ,(false), "Image", App::Prop_None, "Crop image to Width x Height");
+    ADD_PROPERTY_TYPE(Enable3DPDFExport ,(false), "Image", App::Prop_None, "Enable 3D PDF export for this image view");
 }
 
 ViewProviderImage::~ViewProviderImage()
