@@ -1388,10 +1388,6 @@ void Application::setEditDocument(Gui::Document* pcDocument)
     }
     d->editDocuments.push_back(pcDocument);
 
-    // TODO-theo-vt remove this when it is no longer useful
-    if (d->editDocuments.size() > 1) {
-        std::cerr<<"More than one document in edit!\n";
-    }
     updateActions();
 }
 

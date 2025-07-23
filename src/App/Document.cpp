@@ -101,6 +101,9 @@ using namespace zipios;
 #define FC_LOGFEATUREUPDATE
 #endif
 
+// TODO-theo-vt remove when no longer useful
+// #define DEBUG_TRANSACTIONS
+
 namespace fs = std::filesystem;
 
 namespace App
@@ -459,7 +462,9 @@ int Document::setActiveTransaction(const std::string& name, bool tmpName, int ti
         return 0;
     }
     d->bookedTransaction = Transaction::getNewID();
+#ifdef DEBUG_TRANSACTIONS
     std::cerr << "Created transaction " << name <<" #"<<d->bookedTransaction<< "\n";
+#endif
     GetApplication().setTransactionDescription(d->bookedTransaction, TransactionDescription {.initiator = this, .name = name, .tmp = tmpName});
     return d->bookedTransaction;
 }
@@ -488,7 +493,7 @@ void Document::_checkTransaction(DocumentObject* pcDelObj, const Property* What,
     // if the undo is active but no transaction open, open one!
     if (d->iUndoMode == 0 || isPerformingTransaction() || d->activeUndoTransaction) {
         return;
-    } 
+    }
 
     if (!testStatus(Restoring) || testStatus(Importing)) {
 
@@ -559,7 +564,7 @@ void Document::commitTransaction() // NOLINT
     }
 
     if (d->activeUndoTransaction) {
-        // This will iterate over all documents and ask them to 
+        // This will iterate over all documents and ask them to
         // commit their transaction if their ID matches
         GetApplication().closeActiveTransaction(false, d->activeUndoTransaction->getID());
     }
@@ -576,14 +581,16 @@ bool Document::_commitTransaction(const bool notify)
     if (d->committing) {
         // for a recursive call return without printing a warning
         return false;
-    }    
+    }
 
     d->bookedTransaction = 0;
     if (d->activeUndoTransaction) {
         Base::FlagToggler<> flag(d->committing);
         Application::TransactionSignaller signaller(false, true);
         const int id = d->activeUndoTransaction->getID();
+#ifdef DEBUG_TRANSACTIONS
         std::cerr<<"Close transaction #"<<id<<"\n";
+#endif
         mUndoTransactions.push_back(d->activeUndoTransaction);
         d->activeUndoTransaction = nullptr;
 
@@ -3178,7 +3185,7 @@ DocumentObject* Document::addObject(const char* sType,
                AddObjectOption::SetNewStatus
                    | (isPartial ? AddObjectOption::SetPartialStatus : AddObjectOption::UnsetPartialStatus)
                    | (isNew ? AddObjectOption::DoSetup : AddObjectOption::None)
-                   | AddObjectOption::ActivateObject, 
+                   | AddObjectOption::ActivateObject,
                viewType);
 
     // return the Object
@@ -3245,7 +3252,7 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName, Add
     else {
         ObjectName = getUniqueObjectName(pcObject->getTypeId().getName());
     }
- 
+
     // insert in the name map
     d->objectMap[ObjectName] = pcObject;
     d->objectNameManager.addExactName(ObjectName);
@@ -3261,7 +3268,7 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName, Add
     }
     d->objectIdMap[pcObject->_Id] = pcObject;
     d->objectArray.push_back(pcObject);
-     
+
      // do no transactions if we do a rollback!
     if (!d->rollback) {
         // Undo stuff
@@ -3280,9 +3287,9 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName, Add
     if (!isPerformingTransaction() && options.testFlag(AddObjectOption::DoSetup)) {
         pcObject->setupObject();
     }
- 
+
     if (options.testFlag(AddObjectOption::SetNewStatus)) {
-        pcObject->setStatus(ObjectStatus::New, true);    
+        pcObject->setStatus(ObjectStatus::New, true);
     }
     if (options.testFlag(AddObjectOption::SetPartialStatus) || options.testFlag(AddObjectOption::UnsetPartialStatus)) {
         pcObject->setStatus(ObjectStatus::PartialObject, options.testFlag(AddObjectOption::SetPartialStatus));
@@ -3294,15 +3301,15 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName, Add
     pcObject->_pcViewProviderName = viewType ? viewType : "";
 
     signalNewObject(*pcObject);
- 
+
     // do no transactions if we do a rollback!
     if (!d->rollback && d->activeUndoTransaction) {
         signalTransactionAppend(*pcObject, d->activeUndoTransaction);
     }
- 
+
     if (options.testFlag(AddObjectOption::ActivateObject)) {
         d->activeObject = pcObject;
-        signalActivatedObject(*pcObject);    
+        signalActivatedObject(*pcObject);
     }
 }
 
@@ -3335,7 +3342,7 @@ void Document::_removeObject(DocumentObject* pcObject, RemoveObjectOptions optio
         FC_ERR("Cannot delete " << pcObject->getFullName() << " while recomputing");
         return;
     }
-    
+
     TransactionLocker tlock(this);
 
     _checkTransaction(pcObject, nullptr, __LINE__);
@@ -3345,7 +3352,7 @@ void Document::_removeObject(DocumentObject* pcObject, RemoveObjectOptions optio
         FC_ERR("Internal error, could not find " << pcObject->getFullName() << " to remove");
     }
 
-    if (options.testFlag(RemoveObjectOption::PreserveChildrenVisibility) 
+    if (options.testFlag(RemoveObjectOption::PreserveChildrenVisibility)
         && !d->rollback && d->activeUndoTransaction && pcObject->hasChildElement()) {
         // Preserve link group sub object global visibilities. Normally those
         // claimed object should be hidden in global coordinate space. However,
@@ -3353,7 +3360,7 @@ void Document::_removeObject(DocumentObject* pcObject, RemoveObjectOptions optio
         // children, which may now in the global space. When the parent is
         // undeleted, having its children shown in both the local and global
         // coordinate space is very confusing. Hence, we preserve the visibility
-        // here        
+        // here
         for (auto& sub : pcObject->getSubObjects()) {
             if (sub.empty()) {
                 continue;
@@ -3406,7 +3413,7 @@ void Document::_removeObject(DocumentObject* pcObject, RemoveObjectOptions optio
     }
 
     std::unique_ptr<DocumentObject> tobedestroyed;
-    if ((options.testFlag(RemoveObjectOption::MayDestroyOutOfTransaction) && !d->rollback && !d->activeUndoTransaction) 
+    if ((options.testFlag(RemoveObjectOption::MayDestroyOutOfTransaction) && !d->rollback && !d->activeUndoTransaction)
         || (options.testFlag(RemoveObjectOption::DestroyOnRollback) && d->rollback)) {
         // if not saved in undo -> delete object later
         std::unique_ptr<DocumentObject> delobj(pos->second);
@@ -3422,13 +3429,13 @@ void Document::_removeObject(DocumentObject* pcObject, RemoveObjectOptions optio
             break;
         }
     }
-    
+
     // In case the object gets deleted the pointer must be nullified
     if (tobedestroyed) {
         tobedestroyed->pcNameInDocument = nullptr;
     }
 
-    // Erase last to avoid invalidating pcObject->pcNameInDocument 
+    // Erase last to avoid invalidating pcObject->pcNameInDocument
     // when it is still needed in Transaction::addObjectNew
     d->objectMap.erase(pos);
 }
