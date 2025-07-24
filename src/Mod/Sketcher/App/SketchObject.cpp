@@ -3276,6 +3276,7 @@ void createNewConstraintsForTrim(const SketchObject* obj,
                                  const std::array<int, 2>& cuttingGeoIds,
                                  const std::array<Base::Vector3d, 2>& cutPoints,
                                  const std::vector<int>& newIds,
+                                 const std::vector<const Part::Geometry*> newGeos,
                                  std::vector<int>& idsOfOldConstraints,
                                  std::vector<Constraint*>& newConstraints,
                                  std::set<int, std::greater<>>& geoIdsToBeDeleted)
@@ -3320,7 +3321,7 @@ void createNewConstraintsForTrim(const SketchObject* obj,
             continue;
         }
         // constraint has not yet been changed
-        obj->deriveConstraintsForPieces(GeoId, newIds, con, newConstraints);
+        obj->deriveConstraintsForPieces(GeoId, newIds, newGeos, con, newConstraints);
     }
 
     // Add point-on-object/coincidence constraints with the newly exposed points.
@@ -3403,6 +3404,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     //****************************************//
     std::vector<int> newIds;
     std::vector<Part::Geometry*> newGeos;
+    std::vector<const Part::Geometry*> newGeosAsConsts;
 
     switch (paramsOfNewGeos.size()) {
         case 0: {
@@ -3424,6 +3426,9 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     }
 
     createArcsFromGeoWithLimits(geoAsCurve, paramsOfNewGeos, newGeos);
+    for (const auto* geo : newGeos) {
+        newGeosAsConsts.push_back(geo);
+    }
 
     //******************* Step C => Creation of new constraints
     //****************************************//
@@ -3461,6 +3466,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                                 cuttingGeoIds,
                                 cutPoints,
                                 newIds,
+                                newGeosAsConsts,
                                 idsOfOldConstraints,
                                 newConstraints,
                                 geoIdsToBeDeleted);
@@ -3578,6 +3584,8 @@ bool SketchObject::deriveConstraintsForPieces(const int oldId,
         conPos = con->SecondPos;
     }
 
+    bool newGeosLikelyNotCreated = std::ranges::find(newGeos, nullptr) != newGeos.end();
+
     bool transferToAll = false;
     switch (con->Type) {
         case Horizontal:
@@ -3596,6 +3604,11 @@ bool SketchObject::deriveConstraintsForPieces(const int oldId,
             const Part::Geometry* conGeo = getGeometry(conId);
             if (!(conGeo && conGeo->isDerivedFrom<Part::GeomCurve>())) {
                 return false;
+            }
+
+            // no use going forward if newGeos aren't ready
+            if (newGeosLikelyNotCreated) {
+                break;
             }
 
             // For now: just transfer to the first intersection
@@ -3632,10 +3645,11 @@ bool SketchObject::deriveConstraintsForPieces(const int oldId,
                 return true;
             }
 
-            if (conId == GeoEnum::GeoUndef) {
+            if (conId == GeoEnum::GeoUndef || newGeosLikelyNotCreated) {
                 // nothing further to do
                 return false;
             }
+
             Base::Vector3d conPoint(getPoint(conId, conPos));
             double conParam;
             auto* geoAsCurve = static_cast<const Part::GeomCurve*>(geo);
