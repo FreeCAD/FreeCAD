@@ -172,6 +172,7 @@ public:
     friend class Gui::DockWnd::ComboView;
     friend class Gui::ControlSingleton;
 
+    /// sets the task watcher and shows it
     void addTaskWatcher(const std::vector<TaskWatcher*> &Watcher);
     void clearTaskWatcher();
     void takeTaskWatcher(TaskView *other);
@@ -239,10 +240,6 @@ protected:
 
     std::vector<TaskWatcher*> ActiveWatcher;
     TaskPanel* TaskWatcherPanel;
-
-    // QSint::ActionPanel* taskPanel;
-    // TaskDialog *ActiveDialog;
-    // TaskEditControl *ActiveCtrl;
 
     // First index of the stack is reserved to the active watcher
     std::vector<TaskInfo> taskInfos;
