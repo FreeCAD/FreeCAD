@@ -78,7 +78,7 @@ class CommandCreateSimulation:
     def IsActive(self):
         if not UtilsAssembly.isAssemblyCommandActive():
             return False
-            
+
         assembly = UtilsAssembly.activeAssembly()
         joint_types = ["Revolute", "Slider", "Cylindrical"]
         joints = UtilsAssembly.getJointsOfType(assembly, joint_types)
