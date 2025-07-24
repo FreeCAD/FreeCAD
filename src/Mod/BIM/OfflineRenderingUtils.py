@@ -850,10 +850,10 @@ def getViewProviderClass(obj):
         wantedname = "ViewProvider"+objclass
     if wantedname in classes:
         #print("Found matching view provider for",mod,objclass,wantedname)
-        return (mod,wantedname,)
+        return mod,wantedname,
     # use the default Draft VP if this is a Draft object
     if mod == "Draft":
-        return(mod,"_ViewProviderDraft")
+        return mod, "_ViewProviderDraft"
     print("Found no matching view provider for",mod,objclass)
     return None
 

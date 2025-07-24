@@ -54,10 +54,10 @@ def _getProperty(obj, prop):
 
     if o == attr:
         Path.Log.debug(translate("PathGui", "%s has no property %s (%s)") % (obj.Label, prop, name))
-        return (None, None, None)
+        return None, None, None
 
     # Path.Log.debug("found property %s of %s (%s: %s)" % (prop, obj.Label, name, attr))
-    return (o, attr, name)
+    return o, attr, name
 
 
 def getProperty(obj, prop):
@@ -103,7 +103,7 @@ def isValidBaseObject(obj):
         Path.Log.debug("%s is blacklisted (%s)" % (obj.Label, obj.TypeId))
         return False
     if hasattr(obj, "Sheets") or hasattr(obj, "TagText"):  # Arch.Panels and Arch.PanelCut
-        Path.Log.debug("%s is not an Arch.Panel" % (obj.Label))
+        Path.Log.debug("%s is not an Arch.Panel" % obj.Label)
         return False
     import Part
 

@@ -4,8 +4,6 @@
 
 import os, sys
 
-# os.chdir("E:\\Develop\\FreeCADWin\\scripts")
-
 
 try:
     file = open(sys.argv[1], encoding="utf-8")
@@ -23,18 +21,13 @@ if len(sys.argv) > 2:
 else:
     out = sys.stdout
 
-if len(sys.argv) > 3:
-    identifier = sys.argv[3]
-else:
-    identifier = os.path.basename(sys.argv[1])
-    identifier = identifier[:-3]
+identifier = sys.argv[3] if len(sys.argv) > 3 else os.path.basename(sys.argv[1])[:-3]
 
-lines = file.readlines()
 
 # We want to use this script for files in another directory, so we extract the actual file name
-out.write("const char " + identifier + "[] =")
+out.write(f"const char {identifier}[] =")
 
-for line in lines:
+for line in file.readlines():
     # remove new line
     line2 = line.rstrip()
     # replace special chars
@@ -44,6 +37,6 @@ for line in lines:
 
     # output
     # out.write(line)
-    out.write('"' + line2 + '\\n"\n')
+    out.write(f'"{line2}\\n"\n')
 
 out.write(";\n\n\n")

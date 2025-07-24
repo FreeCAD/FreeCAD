@@ -555,9 +555,9 @@ class TempoVis(object):
             if query_scene:
                 cpy = copy(detail)
                 cpy.data = cpy.scene_value()
-                return (None, cpy)
+                return None, cpy
             else:
-                return (None, None)
+                return None, None
 
         if self.is_in_stack:
             va = self.stack.value_after(self, detail)

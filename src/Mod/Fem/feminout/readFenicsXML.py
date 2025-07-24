@@ -123,7 +123,7 @@ def read_fenics_mesh_xml(xmlfilename):
                 # valtupel = tuple([ind] + list(vtupel))
                 # print(("%d " + ("%d "*len(vtupel))) % valtupel)
 
-        return (nodes_dict, cell_dict, cell_type, dim)
+        return nodes_dict, cell_dict, cell_type, dim
 
     def generate_lower_dimensional_structures(nodes, cell_dict, cell_type, dim):
 
@@ -247,7 +247,7 @@ def read_fenics_mesh_xml(xmlfilename):
         Console.PrintMessage("Show min max element dict\n")
         for elm, numbers in list(element_dict.items()):
             lst = sorted(list(numbers.items()), key=lambda x: x[0])
-            if lst != []:
+            if lst:
                 Console.PrintMessage(f"{elm} min: {lst[0]} max: {lst[-1]}\n")
     else:
         Console.PrintError("No mesh found\n")

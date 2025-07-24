@@ -115,8 +115,7 @@ fcount = dcount = 0
 
 def rmall(dirPath):  # delete dirPath and below
     global fcount, dcount
-    namesHere = os.listdir(dirPath)
-    for name in namesHere:  # remove all contents first
+    for name in os.listdir(dirPath):  # remove all contents first
         path = os.path.join(dirPath, name)
         if not os.path.isdir(path):  # remove simple files
             os.remove(path)

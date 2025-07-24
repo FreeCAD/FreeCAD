@@ -568,8 +568,8 @@ class DraftToolBar:
             "draft", "If checked, command will not finish until you press "
                      + "the command button again"))
         self.chainedModeCmd.setText(translate("draft", "Chained mode"))
-        self.chainedModeCmd.setToolTip(translate("draft", "If checked, the next Dimension will be placed in a chain" \
-                                       " with the previously placed Dimension"))
+        self.chainedModeCmd.setToolTip(translate("draft", "If checked, the next Dimension will be placed in a chain"
+                                                          " with the previously placed Dimension"))
         self.occOffset.setText(translate("draft", "OCC-style offset"))
         self.occOffset.setToolTip(translate(
             "draft", "If checked, an OCC-style offset will be performed"
@@ -950,7 +950,7 @@ class DraftToolBar:
         params.set_param("ChainedMode", bool(getattr(val, "value", val)))
         self.chainedMode = bool(getattr(val, "value", val))
         self.continueCmd.setEnabled(not bool(getattr(val, "value", val)))
-        if bool(getattr(val, "value", val)) == False:
+        if not bool(getattr(val, "value", val)):
             # If user has deselected the checkbox, reactive the command
             # which will result in closing it
             FreeCAD.activeDraftCommand.Activated()
@@ -1229,12 +1229,12 @@ class DraftToolBar:
         to set it back to True if applicable. self.mouse is then
         used by gui_tools_utils.get_point() to know if the mouse can
         update field values and point position or not."""
-        if mode == True:
+        if mode:
             self.mouse = True
         else:
             delay = params.get_param("MouseDelay")
             if delay:
-                if self.mouse is True:
+                if self.mouse:
                     self.mouse = False
                     QtCore.QTimer.singleShot(delay*1000, self.setMouseMode)
 
@@ -1351,9 +1351,9 @@ class DraftToolBar:
         else:
             print("draft: error: couldn't get a color for ", typ, " typ.")
         if rgb:
-            return("rgb(" + str(int(r * 255)) + "," + str(int(g * 255)) + "," + str(int(b * 255)) + ")")
+            return "rgb(" + str(int(r * 255)) + "," + str(int(g * 255)) + "," + str(int(b * 255)) + ")"
         else:
-            return (r,g,b)
+            return r,g,b
 
     def cross(self,on=True):
         """deprecated"""
@@ -1507,7 +1507,7 @@ class DraftToolBar:
 
     def constrain(self,val):
         if val == "angle":
-            self.alock = not(self.alock)
+            self.alock = not self.alock
             self.angleLock.setChecked(self.alock)
         elif self.mask == val:
             self.mask = None
@@ -1678,7 +1678,7 @@ class DraftToolBar:
             todo.delay(self.tray.show, None)
 
     def Deactivated(self):
-        if (FreeCAD.activeDraftCommand is not None):
+        if FreeCAD.activeDraftCommand is not None:
             self.continueMode = False
             FreeCAD.activeDraftCommand.finish()
         FreeCADGui.Control.clearTaskWatcher()
@@ -1771,13 +1771,13 @@ class FacebinderTaskPanel:
                             flist = self.obj.Faces
                             found = False
                             for face in flist:
-                                if (face[0] == obj.Name):
+                                if face[0] == obj.Name:
                                     if isinstance(face[1],tuple):
                                         for subf in face[1]:
                                             if subf == elt:
                                                 found = True
                                     else:
-                                        if (face[1] == elt):
+                                        if face[1] == elt:
                                             found = True
                             if not found:
                                 flist.append((obj,elt))
@@ -1793,7 +1793,7 @@ class FacebinderTaskPanel:
                 elt = str(it.text(1))
                 flist = []
                 for face in self.obj.Faces:
-                    if (face[0].Name != obj.Name):
+                    if face[0].Name != obj.Name:
                         flist.append(face)
                     else:
                         if isinstance(face[1],tuple):
@@ -1801,7 +1801,7 @@ class FacebinderTaskPanel:
                                 if subf != elt:
                                     flist.append((obj,subf))
                         else:
-                            if (face[1] != elt):
+                            if face[1] != elt:
                                 flist.append(face)
                 self.obj.Faces = flist
                 FreeCAD.ActiveDocument.recompute()

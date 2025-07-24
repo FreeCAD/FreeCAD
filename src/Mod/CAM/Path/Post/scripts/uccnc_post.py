@@ -539,7 +539,7 @@ def linenumber():
 
     if LINENR <= 0:
         LINENR = LINE_NUMBER_START
-    if OUTPUT_LINE_NUMBERS is True:
+    if OUTPUT_LINE_NUMBERS:
         line = LINENR
         LINENR += LINE_NUMBER_STEP
         return "N{:03d} ".format(line)
@@ -598,7 +598,7 @@ def parse(pathobj):
             commandlist.append(command)
 
             # if modal: only print the command if it is not the same as the last one
-            if MODAL is True:
+            if MODAL:
                 if command == lastcommand:
                     commandlist.pop(0)
 
@@ -659,7 +659,7 @@ def parse(pathobj):
                     commandlist.append(tool_height)
 
             if command == "message":
-                if OUTPUT_COMMENTS is False:
+                if not OUTPUT_COMMENTS:
                     out = []
                 else:
                     commandlist.pop(0)  # remove the command

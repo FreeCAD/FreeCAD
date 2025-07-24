@@ -11,20 +11,23 @@ def cpfile(pathFrom, pathTo, maxfileload=maxfileload):
     """
     copy file pathFrom to pathTo, byte for byte
     """
+    # ensure the dir are exists
+    path_to_dir = os.path.dirname(pathTo)
+    if not os.path.exists(path_to_dir):
+        os.makedirs(path_to_dir, exist_ok=True)
     if os.path.getsize(pathFrom) <= maxfileload:
-        bytesFrom = open(pathFrom, "rb").read()  # read small file all at once
-        bytesTo = open(pathTo, "wb")
-        bytesTo.write(bytesFrom)  # need b mode on Windows
+        # To make it close auto, we used context manager
+        with open(pathFrom, "rb") as bytesFrom, open(pathTo, "wb") as bytesTo:
+            bytesTo.write(bytesFrom.read())
         # bytesTo.close()
         # bytesFrom.close()
     else:
-        fileFrom = open(pathFrom, "rb")  # read big files in chunks
-        fileTo = open(pathTo, "wb")  # need b mode here too
-        while 1:
-            bytesFrom = fileFrom.read(blksize)  # get one block, less at end
-            if not bytesFrom:
-                break  # empty after last chunk
-            fileTo.write(bytesFrom)
+        with open(pathFrom, "rb") as fileFrom, open(pathTo, "wb") as fileTo:
+            while 1:
+                bytesFrom = fileFrom.read(blksize)  # get one block, less at end
+                if not bytesFrom:
+                    break  # empty after last chunk
+                fileTo.write(bytesFrom)
         # fileFrom.close()
         # fileTo.close()
 
@@ -77,7 +80,7 @@ def cpallWithFilter(dirFrom, dirTo, MatchList):
         for matchpat in MatchList:
             if re.match(matchpat, file):
                 hitt = 1
-                print("Refuse: " + file)
+                print(f"Refuse: {file}")
         if hitt == 0:
             pathFrom = os.path.join(dirFrom, file)
             pathTo = os.path.join(dirTo, file)  # extend both paths

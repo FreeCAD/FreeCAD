@@ -355,7 +355,7 @@ class TestCcxTools(unittest.TestCase):
         fcc_print(f"Setting up working directory {analysis_dir}")
         fea.setup_working_dir(analysis_dir)
         self.assertTrue(
-            True if fea.working_dir == analysis_dir else False,
+            fea.working_dir == analysis_dir,
             f"Setting working directory {analysis_dir} failed",
         )
 
@@ -377,7 +377,7 @@ class TestCcxTools(unittest.TestCase):
         ret = testtools.compare_inp_files(inpfile_given, inpfile_totest)
         self.assertFalse(ret, f"ccxtools write_inp_file test failed.\n{ret}")
 
-        if test_end is True:
+        if test_end:
             # do not save and print End of tests
             return fea
 
@@ -404,21 +404,21 @@ class TestCcxTools(unittest.TestCase):
         )
         fea.setup_working_dir(self.test_file_dir)
         self.assertTrue(
-            True if fea.working_dir == self.test_file_dir else False,
+            fea.working_dir == self.test_file_dir,
             f"Setting working directory {self.test_file_dir} failed",
         )
 
         fcc_print(f"Setting base name to read test {base_name}.frd file...")
         fea.set_base_name(base_name)
         self.assertTrue(
-            True if fea.base_name == base_name else False,
+            fea.base_name == base_name,
             f"Setting base name to {base_name} failed",
         )
 
         fcc_print(f"Setting inp file name to read test {base_name}.frd file...")
         fea.set_inp_file_name()
         self.assertTrue(
-            True if fea.inp_file_name == inpfile_given else False,
+            fea.inp_file_name == inpfile_given,
             f"Setting inp file name to {inpfile_given} failed",
         )
 

@@ -154,9 +154,7 @@ class _Axis:
         data = []
         num = 0
         for e in obj.Shape.Edges:
-            axdata = []
-            axdata.append(e.Vertexes[0].Point)
-            axdata.append(e.Vertexes[-1].Point)
+            axdata = [e.Vertexes[0].Point, e.Vertexes[-1].Point]
             if obj.ViewObject:
                 axdata.append(obj.ViewObject.Proxy.getNumber(obj.ViewObject,num))
             else:

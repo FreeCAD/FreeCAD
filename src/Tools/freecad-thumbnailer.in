@@ -57,6 +57,7 @@ try:
         # apps should have at least 48x48 icons
         freecad = open(default_icon, "rb")
         image = freecad.read()
+        freecad.close() # it should be closed after reading.
 
     # Write icon to output_file
     thumb = open(output_file, "wb")

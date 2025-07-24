@@ -870,4 +870,4 @@ class ISO286:
 
     def getValues(self):
         """return range values in mm"""
-        return (self.upperValue / 1000, self.lowerValue / 1000)
+        return self.upperValue / 1000, self.lowerValue / 1000

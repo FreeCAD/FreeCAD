@@ -25,7 +25,8 @@ Version:
   0.1
 """
 
-import os, sys, string, getopt
+import getopt
+import sys
 
 
 def Process(line):

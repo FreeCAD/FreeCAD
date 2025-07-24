@@ -942,7 +942,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 M = JOB.Model.Group[m]
                 M.Visibility = modelVisibility[m]
 
-        if deleteTempsFlag is True:
+        if deleteTempsFlag:
             for to in tempGroup.Group:
                 if hasattr(to, "Group"):
                     for go in to.Group:
@@ -963,7 +963,7 @@ class ObjectSurface(PathOp.ObjectOp):
         if len(gaps) > 0:
             obj.GapSizes = "{} mm".format(gaps)
         else:
-            if self.closedGap is True:
+            if self.closedGap:
                 obj.GapSizes = "Closed gaps < Gap Threshold."
             else:
                 obj.GapSizes = "No gaps identified."
@@ -1111,7 +1111,7 @@ class ObjectSurface(PathOp.ObjectOp):
             self.showDebugObject(prflShp, "NewProfileShape")
             # get offset path geometry and perform OCL scan with that geometry
             pathOffsetGeom = self._offsetFacesToPointData(obj, prflShp)
-            if pathOffsetGeom is False:
+            if not pathOffsetGeom:
                 msg = translate("PathSurface", "No profile path geometry returned.")
                 Path.Log.error(msg)
                 return []
@@ -1132,7 +1132,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 return []
             if obj.CutPattern == "Offset":
                 useGeom = self._offsetFacesToPointData(obj, pathGeom, profile=False)
-                if useGeom is False:
+                if not useGeom:
                     msg = translate("PathSurface", "No clearing path geometry returned.")
                     Path.Log.error(msg)
                     return []
@@ -1280,13 +1280,13 @@ class ObjectSurface(PathOp.ObjectOp):
                         stpOvr.append("BRK")
                     else:
                         scan = self._planarCircularDropCutScan(pdc, Arc, cMode)
-                        if scan is False:
+                        if not scan:
                             erFlg = True
                         else:
                             if aTyp == "L":
                                 scan.append(FreeCAD.Vector(scan[0].x, scan[0].y, scan[0].z))
                             stpOvr.append(scan)
-                if erFlg is False:
+                if not erFlg:
                     SCANS.append(stpOvr)
         # Eif
 
@@ -1487,7 +1487,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 prtsCmds = []
                 stpOvrCmds = []
                 transCmds = []
-                if soHasPnts is True:
+                if soHasPnts:
                     first = ADJPRTS[0][0]  # first point of arc/line stepover group
                     last = None
 
@@ -1495,7 +1495,7 @@ class ObjectSurface(PathOp.ObjectOp):
                     if so > 0:
                         # Control ZigZag direction
                         if obj.CutPattern == "CircularZigZag":
-                            if odd is True:
+                            if odd:
                                 odd = False
                             else:
                                 odd = True
@@ -1536,14 +1536,14 @@ class ObjectSurface(PathOp.ObjectOp):
                                 and lenPrt > 2
                             ):
                                 (rtnVal, gcode) = self._arcsToG2G3(prt, lenPrt, odd, gDIR, tolrnc)
-                                if rtnVal is True:
+                                if rtnVal:
                                     segCmds = gcode
                                 else:
                                     segCmds = self._planarSinglepassProcess(obj, prt)
                             else:
                                 segCmds = self._planarSinglepassProcess(obj, prt)
 
-                            if segCmds is not False:
+                            if not segCmds:
                                 prtsCmds.extend(segCmds)
                                 prtsHasCmds = True
                                 prvStpLast = last
@@ -1557,7 +1557,7 @@ class ObjectSurface(PathOp.ObjectOp):
                         obj.OptimizeLinearPaths = False
 
                 # Compile step over(prts) commands
-                if prtsHasCmds is True:
+                if prtsHasCmds:
                     stepHasCmds = True
                     actvSteps += 1
                     stpOvrCmds.extend(transCmds)
@@ -1580,13 +1580,13 @@ class ObjectSurface(PathOp.ObjectOp):
                             Path.Command("G0", {"X": first.x, "Y": first.y, "F": self.horizRapid})
                         )
 
-                if stepHasCmds is True:
+                if stepHasCmds:
                     lyrHasCmds = True
                     LYR.extend(stpOvrCmds)
             # Eif
 
             # Close layer, saving commands, if any
-            if lyrHasCmds is True:
+            if lyrHasCmds:
                 GCODE.extend(LYR)  # save line commands
                 GCODE.append(Path.Command("N (End of layer {})".format(lyr), {}))
 
@@ -1656,7 +1656,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 if P.z > lMax:
                     lMax = P.z
 
-        return (PTS, lMax)
+        return PTS, lMax
 
     def _planarMultipassProcess(self, obj, PNTS, lMax):
         output = []
@@ -1683,12 +1683,12 @@ class ObjectSurface(PathOp.ObjectOp):
 
             if pnt.z == safe:
                 prcs = False
-                if onHold is False:
+                if not onHold:
                     onHold = True
                     output.append(Path.Command("N (Start hold)", {}))
                     output.append(Path.Command("G0", {"Z": clrScnLn, "F": self.vertRapid}))
             else:
-                if onHold is True:
+                if onHold:
                     onHold = False
                     output.append(Path.Command("N (End hold)", {}))
                     output.append(
@@ -1696,7 +1696,7 @@ class ObjectSurface(PathOp.ObjectOp):
                     )
 
             # Process point
-            if prcs is True:
+            if prcs:
                 if optimize is True:
                     # iPOL = prev.isOnLineSegment(nxt, pnt)
                     iPOL = pnt.isOnLineSegment(prev, nxt)
@@ -1724,7 +1724,7 @@ class ObjectSurface(PathOp.ObjectOp):
                     )
 
             # Rotate point data
-            if onLine is False:
+            if not onLine:
                 prev = pnt
             pnt = nxt
         # Efor
@@ -1820,7 +1820,7 @@ class ObjectSurface(PathOp.ObjectOp):
                     isCircle = True
         isCircle = False
 
-        if isCircle is True:
+        if isCircle:
             # convert LN to G2/G3 arc, consolidating GCode
             # https://wiki.shapeoko.com/index.php/G-Code#G2_-_clockwise_arc
             # https://www.cnccookbook.com/cnc-g-code-arc-circle-g02-g03/
@@ -1889,7 +1889,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 if abs(pt.z - strtHght) > tolrnc:  # test for horizontal coplanar
                     coPlanar = False
                     break
-            if coPlanar is True:
+            if coPlanar:
                 # ijk = self.tmpCOM - strtPnt
                 ijk = self.tmpCOM.sub(strtPnt)  # vector from start to center
                 xyz = endPnt
@@ -1930,7 +1930,7 @@ class ObjectSurface(PathOp.ObjectOp):
                     )
                 )
 
-        return (coPlanar, cmds)
+        return coPlanar, cmds
 
     def _planarApplyDepthOffset(self, SCANDATA, DepthOffset):
         Path.Log.debug("Applying DepthOffset value: {}".format(DepthOffset))
@@ -2175,7 +2175,7 @@ class ObjectSurface(PathOp.ObjectOp):
                     )
                 # Eol
             else:
-                if self.CutClimb is False:
+                if not self.CutClimb:
                     advances = invertAdvances(advances)
                     advances.reverse()
                     scanLines.reverse()
@@ -2256,7 +2256,7 @@ class ObjectSurface(PathOp.ObjectOp):
                     else:  # odd
                         lo = ocl.Line(p2, p1)
                 elif obj.CutPattern == "Line":
-                    if self.CutClimb is True:
+                    if self.CutClimb:
                         lo = ocl.Line(p2, p1)
                     else:
                         lo = ocl.Line(p1, p2)
@@ -2338,12 +2338,12 @@ class ObjectSurface(PathOp.ObjectOp):
             if obj.LayerMode == "Multi-pass":
                 # if z travels above previous layer, start/continue hold high cycle
                 if pnt.z > prvDep and optimize is True:
-                    if self.onHold is False:
+                    if not self.onHold:
                         holdStart = True
                     self.onHold = True
 
-                if self.onHold is True:
-                    if holdStart is True:
+                if self.onHold:
+                    if holdStart:
                         # go to current coordinate
                         output.append(
                             Path.Command(
@@ -2365,7 +2365,7 @@ class ObjectSurface(PathOp.ObjectOp):
                     if pnt.z <= prvDep:
                         holdStop = True
 
-                if holdStop is True:
+                if holdStop:
                     # Send hold and current points to
                     zMax += 2.0
                     for cmd in self.holdStopCmds(obj, zMax, prvDep, pnt, "Hold Stop: in-line"):
@@ -2376,7 +2376,7 @@ class ObjectSurface(PathOp.ObjectOp):
                     self.onHold = False
                     self.holdPoint = FreeCAD.Vector(0.0, 0.0, 0.0)
 
-            if self.onHold is False:
+            if not self.onHold:
                 if not optimize or not pnt.isOnLineSegment(prev, nxt):
                     output.append(
                         Path.Command(
@@ -2499,7 +2499,7 @@ class ObjectSurface(PathOp.ObjectOp):
         self.clearHeight = 0.0
         self.safeHeight = 0.0
         self.faceZMax = -999999999999.0
-        if all is True:
+        if all:
             self.cutter = None
             self.stl = None
             self.fullSTL = None
@@ -2524,7 +2524,7 @@ class ObjectSurface(PathOp.ObjectOp):
         del self.clearHeight
         del self.safeHeight
         del self.faceZMax
-        if all is True:
+        if all:
             del self.cutter
             del self.stl
             del self.fullSTL
@@ -2560,7 +2560,7 @@ class ObjectSurface(PathOp.ObjectOp):
         )
 
         # Make safeCutter with 2 mm buffer around physical cutter
-        if safe is True:
+        if safe:
             diam_1 += 4.0
             if FR != 0.0:
                 FR += 2.0
@@ -2613,7 +2613,7 @@ class ObjectSurface(PathOp.ObjectOp):
         if zDelta > 0:
             for p in pdcLine:
                 p.z += zDelta
-        return (pdcLine, min(zs), max(zs))
+        return pdcLine, min(zs), max(zs)
 
     def showDebugObject(self, objShape, objName):
         if self.showDebugObjects:

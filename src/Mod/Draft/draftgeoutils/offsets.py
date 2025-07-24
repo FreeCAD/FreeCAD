@@ -542,7 +542,7 @@ def offsetWire(wire, dvec, bind=False, occ=False,
         return w
     else:
         if wireNedge:
-            return (wire,connectEdgesF,connectEdges,nedges)
+            return wire,connectEdgesF,connectEdges,nedges
         else:
             return wire
 

@@ -92,7 +92,7 @@ def draftify_shape(shape):
 
     nobj = None
     if DraftGeomUtils.hasCurves(shape):
-        if (len(shape.Edges) == 1):
+        if len(shape.Edges) == 1:
             edge = shape.Edges[0]
             edge_type = DraftGeomUtils.geomType(edge)
             if edge_type == "Circle":

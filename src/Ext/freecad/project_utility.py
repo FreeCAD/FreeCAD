@@ -71,7 +71,6 @@ def getFilesList(filename):
     parser.setContentHandler(handler)
     parser.parse(filename)
 
-    files = []
-    files.append(filename)
+    files = [filename]
     files.extend(iter(handler.files))
     return files

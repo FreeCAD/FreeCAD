@@ -21,21 +21,21 @@ All of the CRC++ code is well-documented. Unit tests are included in the reposit
 
 CRC++ boasts one of the fastest and most memory efficient generic CRC implementation available. The below table shows performance comparisons across multiple implementations and platforms.
 
-| Library       | Speed, x64 platform (100 million iterations) | Speed, x86 platform (100 million iterations) |
-| ------------- | -------------------------------------------- | -------------------------------------------- |
-| CRC++         | 2050 milliseconds                            | 2200 milliseconds                            |
-| boost         | 2250 milliseconds                            | 2000 milliseconds                            |
-| pycrc         | 2050 milliseconds                            | 2240 milliseconds                            |
-| mhash         | 2250 milliseconds                            | 2400 milliseconds                            |
+| Library | Speed, x64 platform (100 million iterations) | Speed, x86 platform (100 million iterations) |
+|---------|----------------------------------------------|----------------------------------------------|
+| CRC++   | 2050 milliseconds                            | 2200 milliseconds                            |
+| boost   | 2250 milliseconds                            | 2000 milliseconds                            |
+| pycrc   | 2050 milliseconds                            | 2240 milliseconds                            |
+| mhash   | 2250 milliseconds                            | 2400 milliseconds                            |
 
 Additionally, CRC++ has the most features of any library and the smallest code footprint:
 
-| Library       | Number of include files | Header-only implemen-tation | Supports byte != 8 bits | Supports arbitrary CRC width | Custom type support | C++11 support | 40+ built-in CRC definitions | Branchless implemen-tation |
-| ------------- | ----------------------- | --------------------------- | ----------------------- | ---------------------------- | ------------------- | ------------- | ---------------------------- | -------------------------- |
-| CRC++         | 1                       | Yes                         | Yes                     | Yes                          | Yes                 | Yes           | Yes                          | Yes                        |
-| boost         | 17                      | Yes                         | Yes                     | Yes                          | Yes                 | Yes           | No                           | No                         |
-| pycrc         | 2 per CRC algorithm     | No                          | No                      | No                           | No                  | No            | No                           | No                         |
-| mhash         | 6                       | No                          | Yes                     | No                           | No                  | No            | No                           | No                         |
+| Library | Number of include files | Header-only implemen-tation | Supports byte != 8 bits | Supports arbitrary CRC width | Custom type support | C++11 support | 40+ built-in CRC definitions | Branchless implemen-tation |
+|---------|-------------------------|-----------------------------|-------------------------|------------------------------|---------------------|---------------|------------------------------|----------------------------|
+| CRC++   | 1                       | Yes                         | Yes                     | Yes                          | Yes                 | Yes           | Yes                          | Yes                        |
+| boost   | 17                      | Yes                         | Yes                     | Yes                          | Yes                 | Yes           | No                           | No                         |
+| pycrc   | 2 per CRC algorithm     | No                          | No                      | No                           | No                  | No            | No                           | No                         |
+| mhash   | 6                       | No                          | Yes                     | No                           | No                  | No            | No                           | No                         |
 
 ### Usage
 

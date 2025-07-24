@@ -280,7 +280,7 @@ class CommandManager:
         for o in analysis_members:
             if o.isDerivedFrom("Fem::FemSolverObjectPython"):
                 solver = True
-        if solver is True:
+        if solver:
             return True
         else:
             return False

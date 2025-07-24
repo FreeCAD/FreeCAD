@@ -447,7 +447,7 @@ class CommandCreateJointBelt:
 
 class CommandGroupGearBelt:
     def GetCommands(self):
-        return ("Assembly_CreateJointGears", "Assembly_CreateJointBelt")
+        return "Assembly_CreateJointGears", "Assembly_CreateJointBelt"
 
     def GetResources(self):
         """Set icon, menu and tooltip."""

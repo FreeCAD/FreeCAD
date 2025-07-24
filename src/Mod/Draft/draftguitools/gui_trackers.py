@@ -576,7 +576,7 @@ class bezcurveTracker(Tracker):
 
         self.bezcurve = []
 
-        if (len(self.points) >= 2):
+        if len(self.points) >= 2:
             if self.degree:
                 poles = self.points[1:]
                 segpoleslst = [poles[x:x+self.degree] for x in range(0, len(poles), (self.degree or 1))]
@@ -679,7 +679,7 @@ class arcTracker(Tracker):
 
     def getAngles(self):
         """Return the start and end angles in degrees."""
-        return(self.startangle, self.endangle)
+        return self.startangle, self.endangle
 
     def setStartPoint(self, pt):
         """Set the start angle from a point."""
@@ -786,7 +786,7 @@ class ghostTracker(Tracker):
                 selnode.addChild(self.marker)
                 node.addChild(selnode)
                 self.rootsep.addChild(node)
-        if mirror is True:
+        if mirror:
             self._do_flip(self.rootsep)
             self.flipped = True
         else:

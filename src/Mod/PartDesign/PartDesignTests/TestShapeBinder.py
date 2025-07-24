@@ -90,22 +90,16 @@ class TestSubShapeBinder(unittest.TestCase):
         sketch.MapMode = 'FlatFace'
         self.Doc.recompute()
 
-        geoList = []
-        geoList.append(Part.LineSegment(Base.Vector(-21.762587,19.904083,0),Base.Vector(32.074337,19.904083,0)))
-        geoList.append(Part.LineSegment(Base.Vector(32.074337,19.904083,0),Base.Vector(32.074337,-27.458027,0)))
-        geoList.append(Part.LineSegment(Base.Vector(32.074337,-27.458027,0),Base.Vector(-21.762587,-27.458027,0)))
-        geoList.append(Part.LineSegment(Base.Vector(-21.762587,-27.458027,0),Base.Vector(-21.762587,19.904083,0)))
+        geoList = [Part.LineSegment(Base.Vector(-21.762587, 19.904083, 0), Base.Vector(32.074337, 19.904083, 0)),
+                   Part.LineSegment(Base.Vector(32.074337, 19.904083, 0), Base.Vector(32.074337, -27.458027, 0)),
+                   Part.LineSegment(Base.Vector(32.074337, -27.458027, 0), Base.Vector(-21.762587, -27.458027, 0)),
+                   Part.LineSegment(Base.Vector(-21.762587, -27.458027, 0), Base.Vector(-21.762587, 19.904083, 0))]
         sketch.addGeometry(geoList,False)
 
-        conList = []
-        conList.append(Sketcher.Constraint('Coincident',0,2,1,1))
-        conList.append(Sketcher.Constraint('Coincident',1,2,2,1))
-        conList.append(Sketcher.Constraint('Coincident',2,2,3,1))
-        conList.append(Sketcher.Constraint('Coincident',3,2,0,1))
-        conList.append(Sketcher.Constraint('Horizontal',0))
-        conList.append(Sketcher.Constraint('Horizontal',2))
-        conList.append(Sketcher.Constraint('Vertical',1))
-        conList.append(Sketcher.Constraint('Vertical',3))
+        conList = [Sketcher.Constraint('Coincident', 0, 2, 1, 1), Sketcher.Constraint('Coincident', 1, 2, 2, 1),
+                   Sketcher.Constraint('Coincident', 2, 2, 3, 1), Sketcher.Constraint('Coincident', 3, 2, 0, 1),
+                   Sketcher.Constraint('Horizontal', 0), Sketcher.Constraint('Horizontal', 2),
+                   Sketcher.Constraint('Vertical', 1), Sketcher.Constraint('Vertical', 3)]
         sketch.addConstraint(conList)
         del geoList, conList
 
@@ -139,22 +133,16 @@ class TestSubShapeBinder(unittest.TestCase):
         body = doc.addObject('PartDesign::Body', 'Body')
         doc.recompute()
         sketch = body.newObject('Sketcher::SketchObject', 'Sketch')
-        geoList = []
-        geoList.append(Part.LineSegment(Base.Vector(10, 10, 0), Base.Vector(30, 10, 0)))
-        geoList.append(Part.LineSegment(Base.Vector(30, 10, 0), Base.Vector(30, 15, 0)))
-        geoList.append(Part.LineSegment(Base.Vector(30, 15, 0), Base.Vector(10, 15, 0)))
-        geoList.append(Part.LineSegment(Base.Vector(10, 15, 0), Base.Vector(10, 10, 0)))
+        geoList = [Part.LineSegment(Base.Vector(10, 10, 0), Base.Vector(30, 10, 0)),
+                   Part.LineSegment(Base.Vector(30, 10, 0), Base.Vector(30, 15, 0)),
+                   Part.LineSegment(Base.Vector(30, 15, 0), Base.Vector(10, 15, 0)),
+                   Part.LineSegment(Base.Vector(10, 15, 0), Base.Vector(10, 10, 0))]
         sketch.addGeometry(geoList, False)
         del geoList
-        constraintList = []
-        constraintList.append(Sketcher.Constraint('Coincident', 0, 2, 1, 1))
-        constraintList.append(Sketcher.Constraint('Coincident', 1, 2, 2, 1))
-        constraintList.append(Sketcher.Constraint('Coincident', 2, 2, 3, 1))
-        constraintList.append(Sketcher.Constraint('Coincident', 3, 2, 0, 1))
-        constraintList.append(Sketcher.Constraint('Horizontal', 0))
-        constraintList.append(Sketcher.Constraint('Horizontal', 2))
-        constraintList.append(Sketcher.Constraint('Vertical', 1))
-        constraintList.append(Sketcher.Constraint('Vertical', 3))
+        constraintList = [Sketcher.Constraint('Coincident', 0, 2, 1, 1), Sketcher.Constraint('Coincident', 1, 2, 2, 1),
+                          Sketcher.Constraint('Coincident', 2, 2, 3, 1), Sketcher.Constraint('Coincident', 3, 2, 0, 1),
+                          Sketcher.Constraint('Horizontal', 0), Sketcher.Constraint('Horizontal', 2),
+                          Sketcher.Constraint('Vertical', 1), Sketcher.Constraint('Vertical', 3)]
         sketch.addConstraint(constraintList)
         del constraintList
         doc.recompute()

@@ -5,11 +5,11 @@ import Part
 import Draft
 from FreeCAD import Base
 
-circ1= Part.makeCircle(
-    5,
-    FreeCAD.Vector(10,18,10), FreeCAD.Vector(1,0,0))
+#circ1= Part.makeCircle(
+#    5,
+#    FreeCAD.Vector(10,18,10), FreeCAD.Vector(1,0,0))
 
-circ2 = Part.makeCircle(5)
+#circ2 = Part.makeCircle(5)
 
 def DrawMyPart(points, extrude):
     obj1 = Draft.makeWire(points,closed=True,face=True,support=None)

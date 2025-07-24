@@ -151,7 +151,7 @@ class Move(gui_base_original.Modifier):
         if not self.point:
             return
         self.ui.redraw()
-        if self.node == []:
+        if not self.node:
             self.node.append(self.point)
             self.ui.isRelative.show()
             for ghost in self.ghosts:

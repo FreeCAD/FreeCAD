@@ -91,7 +91,7 @@ def getDefaultColor(objectType):
     else:
         c = params.get_param_view("DefaultShapeColor")
     r, g, b, _ = Draft.get_rgba_tuple(c)
-    return (r, g, b, alpha)
+    return r, g, b, alpha
 
 def _usedForAttachment(host,obj):
     if not getattr(obj,"AttachmentSupport",[]):
@@ -704,7 +704,7 @@ def download(url,force=False):
     name = url.split('/')[-1]
     macropath = FreeCAD.getUserMacroDir(True)
     filepath = os.path.join(macropath,name)
-    if os.path.exists(filepath) and not(force):
+    if os.path.exists(filepath) and not force:
         return filepath
     try:
         FreeCAD.Console.PrintMessage("downloading "+url+" ...\n")
@@ -1284,8 +1284,7 @@ class SurveyTaskPanel:
                     suml = 0
                     for i in range(rows):
                         item = self.tree.topLevelItem(i)
-                        row = []
-                        row.append(item.text(0))
+                        row = [item.text(0)]
                         if item.text(1):
                             u = FreeCAD.Units.Quantity(item.text(1))
                             if item.toolTip(0) == "total":

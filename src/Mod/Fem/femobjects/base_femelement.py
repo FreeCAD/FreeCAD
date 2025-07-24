@@ -48,17 +48,13 @@ class BaseFemElement(base_fempythonobject.BaseFemPythonObject):
         obj.addExtension("App::SuppressibleExtensionPython")
 
     def _get_properties(self):
-        prop = []
-
-        prop.append(
-            _PropHelper(
-                type="App::PropertyLinkSubListGlobal",
-                name="References",
-                group="Element",
-                doc="List of element shapes",
-                value=[],
-            )
-        )
+        prop = [_PropHelper(
+            type="App::PropertyLinkSubListGlobal",
+            name="References",
+            group="Element",
+            doc="List of element shapes",
+            value=[],
+        )]
 
         return prop
 

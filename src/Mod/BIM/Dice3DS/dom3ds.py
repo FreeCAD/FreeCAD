@@ -468,10 +468,7 @@ class ChunkBase(object):
     # Write out contents (but not header) to chunk
 
     def write(self):
-        s = []
-        s.append(self.write_struct())
-        s.append(self.write_array())
-        s.append(self.write_chunks())
+        s = [self.write_struct(), self.write_array(), self.write_chunks()]
         return ''.join(s)
 
 
@@ -575,7 +572,7 @@ class OneColorChunk(ChunkBase):
               "LIN_COLOR_F lincolor, LIN_COLOR_24 lincolor")
 
 class OnePercentageChunk(ChunkBase):
-    single = ("INT_PERCENTAGE pct, FLOAT_PERCENTAGE pct")
+    single = "INT_PERCENTAGE pct, FLOAT_PERCENTAGE pct"
 
 class OneShortValueChunk(ChunkBase):
     struct = "short value"
@@ -1152,13 +1149,8 @@ class MESH_TEXTURE_INFO(MatrixChunk):
         self.out_attr('cyl_height',flo,indent,flags)
         self.dump_chunks(flo,indent,flags)
     def write(self):
-        s = []
-        s.append(self.write_struct())
-        s.append(self.write_array())
-        s.append(self.out_float(self.icon_width))
-        s.append(self.out_float(self.icon_height))
-        s.append(self.out_float(self.cyl_height))
-        s.append(self.write_chunks())
+        s = [self.write_struct(), self.write_array(), self.out_float(self.icon_width), self.out_float(self.icon_height),
+             self.out_float(self.cyl_height), self.write_chunks()]
         return ''.join(s)
 
 class PROC_NAME(ChunkBase):

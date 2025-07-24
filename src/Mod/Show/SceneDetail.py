@@ -73,7 +73,7 @@ class SceneDetail(object):
     # <utility>
     @property
     def full_key(self):
-        return (self.class_id, self.doc.Name if self.doc else None, self.key)
+        return self.class_id, self.doc.Name if self.doc else None, self.key
 
     def __ne__(self, other):
         return not self.__eq__(other)

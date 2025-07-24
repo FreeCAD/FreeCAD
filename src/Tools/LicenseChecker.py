@@ -13,15 +13,15 @@ flt = [
     "coin_header_includes.h",
     "CxxDebug.hxx",
     "IndirectPythonInterface.hxx",
-    ("thumbs%sIExtractImage.h") % (os.path.sep),
+    "thumbs%sIExtractImage.h" % os.path.sep,
     # ('src%sTools')%(os.path.sep),
-    ("src%sTools%sembedded") % (os.path.sep, os.path.sep),
-    ("App%skdl_cp") % (os.path.sep),
-    ("3rdParty%satlas") % (os.path.sep),
-    ("Mod%sGDML") % (os.path.sep),
-    ("boost%snumeric%sbindings") % (os.path.sep, os.path.sep),
-    ("salomesmesh%sinc") % (os.path.sep),
-    ("App%sCore%stritritest.h") % (os.path.sep, os.path.sep),
+    "src%sTools%sembedded" % (os.path.sep, os.path.sep),
+    "App%skdl_cp" % os.path.sep,
+    "3rdParty%satlas" % os.path.sep,
+    "Mod%sGDML" % os.path.sep,
+    "boost%snumeric%sbindings" % (os.path.sep, os.path.sep),
+    "salomesmesh%sinc" % os.path.sep,
+    "App%sCore%stritritest.h" % (os.path.sep, os.path.sep),
 ]
 # A note to tritritest.h
 # tritritest.h has no licensing information, but Tomas Moller replied
@@ -89,7 +89,7 @@ def parsefile(fn):
                 if i.find(j) >= 0:
                     return
 
-        print("Missing license text in file %s") % (fn)
+        print("Missing license text in file %s") % fn
     except Exception:
         pass
 

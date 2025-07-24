@@ -606,9 +606,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
     def getSignalsForUpdate(self, obj):
         Path.Log.track(obj.Label)
-        signals = []
-        signals.append(self.form.defaultLength.editingFinished)
-        signals.append(self.form.enableExtensions.toggled)
+        signals = [self.form.defaultLength.editingFinished, self.form.enableExtensions.toggled]
         return signals
 
     def registerSignalHandlers(self, obj):

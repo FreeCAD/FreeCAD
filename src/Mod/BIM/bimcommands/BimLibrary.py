@@ -254,9 +254,9 @@ class BIM_Library_TaskPanel:
             self.isFile = os.path.isfile(self.path)
             # if the 3D preview checkbox is on ticked, show the preview
             if self.previewOn == True or self.linked == True:
-                if self.isFile == True:
+                if self.isFile:
                     # close a non linked preview document
-                    if self.linked == False:
+                    if not self.linked:
                         try:
                             FreeCAD.closeDocument(self.previewDocName)
                         except:
@@ -278,9 +278,9 @@ class BIM_Library_TaskPanel:
                         FreeCADGui.SendMsgToActiveView("ViewFit")
                         self.previewDocName = FreeCAD.ActiveDocument.Name
                         thumbnailSave = PARAMS.GetBool("SaveThumbnails", False)
-                        if thumbnailSave == True:
+                        if thumbnailSave:
                             FreeCAD.ActiveDocument.save()
-            if self.linked == False:
+            if not self.linked:
                 self.previousIndex = self.path
 
             # create a 2D image preview
@@ -312,7 +312,7 @@ class BIM_Library_TaskPanel:
             else:
                 self.previewOn = PARAMS.GetBool("3DPreview", False)
                 self.linked = True
-                if self.previewOn != True:
+                if not self.previewOn:
                     BIM_Library_TaskPanel.clicked(self, index, previewDocName="Viewer")
                 self.librarypath = ""
                 # save the file prior to linking
@@ -369,7 +369,7 @@ class BIM_Library_TaskPanel:
                 toexport = []
                 objs = FreeCAD.ActiveDocument.Objects
                 for obj in objs:
-                    if obj.ViewObject.Visibility == True:
+                    if obj.ViewObject.Visibility:
                         toexport.append(obj)
                 if self.stepCB.isChecked() and self.linked == False:
                     STEPfilename = fileName + ".step"
@@ -837,7 +837,7 @@ class BIM_Library_TaskPanel:
 
         import datetime
 
-        if state == None:
+        if state is None:
             state = self.form.checkOnline.isChecked()
         # save state
         PARAMS.SetBool("LibraryOnline", state)
@@ -921,7 +921,7 @@ class BIM_Library_TaskPanel:
             FreeCAD.closeDocument(self.previewDocName)
         except:
             pass
-        if self.previewOn == True:
+        if self.previewOn:
             self.previewDocName = "Viewer"
             self.doc = FreeCAD.newDocument(self.previewDocName)
             FreeCADGui.ActiveDocument.ActiveView.viewIsometric()

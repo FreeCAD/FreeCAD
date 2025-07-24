@@ -779,7 +779,7 @@ def process_shared_arguments(
                     encoding="utf-8",
                 ) as f:
                     f.write(argument_text)
-            return (False, argument_text)
+            return False, argument_text
         if args.output_visible_arguments:
             argument_text = parser.format_help()
             if not filename == "-":
@@ -789,7 +789,7 @@ def process_shared_arguments(
                     encoding="utf-8",
                 ) as f:
                     f.write(argument_text)
-            return (False, argument_text)
+            return False, argument_text
         # Default to metric unless an argument overrides it
         values["UNITS"] = "G21"
         if args.metric:
@@ -921,9 +921,9 @@ def process_shared_arguments(
             values["SPINDLE_WAIT"] = args.wait_for_spindle
 
     except (ArithmeticError, LookupError):
-        return (False, None)
+        return False, None
 
-    return (True, args)
+    return True, args
 
 
 #

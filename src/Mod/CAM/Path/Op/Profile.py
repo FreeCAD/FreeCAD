@@ -345,10 +345,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
     def areaOpAreaParams(self, obj, isHole):
         """areaOpAreaParams(obj, isHole) ... returns dictionary with area parameters.
         Do not overwrite."""
-        params = {}
-        params["Fill"] = 0
-        params["Coplanar"] = 0
-        params["SectionCount"] = -1
+        params = {"Fill": 0, "Coplanar": 0, "SectionCount": -1}
 
         offset = obj.OffsetExtra.Value  # 0.0
         num_passes = max(1, obj.NumPasses)
@@ -434,7 +431,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         shapes = []
         remainingObjBaseFeatures = []
-        self.isDebug = True if Path.Log.getLevel(Path.Log.thisModule()) == 4 else False
+        self.isDebug = Path.Log.getLevel(Path.Log.thisModule()) == 4
         self.inaccessibleMsg = translate(
             "PathProfile",
             "The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.",
@@ -704,14 +701,14 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             sliceZ = wire.BoundBox.ZMin + (extFwdLen / 2)
             crsectFaceShp = self._makeCrossSection(mbbEXT, sliceZ, trgtDep)
             if crsectFaceShp is not False:
-                return (wire, crsectFaceShp)
+                return wire, crsectFaceShp
             else:
                 return False
         else:
             srtWire = Part.Wire(Part.__sortEdges__(wire.Edges))
             srtWire.translate(FreeCAD.Vector(0, 0, trgtDep - srtWire.BoundBox.ZMin))
 
-        return (wire, srtWire)
+        return wire, srtWire
 
     # Open-edges methods
     def _getCutAreaCrossSection(self, obj, base, origWire, flatWire):
@@ -921,7 +918,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         cmnIntArea = intCmn.Area
         cmnExtArea = extCmn.Area
         if cutSide == "QRY":
-            return (cmnIntArea, cmnExtArea)
+            return cmnIntArea, cmnExtArea
 
         if cmnExtArea > cmnIntArea:
             Path.Log.debug("Cutting on Ext side.")
@@ -1032,9 +1029,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                             if t.sub(v).Length < subDist:
                                 cutSub = True
                                 break
-                        if cutSub is True:
+                        if cutSub:
                             break
-                    if cutSub is True:
+                    if cutSub:
                         sub = Part.Wire(Part.__sortEdges__(ofstShp.Wires[w].Edges))
                         subLoops.append(sub)
                 # Eif
@@ -1175,7 +1172,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         IDXS.extend(IDX1)
         IDXS.extend(IDX2)
 
-        if chk4 is True:
+        if chk4:
             # find beginning 1 edge
             begIdx = None
             for e in range(0, lenFULL):
@@ -1241,7 +1238,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             Path.Log.debug('PRE: {}'.format(PRE))
             Path.Log.debug('IDXS: {}'.format(IDXS))
         """
-        return (wireIdxs[0], wireIdxs[1])
+        return wireIdxs[0], wireIdxs[1]
 
     def _makeCrossSection(self, shape, sliceZ, zHghtTrgt=False):
         """_makeCrossSection(shape, sliceZ, zHghtTrgt=None)...
@@ -1255,7 +1252,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             for i in slcs:
                 wires.append(i)
             comp = Part.Compound(wires)
-            if zHghtTrgt is not False:
+            if not zHghtTrgt:
                 comp.translate(FreeCAD.Vector(0, 0, zHghtTrgt - comp.BoundBox.ZMin))
             return comp
 
@@ -1329,7 +1326,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         iTAG = Part.makeCompound(intTags)
         eTAG = Part.makeCompound(extTags)
 
-        return (begInt, begExt, iTAG, eTAG)
+        return begInt, begExt, iTAG, eTAG
 
     def _makeOffsetCircleTag(self, p1, p2, cutterRad, depth, lbl, reverse=False):
         # Path.Log.debug('_makeOffsetCircleTag()')
@@ -1340,7 +1337,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         lenToMid = toMid.Length
         if lenToMid == 0.0:
             # Probably a vertical line segment
-            return (False, False)
+            return False, False
 
         cutFactor = (
             cutterRad / 2.1
@@ -1360,7 +1357,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         icw = Part.Wire(Part.makeCircle((cutterRad / 2), iCntr).Edges[0])
         intTag = Part.Face(icw)
 
-        return (intTag, extTag)
+        return intTag, extTag
 
     def _makeStop(self, sType, pA, pB, lbl):
         # Path.Log.debug('_makeStop()')
@@ -1461,7 +1458,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         for E in Part.sortEdges(wire.Edges)[0]:
             elen = E.Length
             d_ = dist + elen
-            if dist < midW and midW <= d_:
+            if dist < midW <= d_:
                 dtm = midW - dist
                 midPnt = E.valueAt(E.getParameterByLength(dtm))
                 break

@@ -14,14 +14,8 @@ def BuildDistName():
         "../Version.h", "r"
     ).readlines()
     DistName = (
-        "FreeCAD_V"
-        + FCVersionMajor[23:-1]
-        + "."
-        + FCVersionMinor[23:-1]
-        + "B"
-        + FCVersionBuild[23:-1]
+        f"FreeCAD_V{FCVersionMajor[23:-1]}.{FCVersionMinor[23:-1]}B{FCVersionBuild[23:-1]}"
     )
-
     return DistName
 
 
@@ -31,7 +25,7 @@ def BuildSetupName():
     [FCVersionMajor, FCVersionMinor, FCVersionBuild, FCVersionDisDa] = open(
         "../Version.h", "r"
     ).readlines()
-    DistName = "FreeCAD_V" + FCVersionMajor[23:-1] + "." + FCVersionMinor[23:-1]
+    DistName = f"FreeCAD_V{FCVersionMajor[23:-1]}.{FCVersionMinor[23:-1]}"
 
     return DistName
 
@@ -42,7 +36,7 @@ def GetVersion():
     [FCVersionMajor, FCVersionMinor, FCVersionBuild, FCVersionDisDa] = open(
         "../Version.h", "r"
     ).readlines()
-    return FCVersionMajor[23:-1] + "." + FCVersionMinor[23:-1]
+    return f"{FCVersionMajor[23:-1]}.{FCVersionMinor[23:-1]}"
 
 
 def GetBuildNbr():

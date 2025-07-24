@@ -276,7 +276,7 @@ def import_materials(category='Solid', template=False):
             cards[path] = mat.Name
             icons[path] = mat.LibraryIcon
 
-    return (materials, cards, icons)
+    return materials, cards, icons
 
 def add_cards_from_a_dir(materials, cards, icons, mat_dir, icon, template=False):
     # fill materials and icons
@@ -309,7 +309,7 @@ def add_cards_from_a_dir(materials, cards, icons, mat_dir, icon, template=False)
                 cards[a_path] = card_name
                 icons[a_path] = icon
 
-    return (materials, cards, icons)
+    return materials, cards, icons
 
 
 def output_trio(trio):
@@ -434,14 +434,14 @@ def create_mat_template_card(write_group_section=True):
     f.write('; find unit information in src/App/FreeCADInit.py')
     # write sections
     # write standard FCMat section if write group section parameter is set to False
-    if write_group_section is False:
+    if not write_group_section:
         f.write("\n[FCMat]\n")
     for group in template_data:
         gg = list(group)[0]  # group dict has only one key
         # do not write groups Meta and UserDefined
         if (gg != 'Meta') and (gg != 'UserDefined'):
             # only write group section if write group section parameter is set to True
-            if write_group_section is True:
+            if write_group_section:
                 f.write("\n\n[" + gg + "]")
             for prop_name in group[gg]:
                 f.write('\n')
@@ -577,7 +577,7 @@ def write_cards_to_path(cards_path, cards_data, write_group_section=True, write_
         else:
             card_path = join(cards_path, (card_data['CardName'] + '.FCMat'))
             # print(card_path)
-            if write_group_section is True:
+            if write_group_section:
                 write(card_path, card_data, True)
             else:
                 write(card_path, card_data, False)
@@ -766,8 +766,8 @@ def check_mat_units(mat):
     units_ok = True
     for param, value in mat.items():
         if param in known_quantities:
-            if check_value_unit(param, value) is False:
-                if units_ok is True:
+            if not check_value_unit(param, value):
+                if units_ok:
                     units_ok = False
         else:
             pass

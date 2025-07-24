@@ -55,7 +55,7 @@ class ObjectClipPlane(SceneDetail):
     def apply_data(self, val):
         enable, pldef = val
         vp = self.doc.getObject(self.objname).ViewObject
-        cp = getClipPlaneNode(vp, make_if_missing=True if enable else False)
+        cp = getClipPlaneNode(vp, make_if_missing=bool(enable))
         if cp is None and not enable:
             return
         if enable:
@@ -78,7 +78,7 @@ class ObjectClipPlane(SceneDetail):
             )  # placement of CS the object is in
             plm_plane = plm_cs.inverse().multiply(placement)
             pldef = placement2plane(plm_plane, offset)
-        return (enable, pldef if enable else None)
+        return enable, pldef if enable else None
 
 
 def getClipPlaneNode(viewprovider, make_if_missing=True):

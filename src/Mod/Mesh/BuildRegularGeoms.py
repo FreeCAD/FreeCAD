@@ -144,55 +144,12 @@ def Cube(lenX, lenY, lenZ):
     hy = lenY / 2.0
     hz = lenZ / 2.0
 
-    facets = []
-
-    facets.append([-hx, -hy, -hz])
-    facets.append([hx, -hy, -hz])
-    facets.append([hx, -hy, hz])
-
-    facets.append([-hx, -hy, -hz])
-    facets.append([hx, -hy, hz])
-    facets.append([-hx, -hy, hz])
-
-    facets.append([-hx, hy, -hz])
-    facets.append([hx, hy, hz])
-    facets.append([hx, hy, -hz])
-
-    facets.append([-hx, hy, -hz])
-    facets.append([-hx, hy, hz])
-    facets.append([hx, hy, hz])
-
-    facets.append([-hx, -hy, -hz])
-    facets.append([-hx, hy, hz])
-    facets.append([-hx, hy, -hz])
-
-    facets.append([-hx, -hy, -hz])
-    facets.append([-hx, -hy, hz])
-    facets.append([-hx, hy, hz])
-
-    facets.append([hx, -hy, -hz])
-    facets.append([hx, hy, -hz])
-    facets.append([hx, hy, hz])
-
-    facets.append([hx, -hy, -hz])
-    facets.append([hx, hy, hz])
-    facets.append([hx, -hy, hz])
-
-    facets.append([-hx, -hy, -hz])
-    facets.append([-hx, hy, -hz])
-    facets.append([hx, hy, -hz])
-
-    facets.append([-hx, -hy, -hz])
-    facets.append([hx, hy, -hz])
-    facets.append([hx, -hy, -hz])
-
-    facets.append([-hx, -hy, hz])
-    facets.append([hx, hy, hz])
-    facets.append([-hx, hy, hz])
-
-    facets.append([-hx, -hy, hz])
-    facets.append([hx, -hy, hz])
-    facets.append([hx, hy, hz])
+    facets = [[-hx, -hy, -hz], [hx, -hy, -hz], [hx, -hy, hz], [-hx, -hy, -hz], [hx, -hy, hz], [-hx, -hy, hz],
+              [-hx, hy, -hz], [hx, hy, hz], [hx, hy, -hz], [-hx, hy, -hz], [-hx, hy, hz], [hx, hy, hz], [-hx, -hy, -hz],
+              [-hx, hy, hz], [-hx, hy, -hz], [-hx, -hy, -hz], [-hx, -hy, hz], [-hx, hy, hz], [hx, -hy, -hz],
+              [hx, hy, -hz], [hx, hy, hz], [hx, -hy, -hz], [hx, hy, hz], [hx, -hy, hz], [-hx, -hy, -hz], [-hx, hy, -hz],
+              [hx, hy, -hz], [-hx, -hy, -hz], [hx, hy, -hz], [hx, -hy, -hz], [-hx, -hy, hz], [hx, hy, hz],
+              [-hx, hy, hz], [-hx, -hy, hz], [hx, -hy, hz], [hx, hy, hz]]
 
     return facets
 

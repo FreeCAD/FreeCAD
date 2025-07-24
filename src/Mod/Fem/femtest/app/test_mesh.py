@@ -188,7 +188,7 @@ class TestMeshCommon(unittest.TestCase):
         expected_lin = "2, -5e+18, -1.123456789123e-14, -1.234567890123e-102"
         expected = [expected_lin, expected_win]
         self.assertTrue(
-            True if read_node_line in expected else False,
+            read_node_line in expected,
             f"Problem in test_writeAbaqus_precision, \n{read_node_line}\n{expected}",
         )
 
@@ -278,7 +278,7 @@ class TestMeshEleTetra10(unittest.TestCase):
         # fcc_print("\n")
         # fcc_print(outfile)
         # fcc_print(testfile)
-        return (outfile, testfile)
+        return outfile, testfile
 
     # ********************************************************************************************
     def compare_mesh_files(self, femmesh_testfile, femmesh_outfile, filetyp):
@@ -500,17 +500,13 @@ class TestMeshGroups(unittest.TestCase):
         # information
         # fcc_print(fm)
 
-        expected_dict = {}
-        expected_dict["ids"] = []
-        expected_dict["names"] = [
+        expected_dict = {"ids": [], "names": [
             "MyNodeGroup",
             "MyEdgeGroup",
             "MyVolumeGroup",
             "My0DElementGroup",
             "MyBallGroup",
-        ]
-        expected_dict["types"] = ["Node", "Edge", "Volume", "0DElement", "Ball"]
-        expected_dict["count"] = fm.GroupCount + 5
+        ], "types": ["Node", "Edge", "Volume", "0DElement", "Ball"], "count": fm.GroupCount + 5}
         result_dict = {}
 
         mygrpids = []

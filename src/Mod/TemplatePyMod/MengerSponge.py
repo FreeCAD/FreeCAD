@@ -23,7 +23,7 @@ def Sierpinski(level,x0,y0,z0):
    boxnums = pow(3,level)
    thirds = boxnums / 3
    twothirds = thirds * 2
-   if(level == 0):
+   if level == 0:
       rangerx = [x0]
       rangery = [y0]
       rangerz = [z0]
@@ -38,7 +38,7 @@ def Sierpinski(level,x0,y0,z0):
       for j in rangery:
          for k in rangerz:
             if block not in skip:
-               if(level > 0):
+               if level > 0:
                   mesh.addMesh(Sierpinski(level-1,i,j,k))
                else:
                   mesh.addMesh(PlaceBox(i,j,k))

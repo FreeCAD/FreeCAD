@@ -99,7 +99,7 @@ def toolDepthAndOffset(width, extraDepth, tool, printInfo):
     extraOffset = -width if angle == 180 else (extraDepth * tan)
     offset = toolOffset + extraOffset
 
-    return (depth, offset, extraOffset, suppressInfo)
+    return depth, offset, extraOffset, suppressInfo
 
 
 class ObjectDeburr(PathEngraveBase.ObjectOp):
@@ -423,9 +423,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
 
 
 def SetupProperties():
-    setup = []
-    setup.append("Width")
-    setup.append("ExtraDepth")
+    setup = ["Width", "ExtraDepth"]
     return setup
 
 

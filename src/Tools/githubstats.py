@@ -9,4 +9,4 @@ myobj = r.json()
 for p in myobj:
     if "assets" in p:
         for asset in p["assets"]:
-            print((asset["name"] + ": " + str(asset["download_count"]) + " downloads"))
+            print(f"{asset['name']}: {str(asset['download_count'])} downloads")

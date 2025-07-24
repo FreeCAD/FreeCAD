@@ -21,7 +21,7 @@
 #                                                                           *
 # **************************************************************************/
 
-
+# TODO:Finish this script.
 def open(filename):
     doc = App.activeDocument()
     # here you do all what is needed with filename, read, classify data, create corresponding FreeCAD objects
@@ -29,4 +29,4 @@ def open(filename):
 
 
 def insert(filename, docname):
-    print("Inserting file: " + filename + " into document: " + docname)
+    print(f"Inserting file: {filename} into document: {docname}")

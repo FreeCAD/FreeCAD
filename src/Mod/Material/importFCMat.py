@@ -135,8 +135,7 @@ def read_old(filename):
         if FreeCAD.GuiUp:
             QtGui.QMessageBox.critical(None, "Error on card reading", error_message)
         return {}
-    d = {}
-    d["CardName"] = card_name_file  # CardName is the MatCard file name
+    d = {"CardName": card_name_file}
     for ln, line in enumerate(content):
         # print(line)
         ln += 1  # enumerate starts with 0, but we would like to have the real line number
@@ -210,18 +209,8 @@ def read2(filename):
         if FreeCAD.GuiUp:
             QtGui.QMessageBox.critical(None, "Error on card reading", error_message)
         return {}
-    d = {}
-    d["Meta"] = {}
-    d["General"] = {}
-    d["Mechanical"] = {}
-    d["Fluidic"] = {}
-    d["Thermal"] = {}
-    d["Electromagnetic"] = {}
-    d["Architectural"] = {}
-    d["Rendering"] = {}
-    d["VectorRendering"] = {}
-    d["Cost"] = {}
-    d["UserDefined"] = {}
+    d = {"Meta": {}, "General": {}, "Mechanical": {}, "Fluidic": {}, "Thermal": {}, "Electromagnetic": {},
+         "Architectural": {}, "Rendering": {}, "VectorRendering": {}, "Cost": {}, "UserDefined": {}}
     d["Meta"]["CardName"] = card_name_file  # CardName is the MatCard file name
     section = ''
     for ln, line in enumerate(content):
@@ -351,14 +340,14 @@ def write(filename, dictionary, write_group_section=True):
     f.write("; file created by FreeCAD " + rev + "\n")
     # write sections
     # write standard FCMat section if write group section parameter is set to False
-    if write_group_section is False:
+    if not write_group_section:
         f.write("\n[FCMat]\n")
     for s in contents:
         if s["keyname"] != "Meta":
             # if the section has no contents, we don't write it
             if len(s) > 1:
                 # only write group section if write group section parameter is set to True
-                if write_group_section is True:
+                if write_group_section:
                     f.write("\n[" + s["keyname"] + "]\n")
                 for k, i in s.items():
                     if (k != "keyname" and i != '') or k == "Name":

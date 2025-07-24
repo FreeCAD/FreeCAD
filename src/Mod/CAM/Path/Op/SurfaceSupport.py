@@ -552,7 +552,7 @@ class ProcessSelectedFaces:
             (hasFace, hasVoid) = self._identifyFacesAndVoids(
                 FACES, VOIDS
             )  # modifies FACES and VOIDS
-            hasGeometry = True if hasFace or hasVoid else False
+            hasGeometry = hasFace or hasVoid
 
             # Cycle through each base model, processing faces for each
             for m in range(0, lenGRP):
@@ -615,7 +615,7 @@ class ProcessSelectedFaces:
                         )
         # Efor
 
-        return (fShapes, vShapes)
+        return fShapes, vShapes
 
     # private class methods
     def _isReady(self, module):
@@ -680,7 +680,7 @@ class ProcessSelectedFaces:
                     V[m].append((shape, faceIdx))
                     Path.Log.debug(".. Avoiding {}".format(sub))
                     hasVoid = True
-        return (hasFace, hasVoid)
+        return hasFace, hasVoid
 
     def _preProcessFacesAndVoids(self, base, FCS, VDS):
         mFS = False
@@ -812,7 +812,7 @@ class ProcessSelectedFaces:
         # Eif
 
         if len(mIFS) > 0:
-            if mVS is False:
+            if not mVS:
                 mVS = []
             for ifs in mIFS:
                 mVS.append(ifs)
@@ -874,7 +874,7 @@ class ProcessSelectedFaces:
                     mVS = []
                 mVS.append(avdShp)
 
-        return (mFS, mVS, mPS)
+        return mFS, mVS, mPS
 
     def _preProcessEntireBase(self, base, m):
         cont = True
@@ -915,7 +915,7 @@ class ProcessSelectedFaces:
             psOfst = PathUtils.getOffsetArea(csFaceShape, ofstVal, plane=self.wpc)
             if psOfst:
                 if self.profileEdges == "Only":
-                    return (True, psOfst)
+                    return True, psOfst
                 prflShp = psOfst
             else:
                 cont = False
@@ -929,7 +929,7 @@ class ProcessSelectedFaces:
                 faceOffsetShape.translate(
                     FreeCAD.Vector(0.0, 0.0, 0.0 - faceOffsetShape.BoundBox.ZMin)
                 )
-                return (faceOffsetShape, prflShp)
+                return faceOffsetShape, prflShp
         return False
 
     def _calculateOffsetValue(self, isHole, isVoid=False):
@@ -941,7 +941,7 @@ class ProcessSelectedFaces:
         # boundaries.
         tolrnc = max(self.JOB.GeometryTolerance.Value / 10.0, self.obj.LinearDeflection.Value)
 
-        if isVoid is False:
+        if not isVoid:
             if isHole is True:
                 offset = -1 * self.obj.InternalFeaturesAdjustment.Value
                 offset += self.radius + tolrnc
@@ -992,14 +992,14 @@ class ProcessSelectedFaces:
             internalFaces = [f for f in internalShape.Faces if f.Area > minArea]
             if internalFaces:
                 internalFaces = Part.makeCompound(internalFaces)
-            return ([outlineShape], [internalFaces])
+            return [outlineShape], [internalFaces]
         except Exception as e:
             Path.Log.warning("getOffsetArea failed: {}; Using FindUnifiedRegions.".format(e))
         # Use face-unifying class
         FUR = FindUnifiedRegions(shapeAndIndexTuples, tolerance)
         if self.showDebugObjects:
             FUR.setTempGroup(self.tempGroup)
-        return (FUR.getUnifiedRegions(), FUR.getInternalFeatures)
+        return FUR.getUnifiedRegions(), FUR.getInternalFeatures
 
 
 # Eclass
@@ -1541,7 +1541,7 @@ def pathGeomToCircularPointSet(self, obj, compGeoShp):
         if edg.Closed is True:
             stpOvrEI.append(("L", ei, False))
         else:
-            if isSame is False:
+            if not isSame:
                 segEI.append(ei)
                 isSame = True
                 pnt = FreeCAD.Vector(edg.Vertexes[0].X, edg.Vertexes[0].Y, 0.0)
@@ -1552,7 +1552,7 @@ def pathGeomToCircularPointSet(self, obj, compGeoShp):
                 if abs(sameRad - pnt.sub(self.tmpCOM).Length) > 0.00001:
                     isSame = False
 
-                if isSame is True:
+                if isSame:
                     segEI.append(ei)
                 else:
                     # Move co-radial arc segments
@@ -1563,7 +1563,7 @@ def pathGeomToCircularPointSet(self, obj, compGeoShp):
                     pnt = FreeCAD.Vector(edg.Vertexes[0].X, edg.Vertexes[0].Y, 0.0)
                     sameRad = pnt.sub(self.tmpCOM).Length
     # Process trailing `segEI` data, if available
-    if isSame is True:
+    if isSame:
         stpOvrEI.append(["A", segEI, False])
 
     # Identify adjacent arcs with y=0 start/end points that connect
@@ -1778,8 +1778,8 @@ def pathGeomToSpiralPointSet(obj, compGeoShp):
         else:
             LINES.append(inLine)  # Save inLine segments
             lnCnt += 1
-            inLine = []  # reset container
-            inLine.append(tup)
+            inLine = [tup]  # reset container
+
         # p1 = sp
         p2 = ep
     # Efor

@@ -157,9 +157,7 @@ def main():
             os.path.splitext(filename)[1] in args.file_filter
         ):
             filename_list.append(filename)
-            lines_modified = {}
-            lines_modified["name"] = filename
-            lines_modified["lines"] = added_lines[filename]
+            lines_modified = {"name": filename, "lines": added_lines[filename]}
             line_filter.append(lines_modified)
 
     print(f"{json.dumps(line_filter)}")

@@ -290,23 +290,14 @@ def update_translation(entry):
         print("\n\n=============================================")
         print(f"EXTRACTING STRINGS FOR {entry['tsname']}")
         print("=============================================", flush=True)
-        execline = []
-        execline.append(
-            f"touch dummy_cpp_file_for_lupdate.cpp"
-        )  # lupdate 5.x requires at least one source file to process the UI files
-        execline.append(f"touch {tsBasename}py.ts")
-        execline.append(f'{PYLUPDATE} `find ./ -name "*.py"` -ts {tsBasename}py.ts {log_redirect}')
-        execline.append(f"{QMAKE} -project -o {project_filename} -r")
-        execline.append(f"{LUPDATE} {project_filename} -ts {tsBasename}.ts {log_redirect}")
-        execline.append(
-            f"sed 's/<translation.*>.*<\/translation>/<translation type=\"unfinished\"><\/translation>/g' {tsBasename}.ts > {tsBasename}.ts.temp"
-        )
-        execline.append(f"mv {tsBasename}.ts.temp {tsBasename}.ts")
-        execline.append(
-            f"{LCONVERT} -i {tsBasename}py.ts {tsBasename}.ts -o {tsBasename}.ts {log_redirect}"
-        )
-        execline.append(f"rm {tsBasename}py.ts")
-        execline.append(f"rm dummy_cpp_file_for_lupdate.cpp")
+        execline = [f"touch dummy_cpp_file_for_lupdate.cpp", f"touch {tsBasename}py.ts",
+                    f'{PYLUPDATE} `find ./ -name "*.py"` -ts {tsBasename}py.ts {log_redirect}',
+                    f"{QMAKE} -project -o {project_filename} -r",
+                    f"{LUPDATE} {project_filename} -ts {tsBasename}.ts {log_redirect}",
+                    f"sed 's/<translation.*>.*<\/translation>/<translation type=\"unfinished\"><\/translation>/g' {tsBasename}.ts > {tsBasename}.ts.temp",
+                    f"mv {tsBasename}.ts.temp {tsBasename}.ts",
+                    f"{LCONVERT} -i {tsBasename}py.ts {tsBasename}.ts -o {tsBasename}.ts {log_redirect}",
+                    f"rm {tsBasename}py.ts", f"rm dummy_cpp_file_for_lupdate.cpp"]
 
         print(f"Executing commands in {entry['workingdir']}:")
         for line in execline:

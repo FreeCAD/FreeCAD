@@ -151,7 +151,7 @@ class _Window(ArchComponent.Component):
             obj.addProperty("App::PropertyBool","AutoNormalReversed","Window",QT_TRANSLATE_NOOP("App::Property","When normal direction is in auto mode (0,0,0), use reversed normal direction of the Base Sketch, i.e. -z."), locked=True)
             if mode == 'ODR':
                 obj.AutoNormalReversed = False  # To maintain auto extrusion behaviour before introduction of this flag, this remains False if this is called by onDocumentRestored()
-            elif mode == None:
+            elif mode is None:
                 obj.AutoNormalReversed = True  # To enable new extrusion behaviour which is consistent with Window intuitive creation tool after introduction of this flag, this is set True.
         if not "Preset" in lp:
             obj.addProperty("App::PropertyInteger","Preset","Window",QT_TRANSLATE_NOOP("App::Property","The preset number this window is based on"), locked=True)
@@ -846,7 +846,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
 
         """Returns a tuple defining as uniquely as possible a solid"""
 
-        return (solid.ShapeType,round(solid.Volume,3),round(solid.Area,3),round(solid.Length,3))
+        return solid.ShapeType,round(solid.Volume, 3),round(solid.Area, 3),round(solid.Length, 3)
 
     def getSolidMaterial(self,obj,arch_mat,name,mtype=None):
 

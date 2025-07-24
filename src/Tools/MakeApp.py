@@ -14,21 +14,21 @@ if len(sys.argv) != 2:
 Application = sys.argv[1]
 
 # create directory ../Mod/<Application>
-if not os.path.isdir("../Mod/" + Application):
-    os.mkdir("../Mod/" + Application)
+if not os.path.isdir(f"../Mod/{Application}"):
+    os.mkdir(f"../Mod/{Application}")
 else:
-    sys.stdout.write(Application + " already exists. Please enter another name.\n")
+    sys.stdout.write(f"{Application} already exists. Please enter another name.\n")
     sys.exit()
 
 
 # copying files from _TEMPLATE_ to ../Mod/<Application>
 sys.stdout.write("Copying files...")
-MakeAppTools.copyTemplate("_TEMPLATE_", "../Mod/" + Application, "_TEMPLATE_", Application)
+MakeAppTools.copyTemplate("_TEMPLATE_", f"../Mod/{Application}", "_TEMPLATE_", Application)
 sys.stdout.write("Ok\n")
 
 # replace the _TEMPLATE_ string by <Application>
 sys.stdout.write("Modifying files...\n")
-MakeAppTools.replaceTemplate("../Mod/" + Application, "_TEMPLATE_", Application)
+MakeAppTools.replaceTemplate(f"../Mod/{Application}", "_TEMPLATE_", Application)
 # make the configure script executable
 # os.chmod("../Mod/" + Application + "/configure", 0777);
 sys.stdout.write("Modifying files done.\n")

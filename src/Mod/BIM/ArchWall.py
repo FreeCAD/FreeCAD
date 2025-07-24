@@ -240,7 +240,7 @@ class _Wall(ArchComponent.Component):
 
     def loads(self,state):
         super().loads(state)  # do nothing as of 2024.11.28
-        if state == None:
+        if state is None:
             return
         elif state[0] == 'W':  # state[1] == 'a', behaviour before 2024.11.28
             return
@@ -482,7 +482,7 @@ class _Wall(ArchComponent.Component):
                             else:
                                 plate2 = bplates.Faces
                             blocks2 = Part.makeCompound([f.extrude(bvec) for f in plate2])
-                            interval = extv.Length/(fsize)
+                            interval = extv.Length / fsize
                             entire = int(interval)
                             rest = (interval - entire)
                             for i in range(entire):
@@ -899,7 +899,7 @@ class _Wall(ArchComponent.Component):
                                 normal.multiply(height)
                                 base = face.extrude(normal)
                             base, placement = self.rebase(base)
-                            return (base,normal,placement)
+                            return base,normal,placement
 
                     # If the Base has faces, but no specific one has been
                     # selected, rebase the faces and continue.
@@ -1254,7 +1254,7 @@ class _Wall(ArchComponent.Component):
             extrusion = normal.multiply(height)
             if placement.Rotation.Angle > 0:
                 extrusion = placement.inverse().Rotation.multVec(extrusion)
-            return (base,extrusion,placement)
+            return base,extrusion,placement
         return None
 
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):

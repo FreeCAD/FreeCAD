@@ -42,7 +42,7 @@ from draftutils.translate import translate
 from DraftVecUtils import toString
 
 # So the resource file doesn't trigger errors from code checkers (flake8)
-True if Draft_rc.__name__ else False
+bool(Draft_rc.__name__)
 
 
 class ShapeStringTaskPanel:

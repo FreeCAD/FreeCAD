@@ -118,7 +118,7 @@ class Proxy(solverbase.Proxy):
             "App::PropertyIntegerList",
             "TimestepIntervals",
             "Timestepping",
-            ("List of times if 'Simulation Type'\nis either 'Scanning' or 'Transient'"),
+            "List of times if 'Simulation Type'\nis either 'Scanning' or 'Transient'",
             locked=True,
         )
         obj.addProperty(

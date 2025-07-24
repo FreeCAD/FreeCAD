@@ -1137,7 +1137,7 @@ def makeRoof(baseobj=None,
                 if FreeCAD.GuiUp:
                     roof.Base.ViewObject.hide()
             else:
-                if (roof.Base.Shape.Faces and roof.Face):
+                if roof.Base.Shape.Faces and roof.Face:
                     baseWire = roof.Base.Shape.Faces[roof.Face - 1].Wires[0]
                     if FreeCAD.GuiUp:
                         roof.Base.ViewObject.hide()
@@ -1332,7 +1332,7 @@ def makeSpace(objects=None, baseobj=None, name=None):
             # Selection set: convert to common format
             # [<SelectionObject>, ...]
             objects = [(obj.Object, obj.SubElementNames) for obj in objects]
-        elif (isinstance(objects[0], tuple) or isinstance(objects[0], list)):
+        elif isinstance(objects[0], tuple) or isinstance(objects[0], list):
             # Tuple or list of object with subobjects: pass unmodified
             # [ (<Part::Feature>, ["Face1", ...]), ... ]
             pass

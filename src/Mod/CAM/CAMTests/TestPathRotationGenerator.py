@@ -101,11 +101,9 @@ class TestPathRotationGenerator(PathTestUtils.PathTestBase):
         """Test A limits"""
         v1 = FreeCAD.Vector(0.5, 0.5, 0.5)
 
-        args = {"normalVector": v1, "cMin": -360, "cMax": 360, "compound": True}
+        args = {"normalVector": v1, "cMin": -360, "cMax": 360, "compound": True, "aMin": -90, "aMax": 0}
 
         # Constrain a axis rotation negative
-        args["aMin"] = -90
-        args["aMax"] = 0
 
         result = generator.generate(**args)
         Path.Log.debug(result)
@@ -129,11 +127,9 @@ class TestPathRotationGenerator(PathTestUtils.PathTestBase):
         """Test C limits"""
         v1 = FreeCAD.Vector(0.5, 0.5, 0.5)
 
-        args = {"normalVector": v1, "aMin": -360, "aMax": 360, "compound": True}
+        args = {"normalVector": v1, "aMin": -360, "aMax": 360, "compound": True, "cMin": -180, "cMax": 0}
 
         # Constrain a axis rotation negative
-        args["cMin"] = -180
-        args["cMax"] = 0
 
         result = generator.generate(**args)
         Path.Log.debug(result)

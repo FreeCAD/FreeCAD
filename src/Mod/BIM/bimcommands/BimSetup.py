@@ -552,51 +552,51 @@ class BIM_Setup:
                 "User parameter:BaseApp/Preferences/Mod/Draft"
             ).GetUnsigned("DefaultTextColor", 255)
 
-        if unit != None:
+        if unit is not None:
             self.form.settingUnits.setCurrentIndex(unit)
-        if decimals != None:
+        if decimals is not None:
             self.form.settingDecimals.setValue(decimals)
-        if grid != None:
+        if grid is not None:
             self.form.settingGrid.setText(grid)
-        if squares != None:
+        if squares is not None:
             self.form.settingSquares.setValue(squares)
-        if wp != None:
+        if wp is not None:
             self.form.settingWP.setCurrentIndex(wp)
-        if tsize != None:
+        if tsize is not None:
             self.form.settingText.setText(tsize)
-        if font != None:
+        if font is not None:
             self.form.settingFont.setCurrentFont(QtGui.QFont(font))
-        if linewidth != None:
+        if linewidth is not None:
             self.form.settingLinewidth.setValue(linewidth)
-        if dimstyle != None:
+        if dimstyle is not None:
             self.form.settingDimstyle.setCurrentIndex(dimstyle)
-        if asize != None:
+        if asize is not None:
             self.form.settingArrowsize.setText(asize)
-        if author != None:
+        if author is not None:
             self.form.settingAuthor.setText(author)
-        if lic != None:
+        if lic is not None:
             self.form.settingLicense.setCurrentIndex(lic)
-        if newdoc != None:
+        if newdoc is not None:
             self.form.settingNewdocument.setChecked(newdoc)
-        if bkp != None:
+        if bkp is not None:
             self.form.settingBackupfiles.setValue(bkp)
-        if colTop != None:
+        if colTop is not None:
             self.form.colorButtonTop.setProperty("color", self.getPrefColor(colTop))
-        if colBottom != None:
+        if colBottom is not None:
             self.form.colorButtonBottom.setProperty("color", self.getPrefColor(colBottom))
-        if colFace != None:
+        if colFace is not None:
             self.form.colorButtonFaces.setProperty("color", self.getPrefColor(colFace))
-        if colLine != None:
+        if colLine is not None:
             self.form.colorButtonLines.setProperty("color", self.getPrefColor(colLine))
-        if colHelp != None:
+        if colHelp is not None:
             self.form.colorButtonHelpers.setProperty("color", self.getPrefColor(colHelp))
-        if colConst != None:
+        if colConst is not None:
             self.form.colorButtonConstruction.setProperty(
                 "color", self.getPrefColor(colConst)
             )
-        if colSimple != None:
+        if colSimple is not None:
             self.form.colorButtonSimple.setProperty("color", self.getPrefColor(colSimple))
-        if colText != None:
+        if colText is not None:
             self.form.colorButtonText.setProperty("color", self.getPrefColor(colText))
         if height:
             self.form.settingCameraHeight.setValue(height)

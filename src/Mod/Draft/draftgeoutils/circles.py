@@ -346,7 +346,7 @@ def findHomotheticCenterOfCircles(circle1, circle2):
     http://en.wikipedia.org/wiki/Homothetic_center
     http://mathworld.wolfram.com/HomotheticCenter.html
     """
-    if (geomType(circle1) == "Circle" and geomType(circle2) == "Circle"):
+    if geomType(circle1) == "Circle" and geomType(circle2) == "Circle":
         print("debug: findHomotheticCenterOfCircles bad parameters!")
         return None
 

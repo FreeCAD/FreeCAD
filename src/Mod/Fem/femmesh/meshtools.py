@@ -565,8 +565,7 @@ def get_femelement_directions_theshape(femmesh, femelement_table, theshape):
     rotations_ids = []
     # add directions and all ids for each direction
     for e in theshape.Shape.Edges:
-        the_edge = {}
-        the_edge["direction"] = e.Vertexes[1].Point - e.Vertexes[0].Point
+        the_edge = {"direction": e.Vertexes[1].Point - e.Vertexes[0].Point}
         edge_femnodes = femmesh.getNodesByEdge(e)  # femnodes for the current edge
         # femelements for this edge
         the_edge["ids"] = get_femelements_by_femnodes_std(femelement_table, edge_femnodes)
@@ -1948,7 +1947,7 @@ def get_reference_group_elements(obj, aPart):
                         # is_same_geometry() inside geomtools.find_element_in_shape()
                         # AFAIK we could have used the Part methods isPartner() or even isSame()
                         # We're going to find out when we need to debug this :-)!
-    return (key, sorted(elements))
+    return key, sorted(elements)
 
 
 # ************************************************************************************************
@@ -2092,7 +2091,7 @@ def is_edge_femmesh(femmesh):
 # ************************************************************************************************
 def is_zplane_2D_mesh(femmesh):
     # used in oofem writer to distinguish between 3D and 2D plane stress
-    if is_face_femmesh(femmesh) is True:
+    if is_face_femmesh(femmesh):
         tol = 0.0001
         for n in femmesh.Nodes:
             z = femmesh.Nodes[n].z
@@ -2345,7 +2344,7 @@ def compact_mesh(old_femmesh):
             ele_id += 1
 
     # may be return another value if the mesh was compacted, just check last map entries
-    return (new_mesh, node_map, elem_map)
+    return new_mesh, node_map, elem_map
 
 
 # ************************************************************************************************

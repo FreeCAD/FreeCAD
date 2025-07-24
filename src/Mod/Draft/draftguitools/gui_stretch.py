@@ -457,7 +457,7 @@ class Stretch(gui_base_original.Modifier):
                             pts = []
                             vts = ops[0].Shape.Vertexes
                             for i in range(4):
-                                if ops[1][i] == False:
+                                if not ops[1][i]:
                                     pts.append(vts[i].Point)
                                 else:
                                     pts.append(vts[i].Point.add(self.displacement))

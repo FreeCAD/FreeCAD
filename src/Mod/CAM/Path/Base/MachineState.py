@@ -108,19 +108,8 @@ class MachineState:
         """
         Returns a dictionary of the current machine state
         """
-        state = {}
-        state["X"] = self.X
-        state["Y"] = self.Y
-        state["Z"] = self.Z
-        state["A"] = self.A
-        state["B"] = self.B
-        state["C"] = self.C
-        state["F"] = self.F
-        state["Coolant"] = self.Coolant
-        state["WCS"] = self.WCS
-        state["Spindle"] = self.Spindle
-        state["S"] = self.S
-        state["T"] = self.T
+        state = {"X": self.X, "Y": self.Y, "Z": self.Z, "A": self.A, "B": self.B, "C": self.C, "F": self.F,
+                 "Coolant": self.Coolant, "WCS": self.WCS, "Spindle": self.Spindle, "S": self.S, "T": self.T}
 
         return state
 

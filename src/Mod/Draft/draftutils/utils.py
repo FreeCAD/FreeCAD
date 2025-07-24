@@ -53,7 +53,7 @@ if App.GuiUp:
     import Draft_rc
 
     # The module is used to prevent complaints from code checkers (flake8)
-    True if Draft_rc else False
+    bool(Draft_rc)
 
 
 ARROW_TYPES = ["Dot", "Circle", "Arrow", "Tick", "Tick-2"]

@@ -460,7 +460,7 @@ class BIM_Views:
             for item in vm.tree.selectedItems():
                 obj = FreeCAD.ActiveDocument.getObject(item.toolTip(0))
                 if obj:
-                    obj.ViewObject.Visibility = not (obj.ViewObject.Visibility)
+                    obj.ViewObject.Visibility = not obj.ViewObject.Visibility
             FreeCAD.ActiveDocument.recompute()
 
     def _isAncestor(self, ancestor_item, child_item):
@@ -719,7 +719,7 @@ def getTreeViewItem(obj):
             obj.ViewObject.Proxy, "getIcon"
         ):
             it.setIcon(0, QtGui.QIcon(obj.ViewObject.Proxy.getIcon()))
-    return (it, z)
+    return it, z
 
 
 def getAllItemsInTree(tree_widget):

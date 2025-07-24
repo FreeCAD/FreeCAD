@@ -761,7 +761,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         if obj.CutMode == "Climb":
             self.CutClimb = True
         if obj.CutPatternReversed is True:
-            if self.CutClimb is True:
+            if self.CutClimb:
                 self.CutClimb = False
             else:
                 self.CutClimb = True
@@ -944,7 +944,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                 M = JOB.Model.Group[m]
                 M.Visibility = modelVisibility[m]
 
-        if deleteTempsFlag is True:
+        if deleteTempsFlag:
             for to in tempGroup.Group:
                 if hasattr(to, "Group"):
                     for go in to.Group:
@@ -965,7 +965,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         if len(gaps) > 0:
             obj.GapSizes = "{} mm".format(gaps)
         else:
-            if self.closedGap is True:
+            if self.closedGap:
                 obj.GapSizes = "Closed gaps < Gap Threshold."
             else:
                 obj.GapSizes = "No gaps identified."
@@ -1105,11 +1105,11 @@ class ObjectWaterline(PathOp.ObjectOp):
                         E = FreeCAD.Vector(ep[0], ep[1], csHght)
                         C = FreeCAD.Vector(cp[0], cp[1], csHght)
                         scan = (S, E, C, cMode)
-                        if scan is False:
+                        if not scan:
                             erFlg = True
                         else:
                             stpOvr.append(scan)
-                if erFlg is False:
+                if not erFlg:
                     SCANS.append(stpOvr)
 
         return SCANS
@@ -1141,7 +1141,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         if height is not False:
             cmds.append(Path.Command("G0", {"Z": height, "F": self.vertRapid}))
             cmds.append(Path.Command(horizGC, {"X": first.x, "Y": first.y, "F": hSpeed}))
-        if rtpd is not False:  # ReturnToPreviousDepth
+        if not rtpd:  # ReturnToPreviousDepth
             cmds.append(Path.Command("G0", {"Z": rtpd, "F": self.vertRapid}))
 
         return cmds
@@ -1167,7 +1167,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         cmds.append(Path.Command("G0", {"Z": height, "F": self.vertRapid}))
         cmds.append(Path.Command(horizGC, {"X": first.x, "Y": first.y, "F": hSpeed}))
-        if rtpd is not False:  # ReturnToPreviousDepth
+        if not rtpd:  # ReturnToPreviousDepth
             cmds.append(Path.Command("G0", {"Z": rtpd, "F": self.vertRapid}))
 
         return cmds
@@ -1420,7 +1420,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         loop = []
         loopNum = 0
 
-        if self.CutClimb is True:
+        if self.CutClimb:
             lC = [
                 -1,
                 -1,
@@ -1527,7 +1527,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                 -1,
             ]
 
-        while srch is True:
+        while srch:
             srch = False
             if srchCnt > maxSrchs:
                 Path.Log.debug(
@@ -1566,7 +1566,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         follow = True
         ptc = 0
         ptLmt = 200000
-        while follow is True:
+        while follow:
             ptc += 1
             if ptc > ptLmt:
                 Path.Log.debug(
@@ -1616,7 +1616,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                     break
             i += 1
             mtch += 1
-        if found is False:
+        if not found:
             # ("_findNext: No start point found.")
             return [cl, cp, num]
 
@@ -1946,7 +1946,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         # lstStpOvr = False
         gDIR = ["G3", "G2"]
 
-        if self.CutClimb is True:
+        if self.CutClimb:
             gDIR = ["G2", "G3"]
 
         # Send cutter to x,y position of first point on first line
@@ -2007,7 +2007,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                         )
                     elif cutPattern in ["Circular", "CircularZigZag"]:
                         # isCircle = True if lenPRTS == 1 else False
-                        isZigZag = True if cutPattern == "CircularZigZag" else False
+                        isZigZag = cutPattern == "CircularZigZag"
                         Path.Log.debug(
                             "so, isZigZag, odd, cMode: {}, {}, {}, {}".format(
                                 so, isZigZag, odd, prt[3]
@@ -2150,25 +2150,18 @@ class ObjectWaterline(PathOp.ObjectOp):
         Path.Log.track()
 
         paths = []
-        pathParams = {}
+        pathParams = {"shapes": [wire], "feedrate": self.horizFeed, "feedrate_v": self.vertFeed, "verbose": True,
+                      "resume_height": obj.SafeHeight.Value, "retraction": obj.ClearanceHeight.Value,
+                      "return_end": True, "preamble": False, "start": startVect}
 
-        pathParams["shapes"] = [wire]
-        pathParams["feedrate"] = self.horizFeed
-        pathParams["feedrate_v"] = self.vertFeed
-        pathParams["verbose"] = True
-        pathParams["resume_height"] = obj.SafeHeight.Value
-        pathParams["retraction"] = obj.ClearanceHeight.Value
-        pathParams["return_end"] = True
         # Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers
-        pathParams["preamble"] = False
-        pathParams["start"] = startVect
 
         (pp, end_vector) = Path.fromShapes(**pathParams)
         paths.extend(pp.Commands)
 
         self.endVector = end_vector
 
-        return (paths, end_vector)
+        return paths, end_vector
 
     def _makeExtendedBoundBox(self, wBB, bbBfr, zDep):
         pl = FreeCAD.Placement()
@@ -2238,7 +2231,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                 clrLyr = obj.ClearLastLayer
                 clearLastLayer = False
 
-        return (clrLyr, clearLastLayer)
+        return clrLyr, clearLastLayer
 
     # Support methods
     def resetOpVariables(self, all=True):
@@ -2258,7 +2251,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         self.clearHeight = 0.0
         self.safeHeight = 0.0
         self.faceZMax = -999999999999.0
-        if all is True:
+        if all:
             self.cutter = None
             self.stl = None
             self.fullSTL = None
@@ -2283,7 +2276,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         del self.clearHeight
         del self.safeHeight
         del self.faceZMax
-        if all is True:
+        if all:
             del self.cutter
             del self.stl
             del self.fullSTL

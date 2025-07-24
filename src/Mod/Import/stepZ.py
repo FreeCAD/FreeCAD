@@ -24,6 +24,7 @@ from PySide import QtGui
 import tempfile
 
 ___stpZversion___ = "1.4.0"
+
 # support both gz and zipfile archives
 # Catia seems to use gz, Inventor zipfile
 # improved import, open and export
@@ -33,8 +34,8 @@ import gzip as gz
 import builtins
 import importlib
 
-
 import zipfile as zf
+
 
 # import stepZ; import importlib; importlib.reload(stepZ); stepZ.open(u"C:/Temp/brick.stpz")
 
@@ -78,7 +79,6 @@ def sayzerr(msg):
 
 
 def import_stpz(fn, fc, doc):
-
     # sayz(fn)
     ext = os.path.splitext(os.path.basename(fn))[1]
     fname = os.path.splitext(os.path.basename(fn))[0]
@@ -106,7 +106,6 @@ def import_stpz(fn, fc, doc):
 
 
 def open(filename, doc=None):
-
     if zf.is_zipfile(filename):
         with zf.ZipFile(filename, "r") as fz:
             file_names = fz.namelist()
@@ -127,7 +126,6 @@ def open(filename, doc=None):
 
 
 def insert(filename, doc):
-
     doc = FreeCAD.ActiveDocument
     open(filename, doc)
 
@@ -177,6 +175,5 @@ def export(objs, filename):
     else:
         shutil.move(outfpathT_str, outfpath)
         # os.remove(outfpathT_stp)
-
 
 ####

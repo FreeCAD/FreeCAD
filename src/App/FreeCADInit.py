@@ -92,11 +92,11 @@ def InitApplications():
         libpaths.append(Lib64Dir)
     LibPyDir = FreeCAD.getHomePath()+'lib-py3'
     LibPyDir = os.path.realpath(LibPyDir)
-    if (os.path.exists(LibPyDir)):
+    if os.path.exists(LibPyDir):
         libpaths.append(LibPyDir)
     LibFcDir = FreeCAD.getLibraryDir()
     LibFcDir = os.path.realpath(LibFcDir)
-    if (os.path.exists(LibFcDir) and not LibFcDir in libpaths):
+    if os.path.exists(LibFcDir) and not LibFcDir in libpaths:
         libpaths.append(LibFcDir)
     AddPath = FreeCAD.ConfigGet("AdditionalModulePaths").split(";") + \
             FreeCAD.ConfigGet("AdditionalMacroPaths").split(";")
@@ -143,8 +143,7 @@ def InitApplications():
     #Err( AddModPaths)
     # add also this path so that all modules search for libraries
     # they depend on first here
-    PathExtension = []
-    PathExtension.append(BinDir)
+    PathExtension = [BinDir]
 
     # prepend all module paths to Python search path
     Log('Init:   Searching for modules...\n')
@@ -178,7 +177,7 @@ def InitApplications():
 
     def RunInitPy(Dir):
         InstallFile = os.path.join(Dir,"Init.py")
-        if (os.path.exists(InstallFile)):
+        if os.path.exists(InstallFile):
             try:
                 with open(InstallFile, 'rt', encoding='utf-8') as f:
                     exec(compile(f.read(), InstallFile, 'exec'))
@@ -325,7 +324,7 @@ Ntf = FreeCAD.Console.PrintNotification
 Tnf = FreeCAD.Console.PrintTranslatedNotification
 
 #store the cmake variables
-App.__cmake__ = cmake;
+App.__cmake__ = cmake
 
 #store unit test names
 App.__unit_test__ = []

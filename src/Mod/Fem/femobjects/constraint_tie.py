@@ -50,62 +50,43 @@ class ConstraintTie(base_fempythonobject.BaseFemPythonObject):
             prop.add_to_object(obj)
 
     def _get_properties(self):
-        prop = []
-
-        prop.append(
-            _PropHelper(
-                type="App::PropertyLength",
-                name="Tolerance",
-                group="Geometry",
-                doc="Set max gap between tied faces",
-                value="0.0 mm",
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyBool",
-                name="Adjust",
-                group="Geometry",
-                doc="Adjust connected nodes",
-                value=False,
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyBool",
-                name="CyclicSymmetry",
-                group="Geometry",
-                doc="Define cyclic symmetry model",
-                value=False,
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyPlacement",
-                name="SymmetryAxis",
-                group="Geometry",
-                doc="Placement of axis of symmetry",
-                value=FreeCAD.Placement(),
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyInteger",
-                name="Sectors",
-                group="Geometry",
-                doc="Number of sectors",
-                value=0,
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyInteger",
-                name="ConnectedSectors",
-                group="Geometry",
-                doc="Number of connected sectors",
-                value=1,
-            )
-        )
+        prop = [_PropHelper(
+            type="App::PropertyLength",
+            name="Tolerance",
+            group="Geometry",
+            doc="Set max gap between tied faces",
+            value="0.0 mm",
+        ), _PropHelper(
+            type="App::PropertyBool",
+            name="Adjust",
+            group="Geometry",
+            doc="Adjust connected nodes",
+            value=False,
+        ), _PropHelper(
+            type="App::PropertyBool",
+            name="CyclicSymmetry",
+            group="Geometry",
+            doc="Define cyclic symmetry model",
+            value=False,
+        ), _PropHelper(
+            type="App::PropertyPlacement",
+            name="SymmetryAxis",
+            group="Geometry",
+            doc="Placement of axis of symmetry",
+            value=FreeCAD.Placement(),
+        ), _PropHelper(
+            type="App::PropertyInteger",
+            name="Sectors",
+            group="Geometry",
+            doc="Number of sectors",
+            value=0,
+        ), _PropHelper(
+            type="App::PropertyInteger",
+            name="ConnectedSectors",
+            group="Geometry",
+            doc="Number of connected sectors",
+            value=1,
+        )]
 
         return prop
 

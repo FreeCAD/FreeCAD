@@ -285,8 +285,7 @@ class _Roof(ArchComponent.Component):
         return per
 
     def makeRoofProfilsDic(self, id, angle, run, idrel, overhang, thickness):
-        profilDico = {}
-        profilDico["id"] = id
+        profilDico = {"id": id}
         if angle == 90.0:
             profilDico["name"] = "Gable" + str(id)
             profilDico["run"] = 0.0
@@ -635,7 +634,7 @@ class _Roof(ArchComponent.Component):
                     base = obj.Base.Shape
                     #pl = obj.Base.Placement
                 else:
-                    if (obj.Base.Shape.Faces and obj.Face):
+                    if obj.Base.Shape.Faces and obj.Face:
                         baseWire = obj.Base.Shape.Faces[obj.Face-1].Wires[0]
                     elif obj.Base.Shape.Wires:
                         baseWire = obj.Base.Shape.Wires[0]

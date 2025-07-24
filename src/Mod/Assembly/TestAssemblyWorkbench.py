@@ -27,4 +27,4 @@ from AssemblyTests.TestCore import TestCore
 
 
 # Use the modules so that code checkers don't complain (flake8)
-True if TestCore else False
+bool(TestCore)

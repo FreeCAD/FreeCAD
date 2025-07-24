@@ -177,7 +177,7 @@ def importFrd(filename, analysis=None, result_name_prefix="", result_analysis_ty
                     # it does not need to be compacted on further result sets
                     # but NodeNumbers need to be compacted for every result set (res object fill)
                     # example frd file: https://forum.freecad.org/viewtopic.php?t=32649#p274291
-                    if res_mesh_is_compacted is False:
+                    if not res_mesh_is_compacted:
                         # first result set, compact FemMesh and NodeNumbers
                         res_obj = resulttools.compact_result(res_obj)
                         res_mesh_is_compacted = True
@@ -204,7 +204,7 @@ def importFrd(filename, analysis=None, result_name_prefix="", result_analysis_ty
                             )
                             resulttools.add_principal_stress_reinforced(res_obj)
                             break
-                    if has_reinforced_mat is False:
+                    if not has_reinforced_mat:
                         Console.PrintLog(
                             "No reinforced material object detected, "
                             "standard principal stresses will be added.\n"
@@ -333,9 +333,7 @@ def read_frd_result(frd_input):
     elements_seg2 = {}
     elements_seg3 = {}
     results = []
-    mode_results = {}
-    mode_results["number"] = float("NaN")
-    mode_results["time"] = float("NaN")
+    mode_results = {"number": float("NaN"), "time": float("NaN")}
     mode_disp = {}
     mode_stress = {}
     mode_strain = {}
@@ -838,10 +836,8 @@ def read_frd_result(frd_input):
 
             # append mode_results to results and reset mode_result
             results.append(mode_results)
-            mode_results = {}
+            mode_results = {"number": float("NaN"), "time": float("NaN")}
             # https://forum.freecad.org/viewtopic.php?f=18&t=32649&start=10#p274686
-            mode_results["number"] = float("NaN")
-            mode_results["time"] = float("NaN")
             end_of_section_found = False
 
         # on changed --> write changed values in mode_result

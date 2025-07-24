@@ -86,8 +86,8 @@ DEFAULT_MATERIAL = App.Material(
     AmbientColor=(0.33,0.33,0.33),
     SpecularColor=(0.53,0.53,0.53),
     EmissiveColor=(0.00,0.00,0.00),
-    Shininess=(0.90),
-    Transparency=(0.00)
+    Shininess=0.90,
+    Transparency=0.00
     )
 
 ORIGIN = App.Vector(0, 0, 0)
@@ -130,7 +130,7 @@ DOOR_MODELS = {
     'Scopia#glassDoor2': ("Glass door","Door"),
     'Scopia#glass_door': ("Glass door","Door"),
     'Scopia#puerta': ("Simple door","Door"),
-    "PeterSmolik#door1": ("Simple door","Door"),
+     # "PeterSmolik#door1": ("Simple door","Door"), its same as following.
     "PeterSmolik#doorGlassPanels": ("Simple door","Door"),
     "PeterSmolik#door1": ("Simple door","Door"),
     'Siath#emergencyGlassDoubleDoor': ("Simple door","Door"),
@@ -301,7 +301,7 @@ class SH3DImporter:
 
         # Import the <level> element if any. If none are defined
         # create a default one.
-        if home.find(ET_XPATH_LEVEL) != None:
+        if home.find(ET_XPATH_LEVEL) is not None:
             self._import_elements(home, ET_XPATH_LEVEL)
         else:
             # Has the default floor already been created from a
@@ -983,7 +983,7 @@ class BaseHandler:
             if left_face_name and right_face_name:
                 # Optimization. Is it always true?
                 break
-        return (left_face_name, left_face, right_face_name, right_face)
+        return left_face_name, left_face, right_face_name, right_face
 
     def _get_face_side(self, start:App.Vector, end:App.Vector, cog:App.Vector):
         # Compute vectors
@@ -1056,7 +1056,7 @@ class BaseHandler:
         material = part.ViewObject.ShapeAppearance[0]
         material.DiffuseColor = color
         material.Transparency = transparency
-        part.ViewObject.ShapeAppearance = (material)
+        part.ViewObject.ShapeAppearance = material
         App.ActiveDocument.DEBUG_GEOMETRY.addObject(part)
         return part
 
@@ -1258,7 +1258,7 @@ class RoomHandler(BaseHandler):
 
         level_id = elm.get('level', None)
         floor = self.get_floor(level_id)
-        assert floor != None, f"Missing floor '{level_id}' for <room> '{elm.get('id')}' ..."
+        assert floor is not None, f"Missing floor '{level_id}' for <room> '{elm.get('id')}' ..."
 
         space = face = None
         if self.importer.preferences["MERGE"]:
@@ -1305,7 +1305,7 @@ class RoomHandler(BaseHandler):
 
         self.importer.add_space(floor, space)
 
-        space.Visibility = True if space.floorVisible else False
+        space.Visibility = bool(space.floorVisible)
 
         floor.addObject(space)
 
@@ -1453,7 +1453,7 @@ class WallHandler(BaseHandler):
         """
         level_id = elm.get('level', None)
         floor = self.get_floor(level_id)
-        assert floor != None, f"Missing floor '{level_id}' for <wall> '{elm.get('id')}' ..."
+        assert floor is not None, f"Missing floor '{level_id}' for <wall> '{elm.get('id')}' ..."
 
         wall = base_object = None
         if self.importer.preferences["MERGE"]:
@@ -1689,7 +1689,7 @@ class WallHandler(BaseHandler):
         start = coord_sh2fc(App.Vector(x_start, y_start, z))
         end = coord_sh2fc(App.Vector(x_end, y_end, z))
 
-        return (start, end, thickness, height_start, height_end, arc_extent)
+        return start, end, thickness, height_start, height_end, arc_extent
 
     def _create_straight_segment(self, wall_details, prev_wall_details, next_wall_details):
         """Returns the sections and spine for a straight wall.
@@ -2197,7 +2197,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         door_id = f"{elm.get('id', elm.get('name'))}-{i}"
         level_id = elm.get('level', None)
         floor = self.get_floor(level_id)
-        assert floor != None, f"Missing floor '{level_id}' for <doorOrWindow> '{door_id}' ..."
+        assert floor is not None, f"Missing floor '{level_id}' for <doorOrWindow> '{door_id}' ..."
 
 
         feature = None
@@ -2420,8 +2420,8 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
                     continue
                 floor_zmin = other_floor.Placement.Base.z
                 floor_zmax = other_floor.Placement.Base.z + other_floor.Height.Value
-                if (floor_zmin < solid_zmin and solid_zmin < floor_zmax) or (
-                    floor_zmin < solid_zmax and solid_zmax < floor_zmax) or (
+                if (floor_zmin < solid_zmin < floor_zmax) or (
+                        floor_zmin < solid_zmax < floor_zmax) or (
                     solid_zmin < floor_zmin and floor_zmax < solid_zmax):
                     # Add floor and slabs
                     relevant_walls.extend(self.importer.get_walls(other_floor))
@@ -2518,7 +2518,7 @@ class FurnitureHandler(BaseFurnitureHandler):
         furniture_id = self._get_furniture_id(i, elm)
         level_id = elm.get('level', None)
         floor = self.get_floor(level_id)
-        assert floor != None, f"Missing floor '{level_id}' for <pieceOfFurniture> '{furniture_id}' ..."
+        assert floor is not None, f"Missing floor '{level_id}' for <pieceOfFurniture> '{furniture_id}' ..."
 
         furniture = None
         if self.importer.preferences["MERGE"]:
@@ -2719,12 +2719,12 @@ class LightHandler(FurnitureHandler):
         light_id = super()._get_furniture_id(i, elm)
         level_id = elm.get('level', None)
         floor = self.get_floor(level_id)
-        assert floor != None, f"Missing floor '{level_id}' for <doorOrWindow> '{light_id}' ..."
+        assert floor is not None, f"Missing floor '{level_id}' for <doorOrWindow> '{light_id}' ..."
 
         if self.importer.preferences["IMPORT_FURNITURES"]:
             super().process(parent, i, elm)
             light_apppliance = self.get_fc_object(light_id, 'pieceOfFurniture')
-            assert light_apppliance != None, f"Missing <light> furniture {light_id} ..."
+            assert light_apppliance is not None, f"Missing <light> furniture {light_id} ..."
             self.setp(light_apppliance, "App::PropertyFloat", "power", "The power of the light. In percent???",  float(elm.get('power', 0.5)))
 
         if self.importer.preferences["IMPORT_LIGHTS"]:
@@ -2908,7 +2908,7 @@ def set_color_and_transparency(obj, color):
         mat.AmbientColor = rgb_color
         mat.SpecularColor = rgb_color
         mat.EmissiveColor = (0.0,0.0,0.0,1.0)
-        obj.ViewObject.ShapeAppearance = (mat)
+        obj.ViewObject.ShapeAppearance = mat
         return
     if hasattr(view_object, "ShapeColor"):
         view_object.ShapeColor = hex2rgb(color)

@@ -54,7 +54,7 @@ def getIndexOld():
     for dir in sys.path:
         dir = os.path.realpath(dir)
         ret = pydoc.html.index(dir, seen)
-        if ret != None:
+        if ret is not None:
             indices.append(ret)
 
     contents = heading + ' '.join(indices) + '''<p align=right>
@@ -84,7 +84,7 @@ def getIndexNew():
     for dir in sys.path:
         dir = os.path.realpath(dir)
         ret = pydoc.html.index(dir, seen)
-        if ret != None:
+        if ret is not None:
             indices.append(ret)
 
     contents = heading + ' '.join(indices) + '''<p align=right>

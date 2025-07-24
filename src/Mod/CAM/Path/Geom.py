@@ -481,8 +481,8 @@ def wireForPath(path, startPoint=Vector(0, 0, 0)):
                 edges.append(edge)
                 startPoint = commandEndPoint(cmd, startPoint)
     if not edges:
-        return (None, rapid)
-    return (Part.Wire(edges), rapid)
+        return None, rapid
+    return Part.Wire(edges), rapid
 
 
 def wiresForPath(path, startPoint=Vector(0, 0, 0)):

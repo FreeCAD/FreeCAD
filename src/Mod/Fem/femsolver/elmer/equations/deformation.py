@@ -90,7 +90,7 @@ class Proxy(nonlinear.Proxy, equationbase.DeformationProxy):
             "App::PropertyBool",
             "NeoHookeanMaterial",
             "Deformation",
-            ("Uses the neo-Hookean material model"),
+            "Uses the neo-Hookean material model",
             locked=True,
         )
         obj.addProperty(

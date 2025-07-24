@@ -173,7 +173,7 @@ class BezCurve(DraftObject):
         p2h = App.Vector(p2)
         p1h.multiply(0.5)
         p2h.multiply(0.5)
-        return ( knot+p1h-p2h , knot+p2h-p1h )
+        return knot + p1h - p2h , knot + p2h - p1h
 
     @classmethod
     def tangentpoles(cls,knot, p1, p2,allowsameside=False):
@@ -187,7 +187,7 @@ class BezCurve(DraftObject):
         if allowsameside or not (kon12 < 0 or p2k * p12n > 0):# instead of moving
             p1k_.multiply(kon12)
             pk_k = knot - p1 - p1k_
-            return (p1 + pk_k, p2 + pk_k)
+            return p1 + pk_k, p2 + pk_k
         else:
             return cls.symmetricpoles(knot, p1, p2)
 

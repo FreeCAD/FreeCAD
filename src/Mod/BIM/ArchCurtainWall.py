@@ -588,7 +588,7 @@ class ViewProviderCurtainWall(ArchComponent.ViewProviderComponent):
                     mat = obj.Material.Materials[obj.Material.Names.index("Glass panel")]
                     if ('DiffuseColor' in mat.Material) and ("(" in mat.Material['DiffuseColor']):
                         panelcolor = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
-                    if ('Transparency' in mat.Material):
+                    if 'Transparency' in mat.Material:
                         paneltransparency = float(mat.Material['Transparency'])/100.0
                 elif "Solid panel" in obj.Material.Names:
                     mat = obj.Material.Materials[obj.Material.Names.index("Solid panel")]

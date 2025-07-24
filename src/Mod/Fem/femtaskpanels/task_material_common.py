@@ -307,8 +307,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.set_mat_params_in_input_fields(self.material)
 
     def mat_from_input_fields(self):
-        d = {}
-        d["Name"] = "Custom"
+        d = {"Name": "Custom"}
         p = self.parameterWidget
         d["Density"] = p.qsb_density.property("value").UserString
         d["ThermalConductivity"] = p.qsb_thermal_conductivity.property("value").UserString

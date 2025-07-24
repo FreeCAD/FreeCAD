@@ -404,7 +404,7 @@ def parse(pathobj):
                     outstring.append(command)
 
             # if modal: suppress the command if it is the same as the last one
-            if MODAL is True:
+            if MODAL:
                 if command == lastcommand:
                     outstring.pop(0)
 

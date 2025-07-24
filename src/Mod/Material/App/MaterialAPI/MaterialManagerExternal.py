@@ -60,7 +60,7 @@ class MaterialManagerExternal(ABC):
 
         The version returned should be the latest supported version. This method
         allows the interface to use older modules."""
-        return (1, 0, 0)
+        return 1, 0, 0
 
     #
     # Library methods

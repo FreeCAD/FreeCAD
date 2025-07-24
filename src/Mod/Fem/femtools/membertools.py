@@ -123,9 +123,7 @@ def get_several_member(analysis, t):
     objs = get_member(analysis, t)
     members = []
     for m in objs:
-        obj_dict = {}
-        obj_dict["Object"] = m
-        obj_dict["RefShapeType"] = femutils.get_refshape_type(m)
+        obj_dict = {"Object": m, "RefShapeType": femutils.get_refshape_type(m)}
         members.append(obj_dict)
     return members
 
@@ -145,11 +143,11 @@ def get_mesh_to_solve(analysis):
             if not mesh_to_solve:
                 mesh_to_solve = m
             else:
-                return (None, "FEM: multiple mesh in analysis not yet supported!")
+                return None, "FEM: multiple mesh in analysis not yet supported!"
     if mesh_to_solve is not None:
-        return (mesh_to_solve, "")
+        return mesh_to_solve, ""
     else:
-        return (None, "FEM: no mesh object found in analysis.")
+        return None, "FEM: no mesh object found in analysis."
 
 
 class AnalysisMember:

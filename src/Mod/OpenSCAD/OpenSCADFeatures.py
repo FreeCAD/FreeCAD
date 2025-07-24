@@ -85,9 +85,9 @@ class ViewProviderTree:
     def getIcon(self):
         import OpenSCAD_rc
         if isinstance(self.Object.Proxy,RefineShape):
-            return(":/icons/OpenSCAD_RefineShapeFeature.svg")
+            return ":/icons/OpenSCAD_RefineShapeFeature.svg"
         if isinstance(self.Object.Proxy,IncreaseTolerance):
-            return(":/icons/OpenSCAD_IncreaseToleranceFeature.svg")
+            return ":/icons/OpenSCAD_IncreaseToleranceFeature.svg"
         if isinstance(self.Object.Proxy,MatrixTransform):
             return """/* XPM */
 static char * matrix_xpm[] = {
@@ -353,8 +353,8 @@ class Frustum:
                 pts = [FreeCAD.Vector(r.Value,0,ir*fp.Height.Value)]
                 for i in range(fp.FacesNumber-1):
                     ang = (i+1)*angle
-                    pts.append(FreeCAD.Vector(r.Value*math.cos(ang),\
-                            r.Value*math.sin(ang),ir*fp.Height.Value))
+                    pts.append(FreeCAD.Vector(r.Value*math.cos(ang),
+                                              r.Value*math.sin(ang),ir*fp.Height.Value))
                 pts.append(pts[0])
                 shape = Part.makePolygon(pts)
                 face = Part.Face(shape)
@@ -546,8 +546,8 @@ class CGALFeature:
         maxmeshpoints = None #TBD: add as property
         import Part
         import OpenSCAD.OpenSCADUtils
-        shape = OpenSCAD.OpenSCADUtils.process_ObjectsViaOpenSCADShape(fp.Document,fp.Children,\
-                fp.Operation, maxmeshpoints=maxmeshpoints)
+        shape = OpenSCAD.OpenSCADUtils.process_ObjectsViaOpenSCADShape(fp.Document,fp.Children,
+                                                                       fp.Operation, maxmeshpoints=maxmeshpoints)
         if shape:
             fp.Shape = shape
         else:
@@ -613,8 +613,8 @@ def makeSurfaceVolume(filename):
                 face = Part.Face(wire4)
                 faces.append(face)
             except Exception:
-                FreeCAD.Console.PrintWarning("Failed to create the face from {},{},{},{}".format(coords[row + 0][col + 0],\
-                    coords[row + 0][col + 1],coords[row + 1][col + 1],coords[row + 1][col + 0]))
+                FreeCAD.Console.PrintWarning("Failed to create the face from {},{},{},{}".format(coords[row + 0][col + 0],
+                                                                                                 coords[row + 0][col + 1],coords[row + 1][col + 1],coords[row + 1][col + 0]))
 
     last_row = num_rows - 1
     last_col = num_cols - 1

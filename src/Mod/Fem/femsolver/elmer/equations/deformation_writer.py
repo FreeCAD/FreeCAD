@@ -208,7 +208,7 @@ class DeformationWriter:
                         "Set for the materials to what solid they belong to.\n"
                     )
                 self.write.material(name, "Name", m["Name"])
-                if density_needed is True:
+                if density_needed:
                     self.write.material(name, "Density", self.write.getDensity(m))
                 self.write.material(name, "Youngs Modulus", self._getYoungsModulus(m))
                 self.write.material(name, "Poisson ratio", float(m["PoissonRatio"]))

@@ -153,7 +153,7 @@ class Arch_Window:
             elif width_found and height_found:
                 break
 
-        return (width_found and height_found)
+        return width_found and height_found
 
     def getPoint(self,point=None,obj=None):
 
