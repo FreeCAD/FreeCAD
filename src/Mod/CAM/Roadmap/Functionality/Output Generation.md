@@ -6,7 +6,7 @@
 | -------------------- | --------------------------------------------------------------- | ---------- |
 | G-code Generation    | Translate internal tool path to machine-specific G-code dialect | DONE       |
 | Output Customization | Line numbers, comments, units (G20/G21)                         | DONE       |
-| Output review & edit | After the gcode is generated, the user should have the option to review it and edit before saving. They should have the option of editing in an external editor of their choice | Output review is done.  Only uses internal editor which is poor | 
+| Output review & edit | After the gcode is generated, the user should have the option to review it and edit before saving. They should have the option of editing in an external editor of their choice | Output review is done.  Only uses internal editor which is poor |
 
 ---
 
