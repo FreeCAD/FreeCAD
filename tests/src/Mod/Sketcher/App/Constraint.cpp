@@ -7,8 +7,9 @@
 
 #include <gtest/gtest.h>
 #include <xercesc/util/PlatformUtils.hpp>
-#include <fmt/core.h>
 #include <QTemporaryFile>
+
+#include <src/App/InitApplication.h>
 
 
 // Ensure Xerces is initialized before running tests which uses xml
@@ -34,8 +35,16 @@ public:
 ::testing::Environment* const xercesEnv =
     ::testing::AddGlobalTestEnvironment(new XercesEnvironment);
 
+class ConstraintPointsAccess: public ::testing::Test
+{
+protected:
+    static void SetUpTestSuite()
+    {
+        tests::initApplication();
+    }
+};
 
-TEST(ConstraintPointsAccess, testDefaultGeoElementIdsAreSane)  // NOLINT
+TEST_F(ConstraintPointsAccess, testDefaultGeoElementIdsAreSane)  // NOLINT
 {
     // Arrange
     auto constraint = Sketcher::Constraint();
@@ -65,7 +74,7 @@ TEST(ConstraintPointsAccess, testDefaultGeoElementIdsAreSane)  // NOLINT
 }
 
 #if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-TEST(ConstraintPointsAccess, testOldWriteIsReadByNew)  // NOLINT
+TEST_F(ConstraintPointsAccess, testOldWriteIsReadByNew)  // NOLINT
 {
     // Arrange
     auto constraint = Sketcher::Constraint();
@@ -87,7 +96,7 @@ TEST(ConstraintPointsAccess, testOldWriteIsReadByNew)  // NOLINT
               Sketcher::GeoElementId(Sketcher::GeoElementId(45, Sketcher::PointPos::mid)));
 }
 
-TEST(ConstraintPointsAccess, testNewWriteIsReadByOld)  // NOLINT
+TEST_F(ConstraintPointsAccess, testNewWriteIsReadByOld)  // NOLINT
 {
     // Arrange
     auto constraint = Sketcher::Constraint();
@@ -107,7 +116,7 @@ TEST(ConstraintPointsAccess, testNewWriteIsReadByOld)  // NOLINT
 }
 #endif
 
-TEST(ConstraintPointsAccess, testThreeElementsByDefault)  // NOLINT
+TEST_F(ConstraintPointsAccess, testThreeElementsByDefault)  // NOLINT
 {
     // Arrange
     auto constraint = Sketcher::Constraint();
@@ -118,7 +127,7 @@ TEST(ConstraintPointsAccess, testThreeElementsByDefault)  // NOLINT
     EXPECT_EQ(constraint.getElementsSize(), 3);
 }
 
-TEST(ConstraintPointsAccess, testFourElementsWhenAddingOne)  // NOLINT
+TEST_F(ConstraintPointsAccess, testFourElementsWhenAddingOne)  // NOLINT
 {
     // Arrange
     auto constraint = Sketcher::Constraint();
@@ -131,7 +140,7 @@ TEST(ConstraintPointsAccess, testFourElementsWhenAddingOne)  // NOLINT
 }
 
 #if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-TEST(ConstraintPointsAccess, testElementSerializationWhenAccessingOldWay)  // NOLINT
+TEST_F(ConstraintPointsAccess, testElementSerializationWhenAccessingOldWay)  // NOLINT
 {
     // Arrange
     auto constraint = Sketcher::Constraint();
@@ -160,7 +169,7 @@ TEST(ConstraintPointsAccess, testElementSerializationWhenAccessingOldWay)  // NO
 }
 #endif
 
-TEST(ConstraintPointsAccess, testElementSerializationWhenAccessingNewWay)  // NOLINT
+TEST_F(ConstraintPointsAccess, testElementSerializationWhenAccessingNewWay)  // NOLINT
 {
     // Arrange
     auto constraint = Sketcher::Constraint();
@@ -186,7 +195,7 @@ TEST(ConstraintPointsAccess, testElementSerializationWhenAccessingNewWay)  // NO
 }
 
 #if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-TEST(ConstraintPointsAccess, testElementSerializationWhenMixingOldAndNew)  // NOLINT
+TEST_F(ConstraintPointsAccess, testElementSerializationWhenMixingOldAndNew)  // NOLINT
 {
     // Arrange
     auto constraint = Sketcher::Constraint();
@@ -220,7 +229,7 @@ TEST(ConstraintPointsAccess, testElementSerializationWhenMixingOldAndNew)  // NO
 }
 #endif
 
-TEST(ConstraintPointsAccess, testElementsRestoredFromSerialization)  // NOLINT
+TEST_F(ConstraintPointsAccess, testElementsRestoredFromSerialization)  // NOLINT
 {
     // Arrange
     Sketcher::Constraint constraint;
@@ -260,8 +269,8 @@ TEST(ConstraintPointsAccess, testElementsRestoredFromSerialization)  // NOLINT
     inputFile.close();
 }
 
-TEST(ConstraintPointsAccess,
-     testElementsRestoredFromSerializationWithoutNewElementStorage)  // NOLINT
+TEST_F(ConstraintPointsAccess,
+       testElementsRestoredFromSerializationWithoutNewElementStorage)  // NOLINT
 {
     // Arrange
 
@@ -326,8 +335,8 @@ TEST(ConstraintPointsAccess,
     inputFile.close();
 }
 
-TEST(ConstraintPointsAccess,
-     testLegacyIsPreferedDuringSerializationWithoutLegacyElementStorage)  // NOLINT
+TEST_F(ConstraintPointsAccess,
+       testLegacyIsPreferedDuringSerializationWithoutLegacyElementStorage)  // NOLINT
 {
     // Arrange
 
@@ -389,7 +398,7 @@ TEST(ConstraintPointsAccess,
     inputFile.close();
 }
 
-TEST(ConstraintPointsAccess, testLegacyIsPreferedDuringSerializationIfContradicting)  // NOLINT
+TEST_F(ConstraintPointsAccess, testLegacyIsPreferedDuringSerializationIfContradicting)  // NOLINT
 {
     // Arrange
 
@@ -468,7 +477,7 @@ TEST(ConstraintPointsAccess, testLegacyIsPreferedDuringSerializationIfContradict
     inputFile.close();
 }
 
-TEST(ConstraintPointsAccess, testSubstituteIndex)  // NOLINT
+TEST_F(ConstraintPointsAccess, testSubstituteIndex)  // NOLINT
 {
     // Arrange
     Sketcher::Constraint constraint;
@@ -486,7 +495,7 @@ TEST(ConstraintPointsAccess, testSubstituteIndex)  // NOLINT
     EXPECT_EQ(constraint.getElement(2), Sketcher::GeoElementId(99, Sketcher::PointPos::mid));
 }
 
-TEST(ConstraintPointsAccess, testSubstituteIndexAndPos)  // NOLINT
+TEST_F(ConstraintPointsAccess, testSubstituteIndexAndPos)  // NOLINT
 {
     // Arrange
     Sketcher::Constraint constraint;
@@ -504,7 +513,7 @@ TEST(ConstraintPointsAccess, testSubstituteIndexAndPos)  // NOLINT
               Sketcher::GeoElementId(10, Sketcher::PointPos::mid));  // unchanged
 }
 
-TEST(ConstraintPointsAccess, testInvolvesGeoId)  // NOLINT
+TEST_F(ConstraintPointsAccess, testInvolvesGeoId)  // NOLINT
 {
     // Arrange
     Sketcher::Constraint constraint;
@@ -517,7 +526,7 @@ TEST(ConstraintPointsAccess, testInvolvesGeoId)  // NOLINT
     EXPECT_FALSE(constraint.involvesGeoId(99));
 }
 
-TEST(ConstraintPointsAccess, testInvolvesGeoIdAndPosId)  // NOLINT
+TEST_F(ConstraintPointsAccess, testInvolvesGeoIdAndPosId)  // NOLINT
 {
     // Arrange
     Sketcher::Constraint constraint;
@@ -533,7 +542,7 @@ TEST(ConstraintPointsAccess, testInvolvesGeoIdAndPosId)  // NOLINT
 }
 
 #if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-TEST(ConstraintPointsAccess, testLegacyWriteReflectedInInvolvesAndSubstitute)  // NOLINT
+TEST_F(ConstraintPointsAccess, testLegacyWriteReflectedInInvolvesAndSubstitute)  // NOLINT
 {
     // Arrange
     Sketcher::Constraint constraint;
@@ -554,7 +563,7 @@ TEST(ConstraintPointsAccess, testLegacyWriteReflectedInInvolvesAndSubstitute)  /
     EXPECT_FALSE(constraint.involvesGeoId(10));
 }
 
-TEST(ConstraintPointsAccess, testSubstituteUpdatesLegacyFieldsToo)  // NOLINT
+TEST_F(ConstraintPointsAccess, testSubstituteUpdatesLegacyFieldsToo)  // NOLINT
 {
     // Arrange
     Sketcher::Constraint constraint;
