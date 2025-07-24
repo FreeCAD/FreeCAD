@@ -1294,48 +1294,38 @@ PyObject* ApplicationPy::sAddCommand(PyObject * /*self*/, PyObject *args)
     try {
         Base::PyGILStateLocker lock;
 
-        // Get the traceback module.
-        Py::Module tb(PyImport_ImportModule("traceback"), true);
-        if (tb.isNull()) {
-            PyErr_SetString(PyExc_ImportError, "Cannot load traceback module");
-            return nullptr;
-        }
+        // Get the filename of the running code by using the low-level sys._getframe() method.
+        // We use this instead of the `inspect` module (which may actually cause imports to execute
+        // and can result in a circular import if sAddCommand is being called as part of an import
+        // statement itself), and the `traceback` module (which cannot access the filename of code
+        // that is being run through the C interface).
 
-        // Extract the stack information.
-        Py::Callable extract(tb.getAttr("extract_stack"));
-        Py::List stack = extract.apply();
-        if (stack.size() <= 0) {
-            PyErr_SetString(PyExc_RuntimeError, "traceback.extract_stack() returned empty result");
-            return nullptr;
-        }
+        Py::Module sysMod(PyImport_ImportModule("sys"), /*owned=*/true);
+        Py::Callable getFrame(sysMod.getAttr("_getframe"));
 
-        // Extract the filename and line number.
-        Py::Tuple entry(stack.getItem(0));
-        Py::Object filename_obj = entry[0];
-        if (!filename_obj.isString()) {
-            throw Py::Exception();
-        }
-        std::string file = Py::String(filename_obj).as_std_string();
-        if (file.empty()) {
-            PyErr_SetString(PyExc_RuntimeError, "Failed to identify caller from stack");
-            return nullptr;
-        }
+        Py::Object callerFrame;
+        Py::Tuple getFrameArgs(1);
+        getFrameArgs[0] = Py::Int(0);
+        callerFrame = getFrame.apply(getFrameArgs);
 
-        // Split path into file and module name.
-        Base::FileInfo fi(file);
+        Py::Object codeObj (callerFrame.getAttr("f_code"));
+
+        Py::Object filenameObj (codeObj.getAttr("co_filename"));
+        std::string filename (Py::String(filenameObj).as_std_string());
+
+        Base::FileInfo fi(filename);
         // convert backslashes to slashes
-        file = fi.filePath();
+        filename = fi.filePath();
         module = fi.fileNamePure();
-
         // for the group name get the directory name after 'Mod'
         boost::regex rx("/Mod/(\\w+)/");
         boost::smatch what;
-        if (boost::regex_search(file, what, rx)) {
+        if (boost::regex_search(filename, what, rx)) {
             group = what[1];
         }
         else {
-            boost::regex rx("/Ext/freecad/(\\w+)/");
-            if (boost::regex_search(file, what, rx)) {
+            rx = "/Ext/freecad/(\\w+)/";
+            if (boost::regex_search(filename, what, rx)) {
                 group = what[1];
             } else {
                 group = module;
