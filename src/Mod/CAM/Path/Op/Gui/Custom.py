@@ -54,7 +54,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
-        signals = [self.form.toolController.currentIndexChanged, self.form.coolantController.currentIndexChanged]
+        signals = [
+            self.form.toolController.currentIndexChanged,
+            self.form.coolantController.currentIndexChanged,
+        ]
         self.form.txtGCode.textChanged.connect(self.setGCode)
         return signals
 

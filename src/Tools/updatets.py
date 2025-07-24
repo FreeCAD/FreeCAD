@@ -290,14 +290,18 @@ def update_translation(entry):
         print("\n\n=============================================")
         print(f"EXTRACTING STRINGS FOR {entry['tsname']}")
         print("=============================================", flush=True)
-        execline = [f"touch dummy_cpp_file_for_lupdate.cpp", f"touch {tsBasename}py.ts",
-                    f'{PYLUPDATE} `find ./ -name "*.py"` -ts {tsBasename}py.ts {log_redirect}',
-                    f"{QMAKE} -project -o {project_filename} -r",
-                    f"{LUPDATE} {project_filename} -ts {tsBasename}.ts {log_redirect}",
-                    f"sed 's/<translation.*>.*<\/translation>/<translation type=\"unfinished\"><\/translation>/g' {tsBasename}.ts > {tsBasename}.ts.temp",
-                    f"mv {tsBasename}.ts.temp {tsBasename}.ts",
-                    f"{LCONVERT} -i {tsBasename}py.ts {tsBasename}.ts -o {tsBasename}.ts {log_redirect}",
-                    f"rm {tsBasename}py.ts", f"rm dummy_cpp_file_for_lupdate.cpp"]
+        execline = [
+            f"touch dummy_cpp_file_for_lupdate.cpp",
+            f"touch {tsBasename}py.ts",
+            f'{PYLUPDATE} `find ./ -name "*.py"` -ts {tsBasename}py.ts {log_redirect}',
+            f"{QMAKE} -project -o {project_filename} -r",
+            f"{LUPDATE} {project_filename} -ts {tsBasename}.ts {log_redirect}",
+            f"sed 's/<translation.*>.*<\/translation>/<translation type=\"unfinished\"><\/translation>/g' {tsBasename}.ts > {tsBasename}.ts.temp",
+            f"mv {tsBasename}.ts.temp {tsBasename}.ts",
+            f"{LCONVERT} -i {tsBasename}py.ts {tsBasename}.ts -o {tsBasename}.ts {log_redirect}",
+            f"rm {tsBasename}py.ts",
+            f"rm dummy_cpp_file_for_lupdate.cpp",
+        ]
 
         print(f"Executing commands in {entry['workingdir']}:")
         for line in execline:

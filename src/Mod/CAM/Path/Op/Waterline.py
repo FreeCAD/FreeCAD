@@ -2150,9 +2150,17 @@ class ObjectWaterline(PathOp.ObjectOp):
         Path.Log.track()
 
         paths = []
-        pathParams = {"shapes": [wire], "feedrate": self.horizFeed, "feedrate_v": self.vertFeed, "verbose": True,
-                      "resume_height": obj.SafeHeight.Value, "retraction": obj.ClearanceHeight.Value,
-                      "return_end": True, "preamble": False, "start": startVect}
+        pathParams = {
+            "shapes": [wire],
+            "feedrate": self.horizFeed,
+            "feedrate_v": self.vertFeed,
+            "verbose": True,
+            "resume_height": obj.SafeHeight.Value,
+            "retraction": obj.ClearanceHeight.Value,
+            "return_end": True,
+            "preamble": False,
+            "start": startVect,
+        }
 
         # Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers
 

@@ -514,8 +514,19 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
 
 
 def SetupProperties():
-    setup = ["ThreadOrientation", "ThreadType", "ThreadName", "ThreadFit", "MajorDiameter", "MinorDiameter", "Pitch",
-             "TPI", "Passes", "Direction", "LeadInOut"]
+    setup = [
+        "ThreadOrientation",
+        "ThreadType",
+        "ThreadName",
+        "ThreadFit",
+        "MajorDiameter",
+        "MinorDiameter",
+        "Pitch",
+        "TPI",
+        "Passes",
+        "Direction",
+        "LeadInOut",
+    ]
     return setup
 
 

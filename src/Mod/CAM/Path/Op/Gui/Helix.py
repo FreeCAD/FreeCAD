@@ -90,9 +90,14 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
-        signals = [self.form.stepOverPercent.editingFinished, self.form.extraOffset.editingFinished,
-                   self.form.cutMode.currentIndexChanged, self.form.startSide.currentIndexChanged,
-                   self.form.toolController.currentIndexChanged, self.form.coolantController.currentIndexChanged]
+        signals = [
+            self.form.stepOverPercent.editingFinished,
+            self.form.extraOffset.editingFinished,
+            self.form.cutMode.currentIndexChanged,
+            self.form.startSide.currentIndexChanged,
+            self.form.toolController.currentIndexChanged,
+            self.form.coolantController.currentIndexChanged,
+        ]
 
         return signals
 

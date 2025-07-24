@@ -586,9 +586,17 @@ class PolynomialFitCases(unittest.TestCase):
 
     def testFitGood(self):
         # symmetric
-        v = [FreeCAD.Vector(0, 0, 0.0), FreeCAD.Vector(1, 0, 0.5), FreeCAD.Vector(2, 0, 0.0), FreeCAD.Vector(0, 1, 0.5),
-             FreeCAD.Vector(1, 1, 1.0), FreeCAD.Vector(2, 1, 0.5), FreeCAD.Vector(0, 2, 0.0), FreeCAD.Vector(1, 2, 0.5),
-             FreeCAD.Vector(2, 2, 0.0)]
+        v = [
+            FreeCAD.Vector(0, 0, 0.0),
+            FreeCAD.Vector(1, 0, 0.5),
+            FreeCAD.Vector(2, 0, 0.0),
+            FreeCAD.Vector(0, 1, 0.5),
+            FreeCAD.Vector(1, 1, 1.0),
+            FreeCAD.Vector(2, 1, 0.5),
+            FreeCAD.Vector(0, 2, 0.0),
+            FreeCAD.Vector(1, 2, 0.5),
+            FreeCAD.Vector(2, 2, 0.0),
+        ]
         d = Mesh.polynomialFit(v)
         c = d["Coefficients"]
         # print ("Polynomial: f(x,y)=%f*x^2%+f*y^2%+f*x*y%+f*x%+f*y%+f" % (c[0],c[1],c[2],c[3],c[4],c[5]))
@@ -597,8 +605,14 @@ class PolynomialFitCases(unittest.TestCase):
 
     def testFitExact(self):
         # symmetric
-        v = [FreeCAD.Vector(0, 0, 0.0), FreeCAD.Vector(1, 0, 0.0), FreeCAD.Vector(2, 0, 0.0), FreeCAD.Vector(0, 1, 0.0),
-             FreeCAD.Vector(1, 1, 1.0), FreeCAD.Vector(2, 1, 0.0)]
+        v = [
+            FreeCAD.Vector(0, 0, 0.0),
+            FreeCAD.Vector(1, 0, 0.0),
+            FreeCAD.Vector(2, 0, 0.0),
+            FreeCAD.Vector(0, 1, 0.0),
+            FreeCAD.Vector(1, 1, 1.0),
+            FreeCAD.Vector(2, 1, 0.0),
+        ]
         d = Mesh.polynomialFit(v)
         c = d["Coefficients"]
         # print ("Polynomial: f(x,y)=%f*x^2%+f*y^2%+f*x*y%+f*x%+f*y%+f" % (c[0],c[1],c[2],c[3],c[4],c[5]))
@@ -607,9 +621,17 @@ class PolynomialFitCases(unittest.TestCase):
 
     def testFitBad(self):
         # symmetric
-        v = [FreeCAD.Vector(0, 0, 0.0), FreeCAD.Vector(1, 0, 0.0), FreeCAD.Vector(2, 0, 0.0), FreeCAD.Vector(0, 1, 0.0),
-             FreeCAD.Vector(1, 1, 1.0), FreeCAD.Vector(2, 1, 0.0), FreeCAD.Vector(0, 2, 0.0), FreeCAD.Vector(1, 2, 0.0),
-             FreeCAD.Vector(2, 2, 0.0)]
+        v = [
+            FreeCAD.Vector(0, 0, 0.0),
+            FreeCAD.Vector(1, 0, 0.0),
+            FreeCAD.Vector(2, 0, 0.0),
+            FreeCAD.Vector(0, 1, 0.0),
+            FreeCAD.Vector(1, 1, 1.0),
+            FreeCAD.Vector(2, 1, 0.0),
+            FreeCAD.Vector(0, 2, 0.0),
+            FreeCAD.Vector(1, 2, 0.0),
+            FreeCAD.Vector(2, 2, 0.0),
+        ]
         d = Mesh.polynomialFit(v)
         c = d["Coefficients"]
         # print ("Polynomial: f(x,y)=%f*x^2%+f*y^2%+f*x*y%+f*x%+f*y%+f" % (c[0],c[1],c[2],c[3],c[4],c[5]))
@@ -701,10 +723,15 @@ class MeshProperty(unittest.TestCase):
         mesh.Mesh = Mesh.createBox(1.0, 1.0, 1.0)
         len1 = int(mesh.Mesh.CountFacets / 2)
         len2 = int(mesh.Mesh.CountFacets - len1)
-        material = {"transparency": [0.2] * len1 + [0.8] * len2, "binding": MeshEnums.Binding.PER_FACE,
-                    "ambientColor": [(1, 0, 0)] * (len1 + len2), "diffuseColor": [(0, 1, 0)] * (len1 + len2),
-                    "specularColor": [(0, 0, 1)] * (len1 + len2), "emissiveColor": [(1, 1, 1)] * (len1 + len2),
-                    "shininess": [0.3] * (len1 + len2)}
+        material = {
+            "transparency": [0.2] * len1 + [0.8] * len2,
+            "binding": MeshEnums.Binding.PER_FACE,
+            "ambientColor": [(1, 0, 0)] * (len1 + len2),
+            "diffuseColor": [(0, 1, 0)] * (len1 + len2),
+            "specularColor": [(0, 0, 1)] * (len1 + len2),
+            "emissiveColor": [(1, 1, 1)] * (len1 + len2),
+            "shininess": [0.3] * (len1 + len2),
+        }
 
         mesh.addProperty("Mesh::PropertyMaterial", "Material")
         mesh.Material = material

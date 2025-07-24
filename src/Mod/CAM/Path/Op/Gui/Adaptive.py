@@ -54,13 +54,21 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
-        signals = [self.form.Side.currentIndexChanged, self.form.OperationType.currentIndexChanged,
-                   self.form.ToolController.currentIndexChanged, self.form.stepOverPercent.valueChanged,
-                   self.form.Tolerance.valueChanged, self.form.HelixAngle.valueChanged,
-                   self.form.HelixConeAngle.valueChanged, self.form.HelixDiameterLimit.valueChanged,
-                   self.form.LiftDistance.valueChanged, self.form.KeepToolDownRatio.valueChanged,
-                   self.form.StockToLeave.valueChanged, self.form.ZStockToLeave.valueChanged,
-                   self.form.coolantController.currentIndexChanged]
+        signals = [
+            self.form.Side.currentIndexChanged,
+            self.form.OperationType.currentIndexChanged,
+            self.form.ToolController.currentIndexChanged,
+            self.form.stepOverPercent.valueChanged,
+            self.form.Tolerance.valueChanged,
+            self.form.HelixAngle.valueChanged,
+            self.form.HelixConeAngle.valueChanged,
+            self.form.HelixDiameterLimit.valueChanged,
+            self.form.LiftDistance.valueChanged,
+            self.form.KeepToolDownRatio.valueChanged,
+            self.form.StockToLeave.valueChanged,
+            self.form.ZStockToLeave.valueChanged,
+            self.form.coolantController.currentIndexChanged,
+        ]
         if hasattr(self.form.ForceInsideOut, "checkStateChanged"):  # Qt version >= 6.7.0
             signals.append(self.form.ForceInsideOut.checkStateChanged)
             signals.append(self.form.FinishingProfile.checkStateChanged)

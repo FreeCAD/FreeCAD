@@ -48,79 +48,92 @@ class ConstraintCurrentDensity(base_fempythonobject.BaseFemPythonObject):
             prop.add_to_object(obj)
 
     def _get_properties(self):
-        prop = [_PropHelper(
-            type="App::PropertyCurrentDensity",
-            name="CurrentDensity_re_1",
-            group="Current Density",
-            doc="Real part of current density x-component",
-            value="0 A/m^2",
-        ), _PropHelper(
-            type="App::PropertyCurrentDensity",
-            name="CurrentDensity_re_2",
-            group="Current Density",
-            doc="Real part of current density y-component",
-            value="0 A/m^2",
-        ), _PropHelper(
-            type="App::PropertyCurrentDensity",
-            name="CurrentDensity_re_3",
-            group="Current Density",
-            doc="Real part of current density z-component",
-            value="0 A/m^2",
-        ), _PropHelper(
-            type="App::PropertyCurrentDensity",
-            name="CurrentDensity_im_1",
-            group="Current Density",
-            doc="Imaginary part of current density x-component",
-            value="0 A/m^2",
-        ), _PropHelper(
-            type="App::PropertyCurrentDensity",
-            name="CurrentDensity_im_2",
-            group="Current Density",
-            doc="Imaginary part of current density y-component",
-            value="0 A/m^2",
-        ), _PropHelper(
-            type="App::PropertyCurrentDensity",
-            name="CurrentDensity_im_3",
-            group="Current Density",
-            doc="Imaginary part of current density z-component",
-            value="0 A/m^2",
-        ), _PropHelper(
-            type="App::PropertyBool",
-            name="EnableCurrentDensity_1",
-            group="Current Density",
-            doc="Enable currenty density x component",
-            value=False,
-        ), _PropHelper(
-            type="App::PropertyBool",
-            name="EnableCurrentDensity_2",
-            group="Current Density",
-            doc="Enable currenty density y component",
-            value=False,
-        ), _PropHelper(
-            type="App::PropertyBool",
-            name="EnableCurrentDensity_3",
-            group="Current Density",
-            doc="Enable currenty density z component",
-            value=False,
-        ), _PropHelper(
-            type="App::PropertyCurrentDensity",
-            name="NormalCurrentDensity_re",
-            group="Current Density",
-            doc="Real part of current density normal to boundary",
-            value="0 A/m^2",
-        ), _PropHelper(
-            type="App::PropertyCurrentDensity",
-            name="NormalCurrentDensity_im",
-            group="Current Density",
-            doc="Imaginary part of current density normal to boundary",
-            value="0 A/m^2",
-        ), _PropHelper(
-            type="App::PropertyEnumeration",
-            name="Mode",
-            group="Current Density",
-            doc="Set current boundary condition direction mode",
-            value=["Custom", "Normal"],
-        )]
+        prop = [
+            _PropHelper(
+                type="App::PropertyCurrentDensity",
+                name="CurrentDensity_re_1",
+                group="Current Density",
+                doc="Real part of current density x-component",
+                value="0 A/m^2",
+            ),
+            _PropHelper(
+                type="App::PropertyCurrentDensity",
+                name="CurrentDensity_re_2",
+                group="Current Density",
+                doc="Real part of current density y-component",
+                value="0 A/m^2",
+            ),
+            _PropHelper(
+                type="App::PropertyCurrentDensity",
+                name="CurrentDensity_re_3",
+                group="Current Density",
+                doc="Real part of current density z-component",
+                value="0 A/m^2",
+            ),
+            _PropHelper(
+                type="App::PropertyCurrentDensity",
+                name="CurrentDensity_im_1",
+                group="Current Density",
+                doc="Imaginary part of current density x-component",
+                value="0 A/m^2",
+            ),
+            _PropHelper(
+                type="App::PropertyCurrentDensity",
+                name="CurrentDensity_im_2",
+                group="Current Density",
+                doc="Imaginary part of current density y-component",
+                value="0 A/m^2",
+            ),
+            _PropHelper(
+                type="App::PropertyCurrentDensity",
+                name="CurrentDensity_im_3",
+                group="Current Density",
+                doc="Imaginary part of current density z-component",
+                value="0 A/m^2",
+            ),
+            _PropHelper(
+                type="App::PropertyBool",
+                name="EnableCurrentDensity_1",
+                group="Current Density",
+                doc="Enable currenty density x component",
+                value=False,
+            ),
+            _PropHelper(
+                type="App::PropertyBool",
+                name="EnableCurrentDensity_2",
+                group="Current Density",
+                doc="Enable currenty density y component",
+                value=False,
+            ),
+            _PropHelper(
+                type="App::PropertyBool",
+                name="EnableCurrentDensity_3",
+                group="Current Density",
+                doc="Enable currenty density z component",
+                value=False,
+            ),
+            _PropHelper(
+                type="App::PropertyCurrentDensity",
+                name="NormalCurrentDensity_re",
+                group="Current Density",
+                doc="Real part of current density normal to boundary",
+                value="0 A/m^2",
+            ),
+            _PropHelper(
+                type="App::PropertyCurrentDensity",
+                name="NormalCurrentDensity_im",
+                group="Current Density",
+                doc="Imaginary part of current density normal to boundary",
+                value="0 A/m^2",
+            ),
+            _PropHelper(
+                type="App::PropertyEnumeration",
+                name="Mode",
+                group="Current Density",
+                doc="Set current boundary condition direction mode",
+                value=["Custom", "Normal"],
+            ),
+        ]
 
         return prop
 

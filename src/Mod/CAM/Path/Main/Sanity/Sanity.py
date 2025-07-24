@@ -76,9 +76,15 @@ class CAMSanity:
         Gather all the incremental parts of the analysis
         """
 
-        data = {"baseData": self._baseObjectData(), "designData": self._designData(), "toolData": self._toolData(),
-                "runData": self._runData(), "outputData": self._outputData(), "fixtureData": self._fixtureData(),
-                "stockData": self._stockData()}
+        data = {
+            "baseData": self._baseObjectData(),
+            "designData": self._designData(),
+            "toolData": self._toolData(),
+            "runData": self._runData(),
+            "outputData": self._outputData(),
+            "fixtureData": self._fixtureData(),
+            "stockData": self._stockData(),
+        }
         # data["squawkData"] = self._squawkData()
 
         return data
@@ -127,10 +133,17 @@ class CAMSanity:
         """
 
         obj = self.job
-        data = {"FileName": obj.Document.FileName, "LastModifiedDate": str(obj.Document.LastModifiedDate),
-                "Customer": obj.Document.Company, "Designer": obj.Document.LastModifiedBy,
-                "JobDescription": obj.Description, "JobLabel": obj.Label, "Sequence": "", "JobType": "",
-                "squawkData": []}
+        data = {
+            "FileName": obj.Document.FileName,
+            "LastModifiedDate": str(obj.Document.LastModifiedDate),
+            "Customer": obj.Document.Company,
+            "Designer": obj.Document.LastModifiedBy,
+            "JobDescription": obj.Description,
+            "JobLabel": obj.Label,
+            "Sequence": "",
+            "JobType": "",
+            "squawkData": [],
+        }
 
         n = 0
         m = 0
@@ -147,17 +160,30 @@ class CAMSanity:
 
     def _fixtureData(self):
         obj = self.job
-        data = {"fixtures": str(obj.Fixtures), "orderBy": str(obj.OrderOutputBy),
-                "datumImage": self.image_builder.build_image(obj, "datumImage"), "squawkData": []}
+        data = {
+            "fixtures": str(obj.Fixtures),
+            "orderBy": str(obj.OrderOutputBy),
+            "datumImage": self.image_builder.build_image(obj, "datumImage"),
+            "squawkData": [],
+        }
 
         return data
 
     def _outputData(self):
         obj = self.job
-        data = {"lastpostprocess": str(obj.LastPostProcessDate), "lastgcodefile": str(obj.LastPostProcessOutput),
-                "optionalstops": "False", "programmer": "", "machine": "", "postprocessor": str(obj.PostProcessor),
-                "postprocessorFlags": str(obj.PostProcessorArgs), "filesize": "", "linecount": "",
-                "outputfilename": "setupreport", "squawkData": []}
+        data = {
+            "lastpostprocess": str(obj.LastPostProcessDate),
+            "lastgcodefile": str(obj.LastPostProcessOutput),
+            "optionalstops": "False",
+            "programmer": "",
+            "machine": "",
+            "postprocessor": str(obj.PostProcessor),
+            "postprocessorFlags": str(obj.PostProcessorArgs),
+            "filesize": "",
+            "linecount": "",
+            "outputfilename": "setupreport",
+            "squawkData": [],
+        }
 
         if obj.PostProcessorOutputFile != "":
             fname = obj.PostProcessorOutputFile
@@ -197,11 +223,18 @@ class CAMSanity:
 
     def _runData(self):
         obj = self.job
-        data = {"cycletotal": str(obj.CycleTime), "jobMinZ": FreeCAD.Units.Quantity(
-            obj.Path.BoundBox.ZMin, FreeCAD.Units.Length
-        ).UserString, "jobMaxZ": FreeCAD.Units.Quantity(
-            obj.Path.BoundBox.ZMax, FreeCAD.Units.Length
-        ).UserString, "jobDescription": obj.Description, "operations": [], "squawkData": []}
+        data = {
+            "cycletotal": str(obj.CycleTime),
+            "jobMinZ": FreeCAD.Units.Quantity(
+                obj.Path.BoundBox.ZMin, FreeCAD.Units.Length
+            ).UserString,
+            "jobMaxZ": FreeCAD.Units.Quantity(
+                obj.Path.BoundBox.ZMax, FreeCAD.Units.Length
+            ).UserString,
+            "jobDescription": obj.Description,
+            "operations": [],
+            "squawkData": [],
+        }
 
         for op in obj.Operations.Group:
             oplabel = op.Label

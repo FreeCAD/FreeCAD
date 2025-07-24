@@ -148,8 +148,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
-        signals = [self.form.startVertex.editingFinished, self.form.toolController.currentIndexChanged,
-                   self.form.coolantController.currentIndexChanged]
+        signals = [
+            self.form.startVertex.editingFinished,
+            self.form.toolController.currentIndexChanged,
+            self.form.coolantController.currentIndexChanged,
+        ]
         return signals
 
     def taskPanelBaseGeometryPage(self, obj, features):

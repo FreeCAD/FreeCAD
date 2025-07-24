@@ -218,15 +218,19 @@ class ToolController:
 
     def templateAttrs(self, obj):
         """templateAttrs(obj) ... answer a dictionary with all properties that should be stored for a template."""
-        attrs = {ToolControllerTemplate.Version: 1, ToolControllerTemplate.Name: obj.Name,
-                 ToolControllerTemplate.Label: obj.Label, ToolControllerTemplate.ToolNumber: obj.ToolNumber,
-                 ToolControllerTemplate.VertFeed: "%s" % obj.VertFeed,
-                 ToolControllerTemplate.HorizFeed: "%s" % obj.HorizFeed,
-                 ToolControllerTemplate.VertRapid: "%s" % obj.VertRapid,
-                 ToolControllerTemplate.HorizRapid: "%s" % obj.HorizRapid,
-                 ToolControllerTemplate.SpindleSpeed: obj.SpindleSpeed,
-                 ToolControllerTemplate.SpindleDir: obj.SpindleDir,
-                 ToolControllerTemplate.Tool: obj.Tool.Proxy.to_dict()}
+        attrs = {
+            ToolControllerTemplate.Version: 1,
+            ToolControllerTemplate.Name: obj.Name,
+            ToolControllerTemplate.Label: obj.Label,
+            ToolControllerTemplate.ToolNumber: obj.ToolNumber,
+            ToolControllerTemplate.VertFeed: "%s" % obj.VertFeed,
+            ToolControllerTemplate.HorizFeed: "%s" % obj.HorizFeed,
+            ToolControllerTemplate.VertRapid: "%s" % obj.VertRapid,
+            ToolControllerTemplate.HorizRapid: "%s" % obj.HorizRapid,
+            ToolControllerTemplate.SpindleSpeed: obj.SpindleSpeed,
+            ToolControllerTemplate.SpindleDir: obj.SpindleDir,
+            ToolControllerTemplate.Tool: obj.Tool.Proxy.to_dict(),
+        }
         expressions = []
         for expr in obj.ExpressionEngine:
             Path.Log.debug("%s: %s" % (expr[0], expr[1]))

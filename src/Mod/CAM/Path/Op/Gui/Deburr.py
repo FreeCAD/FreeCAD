@@ -115,9 +115,14 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         PathGuiUtil.updateInputField(self.obj, "ExtraDepth", self.form.value_h)
 
     def getSignalsForUpdate(self, obj):
-        signals = [self.form.joinMiter.clicked, self.form.joinRound.clicked,
-                   self.form.coolantController.currentIndexChanged, self.form.direction.currentIndexChanged,
-                   self.form.value_W.valueChanged, self.form.value_h.valueChanged]
+        signals = [
+            self.form.joinMiter.clicked,
+            self.form.joinRound.clicked,
+            self.form.coolantController.currentIndexChanged,
+            self.form.direction.currentIndexChanged,
+            self.form.value_W.valueChanged,
+            self.form.value_h.valueChanged,
+        ]
         return signals
 
     def registerSignalHandlers(self, obj):

@@ -139,8 +139,12 @@ class ViewProvider(object):
         """dumps() ... callback before receiver is saved to a file.
         Returns a dictionary with the receiver's resources as strings."""
         Path.Log.track()
-        state = {"OpName": self.OpName, "OpIcon": self.OpIcon, "OpPageModule": self.OpPageModule,
-                 "OpPageClass": self.OpPageClass}
+        state = {
+            "OpName": self.OpName,
+            "OpIcon": self.OpIcon,
+            "OpPageModule": self.OpPageModule,
+            "OpPageClass": self.OpPageClass,
+        }
         return state
 
     def loads(self, state):

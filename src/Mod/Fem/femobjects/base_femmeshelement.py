@@ -49,13 +49,15 @@ class BaseFemMeshElement(base_fempythonobject.BaseFemPythonObject):
         obj.addExtension("App::SuppressibleExtensionPython")
 
     def _get_properties(self):
-        prop = [_PropHelper(
-            type="App::PropertyLinkSubListGlobal",
-            name="References",
-            group="Mesh Element",
-            doc="List of reference shapes",
-            value=[],
-        )]
+        prop = [
+            _PropHelper(
+                type="App::PropertyLinkSubListGlobal",
+                name="References",
+                group="Mesh Element",
+                doc="List of reference shapes",
+                value=[],
+            )
+        ]
 
         return prop
 

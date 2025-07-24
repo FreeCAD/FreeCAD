@@ -21,6 +21,7 @@
 #                                                                           *
 # **************************************************************************/
 
+
 # TODO:Finish this script.
 def open(filename):
     doc = App.activeDocument()

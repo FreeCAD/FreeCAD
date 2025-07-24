@@ -88,9 +88,14 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
-        signals = [self.form.toolController.currentIndexChanged, self.form.PointCountX.valueChanged,
-                   self.form.PointCountY.valueChanged, self.form.OutputFileName.editingFinished,
-                   self.form.Xoffset.valueChanged, self.form.Yoffset.valueChanged]
+        signals = [
+            self.form.toolController.currentIndexChanged,
+            self.form.PointCountX.valueChanged,
+            self.form.PointCountY.valueChanged,
+            self.form.OutputFileName.editingFinished,
+            self.form.Xoffset.valueChanged,
+            self.form.Yoffset.valueChanged,
+        ]
         self.form.SetOutputFileName.clicked.connect(self.SetOutputFileName)
         return signals
 

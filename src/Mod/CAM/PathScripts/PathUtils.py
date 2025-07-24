@@ -298,10 +298,23 @@ def getOffsetArea(
     https://github.com/sliptonic/FreeCAD/wiki/PathArea-notes."""
     Path.Log.debug("getOffsetArea()")
 
-    areaParams = {"Offset": offset, "Fill": 1, "Outline": removeHoles, "Coplanar": 0, "SectionCount": 1,
-                  "Reorient": True, "OpenMode": 0, "MaxArcPoints": 400, "Project": True, "FitArcs": False,
-                  "Deflection": tolerance, "Accuracy": tolerance, "Tolerance": 1e-5, "Simplify": True,
-                  "CleanDistance": tolerance / 5}
+    areaParams = {
+        "Offset": offset,
+        "Fill": 1,
+        "Outline": removeHoles,
+        "Coplanar": 0,
+        "SectionCount": 1,
+        "Reorient": True,
+        "OpenMode": 0,
+        "MaxArcPoints": 400,
+        "Project": True,
+        "FitArcs": False,
+        "Deflection": tolerance,
+        "Accuracy": tolerance,
+        "Tolerance": 1e-5,
+        "Simplify": True,
+        "CleanDistance": tolerance / 5,
+    }
 
     area = Path.Area()  # Create instance of Area() class object
     # Set working plane normal to Z=1

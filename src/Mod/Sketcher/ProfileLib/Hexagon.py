@@ -36,22 +36,31 @@ def makeHexagonSimple(sketchName=None):
     else:
         sketch = App.ActiveDocument.getObject(sketchName)
 
-    geoList = [Part.LineSegment(App.Vector(-20.00, 34.64, 0), App.Vector(20.00, 34.64, 0)),
-               Part.LineSegment(App.Vector(20.00, 34.64, 0), App.Vector(47.082363, 0.00, 0)),
-               Part.LineSegment(App.Vector(40.00, 0.00, 0), App.Vector(20.00, -34.64, 0)),
-               Part.LineSegment(App.Vector(20.00, -34.64, 0), App.Vector(-20.00, -34.64, 0)),
-               Part.LineSegment(App.Vector(-20.00, -34.64, 0), App.Vector(-40.00, 0.00, 0)),
-               Part.LineSegment(App.Vector(-40.00, 0.00, 0), App.Vector(-20.00, 34.64, 0))]
+    geoList = [
+        Part.LineSegment(App.Vector(-20.00, 34.64, 0), App.Vector(20.00, 34.64, 0)),
+        Part.LineSegment(App.Vector(20.00, 34.64, 0), App.Vector(47.082363, 0.00, 0)),
+        Part.LineSegment(App.Vector(40.00, 0.00, 0), App.Vector(20.00, -34.64, 0)),
+        Part.LineSegment(App.Vector(20.00, -34.64, 0), App.Vector(-20.00, -34.64, 0)),
+        Part.LineSegment(App.Vector(-20.00, -34.64, 0), App.Vector(-40.00, 0.00, 0)),
+        Part.LineSegment(App.Vector(-40.00, 0.00, 0), App.Vector(-20.00, 34.64, 0)),
+    ]
     (l1, l2, l3, l4, l5, l6) = sketch.addGeometry(geoList)
 
-    conList = [Sketcher.Constraint("Coincident", l1, 2, l2, 1), Sketcher.Constraint("Coincident", l2, 2, l3, 1),
-               Sketcher.Constraint("Coincident", l3, 2, l4, 1), Sketcher.Constraint("Coincident", l4, 2, l5, 1),
-               Sketcher.Constraint("Coincident", l5, 2, l6, 1), Sketcher.Constraint("Coincident", l6, 2, l1, 1),
-               Sketcher.Constraint("Equal", l1, l2), Sketcher.Constraint("Equal", l2, l3),
-               Sketcher.Constraint("Equal", l3, l4), Sketcher.Constraint("Equal", l4, l5),
-               Sketcher.Constraint("Equal", l5, l6),
-               Sketcher.Constraint("Angle", l1, 2, l2, 1, App.Units.Quantity("120.000000 deg")),
-               Sketcher.Constraint("Angle", l3, 2, l4, 1, App.Units.Quantity("120.000000 deg")),
-               Sketcher.Constraint("Angle", l5, 2, l6, 1, App.Units.Quantity("120.000000 deg"))]
+    conList = [
+        Sketcher.Constraint("Coincident", l1, 2, l2, 1),
+        Sketcher.Constraint("Coincident", l2, 2, l3, 1),
+        Sketcher.Constraint("Coincident", l3, 2, l4, 1),
+        Sketcher.Constraint("Coincident", l4, 2, l5, 1),
+        Sketcher.Constraint("Coincident", l5, 2, l6, 1),
+        Sketcher.Constraint("Coincident", l6, 2, l1, 1),
+        Sketcher.Constraint("Equal", l1, l2),
+        Sketcher.Constraint("Equal", l2, l3),
+        Sketcher.Constraint("Equal", l3, l4),
+        Sketcher.Constraint("Equal", l4, l5),
+        Sketcher.Constraint("Equal", l5, l6),
+        Sketcher.Constraint("Angle", l1, 2, l2, 1, App.Units.Quantity("120.000000 deg")),
+        Sketcher.Constraint("Angle", l3, 2, l4, 1, App.Units.Quantity("120.000000 deg")),
+        Sketcher.Constraint("Angle", l5, 2, l6, 1, App.Units.Quantity("120.000000 deg")),
+    ]
     sketch.addConstraint(conList)
     return

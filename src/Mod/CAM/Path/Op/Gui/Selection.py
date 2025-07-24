@@ -363,13 +363,34 @@ def turnselect():
 
 
 def select(op):
-    opsel = {"Contour": contourselect, "Deburr": chamferselect, "Drilling": drillselect, "Tapping": tapselect,
-             "Engrave": engraveselect, "Helix": drillselect, "MillFace": pocketselect, "Pocket": pocketselect,
-             "Pocket 3D": pocketselect, "Pocket3D": pocketselect, "Pocket Shape": pocketselect,
-             "Profile Edges": eselect, "Profile Faces": fselect, "Profile": profileselect, "Slot": slotselect,
-             "Surface": surfaceselect, "Waterline": surfaceselect, "Adaptive": adaptiveselect, "Vcarve": vcarveselect,
-             "Probe": probeselect, "Custom": customselect, "ThreadMilling": drillselect, "TurnFace": turnselect,
-             "TurnProfile": turnselect, "TurnPartoff": turnselect, "TurnRough": turnselect}
+    opsel = {
+        "Contour": contourselect,
+        "Deburr": chamferselect,
+        "Drilling": drillselect,
+        "Tapping": tapselect,
+        "Engrave": engraveselect,
+        "Helix": drillselect,
+        "MillFace": pocketselect,
+        "Pocket": pocketselect,
+        "Pocket 3D": pocketselect,
+        "Pocket3D": pocketselect,
+        "Pocket Shape": pocketselect,
+        "Profile Edges": eselect,
+        "Profile Faces": fselect,
+        "Profile": profileselect,
+        "Slot": slotselect,
+        "Surface": surfaceselect,
+        "Waterline": surfaceselect,
+        "Adaptive": adaptiveselect,
+        "Vcarve": vcarveselect,
+        "Probe": probeselect,
+        "Custom": customselect,
+        "ThreadMilling": drillselect,
+        "TurnFace": turnselect,
+        "TurnProfile": turnselect,
+        "TurnPartoff": turnselect,
+        "TurnRough": turnselect,
+    }
     return opsel[op]
 
 

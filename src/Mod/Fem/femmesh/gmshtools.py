@@ -619,7 +619,10 @@ class GmshTools:
                                             elems, mr_obj.Name
                                         )
                                     )
-                        setting = {"hwall_n": Units.Quantity(mr_obj.MinimumThickness).Value, "ratio": mr_obj.GrowthRate}
+                        setting = {
+                            "hwall_n": Units.Quantity(mr_obj.MinimumThickness).Value,
+                            "ratio": mr_obj.GrowthRate,
+                        }
                         setting["thickness"] = sum(
                             [
                                 setting["hwall_n"] * setting["ratio"] ** i
@@ -629,9 +632,7 @@ class GmshTools:
 
                         # hfar: cell dimension outside boundary
                         # should be set later if some character length is set
-                        if (
-                                setting["thickness"] * 0.8 < self.clmax < setting["thickness"] * 1.6
-                        ):
+                        if setting["thickness"] * 0.8 < self.clmax < setting["thickness"] * 1.6:
                             setting["hfar"] = self.clmax
                         else:
                             # set a value for safety, it may works as background mesh cell size
