@@ -26,7 +26,7 @@
     <Methode Name="translateLabel">
       <Documentation>
         <UserDocu>translateLabel(translationContext, objectBaseName, objectUniqueName).
-         No return value.  Replace the current label with a translated version where possible.
+No return value.  Replace the current label with a translated version where possible.
         </UserDocu>
       </Documentation>
     </Methode>
