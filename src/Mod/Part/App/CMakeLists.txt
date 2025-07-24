@@ -62,6 +62,7 @@ generate_from_py(GeometrySurface)
 generate_from_py(Line)
 generate_from_py(LineSegment)
 generate_from_py(Point)
+generate_from_py(Note)
 generate_from_py(BezierCurve)
 generate_from_py(BSplineCurve)
 generate_from_py(Plane)
@@ -309,6 +310,8 @@ SET(Python_SRCS
     LineSegmentPyImp.cpp
     Point.pyi
     PointPyImp.cpp
+    Note.pyi
+    NotePyImp.cpp
     BezierCurve.pyi
     BezierCurvePyImp.cpp
     BSplineCurve.pyi

@@ -111,6 +111,7 @@ private:
     void emptyGeometryRootNodes();
     void createEditModePointInventorNodes();
     void createEditModeCurveInventorNodes();
+    void createEditModeNoteInventorNodes();
 
 private:
     ViewProviderSketch& viewProvider;
