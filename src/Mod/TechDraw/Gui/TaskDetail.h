@@ -65,6 +65,9 @@ public:
                      QPushButton* btnCancel);
     void enableTaskButtons(bool button);
 
+    TechDraw::DrawViewPart* getBaseFeat();
+    TechDraw::DrawViewDetail* getDetailFeat();
+
 public Q_SLOTS:
         void onDraggerClicked(bool clicked);
         void onHighlightMoved(QPointF dragEnd);
@@ -93,8 +96,6 @@ protected:
     void restoreDetailState();
     QPointF getAnchorScene();
 
-    TechDraw::DrawViewPart* getBaseFeat();
-    TechDraw::DrawViewDetail* getDetailFeat();
 
 private:
     std::unique_ptr<Ui_TaskDetail> ui;
@@ -151,6 +152,8 @@ public:
     void update();
 
     void modifyStandardButtons(QDialogButtonBox* box) override;
+
+    std::string getDetailName() const;
 
 private:
     TaskDetail * widget;

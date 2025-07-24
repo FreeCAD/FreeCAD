@@ -651,6 +651,17 @@ void TaskDlgDetail::modifyStandardButtons(QDialogButtonBox* box)
     widget->saveButtons(btnOK, btnCancel);
 }
 
+std::string TaskDlgDetail::getDetailName() const
+{
+    DrawViewDetail* detailObj = widget->getDetailFeat();
+    if (!detailObj) {
+        return {"not found"};
+    }
+
+    return detailObj->getNameInDocument();
+}
+
+
 //==== calls from the TaskView ===============================================================
 void TaskDlgDetail::open()
 {
