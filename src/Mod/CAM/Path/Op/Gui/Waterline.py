@@ -116,11 +116,17 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
-        signals = [self.form.toolController.currentIndexChanged, self.form.coolantController.currentIndexChanged,
-                   self.form.algorithmSelect.currentIndexChanged, self.form.boundBoxSelect.currentIndexChanged,
-                   self.form.layerMode.currentIndexChanged, self.form.cutPattern.currentIndexChanged,
-                   self.form.boundaryAdjustment.editingFinished, self.form.stepOver.editingFinished,
-                   self.form.sampleInterval.editingFinished]
+        signals = [
+            self.form.toolController.currentIndexChanged,
+            self.form.coolantController.currentIndexChanged,
+            self.form.algorithmSelect.currentIndexChanged,
+            self.form.boundBoxSelect.currentIndexChanged,
+            self.form.layerMode.currentIndexChanged,
+            self.form.cutPattern.currentIndexChanged,
+            self.form.boundaryAdjustment.editingFinished,
+            self.form.stepOver.editingFinished,
+            self.form.sampleInterval.editingFinished,
+        ]
         if hasattr(self.form.optimizeEnabled, "checkStateChanged"):  # Qt version >= 6.7.0
             signals.append(self.form.optimizeEnabled.checkStateChanged)
         else:  # Qt version < 6.7.0

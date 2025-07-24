@@ -97,7 +97,10 @@ class FreeCADFileHandler(xml.sax.ContentHandler):
 
         if tag == "Document":
             self.obj = tag
-            self.contents = {"ProgramVersion": attributes["ProgramVersion"], "FileVersion": attributes["FileVersion"]}
+            self.contents = {
+                "ProgramVersion": attributes["ProgramVersion"],
+                "FileVersion": attributes["FileVersion"],
+            }
 
         elif tag == "Object":
             if "name" in attributes:

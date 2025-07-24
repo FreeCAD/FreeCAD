@@ -500,13 +500,18 @@ class TestMeshGroups(unittest.TestCase):
         # information
         # fcc_print(fm)
 
-        expected_dict = {"ids": [], "names": [
-            "MyNodeGroup",
-            "MyEdgeGroup",
-            "MyVolumeGroup",
-            "My0DElementGroup",
-            "MyBallGroup",
-        ], "types": ["Node", "Edge", "Volume", "0DElement", "Ball"], "count": fm.GroupCount + 5}
+        expected_dict = {
+            "ids": [],
+            "names": [
+                "MyNodeGroup",
+                "MyEdgeGroup",
+                "MyVolumeGroup",
+                "My0DElementGroup",
+                "MyBallGroup",
+            ],
+            "types": ["Node", "Edge", "Volume", "0DElement", "Ball"],
+            "count": fm.GroupCount + 5,
+        }
         result_dict = {}
 
         mygrpids = []

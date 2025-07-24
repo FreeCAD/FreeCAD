@@ -265,7 +265,14 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
 
 
 def SetupProperties():
-    setup = ["DwellTime", "DwellEnabled", "AddTipLength", "ReturnLevel", "ExtraOffset", "RetractHeight"]
+    setup = [
+        "DwellTime",
+        "DwellEnabled",
+        "AddTipLength",
+        "ReturnLevel",
+        "ExtraOffset",
+        "RetractHeight",
+    ]
     return setup
 
 

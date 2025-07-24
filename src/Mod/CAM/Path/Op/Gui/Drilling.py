@@ -183,8 +183,11 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals which cause the receiver to update the model"""
-        signals = [self.form.peckRetractHeight.editingFinished, self.form.peckDepth.editingFinished,
-                   self.form.dwellTime.editingFinished]
+        signals = [
+            self.form.peckRetractHeight.editingFinished,
+            self.form.peckDepth.editingFinished,
+            self.form.dwellTime.editingFinished,
+        ]
 
         if hasattr(self.form.dwellEnabled, "checkStateChanged"):  # Qt version >= 6.7.0
             signals.append(self.form.dwellEnabled.checkStateChanged)

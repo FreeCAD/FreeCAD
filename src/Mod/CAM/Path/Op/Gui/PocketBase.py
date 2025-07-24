@@ -173,11 +173,19 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
-        signals = [self.form.cutMode.currentIndexChanged, self.form.offsetPattern.currentIndexChanged,
-                   self.form.stepOverPercent.editingFinished, self.form.zigZagAngle.editingFinished,
-                   self.form.toolController.currentIndexChanged, self.form.extraOffset.editingFinished,
-                   self.form.useStartPoint.clicked, self.form.useRestMachining.clicked, self.form.useOutline.clicked,
-                   self.form.minTravel.clicked, self.form.coolantController.currentIndexChanged]
+        signals = [
+            self.form.cutMode.currentIndexChanged,
+            self.form.offsetPattern.currentIndexChanged,
+            self.form.stepOverPercent.editingFinished,
+            self.form.zigZagAngle.editingFinished,
+            self.form.toolController.currentIndexChanged,
+            self.form.extraOffset.editingFinished,
+            self.form.useStartPoint.clicked,
+            self.form.useRestMachining.clicked,
+            self.form.useOutline.clicked,
+            self.form.minTravel.clicked,
+            self.form.coolantController.currentIndexChanged,
+        ]
 
         if FeatureFacing & self.pocketFeatures():
             signals.append(self.form.boundaryShape.currentIndexChanged)

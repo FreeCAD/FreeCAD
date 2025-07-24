@@ -210,9 +210,15 @@ class ObjectPocket(PathAreaOp.ObjectOp):
     def areaOpAreaParams(self, obj, isHole):
         """areaOpAreaParams(obj, isHole) ... return dictionary with pocket's area parameters"""
         Path.Log.track()
-        params = {"Fill": 0, "Coplanar": 0, "PocketMode": 1, "SectionCount": -1, "Angle": obj.ZigZagAngle,
-                  "FromCenter": obj.StartAt == "Center",
-                  "PocketStepover": (self.radius * 2) * (float(obj.StepOver) / 100)}
+        params = {
+            "Fill": 0,
+            "Coplanar": 0,
+            "PocketMode": 1,
+            "SectionCount": -1,
+            "Angle": obj.ZigZagAngle,
+            "FromCenter": obj.StartAt == "Center",
+            "PocketStepover": (self.radius * 2) * (float(obj.StepOver) / 100),
+        }
         extraOffset = obj.ExtraOffset.Value
         if self.pocketInvertExtraOffset():
             extraOffset = 0 - extraOffset

@@ -339,8 +339,17 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
 
 def SetupProperties():
-    setup = ["PeckDepth", "PeckEnabled", "DwellTime", "DwellEnabled", "AddTipLength", "RetractMode", "ExtraOffset",
-             "RetractHeight", "KeepToolDown"]
+    setup = [
+        "PeckDepth",
+        "PeckEnabled",
+        "DwellTime",
+        "DwellEnabled",
+        "AddTipLength",
+        "RetractMode",
+        "ExtraOffset",
+        "RetractHeight",
+        "KeepToolDown",
+    ]
     return setup
 
 

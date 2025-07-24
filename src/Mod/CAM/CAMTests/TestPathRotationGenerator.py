@@ -101,7 +101,14 @@ class TestPathRotationGenerator(PathTestUtils.PathTestBase):
         """Test A limits"""
         v1 = FreeCAD.Vector(0.5, 0.5, 0.5)
 
-        args = {"normalVector": v1, "cMin": -360, "cMax": 360, "compound": True, "aMin": -90, "aMax": 0}
+        args = {
+            "normalVector": v1,
+            "cMin": -360,
+            "cMax": 360,
+            "compound": True,
+            "aMin": -90,
+            "aMax": 0,
+        }
 
         # Constrain a axis rotation negative
 
@@ -127,7 +134,14 @@ class TestPathRotationGenerator(PathTestUtils.PathTestBase):
         """Test C limits"""
         v1 = FreeCAD.Vector(0.5, 0.5, 0.5)
 
-        args = {"normalVector": v1, "aMin": -360, "aMax": 360, "compound": True, "cMin": -180, "cMax": 0}
+        args = {
+            "normalVector": v1,
+            "aMin": -360,
+            "aMax": 360,
+            "compound": True,
+            "cMin": -180,
+            "cMax": 0,
+        }
 
         # Constrain a axis rotation negative
 

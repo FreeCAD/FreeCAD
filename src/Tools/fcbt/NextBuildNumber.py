@@ -50,7 +50,9 @@ open("../Version.h", "w").writelines(
 )
 
 # writing the ChangeLog.txt
-open("../ChangeLog.txt", "a").write(f"\nVersion: V{FCVersionMajor[23:-1]}.{FCVersionMinor[23:-1]}B{str(BuildNumber)} Date: {time.asctime()} +++++++++++++++++++++++++++++++\n")
+open("../ChangeLog.txt", "a").write(
+    f"\nVersion: V{FCVersionMajor[23:-1]}.{FCVersionMinor[23:-1]}B{str(BuildNumber)} Date: {time.asctime()} +++++++++++++++++++++++++++++++\n"
+)
 
 # writing new Version.wxi File
 open("../Version.wxi", "w").writelines(

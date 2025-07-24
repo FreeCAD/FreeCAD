@@ -224,9 +224,11 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
 
     # ********************************************************************************************
     def write_z88_integration_properties(self):
-        integration_data = ["1 {} {} {}".format(
-            self.element_count, self.z88_elparam["INTORD"], self.z88_elparam["INTOS"]
-        )]
+        integration_data = [
+            "1 {} {} {}".format(
+                self.element_count, self.z88_elparam["INTORD"], self.z88_elparam["INTOS"]
+            )
+        ]
         integration_properties_file_path = self.file_name + "int.txt"
         f = open(integration_properties_file_path, "w")
         f.write(f"{len(integration_data)}\n")

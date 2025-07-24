@@ -127,10 +127,19 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(thickness_obj)
 
     # material
-    matrixprop = {"Name": "Concrete-EN-C35_45", "YoungsModulus": "32000 MPa", "PoissonRatio": "0.17",
-                  "CompressiveStrength": "15.75 MPa", "AngleOfFriction": "30 deg"}
+    matrixprop = {
+        "Name": "Concrete-EN-C35_45",
+        "YoungsModulus": "32000 MPa",
+        "PoissonRatio": "0.17",
+        "CompressiveStrength": "15.75 MPa",
+        "AngleOfFriction": "30 deg",
+    }
     # make some hint on the possible angle units in material system
-    reinfoprop = {"Name": "Reinforcement-FIB-B500", "YieldStrength": "315 MPa", "ReinforcementRatio": "0.0"}
+    reinfoprop = {
+        "Name": "Reinforcement-FIB-B500",
+        "YieldStrength": "315 MPa",
+        "ReinforcementRatio": "0.0",
+    }
     # not an official FreeCAD material property
     material_reinforced = ObjectsFem.makeMaterialReinforced(doc, "MaterialReinforced")
     material_reinforced.Material = matrixprop
