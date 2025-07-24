@@ -135,10 +135,23 @@ def get_fem_test_defs():
     # write to file
     file_path = join(tempfile.gettempdir(), "test_commands.sh")
     cf = open(file_path, "w")
-    cf_lines = ["# created by Python\n", "'''\n", "from femtest.app.support_utils import get_fem_test_defs\n",
-                "get_fem_test_defs()\n", "\n", "\n", "# all FEM App tests\n",
-                "make -j 4 && ./bin/FreeCAD --run-test 'TestFemApp'\n", "\n",
-                "make -j 4 && ./bin/FreeCADCmd --run-test 'TestFemApp'\n", "\n", "\n", "'''\n", "\n", "# modules\n"]
+    cf_lines = [
+        "# created by Python\n",
+        "'''\n",
+        "from femtest.app.support_utils import get_fem_test_defs\n",
+        "get_fem_test_defs()\n",
+        "\n",
+        "\n",
+        "# all FEM App tests\n",
+        "make -j 4 && ./bin/FreeCAD --run-test 'TestFemApp'\n",
+        "\n",
+        "make -j 4 && ./bin/FreeCADCmd --run-test 'TestFemApp'\n",
+        "\n",
+        "\n",
+        "'''\n",
+        "\n",
+        "# modules\n",
+    ]
     for i in cf_lines:
         cf.write(i)
     for m in collected_test_modules:

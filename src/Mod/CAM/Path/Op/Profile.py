@@ -86,7 +86,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             if warn:
                 newPropMsg = "New property added to"
                 newPropMsg += ' "{}": {}'.format(obj.Label, self.addNewProps) + ". "
-                newPropMsg += "Check its default value." + "\n"
+                newPropMsg += "Check its default value.\n"
                 FreeCAD.Console.PrintWarning(newPropMsg)
 
         self.propertiesReady = True

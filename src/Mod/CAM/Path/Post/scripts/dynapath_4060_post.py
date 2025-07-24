@@ -219,7 +219,7 @@ def export(objectslist, filename, argstring):
             obj.Document.Label[0:8]
         )  # Added program name entry and limited to 8 chars as first line in program.
         # Insert "T" in front of comments to signify "textfield" (comment).
-        gcode += linenumber() + "(T)" + "EXPORTED BY FREECAD$\n"
+        gcode += linenumber() + "(T)EXPORTED BY FREECAD$\n"
         gcode += linenumber() + "(T)" + str.upper("Post Processor: " + __name__) + "$\n"
         gcode += linenumber() + "(T)" + str.upper("Output Time:") + str(now) + "$\n"
 

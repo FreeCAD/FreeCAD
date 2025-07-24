@@ -16803,7 +16803,7 @@ def acyclic_product_category_relationship(
     x = bag_to_set(
         USEDIN(
             relation.category,
-            "CONFIG_CONTROL_DESIGN." + "PRODUCT_CATEGORY_RELATIONSHIP.SUB_CATEGORY",
+            "CONFIG_CONTROL_DESIGN.PRODUCT_CATEGORY_RELATIONSHIP.SUB_CATEGORY",
         )
     )
     local_children = children + relation.category

@@ -347,7 +347,7 @@ def parse(pathobj):
                     )
                 else:
                     FreeCAD.Console.PrintWarning(
-                        "Tool Controller Horizontal Rapid Values are unset" + "\n"
+                        "Tool Controller Horizontal Rapid Values are unset\n"
                     )
 
                 if (
@@ -359,7 +359,7 @@ def parse(pathobj):
                     )
                 else:
                     FreeCAD.Console.PrintWarning(
-                        "Tool Controller Vertical Rapid Values are unset" + "\n"
+                        "Tool Controller Vertical Rapid Values are unset\n"
                     )
 
         # print(pathobj.Path.Commands)
@@ -388,7 +388,7 @@ def parse(pathobj):
                 if opHorizRapid and opVertRapid:
                     command = "G1"
                 else:
-                    outstring.append("(Tool Controller Rapid Values are unset)" + "\n")
+                    outstring.append("(Tool Controller Rapid Values are unset)\n")
 
             # Filter out vertical moves since FangLing plasma cutters does not support them
             if command in ["G0", "G00"] and len(c.Parameters) == 1 and "Z" in c.Parameters:

@@ -76,10 +76,13 @@ class CommandCreateSimulation:
         }
 
     def IsActive(self):
-        return (
-            UtilsAssembly.isAssemblyCommandActive()
-            and UtilsAssembly.assembly_has_at_least_n_parts(1)
-        )
+        if not UtilsAssembly.isAssemblyCommandActive():
+            return False
+
+        assembly = UtilsAssembly.activeAssembly()
+        joint_types = ["Revolute", "Slider", "Cylindrical"]
+        joints = UtilsAssembly.getJointsOfType(assembly, joint_types)
+        return len(joints) > 0
 
     def Activated(self):
         assembly = UtilsAssembly.activeAssembly()
@@ -910,7 +913,7 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
 
     def onFrameChanged(self, val):
         self.assembly.updateForFrame(val)
-        self.form.FrameLabel.setText(translate("Assembly", "Frame" + " " + str(val)))
+        self.form.FrameLabel.setText(translate("Assembly", f"Frame {str(val)}"))
         time = float(val * self.simFeaturePy.cTimeStepOutput)
         self.form.FrameTimeLabel.setText(f"{time:.2f} s")
 

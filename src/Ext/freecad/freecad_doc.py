@@ -34,7 +34,7 @@ class FreeCADDoc(pydoc.HTMLDoc):
             return self.bigsection(dir, 'pkg-content', contents)
 
 def bltinlink(name):
-    return '<a href=\"%s.html\">%s</a>' % (name, name)
+    return f'<a href="{name}.html">{name}</a>'
 
 def getIndexOld():
     pydoc.html = FreeCADDoc()

@@ -18,7 +18,7 @@
 from __future__ import absolute_import
 from __future__ import division
 
-import importlib
+from importlib import import_module
 import types
 
 
@@ -40,7 +40,7 @@ class LazyLoader(types.ModuleType):
   def _load(self):
     """Load the module and insert it into the parent's globals."""
     # Import the target module and insert it into the parent's namespace
-    module = importlib.import_module(self.__name__)
+    module = import_module(self.__name__)
     self._parent_module_globals[self._local_name] = module
 
     # Update this object's dict so that if someone keeps a reference to the
