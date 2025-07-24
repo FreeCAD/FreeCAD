@@ -68,6 +68,10 @@ class BIM_Layers:
 
         from PySide import QtGui
 
+        # chech if the dialog is running)
+        if getattr(self, "dialog", None):
+            return
+
         # store changes to be committed
         self.deleteList = []
 
@@ -286,7 +290,7 @@ class BIM_Layers:
             doc.recompute()
 
         # exit
-        self.dialog.reject()
+        return self.dialog.reject()
 
     def reject(self):
         "when Cancel button is pressed or dialog is closed"
@@ -295,6 +299,9 @@ class BIM_Layers:
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
         pref.SetInt("LayersManagerWidth", self.dialog.width())
         pref.SetInt("LayersManagerHeight", self.dialog.height())
+
+        # wipe to let FreeCAD know the dialog has been closed
+        del self.dialog
 
         return True
 

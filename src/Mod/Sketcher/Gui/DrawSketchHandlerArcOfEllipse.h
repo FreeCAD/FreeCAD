@@ -407,47 +407,34 @@ protected:
 private:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        return lookupArcOfEllipseHints(Mode);
+        using enum Gui::InputHint::UserInput;
+
+        return Gui::lookupHints<SelectMode>(
+            Mode,
+            {
+                {.state = STATUS_SEEK_First,
+                 .hints =
+                     {
+                         {tr("%1 pick ellipse center"), {MouseLeft}},
+                     }},
+                {.state = STATUS_SEEK_Second,
+                 .hints =
+                     {
+                         {tr("%1 pick axis point"), {MouseLeft}},
+                     }},
+                {.state = STATUS_SEEK_Third,
+                 .hints =
+                     {
+                         {tr("%1 pick arc start point"), {MouseLeft}},
+                     }},
+                {.state = STATUS_SEEK_Fourth,
+                 .hints =
+                     {
+                         {tr("%1 pick arc end point"), {MouseLeft}},
+                     }},
+            });
     }
-
-private:
-    struct HintEntry
-    {
-        int mode;
-        std::list<Gui::InputHint> hints;
-    };
-
-    using HintTable = std::vector<HintEntry>;
-
-    static HintTable getArcOfEllipseHintTable();
-    static std::list<Gui::InputHint> lookupArcOfEllipseHints(int mode);
 };
-
-DrawSketchHandlerArcOfEllipse::HintTable DrawSketchHandlerArcOfEllipse::getArcOfEllipseHintTable()
-{
-    return {// Structure: {mode, {hints...}}
-            {STATUS_SEEK_First,
-             {{QObject::tr("%1 pick ellipse center"), {Gui::InputHint::UserInput::MouseLeft}}}},
-            {STATUS_SEEK_Second,
-             {{QObject::tr("%1 pick axis point"), {Gui::InputHint::UserInput::MouseLeft}}}},
-            {STATUS_SEEK_Third,
-             {{QObject::tr("%1 pick arc start point"), {Gui::InputHint::UserInput::MouseLeft}}}},
-            {STATUS_SEEK_Fourth,
-             {{QObject::tr("%1 pick arc end point"), {Gui::InputHint::UserInput::MouseLeft}}}}};
-}
-
-std::list<Gui::InputHint> DrawSketchHandlerArcOfEllipse::lookupArcOfEllipseHints(int mode)
-{
-    const auto arcOfEllipseHintTable = getArcOfEllipseHintTable();
-
-    auto it = std::find_if(arcOfEllipseHintTable.begin(),
-                           arcOfEllipseHintTable.end(),
-                           [mode](const HintEntry& entry) {
-                               return entry.mode == mode;
-                           });
-
-    return (it != arcOfEllipseHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
-}
 
 }  // namespace SketcherGui
 

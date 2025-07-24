@@ -1753,14 +1753,14 @@ void ViewProviderSketch::commitDragMove(double x, double y)
     resetPositionText();
 }
 
-void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d& toPos)
+void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d& toPos, OffsetMode offset)
 {
     if (auto constr = getConstraint(constNum)) {
-        moveConstraint(constr, constNum, toPos);
+        moveConstraint(constr, constNum, toPos, offset);
     }
 }
 
-void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constNum, const Base::Vector2d& toPos)
+void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constNum, const Base::Vector2d& toPos, OffsetMode offset)
 {
     // are we in edit?
     if (!isInEditMode())
@@ -1942,13 +1942,29 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
         else if (Constr->Type == DistanceY)
             dir = Base::Vector3d(0, (p2.y - p1.y >= std::numeric_limits<float>::epsilon()) ? 1 : -1, 0);
 
+        double offsetVal = 0.0;
+        if (offset == OffsetConstraint) {
+            if (auto* view = qobject_cast<Gui::View3DInventor*>(this->getActiveView())) {
+                Gui::View3DInventorViewer* viewer = view->getViewer();
+                float fHeight = -1.0;
+                float fWidth = -1.0;
+                viewer->getDimensions(fHeight, fWidth);
+                offsetVal = (fHeight + fWidth) * 0.01;
+            }
+        }
+
         if (Constr->Type == Radius || Constr->Type == Diameter || Constr->Type == Weight) {
-            Constr->LabelDistance = vec.x * dir.x + vec.y * dir.y;
+            double distance = vec.x * dir.x + vec.y * dir.y;
+            if (distance > offsetVal) {
+                distance -= offsetVal;
+            }
+            Constr->LabelDistance = distance;
             Constr->LabelPosition = atan2(dir.y, dir.x);
         }
         else {
             Base::Vector3d normal(-dir.y, dir.x, 0);
-            Constr->LabelDistance = vec.x * normal.x + vec.y * normal.y;
+            double distance = vec.x * normal.x + vec.y * normal.y - offsetVal;
+            Constr->LabelDistance = distance;
             if (Constr->Type == Distance || Constr->Type == DistanceX
                 || Constr->Type == DistanceY) {
                 vec = Base::Vector3d(toPos.x, toPos.y, 0) - (p2 + p1) / 2;
