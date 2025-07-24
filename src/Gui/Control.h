@@ -66,7 +66,6 @@ public:
     //@{
     /// This method starts a task dialog in the task view
     /// The dialog is relative to a specific document
-    /// TODO-theo-vt remove default argument when expending to all workbenches
     void showDialog(Gui::TaskView::TaskDialog *dlg, App::Document* attachTo = nullptr);
     Gui::TaskView::TaskDialog* activeDialog(App::Document* attachedTo = nullptr) const;
     //void closeDialog();
