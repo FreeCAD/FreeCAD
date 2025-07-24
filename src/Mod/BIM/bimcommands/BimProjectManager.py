@@ -475,9 +475,8 @@ class BIM_ProjectManager:
                 + "\n"
             )
 
-            f = open(os.path.join(presetdir, name + ".txt"), "w")
-            f.write(s)
-            f.close()
+            with open(os.path.join(presetdir, name + ".txt"), "w") as f:
+                f.write(s)
             self.fillPresets()
 
     def fillPresets(self):
@@ -496,9 +495,8 @@ class BIM_ProjectManager:
         preset = self.form.presets.itemText(preset)
         pfile = os.path.join(FreeCAD.getUserAppDataDir(), "BIM", preset + ".txt")
         if os.path.exists(pfile):
-            f = open(pfile, "r")
-            buf = f.read()
-            f.close()
+            with open(pfile, "r") as f:
+                buf = f.read()
             lines = buf.split("\n")
             for line in lines:
                 if line:

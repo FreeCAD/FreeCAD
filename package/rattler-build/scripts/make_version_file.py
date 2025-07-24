@@ -21,7 +21,7 @@ for line in i.readlines():
     line = line.replace("${PACKAGE_WCDATE}", gitInfo.date)
     line = line.replace("${PACKAGE_WCURL}", gitInfo.url)
     content.append(line)
-
+i.close() # close the file
 with open("src/Build/Version.h.cmake", "w") as o:
     content.append('// Git relevant stuff\n')
     content.append('#define FCRepositoryHash   "%s"\n' % gitInfo.hash)

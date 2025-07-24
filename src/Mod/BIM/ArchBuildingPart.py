@@ -1000,8 +1000,7 @@ class ViewProviderBuildingPart:
                         print("Debug: IndexedFaceSet mismatch in",obj.Label)
                 # save embedded file
                 tf = tempfile.mkstemp(prefix=obj.Name,suffix=".iv")[1]
-                f = open(tf,"w")
-                f.write(iv)
-                f.close()
+                with open(tf,"w") as f:
+                    f.write(iv)
                 obj.SavedInventor = tf
                 os.remove(tf)

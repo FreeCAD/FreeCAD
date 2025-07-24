@@ -115,9 +115,8 @@ class CommandTestCase(unittest.TestCase):
         # Fixes a crash
         TempPath = tempfile.gettempdir()
         macroName = TempPath + os.sep + "testmacro.py"
-        macroFile = open(macroName, "w")
-        macroFile.write("print ('Hello, World!')")
-        macroFile.close()
+        with open(macroName, "w") as macroFile:
+            macroFile.write("print ('Hello, World!')")
 
         name = FreeCADGui.Command.createCustomCommand(macroName)
         cmd = FreeCADGui.Command.get(name)

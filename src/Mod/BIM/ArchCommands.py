@@ -707,12 +707,11 @@ def download(url,force=False):
     if os.path.exists(filepath) and not force:
         return filepath
     try:
-        FreeCAD.Console.PrintMessage("downloading "+url+" ...\n")
+        FreeCAD.Console.PrintMessage(f"downloading {url} ...\n")
         response = urlopen(url)
         s = response.read()
-        f = open(filepath,'wb')
-        f.write(s)
-        f.close()
+        with open(filepath,'wb') as f:
+            f.write(s)
     except Exception:
         return None
     else:

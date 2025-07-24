@@ -3316,7 +3316,7 @@ def makeFile(outFileName):
     global Force
     outFile = None
     if (not Force) and os.path.exists(outFileName):
-        reply = input("File %s exists.  Overwrite? (y/n): " % outFileName)
+        reply = input(f"File {outFileName} exists.  Overwrite? (y/n): ")
         if reply == "y":
             outFile = open(outFileName, "w")
     else:

@@ -94,10 +94,11 @@ class SimpleParser:
             if len(sttrStr) > 40:
                 sttrStr = sttrStr[:39] + "...."
             gvFile.write(
-                "  " + repr(i) + ' [label="' + entityStr + "\n" + nameStr + "\n" + sttrStr + '"]\n'
+                "  " + repr(i) + f' [label="{entityStr}\n{nameStr}\n{sttrStr}"]\n'
             )
             self._writeGraphVizEdge(i, self._p21loader._instances_definition[i][1], gvFile)
         gvFile.write("}\n")
+        gvFile.close()
 
     def instantiate(self):
         """Instantiate the python class from the entities"""

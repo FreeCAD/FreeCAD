@@ -94,10 +94,10 @@ class UnknownControl(VersionControl):
 class DebianChangelog(VersionControl):
     def extractInfo(self, srcdir, bindir):
         # Do not overwrite existing file with almost useless information
-        if os.path.exists(bindir + "/src/Build/Version.h.out"):
+        if os.path.exists(f"{bindir}/src/Build/Version.h.out"):
             return False
         try:
-            f = open(srcdir + "/debian/changelog")
+            f = open(f"{srcdir}/debian/changelog")
         except Exception:
             return False
         c = f.readline()
@@ -523,14 +523,12 @@ def main():
     for i in vcs:
         if i.extractInfo(srcdir, bindir):
             # Open the template file and the version file
-            inp = open("%s/src/Build/Version.h.in" % bindir)
-            lines = inp.readlines()
-            inp.close()
+            with open("%s/src/Build/Version.h.in" % bindir) as inp:
+                lines = inp.readlines()
             lines = i.writeVersion(lines)
-            out = open("%s/src/Build/Version.h.out" % bindir, "w")
-            out.writelines(lines)
-            out.write("\n")
-            out.close()
+            with open("%s/src/Build/Version.h.out" % bindir, "w") as out:
+                out.writelines(lines)
+                out.write("\n")
             i.printInfo()
             sys.stdout.write("%s/src/Build/Version.h.out written\n" % bindir)
             break

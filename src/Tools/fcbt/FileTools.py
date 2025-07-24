@@ -12,21 +12,15 @@ def cpfile(pathFrom, pathTo, maxfileload=maxfileload):
     copy file pathFrom to pathTo, byte for byte
     """
     if os.path.getsize(pathFrom) <= maxfileload:
-        bytesFrom = open(pathFrom, "rb").read()  # read small file all at once
-        bytesTo = open(pathTo, "wb")
-        bytesTo.write(bytesFrom)  # need b mode on Windows
-        # bytesTo.close()
-        # bytesFrom.close()
+        with open(pathTo, "wb") as bytesTo,  open(pathFrom, "rb") as bytesFrom:
+            bytesTo.write(bytesFrom.read())
     else:
-        fileFrom = open(pathFrom, "rb")  # read big files in chunks
-        fileTo = open(pathTo, "wb")  # need b mode here too
-        while 1:
-            bytesFrom = fileFrom.read(blksize)  # get one block, less at end
-            if not bytesFrom:
-                break  # empty after last chunk
-            fileTo.write(bytesFrom)
-        # fileFrom.close()
-        # fileTo.close()
+        with open(pathFrom, "rb") as fileFrom, open(pathTo, "wb") as fileTo:
+            while 1:
+                bytesFrom = fileFrom.read(blksize)  # get one block, less at end
+                if not bytesFrom:
+                    break  # empty after last chunk
+                fileTo.write(bytesFrom)
 
 
 def cpall(dirFrom, dirTo):
@@ -119,8 +113,8 @@ def rmall(dirPath):  # delete dirPath and below
         path = os.path.join(dirPath, name)
         if not os.path.isdir(path):  # remove simple files
             os.remove(path)
-            fcount = fcount + 1
+            fcount += 1
         else:  # recur to remove subdirs
             rmall(path)
     os.rmdir(dirPath)  # remove now-empty dirPath
-    dcount = dcount + 1
+    dcount += 1
