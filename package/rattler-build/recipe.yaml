@@ -16,7 +16,7 @@ requirements:
   build:
     - ccache
     - cmake
-    - compilers
+    - compilers>=1.10,<1.11
     - doxygen
     - ninja
     - noqt5
