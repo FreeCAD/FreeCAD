@@ -67,9 +67,6 @@ class CommandCreateAssembly:
         return App.ActiveDocument is not None
 
     def Activated(self):
-        # TODO-theo-vt use a variable for document
-        # what happens if the active document changes mid transaction
-        # -- but the whole command uses ActiveDocument..
         Gui.ActiveDocument.openCommand("Create assembly")
 
         activeAssembly = UtilsAssembly.activeAssembly()

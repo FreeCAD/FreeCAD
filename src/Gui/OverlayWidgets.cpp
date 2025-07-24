@@ -1158,10 +1158,6 @@ bool OverlayTabWidget::checkAutoHide() const
         }
     }
 
-    // TODO-theo-vt this looks like it's trying to hide the widget
-    // if it is/is not in edit, how to make this work with multiple
-    // edit document? Compare with the active document?
-    // e.g. ->isInEdit(ActiveDocument())
     bool activeDocInEdit = Application::Instance->isInEdit(Application::Instance->activeDocument());
     if (autoMode == AutoMode::EditShow) {
         return !activeDocInEdit

@@ -468,15 +468,8 @@ void Command::_invoke(int id, bool disablelog)
 
             getMainWindow()->updateActions();
         }
-        // If this command starts an editing, let the transaction persist
-        // if (!editDoc && getGuiApplication()->editDocument())
-        //     committer.setEnable(false);
-        // If the document is in editing mode, let the transaction continue,
-        // otherwise commit
-        // if (!getGuiApplication()->isInEdit(activeDoc)) {
-        //     commitSelf();
-        // }
-        // TODO-theo-vt
+        // here we assume that the overriden activated() function
+        // commited, aborted or gave the transaction id to a dialog
         currentTransactionID = 0; // Get ready for next invoke
     }
     catch (const Base::SystemExitException&) {
