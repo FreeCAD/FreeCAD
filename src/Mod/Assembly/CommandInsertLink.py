@@ -546,7 +546,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
                         self.decrement_counter(item)
                         del self.insertionStack[i]
-                        self.form.partList.setItemSelected(item, False)
+                        item.setSelected(False)
 
                         return True
             else:
