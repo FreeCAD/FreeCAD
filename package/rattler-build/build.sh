@@ -23,6 +23,7 @@ unset CMAKE_GENERATOR
 unset CMAKE_GENERATOR_PLATFORM
 
 cmake \
+    ${CMAKE_ARGS} \
     --preset ${CMAKE_PRESET} \
     -D CMAKE_IGNORE_PREFIX_PATH="/opt/homebrew;/usr/local/homebrew" \
     -D CMAKE_INCLUDE_PATH:FILEPATH="$PREFIX/include" \
@@ -30,14 +31,14 @@ cmake \
     -D CMAKE_INSTALL_PREFIX:FILEPATH="$PREFIX" \
     -D CMAKE_LIBRARY_PATH:FILEPATH="$PREFIX/lib" \
     -D CMAKE_PREFIX_PATH:FILEPATH="$PREFIX" \
+    -D FREECAD_USE_EXTERNAL_FMT:BOOL=OFF \
     -D INSTALL_TO_SITEPACKAGES:BOOL=ON \
-    -D OCC_INCLUDE_DIR:FILEPATH="$PREFIX/include" \
-    -D OCCT_CMAKE_FALLBACK:BOOL=OFF \
+    -D OCC_INCLUDE_DIR:FILEPATH="$PREFIX/include/opencascade" \
+    -D OCC_LIBRARY_DIR:FILEPATH="$PREFIX/lib" \
     -D Python_EXECUTABLE:FILEPATH="$PYTHON" \
     -D Python3_EXECUTABLE:FILEPATH="$PYTHON" \
     -B build \
-    -S . \
-    ${CMAKE_PLATFORM_FLAGS[@]}
+    -S .
 
 cmake --build build
 cmake --install build
