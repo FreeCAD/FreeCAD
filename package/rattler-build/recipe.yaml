@@ -88,6 +88,10 @@ requirements:
         - xorg-x11-server-xvfb-cos7-aarch64
         - xorg-xproto
 
+    - if: osx and x86_64
+      then:
+        - ${{ stdlib('c') }}
+
     - if: build_platform != target_platform
       then:
         - cross-python_${{ target_platform }}
