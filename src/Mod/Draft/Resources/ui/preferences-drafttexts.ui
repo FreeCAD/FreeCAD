@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>555</width>
-    <height>797</height>
+    <height>836</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -261,14 +261,14 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</st
        </spacer>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="label_dimsymbol">
+       <widget class="QLabel" name="label_dimsymbolstart">
         <property name="text">
-         <string>Arrow type</string>
+         <string>Start arrow type</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="Gui::PrefComboBox" name="comboBox_dimsymbol">
+       <widget class="Gui::PrefComboBox" name="comboBox_dimsymbolstart">
         <property name="minimumSize">
          <size>
           <width>140</width>
@@ -276,10 +276,10 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</st
          </size>
         </property>
         <property name="toolTip">
-         <string>The default symbol displayed at the ends of dimension lines</string>
+         <string>The default symbol displayed at the start of dimension lines</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>dimsymbol</cstring>
+         <cstring>dimsymbolstart</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Draft</cstring>
@@ -309,19 +309,24 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</st
           <string>Tick-2</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>None</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item row="3" column="0">
-       <widget class="QLabel" name="label_arrowsize">
+       <widget class="QLabel" name="label_arrowsizestart">
         <property name="text">
-         <string>Arrow size</string>
+         <string>Start arrow size</string>
         </property>
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="Gui::PrefUnitSpinBox" name="spinBox_arrowsize">
+       <widget class="Gui::PrefUnitSpinBox" name="spinBox_arrowsizestart">
         <property name="toolTip">
-         <string>The default arrow size</string>
+         <string>The default starting arrow size</string>
         </property>
         <property name="singleStep">
          <double>0.1</double>
@@ -336,7 +341,7 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</st
          <double>1.0</double>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>arrowsize</cstring>
+         <cstring>arrowsizestart</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Draft</cstring>
@@ -344,13 +349,101 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</st
        </widget>
       </item>
       <item row="4" column="0">
+       <widget class="QLabel" name="label_dimsymbolend">
+        <property name="text">
+         <string>End arrow type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="Gui::PrefComboBox" name="comboBox_dimsymbolend">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>The default symbol displayed at the end of dimension lines</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>dimsymbolend</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+        <item>
+         <property name="text">
+          <string>Dot</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Circle</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Arrow</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Tick</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Tick-2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>None</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_arrowsizeend">
+        <property name="text">
+         <string>End arrow size</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="Gui::PrefUnitSpinBox" name="spinBox_arrowsizeend">
+        <property name="toolTip">
+         <string>The default ending arrow size</string>
+        </property>
+        <property name="singleStep">
+         <double>0.1</double>
+        </property>
+        <property name="unit" stdset="0">
+         <string>mm</string>
+        </property>
+        <property name="minimum">
+         <double>0.0</double>
+        </property>
+        <property name="rawValue" stdset="0">
+         <double>1.0</double>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>arrowsizeend</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
        <widget class="QLabel" name="label_DefaultAnnoLineColor">
         <property name="text">
          <string>Line and arrow color</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="6" column="1">
        <widget class="Gui::PrefColorButton" name="colorButton_DefaultAnnoLineColor">
         <property name="toolTip">
          <string>The default color for lines and arrows</string>
