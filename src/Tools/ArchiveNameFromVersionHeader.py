@@ -11,7 +11,7 @@ def deserializeVersionHeader(path):
     try:
         dat = open(path, "r").readlines()
     except IOError:
-        print("Unable to open ", path)
+        print(f"Unable to open {path}")
         raise
 
     for l in dat:
@@ -23,34 +23,22 @@ def deserializeVersionHeader(path):
 
 
 def main():
-    OSAbbrev = {"Windows": "WIN", "Darwin": "OSX"}
-    SHA = None
-
+    OSAbbrev = {"Windows": "WIN", "Darwin": "OSX", "Linux": "LIN"}
     if len(sys.argv) < 2:
         sys.stderr.write("Usage:  archiveNameFromVersion <path to Version.h> [--git-SHA=]\n")
-
     try:
         opts, args = getopt.getopt(sys.argv[2:], "g:", ["git-SHA="])
     except getopt.GetoptError:
         pass
-
+    version = deserializeVersionHeader(sys.argv[1])
     for o, a in opts:
         if o in ("-g", "--git-SHA"):
             SHA = a
-
-    version = deserializeVersionHeader(sys.argv[1])
-    if SHA:
-        version["FCRepositoryHash"] = SHA
+            if SHA:
+                version["FCRepositoryHash"] = SHA
 
     print(
-        "FreeCAD_{Major}.{Minor}-{RevCount}.{GitShortSHA}-{OS}-{Arch}".format(
-            Major=version["FCVersionMajor"],
-            Minor=version["FCVersionMinor"],
-            RevCount=version["FCRevision"],
-            GitShortSHA=version["FCRepositoryHash"][0:7],
-            OS=OSAbbrev.get(platform.system(), "LIN"),
-            Arch=platform.machine(),
-        )
+    f"FreeCAD_{version["FCVersionMajor"]}.{version["FCVersionMinor"]}-{version["FCRevision"]}.{version["FCRepositoryHash"][0:7]}-{OSAbbrev.get(platform.system(), "NA")}-{platform.machine()}"
     )
 
 

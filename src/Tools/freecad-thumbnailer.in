@@ -63,6 +63,7 @@ try:
     thumb = open(output_file, "wb")
     thumb.write(image)
     thumb.close()
+    zfile.close()
 
 except Exception:
     print("Error creating FreeCAD thumbnail for file ", input_file)

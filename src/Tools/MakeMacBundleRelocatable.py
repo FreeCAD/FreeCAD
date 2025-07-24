@@ -179,8 +179,8 @@ def create_dep_nodes(install_names, search_paths):
                 path = install_path
 
         if not path:
-            logging.error("Unable to find LC_DYLD_LOAD entry: " + lib)
-            raise LibraryNotFound(lib_name + " not found in given search paths")
+            logging.error(f"Unable to find LC_DYLD_LOAD entry: {lib}")
+            raise LibraryNotFound(f"{lib_name} not found in given search paths")
 
         nodes.append(Node(lib_name, path))
 
@@ -275,9 +275,7 @@ def build_deps_graph(graph, bundle_path, dirs_filter=None, search_paths=[]):
 
 
 def in_bundle(lib, bundle_path):
-    if lib.startswith(bundle_path):
-        return True
-    return False
+    return lib.startswith(bundle_path)
 
 
 def copy_into_bundle(graph, node, bundle_path):
@@ -326,7 +324,7 @@ def add_rpaths(graph, node, bundle_path):
 
         # Remove existing rpaths that could take precedence
         for rpath in get_rpaths(lib):
-            logging.debug(" - rpath: " + rpath)
+            logging.debug(f" - rpath:{rpath} ")
             check_call(["install_name_tool", "-delete_rpath", rpath, lib])
 
         if node.children:
@@ -336,31 +334,30 @@ def add_rpaths(graph, node, bundle_path):
             for install_name in install_names:
                 name = os.path.basename(install_name)
                 # change install names to use rpaths
-                logging.debug(" ~ rpath: " + name + " => @rpath/" + name)
+                logging.debug(f" ~ rpath: {name} => @rpath/{name}")
                 check_call(
                     [
                         "install_name_tool",
                         "-change",
                         install_name,
-                        "@rpath/" + name,
+                        f"@rpath/{name}",
                         lib,
                     ]
                 )
 
                 dep_node = node.children[node.children.index(name)]
                 rel_path = os.path.relpath(graph.get_node(dep_node).path, node.path)
-                rpath = ""
                 if rel_path == ".":
                     rpath = "@loader_path/"
                 else:
-                    rpath = "@loader_path/" + rel_path + "/"
+                    rpath = f"@loader_path/{rel_path}/"
                 if rpath not in rpaths:
                     rpaths.append(rpath)
 
             for rpath in rpaths:
                 # Ensure that lib has rpath set
                 if not rpath in get_rpaths(lib):
-                    logging.debug(" + rpath: " + rpath)
+                    logging.debug(f" + rpath: {rpath}")
                     check_call(["install_name_tool", "-add_rpath", rpath, lib])
 
 
@@ -388,7 +385,7 @@ def print_node(graph, node, path):
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage " + sys.argv[0] + " path [additional search paths]")
+        print(f"Usage {sys.argv[0]} path [additional search paths]")
         quit()
 
     path = sys.argv[1]

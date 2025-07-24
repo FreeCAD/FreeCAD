@@ -80,7 +80,7 @@ class Property:
 @dataclass
 class ViewProvider:
     """
-    Corresponds to <ViewProvider>, which can contain 0..∞ <Property> children.
+    Corresponds to <ViewProvider>, which can contain 0...∞ <Property> children.
     """
 
     Property: List[Property] = field(default_factory=list)
@@ -106,7 +106,7 @@ class Parameter:
 class Methode:
     """
     Corresponds to <Methode> inside <PythonExport>.
-    Contains an optional <Documentation> and 0..∞ <Parameter>.
+    Contains an optional <Documentation> and 0...∞ <Parameter>.
     """
 
     Documentation: Optional[Documentation] = None
@@ -162,8 +162,8 @@ class PythonExport:
     Corresponds to <PythonExport> inside <GenerateModel>.
     It contains:
       - optional <Documentation>
-      - 0..∞ <Methode>
-      - 0..∞ <Attribute>
+      - 0...∞ <Methode>
+      - 0...∞ <Attribute>
       - optional <Sequence>
       - optional <CustomAttributes>
       - one <ClassDeclarations> (type=string)
@@ -212,7 +212,7 @@ class PythonExport:
 class Dependencies:
     """
     Corresponds to the <Dependencies> element inside <Module>.
-    It contains 0..∞ local <Module> elements which are not typed in the XSD.
+    It contains 0...∞ local <Module> elements which are not typed in the XSD.
     We'll treat these as strings or possibly minimal structures.
     """
 
@@ -223,7 +223,7 @@ class Dependencies:
 class Feature:
     """
     Corresponds to <Feature> in <Module>'s <Content>.
-    Has optional <Documentation>, 0..∞ <Property>, optional <ViewProvider>,
+    Has optional <Documentation>, 0...∞ <Property>, optional <ViewProvider>,
     and a required attribute 'Name'.
     """
 
@@ -239,7 +239,7 @@ class Feature:
 class DocObject:
     """
     Corresponds to <DocObject> in <Module>'s <Content>.
-    Has optional <Documentation>, 0..∞ <Property>, and a required 'Name' attribute.
+    Has optional <Documentation>, 0...∞ <Property>, and a required 'Name' attribute.
     """
 
     Documentation: Optional[Documentation] = None
@@ -254,11 +254,11 @@ class ModuleContent:
     """
     Corresponds to the <Content> element in <Module>.
     Contains:
-      - 0..∞ <Property>
-      - 0..∞ <Feature>
-      - 0..∞ <DocObject>
-      - 0..∞ <GuiCommand>
-      - 0..∞ <PreferencesPage>
+      - 0...∞ <Property>
+      - 0...∞ <Feature>
+      - 0...∞ <DocObject>
+      - 0...∞ <GuiCommand>
+      - 0...∞ <PreferencesPage>
     """
 
     Property: List[Property] = field(default_factory=list)
@@ -293,7 +293,7 @@ class Module:
 class GenerateModel:
     """
     Corresponds to the root element <GenerateModel>.
-    Contains 0..∞ <Module> and 0..∞ <PythonExport>.
+    Contains 0...∞ <Module> and 0...∞ <PythonExport>.
     """
 
     Module: List[Module] = field(default_factory=list)

@@ -3,17 +3,12 @@
 # (c) 2007 Jürgen Riegel
 
 import os
+import sys
+import re
 
 
 def ensureDir(path, mode=0o777):
-    try:
-        os.makedirs(path, mode)
-    except OSError as err:
-        # https://docs.python.org/3/tutorial/errors.html
-        #  raise an error unless it's about an already existing directory
-        print("Dir Exist")
-        # if errno != 17 or not os.path.isdir(path):
-        # 	raise
+    os.makedirs(path, mode, exist_ok=True)  # will not raise error if target dir exists
 
 
 def convertMultilineString(str):
@@ -23,8 +18,6 @@ def convertMultilineString(str):
 
 
 "Yet Another Python Templating Utility, Version 1.2"
-
-import sys
 
 
 # utility stuff to avoid tests in the mainline code
@@ -116,10 +109,7 @@ class copier:
     ):
         "Initialize self's attributes"
         self.regex = regex
-        if dict is not None:
-            self.globals = dict
-        else:
-            self.globals = {}
+        self.globals = dict or {}
         self.globals["sys"] = sys
         self.locals = {"_cb": self.copyblock}
         self.restat = restat
@@ -139,8 +129,6 @@ class copier:
 
 def replace(template, dict, file):
     "Test: copy a block of lines, with full processing"
-    import re
-
     rex = re.compile(r"@([^@]+)@")
     rbe = re.compile(r"\+")
     ren = re.compile(r"-")
@@ -154,8 +142,6 @@ def replace(template, dict, file):
 
 if __name__ == "__main__":
     "Test: copy a block of lines, with full processing"
-    import re
-
     rex = re.compile(r"@([^@]+)@")
     rbe = re.compile(r"\+")
     ren = re.compile(r"-")

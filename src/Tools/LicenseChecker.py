@@ -82,14 +82,13 @@ def parsefile(fn):
     try:
         lines = data.readlines()
         data.close()
-
         global lic
         for i in lines:
             for j in lic:
                 if i.find(j) >= 0:
                     return
 
-        print("Missing license text in file %s") % fn
+        print(f"Missing license text in file {fn}")
     except Exception:
         pass
 

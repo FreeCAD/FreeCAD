@@ -113,8 +113,6 @@ def cpallWithFilter(dirFrom, dirTo, MatchList):
 # directory is empty; like a Unix "rm -rf directoryPath"
 ################################################################
 
-fcount = dcount = 0
-
 
 def rmall(dirPath):  # delete dirPath and below
     global fcount, dcount
@@ -123,8 +121,8 @@ def rmall(dirPath):  # delete dirPath and below
         path = os.path.join(dirPath, name)
         if not os.path.isdir(path):  # remove simple files
             os.remove(path)
-            fcount = fcount + 1
+            fcount += 1
         else:  # recur to remove subdirs
             rmall(path)
     os.rmdir(dirPath)  # remove now-empty dirPath
-    dcount = dcount + 1
+    dcount += 1

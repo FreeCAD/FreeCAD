@@ -95,7 +95,7 @@ def main():
         if o in ("-o", "--out-file"):
             Output = a
         if o in ("-d", "--directory"):
-            print("Using path: " + a + "\n")
+            print(f"Using path: {a}\n")
             Dir = a
 
     if Automatic:
@@ -155,7 +155,7 @@ def makeTargetExtraDist(Dir):
                 FilePath = FilePathOrg.replace(DirPath, "")
                 FilePath = FilePath.replace(".\\", "")
                 FilePath = FilePath.replace("\\", "/")
-                print("\t\t%s \\" % FilePath)
+                print(f"\t\t{FilePath} \\")
     print()
 
 
