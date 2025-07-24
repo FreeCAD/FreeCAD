@@ -12,7 +12,7 @@ def cpfile(pathFrom, pathTo, maxfileload=maxfileload):
     copy file pathFrom to pathTo, byte for byte
     """
     if os.path.getsize(pathFrom) <= maxfileload:
-        with open(pathTo, "wb") as bytesTo,  open(pathFrom, "rb") as bytesFrom:
+        with open(pathTo, "wb") as bytesTo, open(pathFrom, "rb") as bytesFrom:
             bytesTo.write(bytesFrom.read())
     else:
         with open(pathFrom, "rb") as fileFrom, open(pathTo, "wb") as fileTo:
