@@ -747,12 +747,12 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
     }
 
     // add property
-    menu.addAction(tr("Add property"))->setData(QVariant(MA_AddProp));
+    menu.addAction(tr("Add Property"))->setData(QVariant(MA_AddProp));
     if (!props.empty() && std::all_of(props.begin(), props.end(), [](auto prop) {
             return prop->testStatus(App::Property::PropDynamic)
                 && !boost::starts_with(prop->getName(), prop->getGroup());
         })) {
-        menu.addAction(tr("Rename property group"))->setData(QVariant(MA_EditPropGroup));
+        menu.addAction(tr("Rename Property Group"))->setData(QVariant(MA_EditPropGroup));
     }
 
     // remove property
@@ -768,20 +768,20 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
         }
     }
     if (canRemove) {
-        menu.addAction(tr("Remove property"))->setData(QVariant(MA_RemoveProp));
+        menu.addAction(tr("Remove Property"))->setData(QVariant(MA_RemoveProp));
     }
 
     // add a separator between adding/removing properties and the rest
     menu.addSeparator();
 
     // show all
-    QAction* showHidden = menu.addAction(tr("Show hidden"));
+    QAction* showHidden = menu.addAction(tr("Show Hidden"));
     showHidden->setCheckable(true);
     showHidden->setChecked(PropertyView::showAll());
     showHidden->setData(QVariant(MA_ShowHidden));
 
     // auto expand
-    autoExpand = menu.addAction(tr("Auto expand"));
+    autoExpand = menu.addAction(tr("Auto-Expand"));
     autoExpand->setCheckable(true);
     autoExpand->setChecked(autoexpand);
     autoExpand->setData(QVariant(MA_AutoExpand));
@@ -796,7 +796,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             contextIndex = propertyModel->buddy(contextIndex);
             setCurrentIndex(contextIndex);
             // menu.addSeparator();
-            menu.addAction(tr("Expression..."))->setData(QVariant(MA_Expression));
+            menu.addAction(tr("Expression…"))->setData(QVariant(MA_Expression));
         }
     }
 

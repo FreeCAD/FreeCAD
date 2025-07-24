@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>On-line help</string>
+   <string>Online Help</string>
   </property>
   <layout class="QGridLayout">
    <property name="margin">
@@ -23,7 +23,7 @@
    <item row="0" column="0">
     <widget class="QGroupBox" name="GroupBoxOther">
      <property name="title">
-      <string>Help viewer</string>
+      <string>Help Viewer</string>
      </property>
      <layout class="QGridLayout">
       <property name="margin">

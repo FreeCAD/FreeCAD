@@ -1344,8 +1344,7 @@ static bool checkCanonicalPath(const std::map<App::Document*, bool> &docs)
                     FC_WARN("  Document: " << docName(d).toUtf8().constData()
                             << ": " << d->FileName.getValue());
                 if (count == 3) {
-                    ts << "\n\n"
-                    << QObject::tr("Please check report view for more...");
+                    ts << "\n\n" << QObject::tr("Check report view for more…");
                 } else if (count < 3) {
                     ts << "\n\n"
                     << QObject::tr("Physical path:") << ' ' << v.first
@@ -1482,7 +1481,7 @@ bool Document::save()
 /// Save the document under a new file name
 bool Document::saveAs()
 {
-    getMainWindow()->showMessage(QObject::tr("Save document under new filename..."));
+    getMainWindow()->showMessage(QObject::tr("Save document under new filename…"));
 
     QString exe = qApp->applicationName();
     QString name = QString::fromUtf8(getDocument()->FileName.getValue());
@@ -1587,7 +1586,7 @@ void Document::saveAll()
 /// Save a copy of the document under a new file name
 bool Document::saveCopy()
 {
-    getMainWindow()->showMessage(QObject::tr("Save a copy of the document under new filename..."));
+    getMainWindow()->showMessage(QObject::tr("Save a copy of the document under new filename…"));
 
     QString exe = qApp->applicationName();
     QString fn = FileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save %1 Document").arg(exe),
@@ -1806,8 +1805,9 @@ void Document::SaveDocFile (Base::Writer &writer) const
 {
     writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << std::endl
                     << "<!--" << std::endl
-                    << " FreeCAD Document, see https://www.freecad.org for more information..."
-                    << std::endl << "-->" << std::endl;
+                    << " FreeCAD Document, see https://www.freecad.org for more information…"
+                    << std::endl
+                    << "-->" << std::endl;
 
     writer.Stream() << "<Document SchemaVersion=\"1\"";
 

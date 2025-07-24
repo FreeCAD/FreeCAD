@@ -129,7 +129,7 @@ public:
              << QApplication::translate("Gui::LocationDialog", "X")
              << QApplication::translate("Gui::LocationDialog", "Y")
              << QApplication::translate("Gui::LocationDialog", "Z")
-             << QApplication::translate("Gui::LocationDialog", "User defined...")
+             << QApplication::translate("Gui::LocationDialog", "User defined…")
             );
 
             this->direction->setCurrentIndex(2);
@@ -144,7 +144,7 @@ public:
             this->direction->setItemText(1, QApplication::translate("Gui::LocationDialog", "Y"));
             this->direction->setItemText(2, QApplication::translate("Gui::LocationDialog", "Z"));
             this->direction->setItemText(this->direction->count()-1,
-                QApplication::translate("Gui::LocationDialog", "User defined..."));
+                QApplication::translate("Gui::LocationDialog", "User defined…"));
         }
     }
 
@@ -258,7 +258,7 @@ public:
              << QApplication::translate("Gui::LocationDialog", "X")
              << QApplication::translate("Gui::LocationDialog", "Y")
              << QApplication::translate("Gui::LocationDialog", "Z")
-             << QApplication::translate("Gui::LocationDialog", "User defined...")
+             << QApplication::translate("Gui::LocationDialog", "User defined…")
             );
 
             this->direction->setCurrentIndex(2);
@@ -273,7 +273,7 @@ public:
             this->direction->setItemText(1, QApplication::translate("Gui::LocationDialog", "Y"));
             this->direction->setItemText(2, QApplication::translate("Gui::LocationDialog", "Z"));
             this->direction->setItemText(this->direction->count()-1,
-                QApplication::translate("Gui::LocationDialog", "User defined..."));
+                QApplication::translate("Gui::LocationDialog", "User defined…"));
         }
     }
 
@@ -435,12 +435,12 @@ public:
         ui->retranslateUi(dlg);
 
         if (ui->direction->count() == 0) {
-            ui->direction->insertItems(0, QStringList()
-             << QApplication::translate("Gui::LocationDialog", "X")
-             << QApplication::translate("Gui::LocationDialog", "Y")
-             << QApplication::translate("Gui::LocationDialog", "Z")
-             << QApplication::translate("Gui::LocationDialog", "User defined...")
-            );
+            ui->direction->insertItems(
+                0,
+                QStringList() << QApplication::translate("Gui::LocationDialog", "X")
+                              << QApplication::translate("Gui::LocationDialog", "Y")
+                              << QApplication::translate("Gui::LocationDialog", "Z")
+                              << QApplication::translate("Gui::LocationDialog", "User defined…"));
 
             ui->direction->setCurrentIndex(2);
 
@@ -453,8 +453,9 @@ public:
             ui->direction->setItemText(0, QApplication::translate("Gui::LocationDialog", "X"));
             ui->direction->setItemText(1, QApplication::translate("Gui::LocationDialog", "Y"));
             ui->direction->setItemText(2, QApplication::translate("Gui::LocationDialog", "Z"));
-            ui->direction->setItemText(ui->direction->count()-1,
-                QApplication::translate("Gui::LocationDialog", "User defined..."));
+            ui->direction->setItemText(
+                ui->direction->count() - 1,
+                QApplication::translate("Gui::LocationDialog", "User defined…"));
         }
     }
 
