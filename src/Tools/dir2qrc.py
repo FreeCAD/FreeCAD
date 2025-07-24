@@ -130,12 +130,12 @@ def updateResourceFile(Dir, Output, prefix=""):
                 FilePath = FilePath.replace(".\\", "")
                 FilePath = FilePath.replace("\\", "/")
                 if Verbose:
-                    print(FilePathOrg + " -> " + FilePath)
+                    print(f"{FilePathOrg} -> {FilePath}")
                 filelist.append(FilePath)
 
     filelist.sort()
     for i in filelist:
-        file.write("        <file>" + i + "</file>\n")
+        file.write(f"        <file>{i}</file>\n")
 
     file.write(hhcFooter)
     file.close()

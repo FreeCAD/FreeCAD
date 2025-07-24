@@ -646,9 +646,8 @@ class BIM_Library_TaskPanel:
                     translate("BIM", "Error: Unable to download") + " " + url + "\n"
                 )
             b = u.read()
-            f = open(filepath, "wb")
-            f.write(b)
-            f.close()
+            with open(filepath, "wb") as f:
+                f.write(b)
             QtGui.QApplication.restoreOverrideCursor()
         return filepath
 

@@ -55,9 +55,7 @@ def makeSnapshotWithoutGui():
 	except Exception:
 		tempPath = tempfile.gettempdir()
 		fileName = tempPath + os.sep + "cone.iv"
-		file = open(fileName, "w")
-		file.write(iv)
-		file.close()
+		with open(fileName, "w") as file: file.write(iv)
 		inp.openFile(fileName)
 
 	# and create a scenegraph

@@ -150,6 +150,6 @@ FileTools.rmall("html")
 
 # ====================================================================
 sys.stdout.write(" done\nDocumentation done!\n")
-
+LogFile.close() # close after writing.
 
 # print text

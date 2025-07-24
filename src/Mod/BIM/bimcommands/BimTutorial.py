@@ -126,9 +126,8 @@ class BIM_Tutorial:
         except:
             # unable to load tutorial. Look for offline version
             if os.path.exists(offlineloc):
-                f = open(offlineloc)
-                html = f.read()
-                f.close()
+                with open(offlineloc) as f:
+                    html = f.read()
             else:
                 FreeCAD.Console.PrintError(
                     translate(
@@ -189,9 +188,8 @@ class BIM_Tutorial:
                                 fullpath = path
                             u = urllib2.urlopen(fullpath)
                             imagedata = u.read()
-                            f = open(storename, "wb")
-                            f.write(imagedata)
-                            f.close()
+                            with open(storename, "wb") as f:
+                                f.write(imagedata)
                             u.close()
                         # descr = descr.replace(path,"file://"+storename.replace("\\","/"))
                         # fix for windows - seems to work everywhere else too...

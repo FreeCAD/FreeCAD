@@ -40,19 +40,15 @@ def main():
             check = True
 
     if dfsg:
-        gitattr = open("src/.gitattributes", "w")
-        gitattr.write("zipios++    export-ignore\n")
-        gitattr.write("Pivy-0.5    export-ignore\n")
-        gitattr.write("Pivy    export-ignore\n")
-        gitattr.write("3Dconnexion    export-ignore\n")
-        gitattr.write("Kuka    export-ignore\n")
-        gitattr.close()
+        with open("src/.gitattributes", "w") as gitattr:
+            for i in ["zipios++", "Pivy-0.5", "Pivy", "3Dconnexion", "Kuka"]:
+                gitattr.write(f"{i}    export-ignore\n")
 
     # revision number
     info = os.popen("git rev-list HEAD").read()
     revision = "%04d" % (info.count("\n"))
 
-    verfile = open("{}/src/Build/Version.h".format(bindir), "rb")
+    verfile = open(f"{bindir}/src/Build/Version.h", "rb")
     verstream = io.BytesIO(verfile.read())
     verfile.close()
 
@@ -71,16 +67,16 @@ def main():
     verinfo = tarfile.TarInfo(DIRNAME + "/src/Build/Version.h")
     verinfo.mode = 0o660
     verinfo.size = len(verstream.getvalue())
-    verinfo.mtime = time.time()
+    verinfo.mtime = int(time.time()) # should be int
 
     if wta is None:
-        print(("git archive --prefix={}/ HEAD".format(DIRNAME)))
+        print(f"git archive --prefix={DIRNAME}/ HEAD")
     else:
-        print(("git archive {} --prefix={}/ HEAD".format(wta, DIRNAME)))
+        print(f"git archive {wta} --prefix={DIRNAME}/ HEAD")
 
     if platform.system() == "Windows":
         os.popen(
-            "git archive {} --prefix={}/ --output={} HEAD".format(wta, DIRNAME, TARNAME)
+            f"git archive {wta} --prefix={DIRNAME}/ --output={TARNAME} HEAD"
         ).read()
 
         tar = tarfile.TarFile(mode="a", name=TARNAME)
@@ -88,16 +84,15 @@ def main():
         tar.close()
 
         out = gzip.open(TGZNAME, "wb")
-        tardata = open(TARNAME, "rb")
-        out.write(tardata.read())
+        with open(TARNAME, "rb") as tardata:
+            out.write(tardata.read())
         out.close()
-        tardata.close()
         os.remove(TARNAME)
     else:
         cmd_line = ["git", "archive"]
         if not wta is None:
             cmd_line.append(wta)
-        cmd_line.append("--prefix={}/".format(DIRNAME))
+        cmd_line.append(f"--prefix={DIRNAME}/")
         cmd_line.append("HEAD")
 
         tardata = subprocess.Popen(cmd_line, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -114,7 +109,7 @@ def main():
 
     if dfsg:
         os.remove("src/.gitattributes")
-    print(("Created " + TGZNAME))
+    print(f"Created {TGZNAME}")
     # Unpack and build
     if check:
         archive = tarfile.open(mode="r:gz", name=TGZNAME)

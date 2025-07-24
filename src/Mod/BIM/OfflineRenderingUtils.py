@@ -264,9 +264,8 @@ def saveDiffuseColor(colorlist):
             else:
                 output += tochr(int(d))
     colfile = tempfile.mkstemp(prefix="DiffuseColor")[-1]
-    f = open(colfile,"wb")
-    f.write(output)
-    f.close()
+    with open(colfile,"wb") as f:
+        f.write(output)
     return colfile
 
 
@@ -686,10 +685,8 @@ def buildGuiDocumentFromColors(document,colors,camera=None):
     #print(guidoc)
 
     tempxml = tempfile.mkstemp(suffix=".xml")[-1]
-    f = open(tempxml,"w")
-    f.write(guidoc)
-    f.close()
-
+    with open(tempxml,"w") as f:
+        f.write(guidoc)
     return [tempxml]+colfiles
 
 
@@ -787,9 +784,8 @@ def buildGuiDocumentFromGuiData(document,guidata):
                     buf += binascii.unhexlify(hex(int(color[1]*255))[2:].zfill(2))
                     buf += binascii.unhexlify(hex(int(color[0]*255))[2:].zfill(2))
                 tempcolorfile = tempfile.mkstemp(suffix=".xml")[-1]
-                f = open(tempcolorfile,"wb")
-                f.write(buf)
-                f.close()
+                with open(tempcolorfile,"wb") as f:
+                    f.write(buf)
                 tempcolorname = "ColorFile" + str(colorindex)
                 colorindex += 1
                 guidoc += "                    <ColorList file=\""+tempcolorname+"\"/>\n"
@@ -820,9 +816,8 @@ def buildGuiDocumentFromGuiData(document,guidata):
     #print(guidoc)
 
     tempxml = tempfile.mkstemp(suffix=".xml")[-1]
-    f = open(tempxml,"w")
-    f.write(guidoc)
-    f.close()
+    with open(tempxml,"w") as f:
+        f.write(guidoc)
     files.insert(0,(tempxml,"GuiDocument.xml"))
     return files
 
@@ -890,9 +885,8 @@ def openiv(filename):
 
     from pivy import coin
 
-    f = open(filename,"r")
-    buf = f.read()
-    f.close()
+    with open(filename,"r") as f:
+        buf = f.read()
     inp = coin.SoInput()
     inp.setBuffer(buf)
     node = coin.SoDB.readAll(inp)

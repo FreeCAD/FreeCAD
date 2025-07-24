@@ -117,7 +117,7 @@ def yamGeneral(card):
     yam += "General:\n"
 
     # Add UUIDs
-    yam += '  UUID: "{0}"\n'.format(uuid.uuid4())
+    yam += f'  UUID: "{uuid.uuid4()}"\n'
     for param in card:
         if param in ["Name", "AuthorAndLicense", "Description", "ReferenceSource", "SourceURL"]:
             yam += '  {0}: "{1}"\n'.format(param, card[param])

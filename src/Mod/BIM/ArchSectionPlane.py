@@ -736,9 +736,8 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False,face
     view_window.saveVectorGraphic(svgfile,1) # number is pixel size
 
     # set linewidth placeholder
-    f = open(svgfile,"r")
-    svg = f.read()
-    f.close()
+    with open(svgfile,"r") as f:
+        svg = f.read()
     svg = svg.replace("stroke-width:1.0;","stroke-width:"+str(linewidth)+";")
     svg = svg.replace("stroke-width=\"1px","stroke-width=\""+str(linewidth))
 

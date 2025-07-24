@@ -407,7 +407,7 @@ def create_mat_tools_header():
             for prop_name in group[gg]:
                 if prop_name != 'None':
                     f.write(prop_name + '\n')
-    f.close
+    f.close()
 
 
 def create_mat_template_card(write_group_section=True):
