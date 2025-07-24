@@ -21,6 +21,7 @@
 | Simulation Speed Control     | Speed up or slow down simulation for inspection                | DONE                                                                  |
 | Collision Detection          | Detect collisions between tool, stock, and model               | NO                                                                    |
 | Error Detection              | Identify common errors like gouging, overcutting, missed areas | NO                                                                    |
+| Consistent UI/UX | The UI scene navigation (pan, zoom, rotate) should follow the application mouse model  | Behavior is inconsistent|
 
 ---
 
