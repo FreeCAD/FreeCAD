@@ -30,7 +30,7 @@ Minimising rapids between holes gains nothing over all and leads to rather arbit
 | Stock to Leave        | Set material to leave for finishing | COMPLETE with inconsistent terminology                               |
 | Holding Tags          | Add tags to retain part             | COMPLETE via dressup                                                 |
 
-### Circular Holes
+### Drilling Holes
 
 | Feature                                | Description                                      | Assessment                   |
 | -------------------------------------- | ------------------------------------------------ | ---------------------------- |
@@ -44,10 +44,10 @@ Minimising rapids between holes gains nothing over all and leads to rather arbit
 
 | Gcode | Canned Cycle          | Assessment |
 | ----- | --------------------- | ---------- |
-| G81   | Drilling Cycle        |            |
-| G82   | Drilling Cycle, Dwell |            |
-| G83   | Peck Drilling Cycle   |            |
-| G73   | Chip Breaking Drill   |            |
+| G81   | Drilling Cycle        |  WORKS, excessive air cutting, see #22622          |
+| G82   | Drilling Cycle, Dwell |  WORKS, excessive air cutting, see #22622          |
+| G83   | Peck Drilling Cycle   |  WORKS, excessive air cutting, see #22622          |
+| G73   | Chip Breaking Drill   |  WORKS, excessive air cutting, see #22622          |
 
 ### Engraving
 
@@ -88,7 +88,7 @@ Minimising rapids between holes gains nothing over all and leads to rather arbit
 |--------|-------------|------------|
 | *(placeholder)* | *(To be defined)* | |
 
-### Circular Holes
+### Drilling Holes
 
 | Feature            | Description                                   | Assessment |
 | ------------------ | --------------------------------------------- | ---------- |
@@ -117,7 +117,7 @@ Minimising rapids between holes gains nothing over all and leads to rather arbit
 
 | Feature | Description | Assessment |
 |--------|-------------|------------|
-| *(placeholder)* | *(To be defined)* | |
+| non-synchronised theadmilling | WORKING | |
 
 ### V-Carving
 
@@ -135,7 +135,7 @@ Minimising rapids between holes gains nothing over all and leads to rather arbit
 
 | Feature | Description | Assessment |
 |--------|-------------|------------|
-| *(placeholder)* | *(To be defined)* | |
+| clear cyl. hole | needs outside helix profiling; refuses hole less than twice tool size | |
 
 ### Adaptive Clearing
 
