@@ -32,8 +32,7 @@ def test_python_syntax(rootdir, whitelist=None):
     log = []
     for sub_dir, dirs, files in os.walk(rootdir):
         for fn in files:
-            kargs = {}
-            kargs["encoding"] = "utf-8"
+            kargs = {"encoding": "utf-8"}
             if (not fn in whitelist) and os.path.splitext(fn)[1] == ".py":
                 with open(os.path.join(sub_dir, fn), **kargs) as py_file:
                     try:

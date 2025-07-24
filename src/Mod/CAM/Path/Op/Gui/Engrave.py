@@ -78,7 +78,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
             if base in shapes:
                 Path.Log.notice(
                     (translate("CAM", "Base shape %s already in the list") + "\n")
-                    % (sel.Object.Label)
+                    % sel.Object.Label
                 )
                 continue
             if base.isDerivedFrom("Part::Part2DObject"):
@@ -148,10 +148,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
-        signals = []
-        signals.append(self.form.startVertex.editingFinished)
-        signals.append(self.form.toolController.currentIndexChanged)
-        signals.append(self.form.coolantController.currentIndexChanged)
+        signals = [self.form.startVertex.editingFinished, self.form.toolController.currentIndexChanged,
+                   self.form.coolantController.currentIndexChanged]
         return signals
 
     def taskPanelBaseGeometryPage(self, obj, features):

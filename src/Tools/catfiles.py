@@ -36,7 +36,7 @@ def main():
         for f in args:
             with open(f, "rb") as fd:
                 shutil.copyfileobj(fd, wfd, 1024 * 1024 * 10)
-        print("Created file {0}".format(outputfile))
+        print(f"Created file {outputfile}")
 
 
 if __name__ == "__main__":

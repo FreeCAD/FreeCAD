@@ -202,21 +202,13 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
-        signals = []
-        signals.append(self.form.toolController.currentIndexChanged)
-        signals.append(self.form.coolantController.currentIndexChanged)
-        signals.append(self.form.boundBoxSelect.currentIndexChanged)
-        signals.append(self.form.scanType.currentIndexChanged)
-        signals.append(self.form.layerMode.currentIndexChanged)
-        signals.append(self.form.cutPattern.currentIndexChanged)
-        signals.append(self.form.profileEdges.currentIndexChanged)
-        signals.append(self.form.avoidLastX_Faces.editingFinished)
-        signals.append(self.form.boundBoxExtraOffsetX.editingFinished)
-        signals.append(self.form.boundBoxExtraOffsetY.editingFinished)
-        signals.append(self.form.dropCutterDirSelect.currentIndexChanged)
-        signals.append(self.form.depthOffset.editingFinished)
-        signals.append(self.form.stepOver.editingFinished)
-        signals.append(self.form.sampleInterval.editingFinished)
+        signals = [self.form.toolController.currentIndexChanged, self.form.coolantController.currentIndexChanged,
+                   self.form.boundBoxSelect.currentIndexChanged, self.form.scanType.currentIndexChanged,
+                   self.form.layerMode.currentIndexChanged, self.form.cutPattern.currentIndexChanged,
+                   self.form.profileEdges.currentIndexChanged, self.form.avoidLastX_Faces.editingFinished,
+                   self.form.boundBoxExtraOffsetX.editingFinished, self.form.boundBoxExtraOffsetY.editingFinished,
+                   self.form.dropCutterDirSelect.currentIndexChanged, self.form.depthOffset.editingFinished,
+                   self.form.stepOver.editingFinished, self.form.sampleInterval.editingFinished]
         if hasattr(self.form.useStartPoint, "checkStateChanged"):  # Qt version >= 6.7.0
             signals.append(self.form.useStartPoint.checkStateChanged)
             signals.append(self.form.boundaryEnforcement.checkStateChanged)

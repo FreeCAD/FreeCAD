@@ -345,17 +345,14 @@ class VPPostHistogramFieldData(view_base_fempostextractors.VPPostExtractor):
         pixmap = QtGui.QPixmap()
         pixmap.loadFromData(data.getvalue())
 
-        return (pixmap, self.ViewObject.Legend)
+        return pixmap, self.ViewObject.Legend
 
     def get_kw_args(self):
         # builds kw args from the properties
-        kwargs = {}
+        kwargs = {"edgecolor": self.ViewObject.LineColor, "facecolor": self.ViewObject.BarColor,
+                  "linestyle": self.ViewObject.LineStyle, "linewidth": self.ViewObject.LineWidth}
 
         # colors need a workaround, some error occurs with rgba tuple
-        kwargs["edgecolor"] = self.ViewObject.LineColor
-        kwargs["facecolor"] = self.ViewObject.BarColor
-        kwargs["linestyle"] = self.ViewObject.LineStyle
-        kwargs["linewidth"] = self.ViewObject.LineWidth
         if self.ViewObject.Hatch != "None":
             kwargs["hatch"] = self.ViewObject.Hatch * self.ViewObject.HatchDensity
 
@@ -563,11 +560,8 @@ class VPPostHistogram(view_base_fempostvisualization.VPPostVisualization):
                         legend_prefix = child.Source.Label + ": "
                     labels.append(legend_prefix + table.GetColumnName(i))
 
-        args = {}
-        args["rwidth"] = self.ViewObject.BarWidth
-        args["cumulative"] = self.ViewObject.Cumulative
-        args["histtype"] = self.ViewObject.Type
-        args["label"] = labels
+        args = {"rwidth": self.ViewObject.BarWidth, "cumulative": self.ViewObject.Cumulative,
+                "histtype": self.ViewObject.Type, "label": labels}
         if Version(mpl.__version__) >= Version("3.10.0"):
             args["hatch_linewidth"] = self.ViewObject.HatchLineWidth
 

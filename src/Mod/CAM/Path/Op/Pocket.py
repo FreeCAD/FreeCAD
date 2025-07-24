@@ -190,7 +190,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
                     if obj.AdaptivePocketStart is True or obj.AdaptivePocketFinish is True:
                         pocketTup = self.calculateAdaptivePocket(obj, base, subObjTups)
-                        if pocketTup is not False:
+                        if not pocketTup:
                             obj.removalshape = pocketTup[0]
                             removalshapes.append(pocketTup)  # (shape, isHole, detail)
                     else:
@@ -322,7 +322,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             else:
                 makeHighFace = 1
 
-            if tryNonPlanar is True:
+            if tryNonPlanar:
                 try:
                     highFaceShape = Part.makeFilledFace(
                         Part.__sortEdges__(allEdges)
@@ -619,7 +619,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 if s not in touchingCleaned[sub]:
                     touchingCleaned[sub].append(s)
 
-        return (shared, touchingCleaned)
+        return shared, touchingCleaned
 
     def identifyUnconnectedEdges(self, subObjTups, touching):
         """identifyUnconnectedEdges(subObjTups, touching)
@@ -667,13 +667,13 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 high.extend(hgh)
             # Eif
         # Efor
-        return (low, high)
+        return low, high
 
     def hasCommonVertex(self, edge1, edge2, show=False):
         """findCommonVertexIndexes(edge1, edge2, show=False)
         Compare vertexes of two edges to identify a common vertex.
         Returns the vertex index of edge1 to which edge2 is connected"""
-        if show is True:
+        if show:
             Path.Log.info("New findCommonVertex()... ")
 
         oIdx = 0
@@ -682,15 +682,15 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
         # Find common vertexes
         for o in listOne:
-            if show is True:
+            if show:
                 Path.Log.info("   one ({}, {}, {})".format(o.X, o.Y, o.Z))
             for t in listTwo:
-                if show is True:
+                if show:
                     Path.Log.error("two ({}, {}, {})".format(t.X, t.Y, t.Z))
                 if o.X == t.X:
                     if o.Y == t.Y:
                         if o.Z == t.Z:
-                            if show is True:
+                            if show:
                                 Path.Log.info("found")
                             return oIdx
             oIdx += 1
@@ -766,7 +766,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     e2lv = len(edg2.Vertexes) - 1
                     one = edg2.Vertexes[e2lv]
                     two = edg1.Vertexes[0]
-                    if isSameVertex(one, two) is True:
+                    if isSameVertex(one, two):
                         # Connected, insert h1 in front of h2
                         grps[g].insert(0, h2)
                         stop = True
@@ -775,12 +775,12 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     e1lv = len(edg1.Vertexes) - 1
                     one = edg1.Vertexes[e1lv]
                     two = edg2.Vertexes[0]
-                    if isSameVertex(one, two) is True:
+                    if isSameVertex(one, two):
                         # Connected, append h1 after h2
                         grps[g].append(h2)
                         stop = True
 
-                if stop is True:
+                if stop:
                     # attachment was found
                     attachments = updateAttachments(grps)
                     holds.extend(searched)
@@ -790,7 +790,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     # no attachment found
                     save = True
             # Efor
-            if save is True:
+            if save:
                 searched.append(h2)
                 if len(holds) == 0:
                     if len(grps) == 1:
@@ -834,7 +834,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             low = grp0
             high = grp0
 
-        return (low, high)
+        return low, high
 
     def getMinMaxOfFaces(self, Faces):
         """getMinMaxOfFaces(Faces)
@@ -846,7 +846,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 zmin = f.BoundBox.ZMin
             if f.BoundBox.ZMax > zmax:
                 zmax = f.BoundBox.ZMax
-        return (zmin, zmax)
+        return zmin, zmax
 
 
 def _identifyRemovalSolids(sourceShape, commonShapes):

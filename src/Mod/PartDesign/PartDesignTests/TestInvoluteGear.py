@@ -300,13 +300,13 @@ class TestInvoluteGear(unittest.TestCase):
             msg=f"Total wire length changed after recomputing gear {created_with}")
 
     def assertSuccessfulRecompute(self, *objs, msg=None):
-        if (len(objs) == 0):
+        if len(objs) == 0:
             self.Doc.recompute()
             objs = self.Doc.Objects
         else:
             self.Doc.recompute(objs)
         failed_objects = [o.Name for o in objs if 'Invalid' in o.State]
-        if (len(failed_objects) > 0):
+        if len(failed_objects) > 0:
             self.fail(msg or f"Recompute failed for {failed_objects}")
 
     def assertClosedWire(self, shape, msg=None):
@@ -368,7 +368,7 @@ def external_pin_diameter_and_distance(z, m, a, x):
 
     # Eq. 10-12 on page T46
     rc = (dm - dp) / 2
-    return (dp, rc)
+    return dp, rc
 
 
 def internal_pin_diameter_and_distance(z, m, a, x):
@@ -404,4 +404,4 @@ def internal_pin_diameter_and_distance(z, m, a, x):
     dm = z * m * cos(a) / cos(phi) - dp
 
     rc = (dm + dp) / 2
-    return (dp, rc)
+    return dp, rc

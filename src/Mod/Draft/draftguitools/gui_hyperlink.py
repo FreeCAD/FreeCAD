@@ -45,7 +45,7 @@ translate = FreeCAD.Qt.translate
 from PySide import QtWidgets
 
 __title__ = "FreeCAD Draft Workbench GUI Tools - Hyperlinks tools"
-__author__ = ("")
+__author__ = ""
 __url__ = "https://www.freecad.org"
 
 

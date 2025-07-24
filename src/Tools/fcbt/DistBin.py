@@ -66,6 +66,6 @@ FileTools.cpallWithFilter(
 # ====================================================================
 # zipping an archive
 # os.popen("rar.exe a "+DistDir+DistBin+".rar "+ DistDir+DistBin)
-os.popen("7z a -tzip " + DistDir + DistBin + ".zip " + DistDir + DistBin + " -mx9")
+os.popen(f"7z a -tzip {DistDir}{DistBin}.zip {DistDir}{DistBin} -mx9")
 
 FileTools.rmall(DistDir + DistBin)

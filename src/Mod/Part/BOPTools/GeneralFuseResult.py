@@ -110,8 +110,8 @@ def myCustomFusionRoutine(list_of_shapes):
                 map_needs_repairing = True
 
         if map_needs_repairing:
-            aggregate_types = set(["Wire","Shell","CompSolid","Compound"])
-            nonaggregate_types = set(["Vertex","Edge","Face","Solid"])
+            aggregate_types = {"Wire", "Shell", "CompSolid", "Compound"}
+            nonaggregate_types = {"Vertex", "Edge", "Face", "Solid"}
 
             types = set()
             for piece in self.pieces:
@@ -431,4 +431,4 @@ class GeneralFuseReturnBuilder(FrozenClass):
         self.pieces[piece_index] = new_shape
 
     def getGFReturn(self):
-        return (Part.Compound(self.pieces), [[self.pieces[iPiece] for iPiece in ilist] for ilist in self._pieces_from_source])
+        return Part.Compound(self.pieces), [[self.pieces[iPiece] for iPiece in ilist] for ilist in self._pieces_from_source]

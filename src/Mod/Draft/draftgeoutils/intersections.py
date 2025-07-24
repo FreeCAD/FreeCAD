@@ -91,7 +91,7 @@ def findIntersection(edge1, edge2,
             # first check if we don't already have coincident endpoints
             if pt1 in [pt3, pt4]:
                 return [pt1]
-            elif (pt2 in [pt3, pt4]):
+            elif pt2 in [pt3, pt4]:
                 return [pt2]
         norm1 = pt2.sub(pt1).cross(pt3.sub(pt1))
         norm2 = pt2.sub(pt4).cross(pt3.sub(pt4))
@@ -152,7 +152,7 @@ def findIntersection(edge1, edge2,
     # First, try to use Shape.section if possible
     if (dts and isinstance(edge1, Part.Edge) and isinstance(edge2, Part.Edge)
             and (not infinite1) and (not infinite2)):
-        return [v.Point for v in edge1.section((edge2), tol).Vertexes]
+        return [v.Point for v in edge1.section(edge2, tol).Vertexes]
 
     pt1 = None
 
@@ -215,7 +215,7 @@ def findIntersection(edge1, edge2,
             toLine = pt1.sub(center).add(onLine)
 
             if toLine.Length < arc.Curve.Radius:
-                dOnLine = (arc.Curve.Radius**2 - toLine.Length**2)**(0.5)
+                dOnLine = (arc.Curve.Radius**2 - toLine.Length**2) ** 0.5
                 onLine = App.Vector(dirVec)
                 onLine.scale(dOnLine, dOnLine, dOnLine)
                 int += [center.add(toLine).add(onLine)]
@@ -247,11 +247,11 @@ def findIntersection(edge1, edge2,
             else:
                 return []
 
-        if infinite1 is False:
+        if not infinite1:
             for i in range(len(int) - 1, -1, -1):
                 if not isPtOnEdge(int[i], edge1):
                     del int[i]
-        if infinite2 is False:
+        if not infinite2:
             for i in range(len(int) - 1, -1, -1):
                 if not isPtOnEdge(int[i], edge2):
                     del int[i]
@@ -286,7 +286,7 @@ def findIntersection(edge1, edge2,
                         x = 0
                     else:
                         x = (dc2c**2 + rad1**2 - rad2**2) / (2*dc2c)
-                    y = abs(rad1**2 - x**2)**(0.5)
+                    y = abs(rad1**2 - x**2) ** 0.5
                     c2c.scale(x, x, x)
                     if round(y, precision()) != 0:
                         norm.scale(y, y, y)
@@ -314,11 +314,11 @@ def findIntersection(edge1, edge2,
                 if round(pt.sub(cent2).Length-rad2, precision()) == 0:
                     int += [pt]
 
-        if infinite1 is False:
+        if not infinite1:
             for i in range(len(int) - 1, -1, -1):
                 if not isPtOnEdge(int[i], edge1):
                     del int[i]
-        if infinite2 is False:
+        if not infinite2:
             for i in range(len(int) - 1, -1, -1):
                 if not isPtOnEdge(int[i], edge2):
                     del int[i]
@@ -408,7 +408,7 @@ def connect(edges, closed=False, wireNedge=False):
         # TODO May phase out wire if bind() can do without it later and do with
         # only connectEdges so no need bind() to find 'touching edges' there
         if wireNedge:
-            return (wire, new_edges_full, new_edges)
+            return wire, new_edges_full, new_edges
         else:
             return wire
 

@@ -114,11 +114,8 @@ def generate(
     if startPoint.z < endPoint.z:
         raise ValueError("start point is below end point")
 
-    cmdParams = {}
-    cmdParams["X"] = startPoint.x
-    cmdParams["Y"] = startPoint.y
-    cmdParams["Z"] = endPoint.z
-    cmdParams["R"] = retractheight if retractheight is not None else startPoint.z
+    cmdParams = {"X": startPoint.x, "Y": startPoint.y, "Z": endPoint.z,
+                 "R": retractheight if retractheight is not None else startPoint.z}
 
     if repeat < 1:
         raise ValueError("repeat must be 1 or greater")

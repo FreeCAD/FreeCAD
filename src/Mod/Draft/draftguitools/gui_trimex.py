@@ -307,7 +307,7 @@ class Trimex(gui_base_original.Modifier):
         # sorting out directions
         if reverse and (npoint > 0):
             npoint = npoint - 1
-        if (npoint > len(self.edges) - 1):
+        if npoint > len(self.edges) - 1:
             edge = self.edges[-1]
             ghost = self.ghost[-1]
         else:

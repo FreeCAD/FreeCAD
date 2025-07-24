@@ -165,7 +165,7 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
 
     def convertBezier(edge):
         if DraftGeomUtils.geomType(edge) == "BezierCurve":
-            return(edge.Curve.toBSpline(edge.FirstParameter,edge.LastParameter).toShape())
+            return edge.Curve.toBSpline(edge.FirstParameter, edge.LastParameter).toShape()
         else:
             return edge
 

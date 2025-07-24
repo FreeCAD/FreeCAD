@@ -307,7 +307,7 @@ class _CommandStructure:
             if ax:
                 FreeCADGui.runCommand("Arch_StructuralSystem")
                 return
-            elif not(ax) and not(st):
+            elif not ax and not st:
                 self.doc.openTransaction(translate("Arch","Create Structure"))
                 FreeCADGui.addModule("Arch")
                 for obj in sel:
@@ -741,7 +741,7 @@ class _Structure(ArchComponent.Component):
 
     def loads(self,state):
         super().loads(state)  # do nothing as of 2024.11.28
-        if state == None:
+        if state is None:
             return
         elif state[0] == 'S':  # state[1] == 't', behaviour before 2024.11.28
             return
@@ -1079,7 +1079,7 @@ class _Structure(ArchComponent.Component):
                     if height:
                         extrusion = normal.multiply(height)
             if extrusion:
-                return (base, extrusion, placement)
+                return base, extrusion, placement
         return None
 
     def onChanged(self,obj,prop):
@@ -1559,7 +1559,7 @@ class _StructuralSystem(ArchComponent.Component): # OBSOLETE - All Arch objects 
                 # applying axes
                 pts = self.getAxisPoints(obj)
                 if hasattr(obj,"Align"):
-                    if obj.Align == False :
+                    if not obj.Align:
                         apl = self.getAxisPlacement(obj)
                     if obj.Align:
                         apl = None
@@ -1646,7 +1646,7 @@ if FreeCAD.GuiUp:
     class _ArchStructureGroupCommand:
 
         def GetCommands(self):
-            return ("Arch_Structure", "Arch_StructuralSystem", "Arch_StructuresFromSelection")
+            return "Arch_Structure", "Arch_StructuralSystem", "Arch_StructuresFromSelection"
         def GetResources(self):
             return { "MenuText": QT_TRANSLATE_NOOP("Arch_StructureTools", "Structure tools"),
                      "ToolTip": QT_TRANSLATE_NOOP("Arch_StructureTools", "Structure tools")

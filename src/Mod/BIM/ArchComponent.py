@@ -531,11 +531,11 @@ class Component(ArchIFC.IfcProduct):
                                 for p in data[2]:
                                     p.move(disp)
                                     ndata2.append(p)
-                                return (data[0],data[1],ndata2)
+                                return data[0],data[1],ndata2
                             else:
                                 ndata2 = data[2]
                                 ndata2.move(disp)
-                                return (data[0],data[1],ndata2)
+                                return data[0],data[1],ndata2
 
             # the base is a Part Extrusion
             elif obj.Base.isDerivedFrom("Part::Extrusion"):
@@ -551,7 +551,7 @@ class Component(ArchIFC.IfcProduct):
                             extrusion = extrusion.multiply(obj.Base.LengthFwd.Value)
                     if not self.isIdentity(obj.Base.Placement):
                         placement = placement.multiply(obj.Base.Placement)
-                    return (base,extrusion,placement)
+                    return base,extrusion,placement
 
             elif obj.Base.isDerivedFrom("Part::MultiFuse"):
                 rshapes = []
@@ -583,7 +583,7 @@ class Component(ArchIFC.IfcProduct):
                             revs.append(extrusion)
                             rpls.append(placement)
                 if rshapes and revs and rpls:
-                    return (rshapes,revs,rpls)
+                    return rshapes,revs,rpls
         return None
 
     def rebase(self,shape,hint=None):
@@ -645,9 +645,9 @@ class Component(ArchIFC.IfcProduct):
         p.Base = v
         p.Rotation = r
         if len(shapes) == 1:
-            return (shapes[0],p)
+            return shapes[0],p
         else:
-            return(shapes,p)
+            return shapes,p
 
     def hideSubobjects(self,obj,prop):
         """Hides Additions and Subtractions of this Component when that list changes.
@@ -674,8 +674,8 @@ class Component(ArchIFC.IfcProduct):
                 if hasattr(obj,prop):
                     for o in getattr(obj,prop):
                         if (Draft.getType(o) != "Window") and (not Draft.isClone(o,"Window",True)):
-                            if (Draft.getType(obj) == "Wall"):
-                                if (Draft.getType(o) == "Roof"):
+                            if Draft.getType(obj) == "Wall":
+                                if Draft.getType(o) == "Roof":
                                     continue
                             o.ViewObject.hide()
             elif prop in ["Mesh"]:
@@ -1465,7 +1465,7 @@ class ViewProviderComponent:
         self.meshcolor = coin.SoBaseColor()
         self.hiresgroup.addChild(self.meshcolor)
         self.hiresgroup.setName("HiRes")
-        vobj.addDisplayMode(self.hiresgroup,"HiRes");
+        vobj.addDisplayMode(self.hiresgroup,"HiRes")
         return
 
     def getDisplayModes(self,vobj):

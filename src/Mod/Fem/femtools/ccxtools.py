@@ -542,7 +542,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         ccx_stdout, ccx_stderr = p.communicate()
         ccx_stdout = ccx_stdout.decode()
         m = re.search(r"(\d+).(\d+)", ccx_stdout)
-        return (int(m.group(1)), int(m.group(2)))
+        return int(m.group(1)), int(m.group(2))
 
     def ccx_run(self):
         ret_code = None
@@ -552,7 +552,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             FreeCAD.Console.PrintError("CalculiX can not be run if test_mode is True.\n")
             return
         self.setup_ccx()
-        if self.ccx_binary_present is False:
+        if not self.ccx_binary_present:
             error_message = (
                 "FEM: CalculiX binary ccx '{}' not found. "
                 "Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.\n".format(

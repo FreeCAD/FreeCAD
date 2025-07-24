@@ -128,9 +128,7 @@ G0 Z0.500000
 
     def test50(self):
         """Test Path.Length calculation"""
-        commands = []
-        commands.append(Path.Command("G1", {"X": 1}))
-        commands.append(Path.Command("G1", {"Y": 1}))
+        commands = [Path.Command("G1", {"X": 1}), Path.Command("G1", {"Y": 1})]
         path = Path.Path(commands)
 
         self.assertEqual(path.Length, 2)

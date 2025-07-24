@@ -45,7 +45,7 @@ def QT_TRANSLATE_NOOP(ctx,txt):
 translate = App.Qt.translate
 
 __title__ = "FreeCAD Draft Workbench GUI Tools - Styling tools"
-__author__ = ("Yorik van Havre")
+__author__ = "Yorik van Havre"
 __url__ = "https://www.freecad.org"
 
 PRESETPATH = os.path.join(App.getUserAppDataDir(), "Draft", "StylePresets.json")

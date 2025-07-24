@@ -105,8 +105,8 @@ def make_circle(radius, placement=None, face=None, startangle=None, endangle=Non
             placement.Rotation = rotOk
             if len(edge.Vertexes) > 1:
                 v0 = edge.Curve.XAxis
-                v1 = (edge.Vertexes[0].Point).sub(edge.Curve.Center)
-                v2 = (edge.Vertexes[-1].Point).sub(edge.Curve.Center)
+                v1 = edge.Vertexes[0].Point.sub(edge.Curve.Center)
+                v2 = edge.Vertexes[-1].Point.sub(edge.Curve.Center)
                 # Angle between edge.Curve.XAxis and the vector from center to start of arc
                 a0 = math.degrees(App.Vector.getAngle(v0, v1))
                 # Angle between edge.Curve.XAxis and the vector from center to end of arc

@@ -637,7 +637,7 @@ class ObjectOp(object):
                 return fbb.ZMin
             elif fbb.ZMax > fbb.ZMin and fbb.ZMax == bb.ZMax:  # vertical face, full cut
                 return fbb.ZMin
-            elif fbb.ZMax > fbb.ZMin and fbb.ZMin > bb.ZMin:  # internal vertical wall
+            elif fbb.ZMax > fbb.ZMin > bb.ZMin:  # internal vertical wall
                 return fbb.ZMin
             elif fbb.ZMax == fbb.ZMin and fbb.ZMax > bb.ZMin:  # face/shelf
                 return fbb.ZMin

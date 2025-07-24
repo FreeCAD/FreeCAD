@@ -57,8 +57,8 @@ import draftguitools.gui_snapper as gui_snapper
 import draftguitools.gui_trackers as trackers
 
 # The module is used to prevent complaints from code checkers (flake8)
-True if Draft_rc.__name__ else False
-True if DraftGui.__name__ else False
+bool(Draft_rc.__name__)
+bool(DraftGui.__name__)
 
 __title__ = "FreeCAD Draft Workbench GUI Tools"
 __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "

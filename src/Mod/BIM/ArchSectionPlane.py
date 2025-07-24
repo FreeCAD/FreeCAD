@@ -388,7 +388,7 @@ def getSVG(source,
                 render.cut(cutplane)
             g = '<g transform="scale(1,-1)">\n'
             if hasattr(source.ViewObject,"RotateSolidRender"):
-                if (source.ViewObject.RotateSolidRender.Value != 0):
+                if source.ViewObject.RotateSolidRender.Value != 0:
                     g = '<g transform="scale(1,-1) rotate('
                     g += str(source.ViewObject.RotateSolidRender.Value)
                     g += ')">\n'
@@ -660,7 +660,7 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False,face
             obj.ViewObject.show()
             node_copy = obj.ViewObject.RootNode.copy()
             root_node.addChild(node_copy)
-            if(old_visibility):
+            if old_visibility:
               obj.ViewObject.show()
             else:
                 obj.ViewObject.hide()

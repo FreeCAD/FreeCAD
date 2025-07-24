@@ -110,7 +110,7 @@ def reset_mesh_color(resultobj):
 
 def show_displacement(resultobj, displacement_factor=0.0):
     if FreeCAD.GuiUp:
-        if resultobj.Mesh.ViewObject.Visibility is False:
+        if not resultobj.Mesh.ViewObject.Visibility:
             resultobj.Mesh.ViewObject.Visibility = True
         resultobj.Mesh.ViewObject.setNodeDisplacementByVectors(
             resultobj.NodeNumbers, resultobj.DisplacementVectors
@@ -180,7 +180,7 @@ def show_color_by_scalar_with_cutoff(resultobj, values, limit=None):
     else:
         filtered_values = values
     if FreeCAD.GuiUp:
-        if resultobj.Mesh.ViewObject.Visibility is False:
+        if not resultobj.Mesh.ViewObject.Visibility:
             resultobj.Mesh.ViewObject.Visibility = True
         resultobj.Mesh.ViewObject.setNodeColorByScalars(resultobj.NodeNumbers, filtered_values)
 
@@ -512,7 +512,7 @@ def get_concrete_nodes(res_obj):
             obj, "Fem::MaterialReinforced"
         ):
             FreeCAD.Console.PrintMessage("ReinforcedMaterial\n")
-            if obj.References == []:
+            if not obj.References:
                 for iic in range(nsr):
                     if ic[iic] == 0:
                         ic[iic] = 1
@@ -525,7 +525,7 @@ def get_concrete_nodes(res_obj):
             obj, "Fem::MaterialCommon"
         ):
             FreeCAD.Console.PrintMessage("No ReinforcedMaterial\n")
-            if obj.References == []:
+            if not obj.References:
                 for iic in range(nsr):
                     if ic[iic] == 0:
                         ic[iic] = 2
@@ -697,8 +697,8 @@ def calculate_principal_stress_std(stress_tensor):
     # https://forum.freecad.org/viewtopic.php?f=22&t=33911&start=10#p284229
     # https://forum.freecad.org/viewtopic.php?f=18&t=32649#p274291
     for s in stress_tensor:
-        if isnan(s) is True:
-            return (float("NaN"), float("NaN"), float("NaN"), float("NaN"))
+        if isnan(s):
+            return float("NaN"), float("NaN"), float("NaN"), float("NaN")
 
     s11 = stress_tensor[0]  # Sxx
     s22 = stress_tensor[1]  # Syy
@@ -714,7 +714,7 @@ def calculate_principal_stress_std(stress_tensor):
     eigvals.sort()
     eigvals.reverse()
     maxshear = (eigvals[0] - eigvals[2]) / 2.0
-    return (eigvals[0], eigvals[1], eigvals[2], maxshear)
+    return eigvals[0], eigvals[1], eigvals[2], maxshear
 
 
 def calculate_principal_stress_reinforced(stress_tensor):
@@ -918,7 +918,7 @@ def calculate_rho(stress_tensor, fy):
 
                 rsum = rhox[ir] + rhoy[ir] + rhoz[ir]
 
-                if rsum < rmin and rsum > 0.0:
+                if rmin > rsum > 0.0:
                     rmin = rsum
                     eqmin = ir
 

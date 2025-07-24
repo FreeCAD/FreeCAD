@@ -185,6 +185,6 @@ class PathTwistedArray(DraftLink):
 
         self.buildShape(obj, array_placement, copy_placements)
         self.props_changed_clear()
-        return (not self.use_link)
+        return not self.use_link
 
 ## @}

@@ -195,4 +195,4 @@ def generate(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator, st
     else:
         path.append(Path.Command("G1", {"X": elevatorX, "Y": elevatorY}))
 
-    return (path, FreeCAD.Vector(elevatorX, elevatorY, thread.zFinal))
+    return path, FreeCAD.Vector(elevatorX, elevatorY, thread.zFinal)

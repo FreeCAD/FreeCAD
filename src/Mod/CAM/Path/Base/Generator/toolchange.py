@@ -60,10 +60,7 @@ def generate(toolnumber, toollabel, spindlespeed=0, spindledirection=SpindleDire
     if spindlespeed < 0:
         raise ValueError("Spindle speed must be a positive value")
 
-    commands = []
-
-    commands.append(Path.Command(f"({toollabel})"))
-    commands.append(Path.Command("M6", {"T": int(toolnumber)}))
+    commands = [Path.Command(f"({toollabel})"), Path.Command("M6", {"T": int(toolnumber)})]
 
     if spindledirection is SpindleDirection.OFF:
         return commands

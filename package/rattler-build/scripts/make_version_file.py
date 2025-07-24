@@ -24,11 +24,11 @@ for line in i.readlines():
 
 with open("src/Build/Version.h.cmake", "w") as o:
 	content.append('// Git relevant stuff\n')
-	content.append('#define FCRepositoryHash   "%s"\n' % (gitInfo.hash))
-	content.append('#define FCRepositoryBranch "%s"\n' % (gitInfo.branch))
+	content.append('#define FCRepositoryHash   "%s"\n' % gitInfo.hash)
+	content.append('#define FCRepositoryBranch "%s"\n' % gitInfo.branch)
 	o.writelines(content)
-
-with open(os.sys.argv[1], "w") as f:
+# os.sys.argv is not exists.should be sys.argv
+with open(sys.argv[1], "w") as f:
 	f.write(f"rev_number: {gitInfo.rev}\n")
 	f.write(f"branch_name: {gitInfo.branch}\n")
 	f.write(f"commit_date: {gitInfo.date}\n")

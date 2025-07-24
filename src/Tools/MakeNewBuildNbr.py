@@ -47,13 +47,5 @@ open("../Version.h", "w").writelines(
 
 # writing the ChangeLog.txt
 open("../ChangeLog.txt", "a").write(
-    "\nVersion: V"
-    + FCVersionMajor[23:-1]
-    + "."
-    + FCVersionMinor[23:-1]
-    + "B"
-    + str(BuildNumber)
-    + " Date: "
-    + time.asctime()
-    + " +++++++++++++++++++++++++++++++\n"
+    f"\nVersion: V{FCVersionMajor[23:-1]}.{FCVersionMinor[23:-1]}B{str(BuildNumber)} Date: {time.asctime()}\n +++++++++++++++++++++++++++++++\n"
 )

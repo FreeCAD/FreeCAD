@@ -100,6 +100,7 @@ from drafttests.test_import_tools import DraftImportTools as DraftTestGui02
 from drafttests.test_pivy import DraftPivy as DraftTestGui03
 
 # Use the modules so that code checkers don't complain (flake8)
-True if DraftTestGui01 else False
-True if DraftTestGui02 else False
-True if DraftTestGui03 else False
+bool(DraftTestGui01)
+bool(DraftTestGui02)
+bool(DraftTestGui03)
+

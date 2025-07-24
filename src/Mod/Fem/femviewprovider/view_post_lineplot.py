@@ -352,20 +352,16 @@ class VPPostLineplotFieldData(view_base_fempostextractors.VPPostExtractor):
         pixmap = QtGui.QPixmap()
         pixmap.loadFromData(data.getvalue())
 
-        return (pixmap, self.ViewObject.Legend)
+        return pixmap, self.ViewObject.Legend
 
     def get_kw_args(self):
         # builds kw args from the properties
-        kwargs = {}
+        kwargs = {"color": self.ViewObject.Color, "markeredgecolor": self.ViewObject.Color,
+                  "markerfacecolor": self.ViewObject.Color, "linestyle": self.ViewObject.LineStyle,
+                  "linewidth": self.ViewObject.LineWidth, "marker": self.ViewObject.MarkerStyle,
+                  "markersize": self.ViewObject.MarkerSize}
 
         # colors need a workaround, some error occurs with rgba tuple
-        kwargs["color"] = self.ViewObject.Color
-        kwargs["markeredgecolor"] = self.ViewObject.Color
-        kwargs["markerfacecolor"] = self.ViewObject.Color
-        kwargs["linestyle"] = self.ViewObject.LineStyle
-        kwargs["linewidth"] = self.ViewObject.LineWidth
-        kwargs["marker"] = self.ViewObject.MarkerStyle
-        kwargs["markersize"] = self.ViewObject.MarkerSize
         return kwargs
 
     def get_default_color_property(self):

@@ -238,7 +238,7 @@ class _Stairs(ArchComponent.Component):
 
     def loads(self,state):
         super().loads(state)  # do nothing as of 2024.11.28
-        if state == None:
+        if state is None:
             return
         elif state[0] == 'S':  # state[1] == 't', behaviour before 2024.11.28
             return
@@ -833,8 +833,8 @@ class _Stairs(ArchComponent.Component):
                 lastEdgeIsLineSegmentBool = isinstance(lastEdge.Curve,(Part.Line, Part.LineSegment))
                 thisEdgeIsLineSegmentBool = isinstance(edge.Curve,(Part.Line, Part.LineSegment))
 
-                lastEdgeIsCircleBool = isinstance(lastEdge.Curve,(Part.Circle))    # why it is Part.Circle for an Arc Edge? - why Part.ArcOfCircle Not Working?
-                thisEdgeIsCircleBool = isinstance(edge.Curve,(Part.Circle))
+                lastEdgeIsCircleBool = isinstance(lastEdge.Curve, Part.Circle)    # why it is Part.Circle for an Arc Edge? - why Part.ArcOfCircle Not Working?
+                thisEdgeIsCircleBool = isinstance(edge.Curve, Part.Circle)
 
                 intersectionP1P2, intersectionP3P4 = _Stairs.findLineArcIntersections(p1last, p2last, p3last, p4last, p1this, p2this, p3this, p4this, lastEdgeIsLineSegmentBool, thisEdgeIsLineSegmentBool,
                                                                                       lastEdgeIsCircleBool, thisEdgeIsCircleBool, pArc1last, pArc2last, pArc1this, pArc2this)
@@ -859,7 +859,7 @@ class _Stairs(ArchComponent.Component):
         pArc.extend(pArc2)                            # pArc.extend(pArcReverse)
 
         firstEdgeIsLineSegmentBool = isinstance(edges[0].Curve,(Part.Line, Part.LineSegment))
-        firstEdgeIsCircleBool = isinstance(edges[0].Curve,(Part.Circle))    # why it is Part.Circle for an Arc Edge? - why Part.ArcOfCircle Not Working?
+        firstEdgeIsCircleBool = isinstance(edges[0].Curve, Part.Circle)    # why it is Part.Circle for an Arc Edge? - why Part.ArcOfCircle Not Working?
 
         if mode in ["OrderedClose", "OrderedCloseAndOrderedOpen"]:        # seem only using 'OrderedClose'
             intersectionP1P2, intersectionP3P4 = _Stairs.findLineArcIntersections(p1this, p2this, p3this, p4this, p1[0], p2[0], p3[0], p4[0], thisEdgeIsLineSegmentBool, firstEdgeIsLineSegmentBool,
@@ -1462,7 +1462,7 @@ class _Stairs(ArchComponent.Component):
             print(" numOfSteps = obj.NumberOfSteps - ", numOfSteps)
 
         # setup landingStep - step number of landing, if present
-        if (landings == "At center" or obj.Landings == "At center"):
+        if landings == "At center" or obj.Landings == "At center":
             wantLanding = True
         else:
             wantLanding = False
@@ -1560,13 +1560,13 @@ class _Stairs(ArchComponent.Component):
                     halfTurnLR = 'HalfTurnRight'
                 if (align == "Left" and halfTurnLR == "HalfTurnLeft") or (align == "Right" and halfTurnLR == "HalfTurnRight"):
                     p3r = p2
-                elif (align == "Left" and halfTurnLR == "HalfTurnRight"):
+                elif align == "Left" and halfTurnLR == "HalfTurnRight":
                     p3r = self.align(p2,"Right",-2*vWidth) # -ve / opposite direction of "Right" - no "Left" in _Stairs.Align()
-                elif (align == "Right" and halfTurnLR == "HalfTurnLeft"):
+                elif align == "Right" and halfTurnLR == "HalfTurnLeft":
                     p3r = self.align(p2,"Right",2*vWidth)
-                elif (align == "Center" and halfTurnLR == "HalfTurnLeft"):
+                elif align == "Center" and halfTurnLR == "HalfTurnLeft":
                     p3r = self.align(p2,"Right",vWidth)
-                elif (align == "Center" and halfTurnLR == "HalfTurnRight"):
+                elif align == "Center" and halfTurnLR == "HalfTurnRight":
                     p3r = self.align(p2,"Right",-vWidth) # -ve / opposite direction of "Right" - no "Left" in _Stairs.Align()
                 else:
                     print("Should have a bug here, if see this")

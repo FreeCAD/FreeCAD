@@ -315,7 +315,7 @@ def get_axis(obj):
             placement = FreeCAD.Placement()
             placement.Base = p0
             placement.Rotation = FreeCAD.Rotation(FreeCAD.Vector(0,1,0), p1.sub(p0))
-            return (placement, length, tag)
+            return placement, length, tag
     return None
 
 

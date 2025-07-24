@@ -49,17 +49,13 @@ class ConstraintSectionPrint(base_fempythonobject.BaseFemPythonObject):
             prop.add_to_object(obj)
 
     def _get_properties(self):
-        prop = []
-
-        prop.append(
-            _PropHelper(
-                type="App::PropertyEnumeration",
-                name="Variable",
-                group="Constraint Section Print",
-                doc="Set facial variable",
-                value=["Section Force", "Heat Flux", "Drag Stress"],
-            )
-        )
+        prop = [_PropHelper(
+            type="App::PropertyEnumeration",
+            name="Variable",
+            group="Constraint Section Print",
+            doc="Set facial variable",
+            value=["Section Force", "Heat Flux", "Drag Stress"],
+        )]
 
         return prop
 

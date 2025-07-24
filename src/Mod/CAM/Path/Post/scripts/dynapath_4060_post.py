@@ -170,7 +170,7 @@ def processArguments(argstring):
             OUTPUT_LINE_NUMBERS = True
         if args.no_show_editor:
             SHOW_EDITOR = False
-            print("Show editor = %r" % (SHOW_EDITOR))
+            print("Show editor = %r" % SHOW_EDITOR)
         if args.precision is not None:
             PRECISION = int(args.precision)
         if args.preamble is not None:
@@ -312,9 +312,9 @@ def export(objectslist, filename, argstring):
 # Modified for Dynapath to Include a 4 digit field that begins with an "N".
 def linenumber():
     global LINENR
-    if OUTPUT_LINE_NUMBERS is True:
+    if OUTPUT_LINE_NUMBERS:
         LINENR += 1
-        return "N" + "%04d" % (LINENR)  # Added formatting for 4 digit line number.
+        return "N" + "%04d" % LINENR  # Added formatting for 4 digit line number.
     return ""
 
 
@@ -390,7 +390,7 @@ def parse(pathobj):
             outstring.append(command)
 
             # if modal: suppress the command if it is the same as the last one
-            if MODAL is True:
+            if MODAL:
                 if command == lastcommand:
                     outstring.pop(0)
 
@@ -484,7 +484,7 @@ def parse(pathobj):
                     # This provides the ability to manually go in and bump up the "O" offset in
                     # order to avoid obstacles. The "O" overrides "R", so set them both equal if you
                     # don't need the 2nd reference plane.
-                    elif (param == "R") and ((command in QCYCLE_RANGE)):
+                    elif (param == "R") and (command in QCYCLE_RANGE):
                         pos = Units.Quantity(pathobj.ClearanceHeight.Value, FreeCAD.Units.Length)
                         outstring.insert(
                             6,
@@ -528,7 +528,7 @@ def parse(pathobj):
                     out += linenumber() + "(T)" + "BEGIN TOOLCHANGE$\n"
 
             if command == "message":
-                if OUTPUT_COMMENTS is False:
+                if not OUTPUT_COMMENTS:
                     out = []
                 else:
                     outstring.pop(0)  # remove the command

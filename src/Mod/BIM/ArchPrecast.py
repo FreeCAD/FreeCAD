@@ -162,12 +162,7 @@ class _PrecastBeam(_Precast):
         f = Part.Face(p)
         shape = f.extrude(Vector(length,0,0))
         if (dentlength > 0) and (dentheight > 0):
-            p = []
-            p.append(Vector(0,0,0))
-            p.append(Vector(dentlength,0,0))
-            p.append(Vector(dentlength,width,0))
-            p.append(Vector(0,width,0))
-            p.append(p[0])
+            p = [Vector(0, 0, 0), Vector(dentlength, 0, 0), Vector(dentlength, width, 0), Vector(0, width, 0), p[0]]
             p = Part.makePolygon(p)
             f = Part.Face(p)
             d1 = f.extrude(Vector(0,0,dentheight))
@@ -190,12 +185,8 @@ class _PrecastBeam(_Precast):
                     continue
                 if dentslant >= dentheight:
                     continue
-                p = []
-                p.append(Vector(0-dentchamfer,0,0))
-                p.append(Vector(dentlength,0,dentslant))
-                p.append(Vector(dentlength,0,dentheight))
-                p.append(Vector(0-dentchamfer,0,dentheight))
-                p.append(p[0])
+                p = [Vector(0 - dentchamfer, 0, 0), Vector(dentlength, 0, dentslant), Vector(dentlength, 0, dentheight),
+                     Vector(0 - dentchamfer, 0, dentheight), p[0]]
                 p = Part.makePolygon(p)
                 f = Part.Face(p)
                 dentshape = f.extrude(Vector(0,dentwidth,0))
@@ -258,20 +249,11 @@ class _PrecastIbeam(_Precast):
             return
 
         import Part
-        p = []
-        p.append(Vector(0,0,0))
-        p.append(Vector(0,0,base))
-        p.append(Vector(0,slant,base+slant))
-        p.append(Vector(0,slant,height-(base+slant)))
-        p.append(Vector(0,0,height-base))
-        p.append(Vector(0,0,height))
-        p.append(Vector(0,width,height))
-        p.append(Vector(0,width,height-base))
-        p.append(Vector(0,width-slant,height-(base+slant)))
-        p.append(Vector(0,width-slant,base+slant))
-        p.append(Vector(0,width,base))
-        p.append(Vector(0,width,0))
-        p.append(p[0])
+        p = [Vector(0, 0, 0), Vector(0, 0, base), Vector(0, slant, base + slant),
+             Vector(0, slant, height - (base + slant)), Vector(0, 0, height - base), Vector(0, 0, height),
+             Vector(0, width, height), Vector(0, width, height - base),
+             Vector(0, width - slant, height - (base + slant)), Vector(0, width - slant, base + slant),
+             Vector(0, width, base), Vector(0, width, 0), p[0]]
         p = Part.makePolygon(p)
         f = Part.Face(p)
         shape = f.extrude(Vector(length,0,0))
@@ -357,21 +339,13 @@ class _PrecastPillar(_Precast):
         shape = f.extrude(Vector(0,0,height))
 
         if (groovedepth > 0) and (grooveheight > 0) and (spacing > 0) and (number > 0) and (groovedepth < length/2) and (groovedepth < width/2):
-            p1 = []
-            p1.append(Vector(0,0,0))
-            p1.append(Vector(length,0,0))
-            p1.append(Vector(length,width,0))
-            p1.append(Vector(0,width,0))
-            p1.append(p1[0])
+            p1 = [Vector(0, 0, 0), Vector(length, 0, 0), Vector(length, width, 0), Vector(0, width, 0), p1[0]]
             p1 = Part.makePolygon(p1)
             f1 = Part.Face(p1)
             groove = f1.extrude(Vector(0,0,grooveheight))
-            p2 = []
-            p2.append(Vector(groovedepth,groovedepth,0))
-            p2.append(Vector(length-groovedepth,groovedepth,0))
-            p2.append(Vector(length-groovedepth,width-groovedepth,0))
-            p2.append(Vector(groovedepth,width-groovedepth,0))
-            p2.append(p2[0])
+            p2 = [Vector(groovedepth, groovedepth, 0), Vector(length - groovedepth, groovedepth, 0),
+                  Vector(length - groovedepth, width - groovedepth, 0), Vector(groovedepth, width - groovedepth, 0),
+                  p2[0]]
             p2 = Part.makePolygon(p2)
             f2 = Part.Face(p2)
             s = f2.extrude(Vector(0,0,grooveheight))
@@ -396,12 +370,8 @@ class _PrecastPillar(_Precast):
                     continue
                 if dentslant >= dentheight:
                     continue
-                p = []
-                p.append(Vector(0-dentchamfer,0,0))
-                p.append(Vector(dentlength,0,dentslant))
-                p.append(Vector(dentlength,0,dentheight))
-                p.append(Vector(0-dentchamfer,0,dentheight))
-                p.append(p[0])
+                p = [Vector(0 - dentchamfer, 0, 0), Vector(dentlength, 0, dentslant), Vector(dentlength, 0, dentheight),
+                     Vector(0 - dentchamfer, 0, dentheight), p[0]]
                 p = Part.makePolygon(p)
                 f = Part.Face(p)
                 dentshape = f.extrude(Vector(0,dentwidth,0))
@@ -468,59 +438,36 @@ class _PrecastPanel(_Precast):
             return
 
         import Part
-        p = []
-        p.append(Vector(0,0,0))
-        p.append(Vector(length,0,0))
-        p.append(Vector(length,width,0))
-        p.append(Vector(0,width,0))
-        p.append(p[0])
+        p = [Vector(0, 0, 0), Vector(length, 0, 0), Vector(length, width, 0), Vector(0, width, 0), p[0]]
         p = Part.makePolygon(p)
         f = Part.Face(p)
         shape = f.extrude(Vector(0,0,height))
         if chamfer > 0:
-            p = []
-            p.append(Vector(0,width-chamfer,0))
-            p.append(Vector(chamfer,width,0))
-            p.append(Vector(0,width,0))
-            p.append(p[0])
+            p = [Vector(0, width - chamfer, 0), Vector(chamfer, width, 0), Vector(0, width, 0), p[0]]
             p = Part.makePolygon(p)
             f = Part.Face(p)
             s = f.extrude(Vector(0,0,height))
             shape = shape.cut(s)
-            p = []
-            p.append(Vector(length,width-chamfer,0))
-            p.append(Vector(length-chamfer,width,0))
-            p.append(Vector(length,width,0))
-            p.append(p[0])
+            p = [Vector(length, width - chamfer, 0), Vector(length - chamfer, width, 0), Vector(length, width, 0), p[0]]
             p = Part.makePolygon(p)
             f = Part.Face(p)
             s = f.extrude(Vector(0,0,height))
             shape = shape.cut(s)
-            p = []
-            p.append(Vector(0,width-chamfer,0))
-            p.append(Vector(0,width,chamfer))
-            p.append(Vector(0,width,0))
-            p.append(p[0])
+            p = [Vector(0, width - chamfer, 0), Vector(0, width, chamfer), Vector(0, width, 0), p[0]]
             p = Part.makePolygon(p)
             f = Part.Face(p)
             s = f.extrude(Vector(length,0,0))
             shape = shape.cut(s)
-            p = []
-            p.append(Vector(0,width-chamfer,height))
-            p.append(Vector(0,width,height-chamfer))
-            p.append(Vector(0,width,height))
-            p.append(p[0])
+            p = [Vector(0, width - chamfer, height), Vector(0, width, height - chamfer), Vector(0, width, height), p[0]]
             p = Part.makePolygon(p)
             f = Part.Face(p)
             s = f.extrude(Vector(length,0,0))
             shape = shape.cut(s)
         if (dentheight > 0) and (dentwidth > 0):
-            p = []
-            p.append(Vector(0,((width-chamfer)-dentwidth)/2,0))
-            p.append(Vector(0,((width-chamfer)-dentwidth)/2+dentwidth,0))
-            p.append(Vector(0,((width-chamfer)-dentwidth)/2+dentwidth,dentheight))
-            p.append(Vector(0,((width-chamfer)-dentwidth)/2,dentheight))
-            p.append(p[0])
+            p = [Vector(0, ((width - chamfer) - dentwidth) / 2, 0),
+                 Vector(0, ((width - chamfer) - dentwidth) / 2 + dentwidth, 0),
+                 Vector(0, ((width - chamfer) - dentwidth) / 2 + dentwidth, dentheight),
+                 Vector(0, ((width - chamfer) - dentwidth) / 2, dentheight), p[0]]
             p = Part.makePolygon(p)
             f = Part.Face(p)
             s = f.extrude(Vector(length,0,0))
@@ -933,25 +880,14 @@ class _PrecastTaskPanel:
         widget.setText(FreeCAD.Units.Quantity(val, FreeCAD.Units.Length).UserString)
 
     def getValues(self):
-        d = {}
-        d["SlabType"] = self.SlabTypes[self.valueSlabType.currentIndex()]
-        d["Chamfer"] = self.Chamfer
-        d["DentLength"] = self.DentLength
-        d["DentWidth"] = self.DentWidth
-        d["DentHeight"] = self.DentHeight
-        d["Base"] = self.Base
-        d["HoleNumber"] = self.valueHoleNumber.value()
-        d["HoleMajor"] = self.HoleMajor
-        d["HoleMinor"] = self.HoleMinor
-        d["HoleSpacing"] = self.HoleSpacing
-        d["GrooveNumber"] = self.valueGrooveNumber.value()
-        d["GrooveDepth"] = self.GrooveDepth
-        d["GrooveHeight"] = self.GrooveHeight
-        d["GrooveSpacing"] = self.GrooveSpacing
-        d["RiserNumber"] = self.valueRiserNumber.value()
-        d["DownLength"] = self.DownLength
-        d["Riser"] = self.Riser
-        d["Tread"] = self.Tread
+        d = {"SlabType": self.SlabTypes[self.valueSlabType.currentIndex()], "Chamfer": self.Chamfer,
+             "DentLength": self.DentLength, "DentWidth": self.DentWidth, "DentHeight": self.DentHeight,
+             "Base": self.Base, "HoleNumber": self.valueHoleNumber.value(), "HoleMajor": self.HoleMajor,
+             "HoleMinor": self.HoleMinor, "HoleSpacing": self.HoleSpacing,
+             "GrooveNumber": self.valueGrooveNumber.value(), "GrooveDepth": self.GrooveDepth,
+             "GrooveHeight": self.GrooveHeight, "GrooveSpacing": self.GrooveSpacing,
+             "RiserNumber": self.valueRiserNumber.value(), "DownLength": self.DownLength, "Riser": self.Riser,
+             "Tread": self.Tread}
         if hasattr(self,"Dents"):
             d["Dents"] = self.Dents.getValues()
         return d

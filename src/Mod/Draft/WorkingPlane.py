@@ -426,34 +426,34 @@ class PlaneBase:
         self.axis = Vector(axis).normalize()
         ref_vec = Vector(0.0, 1.0, 0.0)
 
-        if ((abs(axis.x) > abs(axis.y)) and (abs(axis.y) > abs(axis.z))):
+        if (abs(axis.x) > abs(axis.y)) and (abs(axis.y) > abs(axis.z)):
             ref_vec = Vector(0.0, 0., 1.0)
             self.u = axis.negative().cross(ref_vec)
             self.u.normalize()
             self.v = DraftVecUtils.rotate(self.u, math.pi/2, self.axis)
             # projcase = "Case new"
 
-        elif ((abs(axis.y) > abs(axis.z)) and (abs(axis.z) >= abs(axis.x))):
+        elif (abs(axis.y) > abs(axis.z)) and (abs(axis.z) >= abs(axis.x)):
             ref_vec = Vector(1.0, 0.0, 0.0)
             self.u = axis.negative().cross(ref_vec)
             self.u.normalize()
             self.v = DraftVecUtils.rotate(self.u, math.pi/2, self.axis)
             # projcase = "Y>Z, View Y"
 
-        elif ((abs(axis.y) >= abs(axis.x)) and (abs(axis.x) > abs(axis.z))):
+        elif (abs(axis.y) >= abs(axis.x)) and (abs(axis.x) > abs(axis.z)):
             ref_vec = Vector(0.0, 0., 1.0)
             self.u = axis.cross(ref_vec)
             self.u.normalize()
             self.v = DraftVecUtils.rotate(self.u, math.pi/2, self.axis)
             # projcase = "ehem. XY, Case XY"
 
-        elif ((abs(axis.x) > abs(axis.z)) and (abs(axis.z) >= abs(axis.y))):
+        elif (abs(axis.x) > abs(axis.z)) and (abs(axis.z) >= abs(axis.y)):
             self.u = axis.cross(ref_vec)
             self.u.normalize()
             self.v = DraftVecUtils.rotate(self.u, math.pi/2, self.axis)
             # projcase = "X>Z, View X"
 
-        elif ((abs(axis.z) >= abs(axis.y)) and (abs(axis.y) > abs(axis.x))):
+        elif (abs(axis.z) >= abs(axis.y)) and (abs(axis.y) > abs(axis.x)):
             ref_vec = Vector(1.0, 0., 0.0)
             self.u = axis.cross(ref_vec)
             self.u.normalize()
@@ -1294,7 +1294,7 @@ class PlaneGui(PlaneBase):
                     faces = [obj[0] for obj in objs if obj[0].ShapeType == "Face"]
                     if faces and edges:
                             ret = self.align_to_face_and_edge(faces[0], edges[0], offset, _hist_add)
-            if ret is False:
+            if not ret:
                 _wrn(translate("draft", "Selected shapes do not define a plane"))
             return ret
 
@@ -1403,7 +1403,7 @@ class PlaneGui(PlaneBase):
         `True`/`False`
             `True` if successful.
         """
-        if hasattr(obj, "Placement") is False:
+        if not hasattr(obj, "Placement"):
             return False
         if place is None:
             place = obj.Placement
@@ -1727,7 +1727,7 @@ class PlaneGui(PlaneBase):
         return f"({vec.x:.{dec}f}  {vec.y:.{dec}f}  {vec.z:.{dec}f})"
 
     def _update_all(self, _hist_add=True):
-        if _hist_add is True:
+        if _hist_add:
             self._update_history()
         self._update_old_plane()  # Must happen before _update_grid.
         self._update_grid()
@@ -1791,7 +1791,7 @@ def get_working_plane(update=True):
     if view is not None and view in FreeCAD.draft_working_planes[0]:
         i = FreeCAD.draft_working_planes[0].index(view)
         wp = FreeCAD.draft_working_planes[1][i]
-        if update is False:
+        if not update:
             wp._update_old_plane()  # Currently required for tracker and snapper code.
             return wp
         wp.auto_align()

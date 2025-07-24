@@ -26,4 +26,4 @@ from OpenSCADTest.gui.test_dummy import TestDummy as OpenSCADGuiTestDummy
 
 
 # dummy usage to get flake8 and lgtm quiet
-False if OpenSCADGuiTestDummy.__name__ else True
+not bool(OpenSCADGuiTestDummy.__name__)

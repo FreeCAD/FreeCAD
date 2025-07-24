@@ -395,7 +395,7 @@ def determine_adaptive_op(values: Values, pathobj) -> Tuple[bool, float, float]:
                 opVertRapid = Units.Quantity(tc.VertRapid, Units.Velocity)
             else:
                 FreeCAD.Console.PrintWarning(f"Tool Controller Vertical Rapid Values are unset{nl}")
-    return (adaptiveOp, opHorizRapid, opVertRapid)
+    return adaptiveOp, opHorizRapid, opVertRapid
 
 
 def drill_translate(

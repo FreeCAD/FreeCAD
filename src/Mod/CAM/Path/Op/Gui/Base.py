@@ -139,11 +139,8 @@ class ViewProvider(object):
         """dumps() ... callback before receiver is saved to a file.
         Returns a dictionary with the receiver's resources as strings."""
         Path.Log.track()
-        state = {}
-        state["OpName"] = self.OpName
-        state["OpIcon"] = self.OpIcon
-        state["OpPageModule"] = self.OpPageModule
-        state["OpPageClass"] = self.OpPageClass
+        state = {"OpName": self.OpName, "OpIcon": self.OpIcon, "OpPageModule": self.OpPageModule,
+                 "OpPageClass": self.OpPageClass}
         return state
 
     def loads(self, state):
@@ -815,9 +812,7 @@ class TaskPanelHeightsPage(TaskPanelPage):
         self.clearanceHeight.updateWidget()
 
     def getSignalsForUpdate(self, obj):
-        signals = []
-        signals.append(self.form.safeHeight.editingFinished)
-        signals.append(self.form.clearanceHeight.editingFinished)
+        signals = [self.form.safeHeight.editingFinished, self.form.clearanceHeight.editingFinished]
         return signals
 
     def pageUpdateData(self, obj, prop):
@@ -1009,9 +1004,7 @@ class TaskPanelDiametersPage(TaskPanelPage):
         self.maxDiameter.updateWidget()
 
     def getSignalsForUpdate(self, obj):
-        signals = []
-        signals.append(self.form.minDiameter.editingFinished)
-        signals.append(self.form.maxDiameter.editingFinished)
+        signals = [self.form.minDiameter.editingFinished, self.form.maxDiameter.editingFinished]
         return signals
 
     def pageUpdateData(self, obj, prop):

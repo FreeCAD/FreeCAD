@@ -66,7 +66,7 @@ class BIM_TDView:
             pages = FreeCAD.ActiveDocument.findObjects(Type="TechDraw::DrawPage")
             if pages:
                 page = pages[0]
-        if (not page) or ((not sections) and (not drafts)):
+        if (not page) or (not sections and not drafts):
             FreeCAD.Console.PrintError(
                 translate(
                     "BIM",

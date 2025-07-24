@@ -41,9 +41,8 @@ class TestHelix(unittest.TestCase):
         sketch.AttachmentSupport = (self.Doc.getObject('XY_Plane'),[''])
         sketch.MapMode = 'FlatFace'
 
-        geoList = []
-        geoList.append(Part.Circle(Base.Vector(-40.0, 0.0, 0.0), Base.Vector(0.0, 0.0, 1.0), 7.5))
-        geoList.append(Part.Circle(Base.Vector(-40.0, 0.0, 0.0), Base.Vector(0.0, 0.0, 1.0), 10.0))
+        geoList = [Part.Circle(Base.Vector(-40.0, 0.0, 0.0), Base.Vector(0.0, 0.0, 1.0), 7.5),
+                   Part.Circle(Base.Vector(-40.0, 0.0, 0.0), Base.Vector(0.0, 0.0, 1.0), 10.0)]
         sketch.addGeometry(geoList, False)
         del geoList
 
@@ -277,26 +276,19 @@ class TestHelix(unittest.TestCase):
         coneSketch = self.Doc.addObject('Sketcher::SketchObject', 'ConeSketch')
         body.addObject(coneSketch)
 
-        geoList = []
-        geoList.append(Part.LineSegment(FreeCAD.Vector(-5, -5, 0), FreeCAD.Vector(-3, 0, 0)) )
-        geoList.append(Part.LineSegment(FreeCAD.Vector(-3, 0, 0), FreeCAD.Vector(-2, 0, 0)) )
-        geoList.append(Part.LineSegment(FreeCAD.Vector(-2, 0, 0), FreeCAD.Vector(-4, -5, 0)) )
-        geoList.append(Part.LineSegment(FreeCAD.Vector(-4, -5, 0), FreeCAD.Vector(-5, -5, 0)))
+        geoList = [Part.LineSegment(FreeCAD.Vector(-5, -5, 0), FreeCAD.Vector(-3, 0, 0)),
+                   Part.LineSegment(FreeCAD.Vector(-3, 0, 0), FreeCAD.Vector(-2, 0, 0)),
+                   Part.LineSegment(FreeCAD.Vector(-2, 0, 0), FreeCAD.Vector(-4, -5, 0)),
+                   Part.LineSegment(FreeCAD.Vector(-4, -5, 0), FreeCAD.Vector(-5, -5, 0))]
         (l1, l2, l3, l4) = coneSketch.addGeometry(geoList)
 
-        conList = []
-        conList.append(Sketcher.Constraint("Coincident", 0, 2, 1, 1))
-        conList.append(Sketcher.Constraint("Coincident", 1, 2, 2, 1))
-        conList.append(Sketcher.Constraint("Coincident", 2, 2, 3, 1))
-        conList.append(Sketcher.Constraint("Coincident", 3, 2, 0, 1))
-        conList.append(Sketcher.Constraint("Horizontal", 1))
-        conList.append(Sketcher.Constraint("Angle", l3, 1, -2, 2, FreeCAD.Units.Quantity("30.000000 deg")))
-        conList.append(Sketcher.Constraint("DistanceX", 1, 2, -5))
-        conList.append(Sketcher.Constraint("DistanceY", 1, 2, 0))
-        conList.append(Sketcher.Constraint("Equal", 0, 2))
-        conList.append(Sketcher.Constraint("Equal", 1, 3))
-        conList.append(Sketcher.Constraint("DistanceY", 0, 50))
-        conList.append(Sketcher.Constraint("DistanceX", 1, 10))
+        conList = [Sketcher.Constraint("Coincident", 0, 2, 1, 1), Sketcher.Constraint("Coincident", 1, 2, 2, 1),
+                   Sketcher.Constraint("Coincident", 2, 2, 3, 1), Sketcher.Constraint("Coincident", 3, 2, 0, 1),
+                   Sketcher.Constraint("Horizontal", 1),
+                   Sketcher.Constraint("Angle", l3, 1, -2, 2, FreeCAD.Units.Quantity("30.000000 deg")),
+                   Sketcher.Constraint("DistanceX", 1, 2, -5), Sketcher.Constraint("DistanceY", 1, 2, 0),
+                   Sketcher.Constraint("Equal", 0, 2), Sketcher.Constraint("Equal", 1, 3),
+                   Sketcher.Constraint("DistanceY", 0, 50), Sketcher.Constraint("DistanceX", 1, 10)]
         coneSketch.addConstraint(conList)
 
         xz_plane = body.Origin.OriginFeatures[4]
@@ -323,26 +315,19 @@ class TestHelix(unittest.TestCase):
         coneSketch = self.Doc.addObject('Sketcher::SketchObject', 'ConeSketch')
         body.addObject(coneSketch)
 
-        geoList = []
-        geoList.append(Part.LineSegment(FreeCAD.Vector(5, 5, 0), FreeCAD.Vector(3, 0, 0)))
-        geoList.append(Part.LineSegment(FreeCAD.Vector(3, 0, 0), FreeCAD.Vector(2, 0, 0)))
-        geoList.append(Part.LineSegment(FreeCAD.Vector(2, 0, 0), FreeCAD.Vector(4, 5, 0)))
-        geoList.append(Part.LineSegment(FreeCAD.Vector(4, 5, 0), FreeCAD.Vector(5, 5, 0)))
+        geoList = [Part.LineSegment(FreeCAD.Vector(5, 5, 0), FreeCAD.Vector(3, 0, 0)),
+                   Part.LineSegment(FreeCAD.Vector(3, 0, 0), FreeCAD.Vector(2, 0, 0)),
+                   Part.LineSegment(FreeCAD.Vector(2, 0, 0), FreeCAD.Vector(4, 5, 0)),
+                   Part.LineSegment(FreeCAD.Vector(4, 5, 0), FreeCAD.Vector(5, 5, 0))]
         (l1, l2, l3, l4) = coneSketch.addGeometry(geoList)
 
-        conList = []
-        conList.append(Sketcher.Constraint("Coincident", 0, 2, 1, 1))
-        conList.append(Sketcher.Constraint("Coincident", 1, 2, 2, 1))
-        conList.append(Sketcher.Constraint("Coincident", 2, 2, 3, 1))
-        conList.append(Sketcher.Constraint("Coincident", 3, 2, 0, 1))
-        conList.append(Sketcher.Constraint("Horizontal", 1))
-        conList.append(Sketcher.Constraint("Angle", l3, 1, -2, 2, FreeCAD.Units.Quantity("30 deg")))
-        conList.append(Sketcher.Constraint("DistanceX", 1, 2, -100))
-        conList.append(Sketcher.Constraint("DistanceY", 1, 2, 0))
-        conList.append(Sketcher.Constraint("Equal", 0, 2))
-        conList.append(Sketcher.Constraint("Equal", 1, 3))
-        conList.append(Sketcher.Constraint("DistanceY", 0, 50))
-        conList.append(Sketcher.Constraint("DistanceX", 1, 10))
+        conList = [Sketcher.Constraint("Coincident", 0, 2, 1, 1), Sketcher.Constraint("Coincident", 1, 2, 2, 1),
+                   Sketcher.Constraint("Coincident", 2, 2, 3, 1), Sketcher.Constraint("Coincident", 3, 2, 0, 1),
+                   Sketcher.Constraint("Horizontal", 1),
+                   Sketcher.Constraint("Angle", l3, 1, -2, 2, FreeCAD.Units.Quantity("30 deg")),
+                   Sketcher.Constraint("DistanceX", 1, 2, -100), Sketcher.Constraint("DistanceY", 1, 2, 0),
+                   Sketcher.Constraint("Equal", 0, 2), Sketcher.Constraint("Equal", 1, 3),
+                   Sketcher.Constraint("DistanceY", 0, 50), Sketcher.Constraint("DistanceX", 1, 10)]
         coneSketch.addConstraint(conList)
 
         xz_plane = body.Origin.OriginFeatures[4]

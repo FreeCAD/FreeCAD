@@ -49,242 +49,167 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
             prop.add_to_object(obj)
 
     def _get_properties(self):
-        prop = []
-
-        prop.append(
-            _PropHelper(
-                type="App::PropertyLinkList",
-                name="MeshRegionList",
-                group="Base",
-                doc="Refinements of the mesh",
-                value=[],
-            )
-        )
-        # mesh parameters
-        prop.append(
-            _PropHelper(
-                type="App::PropertyString",
-                name="Optimize3d",
-                group="Mesh Parameters",
-                doc="3d optimization strategy.\n"
+        prop = [_PropHelper(
+            type="App::PropertyLinkList",
+            name="MeshRegionList",
+            group="Base",
+            doc="Refinements of the mesh",
+            value=[],
+        ), _PropHelper(
+            type="App::PropertyString",
+            name="Optimize3d",
+            group="Mesh Parameters",
+            doc="3d optimization strategy.\n"
                 + "m: move nodes, M: move nodes, cheap functional\n"
                 + "s: swap faces, c: combine elements, d: divide elements,\n"
                 + "D: divide and join opposite edges, remove element,\n"
                 + "p: plot, no pause, P: plot, Pause,\n"
                 + "h: Histogramm, no pause, H: Histogramm, pause",
-                value="cmdDmustm",
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyIntegerConstraint",
-                name="OptimizationSteps3d",
-                group="Mesh Parameters",
-                doc="Number of 3d optimization steps",
-                value={"value": 3, "min": 0},
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyString",
-                name="Optimize2d",
-                group="Mesh Parameters",
-                doc="2d optimization strategy.\n"
+            value="cmdDmustm",
+        ), _PropHelper(
+            type="App::PropertyIntegerConstraint",
+            name="OptimizationSteps3d",
+            group="Mesh Parameters",
+            doc="Number of 3d optimization steps",
+            value={"value": 3, "min": 0},
+        ), _PropHelper(
+            type="App::PropertyString",
+            name="Optimize2d",
+            group="Mesh Parameters",
+            doc="2d optimization strategy.\n"
                 + "s: swap opt 6 lines/node, S: swap optimal elements,\n"
                 + "m: move nodes, p: plot, no pause\n"
                 + "P: plot, pause, c: combine",
-                value="smcmSmcmSmcm",
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyIntegerConstraint",
-                name="OptimizationSteps2d",
-                group="Mesh Parameters",
-                doc="Number of 2d optimization steps",
-                value={"value": 3, "min": 0},
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyFloat",
-                name="OptimizationErrorPower",
-                group="Mesh Parameters",
-                doc="Power of error to approximate max error optimization",
-                value=2.0,
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyBool",
-                name="BlockFill",
-                group="Mesh Parameters",
-                doc="Do block filling",
-                value=True,
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyLength",
-                name="FillDistance",
-                group="Mesh Parameters",
-                doc="Block filling up to distance",
-                value=0.1,
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyFloatConstraint",
-                name="Safety",
-                group="Mesh Parameters",
-                doc="Radius of local environment (times h)",
-                value={"value": 5.0, "min": 0, "step": 0.1},
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyFloatConstraint",
-                name="RelinnerSafety",
-                group="Mesh Parameters",
-                doc="Radius of active environment (times h)",
-                value={"value": 3.0, "min": 0, "step": 0.1},
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyBool",
-                name="LocalH",
-                group="Mesh Parameters",
-                doc="Use local h",
-                value=True,
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyBool",
-                name="UseLocalH",
-                group="Mesh Parameters",
-                doc="Use local H",
-                value=True,
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyFloatConstraint",
-                name="GrowthRate",
-                group="Mesh Parameters",
-                doc="Grading for local h",
-                value={"value": 0.3, "min": 0, "step": 0.1},
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyBool",
-                name="Delaunay",
-                group="Mesh Parameters",
-                doc="Use Delaunay for 3d meshing",
-                value=True,
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyBool",
-                name="Delaunay2d",
-                group="Mesh Parameters",
-                doc="Use Delaunay for 2d meshing",
-                value=False,
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyLength",
-                name="MaxSize",
-                group="Mesh Parameters",
-                doc="Maximal mesh size",
-                value="1000 mm",
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyLength",
-                name="MinSize",
-                group="Mesh Parameters",
-                doc="Minimal mesh size",
-                value="0 mm",
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyFloatConstraint",
-                name="CloseEdgeFactor",
-                group="Mesh Parameters",
-                doc="Factor to restrict meshing based on close edges",
-                value={"value": 2.0, "min": 0, "step": 0.1},
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyBool",
-                name="StartInSurface",
-                group="Mesh Parameters",
-                doc="Start surface meshing from everywhere in surface",
-                value=False,
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyBool",
-                name="CheckOverlap",
-                group="Mesh Parameters",
-                doc="Check overlapping surfaces",
-                value=True,
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyBool",
-                name="CheckOverlappingBoundary",
-                group="Mesh Parameters",
-                doc="Check overlapping surface mesh before volume meshing",
-                value=True,
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyBool",
-                name="CheckChartBoundary",
-                group="Mesh Parameters",
-                doc="Check chart boundary",
-                value=True,
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyFloatConstraint",
-                name="CurvatureSafety",
-                group="Mesh Parameters",
-                doc="Safety factor for curvatures (elements per radius)",
-                value={"value": 2.0, "min": 0, "step": 0.1},
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyFloatConstraint",
-                name="SegmentsPerEdge",
-                group="Mesh Parameters",
-                doc="Minimal number of segments per edge",
-                value={"value": 2.0, "min": 0, "step": 0.1},
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyFloatConstraint",
-                name="ElementSizeWeight",
-                group="Mesh Parameters",
-                doc="Weight of element size respect to element shape",
-                value={"value": 0.2, "min": 0, "step": 0.1},
-            )
-        )
+            value="smcmSmcmSmcm",
+        ), _PropHelper(
+            type="App::PropertyIntegerConstraint",
+            name="OptimizationSteps2d",
+            group="Mesh Parameters",
+            doc="Number of 2d optimization steps",
+            value={"value": 3, "min": 0},
+        ), _PropHelper(
+            type="App::PropertyFloat",
+            name="OptimizationErrorPower",
+            group="Mesh Parameters",
+            doc="Power of error to approximate max error optimization",
+            value=2.0,
+        ), _PropHelper(
+            type="App::PropertyBool",
+            name="BlockFill",
+            group="Mesh Parameters",
+            doc="Do block filling",
+            value=True,
+        ), _PropHelper(
+            type="App::PropertyLength",
+            name="FillDistance",
+            group="Mesh Parameters",
+            doc="Block filling up to distance",
+            value=0.1,
+        ), _PropHelper(
+            type="App::PropertyFloatConstraint",
+            name="Safety",
+            group="Mesh Parameters",
+            doc="Radius of local environment (times h)",
+            value={"value": 5.0, "min": 0, "step": 0.1},
+        ), _PropHelper(
+            type="App::PropertyFloatConstraint",
+            name="RelinnerSafety",
+            group="Mesh Parameters",
+            doc="Radius of active environment (times h)",
+            value={"value": 3.0, "min": 0, "step": 0.1},
+        ), _PropHelper(
+            type="App::PropertyBool",
+            name="LocalH",
+            group="Mesh Parameters",
+            doc="Use local h",
+            value=True,
+        ), _PropHelper(
+            type="App::PropertyBool",
+            name="UseLocalH",
+            group="Mesh Parameters",
+            doc="Use local H",
+            value=True,
+        ), _PropHelper(
+            type="App::PropertyFloatConstraint",
+            name="GrowthRate",
+            group="Mesh Parameters",
+            doc="Grading for local h",
+            value={"value": 0.3, "min": 0, "step": 0.1},
+        ), _PropHelper(
+            type="App::PropertyBool",
+            name="Delaunay",
+            group="Mesh Parameters",
+            doc="Use Delaunay for 3d meshing",
+            value=True,
+        ), _PropHelper(
+            type="App::PropertyBool",
+            name="Delaunay2d",
+            group="Mesh Parameters",
+            doc="Use Delaunay for 2d meshing",
+            value=False,
+        ), _PropHelper(
+            type="App::PropertyLength",
+            name="MaxSize",
+            group="Mesh Parameters",
+            doc="Maximal mesh size",
+            value="1000 mm",
+        ), _PropHelper(
+            type="App::PropertyLength",
+            name="MinSize",
+            group="Mesh Parameters",
+            doc="Minimal mesh size",
+            value="0 mm",
+        ), _PropHelper(
+            type="App::PropertyFloatConstraint",
+            name="CloseEdgeFactor",
+            group="Mesh Parameters",
+            doc="Factor to restrict meshing based on close edges",
+            value={"value": 2.0, "min": 0, "step": 0.1},
+        ), _PropHelper(
+            type="App::PropertyBool",
+            name="StartInSurface",
+            group="Mesh Parameters",
+            doc="Start surface meshing from everywhere in surface",
+            value=False,
+        ), _PropHelper(
+            type="App::PropertyBool",
+            name="CheckOverlap",
+            group="Mesh Parameters",
+            doc="Check overlapping surfaces",
+            value=True,
+        ), _PropHelper(
+            type="App::PropertyBool",
+            name="CheckOverlappingBoundary",
+            group="Mesh Parameters",
+            doc="Check overlapping surface mesh before volume meshing",
+            value=True,
+        ), _PropHelper(
+            type="App::PropertyBool",
+            name="CheckChartBoundary",
+            group="Mesh Parameters",
+            doc="Check chart boundary",
+            value=True,
+        ), _PropHelper(
+            type="App::PropertyFloatConstraint",
+            name="CurvatureSafety",
+            group="Mesh Parameters",
+            doc="Safety factor for curvatures (elements per radius)",
+            value={"value": 2.0, "min": 0, "step": 0.1},
+        ), _PropHelper(
+            type="App::PropertyFloatConstraint",
+            name="SegmentsPerEdge",
+            group="Mesh Parameters",
+            doc="Minimal number of segments per edge",
+            value={"value": 2.0, "min": 0, "step": 0.1},
+        ), _PropHelper(
+            type="App::PropertyFloatConstraint",
+            name="ElementSizeWeight",
+            group="Mesh Parameters",
+            doc="Weight of element size respect to element shape",
+            value={"value": 0.2, "min": 0, "step": 0.1},
+        )]
+
+        # mesh parameters
 
         # Netgen meshing steps
         meshing_step = [

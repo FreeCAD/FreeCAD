@@ -29,14 +29,14 @@ def main():
             print("{} is deprecated -- ignoring".format(o))
         if o in ("-b", "--bindir"):
             bindir = a
-        if o in ("--major"):
+        if o in "--major":
             major = a
-        if o in ("--minor"):
+        if o in "--minor":
             minor = a
-        if o in ("--dfsg"):
+        if o in "--dfsg":
             dfsg = True
             wta = "--worktree-attributes"
-        if o in ("--check"):
+        if o in "--check":
             check = True
 
     if dfsg:

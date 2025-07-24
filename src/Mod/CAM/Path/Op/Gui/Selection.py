@@ -363,33 +363,13 @@ def turnselect():
 
 
 def select(op):
-    opsel = {}
-    opsel["Contour"] = contourselect  # deprecated
-    opsel["Deburr"] = chamferselect
-    opsel["Drilling"] = drillselect
-    opsel["Tapping"] = tapselect
-    opsel["Engrave"] = engraveselect
-    opsel["Helix"] = drillselect
-    opsel["MillFace"] = pocketselect
-    opsel["Pocket"] = pocketselect
-    opsel["Pocket 3D"] = pocketselect
-    opsel["Pocket3D"] = pocketselect  # deprecated
-    opsel["Pocket Shape"] = pocketselect
-    opsel["Profile Edges"] = eselect  # deprecated
-    opsel["Profile Faces"] = fselect  # deprecated
-    opsel["Profile"] = profileselect
-    opsel["Slot"] = slotselect
-    opsel["Surface"] = surfaceselect
-    opsel["Waterline"] = surfaceselect
-    opsel["Adaptive"] = adaptiveselect
-    opsel["Vcarve"] = vcarveselect
-    opsel["Probe"] = probeselect
-    opsel["Custom"] = customselect
-    opsel["ThreadMilling"] = drillselect
-    opsel["TurnFace"] = turnselect
-    opsel["TurnProfile"] = turnselect
-    opsel["TurnPartoff"] = turnselect
-    opsel["TurnRough"] = turnselect
+    opsel = {"Contour": contourselect, "Deburr": chamferselect, "Drilling": drillselect, "Tapping": tapselect,
+             "Engrave": engraveselect, "Helix": drillselect, "MillFace": pocketselect, "Pocket": pocketselect,
+             "Pocket 3D": pocketselect, "Pocket3D": pocketselect, "Pocket Shape": pocketselect,
+             "Profile Edges": eselect, "Profile Faces": fselect, "Profile": profileselect, "Slot": slotselect,
+             "Surface": surfaceselect, "Waterline": surfaceselect, "Adaptive": adaptiveselect, "Vcarve": vcarveselect,
+             "Probe": probeselect, "Custom": customselect, "ThreadMilling": drillselect, "TurnFace": turnselect,
+             "TurnProfile": turnselect, "TurnPartoff": turnselect, "TurnRough": turnselect}
     return opsel[op]
 
 

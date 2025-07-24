@@ -499,7 +499,7 @@ class ViewProviderDraft(object):
             return ":/icons/Draft_N-Polygon.svg"
         if tp in ("Circle", "Ellipse", "BSpline", "BezCurve", "Fillet"):
             return ":/icons/Draft_N-Curve.svg"
-        if tp in ("ShapeString"):
+        if tp in "ShapeString":
             return ":/icons/Draft_ShapeString_tree.svg"
         if hasattr(self.Object,"AutoUpdate") and not self.Object.AutoUpdate:
             import TechDrawGui

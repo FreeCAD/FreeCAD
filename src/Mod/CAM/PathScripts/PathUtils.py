@@ -298,22 +298,10 @@ def getOffsetArea(
     https://github.com/sliptonic/FreeCAD/wiki/PathArea-notes."""
     Path.Log.debug("getOffsetArea()")
 
-    areaParams = {}
-    areaParams["Offset"] = offset
-    areaParams["Fill"] = 1  # 1
-    areaParams["Outline"] = removeHoles
-    areaParams["Coplanar"] = 0
-    areaParams["SectionCount"] = 1  # -1 = full(all per depthparams??) sections
-    areaParams["Reorient"] = True
-    areaParams["OpenMode"] = 0
-    areaParams["MaxArcPoints"] = 400  # 400
-    areaParams["Project"] = True
-    areaParams["FitArcs"] = False  # Can be buggy & expensive
-    areaParams["Deflection"] = tolerance
-    areaParams["Accuracy"] = tolerance
-    areaParams["Tolerance"] = 1e-5  # Equal point tolerance
-    areaParams["Simplify"] = True
-    areaParams["CleanDistance"] = tolerance / 5
+    areaParams = {"Offset": offset, "Fill": 1, "Outline": removeHoles, "Coplanar": 0, "SectionCount": 1,
+                  "Reorient": True, "OpenMode": 0, "MaxArcPoints": 400, "Project": True, "FitArcs": False,
+                  "Deflection": tolerance, "Accuracy": tolerance, "Tolerance": 1e-5, "Simplify": True,
+                  "CleanDistance": tolerance / 5}
 
     area = Path.Area()  # Create instance of Area() class object
     # Set working plane normal to Z=1
@@ -520,7 +508,7 @@ def guessDepths(objshape, subs=None):
             final = fbb.ZMin
         elif fbb.ZMax > fbb.ZMin and fbb.ZMax == bb.ZMax:  # vertical face, full cut
             final = fbb.ZMin
-        elif fbb.ZMax > fbb.ZMin and fbb.ZMin > bb.ZMin:  # internal vertical wall
+        elif fbb.ZMax > fbb.ZMin > bb.ZMin:  # internal vertical wall
             final = fbb.ZMin
         elif fbb.ZMax == fbb.ZMin and fbb.ZMax > bb.ZMin:  # face/shelf
             final = fbb.ZMin

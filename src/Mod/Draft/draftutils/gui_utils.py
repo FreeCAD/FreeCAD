@@ -415,8 +415,8 @@ def get_diffuse_color(objs):
         obj = objs
         if not hasattr(obj, "ColoredElements") \
                 and hasattr(obj.ViewObject, "DiffuseColor") \
-                and (len(obj.ViewObject.DiffuseColor) == 1 \
-                        or len(obj.ViewObject.DiffuseColor) == len(obj.Shape.Faces)):
+                and (len(obj.ViewObject.DiffuseColor) == 1
+                     or len(obj.ViewObject.DiffuseColor) == len(obj.Shape.Faces)):
             return obj.ViewObject.DiffuseColor
         # Create a list for further processing:
         objs = [objs]

@@ -40,7 +40,7 @@ class IfcElementHandler(xml.sax.ContentHandler):
     def startElement(self, name, attrs):
         if name == "xs:element" and "substitutionGroup" in attrs:
             self.elements[attrs["name"]] = {
-                "is_abstract": True if "abstract" in attrs else False,
+                "is_abstract": "abstract" in attrs,
                 "parent": attrs["substitutionGroup"][len("ifc:") :],
                 "attributes": [],
             }

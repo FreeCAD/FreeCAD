@@ -248,15 +248,12 @@ class TestPathSetupSheet(PathTestBase):
         """Verify template attributes encoding/decoding of lists."""
         ss = PathSetupSheet.Create().Proxy
 
-        attrs = {}
-        attrs["00"] = "x.SetupSheet"
-        attrs["01"] = [{"10": "SetupSheet", "11": "SetupSheet.y"}, {"20": "SetupSheet"}]
-        attrs["02"] = [
+        attrs = {"00": "x.SetupSheet", "01": [{"10": "SetupSheet", "11": "SetupSheet.y"}, {"20": "SetupSheet"}], "02": [
             {
                 "a": [{"b": "SetupSheet"}, {"c": "SetupSheet"}],
                 "b": [{"b": "SetupSheet"}],
             }
-        ]
+        ]}
 
         encoded = ss.encodeTemplateAttributes(attrs)
         self.assertEqual(encoded["00"], "x.${SetupSheet}")

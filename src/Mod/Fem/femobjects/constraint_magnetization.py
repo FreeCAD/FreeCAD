@@ -48,89 +48,61 @@ class ConstraintMagnetization(base_fempythonobject.BaseFemPythonObject):
             prop.add_to_object(obj)
 
     def _get_properties(self):
-        prop = []
-
-        prop.append(
-            _PropHelper(
-                type="App::PropertyMagnetization",
-                name="Magnetization_re_1",
-                group="Magnetization Vector",
-                doc="Real part of magnetization x-component",
-                value="0 A/m",
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyMagnetization",
-                name="Magnetization_re_2",
-                group="Magnetization Vector",
-                doc="Real part of magnetization y-component",
-                value="0 A/m",
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyMagnetization",
-                name="Magnetization_re_3",
-                group="Magnetization Vector",
-                doc="Real part of magnetization z-component",
-                value="0 A/m",
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyMagnetization",
-                name="Magnetization_im_1",
-                group="Magnetization Vector",
-                doc="Imaginary part of magnetization x-component",
-                value="0 A/m",
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyMagnetization",
-                name="Magnetization_im_2",
-                group="Magnetization Vector",
-                doc="Imaginary part of magnetization y-component",
-                value="0 A/m",
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyMagnetization",
-                name="Magnetization_im_3",
-                group="Magnetization Vector",
-                doc="Imaginary part of magnetization z-component",
-                value="0 A/m",
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyBool",
-                name="EnableMagnetization_1",
-                group="Magnetization Vector",
-                doc="Enable magnetization x component",
-                value=False,
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyBool",
-                name="EnableMagnetization_2",
-                group="Magnetization Vector",
-                doc="Enable magnetization y component",
-                value=False,
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyBool",
-                name="EnableMagnetization_3",
-                group="Magnetization Vector",
-                doc="Enable magnetization z component",
-                value=False,
-            )
-        )
+        prop = [_PropHelper(
+            type="App::PropertyMagnetization",
+            name="Magnetization_re_1",
+            group="Magnetization Vector",
+            doc="Real part of magnetization x-component",
+            value="0 A/m",
+        ), _PropHelper(
+            type="App::PropertyMagnetization",
+            name="Magnetization_re_2",
+            group="Magnetization Vector",
+            doc="Real part of magnetization y-component",
+            value="0 A/m",
+        ), _PropHelper(
+            type="App::PropertyMagnetization",
+            name="Magnetization_re_3",
+            group="Magnetization Vector",
+            doc="Real part of magnetization z-component",
+            value="0 A/m",
+        ), _PropHelper(
+            type="App::PropertyMagnetization",
+            name="Magnetization_im_1",
+            group="Magnetization Vector",
+            doc="Imaginary part of magnetization x-component",
+            value="0 A/m",
+        ), _PropHelper(
+            type="App::PropertyMagnetization",
+            name="Magnetization_im_2",
+            group="Magnetization Vector",
+            doc="Imaginary part of magnetization y-component",
+            value="0 A/m",
+        ), _PropHelper(
+            type="App::PropertyMagnetization",
+            name="Magnetization_im_3",
+            group="Magnetization Vector",
+            doc="Imaginary part of magnetization z-component",
+            value="0 A/m",
+        ), _PropHelper(
+            type="App::PropertyBool",
+            name="EnableMagnetization_1",
+            group="Magnetization Vector",
+            doc="Enable magnetization x component",
+            value=False,
+        ), _PropHelper(
+            type="App::PropertyBool",
+            name="EnableMagnetization_2",
+            group="Magnetization Vector",
+            doc="Enable magnetization y component",
+            value=False,
+        ), _PropHelper(
+            type="App::PropertyBool",
+            name="EnableMagnetization_3",
+            group="Magnetization Vector",
+            doc="Enable magnetization z component",
+            value=False,
+        )]
 
         return prop
 

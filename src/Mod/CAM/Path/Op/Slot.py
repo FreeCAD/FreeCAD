@@ -941,7 +941,7 @@ class ObjectSlot(PathOp.ObjectOp):
             FreeCAD.Console.PrintError(msg + "\n")
 
         if done:
-            return (p1, p2)
+            return p1, p2
 
         return False
 
@@ -1053,7 +1053,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 return False
 
         (point1, point2) = self._getOppMidPoints(selected_edges)
-        return (point1, point2)
+        return point1, point2
 
     def _processSingleComplexFace(self, obj, shape):
         """Determine slot path endpoints from a single complex face."""
@@ -1067,7 +1067,7 @@ class ObjectSlot(PathOp.ObjectOp):
             p = self._findLowestEdgePoint(E)
             pnts.append(p)
         pnts.sort(key=zVal)
-        return (pnts[0], pnts[1])
+        return pnts[0], pnts[1]
 
     def _processSingleVertFace(self, obj, shape):
         """Determine slot path endpoints from a single vertically oriented face
@@ -1098,7 +1098,7 @@ class ObjectSlot(PathOp.ObjectOp):
         msg += translate("CAM_Slot", "Verify slot path start and end points.")
         FreeCAD.Console.PrintWarning(msg + "\n")
 
-        return (p1, p2)
+        return p1, p2
 
     def _processSingleEdge(self, obj, edge):
         """Determine slot path endpoints from a single horizontally oriented edge."""
@@ -1138,7 +1138,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
         curveType = edge.Curve.TypeId
         if curveType in lineTypes:
-            return (p1, p2)
+            return p1, p2
 
         elif curveType in curveTypes:
             if len(verts) == 1:
@@ -1177,7 +1177,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 if oversizedTool(self.arcRadius * 2.0):
                     return False
 
-            return (p1, p2)
+            return p1, p2
 
         else:
             msg = translate(
@@ -1228,7 +1228,7 @@ class ObjectSlot(PathOp.ObjectOp):
                     return False
 
         if p2:
-            return (p1, p2)
+            return p1, p2
 
         return False
 
@@ -1346,7 +1346,7 @@ class ObjectSlot(PathOp.ObjectOp):
             return False
 
         if p:
-            return (p, dYdX, cat)
+            return p, dYdX, cat
 
         return False
 
@@ -1355,7 +1355,7 @@ class ObjectSlot(PathOp.ObjectOp):
         begExt and endExt are extension lengths along the arc at each end.
         Returns new (p1, p2) as (n1, n2)."""
         if not begExt and not endExt:
-            return (p1, p2)
+            return p1, p2
 
         def makeChord(angle_rad):
             x = self.newRadius * math.cos(angle_rad)
@@ -1389,7 +1389,7 @@ class ObjectSlot(PathOp.ObjectOp):
             self._addDebugObject(chord, "ExtendEnd")
             n2 = chord.Vertexes[1].Point
 
-        return (n1, n2)
+        return n1, n2
 
     def _makeOffsetArc(self, p1, p2, center, newRadius):
         """_makeOffsetArc(p1, p2, center, newRadius)...
@@ -1398,7 +1398,7 @@ class ObjectSlot(PathOp.ObjectOp):
         The angle of the original arc is maintained."""
         n1 = p1.sub(center).normalize() * newRadius
         n2 = p2.sub(center).normalize() * newRadius
-        return (n1.add(center), n2.add(center))
+        return n1.add(center), n2.add(center)
 
     def _extendLineSlot(self, p1, p2, begExt, endExt):
         """_extendLineSlot(p1, p2, begExt, endExt)...
@@ -1414,7 +1414,7 @@ class ObjectSlot(PathOp.ObjectOp):
             n2 = p2.add(end.normalize() * endExt)
         else:
             n2 = p2
-        return (n1, n2)
+        return n1, n2
 
     def _getOppMidPoints(self, same):
         """_getOppMidPoints(same)...
@@ -1423,7 +1423,7 @@ class ObjectSlot(PathOp.ObjectOp):
         com2 = same[1].CenterOfMass
         p1 = FreeCAD.Vector(com1.x, com1.y, 0.0)
         p2 = FreeCAD.Vector(com2.x, com2.y, 0.0)
-        return (p1, p2)
+        return p1, p2
 
     def _isParallel(self, dYdX1, dYdX2):
         """Determine if two orientation vectors are parallel."""
@@ -1440,13 +1440,13 @@ class ObjectSlot(PathOp.ObjectOp):
             half = FreeCAD.Vector(self.dYdX1.x, self.dYdX1.y, 0.0).multiply(halfDist)
             n1 = midPnt.add(half)
             n2 = midPnt.sub(half)
-            return (n1, n2)
+            return n1, n2
 
         elif getattr(self, "dYdX2", None):
             half = FreeCAD.Vector(self.dYdX2.x, self.dYdX2.y, 0.0).multiply(halfDist)
             n1 = midPnt.add(half)
             n2 = midPnt.sub(half)
-            return (n1, n2)
+            return n1, n2
 
         else:
             toEnd = p2.sub(p1)
@@ -1455,7 +1455,7 @@ class ObjectSlot(PathOp.ObjectOp):
             perp = perp.multiply(halfDist)
             n1 = midPnt.add(perp)
             n2 = midPnt.sub(perp)
-            return (n1, n2)
+            return n1, n2
 
     def _findLowestPointOnEdge(self, E):
         tol = 1e-7
@@ -1573,8 +1573,8 @@ class ObjectSlot(PathOp.ObjectOp):
         cubeB = boxB.extrude(FreeCAD.Vector(0.0, 0.0, 1.0))
         cmnB = self.base.Shape.common(cubeB)
         if cmnA.Volume > cmnB.Volume:
-            return (b1, b2)
-        return (a1, a2)
+            return b1, b2
+        return a1, a2
 
     def _getBottomEdge(self, shape):
         EDGES = list()
@@ -1592,7 +1592,7 @@ class ObjectSlot(PathOp.ObjectOp):
     def _getVertFaceType(self, shape):
         bottom_edge = self._getBottomEdge(shape)
         if bottom_edge:
-            return ("Edge", bottom_edge)
+            return "Edge", bottom_edge
 
         # Extrude vertically to create a sliceable solid
         z_length = shape.BoundBox.ZLength
@@ -1610,8 +1610,8 @@ class ObjectSlot(PathOp.ObjectOp):
             # Align face Z with original shape
             z_offset = shape.BoundBox.ZMin - face.BoundBox.ZMin
             face.translate(FreeCAD.Vector(0, 0, z_offset))
-            return ("Face", face)
-        return ("Wire", wire)
+            return "Face", face
+        return "Wire", wire
 
     def _makeReference1Enumerations(self, sub, single=False):
         """Customize Reference1 enumerations based on feature type."""

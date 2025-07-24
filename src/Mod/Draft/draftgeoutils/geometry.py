@@ -131,7 +131,7 @@ def findDistance(point, edge, strict=False):
 
             newpoint = point.add(dist)
 
-            if (dist.Length == 0):
+            if dist.Length == 0:
                 return None
 
             if strict:
@@ -171,7 +171,7 @@ def findDistance(point, edge, strict=False):
                 ang2 = DraftVecUtils.angle(ve2.sub(center))
                 angpt = DraftVecUtils.angle(newpoint.sub(center))
                 if ang1 >= ang2: # Arc does not cross the 9 o'clock point.
-                    if ang1 >= angpt and angpt >= ang2:
+                    if ang1 >= angpt >= ang2:
                         return dist
                     else:
                         return None
@@ -423,8 +423,8 @@ def is_straight_line(shape, tol=-1):
                 # ./draftfunctions/upgrade.py
                 # ./draftgeoutils/geometry.py
                 # ./draftmake/make_wire.py
-                or first_point.distanceToLine(point_start_edge, dir_start_edge) > err \
-                #
+                or first_point.distanceToLine(point_start_edge, dir_start_edge) > err
+                    #
                 or dir_start_edge.cross(dir_edge).Length > err):
                 return False
 

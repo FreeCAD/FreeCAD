@@ -279,7 +279,7 @@ class BIM_IfcQuantities:
                                     val = self.get_text(obj, prop)
                                     it.setText(val)
                                     it.setCheckable(True)
-                                if val != None:
+                                if val is not None:
                                     d = None
                                     if hasattr(obj, "IfcAttributes"):
                                         d = obj.IfcAttributes

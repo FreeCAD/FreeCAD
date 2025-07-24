@@ -78,17 +78,17 @@ def createApp(Application):
     Create a new application by copying the template
     """
     # create directory ../Mod/<Application>
-    if not os.path.isdir("../Mod/" + Application):
-        os.mkdir("../Mod/" + Application)
+    if not os.path.isdir(f"../Mod/{Application}"):
+        os.mkdir(f"../Mod/{Application}")
     else:
-        sys.stdout.write(Application + " already exists. Please enter another name.\n")
+        sys.stdout.write(f"{Application} already exists. Please enter another name.\n")
         sys.exit()
 
     # copying files from _TEMPLATEPY_ to ../Mod/<Application>
     sys.stdout.write("Copying files...")
     MakeAppTools.copyTemplate(
         "_TEMPLATEPY_",
-        "../Mod/" + Application,
+        f"../Mod/{Application}",
         "_TEMPLATEPY_",
         Application,
         SetupFilter(FilFilter),
@@ -98,9 +98,9 @@ def createApp(Application):
 
     # replace the _TEMPLATEPY_ string by <Application>
     sys.stdout.write("Modifying files...\n")
-    MakeAppTools.replaceTemplate("../Mod/" + Application, "_TEMPLATEPY_", Application)
+    MakeAppTools.replaceTemplate(f"../Mod/{Application}", "_TEMPLATEPY_", Application)
     MakeAppTools.replaceTemplate(
-        "../Mod/" + Application,
+        f"../Mod/{Application}",
         "${CMAKE_SOURCE_DIR}/src/Tools/",
         "${CMAKE_SOURCE_DIR}/src/Mod/",
     )
@@ -108,7 +108,7 @@ def createApp(Application):
     # os.chmod("../Mod/" + Application + "/configure", 0777);
     sys.stdout.write("Modifying files done.\n")
 
-    sys.stdout.write(Application + " module created successfully.\n")
+    sys.stdout.write(f"{Application} module created successfully.\n")
 
 
 def validateApp(AppName):
@@ -116,15 +116,15 @@ def validateApp(AppName):
     Validates the class name
     """
     if len(AppName) < 2:
-        sys.stdout.write("Too short name: '" + AppName + "'\n")
+        sys.stdout.write(f"Too short name: '{AppName}'\n")
         sys.exit()
     # name is long enough
-    clName = "class " + AppName + ": self=0"
+    clName = f"class {AppName}: self=0"
     try:
         exec(clName)
     except Exception:
         # Invalid class name
-        sys.stdout.write("Invalid name: '" + AppName + "'\n")
+        sys.stdout.write(f"Invalid name: '{AppName}'\n")
         sys.exit()
 
 

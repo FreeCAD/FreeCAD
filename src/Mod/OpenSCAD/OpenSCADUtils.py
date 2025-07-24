@@ -60,7 +60,7 @@ class OpenSCADError(BaseError):
 
 def getopenscadexe(osfilename=None):
     if not osfilename:
-        osfilename = FreeCAD.ParamGet(\
+        osfilename = FreeCAD.ParamGet(
             "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
             GetString('openscadexecutable')
     if osfilename and os.path.isfile(osfilename):
@@ -80,11 +80,11 @@ def searchforopenscadexe():
     # The code that follows is from the original OpenSCAD WB code, kept around until we
     # can verify that all of our expected systems work with the shutil call. -CH 2/23
     if sys.platform == 'win32':
-        testpaths = [os.path.join(os.environ.get('Programfiles(x86)','C:'),\
-            'OpenSCAD\\openscad.exe')]
+        testpaths = [os.path.join(os.environ.get('Programfiles(x86)','C:'),
+                                  'OpenSCAD\\openscad.exe')]
         if 'ProgramW6432' in os.environ:
-            testpaths.append(os.path.join(os.environ.get('ProgramW6432','C:')\
-                ,'OpenSCAD\\openscad.exe'))
+            testpaths.append(os.path.join(os.environ.get('ProgramW6432','C:')
+                                          ,'OpenSCAD\\openscad.exe'))
         for testpath in testpaths:
             if os.path.isfile(testpath):
                 return testpath
@@ -93,8 +93,8 @@ def searchforopenscadexe():
                    b'POSIX path of (application file id "org.openscad.OpenSCAD"'
                    b'as alias)\n'
                    b'end tell')
-        p1=subprocess.Popen(['osascript', '-'], stdin=subprocess.PIPE,\
-                stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        p1=subprocess.Popen(['osascript', '-'], stdin=subprocess.PIPE,
+                            stdout=subprocess.PIPE,stderr=subprocess.PIPE)
         stdout, stderr = p1.communicate(ascript)
         if p1.returncode == 0:
             opathl = stdout.decode().split('\n')
@@ -115,16 +115,16 @@ def searchforopenscadexe():
 
 def getopenscadversion(osfilename=None):
     if not osfilename:
-        osfilename = FreeCAD.ParamGet(\
+        osfilename = FreeCAD.ParamGet(
             "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
             GetString('openscadexecutable')
     if osfilename and os.path.isfile(osfilename):
-        with subprocess.Popen([osfilename, '-v'],\
-            stdout = subprocess.PIPE,stderr=subprocess.PIPE, universal_newlines=True) as p:
+        with subprocess.Popen([osfilename, '-v'],
+                              stdout = subprocess.PIPE,stderr=subprocess.PIPE, universal_newlines=True) as p:
             p.wait()
             stdout = p.stdout.read().strip()
             stderr = p.stderr.read().strip()
-            return (stdout or stderr)
+            return stdout or stderr
 
 
 def newtempfilename():
@@ -174,7 +174,7 @@ def callopenscad(inputfilename,outputfilename=None, outputext='csg', keepname=Fa
 
             dir1 = transferDirectory
             if keepname:
-                outputfilename = os.path.join(dir1, '%s.%s' % (os.path.split(\
+                outputfilename = os.path.join(dir1, '%s.%s' % (os.path.split(
                     inputfilename)[1].rsplit('.',1)[0],outputext))
             else:
                 outputfilename = os.path.join(dir1,'%s.%s' % \
@@ -215,7 +215,7 @@ def call_openscad_with_pipes(input_filename, output_filename, output_extension, 
         if not output_filename:
             dir1 = transfer_directory
             if keep_name:
-                output_filename=os.path.join(dir1,'%s.%s' % (os.path.split(\
+                output_filename=os.path.join(dir1,'%s.%s' % (os.path.split(
                     input_filename)[1].rsplit('.',1)[0],output_extension))
             else:
                 output_filename=os.path.join(dir1,'%s.%s' % \
@@ -234,8 +234,8 @@ def callopenscadstring(scadstr,outputext='csg'):
     inputfile = io.open(inputfilename,'w', encoding="utf8")
     inputfile.write(scadstr)
     inputfile.close()
-    outputfilename = callopenscad(inputfilename, outputext=outputext,\
-        keepname=True)
+    outputfilename = callopenscad(inputfilename, outputext=outputext,
+                                  keepname=True)
     os.unlink(inputfilename)
     return outputfilename
 
@@ -335,9 +335,9 @@ def vec2householder(nv):
     """calculated the householder matrix for a given normal vector"""
     lnv = nv.dot(nv)
     l = 2/lnv if lnv > 0 else 0
-    hh = FreeCAD.Matrix(nv.x*nv.x*l,nv.x*nv.y*l,nv.x*nv.z*l,0,\
-                      nv.y*nv.x*l,nv.y*nv.y*l,nv.y*nv.z*l,0,\
-                      nv.z*nv.x*l,nv.z*nv.y*l,nv.z*nv.z*l,0,0,0,0,0)
+    hh = FreeCAD.Matrix(nv.x*nv.x*l,nv.x*nv.y*l,nv.x*nv.z*l,0,
+                        nv.y*nv.x*l,nv.y*nv.y*l,nv.y*nv.z*l,0,
+                        nv.z*nv.x*l,nv.z*nv.y*l,nv.z*nv.z*l,0,0,0,0,0)
     return FreeCAD.Matrix()-hh
 
 
@@ -454,7 +454,7 @@ def findbestmatchingrotation(r1):
                 if dangletest < dangle:
                     bestrot = r2
                     dangle = dangletest
-    return (bestrot,dangle)
+    return bestrot,dangle
 
 
 def roundrotation(rot, maxangulardistance=1e-5):
@@ -505,7 +505,7 @@ def meshopinline(opname, iterable1):
     FreeCAD Mesh objects
     includes all the mesh data in the SCAD file
     """
-    return callopenscadmeshstring('%s(){%s}' % (opname,' '.join(\
+    return callopenscadmeshstring('%s(){%s}' % (opname,' '.join(
         (mesh2polyhedron(meshobj) for meshobj in iterable1))))
 
 
@@ -551,19 +551,19 @@ def meshoponobjs(opname, inobjs):
             params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
             objs.append(obj)
             if False: # disabled due to issue 1292
-                meshes.append(MeshPart.meshFromShape(obj.Shape,params.GetFloat(\
-                'meshmaxlength',1.0), params.GetFloat('meshmaxarea',0.0),\
-                 params.GetFloat('meshlocallen',0.0),\
-                 params.GetFloat('meshdeflection',0.0)))
+                meshes.append(MeshPart.meshFromShape(obj.Shape,params.GetFloat(
+                    'meshmaxlength',1.0), params.GetFloat('meshmaxarea',0.0),
+                                                     params.GetFloat('meshlocallen',0.0),
+                                                     params.GetFloat('meshdeflection',0.0)))
             else:
-                meshes.append(Mesh.Mesh(obj.Shape.tessellate(params.GetFloat(\
-                            'meshmaxlength',1.0))))
+                meshes.append(Mesh.Mesh(obj.Shape.tessellate(params.GetFloat(
+                    'meshmaxlength',1.0))))
         else:
             pass #neither a mesh nor a part
     if len(objs) > 0:
-        return (meshoptempfile(opname,meshes),objs)
+        return meshoptempfile(opname, meshes),objs
     else:
-        return (None,[])
+        return None,[]
 
 
 def process2D_ObjectsViaOpenSCADShape(ObjList, Operation, doc):
@@ -611,13 +611,13 @@ def process2D_ObjectsViaOpenSCAD(ObjList, Operation, doc=None):
 def process3D_ObjectsViaOpenSCADShape(ObjList, Operation, maxmeshpoints=None):
     params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
     if False: # disabled due to issue 1292
-        meshes = [MeshPart.meshFromShape(obj.Shape,params.GetFloat(\
-                'meshmaxlength',1.0), params.GetFloat('meshmaxarea',0.0),\
-                 params.GetFloat('meshlocallen',0.0),\
-                 params.GetFloat('meshdeflection',0.0)) for obj in ObjList]
+        meshes = [MeshPart.meshFromShape(obj.Shape,params.GetFloat(
+            'meshmaxlength',1.0), params.GetFloat('meshmaxarea',0.0),
+                                         params.GetFloat('meshlocallen',0.0),
+                                         params.GetFloat('meshdeflection',0.0)) for obj in ObjList]
     else:
-        meshes = [Mesh.Mesh(obj.Shape.tessellate(params.GetFloat(\
-                            'meshmaxlength',1.0))) for obj in ObjList]
+        meshes = [Mesh.Mesh(obj.Shape.tessellate(params.GetFloat(
+            'meshmaxlength',1.0))) for obj in ObjList]
     if max(mesh.CountPoints for mesh in meshes) < \
             (maxmeshpoints or params.GetInt('tempmeshmaxpoints', 5000)):
         stlmesh = meshoptempfile(Operation,meshes)
@@ -649,8 +649,8 @@ def process_ObjectsViaOpenSCADShape(doc, children, name, maxmeshpoints=None):
             for obj in children):
         return process3D_ObjectsViaOpenSCADShape(children,name,maxmeshpoints)
     else:
-        FreeCAD.Console.PrintError( translate('OpenSCAD',\
-            "OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.")+'\n')
+        FreeCAD.Console.PrintError( translate('OpenSCAD',
+                                              "OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.")+'\n')
 
 def process_ObjectsViaOpenSCAD(doc,children,name):
     if all((not obj.Shape.isNull() and obj.Shape.Volume == 0) \
@@ -660,8 +660,8 @@ def process_ObjectsViaOpenSCAD(doc,children,name):
             for obj in children):
         return process3D_ObjectsViaOpenSCAD(doc,children,name)
     else:
-        FreeCAD.Console.PrintError( translate('OpenSCAD',\
-            "Error: either all shapes must be 2D or all shapes must be 3D") + '\n')
+        FreeCAD.Console.PrintError( translate('OpenSCAD',
+                                              "Error: either all shapes must be 2D or all shapes must be 3D") + '\n')
 
 
 def removesubtree(objs):

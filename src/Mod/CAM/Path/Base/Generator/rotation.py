@@ -103,7 +103,7 @@ def __getCRotation(normalVector, cMin=-360, cMax=360):
         candidates.append(angle + 360)
 
     # final results are candidates that don't violate rotation limits
-    results = [c for c in candidates if c >= cMin and c <= cMax]
+    results = [c for c in candidates if cMin <= c <= cMax]
 
     return results
 
@@ -120,7 +120,7 @@ def __getARotation(normalVector, aMin=-360, aMax=360):
     angle = relAngle(normalVector, refAxis.z)
 
     # only return a result if it doesn't violate rotation constraints
-    if angle > aMin and angle <= aMax:
+    if aMin < angle <= aMax:
         return angle
     else:
         return None

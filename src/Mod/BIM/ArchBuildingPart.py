@@ -380,7 +380,7 @@ class BuildingPart(ArchIFC.IfcProduct):
         g = []
         if hasattr(obj,"Group"):
             g = obj.Group
-        elif (Draft.getType(obj) in ["Wall","Structure"]):
+        elif Draft.getType(obj) in ["Wall", "Structure"]:
             g = obj.Additions
         for child in g:
             if Draft.getType(child) in ["Wall","Structure"]:
@@ -751,7 +751,7 @@ class ViewProviderBuildingPart:
                             o.ViewObject.Lighting = "Two side"
         elif prop == "Visibility":
             # turn clipping off when turning the object off
-            if hasattr(vobj,"Visibility") and not(vobj.Visibility) and hasattr(vobj,"CutView"):
+            if hasattr(vobj,"Visibility") and not vobj.Visibility and hasattr(vobj, "CutView"):
                 vobj.CutView = False
         elif prop == "SaveInventor":
             self.writeInventor(vobj.Object)

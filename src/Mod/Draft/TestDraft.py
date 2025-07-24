@@ -113,13 +113,14 @@ from drafttests.test_draftgeomutils import TestDraftGeomUtils as DraftTest04
 from drafttests.test_array import DraftArray as DraftTest10
 
 # Use the modules so that code checkers don't complain (flake8)
-True if DraftTest01 else False
-True if DraftTest02 else False
-True if DraftTest03 else False
-True if DraftTest04 else False
+bool(DraftTest01)
+bool(DraftTest02)
+bool(DraftTest03)
+bool(DraftTest04)
+bool(DraftTest10)
 # True if DraftTest05 else False
 # True if DraftTest06 else False
 # True if DraftTest07 else False
 # True if DraftTest08 else False
 # True if DraftTest09 else False
-True if DraftTest10 else False
+

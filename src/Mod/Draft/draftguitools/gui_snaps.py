@@ -40,7 +40,7 @@ from draftutils.messages import _log
 from draftutils.translate import translate
 
 
-class Draft_Snap_Base():
+class Draft_Snap_Base:
     """Base Class inherited by all Draft Snap commands."""
 
     def Activated(self, status=0):

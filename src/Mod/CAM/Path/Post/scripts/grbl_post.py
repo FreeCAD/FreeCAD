@@ -537,7 +537,7 @@ def parse(pathobj):
                         out += linenumber() + line
 
             if command == "message":
-                if OUTPUT_COMMENTS is False:
+                if not OUTPUT_COMMENTS:
                     out = []
                 else:
                     outstring.pop(0)  # remove the command

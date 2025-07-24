@@ -49,35 +49,25 @@ class ConstraintBodyHeatSource(base_fempythonobject.BaseFemPythonObject):
             prop.add_to_object(obj)
 
     def _get_properties(self):
-        prop = []
-
-        prop.append(
-            _PropHelper(
-                type="App::PropertyDissipationRate",
-                name="DissipationRate",
-                group="Constraint Body Heat Source",
-                doc="Power dissipated per unit mass",
-                value="0 W/kg",
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyPower",
-                name="TotalPower",
-                group="Constraint Body Heat Source",
-                doc="Total power dissipated",
-                value="0 W",
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyEnumeration",
-                name="Mode",
-                group="Constraint Body Heat Source",
-                doc="Switch quantity input mode",
-                value=["Dissipation Rate", "Total Power"],
-            )
-        )
+        prop = [_PropHelper(
+            type="App::PropertyDissipationRate",
+            name="DissipationRate",
+            group="Constraint Body Heat Source",
+            doc="Power dissipated per unit mass",
+            value="0 W/kg",
+        ), _PropHelper(
+            type="App::PropertyPower",
+            name="TotalPower",
+            group="Constraint Body Heat Source",
+            doc="Total power dissipated",
+            value="0 W",
+        ), _PropHelper(
+            type="App::PropertyEnumeration",
+            name="Mode",
+            group="Constraint Body Heat Source",
+            doc="Switch quantity input mode",
+            value=["Dissipation Rate", "Total Power"],
+        )]
 
         return prop
 

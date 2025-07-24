@@ -109,15 +109,15 @@ def threadSetupInternal(obj, zTop, zBottom):
     if obj.ThreadOrientation == RightHand:
         # Right hand thread, G2, top down -> conventional milling
         if obj.Direction == DirectionConventional:
-            return ("G2", zTop, zBottom)
+            return "G2", zTop, zBottom
         # For climb milling we need to cut the thread from the bottom up
         # in the opposite direction -> G3
-        return ("G3", zBottom, zTop)
+        return "G3", zBottom, zTop
     # Left hand thread, G3, top down -> climb milling
     if obj.Direction == DirectionClimb:
-        return ("G3", zTop, zBottom)
+        return "G3", zTop, zBottom
     # for conventional milling, cut bottom up with G2
-    return ("G2", zBottom, zTop)
+    return "G2", zBottom, zTop
 
 
 def threadSetupExternal(obj, zTop, zBottom):
@@ -125,14 +125,14 @@ def threadSetupExternal(obj, zTop, zBottom):
     if obj.ThreadOrientation == RightHand:
         # right hand thread, G2, top down -> climb milling
         if obj.Direction == DirectionClimb:
-            return ("G2", zTop, zBottom)
+            return "G2", zTop, zBottom
         # for conventional, mill bottom up the other way around
-        return ("G3", zBottom, zTop)
+        return "G3", zBottom, zTop
     # left hand thread, G3, top down -> conventional milling
     if obj.Direction == DirectionConventional:
-        return ("G3", zTop, zBottom)
+        return "G3", zTop, zBottom
     # for climb milling need to go bottom up and the other way
-    return ("G2", zBottom, zTop)
+    return "G2", zBottom, zTop
 
 
 def threadSetup(obj):
@@ -514,18 +514,8 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
 
 
 def SetupProperties():
-    setup = []
-    setup.append("ThreadOrientation")
-    setup.append("ThreadType")
-    setup.append("ThreadName")
-    setup.append("ThreadFit")
-    setup.append("MajorDiameter")
-    setup.append("MinorDiameter")
-    setup.append("Pitch")
-    setup.append("TPI")
-    setup.append("Passes")
-    setup.append("Direction")
-    setup.append("LeadInOut")
+    setup = ["ThreadOrientation", "ThreadType", "ThreadName", "ThreadFit", "MajorDiameter", "MinorDiameter", "Pitch",
+             "TPI", "Passes", "Direction", "LeadInOut"]
     return setup
 
 

@@ -45,7 +45,7 @@ def openscadmesh(doc, scadstr, objname):
 
 class Node:
     #fnmin = 12 # maximal fn for implicit polygon rendering
-    fnmin = FreeCAD.ParamGet(\
+    fnmin = FreeCAD.ParamGet(
         "User parameter:BaseApp/Preferences/Mod/OpenSCAD").GetInt('useMaxFN')
     planedim = 1e10 #size of the square used as x-y-plane
 
@@ -85,8 +85,8 @@ class Node:
 
     def addtofreecad(self,doc=None,fcpar=None):
         def center(obj,x,y,z):
-            obj.Placement = FreeCAD.Placement(\
-                FreeCAD.Vector(-x/2.0,-y/2.0,-z/2.0),\
+            obj.Placement = FreeCAD.Placement(
+                FreeCAD.Vector(-x/2.0,-y/2.0,-z/2.0),
                 FreeCAD.Rotation(0,0,0,1))
 
         import FreeCAD
@@ -118,8 +118,8 @@ class Node:
                 if len(self.children) == 2:
                     tool = self.children[1].addtofreecad(doc,obj)
                 else:
-                    tool = Node(name='imp_union',\
-                        children=self.children[1:]).addtofreecad(doc,obj)
+                    tool = Node(name='imp_union',
+                                children=self.children[1:]).addtofreecad(doc,obj)
                 obj.Base = base
                 obj.Tool = tool
                 base.ViewObject.hide()
@@ -138,8 +138,7 @@ class Node:
         elif namel == 'cylinder':
             h = self.arguments['h']
             r1, r2 = self.arguments['r1'], self.arguments['r2']
-            if '$fn' in self.arguments and self.arguments['$fn'] > 2 \
-            and self.arguments['$fn']<=Node.fnmin: # polygonal
+            if '$fn' in self.arguments and 2 < self.arguments['$fn'] <= Node.fnmin: # polygonal
                 if r1 == r2: # prismatic
                     obj = doc.addObject("Part::Prism","prism")
                     obj.Polygon = int(self.arguments['$fn'])
@@ -159,13 +158,13 @@ class Node:
                     p1 = Draft.makePolygon(int(self.arguments['$fn']), r1)
                     p2 = Draft.makePolygon(int(self.arguments['$fn']), r2)
                     if self.arguments['center']:
-                        p1.Placement = FreeCAD.Placement(\
-                        FreeCAD.Vector(0.0,0.0,-h/2.0),FreeCAD.Rotation())
-                        p2.Placement = FreeCAD.Placement(\
-                        FreeCAD.Vector(0.0,0.0,h/2.0), FreeCAD.Rotation())
+                        p1.Placement = FreeCAD.Placement(
+                            FreeCAD.Vector(0.0,0.0,-h/2.0),FreeCAD.Rotation())
+                        p2.Placement = FreeCAD.Placement(
+                            FreeCAD.Vector(0.0,0.0,h/2.0), FreeCAD.Rotation())
                     else:
-                        p2.Placement = FreeCAD.Placement(\
-                        FreeCAD.Vector(0.0,0.0,h),FreeCAD.Rotation())
+                        p2.Placement = FreeCAD.Placement(
+                            FreeCAD.Vector(0.0,0.0,h),FreeCAD.Rotation())
                     w1 = doc.addObject("Part::FeaturePython",'polygonwire1')
                     w2 = doc.addObject("Part::FeaturePython",'polygonwire2')
                     GetWire(w1,p1)
@@ -194,9 +193,9 @@ class Node:
             obj = doc.addObject("Part::Feature",namel)
             points = self.arguments['points']
             faces = self.arguments['triangles']
-            shell = Part.Shell([Part.Face(Part.makePolygon(\
-                     [tuple(points[pointindex]) for pointindex in \
-                     (face+face[0:1])])) for face in faces])
+            shell = Part.Shell([Part.Face(Part.makePolygon(
+                [tuple(points[pointindex]) for pointindex in
+                 (face+face[0:1])])) for face in faces])
 #            obj.Shape=Part.Solid(shell).removeSplitter()
             solid=Part.Solid(shell).removeSplitter()
             if solid.Volume < 0:
@@ -234,8 +233,8 @@ class Node:
             if len(self.children) == 1:
                 obj = self.children[0].addtofreecad(doc,fcpar or True)
             else:
-                obj = Node(name='imp_union',\
-                        children=self.children).addtofreecad(doc,fcpar or True)
+                obj = Node(name='imp_union',
+                           children=self.children).addtofreecad(doc,fcpar or True)
             obj.ViewObject.ShapeColor = tuple([float(p) for p in self.arguments[:3]]) #RGB
             transp = 100 - int(math.floor(100*self.arguments[3])) #Alpha
             obj.ViewObject.Transparency = transp
@@ -247,8 +246,8 @@ class Node:
                 if len(self.children) == 1:
                     obj = self.children[0].addtofreecad(doc,fcpar or True)
                 else:
-                    obj = Node(name='imp_union',\
-                            children = self.children).addtofreecad(doc,fcpar or True)
+                    obj = Node(name='imp_union',
+                               children = self.children).addtofreecad(doc,fcpar or True)
                     #FreeCAD.Console.PrintMessage('obj %s\nmat %s/n' % (obj.Placement,m1))
                 obj.Placement=FreeCAD.Placement(m1).multiply(obj.Placement)
             else: #we need to apply the matrix transformation to the Shape using a custom PythonFeature
@@ -256,8 +255,8 @@ class Node:
                 if len(self.children) == 1:
                     child = self.children[0].addtofreecad(doc,obj)
                 else:
-                    child = Node(name='imp_union',\
-                            children=self.children).addtofreecad(doc,obj)
+                    child = Node(name='imp_union',
+                                 children=self.children).addtofreecad(doc,obj)
                 MatrixTransform(obj,m1,child) #This object is not mutable from the GUI
                 ViewProviderTree(obj.ViewObject)
         #elif namel == 'import': pass #Custom Feature
@@ -273,7 +272,7 @@ class Node:
             elif len(self.children)==1:
                 base = self.children[0].addtofreecad(doc,obj)
             else:
-                base = Node(name='imp_union',\
+                base = Node(name='imp_union',
                             children=self.children).addtofreecad(doc,obj)
             if False and base.isDerivedFrom('Part::MultiFuse'):
                 #does not solve all the problems
@@ -299,7 +298,7 @@ class Node:
             elif len(self.children)==1:
                 base = self.children[0].addtofreecad(doc,obj)
             else:
-                base = Node(name='imp_union',\
+                base = Node(name='imp_union',
                             children=self.children).addtofreecad(doc,obj)
             if False and base.isDerivedFrom('Part::MultiFuse'):
                 #creates 'Axe and meridian are confused' Errors
@@ -323,8 +322,8 @@ class Node:
                     plane=doc.addObject("Part::Plane",planename)
                     plane.Length=Node.planedim*2
                     plane.Width=Node.planedim*2
-                    plane.Placement = FreeCAD.Placement(FreeCAD.Vector(\
-                    -Node.planedim,-Node.planedim,0),FreeCAD.Rotation(0,0,0,1))
+                    plane.Placement = FreeCAD.Placement(FreeCAD.Vector(
+                        -Node.planedim,-Node.planedim,0),FreeCAD.Rotation(0,0,0,1))
                 #plane.ViewObject.hide()
                 subobjs = [child.addtofreecad(doc,obj) for child in self.children]
                 subobjs.append(plane)
@@ -333,7 +332,7 @@ class Node:
                     subobj.ViewObject.hide()
             else:
                 #Do a proper projection
-                raise(NotImplementedError)
+                raise NotImplementedError
         elif namel == 'import':
             filename = self.arguments.get('file')
             scale = self.arguments.get('scale')
@@ -402,12 +401,12 @@ class Node:
                     obj.Shape=f
 
                 else:
-                    FreeCAD.Console.ErrorMessage('Filetype of %s not supported\n' % (filename))
-                    raise(NotImplementedError)
+                    FreeCAD.Console.ErrorMessage('Filetype of %s not supported\n' % filename)
+                    raise NotImplementedError
                 if obj: #handle origin and scale
                     if scale is not None and scale !=1:
                         if origin is not None and any([c != 0 for c in origin]):
-                            raise(NotImplementedError)# order of transformations unknown
+                            raise NotImplementedError  # order of transformations unknown
                         child = obj
                         m1 = FreeCAD.Matrix()
                         m1.scale(scale,scale,scale)
@@ -418,15 +417,15 @@ class Node:
                         placement = FreeCAD.Placement(FreeCAD.Vector(*[-c for c in origin]),FreeCAD.Rotation())
                         obj.Placement = placement.multiply(obj.Placement)
                 else:
-                    FreeCAD.Console.ErrorMessage('Import of %s failed\n' % (filename))
+                    FreeCAD.Console.ErrorMessage('Import of %s failed\n' % filename)
 
 
         elif namel == 'minkowski':
             childrennames = [child.name.lower() for child in self.children]
             if len(self.children) == 2 and \
                 childrennames.count('cube') == 1 and \
-                (childrennames.count('sphere') + \
-                childrennames.count('cylinder')) == 1:
+                (childrennames.count('sphere') +
+                 childrennames.count('cylinder')) == 1:
                 if self.children[0].name.lower() == 'cube':
                     cube = self.children[0]
                     roundobj = self.children[1]
@@ -453,7 +452,7 @@ class Node:
                     center(cubeobj,x+2*r,y+2*r,z+2*r*issphere)
                 else: #htandle a rotated cylinder
                     #OffsetShape
-                    raise(NotImplementedError)
+                    raise NotImplementedError
             elif childrennames.count('sphere') == 1:
                 sphereindex = childrennames.index('sphere')
                 sphere = self.children[sphereindex]
@@ -464,16 +463,16 @@ class Node:
                 if len(nonsphere) == 1:
                     child = nonsphere[0].addtofreecad(doc,obj)
                 else:
-                    child = Node(name='imp_union',\
-                        children=nonsphere).addtofreecad(doc,obj)
+                    child = Node(name='imp_union',
+                                 children=nonsphere).addtofreecad(doc,obj)
                 OffsetShape(obj,child,offset)
                 ViewProviderTree(obj.ViewObject)
             elif False:
-                raise(NotImplementedError)
+                raise NotImplementedError
                 pass # handle rotated cylinders and select edges that
                      #radius = radius0 * m1.multiply(FreeCAD.Vector(0,0,1)).dot(edge.Curve.tangent(0)[0])
             else:
-                raise(NotImplementedError)
+                raise NotImplementedError
         elif namel == 'surface':
             obj = doc.addObject("Part::Feature",namel) #include filename?
             obj.Shape,xoff,yoff=makeSurfaceVolume(self.arguments['file'])
@@ -482,18 +481,18 @@ class Node:
             return obj
 
         elif namel in ['glide','hull']:
-            raise(NotImplementedError)
+            raise NotImplementedError
         elif namel in ['render','subdiv'] or True:
             lenchld = len(self.children)
             if lenchld == 1:
-                FreeCAD.Console.PrintMessage('Not recognized %s\n' % (self))
+                FreeCAD.Console.PrintMessage('Not recognized %s\n' % self)
                 obj = self.children[0].addtofreecad(doc,fcpar)
             elif lenchld >1:
-                obj = Node(name='imp_union',\
-                        children=self.children).addtofreecad(doc,fcpar or True)
+                obj = Node(name='imp_union',
+                           children=self.children).addtofreecad(doc,fcpar or True)
             else:
                 obj = doc.addObject("Part::Feature",'Not_Impl_%s'%namel)
-        if fcpar == True: #We are the last real object, our parent is not rendered.
+        if fcpar: #We are the last real object, our parent is not rendered.
             return obj
 
         if fcpar:
@@ -506,12 +505,12 @@ class Node:
                 import Draft
                 if obj.Type =='Part::Extrusion' and obj.Base.Type == 'Part::Part2DObjectPython' and \
                     isinstance(obj.Base.Proxy,Draft._Polygon) or \
-                    (not obj.isDerivedFrom('Part::Extrusion') and \
-                    not obj.isDerivedFrom('Part::Boolean') and \
-                    not obj.isDerivedFrom('Part::Cut') and \
-                    not obj.isDerivedFrom('Part::MultiCommon') and \
-                    not obj.isDerivedFrom('Part::MultiFuse') and \
-                    not obj.isDerivedFrom('Part::Revolution') ) \
+                    (not obj.isDerivedFrom('Part::Extrusion') and
+                     not obj.isDerivedFrom('Part::Boolean') and
+                     not obj.isDerivedFrom('Part::Cut') and
+                     not obj.isDerivedFrom('Part::MultiCommon') and
+                     not obj.isDerivedFrom('Part::MultiFuse') and
+                     not obj.isDerivedFrom('Part::Revolution') ) \
                     or (obj.isDerivedFrom('Part::FeaturePython') and isinstance(obj.Proxy,RefineShape)):
                     return obj
                 else:
@@ -527,7 +526,7 @@ class Node:
     def flattengroups(self,name='group'):
         """removes group node with only one child and no arguments and empty groups"""
         node = self
-        while (node.name == name and len(node.children) == 1 and len(node.arguments) == 0):
+        while node.name == name and len(node.children) == 1 and len(node.arguments) == 0:
             node = node.children[0]
         node.children = [child for child in node.children if not (len(child.children) == 0 and child.name == name)]
         if node.children:
@@ -568,7 +567,7 @@ def parseexpression(e):
             return float(e)
         except ValueError:
             import FreeCAD
-            FreeCAD.Console.PrintMessage('%s\n' % (el))
+            FreeCAD.Console.PrintMessage('%s\n' % el)
             return 1.0
 
     elif el.startswith('"'): return e.strip('"') #string literal
@@ -578,7 +577,7 @@ def parseexpression(e):
             return eval(el)
         else:
             import FreeCAD
-            FreeCAD.Console.PrintMessage('%s\n' % (el))
+            FreeCAD.Console.PrintMessage('%s\n' % el)
     else:
         return e #Return the string
 

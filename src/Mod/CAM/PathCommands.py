@@ -65,7 +65,7 @@ class _CommandSelectLoop:
         }
 
     def IsActive(self):
-        if bool(FreeCADGui.Selection.getSelection()) is False:
+        if not bool(FreeCADGui.Selection.getSelection()):
             return False
         try:
             sel = FreeCADGui.Selection.getSelectionEx()[0]
@@ -153,7 +153,7 @@ class _ToggleOperation:
         }
 
     def IsActive(self):
-        if bool(FreeCADGui.Selection.getSelection()) is False:
+        if not bool(FreeCADGui.Selection.getSelection()):
             return False
         try:
             for sel in FreeCADGui.Selection.getSelectionEx():
@@ -191,7 +191,7 @@ class _CopyOperation:
         }
 
     def IsActive(self):
-        if bool(FreeCADGui.Selection.getSelection()) is False:
+        if not bool(FreeCADGui.Selection.getSelection()):
             return False
         try:
             for sel in FreeCADGui.Selection.getSelectionEx():

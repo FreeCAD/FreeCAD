@@ -247,7 +247,7 @@ def export(objectslist, filename, argstring):
 
 def linenumber():
     global LINENR
-    if OUTPUT_LINE_NUMBERS is True:
+    if OUTPUT_LINE_NUMBERS:
         LINENR += 10
         return "N" + str(LINENR) + " "
     return ""
@@ -288,7 +288,7 @@ def parse(pathobj):
             commandlist.append(command)
             # if modal: only print the command if it is not the same as the
             # last one
-            if MODAL is True:
+            if MODAL:
                 if command == lastcommand:
                     commandlist.pop(0)
 

@@ -402,10 +402,7 @@ class AlgebraTestCase(unittest.TestCase):
 
             return rz.multiply(ry).multiply(rx)
 
-        angles = []
-        angles.append((10, 10, 10))
-        angles.append((13, 45, -24))
-        angles.append((10, -90, 20))
+        angles = [(10, 10, 10), (13, 45, -24), (10, -90, 20)]
 
         for i in angles:
             r = getYPR1(*i)

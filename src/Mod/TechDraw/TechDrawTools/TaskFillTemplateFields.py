@@ -99,7 +99,7 @@ class TaskFillTemplateFields:
                 and listofkeys == reader.fieldnames
             ):
                 self.page = obj
-                if obj.Views == []:
+                if not obj.Views:
                     msgBox = QtGui.QMessageBox()
                     msgTitle = QtCore.QT_TRANSLATE_NOOP(
                         "Techdraw_FillTemplateFields",

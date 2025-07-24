@@ -313,7 +313,7 @@ class PartTestCone(unittest.TestCase):
             v10 = surface.getDN(u, v, 1, 0)
             v01 = surface.getDN(u, v, 0, 1)
             v11 = surface.getDN(u, v, 1, 1)
-            return (pos, v10, v01, v11)
+            return pos, v10, v01, v11
 
         cone = Part.Cone()
         cone.SemiAngle = 0.2

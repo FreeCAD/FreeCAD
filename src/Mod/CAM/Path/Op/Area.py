@@ -338,16 +338,10 @@ class ObjectOp(PathOp.ObjectOp):
                 hWire = Part.Wire(Part.__sortEdges__(baseShape.Edges))
                 hWire.translate(FreeCAD.Vector(0, 0, heights[i] - hWire.BoundBox.ZMin))
 
-                pathParams = {}
-                pathParams["shapes"] = [hWire]
-                pathParams["feedrate"] = self.horizFeed
-                pathParams["feedrate_v"] = self.vertFeed
-                pathParams["verbose"] = True
-                pathParams["resume_height"] = obj.SafeHeight.Value
-                pathParams["retraction"] = obj.ClearanceHeight.Value
-                pathParams["return_end"] = True
+                pathParams = {"shapes": [hWire], "feedrate": self.horizFeed, "feedrate_v": self.vertFeed,
+                              "verbose": True, "resume_height": obj.SafeHeight.Value,
+                              "retraction": obj.ClearanceHeight.Value, "return_end": True, "preamble": False}
                 # Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers
-                pathParams["preamble"] = False
 
                 # Always manually setting pathParams["start"] to the first or
                 # last vertex of the wire (depending on obj.Direction) ensures

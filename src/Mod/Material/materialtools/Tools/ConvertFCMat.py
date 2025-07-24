@@ -62,18 +62,8 @@ def read(filename):
         error_message = "Error on loading. Material file '{}' might not utf-8.".format(filename)
         print("{}\n".format(error_message))
         return {}
-    d = {}
-    d["Meta"] = {}
-    d["General"] = {}
-    d["Mechanical"] = {}
-    d["Fluidic"] = {}
-    d["Thermal"] = {}
-    d["Electromagnetic"] = {}
-    d["Architectural"] = {}
-    d["Rendering"] = {}
-    d["VectorRendering"] = {}
-    d["Cost"] = {}
-    d["UserDefined"] = {}
+    d = {"Meta": {}, "General": {}, "Mechanical": {}, "Fluidic": {}, "Thermal": {}, "Electromagnetic": {},
+         "Architectural": {}, "Rendering": {}, "VectorRendering": {}, "Cost": {}, "UserDefined": {}}
     d["Meta"]["CardName"] = card_name_file  # CardName is the MatCard file name
     section = ''
     for ln, line in enumerate(content):

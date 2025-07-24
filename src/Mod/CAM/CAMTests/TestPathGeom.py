@@ -551,11 +551,8 @@ class TestPathGeom(PathTestBase):
 
     def test50(self):
         """Verify proper wire(s) aggregation from a Path."""
-        commands = []
-        commands.append(Path.Command("G1", {"X": 1}))
-        commands.append(Path.Command("G1", {"Y": 1}))
-        commands.append(Path.Command("G0", {"X": 0}))
-        commands.append(Path.Command("G1", {"Y": 0}))
+        commands = [Path.Command("G1", {"X": 1}), Path.Command("G1", {"Y": 1}), Path.Command("G0", {"X": 0}),
+                    Path.Command("G1", {"Y": 0})]
 
         wire, rapid = Path.Geom.wireForPath(Path.Path(commands))
         self.assertEqual(len(wire.Edges), 4)

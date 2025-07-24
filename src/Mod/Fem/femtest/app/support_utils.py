@@ -68,7 +68,7 @@ def fcc_print(message):
 
 def get_namefromdef(strdel="", stradd=""):
     # https://code.activestate.com/recipes/66062-determining-current-function-name/
-    return (sys._getframe(1).f_code.co_name).replace(strdel, stradd)
+    return sys._getframe(1).f_code.co_name.replace(strdel, stradd)
 
 
 def get_defmake_count(fem_vtk_post=True):
@@ -388,7 +388,7 @@ def compare_stats(fea, stat_file, res_obj_name, loc_stat_types=None):
                 sf_content.append(li)
     sf.close()
     sf_content = force_unix_line_ends(sf_content)
-    if sf_content == []:
+    if not sf_content:
         return True
 
     # compare stats

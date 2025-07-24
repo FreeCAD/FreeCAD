@@ -1144,7 +1144,7 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
             if hasattr(self, "font"):
                 self.font.size = vobj.FontSize.Value * vobj.ScaleMultiplier
 
-        elif (prop == "FontName" and hasattr(self, "font")):
+        elif prop == "FontName" and hasattr(self, "font"):
             self.font.name = str(vobj.FontName)
 
         elif (prop == "TextColor" and "TextColor" in properties

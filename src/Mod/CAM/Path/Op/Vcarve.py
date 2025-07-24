@@ -120,7 +120,7 @@ def _sortVoronoiWires(wires, start=FreeCAD.Vector(0, 0, 0)):
             if l is None or l > start.distanceToPoint(point[i]):
                 l = start.distanceToPoint(point[i])
                 p = i
-        return (p, l)
+        return p, l
 
     begin = {}
     end = {}
@@ -494,8 +494,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
             return path
 
-        pathlist = []
-        pathlist.append(Path.Command("(starting)"))
+        pathlist = [Path.Command("(starting)")]
 
         # iterate over each face separately
         for face, wires in self.buildMedialWires(obj, faces).items():

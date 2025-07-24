@@ -63,7 +63,7 @@ tooltip = (
 
 class CommandGroupInsert:
     def GetCommands(self):
-        return ("Assembly_InsertLink", "Assembly_InsertNewPart")
+        return "Assembly_InsertLink", "Assembly_InsertNewPart"
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -391,9 +391,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         addedObject.Label = selectedPart.Label  # non-ASCII characters fails with newObject. #12164
         addedObject.recompute()
 
-        insertionDict = {}
-        insertionDict["item"] = item
-        insertionDict["addedObject"] = addedObject
+        insertionDict = {"item": item, "addedObject": addedObject}
         self.insertionStack.append(insertionDict)
         self.increment_counter(item)
 
@@ -411,7 +409,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         self.totalTranslation += translation
 
         originX, originY = view.getPointOnViewport(App.Vector() + translation)
-        if originX > 0 and originX < x and originY > 0 and originY < y:
+        if 0 < originX < x and 0 < originY < y:
             # If the origin is within view then we insert at the origin.
             addedObject.Placement.Base = self.totalTranslation
         else:

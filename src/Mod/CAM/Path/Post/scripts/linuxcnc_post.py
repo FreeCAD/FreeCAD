@@ -210,7 +210,7 @@ def export(objectslist, filename, argstring):
         # do the pre_op
         if OUTPUT_COMMENTS:
             gcode += linenumber() + "(begin operation: %s)\n" % obj.Label
-            gcode += linenumber() + "(machine units: %s)\n" % (UNIT_SPEED_FORMAT)
+            gcode += linenumber() + "(machine units: %s)\n" % UNIT_SPEED_FORMAT
         for line in PRE_OPERATION.splitlines(True):
             gcode += linenumber() + line
 
@@ -272,7 +272,7 @@ def export(objectslist, filename, argstring):
 
 def linenumber():
     global LINENR
-    if OUTPUT_LINE_NUMBERS is True:
+    if OUTPUT_LINE_NUMBERS:
         LINENR += 10
         return "N" + str(LINENR) + " "
     return ""
@@ -343,7 +343,7 @@ def parse(pathobj):
             outstring.append(command)
 
             # if modal: suppress the command if it is the same as the last one
-            if MODAL is True:
+            if MODAL:
                 if command == lastcommand:
                     outstring.pop(0)
 
@@ -415,7 +415,7 @@ def parse(pathobj):
                     outstring.append(tool_height)
 
             if command == "message":
-                if OUTPUT_COMMENTS is False:
+                if not OUTPUT_COMMENTS:
                     out = []
                 else:
                     outstring.pop(0)  # remove the command

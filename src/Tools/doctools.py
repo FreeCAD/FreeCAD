@@ -64,8 +64,7 @@ def getFilesList(filename):
     parser.setContentHandler(handler)
     parser.parse(filename)
 
-    files = []
-    files.append(filename)
+    files = [filename]
     files.extend(iter(handler.files))
     dirname = os.path.join(dirname, "GuiDocument.xml")
     if os.path.exists(dirname):

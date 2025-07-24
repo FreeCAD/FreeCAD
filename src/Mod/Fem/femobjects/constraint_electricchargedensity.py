@@ -48,44 +48,31 @@ class ConstraintElectricChargeDensity(base_fempythonobject.BaseFemPythonObject):
             prop.add_to_object(obj)
 
     def _get_properties(self):
-        prop = []
-
-        prop.append(
-            _PropHelper(
-                type="App::PropertyVolumeChargeDensity",
-                name="SourceChargeDensity",
-                group="Electric Charge Density",
-                doc="Free electric charge per unit volume at the sources",
-                value="0 C/mm^3",
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertySurfaceChargeDensity",
-                name="InterfaceChargeDensity",
-                group="Electric Charge Density",
-                doc="Free electric charge per unit surface at the boundaries",
-                value="0 C/mm^2",
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyElectricCharge",
-                name="TotalCharge",
-                group="Electric Charge Density",
-                doc="Total free electric charge",
-                value="0 C",
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyEnumeration",
-                name="Mode",
-                group="Electric Charge Density",
-                doc="Switch quantity input mode",
-                value=["Interface", "Source", "Total Interface", "Total Source"],
-            )
-        )
+        prop = [_PropHelper(
+            type="App::PropertyVolumeChargeDensity",
+            name="SourceChargeDensity",
+            group="Electric Charge Density",
+            doc="Free electric charge per unit volume at the sources",
+            value="0 C/mm^3",
+        ), _PropHelper(
+            type="App::PropertySurfaceChargeDensity",
+            name="InterfaceChargeDensity",
+            group="Electric Charge Density",
+            doc="Free electric charge per unit surface at the boundaries",
+            value="0 C/mm^2",
+        ), _PropHelper(
+            type="App::PropertyElectricCharge",
+            name="TotalCharge",
+            group="Electric Charge Density",
+            doc="Total free electric charge",
+            value="0 C",
+        ), _PropHelper(
+            type="App::PropertyEnumeration",
+            name="Mode",
+            group="Electric Charge Density",
+            doc="Switch quantity input mode",
+            value=["Interface", "Source", "Total Interface", "Total Source"],
+        )]
 
         return prop
 

@@ -130,7 +130,7 @@ class ObjectDressup:
                 (prevCommand.y + currCommand.J),
                 currentZ,
             )
-            if endpos is True:
+            if endpos:
                 radvector = arcLoc.sub(
                     currCommand.Placement.Base
                 )  # Calculate vector at start of arc
@@ -197,7 +197,7 @@ class ObjectDressup:
         currLocation.update(extend.Parameters)
 
         replace = None
-        return (results, replace)
+        return results, replace
 
     def arcTwist(self, obj, queue, lastXY, twistCW=False):
         """returns gcode to do an arc move toward an arc to perform
@@ -209,7 +209,7 @@ class ObjectDressup:
         results = []
 
         # set the correct twist command
-        if twistCW is False:
+        if not twistCW:
             arcdir = "G3"
         else:
             arcdir = "G2"
@@ -277,7 +277,7 @@ class ObjectDressup:
             queue[0].Name,
             {"X": queue[0].X, "Y": queue[0].Y, "I": offsetv.x, "J": offsetv.y},
         )
-        return (results, replace)
+        return results, replace
 
     def lineExtension(self, obj, queue):
         """returns gcode for line extension"""
@@ -302,7 +302,7 @@ class ObjectDressup:
         currLocation.update(extendcommand.Parameters)
 
         replace = None
-        return (results, replace)
+        return results, replace
 
     def lineTwist(self, obj, queue, lastXY, twistCW=False):
         """returns gcode to do an arc move toward a line to perform
@@ -314,7 +314,7 @@ class ObjectDressup:
         results = []
 
         # set the correct twist command
-        if twistCW is False:
+        if not twistCW:
             arcdir = "G3"
         else:
             arcdir = "G2"
@@ -353,7 +353,7 @@ class ObjectDressup:
         currLocation.update(plunge.Parameters)
 
         replace = None
-        return (results, replace)
+        return results, replace
 
     def execute(self, obj):
         newpath = []

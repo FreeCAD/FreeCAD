@@ -573,76 +573,60 @@ class BIM_ProjectManager:
 
         # build list of useful settings to store
         wp = WorkingPlane.get_working_plane()
-        values = {}
-        values["wpposition"] = str(wp.position)
-        values["wpu"] = str(wp.u)
-        values["wpv"] = str(wp.v)
-        values["wpaxis"] = str(wp.axis)
-        values["unit"] = str(
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
-                "UserSchema", 0
-            )
-        )
-        values["textsize"] = str(
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetFloat(
-                "textheight", 10
-            )
-        )
-        values["textfont"] = str(
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetString(
-                "textfont", "Sans"
-            )
-        )
-        values["dimstyle"] = str(
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetInt(
-                "dimsymbol", 0
-            )
-        )
-        values["arrowsize"] = str(
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetFloat(
-                "arrowsize", 5
-            )
-        )
-        values["decimals"] = str(
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
-                "Decimals", 2
-            )
-        )
-        values["grid"] = str(
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetFloat(
-                "gridSpacing", 10
-            )
-        )
-        values["squares"] = str(
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetInt(
-                "gridEvery", 10
-            )
-        )
-        values["linewidth"] = str(
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetInt(
-                "DefautShapeLineWidth", 2
-            )
-        )
-        values["colFace"] = str(
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned(
-                "DefaultShapeColor", 4294967295
-            )
-        )
-        values["colLine"] = str(
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned(
-                "DefaultShapeLineColor", 255
-            )
-        )
-        values["colHelp"] = str(
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetUnsigned(
-                "ColorHelpers", 674321151
-            )
-        )
-        values["colConst"] = str(
-            FreeCAD.ParamGet(
-                "User parameter:BaseApp/Preferences/Mod/Draft"
-            ).GetUnsigned("constructioncolor", 746455039)
-        )
+        values = {"wpposition": str(wp.position), "wpu": str(wp.u), "wpv": str(wp.v), "wpaxis": str(wp.axis),
+                  "unit": str(
+                      FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
+                          "UserSchema", 0
+                      )
+                  ), "textsize": str(
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetFloat(
+                    "textheight", 10
+                )
+            ), "textfont": str(
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetString(
+                    "textfont", "Sans"
+                )
+            ), "dimstyle": str(
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetInt(
+                    "dimsymbol", 0
+                )
+            ), "arrowsize": str(
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetFloat(
+                    "arrowsize", 5
+                )
+            ), "decimals": str(
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
+                    "Decimals", 2
+                )
+            ), "grid": str(
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetFloat(
+                    "gridSpacing", 10
+                )
+            ), "squares": str(
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetInt(
+                    "gridEvery", 10
+                )
+            ), "linewidth": str(
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetInt(
+                    "DefautShapeLineWidth", 2
+                )
+            ), "colFace": str(
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned(
+                    "DefaultShapeColor", 4294967295
+                )
+            ), "colLine": str(
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned(
+                    "DefaultShapeLineColor", 255
+                )
+            ), "colHelp": str(
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetUnsigned(
+                    "ColorHelpers", 674321151
+                )
+            ), "colConst": str(
+                FreeCAD.ParamGet(
+                    "User parameter:BaseApp/Preferences/Mod/Draft"
+                ).GetUnsigned("constructioncolor", 746455039)
+            )}
 
         d.Meta = values
         from PySide import QtGui

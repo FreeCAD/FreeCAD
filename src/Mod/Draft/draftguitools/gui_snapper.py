@@ -1067,14 +1067,14 @@ class Snapper:
         snaps = []
         if self.isEnabled("Special"):
 
-            if (Draft.getType(obj) == "Wall"):
+            if Draft.getType(obj) == "Wall":
                 # special snapping for wall: snap to its base shape if it is linear
                 if obj.Base:
                     if not obj.Base.Shape.Solids:
                         for v in obj.Base.Shape.Vertexes:
                             snaps.append([v.Point, 'special', self.toWP(v.Point)])
 
-            elif (Draft.getType(obj) == "Structure"):
+            elif Draft.getType(obj) == "Structure":
                 # special snapping for struct: only to its base point
                 if obj.Base:
                     if not obj.Base.Shape.Solids:
@@ -1111,7 +1111,7 @@ class Snapper:
         """Return a point on an edge, perpendicular to the given point."""
         dv = pt.sub(edge.Vertexes[0].Point)
         nv = DraftVecUtils.project(dv, DraftGeomUtils.vec(edge))
-        np = (edge.Vertexes[0].Point).add(nv)
+        np = edge.Vertexes[0].Point.add(nv)
         return np
 
 
@@ -1411,7 +1411,7 @@ class Snapper:
             """Get the global coordinates from a point."""
             # Same algorithm as in validatePoint in DraftGui.py.
             ref = App.Vector(0, 0, 0)
-            if global_mode is False:
+            if not global_mode:
                 wp = self._get_wp()
                 point = wp.get_global_coords(point, as_vector=True)
                 ref = wp.get_global_coords(ref)
@@ -1643,9 +1643,9 @@ class Snapper:
             return
 
         if self.grid.show_always \
-                or (self.grid.show_during_command \
-                      and hasattr(App, "activeDraftCommand") \
-                      and App.activeDraftCommand):
+                or (self.grid.show_during_command
+                    and hasattr(App, "activeDraftCommand")
+                    and App.activeDraftCommand):
             self.grid.set()
 
 

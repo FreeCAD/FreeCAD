@@ -385,7 +385,7 @@ def insert(filename,docname):
             edges.append(edge)
             # combine lines into medges
             l = peek(index, content_array)
-            if l == None or l[:2] != "l ":
+            if l is None or l[:2] != "l ":
                 medges = edges
                 edges = []
         elif line[:7] == "usemtl ":
@@ -440,9 +440,7 @@ def makeMesh(doc,group,activeobject,verts,edges,facets,material,colortable):
                         polyline.append(i2)
                     else:
                         medges.append(polyline)
-                        polyline = []
-                        polyline.append(i1)
-                        polyline.append(i2)
+                        polyline = [i1, i2]
                 else:
                     polyline.append(i1)
                     polyline.append(i2)

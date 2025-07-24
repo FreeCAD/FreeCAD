@@ -73,7 +73,7 @@ class DraftWireGuiTools(GuiTools):
     def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
         pts = obj.Points
         tol = 0.001 # TODO : Use default precision
-        if (node_idx == 0 and (v - pts[-1]).Length < tol ):
+        if node_idx == 0 and (v - pts[-1]).Length < tol:
             # DNC: user moved first point over last point -> Close curve
             obj.Closed = True
             pts[0] = v
@@ -254,10 +254,7 @@ class DraftRectangleGuiTools(GuiTools):
         1 : Length
         2 : Height
         """
-        editpoints = []
-        editpoints.append(App.Vector(0, 0, 0))
-        editpoints.append(App.Vector(obj.Length, 0, 0))
-        editpoints.append(App.Vector(0, obj.Height, 0))
+        editpoints = [App.Vector(0, 0, 0), App.Vector(obj.Length, 0, 0), App.Vector(0, obj.Height, 0)]
         return editpoints
 
     def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
@@ -287,8 +284,7 @@ class DraftCircleGuiTools(GuiTools):
         2 : second endpoint
         3 : midpoint
         """
-        editpoints = []
-        editpoints.append(App.Vector(0, 0, 0))
+        editpoints = [App.Vector(0, 0, 0)]
         if obj.FirstAngle == obj.LastAngle:
             # obj is a circle
             editpoints.append(App.Vector(obj.Radius,0,0))
@@ -504,10 +500,7 @@ class DraftEllipseGuiTools(GuiTools):
         pass
 
     def get_edit_points(self, obj):
-        editpoints = []
-        editpoints.append(App.Vector(0, 0, 0))
-        editpoints.append(App.Vector(obj.MajorRadius, 0, 0))
-        editpoints.append(App.Vector(0, obj.MinorRadius, 0))
+        editpoints = [App.Vector(0, 0, 0), App.Vector(obj.MajorRadius, 0, 0), App.Vector(0, obj.MinorRadius, 0)]
         return editpoints
 
     def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
@@ -531,8 +524,7 @@ class DraftPolygonGuiTools(GuiTools):
         pass
 
     def get_edit_points(self, obj):
-        editpoints = []
-        editpoints.append(App.Vector(0, 0, 0))
+        editpoints = [App.Vector(0, 0, 0)]
         if obj.DrawMode == 'inscribed':
             editpoints.append(obj.Placement.inverse().multVec(obj.Shape.Vertexes[0].Point))
         else:
@@ -756,12 +748,12 @@ class DraftBezCurveGuiTools(GuiTools):
                     knot = 0
                 else:
                     knot = point
-            elif style == 'Tangent' and point > 0 and point < len(pts)-1:
+            elif style == 'Tangent' and 0 < point < len(pts) - 1:
                 prev, next = obj.Proxy.tangentpoles(pts[point], pts[point-1], pts[point+1])
                 pts[point-1] = prev
                 pts[point+1] = next
                 knot = point  # index for continuity
-            elif style == 'Symmetric' and point > 0 and point < len(pts)-1:
+            elif style == 'Symmetric' and 0 < point < len(pts) - 1:
                 prev, next = obj.Proxy.symmetricpoles(pts[point], pts[point-1], pts[point+1])
                 pts[point-1] = prev
                 pts[point+1] = next
