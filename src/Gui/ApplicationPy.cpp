@@ -430,6 +430,12 @@ PyMethodDef ApplicationPy::Methods[] = {
    "Remove all children from a group node.\n"
    "\n"
    "node : object"},
+  {"suspendWaitCursor", (PyCFunction) ApplicationPy::sSuspendWaitCursor, METH_VARARGS,
+   "suspendWaitCursor() -> None\n\n"
+   "Temporarily suspends the application's wait cursor and event filter."},
+  {"resumeWaitCursor",  (PyCFunction) ApplicationPy::sResumeWaitCursor, METH_VARARGS,
+   "resumeWaitCursor() -> None\n\n"
+   "Resumes the application's wait cursor and event filter."},
   {nullptr, nullptr, 0, nullptr}    /* Sentinel */
 };
 
@@ -1802,4 +1808,24 @@ PyObject* ApplicationPy::sSetUserEditMode(PyObject * /*self*/, PyObject *args)
     bool ok = Application::Instance->setUserEditMode(std::string(mode));
 
     return Py::new_reference_to(Py::Boolean(ok));
+}
+
+PyObject* ApplicationPy::sSuspendWaitCursor(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    WaitCursor::suspend();
+    Py_RETURN_NONE;
+}
+
+PyObject* ApplicationPy::sResumeWaitCursor(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    WaitCursor::resume();
+    Py_RETURN_NONE;
 }
