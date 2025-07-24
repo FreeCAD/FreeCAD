@@ -1176,10 +1176,9 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemActivated(QListWidgetIt
 
     // if its the right constraint
     if (it->isDimensional()) {
-        // TODO-theo-vt what is the transaction id??
-        EditDatumDialog* editDatumDialog = new EditDatumDialog(0, this->sketchView, it->ConstraintNbr);
-        editDatumDialog->exec(false);
-        delete editDatumDialog;
+        int tid = this->sketchView->getDocument()->openCommand(
+                    QT_TRANSLATE_NOOP("Command", "Modify sketch constraints"));
+        EditDatumDialog(tid, this->sketchView, it->ConstraintNbr).exec(false);
     }
 }
 

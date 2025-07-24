@@ -4175,9 +4175,8 @@ void CmdSketcherConstrainCoincidentUnified::activatedPointOnObject(SketchObject*
                     obj,
                     QObject::tr("Wrong selection"),
                     QObject::tr("Select an edge that is not a B-spline weight."));
-                abortSelf(); // TODO-theo-vt, if we abort should we return?
-
-                continue;
+                abortSelf();
+                return;
             }
 
             if (substituteConstraintCombinationsPointOnObject(obj,
@@ -10132,9 +10131,8 @@ void CmdSketcherChangeDimensionConstraint::activated(int iMsg)
 
     try {
         auto value = getDimConstraint();
-        // TODO-theo-vt what is the transaction id??
-        EditDatumDialog editDatumDialog(0, std::get<0>(value), std::get<1>(value));
-        editDatumDialog.exec(false);
+        int tid = openCommand(getDocument(), QT_TRANSLATE_NOOP("Command", "Modify sketch constraints"));
+        EditDatumDialog(tid, std::get<0>(value), std::get<1>(value)).exec(false);
     }
     catch (const Base::RuntimeError&) {
         Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),

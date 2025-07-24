@@ -643,10 +643,11 @@ protected:
     {
         Gui::View3DInventorViewer* viewer = handler->getViewer();
 
-        // TODO-theo-vt this substitution feels a bit weird,
-        // but again no check for null doc were in place
-        // so this probably assumes that there is a document in edit
         auto doc = viewer->getDocument();
+        if (!doc->getInEdit()) {
+            return;
+        }
+
         auto placement = Base::Placement(doc->getEditingTransform());
 
         onViewParameters.clear();
