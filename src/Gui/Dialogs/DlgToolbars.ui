@@ -68,7 +68,7 @@
         <widget class="QTreeWidget" name="commandTreeWidget">
          <property name="minimumSize">
           <size>
-           <width>350</width>
+           <width>400</width>
            <height>0</height>
           </size>
          </property>
