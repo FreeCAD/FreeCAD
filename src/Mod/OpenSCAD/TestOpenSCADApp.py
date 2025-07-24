@@ -25,4 +25,4 @@
 from OpenSCADTest.app.test_importCSG import TestImportCSG as OpenSCADTestImportCSG
 
 # dummy usage to get flake8 and lgtm quiet
-False if OpenSCADTestImportCSG.__name__ else True
+not bool(OpenSCADTestImportCSG.__name__)

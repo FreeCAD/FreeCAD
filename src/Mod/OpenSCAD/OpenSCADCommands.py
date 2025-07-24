@@ -28,6 +28,7 @@ This Script includes the GUI Commands of the OpenSCAD module
 '''
 
 import FreeCAD
+
 import OpenSCADUtils
 
 if FreeCAD.GuiUp:
@@ -551,7 +552,6 @@ class Hull:
 
     def Activated(self):
         import Part
-        import OpenSCADFeatures
         import importCSG
         selection=FreeCADGui.Selection.getSelectionEx()
         objList = []
@@ -571,7 +571,6 @@ class Minkowski:
 
     def Activated(self):
         import Part
-        import OpenSCADFeatures
         import importCSG
         selection=FreeCADGui.Selection.getSelectionEx()
         objList = []

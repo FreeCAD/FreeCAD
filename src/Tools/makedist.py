@@ -21,12 +21,12 @@ def main():
             "sb:",
             ["srcdir=", "bindir=", "major=", "minor=", "dfsg", "check"],
         )
-    except getopt.GetoptError:
-        pass
+    except getopt.GetoptError as e:
+        raise Exception(e)  # raise when error, instead of continue
 
     for o, a in opts:
         if o in ("-s", "--srcdir"):
-            print("{} is deprecated -- ignoring".format(o))
+            print(f"{o} is deprecated -- ignoring")
         if o in ("-b", "--bindir"):
             bindir = a
         if o in "--major":
@@ -46,19 +46,15 @@ def main():
 
     # revision number
     info = os.popen("git rev-list HEAD").read()
-    revision = "%04d" % (info.count("\n"))
+    revision = "%04d" % info.count("\n")
 
-    verfile = open(f"{bindir}/src/Build/Version.h", "rb")
-    verstream = io.BytesIO(verfile.read())
-    verfile.close()
-
-    version_major = major
-    version_minor = minor
+    with open(f"{bindir}/src/Build/Version.h", "rb") as verfile:
+        verstream = io.BytesIO(verfile.read())
 
     PACKAGE_NAME = "freecad"
-    version = "{}.{}.{}".format(version_major, version_minor, revision)
+    version = f"{major}.{minor}.{revision}"
 
-    DIRNAME = "%(p)s-%(v)s" % {"p": PACKAGE_NAME, "v": version}
+    DIRNAME = f"{PACKAGE_NAME}-{version}"
     TARNAME = DIRNAME + ".tar"
     TGZNAME = DIRNAME + ".tar.gz"
     if dfsg:
@@ -88,7 +84,7 @@ def main():
         os.remove(TARNAME)
     else:
         cmd_line = ["git", "archive"]
-        if not wta is None:
+        if wta:
             cmd_line.append(wta)
         cmd_line.append(f"--prefix={DIRNAME}/")
         cmd_line.append("HEAD")

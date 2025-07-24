@@ -22,7 +22,10 @@
 __title__ = "FreeCAD OpenSCAD Workbench - Parametric Features"
 __author__ = "Sebastian Hoogen"
 __url__ = ["https://www.freecad.org"]
-
+import sys
+import FreeCAD
+import Part
+import math
 try:
     long
 except NameError:
@@ -63,7 +66,6 @@ class ViewProviderTree:
 
     def loads(self,state):
         if state is not None:
-            import FreeCAD
             doc = FreeCAD.ActiveDocument #crap
             self.Object = doc.getObject(state['ObjectName'])
 
@@ -178,13 +180,11 @@ class OpenSCADPlaceholder:
             obj.Arguments = arguments
 
     def execute(self,fp):
-        import Part
         fp.Shape = Part.Compound([]) #empty Shape
 
 
 class Resize:
     def __init__(self,obj,target,vector):
-        import FreeCAD
         #self.Obj = obj
         self.Target = target
         self.Vector = vector
@@ -196,7 +196,6 @@ class Resize:
         obj.Proxy = self
 
     def execute(self, fp):
-        import FreeCAD
         mat = FreeCAD.Matrix()
         mat.A11 = self.Vector[0]
         mat.A22 = self.Vector[1]
@@ -321,7 +320,6 @@ class GetWire:
 
     def execute(self, fp):
         if fp.Base:
-            import Part
             #fp.Shape=fp.Base.Shape.Wires[0]
             fp.Shape=Part.Wire(fp.Base.Shape.Wires[0]) # works with 0.13 stable
             #sh = fp.Base.Shape.Wires[0].copy; sh.transformSahpe(fp.Base.Shape.Placement.toMatrix()); fp.Shape = sh #untested
@@ -341,9 +339,6 @@ class Frustum:
 
     def execute(self, fp):
         if all((fp.Radius1,fp.Radius2,fp.FacesNumber,fp.Height)):
-            import math
-            import FreeCAD
-            import Part
             #from draftlibs import fcgeo
             plm = fp.Placement
             wires = []
@@ -370,7 +365,6 @@ class Frustum:
 
 class Twist:
     def __init__(self, obj, child=None, h=1.0, angle=0.0, scale=[1.0,1.0]):
-        import FreeCAD
         obj.addProperty("App::PropertyLink","Base","Base",
                         "The base object that must be transformed", locked=True)
         obj.addProperty("App::PropertyQuantity","Angle","Base","Twist Angle", locked=True)
@@ -385,10 +379,6 @@ class Twist:
         obj.Proxy = self
 
     def execute(self, fp):
-        import FreeCAD
-        import Part
-        import math
-        import sys
         if fp.Base and fp.Height and fp.Base.Shape.isValid():
             solids = []
             for lower_face in fp.Base.Shape.Faces:
@@ -451,10 +441,6 @@ class PrismaticToroid:
         obj.Proxy = self
 
     def execute(self, fp):
-        import FreeCAD
-        import Part
-        import math
-        import sys
         if fp.Base and fp.Angle and fp.Segments and fp.Base.Shape.isValid():
             solids = []
             min_sweep_angle_per_segment = 360.0 / fp.Segments # This is how OpenSCAD defines $fn
@@ -544,7 +530,6 @@ class CGALFeature:
     def execute(self,fp):
         #arguments are ignored
         maxmeshpoints = None #TBD: add as property
-        import Part
         import OpenSCAD.OpenSCADUtils
         shape = OpenSCAD.OpenSCADUtils.process_ObjectsViaOpenSCADShape(fp.Document,fp.Children,
                                                                        fp.Operation, maxmeshpoints=maxmeshpoints)
@@ -554,9 +539,6 @@ class CGALFeature:
             raise ValueError
 
 def makeSurfaceVolume(filename):
-    import FreeCAD
-    import Part
-    import sys
     coords = []
     with open(filename) as f1:
         min_z = sys.float_info.max

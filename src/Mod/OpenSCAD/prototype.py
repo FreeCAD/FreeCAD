@@ -5,22 +5,19 @@
 # as published by the Free Software Foundation; either version 2 of
 # the License, or (at your option) any later version.
 
-import FreeCAD
 import math
-import re
-
-from OpenSCADFeatures import *
-from OpenSCAD2Dgeom import *
-from OpenSCADUtils import *
 from builtins import open as pyopen
 
+import FreeCAD
 
+from OpenSCAD2Dgeom import *
+from OpenSCADFeatures import *
+from OpenSCADUtils import *
 
 
 def openscadmesh(doc, scadstr, objname):
     import Part
     import Mesh
-    import os
     import OpenSCADUtils
     tmpfilename = OpenSCADUtils.callopenscadstring(scadstr,'stl')
     if tmpfilename:
@@ -50,7 +47,6 @@ class Node:
     planedim = 1e10 #size of the square used as x-y-plane
 
     def __init__(self, name, arguments=None, children=None,):
-        pass
         self.name = name
         self.arguments = arguments or {}
         self.children = children or []
@@ -89,7 +85,6 @@ class Node:
                 FreeCAD.Vector(-x/2.0,-y/2.0,-z/2.0),
                 FreeCAD.Rotation(0,0,0,1))
 
-        import FreeCAD
         import Part
         if not doc:
             doc = FreeCAD.newDocument()
@@ -338,7 +333,6 @@ class Node:
             scale = self.arguments.get('scale')
             origin = self.arguments.get('origin')
             if filename:
-                import os
                 docname = os.path.split(filename)[1]
                 objname,extension = docname.split('.',1)
                 if not os.path.isabs(filename):
@@ -566,7 +560,6 @@ def parseexpression(e):
         try:
             return float(e)
         except ValueError:
-            import FreeCAD
             FreeCAD.Console.PrintMessage('%s\n' % el)
             return 1.0
 
@@ -576,7 +569,6 @@ def parseexpression(e):
         if bopen == bclose:
             return eval(el)
         else:
-            import FreeCAD
             FreeCAD.Console.PrintMessage('%s\n' % el)
     else:
         return e #Return the string
@@ -623,7 +615,7 @@ def parsenode(str1):
         childstr = str4[1:index].strip()
         nextelement = str4[index+1:].lstrip()
         bopen,bclose = childstr.count('{'),childstr.count('}')
-        assert(bopen == bclose)
+        assert bopen == bclose
         children= []
         while childstr:
             try:
@@ -636,7 +628,6 @@ def parsenode(str1):
         return Node(name,args,children),nextelement
 
 def readfile(filename):
-    import os
     global lastimportpath
     lastimportpath,relname = os.path.split(filename)
     isopenscad = relname.lower().endswith('.scad')
@@ -657,7 +648,6 @@ def readfile(filename):
     return rootnode.flattengroups()
 
 def open(filename):
-    import os
     docname = os.path.split(filename)[1]
     doc = FreeCAD.newDocument(docname)
     doc.Label = (docname.split('.',1)[0])

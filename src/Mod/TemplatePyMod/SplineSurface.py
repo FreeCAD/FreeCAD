@@ -41,7 +41,7 @@ i = 0
 for jj in range(0, nNodes_v):
     for ii in range(0, nNodes_u):
         bs.setPole(ii + 1, jj + 1, FreeCAD.Vector((coor[i][0], coor[i][1], coor[i][2])), 1)
-        i = i + 1
+        i += 1
 
 s = bs.toShape()
 Part.show(s)

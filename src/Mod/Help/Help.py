@@ -301,8 +301,6 @@ def get_qtwebwidgets():
 def get_contents(location):
     """retrieves text contents of a given page"""
 
-    import urllib
-
     if location.startswith("http"):
         import urllib.request
 
@@ -323,8 +321,6 @@ def get_contents(location):
 def convert(content, force=None):
     """converts the given markdown code to html. Force can be None (automatic)
     or markdown, pandoc, github or raw/builtin"""
-
-    import urllib
 
     def convert_markdown(m):
         try:
@@ -418,11 +414,11 @@ def convert(content, force=None):
             with open(cssfile) as cf:
                 css = cf.read()
             if css:
-                css = "<style>\n" + css + "\n</style>"
+                css = f"<style>\n{css}\n</style>"
         else:
             print("Debug: Help: Unable to open css file:", cssfile)
     if css:
-        html = html.replace("</head>", css + "\n</head>")
+        html = html.replace("</head>", f"{css}\n</head>")
     return html
 
 
