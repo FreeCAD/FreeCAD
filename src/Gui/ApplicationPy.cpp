@@ -1305,7 +1305,7 @@ PyObject* ApplicationPy::sAddCommand(PyObject * /*self*/, PyObject *args)
 
         Py::Object callerFrame;
         Py::Tuple getFrameArgs(1);
-        getFrameArgs[0] = Py::Int(0);
+        getFrameArgs[0] = Py::Long(0);
         callerFrame = getFrame.apply(getFrameArgs);
 
         Py::Object codeObj (callerFrame.getAttr("f_code"));
