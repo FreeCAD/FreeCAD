@@ -76,7 +76,7 @@ class CommandCreateSimulation:
         }
 
     def IsActive(self):
-        if not UtilsAssembly.isAssemblyCommandActive() or not UtilsAssembly.assembly_has_at_least_n_parts(1):
+        if not UtilsAssembly.isAssemblyCommandActive():
             return False
             
         assembly = UtilsAssembly.activeAssembly()
