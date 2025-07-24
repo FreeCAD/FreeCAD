@@ -383,7 +383,8 @@ void ViewProviderAssembly::setActive(bool active)
     bool inEdit = isInEditMode();
     if (active && inEdit) {
         setupActiveAndInEdit();
-    } else {
+    }
+    else {
         unsetupActiveAndInEdit();
     }
 }
