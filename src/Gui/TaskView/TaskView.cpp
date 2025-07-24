@@ -350,7 +350,12 @@ TaskView::~TaskView()
     connectShowTaskWatcherSetting.disconnect();
     Gui::Selection().Detach(this);
 
-    // TODO-theo-vt delete content of taskInfos?
+    // if well behaved, we should not have nay taskInfo at this point
+    for (auto& taskInfo : taskInfos) {
+        delete taskInfo.ActiveCtrl;
+        delete taskInfo.ActiveDialog;
+        delete taskInfo.taskPanel;
+    }
 }
 
 bool TaskView::isEmpty(bool includeWatcher) const
@@ -408,8 +413,6 @@ bool TaskView::event(QEvent* event)
 void TaskView::keyPressEvent(QKeyEvent* ke)
 {
     std::optional<TaskInfo> active = currentTaskInfo();
-
-    // TODO-theo-vt should it check for ActiveDialog && ActiveCtrl as well?
     if (active) {
         if (ke->key() == Qt::Key_Return || ke->key() == Qt::Key_Enter) {
             // get all buttons of the complete task dialog
@@ -532,23 +535,10 @@ void TaskView::slotDeletedDocument(const App::Document& doc)
         return info.Document == &doc;
     });
     bool hasDialog = foundTaskInfo != taskInfos.end();
-    if (hasDialog) {
-        if (foundTaskInfo->ActiveDialog->isAutoCloseOnDeletedDocument()) {
-
-            // TODO-theo-vt presumably this active dialog is on the right document
-            // so this check is superfluous now?
-            std::string name = foundTaskInfo->ActiveDialog->getDocumentName();
-            if (name.empty()) {
-                Base::Console().warning(std::string("TaskView::slotDeletedDocument"),
-                                        "No document name set\n");
-            }
-
-            if (name == doc.getName()) {
-                foundTaskInfo->ActiveDialog->autoClosedOnDeletedDocument();
-                removeDialog(foundTaskInfo);
-                hasDialog = false;
-            }
-        }
+    if (hasDialog && foundTaskInfo->ActiveDialog->isAutoCloseOnDeletedDocument()) {
+        foundTaskInfo->ActiveDialog->autoClosedOnDeletedDocument();
+        removeDialog(foundTaskInfo);
+        hasDialog = false;
     }
 
     if (!hasDialog) {
@@ -582,24 +572,12 @@ void TaskView::transactionChangeOnDocument(const App::Document& doc, bool undo)
     bool hasDialog = foundTaskInfo != taskInfos.end();
 
     if (hasDialog) {
-        // TODO-theo-vt is there a case where we found the dialog
-        // with the doc and the name is not right?
-        // std::string name = ActiveDialog->getDocumentName();
-        // if (name == doc.getName()) {
         undo ? foundTaskInfo->ActiveDialog->onUndo() : foundTaskInfo->ActiveDialog->onRedo();
-        // }
 
         if (foundTaskInfo->ActiveDialog->isAutoCloseOnTransactionChange()) {
-            // if (name.empty()) {
-            //     Base::Console().warning(std::string("TaskView::transactionChangeOnDocument"),
-            //                             "No document name set\n");
-            // }
-
-            // if (name == doc.getName()) {
             foundTaskInfo->ActiveDialog->autoClosedOnTransactionChange();
             removeDialog(foundTaskInfo);
             hasDialog = false;
-            // }
         }
     }
 
@@ -649,10 +627,6 @@ bool TaskView::showDialog(TaskDialog *dlg, App::Document* doc)
     }
     assert(foundTaskInfo == taskInfos.end());
 
-    // TODO-theo-vt is hiding is sufficient?
-    // remove the TaskWatcher as long as the Dialog is up
-    // removeTaskWatcher();
-
     TaskInfo outInfo{.Document=doc};
     // first create the control element, set it up and wire it:
     outInfo.ActiveCtrl = new TaskEditControl(this);
@@ -701,9 +675,11 @@ bool TaskView::showDialog(TaskDialog *dlg, App::Document* doc)
     connect(outInfo.ActiveCtrl->buttonBox, &QDialogButtonBox::clicked,
             this, [doc, this](QAbstractButton *button) { clicked(button, doc); });
     // clang-format on
-
+    
+    // This will hide whatever was shown in the taskview
     taskInfos.push_back(outInfo);
-    setCurrentIndex(addWidget(outInfo.taskPanel));
+    addWidget(outInfo.taskPanel);
+    setShownTaskInfo(taskInfos.size() - 1);
 
     saveCurrentWidth();
     getMainWindow()->updateActions();
@@ -726,20 +702,12 @@ void TaskView::removeDialog(App::Document* doc)
 }
 void TaskView::removeDialog(std::vector<TaskInfo>::iterator infoIt)
 {
-    // TODO-theo-vt should it check if the iterator is within begin end end as well?
-    // this is not a function exposed publicly 
     if (infoIt == taskInfos.end()) {
         return;
     }
     getMainWindow()->updateActions();
 
-    if (infoIt->ActiveCtrl) {
-        infoIt->taskPanel->dialogLayout->removeWidget(infoIt->ActiveCtrl);
-        delete infoIt->ActiveCtrl;
-        infoIt->ActiveCtrl = nullptr;
-    }
-
-    TaskDialog* remove = nullptr;
+    std::optional<TaskInfo> remove = std::nullopt;
     if (infoIt->ActiveDialog) {
         // See 'accept' and 'reject'
         if (infoIt->ActiveDialog->property("taskview_accept_or_reject").isNull()) {
@@ -747,11 +715,9 @@ void TaskView::removeDialog(std::vector<TaskInfo>::iterator infoIt)
             for(const auto & it : cont){
                 infoIt->taskPanel->actionPanel->removeWidget(it);
             }
-            remove = infoIt->ActiveDialog;
-            infoIt->ActiveDialog = nullptr;
+            remove = *infoIt;
             taskInfos.erase(infoIt);
-            infoIt->taskPanel->actionPanel->removeStretch();
-            removeWidget(infoIt->taskPanel);
+            removeWidget(remove->taskPanel);
         }
         else {
             infoIt->ActiveDialog->setProperty("taskview_remove_dialog", true);
@@ -763,9 +729,11 @@ void TaskView::removeDialog(std::vector<TaskInfo>::iterator infoIt)
     addTaskWatcher();
 
     if (remove) {
-        remove->closed();
-        remove->emitDestructionSignal();
-        delete remove;
+        remove->ActiveDialog->closed();
+        remove->ActiveDialog->emitDestructionSignal();
+        delete remove->ActiveCtrl;
+        delete remove->ActiveDialog;
+        delete remove->taskPanel;
     }
 
     tryRestoreWidth();
@@ -843,9 +811,6 @@ void TaskView::addTaskWatcher(const std::vector<TaskWatcher*> &Watcher)
     }
 
     ActiveWatcher = Watcher;
-    // TODO-theo-vt used to check for dialog, is there
-    // a case where there is a task open for a document and 
-    // this function is called?
     addTaskWatcher();
 }
 
@@ -1061,21 +1026,17 @@ void TaskView::clicked (QAbstractButton * button, App::Document* doc)
 void TaskView::clearActionStyle()
 {
     std::optional<TaskInfo> current = currentTaskInfo();
-    if (current) {
-        // TODO-theo-vt clear the style even without currentTaskInfo?
-        static_cast<QSint::ActionPanelScheme*>(QSint::ActionPanelScheme::defaultScheme())->clearActionStyle();
-        current->taskPanel->actionPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
-    }
+    TaskPanel* panel = current ? current->taskPanel : TaskWatcherPanel;
+    static_cast<QSint::ActionPanelScheme*>(QSint::ActionPanelScheme::defaultScheme())->clearActionStyle();
+    panel->actionPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 }
 
 void TaskView::restoreActionStyle()
 {
     std::optional<TaskInfo> current = currentTaskInfo();
-    if (current) {
-        // TODO-theo-vt restore the style even without currentTaskInfo?
-        static_cast<QSint::ActionPanelScheme*>(QSint::ActionPanelScheme::defaultScheme())->restoreActionStyle();
-        current->taskPanel->actionPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
-    }
+    TaskPanel* panel = current ? current->taskPanel : TaskWatcherPanel;
+    static_cast<QSint::ActionPanelScheme*>(QSint::ActionPanelScheme::defaultScheme())->restoreActionStyle();
+    panel->actionPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 }
 
 void TaskView::addContextualPanel(QWidget* panel, App::Document* doc)
