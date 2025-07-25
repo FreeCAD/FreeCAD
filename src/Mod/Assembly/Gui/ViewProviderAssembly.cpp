@@ -226,8 +226,7 @@ void ViewProviderAssembly::updateData(const App::Property* prop)
 
             std::vector<App::DocumentObject*> joints = obj->getJoints(false);
             for (auto* joint : joints) {
-                Gui::ViewProvider* jointVp = Gui::Application::Instance->getViewProvider(joint);
-                if (jointVp) {
+                if (Gui::ViewProvider* jointVp = Gui::Application::Instance->getViewProvider(joint)) {
                     jointVp->signalChangeIcon();
                 }
             }
