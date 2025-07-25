@@ -939,11 +939,8 @@ void AssemblyObject::removeUnconnectedJoints(std::vector<App::DocumentObject*>& 
             [&](App::DocumentObject* joint) {
                 App::DocumentObject* obj1 = getMovingPartFromRef(this, joint, "Reference1");
                 App::DocumentObject* obj2 = getMovingPartFromRef(this, joint, "Reference2");
-                if (!isObjInSetOfObjRefs(obj1, connectedParts)
-                    || !isObjInSetOfObjRefs(obj2, connectedParts)) {
-                    return true;  // Remove joint if any connected object is not in connectedParts
-                }
-                return false;
+                return (!isObjInSetOfObjRefs(obj1, connectedParts)
+                    || !isObjInSetOfObjRefs(obj2, connectedParts));
             }),
         joints.end());
 }
