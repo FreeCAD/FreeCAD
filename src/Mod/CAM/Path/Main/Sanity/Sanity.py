@@ -32,9 +32,10 @@ from collections import Counter
 from datetime import datetime
 import FreeCAD
 import Path
-import Path.Log
-import Path.Main.Sanity.ImageBuilder as ImageBuilder
-import Path.Main.Sanity.ReportGenerator as ReportGenerator
+import Path.Log as Log
+from Path.Main.Sanity.ImageBuilder import ImageBuilder
+from Path.Main.Sanity.ReportGenerator import ReportGenerator
+from Path.Main.Sanity.Squawk import create_squawk, SquawkType
 import os
 import tempfile
 import Path.Dressup.Utils as PathDressup
@@ -42,10 +43,10 @@ import Path.Dressup.Utils as PathDressup
 translate = FreeCAD.Qt.translate
 
 if False:
-    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
-    Path.Log.trackModule(Path.Log.thisModule())
+    Log.setLevel(Log.Level.DEBUG, Log.thisModule())
+    Log.trackModule(Log.thisModule())
 else:
-    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+    Log.setLevel(Log.Level.INFO, Log.thisModule())
 
 
 class CAMSanity:
@@ -88,29 +89,23 @@ class CAMSanity:
 
         return data
 
-    def squawk(self, operator, note, date=datetime.now(), squawkType="NOTE"):
-        squawkType = squawkType if squawkType in ("NOTE", "WARNING", "CAUTION", "TIP") else "NOTE"
+    def squawk(
+        self,
+        operator,
+        note,
+        date=datetime.now(),
+        squawkType: SquawkType = SquawkType.NOTE,
+    ) -> dict:
+        """
+        Create a squawk using the dedicated Squawk class.
+        Maintains backward compatibility with existing code.
 
-        if squawkType == "TIP":
-            squawk_icon = "Sanity_Bulb"
-        elif squawkType == "NOTE":
-            squawk_icon = "Sanity_Note"
-        elif squawkType == "WARNING":
-            squawk_icon = "Sanity_Warning"
-        elif squawkType == "CAUTION":
-            squawk_icon = "Sanity_Caution"
+        Returns:
+            dict: Dictionary representation of the squawk for HTML generation
+        """
 
-        path = f"{FreeCAD.getHomePath()}Mod/CAM/Path/Main/Sanity/{squawk_icon}.svg"
-
-        squawk = {
-            "Date": str(date),
-            "Operator": operator,
-            "Note": note,
-            "squawkType": squawkType,
-            "squawkIcon": path,
-        }
-
-        return squawk
+        # Create squawk and return its dictionary representation
+        return create_squawk(operator, note, date, squawkType)
 
     def _baseObjectData(self):
         data = {"baseimage": "", "bases": "", "squawkData": []}
@@ -257,7 +252,7 @@ class CAMSanity:
         data["operations"] = []
         for op in obj.Operations.Group:
             oplabel = op.Label
-            Path.Log.debug(oplabel)
+            Log.debug(oplabel)
             ctime = op.CycleTime if hasattr(op, "CycleTime") else "00:00:00"
             cool = op.CoolantMode if hasattr(op, "CoolantMode") else "N/A"
 
@@ -333,7 +328,7 @@ class CAMSanity:
                 self.squawk(
                     "CAMSanity",
                     translate("CAM_Sanity", "Consider Specifying the Stock Material"),
-                    squawkType="TIP",
+                    squawkType=SquawkType.TIP,
                 )
             )
 
@@ -362,7 +357,7 @@ class CAMSanity:
                                 "Tool number {} is a legacy tool. Legacy tools not \
                     supported by Path-Sanity",
                             ).format(TC.ToolNumber),
-                            squawkType="WARNING",
+                            squawkType=SquawkType.WARNING,
                         )
                     )
                 )
@@ -376,7 +371,7 @@ class CAMSanity:
                         translate("CAM_Sanity", "Tool number {} used by multiple tools").format(
                             TC.ToolNumber
                         ),
-                        squawkType="CAUTION",
+                        squawkType=SquawkType.CAUTION,
                     )
                 )
             tooldata["bitShape"] = TC.Tool.ShapeType
@@ -399,13 +394,13 @@ class CAMSanity:
                         translate("CAM_Sanity", "Toolbit Shape for TC: {} not found").format(
                             TC.ToolNumber
                         ),
-                        squawkType="WARNING",
+                        squawkType=SquawkType.WARNING,
                     )
                 )
             tooldata["image"] = ""
             imagepath = os.path.join(self.filelocation, f"T{TC.ToolNumber}.png")
             tooldata["imagepath"] = imagepath
-            Path.Log.debug(imagepath)
+            Log.debug(imagepath)
             if imagedata is not None:
                 with open(imagepath, "wb") as fd:
                     fd.write(imagedata)
@@ -419,7 +414,7 @@ class CAMSanity:
                         translate("CAM_Sanity", "Tool Controller '{}' has no feedrate").format(
                             TC.Label
                         ),
-                        squawkType="WARNING",
+                        squawkType=SquawkType.WARNING,
                     )
                 )
 
@@ -431,7 +426,7 @@ class CAMSanity:
                         translate("CAM_Sanity", "Tool Controller '{}' has no spindlespeed").format(
                             TC.Label
                         ),
-                        squawkType="WARNING",
+                        squawkType=SquawkType.WARNING,
                     )
                 )
 
@@ -457,7 +452,7 @@ class CAMSanity:
                         translate("CAM_Sanity", "Tool Controller '{}' is not used").format(
                             TC.Label
                         ),
-                        squawkType="WARNING",
+                        squawkType=SquawkType.WARNING,
                     )
                 )
 
@@ -472,9 +467,9 @@ class CAMSanity:
         return str(obj)  # Fallback to convert any other non-serializable types to string
 
     def get_output_report(self):
-        Path.Log.debug("get_output_url")
+        Log.debug("get_output_url")
 
-        generator = ReportGenerator.ReportGenerator(self.data, embed_images=True)
+        generator = ReportGenerator(self.data, embed_images=True)
         html = generator.generate_html()
         generator = None
         return html
