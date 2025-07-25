@@ -8,11 +8,6 @@ __doc__ = "Helper module to convert zip files"
 import zipfile
 
 def rewrite(source: str, target: str):
-    source_zip = zipfile.ZipFile(source, "r")
-    target_zip = zipfile.ZipFile(target, "w")
-
-    for name in source_zip.namelist():
-        target_zip.writestr(name, source_zip.open(name).read())
-
-    source_zip.close()
-    target_zip.close()
+    with zipfile.ZipFile(source, "r") as source_zip, zipfile.ZipFile(target, "w") as target_zip:
+        for name in source_zip.namelist():
+            target_zip.writestr(name, source_zip.open(name).read())
