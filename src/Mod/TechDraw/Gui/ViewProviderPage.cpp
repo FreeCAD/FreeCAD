@@ -556,6 +556,16 @@ void ViewProviderPage::setGrid()
     }
 }
 
+QGSPage* ViewProviderPage::getQGSPage() const
+{
+    return m_graphicsScene;
+}
+
+QGVPage* ViewProviderPage::getQGVPage() const
+{
+    return m_graphicsView;
+}
+
 ViewProviderPageExtension* ViewProviderPage::getVPPExtension() const
 {
     auto vpe = getExtensionByType<ViewProviderPageExtension>();

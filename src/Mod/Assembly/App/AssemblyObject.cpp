@@ -559,8 +559,10 @@ std::shared_ptr<ASMTAssembly> AssemblyObject::makeMbdAssembly()
     return assembly;
 }
 
-App::DocumentObject* AssemblyObject::getJointOfPartConnectingToGround(App::DocumentObject* part,
-                                                                      std::string& name)
+App::DocumentObject* AssemblyObject::getJointOfPartConnectingToGround(
+    App::DocumentObject* part,
+    std::string& name,
+    const std::vector<App::DocumentObject*>& excludeJoints)
 {
     if (!part) {
         return nullptr;
@@ -572,6 +574,11 @@ App::DocumentObject* AssemblyObject::getJointOfPartConnectingToGround(App::Docum
         if (!joint) {
             continue;
         }
+
+        if (std::ranges::find(excludeJoints, joint) != excludeJoints.end()) {
+            continue;
+        }
+
         App::DocumentObject* part1 = getMovingPartFromRef(this, joint, "Reference1");
         App::DocumentObject* part2 = getMovingPartFromRef(this, joint, "Reference2");
         if (!part1 || !part2) {
@@ -1882,43 +1889,19 @@ std::vector<ObjRef> AssemblyObject::getDownstreamParts(App::DocumentObject* part
     return downstreamParts;
 }
 
-std::vector<App::DocumentObject*> AssemblyObject::getUpstreamParts(App::DocumentObject* part,
-                                                                   int limit)
-{
-    if (!part) {
-        return {};
-    }
-
-    if (limit > 1000) {  // Infinite loop protection
-        return {};
-    }
-    limit++;
-
-    if (isPartGrounded(part)) {
-        return {part};
-    }
-
-    std::string name;
-    App::DocumentObject* connectingJoint = getJointOfPartConnectingToGround(part, name);
-    App::DocumentObject* upPart =
-        getMovingPartFromRef(this,
-                             connectingJoint,
-                             name == "Reference1" ? "Reference2" : "Reference1");
-
-    std::vector<App::DocumentObject*> upstreamParts = getUpstreamParts(upPart, limit);
-    upstreamParts.push_back(part);
-    return upstreamParts;
-}
-
-App::DocumentObject* AssemblyObject::getUpstreamMovingPart(App::DocumentObject* part,
-                                                           App::DocumentObject*& joint,
-                                                           std::string& name)
+App::DocumentObject*
+AssemblyObject::getUpstreamMovingPart(App::DocumentObject* part,
+                                      App::DocumentObject*& joint,
+                                      std::string& name,
+                                      std::vector<App::DocumentObject*> excludeJoints)
 {
     if (!part || isPartGrounded(part)) {
         return nullptr;
     }
 
-    joint = getJointOfPartConnectingToGround(part, name);
+    excludeJoints.push_back(joint);
+
+    joint = getJointOfPartConnectingToGround(part, name, excludeJoints);
     JointType jointType = getJointType(joint);
     if (jointType != JointType::Fixed) {
         return part;

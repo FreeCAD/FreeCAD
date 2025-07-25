@@ -763,6 +763,8 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
             // If fixed joint we need to find the upstream joint to find move mode.
             // For example : Gnd -(revolute)- A -(fixed)- B : if user try to move B, then we should
             // actually move A
+            movingJoint = nullptr;  // reinitialize because getUpstreamMovingPart will call
+            // getJointOfPartConnectingToGround again which will find the same joint.
             auto* upPart =
                 assemblyPart->getUpstreamMovingPart(docsToMove[0].obj, movingJoint, pName);
             if (!movingJoint) {
@@ -1107,7 +1109,9 @@ bool ViewProviderAssembly::canDelete(App::DocumentObject* objBeingDeleted) const
             // List its joints
             std::vector<App::DocumentObject*> joints = assemblyPart->getJointsOfObj(obj);
             for (auto* joint : joints) {
-                objToDel.push_back(joint);
+                if (std::ranges::find(objToDel, joint) == objToDel.end()) {
+                    objToDel.push_back(joint);
+                }
             }
             joints = assemblyPart->getJointsOfPart(obj);
             for (auto* joint : joints) {
