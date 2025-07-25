@@ -45,7 +45,7 @@
 #include "Dummy3DViewer.h"
 
 using namespace std::literals;
-using namespace MillSim;
+using namespace CAMSimulator;
 
 namespace CAMSimulator
 {
@@ -72,7 +72,7 @@ float SimShape::maxDimension() const
     return std::max(std::max(xsize, ysize), zsize);
 }
 
-QPointer<ViewCAMSimulator> viewCAMSimulator;
+QOpenGLExtraFunctions gOpenGLFunctions;
 
 DlgCAMSimulator::DlgCAMSimulator(QWidget* parent)
     : QOpenGLWidget(parent)
@@ -190,7 +190,7 @@ void DlgCAMSimulator::cloneFrom(const DlgCAMSimulator& from)
     mBase.needsUpdate = true;
 
     const auto state = from.mMillSimulator->GetState();
-    mState = std::make_unique<MillSim::MillSimulationState>(state);
+    mState = std::make_unique<CAMSimulator::MillSimulationState>(state);
 }
 
 DlgCAMSimulator* DlgCAMSimulator::instance()
@@ -437,7 +437,7 @@ void DlgCAMSimulator::updateCamera()
 
 void DlgCAMSimulator::initializeGL()
 {
-    initializeOpenGLFunctions();
+    gOpenGLFunctions.initializeOpenGLFunctions();
 }
 
 void DlgCAMSimulator::paintGL()

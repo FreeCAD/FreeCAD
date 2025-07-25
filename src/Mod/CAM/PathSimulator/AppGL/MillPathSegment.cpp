@@ -20,12 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "OpenGlWrapper.h"
 #include "MillPathSegment.h"
-#include "SimShapes.h"
-#include "linmath.h"
-#include "GlUtils.h"
+
 #include <iostream>
+#include <numbers>
+
+#include "SimShapes.h"
+#include "GlUtils.h"
+#include "OpenGlWrapper.h"
+#include "Shader.h"
 
 constexpr auto pi = std::numbers::pi_v<float>;
 
@@ -37,26 +40,28 @@ constexpr auto pi = std::numbers::pi_v<float>;
 #define PY 1
 #define PZ 2
 
-namespace MillSim
+namespace CAMSimulator
 {
 
-bool IsVerticalMotion(MillMotion* m1, MillMotion* m2)
+static bool IsVerticalMotion(const MillMotion& m1, const MillMotion& m2)
 {
-    return (m1->z != m2->z && EQ_FLOAT(m1->x, m2->x) && EQ_FLOAT(m1->y, m2->y));
+    return (m1.z != m2.z && EQ_FLOAT(m1.x, m2.x) && EQ_FLOAT(m1.y, m2.y));
 }
 
-bool IsArcMotion(MillMotion* m)
+static bool IsArcMotion(const MillMotion& m)
 {
-    if (m->cmd != eRotateCCW && m->cmd != eRotateCW) {
+    if (m.cmd != eRotateCCW && m.cmd != eRotateCW) {
         return false;
     }
-    return fabs(m->i) > EPSILON || fabs(m->j) > EPSILON;
+    return fabs(m.i) > EPSILON || fabs(m.j) > EPSILON;
 }
 
 float MillPathSegment::mResolution = 1;
 float MillPathSegment::mSmallRadStep = (pi / 8);
 
-MillPathSegment::MillPathSegment(EndMill* _endmill, MillMotion* from, MillMotion* to)
+MillPathSegment::MillPathSegment(const EndMill& _endmill,
+                                 const MillMotion& from,
+                                 const MillMotion& to)
 {
     mat4x4_identity(mShearMat);
     MotionPosToVec(mStartPos, from);
@@ -66,11 +71,11 @@ MillPathSegment::MillPathSegment(EndMill* _endmill, MillMotion* from, MillMotion
     mZDistance = fabsf(mDiff[PY]);
     mXYZDistance = sqrtf(mXYDistance * mXYDistance + mDiff[PZ] * mDiff[PZ]);
     mXYAngle = atan2f(mDiff[PY], mDiff[PX]);
-    endmill = _endmill;
+    endmill = &_endmill;
     mStartAngRad = mStepAngRad = 0;
     if (IsArcMotion(to)) {
         mMotionType = MTCurved;
-        mRadius = sqrtf(to->j * to->j + to->i * to->i);
+        mRadius = sqrtf(to.j * to.j + to.i * to.i);
         mSmallRad = mRadius <= endmill->radius;
 
         if (mSmallRad) {
@@ -87,11 +92,11 @@ MillPathSegment::MillPathSegment(EndMill* _endmill, MillMotion* from, MillMotion
         }
 
         MotionPosToVec(mCenter, from);
-        mCenter[PX] += to->i;
-        mCenter[PY] += to->j;
-        mArcDir = to->cmd == eRotateCCW ? -1.f : 1.f;
-        mStartAngRad = atan2f(mCenter[PX] - from->x, from->y - mCenter[PY]);
-        float endAng = atan2f(mCenter[PX] - to->x, to->y - mCenter[PY]);
+        mCenter[PX] += to.i;
+        mCenter[PY] += to.j;
+        mArcDir = to.cmd == eRotateCCW ? -1.f : 1.f;
+        mStartAngRad = atan2f(mCenter[PX] - from.x, from.y - mCenter[PY]);
+        float endAng = atan2f(mCenter[PX] - to.x, to.y - mCenter[PY]);
         mSweepAng = (mStartAngRad - endAng) * mArcDir;
         if (mSweepAng < EPSILON) {
             mSweepAng += pi * 2;
@@ -251,4 +256,4 @@ float MillPathSegment::SetQuality(float quality, float maxStockDimension)
     return mResolution;
 }
 
-}  // namespace MillSim
+}  // namespace CAMSimulator
