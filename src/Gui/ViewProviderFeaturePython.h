@@ -244,7 +244,7 @@ public:
                     continue;
                 }
                 static const QSize overlayIconSize  { 10, 10 };
-                QPixmap overlayPixmap = Gui::BitmapFactory().pixmapFromSvg(name.c_str(), overlayIconSize));
+                QPixmap overlayPixmap = Gui::BitmapFactory().pixmapFromSvg(name.c_str(), overlayIconSize);
                 if (!overlayPixmap.isNull()) {
                     currentIcon =
                         Gui::BitmapFactoryInst::mergePixmap(currentIcon,
