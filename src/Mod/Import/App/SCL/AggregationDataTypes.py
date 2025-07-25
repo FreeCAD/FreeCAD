@@ -178,10 +178,7 @@ class ARRAY(BaseType.Type, BaseType.Aggregate):
         indeterminate, or False otherwise"""
         if None in self._container:
             return Unknown
-        if self.get_size() - len(set(self._container)) > 0:  # some items are repeated
-            return False
-        else:
-            return True
+        return not bool(self.get_size() - len(set(self._container)) > 0)  # some items are repeated
 
     def __getitem__(self, index):
         if index < self._bound_1:
@@ -323,10 +320,7 @@ class LIST(BaseType.Type, BaseType.Aggregate):
         indeterminate, or False otherwise"""
         if None in self._container:
             return Unknown
-        if self.get_size() - len(set(self._container)) > 0:  # some items are repeated
-            return False
-        else:
-            return True
+        return not bool(self.get_size() - len(set(self._container)) > 0)  # some items are repeated
 
     def __getitem__(self, index):
         # case bounded
@@ -526,10 +520,7 @@ class BAG(BaseType.Type, BaseType.Aggregate):
         indeterminate, or False otherwise"""
         if None in self._container:
             return Unknown
-        if self.get_size() - len(set(self._container)) > 0:  # some items are repeated
-            return False
-        else:
-            return True
+        return not bool(self.get_size() - len(set(self._container)) > 0)  # some items are repeated
 
 
 class SET(BaseType.Type, BaseType.Aggregate):
