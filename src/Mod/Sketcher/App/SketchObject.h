@@ -1021,7 +1021,9 @@ public:
 
 private:
     /// Internal helper method for exposeInternalGeometryForType
-    void addAndCleanup(std::vector<Part::Geometry*>& igeo, std::vector<Constraint*>& icon);
+    /// Add geometry and constraints to `this`, then delete the geometry and constraints in the
+    /// vectors Note that the contents of the two vectors are invalid after this call.
+    void addAndCleanup(std::vector<Part::Geometry*> igeo, std::vector<Constraint*> icon);
 
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to
     bool allowOtherBody;

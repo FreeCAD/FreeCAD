@@ -1415,7 +1415,6 @@ int SketchObject::moveGeometries(const std::vector<GeoElementId>& geoEltIds, con
     if (lastSolverStatus == 0) {
         std::vector<Part::Geometry*> geomlist = solvedSketch.extractGeometry();
         Geometry.setValues(geomlist);
-        // Constraints.acceptGeometry(getCompleteGeometry());
         for (auto* geo :  geomlist) {
             if (geo){
                 delete geo;
@@ -1571,32 +1570,32 @@ Base::Vector3d SketchObject::getPointForGeometry<>(const Part::GeomBSplineCurve 
 
 Base::Vector3d SketchObject::getPoint(const Part::Geometry *geo, PointPos PosId)
 {
-    if (auto asPoint = freecad_cast<Part::GeomPoint*>(geo)) {
-        return getPointForGeometry<Part::GeomPoint>(asPoint, PosId);
+    if (auto point = freecad_cast<Part::GeomPoint*>(geo)) {
+        return getPointForGeometry<Part::GeomPoint>(point, PosId);
     }
-    else if (auto asLineSegment = freecad_cast<Part::GeomLineSegment*>(geo)) {
-        return getPointForGeometry<Part::GeomLineSegment>(asLineSegment, PosId);
+    else if (auto lineSegment = freecad_cast<Part::GeomLineSegment*>(geo)) {
+        return getPointForGeometry<Part::GeomLineSegment>(lineSegment, PosId);
     }
-    else if (auto asCircle = freecad_cast<Part::GeomCircle*>(geo)) {
-        return getPointForGeometry<Part::GeomCircle>(asCircle, PosId);
+    else if (auto circle = freecad_cast<Part::GeomCircle*>(geo)) {
+        return getPointForGeometry<Part::GeomCircle>(circle, PosId);
     }
-    else if (auto asEllipse = freecad_cast<Part::GeomEllipse*>(geo)) {
-        return getPointForGeometry<Part::GeomEllipse>(asEllipse, PosId);
+    else if (auto ellipse = freecad_cast<Part::GeomEllipse*>(geo)) {
+        return getPointForGeometry<Part::GeomEllipse>(ellipse, PosId);
     }
-    else if (auto asArcOfCircle = freecad_cast<Part::GeomArcOfCircle*>(geo)) {
-        return getPointForGeometry<Part::GeomArcOfCircle>(asArcOfCircle, PosId);
+    else if (auto arcOfCircle = freecad_cast<Part::GeomArcOfCircle*>(geo)) {
+        return getPointForGeometry<Part::GeomArcOfCircle>(arcOfCircle, PosId);
     }
-    else if (auto asArcOfEllipse = freecad_cast<Part::GeomArcOfEllipse*>(geo)) {
-        return getPointForGeometry<Part::GeomArcOfEllipse>(asArcOfEllipse, PosId);
+    else if (auto arcOfEllipse = freecad_cast<Part::GeomArcOfEllipse*>(geo)) {
+        return getPointForGeometry<Part::GeomArcOfEllipse>(arcOfEllipse, PosId);
     }
-    else if (auto asArcOfHyperbola = freecad_cast<Part::GeomArcOfHyperbola*>(geo)) {
-        return getPointForGeometry<Part::GeomArcOfHyperbola>(asArcOfHyperbola, PosId);
+    else if (auto arcOfHyperbola = freecad_cast<Part::GeomArcOfHyperbola*>(geo)) {
+        return getPointForGeometry<Part::GeomArcOfHyperbola>(arcOfHyperbola, PosId);
     }
-    else if (auto asArcOfParabola = freecad_cast<Part::GeomArcOfParabola*>(geo)) {
-        return getPointForGeometry<Part::GeomArcOfParabola>(asArcOfParabola, PosId);
+    else if (auto arcOfParabola = freecad_cast<Part::GeomArcOfParabola*>(geo)) {
+        return getPointForGeometry<Part::GeomArcOfParabola>(arcOfParabola, PosId);
     }
-    else if (auto asBSplineCurve = freecad_cast<Part::GeomBSplineCurve*>(geo)) {
-        return getPointForGeometry<Part::GeomBSplineCurve>(asBSplineCurve, PosId);
+    else if (auto bSplineCurve = freecad_cast<Part::GeomBSplineCurve*>(geo)) {
+        return getPointForGeometry<Part::GeomBSplineCurve>(bSplineCurve, PosId);
     }
     return Base::Vector3d();
 }
@@ -5577,7 +5576,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomEllipse>(const int Geo
     return incrgeo;
 }
 
-void SketchObject::addAndCleanup(std::vector<Part::Geometry*>& igeo, std::vector<Constraint*>& icon)
+void SketchObject::addAndCleanup(std::vector<Part::Geometry*> igeo, std::vector<Constraint*> icon)
 {
     this->addGeometry(igeo, true);
     this->addConstraints(icon);
@@ -7041,14 +7040,6 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
                                                spath.getDocumentObjectName().getString()
                                                    + std::string(1, '.') + spath.toString()));
                 }
-                // (there is a plausible alternative for a slightly different use case to copy the
-                // expression of the parent if one is existing)
-                /*
-                 *           App::PropertyExpressionEngine::ExpressionInfo expr_info =
-                 * psObj->getExpression(path);
-                 *
-                 *           if (expr_info.expression)*/
-                // App::Expression * expr = parse(this, const std::string& buffer);
                 setExpression(Constraints.createPath(nextcid), std::move(expr));
             }
         }
@@ -8601,7 +8592,7 @@ void processFace (const Rotation& invRot,
                   const Placement& invPlm,
                   const gp_Trsf& mov,
                   const gp_Pln& sketchPlane,
-                  const opencascade::handle<Geom_Plane>& gPlane,
+                  const Handle(Geom_Plane)& gPlane,
                   gp_Ax3& sketchAx3,
                   TopoDS_Shape& aProjFace,
                   std::vector<std::unique_ptr<Part::Geometry>>& geos,
@@ -10811,7 +10802,6 @@ bool SketchObject::AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce, bool
     using std::numbers::pi;
 
     try {
-        // assert ( cstr->Type == Tangent  ||  cstr->Type == Perpendicular);
         /*tangency type already set. If not bForce - don't touch.*/
         if (cstr->getValue() != 0.0 && !bForce)
             return true;
