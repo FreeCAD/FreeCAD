@@ -164,10 +164,8 @@ int DlgAddPropertyVarSet::findLabelRow(const char* labelName, QFormLayout* layou
 
 void DlgAddPropertyVarSet::removeExistingWidget(QFormLayout* formLayout, int labelRow)
 {
-    QLayoutItem* existingItem = formLayout->itemAt(labelRow, QFormLayout::FieldRole);
-    if (existingItem != nullptr) {
-        QWidget* existingWidget = existingItem->widget();
-        if (existingWidget != nullptr) {
+    if (QLayoutItem* existingItem = formLayout->itemAt(labelRow, QFormLayout::FieldRole)) {
+        if (QWidget *existingWidget = existingItem->widget()) {
             formLayout->removeWidget(existingWidget);
             existingWidget->deleteLater();
         }
@@ -414,7 +412,7 @@ void DlgAddPropertyVarSet::initializeValue()
 
 void DlgAddPropertyVarSet::setTitle()
 {
-    setWindowTitle(QObject::tr("Add a property to %1").arg(QString::fromStdString(varSet->getFullName())));
+    setWindowTitle(tr("Add a property to %1").arg(QString::fromStdString(varSet->getFullName())));
 }
 
 void DlgAddPropertyVarSet::setOkEnabled(bool enabled)
@@ -584,11 +582,10 @@ bool DlgAddPropertyVarSet::clearBoundProperty()
     // Both a property link and an expression are bound to a property and as a
     // result need the value to be reset.
     using PropertyLinkItem = Gui::PropertyEditor::PropertyLinkItem;
-    bool isPropertyLinkItem = dynamic_cast<PropertyLinkItem*>(propertyItem.get()) != nullptr;
+    bool isPropertyLinkItem = qobject_cast<PropertyLinkItem*>(propertyItem.get()) != nullptr;
     bool valueNeedsReset = isPropertyLinkItem || propertyItem->hasExpression();
 
-    App::Property* prop = propertyItem->getFirstProperty();
-    if (prop) {
+    if (App::Property* prop = propertyItem->getFirstProperty()) {
         propertyItem->unbind();
         propertyItem->removeProperty(prop);
         varSet->removeDynamicProperty(prop->getName());
@@ -636,8 +633,8 @@ void DlgAddPropertyVarSet::onGroupFinished()
     if (isGroupValid() && propertyItem) {
         std::string group = comboBoxGroup.currentText().toStdString();
         std::string doc = ui->lineEditToolTip->text().toStdString();
-        App::Property* prop = propertyItem->getFirstProperty();
-        if (prop && prop->getGroup() != group) {
+        if (App::Property* prop = propertyItem->getFirstProperty();
+            prop && prop->getGroup() != group) {
             varSet->changeDynamicProperty(prop, group.c_str(), doc.c_str());
         }
     }
@@ -787,8 +784,7 @@ void DlgAddPropertyVarSet::accept()
 void DlgAddPropertyVarSet::reject()
 {
     if (propertyItem) {
-        App::Property* prop = propertyItem->getFirstProperty();
-        if (prop) {
+        if (App::Property* prop = propertyItem->getFirstProperty()) {
             App::PropertyContainer* container = prop->getContainer();
             container->removeDynamicProperty(prop->getName());
             closeTransaction(TransactionOption::Abort);

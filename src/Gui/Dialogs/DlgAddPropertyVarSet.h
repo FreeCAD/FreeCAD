@@ -96,9 +96,9 @@ private:
         Abort = true
     };
 
-    enum class FieldChange : bool {
-        Name = false,
-        Type = true
+    enum class FieldChange : std::uint8_t {
+        Name,
+        Type
     };
 
     int findLabelRow(const char* labelName, QFormLayout* layout);
