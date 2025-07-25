@@ -29,15 +29,18 @@
  ***************************************************************************/
 
 #include "SimDisplay.h"
-#include "linmath.h"
-#include "OpenGlWrapper.h"
+
 #include <cmath>
+
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 
+#include "linmath.h"
+#include "OpenGlWrapper.h"
+
 constexpr auto pi = std::numbers::pi_v<float>;
 
-namespace MillSim
+namespace CAMSimulator
 {
 
 void SimDisplay::InitShaders()
@@ -591,4 +594,4 @@ void SimDisplay::UpdateProjectionMatrix()
     updateDisplay = true;
 }
 
-}  // namespace MillSim
+}  // namespace CAMSimulator

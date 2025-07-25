@@ -23,7 +23,6 @@
 #ifndef __glutils_h__
 #define __glutils_h__
 
-#include "OpenGlWrapper.h"
 #include "linmath.h"
 
 constexpr auto EPSILON = 0.00001f;
@@ -57,7 +56,7 @@ constexpr auto EPSILON = 0.00001f;
 #define GLDELETE_RENDERBUFFER(x) GLDELETE(Renderbuffers, x)
 #define GLDELETE_BUFFER(x) GLDELETE(Buffers, x)
 
-namespace MillSim
+namespace CAMSimulator
 {
 
 extern const mat4x4 identityMat;
@@ -65,6 +64,6 @@ extern const mat4x4 identityMat;
 void GLClearError();
 bool GLLogError();
 
-}  // namespace MillSim
+}  // namespace CAMSimulator
 
 #endif  // !__glutils_h__
