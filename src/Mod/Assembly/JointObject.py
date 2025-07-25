@@ -563,8 +563,10 @@ class Joint:
 
         if hasattr(joint, "Activated"):
             activated = joint.Activated
-            if not activated: 
-                print("The 'Activated' property has been replaced by the 'Suppressed' property. Your file has a deactivated joint that is being migrated. If you open back this file in an older version, it will not be deactivated anymore.")
+            if not activated:
+                print(
+                    "The 'Activated' property has been replaced by the 'Suppressed' property. Your file has a deactivated joint that is being migrated. If you open back this file in an older version, it will not be deactivated anymore."
+                )
             joint.removeProperty("Activated")
             joint.Suppressed = not activated
 
