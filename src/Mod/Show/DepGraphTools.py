@@ -34,7 +34,7 @@ def getAllDependencies(feat, out_list: bool = None):
     while len(list_traversing_now) > 0:
         list_to_be_traversed_next = []
         for feat in list_traversing_now:
-            for dep in (feat.OutList if out_list else feat.InList):
+            for dep in feat.OutList if out_list else feat.InList:
                 if not (dep in set_of_deps):
                     set_of_deps.add(dep)
                     list_of_deps.append(dep)
@@ -44,5 +44,5 @@ def getAllDependencies(feat, out_list: bool = None):
 
     return list_of_deps
 
-getAllDependent = lambda feat: getAllDependencies(feat, out_list=False)
 
+getAllDependent = lambda feat: getAllDependencies(feat, out_list=False)
