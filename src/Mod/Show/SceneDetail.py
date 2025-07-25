@@ -64,8 +64,7 @@ class SceneDetail(object):
         if isinstance(other, self.__class__):
             return self.data == other.data and self.data is not None
         else:
-            raise TypeError(
-                f"{repr(self)} can't be compared with {repr(other)}")
+            raise TypeError(f"{repr(self)} can't be compared with {repr(other)}")
 
     # </interface>
 
