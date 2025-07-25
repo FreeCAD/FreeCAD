@@ -23,7 +23,6 @@
 # ***************************************************************************
 
 import os
-import platform
 import shutil
 
 import FreeCAD
@@ -39,21 +38,16 @@ def get_python_exe() -> str:
     prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/PythonConsole")
     python_exe = prefs.GetString("ExternalPythonExecutable", "Not set")
     fc_dir = FreeCAD.getHomePath()
-    if not python_exe or python_exe == "Not set" or not os.path.exists(python_exe):
-        python_exe = os.path.join(fc_dir, "bin", "python3")
-        if "Windows" in platform.system():
-            python_exe += ".exe"
+    if python_exe == "Not set":
+        python_exe = None
+    for i in ['python3', 'python']:
+        if not python_exe or not os.path.exists(python_exe):
+            python_exe = os.path.join(fc_dir, "bin", i)
+            if os.name == "nt": python_exe += ".exe"
 
-    if not python_exe or not os.path.exists(python_exe):
-        python_exe = os.path.join(fc_dir, "bin", "python")
-        if "Windows" in platform.system():
-            python_exe += ".exe"
-
-    if not python_exe or not os.path.exists(python_exe):
-        python_exe = shutil.which("python3")
-
-    if not python_exe or not os.path.exists(python_exe):
-        python_exe = shutil.which("python")
+    for i in ['python3', 'python']:
+        if not python_exe or not os.path.exists(python_exe):
+            python_exe = shutil.which(i)
 
     if not python_exe or not os.path.exists(python_exe):
         return ""

@@ -31,17 +31,16 @@ __url__ = "https://www.freecad.org"
 import os
 import os.path
 import subprocess
-from platform import system
 
 import FreeCAD
-
-from . import writer
-from .. import run
-from .. import settings
 from feminout import importZ88O2Results
 from femmesh import meshsetsgetter
 from femtools import femutils
 from femtools import membertools
+
+from . import writer
+from .. import run
+from .. import settings
 
 SOLVER_TYPES = ["sorcg", "siccg", "choly"]
 
