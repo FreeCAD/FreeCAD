@@ -309,10 +309,8 @@ class Renderer:
                             xinters = (p.y-p1.y)*(p2.x-p1.x)/(p2.y-p1.y)+p1.x
                             if (p1.x == p2.x) or (p.x <= xinters):
                                 count += 1
-        if count % 2 == 0:
-            return False
-        else:
-            return True
+        return not bool(count % 2 == 0)
+
 
     def zOverlaps(self,face1,face2):
         "Checks if face1 overlaps face2 in Z direction"
