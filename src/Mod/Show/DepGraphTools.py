@@ -21,10 +21,12 @@
 # ***************************************************************************/
 
 
-def getAllDependencies(feat):
+def getAllDependencies(feat, out_list: bool = None):
     """getAllDependencies(feat): gets all features feat depends on, directly or indirectly.
     Returns a list, with deepest dependencies last. feat is not included in the list, except
     if the feature depends on itself (dependency loop)."""
+    if out_list is None:
+        out_list = True
     list_traversing_now = [feat]
     set_of_deps = set()
     list_of_deps = []
@@ -32,7 +34,7 @@ def getAllDependencies(feat):
     while len(list_traversing_now) > 0:
         list_to_be_traversed_next = []
         for feat in list_traversing_now:
-            for dep in feat.OutList:
+            for dep in (feat.OutList if out_list else feat.InList):
                 if not (dep in set_of_deps):
                     set_of_deps.add(dep)
                     list_of_deps.append(dep)
@@ -42,24 +44,5 @@ def getAllDependencies(feat):
 
     return list_of_deps
 
+getAllDependent = lambda feat: getAllDependencies(feat, out_list=False)
 
-def getAllDependent(feat):
-    """getAllDependent(feat): gets all features that depend on feat, directly or indirectly.
-    Returns a list, with deepest dependencies last. feat is not included in the list, except
-    if the feature depends on itself (dependency loop)."""
-    list_traversing_now = [feat]
-    set_of_deps = set()
-    list_of_deps = []
-
-    while len(list_traversing_now) > 0:
-        list_to_be_traversed_next = []
-        for feat in list_traversing_now:
-            for dep in feat.InList:
-                if not (dep in set_of_deps):
-                    set_of_deps.add(dep)
-                    list_of_deps.append(dep)
-                    list_to_be_traversed_next.append(dep)
-
-        list_traversing_now = list_to_be_traversed_next
-
-    return list_of_deps
