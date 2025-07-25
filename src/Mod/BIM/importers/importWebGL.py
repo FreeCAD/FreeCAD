@@ -205,7 +205,7 @@ def export(
     """Exports objects to an html file.
 
     Returns:
-        bool: True if export was successful, False if not (particulary,
+        bool: True if export was successful, False if not (particularly,
         False if no template was available).
     """
 
