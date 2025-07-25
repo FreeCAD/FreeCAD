@@ -167,9 +167,7 @@ class DebianGitHub(VersionControl):
         try:
             import requests
 
-            request_url = "{}/repos/{}/{}/commits?per_page=1&sha={}".format(
-                base_url, owner, repo, sha
-            )
+            request_url = f"{base_url}/repos/{owner}/{repo}/commits?per_page=1&sha={sha}"
             commit_req = requests.get(request_url)
             if not commit_req.ok:
                 return False
@@ -208,7 +206,7 @@ class DebianGitHub(VersionControl):
         try:
             # Try to determine the branch of the sha
             # There is no function of the rest API of GH but with the url below we get HTML code
-            branch_url = "https://github.com/{}/{}/branch_commits/{}".format(owner, repo, sha)
+            branch_url = f"https://github.com/{owner}/{repo}/branch_commits/{sha}"
             branch_req = requests.get(branch_url)
             if branch_req.ok:
                 html = branch_req.text
@@ -227,7 +225,7 @@ class DebianGitHub(VersionControl):
         except Exception:
             pass
 
-        self.url = "git://github.com/{}/{}.git {}".format(owner, repo, self.branch)
+        self.url = f"git://github.com/{owner}/{repo}.git {self.branch}"
         return True
 
     def writeVersion(self, lines):

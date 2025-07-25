@@ -265,7 +265,7 @@ class ContainerError(RuntimeError):
 
 class NotAContainerError(ContainerError):
     def __init__(self, name="None"):
-        ContainerError.__init__(self, "'{}' is not recognized as container".format(name))
+        ContainerError.__init__(self, f"'{name}' is not recognized as container")
 
 
 class ContainerTreeError(ContainerError):

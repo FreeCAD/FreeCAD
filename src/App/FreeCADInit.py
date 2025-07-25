@@ -40,7 +40,7 @@ def removeFromPath(module_name):
         if module_name in path:
             sys.path.remove(path)
             return
-    Wrn(module_name + " not found in sys.path\n")
+    Wrn(f"{module_name} not found in sys.path\n")
 
 def setupSearchPaths(PathExtension):
     # DLL resolution in Python 3.8 on Windows has changed
@@ -58,7 +58,7 @@ def setupSearchPaths(PathExtension):
         try:
             PathEnvironment += path + os.pathsep
         except UnicodeDecodeError:
-            Wrn('Filter invalid module path: u{}\n'.format(repr(path)))
+            Wrn(f'Filter invalid module path: u{repr(path)}\n')
 
     # new paths must be prepended to avoid to load a wrong version of a library
     try:
@@ -556,22 +556,22 @@ class FCADLogger(object):
 
         if self.timing:
             now = datetime.now()
-            prefix += '{} '.format((now-self.laststamp).total_seconds())
+            prefix += f'{(now-self.laststamp).total_seconds()} '
             self.laststamp = now
 
         if self.printTag:
-            prefix += '<{}> '.format(self.tag)
+            prefix += f'<{self.tag}> '
 
         if self.lineno:
             try:
                 frame = sys._getframe(frame+1)
-                prefix += '{}({}): '.format(os.path.basename(
-                    frame.f_code.co_filename),frame.f_lineno)
+                prefix += f'{os.path.basename(
+                    frame.f_code.co_filename)}({frame.f_lineno}): '
             except Exception:
                 frame = inspect.stack()[frame+1]
-                prefix += '{}({}): '.format(os.path.basename(frame[1]),frame[2])
+                prefix += f'{os.path.basename(frame[1])}({frame[2]}): '
 
-        self.__class__._printer[level]('{}{}\n'.format(prefix,msg))
+        self.__class__._printer[level](f'{prefix}{msg}\n')
 
         if not self.noUpdateUI and FreeCAD.GuiUp:
             import FreeCADGui
@@ -705,7 +705,7 @@ FreeCAD.Logger = FCADLogger
 try:
     InitApplications()
 except Exception as e:
-    Err('Error in InitApplications ' + str(e) + '\n')
+    Err(f'Error in InitApplications {e}\n')
     Err('-'*80+'\n')
     Err(traceback.format_exc())
     Err('-'*80+'\n')

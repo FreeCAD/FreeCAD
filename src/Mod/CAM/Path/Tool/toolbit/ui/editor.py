@@ -266,7 +266,7 @@ class ToolBitEditor(QtGui.QWidget):
         title = self.default_title
         tool_name = self.toolbit.label
         if tool_name:
-            title = "{} - {}".format(tool_name, title)
+            title = f"{tool_name} - {title}"
         self.form.setWindowTitle(title)
 
     def _on_tab_switched(self, index):

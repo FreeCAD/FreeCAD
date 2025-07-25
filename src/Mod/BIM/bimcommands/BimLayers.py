@@ -68,7 +68,7 @@ class BIM_Layers:
 
         from PySide import QtGui
 
-        # chech if the dialog is running)
+        # check if the dialog is running)
         if getattr(self, "dialog", None):
             return
 
