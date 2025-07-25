@@ -48,7 +48,7 @@ def copyTemplate(dirFrom, dirTo, oldName, newName, MatchFile, MatchDir):
                     hit = 1
                     break
             if hit:
-                print("Ignore file " + file)
+                print(f"Ignore file {file}")
                 continue
             try:
                 if verbose > 1:
@@ -65,7 +65,7 @@ def copyTemplate(dirFrom, dirTo, oldName, newName, MatchFile, MatchDir):
                     hit = 1
                     break
             if hit:
-                print("Ignore directory " + file)
+                print(f"Ignore directory {file}")
                 continue
             if verbose:
                 print("copying dir ", pathFrom, " to ", pathTo)

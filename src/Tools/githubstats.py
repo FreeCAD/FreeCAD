@@ -1,12 +1,6 @@
 #!/usr/bin/python
-
-print("Fetching download statistics from github...")
-
 import requests
-
+print("Fetching download statistics from github...")
 r = requests.get("https://api.github.com/repos/FreeCAD/FreeCAD/releases")
-myobj = r.json()
-for p in myobj:
-    if "assets" in p:
-        for asset in p["assets"]:
-            print(f"{asset['name']}: {str(asset['download_count'])} downloads")
+[[print(f"{asset['name']}: {str(asset['download_count'])} downloads") for asset in p["assets"]] for p in r.json() if "assets" in p]
+
