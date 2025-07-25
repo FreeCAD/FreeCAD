@@ -79,6 +79,8 @@ class Point(gui_base_original.Creator):
         It should automatically update the coordinates in the widgets
         of the task panel.
         """
+        if not self.ui.mouse:
+            return
         event = event_cb.getEvent()
         mousepos = event.getPosition().getValue()
         ctrl = event.wasCtrlDown()
@@ -101,6 +103,8 @@ class Point(gui_base_original.Creator):
         It should act as if the Enter key was pressed, or the OK button
         was pressed in the task panel.
         """
+        if not self.ui.mouse:
+            return
         if event_cb:
             event = event_cb.getEvent()
             if (event.getState() != coin.SoMouseButtonEvent.DOWN or
