@@ -25,6 +25,7 @@
 
 import sys
 import os.path
+import tempfile
 import time
 import getopt
 from urllib.request import urlopen
@@ -958,7 +959,7 @@ def generateExportAttributes(outfile, element, hasAttributes):
             cleanName = cleanupName(name)
             capName = cleanName.capitalize()
             if attrDef.getUse() == "optional":
-                s1 = "        if self.get%s() is not None:\n" % (capName,)
+                s1 = f"        if self.get{capName}() is not None:\n"
                 outfile.write(s1)
                 s1 = "            outfile.write(' %s=\"%%s\"' %% (self.get%s(), ))\n" % (
                     name,
@@ -3268,7 +3269,7 @@ def generate(outfileName, subclassFilename, behaviorFilename, prefix, root, supe
     if outfileName:
         outfile = makeFile(outfileName)
     if not outfile:
-        outfile = os.tmpfile()
+        outfile = tempfile.TemporaryFile()
     processed = []
     generateHeader(outfile, prefix)
     DelayedElements = []
