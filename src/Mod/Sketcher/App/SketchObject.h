@@ -1020,6 +1020,9 @@ public:
     void changeConstraintAfterDeletingGeo(Constraint* constr, const int deletedGeoId) const;
 
 private:
+    /// Internal helper method for exposeInternalGeometryForType
+    void addAndCleanup(std::vector<Part::Geometry*>& igeo, std::vector<Constraint*>& icon);
+
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to
     bool allowOtherBody;
 

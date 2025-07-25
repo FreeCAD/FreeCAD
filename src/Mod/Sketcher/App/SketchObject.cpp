@@ -730,6 +730,8 @@ public:
     }
 };
 
+int addAndCleanup(int incrgeo, std::vector<Part::Geometry*>& igeo, std::vector<Constraint*>& icon);
+int addAndCleanup(std::vector<Part::Geometry*>& igeo, std::vector<Constraint*>& icon);
 void SketchObject::updateGeoHistory() {
     if(!geoHistoryLevel) return;
 
@@ -1819,7 +1821,7 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
 
     // Block acceptGeometry in OnChanged to avoid unnecessary checks and updates
     {
-        Base::StateLocker lock(internaltransaction, true);
+        Base::StateLocker preventUpdate(internaltransaction, true);
         this->Geometry.setValues(std::move(newVals));
         this->Constraints.setValues(std::move(newConstraints));
     }
@@ -1942,7 +1944,7 @@ int SketchObject::delGeometriesExclusiveList(const std::vector<int>& GeoIds)
 
     // Block acceptGeometry in OnChanged to avoid unnecessary checks and updates
     {
-        Base::StateLocker lock(internaltransaction, true);
+        Base::StateLocker preventUpdate(internaltransaction, true);
         this->Geometry.setValues(newVals);
         this->Constraints.setValues(std::move(constraints));
     }
@@ -2001,7 +2003,7 @@ int SketchObject::deleteAllGeometry()
 
     // Avoid unnecessary updates and checks as this is a transaction
     {
-        Base::StateLocker lock(internaltransaction, true);
+        Base::StateLocker preventUpdate(internaltransaction, true);
         this->Geometry.setValues(newVals);
         this->Constraints.setValues(newConstraints);
     }
@@ -5303,7 +5305,7 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList, const Base::Vector3
 
     // Block acceptGeometry in OnChanged to avoid unnecessary checks and updates
     {
-        Base::StateLocker lock(internaltransaction, true);
+        Base::StateLocker preventUpdate(internaltransaction, true);
         Geometry.setValues(std::move(newgeoVals));
 
         if (newconstrVals.size() > constrvals.size())
@@ -5573,18 +5575,22 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomEllipse>(const int Geo
         icon.push_back(newConstr);
     }
 
+    addAndCleanup(igeo, icon);
+    return incrgeo;
+}
+
+void SketchObject::addAndCleanup(std::vector<Part::Geometry*>& igeo, std::vector<Constraint*>& icon)
+{
     this->addGeometry(igeo, true);
     this->addConstraints(icon);
 
-    for (auto& geo : igeo) {
-        delete geo;
+    for (auto& geoToDelete : igeo) {
+        delete geoToDelete;
     }
 
-    for (auto& con : icon) {
-        delete con;
+    for (auto& constraintToDelete : icon) {
+        delete constraintToDelete;
     }
-
-    return incrgeo;// number of added elements
 }
 
 // TODO: This is a repeat of ellipse. Can we do some code reuse?
@@ -5709,19 +5715,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfEllipse>(const in
         icon.push_back(newConstr);
     }
 
-    this->addGeometry(igeo, true);
-    this->addConstraints(icon);
-
-    for (auto& geo : igeo) {
-        delete geo;
-    }
-
-    for (auto& con : icon) {
-        delete con;
-    }
-
-    return incrgeo;// number of added elements
-
+    addAndCleanup(igeo, icon);
+    return incrgeo;  // number of added elements
 }
 
 template <>
@@ -5827,18 +5822,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfHyperbola>(const 
         incrgeo++;
     }
 
-    this->addGeometry(igeo, true);
-    this->addConstraints(icon);
-
-    for (auto& geo : igeo) {
-        delete geo;
-    }
-
-    for (auto& con : icon) {
-        delete con;
-    }
-
-    return incrgeo;// number of added elements
+    addAndCleanup(igeo, icon);
+    return incrgeo;  // number of added elements
 }
 
 template <>
@@ -5914,18 +5899,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfParabola>(const i
         incrgeo++;
     }
 
-    this->addGeometry(igeo, true);
-    this->addConstraints(icon);
-
-    for (auto& geo : igeo) {
-        delete geo;
-    }
-
-    for (auto& con : icon) {
-        delete con;
-    }
-
-    return incrgeo;// number of added elements
+    addAndCleanup(igeo, icon);
+    return incrgeo;  // number of added elements
 }
 
 template <>
@@ -6062,18 +6037,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomBSplineCurve>(const in
 
     Q_UNUSED(isfirstweightconstrained);
 
-    this->addGeometry(igeo, true);
-    this->addConstraints(icon);
-
-    for (auto& geo : igeo) {
-        delete geo;
-    }
-
-    for (auto& con : icon) {
-        delete con;
-    }
-
-    return incrgeo;// number of added elements
+    addAndCleanup(igeo, icon);
+    return incrgeo;  // number of added elements
 }
 
 int SketchObject::exposeInternalGeometry(int GeoId)
@@ -6431,7 +6396,7 @@ bool SketchObject::convertToNURBS(int GeoId)
 
     // Block checks and updates in OnChanged to avoid unnecessary checks and updates
     {
-        Base::StateLocker lock(internaltransaction, true);
+        Base::StateLocker preventUpdate(internaltransaction, true);
 
         if (GeoId < 0) {// external geometry
             newVals.push_back(bspline);
@@ -6719,7 +6684,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
 
     // Block acceptGeometry in OnChanged to avoid unnecessary checks and updates
     {
-        Base::StateLocker lock(internaltransaction, true);
+        Base::StateLocker preventUpdate(internaltransaction, true);
         Geometry.setValues(std::move(newVals));
 
         this->Constraints.setValues(std::move(newcVals));
@@ -6864,7 +6829,7 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
 
     // Block acceptGeometry in OnChanged to avoid unnecessary checks and updates
     {
-        Base::StateLocker lock(internaltransaction, true);
+        Base::StateLocker preventUpdate(internaltransaction, true);
         Geometry.setValues(std::move(newVals));
 
         this->Constraints.setValues(std::move(newcVals));
@@ -7046,7 +7011,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
 
     // Block acceptGeometry in OnChanged to avoid unnecessary checks and updates
     {
-        Base::StateLocker lock(internaltransaction, true);
+        Base::StateLocker preventUpdate(internaltransaction, true);
         Geometry.setValues(std::move(newVals));
         this->Constraints.setValues(std::move(newcVals));
     }
@@ -11679,7 +11644,7 @@ int SketchObject::setGeometryId(int GeoId, long id)
     // There is not actual internal transaction going on here, however neither the geometry indices
     // nor the vertices need to be updated so this is a convenient way of preventing it.
     {
-        Base::StateLocker lock(internaltransaction, true);
+        Base::StateLocker preventUpdate(internaltransaction, true);
         this->Geometry.setValues(std::move(newVals));
     }
 
@@ -11706,7 +11671,7 @@ int SketchObject::setGeometryIds(std::vector<std::pair<int, long>> GeoIdsToIds)
     // There is not actual internal transaction going on here, however neither the geometry indices
     // nor the vertices need to be updated so this is a convenient way of preventing it.
     {
-        Base::StateLocker lock(internaltransaction, true);
+        Base::StateLocker preventUpdate(internaltransaction, true);
         this->Geometry.setValues(std::move(newVals));
     }
 
