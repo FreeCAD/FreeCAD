@@ -434,9 +434,7 @@ class ViewProviderMotion:
 
         typeStr = "Linear" if self.app_obj.MotionType == "Linear" else "Angular"
 
-        self.app_obj.Label = "{label} ({type_})".format(
-            label=self.app_obj.Joint[0].Label, type_=translate("Assembly", typeStr)
-        )
+        self.app_obj.Label = f"{self.app_obj.Joint[0].Label} ({translate('Assembly', typeStr)})"
 
 
 class MotionEditDialog:

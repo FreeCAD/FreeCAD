@@ -51,7 +51,7 @@ def print_places(places, title="Places"):
     _msg(12*"-")
     _msg(title)
     for i in places:
-        _msg("{}".format(i))
+        _msg(f"{i}")
 
 
 def get_init_values(path, count=6):

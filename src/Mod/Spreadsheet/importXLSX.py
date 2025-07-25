@@ -356,7 +356,7 @@ def handleCells(cellList, actCellSheet, sList):
                 attrName = getText(attrRef.childNodes)
                 indexRef = attrs.getNamedItem("si")
                 indexName = getText(indexRef.childNodes)
-                content = "<f t='{}' si='{}'/>".format(attrName, indexName)
+                content = f"<f t='{attrName}' si='{indexName}'/>"
                 print(f"Unsupported formula in cell {ref}: {content}")
 
         else:

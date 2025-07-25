@@ -282,7 +282,7 @@ def copy_into_bundle(graph, node, bundle_path):
     if not in_bundle(node.path, bundle_path):
         source = os.path.join(node.path, node.name)
         target = os.path.join(bundle_path, "lib", node.name)
-        logging.info("Bundling {}".format(source))
+        logging.info(f"Bundling {source}")
 
         check_call(["cp", "-L", source, target])
 
@@ -371,7 +371,7 @@ def change_libid(graph, node, bundle_path):
         try:
             check_call(["install_name_tool", "-id", node.name, lib])
         except Exception:
-            logging.warning("Failed to change bundle id {} in lib {}".format(node.name, lib))
+            logging.warning(f"Failed to change bundle id {node.name} in lib {lib}")
 
 
 def print_child(graph, node, path):

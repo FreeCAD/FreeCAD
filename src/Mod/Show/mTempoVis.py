@@ -213,9 +213,7 @@ class TempoVis(object):
                 self._restoreDetail(detail)
             except Exception as err:
                 Err(
-                    "TempoVis.restore: failed to restore detail {key}: {err}".format(
-                        key=key, err=str(err)
-                    )
+                    f"TempoVis.restore: failed to restore detail {key}: {err}"
                 )
                 _printTraceback(err)
         if ultimate:
@@ -297,10 +295,8 @@ class TempoVis(object):
                     self.restoreDetail(VProperty(doc_obj, prop_name))
                 except Exception as err:
                     Err(
-                        "TempoVis.restore: failed to restore detail {key}: {err}".format(
-                            key=key, err=str(err)
+                        f"TempoVis.restore: failed to restore detail {key}: {err}"
                         )
-                    )
                     _printTraceback(err)
 
     def saveBodyVisibleFeature(self, doc_obj_or_list):

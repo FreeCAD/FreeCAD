@@ -76,7 +76,7 @@ class TestCore(unittest.TestCase):
         if self.assembly:
             self.jointgroup = self.assembly.newObject("Assembly::JointGroup", "Joints")
 
-        _msg("  Temporary document '{}'".format(self.doc.Name))
+        _msg(f"  Temporary document '{self.doc.Name}'")
 
     def tearDown(self):
         """tearDown()...
@@ -88,34 +88,34 @@ class TestCore(unittest.TestCase):
     def test_create_assembly(self):
         """Create an assembly."""
         operation = "Create Assembly Object"
-        _msg("  Test '{}'".format(operation))
-        self.assertTrue(self.assembly, "'{}' failed".format(operation))
+        _msg(f"  Test '{operation}'")
+        self.assertTrue(self.assembly, f"'{operation}' failed")
 
     def test_create_jointGroup(self):
         """Create a joint group in an assembly."""
         operation = "Create JointGroup Object"
-        _msg("  Test '{}'".format(operation))
-        self.assertTrue(self.jointgroup, "'{}' failed".format(operation))
+        _msg(f"  Test '{operation}'")
+        self.assertTrue(self.jointgroup, f"'{operation}' failed")
 
     def test_create_joint(self):
         """Create a joint in an assembly."""
         operation = "Create Joint Object"
-        _msg("  Test '{}'".format(operation))
+        _msg(f"  Test '{operation}'")
 
         joint = self.jointgroup.newObject("App::FeaturePython", "testJoint")
-        self.assertTrue(joint, "'{}' failed (FeaturePython creation failed)".format(operation))
+        self.assertTrue(joint, f"'{operation}' failed (FeaturePython creation failed)")
         JointObject.Joint(joint, 0)
 
-        self.assertTrue(hasattr(joint, "JointType"), "'{}' failed".format(operation))
+        self.assertTrue(hasattr(joint, "JointType"), f"'{operation}' failed")
 
     def test_create_grounded_joint(self):
         """Create a grounded joint in an assembly."""
         operation = "Create Grounded Joint Object"
-        _msg("  Test '{}'".format(operation))
+        _msg(f"  Test '{operation}'")
 
         groundedjoint = self.jointgroup.newObject("App::FeaturePython", "testJoint")
         self.assertTrue(
-            groundedjoint, "'{}' failed (FeaturePython creation failed)".format(operation)
+            groundedjoint, f"'{operation}' failed (FeaturePython creation failed)"
         )
 
         box = self.assembly.newObject("Part::Box", "Box")
@@ -124,17 +124,17 @@ class TestCore(unittest.TestCase):
 
         self.assertTrue(
             hasattr(groundedjoint, "ObjectToGround"),
-            "'{}' failed: No attribute 'ObjectToGround'".format(operation),
+            f"'{operation}' failed: No attribute 'ObjectToGround'",
         )
         self.assertTrue(
             groundedjoint.ObjectToGround == box,
-            "'{}' failed: ObjectToGround not set correctly.".format(operation),
+            f"'{operation}' failed: ObjectToGround not set correctly.",
         )
 
     def test_find_placement(self):
         """Test find placement of joint."""
         operation = "Find placement"
-        _msg("  Test '{}'".format(operation))
+        _msg(f"  Test '{operation}'")
 
         joint = self.jointgroup.newObject("App::FeaturePython", "testJoint")
         JointObject.Joint(joint, 0)
@@ -152,40 +152,40 @@ class TestCore(unittest.TestCase):
         ref = [self.assembly, [box.Name + ".", box.Name + "."]]
         plc = joint.Proxy.findPlacement(joint, ref)
         targetPlc = App.Placement(App.Vector(), App.Rotation())
-        self.assertTrue(plc.isSame(targetPlc, 1e-6), "'{}' failed - Step 0".format(operation))
+        self.assertTrue(plc.isSame(targetPlc, 1e-6), f"'{operation}' failed - Step 0")
 
         # Step 1 : box with placement. Face + Vertex
         ref = [self.assembly, [box.Name + ".Face6", box.Name + ".Vertex7"]]
         plc = joint.Proxy.findPlacement(joint, ref)
         targetPlc = App.Placement(App.Vector(L, W, H), App.Rotation())
-        self.assertTrue(plc.isSame(targetPlc, 1e-6), "'{}' failed - Step 1".format(operation))
+        self.assertTrue(plc.isSame(targetPlc, 1e-6), f"'{operation}' failed - Step 1")
 
         # Step 2 : box with placement. Edge + Vertex
         ref = [self.assembly, [box.Name + ".Edge8", box.Name + ".Vertex8"]]
         plc = joint.Proxy.findPlacement(joint, ref)
         targetPlc = App.Placement(App.Vector(L, W, 0), App.Rotation(0, -90, 270))
-        self.assertTrue(plc.isSame(targetPlc, 1e-6), "'{}' failed - Step 2".format(operation))
+        self.assertTrue(plc.isSame(targetPlc, 1e-6), f"'{operation}' failed - Step 2")
 
         # Step 3 : box with placement. Vertex
         ref = [self.assembly, [box.Name + ".Vertex3", box.Name + ".Vertex3"]]
         plc = joint.Proxy.findPlacement(joint, ref)
         targetPlc = App.Placement(App.Vector(0, W, H), App.Rotation())
-        _msg("  plc '{}'".format(plc))
-        _msg("  targetPlc '{}'".format(targetPlc))
-        self.assertTrue(plc.isSame(targetPlc, 1e-6), "'{}' failed - Step 3".format(operation))
+        _msg(f"  plc '{plc}'")
+        _msg(f"  targetPlc '{targetPlc}'")
+        self.assertTrue(plc.isSame(targetPlc, 1e-6), f"'{operation}' failed - Step 3")
 
         # Step 4 : box with placement. Face
         ref = [self.assembly, [box.Name + ".Face2", box.Name + ".Face2"]]
         plc = joint.Proxy.findPlacement(joint, ref)
         targetPlc = App.Placement(App.Vector(L, W / 2, H / 2), App.Rotation(0, -90, 180))
-        _msg("  plc '{}'".format(plc))
-        _msg("  targetPlc '{}'".format(targetPlc))
-        self.assertTrue(plc.isSame(targetPlc, 1e-6), "'{}' failed - Step 4".format(operation))
+        _msg(f"  plc '{plc}'")
+        _msg(f"  targetPlc '{targetPlc}'")
+        self.assertTrue(plc.isSame(targetPlc, 1e-6), f"'{operation}' failed - Step 4")
 
     def test_solve_assembly(self):
         """Test solving an assembly."""
         operation = "Solve assembly"
-        _msg("  Test '{}'".format(operation))
+        _msg(f"  Test '{operation}'")
 
         box = self.assembly.newObject("Part::Box", "Box")
         box.Length = 10
@@ -212,4 +212,4 @@ class TestCore(unittest.TestCase):
 
         joint.Proxy.setJointConnectors(joint, refs)
 
-        self.assertTrue(box.Placement.isSame(box2.Placement, 1e-6), "'{}'".format(operation))
+        self.assertTrue(box.Placement.isSame(box2.Placement, 1e-6), f"'{operation}'")
