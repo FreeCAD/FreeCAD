@@ -185,8 +185,9 @@ def write_swig_file(tmpl_fn_name, swig_fn_name):
     # write swig file
     i_content = open(tmpl_fn_name, "r").read()
     i_content = i_content.replace("%%TMPL_BODY%%", TMPL_BODY).replace("%%TMPL_PY_CLASS_DEF%%", "\n".join(TMPL_PY_CLASS))
-    with open(swig_fn_name, "w") as f:
-        f.write(i_content)
+    f=open(swig_fn_name, "w")
+    f.write(i_content)
+    f.close()
 
 
 def write_hpp_file(tmpl_fn_name, hpp_fn_name):
@@ -252,8 +253,9 @@ std::ostream& operator<<(std::ostream& out, RECORD_%i%s%s const& T)
     # write hpp file
     hpp_content = open(tmpl_fn_name, "r").read()
     hpp_content = hpp_content.replace("%%TMPL_HPP_DEFS%%", TMPL_BODY)
-    with open(hpp_fn_name, "w") as f:
-        f.write(hpp_content)
+    f=open(hpp_fn_name, "w")
+    f.write(hpp_content)
+    f.close()
 
 
 
