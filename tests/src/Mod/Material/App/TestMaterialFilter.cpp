@@ -45,10 +45,9 @@
 
 class TestMaterialFilter : public ::testing::Test {
 protected:
-    static void SetUpTestSuite() {
-        if (App::Application::GetARGC() == 0) {
-            tests::initApplication();
-        }
+    static void SetUpTestSuite()
+    {
+        tests::initApplication();
     }
 
     void SetUp() override {
@@ -72,6 +71,14 @@ protected:
         hGrp->SetBool("UseMaterialsFromConfigDir", false);
         hGrp->SetBool("UseMaterialsFromCustomDir", true);
 
+        auto param = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Material/Editor");
+        param->SetBool("ShowFavorites", true);
+        param->SetBool("ShowRecent", true);
+        param->SetBool("ShowEmptyFolders", false);
+        param->SetBool("ShowEmptyLibraries", true);
+        param->SetBool("ShowLegacy", false);
+
         _materialManager->refresh();
 
         _library = _materialManager->getLibrary(QStringLiteral("Custom"));
@@ -88,19 +95,33 @@ protected:
         hGrp->SetBool("UseMaterialsFromConfigDir", _useUserDir);
         hGrp->SetBool("UseMaterialsFromCustomDir", _useCustomDir);
 
+        hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Material/Editor");
+        hGrp->SetBool("ShowFavorites", _includeFavorites);
+        hGrp->SetBool("ShowRecent", _includeRecent);
+        hGrp->SetBool("ShowEmptyFolders", _includeFolders);
+        hGrp->SetBool("ShowEmptyLibraries", _includeLibraries);
+        hGrp->SetBool("ShowLegacy", _includeLegacy);
+
         _materialManager->refresh();
     }
 
-    Materials::ModelManager* _modelManager;
-    Materials::MaterialManager* _materialManager;
+    Materials::ModelManager* _modelManager {};
+    Materials::MaterialManager* _materialManager {};
     std::shared_ptr<Materials::MaterialLibrary> _library;
     QString _testMaterialUUID;
 
     std::string _customDir;
-    bool _useBuiltInDir;
-    bool _useWorkbenchDir;
-    bool _useUserDir;
-    bool _useCustomDir;
+    bool _useBuiltInDir {};
+    bool _useWorkbenchDir {};
+    bool _useUserDir {};
+    bool _useCustomDir {};
+
+    bool _includeFavorites {};
+    bool _includeRecent {};
+    bool _includeFolders {};
+    bool _includeLibraries {};
+    bool _includeLegacy {};
 
     const char* UUIDAcrylicLegacy = ""; // This can't be known until it is loaded
     const char* UUIDAluminumAppearance = "3c6d0407-66b3-48ea-a2e8-ee843edf0311";

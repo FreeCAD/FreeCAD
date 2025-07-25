@@ -30,6 +30,7 @@
 #include <QString>
 
 #include <list>
+#include <vector>
 
 namespace Gui
 {
@@ -253,6 +254,16 @@ struct InputHint
         InputSequence(const std::initializer_list<UserInput> keys)
             : keys(keys)
         {}
+
+        friend bool operator==(const InputSequence& lhs, const InputSequence& rhs)
+        {
+            return lhs.keys == rhs.keys;
+        }
+
+        friend bool operator!=(const InputSequence& lhs, const InputSequence& rhs)
+        {
+            return !(lhs == rhs);
+        }
     };
 
     /**
@@ -270,7 +281,40 @@ struct InputHint
      * @brief List of sequences to be substituted.
      */
     std::list<InputSequence> sequences;
+
+    friend bool operator==(const InputHint& lhs, const InputHint& rhs)
+    {
+        return lhs.message == rhs.message && lhs.sequences == rhs.sequences;
+    }
+
+    friend bool operator!=(const InputHint& lhs, const InputHint& rhs)
+    {
+        return !(lhs == rhs);
+    }
 };
+
+template <typename T>
+struct StateHints
+{
+    T state;
+    std::list<InputHint> hints;
+};
+
+template <typename T>
+using HintTable = std::vector<StateHints<T>>;
+
+template <typename T>
+static std::list<InputHint> lookupHints(T state, HintTable<T> table, const std::list<InputHint>& fallback = {}) {
+    const auto stateMatches = [&state](const StateHints<T>& entry) {
+        return entry.state == state;
+    };
+
+    if (auto it = std::ranges::find_if(table, stateMatches); it != table.end()) {
+        return it->hints;
+    }
+
+    return fallback;
+}
 
 }  // namespace Gui
 

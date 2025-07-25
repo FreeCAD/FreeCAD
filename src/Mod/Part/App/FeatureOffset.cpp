@@ -132,18 +132,18 @@ App::DocumentObjectExecReturn *Offset2D::execute()
     if (!source) {
        return new App::DocumentObjectExecReturn("No source shape linked.");
     }
-    const TopoShape shape = Part::Feature::getTopoShape(source, ShapeOption::ResolveLink | ShapeOption::Transform);
+    auto shape = Feature::getTopoShape(source, ShapeOption::ResolveLink | ShapeOption::Transform);
     if (shape.isNull()) {
         return new App::DocumentObjectExecReturn("No source shape linked.");
     }
     double offset = Value.getValue();
     short mode = (short)Mode.getValue();
-    short join = (short)Join.getValue();
-    bool fill = Fill.getValue();
-    bool inter = Intersection.getValue();
+    auto openresult = mode == 0 ? OpenResult::allowOpenResult : OpenResult::noOpenResult;
     if (mode == 2)
         return new App::DocumentObjectExecReturn("Mode 'Recto-Verso' is not supported for 2D offset.");
-
-    this->Shape.setValue(shape.makeOffset2D(offset, join, fill, mode == 0, inter));
+    auto join = static_cast<JoinType>(Join.getValue());
+    auto fill = Fill.getValue() ? FillType::fill : FillType::noFill;
+    bool inter = Intersection.getValue();
+    this->Shape.setValue(TopoShape(0).makeElementOffset2D(shape, offset, join, fill, openresult, inter));
     return App::DocumentObject::StdReturn;
 }

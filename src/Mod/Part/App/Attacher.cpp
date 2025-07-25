@@ -1969,32 +1969,38 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
                 case TopAbs_FACE: {
                     auto surface = freecad_cast<GeomSurface*>(geom.get());
 
+                    auto face = TopoDS::Face(shape->getShape());
+                    auto adaptorSurface = BRepAdaptor_Surface(face, true);
+
+                    auto u1 = adaptorSurface.FirstUParameter();
+                    auto u2 = adaptorSurface.LastUParameter();
+                    auto v1 = adaptorSurface.FirstVParameter();
+                    auto v2 = adaptorSurface.LastVParameter();
+
+                    auto midU = (u1 + u2) / 2;
+                    auto midV = (v1 + v2) / 2;
+
                     if (auto sphere = freecad_cast<GeomSphere*>(geom.get())) {
                         placement.setPosition(sphere->getLocation());
                     } else if (auto cone = freecad_cast<GeomCone*>(geom.get())) {
                         placement.setPosition(cone->getApex());
+                    } else if (auto point = surface->point(midU, midV)) {
+                        placement.setPosition(*point);
                     } else if (auto com = shape->centerOfGravity()) {
                         placement.setPosition(*com);
                     } else {
                         placement.setPosition(shape->getBoundBox().GetCenter());
                     }
 
-                    if (auto rotation = surface->getRotation()) {
-                        placement.setRotation(*rotation);
-                    } else {
-                        auto adaptorSurface = BRepAdaptor_Surface(TopoDS::Face(shape->getShape()), true);
+                    // calculate the normal at midpoint of the surface and use it as Z axis
+                    gp_Dir dir;
+                    surface->normal(midU, midV, dir);
 
-                        auto u1 = adaptorSurface.FirstUParameter();
-                        auto u2 = adaptorSurface.LastUParameter();
-                        auto v1 = adaptorSurface.FirstVParameter();
-                        auto v2 = adaptorSurface.LastVParameter();
-
-                        // calculate the normal at midpoint of the surface and use it as Z axis
-                        gp_Dir dir;
-                        surface->normal((u1 + u2) / 2, (v1 + v2) / 2, dir);
-
-                        placement.setRotation(Base::Rotation::fromNormalVector(Base::convertTo<Base::Vector3d>(-dir)));
+                    if (face.Orientation() == TopAbs_REVERSED) {
+                        dir = -dir;
                     }
+
+                    placement.setRotation(Base::Rotation::fromNormalVector(Base::convertTo<Base::Vector3d>(dir)));
                 }
                 break;
 

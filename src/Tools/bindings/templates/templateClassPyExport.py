@@ -368,9 +368,6 @@ public:
 // Every change you make here gets lost in the next full rebuild!
 // This File is normally built as an include in @self.export.Name@Imp.cpp! It's not intended to be in a project!
 
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/exception.hpp>
 #include <Base/PyObjectBase.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>

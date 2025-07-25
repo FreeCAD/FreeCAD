@@ -75,6 +75,15 @@ namespace SketcherGui
 class DrawSketchHandler;
 class ViewProviderSketch;
 
+enum OffsetMode : bool
+{
+    NoOffset = false,
+    OffsetConstraint = true
+};
+
+// to improve readability, expose the enum cases directly in the namespace
+using enum OffsetMode;
+
 /// This function tries to auto-recompute the active document if the option
 /// is set in the user parameter. If the option is not set nothing will be done
 /// @return true if a recompute was undertaken, false if not.
