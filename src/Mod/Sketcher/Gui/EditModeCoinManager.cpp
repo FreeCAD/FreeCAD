@@ -606,7 +606,7 @@ void EditModeCoinManager::drawEditMarkers(const std::vector<Base::Vector2d>& Edi
 }
 
 void EditModeCoinManager::drawEdit(const std::vector<Base::Vector2d>& EditCurve,
-                                   bool isConstruction)
+                                   GeometryCreationMode mode)
 {
     editModeScenegraphNodes.EditCurveSet->numVertices.setNum(1);
     editModeScenegraphNodes.EditCurvesCoordinate->point.setNum(EditCurve.size());
@@ -615,7 +615,7 @@ void EditModeCoinManager::drawEdit(const std::vector<Base::Vector2d>& EditCurve,
     int32_t* index = editModeScenegraphNodes.EditCurveSet->numVertices.startEditing();
     SbColor* color = editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.startEditing();
 
-    setEditDrawStyle(isConstruction);
+    setEditDrawStyle(mode);
 
     int i = 0;  // setting up the line set
     for (std::vector<Base::Vector2d>::const_iterator it = EditCurve.begin(); it != EditCurve.end();
@@ -624,8 +624,14 @@ void EditModeCoinManager::drawEdit(const std::vector<Base::Vector2d>& EditCurve,
                           it->y,
                           ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
                               * drawingParameters.zEdit);
-        color[i] =
-            isConstruction ? drawingParameters.CurveDraftColor : drawingParameters.CurveColor;
+        switch (mode) {
+            case GeometryCreationMode::Normal:
+                color[i] = drawingParameters.CurveColor;
+                break;
+            case GeometryCreationMode::Construction:
+                color[i] = drawingParameters.CurveDraftColor;
+                break;
+        }
     }
 
     index[0] = EditCurve.size();
@@ -635,7 +641,7 @@ void EditModeCoinManager::drawEdit(const std::vector<Base::Vector2d>& EditCurve,
 }
 
 void EditModeCoinManager::drawEdit(const std::list<std::vector<Base::Vector2d>>& list,
-                                   bool isConstruction)
+                                   GeometryCreationMode mode)
 {
     int ncoords = 0;
 
@@ -650,7 +656,7 @@ void EditModeCoinManager::drawEdit(const std::list<std::vector<Base::Vector2d>>&
     int32_t* index = editModeScenegraphNodes.EditCurveSet->numVertices.startEditing();
     SbColor* color = editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.startEditing();
 
-    setEditDrawStyle(isConstruction);
+    setEditDrawStyle(mode);
 
     int coordindex = 0;
     int indexindex = 0;
@@ -662,8 +668,15 @@ void EditModeCoinManager::drawEdit(const std::list<std::vector<Base::Vector2d>>&
                 ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
                     * drawingParameters.zEdit);
 
-            color[coordindex] =
-                isConstruction ? drawingParameters.CurveDraftColor : drawingParameters.CurveColor;
+            switch (mode) {
+                case GeometryCreationMode::Normal:
+                    color[coordindex] = drawingParameters.CurveColor;
+                    break;
+                case GeometryCreationMode::Construction:
+                    color[coordindex] = drawingParameters.CurveDraftColor;
+                    break;
+            }
+
             coordindex++;
         }
         index[indexindex] = v.size();
@@ -1052,10 +1065,18 @@ void EditModeCoinManager::redrawViewProvider()
 {
     viewProvider.draw(false, false);
 }
-void EditModeCoinManager::setEditDrawStyle(bool isConstruction)
+void EditModeCoinManager::setEditDrawStyle(GeometryCreationMode mode)
 {
-    SoDrawStyle* toCopy = isConstruction ? editModeScenegraphNodes.CurvesConstructionDrawStyle
-                                         : editModeScenegraphNodes.CurvesDrawStyle;
+    SoDrawStyle* toCopy = nullptr;
+
+    switch (mode) {
+        case GeometryCreationMode::Normal:
+            toCopy = editModeScenegraphNodes.CurvesDrawStyle;
+            break;
+        case GeometryCreationMode::Construction:
+            toCopy = editModeScenegraphNodes.CurvesConstructionDrawStyle;
+            break;
+    }
 
     editModeScenegraphNodes.EditCurvesDrawStyle->lineWidth = toCopy->lineWidth;
     editModeScenegraphNodes.EditCurvesDrawStyle->linePattern = toCopy->linePattern;

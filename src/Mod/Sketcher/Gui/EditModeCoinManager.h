@@ -28,6 +28,7 @@
 
 #include <App/Application.h>
 #include <Mod/Sketcher/App/GeoList.h>
+#include "GeometryCreationMode.h"
 
 #include "EditModeCoinManagerParameters.h"
 
@@ -211,8 +212,8 @@ public:
     //@{
     void drawEditMarkers(const std::vector<Base::Vector2d>& EditMarkers,
                          unsigned int augmentationlevel);
-    void drawEdit(const std::vector<Base::Vector2d>& EditCurve, bool isConstruction);
-    void drawEdit(const std::list<std::vector<Base::Vector2d>>& list, bool isConstruction);
+    void drawEdit(const std::vector<Base::Vector2d>& EditCurve, GeometryCreationMode mode);
+    void drawEdit(const std::list<std::vector<Base::Vector2d>>& list, GeometryCreationMode mode);
     void setPositionText(const Base::Vector2d& Pos, const SbString& txt);
     void setPositionText(const Base::Vector2d& Pos);
     void resetPositionText();
@@ -278,7 +279,7 @@ private:
     // causes the ViewProvider to draw
     void redrawViewProvider();
 
-    void setEditDrawStyle(bool isConstruction);
+    void setEditDrawStyle(GeometryCreationMode mode);
 
     int defaultApplicationFontSizePixels() const;
 

@@ -2848,12 +2848,12 @@ bool ViewProviderSketch::getIsShownVirtualSpace() const
 
 void ViewProviderSketch::drawEdit(const std::vector<Base::Vector2d>& EditCurve)
 {
-    editCoinManager->drawEdit(EditCurve, isConstructionMode());
+    editCoinManager->drawEdit(EditCurve, currentGeometryCreationMode());
 }
 
 void ViewProviderSketch::drawEdit(const std::list<std::vector<Base::Vector2d>>& list)
 {
-    editCoinManager->drawEdit(list, isConstructionMode());
+    editCoinManager->drawEdit(list, currentGeometryCreationMode());
 }
 
 void ViewProviderSketch::drawEditMarkers(const std::vector<Base::Vector2d>& EditMarkers,
