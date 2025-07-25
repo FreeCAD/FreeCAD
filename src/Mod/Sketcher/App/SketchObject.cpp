@@ -730,8 +730,6 @@ public:
     }
 };
 
-int addAndCleanup(int incrgeo, std::vector<Part::Geometry*>& igeo, std::vector<Constraint*>& icon);
-int addAndCleanup(std::vector<Part::Geometry*>& igeo, std::vector<Constraint*>& icon);
 void SketchObject::updateGeoHistory() {
     if(!geoHistoryLevel) return;
 
@@ -8599,6 +8597,109 @@ std::vector<TopoDS_Shape> projectShape(const TopoDS_Shape& inShape, const gp_Ax3
     return res;
 }
 
+void processFace (const Rotation& invRot,
+                  const Placement& invPlm,
+                  const gp_Trsf& mov,
+                  const gp_Pln& sketchPlane,
+                  const opencascade::handle<Geom_Plane>& gPlane,
+                  gp_Ax3& sketchAx3,
+                  TopoDS_Shape& aProjFace,
+                  std::vector<std::unique_ptr<Part::Geometry>>& geos,
+                  TopoDS_Shape& refSubShape)
+{
+    const TopoDS_Face& face = TopoDS::Face(refSubShape);
+    BRepAdaptor_Surface surface(face);
+    if (surface.GetType() == GeomAbs_Plane) {
+        // Check that the plane is perpendicular to the sketch plane
+        Geom_Plane plane = surface.Plane();
+        gp_Dir dnormal = plane.Axis().Direction();
+        gp_Dir snormal = sketchPlane.Axis().Direction();
+
+        // Extract all edges from the face
+        TopExp_Explorer edgeExp;
+        for (edgeExp.Init(face, TopAbs_EDGE); edgeExp.More(); edgeExp.Next()) {
+            TopoDS_Edge edge = TopoDS::Edge(edgeExp.Current());
+            // Process each edge
+            processEdge(edge, geos, gPlane, invPlm, mov, sketchPlane, invRot, sketchAx3, aProjFace);
+        }
+
+        if (fabs(dnormal.Angle(snormal) - std::numbers::pi/2) < Precision::Confusion()) {
+            // The face is normal to the sketch plane
+            // We don't want to keep the projection of all the edges of the face.
+            // We need a single line that goes from min to max of all the projections.
+            bool initialized = false;
+            Vector3d start, end;
+            // Lambda to determine if a point should replace start or end
+            auto updateExtremes = [&](const Vector3d& point) {
+                if ((point - start).Length() < (point - end).Length()) {
+                    // `point` is closer to `start` than `end`, check if it's further out than `start`
+                    if ((point - end).Length() > (end - start).Length()) {
+                        start = point;
+                    }
+                }
+                else {
+                    // `point` is closer to `end`, check if it's further out than `end`
+                    if ((point - start).Length() > (end - start).Length()) {
+                        end = point;
+                    }
+                }
+            };
+            for (auto& geo : geos) {
+                auto* line = dynamic_cast<Part::GeomLineSegment*>(geo.get());
+                if (!line) {
+                    // The face being normal to the sketch, we should have
+                    // only lines. This is just a fail-safe in case there's a
+                    // straight bspline or something like this.
+                    continue;
+                }
+                if (!initialized) {
+                    start = line->getStartPoint();
+                    end = line->getEndPoint();
+                    initialized = true;
+                    continue;
+                }
+
+                updateExtremes(line->getStartPoint());
+                updateExtremes(line->getEndPoint());
+            }
+            if (initialized) {
+                auto* unifiedLine = new Part::GeomLineSegment();
+                unifiedLine->setPoints(start, end);
+                geos.clear(); // Clear other segments
+                geos.emplace_back(unifiedLine);
+            }
+            else {
+                // In case we have not initialized, perhaps the projections were
+                // only straight bsplines.
+                // Then we use the old method that will give a line with 20000 length:
+                // Get vector that is normal to both sketch plane normal and plane normal.
+                // This is the line's direction
+                gp_Dir lnormal = dnormal.Crossed(snormal);
+                BRepBuilderAPI_MakeEdge builder(gp_Lin(plane.Location(), lnormal));
+                builder.Build();
+                if (builder.IsDone()) {
+                    const TopoDS_Edge& edge = TopoDS::Edge(builder.Shape());
+                    BRepAdaptor_Curve curve(edge);
+                    if (curve.GetType() == GeomAbs_Line) {
+                        geos.emplace_back(projectLine(curve, gPlane, invPlm));
+                    }
+                }
+            }
+        }
+    }
+    else {
+        std::vector<TopoDS_Shape> res = projectShape(face, sketchAx3);
+        for (auto& resShape : res) {
+            TopExp_Explorer explorer(resShape, TopAbs_EDGE);
+            while (explorer.More()) {
+                TopoDS_Edge projEdge = TopoDS::Edge(explorer.Current());
+                processEdge2(projEdge, geos);
+                explorer.Next();
+            }
+        }
+    }
+}
+
 }
 
 void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd)
@@ -8794,97 +8895,7 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
             if (projection) {
                 switch (refSubShape.ShapeType()) {
                 case TopAbs_FACE: {
-                    const TopoDS_Face& face = TopoDS::Face(refSubShape);
-                    BRepAdaptor_Surface surface(face);
-                    if (surface.GetType() == GeomAbs_Plane) {
-                        // Check that the plane is perpendicular to the sketch plane
-                        Geom_Plane plane = surface.Plane();
-                        gp_Dir dnormal = plane.Axis().Direction();
-                        gp_Dir snormal = sketchPlane.Axis().Direction();
-
-                        // Extract all edges from the face
-                        TopExp_Explorer edgeExp;
-                        for (edgeExp.Init(face, TopAbs_EDGE); edgeExp.More(); edgeExp.Next()) {
-                            TopoDS_Edge edge = TopoDS::Edge(edgeExp.Current());
-                            // Process each edge
-                            processEdge(edge, geos, gPlane, invPlm, mov, sketchPlane, invRot, sketchAx3, aProjFace);
-                        }
-
-                        if (fabs(dnormal.Angle(snormal) - std::numbers::pi/2) < Precision::Confusion()) {
-                            // The face is normal to the sketch plane
-                            // We don't want to keep the projection of all the edges of the face.
-                            // We need a single line that goes from min to max of all the projections.
-                            bool initialized = false;
-                            Base::Vector3d start, end;
-                            // Lambda to determine if a point should replace start or end
-                            auto updateExtremes = [&](const Base::Vector3d& point) {
-                                if ((point - start).Length() < (point - end).Length()) {
-                                    // `point` is closer to `start` than `end`, check if it's further out than `start`
-                                    if ((point - end).Length() > (end - start).Length()) {
-                                        start = point;
-                                    }
-                                }
-                                else {
-                                    // `point` is closer to `end`, check if it's further out than `end`
-                                    if ((point - start).Length() > (end - start).Length()) {
-                                        end = point;
-                                    }
-                                }
-                            };
-                            for (auto& geo : geos) {
-                                auto* line = dynamic_cast<Part::GeomLineSegment*>(geo.get());
-                                if (!line) {
-                                    // The face being normal to the sketch, we should have
-                                    // only lines. This is just a fail-safe in case there's a
-                                    // straight bspline or something like this.
-                                    continue;
-                                }
-                                if (!initialized) {
-                                    start = line->getStartPoint();
-                                    end = line->getEndPoint();
-                                    initialized = true;
-                                    continue;
-                                }
-
-                                updateExtremes(line->getStartPoint());
-                                updateExtremes(line->getEndPoint());
-                            }
-                            if (initialized) {
-                                auto* unifiedLine = new Part::GeomLineSegment();
-                                unifiedLine->setPoints(start, end);
-                                geos.clear(); // Clear other segments
-                                geos.emplace_back(unifiedLine);
-                            }
-                            else {
-                                // In case we have not initialized, perhaps the projections were
-                                // only straight bsplines.
-                                // Then we use the old method that will give a line with 20000 length:
-                                // Get vector that is normal to both sketch plane normal and plane normal.
-                                // This is the line's direction
-                                gp_Dir lnormal = dnormal.Crossed(snormal);
-                                BRepBuilderAPI_MakeEdge builder(gp_Lin(plane.Location(), lnormal));
-                                builder.Build();
-                                if (builder.IsDone()) {
-                                    const TopoDS_Edge& edge = TopoDS::Edge(builder.Shape());
-                                    BRepAdaptor_Curve curve(edge);
-                                    if (curve.GetType() == GeomAbs_Line) {
-                                        geos.emplace_back(projectLine(curve, gPlane, invPlm));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else {
-                        std::vector<TopoDS_Shape> res = projectShape(face, sketchAx3);
-                        for (auto& resShape : res) {
-                            TopExp_Explorer explorer(resShape, TopAbs_EDGE);
-                            while (explorer.More()) {
-                                TopoDS_Edge projEdge = TopoDS::Edge(explorer.Current());
-                                processEdge2(projEdge, geos);
-                                explorer.Next();
-                            }
-                        }
-                    }
+                    processFace(invRot, invPlm, mov, sketchPlane, gPlane, sketchAx3, aProjFace, geos, refSubShape);
                 } break;
                 case TopAbs_EDGE: {
                     const TopoDS_Edge& edge = TopoDS::Edge(refSubShape);
