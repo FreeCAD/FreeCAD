@@ -1571,32 +1571,32 @@ Base::Vector3d SketchObject::getPointForGeometry<>(const Part::GeomBSplineCurve 
 
 Base::Vector3d SketchObject::getPoint(const Part::Geometry *geo, PointPos PosId)
 {
-    if (geo->is<Part::GeomPoint>()) {
-        return getPointForGeometry<Part::GeomPoint>(static_cast<const Part::GeomPoint*>(geo), PosId);
+    if (auto asPoint = freecad_cast<Part::GeomPoint*>(geo)) {
+        return getPointForGeometry<Part::GeomPoint>(asPoint, PosId);
     }
-    else if (geo->is<Part::GeomLineSegment>()) {
-        return getPointForGeometry<Part::GeomLineSegment>(static_cast<const Part::GeomLineSegment*>(geo), PosId);
+    else if (auto asLineSegment = freecad_cast<Part::GeomLineSegment*>(geo)) {
+        return getPointForGeometry<Part::GeomLineSegment>(asLineSegment, PosId);
     }
-    else if (geo->is<Part::GeomCircle>()) {
-        return getPointForGeometry<Part::GeomCircle>(static_cast<const Part::GeomCircle*>(geo), PosId);
+    else if (auto asCircle = freecad_cast<Part::GeomCircle*>(geo)) {
+        return getPointForGeometry<Part::GeomCircle>(asCircle, PosId);
     }
-    else if (geo->is<Part::GeomEllipse>()) {
-        return getPointForGeometry<Part::GeomEllipse>(static_cast<const Part::GeomEllipse*>(geo), PosId);
+    else if (auto asEllipse = freecad_cast<Part::GeomEllipse*>(geo)) {
+        return getPointForGeometry<Part::GeomEllipse>(asEllipse, PosId);
     }
-    else if (geo->is<Part::GeomArcOfCircle>()) {
-        return getPointForGeometry<Part::GeomArcOfCircle>(static_cast<const Part::GeomArcOfCircle*>(geo), PosId);
+    else if (auto asArcOfCircle = freecad_cast<Part::GeomArcOfCircle*>(geo)) {
+        return getPointForGeometry<Part::GeomArcOfCircle>(asArcOfCircle, PosId);
     }
-    else if (geo->is<Part::GeomArcOfEllipse>()) {
-        return getPointForGeometry<Part::GeomArcOfEllipse>(static_cast<const Part::GeomArcOfEllipse*>(geo), PosId);
+    else if (auto asArcOfEllipse = freecad_cast<Part::GeomArcOfEllipse*>(geo)) {
+        return getPointForGeometry<Part::GeomArcOfEllipse>(asArcOfEllipse, PosId);
     }
-    else if (geo->is<Part::GeomArcOfHyperbola>()) {
-        return getPointForGeometry<Part::GeomArcOfHyperbola>(static_cast<const Part::GeomArcOfHyperbola*>(geo), PosId);
+    else if (auto asArcOfHyperbola = freecad_cast<Part::GeomArcOfHyperbola*>(geo)) {
+        return getPointForGeometry<Part::GeomArcOfHyperbola>(asArcOfHyperbola, PosId);
     }
-    else if (geo->is<Part::GeomArcOfParabola>()) {
-        return getPointForGeometry<Part::GeomArcOfParabola>(static_cast<const Part::GeomArcOfParabola*>(geo), PosId);
+    else if (auto asArcOfParabola = freecad_cast<Part::GeomArcOfParabola*>(geo)) {
+        return getPointForGeometry<Part::GeomArcOfParabola>(asArcOfParabola, PosId);
     }
-    else if (geo->is<Part::GeomBSplineCurve>()) {
-        return getPointForGeometry<Part::GeomBSplineCurve>(static_cast<const Part::GeomBSplineCurve*>(geo), PosId);
+    else if (auto asBSplineCurve = freecad_cast<Part::GeomBSplineCurve*>(geo)) {
+        return getPointForGeometry<Part::GeomBSplineCurve>(asBSplineCurve, PosId);
     }
     return Base::Vector3d();
 }
