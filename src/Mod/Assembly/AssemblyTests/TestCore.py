@@ -114,9 +114,7 @@ class TestCore(unittest.TestCase):
         _msg(f"  Test '{operation}'")
 
         groundedjoint = self.jointgroup.newObject("App::FeaturePython", "testJoint")
-        self.assertTrue(
-            groundedjoint, f"'{operation}' failed (FeaturePython creation failed)"
-        )
+        self.assertTrue(groundedjoint, f"'{operation}' failed (FeaturePython creation failed)")
 
         box = self.assembly.newObject("Part::Box", "Box")
 
