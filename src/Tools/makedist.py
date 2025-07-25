@@ -67,7 +67,7 @@ def main():
     verinfo = tarfile.TarInfo(DIRNAME + "/src/Build/Version.h")
     verinfo.mode = 0o660
     verinfo.size = len(verstream.getvalue())
-    verinfo.mtime = int(time.time()) # should be int
+    verinfo.mtime = int(time.time())  # should be int
 
     if wta is None:
         print(f"git archive --prefix={DIRNAME}/ HEAD")
@@ -75,9 +75,7 @@ def main():
         print(f"git archive {wta} --prefix={DIRNAME}/ HEAD")
 
     if platform.system() == "Windows":
-        os.popen(
-            f"git archive {wta} --prefix={DIRNAME}/ --output={TARNAME} HEAD"
-        ).read()
+        os.popen(f"git archive {wta} --prefix={DIRNAME}/ --output={TARNAME} HEAD").read()
 
         tar = tarfile.TarFile(mode="a", name=TARNAME)
         tar.addfile(verinfo, verstream)
