@@ -38,7 +38,7 @@ def main():
                 version["FCRepositoryHash"] = SHA
 
     print(
-    f"FreeCAD_{version["FCVersionMajor"]}.{version["FCVersionMinor"]}-{version["FCRevision"]}.{version["FCRepositoryHash"][0:7]}-{OSAbbrev.get(platform.system(), "NA")}-{platform.machine()}"
+        f"FreeCAD_{version["FCVersionMajor"]}.{version["FCVersionMinor"]}-{version["FCRevision"]}.{version["FCRepositoryHash"][0:7]}-{OSAbbrev.get(platform.system(), "NA")}-{platform.machine()}"
     )
 
 
