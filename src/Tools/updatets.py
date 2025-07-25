@@ -291,9 +291,9 @@ def update_translation(entry):
         print(f"EXTRACTING STRINGS FOR {entry['tsname']}")
         print("=============================================", flush=True)
         if not os.path.exists("dummy_cpp_file_for_lupdate.cpp"):
-            open("dummy_cpp_file_for_lupdate.cpp", 'w').close()
+            open("dummy_cpp_file_for_lupdate.cpp", "w").close()
         if not os.path.exists(f"{tsBasename}py.ts"):
-            open(f"{tsBasename}py.ts", 'w').close()
+            open(f"{tsBasename}py.ts", "w").close()
         execline = [
             f'{PYLUPDATE} `find ./ -name "*.py"` -ts {tsBasename}py.ts {log_redirect}',
             f"{QMAKE} -project -o {project_filename} -r",

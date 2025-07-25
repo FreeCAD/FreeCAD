@@ -22,7 +22,7 @@ def main():
             ["srcdir=", "bindir=", "major=", "minor=", "dfsg", "check"],
         )
     except getopt.GetoptError as e:
-        raise Exception(e) # raise when error, instead of continue
+        raise Exception(e)  # raise when error, instead of continue
 
     for o, a in opts:
         if o in ("-s", "--srcdir"):
