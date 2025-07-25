@@ -31,6 +31,16 @@ generate_from_xml(VoronoiCellPy)
 generate_from_xml(VoronoiEdgePy)
 generate_from_xml(VoronoiVertexPy)
 
+generate_from_py_(CommandPy)
+generate_from_py_(PathPy)
+generate_from_py_(FeaturePathCompoundPy)
+generate_from_py_(AreaPy)
+generate_from_py_(FeatureAreaPy)
+generate_from_py_(VoronoiPy)
+generate_from_py_(VoronoiCellPy)
+generate_from_py_(VoronoiEdgePy)
+generate_from_py_(VoronoiVertexPy)
+
 SET(Python_SRCS
     CommandPy.xml
     CommandPyImp.cpp
