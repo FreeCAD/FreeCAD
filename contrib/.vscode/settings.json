@@ -46,8 +46,6 @@
   "${workspaceFolder}/src/Mod/Assembly",
   "${workspaceFolder}/src/Mod/AddonManager",
   "${workspaceFolder}/src/Mod",
-  "${workspaceFolder}/build/debug/lib",
-  "${workspaceFolder}/build/debug/Ext",
   ],
   "editor.formatOnType": true,
   "files.autoSave": "afterDelay",
