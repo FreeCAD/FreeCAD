@@ -1438,21 +1438,23 @@ void SoDatumLabel::drawAngle(const SbVec3f* points, float& angle, SbVec3f& textO
     SbVec3f v0(cos(startangle+range/2),sin(startangle+range/2),0);
 
     // leave some space for the text
-    double textMargin = std::min(0.2F * abs(range), this->imgWidth / (2 * r));
+    float textMargin = std::min(0.2F * abs(range), this->imgWidth / (2 * r));
 
     textOffset = p0 + v0 * r;
-
-    // Draw
-    glDrawArc(p0, r, startangle, startangle+range/2.-textMargin);
-    glDrawArc(p0, r, startangle+range/2.+textMargin, endangle);
 
     // Direction vectors for start and end lines
     SbVec3f v1(cos(startangle), sin(startangle), 0);
     SbVec3f v2(cos(endangle), sin(endangle), 0);
 
-    if (range < 0) {
+    float textMarginDir = 1.;
+
+    if (range < 0 || length < 0) {
         std::swap(v1, v2);
+        textMarginDir = -1.;
     }
+    // Draw
+    glDrawArc(p0, r, startangle, startangle + range / 2.F - textMarginDir * textMargin);
+    glDrawArc(p0, r, startangle + range / 2.F + textMarginDir * textMargin, endangle);
 
     SbVec3f pnt1 = p0 + (r - endLineLength1) * v1;
     SbVec3f pnt2 = p0 + (r + endLineLength12) * v1;
