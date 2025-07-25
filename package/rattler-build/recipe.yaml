@@ -90,7 +90,7 @@ requirements:
 
     - if: osx and x86_64
       then:
-        - ${{ stdlib('c') }}
+        - __osx >=10.13
 
     - if: build_platform != target_platform
       then:
