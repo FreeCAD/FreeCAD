@@ -913,7 +913,7 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
 
     def onFrameChanged(self, val):
         self.assembly.updateForFrame(val)
-        self.form.FrameLabel.setText(translate("Assembly", "Frame" + " " + str(val)))
+        self.form.FrameLabel.setText(translate("Assembly", f"Frame {str(val)}"))
         time = float(val * self.simFeaturePy.cTimeStepOutput)
         self.form.FrameTimeLabel.setText(f"{time:.2f} s")
 

@@ -244,11 +244,11 @@ def export(objectslist, filename, argstring):
         # turn coolant on if required
         if OUTPUT_COMMENTS:
             if not coolantMode == "None":
-                gcode += linenumber() + "(COOLANT ON:" + coolantMode.upper() + ")\n"
+                gcode += linenumber() + f"(COOLANT ON:{coolantMode.upper()})\n"
         if coolantMode == "Flood":
-            gcode += linenumber() + "M8" + "\n"
+            gcode += linenumber() + "M8\n"
         if coolantMode == "Mist":
-            gcode += linenumber() + "M7" + "\n"
+            gcode += linenumber() + "M7\n"
 
         # process the operation gcode
         gcode += parse(obj)
@@ -262,8 +262,8 @@ def export(objectslist, filename, argstring):
         # turn coolant off if required
         if not coolantMode == "None":
             if OUTPUT_COMMENTS:
-                gcode += linenumber() + "(COOLANT OFF:" + coolantMode.upper() + ")\n"
-            gcode += linenumber() + "M9" + "\n"
+                gcode += linenumber() + f"(COOLANT OFF:{coolantMode.upper()})\n"
+            gcode += linenumber() + "M9\n"
 
     # do the post_amble
     if OUTPUT_COMMENTS:
@@ -371,7 +371,7 @@ def parse(pathobj):
                     )
                 else:
                     FreeCAD.Console.PrintWarning(
-                        "Tool Controller Horizontal Rapid Values are unset" + "\n"
+                        "Tool Controller Horizontal Rapid Values are unset\n"
                     )
 
                 if (
@@ -383,7 +383,7 @@ def parse(pathobj):
                     )
                 else:
                     FreeCAD.Console.PrintWarning(
-                        "Tool Controller Vertical Rapid Values are unset" + "\n"
+                        "Tool Controller Vertical Rapid Values are unset\n"
                     )
 
         commands = PathUtils.getPathWithPlacement(pathobj).Commands
@@ -400,7 +400,7 @@ def parse(pathobj):
                 if opHorizRapid and opVertRapid:
                     command = "G1"
                 else:
-                    outstring.append("(TOOL CONTROLLER RAPID VALUES ARE UNSET)" + "\n")
+                    outstring.append("(TOOL CONTROLLER RAPID VALUES ARE UNSET)\n")
 
             # suppress moves in fixture selection
             if pathobj.Label == "Fixture":

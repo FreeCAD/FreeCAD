@@ -856,7 +856,7 @@ class GmshTools:
             "5=Delaunay, 6=Frontal, 7=BAMG, 8=DelQuad, 9=Packing Parallelograms, 11=Quasi-structured Quad)\n"
         )
         if len(self.bl_setting_list) and self.dimension == 3:
-            geo.write("Mesh.Algorithm = " + "DelQuad" + ";\n")  # Frontal/DelQuad are tested
+            geo.write("Mesh.Algorithm = DelQuad;\n")  # Frontal/DelQuad are tested
         else:
             geo.write("Mesh.Algorithm = " + self.algorithm2D + ";\n")
         geo.write(

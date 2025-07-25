@@ -270,4 +270,4 @@ def export(exportList, filename):
     csg.write("}\n}\n")
     # close file
     csg.close()
-    FreeCAD.Console.PrintMessage("successfully exported" + " " + filename)
+    FreeCAD.Console.PrintMessage(f"successfully exported {filename}")

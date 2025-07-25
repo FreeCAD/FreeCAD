@@ -68,7 +68,7 @@ class Arch_Add:
                     ss += "FreeCAD.ActiveDocument."+o.Name
                 ss += "]"
                 FreeCADGui.addModule("Arch")
-                FreeCADGui.doCommand("Arch.addComponents("+ss+",FreeCAD.ActiveDocument."+host.Name+")")
+                FreeCADGui.doCommand(f"Arch.addComponents({ss},FreeCAD.ActiveDocument.{host.Name})")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
