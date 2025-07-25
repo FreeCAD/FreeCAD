@@ -36,6 +36,7 @@ import Path.Log as Log
 from Path.Main.Sanity.ImageBuilder import ImageBuilder
 from Path.Main.Sanity.ReportGenerator import ReportGenerator
 from Path.Main.Sanity.Squawk import create_squawk, SquawkType
+from Path.Main.Sanity.SanityRule import LegacyToolsRule
 import os
 import tempfile
 import Path.Dressup.Utils as PathDressup
@@ -342,26 +343,15 @@ class CAMSanity:
         toolcontrollers
         Returns information about issues and problems with the tools (squawks)
         """
-
         obj = self.job
         data = {"squawkData": []}
 
+        # LegacyToolsRule
+        data["squawkData"].append(LegacyToolsRule().check(obj))
+
         for TC in obj.Tools.Group:
-            if not hasattr(TC.Tool, "BitBody"):
-                data["squawkData"].append(
-                    data["squawkData"].append(
-                        self.squawk(
-                            "CAMSanity",
-                            translate(
-                                "CAM_Sanity",
-                                "Tool number {} is a legacy tool. Legacy tools not \
-                    supported by Path-Sanity",
-                            ).format(TC.ToolNumber),
-                            squawkType=SquawkType.WARNING,
-                        )
-                    )
-                )
-                continue  # skip old-style tools
+
+            # ToolUsedByMultipleToolsRule
             tooldata = data.setdefault(str(TC.ToolNumber), {})
             bitshape = tooldata.setdefault("ShapeType", "")
             if bitshape not in ["", TC.Tool.ShapeType]:
@@ -381,7 +371,6 @@ class CAMSanity:
             tooldata["inspectionNotes"] = ""
             tooldata["diameter"] = str(TC.Tool.Diameter)
             tooldata["shape"] = TC.Tool.ShapeType
-
             tooldata["partNumber"] = ""
 
             if os.path.isfile(TC.Tool.ShapeType):
@@ -406,6 +395,7 @@ class CAMSanity:
                     fd.write(imagedata)
                     fd.close()
 
+            # ToolControllerZeroFeedrateRule
             tooldata["feedrate"] = str(TC.HorizFeed)
             if TC.HorizFeed.Value == 0.0:
                 data["squawkData"].append(
@@ -418,6 +408,7 @@ class CAMSanity:
                     )
                 )
 
+            # ToolControllerZeroSpindleSpeedRule
             tooldata["spindlespeed"] = str(TC.SpindleSpeed)
             if TC.SpindleSpeed == 0.0:
                 data["squawkData"].append(
@@ -443,7 +434,7 @@ class CAMSanity:
                             "Speed": str(TC.SpindleSpeed),
                         }
                     )
-
+            # ToolControllerNotUsedRule
             if used is False:
                 tooldata.setdefault("ops", [])
                 data["squawkData"].append(
