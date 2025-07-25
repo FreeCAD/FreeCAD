@@ -325,17 +325,8 @@ class ViewProviderDraft(object):
                                                 self.texcoords.directionT.setValue(0, s, 0)
                                                 r.insertChild(self.texcoords, 2)
         elif prop == "PatternSize":
-            if hasattr(self, "texcoords"):
-                if self.texcoords:
-                    s = 1
-                    if vobj.PatternSize:
-                        s = vobj.PatternSize
-                    vS = App.Vector(self.texcoords.directionS.getValue().getValue())
-                    vT = App.Vector(self.texcoords.directionT.getValue().getValue())
-                    vS.Length = s
-                    vT.Length = s
-                    self.texcoords.directionS.setValue(vS.x, vS.y, vS.z)
-                    self.texcoords.directionT.setValue(vT.x, vT.y, vT.z)
+            self._update_pattern_size(vobj)
+
         return
 
     def _update_pattern_size(self, vobj):
