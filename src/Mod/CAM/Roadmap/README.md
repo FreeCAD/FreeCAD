@@ -43,6 +43,7 @@ Any CAM application meeting the needs above must provide functionality in these 
 | [ADR-003](<./ADR/ADR-003.md>) | Height planes to safely move tools within and between operations                                           |
 | [ADR-004](<./ADR/ADR-004.md>) | Standardized vocabulary around rotation of cutter, direction of cut, and conventional vs. climb operations |
 | [ADR-005](<./ADR/ADR-005.md>) | Triggering Tool Path Recompute in Task Panels                                                              |
+| [ADR-006](<./ADR/ADR-006.md>) | Handling of user selected geometry in operations<br>                                                       |
 
 # ⚠️ Pain Points
 *(this section functions like an FAQ.  It helps keep users from creating duplicate issues.  It gives new developers a first place to connect)*
