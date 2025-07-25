@@ -932,17 +932,17 @@ void AssemblyObject::removeUnconnectedJoints(std::vector<App::DocumentObject*>& 
     }
 
     // Filter out unconnected joints
-    joints.erase(
-        std::remove_if(
-            joints.begin(),
-            joints.end(),
-            [&](App::DocumentObject* joint) {
-                App::DocumentObject* obj1 = getMovingPartFromRef(this, joint, "Reference1");
-                App::DocumentObject* obj2 = getMovingPartFromRef(this, joint, "Reference2");
-                return (!isObjInSetOfObjRefs(obj1, connectedParts)
-                    || !isObjInSetOfObjRefs(obj2, connectedParts));
-            }),
-        joints.end());
+    joints.erase(std::remove_if(joints.begin(),
+                                joints.end(),
+                                [&](App::DocumentObject* joint) {
+                                    App::DocumentObject* obj1 =
+                                        getMovingPartFromRef(this, joint, "Reference1");
+                                    App::DocumentObject* obj2 =
+                                        getMovingPartFromRef(this, joint, "Reference2");
+                                    return (!isObjInSetOfObjRefs(obj1, connectedParts)
+                                            || !isObjInSetOfObjRefs(obj2, connectedParts));
+                                }),
+                 joints.end());
 }
 
 void AssemblyObject::traverseAndMarkConnectedParts(App::DocumentObject* currentObj,
