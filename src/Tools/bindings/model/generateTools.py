@@ -65,7 +65,7 @@ class copier:
             match = self.restat.match(line)
             if match:  # a statement starts "here" (at line block[i])
                 # i is the last line to _not_ process
-                stat = match.string[match.end(0):].strip()
+                stat = match.string[match.end(0) :].strip()
                 j = cur_line + 1  # look for 'finish' from here onwards
                 nest = 1  # count nesting levels of statements
                 while j < last:
@@ -80,7 +80,7 @@ class copier:
                     elif nest == 1:  # look for continuation only at this nesting
                         match = self.recont.match(line)
                         if match:  # found a contin.-statement
-                            nestat = match.string[match.end(0):].strip()
+                            nestat = match.string[match.end(0) :].strip()
                             stat = "%s _cb(%s,%s)\n%s" % (stat, cur_line + 1, j, nestat)
                             cur_line = j  # again, i is the last line to _not_ process
                     j = j + 1
@@ -97,15 +97,15 @@ class copier:
                 cur_line = cur_line + 1
 
     def __init__(
-            self,
-            regex=_never,
-            dict=None,
-            restat=_never,
-            restend=_never,
-            recont=_never,
-            preproc=identity,
-            handle=nohandle,
-            ouf=sys.stdout,
+        self,
+        regex=_never,
+        dict=None,
+        restat=_never,
+        restend=_never,
+        recont=_never,
+        preproc=identity,
+        handle=nohandle,
+        ouf=sys.stdout,
     ):
         "Initialize self's attributes"
         self.regex = regex
