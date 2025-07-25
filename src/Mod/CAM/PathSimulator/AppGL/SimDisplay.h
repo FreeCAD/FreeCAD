@@ -40,7 +40,7 @@
 class SoCamera;
 class SoPerspectiveCamera;
 
-namespace MillSim
+namespace CAMSimulator
 {
 
 struct Point3D
@@ -136,6 +136,6 @@ protected:
     unsigned int mFboRandTexture = 0;
 };
 
-}  // namespace MillSim
+}  // namespace CAMSimulator
 
 #endif  // !__simdisplay_h__

@@ -28,7 +28,7 @@
 #include "linmath.h"
 #include "MillPathLine.h"
 
-namespace MillSim
+namespace CAMSimulator
 {
 
 enum MotionType
@@ -37,8 +37,6 @@ enum MotionType
     MTHorizontal,
     MTCurved
 };
-
-bool IsVerticalMotion(MillMotion* m1, MillMotion* m2);
 
 class MillPathSegment
 {
@@ -49,7 +47,7 @@ public:
     /// <param name="endmill">Mill object</param>
     /// <param name="from">Start point</param>
     /// <param name="to">End point</param>
-    MillPathSegment(EndMill* endmill, MillMotion* from, MillMotion* to);
+    MillPathSegment(const EndMill& endmill, const MillMotion& from, const MillMotion& to);
     virtual ~MillPathSegment();
 
     virtual void AppendPathPoints(std::vector<MillPathPosition>& pointsBuffer);
@@ -58,11 +56,11 @@ public:
     static float SetQuality(float quality, float maxStockDimension);  // 1 minimum, 10 maximum
 
 public:
-    EndMill* endmill = nullptr;
+    const EndMill* endmill = nullptr;
     bool isMultyPart;
     int numSimSteps;
-    int indexInArray;
-    int segmentIndex;
+    int indexInArray = -1;
+    int segmentIndex = -1;
 
 protected:
     mat4x4 mShearMat;
@@ -91,6 +89,6 @@ protected:
     MotionType mMotionType;
 };
 
-}  // namespace MillSim
+}  // namespace CAMSimulator
 
 #endif
