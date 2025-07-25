@@ -196,7 +196,8 @@ ColMat<double, 3> FaceUnwrapper::interpolateFlatFace(const TopoDS_Face& face)
     const TColStd_Array1OfReal& _vknots = _bspline->VKnotSequence();
 
     Eigen::VectorXd weights;
-    weights.resize(_bspline->NbUPoles() * _bspline->NbVPoles());
+    weights.resize(static_cast<Eigen::Index>(_bspline->NbUPoles())
+                   * static_cast<Eigen::Index>(_bspline->NbVPoles()));
     long i = 0;
     for (long u = 1; u <= _bspline->NbUPoles(); u++) {
         for (long v = 1; v <= _bspline->NbVPoles(); v++) {
