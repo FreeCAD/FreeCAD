@@ -42,7 +42,7 @@
 #define VIEWITEM_BASE_SHAPE 2
 #define VIEWITEM_MAX 4
 
-namespace MillSim
+namespace CAMSimulator
 {
 
 struct MillSimulationState
@@ -131,12 +131,6 @@ public:
     MillPathLine millPathLine;
     std::vector<MillPathSegment*> MillPathSegments;
 
-    // clang-format off
-    MillMotion mZeroPos = {.cmd=eNop, .tool=-1, .x=0, .y=0, .z=100, .i=0, .j=0, .k=0, .r=0, .retract_mode='\0', .retract_z=0.0};
-    MillMotion mCurMotion = {.cmd=eNop, .tool=-1, .x=0, .y=0, .z=0, .i=0, .j=0, .k=0, .r=0, .retract_mode='\0', .retract_z=0.0};
-    MillMotion mDestMotion = {.cmd=eNop, .tool=-1, .x=0, .y=0, .z=0, .i=0, .j=0, .k=0, .r=0, .retract_mode='\0', .retract_z=0.0};
-    // clang-format on
-
     int mWidth = -1;
     int mHeight = -1;
 
@@ -152,6 +146,6 @@ public:
     clock::duration mTotalElapsed;
 };
 
-}  // namespace MillSim
+}  // namespace CAMSimulator
 
 #endif

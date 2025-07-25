@@ -24,7 +24,7 @@
 #include "OpenGlWrapper.h"
 #include "SimShapes.h"
 
-using namespace MillSim;
+using namespace CAMSimulator;
 
 EndMill::EndMill(int toolid, float diameter)
 {
@@ -96,7 +96,7 @@ void EndMill::GenerateDisplayLists(float quality)
 }
 
 unsigned int
-EndMill::GenerateArcSegmentDL(float radius, float angleRad, float zShift, Shape* retShape)
+EndMill::GenerateArcSegmentDL(float radius, float angleRad, float zShift, Shape* retShape) const
 {
     int nFullPoints = PROFILE_BUFFER_POINTS(nPoints);
     retShape->ExtrudeProfileRadial(profilePoints.data(),

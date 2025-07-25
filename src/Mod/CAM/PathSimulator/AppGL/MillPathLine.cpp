@@ -3,7 +3,7 @@
 #include "GlUtils.h"
 #include "Shader.h"
 
-namespace MillSim
+namespace CAMSimulator
 {
 
 
@@ -61,4 +61,4 @@ void MillPathLine::Render()
     glDrawArrays(GL_LINE_STRIP, 0, mNumVerts);
 }
 
-}  // namespace MillSim
+}  // namespace CAMSimulator

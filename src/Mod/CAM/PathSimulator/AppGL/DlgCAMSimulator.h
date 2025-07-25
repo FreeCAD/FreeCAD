@@ -32,7 +32,6 @@
 #include <chrono>
 
 #include <QOpenGLWidget>
-#include <QOpenGLExtraFunctions>
 #include <QPainter>
 #include <QTimer>
 #include <QExposeEvent>
@@ -44,14 +43,6 @@
 
 class SoCamera;
 
-namespace MillSim
-{
-// use short declaration as using 'include' causes a header loop
-class MillSimulation;
-class MillSimulationState;
-struct Vertex;
-}  // namespace MillSim
-
 namespace Gui
 {
 class MDIView;
@@ -60,6 +51,10 @@ class MDIView;
 namespace CAMSimulator
 {
 
+// use short declaration as using 'include' causes a header loop
+class MillSimulation;
+class MillSimulationState;
+struct Vertex;
 class ViewCAMSimulator;
 class GuiDisplay;
 class Dummy3DViewer;
@@ -70,7 +65,7 @@ public:
     float maxDimension() const;
 
 public:
-    std::vector<MillSim::Vertex> verts;
+    std::vector<Vertex> verts;
     std::vector<GLushort> indices;
     bool needsUpdate = false;
 };
@@ -84,7 +79,7 @@ public:
     float resolution;
 };
 
-class DlgCAMSimulator: public QOpenGLWidget, public QOpenGLExtraFunctions
+class DlgCAMSimulator: public QOpenGLWidget
 {
     Q_OBJECT
 
@@ -136,7 +131,7 @@ private:
     bool mAnimating = false;
     int mAnimatingTimer = 0;
 
-    std::unique_ptr<MillSim::MillSimulation> mMillSimulator;
+    std::unique_ptr<MillSimulation> mMillSimulator;
     float mQuality = 10;
 
     std::vector<std::string> mGCode;
@@ -148,7 +143,7 @@ private:
     SimShape mStock;
     SimShape mBase;
 
-    std::unique_ptr<MillSim::MillSimulationState> mState;
+    std::unique_ptr<MillSimulationState> mState;
     clock::time_point mLastProcessSim = clock::time_point::min();
 
     GuiDisplay* mGui = nullptr;
