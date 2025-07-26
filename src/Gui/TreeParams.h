@@ -132,6 +132,17 @@ public:
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
+    /// Accessor for parameter AutoRelabelNew
+    static const bool & getAutoRelabelNew();
+    static const bool & defaultAutoRelabelNew();
+    static void removeAutoRelabelNew();
+    static void setAutoRelabelNew(const bool &v);
+    static const char *docAutoRelabelNew();
+    static void onAutoRelabelNewChanged();
+    //@}
+
+    // Auto generated code (Tools/params_utils.py:138)
+    //@{
     /// Accessor for parameter DocumentMode
     static const long & getDocumentMode();
     static const long & defaultDocumentMode();
