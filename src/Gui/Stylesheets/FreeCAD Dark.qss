@@ -1715,8 +1715,7 @@ QSint--ActionGroup QToolButton::menu-button {
 }
 
 QSint--ActionGroup QToolButton#settingsButton,
-QSint--ActionGroup QToolButton#filterButton,
-QSint--ActionGroup QToolButton#manualUpdate {
+QSint--ActionGroup QToolButton#filterButton {
     padding-right: 20px; /* make way for the popup button */
 }
 
@@ -2736,7 +2735,7 @@ PlotWidget {
 SKETCHER
 ==================================================================================================*/
 
-Gui--StatefulLabel[state="empty_sketch"] {
+Gui--StatefulLabel[state="empty"] {
   color : #ffffff; /* 50% opacity white */
 }
 Gui--StatefulLabel[state="under_constrained"] {
