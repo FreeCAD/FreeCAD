@@ -79,7 +79,7 @@ void PropertyPartShape::setValue(const TopoShape& sh)
             _Shape.Hasher = obj->getDocument()->getStringHasher();
             _Shape.hashChildMaps();
         }
-        _Shape.fix();
+        if(!_Shape.isNull()) _Shape.fix();
     }
     hasSetValue();
     _Ver.clear();
@@ -89,9 +89,12 @@ void PropertyPartShape::setValue(const TopoDS_Shape& sh, bool resetElementMap)
 {
     aboutToSetValue();
     auto obj = dynamic_cast<App::DocumentObject*>(getContainer());
-    if(obj)
+    if(obj) {
         _Shape.Tag = obj->getID();
+        if(!_Shape.isNull()) _Shape.fix();
+    }
     _Shape.setShape(sh,resetElementMap);
+    
     hasSetValue();
     _Ver.clear();
 }
