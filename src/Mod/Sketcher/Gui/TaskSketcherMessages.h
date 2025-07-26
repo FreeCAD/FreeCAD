@@ -56,6 +56,7 @@ public:
 
 private:
     void setupConnections();
+    void createSettingsButtonActions();
     void onLabelConstrainStatusLinkClicked(const QString&);
     void onAutoUpdateStateChanged();
     void onManualUpdateClicked(bool checked);

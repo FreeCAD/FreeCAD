@@ -36,6 +36,12 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="toolTip">
       <string>Forces the recomputation of the active document</string>
      </property>
@@ -45,6 +51,26 @@
      <property name="icon">
       <iconset>
        <normaloff>:/icons/view-refresh.svg</normaloff>:/icons/view-refresh.svg</iconset>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QToolButton" name="settingsButton">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="toolTip">
+      <string>Sketch edit settings</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="Resources/Sketcher.qrc">
+      <normaloff>:/icons/dialogs/Sketcher_Settings.svg</normaloff>:/icons/dialogs/Sketcher_Settings.svg</iconset>
      </property>
      <property name="popupMode">
       <enum>QToolButton::MenuButtonPopup</enum>

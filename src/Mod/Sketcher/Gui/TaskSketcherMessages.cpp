@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QAction>
+#include <QMenu>
 #endif
 
 #include <Gui/Application.h>
@@ -30,6 +31,7 @@
 #include <Gui/Command.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
+#include "Command.h"
 #include "TaskSketcherMessages.h"
 #include "ViewProviderSketch.h"
 #include "ui_TaskSketcherMessages.h"
@@ -41,7 +43,7 @@ using namespace Gui::TaskView;
 namespace sp = std::placeholders;
 
 TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch* sketchView)
-    : TaskBox(Gui::BitmapFactory().pixmap("Sketcher_Sketch"), tr("Solver Messages"), true, nullptr)
+    : TaskBox(Gui::BitmapFactory().pixmap("Sketcher_Sketch"), tr("Sketch Edit"), true, nullptr)
     , sketchView(sketchView)
     , ui(new Ui_TaskSketcherMessages)
 {
@@ -89,23 +91,7 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch* sketchView)
 
     ui->labelConstrainStatusLink->setLaunchExternal(false);
 
-    // Set Auto Update in the 'Manual Update' button menu.
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher");
-    bool state = hGrp->GetBool("AutoRecompute", false);
-
-    sketchView->getSketchObject()->noRecomputes = !state;
-
-    QAction* action = new QAction(tr("Auto-update"), this);
-    action->setToolTip(tr("Executes a recomputation of active document after every sketch action"));
-    action->setCheckable(true);
-    action->setChecked(state);
-    ui->manualUpdate->addAction(action);
-
-    QObject::connect(std::as_const(ui->manualUpdate)->actions()[0],
-                     &QAction::changed,
-                     this,
-                     &TaskSketcherMessages::onAutoUpdateStateChanged);
+    createSettingsButtonActions();
 }
 
 TaskSketcherMessages::~TaskSketcherMessages()
@@ -175,7 +161,7 @@ void TaskSketcherMessages::onLabelConstrainStatusLinkClicked(const QString& str)
 
 void TaskSketcherMessages::onAutoUpdateStateChanged()
 {
-    bool state = std::as_const(ui->manualUpdate)->actions()[0]->isChecked();
+    bool state = std::as_const(ui->settingsButton)->actions()[0]->isChecked();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher");
@@ -187,6 +173,47 @@ void TaskSketcherMessages::onManualUpdateClicked(bool checked)
 {
     Q_UNUSED(checked);
     Gui::Command::updateActive();
+}
+
+void TaskSketcherMessages::createSettingsButtonActions()
+{
+    // Set Auto Update in the 'Manual Update' button menu.
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher");
+    bool state = hGrp->GetBool("AutoRecompute", false);
+
+    sketchView->getSketchObject()->noRecomputes = !state;
+    QAction* action = new QAction(tr("Auto-update"), this);
+    action->setToolTip(tr("Executes a recomputation of active document after every sketch action"));
+    action->setCheckable(true);
+    action->setChecked(state);
+
+
+    auto* gsa = new GridSpaceAction(this);
+    auto* ssa = new SnapSpaceAction(this);
+    auto* roa = new RenderingOrderAction(this);
+
+    QMenu* myMenu = new QMenu(this);
+    myMenu->addAction(action);
+    myMenu->addSeparator();
+    myMenu->addAction(gsa);
+    myMenu->addSeparator();
+    myMenu->addAction(ssa);
+    myMenu->addSeparator();
+    myMenu->addAction(roa);
+    ui->settingsButton->setMenu(myMenu);
+
+    QObject::connect(myMenu, &QMenu::aboutToShow, [gsa, ssa, roa]() {
+        gsa->updateWidget();
+        ssa->updateWidget(true);
+        roa->updateWidget();
+    });
+
+    QObject::connect(ui->settingsButton, &QToolButton::clicked, ui->settingsButton, &QToolButton::showMenu);
+    QObject::connect(std::as_const(myMenu)->actions()[0],
+        &QAction::changed,
+        this,
+        &TaskSketcherMessages::onAutoUpdateStateChanged);
 }
 
 #include "moc_TaskSketcherMessages.cpp"
