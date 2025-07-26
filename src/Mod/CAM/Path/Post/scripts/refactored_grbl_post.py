@@ -55,12 +55,14 @@ class Refactored_Grbl(PostProcessor):
     def __init__(
         self,
         job,
+        operations,
         tooltip=translate("CAM", "Refactored Grbl post processor"),
         tooltipargs=[""],
         units="Metric",
     ) -> None:
         super().__init__(
             job=job,
+            operations=operations,
             tooltip=tooltip,
             tooltipargs=tooltipargs,
             units=units,

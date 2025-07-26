@@ -52,12 +52,14 @@ class Refactored_Linuxcnc(PostProcessor):
     def __init__(
         self,
         job,
+        operations,
         tooltip=translate("CAM", "Refactored LinuxCNC post processor"),
         tooltipargs=[""],
         units="Metric",
     ) -> None:
         super().__init__(
             job=job,
+            operations=operations,
             tooltip=tooltip,
             tooltipargs=tooltipargs,
             units=units,
