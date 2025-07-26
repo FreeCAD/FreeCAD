@@ -323,16 +323,18 @@ class CAMWorkbench(Workbench):
 
     def ContextMenu(self, recipient):
         menuAppended = False
-        if len(FreeCADGui.Selection.getSelection()) == 1:
-            obj = FreeCADGui.Selection.getSelection()[0]
+        selection = FreeCADGui.Selection.getSelection()
+        if len(selection) == 1:
+            obj = selection[0]
             if obj.isDerivedFrom("Path::Feature"):
                 self.appendContextMenu("", "Separator")
+                self.appendContextMenu("", ["CAM_Post"])
                 self.appendContextMenu("", ["CAM_Inspect"])
                 selectedName = obj.Name
                 if "Remote" in selectedName:
                     self.appendContextMenu("", ["Refresh_Path"])
                 if "Job" in selectedName:
-                    self.appendContextMenu("", ["CAM_ExportTemplate"] + self.toolbitctxmenu)
+                    self.appendContextMenu("", ["CAM_ExportTemplate"])
                 menuAppended = True
             if isinstance(obj.Proxy, Path.Op.Base.ObjectOp):
                 self.appendContextMenu("", ["CAM_OperationCopy", "CAM_OpActiveToggle"])
@@ -344,6 +346,7 @@ class CAMWorkbench(Workbench):
                     "Profile" in selectedName
                     or "Contour" in selectedName
                     or "Dressup" in selectedName
+                    or "Pocket" in selectedName
                 ):
                     self.appendContextMenu("", "Separator")
                     # self.appendContextMenu("", ["Set_StartPoint"])
@@ -354,6 +357,14 @@ class CAMWorkbench(Workbench):
             if isinstance(obj.Proxy, Path.Tool.ToolBit):
                 self.appendContextMenu("", ["CAM_ToolBitSave", "CAM_ToolBitSaveAs"])
                 menuAppended = True
+
+        elif len(selection) > 1:
+            for obj in selection:
+                if not obj.isDerivedFrom("Path::Feature"):
+                    break
+            else:
+                self.appendContextMenu("", ["CAM_Post"])
+
         if menuAppended:
             self.appendContextMenu("", "Separator")
 
