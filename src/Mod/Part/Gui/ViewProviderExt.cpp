@@ -477,9 +477,13 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
 
     // putting all together with the switch
     addDisplayMaskMode(pcNormalRoot, "Flat Lines");
+    pFaceEdgeRoot = pcNormalRoot;
     addDisplayMaskMode(pcFlatRoot, "Shaded");
+    pFaceRoot = pcFlatRoot;
     addDisplayMaskMode(pcWireframeRoot, "Wireframe");
+    pEdgeRoot = pcWireframeRoot;
     addDisplayMaskMode(pcPointsRoot, "Point");
+    pVertexRoot = pcPointsRoot;
 }
 
 void ViewProviderPartExt::setDisplayMode(const char* ModeName)
@@ -508,6 +512,43 @@ std::vector<std::string> ViewProviderPartExt::getDisplayModes() const
     StrList.emplace_back("Points");
 
     return StrList;
+}
+
+Part::TopoShape ViewProviderPartExt::getShape() const
+{
+    Part::TopoShape shape;
+    if (!isAttachedToDocument() || !getObject()) {
+        return shape;
+    }
+
+    auto prop = dynamic_cast<Part::PropertyPartShape*>(
+        getObject()->getPropertyByName(getShapePropertyName()));
+    if (prop) {
+        return prop->getShape();
+    }
+    return Part::Feature::getTopoShape(getObject(), Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+}
+
+void ViewProviderPartExt::setShapePropertyName(const char* propName)
+{
+    if (propName) {
+        shapePropName = propName;
+    }
+    else {
+        shapePropName.clear();
+    }
+
+    if (isUpdateForced() || Visibility.getValue()) {
+        updateVisual();
+    }
+    else {
+        VisualTouched = true;
+    }
+}
+
+const char* ViewProviderPartExt::getShapePropertyName() const
+{
+    return shapePropName.empty() ? "Shape" : shapePropName.c_str();
 }
 
 std::string ViewProviderPartExt::getElement(const SoDetail* detail) const
@@ -847,13 +888,16 @@ void ViewProviderPartExt::reload()
 
 void ViewProviderPartExt::updateData(const App::Property* prop)
 {
-    const char *propName = prop->getName();
-    if (propName && (strcmp(propName, "Shape") == 0 || strstr(propName, "Touched"))) {
+    const char* shapeProp = getShapePropertyName();
+    const char* propName = prop->getName();
+    if (propName && (strcmp(propName, "Shape") == 0 || strcmp(propName, shapeProp) == 0 || strstr(propName, "Touched"))) {
         // calculate the visual only if visible
-        if (isUpdateForced() || Visibility.getValue())
+        if (isUpdateForced() || Visibility.getValue()) {
             updateVisual();
-        else
+        }
+        else {
             VisualTouched = true;
+        }
 
         if (!VisualTouched) {
             if (this->faceset->partIndex.getNum() >
@@ -943,7 +987,7 @@ void ViewProviderPartExt::updateVisual()
     haction.apply(this->lineset);
     haction.apply(this->nodeset);
 
-    TopoDS_Shape cShape = Part::Feature::getShape(getObject(), Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+    TopoDS_Shape cShape = getShape().getShape();
     if (cShape.IsNull()) {
         coords  ->point      .setNum(0);
         norm    ->vector     .setNum(0);
