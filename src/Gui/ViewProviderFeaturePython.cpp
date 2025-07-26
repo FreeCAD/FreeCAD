@@ -158,9 +158,10 @@ QIcon ViewProviderFeaturePythonImp::getIcon() const
     return {};
 }
 
-std::vector<std::string> ViewProviderFeaturePythonImp::getOverlayIcons() const
+std::map<BitmapFactoryInst::Position, std::string>
+ViewProviderFeaturePythonImp::getOverlayIcons() const
 {
-    std::vector<std::string> overlays;
+    std::map<BitmapFactoryInst::Position, std::string> overlays;
     _FC_PY_CALL_CHECK(getOverlayIcons, return overlays);
 
     Base::PyGILStateLocker lock;
@@ -170,9 +171,40 @@ std::vector<std::string> ViewProviderFeaturePythonImp::getOverlayIcons() const
             return overlays;
         }
 
-        Py::Sequence list(ret);
-        for (const auto& item : list) {
-            overlays.push_back(Py::String(item).as_std_string("utf-8"));
+        // Expect a dictionary (dict) from Python
+        if (!PyDict_Check(ret.ptr())) {
+            FC_WARN("getOverlayIcons() must return a dict, but returned %s",
+                    Py_TYPE(ret.ptr())->tp_name);
+            return overlays;
+        }
+
+        Py::Dict dict(ret);
+        PyObject *key, *value;
+        Py_ssize_t pos = 0;
+
+        // Iterate over the dictionary items
+        while (PyDict_Next(dict.ptr(), &pos, &key, &value)) {
+            // Key should be an integer (from the enum)
+            if (!PyLong_Check(key)) {
+                FC_WARN("getOverlayIcons() dict key must be of type FreeCADGui.IconPosition (int)");
+                continue;
+            }
+            // Value should be a string
+            if (!PyUnicode_Check(value)) {
+                FC_WARN("getOverlayIcons() dict value must be a string (icon name)");
+                continue;
+            }
+
+            long position_val = PyLong_AsLong(key);
+            // Basic validation for the enum range
+            if (position_val >= BitmapFactoryInst::TopLeft
+                && position_val <= BitmapFactoryInst::BottomRight) {
+                auto position = static_cast<BitmapFactoryInst::Position>(position_val);
+                std::string iconName = Py::String(value).as_std_string("utf-8");
+                if (!iconName.empty()) {
+                    overlays[position] = iconName;
+                }
+            }
         }
     }
     catch (Py::Exception&) {
