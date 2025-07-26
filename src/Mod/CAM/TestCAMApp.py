@@ -71,6 +71,7 @@ from CAMTests.TestPathToolAssetManager import TestPathToolAssetManager
 from CAMTests.TestPathToolAssetStore import TestPathToolFileStore, TestPathToolMemoryStore
 from CAMTests.TestPathToolAssetUri import TestPathToolAssetUri
 from CAMTests.TestPathToolBit import TestPathToolBit
+from CAMTests.TestPathToolDocObject import TestPathToolDocObject
 from CAMTests.TestPathToolShapeClasses import TestPathToolShapeClasses
 from CAMTests.TestPathToolShapeDoc import TestPathToolShapeDoc
 from CAMTests.TestPathToolShapeIcon import (
@@ -89,7 +90,8 @@ from CAMTests.TestPathToolLibrarySerializer import (
 )
 from CAMTests.TestPathToolChangeGenerator import TestPathToolChangeGenerator
 from CAMTests.TestPathToolController import TestPathToolController
-from CAMTests.TestPathToolMachine import TestPathToolMachine
+from CAMTests.TestPathToolMachine import TestPathToolMachine, TestMill, TestLathe
+from CAMTests.TestPathToolMachineSerializer import TestPathToolMachineSerializer
 from CAMTests.TestPathUtil import TestPathUtil
 from CAMTests.TestPathVcarve import TestPathVcarve
 from CAMTests.TestPathVoronoi import TestPathVoronoi

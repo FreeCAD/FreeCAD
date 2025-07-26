@@ -122,6 +122,7 @@ SET(PathPythonTools_SRCS
 SET(PathPythonToolsAssets_SRCS
     Path/Tool/assets/__init__.py
     Path/Tool/assets/asset.py
+    Path/Tool/assets/docasset.py
     Path/Tool/assets/cache.py
     Path/Tool/assets/manager.py
     Path/Tool/assets/serializer.py
@@ -144,6 +145,7 @@ SET(PathPythonToolsAssetsUi_SRCS
 
 SET(PathPythonToolsDocObject_SRCS
     Path/Tool/docobject/__init__.py
+    Path/Tool/docobject/util.py
 )
 
 SET(PathPythonToolsDocObjectModels_SRCS
@@ -242,7 +244,32 @@ SET(PathPythonToolsMachine_SRCS
 
 SET(PathPythonToolsMachineModels_SRCS
     Path/Tool/machine/models/__init__.py
+    Path/Tool/machine/models/axis.py
+    Path/Tool/machine/models/component.py
+    Path/Tool/machine/models/lathe.py
     Path/Tool/machine/models/machine.py
+    Path/Tool/machine/models/mill.py
+    Path/Tool/machine/models/spindle.py
+)
+
+SET(PathPythonToolsMachineSerializers_SRCS
+    Path/Tool/machine/serializers/__init__.py
+    Path/Tool/machine/serializers/fcmachine.py
+)
+
+SET(PathPythonToolsMachineUi_SRCS
+    Path/Tool/machine/ui/__init__.py
+    Path/Tool/machine/ui/angular_axis.py
+    Path/Tool/machine/ui/component.py
+    Path/Tool/machine/ui/machine.py
+    Path/Tool/machine/ui/post.py
+    Path/Tool/machine/ui/prefs.py
+    Path/Tool/machine/ui/rigidity.py
+    Path/Tool/machine/ui/selector.py
+    Path/Tool/machine/ui/spinbox.py
+    Path/Tool/machine/ui/spindle_edit.py
+    Path/Tool/machine/ui/spindle_prop.py
+    Path/Tool/machine/ui/tree.py
 )
 
 SET(PathPythonToolsShape_SRCS
@@ -270,6 +297,7 @@ SET(PathPythonToolsShapeModels_SRCS
     Path/Tool/shape/models/threadmill.py
     Path/Tool/shape/models/vbit.py
 )
+
 
 SET(PathPythonToolsShapeUi_SRCS
     Path/Tool/shape/ui/__init__.py
@@ -528,6 +556,7 @@ SET(Tests_SRCS
     CAMTests/TestPathToolBitEditorWidget.py
     CAMTests/TestPathToolBitListWidget.py
     CAMTests/TestPathToolBitPropertyEditorWidget.py
+    CAMTests/TestPathToolDocObject.py
     CAMTests/TestPathToolDocumentObjectEditorWidget.py
     CAMTests/TestPathToolShapeClasses.py
     CAMTests/TestPathToolShapeDoc.py
@@ -535,6 +564,7 @@ SET(Tests_SRCS
     CAMTests/TestPathToolLibrary.py
     CAMTests/TestPathToolLibrarySerializer.py
     CAMTests/TestPathToolMachine.py
+    CAMTests/TestPathToolMachineSerializer.py
     CAMTests/TestPathToolController.py
     CAMTests/TestPathUtil.py
     CAMTests/TestPathVcarve.py
@@ -617,6 +647,8 @@ SET(all_files
     ${PathPythonToolsLibraryUi_SRCS}
     ${PathPythonToolsMachine_SRCS}
     ${PathPythonToolsMachineModels_SRCS}
+    ${PathPythonToolsMachineSerializers_SRCS}
+    ${PathPythonToolsMachineUi_SRCS}
     ${PathPythonGui_SRCS}
     ${Tools_SRCS}
     ${Tools_Bit_SRCS}
@@ -891,6 +923,21 @@ INSTALL(
     DESTINATION
         Mod/CAM/Path/Tool/machine/models
 )
+
+INSTALL(
+    FILES
+        ${PathPythonToolsMachineSerializers_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/machine/serializers
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsMachineUi_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/machine/ui
+)
+
 
 INSTALL(
     FILES

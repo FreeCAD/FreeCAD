@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-from .models.machine import Machine
+from .models import Lathe, Machine, Mill
 
 __all__ = [
+    "Lathe",
     "Machine",
+    "Mill",
 ]
