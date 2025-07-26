@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Shape appearance</string>
+   <string>Shape Appearance</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="groupBoxDefaultColors">
      <property name="title">
-      <string>Default Shape view properties</string>
+      <string>Default Shape Appearance Properties</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
@@ -502,7 +502,7 @@ will be used or black.</string>
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Default Annotation color</string>
+      <string>Default Annotation Color</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>

@@ -29,7 +29,7 @@
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Selected shape:</string>
+         <string>Selected shape</string>
         </property>
        </widget>
       </item>
@@ -107,7 +107,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="labelfillet">
         <property name="text">
-         <string>Type:</string>
+         <string>Type</string>
         </property>
        </widget>
       </item>
@@ -139,7 +139,7 @@
         <item>
          <widget class="QLabel" name="labelRadius">
           <property name="text">
-           <string>Radius:</string>
+           <string>Radius</string>
           </property>
          </widget>
         </item>

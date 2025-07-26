@@ -91,7 +91,7 @@ void ViewProviderSplineExtension::extensionSetupContextMenu(QMenu* menu, QObject
 {
     // toggle command to display components
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-    QAction* act = menu->addAction(QObject::tr("Show control points"));
+    QAction* act = menu->addAction(QObject::tr("Show Control Points"));
     act->setCheckable(true);
     act->setChecked(ControlPoints.getValue());
     func->toggle(act, [this](bool on) {
