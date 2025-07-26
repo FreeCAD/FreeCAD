@@ -26,11 +26,17 @@
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderExtrude.h"
 
+class QComboBox;
+class QCheckBox;
+class QLineEdit;
+class QListWidget;
+class QToolButton;
 
 class Ui_TaskPadPocketParameters;
 
 namespace App {
 class Property;
+class PropertyLinkSubList;
 }
 
 namespace PartDesign {
@@ -57,13 +63,23 @@ public:
         Pocket
     };
 
+    enum class SidesMode {
+        OneSide,
+        TwoSides,
+        Symmetric,
+    };
+
+    enum class Sides {
+        First,
+        Second,
+    };
+
     enum class Mode {
         Dimension,
         ThroughAll,
         ToLast = ThroughAll,
         ToFirst,
         ToFace,
-        TwoDimensions,
         ToShape,
     };
 
@@ -72,6 +88,9 @@ public:
         SelectFace,
         SelectShape,
         SelectShapeFaces,
+        SelectFace2,
+        SelectShape2,
+        SelectShapeFaces2,
         SelectReferenceAxis
     };
 
@@ -84,7 +103,7 @@ public:
     void fillDirectionCombo();
     void addAxisToCombo(App::DocumentObject* linkObj, std::string linkSubname, QString itemText,
         bool hasSketch = true);
-    void applyParameters(QString facename);
+    void applyParameters();
 
     void setSelectionMode(SelectionMode mode);
 
@@ -92,27 +111,35 @@ protected Q_SLOTS:
     void onLengthChanged(double);
     void onLength2Changed(double);
     void onOffsetChanged(double);
+    void onOffset2Changed(double);
     void onTaperChanged(double);
     void onTaper2Changed(double);
     void onDirectionCBChanged(int);
     void onAlongSketchNormalChanged(bool);
     void onDirectionToggled(bool);
     void onAllFacesToggled(bool);
+    void onAllFaces2Toggled(bool);
     void onXDirectionEditChanged(double);
     void onYDirectionEditChanged(double);
     void onZDirectionEditChanged(double);
-    void onMidplaneChanged(bool);
     void onReversedChanged(bool);
     void onFaceName(const QString& text);
+    void onFaceName2(const QString& text);
     void onSelectFaceToggle(const bool checked = true);
     void onSelectShapeToggle(const bool checked = true);
     void onSelectShapeFacesToggle(const bool checked);
     void onUnselectShapeFacesTrigger();
+    void onSelectFace2Toggle(const bool checked = true);
+    void onSelectShape2Toggle(const bool checked = true);
+    void onSelectShapeFaces2Toggle(const bool checked);
+    void onUnselectShapeFaces2Trigger();
 
+    void onSidesModeChanged(int);
     virtual void onModeChanged(int);
+    virtual void onMode2Changed(int);
 
 protected:
-    void setCheckboxes(Mode mode, Type type);
+    void setCheckboxes(Type type, Sides side);
     void setupDialog();
     void readValuesFromHistory();
     void changeEvent(QEvent *e) override;
@@ -120,6 +147,7 @@ protected:
     void getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
 
     double getOffset() const;
+    double getOffset2() const;
     bool   getAlongSketchNormal() const;
     bool   getCustom() const;
     std::string getReferenceAxis() const;
@@ -127,37 +155,55 @@ protected:
     double getYDirection() const;
     double getZDirection() const;
     bool   getReversed() const;
-    bool   getMidplane() const;
     int    getMode() const;
-    QString getFaceName() const;
+    int    getMode2() const;
+    int    getSidesMode() const;
+    QString getFaceName(QLineEdit*) const;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
-    virtual void translateModeList(int index);
-    virtual void updateUI(int index);
+    void translateSidesList(int index);
+    virtual void translateModeList(QComboBox* box, int index);
+    virtual void updateUI(Sides side);
     void updateDirectionEdits();
     void setDirectionMode(int index);
-    void handleLineFaceNameClick();
-    void handleLineFaceNameNo();
+    void handleLineFaceNameClick(QLineEdit*);
+    void handleLineFaceNameNo(QLineEdit*);
 
 private:
     void selectedReferenceAxis(const Gui::SelectionChanges& msg);
-    void selectedFace(const Gui::SelectionChanges& msg);
-    void selectedShape(const Gui::SelectionChanges& msg);
-    void selectedShapeFace(const Gui::SelectionChanges& msg);
+    void selectedFace(const Gui::SelectionChanges& msg,
+                      QLineEdit* lineEdit,
+                      QToolButton* btn,
+                      App::PropertyLinkSub& prop);
+    void selectedShape(const Gui::SelectionChanges& msg,
+                       QLineEdit* lineEdit,
+                       QListWidget* list,
+                       QCheckBox* box,
+                       App::PropertyLinkSubList& prop);
+    void selectedShapeFace(const Gui::SelectionChanges& msg,
+                           QListWidget* list,
+                           App::PropertyLinkSubList& prop);
 
     void tryRecomputeFeature();
-    void translateFaceName();
+    void translateFaceName(QLineEdit*);
     void connectSlots();
     bool hasProfileFace(PartDesign::ProfileBased*) const;
-    void clearFaceName();
+    void clearFaceName(QLineEdit*);
 
-    void updateShapeName();
-    void updateShapeFaces();
+    void updateShapeName(QLineEdit*, App::PropertyLinkSubList&);
+    void updateShapeFaces(QListWidget* list, App::PropertyLinkSubList& prop);
 
-    std::vector<std::string> getShapeFaces();
+    std::vector<std::string> getShapeFaces(App::PropertyLinkSubList& prop);
+
+    void changeFaceName(QLineEdit* lineEdit, const QString& text);
+    void selectShapeToggle(const bool checked, QLineEdit*, App::PropertyLinkSubList&, SelectionMode);
+    void selectFaceToggle(const bool checked, QLineEdit*, SelectionMode);
+    void unselectShapeFacesTrigger(QListWidget*, App::PropertyLinkSubList&);
+    void selectShapeFacesToggle(bool checked, SelectionMode, QToolButton*);
 
 protected:
     QWidget* proxy;
     QAction* unselectShapeFaceAction;
+    QAction* unselectShapeFaceAction2;
 
     std::unique_ptr<Ui_TaskPadPocketParameters> ui;
     std::vector<std::unique_ptr<App::PropertyLinkSub>> axesInList;
