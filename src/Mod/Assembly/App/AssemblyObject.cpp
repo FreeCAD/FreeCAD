@@ -102,8 +102,17 @@ PROPERTY_SOURCE(Assembly::AssemblyObject, App::Part)
 AssemblyObject::AssemblyObject()
     : mbdAssembly(std::make_shared<ASMTAssembly>())
     , bundleFixed(false)
+    , lastDoF(0)
+    , lastHasConflict(false)
+    , lastHasRedundancies(false)
+    , lastHasPartialRedundancies(false)
+    , lastHasMalformedConstraints(false)
+    , lastSolverStatus(0)
 {
     mbdAssembly->externalSystem->freecadAssemblyObject = this;
+
+    lastDoF = numberOfComponents() * 6;
+    signalSolverUpdate();
 }
 
 AssemblyObject::~AssemblyObject() = default;
@@ -131,6 +140,8 @@ App::DocumentObjectExecReturn* AssemblyObject::execute()
 
 int AssemblyObject::solve(bool enableRedo, bool updateJCS)
 {
+    lastDoF = numberOfComponents() * 6;
+
     ensureIdentityPlacements();
 
     mbdAssembly = makeMbdAssembly();
@@ -168,6 +179,8 @@ int AssemblyObject::solve(bool enableRedo, bool updateJCS)
     setNewPlacements();
 
     redrawJointPlacements(joints);
+
+    signalSolverUpdate();
 
     return 0;
 }
@@ -1971,4 +1984,53 @@ void AssemblyObject::ensureIdentityPlacements()
             }
         }
     }
+}
+
+int AssemblyObject::numberOfComponents() const
+{
+    int count = 0;
+    const std::vector<App::DocumentObject*> objects = Group.getValues();
+
+    for (auto* obj : objects) {
+        if (!obj) {
+            continue;
+        }
+
+        if (obj->isLinkGroup()) {
+            auto* link = static_cast<const App::Link*>(obj);
+            count += link->ElementCount.getValue();
+            continue;
+        }
+
+        if (obj->isDerivedFrom(Assembly::AssemblyLink::getClassTypeId())) {
+            auto* subAssembly = static_cast<const AssemblyLink*>(obj);
+            count += subAssembly->numberOfComponents();
+            continue;
+        }
+
+        // Resolve standard App::Links to their target object
+        if (obj->isDerivedFrom(App::Link::getClassTypeId())) {
+            obj = static_cast<const App::Link*>(obj)->getLinkedObject();
+            if (!obj) {
+                continue;
+            }
+        }
+
+        if (!obj->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+            continue;
+        }
+
+        if (obj->isDerivedFrom(App::LocalCoordinateSystem::getClassTypeId())) {
+            continue;
+        }
+
+        count++;
+    }
+
+    return count;
+}
+
+bool AssemblyObject::isEmpty() const
+{
+    return numberOfComponents() == 0;
 }
