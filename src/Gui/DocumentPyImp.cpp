@@ -529,7 +529,9 @@ Py::Boolean DocumentPy::getModified() const
 
 void DocumentPy::setModified(Py::Boolean arg)
 {
-    getDocumentPtr()->setModified(arg);
+    // If the setModified call came from some python script, mark as out of transaction / reset
+    // so that it is honored even if there is no transaction
+    getDocumentPtr()->setModified(arg ? Gui::Document::ModificationType::OutOfTransaction : Gui::Document::ModificationType::Reset);
 }
 
 Py::List DocumentPy::getTreeRootObjects() const
