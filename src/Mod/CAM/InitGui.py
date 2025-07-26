@@ -155,6 +155,7 @@ class CAMWorkbench(Workbench):
             "CAM_DressupDogbone",
             "CAM_DressupDragKnife",
             "CAM_DressupLeadInOut",
+            "CAM_DressupMirror",
             "CAM_DressupRampEntry",
             "CAM_DressupTag",
             "CAM_DressupZCorrect",
@@ -323,8 +324,9 @@ class CAMWorkbench(Workbench):
 
     def ContextMenu(self, recipient):
         menuAppended = False
-        if len(FreeCADGui.Selection.getSelection()) == 1:
-            obj = FreeCADGui.Selection.getSelection()[0]
+        selection = FreeCADGui.Selection.getSelection()
+        if len(selection) == 1:
+            obj = selection[0]
             if obj.isDerivedFrom("Path::Feature"):
                 self.appendContextMenu("", "Separator")
                 self.appendContextMenu("", ["CAM_Inspect"])
@@ -332,7 +334,7 @@ class CAMWorkbench(Workbench):
                 if "Remote" in selectedName:
                     self.appendContextMenu("", ["Refresh_Path"])
                 if "Job" in selectedName:
-                    self.appendContextMenu("", ["CAM_ExportTemplate"] + self.toolbitctxmenu)
+                    self.appendContextMenu("", ["CAM_ExportTemplate"])
                 menuAppended = True
             if isinstance(obj.Proxy, Path.Op.Base.ObjectOp):
                 self.appendContextMenu("", ["CAM_OperationCopy", "CAM_OpActiveToggle"])
@@ -355,6 +357,14 @@ class CAMWorkbench(Workbench):
             if isinstance(obj.Proxy, Path.Tool.ToolBit):
                 self.appendContextMenu("", ["CAM_ToolBitSave", "CAM_ToolBitSaveAs"])
                 menuAppended = True
+
+        if len(selection) >= 1:
+            for obj in selection:
+                if not obj.isDerivedFrom("Path::Feature"):
+                    break
+            else:
+                self.appendContextMenu("", ["CAM_Post", "CAM_PostSelected"])
+
         if menuAppended:
             self.appendContextMenu("", "Separator")
 
