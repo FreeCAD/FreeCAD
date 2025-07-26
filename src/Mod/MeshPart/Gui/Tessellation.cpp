@@ -276,14 +276,14 @@ bool Tessellation::accept()
             QMessageBox::critical(
                 this,
                 windowTitle(),
-                tr("You have selected a body without tip.\n"
-                   "Either set the tip of the body or select a different shape, please."));
+                tr("Error: body without a tip selected.\n"
+                   "Either set the tip of the body or select a different shapee."));
         }
         else if (partWithNoFace) {
             QMessageBox::critical(this,
                                   windowTitle(),
-                                  tr("You have selected a shape without faces.\n"
-                                     "Select a different shape, please."));
+                                  tr("Error: shape without faces selected.\n"
+                                     "Select a different shape."));
         }
         else {
             QMessageBox::critical(this, windowTitle(), tr("Select a shape for meshing, first."));

@@ -620,7 +620,7 @@ void CurveOnMeshHandler::Private::vertexCallback(void* ud, SoEventCallback* cb)
                             }
                             else if (self->d_ptr->mesh != mesh) {
                                 Gui::getMainWindow()->statusBar()->showMessage(
-                                    tr("Wrong mesh picked"));
+                                    tr("Wrong mesh selected"));
                                 return;
                             }
 
@@ -659,7 +659,7 @@ void CurveOnMeshHandler::Private::vertexCallback(void* ud, SoEventCallback* cb)
                 }
             }
             else {
-                Gui::getMainWindow()->statusBar()->showMessage(tr("No point was picked"));
+                Gui::getMainWindow()->statusBar()->showMessage(tr("No point was selected"));
             }
         }
         else if (mbe->getButton() == SoMouseButtonEvent::BUTTON2
