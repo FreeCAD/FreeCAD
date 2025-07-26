@@ -150,7 +150,6 @@ class ToolController:
     def onDocumentRestored(self, obj):
         obj.setEditorMode("Placement", 2)
 
-
     def onDelete(self, obj, arg2=None):
         if hasattr(obj.Tool, "InList") and len(obj.Tool.InList) == 1:
             if hasattr(obj.Tool.Proxy, "onDelete"):
