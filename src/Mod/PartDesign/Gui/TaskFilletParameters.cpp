@@ -206,6 +206,7 @@ TaskDlgFilletParameters::TaskDlgFilletParameters(ViewProviderFillet* DressUpView
     parameter = new TaskFilletParameters(DressUpView);
 
     Content.push_back(parameter);
+    Content.push_back(preview);
 }
 
 TaskDlgFilletParameters::~TaskDlgFilletParameters() = default;
@@ -216,7 +217,7 @@ bool TaskDlgFilletParameters::accept()
 {
     auto obj = getObject();
     if (!obj->isError()) {
-        parameter->showObject();
+        getViewObject()->showPreviousFeature(false);
     }
 
     parameter->apply();
