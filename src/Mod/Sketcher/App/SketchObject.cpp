@@ -1415,7 +1415,6 @@ int SketchObject::moveGeometries(const std::vector<GeoElementId>& geoEltIds, con
     if (lastSolverStatus == 0) {
         std::vector<Part::Geometry*> geomlist = solvedSketch.extractGeometry();
         Geometry.setValues(geomlist);
-        // Constraints.acceptGeometry(getCompleteGeometry());
         for (auto* geo :  geomlist) {
             if (geo){
                 delete geo;
@@ -1571,32 +1570,32 @@ Base::Vector3d SketchObject::getPointForGeometry<>(const Part::GeomBSplineCurve 
 
 Base::Vector3d SketchObject::getPoint(const Part::Geometry *geo, PointPos PosId)
 {
-    if (geo->is<Part::GeomPoint>()) {
-        return getPointForGeometry<Part::GeomPoint>(static_cast<const Part::GeomPoint*>(geo), PosId);
+    if (auto point = freecad_cast<Part::GeomPoint*>(geo)) {
+        return getPointForGeometry<Part::GeomPoint>(point, PosId);
     }
-    else if (geo->is<Part::GeomLineSegment>()) {
-        return getPointForGeometry<Part::GeomLineSegment>(static_cast<const Part::GeomLineSegment*>(geo), PosId);
+    else if (auto lineSegment = freecad_cast<Part::GeomLineSegment*>(geo)) {
+        return getPointForGeometry<Part::GeomLineSegment>(lineSegment, PosId);
     }
-    else if (geo->is<Part::GeomCircle>()) {
-        return getPointForGeometry<Part::GeomCircle>(static_cast<const Part::GeomCircle*>(geo), PosId);
+    else if (auto circle = freecad_cast<Part::GeomCircle*>(geo)) {
+        return getPointForGeometry<Part::GeomCircle>(circle, PosId);
     }
-    else if (geo->is<Part::GeomEllipse>()) {
-        return getPointForGeometry<Part::GeomEllipse>(static_cast<const Part::GeomEllipse*>(geo), PosId);
+    else if (auto ellipse = freecad_cast<Part::GeomEllipse*>(geo)) {
+        return getPointForGeometry<Part::GeomEllipse>(ellipse, PosId);
     }
-    else if (geo->is<Part::GeomArcOfCircle>()) {
-        return getPointForGeometry<Part::GeomArcOfCircle>(static_cast<const Part::GeomArcOfCircle*>(geo), PosId);
+    else if (auto arcOfCircle = freecad_cast<Part::GeomArcOfCircle*>(geo)) {
+        return getPointForGeometry<Part::GeomArcOfCircle>(arcOfCircle, PosId);
     }
-    else if (geo->is<Part::GeomArcOfEllipse>()) {
-        return getPointForGeometry<Part::GeomArcOfEllipse>(static_cast<const Part::GeomArcOfEllipse*>(geo), PosId);
+    else if (auto arcOfEllipse = freecad_cast<Part::GeomArcOfEllipse*>(geo)) {
+        return getPointForGeometry<Part::GeomArcOfEllipse>(arcOfEllipse, PosId);
     }
-    else if (geo->is<Part::GeomArcOfHyperbola>()) {
-        return getPointForGeometry<Part::GeomArcOfHyperbola>(static_cast<const Part::GeomArcOfHyperbola*>(geo), PosId);
+    else if (auto arcOfHyperbola = freecad_cast<Part::GeomArcOfHyperbola*>(geo)) {
+        return getPointForGeometry<Part::GeomArcOfHyperbola>(arcOfHyperbola, PosId);
     }
-    else if (geo->is<Part::GeomArcOfParabola>()) {
-        return getPointForGeometry<Part::GeomArcOfParabola>(static_cast<const Part::GeomArcOfParabola*>(geo), PosId);
+    else if (auto arcOfParabola = freecad_cast<Part::GeomArcOfParabola*>(geo)) {
+        return getPointForGeometry<Part::GeomArcOfParabola>(arcOfParabola, PosId);
     }
-    else if (geo->is<Part::GeomBSplineCurve>()) {
-        return getPointForGeometry<Part::GeomBSplineCurve>(static_cast<const Part::GeomBSplineCurve*>(geo), PosId);
+    else if (auto bSplineCurve = freecad_cast<Part::GeomBSplineCurve*>(geo)) {
+        return getPointForGeometry<Part::GeomBSplineCurve>(bSplineCurve, PosId);
     }
     return Base::Vector3d();
 }
@@ -1819,7 +1818,7 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
 
     // Block acceptGeometry in OnChanged to avoid unnecessary checks and updates
     {
-        Base::StateLocker lock(internaltransaction, true);
+        Base::StateLocker preventUpdate(internaltransaction, true);
         this->Geometry.setValues(std::move(newVals));
         this->Constraints.setValues(std::move(newConstraints));
     }
@@ -1942,7 +1941,7 @@ int SketchObject::delGeometriesExclusiveList(const std::vector<int>& GeoIds)
 
     // Block acceptGeometry in OnChanged to avoid unnecessary checks and updates
     {
-        Base::StateLocker lock(internaltransaction, true);
+        Base::StateLocker preventUpdate(internaltransaction, true);
         this->Geometry.setValues(newVals);
         this->Constraints.setValues(std::move(constraints));
     }
@@ -2001,7 +2000,7 @@ int SketchObject::deleteAllGeometry()
 
     // Avoid unnecessary updates and checks as this is a transaction
     {
-        Base::StateLocker lock(internaltransaction, true);
+        Base::StateLocker preventUpdate(internaltransaction, true);
         this->Geometry.setValues(newVals);
         this->Constraints.setValues(newConstraints);
     }
@@ -5303,7 +5302,7 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList, const Base::Vector3
 
     // Block acceptGeometry in OnChanged to avoid unnecessary checks and updates
     {
-        Base::StateLocker lock(internaltransaction, true);
+        Base::StateLocker preventUpdate(internaltransaction, true);
         Geometry.setValues(std::move(newgeoVals));
 
         if (newconstrVals.size() > constrvals.size())
@@ -5573,18 +5572,22 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomEllipse>(const int Geo
         icon.push_back(newConstr);
     }
 
+    addAndCleanup(igeo, icon);
+    return incrgeo;
+}
+
+void SketchObject::addAndCleanup(std::vector<Part::Geometry*> igeo, std::vector<Constraint*> icon)
+{
     this->addGeometry(igeo, true);
     this->addConstraints(icon);
 
-    for (auto& geo : igeo) {
-        delete geo;
+    for (auto& geoToDelete : igeo) {
+        delete geoToDelete;
     }
 
-    for (auto& con : icon) {
-        delete con;
+    for (auto& constraintToDelete : icon) {
+        delete constraintToDelete;
     }
-
-    return incrgeo;// number of added elements
 }
 
 // TODO: This is a repeat of ellipse. Can we do some code reuse?
@@ -5709,19 +5712,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfEllipse>(const in
         icon.push_back(newConstr);
     }
 
-    this->addGeometry(igeo, true);
-    this->addConstraints(icon);
-
-    for (auto& geo : igeo) {
-        delete geo;
-    }
-
-    for (auto& con : icon) {
-        delete con;
-    }
-
-    return incrgeo;// number of added elements
-
+    addAndCleanup(igeo, icon);
+    return incrgeo;  // number of added elements
 }
 
 template <>
@@ -5827,18 +5819,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfHyperbola>(const 
         incrgeo++;
     }
 
-    this->addGeometry(igeo, true);
-    this->addConstraints(icon);
-
-    for (auto& geo : igeo) {
-        delete geo;
-    }
-
-    for (auto& con : icon) {
-        delete con;
-    }
-
-    return incrgeo;// number of added elements
+    addAndCleanup(igeo, icon);
+    return incrgeo;  // number of added elements
 }
 
 template <>
@@ -5914,18 +5896,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfParabola>(const i
         incrgeo++;
     }
 
-    this->addGeometry(igeo, true);
-    this->addConstraints(icon);
-
-    for (auto& geo : igeo) {
-        delete geo;
-    }
-
-    for (auto& con : icon) {
-        delete con;
-    }
-
-    return incrgeo;// number of added elements
+    addAndCleanup(igeo, icon);
+    return incrgeo;  // number of added elements
 }
 
 template <>
@@ -6062,18 +6034,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomBSplineCurve>(const in
 
     Q_UNUSED(isfirstweightconstrained);
 
-    this->addGeometry(igeo, true);
-    this->addConstraints(icon);
-
-    for (auto& geo : igeo) {
-        delete geo;
-    }
-
-    for (auto& con : icon) {
-        delete con;
-    }
-
-    return incrgeo;// number of added elements
+    addAndCleanup(igeo, icon);
+    return incrgeo;  // number of added elements
 }
 
 int SketchObject::exposeInternalGeometry(int GeoId)
@@ -6431,7 +6393,7 @@ bool SketchObject::convertToNURBS(int GeoId)
 
     // Block checks and updates in OnChanged to avoid unnecessary checks and updates
     {
-        Base::StateLocker lock(internaltransaction, true);
+        Base::StateLocker preventUpdate(internaltransaction, true);
 
         if (GeoId < 0) {// external geometry
             newVals.push_back(bspline);
@@ -6719,7 +6681,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
 
     // Block acceptGeometry in OnChanged to avoid unnecessary checks and updates
     {
-        Base::StateLocker lock(internaltransaction, true);
+        Base::StateLocker preventUpdate(internaltransaction, true);
         Geometry.setValues(std::move(newVals));
 
         this->Constraints.setValues(std::move(newcVals));
@@ -6864,7 +6826,7 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
 
     // Block acceptGeometry in OnChanged to avoid unnecessary checks and updates
     {
-        Base::StateLocker lock(internaltransaction, true);
+        Base::StateLocker preventUpdate(internaltransaction, true);
         Geometry.setValues(std::move(newVals));
 
         this->Constraints.setValues(std::move(newcVals));
@@ -7046,7 +7008,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
 
     // Block acceptGeometry in OnChanged to avoid unnecessary checks and updates
     {
-        Base::StateLocker lock(internaltransaction, true);
+        Base::StateLocker preventUpdate(internaltransaction, true);
         Geometry.setValues(std::move(newVals));
         this->Constraints.setValues(std::move(newcVals));
     }
@@ -7078,14 +7040,6 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
                                                spath.getDocumentObjectName().getString()
                                                    + std::string(1, '.') + spath.toString()));
                 }
-                // (there is a plausible alternative for a slightly different use case to copy the
-                // expression of the parent if one is existing)
-                /*
-                 *           App::PropertyExpressionEngine::ExpressionInfo expr_info =
-                 * psObj->getExpression(path);
-                 *
-                 *           if (expr_info.expression)*/
-                // App::Expression * expr = parse(this, const std::string& buffer);
                 setExpression(Constraints.createPath(nextcid), std::move(expr));
             }
         }
@@ -8634,6 +8588,109 @@ std::vector<TopoDS_Shape> projectShape(const TopoDS_Shape& inShape, const gp_Ax3
     return res;
 }
 
+void processFace (const Rotation& invRot,
+                  const Placement& invPlm,
+                  const gp_Trsf& mov,
+                  const gp_Pln& sketchPlane,
+                  const Handle(Geom_Plane)& gPlane,
+                  gp_Ax3& sketchAx3,
+                  TopoDS_Shape& aProjFace,
+                  std::vector<std::unique_ptr<Part::Geometry>>& geos,
+                  TopoDS_Shape& refSubShape)
+{
+    const TopoDS_Face& face = TopoDS::Face(refSubShape);
+    BRepAdaptor_Surface surface(face);
+    if (surface.GetType() == GeomAbs_Plane) {
+        // Check that the plane is perpendicular to the sketch plane
+        Geom_Plane plane = surface.Plane();
+        gp_Dir dnormal = plane.Axis().Direction();
+        gp_Dir snormal = sketchPlane.Axis().Direction();
+
+        // Extract all edges from the face
+        TopExp_Explorer edgeExp;
+        for (edgeExp.Init(face, TopAbs_EDGE); edgeExp.More(); edgeExp.Next()) {
+            TopoDS_Edge edge = TopoDS::Edge(edgeExp.Current());
+            // Process each edge
+            processEdge(edge, geos, gPlane, invPlm, mov, sketchPlane, invRot, sketchAx3, aProjFace);
+        }
+
+        if (fabs(dnormal.Angle(snormal) - std::numbers::pi/2) < Precision::Confusion()) {
+            // The face is normal to the sketch plane
+            // We don't want to keep the projection of all the edges of the face.
+            // We need a single line that goes from min to max of all the projections.
+            bool initialized = false;
+            Vector3d start, end;
+            // Lambda to determine if a point should replace start or end
+            auto updateExtremes = [&](const Vector3d& point) {
+                if ((point - start).Length() < (point - end).Length()) {
+                    // `point` is closer to `start` than `end`, check if it's further out than `start`
+                    if ((point - end).Length() > (end - start).Length()) {
+                        start = point;
+                    }
+                }
+                else {
+                    // `point` is closer to `end`, check if it's further out than `end`
+                    if ((point - start).Length() > (end - start).Length()) {
+                        end = point;
+                    }
+                }
+            };
+            for (auto& geo : geos) {
+                auto* line = dynamic_cast<Part::GeomLineSegment*>(geo.get());
+                if (!line) {
+                    // The face being normal to the sketch, we should have
+                    // only lines. This is just a fail-safe in case there's a
+                    // straight bspline or something like this.
+                    continue;
+                }
+                if (!initialized) {
+                    start = line->getStartPoint();
+                    end = line->getEndPoint();
+                    initialized = true;
+                    continue;
+                }
+
+                updateExtremes(line->getStartPoint());
+                updateExtremes(line->getEndPoint());
+            }
+            if (initialized) {
+                auto* unifiedLine = new Part::GeomLineSegment();
+                unifiedLine->setPoints(start, end);
+                geos.clear(); // Clear other segments
+                geos.emplace_back(unifiedLine);
+            }
+            else {
+                // In case we have not initialized, perhaps the projections were
+                // only straight bsplines.
+                // Then we use the old method that will give a line with 20000 length:
+                // Get vector that is normal to both sketch plane normal and plane normal.
+                // This is the line's direction
+                gp_Dir lnormal = dnormal.Crossed(snormal);
+                BRepBuilderAPI_MakeEdge builder(gp_Lin(plane.Location(), lnormal));
+                builder.Build();
+                if (builder.IsDone()) {
+                    const TopoDS_Edge& edge = TopoDS::Edge(builder.Shape());
+                    BRepAdaptor_Curve curve(edge);
+                    if (curve.GetType() == GeomAbs_Line) {
+                        geos.emplace_back(projectLine(curve, gPlane, invPlm));
+                    }
+                }
+            }
+        }
+    }
+    else {
+        std::vector<TopoDS_Shape> res = projectShape(face, sketchAx3);
+        for (auto& resShape : res) {
+            TopExp_Explorer explorer(resShape, TopAbs_EDGE);
+            while (explorer.More()) {
+                TopoDS_Edge projEdge = TopoDS::Edge(explorer.Current());
+                processEdge2(projEdge, geos);
+                explorer.Next();
+            }
+        }
+    }
+}
+
 }
 
 void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd)
@@ -8829,97 +8886,7 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
             if (projection) {
                 switch (refSubShape.ShapeType()) {
                 case TopAbs_FACE: {
-                    const TopoDS_Face& face = TopoDS::Face(refSubShape);
-                    BRepAdaptor_Surface surface(face);
-                    if (surface.GetType() == GeomAbs_Plane) {
-                        // Check that the plane is perpendicular to the sketch plane
-                        Geom_Plane plane = surface.Plane();
-                        gp_Dir dnormal = plane.Axis().Direction();
-                        gp_Dir snormal = sketchPlane.Axis().Direction();
-
-                        // Extract all edges from the face
-                        TopExp_Explorer edgeExp;
-                        for (edgeExp.Init(face, TopAbs_EDGE); edgeExp.More(); edgeExp.Next()) {
-                            TopoDS_Edge edge = TopoDS::Edge(edgeExp.Current());
-                            // Process each edge
-                            processEdge(edge, geos, gPlane, invPlm, mov, sketchPlane, invRot, sketchAx3, aProjFace);
-                        }
-
-                        if (fabs(dnormal.Angle(snormal) - std::numbers::pi/2) < Precision::Confusion()) {
-                            // The face is normal to the sketch plane
-                            // We don't want to keep the projection of all the edges of the face.
-                            // We need a single line that goes from min to max of all the projections.
-                            bool initialized = false;
-                            Base::Vector3d start, end;
-                            // Lambda to determine if a point should replace start or end
-                            auto updateExtremes = [&](const Base::Vector3d& point) {
-                                if ((point - start).Length() < (point - end).Length()) {
-                                    // `point` is closer to `start` than `end`, check if it's further out than `start`
-                                    if ((point - end).Length() > (end - start).Length()) {
-                                        start = point;
-                                    }
-                                }
-                                else {
-                                    // `point` is closer to `end`, check if it's further out than `end`
-                                    if ((point - start).Length() > (end - start).Length()) {
-                                        end = point;
-                                    }
-                                }
-                            };
-                            for (auto& geo : geos) {
-                                auto* line = dynamic_cast<Part::GeomLineSegment*>(geo.get());
-                                if (!line) {
-                                    // The face being normal to the sketch, we should have
-                                    // only lines. This is just a fail-safe in case there's a
-                                    // straight bspline or something like this.
-                                    continue;
-                                }
-                                if (!initialized) {
-                                    start = line->getStartPoint();
-                                    end = line->getEndPoint();
-                                    initialized = true;
-                                    continue;
-                                }
-
-                                updateExtremes(line->getStartPoint());
-                                updateExtremes(line->getEndPoint());
-                            }
-                            if (initialized) {
-                                auto* unifiedLine = new Part::GeomLineSegment();
-                                unifiedLine->setPoints(start, end);
-                                geos.clear(); // Clear other segments
-                                geos.emplace_back(unifiedLine);
-                            }
-                            else {
-                                // In case we have not initialized, perhaps the projections were
-                                // only straight bsplines.
-                                // Then we use the old method that will give a line with 20000 length:
-                                // Get vector that is normal to both sketch plane normal and plane normal.
-                                // This is the line's direction
-                                gp_Dir lnormal = dnormal.Crossed(snormal);
-                                BRepBuilderAPI_MakeEdge builder(gp_Lin(plane.Location(), lnormal));
-                                builder.Build();
-                                if (builder.IsDone()) {
-                                    const TopoDS_Edge& edge = TopoDS::Edge(builder.Shape());
-                                    BRepAdaptor_Curve curve(edge);
-                                    if (curve.GetType() == GeomAbs_Line) {
-                                        geos.emplace_back(projectLine(curve, gPlane, invPlm));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else {
-                        std::vector<TopoDS_Shape> res = projectShape(face, sketchAx3);
-                        for (auto& resShape : res) {
-                            TopExp_Explorer explorer(resShape, TopAbs_EDGE);
-                            while (explorer.More()) {
-                                TopoDS_Edge projEdge = TopoDS::Edge(explorer.Current());
-                                processEdge2(projEdge, geos);
-                                explorer.Next();
-                            }
-                        }
-                    }
+                    processFace(invRot, invPlm, mov, sketchPlane, gPlane, sketchAx3, aProjFace, geos, refSubShape);
                 } break;
                 case TopAbs_EDGE: {
                     const TopoDS_Edge& edge = TopoDS::Edge(refSubShape);
@@ -10835,7 +10802,6 @@ bool SketchObject::AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce, bool
     using std::numbers::pi;
 
     try {
-        // assert ( cstr->Type == Tangent  ||  cstr->Type == Perpendicular);
         /*tangency type already set. If not bForce - don't touch.*/
         if (cstr->getValue() != 0.0 && !bForce)
             return true;
@@ -11679,7 +11645,7 @@ int SketchObject::setGeometryId(int GeoId, long id)
     // There is not actual internal transaction going on here, however neither the geometry indices
     // nor the vertices need to be updated so this is a convenient way of preventing it.
     {
-        Base::StateLocker lock(internaltransaction, true);
+        Base::StateLocker preventUpdate(internaltransaction, true);
         this->Geometry.setValues(std::move(newVals));
     }
 
@@ -11706,7 +11672,7 @@ int SketchObject::setGeometryIds(std::vector<std::pair<int, long>> GeoIdsToIds)
     // There is not actual internal transaction going on here, however neither the geometry indices
     // nor the vertices need to be updated so this is a convenient way of preventing it.
     {
-        Base::StateLocker lock(internaltransaction, true);
+        Base::StateLocker preventUpdate(internaltransaction, true);
         this->Geometry.setValues(std::move(newVals));
     }
 
