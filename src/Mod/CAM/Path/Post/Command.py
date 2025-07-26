@@ -61,7 +61,7 @@ def _resolve_post_processor_name(job):
     if valid_name and PostProcessor.exists(valid_name):
         return valid_name
     else:
-        raise ValueError(f"Post processor not identified.")
+        raise ValueError("Post processor not identified.")
 
 
 class DlgSelectPostProcessor:
@@ -108,12 +108,14 @@ class CommandPathPost:
             "Pixmap": "CAM_Post",
             "MenuText": QT_TRANSLATE_NOOP("CAM_Post", "Post Process"),
             "Accel": "P, P",
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_Post", "Post Process the selected Job"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "CAM_Post", "Post Process the selected Job or selected operations"
+            ),
         }
 
     def IsActive(self):
         selected = FreeCADGui.Selection.getSelectionEx()
-        if len(selected) != 1:
+        if len(selected) == 0:
             return False
 
         selected_object = selected[0].Object
@@ -203,6 +205,12 @@ class CommandPathPost:
         Path.Log.debug(self.candidate.Name)
         FreeCAD.ActiveDocument.openTransaction("Post Process the Selected Job")
 
+        selected = FreeCADGui.Selection.getSelection()
+        if len(selected) > 0:
+            operations = [
+                op for op in selected if hasattr(op, "Path") and not op.Name.startswith("Job")
+            ]
+
         postprocessor_name = _resolve_post_processor_name(self.candidate)
         Path.Log.debug(f"Post Processor: {postprocessor_name}")
 
@@ -211,7 +219,9 @@ class CommandPathPost:
             return
 
         # get a postprocessor
-        postprocessor = PostProcessorFactory.get_post_processor(self.candidate, postprocessor_name)
+        postprocessor = PostProcessorFactory.get_post_processor(
+            self.candidate, postprocessor_name, operations
+        )
 
         post_data = postprocessor.export()
         # None is returned if there was an error during argument processing
