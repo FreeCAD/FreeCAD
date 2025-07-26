@@ -162,6 +162,10 @@ public:
     void clearActionStyle();
     void restoreActionStyle();
 
+    /// Add a persistent panel at the top of the task view, independent of the active dialog.
+    void addContextualPanel(QWidget* panel);
+    void removeContextualPanel(QWidget* panel);
+
     QSize minimumSizeHint() const override;
 
     // Restore width before opening a task panel
@@ -190,6 +194,9 @@ private:
     void transactionChangeOnDocument(const App::Document&, bool undo);
     QVBoxLayout* mainLayout;
     QScrollArea* scrollArea;
+    QVBoxLayout* contextualPanelsLayout;
+    QVBoxLayout* dialogLayout;
+    QList<QWidget*> contextualPanels;
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;
