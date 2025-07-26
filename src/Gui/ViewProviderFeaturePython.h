@@ -238,8 +238,9 @@ public:
         if (!overlayMap.empty()) {
             // Use the static instance of BitmapFactory to perform the merge
             for (const auto& [position, name] : overlayMap) {
+                static const QSize overlayIconSize  { 10, 10 };
                 QPixmap overlayPixmap =
-                    Gui::BitmapFactory().pixmapFromSvg(name.c_str(), QSize(10, 10));
+                    Gui::BitmapFactory().pixmapFromSvg(name.c_str(), overlayIconSize);
                 if (!overlayPixmap.isNull()) {
                     currentIcon =
                         Gui::BitmapFactoryInst::mergePixmap(currentIcon, overlayPixmap, position);
