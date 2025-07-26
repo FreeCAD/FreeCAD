@@ -470,7 +470,7 @@ class PathArray(DraftLink):
 
         self.buildShape(obj, array_placement, copy_placements)
         self.props_changed_clear()
-        return (not self.use_link)
+        return not self.use_link
 
     def get_wires(self, path_object, subelements):
         """Get wires from the path object."""

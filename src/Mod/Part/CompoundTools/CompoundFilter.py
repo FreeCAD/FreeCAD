@@ -177,7 +177,7 @@ class _CompoundFilter:
             valTo = obj.WindowTo / 100.0 * maxval
 
             for i in range(len(shps)):
-                if bool(vals[i] >= valFrom and vals[i] <= valTo) ^ obj.Invert:
+                if bool(valFrom <= vals[i] <= valTo) ^ obj.Invert:
                     rst.append(shps[i])
         else:
             raise ValueError("Filter mode not implemented: '{}'".format(obj.FilterType))

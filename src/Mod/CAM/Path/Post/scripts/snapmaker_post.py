@@ -499,7 +499,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
                         + f" Choose from [{compatible_toolheads}]\n"
                     )
                     flag = False
-                    return (flag, args)
+                    return flag, args
                 toolhead = self.values["TOOLHEADS"][args.toolhead]
             elif len(compatible_toolheads) == 1:
                 toolhead_key = next(iter(compatible_toolheads))
@@ -511,7 +511,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
                     "Please add --toolhead argument.\n"
                 )
                 flag = False
-                return (flag, args)
+                return flag, args
             self.values["TOOLHEAD_KEY"] = toolhead["key"]
             self.values["TOOLHEAD_NAME"] = toolhead["name"]
 
@@ -529,7 +529,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
                         + " does not support speed as percent.\n"
                     )
                     flag = False
-                    return (flag, args)
+                    return flag, args
             else:
                 # Prefer speed S over percent P
                 self.values["SPINDLE_PERCENT"] = (
@@ -568,7 +568,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
                         + f" Choose from {compatible_modkit_combos}."
                     )
                     flag = False
-                    return (flag, args)
+                    return flag, args
 
                 # Update machine dimensions based on installed toolhead and mod kits
                 boundaries_table_entry_l = [

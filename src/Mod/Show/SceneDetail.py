@@ -64,16 +64,14 @@ class SceneDetail(object):
         if isinstance(other, self.__class__):
             return self.data == other.data and self.data is not None
         else:
-            raise TypeError(
-                "{self} can't be compared with {other}".format(self=repr(self), other=repr(other))
-            )
+            raise TypeError(f"{repr(self)} can't be compared with {repr(other)}")
 
     # </interface>
 
     # <utility>
     @property
     def full_key(self):
-        return (self.class_id, self.doc.Name if self.doc else None, self.key)
+        return self.class_id, self.doc.Name if self.doc else None, self.key
 
     def __ne__(self, other):
         return not self.__eq__(other)

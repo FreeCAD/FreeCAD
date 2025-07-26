@@ -257,7 +257,7 @@ class Machine(Asset):
         if not self.label:
             raise AttributeError("Machine name is required")
         if self._peak_torque_rpm > self._max_rpm:
-            err = ("Peak Torque RPM {ptrpm:.2f} must be less than max RPM " "{max_rpm:.2f}").format(
+            err = "Peak Torque RPM {ptrpm:.2f} must be less than max RPM " "{max_rpm:.2f}".format(
                 ptrpm=self._peak_torque_rpm * 60, max_rpm=self._max_rpm * 60
             )
             raise AttributeError(err)

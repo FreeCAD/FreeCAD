@@ -48,26 +48,22 @@ class ConstraintCentrif(base_fempythonobject.BaseFemPythonObject):
             prop.add_to_object(obj)
 
     def _get_properties(self):
-        prop = []
-
-        prop.append(
+        prop = [
             _PropHelper(
                 type="App::PropertyFrequency",
                 name="RotationFrequency",
                 group="Constraint Centrif",
                 doc="Set rotation frequency",
                 value="0 1/s",
-            )
-        )
-        prop.append(
+            ),
             _PropHelper(
                 type="App::PropertyLinkSubListGlobal",
                 name="RotationAxis",
                 group="Constraint Centrif",
                 doc="Set line as axis of rotation",
                 value=[],
-            )
-        )
+            ),
+        ]
 
         return prop
 

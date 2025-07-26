@@ -37,8 +37,8 @@ import replaceobj
 def likeprimitive(obj,extrusion=False):
     '''we can't push the matrix transformation further down'''
     return not obj.OutList or obj.isDerivedFrom('Part::Extrusion')\
-        or extrusion and (obj.isDerivedFrom('Part::Revolution') \
-        or obj.isDerivedFrom('Part::FeaturePython')) or \
+        or extrusion and (obj.isDerivedFrom('Part::Revolution')
+                          or obj.isDerivedFrom('Part::FeaturePython')) or \
         not obj.isDerivedFrom('Part::Feature')
 
 
@@ -73,8 +73,8 @@ def expandplacementsmatrix(obj,matrix):
         for outobj in obj.OutList:
             if outobj.isDerivedFrom('Part::Feature') and \
                     isinstance(obj.Proxy,MatrixTransform):
-                newmatrix = ownmatrix.multiply(obj.Matrix).multiply(\
-                            outobj.Base.Placement.toMatrix())
+                newmatrix = ownmatrix.multiply(obj.Matrix).multiply(
+                    outobj.Base.Placement.toMatrix())
                 if likeprimitive(outobj.Base,True): #child of is like primtitive
                     outobj.Matrix = newmatrix
                     outobj.Base.Placement=FreeCAD.Placement()

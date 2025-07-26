@@ -181,7 +181,7 @@ class Tag:
             self.solid = Part.makeCone(r1, r2, height)
         else:
             # degenerated case - no tag
-            Path.Log.debug("Part.makeSphere(%f / 10000)" % (r1))
+            Path.Log.debug("Part.makeSphere(%f / 10000)" % r1)
             self.solid = Part.makeSphere(r1 / 10000)
         if not Path.Geom.isRoughly(0, R):  # testing is easier if the solid is not rotated
             angle = -Path.Geom.getAngle(self.originAt(0)) * 180 / math.pi
@@ -199,7 +199,7 @@ class Tag:
     def filterIntersections(self, pts, face):
         if type(face.Surface) in [Part.Cone, Part.Cylinder, Part.Toroid]:
             Path.Log.track("it's a cone/cylinder, checking z")
-            return list([pt for pt in pts if pt.z >= self.bottom() and pt.z <= self.top()])
+            return list([pt for pt in pts if self.bottom() <= pt.z <= self.top()])
         if type(face.Surface) is Part.Plane:
             Path.Log.track("it's a plane, checking R")
             c = face.Edges[0].Curve
@@ -484,7 +484,7 @@ class MapWireToTag:
                 Path.Log.debug("remaining edges:")
                 for e in edges:
                     debugEdge(e, "    ", False)
-                raise ValueError("No connection to %s" % (p0))
+                raise ValueError("No connection to %s" % p0)
             elif lastP:
                 Path.Log.debug(
                     "xxxxxx (%.2f, %.2f, %.2f) (%.2f, %.2f, %.2f)"
@@ -683,11 +683,11 @@ class PathData:
                     minZ = v.Point.z
                 if v.Point.z > maxZ:
                     maxZ = v.Point.z
-        return (minZ, maxZ)
+        return minZ, maxZ
 
     def shortestAndLongestPathEdge(self):
         edges = sorted(self.bottomEdges, key=lambda e: e.Length)
-        return (edges[0], edges[-1])
+        return edges[0], edges[-1]
 
     def generateTags(
         self, obj, count, width=None, height=None, angle=None, radius=None, spacing=None
@@ -829,7 +829,7 @@ class PathData:
         else:
             Path.Log.debug("      skipping=%-2d (%.2f)" % (index, edge.Length))
 
-        return (currentLength, lastTagLength)
+        return currentLength, lastTagLength
 
     def defaultTagHeight(self):
         op = PathDressup.baseOp(self.obj.Base)
@@ -1163,7 +1163,7 @@ class ObjectTagDressup:
             tag.nr = i  # assign final nr
             tags.append(tag)
             positions.append(tag.originAt(self.pathData.minZ))
-        return (tags, positions, disabled)
+        return tags, positions, disabled
 
     def execute(self, obj):
         # import cProfile

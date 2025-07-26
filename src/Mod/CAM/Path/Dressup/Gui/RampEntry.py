@@ -410,11 +410,11 @@ class ObjectDressup:
                 p1.z > self.ignoreAbove or Path.Geom.isRoughly(p1.z, self.ignoreAbove.Value)
             ):
                 Path.Log.debug("Whole plunge move above 'ignoreAbove', ignoring")
-                return (edge, True)
+                return edge, True
             elif p0.z > self.ignoreAbove and not Path.Geom.isRoughly(p0.z, self.ignoreAbove.Value):
                 Path.Log.debug("Plunge move partially above 'ignoreAbove', splitting into two")
                 newPoint = FreeCAD.Base.Vector(p0.x, p0.y, self.ignoreAbove)
-                return (Part.makeLine(p0, newPoint), False)
+                return Part.makeLine(p0, newPoint), False
             else:
                 return None, False
         else:

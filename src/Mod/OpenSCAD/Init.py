@@ -28,8 +28,8 @@ import FreeCAD
 
 FreeCAD.addImportType("OpenSCAD CSG Format (*.csg *.CSG)", "importCSG")
 
-param = FreeCAD.ParamGet(\
-        "User parameter:BaseApp/Preferences/Mod/OpenSCAD")
+param = FreeCAD.ParamGet(
+    "User parameter:BaseApp/Preferences/Mod/OpenSCAD")
 openscadfilename = param.GetString('openscadexecutable')
 openscadbin = openscadfilename and os.path.isfile(openscadfilename)
 

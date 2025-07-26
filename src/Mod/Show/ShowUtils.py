@@ -36,5 +36,5 @@ def is3DObject(obj):
     except Exception as err:
         import FreeCAD as App
 
-        App.Console.PrintWarning("Show.ShowUtils.is3DObject error: {err}\n".format(err=str(err)))
+        App.Console.PrintWarning(f"Show.ShowUtils.is3DObject error: {err}\n")
         return True  # assume.

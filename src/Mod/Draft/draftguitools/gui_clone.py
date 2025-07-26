@@ -53,7 +53,7 @@ from draftutils.messages import _msg, _wrn
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
-True if Draft_rc.__name__ else False
+bool(Draft_rc.__name__)
 
 
 class Clone(gui_base_original.Modifier):

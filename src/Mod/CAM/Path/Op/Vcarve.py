@@ -504,8 +504,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
             return path
 
-        pathlist = []
-        pathlist.append(Path.Command("(starting)"))
+        pathlist = [Path.Command("(starting)")]
 
         geom = _Geometry.FromObj(obj, self.model[0])
 

@@ -46,7 +46,7 @@ class Type(object):
 
     def get_type(self):
         if type(self._typedef) == str:
-            if self._scope == None:
+            if self._scope is None:
                 raise AssertionError("No scope defined for this type")
             elif self._typedef in vars(self._scope):
                 return vars(self._scope)[self._typedef]

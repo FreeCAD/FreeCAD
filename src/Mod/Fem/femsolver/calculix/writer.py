@@ -220,7 +220,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         FreeCAD.Console.PrintMessage(f"Writing time CalculiX input file: {writetime} seconds.\n")
 
         # return
-        if self.femelement_count_test is True:
+        if self.femelement_count_test:
             return self.file_name
         else:
             FreeCAD.Console.PrintError("Problems on writing input file, check report prints.\n\n")

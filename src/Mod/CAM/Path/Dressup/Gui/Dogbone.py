@@ -354,10 +354,10 @@ class Bone(object):
         return self.cPt
 
     def location(self):
-        return (self.inChord.End.x, self.inChord.End.y)
+        return self.inChord.End.x, self.inChord.End.y
 
     def locationZ(self):
-        return (self.inChord.End.x, self.inChord.End.y, self.inChord.End.z)
+        return self.inChord.End.x, self.inChord.End.y, self.inChord.End.z
 
     def adaptiveLength(self, boneAngle, toolRadius):
         theta = self.angle()
@@ -772,7 +772,7 @@ class ObjectDressup(object):
             blacklisted = parentConsumed
         if blacklisted:
             self.locationBlacklist.add(bone.location())
-        return (blacklisted, parentConsumed)
+        return blacklisted, parentConsumed
 
     # Generate commands necessary to execute the dogbone
     def boneCommands(self, bone, enabled):

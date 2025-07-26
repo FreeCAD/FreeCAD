@@ -145,7 +145,7 @@ class PointArray(DraftLink):
 
         self.buildShape(obj, obj.Placement, pls)
         self.props_changed_clear()
-        return (not self.use_link)
+        return not self.use_link
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)

@@ -81,9 +81,7 @@ def readResult(dat_input):
             try:
                 mode = int(line[0:7])
                 mode_frequency = float(line[39:55])
-                m = {}
-                m["eigenmode"] = mode
-                m["frequency"] = mode_frequency
+                m = {"eigenmode": mode, "frequency": mode_frequency}
                 results.append(m)
                 mode_reading = True
             except Exception:

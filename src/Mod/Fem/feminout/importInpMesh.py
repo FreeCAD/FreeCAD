@@ -121,7 +121,7 @@ def read_inp(file_name):
                 start = 1 + line.index("=")
                 include = line[start:].strip().strip('"')
                 include_path = os.path.normpath(include)
-                if os.path.isfile(include_path) is True:
+                if os.path.isfile(include_path):
                     f_include = pyopen(include_path, "r")
                 else:
                     path_start = os.path.split(file_name)[0]
@@ -139,7 +139,7 @@ def read_inp(file_name):
         # reading nodes
         if (line[:5].upper() == "*NODE") and (model_definition is True):
             read_node = True
-        elif read_node is True:
+        elif read_node:
             line_list = line.split(",")
             number = int(line_list[0])
             x = float(line_list[1])
@@ -196,7 +196,7 @@ def read_inp(file_name):
 
         elif elm_category != [] and number_of_nodes > 0:
             line_list = line.split(",")
-            if elm_2nd_line is False:
+            if not elm_2nd_line:
                 number = int(line_list[0])
                 elm_category[number] = []
                 pos = 1
@@ -213,9 +213,9 @@ def read_inp(file_name):
 
         elif line[:5].upper() == "*STEP":
             model_definition = False
-    if error_seg3 is True:  # to print "not supported"
+    if error_seg3:  # to print "not supported"
         Console.PrintError("Error: seg3 (3-node beam element type) not supported, yet.\n")
-    elif error_not_supported_elemtype is True:
+    elif error_not_supported_elemtype:
         Console.PrintError(f"Error: {elm_type} not supported.\n")
     f.close()
 

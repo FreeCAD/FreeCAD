@@ -201,7 +201,7 @@ def mergeShapes(list_of_shapes, flag_single = False, split_connections = [], boo
         args.append(bool_compsolid)
         return mergeSolids(*args)
     else:
-        assert(dim >= 0 and dim <= 3)
+        assert(0 <= dim <= 3)
 
 def removeDuplicates(list_of_shapes):
     hashes = set()

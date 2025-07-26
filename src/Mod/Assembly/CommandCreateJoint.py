@@ -21,7 +21,6 @@
 #                                                                           *
 # **************************************************************************/
 
-import os
 import FreeCAD as App
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -31,7 +30,6 @@ if App.GuiUp:
     from PySide import QtCore, QtGui, QtWidgets
 
 import JointObject
-from JointObject import TaskAssemblyCreateJoint
 import UtilsAssembly
 import Assembly_rc
 
@@ -447,7 +445,7 @@ class CommandCreateJointBelt:
 
 class CommandGroupGearBelt:
     def GetCommands(self):
-        return ("Assembly_CreateJointGears", "Assembly_CreateJointBelt")
+        return "Assembly_CreateJointGears", "Assembly_CreateJointBelt"
 
     def GetResources(self):
         """Set icon, menu and tooltip."""

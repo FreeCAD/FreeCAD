@@ -186,9 +186,8 @@ def generate_shape(ifcfile, elements, cached=False):
             sstyle = item.geometry.surface_styles
             scolors = []
             if (
-                (len(sstyle) > 4)
-                and len(shape.Solids) > 1
-                and len(sstyle) // 4 == len(shape.Solids)
+                    (len(sstyle) > 4)
+                    and 1 < len(shape.Solids) == len(sstyle) // 4
             ):
                 # multiple colors
                 for i in range(len(shape.Solids)):

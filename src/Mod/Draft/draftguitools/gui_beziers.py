@@ -487,7 +487,7 @@ class BezierGroup:
 
     def GetCommands(self):
         """Return a tuple of commands in the group."""
-        return ('Draft_CubicBezCurve', 'Draft_BezCurve')
+        return 'Draft_CubicBezCurve', 'Draft_BezCurve'
 
     def IsActive(self):
         """Return True when this command should be available."""

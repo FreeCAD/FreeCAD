@@ -20,7 +20,7 @@ hostage in demands for "bounties" will not be entertained. Contact the FPA at fp
 FreeCAD implements security fixes to the current release series, and to the current development on the main branch.
 
 | Version | Supported          |
-|---------| ------------------ |
+|---------|--------------------|
 | 1.1dev  | :white_check_mark: |
 | 1.0     | :white_check_mark: |
 | < 1.0   | :x:                |

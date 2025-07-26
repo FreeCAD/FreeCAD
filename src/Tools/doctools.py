@@ -42,7 +42,7 @@ def extractDocument(filename, outpath):
             for j in dirs:
                 curpath = curpath + "/" + j
                 os.mkdir(curpath)
-        output = open(outpath + "/" + i, "wb")
+        output = open(f"{outpath}/{i}", "wb")
         output.write(data)
         output.close()
 
@@ -64,8 +64,7 @@ def getFilesList(filename):
     parser.setContentHandler(handler)
     parser.parse(filename)
 
-    files = []
-    files.append(filename)
+    files = [filename]
     files.extend(iter(handler.files))
     dirname = os.path.join(dirname, "GuiDocument.xml")
     if os.path.exists(dirname):

@@ -500,7 +500,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             s.renameConstraint(9,'Width')
             s.renameConstraint(10,'Height')
 
-        return (s,wp)
+        return s,wp
 
     if windowtype in WindowPresets:
         import Arch

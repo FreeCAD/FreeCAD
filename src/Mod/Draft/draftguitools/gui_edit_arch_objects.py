@@ -55,9 +55,8 @@ class ArchWallGuiTools(GuiTools):
         1-to end : base object editpoints, in place with the wall
         """
 
-        editpoints = []
+        editpoints = [App.Vector(0, 0, obj.Height)]
         # height of the wall
-        editpoints.append(App.Vector(0, 0, obj.Height))
         return editpoints
 
     def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
@@ -149,8 +148,7 @@ class ArchSpaceGuiTools(GuiTools):
 
     def get_edit_points(self, obj):
         try:
-            editpoints = []
-            editpoints.append(obj.ViewObject.Proxy.getTextPosition(obj.ViewObject))
+            editpoints = [obj.ViewObject.Proxy.getTextPosition(obj.ViewObject)]
             return editpoints
         except Exception:
             pass
@@ -185,8 +183,7 @@ class ArchPanelSheetGuiTools(GuiTools):
         pass
 
     def get_edit_points(self, obj):
-        editpoints = []
-        editpoints.append(obj.TagPosition)
+        editpoints = [obj.TagPosition]
         for o in obj.Group:
             editpoints.append(o.Placement.Base)
         return editpoints

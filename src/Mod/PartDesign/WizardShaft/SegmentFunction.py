@@ -184,7 +184,7 @@ class SegmentFunction:
                 yresult.append(self.lowervalue(xval))
             xresult.append(xval)
             yresult.append(self.value(xval))
-        return (xresult, yresult)
+        return xresult, yresult
 
     def output(self):
         FreeCAD.Console.PrintMessage(self.name + " = ")
@@ -207,7 +207,7 @@ class IntervalFunction:
 
     def value(self,  xval):
         for i in range(len(self.intervals)):
-            if xval >= self.intervals[i][0] and xval < self.intervals[i][0] + self.intervals[i][1]:
+            if self.intervals[i][0] <= xval < self.intervals[i][0] + self.intervals[i][1]:
                 return  self.values[i]
         return self.values[len(self.values)-1]
 
@@ -261,13 +261,13 @@ class StressFunction:
                 # create double point at segment border
                 xresult.append(xval)
                 yresult.append(self.segfunc.lowervalue(xval) / self.intfunc.value(xval))
-            if (xval in divs):
+            if xval in divs:
                 # create double point at divisor border
                 xresult.append(xval)
                 yresult.append(self.segfunc.value(xval) / self.intfunc.lowervalue(xval))
             xresult.append(xval)
             yresult.append(self.segfunc.value(xval) / self.intfunc.value(xval))
-        return (xresult, yresult)
+        return xresult, yresult
 
 class TranslationFunction:
     "Specialization for segment-wise display of translations"
@@ -389,5 +389,5 @@ class TranslationFunction:
             value = (self.transfunc.value(xval)  + C_i0 * xval + C_i1) / (E * I_i)
             yresult.append(value)
 
-        return (xresult, yresult)
+        return xresult, yresult
 

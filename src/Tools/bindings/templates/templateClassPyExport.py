@@ -79,10 +79,9 @@ class TemplateClassPyExport(template.ModelTemplate):
         outputImp = self.getPath(outputDir + exportName + "Imp.cpp")
         if not os.path.exists(outputImp):
             if not os.path.exists(inputDir + exportName + "Imp.cpp"):
-                file = open(outputImp, "wb")
-                print("TemplateClassPyExport", "TemplateImplement", file.name)
-                model.generateTools.replace(self.TemplateImplement, locals(), file)
-                file.close()
+                with open(outputImp, "wb") as file:
+                    print("TemplateClassPyExport", "TemplateImplement", file.name)
+                    model.generateTools.replace(self.TemplateImplement, locals(), file)
 
         outputCpp = self.getPath(outputDir + exportName + ".cpp")
         with open(outputCpp, "wb") as file:

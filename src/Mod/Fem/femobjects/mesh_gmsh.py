@@ -49,90 +49,70 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
             prop.add_to_object(obj)
 
     def _get_properties(self):
-        prop = []
-
-        prop.append(
+        prop = [
             _PropHelper(
                 type="App::PropertyLinkList",
                 name="MeshBoundaryLayerList",
                 group="Base",
                 doc="Mesh boundaries need inflation layers",
                 value=[],
-            )
-        )
-        prop.append(
+            ),
             _PropHelper(
                 type="App::PropertyLinkList",
                 name="MeshRegionList",
                 group="Base",
                 doc="Mesh refinments of the mesh",
                 value=[],
-            )
-        )
-        prop.append(
+            ),
             _PropHelper(
                 type="App::PropertyLinkList",
                 name="MeshGroupList",
                 group="Base",
                 doc="Mesh groups of the mesh",
                 value=[],
-            )
-        )
-        prop.append(
+            ),
             _PropHelper(
                 type="App::PropertyLength",
                 name="CharacteristicLengthMax",
                 group="Mesh Parameters",
                 doc="Max mesh element size (0.0 means infinity)",
                 value=0.0,  # will be 1e+22
-            )
-        )
-        prop.append(
+            ),
             _PropHelper(
                 type="App::PropertyLength",
                 name="CharacteristicLengthMin",
                 group="Mesh Parameters",
                 doc="Min mesh element size",
                 value=0.0,
-            )
-        )
-        prop.append(
+            ),
             _PropHelper(
                 type="App::PropertyEnumeration",
                 name="ElementDimension",
                 group="Mesh Parameters",
                 doc="Dimension of mesh elements ('From Shape': according ShapeType of part to mesh)",
                 value=["From Shape", "1D", "2D", "3D"],
-            )
-        )
-        prop.append(
+            ),
             _PropHelper(
                 type="App::PropertyEnumeration",
                 name="ElementOrder",
                 group="Mesh Parameters",
                 doc="Order of mesh elements",
                 value=["1st", "2nd"],
-            )
-        )
-        prop.append(
+            ),
             _PropHelper(
                 type="App::PropertyBool",
                 name="OptimizeStd",
                 group="Mesh Parameters",
                 doc="Optimize tetrahedral elements",
                 value=True,
-            )
-        )
-        prop.append(
+            ),
             _PropHelper(
                 type="App::PropertyBool",
                 name="OptimizeNetgen",
                 group="Mesh Parameters",
                 doc="Optimize tetra elements by use of Netgen",
                 value=False,
-            )
-        )
-        prop.append(
+            ),
             _PropHelper(
                 type="App::PropertyEnumeration",
                 name="HighOrderOptimize",
@@ -145,27 +125,21 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                     "Elastic",
                     "Fast curving",
                 ],
-            )
-        )
-        prop.append(
+            ),
             _PropHelper(
                 type="App::PropertyBool",
                 name="RecombineAll",
                 group="Mesh Parameters",
                 doc="Apply recombination algorithm to all surfaces",
                 value=False,
-            )
-        )
-        prop.append(
+            ),
             _PropHelper(
                 type="App::PropertyBool",
                 name="Recombine3DAll",
                 group="Mesh Parameters",
                 doc="Apply recombination algorithm to all volumes",
                 value=False,
-            )
-        )
-        prop.append(
+            ),
             _PropHelper(
                 type="App::PropertyEnumeration",
                 name="RecombinationAlgorithm",
@@ -177,45 +151,35 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                     "Simple full-quad",
                     "Blossom full-quad",
                 ],
-            )
-        )
-        prop.append(
+            ),
             _PropHelper(
                 type="App::PropertyBool",
                 name="CoherenceMesh",
                 group="Mesh Parameters",
                 doc="Removes all duplicate mesh vertices",
                 value=True,
-            )
-        )
-        prop.append(
+            ),
             _PropHelper(
                 type="App::PropertyFloat",
                 name="GeometryTolerance",
                 group="Mesh Parameters",
                 doc="Geometrical Tolerance (0.0 means GMSH std = 1e-08)",
                 value=1e-06,
-            )
-        )
-        prop.append(
+            ),
             _PropHelper(
                 type="App::PropertyBool",
                 name="SecondOrderLinear",
                 group="Mesh Parameters",
                 doc="Second order nodes are created by linear interpolation",
                 value=False,
-            )
-        )
-        prop.append(
+            ),
             _PropHelper(
                 type="App::PropertyIntegerConstraint",
                 name="MeshSizeFromCurvature",
                 group="Mesh Parameters",
                 doc="Number of elements per 2*pi radians, 0 to deactivate",
                 value=(12, 0, 10000, 1),
-            )
-        )
-        prop.append(
+            ),
             _PropHelper(
                 type="App::PropertyEnumeration",
                 name="Algorithm2D",
@@ -231,9 +195,7 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                     "Packing Parallelograms",
                     "Quasi-structured Quad",
                 ],
-            )
-        )
-        prop.append(
+            ),
             _PropHelper(
                 type="App::PropertyEnumeration",
                 name="Algorithm3D",
@@ -248,26 +210,22 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                     "R-tree",
                     "HXT",
                 ],
-            )
-        )
-        prop.append(
+            ),
             _PropHelper(
                 type="App::PropertyBool",
                 name="GroupsOfNodes",
                 group="Mesh Parameters",
                 doc="For each group create not only the elements but the nodes too",
                 value=False,
-            )
-        )
-        prop.append(
+            ),
             _PropHelper(
                 type="App::PropertyEnumeration",
                 name="SubdivisionAlgorithm",
                 group="Mesh Parameters",
                 doc="Mesh subdivision algorithm",
                 value=["None", "All Quadrangles", "All Hexahedra", "Barycentric"],
-            )
-        )
+            ),
+        ]
 
         return prop
 

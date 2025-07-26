@@ -338,4 +338,4 @@ class WizardShaftTable:
         if widget is not None:
             index = self.widget.indexAt(widget.pos())
             self.widget.setCurrentCell(index.row(), index.column())
-        return (self.widget.currentRow(), self.widget.currentColumn())
+        return self.widget.currentRow(), self.widget.currentColumn()

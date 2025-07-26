@@ -323,7 +323,6 @@ class ArchReference:
                 return self.exists(altfile)
             else:
                 # search for subpaths in current folder
-                altfile = None
                 subdirs = self.splitall(os.path.dirname(filename))
                 for i in range(len(subdirs)):
                     subpath = [currentdir]+subdirs[-i:]+[basename]
@@ -561,7 +560,7 @@ class ViewProviderArchReference:
 
     def updateData(self,obj,prop):
 
-        if (prop == "Shape"):
+        if prop == "Shape":
             if hasattr(obj.ViewObject,"UpdateColors") and obj.ViewObject.UpdateColors:
                 if obj.Shape and not obj.Shape.isNull():
                     colors = obj.Proxy.getColors(obj)

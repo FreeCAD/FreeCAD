@@ -38,7 +38,7 @@ if App.GuiUp:
     import Draft_rc
     gui = True
     # To prevent complaints from code checkers (flake8)
-    True if Draft_rc.__name__ else False
+    bool(Draft_rc.__name__)
 else:
     gui = False
 

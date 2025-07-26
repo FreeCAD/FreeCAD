@@ -928,7 +928,7 @@ class Edit(gui_base_original.Modifier):
 
 
 
-class GuiToolsRepository():
+class GuiToolsRepository:
     """ This object provide a repository to collect all the specific objects
     editing tools.
     """

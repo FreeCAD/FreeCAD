@@ -339,16 +339,13 @@ def updateqrc(qrcpath, lncode):
 
     # getting qrc file contents
     if not os.path.exists(qrcpath):
-        print("ERROR: Resource file " + qrcpath + " doesn't exist")
+        print(f"ERROR: Resource file {qrcpath} doesn't exist")
         sys.exit()
-    f = open(qrcpath, "r")
-    resources = []
-    for l in f.readlines():
-        resources.append(l)
-    f.close()
+    with open(qrcpath, "r") as f:
+        resources = f.readlines()
 
     # checking for existing entry
-    name = "_" + lncode + ".qm"
+    name = f"_{lncode}.qm"
     for r in resources:
         if name in r:
             # print("language already exists in qrc file")
@@ -365,26 +362,25 @@ def updateqrc(qrcpath, lncode):
             if "</qresource>" in resources[i]:
                 pos = i - 1
     if pos is None:
-        print("ERROR: couldn't add qm files to this resource: " + qrcpath)
+        print(f"ERROR: couldn't add qm files to this resource: {qrcpath}")
         sys.exit()
 
     # inserting new entry just after the last one
     line = resources[pos]
     if ".qm" in line:
-        line = re.sub(r"_.*\.qm", "_" + lncode + ".qm", line)
+        line = re.sub(r"_.*\.qm", f"_{lncode}.qm", line)
     else:
         modname = os.path.splitext(os.path.basename(qrcpath))[0]
-        line = "        <file>translations/" + modname + "_" + lncode + ".qm</file>\n"
+        line = f"        <file>translations/{modname}_{lncode}.qm</file>\n"
         # print "ERROR: no existing qm entry in this resource: Please add one manually " + qrcpath
         # sys.exit()
     # print("inserting line: ",line)
     resources.insert(pos + 1, line)
 
     # writing the file
-    f = open(qrcpath, "w")
-    for r in resources:
-        f.write(r)
-    f.close()
+    with open(qrcpath, "w") as f:
+        for r in resources:
+            f.write(r)
     print("successfully updated ", qrcpath)
 
 
@@ -396,11 +392,8 @@ def updateTranslatorCpp(lncode):
     lnname = QtCore.QLocale.languageToString(l.language())
 
     # read file contents
-    f = open(cppfile, "r")
-    cppcode = []
-    for l in f.readlines():
-        cppcode.append(l)
-    f.close()
+    with open(cppfile, "r") as f:
+        cppcode = f.readlines()
 
     # checking for existing entry
     lastentry = 0
@@ -418,15 +411,18 @@ def updateTranslatorCpp(lncode):
         sys.exit()
 
     # inserting new entry just before the above line
-    line = '    d->mapLanguageTopLevelDomain[QT_TR_NOOP("' + lnname + '")] = "' + lncode + '";\n'
+    line = f'    d->mapLanguageTopLevelDomain[QT_TR_NOOP("{lnname}")] = "{lncode}";\n'
     cppcode.insert(pos, line)
-    print(lnname + " (" + lncode + ") added Translator.cpp")
+    print(f"{lnname} ({lncode}) added Translator.cpp")
 
     # writing the file
-    f = open(cppfile, "w")
-    for r in cppcode:
+    with open(cppfile, "w") as f:
+        f.writelines(cppcode)
+        """"
+        replace origin:
+        for r in cppcode:
         f.write(r)
-    f.close()
+        """
 
 
 def doFile(tsfilepath, targetpath, lncode, qrcpath):
@@ -438,7 +434,7 @@ def doFile(tsfilepath, targetpath, lncode, qrcpath):
         basename = list(LEGACY_NAMING_MAP)[
             list(LEGACY_NAMING_MAP.values()).index(basename + ".ts")
         ][:-3]
-    newname = basename + "_" + lncode + ".ts"
+    newname = basename + f"_{lncode}.ts"
     newpath = targetpath + os.sep + newname
     if not os.path.exists(tsfilepath):
         # If this language code does not exist for the given TS file, bail out
@@ -456,9 +452,9 @@ def doFile(tsfilepath, targetpath, lncode, qrcpath):
             )
         except Exception as e:
             print(e)
-        newqm = targetpath + os.sep + basename + "_" + lncode + ".qm"
+        newqm = targetpath + os.sep + f"{basename}_{lncode}.qm"
         if not os.path.exists(newqm):
-            print("ERROR: failed to create " + newqm + ", aborting")
+            print(f"ERROR: failed to create {newqm}, aborting")
             sys.exit()
         updateqrc(qrcpath, lncode)
 
@@ -474,7 +470,7 @@ def doLanguage(lncode):
     if os.name == "posix":
         prefix = "\033[;32m"
         suffix = "\033[0m"
-    print("Updating files for " + prefix + lncode + suffix + "...", end="")
+    print(f"Updating files for {prefix}{lncode}{suffix}...", end="")
     for target in locations:
         basefilepath = os.path.join(tempfolder, lncode, target[0] + ".ts")
         targetpath = os.path.abspath(target[1])
@@ -488,7 +484,7 @@ def applyTranslations(languages):
     global tempfolder
     currentfolder = os.getcwd()
     tempfolder = tempfile.mkdtemp()
-    print("creating temp folder " + tempfolder)
+    print(f"creating temp folder {tempfolder}")
     src = os.path.join(currentfolder, "freecad.zip")
     dst = os.path.join(tempfolder, "freecad.zip")
     if not os.path.exists(src):
@@ -502,7 +498,7 @@ def applyTranslations(languages):
     os.chdir(currentfolder)
     for ln in languages:
         if not os.path.exists(os.path.join(tempfolder, ln)):
-            print("ERROR: language path for " + ln + " not found!")
+            print(f"ERROR: language path for {ln} not found!")
         else:
             doLanguage(ln)
 

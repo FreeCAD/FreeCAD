@@ -178,7 +178,7 @@ def read_z88_mesh(z88_mesh_input):
         lno = no + 1
         linecolumns = line.split()
 
-        if lno >= nodes_first_line and lno <= nodes_last_line:
+        if nodes_first_line <= lno <= nodes_last_line:
             # node line
             node_no = int(linecolumns[0])
             node_x = float(linecolumns[2])
@@ -189,7 +189,7 @@ def read_z88_mesh(z88_mesh_input):
                 node_z = float(linecolumns[4])
             nodes[node_no] = FreeCAD.Vector(node_x, node_y, node_z)
 
-        if lno >= elemts_first_line and lno <= elements_last_line:
+        if elemts_first_line <= lno <= elements_last_line:
             # first element line
             if not input_continues:
                 elem_no = int(linecolumns[0])

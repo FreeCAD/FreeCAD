@@ -155,7 +155,7 @@ class Mirror(gui_base_original.Modifier):
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 if self.point:
                     self.ui.redraw()
-                    if (self.node == []):
+                    if self.node == []:
                         self.node.append(self.point)
                         self.ui.isRelative.show()
                         if self.ghost:

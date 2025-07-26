@@ -167,7 +167,7 @@ def run_analysis(doc, base_name, filepath="", run_solver=False):
     # run analysis
     from femsolver.run import run_fem_solver
 
-    if run_solver is True:
+    if run_solver:
         run_fem_solver(solver, working_dir)
 
     # save doc once again with results

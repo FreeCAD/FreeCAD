@@ -203,7 +203,7 @@ class Arc(gui_base_original.Creator):
                 self.linetrack.p1(self.center)
                 self.linetrack.p2(self.point)
                 self.linetrack.on()
-            elif (self.step == 2):  # choose first angle
+            elif self.step == 2:  # choose first angle
                 currentrad = DraftVecUtils.dist(self.point, self.center)
                 if currentrad != 0:
                     angle = DraftVecUtils.angle(self.wp.u, self.point.sub(self.center), self.wp.axis)
@@ -644,7 +644,7 @@ class ArcGroup:
 
     def GetCommands(self):
         """Return a tuple of commands in the group."""
-        return ('Draft_Arc', 'Draft_Arc_3Points')
+        return 'Draft_Arc', 'Draft_Arc_3Points'
 
     def IsActive(self):
         """Return True when this command should be available."""

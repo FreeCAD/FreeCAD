@@ -76,7 +76,7 @@ def make_bspline(pointslist, closed=False, placement=None, face=None, support=No
         _err = "Draft.make_bspline: not enough points"
         App.Console.PrintError(translate("draft", _err)+"\n")
         return
-    if (pointslist[0] == pointslist[-1]):
+    if pointslist[0] == pointslist[-1]:
         if len(pointslist) > 2:
             closed = True
             pointslist.pop()

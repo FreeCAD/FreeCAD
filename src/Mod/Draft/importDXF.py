@@ -619,10 +619,10 @@ def getColor():
         r = float(draftui.color.red() / 255.0)
         g = float(draftui.color.green() / 255.0)
         b = float(draftui.color.blue() / 255.0)
-        return (r, g, b, 0.0)
+        return r, g, b, 0.0
     else:
         r, g, b, _ = utils.get_rgba_tuple(params.get_param_view("DefaultShapeLineColor"))
-        return (r, g, b, 0.0)
+        return r, g, b, 0.0
 
 
 def formatObject(obj, dxfobj=None):
@@ -758,14 +758,14 @@ def placementFromDXFOCS(ent):
     # Riferimenti dell'algoritmo dell'asse arbitrario in italiano
     # http://docs.autodesk.com/ACD/2011/ITA/filesDXF/WS1a9193826455f5ff18cb41610ec0a2e719-7941.htm
     # http://docs.autodesk.com/ACD/2011/ITA/filesDXF/WS1a9193826455f5ff18cb41610ec0a2e719-793d.htm#WSc30cd3d5faa8f6d81cb25f1ffb755717d-7ff5
-    if (draftWPlane.axis == FreeCAD.Vector(1.0, 0.0, 0.0)):
+    if draftWPlane.axis == FreeCAD.Vector(1.0, 0.0, 0.0):
         draftWPlane.u = FreeCAD.Vector(0.0, 1.0, 0.0)
         draftWPlane.v = FreeCAD.Vector(0.0, 0.0, 1.0)
-    elif (draftWPlane.axis == FreeCAD.Vector(-1.0, 0.0, 0.0)):
+    elif draftWPlane.axis == FreeCAD.Vector(-1.0, 0.0, 0.0):
         draftWPlane.u = FreeCAD.Vector(0.0, -1.0, 0.0)
         draftWPlane.v = FreeCAD.Vector(0.0, 0.0, 1.0)
     else:
-        if ((abs(ent.extrusion[0]) < (1.0 / 64.0)) and (abs(ent.extrusion[1]) < (1.0 / 64.0))):
+        if (abs(ent.extrusion[0]) < (1.0 / 64.0)) and (abs(ent.extrusion[1]) < (1.0 / 64.0)):
             draftWPlane.u = FreeCAD.Vector(0.0, 1.0, 0.0).cross(draftWPlane.axis)
         else:
             draftWPlane.u = FreeCAD.Vector(0.0, 0.0, 1.0).cross(draftWPlane.axis)
@@ -775,7 +775,7 @@ def placementFromDXFOCS(ent):
         draftWPlane.position = Vector(0.0, 0.0, 0.0)
 
     pl = draftWPlane.get_placement()
-    if ((ent.type == "lwpolyline") or (ent.type == "polyline")):
+    if (ent.type == "lwpolyline") or (ent.type == "polyline"):
         pl.Base = draftWPlane.get_global_coords(vec([0.0, 0.0, ent.elevation]))
     else:
         pl.Base = draftWPlane.get_global_coords(vec(ent.loc))
@@ -1933,7 +1933,7 @@ def addObject(shape, name="Shape", layer=None):
         else:
             lay = None
 
-        if lay != None:
+        if lay is not None:
             if lay not in layerObjects:
                 l = []
                 layerObjects[lay] = l
@@ -2385,7 +2385,7 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
         edges = []
         for s in shapes:
             edges.extend(s.Edges)
-        if len(edges) > (100):
+        if len(edges) > 100:
             FCC.PrintMessage(str(len(edges)) + " edges to join\n")
             if gui:
                 d = QtWidgets.QMessageBox()
@@ -3140,10 +3140,10 @@ def getWire(wire, nospline=False, lw=True, asis=False):
     def fmt(v, b=0.0):
         if lw:
             # LWpolyline format
-            return (v.x, v.y, v.z, None, None, b)
+            return v.x, v.y, v.z, None, None, b
         else:
             # Polyline format
-            return ((v.x, v.y, v.z), None, [None, None], b)
+            return (v.x, v.y, v.z), None, [None, None], b
     points = []
     if asis:
         points = [fmt(v.Point) for v in wire.OrderedVertexes]
@@ -4231,12 +4231,11 @@ class DxfImportReporter:
         if not self.stats:
             return "DXF Import: no statistics were returned from the importer.\n"
 
-        lines = ["\n--- DXF import summary ---"]
-        lines.append(f"Import of file: '{self.filename}'\n")
+        lines = ["\n--- DXF import summary ---", f"Import of file: '{self.filename}'\n",
+                 f"DXF version: {self.stats.get('dxfVersion', 'Unknown')}",
+                 f"File encoding: {self.stats.get('dxfEncoding', 'Unknown')}"]
 
         # General info
-        lines.append(f"DXF version: {self.stats.get('dxfVersion', 'Unknown')}")
-        lines.append(f"File encoding: {self.stats.get('dxfEncoding', 'Unknown')}")
 
         # Scaling info
         file_units = self.stats.get('fileUnits', 'Not specified')

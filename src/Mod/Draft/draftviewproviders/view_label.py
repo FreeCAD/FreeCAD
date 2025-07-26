@@ -489,12 +489,8 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         #     |            |
         #     p4 --------- p3
         #
-        pts = []
-        pts.append(first_frame_point)
-        pts.append(first_frame_point + App.Vector(total_width, 0, 0))
-        pts.append(pts[-1] + App.Vector(0, -total_height, 0))
-        pts.append(pts[-1] + App.Vector(-total_width, 0, 0))
-        pts.append(first_frame_point)
+        pts = [first_frame_point, first_frame_point + App.Vector(total_width, 0, 0),
+               pts[-1] + App.Vector(0, -total_height, 0), pts[-1] + App.Vector(-total_width, 0, 0), first_frame_point]
 
         self.fcoords.point.setValues(pts)
         self.frame.coordIndex.setValues(0,

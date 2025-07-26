@@ -338,7 +338,7 @@ def read(filename,skip=None):
                     # check if parent is a subtraction, if yes parent to grandparent
                     if parent_id in ifcParents:
                         for p in ifcParents[parent_id]:
-                            if p[1] == False:
+                            if not p[1]:
                                 grandparent_id = p[0]
                                 if grandparent_id in ifcObjects:
                                     parent = ifcObjects[grandparent_id]
@@ -407,7 +407,7 @@ def read(filename,skip=None):
             FreeCAD.Console.PrintWarning(translate("Arch","IFC Schema not found, IFC import disabled.")+"\n")
             return None
         t2 = time.time()
-        if DEBUG: print("Successfully loaded",ifc,"in %s s" % ((t2-t1)))
+        if DEBUG: print("Successfully loaded", ifc,"in %s s" % (t2 - t1))
 
         # getting walls
         for w in ifc.getEnt("IfcWallStandardCase"):
@@ -418,7 +418,7 @@ def read(filename,skip=None):
             nobj = makeWindow(w)
 
         # getting structs
-        for w in (ifc.getEnt("IfcSlab") + ifc.getEnt("IfcBeam") + ifc.getEnt("IfcColumn") \
+        for w in (ifc.getEnt("IfcSlab") + ifc.getEnt("IfcBeam") + ifc.getEnt("IfcColumn")
                   + ifc.getEnt("IfcFooting")):
             nobj = makeStructure(w)
 
@@ -437,7 +437,7 @@ def read(filename,skip=None):
     if DEBUG: print("done parsing. Recomputing...")
     FreeCAD.ActiveDocument.recompute()
     t3 = time.time()
-    if DEBUG: print("done processing IFC file in %s s" % ((t3-t1)))
+    if DEBUG: print("done processing IFC file in %s s" % (t3 - t1))
 
     return None
 
@@ -763,7 +763,7 @@ def getPlacement(entity):
     if entitytype == "IFCAXIS2PLACEMENT3D":
         x = getVector(getAttr(entity,"RefDirection"))
         z = getVector(getAttr(entity,"Axis"))
-        if not(x) or not(z):
+        if not x or not z:
             return None
         y = z.cross(x)
         loc = getVector(getAttr(entity,"Location"))
@@ -1193,7 +1193,7 @@ def getTuples(data,scale=1,placement=None,normal=None,close=True):
             data = placement.multVec(data)
         if rnd:
             data = DraftVecUtils.rounded(data)
-        return (data.x*scale,data.y*scale,data.z*scale)
+        return data.x * scale, data.y * scale, data.z * scale
     elif isinstance(data,Part.Shape):
         t = []
         if len(data.Wires) == 1:
@@ -1295,7 +1295,7 @@ def getIfcExtrusionData(obj,scale=1,nosubs=False):
                             if p2 < 0:
                                 p2 = 360 + p2
                             if da > 0:
-                                follow = not(follow)
+                                follow = not follow
                             if CURVEMODE == "CARTESIAN":
                                 # BUGGY
                                 p1 = getTuples(e.Vertexes[0].Point,scale)
@@ -1366,8 +1366,7 @@ def getIfcBrepFacesData(obj,scale=1,sub=False,tessellation=1):
                     s.append([f])
             else:
                 for face in sol.Faces:
-                    f = []
-                    f.append(getTuples(face.OuterWire,scale,normal=face.normalAt(0,0),close=False))
+                    f = [getTuples(face.OuterWire, scale, normal=face.normalAt(0, 0), close=False)]
                     for wire in face.Wires:
                         if wire.hashCode() != face.OuterWire.hashCode():
                             f.append(getTuples(wire,scale,normal=DraftVecUtils.neg(face.normalAt(0,0)),close=False))
@@ -1588,7 +1587,7 @@ class IfcFile:
         while lastpos < len(attr_str):
             newpos = self.nextString(attr_str, lastpos)
             s = attr_str[lastpos:newpos-1]
-            if (s[0] == "(" and s[-1] == ")"): # list, recurse
+            if s[0] == "(" and s[-1] == ")": # list, recurse
                 parts.append(self.parseAttribute(s[1:-1]))
             else:
                 try:
@@ -1839,7 +1838,7 @@ def explorer(filename,schema="IFC2X3_TC1.exp"):
             elif e.type in ["IFCARBITRARYCLOSEDPROFILEDEF","IFCPOLYLOOP"]:
                 item.setIcon(1,QtGui.QIcon(":icons/Draft_Draft.svg"))
             item.setText(2,str(schema.capitalize(e.type)))
-            item.setFont(2,bold);
+            item.setFont(2,bold)
             for a in e.attributes.keys():
                 if hasattr(e,a):
                     if not a.upper() in ["ID", "GLOBALID"]:
@@ -1919,9 +1918,9 @@ def getTuple(vec):
     elif isinstance(vec,list):
         return tuple([fmt(v) for v in vec])
     elif hasattr(vec,"x") and hasattr(vec,"y") and hasattr(vec,"z"):
-        return (fmt(vec.x),fmt(vec.y),fmt(vec.z))
+        return fmt(vec.x),fmt(vec.y),fmt(vec.z)
     elif hasattr(vec,"X") and hasattr(vec,"Y") and hasattr(vec,"Z"):
-        return (fmt(vec.X),fmt(vec.Y),fmt(vec.Z))
+        return fmt(vec.X),fmt(vec.Y),fmt(vec.Z)
 
 def getValueAndDirection(vec):
     """getValueAndDirection(vec): returns a length and a tuple

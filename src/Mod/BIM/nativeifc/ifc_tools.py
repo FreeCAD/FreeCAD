@@ -843,7 +843,7 @@ def get_ifc_classes(obj, baseclass):
     # this function can become pure IFC
 
     if baseclass in ("IfcProject", "IfcProjectLibrary"):
-        return ("IfcProject", "IfcProjectLibrary")
+        return "IfcProject", "IfcProjectLibrary"
     ifcfile = get_ifcfile(obj)
     if not ifcfile:
         return [baseclass]
@@ -982,10 +982,8 @@ def set_attribute(ifcfile, element, attribute, value):
                 # TODO fix attributes
                 return product
     if attribute in ["RefLongitude", "RefLatitude"]:
-      c = [int(value)]
-      c.append(int((value - c[0]) * 60))
-      c.append(int(((value - c[0]) * 60 - c[1]) * 60))
-      c.append(int((((value - c[0]) * 60 - c[1]) * 60 - c[2]) * 1.e6))
+      c = [int(value), int((value - c[0]) * 60), int(((value - c[0]) * 60 - c[1]) * 60),
+           int((((value - c[0]) * 60 - c[1]) * 60 - c[2]) * 1.e6)]
       value = c
     cmd = "attribute.edit_attributes"
     attribs = {attribute: value}

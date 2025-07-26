@@ -36,7 +36,7 @@ import Draft_rc
 import draftguitools.gui_arcs as gui_arcs
 
 # The module is used to prevent complaints from code checkers (flake8)
-True if Draft_rc.__name__ else False
+bool(Draft_rc.__name__)
 
 
 class Circle(gui_arcs.Arc):

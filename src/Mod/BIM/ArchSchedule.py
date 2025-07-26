@@ -860,7 +860,7 @@ class ArchScheduleTaskPanel:
         filename = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(),
                                                      translate("Arch","Export CSV file"),
                                                      None,
-                                                     "Comma-separated values (*.csv);;TAB-separated values (*.tsv);;Markdown (*.md)");
+                                                     "Comma-separated values (*.csv);;TAB-separated values (*.tsv);;Markdown (*.md)")
         if filename:
             filt = filename[1]
             filename = filename[0]

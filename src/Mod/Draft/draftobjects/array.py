@@ -472,7 +472,7 @@ class Array(DraftLink):
 
         self.buildShape(obj, pl, pls)
         self.props_changed_clear()
-        return (not self.use_link)
+        return not self.use_link
 
 
 # Alias for compatibility with v0.18 and earlier

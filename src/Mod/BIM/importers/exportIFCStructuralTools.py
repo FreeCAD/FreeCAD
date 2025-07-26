@@ -288,7 +288,7 @@ def createStructuralMember(ifcfile, ifcbin, obj):
             verts = verts21
         else:
             verts = verts12
-        if (verts12_in_curves or verts21_in_curves):
+        if verts12_in_curves or verts21_in_curves:
             if structural_curves[verts]:
                 # there is already another member using this curve
                 strucCrvConn = structural_curves[verts]

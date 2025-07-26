@@ -153,7 +153,7 @@ class Arch_Window:
             elif width_found and height_found:
                 break
 
-        return (width_found and height_found)
+        return width_found and height_found
 
     def getPoint(self,point=None,obj=None):
 
@@ -491,9 +491,8 @@ class Arch_Window:
                             if image in files:
                                 image = zfile.read(image)
                                 thumbfile = tempfile.mkstemp(suffix='.png')[1]
-                                thumb = open(thumbfile,"wb")
-                                thumb.write(image)
-                                thumb.close()
+                                with open(thumbfile,"wb") as thumb:
+                                    thumb.write(image)
                                 im = QtGui.QPixmap(thumbfile)
                                 self.pic.setPixmap(im)
                                 self.pic.show()

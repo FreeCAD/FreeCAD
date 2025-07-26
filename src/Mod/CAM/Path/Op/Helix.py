@@ -256,7 +256,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         }
 
         for hole in holes:
-            args["hole_radius"] = (hole["r"] / 2) - (obj.OffsetExtra.Value)
+            args["hole_radius"] = (hole["r"] / 2) - obj.OffsetExtra.Value
             startPoint = FreeCAD.Vector(hole["x"], hole["y"], obj.StartDepth.Value)
             endPoint = FreeCAD.Vector(hole["x"], hole["y"], obj.FinalDepth.Value)
             args["edge"] = Part.makeLine(startPoint, endPoint)
@@ -287,11 +287,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
 def SetupProperties():
     """Returns property names for which the "Setup Sheet" should provide defaults."""
-    setup = []
-    setup.append("CutMode")
-    setup.append("StartSide")
-    setup.append("StepOver")
-    setup.append("StartRadius")
+    setup = ["CutMode", "StartSide", "StepOver", "StartRadius"]
     return setup
 
 

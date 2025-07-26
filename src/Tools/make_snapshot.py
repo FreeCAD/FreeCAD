@@ -36,7 +36,7 @@ def make_snapshot(input_file, output_file, size=48):
     ext = os.path.splitext(input_file)[1][1:]
     mod = FreeCAD.getImportType(ext)
     if len(mod) == 0:
-        print("Cannot load file {}".format(input_file))
+        print(f"Cannot load file {input_file}")
         return
 
     # use the first listed module

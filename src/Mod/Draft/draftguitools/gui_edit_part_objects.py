@@ -42,9 +42,7 @@ class PartLineGuiTools(GuiTools):
         pass
 
     def get_edit_points(self, obj):
-        editpoints = []
-        editpoints.append(App.Vector(obj.X1,obj.Y1,obj.Z1))
-        editpoints.append(App.Vector(obj.X2,obj.Y2,obj.Z2))
+        editpoints = [App.Vector(obj.X1, obj.Y1, obj.Z1), App.Vector(obj.X2, obj.Y2, obj.Z2)]
         return editpoints
 
     def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
@@ -64,11 +62,8 @@ class PartBoxGuiTools(GuiTools):
         pass
 
     def get_edit_points(self, obj):
-        editpoints = []
-        editpoints.append(App.Vector(0, 0, 0))
-        editpoints.append(App.Vector(obj.Length, 0, 0))
-        editpoints.append(App.Vector(0, obj.Width, 0))
-        editpoints.append(App.Vector(0, 0, obj.Height))
+        editpoints = [App.Vector(0, 0, 0), App.Vector(obj.Length, 0, 0), App.Vector(0, obj.Width, 0),
+                      App.Vector(0, 0, obj.Height)]
         return editpoints
 
     def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
@@ -91,10 +86,7 @@ class PartCylinderGuiTools(GuiTools):
         pass
 
     def get_edit_points(self, obj):
-        editpoints = []
-        editpoints.append(App.Vector(0, 0, 0))
-        editpoints.append(App.Vector(obj.Radius, 0, 0))
-        editpoints.append(App.Vector(0, 0, obj.Height))
+        editpoints = [App.Vector(0, 0, 0), App.Vector(obj.Radius, 0, 0), App.Vector(0, 0, obj.Height)]
         return editpoints
 
     def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
@@ -114,11 +106,8 @@ class PartConeGuiTools(GuiTools):
         pass
 
     def get_edit_points(self, obj):
-        editpoints = []
-        editpoints.append(App.Vector(0, 0, 0))
-        editpoints.append(App.Vector(obj.Radius1, 0, 0))
-        editpoints.append(App.Vector(obj.Radius2, 0, obj.Height))
-        editpoints.append(App.Vector(0, 0, obj.Height))
+        editpoints = [App.Vector(0, 0, 0), App.Vector(obj.Radius1, 0, 0), App.Vector(obj.Radius2, 0, obj.Height),
+                      App.Vector(0, 0, obj.Height)]
         return editpoints
 
     def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
@@ -140,9 +129,7 @@ class PartSphereGuiTools(GuiTools):
         pass
 
     def get_edit_points(self, obj):
-        editpoints = []
-        editpoints.append(App.Vector(0, 0, 0))
-        editpoints.append(App.Vector(obj.Radius, 0, 0))
+        editpoints = [App.Vector(0, 0, 0), App.Vector(obj.Radius, 0, 0)]
         return editpoints
 
     def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):

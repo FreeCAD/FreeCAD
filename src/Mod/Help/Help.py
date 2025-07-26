@@ -175,11 +175,11 @@ def location_url(url_localized: str, url_english: str) -> tuple:
                 # Pages from FreeCAD Wiki fall here
                 pagename_match = re.search(r"<title>(.*?) - .*?</title>", html)
             if pagename_match is not None:
-                return (url_localized, pagename_match.group(1))
+                return url_localized, pagename_match.group(1)
             else:
-                return (url_localized, "")
+                return url_localized, ""
     except urllib.error.HTTPError as e:
-        return (url_english, "")
+        return url_english, ""
 
 
 def get_location(page) -> tuple:
@@ -191,10 +191,10 @@ def get_location(page) -> tuple:
         # we don't know the URL, using location_url() fallback to the HTML <title> tag
         return location_url(page, page)
     if page.startswith("file://"):
-        return (page[7:], "")
+        return page[7:], ""
     # offline location
     if os.path.exists(page):
-        return (page, "")
+        return page, ""
     page = page.replace(".md", "")
     page = page.replace(" ", "_")
     page = page.replace("wiki/", "")
@@ -241,7 +241,7 @@ def get_location(page) -> tuple:
             if os.path.exists(os.path.join(location, page + ext)):
                 location = os.path.join(location, page + ext)
                 break
-    return (location, pagename)
+    return location, pagename
 
 
 def show_browser(url):
@@ -301,8 +301,6 @@ def get_qtwebwidgets():
 def get_contents(location):
     """retrieves text contents of a given page"""
 
-    import urllib
-
     if location.startswith("http"):
         import urllib.request
 
@@ -323,8 +321,6 @@ def get_contents(location):
 def convert(content, force=None):
     """converts the given markdown code to html. Force can be None (automatic)
     or markdown, pandoc, github or raw/builtin"""
-
-    import urllib
 
     def convert_markdown(m):
         try:
@@ -418,11 +414,11 @@ def convert(content, force=None):
             with open(cssfile) as cf:
                 css = cf.read()
             if css:
-                css = "<style>\n" + css + "\n</style>"
+                css = f"<style>\n{css}\n</style>"
         else:
             print("Debug: Help: Unable to open css file:", cssfile)
     if css:
-        html = html.replace("</head>", css + "\n</head>")
+        html = html.replace("</head>", f"{css}\n</head>")
     return html
 
 

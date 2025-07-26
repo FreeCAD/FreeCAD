@@ -192,7 +192,7 @@ class _InvoluteGearTaskPanel:
             """Variant of assignValue that transforms the index of a Yes/No Combobox to a bool."""
             assigner = assignValue(property_name)
             def transformingAssigner(value):
-                assigner(True if value == 0 else False)
+                assigner(value == 0)
             return transformingAssigner
 
         self.form.Quantity_Modules.valueChanged.connect(assignValue("Modules", fitView=True))
@@ -238,8 +238,8 @@ class _InvoluteGearTaskPanel:
         self.obj.NumberOfTeeth  = self.form.spinBox_NumberOfTeeth.value()
         self.obj.Modules        = self.form.Quantity_Modules.text()
         self.obj.PressureAngle  = self.form.Quantity_PressureAngle.text()
-        self.obj.HighPrecision = True if self.form.comboBox_HighPrecision.currentIndex() == 0 else False
-        self.obj.ExternalGear = True if self.form.comboBox_ExternalGear.currentIndex() == 0 else False
+        self.obj.HighPrecision = self.form.comboBox_HighPrecision.currentIndex() == 0
+        self.obj.ExternalGear = self.form.comboBox_ExternalGear.currentIndex() == 0
         self.obj.AddendumCoefficient = self.form.doubleSpinBox_Addendum.value()
         self.obj.DedendumCoefficient = self.form.doubleSpinBox_Dedendum.value()
         self.obj.RootFilletCoefficient = self.form.doubleSpinBox_RootFillet.value()

@@ -29,7 +29,7 @@ from CAMTests.PathTestUtils import PathTestBase
 
 def radii(internal, major, minor, toolDia, toolCrest):
     """test radii function for simple testing"""
-    return (minor, major)
+    return minor, major
 
 
 class TestPathThreadMillingGenerator(PathTestBase):

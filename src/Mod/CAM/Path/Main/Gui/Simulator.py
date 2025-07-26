@@ -397,13 +397,13 @@ class PathSimulation:
             startDir.normalize()
             endDir.normalize()
         except Exception:
-            return (None, endPos)
+            return None, endPos
 
         # hack to overcome occ bugs
         rad = float(tool.Diameter) / 2.0 - 0.001 * pos[2]
         if type(toolPath.Curve) is Part.Circle and toolPath.Curve.Radius <= rad:
             rad = toolPath.Curve.Radius - 0.01 * (pos[2] + 1)
-            return (None, endPos)
+            return None, endPos
 
         # create the path shell
         toolProf = self.CreateToolProfile(tool, startDir, pos, rad)
@@ -420,7 +420,7 @@ class PathSimulation:
             if self.debug:
                 Part.show(pathWire)
                 Part.show(fullProf)
-            return (None, endPos)
+            return None, endPos
 
         # create the start cup
         startCup = toolProf.revolve(pos, Vector(0, 0, 1), -180)
@@ -430,7 +430,7 @@ class PathSimulation:
         endCup = endProf.revolve(endPos, Vector(0, 0, 1), 180)
 
         fullShell = Part.makeShell(startCup.Faces + pathShell.Faces + endCup.Faces)
-        return (Part.makeSolid(fullShell).removeSplitter(), endPos)
+        return Part.makeSolid(fullShell).removeSplitter(), endPos
 
     # create radial profile of the tool (90 degrees to the direction of the path)
     def CreateToolProfile(self, tool, dir, pos, rad):
