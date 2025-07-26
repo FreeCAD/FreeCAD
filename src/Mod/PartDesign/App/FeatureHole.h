@@ -50,6 +50,7 @@ public:
 
     App::PropertyBool           Threaded;
     App::PropertyBool           ModelThread;
+    App::PropertyBool           CosmeticThread;
     App::PropertyLength         ThreadPitch;
     App::PropertyEnumeration    ThreadType;
     App::PropertyEnumeration    ThreadSize;
@@ -123,6 +124,7 @@ public:
     virtual void updateProps();
     bool isDynamicCounterbore(const std::string &thread, const std::string &holeCutType);
     bool isDynamicCountersink(const std::string &thread, const std::string &holeCutType);
+    double getThreadPitch() const;
 
 protected:
     void onChanged(const App::Property* prop) override;
@@ -249,7 +251,6 @@ private:
     double getCountersinkAngle() const;
     double getThreadClassClearance() const;
     double getThreadRunout(int mode = 1) const;
-    double getThreadPitch() const;
     double getThreadProfileAngle();
     void findClosestDesignation();
     void rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, TopoDS_Shape& helixShape) const;
