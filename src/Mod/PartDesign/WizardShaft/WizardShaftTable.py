@@ -61,7 +61,7 @@ class WizardShaftTable:
         # Create table widget
         self.widget = QtGui.QTableWidget(len(self.rowDict), 0)
         self.widget.setObjectName("ShaftWizardTable") # Do not change or translate: Used in ViewProviderFemConstraintXXX
-        self.widget.setWindowTitle(translate("WizardShaftTable", "Shaft wizard"))
+        self.widget.setWindowTitle(translate("WizardShaftTable", "Shaft Wizard"))
         self.widget.resize(QtCore.QSize(300,200))
         self.editedRow = None
         self.editedColumn = None

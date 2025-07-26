@@ -27,7 +27,7 @@
    <item>
     <widget class="QGroupBox" name="checkExternal">
      <property name="title">
-      <string>Allow external features</string>
+      <string>Allow External Features</string>
      </property>
      <property name="checkable">
       <bool>false</bool>
