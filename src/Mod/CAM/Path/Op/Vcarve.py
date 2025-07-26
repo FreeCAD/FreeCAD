@@ -120,7 +120,6 @@ def _sortVoronoiWires(wires, start=FreeCAD.Vector(0, 0, 0)):
                 p = i
         return (p, length)
 
-
     begin = {}
     end = {}
 
