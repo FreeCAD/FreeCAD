@@ -163,17 +163,15 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
         Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
 
         // undo command open
-        openCommand(QT_TRANSLATE_NOOP("Command", "Toggle constraints to the other virtual space"));
+        openSelf(QT_TRANSLATE_NOOP("Command", "Toggle constraints to the other virtual space"));
 
         int successful = SubNames.size();
         // go through the selected subelements
-        for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
-             ++it) {
+        for (const std::string& subName : SubNames) {
             // only handle constraints
-            if (it->size() > 10 && it->substr(0, 10) == "Constraint") {
-                int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(*it);
-                Gui::Command::openCommand(
-                    QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
+            if (subName.size() > 10 && subName.substr(0, 10) == "Constraint") {
+                int ConstrId =
+                    Sketcher::PropertyConstraintList::getIndexFromConstraintName(subName);
                 try {
                     Gui::cmdAppObjectArgs(Obj, "toggleVirtualSpace(%d)", ConstrId);
                 }
@@ -181,13 +179,16 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
                     successful--;
                 }
             }
+            else {
+                successful--;  // Not a failure, but not applicable
+            }
         }
 
         if (successful > 0) {
-            commitCommand();
+            commitSelf();
         }
         else {
-            abortCommand();
+            abortSelf();
         }
 
         // recomputer and clear the selection (convenience)

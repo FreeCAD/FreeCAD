@@ -1158,6 +1158,15 @@ PyObject* DocumentPy::getDependentDocuments(PyObject* args)
     }
     PY_CATCH;
 }
+PyObject* DocumentPy::getBookedTransactionID(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    int tid = getDocumentPtr()->getBookedTransactionID();
+    return Py::new_reference_to(Py::Long(tid));
+}
+
 
 Py::Boolean DocumentPy::getRestoring() const
 {

@@ -336,7 +336,7 @@ void execMidpoints(Gui::Command* cmd)
     if (!dvp || selectedEdges.empty())
         return;
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Midpoint Vertices"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Add Midpoint Vertices"));
 
     const TechDraw::BaseGeomPtrVector edges = dvp->getEdgeGeometry();
     for (auto& s: selectedEdges) {
@@ -349,7 +349,7 @@ void execMidpoints(Gui::Command* cmd)
         dvp->addCosmeticVertex(mid);
     }
 
-    Gui::Command::commitCommand();
+    cmd->commitSelf();
 
     dvp->recomputeFeature();
 }
@@ -363,7 +363,7 @@ void execQuadrants(Gui::Command* cmd)
     if (!dvp || selectedEdges.empty())
         return;
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Quadrant Vertices"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Add Quadrant Vertices"));
 
     const TechDraw::BaseGeomPtrVector edges = dvp->getEdgeGeometry();
     for (auto& s: selectedEdges) {
@@ -378,7 +378,7 @@ void execQuadrants(Gui::Command* cmd)
         }
     }
 
-    Gui::Command::commitCommand();
+    cmd->commitSelf();
 
     dvp->recomputeFeature();
 }
@@ -546,7 +546,7 @@ void CmdTechDrawAnnotation::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     std::string FeatName = getUniqueObjectName("Annotation");
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create Annotation"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Create Annotation"));
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewAnnotation', '%s')", FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewAnnotation', 'Annotation', '%s')",
               FeatName.c_str(), FeatName.c_str());
@@ -560,7 +560,7 @@ void CmdTechDrawAnnotation::activated(int iMsg)
 
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
     updateActive();
-    commitCommand();
+    commitSelf();
 }
 
 bool CmdTechDrawAnnotation::isActive()
