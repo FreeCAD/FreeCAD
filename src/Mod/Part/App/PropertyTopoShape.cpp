@@ -73,9 +73,8 @@ void PropertyPartShape::setValue(const TopoShape& sh)
         if(_Shape.Tag && tag!=_Shape.Tag) {
             auto hasher = _Shape.Hasher?_Shape.Hasher:obj->getDocument()->getStringHasher();
             _Shape.reTagElementMap(tag,hasher);
-        } else {
+        } else 
             _Shape.Tag = obj->getID();
-        }
         if (!_Shape.Hasher && _Shape.hasChildElementMap()) {
             _Shape.Hasher = obj->getDocument()->getStringHasher();
             _Shape.hashChildMaps();

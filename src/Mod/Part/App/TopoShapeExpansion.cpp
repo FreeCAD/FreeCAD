@@ -1932,7 +1932,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
 
                         // To avoid the name becoming to long, just put some limit here
                         if (++count == 4) {
-                            // break;
+                            break;
                         }
                     }
                     ss << ')';
