@@ -150,6 +150,7 @@ class ToolController:
     def onDocumentRestored(self, obj):
         obj.setEditorMode("Placement", 2)
 
+
     def onDelete(self, obj, arg2=None):
         if hasattr(obj.Tool, "InList") and len(obj.Tool.InList) == 1:
             if hasattr(obj.Tool.Proxy, "onDelete"):
@@ -245,7 +246,6 @@ class ToolController:
 
     def execute(self, obj):
         Path.Log.track(obj.Name)
-
         args = {
             "toolnumber": obj.ToolNumber,
             "toollabel": obj.Label,
@@ -306,6 +306,8 @@ def Create(
 
         if hasattr(obj.Tool, "SpindleDirection"):
             obj.SpindleDir = obj.Tool.SpindleDirection
+        else:
+            obj.SpindleDir = "None"
 
     obj.ToolNumber = toolNumber
     return obj
