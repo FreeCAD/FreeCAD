@@ -46,7 +46,7 @@ class Hatch(DraftObject):
 
         pl = obj.PropertiesList
         if not "Base" in pl:
-            obj.addProperty("App::PropertyLink","Base","Hatch",
+            obj.addProperty("App::PropertyLinkSubList","Base","Hatch",
                             QT_TRANSLATE_NOOP("App::Property","The base object used by this object"), locked=True)
         if not "File" in pl:
             obj.addProperty("App::PropertyFile","File","Hatch",
@@ -86,8 +86,7 @@ class Hatch(DraftObject):
                 or not obj.Pattern \
                 or not obj.Scale \
                 or not obj.Pattern in self.getPatterns(obj.File) \
-                or not obj.Base.isDerivedFrom("Part::Feature") \
-                or not obj.Base.Shape.Faces:
+                or not self.has_faces(obj.Base):
             self.props_changed_clear()
             return
 
@@ -104,7 +103,7 @@ class Hatch(DraftObject):
         param_grp.SetBool("allowCrazyEdge", True)
 
         shapes = []
-        for face in obj.Base.Shape.Faces:
+        for face in self.get_faces(obj.Base):
             if face.findPlane(): # Only planar faces.
                 face = face.copy()
                 if obj.Translate:
@@ -150,6 +149,38 @@ class Hatch(DraftObject):
         if shapes:
             obj.Shape = Part.makeCompound(shapes)
         self.props_changed_clear()
+
+    def has_faces(self, base):
+        """Returns True if the given base data contains hatchable faces"""
+
+        for data in base:
+            if data[0].isDerivedFrom("Part::Feature"):
+                if data[0].Shape.Faces:
+                    if not data[1]:
+                        return True
+                    for f in data[1]:
+                        if f.startswith("Face"):
+                            return True
+                        elif f == "":
+                            return True
+        return False
+
+    def get_faces(self, base):
+        """Returns a list of usable faces from base data"""
+
+        faces = []
+        for data in base:
+            if data[0].isDerivedFrom("Part::Feature"):
+                if data[0].Shape.Faces:
+                    if not data[1]:
+                        faces.extend(data[0].Shape.Faces)
+                    else:
+                        for f in data[1]:
+                            if f.startswith("Face"):
+                                faces.append(getattr(data[0].Shape, f))
+                            elif f == "":
+                                faces.extend(data[0].Shape.Faces)
+        return faces
 
     def onChanged(self, obj, prop):
 

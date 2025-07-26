@@ -46,7 +46,7 @@ class Draft_Hatch(gui_base.GuiCommandNeedsSelection):
         import FreeCADGui
 
         if FreeCADGui.Selection.getSelection():
-            task = FreeCADGui.Control.showDialog(Draft_Hatch_TaskPanel(FreeCADGui.Selection.getSelection()[0]))
+            task = FreeCADGui.Control.showDialog(Draft_Hatch_TaskPanel(FreeCADGui.Selection.getSelectionEx()))
             task.setDocumentName(FreeCADGui.ActiveDocument.Document.Name)
             task.setAutoCloseOnDeletedDocument(True)
         else:
@@ -56,13 +56,22 @@ class Draft_Hatch(gui_base.GuiCommandNeedsSelection):
 class Draft_Hatch_TaskPanel:
 
 
-    def __init__(self,baseobj):
+    def __init__(self, baseobj):
 
         import FreeCADGui
         from PySide import QtCore,QtGui
         import Draft_rc
 
-        self.baseobj = baseobj
+        if isinstance(baseobj, (tuple, list)):
+            bases = "("
+            for o in baseobj:
+                if isinstance(o, (tuple, list)):
+                    bases += "(FreeCAD.ActiveDocument." + o[0].Name + "," + str(o[1]) + "),"
+                else:
+                    bases += "(FreeCAD.ActiveDocument." + o.Object.Name + "," + str(o.SubElementNames) + "),"
+            self.baseobj = bases + ")"
+        else:
+            self.baseobj = baseobj
         self.form = FreeCADGui.PySideUic.loadUi(":/ui/dialogHatch.ui")
         self.form.setWindowIcon(QtGui.QIcon(":/icons/Draft_Hatch.svg"))
         self.form.File.fileNameChanged.connect(self.onFileChanged)
@@ -94,11 +103,13 @@ class Draft_Hatch_TaskPanel:
             FreeCADGui.doCommand(o+".Translate="+str(self.form.Translate.isChecked()))
         else:
             # create new hatch object
+            if hasattr(self.baseobj, "Name"):
+                self.baseobj = "FreeCAD.ActiveDocument." + self.baseobj.Name
             FreeCAD.ActiveDocument.openTransaction("Create Hatch")
             FreeCADGui.addModule("Draft")
             cmd = "Draft.make_hatch("
-            cmd += "baseobject=FreeCAD.ActiveDocument.getObject(\""+self.baseobj.Name
-            cmd += "\"),filename=\""+self.form.File.property("fileName")
+            cmd += "baseobject="+self.baseobj
+            cmd += ",filename=\""+self.form.File.property("fileName")
             cmd += "\",pattern=\""+self.form.Pattern.currentText()
             cmd += "\",scale="+str(self.form.Scale.value())
             cmd += ",rotation="+str(self.form.Rotation.value())
