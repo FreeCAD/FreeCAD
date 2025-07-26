@@ -26,7 +26,6 @@
 
 #include <vector>
 #include <QScrollArea>
-#include <QPointer>
 
 #include <Gui/QSint/include/QSint>
 #include <Gui/Selection/Selection.h>
@@ -197,7 +196,7 @@ private:
     QScrollArea* scrollArea;
     QVBoxLayout* contextualPanelsLayout;
     QVBoxLayout* dialogLayout;
-    QList<QPointer<QWidget>> contextualPanels;
+    QList<QWidget*> contextualPanels;
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;
