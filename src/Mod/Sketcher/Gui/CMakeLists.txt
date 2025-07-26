@@ -23,7 +23,6 @@ set(SketcherGui_UIC_SRCS
     TaskSketcherConstraints.ui
     TaskSketcherElements.ui
     SketcherToolDefaultWidget.ui
-    TaskSketcherMessages.ui
     TaskSketcherSolverAdvanced.ui
     TaskSketcherValidation.ui
     InsertDatum.ui
@@ -103,7 +102,6 @@ SET(SketcherGui_SRCS
     SketcherToolDefaultWidget.h
     TaskSketcherTool.cpp
     TaskSketcherTool.h
-    TaskSketcherMessages.ui
     TaskSketcherMessages.cpp
     TaskSketcherMessages.h
     TaskSketcherSolverAdvanced.ui

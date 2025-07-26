@@ -1480,7 +1480,7 @@ QWidget* SnapSpaceAction::createWidget(QWidget* parent)
     layout->addWidget(snapAngle, 1, 1);
 
     languageChange();
-    
+
 #if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
     QObject::connect(snapToObjects, &QCheckBox::checkStateChanged, [this](int state) {
 #else
@@ -1925,4 +1925,3 @@ void CreateSketcherCommands()
     rcCmdMgr.addCommand(new CmdRenderingOrder());
 }
 // clang-format on
-
