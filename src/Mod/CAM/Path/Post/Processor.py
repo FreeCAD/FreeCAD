@@ -116,6 +116,8 @@ class PostProcessorFactory:
                     Path.Log.debug(f"Post processor {postname} is a script")
                     return WrapperPost(job, module_path, module_name)
 
+        return None
+
 
 def needsTcOp(oldTc, newTc):
     return (
@@ -133,10 +135,18 @@ class PostProcessor:
         self._tooltip = tooltip
         self._tooltipargs = tooltipargs
         self._units = units
-        self._job = job
         self._args = args
         self._kwargs = kwargs
         self.reinitialize()
+
+        if isinstance(job, dict):
+            # process only selected operations
+            self._job = job["job"]
+            self._operations = job["operations"]
+        else:
+            # get all operations from 'Operations' group
+            self._job = job
+            self._operations = getattr(job.Operations, "Group", [])
 
     @classmethod
     def exists(cls, processor):
@@ -203,7 +213,7 @@ class PostProcessor:
                 sublist = [__fixtureSetup(index, f, self._job)]
 
                 # Now generate the gcode
-                for obj in self._job.Operations.Group:
+                for obj in self._operations:
                     tc = PathUtil.toolControllerForOp(obj)
                     if tc is not None and PathUtil.activeForOp(obj):
                         if needsTcOp(currTc, tc):
@@ -240,7 +250,7 @@ class PostProcessor:
                     postlist.append((toolstring, sublist))
 
             Path.Log.track(self._job.PostProcessorOutputFile)
-            for idx, obj in enumerate(self._job.Operations.Group):
+            for idx, obj in enumerate(self._operations):
                 Path.Log.track(obj.Label)
 
                 # check if the operation is active
@@ -286,7 +296,7 @@ class PostProcessor:
             currTc = None
 
             # Now generate the gcode
-            for obj in self._job.Operations.Group:
+            for obj in self._operations:
 
                 # check if the operation is active
                 if not PathUtil.activeForOp(obj):
