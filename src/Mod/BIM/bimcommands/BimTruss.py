@@ -42,7 +42,7 @@ class Arch_Truss:
         return {'Pixmap'  : 'Arch_Truss',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Truss","Truss"),
                 'Accel': "T, U",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Truss","Creates a truss object from selected line or from scratch")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Truss","Creates a truss object from the selected line or from scratch")}
 
     def IsActive(self):
 
@@ -54,7 +54,7 @@ class Arch_Truss:
         self.doc = FreeCAD.ActiveDocument
         sel = FreeCADGui.Selection.getSelection()
         if len(sel) > 1:
-            FreeCAD.Console.PrintError(translate("Arch","Please select only one base object or none")+"\n")
+            FreeCAD.Console.PrintError(translate("Arch","Select only one base object or none")+"\n")
         elif len(sel) == 1:
             # build on selection
             basename = "FreeCAD.ActiveDocument."+FreeCADGui.Selection.getSelection()[0].Name

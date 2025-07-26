@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>IFC export</string>
+   <string>IFC Export</string>
   </property>
   <layout class="QVBoxLayout">
    <property name="spacing">
@@ -32,7 +32,7 @@
    <item>
     <widget class="QGroupBox" name="group_box_0">
      <property name="title">
-      <string>General options</string>
+      <string>General Options</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -54,7 +54,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Export options</string>
+      <string>Export Options</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -62,10 +62,10 @@
         <item>
          <widget class="QLabel" name="label_2">
           <property name="toolTip">
-           <string>The type of objects that you wish to export:
-- Standard model: solid objects.
-- Structural analysis: wireframe model for structural calculations.
-- Standard + structural: both types of models.</string>
+           <string>The type of objects to export:
+- Standard model: solid objects
+- Structural analysis: wireframe model for structural calculations
+- Standard + structural: both types of models</string>
           </property>
           <property name="text">
            <string>Export type</string>
@@ -75,10 +75,10 @@
         <item>
          <widget class="Gui::PrefComboBox" name="comboBox">
           <property name="toolTip">
-           <string>The type of objects that you wish to export:
-- Standard model: solid objects.
-- Structural analysis: wireframe model for structural calculations.
-- Standard + structural: both types of models.</string>
+           <string>The type of objects to export:
+- Standard model: solid objects
+- Structural analysis: wireframe model for structural calculations
+- Standard + structural: both types of models</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ifcExportModel</cstring>
@@ -108,11 +108,11 @@
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBox">
         <property name="toolTip">
-         <string>Some IFC viewers don't like objects exported as extrusions.
+         <string>Some IFC viewers do not like objects exported as extrusions.
 Use this to force all objects to be exported as BREP geometry.</string>
         </property>
         <property name="text">
-         <string>Force export as Brep</string>
+         <string>Force export as BREP</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ifcExportAsBrep</cstring>
@@ -236,7 +236,7 @@ allowing to recreate a full parametric model on reimport.</string>
        <widget class="Gui::PrefCheckBox" name="checkBox_15">
         <property name="toolTip">
          <string>When possible, similar entities will be used only once in the file if possible.
-This can reduce the file size a lot, but will make it less easily readable.</string>
+This can reduce the file size considerably, but will make it less easily readable.</string>
         </property>
         <property name="text">
          <string>Reuse similar entities</string>
@@ -258,7 +258,7 @@ This can reduce the file size a lot, but will make it less easily readable.</str
          <string>When possible, IFC objects that are extruded rectangles will be
 exported as IfcRectangleProfileDef.
 However, some other applications might have problems importing that entity.
-If this is your case, you can disable this and then all profiles will be exported as IfcArbitraryClosedProfileDef.</string>
+If this is the case, it can disabled and then all profiles will be exported as IfcArbitraryClosedProfileDef.</string>
         </property>
         <property name="text">
          <string>Disable IfcRectangleProfileDef</string>
@@ -327,7 +327,7 @@ A building storey is not mandatory but a common practice to have at least one in
         <item>
          <widget class="QLabel" name="label">
           <property name="toolTip">
-           <string>The units you want your IFC file to be exported to.
+           <string>Desired units in the exported IFC file.
 
 Note that IFC files are ALWAYS written in metric units; imperial units
 are only a conversion factor applied on top of them.
@@ -342,7 +342,7 @@ unit to work with when opening the file.</string>
         <item>
          <widget class="Gui::PrefComboBox" name="comboBox_3">
           <property name="toolTip">
-           <string>The units you want your IFC file to be exported to.
+           <string>Desired units in the exported IFC file.
 
 Note that IFC files are ALWAYS written in metric units; imperial units
 are only a conversion factor applied on top of them.
@@ -389,8 +389,7 @@ unit to work with when opening the file.</string>
        <widget class="Gui::PrefCheckBox" name="checkBox_21">
         <property name="toolTip">
          <string>If no building is found in the FreeCAD document, a default one will be added.
-Warning: The IFC standard asks for at least one building in each file. By turning this option off, you will produce a non-standard IFC file.
-However, at FreeCAD, we believe having a building should not be mandatory, and this option is there to have a chance to demonstrate our point of view.</string>
+Warning: The IFC standard asks for at least one building in each file. By turning this option off, a non-standard IFC file will be produced.</string>
         </property>
         <property name="text">
          <string>Add default building if one is not found in the document</string>
@@ -412,7 +411,7 @@ However, at FreeCAD, we believe having a building should not be mandatory, and t
          <string>If not checked, standard FreeCAD groups (App::DocumentObjectGroup) will not be exported as IfcGroup or IfcElementAssembly.\nTheir children will be re-parented to the container of the skipped group in the IFC structure.</string>
         </property>
         <property name="title">
-         <string>Export FreeCAD groups</string>
+         <string>Export FreeCAD Groups</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -430,7 +429,7 @@ However, at FreeCAD, we believe having a building should not be mandatory, and t
          <item>
           <widget class="Gui::PrefCheckBox" name="checkBox_2">
            <property name="toolTip">
-            <string>In FreeCAD, it is possible to nest groups inside buildings or storeys. If this option is disabled, FreeCAD groups will be saved as IfcGroups and aggregated to the building structure. Aggregating non-building elements such as IfcGroups is however not recommended by the IFC standards. It is therefore also possible to export these groups as IfcElementAssemblies, which produces an IFC-compliant file. However, at FreeCAD, we believe nesting groups inside structures should be possible, and this option is there to have a chance to demonstrate our point of view.</string>
+            <string>In FreeCAD, it is possible to nest groups inside buildings or storeys. If this option is disabled, FreeCAD groups will be saved as IfcGroups and aggregated to the building structure. Aggregating non-building elements such as IfcGroups is however not recommended by the IFC standards. It is therefore also possible to export these groups as IfcElementAssemblies, which produces an IFC-compliant file.</string>
            </property>
            <property name="text">
             <string>Export nested groups as assemblies</string>

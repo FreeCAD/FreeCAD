@@ -133,7 +133,7 @@ class BIM_Tutorial:
                 FreeCAD.Console.PrintError(
                     translate(
                         "BIM",
-                        "Unable to access the tutorial. Verify that you are online (This is needed only once).",
+                        "Unable to access the tutorial. Verify the internet connection (This is needed only once).",
                     )
                     + "\n"
                 )
@@ -163,7 +163,7 @@ class BIM_Tutorial:
 
         # download images (QTextEdit cannot load online images)
         self.form.textEdit.setHtml(
-            html.replace("inserthere", translate("BIM", "Downloading images..."))
+            html.replace("inserthere", translate("BIM", "Downloading images…"))
         )
         nd = []
         for descr in self.descriptions:

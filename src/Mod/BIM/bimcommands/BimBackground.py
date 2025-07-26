@@ -35,7 +35,7 @@ class BIM_Background:
     def GetResources(self):
         return {
             "Pixmap": "BIM_Background",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_Background", "Toggle background"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_Background", "Toggle Background"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_Background",
                 "Toggles the background of the 3D view between simple and gradient",
