@@ -36,14 +36,14 @@
       </size>
      </property>
      <property name="text">
-      <string>Start Depth</string>
+      <string>Start depth</string>
      </property>
     </widget>
    </item>
    <item row="0" column="2">
     <widget class="Gui::QuantitySpinBox" name="startDepth">
      <property name="toolTip">
-      <string>Start Depth of the operation. The highest point in Z-axis the operation needs to process.</string>
+      <string>Start depth of the operation. The highest point in Z-axis the operation needs to process.</string>
      </property>
      <property name="minimum" stdset="0">
       <double>-999999999.000000000000000</double>
@@ -56,10 +56,10 @@
    <item row="0" column="3">
     <widget class="QToolButton" name="startDepthSet">
      <property name="toolTip">
-      <string>Transfer the Z value of the selected feature as the Start Depth for the operation.</string>
+      <string>Transfer the Z value of the selected feature as the start depth for the operation</string>
      </property>
      <property name="text">
-      <string notr="true">...</string>
+      <string notr="true">…</string>
      </property>
      <property name="icon">
       <iconset>
@@ -82,7 +82,7 @@
       </size>
      </property>
      <property name="text">
-      <string>Final Depth</string>
+      <string>Final depth</string>
      </property>
     </widget>
    </item>
@@ -102,10 +102,10 @@
    <item row="1" column="3">
     <widget class="QToolButton" name="finalDepthSet">
      <property name="toolTip">
-      <string>Transfer the Z value of the selected feature as the Final Depth for the operation.</string>
+      <string>Transfer the Z value of the selected feature as the final depth for the operation</string>
      </property>
      <property name="text">
-      <string notr="true">...</string>
+      <string notr="true">…</string>
      </property>
      <property name="icon">
       <iconset>
@@ -128,14 +128,14 @@
       </size>
      </property>
      <property name="text">
-      <string>Step Down</string>
+      <string>Step down</string>
      </property>
     </widget>
    </item>
    <item row="2" column="2">
     <widget class="Gui::QuantitySpinBox" name="stepDown">
      <property name="toolTip">
-      <string>The depth in Z-axis the operation moves downwards between layers. This value depends on the tool being used, the material to be cut, available cooling and many other factors. Please consult the tool manufacturers data sheets for the proper value.</string>
+      <string>The depth in Z-axis the operation moves downwards between layers. This value depends on the tool being used, the material to be cut, available cooling and many other factors. Consult the tool manufacturers data sheets for the proper value.</string>
      </property>
      <property name="minimum" stdset="0">
       <double>-999999999.000000000000000</double>
@@ -160,7 +160,7 @@
       </size>
      </property>
      <property name="text">
-      <string>Finish Step Down</string>
+      <string>Finish step down</string>
      </property>
     </widget>
    </item>

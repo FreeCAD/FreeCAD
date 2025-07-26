@@ -34,7 +34,7 @@
   <item row="1" column="0">
     <widget class="QLabel" name="lblOffSetDistance">
      <property name="text">
-      <string>Offset Distance</string>
+      <string>Offset distance</string>
      </property>
     </widget>
    </item>
@@ -60,7 +60,7 @@
    <item row="2" column="0">
     <widget class="QLabel" name="lblPivotHeight">
      <property name="text">
-      <string>Pivot Height</string>
+      <string>Pivot height</string>
      </property>
     </widget>
    </item>

@@ -434,7 +434,7 @@ class ObjectDressup(object):
             "App::PropertyIntegerList",
             "BoneBlacklist",
             "Dressup",
-            QT_TRANSLATE_NOOP("App::Property", "Bones that aren't dressed up"),
+            QT_TRANSLATE_NOOP("App::Property", "Bones that are not dressed up"),
         )
         obj.BoneBlacklist = []
         obj.setEditorMode("BoneBlacklist", 2)  # hide this one
@@ -1322,7 +1322,7 @@ class CommandDressupDogbone(object):
             "MenuText": QT_TRANSLATE_NOOP("CAM_DressupDogbone", "Dogbone"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_DressupDogbone",
-                "Creates a Dogbone Dress-up object from a selected toolpath",
+                "Creates a dogbone dress-up object from a selected toolpath",
             ),
         }
 
@@ -1339,7 +1339,7 @@ class CommandDressupDogbone(object):
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("CAM_DressupDogbone", "Please select one toolpath object") + "\n"
+                translate("CAM_DressupDogbone", "Select one toolpath object") + "\n"
             )
             return
         baseObject = selection[0]
@@ -1367,4 +1367,4 @@ class CommandDressupDogbone(object):
 #
 #    FreeCADGui.addCommand("CAM_DressupDogbone", CommandDressupDogbone())
 
-FreeCAD.Console.PrintLog("Loading DressupDogbone... done\n")
+FreeCAD.Console.PrintLog("Loading DressupDogbone… done\n")

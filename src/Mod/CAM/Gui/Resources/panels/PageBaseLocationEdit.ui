@@ -17,7 +17,7 @@
    <item>
     <widget class="QTableWidget" name="baseList">
      <property name="toolTip">
-      <string>List of locations to be processed.</string>
+      <string>List of locations to be processed</string>
      </property>
      <column>
       <property name="text">
@@ -37,7 +37,7 @@
       <item row="0" column="1">
        <widget class="QPushButton" name="addLocation">
         <property name="toolTip">
-         <string>Opens a dialog to add arbitrary locations.</string>
+         <string>Opens a dialog to add arbitrary locations</string>
         </property>
         <property name="text">
          <string>Add</string>
@@ -57,7 +57,7 @@
       <item row="0" column="3">
        <widget class="QPushButton" name="editLocation">
         <property name="toolTip">
-         <string>Edit selected location.</string>
+         <string>Edit selected location</string>
         </property>
         <property name="text">
          <string>Edit</string>
@@ -67,7 +67,7 @@
       <item row="1" column="1" colspan="3">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>All locations will be processed using the same operation properties.</string>
+         <string>All locations will be processed using the same operation properties</string>
         </property>
         <property name="textFormat">
          <enum>Qt::AutoText</enum>
