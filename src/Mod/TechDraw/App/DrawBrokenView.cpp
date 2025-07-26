@@ -39,6 +39,9 @@
 //!       for sketch based breaks, the break direction is perpendicular to the edges
 //!       in the sketch.
 
+// ??? is option 1 actually working?  Not used in practice?
+
+
 #include "PreCompiled.h"    // NOLINT
 
 #ifndef _PreComp_
@@ -157,7 +160,6 @@ App::DocumentObjectExecReturn* DrawBrokenView::execute()
 
     BRepBuilderAPI_Copy BuilderCopy(shape);
     TopoDS_Shape safeShape = BuilderCopy.Shape();
-
     m_unbrokenCenter = SU::findCentroidVec(safeShape, getProjectionCS());
 
     TopoDS_Shape brokenShape = breakShape(safeShape);
@@ -206,7 +208,6 @@ TopoDS_Shape DrawBrokenView::apply1Break(const App::DocumentObject& breakObj, co
         Base::Console().message("DBV::apply1Break - cut0 failed\n");
     }
     TopoDS_Shape cut0 = mkCut0.Shape();
-
     // make a halfspace that is positioned at the second breakpoint and extends
     // in the direction of the first point
     Base::Vector3d moveDir1 = breakPoints.first - breakPoints.second;
@@ -242,12 +243,13 @@ TopoDS_Shape DrawBrokenView::compressShape(const TopoDS_Shape& shapeToCompress) 
 //! a piece:                  PppppP    no need to move
 TopoDS_Shape  DrawBrokenView::compressHorizontal(const TopoDS_Shape& shapeToCompress)const
 {
-    auto pieces = getPieces(shapeToCompress);
-    auto breaksAll = Breaks.getValues();
-    auto moveDirection = DU::closestBasisOriented(Base::convertTo<Base::Vector3d>(getProjectionCS().XDirection()));
+    std::vector<TopoDS_Shape> pieces = getPieces(shapeToCompress);
+    std::vector<App::DocumentObject*> breaksAll = Breaks.getValues();
+    Base::Vector3d moveDirection = DU::closestBasisOriented(Base::convertTo<Base::Vector3d>(getProjectionCS().XDirection()));
     bool descend = false;
-    auto sortedBreaks = makeSortedBreakList(breaksAll, moveDirection, descend);
-    auto limits = getPieceLimits(pieces, moveDirection);
+    BreakList sortedBreaks = makeSortedBreakList(breaksAll, moveDirection, descend);
+    PieceLimitList limits = getPieceLimits(pieces, moveDirection);
+
     // for each break, move all the pieces left of the break to the right by the removed amount
     // for the break
     for (auto& breakItem : sortedBreaks) {
@@ -262,6 +264,7 @@ TopoDS_Shape  DrawBrokenView::compressHorizontal(const TopoDS_Shape& shapeToComp
                 TopoDS_Shape temp = ShapeUtils::moveShape(pieces.at(iPiece), netBreakDisplace);
                 pieces.at(iPiece) = temp;
             }
+
             iPiece++;
         }
     }
@@ -281,6 +284,7 @@ TopoDS_Shape  DrawBrokenView::compressHorizontal(const TopoDS_Shape& shapeToComp
 TopoDS_Shape  DrawBrokenView::compressVertical(const TopoDS_Shape& shapeToCompress)const
 {
     auto pieces = getPieces(shapeToCompress);
+
     auto breaksAll = Breaks.getValues();
     // not sure about using closestBasis here. may prevent oblique breaks later.
     auto moveDirection = DU::closestBasisOriented(Base::convertTo<Base::Vector3d>(getProjectionCS().YDirection()));
@@ -750,16 +754,32 @@ PieceLimitList DrawBrokenView::getPieceLimits(const std::vector<TopoDS_Shape>& p
     return limits;
 }
 
+//! get the pieces of the broken shape.
 std::vector<TopoDS_Shape> DrawBrokenView::getPieces(const TopoDS_Shape& brokenShape)
+{
+    std::vector<TopoDS_Shape> result = getPiecesByType(brokenShape, TopAbs_SOLID);
+    std::vector<TopoDS_Shape> temp = getPiecesByType(brokenShape, TopAbs_SHELL, TopAbs_SOLID);
+    result.insert(result.end(), temp.begin(), temp.end());
+    temp = getPiecesByType(brokenShape, TopAbs_FACE, TopAbs_SHELL);
+    result.insert(result.end(), temp.begin(), temp.end());
+    temp = getPiecesByType(brokenShape, TopAbs_WIRE, TopAbs_FACE);
+    result.insert(result.end(), temp.begin(), temp.end());
+    temp = getPiecesByType(brokenShape, TopAbs_EDGE, TopAbs_WIRE);
+    result.insert(result.end(), temp.begin(), temp.end());
+    return result;
+}
+
+//! retrieve the subelements of a shape that are of type desiredShapeType, but that do not
+//! belong to a shape of type avoidShapeType.
+std::vector<TopoDS_Shape> DrawBrokenView::getPiecesByType(const TopoDS_Shape& shapeToSearch,
+                                                          TopAbs_ShapeEnum desiredShapeType,
+                                                          TopAbs_ShapeEnum avoidShapeType)
 {
     std::vector<TopoDS_Shape> result;
 
-    // ?? is it reasonable to expect that we only want the solids? do we need to
-    // pick based on ShapeType <= TopAbs_SHELL? to get shells, compounds etc?
-    TopExp_Explorer expl(brokenShape, TopAbs_SOLID);
+    TopExp_Explorer expl(shapeToSearch, desiredShapeType, avoidShapeType);
     for (; expl.More(); expl.Next()) {
-        const TopoDS_Solid& solid = TopoDS::Solid(expl.Current());
-        result.push_back(solid);
+        result.push_back(expl.Current());
     }
 
     return result;
