@@ -410,6 +410,13 @@ private:
                     continue;
                 }
 
+                // Only consider constraints that apply to the geometry that we are scaling
+                if (std::ranges::none_of(listOfGeoIds, [cstr](const auto& geoId) {
+                        return cstr->involvesGeoId(geoId);
+                    })) {
+                    continue;
+                }
+
                 auto newConstr = std::unique_ptr<Constraint>(cstr->copy());
                 newConstr->First = offsetGeoID(newConstr->First, firstCurveCreated);
 
