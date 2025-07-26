@@ -3282,6 +3282,8 @@ void Document::_removeObject(DocumentObject* pcObject, RemoveObjectOptions optio
         pcObject->unsetupObject();
     }
     signalDeletedObject(*pcObject);
+    signalTransactionRemove(*pcObject, d->rollback ? nullptr : d->activeUndoTransaction);
+    breakDependency(pcObject, true);
 
     // TODO Check me if it's needed (2015-09-01, Fat-Zer)
     // remove the tip if needed
@@ -3298,15 +3300,7 @@ void Document::_removeObject(DocumentObject* pcObject, RemoveObjectOptions optio
 
     // do no transactions if we do a rollback!
     if (!d->rollback && d->activeUndoTransaction) {
-        // Undo stuff
-        signalTransactionRemove(*pcObject, d->activeUndoTransaction);
-        breakDependency(pcObject, true);
         d->activeUndoTransaction->addObjectNew(pcObject);
-    }
-    else {
-        // for a rollback delete the object
-        signalTransactionRemove(*pcObject, 0);
-        breakDependency(pcObject, true);
     }
 
     std::unique_ptr<DocumentObject> tobedestroyed;
