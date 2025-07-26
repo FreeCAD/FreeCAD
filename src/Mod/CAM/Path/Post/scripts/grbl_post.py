@@ -597,8 +597,19 @@ def drill_translate(outstring, cmd, params):
         drill_Z += CURRENT_Z
         RETRACT_Z += CURRENT_Z
 
-    #    if DRILL_RETRACT_MODE == "G98" and CURRENT_Z >= RETRACT_Z:
-    #        RETRACT_Z = CURRENT_Z
+        #
+        # 3.5.20 Set Canned Cycle Return Level — G98 and G99
+        # When the spindle retracts during canned cycles, there is a choice of how far it retracts: (1) retract
+        # perpendicular to the selected plane to the position indicated by the R word, or (2) retract
+        # perpendicular to the selected plane to the position that axis was in just before the canned cycle
+        # started (unless that position is lower than the position indicated by the R word, in which case use
+        # the R word position).
+        # To use option (1), program G99. To use option (2), program G98. Remember that the R word has
+        # different meanings in absolute distance mode and incremental distance mode.
+        # """
+
+        if DRILL_RETRACT_MODE == "G98" and CURRENT_Z >= RETRACT_Z:
+            RETRACT_Z = CURRENT_Z
 
     # get the other parameters
     drill_feedrate = Units.Quantity(params["F"], FreeCAD.Units.Velocity)
