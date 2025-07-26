@@ -173,8 +173,6 @@ ViewProviderFeaturePythonImp::getOverlayIcons() const
 
         // Expect a dictionary (dict) from Python
         if (!PyDict_Check(ret.ptr())) {
-            FC_WARN("getOverlayIcons() must return a dict, but returned %s",
-                    Py_TYPE(ret.ptr())->tp_name);
             return overlays;
         }
 
@@ -186,12 +184,10 @@ ViewProviderFeaturePythonImp::getOverlayIcons() const
         while (PyDict_Next(dict.ptr(), &pos, &key, &value)) {
             // Key should be an integer (from the enum)
             if (!PyLong_Check(key)) {
-                FC_WARN("getOverlayIcons() dict key must be of type FreeCADGui.IconPosition (int)");
                 continue;
             }
             // Value should be a string
             if (!PyUnicode_Check(value)) {
-                FC_WARN("getOverlayIcons() dict value must be a string (icon name)");
                 continue;
             }
 
