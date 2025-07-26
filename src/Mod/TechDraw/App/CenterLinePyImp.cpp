@@ -43,7 +43,7 @@ PyObject *CenterLinePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  //
 {
     // never create such objects with the constructor
     PyErr_SetString(PyExc_RuntimeError,
-        "You cannot create an instance of the abstract class 'CenterLine'.");
+        "Cannot create an instance of the abstract class 'CenterLine'.");
     return nullptr;
 }
 

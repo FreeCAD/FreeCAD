@@ -186,7 +186,7 @@ void TaskProjGroup::updateUi()
         ui->label_11->show();
     }
     else {
-        setWindowTitle(QObject::tr("Part View"));
+        setWindowTitle(QObject::tr("New View"));
         ui->projection->hide();
         ui->cbAutoDistribute->hide();
         ui->sbXSpacing->hide();

@@ -83,7 +83,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Replace References with Current Selection</string>
+           <string>Replace references with current selection</string>
           </property>
          </widget>
         </item>
@@ -116,7 +116,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>The View that owns this Dimension</string>
+           <string>The view that owns this dimension</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -160,7 +160,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>The subelements of the View that define the geometry for this Dimension</string>
+           <string>The sub-elements of the view that define the geometry for this dimension</string>
           </property>
           <property name="editTriggers">
            <set>QAbstractItemView::NoEditTriggers</set>

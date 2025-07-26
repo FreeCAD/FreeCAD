@@ -213,7 +213,7 @@ Angle, surface finish, root</string>
             <string>Flips the sides</string>
            </property>
            <property name="text">
-            <string>Flip Sides</string>
+            <string>Flip sides</string>
            </property>
           </widget>
          </item>
@@ -235,22 +235,22 @@ Angle, surface finish, root</string>
      <item row="0" column="0">
       <widget class="QCheckBox" name="cbFieldWeld">
        <property name="toolTip">
-        <string>Adds the 'Field Weld' symbol (flag)
+        <string>Adds the 'Field weld' symbol (flag)
 at the kink in the leader line</string>
        </property>
        <property name="text">
-        <string>Field Weld</string>
+        <string>Field weld</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
       <widget class="QCheckBox" name="cbAllAround">
        <property name="toolTip">
-        <string>Adds the 'All Around' symbol (circle)
+        <string>Adds the 'All around' symbol (circle)
 at the kink in the leader line</string>
        </property>
        <property name="text">
-        <string>All Around</string>
+        <string>All around</string>
        </property>
       </widget>
      </item>
@@ -271,7 +271,7 @@ at the kink in the leader line</string>
      <item row="0" column="0">
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>Tail Text</string>
+        <string>Tail text</string>
        </property>
       </widget>
      </item>
@@ -291,7 +291,7 @@ at the kink in the leader line</string>
      <item row="1" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Symbol Directory</string>
+        <string>Symbol directory</string>
        </property>
       </widget>
      </item>

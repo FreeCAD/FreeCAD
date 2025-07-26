@@ -245,7 +245,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="lbAngle">
        <property name="text">
-        <string>Symbol angle:</string>
+        <string>Symbol angle</string>
        </property>
       </widget>
      </item>
