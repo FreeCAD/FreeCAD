@@ -66,17 +66,17 @@ class CommandCreateBom:
     def GetResources(self):
         return {
             "Pixmap": "Assembly_BillOfMaterials",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateBom", "Create Bill of Materials"),
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateBom", "Bill of Materials"),
             "Accel": "O",
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateBom",
-                "Create a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.",
+                "Creates a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.",
             )
             + "</p><p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateBom",
-                "The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.",
+                "The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you do not need the BOM object to be saved as a document object, you can simply export and cancel the task.",
             )
             + "</p><p>"
             + QT_TRANSLATE_NOOP(
@@ -370,28 +370,28 @@ class TaskAssemblyCreateBom(QtCore.QObject):
         layout = QtWidgets.QVBoxLayout()
         layout.setContentsMargins(10, 10, 10, 10)
 
-        options_title = QtWidgets.QLabel("<b>" + translate("Assembly", "Options:") + "</b>")
+        options_title = QtWidgets.QLabel("<b>" + translate("Assembly", "Options") + "</b>")
         options_text = QtWidgets.QLabel(
             " - "
             + translate(
                 "Assembly",
-                "Sub-assemblies children : If checked, Sub assemblies children will be added to the bill of materials.",
+                "Sub-assembly children: the children of sub-assemblies will be included in the bill of materials",
             )
             + "\n"
             " - "
             + translate(
                 "Assembly",
-                "Parts children : If checked, Parts children will be added to the bill of materials.",
+                "Parts children: the children of parts will be added to the bill of materials",
             )
             + "\n"
             " - "
             + translate(
                 "Assembly",
-                "Only parts : If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.",
+                "Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.",
             )
             + "\n"
         )
-        columns_title = QtWidgets.QLabel("<b>" + translate("Assembly", "Columns:") + "</b>")
+        columns_title = QtWidgets.QLabel("<b>" + translate("Assembly", "Columns") + "</b>")
         columns_text = QtWidgets.QLabel(
             " - "
             + translate(
@@ -402,22 +402,22 @@ class TaskAssemblyCreateBom(QtCore.QObject):
             " - "
             + translate(
                 "Assembly",
-                "Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. If a column name starts with '.' followed by a property name (e.g. '.Length'), it will be auto-populated with that property value. These columns can be renamed by double-clicking or pressing F2 (Renaming a column will currently lose its data).",
+                "Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. If a column name starts with '.' followed by a property name (e.g. '.Length'), it will be auto-populated with that property value. These columns can be renamed by double-clicking or pressing F2 (renaming a column will currently lose its data).",
             )
             + "\n"
             "\n"
             + translate(
                 "Assembly",
-                "Any column (custom or not) can be deleted by pressing Del.",
+                "Any column (custom or not), can be deleted by pressing the Delete key",
             )
             + "\n"
         )
-        export_title = QtWidgets.QLabel("<b>" + translate("Assembly", "Export:") + "</b>")
+        export_title = QtWidgets.QLabel("<b>" + translate("Assembly", "Export") + "</b>")
         export_text = QtWidgets.QLabel(
             " - "
             + translate(
                 "Assembly",
-                "The exported file format can be customized in the Spreadsheet workbench preferences.",
+                "The exported file format can be customized in the Spreadsheet workbench preferences",
             )
             + "\n"
         )

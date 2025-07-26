@@ -46,7 +46,7 @@ tooltip = (
     "<p>"
     + QT_TRANSLATE_NOOP(
         "Assembly_InsertLink",
-        "Insert a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is <b>open in the current session</b>",
+        "Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is <b>open in the current session</b>",
     )
     + "</p><p><ul><li>"
     + QT_TRANSLATE_NOOP("Assembly_InsertLink", "Insert by left clicking items in the list.")
@@ -70,7 +70,7 @@ class CommandGroupInsert:
 
         return {
             "Pixmap": "Assembly_InsertLink",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_Insert", "Insert"),
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_Insert", "Insert Component"),
             "ToolTip": tooltip,
             "CmdType": "ForEdit",
         }
@@ -86,7 +86,7 @@ class CommandInsertLink:
     def GetResources(self):
         return {
             "Pixmap": "Assembly_InsertLink",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_InsertLink", "Insert Component"),
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_InsertLink", "Component"),
             "Accel": "I",
             "ToolTip": tooltip,
             "CmdType": "ForEdit",

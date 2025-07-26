@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Create Joint</string>
+   <string>Joint</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0" colspan="2">
@@ -141,7 +141,7 @@
      <item>
       <widget class="QPushButton" name="offset1Button">
        <property name="toolTip">
-        <string>By clicking this button, you can set the attachment offset of the first marker (coordinate system) of the joint.</string>
+        <string>Sets the attachment offset of the joint’s first marker (coordinate system)</string>
        </property>
        <property name="text">
         <string></string>
@@ -162,7 +162,7 @@
      <item>
       <widget class="QPushButton" name="offset2Button">
        <property name="toolTip">
-        <string>By clicking this button, you can set the attachment offset of the second marker (coordinate system) of the joint.</string>
+        <string>Sets the attachment offset of the second marker (coordinate system) of the joint</string>
        </property>
        <property name="text">
         <string></string>
@@ -190,7 +190,7 @@
       </sizepolicy>
      </property>
      <property name="toolTip">
-      <string>Reverse the direction of the joint.</string>
+      <string>Reverse the direction of the joint</string>
      </property>
      <property name="text">
       <string>Reverse</string>
