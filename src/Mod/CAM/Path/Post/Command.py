@@ -60,8 +60,7 @@ def _resolve_post_processor_name(job):
 
     if valid_name and PostProcessor.exists(valid_name):
         return valid_name
-    else:
-        raise ValueError(f"Post processor not identified.")
+    raise ValueError("Post processor not identified.")
 
 
 class DlgSelectPostProcessor:
@@ -108,16 +107,15 @@ class CommandPathPost:
             "Pixmap": "CAM_Post",
             "MenuText": QT_TRANSLATE_NOOP("CAM_Post", "Post Process"),
             "Accel": "P, P",
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_Post", "Post Processes the selected job"),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_Post", "Post Processes the selected Job"),
         }
 
     def IsActive(self):
-        selected = FreeCADGui.Selection.getSelectionEx()
-        if len(selected) != 1:
+        selected = FreeCADGui.Selection.getSelection()
+        if len(selected) == 0:
             return False
 
-        selected_object = selected[0].Object
-        self.candidate = PathUtils.findParentJob(selected_object)
+        self.candidate = PathUtils.findParentJob(selected[0])
 
         return self.candidate is not None
 
@@ -211,7 +209,9 @@ class CommandPathPost:
             return
 
         # get a postprocessor
-        postprocessor = PostProcessorFactory.get_post_processor(self.candidate, postprocessor_name)
+        postprocessor = PostProcessorFactory.get_post_processor(
+            self.candidate, postprocessor_name, None
+        )
 
         post_data = postprocessor.export()
         # None is returned if there was an error during argument processing
@@ -258,8 +258,103 @@ class CommandPathPost:
         FreeCAD.ActiveDocument.recompute()
 
 
+class CommandPathPostSelected(CommandPathPost):
+    def GetResources(self):
+        return {
+            "Pixmap": "CAM_PostSelected",
+            "MenuText": QT_TRANSLATE_NOOP("CAM_Post", "Post Process Selected"),
+            "Accel": "P, O",
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_Post", "Post Processes the selected operations"),
+        }
+
+    def IsActive(self):
+        selected = FreeCADGui.Selection.getSelection()
+        if len(selected) == 0:
+            return False
+
+        return all(hasattr(op, "Path") and not op.Name.startswith("Job") for op in selected)
+
+    def Activated(self):
+        """
+        Handles the activation of post processing, initiating the process based
+        on user selection and document context.
+        """
+        FreeCAD.ActiveDocument.openTransaction("Post Process the Selected operations")
+
+        selected = FreeCADGui.Selection.getSelection()
+        job = PathUtils.findParentJob(selected[0])
+        if (
+            not job
+            and hasattr(selected[0], "Base")
+            and isinstance(selected[0].Base, list)
+            and selected[0].Base
+        ):
+            # find 'job' for operation inside 'Array' with multi tool controller
+            baseOp = FreeCAD.ActiveDocument.getObject(selected[0].Base[0])
+            job = PathUtils.findParentJob(baseOp)
+
+        opCandidates = [op for op in selected if hasattr(op, "Path") and "Job" not in op.Name]
+        operations = []
+        if opCandidates and job.Operations.Group != opCandidates:
+            msgBox = QtGui.QMessageBox()
+            msgBox.setWindowTitle("Post Process")
+            msgBox.setText("<p align='center'>What needs to be exported?</p>")
+            msgBox.setInformativeText(
+                "<p align='center'>Check to make sure that you won't break anything by leaving out operations</p>"
+            )
+            msgBox.findChild(QtGui.QGridLayout).setColumnMinimumWidth(1, 250)
+            btn1 = msgBox.addButton("Only selected", QtGui.QMessageBox.ButtonRole.YesRole)
+            btn2 = msgBox.addButton("All", QtGui.QMessageBox.ButtonRole.NoRole)
+            msgBox.setDefaultButton(btn2)
+            msgBox.exec()
+
+            if msgBox.clickedButton() == btn1:
+                print(
+                    f"Post process only selected operations: {', '.join([op.Name for op in opCandidates])}"
+                )
+                operations = opCandidates
+
+        postprocessor_name = _resolve_post_processor_name(job)
+        Path.Log.debug(f"Post Processor: {postprocessor_name}")
+
+        if not postprocessor_name:
+            FreeCAD.ActiveDocument.abortTransaction()
+            return
+
+        # get a postprocessor
+        postprocessor = PostProcessorFactory.get_post_processor(job, postprocessor_name, operations)
+
+        post_data = postprocessor.export()
+        # None is returned if there was an error during argument processing
+        # otherwise the "usual" post_data data structure is returned.
+        if not post_data:
+            FreeCAD.ActiveDocument.abortTransaction()
+            return
+
+        policy = Path.Preferences.defaultOutputPolicy()
+        generator = FilenameGenerator(job=job)
+        generated_filename = generator.generate_filenames()
+
+        for item in post_data:
+            subpart, gcode = item
+
+            # get a name for the file
+            subpart = "" if subpart == "allitems" else subpart
+            Path.Log.debug(subpart)
+            generator.set_subpartname(subpart)
+            fname = next(generated_filename)
+
+            if gcode is not None:
+                # write the results to the file
+                self._write_file(fname, gcode, policy)
+
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
+
+
 if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand("CAM_Post", CommandPathPost())
+    FreeCADGui.addCommand("CAM_PostSelected", CommandPathPostSelected())
 
 FreeCAD.Console.PrintLog("Loading PathPost… done\n")
