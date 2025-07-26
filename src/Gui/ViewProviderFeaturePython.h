@@ -56,8 +56,8 @@ public:
 
     // Returns the icon
     QIcon getIcon() const;
-    // returns a vector of icon names to be used in the 4 positions.
-    std::vector<std::string> getOverlayIcons() const;
+    // returns a map of position -> icon name.
+    std::map<BitmapFactoryInst::Position, std::string> getOverlayIcons() const;
     bool claimChildren(std::vector<App::DocumentObject*>&) const;
     ValueT useNewSelectionModel() const;
     void onSelectionChanged(const SelectionChanges&);
@@ -232,28 +232,17 @@ public:
     {
         QIcon currentIcon = orig;
 
-        // Get the list of overlay names from the Python implementation
-        std::vector<std::string> overlayNames = imp->getOverlayIcons();
+        // Get the map of overlay names from the Python implementation
+        std::map<BitmapFactoryInst::Position, std::string> overlayMap = imp->getOverlayIcons();
 
-        if (!overlayNames.empty()) {
+        if (!overlayMap.empty()) {
             // Use the static instance of BitmapFactory to perform the merge
-            size_t i = 0;
-            for (const auto& name : overlayNames) {
-                if (name.empty()) {
-                    ++i;
-                    continue;
-                }
-                static const QSize overlayIconSize  { 10, 10 };
-                QPixmap overlayPixmap = Gui::BitmapFactory().pixmapFromSvg(name.c_str(), overlayIconSize);
+            for (const auto& [position, name] : overlayMap) {
+                QPixmap overlayPixmap =
+                    Gui::BitmapFactory().pixmapFromSvg(name.c_str(), QSize(10, 10));
                 if (!overlayPixmap.isNull()) {
                     currentIcon =
-                        Gui::BitmapFactoryInst::mergePixmap(currentIcon,
-                                                            overlayPixmap,
-                                                            static_cast<Gui::BitmapFactoryInst::Position>(i));
-                }
-                ++i;
-                if (i > 3) {
-                    break;
+                        Gui::BitmapFactoryInst::mergePixmap(currentIcon, overlayPixmap, position);
                 }
             }
         }
