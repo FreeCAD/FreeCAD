@@ -951,14 +951,19 @@ class ViewProviderJoint:
 
     def getOverlayIcons(self):
         """
-        Return a list of overlay icon names to be merged by the C++ framework.
+        Return a dictionary of overlay icons.
+        Keys are positions from Gui.IconPosition.
+        Values are the icon resource names.
         """
-        overlays = ["", ""]
+
+        overlays = {}
 
         assembly = self.app_obj.Proxy.getAssembly(self.app_obj)
-        part = UtilsAssembly.getMovingPart(assembly, self.app_obj.Reference1)
-        if part is not None and not assembly.isPartConnected(part):
-            overlays.append("Part_Detached")
+        # Assuming Reference1 corresponds to the first part link
+        if hasattr(self.app_obj, "Reference1"):
+            part = UtilsAssembly.getMovingPart(assembly, self.app_obj.Reference1)
+            if part is not None and not assembly.isPartConnected(part):
+                overlays[Gui.IconPosition.BottomLeft] = "Part_Detached"
 
         return overlays
 
