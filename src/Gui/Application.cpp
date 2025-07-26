@@ -551,6 +551,13 @@ Application::Application(bool GUIenabled)
             {"AxisCross", SoFCPlacementIndicatorKit::AxisCross},
         });
 
+        Base::PyRegisterEnum<Gui::BitmapFactoryInst::Position>(module, "IconPosition", {
+            {"TopLeft",     Gui::BitmapFactoryInst::TopLeft},
+            {"TopRight",    Gui::BitmapFactoryInst::TopRight},
+            {"BottomLeft",  Gui::BitmapFactoryInst::BottomLeft},
+            {"BottomRight", Gui::BitmapFactoryInst::BottomRight}
+        });
+
         CommandActionPy::init_type();
         Base::Interpreter().addType(CommandActionPy::type_object(), module, "CommandAction");
 
