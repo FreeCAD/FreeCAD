@@ -212,6 +212,32 @@ public:
 
 
 private:
+    // struct to hold all information needed for complexFind checks
+    struct ComplexFindData {
+        std::string originalName;
+        std::vector<std::pair<std::string, char>> unfilteredMajorSections;
+        std::vector<std::pair<std::string, char>> majorSections;
+        std::vector<std::pair<std::string, char>> looseSections;
+        std::vector<std::string> geometryOpCodes;
+        std::vector<std::string> geometryDefSections;
+        std::map<int, std::vector<std::string>> parenthesesMap;
+        std::vector<int> postfixNumbers;
+        std::vector<int> unfilteredPostfixNumbers;
+        bool isHashed = false;
+
+        void cleanup() {
+            originalName.clear();
+            majorSections.clear();
+            looseSections.clear();
+            geometryOpCodes.clear();
+            geometryDefSections.clear();
+            parenthesesMap.clear();
+        }
+    };
+
+    // Helper to populate ComplexFindData from a MappedName
+    ComplexFindData compileComplexFindData(const MappedName& name) const;
+
     /** Serialize this map
      * @param stream: serialized stream
      * @param childMapSet: where all child element maps are stored
@@ -221,6 +247,29 @@ private:
               int index,
               const std::map<const ElementMap*, int>& childMapSet,
               const std::map<QByteArray, int>& postfixMap) const;
+
+    /** Complex check methods. 
+     * All are meant to be private for right now.
+     */
+    IndexedName complexFind(
+              const MappedName& name) const;
+    
+    std::vector<std::pair<std::string, char>> splitNameIntoSections(
+              const std::string &name,
+              const bool &filterSections,
+              const bool &findSmallSections,
+              std::map<int, std::vector<std::string>> *parenMapPtr,
+              std::vector<int> *postfixNumbersPtr = nullptr,
+              std::vector<std::pair<std::string, char>> *outputVecPtr = nullptr) const;
+    
+    MappedName fullDehashElementName(const MappedName& name) const;
+    
+    std::vector<std::string> findGeometryOpCodes(
+              const std::vector<std::string> &name) const;
+    
+    double percentSimilarity(
+              const std::string& a, 
+              const std::string& b) const;
 
     /** Deserialize and restore this map.
      * @param hasherRef: where all the StringIDs are stored
