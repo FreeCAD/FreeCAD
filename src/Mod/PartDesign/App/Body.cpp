@@ -418,6 +418,7 @@ App::DocumentObjectExecReturn *Body::execute()
     }
 
     Shape.setValue ( tipShape );
+    // Shape.getShape().fix();
     return App::DocumentObject::StdReturn;
 
 }
