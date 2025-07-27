@@ -23,7 +23,7 @@
 import base64
 import os
 from string import Template
-from Path.Main.Sanity.Squawk import Squawk, SquawkType
+from Path.Main.Sanity.Squawk import Squawk
 import FreeCAD
 import Path.Log
 from Path.Main.Sanity.HTMLTemplate import (

@@ -29,7 +29,6 @@ to make sure tools are selected and configured and defaults have been revised
 """
 
 import os
-import tempfile
 from collections import Counter
 from datetime import datetime
 
@@ -37,7 +36,7 @@ import FreeCAD
 import Path
 import Path.Dressup.Utils as PathDressup
 import Path.Log as Log
-from Path.Main.Sanity.ImageBuilder import ImageBuilder, ImageBuilderFactory
+from Path.Main.Sanity import ImageBuilder
 from Path.Main.Sanity.ReportGenerator import ReportGenerator
 from Path.Main.Sanity.SanityRule import (
     JobNotPostProcessedRule,
@@ -56,7 +55,9 @@ import re
 
 translate = FreeCAD.Qt.translate
 
-if False:
+# Set the logging level and track the module
+is_debugging = False
+if is_debugging is False:
     Log.setLevel(Log.Level.DEBUG, Log.thisModule())
     Log.trackModule(Log.thisModule())
 else:
@@ -83,7 +84,9 @@ class CAMSanity:
                 )
             )
         if generate_images:
-            self.image_builder = ImageBuilderFactory.get_image_builder(self.filelocation)
+            self.image_builder = ImageBuilder.ImageBuilderFactory.get_image_builder(
+                self.filelocation
+            )
         self.data = self.summarize()
 
     def summarize(self):

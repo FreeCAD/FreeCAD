@@ -1,6 +1,5 @@
-import os
 from datetime import datetime
-from enum import Enum, auto
+from enum import Enum
 
 import FreeCAD
 
