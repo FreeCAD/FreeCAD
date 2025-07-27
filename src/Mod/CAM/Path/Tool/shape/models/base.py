@@ -41,6 +41,13 @@ from ..doc import (
 from .icon import ToolBitShapeIcon
 
 
+if False:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
+
 class ToolBitShape(Asset):
     """Abstract base class for tool bit shapes."""
 
@@ -74,6 +81,9 @@ class ToolBitShape(Asset):
 
         # Stores default parameter values loaded from the FCStd file
         self._defaults: Dict[str, Any] = {}
+
+        # Stores the FreeCAD property types for each parameter
+        self._param_types: Dict[str, str] = {}
 
         # Keeps the loaded FreeCAD document content for this instance
         self._data: Optional[bytes] = None
@@ -123,15 +133,15 @@ class ToolBitShape(Asset):
         shape_classes = {c.name: c for c in ToolBitShape.__subclasses__()}
         shape_class = shape_classes.get(body_obj.Label)
         if not shape_class:
-            return ToolBitShape.get_subclass_by_id("Custom")
+            return ToolBitShape.get_subclass_by_name("Custom")
         return shape_class
 
     @classmethod
     def get_shape_class_from_id(
         cls,
         shape_id: str,
-        shape_type: str | None = None,
-        default: Type["ToolBitShape"] | None = None,
+        shape_type: Optional[str] = None,
+        default: Optional[Type["ToolBitShape"]] = None,
     ) -> Optional[Type["ToolBitShape"]]:
         """
         Extracts the shape class from the given ID and shape_type, retrieving it
@@ -218,7 +228,7 @@ class ToolBitShape(Asset):
 
             # Find the correct subclass based on the body label
             shape_class = cls.get_subclass_by_name(body_label)
-            return shape_class or ToolBitShape.get_subclass_by_id("Custom")
+            return shape_class or ToolBitShape.get_subclass_by_name("Custom")
 
         except zipfile.BadZipFile:
             raise ValueError("Invalid FCStd file data (not a valid zip archive)")
@@ -321,6 +331,7 @@ class ToolBitShape(Asset):
             Exception: For other potential FreeCAD errors during loading.
         """
         assert serializer == DummyAssetSerializer, "ToolBitShape supports only native import"
+        Path.Log.debug(f"{id}: ToolBitShape.from_bytes called with {len(data)} bytes")
 
         # Open the shape data temporarily to get the Body label and parameters
         with ShapeDocFromBytes(data) as temp_doc:
@@ -335,12 +346,25 @@ class ToolBitShape(Asset):
             except Exception as e:
                 Path.Log.debug(f"{id}: Failed to determine shape class from bytes: {e}")
                 shape_class = ToolBitShape.get_shape_class_from_id("Custom")
+            if shape_class is None:
+                # This should ideally not happen due to get_shape_class_from_bytes fallback
+                # but added for linter satisfaction.
+                raise ValueError("Shape class could not be determined.")
 
             # Load properties from the temporary document
             props_obj = ToolBitShape._find_property_object(temp_doc)
             if not props_obj:
                 raise ValueError("No 'Attributes' PropertyBag object found in document bytes")
-            loaded_params = get_object_properties(props_obj, group="Shape")
+
+            # loaded_raw_params will now be Dict[str, Tuple[Any, str]]
+            loaded_raw_params = get_object_properties(props_obj, exclude_groups=["", "Base"])
+
+            # Separate values and types, and populate _param_types
+            loaded_params = {}
+            loaded_param_types = {}
+            for name, (value, type_id) in loaded_raw_params.items():
+                loaded_params[name] = value
+                loaded_param_types[name] = type_id
 
             # For now, we log missing parameters, but do not raise an error.
             # This allows for more flexible shape files that may not have all
@@ -360,13 +384,16 @@ class ToolBitShape(Asset):
                     f" In future releases, these shapes will not load!"
                 )
                 for param in missing_params:
-                    param_type = shape_class.get_parameter_property_type(param)
+                    param_type = shape_class.get_schema_property_type(param)
                     loaded_params[param] = get_unset_value_for(param_type)
+                    loaded_param_types[param] = param_type  # Store the type for missing params
 
             # Instantiate the specific subclass with the provided ID
             instance = shape_class(id=id)
             instance._data = data  # Keep the byte content
             instance._defaults = loaded_params
+            instance._param_types = loaded_param_types
+            Path.Log.debug(f"Params: {instance._params} {instance._defaults}")
             instance._params = instance._defaults | instance._params
 
             if dependencies:  # dependencies is None = shallow load
@@ -442,6 +469,7 @@ class ToolBitShape(Asset):
         """
         if not filepath.exists():
             raise FileNotFoundError(f"Shape file not found: {filepath}")
+        Path.Log.debug(f"{id}: ToolBitShape.from_file called with {filepath}")
 
         try:
             data = filepath.read_bytes()
@@ -461,7 +489,7 @@ class ToolBitShape(Asset):
 
     @classmethod
     def get_subclass_by_name(
-        cls, name: str, default: Type["ToolBitShape"] | None = None
+        cls, name: str, default: Optional[Type["ToolBitShape"]] = None
     ) -> Optional[Type["ToolBitShape"]]:
         """
         Retrieves a ToolBitShape class by its name or alias.
@@ -478,7 +506,7 @@ class ToolBitShape(Asset):
 
     @classmethod
     def guess_subclass_from_name(
-        cls, name: str, default: Type["ToolBitShape"] | None = None
+        cls, name: str, default: Optional[Type["ToolBitShape"]] = None
     ) -> Optional[Type["ToolBitShape"]]:
         """
         Retrieves a ToolBitShape class by its name or alias.
@@ -495,7 +523,7 @@ class ToolBitShape(Asset):
     @classmethod
     def resolve_name(cls, identifier: str) -> AssetUri:
         """
-        Resolves an identifier (alias, name, filename, or URI) to a Uri object.
+        Resolves an identifier (name, filename, or URI) to a Uri object.
         """
         # 1. If the input is a url string, return the AssetUri for it.
         if AssetUri.is_uri(identifier):
@@ -507,13 +535,7 @@ class ToolBitShape(Asset):
         if pathlib.Path(identifier).suffix.lower() == ".fcstd":
             asset_name = os.path.splitext(os.path.basename(identifier))[0]
 
-        # 3. Use get_subclass_by_name to try to resolve alias to a class.
-        #    if one is found, use the class.name.
-        shape_class = cls.get_subclass_by_name(asset_name.lower())
-        if shape_class:
-            asset_name = shape_class.name.lower()
-
-        # 4. Construct the Uri using AssetUri.build() and return it
+        # 3. Construct the Uri using AssetUri.build() and return it
         return AssetUri.build(
             asset_type="toolbitshape",
             asset_id=asset_name,
@@ -550,11 +572,52 @@ class ToolBitShape(Asset):
         return entry[0] if entry else str_param_name
 
     @classmethod
-    def get_parameter_property_type(cls, param_name: str) -> str:
+    def get_schema_property_type(cls, param_name: str) -> str:
         """
         Get the FreeCAD property type string for a given parameter name.
         """
         return cls.schema()[param_name][1]
+
+    def get_parameter_property_type(
+        self, param_name: str, default: str = "App::PropertyString"
+    ) -> str:
+        """
+        Get the FreeCAD property type string for a given parameter name.
+        """
+        try:
+            return self.get_schema_property_type(param_name)
+        except KeyError:
+            try:
+                return self._param_types[param_name]
+            except KeyError:
+                return default
+
+    def _normalize_value(self, name: str, value: Any) -> Any:
+        """
+        Normalize the value for a parameter based on its expected type.
+        This is a placeholder for any type-specific normalization logic.
+
+        Args:
+            name (str): The name of the parameter.
+            value: The value to normalize.
+
+        Returns:
+            The normalized value, potentially converted to a FreeCAD.Units.Quantity.
+        """
+        prop_type = self.get_parameter_property_type(name)
+        if prop_type in ("App::PropertyDistance", "App::PropertyLength", "App::PropertyAngle"):
+            return FreeCAD.Units.Quantity(value)
+        elif prop_type == "App::PropertyInteger":
+            return int(value)
+        elif prop_type == "App::PropertyFloat":
+            return float(value)
+        elif prop_type == "App::PropertyBool":
+            if value in ("True", "true", "1"):
+                return True
+            elif value in ("False", "false", "0"):
+                return False
+            return bool(value)
+        return str(value)
 
     def get_parameters(self) -> Dict[str, Any]:
         """
@@ -563,7 +626,7 @@ class ToolBitShape(Asset):
         Returns:
             dict: A dictionary mapping parameter names to their values.
         """
-        return self._params
+        return {name: self._normalize_value(name, value) for name, value in self._params.items()}
 
     def get_parameter(self, name: str) -> Any:
         """
@@ -580,7 +643,7 @@ class ToolBitShape(Asset):
         """
         if name not in self.schema():
             raise KeyError(f"Shape '{self.name}' has no parameter '{name}'")
-        return self._params[name]
+        return self._normalize_value(name, self._params[name])
 
     def set_parameter(self, name: str, value: Any):
         """
@@ -594,18 +657,7 @@ class ToolBitShape(Asset):
         Raises:
             KeyError: If the parameter name is not valid for this shape.
         """
-        if name not in self.schema().keys():
-            Path.Log.debug(
-                f"Shape '{self.name}' was given an invalid parameter '{name}'. Has {self._params}\n"
-            )
-            # Log to confirm this path is taken when an invalid parameter is given
-            Path.Log.debug(
-                f"Invalid parameter '{name}' for shape "
-                f"'{self.name}', returning without raising KeyError."
-            )
-            return
-
-        self._params[name] = value
+        self._params[name] = self._normalize_value(name, value)
 
     def set_parameters(self, **kwargs):
         """
@@ -664,6 +716,13 @@ class ToolBitShape(Asset):
         Retrieves the thumbnail data for the tool bit shape in PNG format.
         """
 
+    def get_parameter_type(self, name: str) -> str:
+        """
+        Get the FreeCAD property type string for a given parameter name,
+        as loaded from the FCStd file.
+        """
+        return self._param_types.get(name, "App::PropertyString")
+
     def get_icon(self) -> Optional[ToolBitShapeIcon]:
         """
         Get the associated ToolBitShapeIcon instance. Tries to load one from
@@ -676,18 +735,16 @@ class ToolBitShape(Asset):
             return self.icon
 
         # Try to get a matching SVG from the asset manager.
-        self.icon = cam_assets.get_or_none(f"toolbitshapesvg://{self.id}.svg")
-        if self.icon:
-            return self.icon
-        self.icon = cam_assets.get_or_none(f"toolbitshapesvg://{self.name.lower()}.svg")
+        self.icon = cast(
+            ToolBitShapeIcon, cam_assets.get_or_none(f"toolbitshapesvg://{self.id}.svg")
+        )
         if self.icon:
             return self.icon
 
         # Try to get a matching PNG from the asset manager.
-        self.icon = cam_assets.get_or_none(f"toolbitshapepng://{self.id}.png")
-        if self.icon:
-            return self.icon
-        self.icon = cam_assets.get_or_none(f"toolbitshapepng://{self.name.lower()}.png")
+        self.icon = cast(
+            ToolBitShapeIcon, cam_assets.get_or_none(f"toolbitshapepng://{self.id}.png")
+        )
         if self.icon:
             return self.icon
         return None
