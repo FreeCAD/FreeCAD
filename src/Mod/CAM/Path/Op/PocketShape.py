@@ -203,7 +203,11 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         """
         face = bs.Shape.getElement(sub)
 
-        if type(face.Surface) == Part.Plane:
+        if isinstance(face.Surface, Part.BSplineSurface):
+            self.horiz.append(face)
+            return True
+
+        elif isinstance(face.Surface, Part.Plane):
             Path.Log.debug("type() == Part.Plane")
             if Path.Geom.isVertical(face.Surface.Axis):
                 Path.Log.debug("  -isVertical()")
@@ -219,7 +223,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             else:
                 return False
 
-        elif type(face.Surface) == Part.Cylinder and Path.Geom.isVertical(face.Surface.Axis):
+        elif isinstance(face.Surface, Part.Cylinder) and Path.Geom.isVertical(face.Surface.Axis):
             Path.Log.debug("type() == Part.Cylinder")
             # vertical cylinder wall
             if any(e.isClosed() for e in face.Edges):
@@ -237,7 +241,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 self.vert.append(face)
                 return True
 
-        elif type(face.Surface) == Part.SurfaceOfExtrusion:
+        elif isinstance(face.Surface, Part.SurfaceOfExtrusion):
             # extrusion wall
             Path.Log.debug("type() == Part.SurfaceOfExtrusion")
             # Save face to self.horiz for processing or display error
