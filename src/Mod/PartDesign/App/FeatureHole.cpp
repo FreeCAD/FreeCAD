@@ -60,6 +60,7 @@
 #include <Mod/Part/App/FaceMakerCheese.h>
 #include <Mod/Part/App/TopoShapeMapper.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
+#include <Mod/Part/App/Tools.h>
 
 #include "FeatureHole.h"
 #include "json.hpp"
@@ -2267,12 +2268,12 @@ Base::Vector3d Hole::guessNormalDirection(const TopoShape& profileshape) const
         BRepAdaptor_Surface sf(TopoDS::Face(profileshape.getSubShape(TopAbs_FACE, 1)));
 
         if (sf.GetType() != GeomAbs_Cylinder) {
-            throw(Base::Exception("Cannot create hole from non cylindrical face"));
+            throw Base::Exception("Cannot create hole from non cylindrical face");
         }
 
-        gp_Dir dir = sf.Cylinder().Axis().Direction();
-        return Base::Vector3d(dir.X(), dir.Y(), dir.Z());
+        return Base::convertTo<Base::Vector3d>(sf.Cylinder().Axis().Direction());
     }
+
     return getProfileNormal();
 }
 TopoShape Hole::findHoles(std::vector<TopoShape> &holes,
