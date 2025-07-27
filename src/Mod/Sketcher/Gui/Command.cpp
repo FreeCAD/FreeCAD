@@ -1673,9 +1673,9 @@ void RenderingOrderAction::updateWidget()
 
         newItem = new QListWidgetItem;
         newItem->setData(Qt::UserRole, QVariant(midid));
-        newItem->setText(midid == 1       ? tr("Normal Geometry")
-                                : midid == 2 ? tr("Construction Geometry")
-                                            : tr("External Geometry"));
+        newItem->setText(midid == 1       ? tr("Normal geometry")
+                                : midid == 2 ? tr("Construction geometry")
+                                            : tr("External geometry"));
         list->insertItem(1, newItem);
 
         newItem = new QListWidgetItem;
