@@ -70,16 +70,16 @@ void PropertyPartShape::setValue(const TopoShape& sh)
 
     auto obj = freecad_cast<App::DocumentObject*>(getContainer());
     if(obj) {
-        auto hasher = _Shape.Hasher?_Shape.Hasher : obj->getDocument()->getStringHasher();
-
         if(_Shape.getElementMap().size() != sh.getElementMap().size()) {
-            TopoShape res(obj->getID(), hasher, _Shape.getShape());
+            TopoShape res(obj->getID(), sh.Hasher, _Shape.getShape());
             res.mapSubElement(_Shape);
             _Shape = res;
         }
 
         auto tag = obj->getID();
         if(_Shape.Tag && tag!=_Shape.Tag) {
+            auto hasher = _Shape.Hasher ? _Shape.Hasher : obj->getDocument()->getStringHasher();
+
             _Shape.reTagElementMap(tag,hasher);
         } else 
             _Shape.Tag = obj->getID();
