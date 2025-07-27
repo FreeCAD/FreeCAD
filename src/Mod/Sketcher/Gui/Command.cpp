@@ -1177,7 +1177,7 @@ void GridSpaceAction::languageChange()
     gridShow->setStatusTip(gridAutoSpacing->toolTip());
 
     gridAutoSpacing->setText(tr("Grid auto spacing"));
-    gridAutoSpacing->setToolTip(tr("Resize grid automatically depending on zoom."));
+    gridAutoSpacing->setToolTip(tr("Automatically adjusts the grid spacing based on the zoom level"));
     gridAutoSpacing->setStatusTip(gridAutoSpacing->toolTip());
 
     sizeLabel->setText(tr("Spacing"));
