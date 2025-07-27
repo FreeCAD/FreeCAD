@@ -27,6 +27,8 @@
 #include <QWidgetAction>
 #include <QCoreApplication>
 
+#include <Base/Parameter.h>
+
 class QCheckBox;
 class QLabel;
 class QWidget;
