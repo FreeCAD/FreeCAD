@@ -573,6 +573,9 @@ class Joint:
         for obj in joint.InList:
             if obj.isDerivedFrom("Assembly::AssemblyObject"):
                 return obj
+            elif obj.isDerivedFrom("Assembly::AssemblyLink"):
+                return self.getAssembly(obj)
+
         return None
 
     def setJointType(self, joint, newType):
@@ -624,6 +627,8 @@ class Joint:
         if (
             hasattr(joint, "Reference1")
             and joint.Reference1 is not None
+            and len(joint.Reference1) == 2
+            and len(joint.Reference1[1]) != 0
             and (joint.Reference1[1][0].find("?") != -1)
         ):
             raise Exception(errStr + "Reference1")
@@ -631,6 +636,8 @@ class Joint:
         if (
             hasattr(joint, "Reference2")
             and joint.Reference2 is not None
+            and len(joint.Reference2) == 2
+            and len(joint.Reference2[1]) != 0
             and (joint.Reference2[1][0].find("?") != -1)
         ):
             raise Exception(errStr + "Reference2")
@@ -941,6 +948,24 @@ class ViewProviderJoint:
             return ":/icons/Assembly_CreateJointPulleys.svg"
 
         return ":/icons/Assembly_CreateJoint.svg"
+
+    def getOverlayIcons(self):
+        """
+        Return a dictionary of overlay icons.
+        Keys are positions from Gui.IconPosition.
+        Values are the icon resource names.
+        """
+
+        overlays = {}
+
+        assembly = self.app_obj.Proxy.getAssembly(self.app_obj)
+        # Assuming Reference1 corresponds to the first part link
+        if hasattr(self.app_obj, "Reference1"):
+            part = UtilsAssembly.getMovingPart(assembly, self.app_obj.Reference1)
+            if part is not None and not assembly.isPartConnected(part):
+                overlays[Gui.IconPosition.BottomLeft] = "Part_Detached"
+
+        return overlays
 
     def dumps(self):
         """When saving the document this object gets stored using Python's json module.\

@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Enable</string>
+      <string>Viewport selection behavior</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="4" column="1">
@@ -25,7 +25,7 @@
         <property name="text">
          <string/>
         </property>
-        <property name="color" stdset="0">
+        <property name="color">
          <color>
           <red>28</red>
           <green>173</green>
@@ -59,12 +59,75 @@
         </property>
        </widget>
       </item>
+      <item row="7" column="0" colspan="2">
+       <layout class="QHBoxLayout" name="horizontalLayout_1">
+        <item>
+         <widget class="QLabel" name="spinPickRadiusLabel">
+          <property name="text">
+           <string>Radius:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizSpacer_1">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>250</width>
+            <height>10</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="Gui::PrefDoubleSpinBox" name="spinPickRadius">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+      </string>
+          </property>
+          <property name="inputMethodHints">
+           <set>Qt::InputMethodHint::ImhPreferNumbers</set>
+          </property>
+          <property name="suffix">
+           <string notr="true"> px</string>
+          </property>
+          <property name="decimals">
+           <number>1</number>
+          </property>
+          <property name="minimum">
+           <double>0.500000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>200.000000000000000</double>
+          </property>
+          <property name="value">
+           <double>5.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>PickRadius</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
       <item row="3" column="1">
        <widget class="Gui::PrefColorButton" name="HighlightColor">
         <property name="text">
          <string/>
         </property>
-        <property name="color" stdset="0">
+        <property name="color">
          <color>
           <red>225</red>
           <green>225</green>
@@ -104,77 +167,18 @@
         </property>
        </widget>
       </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="title">
-      <string>Picking</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_1">
-        <item>
-         <widget class="QLabel" name="spinPickRadiusLabel">
-          <property name="text">
-           <string>Radius:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizSpacer_1">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>250</width>
-            <height>10</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="Gui::PrefDoubleSpinBox" name="spinPickRadius">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
-      </string>
-          </property>
-          <property name="inputMethodHints">
-           <set>Qt::ImhPreferNumbers</set>
-          </property>
-          <property name="suffix">
-           <string notr="true"> px</string>
-          </property>
-          <property name="decimals">
-           <number>1</number>
-          </property>
-          <property name="minimum">
-           <double>0.500000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>200.000000000000000</double>
-          </property>
-          <property name="value">
-           <double>5.000000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>PickRadius</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+      <item row="8" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxPreselect">
+        <property name="text">
+         <string>Preselect the object in 3D view when hovering the cursor over the tree item</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>PreSelection</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>TreeView</cstring>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -182,7 +186,7 @@ Larger value eases to pick things, but can make small features impossible to sel
    <item>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
-      <string>Auto</string>
+      <string>Tree selection behavior</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -205,28 +209,6 @@ Larger value eases to pick things, but can make small features impossible to sel
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>SyncSelection</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>TreeView</cstring>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox_4">
-     <property name="title">
-      <string>Misc.</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <item>
-       <widget class="Gui::PrefCheckBox" name="checkBoxPreselect">
-        <property name="text">
-         <string>Preselect the object in 3D view when hovering the cursor over the tree item</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>PreSelection</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>TreeView</cstring>
@@ -265,7 +247,7 @@ Larger value eases to pick things, but can make small features impossible to sel
    <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
@@ -284,6 +266,11 @@ Larger value eases to pick things, but can make small features impossible to sel
    <header>Gui/Widgets.h</header>
   </customwidget>
   <customwidget>
+   <class>Gui::PrefColorButton</class>
+   <extends>Gui::ColorButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
@@ -291,11 +278,6 @@ Larger value eases to pick things, but can make small features impossible to sel
   <customwidget>
    <class>Gui::PrefDoubleSpinBox</class>
    <extends>QDoubleSpinBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefColorButton</class>
-   <extends>Gui::ColorButton</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

@@ -58,6 +58,7 @@ class _Frame(ArchComponent.Component):
 
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
+        self.Type = "Frame"
         self.setProperties(obj)
         obj.IfcType = "Railing"
 
@@ -82,12 +83,15 @@ class _Frame(ArchComponent.Component):
             obj.Edges = ["All edges","Vertical edges","Horizontal edges","Bottom horizontal edges","Top horizontal edges"]
         if not "Fuse" in pl:
             obj.addProperty("App::PropertyBool","Fuse","Frame",QT_TRANSLATE_NOOP("App::Property","If true, geometry is fused, otherwise a compound"), locked=True)
-        self.Type = "Frame"
 
     def onDocumentRestored(self,obj):
 
         ArchComponent.Component.onDocumentRestored(self,obj)
         self.setProperties(obj)
+
+    def loads(self,state):
+
+        self.Type = "Frame"
 
     def execute(self,obj):
 

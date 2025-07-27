@@ -378,9 +378,6 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
         addedObject = self.assembly.newObject(objType, selectedPart.Label)
 
-        if selectedPart.isDerivedFrom("Assembly::AssemblyObject"):
-            addedObject.Rigid = self.form.CheckBox_RigidSubAsm.isChecked()
-
         # set placement of the added object to the center of the screen.
         view = Gui.activeView()
         x, y = view.getSize()
@@ -420,6 +417,11 @@ class TaskAssemblyInsertLink(QtCore.QObject):
             addedObject.Placement.Base = screenCenter - bboxCenter + self.totalTranslation
 
         self.prevScreenCenter = screenCenter
+
+        # We turn it flexible after changing the position so that it uses the logic in
+        # AssemblyLink::onChanged to handle positioning correctly.
+        if selectedPart.isDerivedFrom("Assembly::AssemblyObject"):
+            addedObject.Rigid = self.form.CheckBox_RigidSubAsm.isChecked()
 
         # highlight the link
         Gui.Selection.clearSelection()
@@ -548,7 +550,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
                         self.decrement_counter(item)
                         del self.insertionStack[i]
-                        self.form.partList.setItemSelected(item, False)
+                        item.setSelected(False)
 
                         return True
             else:

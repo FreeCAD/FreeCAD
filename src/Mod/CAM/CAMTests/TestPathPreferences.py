@@ -52,8 +52,8 @@ class TestPathPreferences(PathTestUtils.PathTestBase):
         """Default paths for tools are resolved correctly"""
 
         self.assertEqual(
-            Path.Preferences.getDefaultAssetPath().parts[-2:],
-            ("CAM", "Tools"),
+            Path.Preferences.getDefaultAssetPath().parts[-1],
+            "CamAssets",
             str(Path.Preferences.getDefaultAssetPath()),
         )
         self.assertEqual(

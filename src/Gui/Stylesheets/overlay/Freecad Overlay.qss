@@ -1,0 +1,174 @@
+QFrame {
+  border: none;
+}
+
+Gui--DockWnd--ReportOutput,
+Gui--TaskView--TaskView QScrollArea {
+  border: none;
+ }
+
+QTabWidget::pane{
+  background-color: transparent;
+  border: transparent;
+}
+QAbstractItemView {
+  alternate-background-color: @PrimaryColor;
+  color: @TextForegroundColor;
+  border: 1px solid @GeneralBorderColor
+;
+}
+
+Gui--OverlayTitleBar,
+Gui--OverlaySplitterHandle {
+  background-color: @PrimaryColor;
+ }
+
+
+/* Overwrites Properties panel to use white text. */
+ Gui--TreePanel QTreeView {
+  background-color: @PrimaryColor;
+  border: 0px solid   @TextForegroundColor;
+  color: @TextForegroundColor;
+  gridline-color: @GeneralGridLinesColor;
+  border-radius: 0px;
+}
+
+ Gui--TreePanel QTreeView::item {
+  color: @TextForegroundColor;
+}
+
+ Gui--TreePanel QTreeView:disabled  {
+  color: @TextDisabledColor;
+}
+
+Gui--PropertyEditor--PropertyEditor {
+  qproperty-itemBackground: @TextEditFieldBackgroundColor;
+}
+
+Gui--OverlayTabWidget[transparent="false"]  Gui--TreePanel QTreeView::item {
+  color: @TextForegroundColor;
+}
+
+Gui--OverlayTabWidget[transparent="true"] Gui--TreePanel QTreeView::item {
+  color: @TextForegroundColor;
+}
+
+Gui--OverlayTabWidget[transparent="true"] Gui--TreePanel QTreeView::item:disabled {
+  color: @TextDisabledColor;
+}
+
+Gui--OverlayTabWidget {
+  qproperty-effectColor: @3DViewBackgroundRefColor;
+  qproperty-effectBlurRadius: 0;
+  qproperty-effectOffsetX: 0;
+  qproperty-effectOffsetY: 0;
+  qproperty-effectWidth: 1;
+  qproperty-effectHeight: 1;
+  qproperty-enableEffect: 1;
+}
+
+ Gui--OverlayTabWidget#OverlayBottom {
+  qproperty-effectColor: @3DViewBackgroundRefColor;
+  qproperty-effectBlurRadius: 0;
+  qproperty-effectOffsetX: 0.0;
+  qproperty-effectOffsetY: 0.0;
+  qproperty-effectWidth: 1;
+  qproperty-effectHeight: 1;
+  qproperty-enableEffect: 1;
+}
+
+Gui--OverlayTabWidget::pane {
+  background-color: transparent;
+  border: transparent;
+}
+
+QSint--ActionGroup QFrame[class="content"] {
+  border-bottom: 1px solid @GeneralBorderColor;
+  border-left: 1px solid @GeneralBorderColor;
+  border-right: 1px solid @GeneralBorderColor;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+QSint--ActionGroup QFrame[class="header"] {
+  border: 1px solid @GeneralBorderColor;
+  /* border-bottom: 0px solid @GeneralBorderColor; */
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+Gui--OverlayTabWidget::tab-bar:top,
+Gui--OverlayTabWidget::tab-bar:bottom {
+    left: 10px;
+    alignment: left;
+}
+
+Gui--OverlayTabWidget::tab-bar:left,
+Gui--OverlayTabWidget::tab-bar:right {
+    top: 10px;
+    alignment: top;
+}
+
+Gui--OverlayProxyWidget {
+  qproperty-hintColor: rgba(250, 250, 250, 0.6);
+  background-color: red;
+}
+
+Gui--OverlayToolButton {
+  border: 0.5px solid transparent;
+  border-radius: 1px;
+}
+
+Gui--OverlayToolButton:hover {
+  border: 0.5px solid @GeneralBorderColor;
+  background-color: @3DViewBackgroundRefColor;
+  border-radius: 1px;
+}
+
+Gui--OverlayToolButton::pressed,
+Gui--OverlayToolButton:checked {
+  border: 0.5px solid @GeneralBorderColor;
+  border-radius: 1px;
+  background-color: @UserHighlight1Color;
+}
+
+Gui--OverlayToolButton:checked:hover {
+  border: 0.5px solid @UserHighlight1Color;
+  background-color:  @3DViewBackgroundRefColor
+}
+
+Gui--OverlayToolButton{
+  image: url(qss:@IconsLocationFolderName/close-lightgray.svg);
+}
+
+Gui--OverlayToolButton:hover {
+  image: url(qss:@IconsLocationFolderName/close-red.svg);
+}
+
+Gui--OverlayToolButton[objectName="OBTN Transparent"] {
+  image: url(qss:@IconsLocationFolderName/transparent-lightgray.svg);
+  }
+
+Gui--OverlayToolButton[objectName="OBTN Transparent"]:hover {
+  image: url(qss:@IconsLocationFolderName/transparent-@StylesheetIconsColor.svg);
+}
+
+Gui--OverlayToolButton[objectName="OBTN Overlay"] {
+  image: url(qss:@IconsLocationFolderName/overlay-lightgray.svg);
+}
+
+Gui--OverlayToolButton[objectName="OBTN Overlay"]:hover {
+  image: url(qss:@IconsLocationFolderName/overlay-@StylesheetIconsColor.svg);
+}
+
+Gui--OverlayToolButton[objectName="OBTN AutoMode"] {
+  image: url(qss:@IconsLocationFolderName/mode-lightgray.svg);
+}
+
+Gui--OverlayToolButton[objectName="OBTN AutoMode"]:hover {
+  image: url(qss:@IconsLocationFolderName/mode-@StylesheetIconsColor.svg);
+}

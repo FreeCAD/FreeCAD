@@ -51,11 +51,13 @@
 #endif
 
 #include <Base/Quantity.h>
+#include <Base/Converter.h>
 
 #include "SoTransformDragger.h"
 #include "SoLinearDragger.h"
 #include "SoPlanarDragger.h"
 #include "SoRotationDragger.h"
+#include "Utilities.h"
 
 #include <SoTextLabel.h>
 
@@ -92,9 +94,9 @@ SO_KIT_SOURCE(SoTransformDragger)
 
 void SoTransformDragger::initClass()
 {
-    SoLinearDragger::initClass();
+    SoLinearDraggerContainer::initClass();
     SoPlanarDragger::initClass();
-    SoRotationDragger::initClass();
+    SoRotationDraggerContainer::initClass();
     SO_KIT_INIT_CLASS(SoTransformDragger, SoDragger, "Dragger");
 }
 
@@ -110,27 +112,11 @@ SoTransformDragger::SoTransformDragger()
     SO_KIT_ADD_CATALOG_ENTRY(annotation, So3DAnnotation, TRUE, geomSeparator, "", TRUE);
     SO_KIT_ADD_CATALOG_ENTRY(scaleNode, SoScale, TRUE, annotation, "", TRUE);
     SO_KIT_ADD_CATALOG_ENTRY(pickStyle, SoPickStyle, TRUE, annotation, "", TRUE);
+
     // Translator
-
-    SO_KIT_ADD_CATALOG_ENTRY(xTranslatorSwitch, SoSwitch, TRUE, annotation, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(yTranslatorSwitch, SoSwitch, TRUE, annotation, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(zTranslatorSwitch, SoSwitch, TRUE, annotation, "", TRUE);
-
-    SO_KIT_ADD_CATALOG_ENTRY(xTranslatorSeparator, SoSeparator, TRUE, xTranslatorSwitch, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(yTranslatorSeparator, SoSeparator, TRUE, yTranslatorSwitch, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(zTranslatorSeparator, SoSeparator, TRUE, zTranslatorSwitch, "", TRUE);
-
-    SO_KIT_ADD_CATALOG_ENTRY(xTranslatorColor, SoBaseColor, TRUE, xTranslatorSeparator, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(yTranslatorColor, SoBaseColor, TRUE, yTranslatorSeparator, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(zTranslatorColor, SoBaseColor, TRUE, zTranslatorSeparator, "", TRUE);
-
-    SO_KIT_ADD_CATALOG_ENTRY(xTranslatorRotation, SoRotation, TRUE, xTranslatorSeparator, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(yTranslatorRotation, SoRotation, TRUE, yTranslatorSeparator, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(zTranslatorRotation, SoRotation, TRUE, zTranslatorSeparator, "", TRUE);
-
-    SO_KIT_ADD_CATALOG_ENTRY(xTranslatorDragger, SoLinearDragger, TRUE, xTranslatorSeparator, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(yTranslatorDragger, SoLinearDragger, TRUE, yTranslatorSeparator, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(zTranslatorDragger, SoLinearDragger, TRUE, zTranslatorSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(xTranslatorDragger, SoLinearDraggerContainer, TRUE, annotation, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(yTranslatorDragger, SoLinearDraggerContainer, TRUE, annotation, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(zTranslatorDragger, SoLinearDraggerContainer, TRUE, annotation, "", TRUE);
 
     // Planar Translator
 
@@ -215,26 +201,9 @@ SoTransformDragger::SoTransformDragger()
                              TRUE);
 
     // Rotator
-
-    SO_KIT_ADD_CATALOG_ENTRY(xRotatorSwitch, SoSwitch, TRUE, annotation, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(yRotatorSwitch, SoSwitch, TRUE, annotation, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(zRotatorSwitch, SoSwitch, TRUE, annotation, "", TRUE);
-
-    SO_KIT_ADD_CATALOG_ENTRY(xRotatorSeparator, SoSeparator, TRUE, xRotatorSwitch, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(yRotatorSeparator, SoSeparator, TRUE, yRotatorSwitch, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(zRotatorSeparator, SoSeparator, TRUE, zRotatorSwitch, "", TRUE);
-
-    SO_KIT_ADD_CATALOG_ENTRY(xRotatorColor, SoBaseColor, TRUE, xRotatorSeparator, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(yRotatorColor, SoBaseColor, TRUE, yRotatorSeparator, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(zRotatorColor, SoBaseColor, TRUE, zRotatorSeparator, "", TRUE);
-
-    SO_KIT_ADD_CATALOG_ENTRY(xRotatorRotation, SoRotation, TRUE, xRotatorSeparator, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(yRotatorRotation, SoRotation, TRUE, yRotatorSeparator, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(zRotatorRotation, SoRotation, TRUE, zRotatorSeparator, "", TRUE);
-
-    SO_KIT_ADD_CATALOG_ENTRY(xRotatorDragger, SoRotationDragger, TRUE, xRotatorSeparator, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(yRotatorDragger, SoRotationDragger, TRUE, yRotatorSeparator, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(zRotatorDragger, SoRotationDragger, TRUE, zRotatorSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(xRotatorDragger, SoRotationDraggerContainer, TRUE, annotation, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(yRotatorDragger, SoRotationDraggerContainer, TRUE, annotation, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(zRotatorDragger, SoRotationDraggerContainer, TRUE, annotation, "", TRUE);
 
     // Other
     SO_KIT_ADD_FIELD(translation, (0.0, 0.0, 0.0));
@@ -264,22 +233,8 @@ SoTransformDragger::SoTransformDragger()
                   SbColor(0, 0, 1.0).getPackedValue(0.0f));
 
     // Translator
-    SoLinearDragger* tDragger;
-    tDragger = SO_GET_ANY_PART(this, "xTranslatorDragger", SoLinearDragger);
-    tDragger->translationIncrement.connectFrom(&this->translationIncrement);
-    tDragger->autoScaleResult.connectFrom(&this->autoScaleResult);
-    tDragger->label.connectFrom(&xAxisLabel);
-    translationIncrementCountX.connectFrom(&tDragger->translationIncrementCount);
-    tDragger = SO_GET_ANY_PART(this, "yTranslatorDragger", SoLinearDragger);
-    tDragger->translationIncrement.connectFrom(&this->translationIncrement);
-    tDragger->autoScaleResult.connectFrom(&this->autoScaleResult);
-    tDragger->label.connectFrom(&yAxisLabel);
-    translationIncrementCountY.connectFrom(&tDragger->translationIncrementCount);
-    tDragger = SO_GET_ANY_PART(this, "zTranslatorDragger", SoLinearDragger);
-    tDragger->translationIncrement.connectFrom(&this->translationIncrement);
-    tDragger->autoScaleResult.connectFrom(&this->autoScaleResult);
-    tDragger->label.connectFrom(&zAxisLabel);
-    translationIncrementCountZ.connectFrom(&tDragger->translationIncrementCount);
+    setupTranslationDraggers();
+
     // Planar Translator
     SoPlanarDragger* tPlanarDragger;
     tPlanarDragger = SO_GET_ANY_PART(this, "xyPlanarTranslatorDragger", SoPlanarDragger);
@@ -297,27 +252,12 @@ SoTransformDragger::SoTransformDragger()
     tPlanarDragger->autoScaleResult.connectFrom(&this->autoScaleResult);
     translationIncrementCountX.appendConnection(&tPlanarDragger->translationIncrementXCount);
     translationIncrementCountZ.appendConnection(&tPlanarDragger->translationIncrementYCount);
+
     // Rotator
-    SoRotationDragger* rDragger;
-    rDragger = SO_GET_ANY_PART(this, "xRotatorDragger", SoRotationDragger);
-    rDragger->rotationIncrement.connectFrom(&this->rotationIncrement);
-    rotationIncrementCountX.connectFrom(&rDragger->rotationIncrementCount);
-    rDragger = SO_GET_ANY_PART(this, "yRotatorDragger", SoRotationDragger);
-    rDragger->rotationIncrement.connectFrom(&this->rotationIncrement);
-    rotationIncrementCountY.connectFrom(&rDragger->rotationIncrementCount);
-    rDragger = SO_GET_ANY_PART(this, "zRotatorDragger", SoRotationDragger);
-    rDragger->rotationIncrement.connectFrom(&this->rotationIncrement);
-    rotationIncrementCountZ.connectFrom(&rDragger->rotationIncrementCount);
+    setupRotationDraggers();
 
     // Switches
-
-    // Translator
-    SoSwitch* sw = SO_GET_ANY_PART(this, "xTranslatorSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
-    sw = SO_GET_ANY_PART(this, "yTranslatorSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
-    sw = SO_GET_ANY_PART(this, "zTranslatorSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
+    SoSwitch* sw;
     // Planar Translator
     sw = SO_GET_ANY_PART(this, "xyPlanarTranslatorSwitch", SoSwitch);
     SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
@@ -325,26 +265,12 @@ SoTransformDragger::SoTransformDragger()
     SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
     sw = SO_GET_ANY_PART(this, "zxPlanarTranslatorSwitch", SoSwitch);
     SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
-    // Rotator
-    sw = SO_GET_ANY_PART(this, "xRotatorSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
-    sw = SO_GET_ANY_PART(this, "yRotatorSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
-    sw = SO_GET_ANY_PART(this, "zRotatorSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
 
     // Rotations
 
     SoRotation* localRotation;
     SbRotation tempRotation;
     auto angle = static_cast<float>(std::numbers::pi / 2.0);
-    // Translator
-    localRotation = SO_GET_ANY_PART(this, "xTranslatorRotation", SoRotation);
-    localRotation->rotation.setValue(SbVec3f(0.0, 0.0, -1.0), angle);
-    localRotation = SO_GET_ANY_PART(this, "yTranslatorRotation", SoRotation);
-    localRotation->rotation.setValue(SbRotation::identity());
-    localRotation = SO_GET_ANY_PART(this, "zTranslatorRotation", SoRotation);
-    localRotation->rotation.setValue(SbVec3f(1.0, 0.0, 0.0), angle);
     // Planar Translator
     localRotation = SO_GET_ANY_PART(this, "xyPlanarTranslatorRotation", SoRotation);
     localRotation->rotation.setValue(SbRotation::identity());
@@ -353,16 +279,17 @@ SoTransformDragger::SoTransformDragger()
     localRotation = SO_GET_ANY_PART(this, "zxPlanarTranslatorRotation", SoRotation);
     localRotation->rotation.setValue(SbVec3f(1.0, 0.0, 0.0), angle);
     // Rotator
-    localRotation = SO_GET_ANY_PART(this, "xRotatorRotation", SoRotation);
+    SoRotationDraggerContainer* rDragger;
+    rDragger = SO_GET_ANY_PART(this, "xRotatorDragger", SoRotationDraggerContainer);
     tempRotation = SbRotation(SbVec3f(1.0, 0.0, 0.0), angle);
     tempRotation *= SbRotation(SbVec3f(0.0, 0.0, 1.0), angle);
-    localRotation->rotation.setValue(tempRotation);
-    localRotation = SO_GET_ANY_PART(this, "yRotatorRotation", SoRotation);
+    rDragger->rotation.setValue(tempRotation);
+    rDragger = SO_GET_ANY_PART(this, "yRotatorDragger", SoRotationDraggerContainer);
     tempRotation = SbRotation(SbVec3f(0.0, -1.0, 0.0), angle);
     tempRotation *= SbRotation(SbVec3f(0.0, 0.0, -1.0), angle);
-    localRotation->rotation.setValue(tempRotation);
-    localRotation = SO_GET_ANY_PART(this, "zRotatorRotation", SoRotation);
-    localRotation->rotation.setValue(SbRotation::identity());
+    rDragger->rotation.setValue(tempRotation);
+    rDragger = SO_GET_ANY_PART(this, "zRotatorDragger", SoRotationDraggerContainer);
+    rDragger->rotation.setValue(SbRotation::identity());
 
     // this is for non-autoscale mode. this will be disconnected for autoscale
     // and won't be used. see setUpAutoScale.
@@ -420,31 +347,31 @@ SbBool SoTransformDragger::setUpConnections(SbBool onoff, SbBool doitalways)
         return onoff;
     }
 
-    SoLinearDragger* tDraggerX = SO_GET_ANY_PART(this, "xTranslatorDragger", SoLinearDragger);
-    SoLinearDragger* tDraggerY = SO_GET_ANY_PART(this, "yTranslatorDragger", SoLinearDragger);
-    SoLinearDragger* tDraggerZ = SO_GET_ANY_PART(this, "zTranslatorDragger", SoLinearDragger);
+    auto tDraggerX = SO_GET_ANY_PART(this, "xTranslatorDragger", SoLinearDraggerContainer);
+    auto tDraggerY = SO_GET_ANY_PART(this, "yTranslatorDragger", SoLinearDraggerContainer);
+    auto tDraggerZ = SO_GET_ANY_PART(this, "zTranslatorDragger", SoLinearDraggerContainer);
     SoPlanarDragger* tPlanarDraggerXZ =
         SO_GET_ANY_PART(this, "xyPlanarTranslatorDragger", SoPlanarDragger);
     SoPlanarDragger* tPlanarDraggerYZ =
         SO_GET_ANY_PART(this, "yzPlanarTranslatorDragger", SoPlanarDragger);
     SoPlanarDragger* tPlanarDraggerZX =
         SO_GET_ANY_PART(this, "zxPlanarTranslatorDragger", SoPlanarDragger);
-    SoRotationDragger* rDraggerX = SO_GET_ANY_PART(this, "xRotatorDragger", SoRotationDragger);
-    SoRotationDragger* rDraggerY = SO_GET_ANY_PART(this, "yRotatorDragger", SoRotationDragger);
-    SoRotationDragger* rDraggerZ = SO_GET_ANY_PART(this, "zRotatorDragger", SoRotationDragger);
+    auto rDraggerX = SO_GET_ANY_PART(this, "xRotatorDragger", SoRotationDraggerContainer);
+    auto rDraggerY = SO_GET_ANY_PART(this, "yRotatorDragger", SoRotationDraggerContainer);
+    auto rDraggerZ = SO_GET_ANY_PART(this, "zRotatorDragger", SoRotationDraggerContainer);
 
     if (onoff) {
         inherited::setUpConnections(onoff, doitalways);
 
-        registerChildDragger(tDraggerX);
-        registerChildDragger(tDraggerY);
-        registerChildDragger(tDraggerZ);
+        registerChildDragger(tDraggerX->getDragger());
+        registerChildDragger(tDraggerY->getDragger());
+        registerChildDragger(tDraggerZ->getDragger());
         registerChildDragger(tPlanarDraggerXZ);
         registerChildDragger(tPlanarDraggerYZ);
         registerChildDragger(tPlanarDraggerZX);
-        registerChildDragger(rDraggerX);
-        registerChildDragger(rDraggerY);
-        registerChildDragger(rDraggerZ);
+        registerChildDragger(rDraggerX->getDragger());
+        registerChildDragger(rDraggerY->getDragger());
+        registerChildDragger(rDraggerZ->getDragger());
 
         translationSensorCB(this, nullptr);
         if (this->translationSensor.getAttachedField() != &this->translation) {
@@ -457,15 +384,15 @@ SbBool SoTransformDragger::setUpConnections(SbBool onoff, SbBool doitalways)
         }
     }
     else {
-        unregisterChildDragger(tDraggerX);
-        unregisterChildDragger(tDraggerY);
-        unregisterChildDragger(tDraggerZ);
+        unregisterChildDragger(tDraggerX->getDragger());
+        unregisterChildDragger(tDraggerY->getDragger());
+        unregisterChildDragger(tDraggerZ->getDragger());
         unregisterChildDragger(tPlanarDraggerXZ);
         unregisterChildDragger(tPlanarDraggerYZ);
         unregisterChildDragger(tPlanarDraggerZX);
-        unregisterChildDragger(rDraggerX);
-        unregisterChildDragger(rDraggerY);
-        unregisterChildDragger(rDraggerZ);
+        unregisterChildDragger(rDraggerX->getDragger());
+        unregisterChildDragger(rDraggerY->getDragger());
+        unregisterChildDragger(rDraggerZ->getDragger());
 
         inherited::setUpConnections(onoff, doitalways);
 
@@ -669,12 +596,13 @@ void SoTransformDragger::setAxisColors(unsigned long x, unsigned long y, unsigne
     SoBaseColor* color;
 
     // Translator
-    color = SO_GET_ANY_PART(this, "xTranslatorColor", SoBaseColor);
-    color->rgb.setValue(colorX[0], colorX[1], colorX[2]);
-    color = SO_GET_ANY_PART(this, "yTranslatorColor", SoBaseColor);
-    color->rgb.setValue(colorY[0], colorY[1], colorY[2]);
-    color = SO_GET_ANY_PART(this, "zTranslatorColor", SoBaseColor);
-    color->rgb.setValue(colorZ[0], colorZ[1], colorZ[2]);
+    SoLinearDraggerContainer* tDragger;
+    tDragger = SO_GET_ANY_PART(this, "xTranslatorDragger", SoLinearDraggerContainer);
+    tDragger->color.setValue(colorX[0], colorX[1], colorX[2]);
+    tDragger = SO_GET_ANY_PART(this, "yTranslatorDragger", SoLinearDraggerContainer);
+    tDragger->color.setValue(colorY[0], colorY[1], colorY[2]);
+    tDragger = SO_GET_ANY_PART(this, "zTranslatorDragger", SoLinearDraggerContainer);
+    tDragger->color.setValue(colorZ[0], colorZ[1], colorZ[2]);
     // Planar Translator
     color = SO_GET_ANY_PART(this, "xyPlanarTranslatorColor", SoBaseColor);
     color->rgb.setValue(colorZ[0], colorZ[1], colorZ[2]);
@@ -683,12 +611,13 @@ void SoTransformDragger::setAxisColors(unsigned long x, unsigned long y, unsigne
     color = SO_GET_ANY_PART(this, "zxPlanarTranslatorColor", SoBaseColor);
     color->rgb.setValue(colorY[0], colorY[1], colorY[2]);
     // Rotator
-    color = SO_GET_ANY_PART(this, "xRotatorColor", SoBaseColor);
-    color->rgb.setValue(colorX[0], colorX[1], colorX[2]);
-    color = SO_GET_ANY_PART(this, "yRotatorColor", SoBaseColor);
-    color->rgb.setValue(colorY[0], colorY[1], colorY[2]);
-    color = SO_GET_ANY_PART(this, "zRotatorColor", SoBaseColor);
-    color->rgb.setValue(colorZ[0], colorZ[1], colorZ[2]);
+    SoRotationDraggerContainer* rDragger;
+    rDragger = SO_GET_ANY_PART(this, "xRotatorDragger", SoRotationDraggerContainer);
+    rDragger->color.setValue(colorX[0], colorX[1], colorX[2]);
+    rDragger = SO_GET_ANY_PART(this, "yRotatorDragger", SoRotationDraggerContainer);
+    rDragger->color.setValue(colorY[0], colorY[1], colorY[2]);
+    rDragger = SO_GET_ANY_PART(this, "zRotatorDragger", SoRotationDraggerContainer);
+    rDragger->color.setValue(colorZ[0], colorZ[1], colorZ[2]);
 }
 
 // Visibility API Functions
@@ -696,66 +625,50 @@ void SoTransformDragger::setAxisColors(unsigned long x, unsigned long y, unsigne
 // Translator
 void SoTransformDragger::showTranslationX()
 {
-    SoSwitch* sw = SO_GET_ANY_PART(this, "xTranslatorSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
+    auto tDragger = SO_GET_ANY_PART(this, "xTranslatorDragger", SoLinearDraggerContainer);
+    tDragger->visible = true;
 }
 void SoTransformDragger::showTranslationY()
 {
-    SoSwitch* sw = SO_GET_ANY_PART(this, "yTranslatorSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
+    auto tDragger = SO_GET_ANY_PART(this, "yTranslatorDragger", SoLinearDraggerContainer);
+    tDragger->visible = true;
 }
 void SoTransformDragger::showTranslationZ()
 {
-    SoSwitch* sw = SO_GET_ANY_PART(this, "zTranslatorSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
+    auto tDragger = SO_GET_ANY_PART(this, "zTranslatorDragger", SoLinearDraggerContainer);
+    tDragger->visible = true;
 }
 
 void SoTransformDragger::hideTranslationX()
 {
-    SoSwitch* sw = SO_GET_ANY_PART(this, "xTranslatorSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
+    auto tDragger = SO_GET_ANY_PART(this, "xTranslatorDragger", SoLinearDraggerContainer);
+    tDragger->visible = false;
 }
 void SoTransformDragger::hideTranslationY()
 {
-    SoSwitch* sw = SO_GET_ANY_PART(this, "yTranslatorSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
+    auto tDragger = SO_GET_ANY_PART(this, "yTranslatorDragger", SoLinearDraggerContainer);
+    tDragger->visible = false;
 }
 void SoTransformDragger::hideTranslationZ()
 {
-    SoSwitch* sw = SO_GET_ANY_PART(this, "zTranslatorSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
+    auto tDragger = SO_GET_ANY_PART(this, "zTranslatorDragger", SoLinearDraggerContainer);
+    tDragger->visible = false;
 }
 
 bool SoTransformDragger::isShownTranslationX()
 {
-    SoSwitch* sw = SO_GET_ANY_PART(this, "xTranslatorSwitch", SoSwitch);
-    return (sw->whichChild.getValue() == SO_SWITCH_ALL);
+    auto tDragger = SO_GET_ANY_PART(this, "xTranslatorDragger", SoLinearDraggerContainer);
+    return tDragger->visible.getValue();
 }
 bool SoTransformDragger::isShownTranslationY()
 {
-    SoSwitch* sw = SO_GET_ANY_PART(this, "yTranslatorSwitch", SoSwitch);
-    return (sw->whichChild.getValue() == SO_SWITCH_ALL);
+    auto tDragger = SO_GET_ANY_PART(this, "yTranslatorDragger", SoLinearDraggerContainer);
+    return tDragger->visible.getValue();
 }
 bool SoTransformDragger::isShownTranslationZ()
 {
-    SoSwitch* sw = SO_GET_ANY_PART(this, "zTranslatorSwitch", SoSwitch);
-    return (sw->whichChild.getValue() == SO_SWITCH_ALL);
-}
-
-bool SoTransformDragger::isHiddenTranslationX()
-{
-    SoSwitch* sw = SO_GET_ANY_PART(this, "xTranslatorSwitch", SoSwitch);
-    return (sw->whichChild.getValue() == SO_SWITCH_NONE);
-}
-bool SoTransformDragger::isHiddenTranslationY()
-{
-    SoSwitch* sw = SO_GET_ANY_PART(this, "yTranslatorSwitch", SoSwitch);
-    return (sw->whichChild.getValue() == SO_SWITCH_NONE);
-}
-bool SoTransformDragger::isHiddenTranslationZ()
-{
-    SoSwitch* sw = SO_GET_ANY_PART(this, "zTranslatorSwitch", SoSwitch);
-    return (sw->whichChild.getValue() == SO_SWITCH_NONE);
+    auto tDragger = SO_GET_ANY_PART(this, "zTranslatorDragger", SoLinearDraggerContainer);
+    return tDragger->visible.getValue();
 }
 
 // Planar Translator
@@ -826,64 +739,84 @@ bool SoTransformDragger::isHiddenPlanarTranslationZX()
 // Rotator
 void SoTransformDragger::showRotationX()
 {
-    SoSwitch* sw = SO_GET_ANY_PART(this, "xRotatorSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
+    SoRotationDraggerContainer* rDragger = SO_GET_ANY_PART(this, "xRotatorDragger", SoRotationDraggerContainer);
+    rDragger->visible = true;
 }
 void SoTransformDragger::showRotationY()
 {
-    SoSwitch* sw = SO_GET_ANY_PART(this, "yRotatorSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
+    SoRotationDraggerContainer* rDragger = SO_GET_ANY_PART(this, "yRotatorDragger", SoRotationDraggerContainer);
+    rDragger->visible = true;
 }
 void SoTransformDragger::showRotationZ()
 {
-    SoSwitch* sw = SO_GET_ANY_PART(this, "zRotatorSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
+    SoRotationDraggerContainer* rDragger = SO_GET_ANY_PART(this, "zRotatorDragger", SoRotationDraggerContainer);
+    rDragger->visible = true;
 }
 
 void SoTransformDragger::hideRotationX()
 {
-    SoSwitch* sw = SO_GET_ANY_PART(this, "xRotatorSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
+    SoRotationDraggerContainer* rDragger = SO_GET_ANY_PART(this, "xRotatorDragger", SoRotationDraggerContainer);
+    rDragger->visible = false;
 }
 void SoTransformDragger::hideRotationY()
 {
-    SoSwitch* sw = SO_GET_ANY_PART(this, "yRotatorSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
+    SoRotationDraggerContainer* rDragger = SO_GET_ANY_PART(this, "yRotatorDragger", SoRotationDraggerContainer);
+    rDragger->visible = false;
 }
 void SoTransformDragger::hideRotationZ()
 {
-    SoSwitch* sw = SO_GET_ANY_PART(this, "zRotatorSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
+    SoRotationDraggerContainer* rDragger = SO_GET_ANY_PART(this, "zRotatorDragger", SoRotationDraggerContainer);
+    rDragger->visible = false;
 }
 
 bool SoTransformDragger::isShownRotationX()
 {
-    SoSwitch* sw = SO_GET_ANY_PART(this, "xRotatorSwitch", SoSwitch);
-    return (sw->whichChild.getValue() == SO_SWITCH_ALL);
+    SoRotationDraggerContainer* rDragger = SO_GET_ANY_PART(this, "xRotatorDragger", SoRotationDraggerContainer);
+    return rDragger->visible.getValue();
 }
 bool SoTransformDragger::isShownRotationY()
 {
-    SoSwitch* sw = SO_GET_ANY_PART(this, "yRotatorSwitch", SoSwitch);
-    return (sw->whichChild.getValue() == SO_SWITCH_ALL);
+    SoRotationDraggerContainer* rDragger = SO_GET_ANY_PART(this, "yRotatorDragger", SoRotationDraggerContainer);
+    return rDragger->visible.getValue();
 }
 bool SoTransformDragger::isShownRotationZ()
 {
-    SoSwitch* sw = SO_GET_ANY_PART(this, "zRotatorSwitch", SoSwitch);
-    return (sw->whichChild.getValue() == SO_SWITCH_ALL);
+    SoRotationDraggerContainer* rDragger = SO_GET_ANY_PART(this, "zRotatorDragger", SoRotationDraggerContainer);
+    return rDragger->visible.getValue();
 }
 
-bool SoTransformDragger::isHiddenRotationX()
+void SoTransformDragger::setupTranslationDraggers()
 {
-    SoSwitch* sw = SO_GET_ANY_PART(this, "xRotatorSwitch", SoSwitch);
-    return (sw->whichChild.getValue() == SO_SWITCH_NONE);
+    setupTranslationDragger("xTranslatorDragger", &xAxisLabel, translationIncrementCountX, SbVec3d(1.0, 0.0, 0.0));
+    setupTranslationDragger("yTranslatorDragger", &yAxisLabel, translationIncrementCountY, SbVec3d(0.0, 1.0, 0.0));
+    setupTranslationDragger("zTranslatorDragger", &zAxisLabel, translationIncrementCountZ, SbVec3d(0.0, 0.0, 1.0));
 }
-bool SoTransformDragger::isHiddenRotationY()
+
+void SoTransformDragger::setupTranslationDragger(const std::string& name, SoSFString* label, SoSFInt32& incrementCount, const SbVec3d& rotDir)
 {
-    SoSwitch* sw = SO_GET_ANY_PART(this, "yRotatorSwitch", SoSwitch);
-    return (sw->whichChild.getValue() == SO_SWITCH_NONE);
+    SoLinearDraggerContainer* draggerContainer = SO_GET_ANY_PART(this, name.c_str(), SoLinearDraggerContainer);
+    SoLinearDragger* dragger = draggerContainer->getDragger();
+
+    dragger->translationIncrement.connectFrom(&this->translationIncrement);
+    dragger->autoScaleResult.connectFrom(&this->autoScaleResult);
+    dragger->label.connectFrom(label);
+    incrementCount.connectFrom(&dragger->translationIncrementCount);
+
+    draggerContainer->setPointerDirection(Base::convertTo<Base::Vector3d>(rotDir));
 }
-bool SoTransformDragger::isHiddenRotationZ()
+
+void SoTransformDragger::setupRotationDraggers()
 {
-    SoSwitch* sw = SO_GET_ANY_PART(this, "zRotatorSwitch", SoSwitch);
-    return (sw->whichChild.getValue() == SO_SWITCH_NONE);
+    setupRotationDragger("xRotatorDragger", rotationIncrementCountX);
+    setupRotationDragger("yRotatorDragger", rotationIncrementCountY);
+    setupRotationDragger("zRotatorDragger", rotationIncrementCountZ);
+}
+
+void SoTransformDragger::setupRotationDragger(const std::string& name, SoSFInt32& incrementCount)
+{
+    SoRotationDraggerContainer* draggerContainer = SO_GET_ANY_PART(this, name.c_str(), SoRotationDraggerContainer);
+    SoRotationDragger* dragger = draggerContainer->getDragger();
+
+    dragger->rotationIncrement.connectFrom(&this->rotationIncrement);
+    incrementCount.connectFrom(&dragger->rotationIncrementCount);
 }

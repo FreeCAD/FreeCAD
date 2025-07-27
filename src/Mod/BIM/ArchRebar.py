@@ -70,6 +70,7 @@ class _Rebar(ArchComponent.Component):
     def __init__(self,obj):
 
         ArchComponent.Component.__init__(self,obj)
+        self.Type = "Rebar"
         self.setProperties(obj)
         obj.IfcType = "Reinforcing Bar"
 
@@ -113,12 +114,15 @@ class _Rebar(ArchComponent.Component):
                 QT_TRANSLATE_NOOP("App::Property", "The rebar mark"),
                 locked=True,
             )
-        self.Type = "Rebar"
 
     def onDocumentRestored(self,obj):
 
         ArchComponent.Component.onDocumentRestored(self,obj)
         self.setProperties(obj)
+
+    def loads(self,state):
+
+        self.Type = "Rebar"
 
     def getBaseAndAxis(self,wire):
 

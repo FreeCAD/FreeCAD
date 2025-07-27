@@ -29,16 +29,134 @@
 #include <QDialog>
 #include <QStandardItemModel>
 #include <QStackedWidget>
+#include <QPointer>
+#include <QListWidget>
+#include <QLineEdit>
 #include <memory>
 #include <FCGlobal.h>
 
 class QAbstractButton;
 class QListWidgetItem;
 class QTabWidget;
+class QKeyEvent;
+class QMouseEvent;
 
 namespace Gui::Dialog {
 class PreferencePage;
 class Ui_DlgPreferences;
+class DlgPreferencesImp;
+
+class GuiExport PreferencesSearchController : public QObject
+{
+    Q_OBJECT
+
+private:
+    enum class PopupAction {
+        KeepOpen,    // don't close popup (used for keyboard navigation)
+        CloseAfter   // close popup (used for mouse clicks and Enter/Return)
+    };
+
+public:
+    // Custom data roles for separating path and widget text
+    enum SearchDataRole {
+        PathRole = Qt::UserRole + 10,        // Path to page (e.g., "Display/3D View")
+        WidgetTextRole = Qt::UserRole + 11   // Text from the widget (e.g., "Enable anti-aliasing")
+    };
+
+    // Search results structure
+    struct SearchResult {
+        QString groupName;
+        QString pageName;
+        QPointer<QWidget> widget;
+        QString matchText;
+        QString groupBoxName;
+        QString tabName; // The tab name (like "Display")
+        QString pageDisplayName; // The page display name (like "3D View")
+        bool isPageLevelMatch = false; // True if this is a page title match
+        int score = 0; // Fuzzy search score for sorting
+    };
+
+    explicit PreferencesSearchController(DlgPreferencesImp* parentDialog, QObject* parent = nullptr);
+    ~PreferencesSearchController() = default;
+
+    // Setup methods
+    void setPreferencesModel(QStandardItemModel* model);
+    void setGroupNameRole(int role);
+    void setPageNameRole(int role);
+
+    // UI access methods
+    QListWidget* getSearchResultsList() const;
+    bool isPopupVisible() const;
+    bool isPopupUnderMouse() const;
+    bool isPopupAncestorOf(QWidget* widget) const;
+
+    // Event handling
+    bool handleSearchBoxKeyPress(QKeyEvent* keyEvent);
+    bool handlePopupKeyPress(QKeyEvent* keyEvent);
+    bool isClickOutsidePopup(QMouseEvent* mouseEvent);
+
+    // Focus management
+    void ensureSearchBoxFocus();
+
+    // Search functionality
+    void performSearch(const QString& searchText);
+    void clearHighlights();
+    void hideSearchResultsList();
+    void showSearchResultsList();
+
+    // Navigation
+    void navigateToCurrentSearchResult(PopupAction action);
+
+Q_SIGNALS:
+    void navigationRequested(const QString& groupName, const QString& pageName);
+
+public Q_SLOTS:
+    void onSearchTextChanged(const QString& text);
+    void onSearchResultSelected();
+    void onSearchResultClicked();
+    void onSearchResultDoubleClicked();
+
+private:
+    // Search implementation
+    void collectSearchResults(QWidget* widget, const QString& searchText, const QString& groupName, 
+                             const QString& pageName, const QString& pageDisplayName, const QString& tabName);
+    void populateSearchResultsList();
+    
+    template<typename WidgetType>
+    void searchWidgetType(QWidget* parentWidget, const QString& searchText, const QString& groupName,
+                         const QString& pageName, const QString& pageDisplayName, const QString& tabName);
+
+    // UI helpers
+    void configurePopupSize();
+    int calculatePopupHeight(int popupWidth);
+    void applyHighlightToWidget(QWidget* widget);
+    QString getHighlightStyleForWidget(QWidget* widget);
+    
+    // Search result navigation
+    void selectNextSearchResult();
+    void selectPreviousSearchResult();
+    
+    // Utility methods
+    QString findGroupBoxForWidget(QWidget* widget);
+    bool fuzzyMatch(const QString& searchText, const QString& targetText, int& score);
+    bool isExactMatch(const QString& searchText, const QString& targetText);
+
+private:
+    DlgPreferencesImp* m_parentDialog;
+    QStandardItemModel* m_preferencesModel;
+    int m_groupNameRole;
+    int m_pageNameRole;
+    
+    // UI components
+    QLineEdit* m_searchBox;
+    QListWidget* m_searchResultsList;
+    
+    // Search state
+    QList<SearchResult> m_searchResults;
+    QString m_lastSearchText;
+    QList<QWidget*> m_highlightedWidgets;
+    QMap<QWidget*, QString> m_originalStyles;
+};
 
 class PreferencesPageItem : public QStandardItem
 {
@@ -155,6 +273,7 @@ public:
 protected:
     void changeEvent(QEvent *e) override;
     void showEvent(QShowEvent*) override;
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
 protected Q_SLOTS:
     void onButtonBoxClicked(QAbstractButton*);
@@ -163,6 +282,8 @@ protected Q_SLOTS:
 
     void onGroupExpanded(const QModelIndex &index);
     void onGroupCollapsed(const QModelIndex &index);
+    
+    void onNavigationRequested(const QString& groupName, const QString& pageName);
 
 private:
     /** @name for internal use only */
@@ -190,6 +311,9 @@ private:
     int minimumPageWidth() const;
     int minimumDialogWidth(int) const;
     void expandToMinimumDialogWidth();
+    
+    // Navigation helper for search controller
+    void navigateToSearchResult(const QString& groupName, const QString& pageName);
     //@}
 
 private:
@@ -210,6 +334,9 @@ private:
     bool invalidParameter;
     bool canEmbedScrollArea;
     bool restartRequired;
+    
+    // Search controller
+    std::unique_ptr<PreferencesSearchController> m_searchController;
 
     /**< A name for our Qt::UserRole, used when storing user data in a list item */
     static const int GroupNameRole;
@@ -219,6 +346,9 @@ private:
     static constexpr char const* PageNameProperty = "PageName";
 
     static DlgPreferencesImp* _activeDialog; /**< Defaults to the nullptr, points to the current instance if there is one */
+
+    // Friend class to allow search controller access to UI
+    friend class PreferencesSearchController;
 };
 
 } // namespace Gui

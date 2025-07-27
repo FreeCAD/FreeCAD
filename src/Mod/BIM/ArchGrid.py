@@ -58,6 +58,7 @@ class ArchGrid:
     def __init__(self,obj):
 
         obj.Proxy = self
+        self.Type = "Grid"
         self.setProperties(obj)
 
     def setProperties(self,obj):
@@ -88,7 +89,6 @@ class ArchGrid:
             obj.addProperty("App::PropertyBool","Reorient","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'When in edge midpoint mode, if this grid must reorient its children along edge normals or not'), locked=True)
         if not "HiddenFaces" in pl:
             obj.addProperty("App::PropertyIntegerList","HiddenFaces","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The indices of faces to hide'), locked=True)
-        self.Type = "Grid"
 
     def onDocumentRestored(self,obj):
 
@@ -251,7 +251,7 @@ class ArchGrid:
 
     def loads(self,state):
 
-        return None
+        self.Type = "Grid"
 
 
 class ViewProviderArchGrid:

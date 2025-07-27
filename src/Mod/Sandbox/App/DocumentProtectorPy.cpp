@@ -136,7 +136,7 @@ Py::Object DocumentProtectorPy::addObject(const Py::Tuple& args)
     if (!obj) {
         std::string s;
         std::ostringstream s_out;
-        s_out << "Couldn't create an object of type '" << type << "'";
+        s_out << "Could not create an object of type '" << type << "'";
         throw Py::RuntimeError(s_out.str());
     }
     //return Py::asObject(obj->getPyObject());

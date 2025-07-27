@@ -38,6 +38,13 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="checkDoNotAskAgain">
+     <property name="text">
+      <string>Do not ask again and use this setting</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>

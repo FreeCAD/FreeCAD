@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Analysis feature properties</string>
+   <string>Analysis Feature Properties</string>
   </property>
   <layout class="QVBoxLayout" name="horizontalLayout">
    <item>
@@ -32,7 +32,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="lbl_dissipation_rate">
         <property name="text">
-         <string>Mode:</string>
+         <string>Mode</string>
         </property>
        </widget>
       </item>
@@ -42,7 +42,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="lbl_total_power">
         <property name="text">
-         <string>Total Power:</string>
+         <string>Total power</string>
         </property>
        </widget>
       </item>
@@ -83,7 +83,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="lbl_dissipation_rate">
         <property name="text">
-         <string>Dissipation Rate:</string>
+         <string>Dissipation rate</string>
         </property>
        </widget>
       </item>

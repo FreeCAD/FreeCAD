@@ -425,6 +425,7 @@ PyMOD_INIT_FUNC(Part)
     Part::FaceMakerCheese       ::init();
     Part::FaceMakerExtrusion    ::init();
     Part::FaceMakerBullseye     ::init();
+    Part::FaceMakerRing         ::init();
 
     Attacher::AttachEngine        ::init();
     Attacher::AttachEngine3D      ::init();

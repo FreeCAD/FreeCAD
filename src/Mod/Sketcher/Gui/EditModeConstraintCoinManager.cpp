@@ -121,7 +121,6 @@ void EditModeConstraintCoinManager::processConstraints(const GeoListFacade& geol
 
     auto zConstrH = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
         * drawingParameters.zConstr;
-
     // After an undo/redo it can happen that we have an empty geometry list but a non-empty
     // constraint list In this case just ignore the constraints. (See bug #0000421)
     if (geolistfacade.geomlist.size() <= 2 && !constrlist.empty()) {
@@ -1458,8 +1457,10 @@ Restart:
                     assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
 
                     Base::Vector3d pnt1(0., 0., 0.), pnt2(0., 0., 0.);
-                    double helperStartAngle = 0.;
-                    double helperRange = 0.;
+                    double startHelperAngle = 0.;
+                    double startHelperRange = 0.;
+                    double endHelperAngle = 0.;
+                    double endHelperRange = 0.;
 
                     if (Constr->First == GeoEnum::GeoUndef) {
                         break;
@@ -1478,9 +1479,15 @@ Restart:
                             angle = (startAngle + endAngle) / 2;
                         }
 
-                        findHelperAngles(helperStartAngle,
-                                         helperRange,
+                        findHelperAngles(startHelperAngle,
+                                         startHelperRange,
                                          angle,
+                                         startAngle,
+                                         endAngle);
+
+                        findHelperAngles(endHelperAngle,
+                                         endHelperRange,
+                                         angle + pi,
                                          startAngle,
                                          endAngle);
 
@@ -1516,8 +1523,10 @@ Restart:
                     asciiText->datumtype = SoDatumLabel::DIAMETER;
                     asciiText->param1 = Constr->LabelDistance;
                     asciiText->param2 = Constr->LabelPosition;
-                    asciiText->param3 = helperStartAngle;
-                    asciiText->param4 = helperRange;
+                    asciiText->param3 = static_cast<float>(startHelperAngle);
+                    asciiText->param4 = static_cast<float>(startHelperRange);
+                    asciiText->param5 = static_cast<float>(endHelperAngle);
+                    asciiText->param6 = static_cast<float>(endHelperRange);
 
                     asciiText->pnts.setNum(2);
                     SbVec3f* verts = asciiText->pnts.startEditing();
@@ -1976,12 +1985,8 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                 text->size.setValue(drawingParameters.labelFontSize);
                 text->lineWidth = 2 * drawingParameters.pixelScalingFactor;
                 text->useAntialiasing = false;
-                SoAnnotation* anno = new SoAnnotation();
-                anno->renderCaching = SoSeparator::OFF;
-                anno->addChild(text);
-                // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
                 sep->addChild(text);
-                editModeScenegraphNodes.constrGroup->addChild(anno);
+                editModeScenegraphNodes.constrGroup->addChild(sep);
                 vConstrType.push_back((*it)->Type);
                 // nodes not needed
                 sep->unref();

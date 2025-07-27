@@ -1075,7 +1075,6 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which, double len
         }
 
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, cmd, which, worker);
@@ -1172,7 +1171,6 @@ void CmdPartDesignHole::activated(int iMsg)
             return;
 
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "Hole", worker);
@@ -1228,7 +1226,6 @@ void CmdPartDesignRevolution::activated(int iMsg)
             FCMD_OBJ_CMD(Feat,"Reversed = 1");
 
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "Revolution", worker);
@@ -1292,7 +1289,6 @@ void CmdPartDesignGroove::activated(int iMsg)
         }
 
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "Groove", worker);
@@ -1339,7 +1335,6 @@ void CmdPartDesignAdditivePipe::activated(int iMsg)
         Gui::Command::updateActive();
 
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "AdditivePipe", worker);
@@ -1387,7 +1382,6 @@ void CmdPartDesignSubtractivePipe::activated(int iMsg)
         Gui::Command::updateActive();
 
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "SubtractivePipe", worker);
@@ -1435,7 +1429,6 @@ void CmdPartDesignAdditiveLoft::activated(int iMsg)
         Gui::Command::updateActive();
 
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "AdditiveLoft", worker);
@@ -1483,7 +1476,6 @@ void CmdPartDesignSubtractiveLoft::activated(int iMsg)
         Gui::Command::updateActive();
 
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "SubtractiveLoft", worker);
@@ -1555,8 +1547,6 @@ void CmdPartDesignAdditiveHelix::activated(int iMsg)
                     view->makeTemporaryVisible(true);
             }
         }
-
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "AdditiveHelix", worker);
@@ -1611,7 +1601,6 @@ void CmdPartDesignSubtractiveHelix::activated(int iMsg)
         }
 
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "SubtractiveHelix", worker);

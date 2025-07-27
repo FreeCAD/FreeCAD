@@ -1635,9 +1635,7 @@ void CmdPartOffset::activated(int iMsg)
     updateActive();
 
     doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",offset.c_str());
-
-    adjustCameraPosition();
-
+    
     copyVisual(offset.c_str(), "ShapeAppearance", shape->getNameInDocument());
     copyVisual(offset.c_str(), "LineColor" , shape->getNameInDocument());
     copyVisual(offset.c_str(), "PointColor", shape->getNameInDocument());
@@ -1692,7 +1690,6 @@ void CmdPartOffset2D::activated(int iMsg)
     doCommand(Doc,"App.ActiveDocument.%s.Value = 1.0",offset.c_str());
     updateActive();
     doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",offset.c_str());
-    adjustCameraPosition();
 
     copyVisual(offset.c_str(), "ShapeAppearance", shape->getNameInDocument());
     copyVisual(offset.c_str(), "LineColor" , shape->getNameInDocument());
@@ -1876,7 +1873,6 @@ void CmdPartThickness::activated(int iMsg)
                   obj->getDocument()->getName(), obj->getNameInDocument());
     }
     doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",thick.c_str());
-    adjustCameraPosition();
 
     copyVisual(thick.c_str(), "ShapeAppearance", obj->getNameInDocument());
     copyVisual(thick.c_str(), "LineColor" , obj->getNameInDocument());

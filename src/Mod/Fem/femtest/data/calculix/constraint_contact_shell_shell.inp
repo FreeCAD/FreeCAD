@@ -38362,7 +38362,7 @@ Efaces
 
 ***********************************************************
 ** Sections
-*SHELL SECTION, ELSET=MechanicalMaterialShellThickness, MATERIAL=MechanicalMaterial
+*SHELL SECTION, ELSET=MechanicalMaterialShellThickness, MATERIAL=MechanicalMaterial, OFFSET=0
 0.5
 
 ***********************************************************

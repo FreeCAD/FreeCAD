@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64"
+   height="64"
+   id="svg2869"
+   version="1.1"
+   sodipodi:docname="Std_DockOverlayToggleBottom.svg"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   viewBox="0 0 64 64"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="false"
+     inkscape:deskcolor="#d1d1d1"
+     showguides="true"
+     showgrid="true"
+     inkscape:zoom="2.828427"
+     inkscape:cx="-8.3085052"
+     inkscape:cy="28.637826"
+     inkscape:window-width="1368"
+     inkscape:window-height="842"
+     inkscape:window-x="-6"
+     inkscape:window-y="-6"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer3"
+     inkscape:lockguides="true"
+     inkscape:clip-to-page="false"
+     shape-rendering="auto">
+    <inkscape:grid
+       id="grid2"
+       units="px"
+       originx="0"
+       originy="0"
+       spacingx="1"
+       spacingy="1"
+       empcolor="#0099e5"
+       empopacity="0.30196078"
+       color="#0099e5"
+       opacity="0.14901961"
+       empspacing="2"
+       dotted="false"
+       gridanglex="30"
+       gridanglez="30"
+       visible="true" />
+    <sodipodi:guide
+       position="4,50"
+       orientation="1,0"
+       id="guide8"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="64,64"
+       orientation="0.70710678,-0.70710678"
+       id="guide9"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="60,5.384631"
+       orientation="1,0"
+       id="guide10"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="9,60"
+       orientation="0,-1"
+       id="guide11"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="62,4"
+       orientation="0,-1"
+       id="guide12"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="64,0"
+       orientation="-0.70710678,-0.70710678"
+       id="guide13"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="32,32"
+       orientation="1,0"
+       id="guide18"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="32,32"
+       orientation="0,-1"
+       id="guide19"
+       inkscape:locked="true" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2871">
+    <linearGradient
+       id="linearGradient5"
+       inkscape:swatch="gradient">
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1;"
+         offset="0"
+         id="stop19" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:0;"
+         offset="1"
+         id="stop20" />
+    </linearGradient>
+    <linearGradient
+       id="swatch18"
+       inkscape:swatch="solid"
+       inkscape:label="point-stroke-inner">
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1;"
+         offset="0"
+         id="stop18" />
+    </linearGradient>
+    <linearGradient
+       id="swatch15"
+       inkscape:swatch="solid"
+       inkscape:label="point-stroke-outer">
+      <stop
+         style="stop-color:#3d0000;stop-opacity:1;"
+         offset="0"
+         id="stop15" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient5-1"
+       inkscape:swatch="gradient">
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1;"
+         offset="0"
+         id="stop5" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:0;"
+         offset="1"
+         id="stop6" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3836-9"
+       inkscape:swatch="gradient"
+       inkscape:label="point-fill">
+      <stop
+         style="stop-color:#a40000;stop-opacity:1"
+         offset="0"
+         id="stop3838-8" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1"
+         offset="1"
+         id="stop3840-1" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3830-5"
+       id="linearGradient3836-7"
+       x1="49"
+       y1="54"
+       x2="43"
+       y2="14"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(2.7499996,0,0,0.30952367,-97.24998,36.976197)" />
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3830-5">
+      <stop
+         style="stop-color:#d3d7cf;stop-opacity:1;"
+         offset="0"
+         id="stop3832-3" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1"
+         offset="1"
+         id="stop3834-5" />
+    </linearGradient>
+    <linearGradient
+       gradientTransform="matrix(2,0,0,0.5,-62,5.500001)"
+       inkscape:collect="always"
+       xlink:href="#linearGradient3842-2"
+       id="linearGradient3848-6"
+       x1="49"
+       y1="16"
+       x2="48"
+       y2="4"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3842-2">
+      <stop
+         style="stop-color:#204a87;stop-opacity:1"
+         offset="0"
+         id="stop3844-9" />
+      <stop
+         style="stop-color:#729fcf;stop-opacity:1"
+         offset="1"
+         id="stop3846-1" />
+    </linearGradient>
+  </defs>
+  <metadata
+     id="metadata2874">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[maxwxyz]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:date>2024</dc:date>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Icon"
+     style="display:inline">
+    <rect
+       style="fill:#204a87;stroke:#204a87;stroke-width:5.99999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:6;stroke-opacity:1"
+       id="rect3020-2"
+       width="48.000011"
+       height="48.000011"
+       x="7.9999952"
+       y="7.9999952" />
+    <rect
+       style="fill:none;stroke:#729fcf;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:6;stroke-opacity:1"
+       id="rect3020-6-7"
+       width="48"
+       height="48"
+       x="8"
+       y="8" />
+    <rect
+       style="fill:url(#linearGradient3848-6);fill-opacity:1;stroke:#729fcf;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:6;stroke-opacity:1"
+       id="rect3826-0"
+       width="48"
+       height="4"
+       x="8"
+       y="8" />
+    <rect
+       style="fill:url(#linearGradient3836-7);fill-opacity:1;stroke:#ffffff;stroke-width:2.00001;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:6;stroke-opacity:1"
+       id="rect3828-9"
+       width="43.999992"
+       height="12.999995"
+       x="10.000004"
+       y="41.000004" />
+    <path
+       style="fill:none;stroke:#d3d7cf;stroke-width:2.00001;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="M 9.0000001,10 H 20"
+       id="path3840-6"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>

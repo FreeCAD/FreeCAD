@@ -24,6 +24,9 @@
 #ifndef TECHDRAW_TAG_H
 #define TECHDRAW_TAG_H
 
+#include <string>
+#include <string_view>
+
 #include <boost/uuid/uuid.hpp>
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
@@ -34,11 +37,18 @@ class Writer;
 }
 
 namespace TechDraw {
+
+
+//NOLINTNEXTLINE    (default destructor but no copy)
 class TechDrawExport Tag {
 public:
+    virtual ~Tag() = default;
     //Uniqueness
     boost::uuids::uuid getTag() const;
     virtual std::string getTagAsString() const;
+
+    static boost::uuids::uuid fromString(const std::string& tagString);
+
 
 protected:
     Tag();
@@ -49,7 +59,7 @@ protected:
 
 private:
     void createNewTag();
-    boost::uuids::uuid tag;
+    boost::uuids::uuid tag{};
 };
 }
 

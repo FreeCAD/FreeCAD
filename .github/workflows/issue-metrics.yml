@@ -17,7 +17,7 @@ jobs:
     steps:
 
     - name: Harden the runner (Audit all outbound calls)
-      uses: step-security/harden-runner@0634a2670c59f64b4a01f0f96f84700a4088b9f0 # v2.12.0
+      uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
       with:
         egress-policy: audit
 
@@ -35,7 +35,7 @@ jobs:
         echo "last_month=$first_day..$last_day" >> "$GITHUB_ENV"
 
     - name: Run issue-metrics tool
-      uses: github/issue-metrics@119b5237f41e78241b9b9cae254e544b52a359a0 # v3.20.1
+      uses: github/issue-metrics@f5c0d3ba93f0f6c6465665ac6ed1737dc74cea78 # v3.22.0
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SEARCH_QUERY: 'repo:FreeCAD/FreeCAD is:issue created:${{ env.last_month }}'

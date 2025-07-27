@@ -208,6 +208,8 @@ public:
                 return true;
             }
         }
+        updateHint();
+
         return false;
     }
 
@@ -242,8 +244,16 @@ private:
 
     bool alwaysReference;
     bool intersection;
-};
 
+public:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return {
+            {tr("%1 pick external geometry", "Sketcher External: hint"),
+             {Gui::InputHint::UserInput::MouseLeft}},
+        };
+    }
+};
 
 }  // namespace SketcherGui
 

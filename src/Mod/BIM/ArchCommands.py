@@ -93,6 +93,14 @@ def getDefaultColor(objectType):
     r, g, b, _ = Draft.get_rgba_tuple(c)
     return (r, g, b, alpha)
 
+def _usedForAttachment(host,obj):
+    if not getattr(obj,"AttachmentSupport",[]):
+        return False
+    for sub in obj.AttachmentSupport:
+        if sub[0] == host:
+            return True
+    return False
+
 def addComponents(objectsList,host):
     '''addComponents(objectsList,hostObject): adds the given object or the objects
     from the given list as components to the given host Object. Use this for
@@ -105,24 +113,32 @@ def addComponents(objectsList,host):
             host.addObject(o)
     elif hostType in ["Wall","CurtainWall","Structure","Precast","Window","Roof","Stairs","StructuralSystem","Panel","Component","Pipe"]:
         import DraftGeomUtils
+        outList = host.OutListRecursive
         a = host.Additions
-        if hasattr(host,"Axes"):
-            x = host.Axes
+        x = getattr(host,"Axes",[])
         for o in objectsList:
-            if hasattr(o,'Shape'):
+            if hasattr(o,"Shape"):
                 if Draft.getType(o) == "Window":
                     if hasattr(o,"Hosts"):
                         if not host in o.Hosts:
                             g = o.Hosts
                             g.append(host)
                             o.Hosts = g
-                elif DraftGeomUtils.isValidPath(o.Shape) and (hostType in ["Structure","Precast"]):
-                    if o.AttachmentSupport == host:
-                        o.AttachmentSupport = None
-                    host.Tool = o
+                elif o in outList:
+                    FreeCAD.Console.PrintWarning(
+                        translate(
+                            "Arch",
+                            "Cannot add {0} as it is already referenced by {1}."
+                        ).format(o.Label, host.Label) + "\n"
+                    )
                 elif Draft.getType(o) == "Axis":
                     if not o in x:
                         x.append(o)
+                elif DraftGeomUtils.isValidPath(o.Shape) and (hostType in ["Structure","Precast"]):
+                    if _usedForAttachment(host,o):
+                        o.AttachmentSupport = None
+                        o.MapMode = "Deactivated"
+                    host.Tool = o
                 elif not o in a:
                     if hasattr(o,"Shape"):
                         a.append(o)
@@ -148,15 +164,15 @@ def removeComponents(objectsList,host=None):
         objectsList = [objectsList]
     if host:
         if Draft.getType(host) in ["Wall","CurtainWall","Structure","Precast","Window","Roof","Stairs","StructuralSystem","Panel","Component","Pipe"]:
-            if hasattr(host,"Tool"):
-                if objectsList[0] == host.Tool:
-                    host.Tool = None
+            if getattr(host,"Tool",None) in objectsList:
+                host.Tool = None
             if hasattr(host,"Axes"):
                 a = host.Axes
                 for o in objectsList[:]:
                     if o in a:
                         a.remove(o)
                         objectsList.remove(o)
+                host.Axes = a
             s = host.Subtractions
             for o in objectsList:
                 if Draft.getType(o) == "Window":
@@ -168,34 +184,24 @@ def removeComponents(objectsList,host=None):
                 elif not o in s:
                     s.append(o)
                     if FreeCAD.GuiUp:
-                        if not Draft.getType(o) in ["Window","Roof"]:
+                        if Draft.getType(o) != "Roof":
                             setAsSubcomponent(o)
-                    # Making reference to BimWindow.Arch_Window:
-                    # Check if o and o.Base has Attachment Support, and
-                    # if the support is the host object itself - thus a cyclic
-                    # dependency and probably creating TNP.
-                    # If above is positive, remove its AttachmentSupport:
+                    # Avoid cyclic dependency via Attachment Support:
                     if hasattr(o,"Base") and o.Base:
                         objList = [o, o.Base]
                     else:
                         objList = [o]
                     for i in objList:
-                        objHost = None
-                        if hasattr(i,"AttachmentSupport"):
-                            if i.AttachmentSupport:
-                                if isinstance(i.AttachmentSupport,tuple):
-                                    objHost = i.AttachmentSupport[0]
-                                elif isinstance(i.AttachmentSupport,list):
-                                    objHost = i.AttachmentSupport[0][0]
-                                else:
-                                    objHost = i.AttachmentSupport
-                            if objHost == host:
-                                msg = FreeCAD.Console.PrintMessage
-                                msg(i.Label + " is mapped to " + host.Label +
-                                    ", removing the former's Attachment " +
-                                    "Support to avoid cyclic dependency and " +
-                                    "TNP." + "\n")
-                                i.AttachmentSupport = None # remove
+                        if _usedForAttachment(host,i):
+                            FreeCAD.Console.PrintMessage(
+                                translate(
+                                    "Arch",
+                                    "{0} is mapped to {1}, removing the former's " +
+                                    "Attachment Support to avoid cyclic dependency."
+                                ).format(o.Label, host.Label) + "\n"
+                            )
+                            i.AttachmentSupport = None
+                            i.MapMode = "Deactivated"
             host.Subtractions = s
         elif Draft.getType(host) in ["SectionPlane"]:
             a = host.Objects

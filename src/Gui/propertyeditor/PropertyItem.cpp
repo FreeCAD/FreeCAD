@@ -1376,9 +1376,11 @@ void PropertyBoolItem::setValue(const QVariant& value)
 }
 
 QWidget* PropertyBoolItem::createEditor(QWidget* parent,
-                                        const std::function<void()>& method,
+                                        const std::function<void()>& /*method*/,
                                         FrameOption /*frameOption*/) const
 {
+    // The checkbox is basically artificial (it is not rendered). Other code handles the callback,
+    // etc.
     auto checkbox = new QCheckBox(parent);
     return checkbox;
 }
@@ -1786,15 +1788,11 @@ void PropertyVectorDistanceItem::setValue(const QVariant& variant)
     }
     const Base::Vector3d& value = variant.value<Base::Vector3d>();
 
-    Base::Quantity x = Base::Quantity(value.x, Base::Unit::Length);
-    Base::Quantity y = Base::Quantity(value.y, Base::Unit::Length);
-    Base::Quantity z = Base::Quantity(value.z, Base::Unit::Length);
-
     Base::QuantityFormat format(Base::QuantityFormat::Default, highPrec);
     std::string val = fmt::format("({}, {}, {})",
-                                  Base::UnitsApi::toNumber(x, format),
-                                  Base::UnitsApi::toNumber(y, format),
-                                  Base::UnitsApi::toNumber(z, format));
+                                  Base::UnitsApi::toNumber(value.x, format),
+                                  Base::UnitsApi::toNumber(value.y, format),
+                                  Base::UnitsApi::toNumber(value.z, format));
     setPropertyValue(val);
 }
 

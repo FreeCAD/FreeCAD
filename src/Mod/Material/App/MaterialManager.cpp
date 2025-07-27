@@ -273,9 +273,9 @@ std::shared_ptr<MaterialLibrary> MaterialManager::getLibrary(const QString& name
     return _localManager->getLibrary(name);
 }
 
-void MaterialManager::createLibrary(const QString& libraryName,
-                                    const QString& iconPath,
-                                    bool readOnly)
+void MaterialManager::createLibrary([[maybe_unused]] const QString& libraryName,
+                                    [[maybe_unused]] const QString& iconPath,
+                                    [[maybe_unused]] bool readOnly)
 {
 #if defined(BUILD_MATERIAL_EXTERNAL)
     if (_useExternal) {
@@ -325,7 +325,7 @@ void MaterialManager::removeLibrary(const QString& libraryName)
 }
 
 std::shared_ptr<std::vector<LibraryObject>>
-MaterialManager::libraryMaterials(const QString& libraryName, bool local)
+MaterialManager::libraryMaterials(const QString& libraryName, [[maybe_unused]] bool local)
 {
 #if defined(BUILD_MATERIAL_EXTERNAL)
     if (_useExternal && !local) {
@@ -346,7 +346,7 @@ std::shared_ptr<std::vector<LibraryObject>>
 MaterialManager::libraryMaterials(const QString& libraryName,
                                   const MaterialFilter& filter,
                                   const MaterialFilterOptions& options,
-                                  bool local)
+                                  [[maybe_unused]] bool local)
 {
 #if defined(BUILD_MATERIAL_EXTERNAL)
     if (_useExternal && !local) {

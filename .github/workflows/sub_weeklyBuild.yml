@@ -14,7 +14,7 @@ jobs:
       build_tag: ${{ steps.tag_build.outputs.build_tag }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@0634a2670c59f64b4a01f0f96f84700a4088b9f0 # v2.12.0
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
         with:
           egress-policy: audit
 
@@ -72,7 +72,7 @@ jobs:
     environment: weekly-build
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@0634a2670c59f64b4a01f0f96f84700a4088b9f0 # v2.12.0
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
         with:
           egress-policy: audit
 
@@ -104,9 +104,9 @@ jobs:
           fetch-tags: true
           submodules: 'recursive'
 
-      - uses: prefix-dev/setup-pixi@19eac09b398e3d0c747adc7921926a6d802df4da # v0.8.8
+      - uses: prefix-dev/setup-pixi@307e5e5842748e3752d5178fbd158e0a6c1b55ff # v0.8.12
         with:
-          pixi-version: v0.46.0
+          pixi-version: v0.48.1
           cache: false
 
       - name: Install the Apple certificate and provisioning profile

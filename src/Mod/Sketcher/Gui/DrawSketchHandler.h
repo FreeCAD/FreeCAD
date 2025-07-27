@@ -23,8 +23,8 @@
 #ifndef SKETCHERGUI_DrawSketchHandler_H
 #define SKETCHERGUI_DrawSketchHandler_H
 
-#include <QCursor>
 #include <QPixmap>
+#include <QCoreApplication>
 
 #include <Inventor/SbString.h>
 
@@ -32,10 +32,13 @@
 #include <Base/Tools2D.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ToolHandler.h>
+#include <Gui/InputHint.h>
+
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/Constraint.h>
 
 #include "AutoConstraint.h"
+#include "Utils.h"
 
 class QWidget;
 
@@ -82,7 +85,6 @@ private:
     int curvedEdgeCountSegments;
 };
 
-
 /**
  * In order to enforce a certain degree of encapsulation and promote a not
  * too tight coupling, while still allowing well defined collaboration,
@@ -115,8 +117,10 @@ private:
     static inline int getPreselectCurve(const ViewProviderSketch& vp);
     static inline int getPreselectCross(const ViewProviderSketch& vp);
 
-    static inline void
-    moveConstraint(ViewProviderSketch& vp, int constNum, const Base::Vector2d& toPos);
+    static inline void moveConstraint(ViewProviderSketch& vp,
+                                      int constNum,
+                                      const Base::Vector2d& toPos,
+                                      OffsetMode offset = NoOffset);
 
     static inline void signalToolChanged(const ViewProviderSketch& vp, const std::string& toolname);
 
@@ -140,11 +144,14 @@ private:
  */
 class SketcherGuiExport DrawSketchHandler: public Gui::ToolHandler
 {
+    Q_DECLARE_TR_FUNCTIONS(DrawSketchHandler)
+
 public:
     DrawSketchHandler();
     virtual ~DrawSketchHandler();
 
     void activate(ViewProviderSketch*);
+    void setSketchGui(ViewProviderSketch* vp);
     void deactivate() override;
 
     virtual void mouseMove(Base::Vector2d pos) = 0;
@@ -157,6 +164,11 @@ public:
     virtual bool onSelectionChanged(const Gui::SelectionChanges&)
     {
         return false;
+    }
+
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return {};
     }
 
     void quit() override;
@@ -267,7 +279,7 @@ protected:
 
     void setAngleSnapping(bool enable, Base::Vector2d referencePoint = Base::Vector2d(0., 0.));
 
-    void moveConstraint(int constNum, const Base::Vector2d& toPos);
+    void moveConstraint(int constNum, const Base::Vector2d& toPos, OffsetMode offset = NoOffset);
 
     void signalToolChanged() const;
 

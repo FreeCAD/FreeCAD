@@ -70,12 +70,13 @@ void TaskDimRepair::setUiPrimary()
     ui->leName->setText(QString::fromStdString(m_dim->getNameInDocument()));
     ui->leLabel->setText(QString::fromStdString(m_dim->Label.getValue()));
 
-    std::string objName = m_dim->getViewPart()->getNameInDocument();
-    std::string objLabel = m_dim->getViewPart()->Label.getValue();
+    DrawViewPart* viewPart = m_dim->getViewPart();
+    std::string objName = viewPart ?  viewPart->getNameInDocument() : "";
+    std::string objLabel = viewPart ?  viewPart->Label.getValue() : "";
     ui->leObject2d->setText(QString::fromStdString(objName + " / " + objLabel));
     const std::vector<std::string>& subElements2d = m_dim->References2D.getSubValues();
-    std::vector<std::string> noLabels(subElements2d.size());
-    fillList(ui->lwGeometry2d, subElements2d, noLabels);
+    std::vector<std::string> labelsInOut(subElements2d.size());
+    fillList(ui->lwGeometry2d, labelsInOut, subElements2d);
 
     QStringList headers;
     headers << tr("Object Name") << tr("Object Label") << tr("SubElement");
@@ -119,11 +120,14 @@ void TaskDimRepair::slotUseSelection()
     ReferenceVector references2d;
     ReferenceVector references3d;
     TechDraw::DrawViewPart* dvp = TechDraw::getReferencesFromSelection(references2d, references3d);
-    if (dvp != m_saveDvp) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not use references from a different View"));
-        return;
+     if (dvp != m_saveDvp) {
+        int ret = QMessageBox::warning(Gui::getMainWindow(),
+                                       QObject::tr("Incorrect Selection?"),
+                                       QObject::tr("This will change the dimension's owner view. Continue?"),
+                                       QMessageBox::Cancel | QMessageBox::Ok);
+        if (ret == QMessageBox::Cancel) {
+            return;
+        }
     }
 
     StringVector acceptableGeometry({ "Edge", "Vertex", "Face" });
@@ -161,16 +165,24 @@ void TaskDimRepair::slotUseSelection()
 
 void TaskDimRepair::updateUi()
 {
-    std::string objName = m_dim->getViewPart()->getNameInDocument();
-    std::string objLabel = m_dim->getViewPart()->Label.getValue();
+    // if the dimension is very broken, it may not have a valid 2d view reference.  This can happen if the
+    // restore process breaks and the reference target object does not get properly loaded.
+
+    DrawViewPart* viewPart = m_dim->getViewPart();
+    if (!viewPart && !m_toApply2d.empty()) {
+        viewPart = Base::freecad_cast<DrawViewPart*>(m_toApply2d.front().getObject());
+    }
+
+    std::string objName = viewPart ?  viewPart->getNameInDocument() : "";
+    std::string objLabel = viewPart ?  viewPart->Label.getValue() : "";
     ui->leObject2d->setText(QString::fromStdString(objName + " / " + objLabel));
 
     std::vector<std::string> subElements2d;
     for (auto& ref : m_toApply2d) {
         subElements2d.push_back(ref.getSubName());
     }
-    std::vector<std::string> noLabels(subElements2d.size());
-    fillList(ui->lwGeometry2d, subElements2d, noLabels);
+    std::vector<std::string> labelsInOut(subElements2d.size());
+    fillList(ui->lwGeometry2d, labelsInOut, subElements2d);
 
     loadTableWidget(ui->twReferences3d, m_toApply3d);
 }
@@ -218,12 +230,12 @@ void TaskDimRepair::fillList(QListWidget* lwItems, std::vector<std::string> labe
 }
 void TaskDimRepair::replaceReferences()
 {
-    if (!m_dim) {
+    if (!m_dim || m_toApply2d.empty()) {
         return;
     }
-    if (!m_toApply2d.empty()) {
-        m_dim->setReferences2d(m_toApply2d);
-    }
+
+    m_dim->setReferences2d(m_toApply2d);
+
     if (!m_toApply3d.empty()) {
         m_dim->setReferences3d(m_toApply3d);
     }

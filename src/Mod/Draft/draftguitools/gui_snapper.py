@@ -431,8 +431,7 @@ class Snapper:
             snaps.extend(self.snapToEndpoints(obj.Mesh))
 
         elif Draft.getType(obj).startswith("Points::"):
-            # for points we only snap to points
-            snaps.extend(self.snapToEndpoints(obj.Points))
+            snaps.extend(self.snapToEndpoints(obj.Points, point))
 
         elif (Draft.getType(obj) in ("WorkingPlaneProxy", "BuildingPart")
               and self.isEnabled("Center")):
@@ -740,23 +739,32 @@ class Snapper:
         return point
 
 
-    def snapToEndpoints(self, shape):
+    def snapToEndpoints(self, shape, point=None):
         """Return a list of endpoints snap locations."""
-        snaps = []
         if self.isEnabled("Endpoint"):
             if hasattr(shape, "Vertexes"):
+                snaps = []
                 for v in shape.Vertexes:
-                    snaps.append([v.Point, 'endpoint', self.toWP(v.Point)])
-            elif hasattr(shape, "Point"):
-                snaps.append([shape.Point, 'endpoint', self.toWP(shape.Point)])
-            elif hasattr(shape, "Points"):
-                if len(shape.Points) and hasattr(shape.Points[0], "Vector"):
-                    for v in shape.Points:
-                        snaps.append([v.Vector, 'endpoint', self.toWP(v.Vector)])
-                else:
-                    for v in shape.Points:
-                        snaps.append([v, 'endpoint', self.toWP(v)])
-        return snaps
+                    snaps.append([v.Point, "endpoint", self.toWP(v.Point)])
+                return snaps
+            if hasattr(shape, "Point"):
+                return [[shape.Point, "endpoint", self.toWP(shape.Point)]]
+            if hasattr(shape, "Points") and point is not None:
+                # point cloud
+                # Same as snapToNearUnprojected.
+                # Processing individual points in a large point cloud is way too slow:
+                # https://github.com/FreeCAD/FreeCAD/issues/22367
+                # Must come before handling of mesh as even accessing shape.Points is slow then.
+                return [[point, "endpoint", self.toWP(point)]]
+            if hasattr(shape, "Points"):
+                # mesh
+                pts = shape.Points
+                if pts and hasattr(pts[0], "Vector"):
+                    snaps = []
+                    for pt in pts:
+                        snaps.append([pt.Vector, "endpoint", self.toWP(pt.Vector)])
+                    return snaps
+        return []
 
 
     def snapToMidpoint(self, shape):

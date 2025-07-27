@@ -122,7 +122,10 @@ class BIM_IfcQuantities:
         self.qmodel.dataChanged.connect(self.setChecked)
         self.form.buttonBox.accepted.connect(self.accept)
         self.form.quantities.clicked.connect(self.onClickTree)
-        self.form.onlyVisible.stateChanged.connect(self.update)
+        if hasattr(self.form.onlyVisible, "checkStateChanged"): # Qt version >= 6.7.0
+            self.form.onlyVisible.checkStateChanged.connect(self.update)
+        else: # Qt version < 6.7.0
+            self.form.onlyVisible.stateChanged.connect(self.update)
         self.form.buttonRefresh.clicked.connect(self.update)
         self.form.buttonApply.clicked.connect(self.add_qto)
 

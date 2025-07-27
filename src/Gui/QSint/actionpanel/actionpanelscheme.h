@@ -59,11 +59,6 @@ public:
     int headerSize;
 
     /**
-     * @brief Whether mouseover on the header triggers a slow opacity change.
-     */
-    bool headerAnimation;
-
-    /**
      * @brief Image of the folding button when the group is expanded.
      */
     QPixmap headerButtonFold;

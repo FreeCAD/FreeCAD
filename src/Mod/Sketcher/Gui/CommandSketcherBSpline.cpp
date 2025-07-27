@@ -111,7 +111,7 @@ CmdSketcherConvertToNURBS::CmdSketcherConvertToNURBS()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Convert geometry to B-spline");
+    sMenuText = QT_TR_NOOP("Geometry to B-Spline");
     sToolTipText = QT_TR_NOOP("Converts the selected geometry to a B-spline");
     sWhatsThis = "Sketcher_BSplineConvertToNURBS";
     sStatusTip = sToolTipText;
@@ -187,7 +187,7 @@ CmdSketcherIncreaseDegree::CmdSketcherIncreaseDegree()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Increase B-spline degree");
+    sMenuText = QT_TR_NOOP("Increase B-Spline Degree");
     sToolTipText = QT_TR_NOOP("Increases the degree of the B-spline");
     sWhatsThis = "Sketcher_BSplineIncreaseDegree";
     sStatusTip = sToolTipText;
@@ -264,7 +264,7 @@ CmdSketcherDecreaseDegree::CmdSketcherDecreaseDegree()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Decrease B-spline degree");
+    sMenuText = QT_TR_NOOP("Decrease B-Spline Degree");
     sToolTipText = QT_TR_NOOP("Decreases the degree of the B-spline");
     sWhatsThis = "Sketcher_BSplineDecreaseDegree";
     sStatusTip = sToolTipText;
@@ -346,7 +346,7 @@ CmdSketcherIncreaseKnotMultiplicity::CmdSketcherIncreaseKnotMultiplicity()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Increase knot multiplicity");
+    sMenuText = QT_TR_NOOP("Increase Knot Multiplicity");
     sToolTipText = QT_TR_NOOP("Increases the multiplicity of the selected knot of a B-spline");
     sWhatsThis = "Sketcher_BSplineIncreaseKnotMultiplicity";
     sStatusTip = sToolTipText;
@@ -377,8 +377,7 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
         Gui::TranslatedUserWarning(
             getActiveGuiDocument()->getDocument(),
             QObject::tr("Wrong selection"),
-            QObject::tr(
-                "The selection comprises more than one item. Please select just one knot."));
+            QObject::tr("The selection comprises more than one item. Select just one knot."));
         return;
     }
 
@@ -494,7 +493,7 @@ CmdSketcherDecreaseKnotMultiplicity::CmdSketcherDecreaseKnotMultiplicity()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Decrease knot multiplicity");
+    sMenuText = QT_TR_NOOP("Decrease Knot Multiplicity");
     sToolTipText = QT_TR_NOOP("Decreases the multiplicity of the selected knot of a B-spline");
     sWhatsThis = "Sketcher_BSplineDecreaseKnotMultiplicity";
     sStatusTip = sToolTipText;
@@ -525,8 +524,7 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
         Gui::TranslatedUserWarning(
             getActiveGuiDocument()->getDocument(),
             QObject::tr("Wrong selection"),
-            QObject::tr(
-                "The selection comprises more than one item. Please select just one knot."));
+            QObject::tr("The selection comprises more than one item. Select just one knot."));
         return;
     }
 
@@ -632,7 +630,7 @@ CmdSketcherCompModifyKnotMultiplicity::CmdSketcherCompModifyKnotMultiplicity()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Modify knot multiplicity");
+    sMenuText = QT_TR_NOOP("Modify Knot Multiplicity");
     sToolTipText = QT_TR_NOOP("Modifies the multiplicity of the selected knot of a B-spline");
     sWhatsThis = "Sketcher_CompModifyKnotMultiplicity";
     sStatusTip = sToolTipText;
@@ -886,9 +884,10 @@ CmdSketcherInsertKnot::CmdSketcherInsertKnot()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Insert knot");
-    sToolTipText = QT_TR_NOOP("Inserts knot at given parameter. If a knot already exists at that "
-                              "parameter, it's multiplicity is increased by one.");
+    sMenuText = QT_TR_NOOP("Insert Knot");
+    sToolTipText =
+        QT_TR_NOOP("Inserts a knot at a given parameter. If a knot already exists at that "
+                   "parameter, its multiplicity is increased by 1.");
     sWhatsThis = "Sketcher_BSplineInsertKnot";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_BSplineInsertKnot";
@@ -917,7 +916,7 @@ void CmdSketcherInsertKnot::activated(int iMsg)
         // as we need only one object to get the new GeoId after multiplicity change
         Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
                                    QObject::tr("Selection is empty"),
-                                   QObject::tr("Nothing is selected. Please select a B-spline."));
+                                   QObject::tr("Nothing is selected. Select a B-spline."));
 
         return;
     }
@@ -935,8 +934,8 @@ void CmdSketcherInsertKnot::activated(int iMsg)
         Gui::TranslatedUserWarning(
             Obj,
             QObject::tr("Wrong selection"),
-            QObject::tr("Please select a B-spline to insert a knot (not a knot on it). "
-                        "If the curve is not a B-spline, please convert it into one first."));
+            QObject::tr("Select a B-spline to insert a knot (not a knot on it). "
+                        "If the curve is not a B-spline, convert it into one first."));
     }
 
     getSelection().clearSelection();
@@ -954,8 +953,8 @@ CmdSketcherJoinCurves::CmdSketcherJoinCurves()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Join curves");
-    sToolTipText = QT_TR_NOOP("Join two curves at selected end points");
+    sMenuText = QT_TR_NOOP("Join Curves");
+    sToolTipText = QT_TR_NOOP("Joins 2 curves at selected end points");
     sWhatsThis = "Sketcher_JoinCurves";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_JoinCurves";
@@ -990,7 +989,7 @@ void CmdSketcherJoinCurves::activated(int iMsg)
             Gui::TranslatedUserWarning(
                 Obj,
                 QObject::tr("Selection is empty"),
-                QObject::tr("Nothing is selected. Please select end points of curves."));
+                QObject::tr("Nothing is selected. Select end points of curves."));
             return;
         }
         case 1: {

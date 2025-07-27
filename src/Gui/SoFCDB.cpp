@@ -51,8 +51,11 @@
 #include "Camera.h"
 #include "Flag.h"
 #include "Inventor/Draggers/SoTransformDragger.h"
+#include "Inventor/Draggers/SoLinearDragger.h"
+#include "Inventor/Draggers/SoRotationDragger.h"
 #include "Navigation/GestureNavigationStyle.h"
 #include "Navigation/NavigationStyle.h"
+#include "Navigation/SiemensNXNavigationStyle.h"
 #include "SelectionObject.h"
 #include "SoDevicePixelRatioElement.h"
 #include "SoFCColorBar.h"
@@ -76,6 +79,7 @@
 #include "Inventor/SoFCBoundingBox.h"
 #include "Inventor/SoMouseWheelEvent.h"
 #include "Inventor/SoFCTransform.h"
+#include "Inventor/SoToggleSwitch.h"
 #include "propertyeditor/PropertyItem.h"
 #include "ArcEngine.h"
 
@@ -142,7 +146,12 @@ void Gui::SoFCDB::init()
     SoFCTransform                   ::initClass();
     SoAutoZoomTranslation           ::initClass();
     MarkerBitmaps                   ::initClass();
-    SoTransformDragger                 ::initClass();
+    SoTransformDragger              ::initClass();
+    SoLinearGeometryKit             ::initClass();
+    SoArrowGeometry                 ::initClass();
+    SoRotatorGeometryKit            ::initClass();
+    SoRotatorGeometry               ::initClass();
+    SoToggleSwitch                  ::initClass();
     SmSwitchboard                   ::initClass();
     SoFCSeparator                   ::initClass();
     SoFCSelectionRoot               ::initClass();
@@ -188,17 +197,19 @@ void Gui::SoFCDB::init()
 
     NavigationStyle                 ::init();
     UserNavigationStyle             ::init();
-    InventorNavigationStyle         ::init();
-    CADNavigationStyle              ::init();
-    RevitNavigationStyle            ::init();
+    NavigationStateChart            ::init();
     BlenderNavigationStyle          ::init();
-    SolidWorksNavigationStyle       ::init();
-    MayaGestureNavigationStyle      ::init();
-    TouchpadNavigationStyle         ::init();
+    CADNavigationStyle              ::init();
     GestureNavigationStyle          ::init();
+    MayaGestureNavigationStyle      ::init();
     OpenCascadeNavigationStyle      ::init();
+    InventorNavigationStyle         ::init();
     OpenSCADNavigationStyle         ::init();
+    RevitNavigationStyle            ::init();
+    SiemensNXNavigationStyle        ::init();
+    SolidWorksNavigationStyle       ::init();
     TinkerCADNavigationStyle        ::init();
+    TouchpadNavigationStyle         ::init();
 
     GLGraphicsItem                  ::init();
     GLFlagWindow                    ::init();

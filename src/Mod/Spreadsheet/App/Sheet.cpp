@@ -146,11 +146,6 @@ void Sheet::clearAll()
     cellErrors.clear();
     columnWidths.clear();
     rowHeights.clear();
-
-    for (auto& observer : observers) {
-        delete observer.second;
-    }
-    observers.clear();
 }
 
 // validate import/export parameters
@@ -802,7 +797,7 @@ void Sheet::updateProperty(CellAddress key)
                 Base::PyGILStateLocker lock;
                 setObjectProperty(key, constant->getPyValue());
             }
-            else if (!number->getUnit().isEmpty()) {
+            else if (number->getUnit() != Unit::One) {
                 setQuantityProperty(key, number->getValue(), number->getUnit());
             }
             else if (number->isInteger(&l)) {

@@ -31,6 +31,7 @@
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/io/ios_state.hpp>
 #include <boost/math/special_functions/round.hpp>
 #include <boost/math/special_functions/trunc.hpp>
 
@@ -488,7 +489,7 @@ static inline Quantity pyToQuantity(const Py::Object &pyobj,
 }
 
 Py::Object pyFromQuantity(const Quantity &quantity) {
-    if(!quantity.getUnit().isEmpty())
+    if (!quantity.isDimensionless())
         return Py::asObject(new QuantityPy(new Quantity(quantity)));
     double v = quantity.getValue();
     long l;

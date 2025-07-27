@@ -32,6 +32,7 @@
 # include <QPointer>
 # include <QPushButton>
 # include <QTimer>
+# include <QVBoxLayout>
 #endif
 
 #include <App/Document.h>
@@ -268,9 +269,23 @@ QSize TaskPanel::minimumSizeHint() const
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskView::TaskView(QWidget *parent)
-    : QScrollArea(parent),ActiveDialog(nullptr),ActiveCtrl(nullptr)
+    : QWidget(parent),ActiveDialog(nullptr),ActiveCtrl(nullptr)
 {
-    taskPanel = new TaskPanel(this);
+    mainLayout = new QVBoxLayout(this);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
+    this->setLayout(mainLayout);
+    scrollArea = new QScrollArea(this);
+
+    contextualPanelsLayout = new QVBoxLayout();
+    contextualPanelsLayout->setContentsMargins(0, 0, 0, 0);
+    mainLayout->addLayout(contextualPanelsLayout);
+
+    dialogLayout = new QVBoxLayout();
+    dialogLayout->setContentsMargins(0, 0, 0, 0);
+    dialogLayout->setSpacing(0);
+    mainLayout->addLayout(dialogLayout, 1);
+
+    taskPanel = new TaskPanel(scrollArea);
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     sizePolicy.setHorizontalStretch(0);
     sizePolicy.setVerticalStretch(0);
@@ -278,10 +293,11 @@ TaskView::TaskView(QWidget *parent)
     taskPanel->setSizePolicy(sizePolicy);
     taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 
-    this->setWidget(taskPanel);
-    setWidgetResizable(true);
-    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    this->setMinimumWidth(200);
+    scrollArea->setWidget(taskPanel);
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    scrollArea->setMinimumWidth(200);
+    dialogLayout->addWidget(scrollArea, 1);
 
     Gui::Selection().Attach(this);
 
@@ -314,6 +330,10 @@ TaskView::~TaskView()
     connectApplicationUndoDocument.disconnect();
     connectApplicationRedoDocument.disconnect();
     Gui::Selection().Detach(this);
+
+    for (QWidget* panel : contextualPanels) {
+        delete panel;
+    }
 }
 
 bool TaskView::isEmpty(bool includeWatcher) const
@@ -361,7 +381,7 @@ bool TaskView::event(QEvent* event)
             }
         }
     }
-    return QScrollArea::event(event);
+    return QWidget::event(event);
 }
 
 void TaskView::keyPressEvent(QKeyEvent* ke)
@@ -423,7 +443,7 @@ void TaskView::keyPressEvent(QKeyEvent* ke)
         }
     }
     else {
-        QScrollArea::keyPressEvent(ke);
+        QWidget::keyPressEvent(ke);
     }
 }
 
@@ -441,7 +461,7 @@ void TaskView::adjustMinimumSizeHint()
 
 QSize TaskView::minimumSizeHint() const
 {
-    QSize ms = QScrollArea::minimumSizeHint();
+    QSize ms = QWidget::minimumSizeHint();
     int spacing = 0;
     if (QLayout* layout = taskPanel->layout()) {
         spacing = 2 * layout->spacing();
@@ -592,7 +612,8 @@ void TaskView::showDialog(TaskDialog *dlg)
     dlg->modifyStandardButtons(ActiveCtrl->buttonBox);
 
     if (dlg->buttonPosition() == TaskDialog::North) {
-        taskPanel->addWidget(ActiveCtrl);
+        // Add button box to the top of the main layout
+        dialogLayout->insertWidget(0, ActiveCtrl);
         for (const auto & it : cont){
             taskPanel->addWidget(it);
         }
@@ -601,7 +622,8 @@ void TaskView::showDialog(TaskDialog *dlg)
         for (const auto & it : cont){
             taskPanel->addWidget(it);
         }
-        taskPanel->addWidget(ActiveCtrl);
+        // Add button box to the bottom of the main layout
+        dialogLayout->addWidget(ActiveCtrl);
     }
 
     taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
@@ -627,7 +649,7 @@ void TaskView::removeDialog()
     getMainWindow()->updateActions();
 
     if (ActiveCtrl) {
-        taskPanel->removeWidget(ActiveCtrl);
+        dialogLayout->removeWidget(ActiveCtrl);
         delete ActiveCtrl;
         ActiveCtrl = nullptr;
     }
@@ -879,5 +901,30 @@ void TaskView::restoreActionStyle()
     taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 }
 
+void TaskView::addContextualPanel(QWidget* panel)
+{
+    if (!panel || contextualPanels.contains(panel)) {
+        return;
+    }
+
+    contextualPanelsLayout->addWidget(panel);
+    contextualPanels.append(panel);
+    panel->show();
+    triggerMinimumSizeHint();
+    Q_EMIT taskUpdate();
+}
+
+void TaskView::removeContextualPanel(QWidget* panel)
+{
+    if (!panel || !contextualPanels.contains(panel)) {
+        return;
+    }
+
+    contextualPanelsLayout->removeWidget(panel);
+    contextualPanels.removeOne(panel);
+    panel->deleteLater();
+    triggerMinimumSizeHint();
+    Q_EMIT taskUpdate();
+}
 
 #include "moc_TaskView.cpp"

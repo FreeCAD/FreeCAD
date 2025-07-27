@@ -65,7 +65,7 @@ class CommandCreateSimulation:
         return {
             "Pixmap": "Assembly_CreateSimulation",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateSimulation", "Create Simulation"),
-            "Accel": "S",
+            "Accel": "V",
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateSimulation",
@@ -76,10 +76,13 @@ class CommandCreateSimulation:
         }
 
     def IsActive(self):
-        return (
-            UtilsAssembly.isAssemblyCommandActive()
-            and UtilsAssembly.assembly_has_at_least_n_parts(1)
-        )
+        if not UtilsAssembly.isAssemblyCommandActive():
+            return False
+
+        assembly = UtilsAssembly.activeAssembly()
+        joint_types = ["Revolute", "Slider", "Cylindrical"]
+        joints = UtilsAssembly.getJointsOfType(assembly, joint_types)
+        return len(joints) > 0
 
     def Activated(self):
         assembly = UtilsAssembly.activeAssembly()

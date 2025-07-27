@@ -16,6 +16,7 @@ set(MeshGui_LIBS
 )
 
 generate_from_xml(ViewProviderMeshPy)
+generate_from_py_(ViewProviderMeshPy)
 
 SET(MeshGui_XML_SRCS
     ViewProviderMeshPy.xml

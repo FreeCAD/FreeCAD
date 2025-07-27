@@ -128,8 +128,8 @@ namespace {
         }
 
         // QSvgRenderer::transformForElement only returns transform for parents, not for the element itself
-        // If the `text` element itself has transform, let's wrap it in a shallow group so it's takin into account
-        // by QSvgRenderer::transformForElement
+        // If the `text` element itself has transform, let's wrap it in a shallow group so it's taken into
+        // account by QSvgRenderer::transformForElement
         for(QDomElement& textElement : textElements) {
             if (textElement.hasAttribute(QStringLiteral("transform"))) {
                 QDomElement group = doc.createElement(QStringLiteral("g"));

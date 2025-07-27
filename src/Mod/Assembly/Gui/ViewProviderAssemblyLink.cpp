@@ -106,8 +106,6 @@ bool ViewProviderAssemblyLink::onDelete(const std::vector<std::string>& subNames
 {
     Q_UNUSED(subNames)
 
-    Base::Console().warning("onDelete\n");
-
     Gui::Command::doCommand(Gui::Command::Doc,
                             "App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()",
                             getObject()->getDocument()->getName(),

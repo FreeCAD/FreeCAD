@@ -1872,6 +1872,7 @@ int ParameterManager::LoadDocument(const XERCES_CPP_NAMESPACE_QUALIFIER InputSou
     parser->setDoSchema(gDoSchema);
     parser->setValidationSchemaFullChecking(gSchemaFullChecking);
     parser->setCreateEntityReferenceNodes(gDoCreate);
+    parser->setDisableDefaultEntityResolution(true);
 
     auto errReporter = new DOMTreeErrorReporter();
     parser->setErrorHandler(errReporter);
@@ -2093,6 +2094,7 @@ void ParameterManager::CheckDocument() const
         parser.setValidationScheme(XercesDOMParser::Val_Auto);
         parser.setDoNamespaces(true);
         parser.setDoSchema(true);
+        parser.setDisableDefaultEntityResolution(true);
 
         DOMTreeErrorReporter errHandler;
         parser.setErrorHandler(&errHandler);

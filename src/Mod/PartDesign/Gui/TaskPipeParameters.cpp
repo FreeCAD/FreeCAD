@@ -35,6 +35,7 @@
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection/Selection.h>
+#include <Gui/Tools.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Widgets.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -86,11 +87,7 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
-    {
-        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
-        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
-        remove->setShortcut(QKeySequence(shortcut));
-    }
+    remove->setShortcut(Gui::QtTools::deleteKeySequence());
     remove->setShortcutContext(Qt::WidgetShortcut);
 
     // display shortcut behind the context menu entry
@@ -609,11 +606,7 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView,
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
-    {
-        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
-        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
-        remove->setShortcut(QKeySequence(shortcut));
-    }
+    remove->setShortcut(Gui::QtTools::deleteKeySequence());
     remove->setShortcutContext(Qt::WidgetShortcut);
 
     // display shortcut behind the context menu entry
@@ -901,11 +894,7 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
-    {
-        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
-        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
-        remove->setShortcut(QKeySequence(shortcut));
-    }
+    remove->setShortcut(Gui::QtTools::deleteKeySequence());
     remove->setShortcutContext(Qt::WidgetShortcut);
 
     // display shortcut behind the context menu entry

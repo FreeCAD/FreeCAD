@@ -95,7 +95,10 @@ class BIM_IfcElements:
                 )
         self.form.groupMode.currentIndexChanged.connect(self.update)
         self.form.tree.clicked.connect(self.onClickTree)
-        self.form.onlyVisible.stateChanged.connect(self.update)
+        if hasattr(self.form.onlyVisible, "checkStateChanged"): # Qt version >= 6.7.0
+            self.form.onlyVisible.checkStateChanged.connect(self.update)
+        else: # Qt version < 6.7.0
+            self.form.onlyVisible.stateChanged.connect(self.update)
         self.form.buttonBox.accepted.connect(self.accept)
         self.form.globalMode.currentIndexChanged.connect(self.onObjectTypeChanged)
         self.form.globalMaterial.currentIndexChanged.connect(self.onMaterialChanged)

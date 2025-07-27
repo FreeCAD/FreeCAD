@@ -53,8 +53,8 @@ CmdRobotCreateTrajectory::CmdRobotCreateTrajectory()
 {
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
-    sMenuText = QT_TR_NOOP("Create trajectory");
-    sToolTipText = QT_TR_NOOP("Create a new empty trajectory");
+    sMenuText = QT_TR_NOOP("Trajectory");
+    sToolTipText = QT_TR_NOOP("Creates a new empty trajectory");
     sWhatsThis = "Robot_CreateTrajectory";
     sStatusTip = sToolTipText;
     sPixmap = "Robot_CreateTrajectory";
@@ -88,7 +88,7 @@ CmdRobotInsertWaypoint::CmdRobotInsertWaypoint()
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
     sMenuText = QT_TR_NOOP("Insert in trajectory");
-    sToolTipText = QT_TR_NOOP("Insert robot Tool location into trajectory");
+    sToolTipText = QT_TR_NOOP("Inserts the robot tool location into the trajectory");
     sWhatsThis = "Robot_InsertWaypoint";
     sStatusTip = sToolTipText;
     sPixmap = "Robot_InsertWaypoint";
@@ -156,8 +156,8 @@ CmdRobotInsertWaypointPreselect::CmdRobotInsertWaypointPreselect()
 {
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
-    sMenuText = QT_TR_NOOP("Insert in trajectory");
-    sToolTipText = QT_TR_NOOP("Insert preselection position into trajectory (W)");
+    sMenuText = QT_TR_NOOP("Insert in Trajectory");
+    sToolTipText = QT_TR_NOOP("Inserts the preselection position into the trajectory (W)");
     sWhatsThis = "Robot_InsertWaypointPreselect";
     sStatusTip = sToolTipText;
     sPixmap = "Robot_InsertWaypointPre";
@@ -233,9 +233,9 @@ CmdRobotSetDefaultOrientation::CmdRobotSetDefaultOrientation()
 {
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
-    sMenuText = QT_TR_NOOP("Set default orientation");
+    sMenuText = QT_TR_NOOP("Set Default Orientation");
     sToolTipText =
-        QT_TR_NOOP("Set the default orientation for subsequent commands for waypoint creation");
+        QT_TR_NOOP("Sets the default orientation for subsequent commands for waypoint creation");
     sWhatsThis = "Robot_SetDefaultOrientation";
     sStatusTip = sToolTipText;
     sPixmap = nullptr;
@@ -277,8 +277,8 @@ CmdRobotSetDefaultValues::CmdRobotSetDefaultValues()
 {
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
-    sMenuText = QT_TR_NOOP("Set default values");
-    sToolTipText = QT_TR_NOOP("Set the default values for speed, acceleration and continuity for "
+    sMenuText = QT_TR_NOOP("Set Default Values");
+    sToolTipText = QT_TR_NOOP("Sets the default values for speed, acceleration, and continuity for "
                               "subsequent commands of waypoint creation");
     sWhatsThis = "Robot_SetDefaultValues";
     sStatusTip = sToolTipText;
@@ -358,8 +358,8 @@ CmdRobotEdge2Trac::CmdRobotEdge2Trac()
 {
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
-    sMenuText = QT_TR_NOOP("Edge to Trajectory...");
-    sToolTipText = QT_TR_NOOP("Generate a Trajectory from a set of edges");
+    sMenuText = QT_TR_NOOP("Edge to Trajectory…");
+    sToolTipText = QT_TR_NOOP("Generates a trajectory from the selected edges");
     sWhatsThis = "Robot_Edge2Trac";
     sStatusTip = sToolTipText;
     sPixmap = "Robot_Edge2Trac";
@@ -424,9 +424,8 @@ CmdRobotTrajectoryDressUp::CmdRobotTrajectoryDressUp()
 {
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
-    sMenuText = QT_TR_NOOP("Dress-up trajectory...");
-    sToolTipText =
-        QT_TR_NOOP("Create a dress-up object which overrides some aspects of a trajectory");
+    sMenuText = QT_TR_NOOP("Dress-Up Trajectory…");
+    sToolTipText = QT_TR_NOOP("Creates a dress-up object that overrides aspects of a trajectory");
     sWhatsThis = "Robot_TrajectoryDressUp";
     sStatusTip = sToolTipText;
     sPixmap = "Robot_TrajectoryDressUp";
@@ -481,8 +480,8 @@ CmdRobotTrajectoryCompound::CmdRobotTrajectoryCompound()
 {
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
-    sMenuText = QT_TR_NOOP("Trajectory compound...");
-    sToolTipText = QT_TR_NOOP("Group and connect some trajectories to one");
+    sMenuText = QT_TR_NOOP("Trajectory Compound…");
+    sToolTipText = QT_TR_NOOP("Groups and connects multiple trajectories into one");
     sWhatsThis = "Robot_TrajectoryCompound";
     sStatusTip = sToolTipText;
     sPixmap = "Robot_TrajectoryCompound";

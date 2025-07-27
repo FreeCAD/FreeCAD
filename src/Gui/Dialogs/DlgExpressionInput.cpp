@@ -124,8 +124,13 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
 
 DlgExpressionInput::~DlgExpressionInput()
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+    disconnect(ui->checkBoxVarSets, &QCheckBox::checkStateChanged,
+               this, &DlgExpressionInput::onCheckVarSets);
+#else
     disconnect(ui->checkBoxVarSets, &QCheckBox::stateChanged,
                this, &DlgExpressionInput::onCheckVarSets);
+#endif
     disconnect(ui->comboBoxVarSet, qOverload<int>(&QComboBox::currentIndexChanged),
                this, &DlgExpressionInput::onVarSetSelected);
     disconnect(ui->lineEditGroup, &QLineEdit::textChanged,
@@ -202,8 +207,13 @@ void DlgExpressionInput::initializeVarSets()
     ui->labelInfoActive->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     ui->labelInfoActive->setWordWrap(true);
 
+#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+    connect(ui->checkBoxVarSets, &QCheckBox::checkStateChanged,
+            this, &DlgExpressionInput::onCheckVarSets);
+#else
     connect(ui->checkBoxVarSets, &QCheckBox::stateChanged,
             this, &DlgExpressionInput::onCheckVarSets);
+#endif
     connect(ui->comboBoxVarSet, qOverload<int>(&QComboBox::currentIndexChanged),
             this, &DlgExpressionInput::onVarSetSelected);
     connect(ui->lineEditGroup, &QLineEdit::textChanged,
@@ -298,14 +308,14 @@ void DlgExpressionInput::checkExpression(const QString& text)
                 }
 
                 auto msg = value.getUserString();
-                if (!impliedUnit.isEmpty()) {
-                    if (!value.getUnit().isEmpty() && value.getUnit() != impliedUnit)
+                if (impliedUnit != Base::Unit::One) {
+                    if (!value.isDimensionless() && value.getUnit() != impliedUnit)
                         throw Base::UnitsMismatchError("Unit mismatch between result and required unit");
 
                     value.setUnit(impliedUnit);
 
                 }
-                else if (!value.getUnit().isEmpty()) {
+                else if (!value.isDimensionless()) {
                     msg += " (Warning: unit discarded)";
 
                     QPalette p(ui->msg->palette());

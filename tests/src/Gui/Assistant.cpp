@@ -2,5 +2,17 @@
 
 #include "Gui/Assistant.h"
 
-TEST(Assistant, first)
+#include <src/App/InitApplication.h>
+
+
+class Assistant: public ::testing::Test
+{
+protected:
+    static void SetUpTestSuite()
+    {
+        tests::initApplication();
+    }
+};
+
+TEST_F(Assistant, first)
 {}

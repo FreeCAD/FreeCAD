@@ -718,6 +718,38 @@ void DrawViewPart::onFacesFinished()
     requestPaint();
 }
 
+
+//! returns the position of the first visible vertex within snap radius of newAnchorPoint.  newAnchorPoint
+//! should be unscaled in conventional coordinates.  if no suitable vertex is found, newAnchorPoint
+//! is returned. the result is unscaled and inverted?
+Base::Vector3d DrawViewPart::snapHighlightToVertex(Base::Vector3d newAnchorPoint,
+                                                   double radius) const
+{
+    if (!Preferences::snapDetailHighlights()) {
+        return newAnchorPoint;
+    }
+
+    double snapRadius = radius * Preferences::detailSnapRadius();
+    double dvpScale = getScale();
+    std::vector<Base::Vector3d> vertexPoints;
+    auto vertsAll = getVertexGeometry();
+    double nearDistance{std::numeric_limits<double>::max()};
+    Base::Vector3d nearPoint{newAnchorPoint};
+    for (auto& vert: vertsAll) {
+        if (vert->getHlrVisible()) {
+            Base::Vector3d vertPointUnscaled = DU::invertY(vert->point()) / dvpScale;
+            double distanceToVertex = (vertPointUnscaled - newAnchorPoint).Length();
+            if (distanceToVertex < snapRadius &&
+                distanceToVertex < nearDistance) {
+                nearDistance = distanceToVertex;
+                nearPoint = vertPointUnscaled;
+            }
+        }
+    }
+    return nearPoint;
+}
+
+
 //retrieve all the face hatches associated with this dvp
 std::vector<TechDraw::DrawHatch*> DrawViewPart::getHatches() const
 {
@@ -1484,8 +1516,8 @@ void DrawViewPart::resetReferenceVerts()
 void DrawViewPart::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
 {
     if (prop == &Direction) {
-        // Direction was PropertyVector but is now PropertyDirection
-        App::PropertyVector tmp;
+        // Direction was PropertyVector, then briefly PropertyDirection, now back to PropertyVector
+        App::PropertyDirection tmp;
         if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
             tmp.setContainer(this);
             tmp.Restore(reader);
@@ -1496,8 +1528,8 @@ void DrawViewPart::handleChangedPropertyType(Base::XMLReader &reader, const char
     }
 
     if (prop == &XDirection) {
-        // XDirection was PropertyFloat but is now PropertyLength
-        App::PropertyVector tmp;
+        // XDirection was PropertyVector, then briefly PropertyDirection, now back to PropertyVector
+        App::PropertyDirection tmp;
         if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
             tmp.setContainer(this);
             tmp.Restore(reader);

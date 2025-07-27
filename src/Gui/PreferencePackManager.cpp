@@ -41,9 +41,12 @@
 #include "DockWindowManager.h"
 #include "ToolBarManager.h"
 
+#include <Application.h>
 #include <App/Application.h>
 
-#include <ctime> // For generating a timestamped filename
+#include <ctime>  // For generating a timestamped filename
+#include <Base/ServiceProvider.h>
+#include <Dialogs/DlgThemeEditor.h>
 
 
 using namespace Gui;
@@ -358,6 +361,9 @@ bool PreferencePackManager::apply(const std::string& preferencePackName) const
             // Same goes for toolbars:
             Gui::ToolBarManager* pToolbarMgr = Gui::ToolBarManager::getInstance();
             pToolbarMgr->restoreState();
+
+            // We need to reload stylesheet to apply any changed style parameters
+            Gui::Application::Instance->reloadStyleSheet();
 
             // TODO: Are there other things that have to be manually triggered?
         }

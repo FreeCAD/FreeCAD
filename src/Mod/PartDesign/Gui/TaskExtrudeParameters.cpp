@@ -30,6 +30,7 @@
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Command.h>
+#include <Gui/Tools.h>
 #include <Mod/PartDesign/App/FeatureExtrude.h>
 #include <Mod/Part/Gui/ReferenceHighlighter.h>
 
@@ -174,11 +175,8 @@ void TaskExtrudeParameters::setupDialog()
     translateModeList(index);
 
     unselectShapeFaceAction = new QAction(tr("Remove"), this);
-    {
-        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
-        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
-        unselectShapeFaceAction->setShortcut(QKeySequence(shortcut));
-    }
+    unselectShapeFaceAction->setShortcut(Gui::QtTools::deleteKeySequence());
+
     // display shortcut behind the context menu entry
     unselectShapeFaceAction->setShortcutVisibleInContextMenu(true);
 

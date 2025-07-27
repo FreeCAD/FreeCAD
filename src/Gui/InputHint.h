@@ -30,9 +30,40 @@
 #include <QString>
 
 #include <list>
+#include <vector>
 
 namespace Gui
 {
+
+/**
+ * @brief Representation of one input hint.
+ *
+ * Each input is essentially a short message defining action with reference to inputs that will
+ * trigger that action.
+ *
+ * For example,
+ * @code{c++}
+ * using enum InputHint::UserInput;
+ *
+ * // simple example of hint
+ * InputHint selectPointHint {
+ *     .message = QWidget::tr("%1 select point"),
+ *     .sequences = { MouseLeft }
+ * }
+ *
+ * // multiple sequences are also allowed in one hint
+ * InputHint lockAxisHint {
+ *     .message = QWidget::tr("%1, %2 or %3 lock X, Y or Z axis"),
+ *     .sequences = { KeyX, KeyY, KeyZ }
+ * }
+ *
+ * // hints can also use sequences consisting of multiple keys
+ * InputHint exitProgramHint {
+ *     .message = QWidget::tr("%1 exit program"),
+ *     .sequences = { {KeyAlt, KeyF4} }
+ * }
+ * @endcode
+ */
 struct InputHint
 {
     enum class UserInput
@@ -184,6 +215,18 @@ struct InputHint
         KeyF34 = Qt::Key_F34,
         KeyF35 = Qt::Key_F35,
 
+        // numpad keys
+        KeyNum0 = static_cast<int>(Qt::Key_0) | static_cast<int>(Qt::KeypadModifier),
+        KeyNum1 = static_cast<int>(Qt::Key_1) | static_cast<int>(Qt::KeypadModifier),
+        KeyNum2 = static_cast<int>(Qt::Key_2) | static_cast<int>(Qt::KeypadModifier),
+        KeyNum3 = static_cast<int>(Qt::Key_3) | static_cast<int>(Qt::KeypadModifier),
+        KeyNum4 = static_cast<int>(Qt::Key_4) | static_cast<int>(Qt::KeypadModifier),
+        KeyNum5 = static_cast<int>(Qt::Key_5) | static_cast<int>(Qt::KeypadModifier),
+        KeyNum6 = static_cast<int>(Qt::Key_6) | static_cast<int>(Qt::KeypadModifier),
+        KeyNum7 = static_cast<int>(Qt::Key_7) | static_cast<int>(Qt::KeypadModifier),
+        KeyNum8 = static_cast<int>(Qt::Key_8) | static_cast<int>(Qt::KeypadModifier),
+        KeyNum9 = static_cast<int>(Qt::Key_9) | static_cast<int>(Qt::KeypadModifier),
+
         // Mouse Keys
         MouseMove = 1 << 16,
         MouseLeft = 2 << 16,
@@ -211,11 +254,67 @@ struct InputHint
         InputSequence(const std::initializer_list<UserInput> keys)
             : keys(keys)
         {}
+
+        friend bool operator==(const InputSequence& lhs, const InputSequence& rhs)
+        {
+            return lhs.keys == rhs.keys;
+        }
+
+        friend bool operator!=(const InputSequence& lhs, const InputSequence& rhs)
+        {
+            return !(lhs == rhs);
+        }
     };
 
+    /**
+     * @brief Message associated with the hint.
+     *
+     * The message should confirm to rules stated in the documentation of the InputHint class.
+     * Message can contain placeholders like %1, %2 etc. that will then be replaced with graphical
+     * key representation from sequences field.
+     *
+     * @see https://freecad.github.io/DevelopersHandbook/designguide/input-hints.html
+     */
     QString message;
+
+    /**
+     * @brief List of sequences to be substituted.
+     */
     std::list<InputSequence> sequences;
+
+    friend bool operator==(const InputHint& lhs, const InputHint& rhs)
+    {
+        return lhs.message == rhs.message && lhs.sequences == rhs.sequences;
+    }
+
+    friend bool operator!=(const InputHint& lhs, const InputHint& rhs)
+    {
+        return !(lhs == rhs);
+    }
 };
+
+template <typename T>
+struct StateHints
+{
+    T state;
+    std::list<InputHint> hints;
+};
+
+template <typename T>
+using HintTable = std::vector<StateHints<T>>;
+
+template <typename T>
+static std::list<InputHint> lookupHints(T state, HintTable<T> table, const std::list<InputHint>& fallback = {}) {
+    const auto stateMatches = [&state](const StateHints<T>& entry) {
+        return entry.state == state;
+    };
+
+    if (auto it = std::ranges::find_if(table, stateMatches); it != table.end()) {
+        return it->hints;
+    }
+
+    return fallback;
+}
 
 }  // namespace Gui
 

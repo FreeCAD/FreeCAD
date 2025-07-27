@@ -11,17 +11,16 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Sectional edges</string>
+   <string>Sectional Edges</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="toolTip">
-      <string>Add the edges that will be sectional cuts of the surface,
-that is, the surface will be forced to pass through these edges.</string>
+      <string>Constrains the surface to follow the selected sectional edges</string>
      </property>
      <property name="title">
-      <string>Sectional edges</string>
+      <string>Sectional Edges</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0" colspan="2">

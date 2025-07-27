@@ -344,6 +344,8 @@ public:
             sketchgui
                 ->purgeHandler();  // no code after this line, Handler get deleted in ViewProvider
         }
+
+        updateHint();
         return true;
     }
 
@@ -371,6 +373,27 @@ protected:
     double Increment;
     std::vector<AutoConstraint> SugConstr;
 
+public:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        using enum Gui::InputHint::UserInput;
+
+        return Gui::lookupHints<SelectMode>(
+            Mode,
+            {
+                {.state = STATUS_SEEK_First,
+                 .hints =
+                     {
+                         {tr("%1 pick edge to extend", "Sketcher Extend: hint"), {MouseLeft}},
+                     }},
+                {.state = STATUS_SEEK_Second,
+                 .hints =
+                     {
+                         {tr("%1 set extension length", "Sketcher Extend: hint"), {MouseLeft}},
+                     }},
+            });
+    }
+
 private:
     int crossProduct(Base::Vector2d& vec1, Base::Vector2d& vec2)
     {
@@ -378,8 +401,6 @@ private:
     }
 };
 
-
 }  // namespace SketcherGui
-
 
 #endif  // SKETCHERGUI_DrawSketchHandlerExtend_H

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Analysis feature properties</string>
+   <string>Analysis Feature Properties</string>
   </property>
   <layout class="QVBoxLayout" name="vlt_0">
    <item row="0" column="0">
@@ -20,13 +20,13 @@
       <string></string>
      </property>
      <property name="toolTip">
-      <string>Select Custom mode to enable vector current density</string>
+      <string>Select custom mode to enable vector current density</string>
      </property>
      <layout class="QFormLayout" name="glt_1">
       <item row="0" column="0">
        <widget class="QLabel" name="l_mode">
         <property name="text">
-         <string>Mode:</string>
+         <string>Mode</string>
         </property>
        </widget>
       </item>
@@ -75,7 +75,7 @@ with harmonic/oscillating driving current</string>
       <item row="1" column="0">
        <widget class="QCheckBox" name="ckb_current_density_1">
         <property name="text">
-         <string>x</string>
+         <string>X</string>
         </property>
        </widget>
       </item>
@@ -126,7 +126,7 @@ with harmonic/oscillating driving current</string>
       <item row="2" column="0">
        <widget class="QCheckBox" name="ckb_current_density_2">
         <property name="text">
-         <string>y</string>
+         <string>Y</string>
         </property>
        </widget>
       </item>
@@ -177,7 +177,7 @@ with harmonic/oscillating driving current</string>
       <item row="3" column="0">
        <widget class="QCheckBox" name="ckb_current_density_3">
         <property name="text">
-         <string>z</string>
+         <string>Z</string>
         </property>
        </widget>
       </item>
@@ -260,7 +260,7 @@ with harmonic/oscillating driving current</string>
       <item row="1" column="0">
        <widget class="QLabel" name="l_normal_current_density">
         <property name="text">
-         <string>Normal:</string>
+         <string>Normal</string>
         </property>
        </widget>
       </item>

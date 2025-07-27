@@ -441,6 +441,48 @@ private:
     class MatchName;
 };
 
+#define FC_ADD_CATALOG_ENTRY(__part__, __partclass__, __parent__) SO_KIT_ADD_CATALOG_ENTRY(__part__, __partclass__, TRUE, __parent__, "", TRUE);
+
+#define FC_SET_SWITCH(__name__, __state__) \
+do { \
+    SoSwitch* sw = SO_GET_ANY_PART(this, __name__, SoSwitch); \
+    assert(sw); \
+    sw->whichChild = __state__; \
+} while (0)
+
+#define FC_SET_TOGGLE_SWITCH(__name__, __state__) \
+do { \
+    SoToggleSwitch* sw = SO_GET_ANY_PART(this, __name__, SoToggleSwitch); \
+    assert(sw); \
+    sw->on = __state__; \
+} while (0)
+
+struct RotationComponents {
+    float angle;
+    SbVec3f axis;
+};
+
+[[nodiscard]] inline RotationComponents getRotationComponents(const SbRotation &rotation) {
+    RotationComponents comps;
+    rotation.getValue(comps.axis, comps.angle);
+
+    return comps;
+}
+
+struct TransformComponents {
+    SbVec3f translation;
+    SbVec3f scale;
+    SbRotation rotation;
+    SbRotation scaleOrientation;
+};
+
+[[nodiscard]] inline TransformComponents getMatrixTransform(const SbMatrix &matrix) {
+    TransformComponents comps;
+    matrix.getTransform(comps.translation, comps.rotation, comps.scale, comps.scaleOrientation);
+
+    return comps;
+}
+
 } // namespace Gui
 
 #endif // GUI_UTILITIES_H

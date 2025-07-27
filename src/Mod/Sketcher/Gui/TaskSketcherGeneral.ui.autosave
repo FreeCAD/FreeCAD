@@ -54,7 +54,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>Auto Recompute</string>
+      <string>Auto recompute</string>
      </property>
     </widget>
    </item>

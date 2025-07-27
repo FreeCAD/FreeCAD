@@ -138,7 +138,7 @@ public:
   * This elements get injected mostly by the ViewProvider classes of the selected
   * DocumentObjects. 
   */
-class GuiExport TaskView : public QScrollArea, public Gui::SelectionSingleton::ObserverType
+class GuiExport TaskView : public QWidget, public Gui::SelectionSingleton::ObserverType
 {
     Q_OBJECT
 
@@ -161,6 +161,10 @@ public:
 
     void clearActionStyle();
     void restoreActionStyle();
+
+    /// Add a persistent panel at the top of the task view, independent of the active dialog.
+    void addContextualPanel(QWidget* panel);
+    void removeContextualPanel(QWidget* panel);
 
     QSize minimumSizeHint() const override;
 
@@ -188,6 +192,11 @@ private:
     void slotUndoDocument(const App::Document&);
     void slotRedoDocument(const App::Document&);
     void transactionChangeOnDocument(const App::Document&, bool undo);
+    QVBoxLayout* mainLayout;
+    QScrollArea* scrollArea;
+    QVBoxLayout* contextualPanelsLayout;
+    QVBoxLayout* dialogLayout;
+    QList<QWidget*> contextualPanels;
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;

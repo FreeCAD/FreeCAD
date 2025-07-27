@@ -41,6 +41,7 @@
 #include "Dialogs/DlgAddPropertyVarSet.h"
 #include "ui_DlgAddPropertyVarSet.h"
 #include "ViewProviderVarSet.h"
+#include "propertyeditor/PropertyItem.h"
 
 FC_LOG_LEVEL_INIT("DlgAddPropertyVarSet", true, true)
 
@@ -48,6 +49,84 @@ using namespace Gui;
 using namespace Gui::Dialog;
 
 const std::string DlgAddPropertyVarSet::GroupBase = "Base";
+
+/*
+ * This dialog has quite complex logic, so we will document it here.
+ *
+ * The design goals of this dialog are:
+ * - support transactions (undo/redo),
+ * - provide a value field as soon as possible (see #16189),
+ *   - keep the value if the name of the property is changed,
+ * - support units (see #15557),
+ * - make OK available as soon as there is a valid property (see #17474), and
+ * - support expressions (see #19716).
+ *
+ * Especially supporting expressions in the value field makes the logic
+ * complex.  Editors for value fields are created from PropertyItems.  An
+ * editor has two modes: One without the possibility to add an expression and
+ * one with the possibility to add an expression.  This depends on whether the
+ * PropertyItem is bound.  A PropertyItem can only be bound if a valid property
+ * exists, which means the name of the property and the type should be known.
+ *
+ * As one of the goals of this dialog is to show an editor as soon as possible,
+ * so also when there is no property name known yet, this means that the editor
+ * won't have the expression button at first.
+ *
+ * To show the expression button as soon as possible, we create the property as
+ * soon as a valid type and name are known.  This allows us to bind the
+ * PropertyItem which results in having the expression button.
+ *
+ * However, since we also want to support transactions, this means that we need
+ * to open a transaction as well.  This means that this dialog juggles the
+ * following things:
+ *
+ * Given a valid property name and a property type we open a transaction and
+ * create the property.  As soon as the property name or type is changed, we
+ * abort the transaction and start a new transaction with a recreated property
+ * with the new name or type.
+ *
+ * If the property name or type is invalid, we clear the transaction and as
+ * soon as the name or type become valid again, we start a new transaction.
+ *
+ * If the type is changed, we need to clear the current expression and value to
+ * the default value.  If only the name is changed, we keep the value as much
+ * as possible with two exceptions: having a value based on an expression or
+ * being a value for a property link.
+ *
+ * Expressions and links are bound to the property and changing the name of a
+ * property prompts us to remove the old property and create a new one.  This
+ * to make sure that the transaction for adding a property does not keep a
+ * history of old property name changes.  So, because we want to have a new
+ * transaction and expressions and links are bound to a property, the
+ * expression or link becomes invalid when changing the property name.
+ *
+ * For expressions there are two choices: 1) we leave the outcome of the
+ * expression in the value field (which is possible) but without it being based
+ * on an expression or 2) we reset the value to the default value of the type.
+ *
+ * I chose the latter option because it is easy to miss that on a property name
+ * change, the expression is invalidated, so the user may think the value is
+ * the result of an expression, whereas in reality, the expression is lost.
+ *
+ * All in all, this leads to the following entities that need to be managed:
+ * - transaction
+ * - property item
+ *   - property
+ *   - editor
+ *   - value of the editor
+ *
+ * We have to react on a name change and on a type change.  For each of these
+ * changes, we need to take three cases into account:
+ * - the name and type are valid
+ * - only the type is valid
+ * - neither the name nor the type is valid
+ *
+ * This has been encoded in the code below as onNameFieldChanged() and
+ * onTypeChanged() and it works in two phases: clearing the transaction,
+ * property item, and related, and building it up again depending on the
+ * situation.
+ */
+
 
 DlgAddPropertyVarSet::DlgAddPropertyVarSet(QWidget* parent,
                                            ViewProviderVarSet* viewProvider)
@@ -83,6 +162,15 @@ int DlgAddPropertyVarSet::findLabelRow(const char* labelName, QFormLayout* layou
     return -1;
 }
 
+void DlgAddPropertyVarSet::removeExistingWidget(QFormLayout* formLayout, int labelRow)
+{
+    if (QLayoutItem* existingItem = formLayout->itemAt(labelRow, QFormLayout::FieldRole)) {
+        if (QWidget *existingWidget = existingItem->widget()) {
+            formLayout->removeWidget(existingWidget);
+            existingWidget->deleteLater();
+        }
+    }
+}
 void DlgAddPropertyVarSet::setWidgetForLabel(const char* labelName, QWidget* widget)
 {
     auto formLayout = qobject_cast<QFormLayout*>(layout());
@@ -97,6 +185,7 @@ void DlgAddPropertyVarSet::setWidgetForLabel(const char* labelName, QWidget* wid
         return;
     }
 
+    removeExistingWidget(formLayout, labelRow);
     formLayout->setWidget(labelRow, QFormLayout::FieldRole, widget);
 }
 
@@ -134,8 +223,8 @@ void DlgAddPropertyVarSet::initializeGroup()
     }
 
     comboBoxGroup.setEditText(QString::fromStdString(groupNamesSorted[0]));
-    connComboBoxGroup = connect(&comboBoxGroup, &EditFinishedComboBox::currentTextChanged,
-                                this, &DlgAddPropertyVarSet::onTextFieldChanged);
+    connComboBoxGroup = connect(&comboBoxGroup, &EditFinishedComboBox::editFinished,
+                                this, &DlgAddPropertyVarSet::onGroupFinished);
 }
 
 std::vector<Base::Type> DlgAddPropertyVarSet::getSupportedTypes()
@@ -204,6 +293,10 @@ void DlgAddPropertyVarSet::addEditor(PropertyEditor::PropertyItem* propertyItem)
     if (editor == nullptr) {
         return;
     }
+
+    // Make sure that the editor has the same height as the
+    // other widgets in the dialog.
+    editor->setMinimumHeight(comboBoxGroup.height());
 
     QSignalBlocker blockSignals(editor.get());
 
@@ -306,17 +399,20 @@ void DlgAddPropertyVarSet::initializeValue()
     Base::Type propType =
         Base::Type::getTypeIfDerivedFrom(type.c_str(), App::Property::getClassTypeId(), true);
     if (propType.isBad()) {
-        FC_THROWM(Base::TypeError, "Invalid type " << type << " for property");
+        return;
     }
 
     if (isTypeWithEditor(propType)) {
         createEditorForType(propType);
     }
+    else {
+        removeEditor();
+    }
 }
 
 void DlgAddPropertyVarSet::setTitle()
 {
-    setWindowTitle(QObject::tr("Add a property to %1").arg(QString::fromStdString(varSet->getFullName())));
+    setWindowTitle(tr("Add a property to %1").arg(QString::fromStdString(varSet->getFullName())));
 }
 
 void DlgAddPropertyVarSet::setOkEnabled(bool enabled)
@@ -334,7 +430,7 @@ void DlgAddPropertyVarSet::initializeWidgets(ViewProviderVarSet* viewProvider)
     connect(this, &QDialog::finished,
             this, [viewProvider](int result) { viewProvider->onFinished(result); });
     connLineEditNameTextChanged = connect(ui->lineEditName, &QLineEdit::textChanged,
-            this, &DlgAddPropertyVarSet::onTextFieldChanged);
+            this, &DlgAddPropertyVarSet::onNameChanged);
 
     setTitle();
     setOkEnabled(false);
@@ -348,7 +444,8 @@ void DlgAddPropertyVarSet::initializeWidgets(ViewProviderVarSet* viewProvider)
 bool DlgAddPropertyVarSet::propertyExists(const std::string& name)
 {
     App::Property* prop = varSet->getPropertyByName(name.c_str());
-    return prop && prop->getContainer() == varSet;
+    return prop && prop->getContainer() == varSet &&
+        !(propertyItem && propertyItem->getFirstProperty() == prop);
 }
 
 bool DlgAddPropertyVarSet::isNameValid()
@@ -377,12 +474,6 @@ bool DlgAddPropertyVarSet::isTypeValid()
 bool DlgAddPropertyVarSet::areFieldsValid()
 {
     return isNameValid() && isGroupValid() && isTypeValid();
-}
-
-void DlgAddPropertyVarSet::onTextFieldChanged([[maybe_unused]]const QString& text)
-{
-    setOkEnabled(areFieldsValid());
-    showStatusMessage();
 }
 
 void DlgAddPropertyVarSet::showStatusMessage()
@@ -422,22 +513,146 @@ void DlgAddPropertyVarSet::removeEditor()
         return;
     }
 
-    layout()->removeWidget(editor.get());
+    // Create a placeholder widget to keep the layout intact.
+    auto* placeholder = new QWidget(this);
+    placeholder->setObjectName(QStringLiteral("placeholder"));
+    placeholder->setMinimumHeight(comboBoxGroup.height());
+    setWidgetForLabel("labelValue", placeholder);
+
     QWidget::setTabOrder(ui->comboBoxType, ui->checkBoxAdd);
     editor = nullptr;
 }
 
-void DlgAddPropertyVarSet::onTypeChanged(const QString& text)
+void DlgAddPropertyVarSet::setEditor(bool valueNeedsReset)
 {
-    std::string type = text.toStdString();
-
-    if (Base::Type::fromName(type.c_str()).isBad() || !isTypeWithEditor(type)) {
-        propertyItem = nullptr;
-        removeEditor();
+    if (editor && !valueNeedsReset) {
+        QVariant data = propertyItem->editorData(editor.get());
+        addEditor(propertyItem.get());
+        propertyItem->setEditorData(editor.get(), data);
+        removeSelectionEditor();
+    }
+    else if (propertyItem) {
+        addEditor(propertyItem.get());
     }
     else {
         initializeValue();
     }
+
+    if (editor) {
+        QVariant data = propertyItem->editorData(editor.get());
+        propertyItem->setData(data);
+    }
+}
+
+void DlgAddPropertyVarSet::setPropertyItem(App::Property* prop)
+{
+    if (prop == nullptr) {
+        return;
+    }
+
+    if (propertyItem == nullptr) {
+        propertyItem.reset(createPropertyItem(prop));
+    }
+
+    if (propertyItem == nullptr) {
+        return;
+    }
+
+    objectIdentifier = std::make_unique<App::ObjectIdentifier>(*prop);
+    propertyItem->setAutoApply(true);
+    propertyItem->setPropertyData({prop});
+    propertyItem->bind(*objectIdentifier);
+}
+
+void DlgAddPropertyVarSet::buildForUnbound(bool valueNeedsReset)
+{
+    setEditor(valueNeedsReset);
+}
+
+void DlgAddPropertyVarSet::buildForBound(bool valueNeedsReset)
+{
+    openTransaction();
+    App::Property* prop = createProperty();
+    setPropertyItem(prop);
+    setEditor(valueNeedsReset);
+}
+
+bool DlgAddPropertyVarSet::clearBoundProperty()
+{
+    // Both a property link and an expression are bound to a property and as a
+    // result need the value to be reset.
+    using PropertyLinkItem = Gui::PropertyEditor::PropertyLinkItem;
+    bool isPropertyLinkItem = qobject_cast<PropertyLinkItem*>(propertyItem.get()) != nullptr;
+    bool valueNeedsReset = isPropertyLinkItem || propertyItem->hasExpression();
+
+    if (App::Property* prop = propertyItem->getFirstProperty()) {
+        propertyItem->unbind();
+        propertyItem->removeProperty(prop);
+        varSet->removeDynamicProperty(prop->getName());
+        closeTransaction(TransactionOption::Abort);
+    }
+    return valueNeedsReset;
+}
+
+bool DlgAddPropertyVarSet::clear(FieldChange fieldChange)
+{
+    if (propertyItem == nullptr) {
+        return true;
+    }
+
+    bool valueNeedsReset = clearBoundProperty();
+
+    if (fieldChange == FieldChange::Type) {
+        valueNeedsReset = true;
+        removeEditor();
+        propertyItem = nullptr;
+    }
+    return valueNeedsReset;
+}
+
+void DlgAddPropertyVarSet::onNameChanged([[maybe_unused]]const QString& text)
+{
+    bool valueNeedsReset = clear(FieldChange::Name);
+    if (isNameValid() && isTypeValid()) {
+        buildForBound(valueNeedsReset);
+    }
+    else if (isTypeValid()) {
+        buildForUnbound(valueNeedsReset);
+    }
+    else {
+        removeEditor();
+        propertyItem = nullptr;
+    }
+
+    setOkEnabled(areFieldsValid());
+    showStatusMessage();
+}
+
+void DlgAddPropertyVarSet::onGroupFinished()
+{
+    if (isGroupValid() && propertyItem) {
+        std::string group = comboBoxGroup.currentText().toStdString();
+        std::string doc = ui->lineEditToolTip->text().toStdString();
+        if (App::Property* prop = propertyItem->getFirstProperty();
+            prop && prop->getGroup() != group) {
+            varSet->changeDynamicProperty(prop, group.c_str(), doc.c_str());
+        }
+    }
+
+    setOkEnabled(areFieldsValid());
+    showStatusMessage();
+}
+
+void DlgAddPropertyVarSet::onTypeChanged([[maybe_unused]] const QString& text)
+{
+    bool valueNeedsReset = clear(FieldChange::Type);
+    if (isNameValid() && isTypeValid()) {
+        buildForBound(valueNeedsReset);
+    }
+    else if (isTypeValid()) {
+        buildForUnbound(valueNeedsReset);
+    }
+    // nothing if both name and type are invalid
 
     setOkEnabled(areFieldsValid());
     showStatusMessage();
@@ -479,16 +694,15 @@ void DlgAddPropertyVarSet::critical(const QString& title, const QString& text) {
     }
 }
 
-bool DlgAddPropertyVarSet::createProperty()
+App::Property* DlgAddPropertyVarSet::createProperty()
 {
     std::string name = ui->lineEditName->text().toStdString();
     std::string group = comboBoxGroup.currentText().toStdString();
     std::string type = ui->comboBoxType->currentText().toStdString();
     std::string doc = ui->lineEditToolTip->text().toStdString();
 
-    App::Property* prop = nullptr;
     try {
-        prop = varSet->addDynamicProperty(type.c_str(), name.c_str(),
+        return varSet->addDynamicProperty(type.c_str(), name.c_str(),
                                           group.c_str(), doc.c_str());
     }
     catch (Base::Exception& e) {
@@ -497,19 +711,8 @@ bool DlgAddPropertyVarSet::createProperty()
                  QObject::tr("Failed to add property to '%1': %2").arg(
                          QString::fromLatin1(varSet->getFullName().c_str()),
                          QString::fromUtf8(e.what())));
-        return false;
+        return nullptr;
     }
-
-    if (propertyItem) {
-        objectIdentifier = std::make_unique<App::ObjectIdentifier>(*prop);
-        propertyItem->setPropertyData({prop});
-        propertyItem->bind(*objectIdentifier);
-
-        QVariant data = propertyItem->editorData(editor.get());
-        propertyItem->setData(data);
-    }
-
-    return true;
 }
 
 void DlgAddPropertyVarSet::closeTransaction(TransactionOption option)
@@ -533,34 +736,60 @@ void DlgAddPropertyVarSet::clearFields()
     setOkEnabled(false);
 }
 
+void DlgAddPropertyVarSet::addDocumentation() {
+    /* Since there is no check on documentation (we accept any string), there
+     * is no signal handler for the documentation field.  This method updates
+     * the property that is being added with the text inserted as
+     * documentation/tooltip.
+     */
+
+    std::string group = comboBoxGroup.currentText().toStdString();
+    std::string doc = ui->lineEditToolTip->text().toStdString();
+
+    if (propertyItem == nullptr) {
+        // If there is no property item, we cannot add documentation.
+        return;
+    }
+
+    App::Property* prop = propertyItem->getFirstProperty();
+    if (prop == nullptr) {
+        return;
+    }
+
+    varSet->changeDynamicProperty(prop, group.c_str(), doc.c_str());
+}
+
 void DlgAddPropertyVarSet::accept()
 {
-    openTransaction();
-    if (createProperty()) {
-        closeTransaction(TransactionOption::Commit);
-        std::string group = comboBoxGroup.currentText().toStdString();
-        std::string type = ui->comboBoxType->currentText().toStdString();
-        auto paramGroup = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/PropertyView");
-        paramGroup->SetASCII("NewPropertyType", type.c_str());
-        paramGroup->SetASCII("NewPropertyGroup", group.c_str());
+    addDocumentation();
+    varSet->ExpressionEngine.execute();
+    closeTransaction(TransactionOption::Commit);
+    std::string group = comboBoxGroup.currentText().toStdString();
+    std::string type = ui->comboBoxType->currentText().toStdString();
+    auto paramGroup = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/PropertyView");
+    paramGroup->SetASCII("NewPropertyType", type.c_str());
+    paramGroup->SetASCII("NewPropertyGroup", group.c_str());
 
-        if (ui->checkBoxAdd->isChecked()) {
-            clearFields();
-            ui->lineEditName->setFocus();
-        }
-        else {
-            // we are done, close the dialog
-            QDialog::accept();
-        }
+    if (ui->checkBoxAdd->isChecked()) {
+        clearFields();
+        ui->lineEditName->setFocus();
     }
     else {
-        closeTransaction(TransactionOption::Abort);
+        // we are done, close the dialog
+        QDialog::accept();
     }
 }
 
 void DlgAddPropertyVarSet::reject()
 {
+    if (propertyItem) {
+        if (App::Property* prop = propertyItem->getFirstProperty()) {
+            App::PropertyContainer* container = prop->getContainer();
+            container->removeDynamicProperty(prop->getName());
+            closeTransaction(TransactionOption::Abort);
+        }
+    }
     disconnect(connComboBoxGroup);
     disconnect(connComboBoxType);
     disconnect(connLineEditNameTextChanged);

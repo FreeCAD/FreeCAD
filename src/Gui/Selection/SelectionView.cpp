@@ -111,7 +111,11 @@ SelectionView::SelectionView(Gui::Document* pcDocument, QWidget* parent)
     connect(pickList, &QListWidget::itemDoubleClicked, this, &SelectionView::toggleSelect);
     connect(pickList, &QListWidget::itemEntered, this, &SelectionView::preselect);
     connect(selectionView, &QListWidget::customContextMenuRequested, this, &SelectionView::onItemContextMenu);
+#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+    connect(enablePickList, &QCheckBox::checkStateChanged, this, &SelectionView::onEnablePickList);
+#else
     connect(enablePickList, &QCheckBox::stateChanged, this, &SelectionView::onEnablePickList);
+#endif
     // clang-format on
 }
 

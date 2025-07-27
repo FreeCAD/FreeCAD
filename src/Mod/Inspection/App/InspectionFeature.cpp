@@ -869,7 +869,7 @@ App::DocumentObjectExecReturn* Feature::execute()
     DistanceInspection insp(this->SearchRadius.getValue(), actual, inspectNominal);
     unsigned long count = actual->countPoints();
     std::stringstream str;
-    str << "Inspecting " << this->Label.getValue() << "...";
+    str << "Inspecting " << this->Label.getValue() << "…";
     Base::SequencerLauncher seq(str.str().c_str(), count);
 
     std::vector<float> vals(count);
@@ -920,7 +920,7 @@ App::DocumentObjectExecReturn* Feature::execute()
             fMinDist = -std::numeric_limits<float>::max();
         }
         else {
-            res.m_sumsq += fMinDist * fMinDist;
+            res.m_sumsq += static_cast<double>(fMinDist) * static_cast<double>(fMinDist);
             res.m_numv++;
         }
 
@@ -958,7 +958,7 @@ App::DocumentObjectExecReturn* Feature::execute()
     else {
         // Single-threaded operation
         std::stringstream str;
-        str << "Inspecting " << this->Label.getValue() << "...";
+        str << "Inspecting " << this->Label.getValue() << "…";
         Base::SequencerLauncher seq(str.str().c_str(), count);
 
         for (unsigned int i = 0; i < count; i++) {

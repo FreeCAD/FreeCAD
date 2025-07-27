@@ -61,6 +61,7 @@ class _ArchPipe(ArchComponent.Component):
     def __init__(self,obj):
 
         ArchComponent.Component.__init__(self,obj)
+        self.Type = "Pipe"
         self.setProperties(obj)
         # IfcPipeSegment is new in IFC4
         from ArchIFC import IfcTypes
@@ -94,12 +95,26 @@ class _ArchPipe(ArchComponent.Component):
         if not "ProfileType" in pl:
             obj.addProperty("App::PropertyEnumeration", "ProfileType", "Pipe", QT_TRANSLATE_NOOP("App::Property","If not based on a profile, this controls the profile of this pipe"), locked=True)
             obj.ProfileType = ["Circle", "Square", "Rectangle"]
-        self.Type = "Pipe"
 
     def onDocumentRestored(self,obj):
 
         ArchComponent.Component.onDocumentRestored(self,obj)
         self.setProperties(obj)
+        if obj.ProfileType == "Rectangle" and FreeCAD.ActiveDocument.getProgramVersion().split()[0] <= "1.1R42474":
+            # in older versions Height and Width are inverted
+            obj.Height, obj.Width = obj.Width, obj.Height
+            FreeCAD.ActiveDocument.recompute()
+            FreeCAD.Console.PrintWarning(
+                "v1.1, "
+                + obj.Label
+                + ", "
+                + translate("Arch", "corrected 'Height' and 'Width' properties")
+                + "\n"
+            )
+
+    def loads(self,state):
+
+        self.Type = "Pipe"
 
     def onChanged(self, obj, prop):
         if prop == "IfcType":
@@ -160,7 +175,7 @@ class _ArchPipe(ArchComponent.Component):
             v1 = obj.Base.Placement.multVec(obj.Base.Points[1])-w.Vertexes[0].Point
         else:
             v1 = w.Vertexes[1].Point-w.Vertexes[0].Point
-        v2 = DraftGeomUtils.getNormal(p)
+        #v2 = DraftGeomUtils.getNormal(p)
         #rot = FreeCAD.Rotation(v2,v1)
         # rotate keeping up vector
         if v1.getAngle(FreeCAD.Vector(0,0,1)) > 0.01:
@@ -171,6 +186,7 @@ class _ArchPipe(ArchComponent.Component):
         v1x = v1.cross(v1y)
         rot = FreeCAD.Rotation(v1x,v1y,v1,"ZYX")
         p.rotate(w.Vertexes[0].Point,rot.Axis,math.degrees(rot.Angle))
+        p.rotate(w.Vertexes[0].Point,v1,90)
         shapes = []
         try:
             if p.Faces:
@@ -375,7 +391,7 @@ class _ArchPipeConnector(ArchComponent.Component):
             # move and rotate the profile to the first point
             delta = point.add(v1)-p.CenterOfMass
             p.translate(delta)
-            vp = DraftGeomUtils.getNormal(p)
+            #vp = DraftGeomUtils.getNormal(p)
             #rot = FreeCAD.Rotation(vp,v1)
             # rotate keeping up vector
             if v1.getAngle(FreeCAD.Vector(0,0,1)) > 0.01:

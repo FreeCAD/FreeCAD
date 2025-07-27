@@ -116,7 +116,7 @@ public:
         double normal;
         double loose;
     };
-    static const UTSClearanceDefinition UTSHoleDiameters[22];
+    static const UTSClearanceDefinition UTSHoleDiameters[23];
 
     void Restore(Base::XMLReader & reader) override;
 

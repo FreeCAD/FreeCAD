@@ -718,24 +718,25 @@ MenuItem* StdWorkbench::setupMenuBar() const
     // Tools
     auto tool = new MenuItem( menuBar );
     tool->setCommand("&Tools");
-    *tool << "Std_DlgParameter"
+#ifdef BUILD_ADDONMGR
+    *tool << "Std_AddonMgr"
+          << "Separator";
+#endif
+    *tool << "Std_Measure"
+          << "Std_UnitsCalculator"
           << "Separator"
-          << "Std_ViewScreenShot"
           << "Std_ViewLoadImage"
+          << "Std_ViewScreenShot"
+          << "Std_TextDocument"
+          << "Std_DemoMode"
+          << "Separator"
           << "Std_SceneInspector"
           << "Std_DependencyGraph"
           << "Std_ExportDependencyGraph"
+          << "Separator"
           << "Std_ProjectUtil"
-          << "Separator"
-          << "Std_TextDocument"
-          << "Separator"
-          << "Std_DemoMode"
-          << "Std_UnitsCalculator"
-          << "Separator"
+          << "Std_DlgParameter"
           << "Std_DlgCustomize";
-#ifdef BUILD_ADDONMGR
-    *tool << "Std_AddonMgr";
-#endif
 
     // Macro
     auto macro = new MenuItem( menuBar );
@@ -766,11 +767,11 @@ MenuItem* StdWorkbench::setupMenuBar() const
     // Help
     auto help = new MenuItem( menuBar );
     help->setCommand("&Help");
-    *help << "Std_OnlineHelp" << "Std_WhatsThis" << "Separator"
+    *help << "Std_WhatsThis" << "Separator"
           // Start page and additional separator are dynamically inserted here
-          << "Std_FreeCADUserHub" << "Std_FreeCADForum" << "Std_FreeCADFAQ" << "Std_ReportBug" << "Separator"
+          << "Std_FreeCADUserHub" << "Std_FreeCADForum" << "Std_ReportBug" << "Separator"
           << "Std_RestartInSafeMode" << "Separator"
-          << "Std_FreeCADPowerUserHub" << "Std_PythonHelp" << "Separator"
+          << "Std_DevHandbook" << "Std_PythonHelp" << "Separator"
           << "Std_FreeCADWebsite" << "Std_FreeCADDonation" << "Std_About";
 
     return menuBar;
@@ -811,7 +812,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     auto view = new ToolBarItem( root );
     view->setCommand("View");
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewGroup" << "Std_AlignToSelection"
-          << "Separator" << "Std_DrawStyle" << "Std_TreeViewActions";
+          << "Separator" << "Std_DrawStyle" << "Std_TreeViewActions" << "Std_Measure";
 
     // Individual views
     auto individualViews = new ToolBarItem(root, ToolBarItem::DefaultVisibility::Hidden);

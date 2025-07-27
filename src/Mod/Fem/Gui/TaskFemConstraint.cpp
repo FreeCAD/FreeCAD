@@ -37,6 +37,7 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Selection/Selection.h>
+#include <Gui/Tools.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/Fem/App/FemConstraint.h>
 
@@ -57,6 +58,8 @@ TaskFemConstraint::TaskFemConstraint(ViewProviderFemConstraint* ConstraintView,
               true,
               parent)
     , proxy(nullptr)
+    , actionList(nullptr)
+    , clearListAction(nullptr)
     , deleteAction(nullptr)
     , ConstraintView(ConstraintView)
     , selectionMode(selref)
@@ -129,6 +132,12 @@ void TaskFemConstraint::setSelection(QListWidgetItem* item)
     Gui::Selection().addSelection(docName.c_str(), objName.c_str(), ItemName.c_str(), 0, 0, 0);
 }
 
+void TaskFemConstraint::onReferenceClearList()
+{
+    QSignalBlocker block(actionList);
+    actionList->clear();
+}
+
 void TaskFemConstraint::onReferenceDeleted(const int row)
 {
     Fem::Constraint* pcConstraint = ConstraintView->getObject<Fem::Constraint>();
@@ -163,16 +172,28 @@ const QString TaskFemConstraint::makeRefText(const App::DocumentObject* obj,
     return QString::fromUtf8((std::string(obj->getNameInDocument()) + ":" + subName).c_str());
 }
 
+void TaskFemConstraint::createActions(QListWidget* parentList)
+{
+    actionList = parentList;
+    createDeleteAction(parentList);
+    createClearListAction(parentList);
+}
+
+void TaskFemConstraint::createClearListAction(QListWidget* parentList)
+{
+    clearListAction = new QAction(tr("Clear list"), this);
+    connect(clearListAction, &QAction::triggered, this, &TaskFemConstraint::onReferenceClearList);
+
+    parentList->addAction(clearListAction);
+    parentList->setContextMenuPolicy(Qt::ActionsContextMenu);
+}
+
 void TaskFemConstraint::createDeleteAction(QListWidget* parentList)
 {
     // creates a context menu, a shortcut for it and connects it to a slot function
 
     deleteAction = new QAction(tr("Delete"), this);
-    {
-        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
-        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
-        deleteAction->setShortcut(QKeySequence(shortcut));
-    }
+    deleteAction->setShortcut(Gui::QtTools::deleteKeySequence());
 
     // display shortcut behind the context menu entry
     deleteAction->setShortcutVisibleInContextMenu(true);

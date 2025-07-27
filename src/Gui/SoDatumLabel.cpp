@@ -134,6 +134,7 @@ SoDatumLabel::SoDatumLabel()
     SO_NODE_ADD_FIELD(name, ("Helvetica"));
     SO_NODE_ADD_FIELD(size, (10.F));
     SO_NODE_ADD_FIELD(lineWidth, (2.F));
+    SO_NODE_ADD_FIELD(sampling, (2.F));
 
     SO_NODE_ADD_FIELD(datumtype, (SoDatumLabel::DISTANCE));
 
@@ -187,7 +188,8 @@ void SoDatumLabel::drawImage()
     QColor front;
     front.setRgbF(t[0],t[1], t[2]);
 
-    QImage image(w, h,QImage::Format_ARGB32_Premultiplied);
+    QImage image(w * sampling.getValue(), h * sampling.getValue(), QImage::Format_ARGB32_Premultiplied);
+    image.setDevicePixelRatio(sampling.getValue());
     image.fill(0x00000000);
 
     QPainter painter(&image);
@@ -1165,7 +1167,7 @@ void SoDatumLabel::getDimension(float scale, int& srcw, int& srch)
     srch = imgsize[1];
 
     float aspectRatio =  (float) srcw / (float) srch;
-    this->imgHeight = scale * (float) (srch);
+    this->imgHeight = scale * (float) (srch) / sampling.getValue();
     this->imgWidth  = aspectRatio * (float) this->imgHeight;
 }
 
@@ -1301,35 +1303,18 @@ void SoDatumLabel::drawDistance(const SbVec3f* points)
     // Draw arc helpers if needed
     float range1 = this->param4.getValue();
     if (range1 != 0.0) {
-        float startangle1 = this->param3.getValue();
+        float startAngle1 = this->param3.getValue();
         float radius1 = this->param5.getValue();
-        SbVec3f center = points[2];
-        int countSegments = std::max(6, abs(int(50.0 * range1 / (2 * std::numbers::pi))));
-        double segment = range1 / (countSegments - 1);
-
-        glBegin(GL_LINE_STRIP);
-        for (int i = 0; i < countSegments; i++) {
-            double theta = startangle1 + segment * i;
-            SbVec3f v1 = center + SbVec3f(radius1 * cos(theta), radius1 * sin(theta), 0);
-            glVertex2f(v1[0], v1[1]);
-        }
-        glEnd();
+        SbVec3f center1 = points[2];
+        glDrawArc(center1, radius1, startAngle1, startAngle1 + range1);
     }
+
     float range2 = this->param7.getValue();
     if (range2 != 0.0) {
-        float startangle2 = this->param6.getValue();
+        float startAngle2 = this->param6.getValue();
         float radius2 = this->param8.getValue();
-        SbVec3f center = points[3];
-        int countSegments = std::max(6, abs(int(50.0 * range2 / (2 * std::numbers::pi))));
-        double segment = range2 / (countSegments - 1);
-
-        glBegin(GL_LINE_STRIP);
-        for (int i = 0; i < countSegments; i++) {
-            double theta = startangle2 + segment * i;
-            SbVec3f v1 = center + SbVec3f(radius2 * cos(theta), radius2 * sin(theta), 0);
-            glVertex2f(v1[0], v1[1]);
-        }
-        glEnd();
+        SbVec3f center2 = points[3];
+        glDrawArc(center2, radius2, startAngle2, startAngle2 + range2);
     }
 }
 
@@ -1341,7 +1326,7 @@ void SoDatumLabel::drawRadiusOrDiameter(const SbVec3f* points, float& angle, SbV
 
     SbVec3f dir = (p2-p1);
     SbVec3f center = p1;
-    double radius = (p2 - p1).length();
+    float radius = (p2 - p1).length();
     if (this->datumtype.getValue() == DIAMETER) {
         center = (p1 + p2) / 2;
         radius = radius / 2;
@@ -1410,20 +1395,17 @@ void SoDatumLabel::drawRadiusOrDiameter(const SbVec3f* points, float& angle, SbV
         glEnd();
     }
 
-    // Draw arc helper if needed
-    float startangle = this->param3.getValue();
-    float range = this->param4.getValue();
-    if (range != 0.0) {
-        int countSegments = std::max(6, abs(int(50.0 * range / (2 * std::numbers::pi))));
-        double segment = range / (countSegments - 1);
+    // Draw arc helpers if needed
+    float startHelperRange = this->param4.getValue();
+    if (startHelperRange != 0.0) {
+        float startHelperAngle = this->param3.getValue();
+        glDrawArc(center, radius, startHelperAngle, startHelperAngle + startHelperRange);
+    }
 
-        glBegin(GL_LINE_STRIP);
-        for (int i = 0; i < countSegments; i++) {
-            double theta = startangle + segment * i;
-            SbVec3f v1 = center + SbVec3f(radius * cos(theta), radius * sin(theta), 0);
-            glVertex2f(v1[0], v1[1]);
-        }
-        glEnd();
+    float endHelperRange = this->param6.getValue();
+    if (endHelperRange != 0.0) {
+        float endHelperAngle = this->param5.getValue();
+        glDrawArc(center, radius, endHelperAngle, endHelperAngle + endHelperRange);
     }
 }
 
@@ -1456,21 +1438,23 @@ void SoDatumLabel::drawAngle(const SbVec3f* points, float& angle, SbVec3f& textO
     SbVec3f v0(cos(startangle+range/2),sin(startangle+range/2),0);
 
     // leave some space for the text
-    double textMargin = std::min(0.2F * abs(range), this->imgWidth / (2 * r));
+    float textMargin = std::min(0.2F * abs(range), this->imgWidth / (2 * r));
 
     textOffset = p0 + v0 * r;
-
-    // Draw
-    glDrawArc(p0, r, startangle, startangle+range/2.-textMargin);
-    glDrawArc(p0, r, startangle+range/2.+textMargin, endangle);
 
     // Direction vectors for start and end lines
     SbVec3f v1(cos(startangle), sin(startangle), 0);
     SbVec3f v2(cos(endangle), sin(endangle), 0);
 
-    if (range < 0) {
+    float textMarginDir = 1.;
+
+    if (range < 0 || length < 0) {
         std::swap(v1, v2);
+        textMarginDir = -1.;
     }
+    // Draw
+    glDrawArc(p0, r, startangle, startangle + range / 2.F - textMarginDir * textMargin);
+    glDrawArc(p0, r, startangle + range / 2.F + textMarginDir * textMargin, endangle);
 
     SbVec3f pnt1 = p0 + (r - endLineLength1) * v1;
     SbVec3f pnt2 = p0 + (r + endLineLength12) * v1;

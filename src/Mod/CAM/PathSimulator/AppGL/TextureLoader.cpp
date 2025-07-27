@@ -55,7 +55,8 @@ TextureLoader::TextureLoader(std::string imgFolder,
                              int textureSize)
     : mImageFolder(imgFolder)
 {
-    int buffsize = textureSize * textureSize * sizeof(unsigned int);
+    size_t buffsize =
+        static_cast<size_t>(textureSize) * static_cast<size_t>(textureSize) * sizeof(unsigned int);
     mRawData = (unsigned int*)malloc(buffsize);
     if (mRawData == nullptr) {
         return;

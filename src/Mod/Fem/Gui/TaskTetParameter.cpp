@@ -69,10 +69,17 @@ TaskTetParameter::TaskTetParameter(Fem::FemMeshShapeNetgenObject* pcObject, QWid
                      qOverload<int>(&QComboBox::activated),
                      this,
                      &TaskTetParameter::SwitchMethod);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
+    QObject::connect(ui->checkBox_SecondOrder,
+                     &QCheckBox::checkStateChanged,
+                     this,
+                     &TaskTetParameter::setQuadric);
+#else
     QObject::connect(ui->checkBox_SecondOrder,
                      &QCheckBox::stateChanged,
                      this,
                      &TaskTetParameter::setQuadric);
+#endif
     QObject::connect(ui->doubleSpinBox_GrowthRate,
                      qOverload<double>(&QDoubleSpinBox::valueChanged),
                      this,
@@ -85,11 +92,17 @@ TaskTetParameter::TaskTetParameter(Fem::FemMeshShapeNetgenObject* pcObject, QWid
                      qOverload<int>(&QSpinBox::valueChanged),
                      this,
                      &TaskTetParameter::setSegsPerRadius);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
+    QObject::connect(ui->checkBox_Optimize,
+                     &QCheckBox::checkStateChanged,
+                     this,
+                     &TaskTetParameter::setOptimize);
+#else
     QObject::connect(ui->checkBox_Optimize,
                      &QCheckBox::stateChanged,
                      this,
                      &TaskTetParameter::setOptimize);
-
+#endif
     if (pcObject->FemMesh.getValue().getInfo().numNode == 0) {
         touched = true;
     }

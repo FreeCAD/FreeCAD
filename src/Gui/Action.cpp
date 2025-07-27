@@ -606,9 +606,37 @@ void ActionGroup::onActivated (QAction* act)
     }
 }
 
-void ActionGroup::onHovered (QAction *act)
+/**
+ * Shows tooltip at the right side when hovered.
+ */
+void ActionGroup::onHovered(QAction *act)
 {
-    QToolTip::showText(QCursor::pos(), act->toolTip());
+    const auto topLevelWidgets = QApplication::topLevelWidgets();
+    QMenu* foundMenu = nullptr;
+
+    for (QWidget* widget : topLevelWidgets) {
+        QList<QMenu*> menus = widget->findChildren<QMenu*>();
+
+        for (QMenu* menu : menus) {
+            if (menu->isVisible() && menu->actions().contains(act)) {
+                foundMenu = menu;
+                break;
+            }
+        }
+
+        if (foundMenu) {
+            break;
+        }
+
+    }
+
+    if (foundMenu) {
+        QRect actionRect = foundMenu->actionGeometry(act);
+        QPoint globalPos = foundMenu->mapToGlobal(actionRect.topRight());
+        QToolTip::showText(globalPos, act->toolTip(), foundMenu, actionRect);
+    } else {
+        QToolTip::showText(QCursor::pos(), act->toolTip());
+    }
 }
 
 
@@ -830,6 +858,32 @@ RecentFilesAction::RecentFilesAction ( Command* pcCmd, QObject * parent )
 {
     _pimpl = std::make_unique<Private>(this, "User parameter:BaseApp/Preferences/RecentFiles");
     restore();
+
+    sep.setSeparator(true);
+    sep.setToolTip({});
+    this->groupAction()->addAction(&sep);
+
+    //: Empties the list of recent files
+    clearRecentFilesListAction.setText(tr("Clear Recent Files"));
+    clearRecentFilesListAction.setToolTip({});
+    this->groupAction()->addAction(&clearRecentFilesListAction);
+
+    auto clearFun = [this, hGrp = _pimpl->handle](){
+        const size_t recentFilesListSize = hGrp->GetASCIIs("MRU").size();
+        for (size_t i = 0; i < recentFilesListSize; i++)
+        {
+            const QByteArray key = QStringLiteral("MRU%1").arg(i).toLocal8Bit();
+            hGrp->SetASCII(key.data(), "");
+        }
+        restore();
+        clearRecentFilesListAction.setEnabled(false);
+    };
+
+    connect(&clearRecentFilesListAction, &QAction::triggered,
+            this, clearFun);
+
+    connect(&clearRecentFilesListAction, &QAction::triggered,
+            this, &RecentFilesAction::recentFilesListModified);
 }
 
 RecentFilesAction::~RecentFilesAction()
@@ -850,6 +904,10 @@ void RecentFilesAction::appendFile(const QString& filename)
     save();
 
     _pimpl->trySaveUserParameter();
+
+    clearRecentFilesListAction.setEnabled(true);
+
+    Q_EMIT recentFilesListModified();
 }
 
 static QString numberToLabel(int number) {
@@ -893,6 +951,9 @@ void RecentFilesAction::setFiles(const QStringList& files)
     // if less file names than actions
     numRecentFiles = std::min<int>(numRecentFiles, this->visibleItems);
     for (int index = numRecentFiles; index < recentFiles.count(); index++) {
+        if (recentFiles[index] == &sep || recentFiles[index] == &clearRecentFilesListAction) {
+            continue;
+        }
         recentFiles[index]->setVisible(false);
         recentFiles[index]->setText(QString());
         recentFiles[index]->setToolTip(QString());

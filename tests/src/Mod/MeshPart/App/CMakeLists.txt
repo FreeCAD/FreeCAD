@@ -1,4 +1,4 @@
-target_sources(MeshPart_tests_run PRIVATE
+add_executable(MeshPart_tests_run
         MeshPart.cpp
 )
 

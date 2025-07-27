@@ -157,6 +157,8 @@ private:
     QString str(const char* str);
     QMenu* createNaviCubeMenu();
     void drawNaviCube(bool picking, float opacity);
+    bool isFramebufferValid() const;
+    void ensureFramebufferValid();
 
     SbRotation getNearestOrientation(PickId pickId);
     qreal getPhysicalCubeWidgetSize();
@@ -710,17 +712,17 @@ void NaviCubeImplementation::prepare()
     addButtonFace(PickId::DotBackside, SbVec3f(0, 1, 0));
     addButtonFace(PickId::ViewMenu);
 
-    qreal physicalCubeWidgetSize = getPhysicalCubeWidgetSize();
-
-    if (m_PickingFramebuffer)
+    if (m_PickingFramebuffer) {
         delete m_PickingFramebuffer;
-    m_PickingFramebuffer =
-        new QOpenGLFramebufferObject(2 * physicalCubeWidgetSize, 2 * physicalCubeWidgetSize,
-                                     QOpenGLFramebufferObject::CombinedDepthStencil);
+        m_PickingFramebuffer = nullptr;
+    }
+
+    ensureFramebufferValid();
     m_View3DInventorViewer->getSoRenderManager()->scheduleRedraw();
 }
 
 void NaviCubeImplementation::drawNaviCube() {
+    ensureFramebufferValid();
     handleResize();
     qreal physicalCubeWidgetSize = getPhysicalCubeWidgetSize();
     int posX = (int)(m_RelPos[0] * m_PosAreaSize[0]) + m_PosAreaBase[0] - physicalCubeWidgetSize / 2;
@@ -764,6 +766,8 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode, float opacity)
         m_View3DInventorViewer->getSoRenderManager()->scheduleRedraw();
         return;
     }
+    
+    ensureFramebufferValid();
 
     SoCamera* cam = m_View3DInventorViewer->getSoRenderManager()->getCamera();
     if (!cam)
@@ -946,9 +950,37 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode, float opacity)
     glPopAttrib();
 }
 
+bool NaviCubeImplementation::isFramebufferValid() const
+{
+    return m_PickingFramebuffer && m_PickingFramebuffer->isValid();
+}
+
+
+void NaviCubeImplementation::ensureFramebufferValid()
+{
+    if (!isFramebufferValid()) {
+        if (m_PickingFramebuffer) {
+
+            if (!m_PickingFramebuffer->isValid()) {
+                Base::Console().developerWarning("NaviCube", "The frame buffer has become invalid, a new frame buffer will be created\n");
+            }
+            
+            delete m_PickingFramebuffer;
+            m_PickingFramebuffer = nullptr;
+        }
+
+        qreal physicalCubeWidgetSize = getPhysicalCubeWidgetSize();
+        m_PickingFramebuffer =
+            new QOpenGLFramebufferObject(2 * physicalCubeWidgetSize,
+                                         2 * physicalCubeWidgetSize,
+                                         QOpenGLFramebufferObject::CombinedDepthStencil);
+    }
+}
+
 NaviCubeImplementation::PickId NaviCubeImplementation::pickFace(short x, short y) {
     qreal physicalCubeWidgetSize = getPhysicalCubeWidgetSize();
     GLubyte pixels[4] = {0};
+    ensureFramebufferValid();
     if (m_PickingFramebuffer && std::abs(x) <= physicalCubeWidgetSize / 2 &&
         std::abs(y) <= physicalCubeWidgetSize / 2) {
         static_cast<QOpenGLWidget*>(m_View3DInventorViewer->viewport())->makeCurrent();

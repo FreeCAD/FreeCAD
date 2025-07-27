@@ -310,9 +310,6 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
         # Cancel canned drilling cycle
         self.commandlist.append(Path.Command("G80"))
-        command = Path.Command("G0", {"Z": obj.SafeHeight.Value})
-        self.commandlist.append(command)
-        machine.addCommand(command)
 
         # Apply feedrates to commands
         PathFeedRate.setFeedRate(self.commandlist, obj.ToolController)

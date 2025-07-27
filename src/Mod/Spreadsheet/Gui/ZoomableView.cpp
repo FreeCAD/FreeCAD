@@ -109,7 +109,7 @@ ZoomableView::ZoomableView(Ui::Sheet* ui)
     connect(ui->zoomMinus, &QToolButton::clicked, this, &ZoomableView::zoomOut);
 
     connect(ui->zoomTB, &QToolButton::clicked, ui->zoomSlider, [zoomSlider = ui->zoomSlider]() {
-        const QString title = tr("Zoom level"), label = tr("New zoom level:");
+        const QString title = tr("Zoom Level"), label = tr("New zoom level:");
         constexpr int min = ZoomableView::min, max = ZoomableView::max, step = 10;
         const int val = zoomSlider->value();
         bool ok;
@@ -122,6 +122,18 @@ ZoomableView::ZoomableView(Ui::Sheet* ui)
     });
 
     resetZoom();
+
+    auto connectCursorChangedSignal = [this](QHeaderView* hv) {
+        auto header = qobject_cast<SpreadsheetGui::SheetViewHeader*>(hv);
+        connect(header,
+                &SpreadsheetGui::SheetViewHeader::cursorChanged,
+                this,
+                [this](const QCursor& newerCursor) {
+                    qpw->setCursor(newerCursor);
+                });
+    };
+    connectCursorChangedSignal(stv->horizontalHeader());
+    connectCursorChangedSignal(stv->verticalHeader());
 }
 
 int ZoomableView::zoomLevel() const

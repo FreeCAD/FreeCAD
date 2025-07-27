@@ -98,6 +98,7 @@ class _Window(ArchComponent.Component):
     def __init__(self,obj):
 
         ArchComponent.Component.__init__(self,obj)
+        self.Type = "Window"
         self.setProperties(obj)
         obj.IfcType = "Window"
         obj.MoveWithHost = True
@@ -178,7 +179,6 @@ class _Window(ArchComponent.Component):
         obj.setEditorMode("VerticalArea",2)
         obj.setEditorMode("HorizontalArea",2)
         obj.setEditorMode("PerimeterLength",2)
-        self.Type = "Window"
 
     def onDocumentRestored(self,obj):
 
@@ -187,6 +187,17 @@ class _Window(ArchComponent.Component):
 
         # Add features in the SketchArch External Add-on
         self.addSketchArchFeatures(obj, mode='ODR')
+
+        # Need to restore 'initial' settings as corresponding codes in onChanged() does upon object creation
+        self.baseSill = obj.Sill.Value
+        self.basePos = obj.Base.Placement.Base
+        self.atthOff = None
+        if hasattr(obj, 'AttachmentOffsetXyzAndRotation'):
+            self.atthOff = obj.AttachmentOffsetXyzAndRotation.Base
+
+    def loads(self,state):
+
+        self.Type = "Window"
 
     def onBeforeChange(self,obj,prop):
 
@@ -200,12 +211,36 @@ class _Window(ArchComponent.Component):
         self.hideSubobjects(obj,prop)
         if prop == "Sill":
             val = getattr(obj,prop).Value
-            if getattr(self, 'baseSill', None) is None and getattr(self, 'basePos', None) is None:
+
+            if (getattr(self, 'baseSill', None) is None and
+                getattr(self, 'basePos', None) is None and
+                getattr(self, 'atthOff', None) is None):  # TODO Any cases only 1 or 2 are not None?
                 self.baseSill = val
                 self.basePos = obj.Base.Placement.Base
+                self.atthOff = None
+                if hasattr(obj, 'AttachmentOffsetXyzAndRotation'):
+                    self.atthOff = obj.AttachmentOffsetXyzAndRotation.Base
                 return
 
-            obj.Base.Placement.Base.z = self.basePos.z + (obj.Sill.Value - self.baseSill)
+            import ArchSketchObject  # Need to import per method
+            host = None
+            if obj.Hosts:
+                host = obj.Hosts[0]
+            if (hasattr(obj, 'AttachToAxisOrSketch') and
+                obj.AttachToAxisOrSketch == "Host" and
+                host and Draft.getType(host.Base) == "ArchSketch" and
+                hasattr(ArchSketchObject, 'updateAttachmentOffset')):
+                SketchArch = True
+            else:
+                SketchArch = False
+
+            if SketchArch:
+                objAttOff = obj.AttachmentOffsetXyzAndRotation
+                objAttOff.Base.z = self.atthOff.z + (obj.Sill.Value - self.baseSill)
+                obj.AttachmentOffsetXyzAndRotation = objAttOff
+            else:
+                obj.Base.Placement.Base.z = self.basePos.z + (obj.Sill.Value - self.baseSill)
+
         elif not "Restore" in obj.State:
             if prop in ["Base","WindowParts","Placement","HoleDepth","Height","Width","Hosts","Shape"]:
                 # anti-recursive loops, bc the base sketch will touch the Placement all the time
@@ -604,6 +639,19 @@ class _Window(ArchComponent.Component):
                         widths = host.OverrideWidth
                     elif host.Width:
                         widths = [host.Width.Value]
+
+                    # TODO Below codes copied and adopted from ArchWall.py.
+                    #      Consider adding a variable to store the layer's
+                    #      thickness as deduced, so the figure there could be
+                    #      used directly without re-calculated here below.
+                    if hasattr(host,"Material"):
+                        if host.Material:
+                            if hasattr(host.Material,"Materials"):
+                                thicknesses = [abs(t) for t in host.Material.Thicknesses]
+                                totalThk = sum(thicknesses)
+                                # Append totalThk to widths, find max below
+                                widths.append(totalThk)
+
                 if widths:
                     width = max(widths)
                     # +100mm to ensure subtract is through at the moment

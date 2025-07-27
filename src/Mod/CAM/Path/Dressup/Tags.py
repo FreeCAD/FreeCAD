@@ -49,7 +49,7 @@ def debugEdge(edge, prefix, force=False):
     if force or Path.Log.getLevel(Path.Log.thisModule()) == Path.Log.Level.DEBUG:
         pf = edge.valueAt(edge.FirstParameter)
         pl = edge.valueAt(edge.LastParameter)
-        if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
+        if type(edge.Curve) in [Part.Line, Part.LineSegment]:
             print(
                 "%s %s((%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f))"
                 % (prefix, type(edge.Curve), pf.x, pf.y, pf.z, pl.x, pl.y, pl.z)
@@ -197,17 +197,13 @@ class Tag:
             self.solid = self.solid.makeFillet(radius, [self.solid.Edges[0]])
 
     def filterIntersections(self, pts, face):
-        if (
-            type(face.Surface) == Part.Cone
-            or type(face.Surface) == Part.Cylinder
-            or type(face.Surface) == Part.Toroid
-        ):
+        if type(face.Surface) in [Part.Cone, Part.Cylinder, Part.Toroid]:
             Path.Log.track("it's a cone/cylinder, checking z")
             return list([pt for pt in pts if pt.z >= self.bottom() and pt.z <= self.top()])
-        if type(face.Surface) == Part.Plane:
+        if type(face.Surface) is Part.Plane:
             Path.Log.track("it's a plane, checking R")
             c = face.Edges[0].Curve
-            if type(c) == Part.Circle:
+            if type(c) is Part.Circle:
                 return list(
                     [
                         pt
@@ -457,13 +453,13 @@ class MapWireToTag:
                     break
                 elif Path.Geom.pointsCoincide(p2, p0):
                     flipped = Path.Geom.flipEdge(e)
-                    if not flipped is None:
+                    if flipped is not None:
                         outputEdges.append((flipped, True))
                     else:
                         p0 = None
                         cnt = 0
                         for p in reversed(e.discretize(Deflection=0.01)):
-                            if not p0 is None:
+                            if p0 is not None:
                                 outputEdges.append((Part.Edge(Part.LineSegment(p0, p)), True))
                                 cnt = cnt + 1
                             p0 = p
@@ -623,7 +619,7 @@ class _RapidEdges:
         self.rapid = rapid
 
     def isRapid(self, edge):
-        if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
+        if type(edge.Curve) in [Part.Line, Part.LineSegment]:
             v0 = edge.Vertexes[0]
             v1 = edge.Vertexes[1]
             for r in self.rapid:
@@ -790,7 +786,7 @@ class PathData:
         j = 0
         for i, pos in enumerate(fromObj.Positions):
             print("tag[%d]" % i)
-            if not i in fromObj.Disabled:
+            if i not in fromObj.Disabled:
                 dist = self.baseWire.distToShape(
                     Part.Vertex(FreeCAD.Vector(pos.x, pos.y, self.minZ))
                 )
@@ -1038,9 +1034,7 @@ class ObjectTagDressup:
         commands = []
         lastEdge = 0
         lastTag = 0
-        # sameTag = None
         t = 0
-        # inters = None
         edge = None
 
         segm = 50
@@ -1065,7 +1059,6 @@ class ObjectTagDressup:
                 edge = pathData.edges[lastEdge]
                 debugEdge(edge, "=======  new edge: %d/%d" % (lastEdge, len(pathData.edges)))
                 lastEdge += 1
-                # sameTag = None
 
             if mapper:
                 mapper.add(edge)
@@ -1136,7 +1129,7 @@ class ObjectTagDressup:
                 obj.Height.Value,
                 obj.Angle,
                 obj.Radius,
-                not i in disabledIn,
+                i not in disabledIn,
             )
             tag.createSolidsAt(self.pathData.minZ, self.toolRadius)
             rawTags.append(tag)
