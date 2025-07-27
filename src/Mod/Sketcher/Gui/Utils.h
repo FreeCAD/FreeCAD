@@ -158,6 +158,7 @@ inline GeometryCreationMode currentGeometryCreationMode()
 {
     return geometryCreationMode;
 }
+
 inline bool isConstructionMode()
 {
     return geometryCreationMode == GeometryCreationMode::Construction;
