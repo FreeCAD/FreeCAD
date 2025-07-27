@@ -57,7 +57,7 @@ translate = FreeCAD.Qt.translate
 
 # Set the logging level and track the module
 is_debugging = False
-if is_debugging is False:
+if is_debugging is True:
     Log.setLevel(Log.Level.DEBUG, Log.thisModule())
     Log.trackModule(Log.thisModule())
 else:
