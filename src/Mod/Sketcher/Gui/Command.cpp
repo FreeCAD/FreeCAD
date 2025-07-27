@@ -1176,7 +1176,7 @@ void GridSpaceAction::languageChange()
     gridShow->setToolTip(tr("Toggles the visibility of the grid in the active sketch"));
     gridShow->setStatusTip(gridAutoSpacing->toolTip());
 
-    gridAutoSpacing->setText(tr("Grid auto spacing"));
+    gridAutoSpacing->setText(tr("Grid auto-spacing"));
     gridAutoSpacing->setToolTip(tr("Automatically adjusts the grid spacing based on the zoom level"));
     gridAutoSpacing->setStatusTip(gridAutoSpacing->toolTip());
 
