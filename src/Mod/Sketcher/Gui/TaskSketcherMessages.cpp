@@ -42,7 +42,7 @@ using namespace Gui::TaskView;
 namespace sp = std::placeholders;
 
 TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch* sketchView)
-    : TaskSolverMessages(Gui::BitmapFactory().pixmap("Sketcher_Sketch"), tr("Sketch edit"))
+    : TaskSolverMessages(Gui::BitmapFactory().pixmap("Sketcher_Sketch"), tr("Sketch Edit"))
     , sketchView(sketchView)
 {
     createSettingsButtonActions();
