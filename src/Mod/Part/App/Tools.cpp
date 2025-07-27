@@ -26,6 +26,7 @@
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
+# include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepIntCurveSurface_Inter.hxx>
@@ -811,4 +812,27 @@ bool Part::Tools::isShapeEmpty(const TopoDS_Shape& shape)
     // To see if shape is non-empty we check if it has at least one vertex
     TopExp_Explorer explorer(shape, TopAbs_VERTEX);
     return !explorer.More();
+}
+
+Bnd_Box Part::Tools::getBounds(const TopoDS_Shape& shape)
+{
+    Bnd_Box bounds;
+    BRepBndLib::Add(shape, bounds);
+    bounds.SetGap(0.0);
+
+    return bounds;
+}
+
+Standard_Real Part::Tools::getDeflection(const Bnd_Box& bounds, double deviation)
+{
+    Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
+    bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+
+    // calculating the deflection value
+    return ((xMax - xMin) + (yMax - yMin) + (zMax - zMin)) / 300.0 * deviation;
+}
+
+Standard_Real Part::Tools::getDeflection(const TopoDS_Shape& shape, double deviation)
+{
+    return getDeflection(getBounds(shape), deviation);
 }

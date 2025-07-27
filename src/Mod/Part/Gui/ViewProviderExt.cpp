@@ -82,6 +82,8 @@
 #include <Gui/Selection/SoFCSelectionAction.h>
 #include <Gui/Selection/SoFCUnifiedSelection.h>
 #include <Gui/ViewParams.h>
+#include <Gui/Utilities.h>
+
 #include <Mod/Part/App/ShapeMapHasher.h>
 #include <Mod/Part/App/Tools.h>
 
@@ -955,12 +957,7 @@ void ViewProviderPartExt::setupCoinGeometry(TopoDS_Shape shape,
     std::set<int> faceEdges;
 
     // calculating the deflection value
-    Bnd_Box bounds;
-    BRepBndLib::Add(shape, bounds);
-    bounds.SetGap(0.0);
-    Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
-    bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
-    Standard_Real deflection = ((xMax - xMin) + (yMax - yMin) + (zMax - zMin)) / 300.0 * deviation;
+    Standard_Real deflection = Part::Tools::getDeflection(shape, deviation);
 
     // Since OCCT 7.6 a value of equal 0 is not allowed any more, this can happen if a single
     // vertex should be displayed.
@@ -1143,9 +1140,9 @@ void ViewProviderPartExt::setupCoinGeometry(TopoDS_Shape shape,
                 NV3.SetXYZ(Normals(N3).XYZ());
             }
             else {
-                gp_Vec v1(V1.X(), V1.Y(), V1.Z()),
-                       v2(V2.X(), V2.Y(), V2.Z()),
-                       v3(V3.X(), V3.Y(), V3.Z());
+                gp_Vec v1 = Base::convertTo<gp_Vec>(V1);
+                gp_Vec v2 = Base::convertTo<gp_Vec>(V2);
+                gp_Vec v3 = Base::convertTo<gp_Vec>(V3);
 
                 gp_Vec normal = (v2 - v1) ^ (v3 - v1);
                 NV1 = normal;
@@ -1166,20 +1163,14 @@ void ViewProviderPartExt::setupCoinGeometry(TopoDS_Shape shape,
             }
 
             // add the normals for all points of this triangle
-            norms[faceNodeOffset + N1 - 1] += SbVec3f(NV1.X(), NV1.Y(), NV1.Z());
-            norms[faceNodeOffset + N2 - 1] += SbVec3f(NV2.X(), NV2.Y(), NV2.Z());
-            norms[faceNodeOffset + N3 - 1] += SbVec3f(NV3.X(), NV3.Y(), NV3.Z());
+            norms[faceNodeOffset + N1 - 1] += Base::convertTo<SbVec3f>(NV1);
+            norms[faceNodeOffset + N2 - 1] += Base::convertTo<SbVec3f>(NV2);
+            norms[faceNodeOffset + N3 - 1] += Base::convertTo<SbVec3f>(NV3);
 
             // set the vertices
-            verts[faceNodeOffset + N1 - 1].setValue((float)(V1.X()),
-                                                    (float)(V1.Y()),
-                                                    (float)(V1.Z()));
-            verts[faceNodeOffset + N2 - 1].setValue((float)(V2.X()),
-                                                    (float)(V2.Y()),
-                                                    (float)(V2.Z()));
-            verts[faceNodeOffset + N3 - 1].setValue((float)(V3.X()),
-                                                    (float)(V3.Y()),
-                                                    (float)(V3.Z()));
+            verts[faceNodeOffset + N1 - 1] = Base::convertTo<SbVec3f>(V1);
+            verts[faceNodeOffset + N2 - 1] = Base::convertTo<SbVec3f>(V2);
+            verts[faceNodeOffset + N3 - 1] = Base::convertTo<SbVec3f>(V3);
 
             // set the index vector with the 3 point indexes and the end delimiter
             index[faceTriaOffset * 4 + 4 * (g - 1)]     = faceNodeOffset + N1 - 1;
@@ -1227,7 +1218,7 @@ void ViewProviderPartExt::setupCoinGeometry(TopoDS_Shape shape,
                     if (!identity) {
                         p.Transform(myTransf);
                     }
-                    verts[index].setValue((float)(p.X()), (float)(p.Y()), (float)(p.Z()));
+                    verts[index] = Base::convertTo<SbVec3f>(p);
                 }
 
                 // remove the handled edge index from the set
@@ -1269,7 +1260,7 @@ void ViewProviderPartExt::setupCoinGeometry(TopoDS_Shape shape,
                         pnt.Transform(myTransf);
                     }
                     int index = faceNodeOffset + j - 1;
-                    verts[index].setValue((float)(pnt.X()), (float)(pnt.Y()), (float)(pnt.Z()));
+                    verts[index] = Base::convertTo<SbVec3f>(pnt);
                     lineSetMap[i].push_back(index);
                 }
 
@@ -1282,9 +1273,8 @@ void ViewProviderPartExt::setupCoinGeometry(TopoDS_Shape shape,
     for (int i = 0; i < vertexMap.Extent(); i++) {
         const TopoDS_Vertex& aVertex = TopoDS::Vertex(vertexMap(i + 1));
         gp_Pnt pnt = BRep_Tool::Pnt(aVertex);
-        verts[faceNodeOffset + i].setValue((float)(pnt.X()),
-                                           (float)(pnt.Y()),
-                                           (float)(pnt.Z()));
+
+        verts[faceNodeOffset + i] = Base::convertTo<SbVec3f>(pnt);
     }
 
     // normalize all normals
@@ -1304,9 +1294,7 @@ void ViewProviderPartExt::setupCoinGeometry(TopoDS_Shape shape,
     int32_t* lines = lineset->coordIndex.startEditing();
 
     int l = 0;
-    for (std::vector<int32_t>::const_iterator it = lineSetCoords.begin();
-         it != lineSetCoords.end();
-         ++it, l++) {
+    for (auto it = lineSetCoords.begin(); it != lineSetCoords.end(); ++it, l++) {
         lines[l] = *it;
     }
 
@@ -1318,9 +1306,8 @@ void ViewProviderPartExt::setupCoinGeometry(TopoDS_Shape shape,
     lineset->coordIndex.finishEditing();
 
 #   ifdef FC_DEBUG
-    // printing some information
     Base::Console().log("ViewProvider update time: %f s\n",Base::TimeElapsed::diffTimeF(startTime,Base::TimeElapsed()));
-    Base::Console().log("Shape tria info: Faces:%d Edges:%d Nodes:%d Triangles:%d IdxVec:%d\n",numFaces,numEdges,numNodes,numTriangles,numLines);
+    Base::Console().log("Shape mesh info: Faces:%d Edges:%d Nodes:%d Triangles:%d IdxVec:%d\n",numFaces,numEdges,numNodes,numTriangles,numLines);
 #   endif
 }
 
