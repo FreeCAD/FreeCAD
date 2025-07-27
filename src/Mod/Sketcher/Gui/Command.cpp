@@ -1181,7 +1181,7 @@ void GridSpaceAction::languageChange()
     gridAutoSpacing->setStatusTip(gridAutoSpacing->toolTip());
 
     sizeLabel->setText(tr("Spacing"));
-    gridSizeBox->setToolTip(tr("Distance between two subsequent grid lines."));
+    gridSizeBox->setToolTip(tr("Distance between two subsequent grid lines"));
 
     snapToGrid->setText(tr("Snap to grid"));
     snapToGrid->setToolTip(
