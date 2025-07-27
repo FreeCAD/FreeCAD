@@ -36,6 +36,8 @@ import DraftVecUtils
 from draftobjects.base import DraftObject
 from draftutils import gui_utils
 from draftutils import params
+from draftutils.messages import _wrn
+from draftutils.translate import translate
 
 
 class Wire(DraftObject):
@@ -98,6 +100,36 @@ class Wire(DraftObject):
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
         gui_utils.restore_view_object(obj, vp_module="view_wire", vp_class="ViewProviderWire")
+
+        vobj = getattr(obj, "ViewObject", None)
+        if vobj is None:
+            return
+
+        if hasattr(vobj, "ArrowSize") or hasattr(vobj, "ArrowType") or hasattr(vobj, "EndArrow"):
+            self.update_properties_1v1(obj, vobj)
+
+    def update_properties_1v1(self, obj, vobj):
+        """Update view properties."""
+        vobj.Proxy._set_properties(vobj)
+        if getattr(vobj, "EndArrow", False) and hasattr(vobj, "ArrowType"):
+            vobj.ArrowTypeEnd = vobj.ArrowType
+        if hasattr(vobj, "ArrowSize"):
+            vobj.ArrowSizeStart = vobj.ArrowSize
+            vobj.ArrowSizeEnd = vobj.ArrowSize
+            vobj.setPropertyStatus("ArrowSize", "-LockDynamic")
+            vobj.removeProperty("ArrowSize")
+        if hasattr(vobj, "ArrowType"):
+            vobj.setPropertyStatus("ArrowType", "-LockDynamic")
+            vobj.removeProperty("ArrowType")
+        if hasattr(vobj, "EndArrow"):
+            vobj.setPropertyStatus("EndArrow", "-LockDynamic")
+            vobj.removeProperty("EndArrow")
+        _wrn(
+            "v1.1, "
+            + obj.Label
+            + ", "
+            + translate("draft", "migrated view properties")
+        )
 
     def execute(self, obj):
         if self.props_changed_placement_only(obj): # Supplying obj is required because of `Base` and `Tool`.

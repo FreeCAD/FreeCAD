@@ -154,7 +154,7 @@
         <x>0</x>
         <y>0</y>
         <width>383</width>
-        <height>589</height>
+        <height>732</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -349,15 +349,15 @@
           <item row="3" column="0">
            <widget class="QLabel" name="label_ArrowType">
             <property name="toolTip">
-             <string>The type of arrows or markers to use for dimensions and labels</string>
+             <string>The type of the starting arrows or markers to use for dimensions and labels</string>
             </property>
             <property name="text">
-             <string>Arrow type</string>
+             <string>Start arrow type</string>
             </property>
            </widget>
           </item>
           <item row="3" column="1">
-           <widget class="QComboBox" name="ArrowType">
+           <widget class="QComboBox" name="ArrowTypeStart">
             <property name="sizePolicy">
              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -371,7 +371,7 @@
              </size>
             </property>
             <property name="toolTip">
-             <string>The type of arrows or markers to use for dimensions and labels</string>
+             <string>The type of the starting arrows or markers to use for dimensions and labels</string>
             </property>
             <item>
              <property name="text">
@@ -398,22 +398,27 @@
               <string>Tick-2</string>
              </property>
             </item>
+            <item>
+             <property name="text">
+              <string>None</string>
+             </property>
+            </item>
            </widget>
           </item>
           <item row="4" column="0">
-           <widget class="QLabel" name="label_ArrowSize">
+           <widget class="QLabel" name="label_ArrowSizeStart">
             <property name="toolTip">
-             <string>The size of the arrows or markers in system units</string>
+             <string>The size of the starting arrows or markers in system units</string>
             </property>
             <property name="text">
-             <string>Arrow size</string>
+             <string>Start arrow size</string>
             </property>
            </widget>
           </item>
           <item row="4" column="1">
-           <widget class="Gui::InputField" name="ArrowSize">
+           <widget class="Gui::InputField" name="ArrowSizeStart">
             <property name="toolTip">
-             <string>The size of the arrows or markers in system units</string>
+             <string>The size of the starting arrows or markers in system units</string>
             </property>
             <property name="unit" stdset="0">
              <string notr="true"/>
@@ -421,6 +426,85 @@
            </widget>
           </item>
           <item row="5" column="0">
+           <widget class="QLabel" name="label_ArrowTypeEnd">
+            <property name="toolTip">
+             <string>The type of the ending arrows or markers to use for dimensions and labels</string>
+            </property>
+            <property name="text">
+             <string>End arrow type</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QComboBox" name="ArrowTypeEnd">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>The type of the ending arrows or markers to use for dimensions and labels</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>Dot</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Circle</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Arrow</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Tick</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Tick-2</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>None</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="label_ArrowSizeEnd">
+            <property name="toolTip">
+             <string>The size of the ending arrows or markers in system units</string>
+            </property>
+            <property name="text">
+             <string>End arrow size</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="Gui::InputField" name="ArrowSizeEnd">
+            <property name="toolTip">
+             <string>The size of the ending arrows or markers in system units</string>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0">
            <widget class="QLabel" name="label_LineColor">
             <property name="toolTip">
              <string>The color of lines and arrows</string>
@@ -430,7 +514,7 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="1">
+          <item row="7" column="1">
            <widget class="Gui::ColorButton" name="LineColor">
             <property name="toolTip">
              <string>The color of lines and arrows</string>
@@ -469,7 +553,7 @@
             </property>
            </widget>
           </item>
-         <item row="1" column="0">
+          <item row="1" column="0">
            <widget class="QLabel" name="label_UnitOverride">
             <property name="toolTip">
              <string>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</string>
