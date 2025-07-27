@@ -1,7 +1,8 @@
-from datetime import datetime
-import FreeCAD
 import os
+from datetime import datetime
 from enum import Enum, auto
+
+import FreeCAD
 
 
 class SquawkType(Enum):
@@ -31,12 +32,13 @@ class Squawk:
             note (str): The message content
             date (datetime, optional): Timestamp of the squawk, defaults to current time
             squawk_type (str): Type of squawk (NOTE, WARNING, CAUTION, TIP)
+            icon (str, optional): A string representing the squawk icon.
         """
         self.operator = operator
         self.note = note
         self.date = date or datetime.now()
         self._validate_and_set_type(squawk_type)
-        self._set_icon_path()
+        self._set_icon()
 
     def _validate_and_set_type(self, squawk_type):
         """Validate and set the squawk type."""
@@ -45,8 +47,8 @@ class Squawk:
         else:
             self.squawk_type = SquawkType.NOTE
 
-    def _set_icon_path(self):
-        """Set the appropriate icon path based on squawk type."""
+    def _set_icon(self):
+        """Set the appropriate icon string based on squawk type."""
         icon_map = {
             SquawkType.TIP: "Sanity_Bulb",
             SquawkType.NOTE: "Sanity_Note",
@@ -55,7 +57,7 @@ class Squawk:
         }
 
         icon_name = icon_map.get(self.squawk_type, "Sanity_Note")
-        self.icon_path = f"{FreeCAD.getHomePath()}Mod/CAM/Path/Main/Sanity/{icon_name}.svg"
+        self.icon = f"{FreeCAD.getHomePath()}Mod/CAM/Path/Main/Sanity/{icon_name}.svg"
 
     def to_dict(self):
         """
@@ -65,11 +67,11 @@ class Squawk:
             dict: Dictionary representation of the squawk
         """
         return {
-            "Date": str(self.date),
-            "Operator": self.operator,
-            "Note": self.note,
+            "date": str(self.date),
+            "operator": self.operator,
+            "note": self.note,
             "squawkType": self.squawk_type,
-            "squawkIcon": self.icon_path,
+            "icon": self.icon,
         }
 
 

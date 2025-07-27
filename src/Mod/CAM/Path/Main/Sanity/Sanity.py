@@ -28,18 +28,31 @@ CAM projects.  Ideally, the user could execute these utilities from an icon
 to make sure tools are selected and configured and defaults have been revised
 """
 
-from collections import Counter
-from datetime import datetime
-import FreeCAD
-import Path
-import Path.Log as Log
-from Path.Main.Sanity.ImageBuilder import ImageBuilder
-from Path.Main.Sanity.ReportGenerator import ReportGenerator
-from Path.Main.Sanity.Squawk import create_squawk, SquawkType
-from Path.Main.Sanity.SanityRule import LegacyToolsRule
 import os
 import tempfile
+from collections import Counter
+from datetime import datetime
+
+import FreeCAD
+import Path
 import Path.Dressup.Utils as PathDressup
+import Path.Log as Log
+from Path.Main.Sanity.ImageBuilder import ImageBuilder, ImageBuilderFactory
+from Path.Main.Sanity.ReportGenerator import ReportGenerator
+from Path.Main.Sanity.SanityRule import (
+    JobNotPostProcessedRule,
+    LegacyToolsRule,
+    MaterialNotSpecifiedRule,
+    PostProcessedFileMissingRule,
+    ToolBitShapeNotFoundRule,
+    ToolControllerNotUsedRule,
+    ToolControllerZeroFeedrateRule,
+    ToolUsedByMultipleToolsRule,
+    SpindleSpeedZeroFeedrateRule,
+)
+from Path.Main.Sanity.Squawk import SquawkType, Squawk, create_squawk
+
+import re
 
 translate = FreeCAD.Qt.translate
 
@@ -56,7 +69,7 @@ class CAMSanity:
     and export it in a format that is useful to the user.
     """
 
-    def __init__(self, job, output_file):
+    def __init__(self, job, output_file, generate_images=True):
         self.job = job
         self.output_file = output_file
         self.filelocation = os.path.dirname(output_file)
@@ -69,8 +82,8 @@ class CAMSanity:
                     "output location {} doesn't exist".format(os.path.dirname(output_file)),
                 )
             )
-
-        self.image_builder = ImageBuilder.ImageBuilderFactory.get_image_builder(self.filelocation)
+        if generate_images:
+            self.image_builder = ImageBuilderFactory.get_image_builder(self.filelocation)
         self.data = self.summarize()
 
     def summarize(self):
@@ -84,9 +97,8 @@ class CAMSanity:
         data["toolData"] = self._toolData()
         data["runData"] = self._runData()
         data["outputData"] = self._outputData()
-        data["fixtureData"] = self._fixtureData()
-        data["stockData"] = self._stockData()
-        # data["squawkData"] = self._squawkData()
+        data["fixtureData"] = self._fixtureData()  # has image
+        data["stockData"] = self._stockData()  # has image
 
         return data
 
@@ -185,6 +197,8 @@ class CAMSanity:
             "outputfilename": "setupreport",
             "squawkData": [],
         }
+        data["squawkData"] += JobNotPostProcessedRule().check(obj)
+        data["squawkData"] += PostProcessedFileMissingRule().check(obj)
 
         data["lastpostprocess"] = str(obj.LastPostProcessDate)
         data["lastgcodefile"] = str(obj.LastPostProcessOutput)
@@ -205,12 +219,6 @@ class CAMSanity:
         if obj.LastPostProcessOutput == "":
             data["filesize"] = str(0.0)
             data["linecount"] = str(0)
-            data["squawkData"].append(
-                self.squawk(
-                    "CAMSanity",
-                    translate("CAM_Sanity", "The Job has not been post-processed"),
-                )
-            )
         else:
             if os.path.isfile(obj.LastPostProcessOutput):
                 data["filesize"] = str(os.path.getsize(obj.LastPostProcessOutput) / 1000)
@@ -218,16 +226,6 @@ class CAMSanity:
             else:
                 data["filesize"] = str(0.0)
                 data["linecount"] = str(0)
-                data["squawkData"].append(
-                    self.squawk(
-                        "CAMSanity",
-                        translate(
-                            "CAM_Sanity",
-                            "The Job's last post-processed file is missing",
-                        ),
-                    )
-                )
-
         return data
 
     def _runData(self):
@@ -303,6 +301,7 @@ class CAMSanity:
             "stockImage": "",
             "squawkData": [],
         }
+        data["squawkData"] += MaterialNotSpecifiedRule().check(obj)
 
         bb = obj.Stock.Shape.BoundBox
         data["xLen"] = FreeCAD.Units.Quantity(bb.XLength, FreeCAD.Units.Length).UserString
@@ -324,15 +323,6 @@ class CAMSanity:
                     props["SurfaceSpeedHSS"]
                 ).UserString
 
-        if data["material"] in ["Default", "Not Specified"]:
-            data["squawkData"].append(
-                self.squawk(
-                    "CAMSanity",
-                    translate("CAM_Sanity", "Consider Specifying the Stock Material"),
-                    squawkType=SquawkType.TIP,
-                )
-            )
-
         data["stockImage"] = self.image_builder.build_image(obj.Stock, "stockImage")
 
         return data
@@ -346,24 +336,28 @@ class CAMSanity:
         obj = self.job
         data = {"squawkData": []}
 
-        # LegacyToolsRule
-        data["squawkData"].append(LegacyToolsRule().check(obj))
+        # Run legacy tools rule first to get legacy tool controllers
+        # This will be used to filter out legacy tools in subsequent checks
+
+        data["squawkData"] += LegacyToolsRule().check(obj)
+        legacy_tcs = self._get_legacy_tools(data["squawkData"])
+
+        data["squawkData"] += ToolUsedByMultipleToolsRule().check(obj, legacy_tcs)
+
+        data["squawkData"] += ToolControllerZeroFeedrateRule().check(obj, legacy_tcs)
+
+        data["squawkData"] += ToolBitShapeNotFoundRule().check(obj, legacy_tcs)
+
+        data["squawkData"] += ToolControllerNotUsedRule().check(obj, legacy_tcs)
+
+        data["squawkData"] += SpindleSpeedZeroFeedrateRule().check(obj, legacy_tcs)
 
         for TC in obj.Tools.Group:
+            if TC.ToolNumber in legacy_tcs:
+                continue  # Skip legacy tools
 
-            # ToolUsedByMultipleToolsRule
-            tooldata = data.setdefault(str(TC.ToolNumber), {})
-            bitshape = tooldata.setdefault("ShapeType", "")
-            if bitshape not in ["", TC.Tool.ShapeType]:
-                data["squawkData"].append(
-                    self.squawk(
-                        "CAMSanity",
-                        translate("CAM_Sanity", "Tool number {} used by multiple tools").format(
-                            TC.ToolNumber
-                        ),
-                        squawkType=SquawkType.CAUTION,
-                    )
-                )
+            tooldata = data.setdefault(str(TC.ToolNumber), {})  # type: ignore
+
             tooldata["bitShape"] = TC.Tool.ShapeType
             tooldata["description"] = TC.Tool.Label
             tooldata["manufacturer"] = ""
@@ -377,15 +371,7 @@ class CAMSanity:
                 imagedata = TC.Tool.Proxy.get_thumbnail()
             else:
                 imagedata = None
-                data["squawkData"].append(
-                    self.squawk(
-                        "CAMSanity",
-                        translate("CAM_Sanity", "Toolbit Shape for TC: {} not found").format(
-                            TC.ToolNumber
-                        ),
-                        squawkType=SquawkType.WARNING,
-                    )
-                )
+
             tooldata["image"] = ""
             imagepath = os.path.join(self.filelocation, f"T{TC.ToolNumber}.png")
             tooldata["imagepath"] = imagepath
@@ -395,31 +381,8 @@ class CAMSanity:
                     fd.write(imagedata)
                     fd.close()
 
-            # ToolControllerZeroFeedrateRule
             tooldata["feedrate"] = str(TC.HorizFeed)
-            if TC.HorizFeed.Value == 0.0:
-                data["squawkData"].append(
-                    self.squawk(
-                        "CAMSanity",
-                        translate("CAM_Sanity", "Tool Controller '{}' has no feedrate").format(
-                            TC.Label
-                        ),
-                        squawkType=SquawkType.WARNING,
-                    )
-                )
-
-            # ToolControllerZeroSpindleSpeedRule
             tooldata["spindlespeed"] = str(TC.SpindleSpeed)
-            if TC.SpindleSpeed == 0.0:
-                data["squawkData"].append(
-                    self.squawk(
-                        "CAMSanity",
-                        translate("CAM_Sanity", "Tool Controller '{}' has no spindlespeed").format(
-                            TC.Label
-                        ),
-                        squawkType=SquawkType.WARNING,
-                    )
-                )
 
             used = False
             for op in obj.Operations.Group:
@@ -434,19 +397,8 @@ class CAMSanity:
                             "Speed": str(TC.SpindleSpeed),
                         }
                     )
-            # ToolControllerNotUsedRule
             if used is False:
                 tooldata.setdefault("ops", [])
-                data["squawkData"].append(
-                    self.squawk(
-                        "CAMSanity",
-                        translate("CAM_Sanity", "Tool Controller '{}' is not used").format(
-                            TC.Label
-                        ),
-                        squawkType=SquawkType.WARNING,
-                    )
-                )
-
         return data
 
     def serialize(self, obj):
@@ -464,3 +416,13 @@ class CAMSanity:
         html = generator.generate_html()
         generator = None
         return html
+
+    def _get_legacy_tools(self, squawks: list[Squawk]) -> list[int]:
+        """
+        Returns a list of legacy tool controllers to ignore for the rest of camsanity parsing.
+        """
+        tool_controllers = []
+        for squawk in squawks:
+            number = re.findall(r"\d+", squawk.note)
+            tool_controllers.append(int(number[0])) if number else None
+        return tool_controllers

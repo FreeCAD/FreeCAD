@@ -20,20 +20,20 @@
 # *                                                                         *
 # ***************************************************************************
 
-from string import Template
-import FreeCAD
-import Path.Log
 import base64
 import os
-
+from string import Template
+from Path.Main.Sanity.Squawk import Squawk, SquawkType
+import FreeCAD
+import Path.Log
 from Path.Main.Sanity.HTMLTemplate import (
-    html_template,
     base_template,
-    squawk_template,
-    tool_template,
+    html_template,
     op_run_template,
     op_tool_template,
+    squawk_template,
     tool_item_template,
+    tool_template,
 )
 
 translate = FreeCAD.Qt.translate
@@ -204,15 +204,16 @@ class ReportGenerator:
             bases += base_template.substitute(base)
         self.formatted_data["bases"] = bases
 
-    def _format_squawks(self, squawk_data):
+    def _format_squawks(self, squawk_data: list[Squawk]):
         for squawk in squawk_data:
+            print(f"Squawk: {squawk}")
             if self.embed_images:
-                data, tag = self.file_to_base64_with_tag(squawk["squawkIcon"])
+                data, tag = self.file_to_base64_with_tag(squawk.icon)
             else:
-                tag = f"<img src={squawk['squawkIcon']} name='Image' alt='TIP' />"
+                tag = f"<img src={squawk.icon} name='Image' alt='TIP' />"
 
-            squawk["squawkIcon"] = tag
-            self.squawks += squawk_template.substitute(squawk)
+            squawk.icon = tag
+            self.squawks += squawk_template.substitute(**squawk.to_dict())
 
     def generate_html(self):
         self.formatted_data.update(self.translated_labels)
