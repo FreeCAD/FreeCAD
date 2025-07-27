@@ -1445,8 +1445,8 @@ void SnapSpaceAction::languageChange()
 
     angleLabel->setText(tr("Snap angle"));
     snapAngle->setToolTip(
-        tr("Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to "
-            "enable 'Snap at Angle'. The angle starts from the positive X axis of the sketch."));
+        tr("Angular step for tools that use 'Snap at angle'. Hold Ctrl to "
+            "enable 'Snap at angle'. The angle starts from the positive X axis of the sketch."));
 }
 
 QWidget* SnapSpaceAction::createWidget(QWidget* parent)
