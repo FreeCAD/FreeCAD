@@ -1666,9 +1666,9 @@ void RenderingOrderAction::updateWidget()
 
         QListWidgetItem* newItem = new QListWidgetItem;
         newItem->setData(Qt::UserRole, QVariant(topid));
-        newItem->setText(topid == 1       ? tr("Normal Geometry")
-                                : topid == 2 ? tr("Construction Geometry")
-                                            : tr("External Geometry"));
+        newItem->setText(topid == 1       ? tr("Normal geometry")
+                                : topid == 2 ? tr("Construction geometry")
+                                            : tr("External geometry"));
         list->insertItem(0, newItem);
 
         newItem = new QListWidgetItem;
