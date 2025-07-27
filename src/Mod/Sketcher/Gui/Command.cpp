@@ -1172,7 +1172,7 @@ void GridSpaceAction::updateWidget()
 
 void GridSpaceAction::languageChange()
 {
-    gridShow->setText(tr("Grid"));
+    gridShow->setText(tr("Display grid"));
     gridShow->setToolTip(tr("Toggles the visibility of the grid in the active sketch"));
     gridShow->setStatusTip(gridAutoSpacing->toolTip());
 
