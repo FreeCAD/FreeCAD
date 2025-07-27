@@ -196,7 +196,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
                                     if vobj.getTypeIdOfProperty(attr) == "App::PropertyColor":
                                         value = value | 0x000000FF
                                     setattr(vobj, attr, value)
-                                except:
+                                except TypeError:
                                     pass
                 else:
                     # the style has been removed
