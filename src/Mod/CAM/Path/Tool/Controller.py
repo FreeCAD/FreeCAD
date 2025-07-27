@@ -245,7 +245,6 @@ class ToolController:
 
     def execute(self, obj):
         Path.Log.track(obj.Name)
-
         args = {
             "toolnumber": obj.ToolNumber,
             "toollabel": obj.Label,
@@ -306,6 +305,8 @@ def Create(
 
         if hasattr(obj.Tool, "SpindleDirection"):
             obj.SpindleDir = obj.Tool.SpindleDirection
+        else:
+            obj.SpindleDir = "None"
 
     obj.ToolNumber = toolNumber
     return obj
