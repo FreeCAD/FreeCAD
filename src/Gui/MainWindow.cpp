@@ -447,12 +447,10 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // connection between workspace, window menu and tab bar
 #if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-    connect(d->windowMapper, &QSignalMapper::mappedWidget,
-            this, &MainWindow::onSetActiveSubWindow);
+    connect(d->windowMapper, &QSignalMapper::mappedWidget, this, &MainWindow::setActiveSubWindow);
 #else
-    connect(d->windowMapper, &QSignalMapper::mappedObject,
-            this, [=, this](QObject* object) {
-        onSetActiveSubWindow(qobject_cast<QWidget*>(object));
+    connect(d->windowMapper, &QSignalMapper::mappedObject, this, [=, this](QObject* object) {
+        setActiveSubWindow(qobject_cast<QWidget*>(object));
     });
 #endif
     connect(d->mdiArea, &QMdiArea::subWindowActivated,
@@ -960,15 +958,16 @@ void MainWindow::activatePreviousWindow ()
 
 void MainWindow::activateWorkbench(const QString& name)
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    bool saveWB = hGrp->GetBool("SaveWBbyTab", false);
-    QMdiSubWindow* subWin = d->mdiArea->activeSubWindow();
-    if (subWin && saveWB) {
-        QString currWb = subWin->property("ownWB").toString();
-        if (currWb.isEmpty() || currWb != name) {
-            subWin->setProperty("ownWB", name);
-        }
+    // remember workbench by tab (if enabled)
+
+    const ParameterGrp::handle hGrp =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    const bool saveWB = hGrp->GetBool("SaveWBbyTab", false);
+    MDIView* view = activeWindow();
+    if (view && saveWB) {
+        view->setProperty("ownWB", name);
     }
+    
     // emit this signal
     Q_EMIT workbenchActivated(name);
     updateActions(true);
@@ -1157,6 +1156,7 @@ bool MainWindow::eventFilter(QObject* o, QEvent* e)
 void MainWindow::addWindow(MDIView* view)
 {
     // make workspace parent of view
+
     bool isempty = d->mdiArea->subWindowList().isEmpty();
     auto child = qobject_cast<QMdiSubWindow*>(view->parentWidget());
     if(!child) {
@@ -1186,7 +1186,9 @@ void MainWindow::addWindow(MDIView* view)
     // listen to the incoming events of the view
     view->installEventFilter(this);
 
-    // show the very first window in maximized mode
+    // Show the new window. This will also call onWindowActivated. The very first window is shown in
+    // maximized mode.
+
     if (isempty)
         view->showMaximized();
     else
@@ -1194,13 +1196,18 @@ void MainWindow::addWindow(MDIView* view)
 }
 
 /**
- * Removes the instance of Gui::MDiView from the main window and sends am event
+ * Removes the instance of Gui::MDIView from the main window and sends n event
  * to the parent widget, a QMdiSubWindow to delete itself.
  * If you want to avoid that the Gui::MDIView instance gets destructed too you
  * must reparent it afterwards, e.g. set parent to NULL.
  */
 void MainWindow::removeWindow(Gui::MDIView* view, bool close)
 {
+    if (view->currentViewMode() != MDIView::Child) {
+        FC_WARN("tried to remove an MDIView that is not currently in child mode");
+        return;
+    }
+
     // free all connections
     disconnect(view, &MDIView::message, this, &MainWindow::showMessage);
     disconnect(this, &MainWindow::windowStateChanged, view, &MDIView::windowStateChanged);
@@ -1234,6 +1241,7 @@ void MainWindow::removeWindow(Gui::MDIView* view, bool close)
     auto subwindow = qobject_cast<QMdiSubWindow*>(parent);
     if(subwindow && d->mdiArea->subWindowList().contains(subwindow)) {
         subwindow->setParent(nullptr);
+        subwindow->deleteLater();
 
         assert(!d->mdiArea->subWindowList().contains(subwindow));
     }
@@ -1264,21 +1272,68 @@ void MainWindow::tabCloseRequested(int index)
     updateActions();
 }
 
-void MainWindow::onSetActiveSubWindow(QWidget *window)
+void MainWindow::setActiveSubWindow(QWidget* window)
 {
-    if (!window)
+    auto mdi = qobject_cast<QMdiSubWindow*>(window);
+    if (!mdi) {
         return;
-    d->mdiArea->setActiveSubWindow(qobject_cast<QMdiSubWindow *>(window));
-    updateActions();
+    }
+
+    auto view = qobject_cast<MDIView*>(mdi->widget());
+    setActiveWindow(view);
 }
 
 void MainWindow::setActiveWindow(MDIView* view)
 {
-    if (!view || d->activeView == view)
+    if (!view) {
         return;
-    onSetActiveSubWindow(view->parentWidget());
+    }
+
+    // always update the focus and active sub window
+
+    // We need the explicit call to setFocus because it seems the focus window and the
+    // activeSubWindow in the QMdiView can diverge when calling setActiveWindow while the MainWindow
+    // is not currently active. In this case Qt will later set the previous focus window as active,
+    // which will call onWindowActivated and activate the wrong window. This e.g. happens when
+    // switching from a 3d view to a spreadsheet using the "Windows..." dialog or when docking a
+    // spreadsheet that was in top-level/fullscreen mode. Why this could only be reproduced with a
+    // spreadsheet remains a mystery.
+
+    view->setFocus();
+
+    auto subwindow = qobject_cast<QMdiSubWindow*>(view->parentWidget());
+    if (subwindow) {
+        d->mdiArea->setActiveSubWindow(subwindow);
+    }
+
+    // if active view changed, notify rest of the application
+
+    if (view == d->activeView) {
+        return;
+    }
+
     d->activeView = view;
     Application::Instance->viewActivated(view);
+
+    // activate/remember workbench by tab (if enabled)
+
+    const ParameterGrp::handle hGrp =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    const bool saveWB = hGrp->GetBool("SaveWBbyTab", false);
+    if (saveWB) {
+        const QString currWb = view->property("ownWB").toString();
+        if (!currWb.isEmpty()) {
+            this->activateWorkbench(currWb);
+        }
+        else {
+            const std::string name = WorkbenchManager::instance()->active()->name();
+            view->setProperty("ownWB", QString::fromStdString(name));
+        }
+    }
+
+    // update actions
+
+    updateActions();
 }
 
 void MainWindow::onWindowActivated(QMdiSubWindow* mdi)
@@ -1289,41 +1344,11 @@ void MainWindow::onWindowActivated(QMdiSubWindow* mdi)
         return;
     }
 
+    // set active the appropriate window (it needs not to be part of mdiIds, e.g. directly after
+    // creation)
+
     auto view = dynamic_cast<MDIView*>(mdi->widget());
-
-    // set active the appropriate window (it needs not to be part of mdiIds, e.g. directly after creation)
-    if (view)
-    {
-        d->activeView = view;
-        Application::Instance->viewActivated(view);
-    }
-
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    bool saveWB = hGrp->GetBool("SaveWBbyTab", false);
-    if (saveWB) {
-        QString currWb = mdi->property("ownWB").toString();
-        if (! currWb.isEmpty()) {
-            this->activateWorkbench(currWb);
-        }
-        else {
-            mdi->setProperty("ownWB", QString::fromStdString(WorkbenchManager::instance()->active()->name()));
-        }
-    }
-
-    // Even if windowActivated() signal is emitted mdi doesn't need to be a top-level window.
-    // This happens e.g. if two windows are top-level and one of them gets docked again.
-    // QWorkspace emits the signal then even though the other window is in front.
-    // The consequence is that the docked window becomes the active window and not the undocked
-    // window on top. This means that all accel events, menu and toolbar actions get redirected
-    // to the (wrong) docked window.
-    // But just testing whether the view is active and ignore it if not leads to other more serious problems -
-    // at least under Linux. It seems to be a problem with the window manager.
-    // Under Windows it seems to work though it's not really sure that it works reliably.
-    // Result: So, we accept the first problem to be sure to avoid the second one.
-    if ( !view /*|| !mdi->isActiveWindow()*/ )
-        return; // either no MDIView or no valid object or no top-level window
-
-    updateActions(true);
+    setActiveWindow(view);
 }
 
 void MainWindow::onWindowsMenuAboutToShow()
@@ -2179,13 +2204,7 @@ void MainWindow::changeEvent(QEvent *e)
     else if (e->type() == QEvent::ActivationChange) {
         if (isActiveWindow()) {
             QMdiSubWindow* mdi = d->mdiArea->currentSubWindow();
-            if (mdi) {
-                auto view = dynamic_cast<MDIView*>(mdi->widget());
-                if (view && getMainWindow()->activeWindow() != view) {
-                    d->activeView = view;
-                    Application::Instance->viewActivated(view);
-                }
-            }
+            setActiveSubWindow(mdi);
         }
     }
     else {

@@ -1682,7 +1682,7 @@ void StdViewDock::activated(int iMsg)
 bool StdViewDock::isActive()
 {
     MDIView* view = getMainWindow()->activeWindow();
-    return (qobject_cast<View3DInventor*>(view) ? true : false);
+    return view != nullptr;
 }
 
 //===========================================================================
@@ -1711,7 +1711,7 @@ void StdViewUndock::activated(int iMsg)
 bool StdViewUndock::isActive()
 {
     MDIView* view = getMainWindow()->activeWindow();
-    return (qobject_cast<View3DInventor*>(view) ? true : false);
+    return view != nullptr;
 }
 
 //===========================================================================
@@ -1773,7 +1773,7 @@ void StdViewFullscreen::activated(int iMsg)
 bool StdViewFullscreen::isActive()
 {
     MDIView* view = getMainWindow()->activeWindow();
-    return (qobject_cast<View3DInventor*>(view) ? true : false);
+    return view != nullptr;
 }
 
 //===========================================================================
@@ -1825,67 +1825,61 @@ void StdViewDockUndockFullscreen::activated(int iMsg)
     if (!view) // no active view
         return;
 
-    // nothing to do when the view is docked and 'Docked' is pressed
-    if (iMsg == 0 && view->currentViewMode() == MDIView::Child)
+    const auto oldmode = view->currentViewMode();
+    auto mode = (MDIView::ViewMode)iMsg;
+
+    // Pressing the same button again toggles the view back to docked.
+    if (mode == oldmode) {
+        mode = MDIView::Child;
+    }
+
+    if (mode == oldmode) {
         return;
+    }
+
     // Change the view mode after an mdi view was already visible doesn't
     // work well with Qt5 any more because of some strange OpenGL behaviour.
     // A workaround is to clone the mdi view, set its view mode and delete
     // the original view.
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (doc) {
-        Gui::MDIView* clone = doc->cloneView(view);
-        if (!clone)
-            return;
 
-        const char* ppReturn = nullptr;
-        if (view->onMsg("GetCamera", &ppReturn)) {
-            std::string sMsg = "SetCamera ";
-            sMsg += ppReturn;
+    bool needsClone = mode == MDIView::Child || oldmode == MDIView::Child;
+    Gui::MDIView* clone = needsClone ? view->clone() : nullptr;
 
-            const char** pReturnIgnore=nullptr;
-            clone->onMsg(sMsg.c_str(), pReturnIgnore);
-        }
-
-        if (iMsg==0) {
+    if (clone) {
+        if (mode == MDIView::Child) {
             getMainWindow()->addWindow(clone);
         }
-        else if (iMsg==1) {
-            if (view->currentViewMode() == MDIView::TopLevel)
-                getMainWindow()->addWindow(clone);
-            else
-                clone->setCurrentViewMode(MDIView::TopLevel);
+        else {
+            clone->setCurrentViewMode(mode);
         }
-        else if (iMsg==2) {
-            if (view->currentViewMode() == MDIView::FullScreen)
-                getMainWindow()->addWindow(clone);
-            else
-                clone->setCurrentViewMode(MDIView::FullScreen);
-        }
+
         // destroy the old view
         view->deleteSelf();
+    }
+    else {
+        // no clone needed, simply change the view mode
+        view->setCurrentViewMode(mode);
     }
 }
 
 bool StdViewDockUndockFullscreen::isActive()
 {
     MDIView* view = getMainWindow()->activeWindow();
-    if (qobject_cast<View3DInventor*>(view)) {
-        // update the action group if needed
-        auto pActGrp = qobject_cast<ActionGroup*>(_pcAction);
-        if (pActGrp) {
-            int index = pActGrp->checkedAction();
-            int mode = (int)(view->currentViewMode());
-            if (index != mode) {
-                // active window has changed with another view mode
-                pActGrp->setCheckedAction(mode);
-            }
-        }
+    if (!view)
+        return false;
 
-        return true;
+    // update the action group if needed
+    auto pActGrp = qobject_cast<ActionGroup*>(_pcAction);
+    if (pActGrp) {
+        int index = pActGrp->checkedAction();
+        int mode = (int)(view->currentViewMode());
+        if (index != mode) {
+            // active window has changed with another view mode
+            pActGrp->setCheckedAction(mode);
+        }
     }
 
-    return false;
+    return true;
 }
 
 

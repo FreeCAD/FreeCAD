@@ -20,12 +20,12 @@ For a complete overview of what can be done see also the documentation of mesh.
 A mesh object cannot be added to an existing document directly. Therefore the document must create an object
 with a property class that supports meshes.
 Example:
-  m = Mesh.Mesh()
-  ... # Manipulate the mesh
-  d = FreeCAD.activeDocument() # Get a reference to the actie document
-  f = d.addObject("Mesh::Feature", "Mesh") # Create a mesh feature
-  f.Mesh = m # Assign the mesh object to the internal property
-  d.recompute()</UserDocu>
+m = Mesh.Mesh()
+... # Manipulate the mesh
+d = FreeCAD.activeDocument() # Get a reference to the actie document
+f = d.addObject("Mesh::Feature", "Mesh") # Create a mesh feature
+f.Mesh = m # Assign the mesh object to the internal property
+d.recompute()</UserDocu>
 		</Documentation>
         <Methode Name="read" Keyword="true">
 			<Documentation>
@@ -166,25 +166,26 @@ lines = mesh.section(mesh2, [ConnectLines=True, MinDist=0.0001])
 		<Methode Name="setPoint">
 			<Documentation>
 				<UserDocu>
-					setPoint(int, Vector)
-					Sets the point at index.
+setPoint(int, Vector)
+Sets the point at index.
 				</UserDocu>
 			</Documentation>
 		</Methode>
         <Methode Name="movePoint">
             <Documentation>
-                <UserDocu>movePoint(int, Vector)
-  This method moves the point in the mesh along the
-  given vector. This affects the geometry of the mesh.
-  Be aware that moving points may cause self-intersections.
+                <UserDocu>
+movePoint(int, Vector)
+This method moves the point in the mesh along the
+given vector. This affects the geometry of the mesh.
+Be aware that moving points may cause self-intersections.
                 </UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getPointNormals" Const="true">
 			<Documentation>
 				<UserDocu>
-					getPointNormals()
-					Get the normals of the points.
+getPointNormals()
+Get the normals of the points.
 				</UserDocu>
 			</Documentation>
 		</Methode>
@@ -205,12 +206,13 @@ lines = mesh.section(mesh2, [ConnectLines=True, MinDist=0.0001])
 		</Methode>
 		<Methode Name="getSeparateComponents" Const="true">
 			<Documentation>
-				<UserDocu>Returns a list containing the different
+				<UserDocu>
+Returns a list containing the different
 components (separated areas) of the mesh as separate meshes
 
 import Mesh
 for c in mesh.getSeparatecomponents():
-	Mesh.show(c)
+Mesh.show(c)
 
 				</UserDocu>
 			</Documentation>
@@ -485,13 +487,13 @@ smooth([iteration=1,maxError=FLT_MAX])</UserDocu>
 		<Methode Name="decimate">
 			<Documentation>
 				<UserDocu>
-					Decimate the mesh
-					decimate(tolerance(Float), reduction(Float))
-					tolerance: maximum error
-					reduction: reduction factor must be in the range [0.0,1.0]
-					Example:
-					mesh.decimate(0.5, 0.1) # reduction by up to 10 percent
-					mesh.decimate(0.5, 0.9) # reduction by up to 90 percent
+Decimate the mesh
+decimate(tolerance(Float), reduction(Float))
+tolerance: maximum error
+reduction: reduction factor must be in the range [0.0,1.0]
+Example:
+mesh.decimate(0.5, 0.1) # reduction by up to 10 percent
+mesh.decimate(0.5, 0.9) # reduction by up to 90 percent
 				</UserDocu>
 			</Documentation>
 		</Methode>
@@ -611,9 +613,9 @@ for p in mesh.Facets:
 			</Documentation>
 			<Parameter Name="Volume" Type="Float" />
 		</Attribute>
-		<ClassDeclarations>private:
+		<ClassDeclarations>
+    private:
     friend class PropertyMeshKernel;
-    class PropertyMeshKernel* parentProperty = nullptr;
-		</ClassDeclarations>
+    class PropertyMeshKernel* parentProperty = nullptr;</ClassDeclarations>
 	</PythonExport>
 </GenerateModel>

@@ -240,6 +240,9 @@ public:
     void activateFile(int);
     void resizeList(int);
 
+Q_SIGNALS:
+    void recentFilesListModified();
+
 private:
     void setFiles(const QStringList&);
     QStringList files() const;
@@ -249,6 +252,8 @@ private:
 private:
     int visibleItems; /**< Number of visible items */
     int maximumItems; /**< Number of maximum items */
+
+    QAction sep, clearRecentFilesListAction;
 
     class Private;
     friend class Private;

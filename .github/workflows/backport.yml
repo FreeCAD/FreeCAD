@@ -1,0 +1,50 @@
+name: Backport merged pull request
+
+on:
+  pull_request_target:
+    types: [closed, labeled]
+    branches: [main, releases/*]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  backport:
+    name: Create backport pull request
+    runs-on: ubuntu-latest
+
+    # Run the action if a PR is merged with backport labels
+    # OR
+    # when already merged PR is labeled with backport labels
+    if: >
+      github.event.pull_request.merged
+      && (
+        github.event.action == 'closed'
+        || (
+          github.event.action == 'labeled'
+          && startsWith(github.event.label.name, 'backport ')
+        )
+      )
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Create backport pull requests
+        uses: korthout/backport-action@0193454f0c5947491d348f33a275c119f30eb736 # v3.2.1
+        with:
+          # Inputs documented here: https://github.com/korthout/backport-action?tab=readme-ov-file#inputs
+          github_token: ${{ github.token }}
+          github_workspace: ${{ github.workspace }}
+
+          # permit PRs with merge commits to be backported
+          merge_commits: 'skip'
+
+          # copy labels to backport to identify affected systems and priorities
+          copy_labels_pattern: '.*'
+
+          # Regex pattern to match github labels
+          # The capture group catches the target branch
+          # i.e. label "backport releases/FreeCAD-1-0" will create backport
+          # PR for branch releases/FreeCAD-1-0
+          label_pattern: ^backport ([^ ]+)$

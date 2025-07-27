@@ -93,24 +93,36 @@ public:
 
     ~DrawSketchHandlerArcSlot() override = default;
 
-private:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        return lookupArcSlotHints(state());
+        using enum Gui::InputHint::UserInput;
+
+        return Gui::lookupHints<SelectMode>(state(),
+                                            {
+                                                {.state = SelectMode::SeekFirst,
+                                                 .hints =
+                                                     {
+                                                         {tr("%1 pick slot center"), {MouseLeft}},
+                                                     }},
+                                                {.state = SelectMode::SeekSecond,
+                                                 .hints =
+                                                     {
+                                                         {tr("%1 pick slot radius"), {MouseLeft}},
+                                                     }},
+                                                {.state = SelectMode::SeekThird,
+                                                 .hints =
+                                                     {
+                                                         {tr("%1 pick slot angle"), {MouseLeft}},
+                                                     }},
+                                                {.state = SelectMode::SeekFourth,
+                                                 .hints =
+                                                     {
+                                                         {tr("%1 pick slot width"), {MouseLeft}},
+                                                     }},
+                                            });
     }
 
 private:
-    struct HintEntry
-    {
-        SelectMode state;
-        std::list<Gui::InputHint> hints;
-    };
-
-    using HintTable = std::vector<HintEntry>;
-
-    static HintTable getArcSlotHintTable();
-    static std::list<Gui::InputHint> lookupArcSlotHints(SelectMode state);
-
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
         switch (state()) {
@@ -284,7 +296,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Arc Slot parameters"));
+        return QString(tr("Arc Slot parameters"));
     }
 
     bool canGoToNextMode() override
@@ -974,32 +986,6 @@ void DSHArcSlotController::addConstraints()
             constraintSlotRadius();
         }
     }
-}
-
-DrawSketchHandlerArcSlot::HintTable DrawSketchHandlerArcSlot::getArcSlotHintTable()
-{
-    return {// Structure: {SelectMode, {hints...}}
-            {SelectMode::SeekFirst,
-             {{QObject::tr("%1 pick slot center"), {Gui::InputHint::UserInput::MouseLeft}}}},
-            {SelectMode::SeekSecond,
-             {{QObject::tr("%1 pick slot radius"), {Gui::InputHint::UserInput::MouseLeft}}}},
-            {SelectMode::SeekThird,
-             {{QObject::tr("%1 pick slot angle"), {Gui::InputHint::UserInput::MouseLeft}}}},
-            {SelectMode::SeekFourth,
-             {{QObject::tr("%1 pick slot width"), {Gui::InputHint::UserInput::MouseLeft}}}}};
-}
-
-std::list<Gui::InputHint> DrawSketchHandlerArcSlot::lookupArcSlotHints(SelectMode state)
-{
-    const auto arcSlotHintTable = getArcSlotHintTable();
-
-    auto it = std::find_if(arcSlotHintTable.begin(),
-                           arcSlotHintTable.end(),
-                           [state](const HintEntry& entry) {
-                               return entry.state == state;
-                           });
-
-    return (it != arcSlotHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
 }
 
 }  // namespace SketcherGui
