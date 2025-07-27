@@ -267,7 +267,7 @@ class ViewProviderDraftAnnotation(object):
                                     if vobj.getTypeIdOfProperty(visprop) == "App::PropertyColor":
                                         value = value | 0x000000FF
                                     setattr(vobj, visprop, value)
-                                except:
+                                except TypeError:
                                     pass
                     break
 
