@@ -52,12 +52,13 @@ def setFeedRate(commandlist_arg, ToolController):
     def _isVertical(currentposition, command):
         x = command.Parameters["X"] if "X" in command.Parameters else currentposition.x
         y = command.Parameters["Y"] if "Y" in command.Parameters else currentposition.y
-        return Path.Geom.isRoughly(x,currentposition.x) and Path.Geom.isRoughly(y,currentposition.y)
+        return Path.Geom.isRoughly(x, currentposition.x) and Path.Geom.isRoughly(
+            y, currentposition.y
+        )
 
     def _isHorizontal(currentposition, command):
         z = command.Parameters["Z"] if "Z" in command.Parameters else currentposition.z
-        return Path.Geom.isRoughly(z,currentposition.z)
-
+        return Path.Geom.isRoughly(z, currentposition.z)
 
     machine = PathMachineState.MachineState()
 
@@ -70,16 +71,15 @@ def setFeedRate(commandlist_arg, ToolController):
 
         params = command.Parameters
 
-        if _isVertical(machine.getPosition(), command): # also true for plunge helix
+        if _isVertical(machine.getPosition(), command):  # also true for plunge helix
             rate = (
-                ToolController.VertRapid.Value
-                if command.Name in Path.Geom.CmdMoveRapid
-                else vFeed
+                ToolController.VertRapid.Value if command.Name in Path.Geom.CmdMoveRapid else vFeed
             )
         else:
             if "FR" in params:
                 hFeed_adj = hFeed * params["FR"]
-            else: hFeed_adj = hFeed
+            else:
+                hFeed_adj = hFeed
 
             if _isHorizontal(machine.getPosition(), command):
                 rate = (
@@ -87,14 +87,14 @@ def setFeedRate(commandlist_arg, ToolController):
                     if command.Name in Path.Geom.CmdMoveRapid
                     else hFeed_adj
                 )
-            elif (command.Name in ["G2", "G3"]):
-                if ("DR" in params):
-                    if params["DR"]==0:
-                         rate = hFeed_adj
-                    elif abs(params["DR"]) > 2: # > 60 deg., steep helix: use V feedrate
-                         rate = vFeed
+            elif command.Name in ["G2", "G3"]:
+                if "DR" in params:
+                    if params["DR"] == 0:
+                        rate = hFeed_adj
+                    elif abs(params["DR"]) > 2:  # > 60 deg., steep helix: use V feedrate
+                        rate = vFeed
                     else:
-                        descentAngle = math.atan(abs(params["DR"])) # DR is signed, neg down
+                        descentAngle = math.atan(abs(params["DR"]))  # DR is signed, neg down
                         rate = math.sqrt(vFeed * vFeed + hFeed_adj * hFeed_adj)  # vector sum
                         # ensure v,h feedrates not exceeded by "FR" rate
                         rate = min(rate, vFeed / math.sin(descentAngle))
@@ -111,4 +111,4 @@ def setFeedRate(commandlist_arg, ToolController):
 
         machine.addCommand(command)
 
-    return  commandlist_arg
+    return commandlist_arg

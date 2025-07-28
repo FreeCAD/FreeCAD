@@ -53,7 +53,6 @@ std::string CommandPy::representation() const
     }
     str << " ]";
     return str.str();
-
 }
 
 //
