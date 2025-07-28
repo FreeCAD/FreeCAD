@@ -2016,7 +2016,7 @@ void Document::addRootObjectsToGroup(const std::vector<App::DocumentObject*>& ob
     }
 }
 
-MDIView *Document::createView(const Base::Type& typeId)
+MDIView* Document::createView(const Base::Type& typeId, CreateViewMode mode)
 {
     if (!typeId.isDerivedFrom(MDIView::getClassTypeId()))
         return nullptr;
@@ -2062,11 +2062,16 @@ MDIView *Document::createView(const Base::Type& typeId)
         for (App::DocumentObject* obj : child_vps)
             view3D->getViewer()->removeViewProvider(getViewProvider(obj));
 
-        const char* name = getDocument()->Label.getValue();
-        QString title = QStringLiteral("%1 : %2[*]")
-            .arg(QString::fromUtf8(name)).arg(d->_iWinCount++);
+        // When cloning the view, don't increment the window counter as the old view will be deleted
+        // shortly after.
+        if (mode != CreateViewMode::Clone) {
+            const char* name = getDocument()->Label.getValue();
+            QString title =
+                QStringLiteral("%1 : %2[*]").arg(QString::fromUtf8(name)).arg(d->_iWinCount++);
 
-        view3D->setWindowTitle(title);
+            view3D->setWindowTitle(title);
+        }
+
         view3D->setWindowModified(this->isModified());
         view3D->resize(400, 300);
 
@@ -2075,62 +2080,16 @@ MDIView *Document::createView(const Base::Type& typeId)
             view3D->onMsg(cameraSettings.c_str(),&ppReturn);
         }
 
-        getMainWindow()->addWindow(view3D);
+        // When cloning the view, don't add the view to the main window. The whole purpose of the
+        // workaround using cloned views is that the view can be shown in undocked/fullscreen mode
+        // without having been docked before.
+        if (mode != CreateViewMode::Clone) {
+            getMainWindow()->addWindow(view3D);
+        }
+
         view3D->getViewer()->redraw();
         return view3D;
     }
-    return nullptr;
-}
-
-Gui::MDIView* Document::cloneView(Gui::MDIView* oldview)
-{
-    if (!oldview)
-        return nullptr;
-
-    if (oldview->is<View3DInventor>()) {
-        auto view3D = new View3DInventor(this, getMainWindow());
-
-        auto firstView = static_cast<View3DInventor*>(oldview);
-        std::string overrideMode = firstView->getViewer()->getOverrideMode();
-        view3D->getViewer()->setOverrideMode(overrideMode);
-
-        view3D->getViewer()->setAxisCross(firstView->getViewer()->hasAxisCross());
-
-        // attach the viewproviders. we need to make sure that we only attach the toplevel ones
-        // and not viewproviders which are claimed by other providers. To ensure this we first
-        // add all providers and then remove the ones already claimed
-        std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator It1;
-        std::vector<App::DocumentObject*> child_vps;
-        for (It1=d->_ViewProviderMap.begin();It1!=d->_ViewProviderMap.end();++It1) {
-            view3D->getViewer()->addViewProvider(It1->second);
-            std::vector<App::DocumentObject*> children = It1->second->claimChildren3D();
-            child_vps.insert(child_vps.end(), children.begin(), children.end());
-        }
-        std::map<std::string,ViewProvider*>::const_iterator It2;
-        for (It2=d->_ViewProviderMapAnnotation.begin();It2!=d->_ViewProviderMapAnnotation.end();++It2) {
-            view3D->getViewer()->addViewProvider(It2->second);
-            std::vector<App::DocumentObject*> children = It2->second->claimChildren3D();
-            child_vps.insert(child_vps.end(), children.begin(), children.end());
-        }
-
-        for (App::DocumentObject* obj : child_vps)
-            view3D->getViewer()->removeViewProvider(getViewProvider(obj));
-
-        view3D->setWindowTitle(oldview->windowTitle());
-        view3D->setWindowModified(oldview->isWindowModified());
-        view3D->setWindowIcon(oldview->windowIcon());
-        view3D->resize(oldview->size());
-
-        // FIXME: Add parameter to define behaviour by the calling instance
-        // View provider editing
-        if (d->_editViewProvider) {
-            firstView->getViewer()->resetEditingViewProvider();
-            view3D->getViewer()->setEditingViewProvider(d->_editViewProvider, d->_editMode);
-        }
-
-        return view3D;
-    }
-
     return nullptr;
 }
 

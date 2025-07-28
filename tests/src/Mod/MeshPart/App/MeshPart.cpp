@@ -5,6 +5,9 @@
 #include <TopAbs_ShapeEnum.hxx>
 #include <QObject>
 
+#include <src/App/InitApplication.h>
+
+
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_CLANG("-Wextra-semi")
 QT_WARNING_DISABLE_CLANG("-Woverloaded-virtual")
@@ -17,8 +20,16 @@ QT_WARNING_DISABLE_CLANG("-Woverloaded-virtual")
 #include <StdMeshers_QuadranglePreference.hxx>
 QT_WARNING_POP
 
+class SMesh: public ::testing::Test
+{
+protected:
+    static void SetUpTestSuite()
+    {
+        tests::initApplication();
+    }
+};
 // NOLINTBEGIN
-TEST(SMesh, testMefisto)
+TEST_F(SMesh, testMefisto)
 {
     TopoDS_Solid box = BRepPrimAPI_MakeBox(10.0, 10.0, 10.0).Solid();
 
@@ -64,7 +75,7 @@ TEST(SMesh, testMefisto)
     delete gen;
 }
 
-TEST(SMesh, testStdMeshers)
+TEST_F(SMesh, testStdMeshers)
 {
     TopoDS_Solid box = BRepPrimAPI_MakeBox(10.0, 10.0, 10.0).Solid();
 

@@ -76,13 +76,6 @@ macro(InitializeFreeCADBuildOptions)
 
     ChooseQtVersion()
 
-    # https://blog.kitware.com/constraining-values-with-comboboxes-in-cmake-cmake-gui/
-    set(FREECAD_USE_OCC_VARIANT "Community Edition"  CACHE STRING  "Official OpenCASCADE version or community edition")
-    set_property(CACHE FREECAD_USE_OCC_VARIANT PROPERTY STRINGS
-                 "Official Version"
-                 "Community Edition"
-    )
-
     option(BUILD_DESIGNER_PLUGIN "Build and install the designer plugin" OFF)
 
     if(APPLE)

@@ -103,19 +103,24 @@ Branding::XmlConfig Branding::getUserDefines() const
 
 bool Branding::evaluateXML(QIODevice* device, QDomDocument& xmlDocument)
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6,5,0)
+    if (!xmlDocument.setContent(device)) {
+        return false;
+    }
+#else
     QString errorStr;
     int errorLine;
     int errorColumn;
-
     if (!xmlDocument.setContent(device, true, &errorStr, &errorLine, &errorColumn)) {
         return false;
     }
+#endif
 
     QDomElement root = xmlDocument.documentElement();
     if (root.tagName() != QLatin1String("Branding")) {
         return false;
     }
-    else if (root.hasAttribute(QLatin1String("version"))) {
+    if (root.hasAttribute(QLatin1String("version"))) {
         QString attr = root.attribute(QLatin1String("version"));
         if (attr != QLatin1String("1.0")) {
             return false;

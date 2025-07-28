@@ -1,10 +1,22 @@
 #include <gtest/gtest.h>
 
+#include <src/App/InitApplication.h>
+
 #include "App/ExpressionParser.h"
 #include "App/ExpressionTokenizer.h"
 
+
+class Expression: public ::testing::Test
+{
+protected:
+    static void SetUpTestSuite()
+    {
+        tests::initApplication();
+    }
+};
+
 // clang-format off
-TEST(Expression, tokenize)
+TEST_F(Expression, tokenize)
 {
     EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral(""), 10), QString());
     // 0.0000 deg-
@@ -15,7 +27,7 @@ TEST(Expression, tokenize)
     EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("0.00000 deg"), 11), QStringLiteral("deg"));
 }
 
-TEST(Expression, tokenizeCompletion)
+TEST_F(Expression, tokenizeCompletion)
 {
     EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("My Cube"), 7), QStringLiteral("MyCube"));
     EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("My Cube0"), 8), QStringLiteral("MyCube0"));
@@ -24,7 +36,7 @@ TEST(Expression, tokenizeCompletion)
     EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("My Cube 1"), 9), QStringLiteral("MyCube1"));
 }
 
-TEST(Expression, tokenizeQuantity)
+TEST_F(Expression, tokenizeQuantity)
 {
     auto result = App::ExpressionParser::tokenize("0.00000 deg");
     EXPECT_EQ(result.size(), 2);
@@ -36,7 +48,7 @@ TEST(Expression, tokenizeQuantity)
     EXPECT_EQ(std::get<2>(result[1]), "deg");
 }
 
-TEST(Expression, tokenizeFunc)
+TEST_F(Expression, tokenizeFunc)
 {
     auto result = App::ExpressionParser::tokenize("sin(0.00000)");
     EXPECT_EQ(result.size(), 3);
@@ -50,7 +62,7 @@ TEST(Expression, tokenizeFunc)
     EXPECT_EQ(std::get<2>(result[2]), ")");
 }
 
-TEST(Expression, tokenizeOne)
+TEST_F(Expression, tokenizeOne)
 {
     auto result = App::ExpressionParser::tokenize("1");
     EXPECT_EQ(result.size(), 1);
@@ -59,7 +71,7 @@ TEST(Expression, tokenizeOne)
     EXPECT_EQ(std::get<2>(result[0]), "1");
 }
 
-TEST(Expression, tokenizeNum)
+TEST_F(Expression, tokenizeNum)
 {
     auto result = App::ExpressionParser::tokenize("1.2341");
     EXPECT_EQ(result.size(), 1);
@@ -68,7 +80,7 @@ TEST(Expression, tokenizeNum)
     EXPECT_EQ(std::get<2>(result[0]), "1.2341");
 }
 
-TEST(Expression, tokenizeID)
+TEST_F(Expression, tokenizeID)
 {
     auto result = App::ExpressionParser::tokenize("Something");
     EXPECT_EQ(result.size(), 1);
@@ -77,7 +89,7 @@ TEST(Expression, tokenizeID)
     EXPECT_EQ(std::get<2>(result[0]), "Something");
 }
 
-TEST(Expression, tokenizeUnit)
+TEST_F(Expression, tokenizeUnit)
 {
     auto result = App::ExpressionParser::tokenize("km");
     EXPECT_EQ(result.size(), 1);
@@ -86,7 +98,7 @@ TEST(Expression, tokenizeUnit)
     EXPECT_EQ(std::get<2>(result[0]), "km");
 }
 
-TEST(Expression, tokenizeUSUnit)
+TEST_F(Expression, tokenizeUSUnit)
 {
     auto result = App::ExpressionParser::tokenize("\"");
     EXPECT_EQ(result.size(), 1);
@@ -95,7 +107,7 @@ TEST(Expression, tokenizeUSUnit)
     EXPECT_EQ(std::get<2>(result[0]), "\"");
 }
 
-TEST(Expression, tokenizeInt)
+TEST_F(Expression, tokenizeInt)
 {
     auto result = App::ExpressionParser::tokenize("123456");
     EXPECT_EQ(result.size(), 1);
@@ -104,7 +116,7 @@ TEST(Expression, tokenizeInt)
     EXPECT_EQ(std::get<2>(result[0]), "123456");
 }
 
-TEST(Expression, tokenizePi)
+TEST_F(Expression, tokenizePi)
 {
     auto result = App::ExpressionParser::tokenize("pi");
     EXPECT_EQ(result.size(), 1);
@@ -113,7 +125,7 @@ TEST(Expression, tokenizePi)
     EXPECT_EQ(std::get<2>(result[0]), "pi");
 }
 
-TEST(Expression, tokenizeE)
+TEST_F(Expression, tokenizeE)
 {
     auto result = App::ExpressionParser::tokenize("e");
     EXPECT_EQ(result.size(), 1);
@@ -122,7 +134,7 @@ TEST(Expression, tokenizeE)
     EXPECT_EQ(std::get<2>(result[0]), "e");
 }
 
-TEST(Expression, tokenizeConstant)
+TEST_F(Expression, tokenizeConstant)
 {
     auto result = App::ExpressionParser::tokenize("True False true false None");
     EXPECT_EQ(result.size(), 5);
@@ -135,7 +147,7 @@ TEST(Expression, tokenizeConstant)
     EXPECT_EQ(std::get<0>(result[4]), App::ExpressionParser::CONSTANT);
 }
 
-TEST(Expression, tokenizeEqual)
+TEST_F(Expression, tokenizeEqual)
 {
     auto result = App::ExpressionParser::tokenize("==");
     EXPECT_EQ(result.size(), 1);
@@ -144,7 +156,7 @@ TEST(Expression, tokenizeEqual)
     EXPECT_EQ(std::get<2>(result[0]), "==");
 }
 
-TEST(Expression, tokenizeNotEqual)
+TEST_F(Expression, tokenizeNotEqual)
 {
     auto result = App::ExpressionParser::tokenize("!=");
     EXPECT_EQ(result.size(), 1);
@@ -153,7 +165,7 @@ TEST(Expression, tokenizeNotEqual)
     EXPECT_EQ(std::get<2>(result[0]), "!=");
 }
 
-TEST(Expression, tokenizeLessThan)
+TEST_F(Expression, tokenizeLessThan)
 {
     auto result = App::ExpressionParser::tokenize("<");
     EXPECT_EQ(result.size(), 1);
@@ -162,7 +174,7 @@ TEST(Expression, tokenizeLessThan)
     EXPECT_EQ(std::get<2>(result[0]), "<");
 }
 
-TEST(Expression, tokenizeLessThanEqual)
+TEST_F(Expression, tokenizeLessThanEqual)
 {
     auto result = App::ExpressionParser::tokenize("<=");
     EXPECT_EQ(result.size(), 1);
@@ -171,7 +183,7 @@ TEST(Expression, tokenizeLessThanEqual)
     EXPECT_EQ(std::get<2>(result[0]), "<=");
 }
 
-TEST(Expression, tokenizeGreaterThan)
+TEST_F(Expression, tokenizeGreaterThan)
 {
     auto result = App::ExpressionParser::tokenize(">");
     EXPECT_EQ(result.size(), 1);
@@ -180,7 +192,7 @@ TEST(Expression, tokenizeGreaterThan)
     EXPECT_EQ(std::get<2>(result[0]), ">");
 }
 
-TEST(Expression, tokenizeGreaterThanEqual)
+TEST_F(Expression, tokenizeGreaterThanEqual)
 {
     auto result = App::ExpressionParser::tokenize(">=");
     EXPECT_EQ(result.size(), 1);
@@ -189,7 +201,7 @@ TEST(Expression, tokenizeGreaterThanEqual)
     EXPECT_EQ(std::get<2>(result[0]), ">=");
 }
 
-TEST(Expression, tokenizeMinus)
+TEST_F(Expression, tokenizeMinus)
 {
     auto result = App::ExpressionParser::tokenize("1-1");
     EXPECT_EQ(result.size(), 3);
@@ -198,7 +210,7 @@ TEST(Expression, tokenizeMinus)
     EXPECT_EQ(std::get<2>(result[1]), "-");
 }
 
-TEST(Expression, tokenizeCell1)
+TEST_F(Expression, tokenizeCell1)
 {
     auto result = App::ExpressionParser::tokenize("$A$12");
     EXPECT_EQ(result.size(), 1);
@@ -207,7 +219,7 @@ TEST(Expression, tokenizeCell1)
     EXPECT_EQ(std::get<2>(result[0]), "$A$12");
 }
 
-TEST(Expression, tokenizeCell2)
+TEST_F(Expression, tokenizeCell2)
 {
     auto result = App::ExpressionParser::tokenize("A$12");
     EXPECT_EQ(result.size(), 1);
@@ -216,7 +228,7 @@ TEST(Expression, tokenizeCell2)
     EXPECT_EQ(std::get<2>(result[0]), "A$12");
 }
 
-TEST(Expression, tokenizeCell3)
+TEST_F(Expression, tokenizeCell3)
 {
     auto result = App::ExpressionParser::tokenize("$A12");
     EXPECT_EQ(result.size(), 1);
@@ -225,7 +237,7 @@ TEST(Expression, tokenizeCell3)
     EXPECT_EQ(std::get<2>(result[0]), "$A12");
 }
 
-TEST(Expression, tokenizeString)
+TEST_F(Expression, tokenizeString)
 {
     auto result = App::ExpressionParser::tokenize("<<Test>>");
     EXPECT_EQ(result.size(), 1);
@@ -234,27 +246,27 @@ TEST(Expression, tokenizeString)
     EXPECT_EQ(std::get<2>(result[0]), "<<Test>>");
 }
 
-TEST(Expression, tokenizeExponent)
+TEST_F(Expression, tokenizeExponent)
 {
     // TODO
 }
 
-TEST(Expression, tokenizeNumAndUnit)
+TEST_F(Expression, tokenizeNumAndUnit)
 {
     // TODO
 }
 
-TEST(Expression, tokenizePos)
+TEST_F(Expression, tokenizePos)
 {
     // TODO
 }
 
-TEST(Expression, tokenizeNeg)
+TEST_F(Expression, tokenizeNeg)
 {
     // TODO
 }
 
-TEST(Expression, tokenizePi_rad)
+TEST_F(Expression, tokenizePi_rad)
 {
     EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("p"), 1), QStringLiteral("p"));
     EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("pi"), 2), QString());
@@ -265,13 +277,13 @@ TEST(Expression, tokenizePi_rad)
     EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("pi rad"), 2), QString());
 }
 
-TEST(Expression, toString)
+TEST_F(Expression, toString)
 {
     App::UnitExpression expr{nullptr, Base::Quantity{}, "pi rad"};
     EXPECT_EQ(expr.toString(), "pi rad");
 }
 
-TEST(Expression, test_pi_rad)
+TEST_F(Expression, test_pi_rad)
 {
     auto constant = std::make_unique<App::ConstantExpression>(nullptr, "pi");
     auto unit = std::make_unique<App::UnitExpression>(nullptr, Base::Quantity{}, "rad");
@@ -280,7 +292,7 @@ TEST(Expression, test_pi_rad)
     op.release();
 }
 
-TEST(Expression, test_e_rad)
+TEST_F(Expression, test_e_rad)
 {
     auto constant = std::make_unique<App::ConstantExpression>(nullptr, "e");
     auto unit = std::make_unique<App::UnitExpression>(nullptr, Base::Quantity{}, "rad");
