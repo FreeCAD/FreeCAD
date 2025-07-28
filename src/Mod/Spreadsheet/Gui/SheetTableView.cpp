@@ -188,7 +188,7 @@ SheetTableView::SheetTableView(QWidget* parent)
         menu.exec(QCursor::pos());
     });
 
-    auto createAction = [this](const char *iconPath, const QString &text, auto fun){
+    auto createAction = [this](const char* iconPath, const QString& text, auto fun) {
         const QIcon icon {QString::fromLatin1(iconPath)};
         auto act = new QAction(icon, text, this);
         connect(act, &QAction::triggered, this, fun);
@@ -198,17 +198,24 @@ SheetTableView::SheetTableView(QWidget* parent)
 
     actionProperties = createAction("", tr("Properties…"), &SheetTableView::cellProperties);
     contextMenu.addSeparator();
-    actionRecompute = createAction(":/icons/view-refresh.svg", tr("Recompute"), &SheetTableView::onRecompute);
+    actionRecompute =
+        createAction(":/icons/view-refresh.svg", tr("Recompute"), &SheetTableView::onRecompute);
     actionBind = createAction("", tr("Bind…"), &SheetTableView::onBind);
     actionConf = createAction("", tr("Configuration Table…"), &SheetTableView::onConfSetup);
     contextMenu.addSeparator();
-    actionMerge = createAction(":/icons/SpreadsheetMergeCells.svg", tr("Merge Cells"), &SheetTableView::mergeCells);
-    actionSplit = createAction(":/icons/SpreadsheetSplitCell.svg",  tr("Split Cells"), &SheetTableView::splitCell);
+    actionMerge = createAction(":/icons/SpreadsheetMergeCells.svg",
+                               tr("Merge Cells"),
+                               &SheetTableView::mergeCells);
+    actionSplit = createAction(":/icons/SpreadsheetSplitCell.svg",
+                               tr("Split Cells"),
+                               &SheetTableView::splitCell);
     contextMenu.addSeparator();
-    actionCut   = createAction(":/icons/edit-cut.svg",    tr("Cut"),    &SheetTableView::cutSelection);
-    actionCopy  = createAction(":/icons/edit-copy.svg",   tr("Copy"),   &SheetTableView::copySelection);
-    actionPaste = createAction(":/icons/edit-paste.svg",  tr("Paste"),  &SheetTableView::pasteClipboard);
-    actionDel   = createAction(":/icons/edit-delete.svg", tr("Delete"), &SheetTableView::deleteSelection);
+    actionCut = createAction(":/icons/edit-cut.svg", tr("Cut"), &SheetTableView::cutSelection);
+    actionCopy = createAction(":/icons/edit-copy.svg", tr("Copy"), &SheetTableView::copySelection);
+    actionPaste =
+        createAction(":/icons/edit-paste.svg", tr("Paste"), &SheetTableView::pasteClipboard);
+    actionDel =
+        createAction(":/icons/edit-delete.svg", tr("Delete"), &SheetTableView::deleteSelection);
 
     addAction(actionProperties);
 
