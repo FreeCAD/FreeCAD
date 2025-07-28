@@ -760,17 +760,6 @@ public:
     }
 
 private:
-    struct HintEntry
-    {
-        int mode;
-        std::list<Gui::InputHint> hints;
-    };
-
-    using HintTable = std::vector<HintEntry>;
-
-    static HintTable getLineSetHintTable();
-    static std::list<Gui::InputHint> lookupLineSetHints(int mode);
-
     QString getCrosshairCursorSVGName() const override
     {
         return QStringLiteral("Sketcher_Pointer_Create_Lineset");
@@ -778,7 +767,26 @@ private:
 
     std::list<Gui::InputHint> getToolHints() const override
     {
-        return lookupLineSetHints(Mode);
+        using enum Gui::InputHint::UserInput;
+
+        // clang-format off
+        return Gui::lookupHints<SELECT_MODE>(
+            Mode,
+            {
+                {.state = STATUS_SEEK_First,
+                 .hints =
+                     {
+                         {tr("%1 pick first point"), {MouseLeft}},
+                     }},
+                {.state = STATUS_SEEK_Second,
+                 .hints =
+                     {
+                         {tr("%1 pick next point"), {MouseLeft}},
+                         {tr("%1 finish"), {MouseRight}},
+                         {tr("%1 switch mode"), {KeyM}},
+                     }},
+            });
+        // clang-format on
     }
 
 protected:
@@ -840,30 +848,6 @@ protected:
         dirVec.Normalize();
     }
 };
-
-DrawSketchHandlerLineSet::HintTable DrawSketchHandlerLineSet::getLineSetHintTable()
-{
-    return {// Structure: {mode, {hints...}}
-            {STATUS_SEEK_First,
-             {{QObject::tr("%1 pick first point"), {Gui::InputHint::UserInput::MouseLeft}}}},
-            {STATUS_SEEK_Second,
-             {{QObject::tr("%1 pick next point"), {Gui::InputHint::UserInput::MouseLeft}},
-              {QObject::tr("%1 finish"), {Gui::InputHint::UserInput::MouseRight}},
-              {QObject::tr("%1 switch mode"), {Gui::InputHint::UserInput::KeyM}}}}};
-}
-
-std::list<Gui::InputHint> DrawSketchHandlerLineSet::lookupLineSetHints(int mode)
-{
-    const auto lineSetHintTable = getLineSetHintTable();
-
-    auto it = std::find_if(lineSetHintTable.begin(),
-                           lineSetHintTable.end(),
-                           [mode](const HintEntry& entry) {
-                               return entry.mode == mode;
-                           });
-
-    return (it != lineSetHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
-}
 }  // namespace SketcherGui
 
 

@@ -107,8 +107,121 @@ private:
 TEST_F(BackupPolicyTest, StandardSourceDoesNotExist)
 {
     // Arrange
-    setPolicyTerms(App::BackupPolicy::Policy::Standard, 1, true, "%Y-%m-%d_%H-%M-%S");
+    setPolicyTerms(App::BackupPolicy::Policy::Standard, 1, false, "%Y-%m-%d_%H-%M-%S");
 
     // Act & Assert
     EXPECT_THROW(apply("nonexistent.fcstd", "backup.fcstd"), Base::FileException);
+}
+
+TEST_F(BackupPolicyTest, StandardWithZeroFilesDeletesExisting)
+{
+    // Arrange
+    setPolicyTerms(App::BackupPolicy::Policy::Standard, 0, false, "%Y-%m-%d_%H-%M-%S");
+    auto source = createTempFile("source.fcstd");
+    auto target = createTempFile("target.fcstd");
+
+    // Act
+    apply(source.string(), target.string());
+
+    // Assert
+    GTEST_SKIP();  // Can't test on a real filesystem, too much caching for reliable results
+    EXPECT_FALSE(std::filesystem::exists(target));
+}
+
+TEST_F(BackupPolicyTest, StandardWithOneFileNoPreviousBackups)
+{
+    // Arrange
+    setPolicyTerms(App::BackupPolicy::Policy::Standard, 1, false, "%Y-%m-%d_%H-%M-%S");
+    auto source = createTempFile("source.fcstd");
+    auto target = createTempFile("target.fcstd");
+
+    // Act
+    apply(source.string(), target.string());
+
+    // Assert
+    EXPECT_TRUE(std::filesystem::exists(target.string() + "1"));
+}
+
+TEST_F(BackupPolicyTest, StandardWithOneFileOnePreviousBackup)
+{
+    // Arrange
+    setPolicyTerms(App::BackupPolicy::Policy::Standard, 1, false, "%Y-%m-%d_%H-%M-%S");
+    auto source = createTempFile("source.fcstd");
+    auto target = createTempFile("target.fcstd");
+    auto backup = createTempFile("target.fcstd1");
+
+    // Act
+    apply(source.string(), target.string());
+
+    // Assert
+    EXPECT_TRUE(std::filesystem::exists(backup));
+    EXPECT_FALSE(std::filesystem::exists(target.string() + "2"));
+}
+
+TEST_F(BackupPolicyTest, StandardWithTwoFilesOnePreviousBackup)
+{
+    // Arrange
+    setPolicyTerms(App::BackupPolicy::Policy::Standard, 2, false, "%Y-%m-%d_%H-%M-%S");
+    auto source = createTempFile("source.fcstd");
+    auto target = createTempFile("target.fcstd");
+    auto backup = createTempFile("target.fcstd1");
+
+    // Act
+    apply(source.string(), target.string());
+
+    // Assert
+    EXPECT_TRUE(std::filesystem::exists(backup));
+    EXPECT_TRUE(std::filesystem::exists(target.string() + "2"));
+}
+
+TEST_F(BackupPolicyTest, StandardWithTwoFilesOnePreviousBackupUnexpectedSuffix)
+{
+    // Arrange
+    setPolicyTerms(App::BackupPolicy::Policy::Standard, 2, false, "%Y-%m-%d_%H-%M-%S");
+    auto source = createTempFile("source.fcstd");
+    auto target = createTempFile("target.fcstd");
+    auto backup = createTempFile("target.fcstd1");
+    auto weird = createTempFile("target.fcstd2a");
+
+    // Act
+    apply(source.string(), target.string());
+
+    // Assert
+    EXPECT_TRUE(std::filesystem::exists(backup));
+    EXPECT_TRUE(std::filesystem::exists(target.string() + "2"));
+    EXPECT_TRUE(std::filesystem::exists(weird));
+}
+
+TEST_F(BackupPolicyTest, StandardWithTwoFilesOnePreviousBackupOutOfSequenceNumber)
+{
+    // Arrange
+    setPolicyTerms(App::BackupPolicy::Policy::Standard, 2, false, "%Y-%m-%d_%H-%M-%S");
+    auto source = createTempFile("source.fcstd");
+    auto target = createTempFile("target.fcstd");
+    auto backup = createTempFile("target.fcstd1");
+    auto weird = createTempFile("target.fcstd999");
+
+    // Act
+    apply(source.string(), target.string());
+
+    // Assert
+    EXPECT_TRUE(std::filesystem::exists(backup));
+    bool check1 = std::filesystem::exists(target.string() + "2");
+    bool check2 = std::filesystem::exists(weird);
+    EXPECT_NE(check1, check2);  // Only one or the other can exist (we don't know which because it
+                                // depends on file modification date)
+}
+
+TEST_F(BackupPolicyTest, StandardWithFCBakSet)
+{
+    // Arrange
+    setPolicyTerms(App::BackupPolicy::Policy::Standard, 1, true, "%Y-%m-%d_%H-%M-%S");
+    auto source = createTempFile("source.fcstd");
+    auto target = createTempFile("target.fcstd");
+
+    // Act
+    apply(source.string(), target.string());
+
+    // Assert
+    EXPECT_TRUE(std::filesystem::exists(target.string() + "1"));  // No FCBak extension for Standard
 }

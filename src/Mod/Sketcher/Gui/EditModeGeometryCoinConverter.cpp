@@ -271,8 +271,8 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
 
     // Coin Nodes Editing
     int vOrFactor = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider);
-    double linez = vOrFactor * drawingParameters.zLowLines;  // NOLINT
-    double pointz = vOrFactor * drawingParameters.zLowPoints;
+    double linez = vOrFactor * static_cast<double>(drawingParameters.zLowLines);  // NOLINT
+    double pointz = vOrFactor * static_cast<double>(drawingParameters.zLowPoints);
 
     for (auto l = 0; l < geometryLayerParameters.getCoinLayerCount(); l++) {
         geometryLayerNodes.PointsCoordinate[l]->point.setNum(Points[l].size());

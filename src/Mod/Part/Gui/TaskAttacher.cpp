@@ -1242,9 +1242,6 @@ TaskDlgAttacher::~TaskDlgAttacher()
     if (accepted && onAccept) {
         onAccept();
     }
-    else if (onReject) {
-        onReject();
-    }
 };
 
 //==== calls from the TaskView ===============================================================
@@ -1307,6 +1304,10 @@ bool TaskDlgAttacher::accept()
 
 bool TaskDlgAttacher::reject()
 {
+    if (onReject) {
+        onReject();
+    }
+    
     Gui::DocumentT doc(getDocumentName());
     Gui::Document* document = doc.getDocument();
     if (document) {

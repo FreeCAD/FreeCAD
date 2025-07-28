@@ -920,7 +920,7 @@ App::DocumentObjectExecReturn* Feature::execute()
             fMinDist = -std::numeric_limits<float>::max();
         }
         else {
-            res.m_sumsq += fMinDist * fMinDist;
+            res.m_sumsq += static_cast<double>(fMinDist) * static_cast<double>(fMinDist);
             res.m_numv++;
         }
 

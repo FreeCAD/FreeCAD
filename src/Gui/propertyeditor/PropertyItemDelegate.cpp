@@ -163,7 +163,10 @@ void PropertyItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 bool PropertyItemDelegate::editorEvent (QEvent * event, QAbstractItemModel* model,
                                         const QStyleOptionViewItem& option, const QModelIndex& index)
 {
-    if (!event || event->type() == QEvent::MouseButtonDblClick) {
+    auto property = static_cast<PropertyItem*>(index.internalPointer());
+
+    if ((property && !property->isSeparator())
+        && (!event || event->type() == QEvent::MouseButtonDblClick)) {
         // ignore double click, as it could cause editor lock with checkboxes
         // due to the editor being close immediately after toggling the checkbox
         // which is currently done on first click

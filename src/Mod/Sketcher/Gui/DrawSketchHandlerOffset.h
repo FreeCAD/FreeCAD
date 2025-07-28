@@ -179,7 +179,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Offset parameters"));
+        return QString(tr("Offset parameters"));
     }
 
     void activated() override
@@ -196,8 +196,9 @@ public:
     {
         using enum Gui::InputHint::UserInput;
 
-        return {{QObject::tr("%1 set offset direction and distance", "Sketcher Offset: hint"),
-                 {MouseLeft}}};
+        return {
+            {tr("%1 set offset direction and distance", "Sketcher Offset: hint"), {MouseLeft}},
+        };
     }
 
 private:

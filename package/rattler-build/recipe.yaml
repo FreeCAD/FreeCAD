@@ -16,7 +16,7 @@ requirements:
   build:
     - ccache
     - cmake
-    - compilers
+    - compilers>=1.10,<1.11
     - doxygen
     - ninja
     - noqt5
@@ -87,6 +87,10 @@ requirements:
         - xorg-x11-server-common-cos7-aarch64
         - xorg-x11-server-xvfb-cos7-aarch64
         - xorg-xproto
+
+    - if: osx and x86_64
+      then:
+        - __osx >=10.13
 
     - if: build_platform != target_platform
       then:

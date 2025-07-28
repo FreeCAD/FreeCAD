@@ -24,7 +24,6 @@
 
 #ifndef _PreComp_
 # include <string>
-# include <QAction>
 # include <QApplication>
 # include <QKeyEvent>
 # include <QEvent>
@@ -39,6 +38,7 @@
 # include <QPrintDialog>
 # include <QPrintPreviewDialog>
 # include <QStackedWidget>
+# include <QSurfaceFormat>
 # include <QTimer>
 # include <QUrl>
 # include <QWindow>
@@ -94,9 +94,12 @@ void GLOverlayWidget::paintEvent(QPaintEvent*)
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::View3DInventor,Gui::MDIView)
 
-View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
-                               const QOpenGLWidget* sharewidget, Qt::WindowFlags wflags)
-    : MDIView(pcDocument, parent, wflags), _viewerPy(nullptr)
+View3DInventor::View3DInventor(Gui::Document* pcDocument,
+                               QWidget* parent,
+                               const QOpenGLWidget* sharewidget,
+                               Qt::WindowFlags wflags)
+    : MDIView(pcDocument, parent, wflags)
+    , _viewerPy(nullptr)
 {
     stack = new QStackedWidget(this);
     // important for highlighting
@@ -187,6 +190,27 @@ void View3DInventor::deleteSelf()
     _viewer->setSceneGraph(nullptr);
     _viewer->setDocument(nullptr);
     MDIView::deleteSelf();
+}
+
+View3DInventor* View3DInventor::clone()
+{
+    auto mdiView = _pcDocument->createView(getClassTypeId(), CreateViewMode::Clone);
+    auto view3D = static_cast<View3DInventor*>(mdiView);
+
+    view3D->cloneFrom(*this);
+    view3D->getViewer()->setAxisCross(getViewer()->hasAxisCross());
+
+    // FIXME: Add parameter to define behaviour by the calling instance
+    // View provider editing
+
+    int editMode;
+    ViewProvider* editViewProvider = _pcDocument->getInEdit(nullptr, nullptr, &editMode);
+    if (editViewProvider) {
+        getViewer()->resetEditingViewProvider();
+        view3D->getViewer()->setEditingViewProvider(editViewProvider, editMode);
+    }
+
+    return view3D;
 }
 
 PyObject *View3DInventor::getPyObject()
@@ -722,33 +746,27 @@ void View3DInventor::dragEnterEvent (QDragEnterEvent * e)
         e->ignore();
 }
 
-void View3DInventor::setCurrentViewMode(ViewMode newmode)
+void View3DInventor::setCurrentViewMode(ViewMode mode)
 {
-    ViewMode oldmode = MDIView::currentViewMode();
-    if (oldmode == newmode)
+    ViewMode oldmode = currentViewMode();
+    if (mode == oldmode) {
         return;
-
-    if (newmode == Child) {
-        // Fix in two steps:
-        // The mdi view got a QWindow when it became a top-level widget and when resetting it to a child widget
-        // the QWindow must be deleted because it has an impact on resize events and may break the layout of
-        // mdi view inside the QMdiSubWindow.
-        // In the second step below the layout must be invalidated after it's again a child widget to make sure
-        // the mdi view fits into the QMdiSubWindow.
-        QWindow* winHandle = this->windowHandle();
-        if (winHandle)
-            winHandle->destroy();
     }
 
-    MDIView::setCurrentViewMode(newmode);
+    if (mode == Child) {
+        // Fix in two steps:
+        // The mdi view got a QWindow when it became a top-level widget and when resetting it to a
+        // child widget the QWindow must be deleted because it has an impact on resize events and
+        // may break the layout of mdi view inside the QMdiSubWindow. In the second step below the
+        // layout must be invalidated after it's again a child widget to make sure the mdi view fits
+        // into the QMdiSubWindow.
+        QWindow* winHandle = this->windowHandle();
+        if (winHandle) {
+            winHandle->destroy();
+        }
+    }
 
-    // Internally the QOpenGLWidget switches of the multi-sampling and there is no
-    // way to switch it on again. So as a workaround we just re-create a new viewport
-    // The method is private but defined as slot to avoid to call it by accident.
-    //int index = _viewer->metaObject()->indexOfMethod("replaceViewport()");
-    //if (index >= 0) {
-    //    _viewer->qt_metacall(QMetaObject::InvokeMetaMethod, index, 0);
-    //}
+    MDIView::setCurrentViewMode(mode);
 
     // This widget becomes the focus proxy of the embedded GL widget if we leave
     // the 'Child' mode. If we reenter 'Child' mode the focus proxy is reset to 0.
@@ -760,26 +778,18 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
     //
     // It is important to set the focus proxy to get all key events otherwise we would lose
     // control after redirecting the first key event to the GL widget.
+
     if (oldmode == Child) {
-        // To make a global shortcut working from this window we need to add
-        // all existing actions from the mainwindow and its sub-widgets
-        QList<QAction*> acts = getMainWindow()->findChildren<QAction*>();
-        this->addActions(acts);
         _viewer->getGLWidget()->setFocusProxy(this);
-        // To be notfified for new actions
-        qApp->installEventFilter(this);
     }
-    else if (newmode == Child) {
+    else if (mode == Child) {
         _viewer->getGLWidget()->setFocusProxy(nullptr);
-        qApp->removeEventFilter(this);
-        QList<QAction*> acts = this->actions();
-        for (QAction* it : acts)
-            this->removeAction(it);
 
         // Step two
         auto mdi = qobject_cast<QMdiSubWindow*>(parentWidget());
-        if (mdi && mdi->layout())
+        if (mdi && mdi->layout()) {
             mdi->layout()->invalidate();
+        }
     }
 }
 
@@ -872,27 +882,6 @@ RayPickInfo View3DInventor::getObjInfoRay(Base::Vector3d* startvec, Base::Vector
         }
     }
     return ret;
-}
-
-bool View3DInventor::eventFilter(QObject* watched, QEvent* e)
-{
-    // As long as this widget is a top-level window (either in 'TopLevel' or 'FullScreen' mode) we
-    // need to be notified when an action is added to a widget. This action must also be added to
-    // this window to allow one to make use of its shortcut (if defined).
-    // Note: We don't need to care about removing an action if its parent widget gets destroyed.
-    // This does the action itself for us.
-    if (watched != this && e->type() == QEvent::ActionAdded) {
-        auto a = static_cast<QActionEvent*>(e);
-        QAction* action = a->action();
-
-        if (!action->isSeparator()) {
-            QList<QAction*> actions = this->actions();
-            if (!actions.contains(action))
-                this->addAction(action);
-        }
-    }
-
-    return false;
 }
 
 void View3DInventor::keyPressEvent (QKeyEvent* e)
