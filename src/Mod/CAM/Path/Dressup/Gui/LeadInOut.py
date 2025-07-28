@@ -47,21 +47,24 @@ if False:
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
+lead_styles = [
+    # common options first
+    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "None"),
+    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Arc"),
+    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Line"),
+    # additional options, alphabetical order
+    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Arc3d"),
+    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "ArcZ"),
+    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Helix"),
+    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Line3d"),
+    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "LineZ"),
+    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "No Retraction"),
+    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Vertical"),
+]
+
 
 class ObjectDressup:
     def __init__(self, obj):
-        lead_styles = [
-            QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Arc"),
-            QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Arc3d"),
-            QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "ArcZ"),
-            QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Helix"),
-            QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Line"),
-            QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Line3d"),
-            QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "LineZ"),
-            QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Vertical"),
-            QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "None"),
-            QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Original"),
-        ]
         self.obj = obj
         obj.addProperty(
             "App::PropertyLink",
@@ -202,10 +205,10 @@ class ObjectDressup:
             obj.AngleOut = limit_angle_out
 
         hideModes = {
-            "Angle": ["None", "Vertical"],
-            "Invert": ["None", "ArcZ", "LineZ", "Vertical"],
-            "Offset": ["None"],
-            "PercentageRadius": ["None", "Vertical"],
+            "Angle": ["None", "No Retraction", "Vertical"],
+            "Invert": ["None", "No Retraction", "ArcZ", "LineZ", "Vertical"],
+            "Offset": ["None", "No Retraction"],
+            "PercentageRadius": ["None", "No Retraction", "Vertical"],
         }
         for k, v in hideModes.items():
             obj.setEditorMode(k + "In", 2 if obj.StyleIn in v else 0)
@@ -216,18 +219,6 @@ class ObjectDressup:
 
     def onDocumentRestored(self, obj):
         """onDocumentRestored(obj) ... Called automatically when document is restored."""
-        lead_styles = [
-            QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Arc"),
-            QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Arc3d"),
-            QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "ArcZ"),
-            QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Helix"),
-            QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Line"),
-            QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Line3d"),
-            QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "LineZ"),
-            QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Vertical"),
-            QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "None"),
-        ]
-
         leadIn = leadOut = None
         if hasattr(obj, "LeadIn"):
             leadIn = obj.LeadIn
@@ -581,7 +572,7 @@ class ObjectDressup:
         lead = []
         begin = move.positionBegin()
 
-        if obj.StyleIn not in ["None", "Vertical"]:
+        if obj.StyleIn not in ["No Retraction", "Vertical"]:
             toolRadius = PathDressup.toolController(obj.Base).Tool.Diameter.Value / 2
             angleIn = math.radians(obj.AngleIn.Value)
             length = obj.PercentageRadiusIn * toolRadius / 100
@@ -673,7 +664,7 @@ class ObjectDressup:
                 lead[0].setPositionBegin(begin)
 
         # get complete start travel moves
-        if obj.StyleIn != "None":
+        if obj.StyleIn != "No Retraction":
             travelToStart = self.getTravelStart(obj, begin, first, inInstrPrev, outInstrPrev)
         else:
             # exclude any lead-in commands
@@ -697,7 +688,7 @@ class ObjectDressup:
         lead = []
         end = move.positionEnd()
 
-        if obj.StyleOut not in ["None", "Vertical"]:
+        if obj.StyleOut not in ["No Retraction", "Vertical"]:
             toolRadius = PathDressup.toolController(obj.Base).Tool.Diameter.Value / 2
             angleOut = math.radians(obj.AngleOut.Value)
             length = obj.PercentageRadiusOut * toolRadius / 100
@@ -783,7 +774,7 @@ class ObjectDressup:
                 lead[-1].param["Z"] = op.StartDepth.Value
 
         # append travel moves to cleareance height after finish all profiles
-        if last and obj.StyleOut != "None":
+        if last and obj.StyleOut != "No Retraction":
             lead += self.getTravelEnd(obj)
 
         return lead
@@ -1011,10 +1002,10 @@ class ObjectDressup:
                     commands.append(instr)
                 else:
                     moveDir = self.getMoveDir(instr)
-                    if obj.StyleIn == "Original" and (moveDir in ["Down", "Hor"] or first):
+                    if obj.StyleIn == "None" and (moveDir in ["Down", "Hor"] or first):
                         # keep original Lead-in movements
                         commands.append(instr)
-                    elif obj.StyleOut == "Original" and moveDir in ["Up"]:
+                    elif obj.StyleOut == "None" and moveDir in ["Up"]:
                         # keep original Lead-out movements
                         commands.append(instr)
                 # skip travel and plunge moves if LeadInOut will be process
@@ -1028,9 +1019,9 @@ class ObjectDressup:
             # Process Lead-In
             if (
                 first or not self.isCuttingMove(obj, source[i - 1 - skipCounter])
-            ) and obj.StyleIn != "Original":
+            ) and obj.StyleIn != "None":
                 # Process negative Offset Lead-In (cut travel from begin)
-                if obj.OffsetIn.Value < 0 and obj.StyleIn != "None":
+                if obj.OffsetIn.Value < 0 and obj.StyleIn != "No Retraction":
                     if measuredLength <= abs(obj.OffsetIn.Value):
                         # skip mill instruction
                         skipCounter += 1  # count skipped instructions
@@ -1045,7 +1036,7 @@ class ObjectDressup:
                 firstMillIndex = i
                 lastMillIndex = self.findLastCutMultiProfileIndex(obj, source, i + 1)
                 overtravelIn = None
-                if obj.OffsetIn.Value > 0 and obj.StyleIn != "None":
+                if obj.OffsetIn.Value > 0 and obj.StyleIn != "No Retraction":
                     overtravelIn = self.getOvertravelIn(
                         obj,
                         source,
@@ -1069,16 +1060,16 @@ class ObjectDressup:
 
             # Process Lead-Out
             last = bool(i == lastCuttingMoveIndex)
-            if (last or not self.isCuttingMove(obj, source[i + 1])) and obj.StyleOut != "Original":
+            if (last or not self.isCuttingMove(obj, source[i + 1])) and obj.StyleOut != "None":
                 measuredLength = 0  # reset measured length for last profile
                 lastMillIndex = i  # index last mill instruction for last profile
 
                 # Process negative Offset Lead-Out (cut travel from end)
-                if obj.OffsetOut.Value < 0 and obj.StyleOut != "None":
+                if obj.OffsetOut.Value < 0 and obj.StyleOut != "No Retraction":
                     commands = self.cutTravelEnd(obj, commands, abs(obj.OffsetOut.Value))
 
                 # Process positive Offset Lead-Out (overtravel)
-                if obj.OffsetOut.Value > 0 and obj.StyleOut != "None":
+                if obj.OffsetOut.Value > 0 and obj.StyleOut != "No Retraction":
                     overtravelOut = self.getOvertravelOut(
                         obj,
                         source,
