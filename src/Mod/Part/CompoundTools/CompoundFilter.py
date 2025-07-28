@@ -117,6 +117,7 @@ class _CompoundFilter:
                                          "filter: '{}'".format(obj.FilterType))
                     try:
                         rst.append(shps[i])
+                        len(shps[i].ElementMap) # this should fix some stuff on the c++ side..
                     except IndexError:
                         raise ValueError("Item index '{}' is out of range for this filter: '{}'".format(i, obj.FilterType))
                     flags[i] = True

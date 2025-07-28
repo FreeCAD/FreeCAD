@@ -288,7 +288,7 @@ void CrossSections::apply()
         }
 
         Gui::Command::runCommand(Gui::Command::App, QStringLiteral(
-            "comp=Part.Compound(wires)\n"
+            "comp=Part.makeCompound(wires)\n"
             "slice=FreeCAD.getDocument(\"%1\").addObject(\"Part::Feature\",\"%2\")\n"
             "slice.Shape=comp\n"
             "slice.purgeTouched()\n"
