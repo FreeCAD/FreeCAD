@@ -651,8 +651,8 @@ AssemblyObject::getJoints(bool updateJCS, bool delBadJoints, bool subJoints)
             continue;
         }
 
-        auto* prop = dynamic_cast<App::PropertyBool*>(joint->getPropertyByName("Activated"));
-        if (joint->isError() || !prop || !prop->getValue()) {
+        auto* prop = dynamic_cast<App::PropertyBool*>(joint->getPropertyByName("Suppressed"));
+        if (joint->isError() || !prop || prop->getValue()) {
             // Filter grounded joints and deactivated joints.
             continue;
         }
