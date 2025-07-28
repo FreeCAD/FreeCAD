@@ -49,7 +49,7 @@ else:
 
 lead_styles = [
     # common options first
-    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "None"),
+    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "No Change"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Arc"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Line"),
     # additional options, alphabetical order
@@ -58,7 +58,7 @@ lead_styles = [
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Helix"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Line3d"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "LineZ"),
-    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "No Retraction"),
+    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Suppress Retraction"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Vertical"),
 ]
 
@@ -205,10 +205,10 @@ class ObjectDressup:
             obj.AngleOut = limit_angle_out
 
         hideModes = {
-            "Angle": ["None", "No Retraction", "Vertical"],
-            "Invert": ["None", "No Retraction", "ArcZ", "LineZ", "Vertical"],
-            "Offset": ["None", "No Retraction"],
-            "PercentageRadius": ["None", "No Retraction", "Vertical"],
+            "Angle": ["No Change", "Suppress Retraction", "Vertical"],
+            "Invert": ["No Change", "Suppress Retraction", "ArcZ", "LineZ", "Vertical"],
+            "Offset": ["No Change", "Suppress Retraction"],
+            "PercentageRadius": ["No Change", "Suppress Retraction", "Vertical"],
         }
         for k, v in hideModes.items():
             obj.setEditorMode(k + "In", 2 if obj.StyleIn in v else 0)
@@ -271,7 +271,7 @@ class ObjectDressup:
             obj.AngleOut = 45
 
         if leadIn is not None and not leadIn:
-            obj.StyleIn = "None"
+            obj.StyleIn = "No Change"
         elif styleOn:
             if styleOn == "Arc":
                 obj.StyleIn = "Arc"
@@ -280,7 +280,7 @@ class ObjectDressup:
                 obj.StyleIn = "Line"
                 obj.AngleIn = 90 if styleOn == "Perpendicular" else 0
         if leadOut is not None and not leadOut:
-            obj.StyleOut = "None"
+            obj.StyleOut = "No Change"
         elif styleOff:
             if styleOff == "Arc":
                 obj.StyleOut = "Arc"
@@ -572,7 +572,7 @@ class ObjectDressup:
         lead = []
         begin = move.positionBegin()
 
-        if obj.StyleIn not in ["No Retraction", "Vertical"]:
+        if obj.StyleIn not in ["Suppress Retraction", "Vertical"]:
             toolRadius = PathDressup.toolController(obj.Base).Tool.Diameter.Value / 2
             angleIn = math.radians(obj.AngleIn.Value)
             length = obj.PercentageRadiusIn * toolRadius / 100
@@ -664,7 +664,7 @@ class ObjectDressup:
                 lead[0].setPositionBegin(begin)
 
         # get complete start travel moves
-        if obj.StyleIn != "No Retraction":
+        if obj.StyleIn != "Suppress Retraction":
             travelToStart = self.getTravelStart(obj, begin, first, inInstrPrev, outInstrPrev)
         else:
             # exclude any lead-in commands
@@ -688,7 +688,7 @@ class ObjectDressup:
         lead = []
         end = move.positionEnd()
 
-        if obj.StyleOut not in ["No Retraction", "Vertical"]:
+        if obj.StyleOut not in ["Suppress Retraction", "Vertical"]:
             toolRadius = PathDressup.toolController(obj.Base).Tool.Diameter.Value / 2
             angleOut = math.radians(obj.AngleOut.Value)
             length = obj.PercentageRadiusOut * toolRadius / 100
@@ -774,7 +774,7 @@ class ObjectDressup:
                 lead[-1].param["Z"] = op.StartDepth.Value
 
         # append travel moves to cleareance height after finish all profiles
-        if last and obj.StyleOut != "No Retraction":
+        if last and obj.StyleOut != "Suppress Retraction":
             lead += self.getTravelEnd(obj)
 
         return lead
@@ -1003,10 +1003,10 @@ class ObjectDressup:
                     commands.append(instr)
                 else:
                     moveDir = self.getMoveDir(instr)
-                    if obj.StyleIn == "None" and (moveDir in ["Down", "Hor"] or first):
+                    if obj.StyleIn == "No Change" and (moveDir in ["Down", "Hor"] or first):
                         # keep original Lead-in movements
                         commands.append(instr)
-                    elif obj.StyleOut == "None" and moveDir in ["Up"] and not first:
+                    elif obj.StyleOut == "No Change" and moveDir in ["Up"] and not first:
                         # keep original Lead-out movements
                         commands.append(instr)
                 # skip travel and plunge moves if LeadInOut will be process
@@ -1019,9 +1019,9 @@ class ObjectDressup:
 
             # Process Lead-In
             if first or not self.isCuttingMove(obj, source[i - 1 - skipCounter]):
-                if obj.StyleIn != "None":
+                if obj.StyleIn != "No Change":
                     # Process negative Offset Lead-In (cut travel from begin)
-                    if obj.OffsetIn.Value < 0 and obj.StyleIn != "No Retraction":
+                    if obj.OffsetIn.Value < 0 and obj.StyleIn != "Suppress Retraction":
                         if measuredLength <= abs(obj.OffsetIn.Value):
                             # skip mill instruction
                             skipCounter += 1  # count skipped instructions
@@ -1036,7 +1036,7 @@ class ObjectDressup:
                     firstMillIndex = i
                     lastMillIndex = self.findLastCutMultiProfileIndex(obj, source, i + 1)
                     overtravelIn = None
-                    if obj.OffsetIn.Value > 0 and obj.StyleIn != "No Retraction":
+                    if obj.OffsetIn.Value > 0 and obj.StyleIn != "Suppress Retraction":
                         overtravelIn = self.getOvertravelIn(
                             obj,
                             source,
@@ -1064,16 +1064,16 @@ class ObjectDressup:
 
             # Process Lead-Out
             last = bool(i == lastCuttingMoveIndex)
-            if (last or not self.isCuttingMove(obj, source[i + 1])) and obj.StyleOut != "None":
+            if (last or not self.isCuttingMove(obj, source[i + 1])) and obj.StyleOut != "No Change":
                 measuredLength = 0  # reset measured length for last profile
                 lastMillIndex = i  # index last mill instruction for last profile
 
                 # Process negative Offset Lead-Out (cut travel from end)
-                if obj.OffsetOut.Value < 0 and obj.StyleOut != "No Retraction":
+                if obj.OffsetOut.Value < 0 and obj.StyleOut != "Suppress Retraction":
                     commands = self.cutTravelEnd(obj, commands, abs(obj.OffsetOut.Value))
 
                 # Process positive Offset Lead-Out (overtravel)
-                if obj.OffsetOut.Value > 0 and obj.StyleOut != "No Retraction":
+                if obj.OffsetOut.Value > 0 and obj.StyleOut != "Suppress Retraction":
                     overtravelOut = self.getOvertravelOut(
                         obj,
                         source,
@@ -1122,24 +1122,24 @@ class TaskDressupLeadInOut(SimpleEditPanel):
 
         def updateStyleFromCheckbox():
             if self.form.groupBoxIn.isChecked():
-                if styleEnum[self.form.cboStyleIn.currentIndex()] == "None":
+                if styleEnum[self.form.cboStyleIn.currentIndex()] == "No Change":
                     self.form.cboStyleIn.setCurrentIndex(styleEnum.index("Arc"))
             else:
-                self.form.cboStyleIn.setCurrentIndex(styleEnum.index("None"))
+                self.form.cboStyleIn.setCurrentIndex(styleEnum.index("No Change"))
 
             if self.form.groupBoxOut.isChecked():
-                if styleEnum[self.form.cboStyleOut.currentIndex()] == "None":
+                if styleEnum[self.form.cboStyleOut.currentIndex()] == "No Change":
                     self.form.cboStyleOut.setCurrentIndex(styleEnum.index("Arc"))
             else:
-                self.form.cboStyleOut.setCurrentIndex(styleEnum.index("None"))
+                self.form.cboStyleOut.setCurrentIndex(styleEnum.index("No Change"))
 
         def updateCheckboxFromStyle():
-            if styleEnum[self.form.cboStyleIn.currentIndex()] == "None":
+            if styleEnum[self.form.cboStyleIn.currentIndex()] == "No Change":
                 self.form.groupBoxIn.setChecked(False)
             else:
                 self.form.groupBoxIn.setChecked(True)
 
-            if styleEnum[self.form.cboStyleOut.currentIndex()] == "None":
+            if styleEnum[self.form.cboStyleOut.currentIndex()] == "No Change":
                 self.form.groupBoxOut.setChecked(False)
             else:
                 self.form.groupBoxOut.setChecked(True)
