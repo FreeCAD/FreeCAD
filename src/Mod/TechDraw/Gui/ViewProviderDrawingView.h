@@ -39,6 +39,7 @@ class DrawView;
 
 namespace TechDrawGui {
 class QGIView;
+class QGSPage;
 class MDIViewPage;
 class ViewProviderPage;
 
@@ -69,6 +70,7 @@ public:
     void onChanged(const App::Property *prop) override;
     void updateData(const App::Property*) override;
 
+    QGSPage* getQPage();
     QGIView* getQView();
     MDIViewPage* getMDIViewPage() const;
     Gui::MDIView *getMDIView() const override;
