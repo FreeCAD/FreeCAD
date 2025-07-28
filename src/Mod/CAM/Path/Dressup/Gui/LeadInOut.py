@@ -794,10 +794,11 @@ class ObjectDressup:
             return "Down"
         elif instr.positionBegin().z < instr.positionEnd().z:
             return "Up"
-        else:
+        elif instr.pathLength() != 0:
             return "Hor"
-
-        return None
+        else:
+            # move command without change position
+            return None
 
     # Get last index of mill command in whole Path
     def findLastCuttingMoveIndex(self, obj, source):
@@ -1005,7 +1006,7 @@ class ObjectDressup:
                     if obj.StyleIn == "None" and (moveDir in ["Down", "Hor"] or first):
                         # keep original Lead-in movements
                         commands.append(instr)
-                    elif obj.StyleOut == "None" and moveDir in ["Up"]:
+                    elif obj.StyleOut == "None" and moveDir in ["Up"] and not first:
                         # keep original Lead-out movements
                         commands.append(instr)
                 # skip travel and plunge moves if LeadInOut will be process
@@ -1017,43 +1018,46 @@ class ObjectDressup:
                 measuredLength += instr.pathLength()
 
             # Process Lead-In
-            if (
-                first or not self.isCuttingMove(obj, source[i - 1 - skipCounter])
-            ) and obj.StyleIn != "None":
-                # Process negative Offset Lead-In (cut travel from begin)
-                if obj.OffsetIn.Value < 0 and obj.StyleIn != "No Retraction":
-                    if measuredLength <= abs(obj.OffsetIn.Value):
-                        # skip mill instruction
-                        skipCounter += 1  # count skipped instructions
-                        continue
-                    else:
-                        skipCounter = 0
-                        # cut mill instruction
-                        newLength = measuredLength - abs(obj.OffsetIn.Value)
-                        instr = self.cutInstrBegin(obj, instr, newLength)
+            if first or not self.isCuttingMove(obj, source[i - 1 - skipCounter]):
+                if obj.StyleIn != "None":
+                    # Process negative Offset Lead-In (cut travel from begin)
+                    if obj.OffsetIn.Value < 0 and obj.StyleIn != "No Retraction":
+                        if measuredLength <= abs(obj.OffsetIn.Value):
+                            # skip mill instruction
+                            skipCounter += 1  # count skipped instructions
+                            continue
+                        else:
+                            skipCounter = 0
+                            # cut mill instruction
+                            newLength = measuredLength - abs(obj.OffsetIn.Value)
+                            instr = self.cutInstrBegin(obj, instr, newLength)
 
-                # Process positive offset Lead-In (overtravel)
-                firstMillIndex = i
-                lastMillIndex = self.findLastCutMultiProfileIndex(obj, source, i + 1)
-                overtravelIn = None
-                if obj.OffsetIn.Value > 0 and obj.StyleIn != "No Retraction":
-                    overtravelIn = self.getOvertravelIn(
-                        obj,
-                        source,
-                        obj.OffsetIn.Value,
-                        firstMillIndex,
-                        lastMillIndex,
-                    )
-                if overtravelIn:
-                    commands.extend(
-                        self.getLeadStart(obj, overtravelIn[0], first, inInstrPrev, outInstrPrev)
-                    )
-                    commands.extend(overtravelIn)
-                else:
-                    commands.extend(self.getLeadStart(obj, instr, first, inInstrPrev, outInstrPrev))
+                    # Process positive offset Lead-In (overtravel)
+                    firstMillIndex = i
+                    lastMillIndex = self.findLastCutMultiProfileIndex(obj, source, i + 1)
+                    overtravelIn = None
+                    if obj.OffsetIn.Value > 0 and obj.StyleIn != "No Retraction":
+                        overtravelIn = self.getOvertravelIn(
+                            obj,
+                            source,
+                            obj.OffsetIn.Value,
+                            firstMillIndex,
+                            lastMillIndex,
+                        )
+                    if overtravelIn:
+                        commands.extend(
+                            self.getLeadStart(
+                                obj, overtravelIn[0], first, inInstrPrev, outInstrPrev
+                            )
+                        )
+                        commands.extend(overtravelIn)
+                    else:
+                        commands.extend(
+                            self.getLeadStart(obj, instr, first, inInstrPrev, outInstrPrev)
+                        )
+                    firstMillIndex = i if not firstMillIndex else firstMillIndex
+                    inInstrPrev = commands[-1]
                 first = False
-                firstMillIndex = i if not firstMillIndex else firstMillIndex
-                inInstrPrev = commands[-1]
 
             # Add mill instruction
             commands.append(instr)
