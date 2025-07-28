@@ -28,24 +28,40 @@ CAM projects.  Ideally, the user could execute these utilities from an icon
 to make sure tools are selected and configured and defaults have been revised
 """
 
+import os
 from collections import Counter
 from datetime import datetime
+
 import FreeCAD
 import Path
-import Path.Log
-import Path.Main.Sanity.ImageBuilder as ImageBuilder
-import Path.Main.Sanity.ReportGenerator as ReportGenerator
-import os
-import tempfile
 import Path.Dressup.Utils as PathDressup
+import Path.Log as Log
+from Path.Main.Sanity import ImageBuilder
+from Path.Main.Sanity.ReportGenerator import ReportGenerator
+from Path.Main.Sanity.SanityRule import (
+    JobNotPostProcessedRule,
+    LegacyToolsRule,
+    MaterialNotSpecifiedRule,
+    PostProcessedFileMissingRule,
+    ToolBitShapeNotFoundRule,
+    ToolControllerNotUsedRule,
+    ToolControllerZeroFeedrateRule,
+    ToolUsedByMultipleToolsRule,
+    SpindleSpeedZeroFeedrateRule,
+)
+from Path.Main.Sanity.Squawk import SquawkType, Squawk, create_squawk
+
+import re
 
 translate = FreeCAD.Qt.translate
 
-if False:
-    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
-    Path.Log.trackModule(Path.Log.thisModule())
+# Set the logging level and track the module
+is_debugging = False
+if is_debugging is True:
+    Log.setLevel(Log.Level.DEBUG, Log.thisModule())
+    Log.trackModule(Log.thisModule())
 else:
-    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+    Log.setLevel(Log.Level.INFO, Log.thisModule())
 
 
 class CAMSanity:
@@ -54,7 +70,7 @@ class CAMSanity:
     and export it in a format that is useful to the user.
     """
 
-    def __init__(self, job, output_file):
+    def __init__(self, job, output_file, generate_images=True):
         self.job = job
         self.output_file = output_file
         self.filelocation = os.path.dirname(output_file)
@@ -67,8 +83,10 @@ class CAMSanity:
                     "output location {} doesn't exist".format(os.path.dirname(output_file)),
                 )
             )
-
-        self.image_builder = ImageBuilder.ImageBuilderFactory.get_image_builder(self.filelocation)
+        if generate_images:
+            self.image_builder = ImageBuilder.ImageBuilderFactory.get_image_builder(
+                self.filelocation
+            )
         self.data = self.summarize()
 
     def summarize(self):
@@ -82,35 +100,28 @@ class CAMSanity:
         data["toolData"] = self._toolData()
         data["runData"] = self._runData()
         data["outputData"] = self._outputData()
-        data["fixtureData"] = self._fixtureData()
-        data["stockData"] = self._stockData()
-        # data["squawkData"] = self._squawkData()
+        data["fixtureData"] = self._fixtureData()  # has image
+        data["stockData"] = self._stockData()  # has image
 
         return data
 
-    def squawk(self, operator, note, date=datetime.now(), squawkType="NOTE"):
-        squawkType = squawkType if squawkType in ("NOTE", "WARNING", "CAUTION", "TIP") else "NOTE"
+    def squawk(
+        self,
+        operator,
+        note,
+        date=datetime.now(),
+        squawkType: SquawkType = SquawkType.NOTE,
+    ) -> dict:
+        """
+        Create a squawk using the dedicated Squawk class.
+        Maintains backward compatibility with existing code.
 
-        if squawkType == "TIP":
-            squawk_icon = "Sanity_Bulb"
-        elif squawkType == "NOTE":
-            squawk_icon = "Sanity_Note"
-        elif squawkType == "WARNING":
-            squawk_icon = "Sanity_Warning"
-        elif squawkType == "CAUTION":
-            squawk_icon = "Sanity_Caution"
+        Returns:
+            dict: Dictionary representation of the squawk for HTML generation
+        """
 
-        path = f"{FreeCAD.getHomePath()}Mod/CAM/Path/Main/Sanity/{squawk_icon}.svg"
-
-        squawk = {
-            "Date": str(date),
-            "Operator": operator,
-            "Note": note,
-            "squawkType": squawkType,
-            "squawkIcon": path,
-        }
-
-        return squawk
+        # Create squawk and return its dictionary representation
+        return create_squawk(operator, note, date, squawkType)
 
     def _baseObjectData(self):
         data = {"baseimage": "", "bases": "", "squawkData": []}
@@ -189,6 +200,8 @@ class CAMSanity:
             "outputfilename": "setupreport",
             "squawkData": [],
         }
+        data["squawkData"] += JobNotPostProcessedRule().check(obj)
+        data["squawkData"] += PostProcessedFileMissingRule().check(obj)
 
         data["lastpostprocess"] = str(obj.LastPostProcessDate)
         data["lastgcodefile"] = str(obj.LastPostProcessOutput)
@@ -209,12 +222,6 @@ class CAMSanity:
         if obj.LastPostProcessOutput == "":
             data["filesize"] = str(0.0)
             data["linecount"] = str(0)
-            data["squawkData"].append(
-                self.squawk(
-                    "CAMSanity",
-                    translate("CAM_Sanity", "The Job has not been post-processed"),
-                )
-            )
         else:
             if os.path.isfile(obj.LastPostProcessOutput):
                 data["filesize"] = str(os.path.getsize(obj.LastPostProcessOutput) / 1000)
@@ -222,16 +229,6 @@ class CAMSanity:
             else:
                 data["filesize"] = str(0.0)
                 data["linecount"] = str(0)
-                data["squawkData"].append(
-                    self.squawk(
-                        "CAMSanity",
-                        translate(
-                            "CAM_Sanity",
-                            "The Job's last post-processed file is missing",
-                        ),
-                    )
-                )
-
         return data
 
     def _runData(self):
@@ -257,7 +254,7 @@ class CAMSanity:
         data["operations"] = []
         for op in obj.Operations.Group:
             oplabel = op.Label
-            Path.Log.debug(oplabel)
+            Log.debug(oplabel)
             ctime = op.CycleTime if hasattr(op, "CycleTime") else "00:00:00"
             cool = op.CoolantMode if hasattr(op, "CoolantMode") else "N/A"
 
@@ -307,6 +304,7 @@ class CAMSanity:
             "stockImage": "",
             "squawkData": [],
         }
+        data["squawkData"] += MaterialNotSpecifiedRule().check(obj)
 
         bb = obj.Stock.Shape.BoundBox
         data["xLen"] = FreeCAD.Units.Quantity(bb.XLength, FreeCAD.Units.Length).UserString
@@ -328,15 +326,6 @@ class CAMSanity:
                     props["SurfaceSpeedHSS"]
                 ).UserString
 
-        if data["material"] in ["Default", "Not Specified"]:
-            data["squawkData"].append(
-                self.squawk(
-                    "CAMSanity",
-                    translate("CAM_Sanity", "Consider Specifying the Stock Material"),
-                    squawkType="TIP",
-                )
-            )
-
         data["stockImage"] = self.image_builder.build_image(obj.Stock, "stockImage")
 
         return data
@@ -347,38 +336,31 @@ class CAMSanity:
         toolcontrollers
         Returns information about issues and problems with the tools (squawks)
         """
-
         obj = self.job
         data = {"squawkData": []}
 
+        # Run legacy tools rule first to get legacy tool controllers
+        # This will be used to filter out legacy tools in subsequent checks
+
+        data["squawkData"] += LegacyToolsRule().check(obj)
+        legacy_tcs = self._get_legacy_tools(data["squawkData"])
+
+        data["squawkData"] += ToolUsedByMultipleToolsRule().check(obj, legacy_tcs)
+
+        data["squawkData"] += ToolControllerZeroFeedrateRule().check(obj, legacy_tcs)
+
+        data["squawkData"] += ToolBitShapeNotFoundRule().check(obj, legacy_tcs)
+
+        data["squawkData"] += ToolControllerNotUsedRule().check(obj, legacy_tcs)
+
+        data["squawkData"] += SpindleSpeedZeroFeedrateRule().check(obj, legacy_tcs)
+
         for TC in obj.Tools.Group:
-            if not hasattr(TC.Tool, "BitBody"):
-                data["squawkData"].append(
-                    data["squawkData"].append(
-                        self.squawk(
-                            "CAMSanity",
-                            translate(
-                                "CAM_Sanity",
-                                "Tool number {} is a legacy tool. Legacy tools not \
-                    supported by Path-Sanity",
-                            ).format(TC.ToolNumber),
-                            squawkType="WARNING",
-                        )
-                    )
-                )
-                continue  # skip old-style tools
-            tooldata = data.setdefault(str(TC.ToolNumber), {})
-            bitshape = tooldata.setdefault("ShapeType", "")
-            if bitshape not in ["", TC.Tool.ShapeType]:
-                data["squawkData"].append(
-                    self.squawk(
-                        "CAMSanity",
-                        translate("CAM_Sanity", "Tool number {} used by multiple tools").format(
-                            TC.ToolNumber
-                        ),
-                        squawkType="CAUTION",
-                    )
-                )
+            if TC.ToolNumber in legacy_tcs:
+                continue  # Skip legacy tools
+
+            tooldata = data.setdefault(str(TC.ToolNumber), {})  # type: ignore
+
             tooldata["bitShape"] = TC.Tool.ShapeType
             tooldata["description"] = TC.Tool.Label
             tooldata["manufacturer"] = ""
@@ -386,54 +368,24 @@ class CAMSanity:
             tooldata["inspectionNotes"] = ""
             tooldata["diameter"] = str(TC.Tool.Diameter)
             tooldata["shape"] = TC.Tool.ShapeType
-
             tooldata["partNumber"] = ""
 
             if os.path.isfile(TC.Tool.ShapeType):
                 imagedata = TC.Tool.Proxy.get_thumbnail()
             else:
                 imagedata = None
-                data["squawkData"].append(
-                    self.squawk(
-                        "CAMSanity",
-                        translate("CAM_Sanity", "Toolbit Shape for TC: {} not found").format(
-                            TC.ToolNumber
-                        ),
-                        squawkType="WARNING",
-                    )
-                )
+
             tooldata["image"] = ""
             imagepath = os.path.join(self.filelocation, f"T{TC.ToolNumber}.png")
             tooldata["imagepath"] = imagepath
-            Path.Log.debug(imagepath)
+            Log.debug(imagepath)
             if imagedata is not None:
                 with open(imagepath, "wb") as fd:
                     fd.write(imagedata)
                     fd.close()
 
             tooldata["feedrate"] = str(TC.HorizFeed)
-            if TC.HorizFeed.Value == 0.0:
-                data["squawkData"].append(
-                    self.squawk(
-                        "CAMSanity",
-                        translate("CAM_Sanity", "Tool Controller '{}' has no feedrate").format(
-                            TC.Label
-                        ),
-                        squawkType="WARNING",
-                    )
-                )
-
             tooldata["spindlespeed"] = str(TC.SpindleSpeed)
-            if TC.SpindleSpeed == 0.0:
-                data["squawkData"].append(
-                    self.squawk(
-                        "CAMSanity",
-                        translate("CAM_Sanity", "Tool Controller '{}' has no spindlespeed").format(
-                            TC.Label
-                        ),
-                        squawkType="WARNING",
-                    )
-                )
 
             used = False
             for op in obj.Operations.Group:
@@ -448,19 +400,8 @@ class CAMSanity:
                             "Speed": str(TC.SpindleSpeed),
                         }
                     )
-
             if used is False:
                 tooldata.setdefault("ops", [])
-                data["squawkData"].append(
-                    self.squawk(
-                        "CAMSanity",
-                        translate("CAM_Sanity", "Tool Controller '{}' is not used").format(
-                            TC.Label
-                        ),
-                        squawkType="WARNING",
-                    )
-                )
-
         return data
 
     def serialize(self, obj):
@@ -472,9 +413,19 @@ class CAMSanity:
         return str(obj)  # Fallback to convert any other non-serializable types to string
 
     def get_output_report(self):
-        Path.Log.debug("get_output_url")
+        Log.debug("get_output_url")
 
-        generator = ReportGenerator.ReportGenerator(self.data, embed_images=True)
+        generator = ReportGenerator(self.data, embed_images=True)
         html = generator.generate_html()
         generator = None
         return html
+
+    def _get_legacy_tools(self, squawks: list[Squawk]) -> list[int]:
+        """
+        Returns a list of legacy tool controllers to ignore for the rest of camsanity parsing.
+        """
+        tool_controllers = []
+        for squawk in squawks:
+            number = re.findall(r"\d+", squawk.note)
+            tool_controllers.append(int(number[0])) if number else None
+        return tool_controllers
