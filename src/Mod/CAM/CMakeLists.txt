@@ -144,6 +144,7 @@ SET(PathPythonToolsAssetsUi_SRCS
 
 SET(PathPythonToolsDocObject_SRCS
     Path/Tool/docobject/__init__.py
+    Path/Tool/docobject/util.py
 )
 
 SET(PathPythonToolsDocObjectModels_SRCS
@@ -528,6 +529,7 @@ SET(Tests_SRCS
     CAMTests/TestPathToolBitEditorWidget.py
     CAMTests/TestPathToolBitListWidget.py
     CAMTests/TestPathToolBitPropertyEditorWidget.py
+    CAMTests/TestPathToolDocObject.py
     CAMTests/TestPathToolDocumentObjectEditorWidget.py
     CAMTests/TestPathToolShapeClasses.py
     CAMTests/TestPathToolShapeDoc.py
