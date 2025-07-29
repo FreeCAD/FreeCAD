@@ -8701,7 +8701,6 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
     auto SubElements = ExternalGeometry.getSubValues();
     assert(externalGeoRef.size() == Objects.size());
     auto keys = externalGeoRef;
-    Types.resize(Objects.size(), 0);
 
     // re-check for any missing geometry element. The code here has a side
     // effect that the linked external geometry will continue to work even if
@@ -8722,7 +8721,6 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
             if(elementName.oldName.size()
                     && !App::GeoFeature::hasMissingElement(elementName.oldName.c_str()))
             {
-                Types.push_back(static_cast<int>(ExtType::Projection));
                 Objects.push_back(obj);
                 SubElements.push_back(elementName.oldName);
                 keys.push_back(ref);
