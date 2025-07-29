@@ -489,7 +489,6 @@ void CDxfWrite::makeBlockSectionHead()
     }
 }
 
-// Add these new methods to the CDxfWrite implementation
 void CDxfWrite::writeBlock(const std::string& blockName, const double basePoint[3])
 {
     if (m_version > 12) {
@@ -497,53 +496,53 @@ void CDxfWrite::writeBlock(const std::string& blockName, const double basePoint[
         addBlockName(blockName, blkRecordHandle);
     }
 
-    (*m_ssBlock) << "  0" << endl;
-    (*m_ssBlock) << "BLOCK" << endl;
-    (*m_ssBlock) << "  5" << endl;
+    (*m_ssBlock) << "  0\n";
+    (*m_ssBlock) << "BLOCK\n";
+    (*m_ssBlock) << "  5\n";
     m_currentBlock = getBlockHandle();
-    (*m_ssBlock) << m_currentBlock << endl;
+    (*m_ssBlock) << m_currentBlock << "\n";
     if (m_version > 12) {
-        (*m_ssBlock) << "330" << endl;
-        (*m_ssBlock) << m_blkRecordList.back() << endl;  // Use the handle we just added
-        (*m_ssBlock) << "100" << endl;
-        (*m_ssBlock) << "AcDbEntity" << endl;
+        (*m_ssBlock) << "330\n";
+        (*m_ssBlock) << m_blkRecordList.back() << "\n";  // Use the handle we just added
+        (*m_ssBlock) << "100\n";
+        (*m_ssBlock) << "AcDbEntity\n";
     }
-    (*m_ssBlock) << "  8" << endl;
-    (*m_ssBlock) << "0" << endl;  // Blocks are defined on layer 0
+    (*m_ssBlock) << "  8\n";
+    (*m_ssBlock) << "0\n";  // Blocks are defined on layer 0
     if (m_version > 12) {
-        (*m_ssBlock) << "100" << endl;
-        (*m_ssBlock) << "AcDbBlockBegin" << endl;
+        (*m_ssBlock) << "100\n";
+        (*m_ssBlock) << "AcDbBlockBegin\n";
     }
-    (*m_ssBlock) << "  2" << endl;
-    (*m_ssBlock) << blockName << endl;
-    (*m_ssBlock) << " 70" << endl;
-    (*m_ssBlock) << "   0" << endl;  // Flags
-    (*m_ssBlock) << " 10" << endl;
-    (*m_ssBlock) << basePoint[0] << endl;
-    (*m_ssBlock) << " 20" << endl;
-    (*m_ssBlock) << basePoint[1] << endl;
-    (*m_ssBlock) << " 30" << endl;
-    (*m_ssBlock) << basePoint[2] << endl;
-    (*m_ssBlock) << "  3" << endl;
-    (*m_ssBlock) << blockName << endl;
-    (*m_ssBlock) << "  1" << endl;
-    (*m_ssBlock) << "" << endl;  // Path name (empty)
+    (*m_ssBlock) << "  2\n";
+    (*m_ssBlock) << blockName << "\n";
+    (*m_ssBlock) << " 70\n";
+    (*m_ssBlock) << "   0\n";  // Flags
+    (*m_ssBlock) << " 10\n";
+    (*m_ssBlock) << basePoint[0] << "\n";
+    (*m_ssBlock) << " 20\n";
+    (*m_ssBlock) << basePoint[1] << "\n";
+    (*m_ssBlock) << " 30\n";
+    (*m_ssBlock) << basePoint[2] << "\n";
+    (*m_ssBlock) << "  3\n";
+    (*m_ssBlock) << blockName << "\n";
+    (*m_ssBlock) << "  1\n";
+    (*m_ssBlock) << "\n";  // Path name (empty)
 }
 
 void CDxfWrite::writeEndBlock(const std::string& /*blockName*/)
 {
     std::string endBlkHandle = getBlockHandle();
-    (*m_ssBlock) << "  0" << endl;
-    (*m_ssBlock) << "ENDBLK" << endl;
-    (*m_ssBlock) << "  5" << endl;
-    (*m_ssBlock) << endBlkHandle << endl;
+    (*m_ssBlock) << "  0\n";
+    (*m_ssBlock) << "ENDBLK\n";
+    (*m_ssBlock) << "  5\n";
+    (*m_ssBlock) << endBlkHandle << "\n";
     if (m_version > 12) {
-        (*m_ssBlock) << "330" << endl;
-        (*m_ssBlock) << m_blkRecordList.back() << endl;  // Corresponds to the last BLOCK
-        (*m_ssBlock) << "100" << endl;
-        (*m_ssBlock) << "AcDbEntity" << endl;
-        (*m_ssBlock) << "100" << endl;
-        (*m_ssBlock) << "AcDbBlockEnd" << endl;
+        (*m_ssBlock) << "330\n";
+        (*m_ssBlock) << m_blkRecordList.back() << "\n";  // Corresponds to the last BLOCK
+        (*m_ssBlock) << "100\n";
+        (*m_ssBlock) << "AcDbEntity\n";
+        (*m_ssBlock) << "100\n";
+        (*m_ssBlock) << "AcDbBlockEnd\n";
     }
 }
 
@@ -552,40 +551,40 @@ void CDxfWrite::writeInsert(const std::string& blockName,
                             double scale,
                             double rotation)
 {
-    (*m_ssEntity) << "  0" << endl;
-    (*m_ssEntity) << "INSERT" << endl;
-    (*m_ssEntity) << "  5" << endl;
-    (*m_ssEntity) << getEntityHandle() << endl;
+    (*m_ssEntity) << "  0\n";
+    (*m_ssEntity) << "INSERT\n";
+    (*m_ssEntity) << "  5\n";
+    (*m_ssEntity) << getEntityHandle() << "\n";
     if (m_version > 12) {
-        (*m_ssEntity) << "330" << endl;
-        (*m_ssEntity) << m_saveModelSpaceHandle << endl;
-        (*m_ssEntity) << "100" << endl;
-        (*m_ssEntity) << "AcDbEntity" << endl;
+        (*m_ssEntity) << "330\n";
+        (*m_ssEntity) << m_saveModelSpaceHandle << "\n";
+        (*m_ssEntity) << "100\n";
+        (*m_ssEntity) << "AcDbEntity\n";
     }
-    (*m_ssEntity) << "  8" << endl;
-    (*m_ssEntity) << getLayerName() << endl;
-    (*m_ssEntity) << " 62" << endl;
-    (*m_ssEntity) << m_currentColor << endl;
+    (*m_ssEntity) << "  8\n";
+    (*m_ssEntity) << getLayerName() << "\n";
+    (*m_ssEntity) << " 62\n";
+    (*m_ssEntity) << m_currentColor << "\n";
     if (m_version > 12) {
-        (*m_ssEntity) << "100" << endl;
-        (*m_ssEntity) << "AcDbBlockReference" << endl;
+        (*m_ssEntity) << "100\n";
+        (*m_ssEntity) << "AcDbBlockReference\n";
     }
-    (*m_ssEntity) << "  2" << endl;
-    (*m_ssEntity) << blockName << endl;
-    (*m_ssEntity) << " 10" << endl;
-    (*m_ssEntity) << insertionPoint[0] << endl;
-    (*m_ssEntity) << " 20" << endl;
-    (*m_ssEntity) << insertionPoint[1] << endl;
-    (*m_ssEntity) << " 30" << endl;
-    (*m_ssEntity) << insertionPoint[2] << endl;
-    (*m_ssEntity) << " 41" << endl;
-    (*m_ssEntity) << scale << endl;  // X scale factor
-    (*m_ssEntity) << " 42" << endl;
-    (*m_ssEntity) << scale << endl;  // Y scale factor
-    (*m_ssEntity) << " 43" << endl;
-    (*m_ssEntity) << scale << endl;  // Z scale factor
-    (*m_ssEntity) << " 50" << endl;
-    (*m_ssEntity) << rotation << endl;  // Rotation angle
+    (*m_ssEntity) << "  2\n";
+    (*m_ssEntity) << blockName << "\n";
+    (*m_ssEntity) << " 10\n";
+    (*m_ssEntity) << insertionPoint[0] << "\n";
+    (*m_ssEntity) << " 20\n";
+    (*m_ssEntity) << insertionPoint[1] << "\n";
+    (*m_ssEntity) << " 30\n";
+    (*m_ssEntity) << insertionPoint[2] << "\n";
+    (*m_ssEntity) << " 41\n";
+    (*m_ssEntity) << scale << "\n";  // X scale factor
+    (*m_ssEntity) << " 42\n";
+    (*m_ssEntity) << scale << "\n";  // Y scale factor
+    (*m_ssEntity) << " 43\n";
+    (*m_ssEntity) << scale << "\n";  // Z scale factor
+    (*m_ssEntity) << " 50\n";
+    (*m_ssEntity) << rotation << "\n";  // Rotation angle
 }
 
 std::string CDxfWrite::getPlateFile(std::string fileSpec)
@@ -695,8 +694,8 @@ void CDxfWrite::putLine(
     }
     (*outStream) << "  8" << endl;           // Group code for layer name
     (*outStream) << getLayerName() << endl;  // Layer number
-    (*outStream) << " 62" << endl;           // Group code for color
-    (*outStream) << m_currentColor << endl;  // Color index
+    (*outStream) << " 62\n";                 // Group code for color
+    (*outStream) << m_currentColor << "\n";  // Color index
     if (m_version > 12) {
         (*outStream) << "100" << endl;
         (*outStream) << "AcDbLine" << endl;
@@ -831,113 +830,113 @@ void CDxfWrite::writePolyFace(const std::vector<point3D>& vertices,
                               const std::vector<std::vector<int>>& faces)
 {
     // A Polyface Mesh is a POLYLINE entity with bit 6 (64) set in its flags (group 70).
-    (*m_ssEntity) << "  0" << endl;
-    (*m_ssEntity) << "POLYLINE" << endl;
-    (*m_ssEntity) << "  5" << endl;
-    (*m_ssEntity) << getEntityHandle() << endl;
+    (*m_ssEntity) << "  0\n";
+    (*m_ssEntity) << "POLYLINE\n";
+    (*m_ssEntity) << "  5\n";
+    (*m_ssEntity) << getEntityHandle() << "\n";
     if (m_version > 12) {
-        (*m_ssEntity) << "330" << endl;
-        (*m_ssEntity) << m_saveModelSpaceHandle << endl;
-        (*m_ssEntity) << "100" << endl;
-        (*m_ssEntity) << "AcDbEntity" << endl;
+        (*m_ssEntity) << "330\n";
+        (*m_ssEntity) << m_saveModelSpaceHandle << "\n";
+        (*m_ssEntity) << "100\n";
+        (*m_ssEntity) << "AcDbEntity\n";
     }
-    (*m_ssEntity) << "  8" << endl;
-    (*m_ssEntity) << getLayerName() << endl;
-    (*m_ssEntity) << " 62" << endl;
-    (*m_ssEntity) << m_currentColor << endl;
+    (*m_ssEntity) << "  8\n";
+    (*m_ssEntity) << getLayerName() << "\n";
+    (*m_ssEntity) << " 62\n";
+    (*m_ssEntity) << m_currentColor << "\n";
     if (m_version > 12) {
-        (*m_ssEntity) << "100" << endl;
-        (*m_ssEntity) << "AcDb3dPolyline" << endl;
+        (*m_ssEntity) << "100\n";
+        (*m_ssEntity) << "AcDb3dPolyline\n";
     }
-    (*m_ssEntity) << " 66" << endl;
-    (*m_ssEntity) << "     1" << endl;  // Vertices follow flag
-    (*m_ssEntity) << " 10" << endl;
-    (*m_ssEntity) << "0.0" << endl;
-    (*m_ssEntity) << " 20" << endl;
-    (*m_ssEntity) << "0.0" << endl;
-    (*m_ssEntity) << " 30" << endl;
-    (*m_ssEntity) << "0.0" << endl;
-    (*m_ssEntity) << " 70" << endl;
-    (*m_ssEntity) << "    64" << endl;  // Flag for Polyface Mesh
+    (*m_ssEntity) << " 66\n";
+    (*m_ssEntity) << "     1\n";  // Vertices follow flag
+    (*m_ssEntity) << " 10\n";
+    (*m_ssEntity) << "0.0\n";
+    (*m_ssEntity) << " 20\n";
+    (*m_ssEntity) << "0.0\n";
+    (*m_ssEntity) << " 30\n";
+    (*m_ssEntity) << "0.0\n";
+    (*m_ssEntity) << " 70\n";
+    (*m_ssEntity) << "    64\n";  // Flag for Polyface Mesh
 
     // Write all the unique vertices first
     for (const auto& v : vertices) {
-        (*m_ssEntity) << "  0" << endl;
-        (*m_ssEntity) << "VERTEX" << endl;
-        (*m_ssEntity) << "  5" << endl;
-        (*m_ssEntity) << getEntityHandle() << endl;
+        (*m_ssEntity) << "  0\n";
+        (*m_ssEntity) << "VERTEX\n";
+        (*m_ssEntity) << "  5\n";
+        (*m_ssEntity) << getEntityHandle() << "\n";
         if (m_version > 12) {
-            (*m_ssEntity) << "330" << endl;
-            (*m_ssEntity) << m_saveModelSpaceHandle << endl;
-            (*m_ssEntity) << "100" << endl;
-            (*m_ssEntity) << "AcDbEntity" << endl;
-            (*m_ssEntity) << "100" << endl;
-            (*m_ssEntity) << "AcDbVertex" << endl;
-            (*m_ssEntity) << "100" << endl;
-            (*m_ssEntity) << "AcDb3dPolylineVertex" << endl;
+            (*m_ssEntity) << "330\n";
+            (*m_ssEntity) << m_saveModelSpaceHandle << "\n";
+            (*m_ssEntity) << "100\n";
+            (*m_ssEntity) << "AcDbEntity\n";
+            (*m_ssEntity) << "100\n";
+            (*m_ssEntity) << "AcDbVertex\n";
+            (*m_ssEntity) << "100\n";
+            (*m_ssEntity) << "AcDb3dPolylineVertex\n";
         }
-        (*m_ssEntity) << "  8" << endl;
-        (*m_ssEntity) << getLayerName() << endl;
-        (*m_ssEntity) << " 10" << endl;
-        (*m_ssEntity) << v.x << endl;
-        (*m_ssEntity) << " 20" << endl;
-        (*m_ssEntity) << v.y << endl;
-        (*m_ssEntity) << " 30" << endl;
-        (*m_ssEntity) << v.z << endl;
-        (*m_ssEntity) << " 70" << endl;
-        (*m_ssEntity) << "    32" << endl;  // Polyface mesh vertex flag
+        (*m_ssEntity) << "  8\n";
+        (*m_ssEntity) << getLayerName() << "\n";
+        (*m_ssEntity) << " 10\n";
+        (*m_ssEntity) << v.x << "\n";
+        (*m_ssEntity) << " 20\n";
+        (*m_ssEntity) << v.y << "\n";
+        (*m_ssEntity) << " 30\n";
+        (*m_ssEntity) << v.z << "\n";
+        (*m_ssEntity) << " 70\n";
+        (*m_ssEntity) << "    32\n";  // Polyface mesh vertex flag
     }
 
     // Write the face definitions
     for (const auto& f : faces) {
-        (*m_ssEntity) << "  0" << endl;
-        (*m_ssEntity) << "VERTEX" << endl;
-        (*m_ssEntity) << "  5" << endl;
-        (*m_ssEntity) << getEntityHandle() << endl;
+        (*m_ssEntity) << "  0\n";
+        (*m_ssEntity) << "VERTEX\n";
+        (*m_ssEntity) << "  5\n";
+        (*m_ssEntity) << getEntityHandle() << "\n";
         if (m_version > 12) {
-            (*m_ssEntity) << "330" << endl;
-            (*m_ssEntity) << m_saveModelSpaceHandle << endl;
-            (*m_ssEntity) << "100" << endl;
-            (*m_ssEntity) << "AcDbEntity" << endl;
-            (*m_ssEntity) << "100" << endl;
-            (*m_ssEntity) << "AcDbVertex" << endl;
-            (*m_ssEntity) << "100" << endl;
-            (*m_ssEntity) << "AcDbFaceRecord" << endl;
+            (*m_ssEntity) << "330\n";
+            (*m_ssEntity) << m_saveModelSpaceHandle << "\n";
+            (*m_ssEntity) << "100\n";
+            (*m_ssEntity) << "AcDbEntity\n";
+            (*m_ssEntity) << "100\n";
+            (*m_ssEntity) << "AcDbVertex\n";
+            (*m_ssEntity) << "100\n";
+            (*m_ssEntity) << "AcDbFaceRecord\n";
         }
-        (*m_ssEntity) << "  8" << endl;
-        (*m_ssEntity) << getLayerName() << endl;
-        (*m_ssEntity) << " 10" << endl;
-        (*m_ssEntity) << "0.0" << endl;
-        (*m_ssEntity) << " 20" << endl;
-        (*m_ssEntity) << "0.0" << endl;
-        (*m_ssEntity) << " 30" << endl;
-        (*m_ssEntity) << "0.0" << endl;
-        (*m_ssEntity) << " 70" << endl;
-        (*m_ssEntity) << "   128" << endl;  // Polyface mesh face flag
+        (*m_ssEntity) << "  8\n";
+        (*m_ssEntity) << getLayerName() << "\n";
+        (*m_ssEntity) << " 10\n";
+        (*m_ssEntity) << "0.0\n";
+        (*m_ssEntity) << " 20\n";
+        (*m_ssEntity) << "0.0\n";
+        (*m_ssEntity) << " 30\n";
+        (*m_ssEntity) << "0.0\n";
+        (*m_ssEntity) << " 70\n";
+        (*m_ssEntity) << "   128\n";  // Polyface mesh face flag
 
         // The vertex indices for the face
         // DXF uses 1-based indices
         if (f.size() >= 1) {
-            (*m_ssEntity) << " 71" << endl << f[0] << endl;
+            (*m_ssEntity) << " 71" << endl << f[0] << "\n";
         }
         if (f.size() >= 2) {
-            (*m_ssEntity) << " 72" << endl << f[1] << endl;
+            (*m_ssEntity) << " 72" << endl << f[1] << "\n";
         }
         if (f.size() >= 3) {
-            (*m_ssEntity) << " 73" << endl << f[2] << endl;
+            (*m_ssEntity) << " 73" << endl << f[2] << "\n";
         }
         if (f.size() >= 4) {
-            (*m_ssEntity) << " 74" << endl << f[3] << endl;
+            (*m_ssEntity) << " 74" << endl << f[3] << "\n";
         }
     }
 
     // End the sequence
-    (*m_ssEntity) << "  0" << endl;
-    (*m_ssEntity) << "SEQEND" << endl;
-    (*m_ssEntity) << "  5" << endl;
-    (*m_ssEntity) << getEntityHandle() << endl;
-    (*m_ssEntity) << "  8" << endl;
-    (*m_ssEntity) << getLayerName() << endl;
+    (*m_ssEntity) << "  0\n";
+    (*m_ssEntity) << "SEQEND\n";
+    (*m_ssEntity) << "  5\n";
+    (*m_ssEntity) << getEntityHandle() << "\n";
+    (*m_ssEntity) << "  8\n";
+    (*m_ssEntity) << getLayerName() << "\n";
 }
 
 void CDxfWrite::writePoint(const double* point)
@@ -1266,10 +1265,10 @@ void CDxfWrite::putText(
         (*outStream) << "100" << endl;
         (*outStream) << "AcDbEntity" << endl;
     }
-    (*outStream) << "  8" << endl;  // Group code for layer name
+    (*outStream) << "  8\n";  // Group code for layer name
     (*outStream) << getLayerName() << endl;
-    (*outStream) << " 62" << endl;  // Group code for color
-    (*outStream) << m_currentColor << endl;
+    (*outStream) << " 62\n";  // Group code for color
+    (*outStream) << m_currentColor << "\n";
     if (m_version > 12) {
         (*outStream) << "100" << endl;
         (*outStream) << "AcDbText" << endl;
