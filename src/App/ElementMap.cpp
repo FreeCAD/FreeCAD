@@ -1196,9 +1196,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
         // this is old code that caused extra shape tags and faulty code to check
         // if there are duplicated tags
 
-        // do child mapping only if the child element count >= 5
-        const int threshold {5};
-        if (child.count >= threshold || !child.elementMap) {
+        if (!child.elementMap) {
             encodeElementName(child.indexedName[0],
                               tmp,
                               ss,
@@ -1206,7 +1204,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
                               masterTag,
                               child.postfix.constData(),
                               child.tag,
-                              false); // originally set to true, which added unnecessary tags
+                              true);
 
             // Perform some disambiguation in case the same shape is mapped
             // multiple times, e.g. draft array.
@@ -1249,7 +1247,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
             continue;
         }
 
-        if (entry->index != 1 && tmp.size() != 0) {
+        if (entry->index != 1) {
             // There is some ambiguity in child mapping. We need some
             // additional postfix for disambiguation. NOTE: We are not
             // using ComplexGeoData::indexPostfix() so we don't confuse
