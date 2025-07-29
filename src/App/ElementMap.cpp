@@ -1193,57 +1193,58 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
 
         ChildMapInfo* entry = nullptr;
 
+        // this is old code that caused extra shape tags and faulty code to check
+        // if there are duplicated tags
+
         // do child mapping only if the child element count >= 5
-        const int threshold {5};
-        if (child.count >= threshold || !child.elementMap) {
-            encodeElementName(child.indexedName[0],
-                              tmp,
-                              ss,
-                              nullptr,
-                              masterTag,
-                              child.postfix.constData(),
-                              child.tag,
-                              true);
+        // const int threshold {5};
+        // if (child.count >= threshold || !child.elementMap) {
+        //     encodeElementName(child.indexedName[0],
+        //                       tmp,
+        //                       ss,
+        //                       nullptr,
+        //                       masterTag,
+        //                       child.postfix.constData(),
+        //                       child.tag,
+        //                       true);
 
-            // Perform some disambiguation in case the same shape is mapped
-            // multiple times, e.g. draft array.
-            entry = &childElements[tmp.toBytes()];
-            int mapIndex = entry->mapIndices[child.elementMap.get()]++;
-            ++entry->index;
-            if (entry->index != 1 && child.elementMap && mapIndex == 0) {
-                // This child has duplicated 'tag' and 'postfix', but it
-                // has its own element map. We'll expand this map now.
-                entry = nullptr;
-            }
-        }
+        //     // Perform some disambiguation in case the same shape is mapped
+        //     // multiple times, e.g. draft array.
+        //     entry = &childElements[tmp.toBytes()];
+        //     int mapIndex = entry->mapIndices[child.elementMap.get()]++;
+        //     ++entry->index;
+        //     if (entry->index != 1 && child.elementMap && mapIndex == 0) {
+        //         // This child has duplicated 'tag' and 'postfix', but it
+        //         // has its own element map. We'll expand this map now.
+        //         entry = nullptr;
+        //     }
+        // }
 
-        if (!entry) {
-            IndexedName childIdx(child.indexedName);
-            IndexedName idx(childIdx.getType(), childIdx.getIndex() + child.offset);
-            for (int i = 0; i < child.count; ++i, ++childIdx, ++idx) {
-                ElementIDRefs sids;
-                MappedName name = child.elementMap->find(childIdx, &sids);
-                if (!name) {
-                    if ((child.tag == 0) || child.tag == masterTag) {
-                        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-                            FC_WARN("unmapped element");  // NOLINT
-                        }
-                        continue;
+        IndexedName childIdx(child.indexedName);
+        IndexedName idx(childIdx.getType(), childIdx.getIndex() + child.offset);
+        for (int i = 0; i < child.count; ++i, ++childIdx, ++idx) {
+            ElementIDRefs sids;
+            MappedName name = child.elementMap->find(childIdx, &sids);
+            if (!name) {
+                if ((child.tag == 0) || child.tag == masterTag) {
+                    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                        FC_WARN("unmapped element");  // NOLINT
                     }
-                    name = MappedName(childIdx);
+                    continue;
                 }
-                ss.str("");
-                encodeElementName(idx[0],
-                                  name,
-                                  ss,
-                                  &sids,
-                                  masterTag,
-                                  child.postfix.constData(),
-                                  child.tag);
-                setElementName(idx, name, masterTag, &sids);
+                name = MappedName(childIdx);
             }
-            continue;
+            ss.str("");
+            encodeElementName(idx[0],
+                                name,
+                                ss,
+                                &sids,
+                                masterTag,
+                                child.postfix.constData(),
+                                child.tag);
+            setElementName(idx, name, masterTag, &sids);
         }
+        continue;
 
         if (entry->index != 1) {
             // There is some ambiguity in child mapping. We need some
@@ -1254,7 +1255,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
             // disambiguation. We don't need to extract the index.
             ss.str("");
             ss << ELEMENT_MAP_PREFIX << ":C" << entry->index - 1;
-
+            
             tmp.clear();
             encodeElementName(child.indexedName[0],
                               tmp,
