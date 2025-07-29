@@ -1901,22 +1901,22 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
 bool CmdTechDrawExportPageDXF::isActive() { return DrawGuiUtil::needPage(this); }
 
 //===========================================================================
-// TechDraw_ExportPage3DPDF
+// TechDraw_ExportPagePDF
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawExportPage3DPDF)
+DEF_STD_CMD_A(CmdTechDrawExportPagePDF)
 
-CmdTechDrawExportPage3DPDF::CmdTechDrawExportPage3DPDF() : Command("TechDraw_ExportPage3DPDF")
+CmdTechDrawExportPagePDF::CmdTechDrawExportPagePDF() : Command("TechDraw_ExportPagePDF")
 {
     sGroup = QT_TR_NOOP("File");
-    sMenuText = QT_TR_NOOP("Export Page as 3D PDF");
+    sMenuText = QT_TR_NOOP("Export Page as PDF");
     sToolTipText = sMenuText;
-    sWhatsThis = "TechDraw_ExportPage3DPDF";
+    sWhatsThis = "TechDraw_ExportPagePDF";
     sStatusTip = sToolTipText;
-    sPixmap = "actions/TechDraw_ExportPage3DPDF";
+    sPixmap = "actions/TechDraw_ExportPagePDF";
 }
 
-void CmdTechDrawExportPage3DPDF::activated(int iMsg)
+void CmdTechDrawExportPagePDF::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
@@ -1925,10 +1925,10 @@ void CmdTechDrawExportPage3DPDF::activated(int iMsg)
     }
 
     // For now, just log the message as requested
-    Base::Console().message("Export 3d pdf button pressed\n");
+    Base::Console().message("Export PDF button pressed\n");
 }
 
-bool CmdTechDrawExportPage3DPDF::isActive() 
+bool CmdTechDrawExportPagePDF::isActive() 
 { 
     if (!DrawGuiUtil::needPage(this)) {
         return false;
@@ -1985,7 +1985,7 @@ void CreateTechDrawCommands()
     rcCmdMgr.addCommand(new CmdTechDrawSymbol());
     rcCmdMgr.addCommand(new CmdTechDrawExportPageSVG());
     rcCmdMgr.addCommand(new CmdTechDrawExportPageDXF());
-    rcCmdMgr.addCommand(new CmdTechDrawExportPage3DPDF());
+    rcCmdMgr.addCommand(new CmdTechDrawExportPagePDF());
     rcCmdMgr.addCommand(new CmdTechDrawDraftView());
     rcCmdMgr.addCommand(new CmdTechDrawArchView());
     rcCmdMgr.addCommand(new CmdTechDrawSpreadsheetView());

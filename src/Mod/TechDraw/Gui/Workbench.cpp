@@ -210,7 +210,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *pages << "Separator";
     *pages << "TechDraw_ExportPageSVG";
     *pages << "TechDraw_ExportPageDXF";
-    *pages << "TechDraw_ExportPage3DPDF";
+    *pages << "TechDraw_ExportPagePDF";
 
     // views
     Gui::MenuItem* views = new Gui::MenuItem;
@@ -384,7 +384,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     file->setCommand("TechDraw File Access");
     *file << "TechDraw_ExportPageSVG";
     *file << "TechDraw_ExportPageDXF";
-    *file << "TechDraw_ExportPage3DPDF";
+    *file << "TechDraw_ExportPagePDF";
 
     Gui::ToolBarItem* decor = new Gui::ToolBarItem(root);
     decor->setCommand("TechDraw Decoration");
@@ -485,7 +485,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     file->setCommand("TechDraw File Access");
     *file << "TechDraw_ExportPageSVG";
     *file << "TechDraw_ExportPageDXF";
-    *file << "TechDraw_ExportPage3DPDF";
+    *file << "TechDraw_ExportPagePDF";
 
     Gui::ToolBarItem* decor = new Gui::ToolBarItem(root);
     decor->setCommand("TechDraw Decoration");
