@@ -46,9 +46,9 @@
 #include "PreferencesGui.h"
 #include "ZVALUE.h"
 #include "QGIViewBalloon.h"
-#include "QGSPage.h"
 #include "TaskBalloon.h"
 #include "ViewProviderBalloon.h"
+#include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -123,15 +123,9 @@ void ViewProviderBalloon::updateData(const App::Property* prop)
         }
     }
     if (prop == &(getViewObject()->SourceView)) {
-        // Re-add the baloon so that it is properly attached
-        // to the view
-        QGSPage* page = getQPage();
-        if (page) {
-            QGIView* qgiv = getQView();
-            if (qgiv) {
-                page->removeItem(qgiv);
-            }
-            page->attachView(getViewObject());
+        // Ensure the QGraphicsItems hierarchy matches the DocumentObject's
+        if (ViewProviderPage* vpp = getViewProviderPage()) {
+            vpp->fixSceneDependencies();
         }
     }
 

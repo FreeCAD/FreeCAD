@@ -172,7 +172,7 @@ void ViewProviderDrawingView::hide()
         }
     }
 }
-QGSPage* ViewProviderDrawingView::getQPage()
+QGIView* ViewProviderDrawingView::getQView()
 {
     TechDraw::DrawView* dv = getViewObject();
     if (!dv) {
@@ -188,12 +188,9 @@ QGSPage* ViewProviderDrawingView::getQPage()
     if (!vpp) {
         return nullptr;
     }
-    return vpp->getQGSPage();
-}
-QGIView* ViewProviderDrawingView::getQView()
-{
-    
-    if (QGSPage* page = getQPage()) {
+
+    QGSPage* page = vpp->getQGSPage();
+    if (page) {
         return dynamic_cast<QGIView *>(page->findQViewForDocObj(getViewObject()));
     }
 

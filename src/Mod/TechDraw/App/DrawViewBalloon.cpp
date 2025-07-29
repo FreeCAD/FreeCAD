@@ -113,12 +113,6 @@ void DrawViewBalloon::onChanged(const App::Property* prop)
             || (prop == &OriginY)) {
             requestPaint();
         }
-        // if ((prop == &SourceView)) {
-        //     auto* link = freecad_cast<App::PropertyLink*>(prop);
-        //     if (link && link->getValue()) {
-        //         link->getValue()->touch(true);
-        //     }
-        // }
     }
     DrawView::onChanged(prop);
 }
