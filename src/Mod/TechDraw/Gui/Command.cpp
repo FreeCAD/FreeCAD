@@ -1924,8 +1924,56 @@ void CmdTechDrawExportPagePDF::activated(int iMsg)
         return;
     }
 
-    // For now, just log the message as requested
-    Base::Console().message("Export PDF button pressed\n");
+    std::vector<App::DocumentObject*> views = page->getViews();
+    bool foundActiveViewWith3DPDFExport = false;
+    
+    for (auto* view : views) {
+        TechDraw::DrawViewImage* imageView = dynamic_cast<TechDraw::DrawViewImage*>(view);
+        if (!imageView) {
+            continue;
+        }
+        
+
+        std::string viewLabel = imageView->getNameInDocument();
+        if (viewLabel.find("ActiveView") != std::string::npos) {
+
+            Gui::Document* guiDoc = Gui::Application::Instance->getDocument(imageView->getDocument());
+            if (guiDoc) {
+                Gui::ViewProvider* vp = guiDoc->getViewProvider(imageView);
+                if (vp) {
+                    auto vpImage = freecad_cast<ViewProviderImage*>(vp);
+                    if (vpImage) {
+                        if (vpImage->Enable3DPDFExport.getValue()) {
+                            foundActiveViewWith3DPDFExport = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    if (foundActiveViewWith3DPDFExport) {
+
+        doCommand(Gui, "import Export3DPDFGui");
+    
+        Gui::Command* cmd = Gui::Application::Instance->commandManager().getCommandByName("Std_Print3dPdf");
+        
+        if (cmd) {
+            cmd->invoke(0);
+        } else {
+            Base::Console().error("Std_Print3dPdf command not found even after loading Export3DPDFGui\n");
+        }
+        Base::Console().message("Ready for 3d pdf export\n");
+    } else {
+        Gui::Command* cmd = Gui::Application::Instance->commandManager().getCommandByName("Std_PrintPdf");
+        
+        if (cmd) {
+            cmd->invoke(0);
+        } else {
+            Base::Console().error("Std_PrintPdf command not found\n");
+        }
+    }
 }
 
 bool CmdTechDrawExportPagePDF::isActive() 
