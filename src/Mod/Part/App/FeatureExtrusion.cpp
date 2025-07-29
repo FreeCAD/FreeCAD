@@ -313,7 +313,7 @@ Base::Vector3d Extrusion::calculateShapeNormal(const App::PropertyLink& shapeLin
     return Base::Vector3d(normal.X(), normal.Y(), normal.Z());
 }
 
-void Extrusion::extrudeShape(TopoShape &result, const TopoShape &source, const ExtrusionParameters& params, App::Document* document)
+void Extrusion::extrudeShape(TopoShape &result, const TopoShape &source, const ExtrusionParameters& params)
 {
     gp_Vec vec = gp_Vec(params.dir).Multiplied(params.lengthFwd + params.lengthRev);//total vector of extrusion
 
@@ -355,11 +355,7 @@ void Extrusion::extrudeShape(TopoShape &result, const TopoShape &source, const E
             // test if we need to make faces from wires. If there are faces - we don't.
             if (!myShape.hasSubShape(TopAbs_FACE)) {
                 if (!myShape.Hasher) {
-                    if (result.Hasher) {
-                        myShape.Hasher = result.Hasher;
-                    } else if(document) {
-                        myShape.Hasher = document->getStringHasher();
-                    }
+                    myShape.Hasher = result.Hasher;
                 }
                 myShape = myShape.makeElementFace(nullptr, params.faceMakerClass.c_str());
             }
@@ -379,8 +375,9 @@ App::DocumentObjectExecReturn* Extrusion::execute()
 
     try {
         ExtrusionParameters params = computeFinalParameters();
-        TopoShape result(0);
-        extrudeShape(result, Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform), params, link->getDocument());
+        TopoShape result(0, getDocument()->getStringHasher());
+        
+        extrudeShape(result, Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform), params);
         this->Shape.setValue(result);
         return App::DocumentObject::StdReturn;
     }

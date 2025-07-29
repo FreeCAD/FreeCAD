@@ -54,17 +54,31 @@ App::DocumentObjectExecReturn *Chamfer::execute()
         TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
         TopExp::MapShapesAndAncestors(baseShape, TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
         TopTools_IndexedMapOfShape mapOfEdges;
+        std::vector<Part::FilletElement> edges = Edges.getValues();
         TopExp::MapShapes(baseShape, TopAbs_EDGE, mapOfEdges);
+        std::string fullErrMsg = "";
 
         const auto &vals = EdgeLinks.getSubValues();
         const auto &subs = EdgeLinks.getShadowSubs();
         if(subs.size()!=(size_t)Edges.getSize())
             return new App::DocumentObjectExecReturn("Edge link size mismatch");
         size_t i=0;
-        for(const auto &info : Edges.getValues()) {
+        for(const auto &info : edges) {
             auto &sub = subs[i];
-            auto &ref = sub.newName.size()?sub.newName:vals[i];
+            auto &ref = sub.newName.size() ? sub.newName : vals[i];
+            auto &oldName = sub.oldName.size() ? sub.oldName : "";
             ++i;
+
+            if (Data::hasMissingElement(ref.c_str()) || Data::hasMissingElement(oldName.c_str())) {
+                fullErrMsg.append("Missing edge link: ");
+                fullErrMsg.append(ref);
+                fullErrMsg.append("\n");
+
+                auto removeIt = std::remove(edges.begin(), edges.end(), info);
+                edges.erase(removeIt, edges.end());
+
+                continue;
+            }
             // Toponaming project March 2024:  Replaced this code because it wouldn't work:
 //            TopoDS_Shape edge;
 //            try {
@@ -79,6 +93,11 @@ App::DocumentObjectExecReturn *Chamfer::execute()
             const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
             mkChamfer.Add(radius1, radius2, TopoDS::Edge(edge), face);
         }
+
+        if (fullErrMsg != "") {
+            return new App::DocumentObjectExecReturn(fullErrMsg);
+        }
+        Edges.setValues(edges);
 
         TopoDS_Shape shape = mkChamfer.Shape();
         if (shape.IsNull())

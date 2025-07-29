@@ -72,7 +72,7 @@ public:
      * @param source: the shape to be extruded
      * @param params: extrusion parameters
      */
-    static void extrudeShape(TopoShape &result, const TopoShape &source, const ExtrusionParameters& params, App::Document* document = nullptr);
+    static void extrudeShape(TopoShape &result, const TopoShape &source, const ExtrusionParameters& params);
 
     /**
      * @brief fetchAxisLink: read AxisLink to obtain the direction and
