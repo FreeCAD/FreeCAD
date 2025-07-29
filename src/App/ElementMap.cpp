@@ -674,7 +674,6 @@ void ElementMap::encodeElementName(char element_type,
         }
     }
     if (forceTag || (tag != 0)) {
-        FC_WARN("tag: " << tag);
         assert(element_type);
         auto pos = ss.tellp();
         boost::io::ios_flags_saver ifs(ss);
@@ -1194,6 +1193,9 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
 
         ChildMapInfo* entry = nullptr;
 
+        // this is old code that caused extra shape tags and faulty code to check
+        // if there are duplicated tags
+
         // do child mapping only if the child element count >= 5
         // const int threshold {5};
         // if (child.count >= threshold || !child.elementMap) {
@@ -1218,33 +1220,31 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
         //     }
         // }
 
-        if (!entry) {
-            IndexedName childIdx(child.indexedName);
-            IndexedName idx(childIdx.getType(), childIdx.getIndex() + child.offset);
-            for (int i = 0; i < child.count; ++i, ++childIdx, ++idx) {
-                ElementIDRefs sids;
-                MappedName name = child.elementMap->find(childIdx, &sids);
-                if (!name) {
-                    if ((child.tag == 0) || child.tag == masterTag) {
-                        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-                            FC_WARN("unmapped element");  // NOLINT
-                        }
-                        continue;
+        IndexedName childIdx(child.indexedName);
+        IndexedName idx(childIdx.getType(), childIdx.getIndex() + child.offset);
+        for (int i = 0; i < child.count; ++i, ++childIdx, ++idx) {
+            ElementIDRefs sids;
+            MappedName name = child.elementMap->find(childIdx, &sids);
+            if (!name) {
+                if ((child.tag == 0) || child.tag == masterTag) {
+                    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                        FC_WARN("unmapped element");  // NOLINT
                     }
-                    name = MappedName(childIdx);
+                    continue;
                 }
-                ss.str("");
-                encodeElementName(idx[0],
-                                  name,
-                                  ss,
-                                  &sids,
-                                  masterTag,
-                                  child.postfix.constData(),
-                                  child.tag);
-                setElementName(idx, name, masterTag, &sids);
+                name = MappedName(childIdx);
             }
-            continue;
+            ss.str("");
+            encodeElementName(idx[0],
+                                name,
+                                ss,
+                                &sids,
+                                masterTag,
+                                child.postfix.constData(),
+                                child.tag);
+            setElementName(idx, name, masterTag, &sids);
         }
+        continue;
 
         if (entry->index != 1) {
             // There is some ambiguity in child mapping. We need some
