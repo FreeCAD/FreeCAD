@@ -191,6 +191,8 @@ private:
                                  float g,
                                  float b);
 
+        void updateShapeAppearanceProperty(const std::string& string, App::Property* property);
+
         void updateEscapeKeyBehaviour(const std::string& string, App::Property* property);
 
         void updateAutoRecompute(const std::string& string, App::Property* property);
@@ -747,6 +749,16 @@ protected:
     void startRestoring() override;
     void finishRestoring() override;
 
+    bool getElementPicked(const SoPickedPoint* pp, std::string& subname) const override;
+    bool getDetailPath(const char* subname,
+                       SoFullPath* pPath,
+                       bool append,
+                       SoDetail*& det) const override;
+    const char* getDefaultDisplayMode() const override;
+
+    void reattach(App::DocumentObject*) override;
+    void beforeDelete() override;
+
 private:
     /// function to handle OCCT BSpline weight calculation singularities and representation
     void scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGeometry(
@@ -827,6 +839,8 @@ private:
     //@}
 
     void slotToolWidgetChanged(QWidget* newwidget);
+
+    void updateColorPropertiesVisibility();
 
     /** @name Attorney functions*/
     //@{
@@ -943,6 +957,8 @@ private:
     std::string editDocName;
     std::string editObjName;
     std::string editSubName;
+
+    std::unique_ptr<PartGui::ViewProviderPart> pInternalView;
 
     ShortcutListener* listener;
 
