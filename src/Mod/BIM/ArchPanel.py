@@ -522,7 +522,7 @@ class PanelCut(Draft.DraftObject):
             obj.addProperty("App::PropertyAngle","TagRotation","PanelCut",QT_TRANSLATE_NOOP("App::Property","The rotation of the tag text"), locked=True)
         if not "FontFile" in pl:
             obj.addProperty("App::PropertyFile","FontFile","PanelCut",QT_TRANSLATE_NOOP("App::Property","The font of the tag text"), locked=True)
-            obj.FontFile = params.get_param("FontFile")
+            obj.FontFile = params.get_param("ShapeStringFontFile")
         if not "MakeFace" in pl:
             obj.addProperty("App::PropertyBool","MakeFace","PanelCut",QT_TRANSLATE_NOOP("App::Property","If True, the object is rendered as a face, if possible."), locked=True)
         if not "AllowedAngles" in pl:
@@ -802,7 +802,7 @@ class PanelSheet(Draft.DraftObject):
             obj.addProperty("App::PropertyAngle","TagRotation","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The rotation of the tag text"), locked=True)
         if not "FontFile" in pl:
             obj.addProperty("App::PropertyFile","FontFile","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The font of the tag text"), locked=True)
-            obj.FontFile = params.get_param("FontFile")
+            obj.FontFile = params.get_param("ShapeStringFontFile")
         if not "Width" in pl:
             obj.addProperty("App::PropertyLength","Width","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The width of the sheet"), locked=True)
             obj.Width = params.get_param_arch("PanelLength")
