@@ -148,6 +148,53 @@ class ViewProviderDraftAnnotation(object):
 
     def set_graphics_properties(self, vobj, properties):
         """Set graphics properties only if they don't already exist."""
+        if vobj.Object.Proxy.Type == "Text":
+            return
+
+        if "ArrowSizeStart" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Arrow size")
+            vobj.addProperty("App::PropertyLength",
+                             "ArrowSizeStart",
+                             "Graphics",
+                             _tip,
+                             locked=True)
+            vobj.ArrowSizeStart = params.get_param("arrowsizestart")
+
+        if "ArrowTypeStart" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Arrow type")
+            vobj.addProperty("App::PropertyEnumeration",
+                             "ArrowTypeStart",
+                             "Graphics",
+                             _tip,
+                             locked=True)
+            vobj.ArrowTypeStart = utils.ARROW_TYPES
+            vobj.ArrowTypeStart = "None"
+
+        if vobj.Object.Proxy.Type != "Label":
+
+            if "ArrowSizeEnd" not in properties:
+                _tip = QT_TRANSLATE_NOOP("App::Property",
+                                         "Arrow size")
+                vobj.addProperty("App::PropertyLength",
+                                 "ArrowSizeEnd",
+                                 "Graphics",
+                                 _tip,
+                                 locked=True)
+                vobj.ArrowSizeEnd = params.get_param("arrowsizeend")
+
+            if "ArrowTypeEnd" not in properties:
+                _tip = QT_TRANSLATE_NOOP("App::Property",
+                                         "Arrow type")
+                vobj.addProperty("App::PropertyEnumeration",
+                                 "ArrowTypeEnd",
+                                 "Graphics",
+                                 _tip,
+                                 locked=True)
+                vobj.ArrowTypeEnd = utils.ARROW_TYPES
+                vobj.ArrowTypeEnd = "None"
+
         if "LineWidth" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Line width")
             vobj.addProperty("App::PropertyFloat",
@@ -208,24 +255,21 @@ class ViewProviderDraftAnnotation(object):
                         vobj.setPropertyStatus(visprop, '-ReadOnly')
             else:
                 # set style
-                styles = {}
                 for key, value in meta.items():
-                    if key.startswith("Draft_Style_"):
-                        styles[key[12:]] = json.loads(value)
-
-                if vobj.AnnotationStyle in styles:
-                    style = styles[vobj.AnnotationStyle]
-                    for visprop in style.keys():
-                        if visprop in properties:
-                            # make property read-only
-                            vobj.setPropertyStatus(visprop, "ReadOnly")
-                            value = style[visprop]
-                            try:
-                                if vobj.getTypeIdOfProperty(visprop) == "App::PropertyColor":
-                                    value = value | 0x000000FF
-                                setattr(vobj, visprop, value)
-                            except:
-                                pass
+                    if key.startswith("Draft_Style_") and key[12:] == vobj.AnnotationStyle:
+                        style = utils.repair_annotation_style(json.loads(value))
+                        for visprop in style.keys():
+                            if visprop in properties:
+                                # make property read-only
+                                vobj.setPropertyStatus(visprop, "ReadOnly")
+                                value = style[visprop]
+                                try:
+                                    if vobj.getTypeIdOfProperty(visprop) == "App::PropertyColor":
+                                        value = value | 0x000000FF
+                                    setattr(vobj, visprop, value)
+                                except TypeError:
+                                    pass
+                    break
 
     def execute(self, vobj):
         """Execute when the object is created or recomputed."""

@@ -59,16 +59,19 @@ class DraftAnnotation(object):
         Check if new properties are present after the object is restored
         in order to migrate older objects.
         """
-        if not getattr(obj, "ViewObject", None):
+        vobj = getattr(obj, "ViewObject", None)
+        if vobj is None:
             return
-        vobj = obj.ViewObject
         if not getattr(vobj, "Proxy", None):
             # Object was saved without GUI.
             # onDocumentRestored in the object class should restore the ViewObject.
             return
-        if hasattr(vobj, "ScaleMultiplier") and hasattr(vobj, "AnnotationStyle"):
-            return
-        self.add_missing_properties_0v19(obj, vobj)
+
+        if not hasattr(vobj, "ScaleMultiplier") or not hasattr(vobj, "AnnotationStyle"):
+            self.add_missing_properties_0v19(obj, vobj)
+
+        if hasattr(vobj, "ArrowType") or hasattr(vobj, "ArrowSize"):
+            self.update_properties_1v1(obj, vobj)
 
     def add_missing_properties_0v19(self, obj, vobj):
         """Provide missing annotation properties."""
@@ -83,6 +86,38 @@ class DraftAnnotation(object):
         vobj.Proxy.set_annotation_properties(vobj, vobj.PropertiesList)
         if multiplier is not None:
             vobj.ScaleMultiplier = multiplier
+
+    def update_properties_1v1(self, obj, vobj):
+        """Update view properties."""
+        vobj.Proxy.set_graphics_properties(vobj, vobj.PropertiesList)
+
+        if hasattr(vobj, "ArrowType"):
+            typ = obj.Proxy.Type
+            if typ == "Label":
+                vobj.ArrowTypeStart = vobj.ArrowType
+            elif typ == "AngularDimension" \
+                    or obj.Diameter \
+                    or not vobj.Proxy.is_linked_to_circle():
+                vobj.ArrowTypeStart = vobj.ArrowType
+                vobj.ArrowTypeEnd = vobj.ArrowType
+            else:  # Radial dimension
+                vobj.ArrowTypeStart = "None"
+                vobj.ArrowTypeEnd = vobj.ArrowType
+            vobj.setPropertyStatus("ArrowType", "-LockDynamic")
+            vobj.removeProperty("ArrowType")
+        if hasattr(vobj, "ArrowSize"):
+            vobj.ArrowSizeStart = vobj.ArrowSize
+            if hasattr(vobj, "ArrowSizeEnd"):
+                # Label objects do not have this property
+                vobj.ArrowSizeEnd = vobj.ArrowSize
+            vobj.setPropertyStatus("ArrowSize", "-LockDynamic")
+            vobj.removeProperty("ArrowSize")
+        _wrn(
+            "v1.1, "
+            + obj.Label
+            + ", "
+            + translate("draft", "migrated view properties")
+        )
 
     def dumps(self):
 
