@@ -1555,7 +1555,12 @@ static bool updateLinkReference(App::PropertyLinkBase* prop,
 void PropertyLinkSub::afterRestore()
 {
     _ShadowSubList.resize(_cSubList.size());
-    if (!testFlag(LinkRestoreLabel) || !_pcLinkSub || !_pcLinkSub->isAttachedToDocument()) {
+    if (!_pcLinkSub || !_pcLinkSub->isAttachedToDocument()) {
+        return;
+    } else {
+        updateElementReferences(_pcLinkSub, true);
+    }
+    if (!testFlag(LinkRestoreLabel)) {
         return;
     }
     setFlag(LinkRestoreLabel, false);
@@ -2705,6 +2710,9 @@ void PropertyLinkSubList::setPyObject(PyObject* value)
 void PropertyLinkSubList::afterRestore()
 {
     assert(_lSubList.size() == _ShadowSubList.size());
+    // if (_pcLink) {
+    //     updateElementReferences(_pcLink, true);
+    // }
     if (!testFlag(LinkRestoreLabel)) {
         return;
     }
