@@ -1197,56 +1197,59 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
         // if there are duplicated tags
 
         // do child mapping only if the child element count >= 5
-        // const int threshold {5};
-        // if (child.count >= threshold || !child.elementMap) {
-        //     encodeElementName(child.indexedName[0],
-        //                       tmp,
-        //                       ss,
-        //                       nullptr,
-        //                       masterTag,
-        //                       child.postfix.constData(),
-        //                       child.tag,
-        //                       true);
+        const int threshold {5};
+        if (child.count >= threshold || !child.elementMap) {
+            encodeElementName(child.indexedName[0],
+                              tmp,
+                              ss,
+                              nullptr,
+                              masterTag,
+                              child.postfix.constData(),
+                              child.tag,
+                              false); // originally set to true, which added unnecessary tags
 
-        //     // Perform some disambiguation in case the same shape is mapped
-        //     // multiple times, e.g. draft array.
-        //     entry = &childElements[tmp.toBytes()];
-        //     int mapIndex = entry->mapIndices[child.elementMap.get()]++;
-        //     ++entry->index;
-        //     if (entry->index != 1 && child.elementMap && mapIndex == 0) {
-        //         // This child has duplicated 'tag' and 'postfix', but it
-        //         // has its own element map. We'll expand this map now.
-        //         entry = nullptr;
-        //     }
-        // }
-
-        IndexedName childIdx(child.indexedName);
-        IndexedName idx(childIdx.getType(), childIdx.getIndex() + child.offset);
-        for (int i = 0; i < child.count; ++i, ++childIdx, ++idx) {
-            ElementIDRefs sids;
-            MappedName name = child.elementMap->find(childIdx, &sids);
-            if (!name) {
-                if ((child.tag == 0) || child.tag == masterTag) {
-                    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-                        FC_WARN("unmapped element");  // NOLINT
-                    }
-                    continue;
-                }
-                name = MappedName(childIdx);
+            // Perform some disambiguation in case the same shape is mapped
+            // multiple times, e.g. draft array.
+            entry = &childElements[tmp.toBytes()];
+            int mapIndex = entry->mapIndices[child.elementMap.get()]++;
+            ++entry->index;
+            if (entry->index != 1 && child.elementMap && mapIndex == 0) {
+                // This child has duplicated 'tag' and 'postfix', but it
+                // has its own element map. We'll expand this map now.
+                entry = nullptr;
             }
-            ss.str("");
-            encodeElementName(idx[0],
-                                name,
-                                ss,
-                                &sids,
-                                masterTag,
-                                child.postfix.constData(),
-                                child.tag);
-            setElementName(idx, name, masterTag, &sids);
         }
-        continue;
 
-        if (entry->index != 1) {
+        if (entry == nullptr) {
+            IndexedName childIdx(child.indexedName);
+            IndexedName idx(childIdx.getType(), childIdx.getIndex() + child.offset);
+            for (int i = 0; i < child.count; ++i, ++childIdx, ++idx) {
+                ElementIDRefs sids;
+                MappedName name = child.elementMap->find(childIdx, &sids);
+                if (!name) {
+                    if ((child.tag == 0) || child.tag == masterTag) {
+                        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                            FC_WARN("unmapped element");  // NOLINT
+                        }
+                        continue;
+                    }
+                    name = MappedName(childIdx);
+                }
+                ss.str("");
+                encodeElementName(idx[0],
+                                    name,
+                                    ss,
+                                    &sids,
+                                    masterTag,
+                                    child.postfix.constData(),
+                                    child.tag);
+                setElementName(idx, name, masterTag, &sids);
+            }
+
+            continue;
+        }
+
+        if (entry->index != 1 && tmp.size() != 0) {
             // There is some ambiguity in child mapping. We need some
             // additional postfix for disambiguation. NOTE: We are not
             // using ComplexGeoData::indexPostfix() so we don't confuse
