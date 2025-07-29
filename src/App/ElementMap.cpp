@@ -674,6 +674,7 @@ void ElementMap::encodeElementName(char element_type,
         }
     }
     if (forceTag || (tag != 0)) {
+        FC_WARN("tag: " << tag);
         assert(element_type);
         auto pos = ss.tellp();
         boost::io::ios_flags_saver ifs(ss);
@@ -1194,28 +1195,28 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
         ChildMapInfo* entry = nullptr;
 
         // do child mapping only if the child element count >= 5
-        const int threshold {5};
-        if (child.count >= threshold || !child.elementMap) {
-            encodeElementName(child.indexedName[0],
-                              tmp,
-                              ss,
-                              nullptr,
-                              masterTag,
-                              child.postfix.constData(),
-                              child.tag,
-                              true);
+        // const int threshold {5};
+        // if (child.count >= threshold || !child.elementMap) {
+        //     encodeElementName(child.indexedName[0],
+        //                       tmp,
+        //                       ss,
+        //                       nullptr,
+        //                       masterTag,
+        //                       child.postfix.constData(),
+        //                       child.tag,
+        //                       true);
 
-            // Perform some disambiguation in case the same shape is mapped
-            // multiple times, e.g. draft array.
-            entry = &childElements[tmp.toBytes()];
-            int mapIndex = entry->mapIndices[child.elementMap.get()]++;
-            ++entry->index;
-            if (entry->index != 1 && child.elementMap && mapIndex == 0) {
-                // This child has duplicated 'tag' and 'postfix', but it
-                // has its own element map. We'll expand this map now.
-                entry = nullptr;
-            }
-        }
+        //     // Perform some disambiguation in case the same shape is mapped
+        //     // multiple times, e.g. draft array.
+        //     entry = &childElements[tmp.toBytes()];
+        //     int mapIndex = entry->mapIndices[child.elementMap.get()]++;
+        //     ++entry->index;
+        //     if (entry->index != 1 && child.elementMap && mapIndex == 0) {
+        //         // This child has duplicated 'tag' and 'postfix', but it
+        //         // has its own element map. We'll expand this map now.
+        //         entry = nullptr;
+        //     }
+        // }
 
         if (!entry) {
             IndexedName childIdx(child.indexedName);
@@ -1254,7 +1255,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
             // disambiguation. We don't need to extract the index.
             ss.str("");
             ss << ELEMENT_MAP_PREFIX << ":C" << entry->index - 1;
-
+            
             tmp.clear();
             encodeElementName(child.indexedName[0],
                               tmp,
