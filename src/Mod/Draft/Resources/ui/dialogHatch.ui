@@ -94,6 +94,13 @@ This setting modifies the Translate property.</string>
      </property>
     </widget>
    </item>
+   <item row="5" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </spacer>
+   </item>
   </layout>
  </widget>
  <customwidgets>
