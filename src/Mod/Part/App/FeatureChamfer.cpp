@@ -49,7 +49,7 @@ App::DocumentObjectExecReturn *Chamfer::execute()
 
     try {
         TopoShape baseTopoShape = Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
-        auto baseShape = Feature::getShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
+        auto baseShape = baseTopoShape.getShape();
         BRepFilletAPI_MakeChamfer mkChamfer(baseShape);
         TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
         TopExp::MapShapesAndAncestors(baseShape, TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);

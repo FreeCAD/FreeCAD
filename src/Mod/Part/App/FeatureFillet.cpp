@@ -54,8 +54,8 @@ App::DocumentObjectExecReturn *Fillet::execute()
 #if defined(__GNUC__) && defined (FC_OS_LINUX)
         Base::SignalException se;
 #endif
-        auto baseShape = Feature::getShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
         TopoShape baseTopoShape = Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
+        auto baseShape = baseTopoShape.getShape();
         BRepFilletAPI_MakeFillet mkFillet(baseShape);
         TopTools_IndexedMapOfShape mapOfShape;
         TopExp::MapShapes(baseShape, TopAbs_EDGE, mapOfShape);
@@ -89,7 +89,7 @@ App::DocumentObjectExecReturn *Fillet::execute()
             return new App::DocumentObjectExecReturn("Resulting shape is null");
 
         TopoShape res(0);
-        this->Shape.setValue(res.makeElementShape(mkFillet,baseTopoShape,Part::OpCodes::Fillet));
+        this->Shape.setValue(res.makeElementShape(mkFillet, baseTopoShape, Part::OpCodes::Fillet));
         return Part::FilletBase::execute();
     }
     catch (Standard_Failure& e) {
