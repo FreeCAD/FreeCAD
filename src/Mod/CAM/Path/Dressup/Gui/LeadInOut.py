@@ -101,12 +101,6 @@ class ObjectDressup:
             QT_TRANSLATE_NOOP("App::Property", "Perform plunges with G0"),
         )
         obj.addProperty(
-            "App::PropertyBool",
-            "IncludeLayers",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Apply LeadInOut to layers within an operation"),
-        )
-        obj.addProperty(
             "App::PropertyAngle",
             "AngleIn",
             "Path Lead-in",
@@ -167,7 +161,6 @@ class ObjectDressup:
     def setup(self, obj):
         obj.AngleIn = 45
         obj.AngleOut = 45
-        obj.IncludeLayers = True
         obj.InvertIn = False
         obj.InvertOut = False
         obj.PercentageRadiusIn = 150
@@ -318,6 +311,8 @@ class ObjectDressup:
         if hasattr(obj, "ExtendLeadOut"):
             # Remove ExtendLeadOut property
             obj.removeProperty("ExtendLeadOut")
+        if hasattr(obj, "IncludeLayers"):
+            obj.removeProperty("IncludeLayers")
 
         if not hasattr(obj, "InvertIn"):
             obj.addProperty(
@@ -781,11 +776,7 @@ class ObjectDressup:
 
     # Check command
     def isCuttingMove(self, obj, instr):
-        result = (
-            instr.isMove()
-            and not instr.isRapid()
-            and (not obj.IncludeLayers or not instr.isPlunge())
-        )
+        result = instr.isMove() and not instr.isRapid() and (not instr.isPlunge())
         return result
 
     # Get direction of non cut movements
@@ -1115,7 +1106,6 @@ class TaskDressupLeadInOut(SimpleEditPanel):
         self.connectWidget("OffsetIn", self.form.dspOffsetIn)
         self.connectWidget("OffsetOut", self.form.dspOffsetOut)
         self.connectWidget("RapidPlunge", self.form.chkRapidPlunge)
-        self.connectWidget("IncludeLayers", self.form.chkLayers)
         self.setFields()
 
         styleEnum = self.obj.getEnumerationsOfProperty("StyleIn")
