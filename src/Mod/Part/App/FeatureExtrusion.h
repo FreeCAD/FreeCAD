@@ -26,6 +26,7 @@
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 
+#include <App/Document.h>
 #include "FaceMakerCheese.h"
 #include "PartFeature.h"
 #include "ExtrusionHelper.h"
@@ -71,7 +72,7 @@ public:
      * @param source: the shape to be extruded
      * @param params: extrusion parameters
      */
-    static void extrudeShape(TopoShape &result, const TopoShape &source, const ExtrusionParameters& params);
+    static void extrudeShape(TopoShape &result, const TopoShape &source, const ExtrusionParameters& params, App::Document* document = nullptr);
 
     /**
      * @brief fetchAxisLink: read AxisLink to obtain the direction and
