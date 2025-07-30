@@ -60,6 +60,10 @@ dependencies:
 - cmake
 - coin3d
 - compilers
+- gcc==13.3.*  # [linux]
+- gxx==13.3.*  # [linux]
+- clang==18.1.*  # [osx]
+- clangxx==18.1.*  # [osx]
 - conda
 - conda-devenv
 - debugpy
