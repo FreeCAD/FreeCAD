@@ -82,6 +82,8 @@
 #include "ViewProviderImage.h"
 #include "CommandHelpers.h"
 
+#include <Mod/Part/App/PartFeature.h>
+
 void execSimpleSection(Gui::Command* cmd);
 void execComplexSection(Gui::Command* cmd);
 void getSelectedShapes(Gui::Command* cmd,
@@ -1945,6 +1947,44 @@ void CmdTechDrawExportPagePDF::activated(int iMsg)
                     if (vpImage) {
                         if (vpImage->Enable3DPDFExport.getValue()) {
                             foundActiveViewWith3DPDFExport = true;
+                            
+                            // Get 3D objects from the ActiveView's Source property
+                            std::vector<App::DocumentObject*> objects3D = imageView->get3DObjects();
+                            Base::Console().message("ActiveView contains %d 3D objects:\n", objects3D.size());
+                            
+                            // Backward compatibility: if no objects in Source property, fall back to document-wide search
+                            if (objects3D.empty()) {
+                                Base::Console().message("ActiveView has no Source objects (legacy ActiveView), falling back to document search\n");
+                                Gui::Document* guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
+                                if (guiDoc) {
+                                    auto allObjects = page->getDocument()->getObjects();
+                                    for (auto* obj : allObjects) {
+                                        App::Property* shapeProp = obj->getPropertyByName("Shape");
+                                        if (shapeProp && (obj->isDerivedFrom(Part::Feature::getClassTypeId()) || 
+                                                         obj->isDerivedFrom(App::GeoFeature::getClassTypeId()))) {
+                                            Gui::ViewProvider* vp = guiDoc->getViewProvider(obj);
+                                            if (vp && vp->isVisible()) {
+                                                objects3D.push_back(obj);
+                                            }
+                                        }
+                                    }
+                                    Base::Console().message("Found %d visible 3D objects via fallback search\n", objects3D.size());
+                                }
+                            }
+                            
+                            // Validate objects have Shape property as requested
+                            for (auto* obj : objects3D) {
+                                App::Property* shapeProp = obj->getPropertyByName("Shape");
+                                if (shapeProp) {
+                                    Base::Console().message("  - %s (%s) has Shape property\n", 
+                                                           obj->Label.getValue(), 
+                                                           obj->getTypeId().getName());
+                                } else {
+                                    Base::Console().warning("  - %s (%s) missing Shape property\n", 
+                                                           obj->Label.getValue(), 
+                                                           obj->getTypeId().getName());
+                                }
+                            }
                             break;
                         }
                     }

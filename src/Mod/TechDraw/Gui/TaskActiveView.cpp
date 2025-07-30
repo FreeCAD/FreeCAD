@@ -29,6 +29,7 @@
 #endif // #ifndef _PreComp_
 
 #include <App/Document.h>
+#include <App/GeoFeature.h>
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -37,6 +38,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/ViewProvider.h>
+#include <Mod/Part/App/PartFeature.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawViewImage.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
@@ -102,6 +104,39 @@ void TaskActiveView::setUiPrimary()
 
 void TaskActiveView::blockButtons(bool b) { Q_UNUSED(b); }
 
+/// Helper function to get all visible 3D objects that have Shape property
+std::vector<App::DocumentObject*> getVisible3DObjects(App::Document* doc, Gui::Document* guiDoc)
+{
+    std::vector<App::DocumentObject*> visibleObjects;
+    
+    if (!doc || !guiDoc) {
+        return visibleObjects;
+    }
+    
+    // Get all objects in the document
+    auto allObjects = doc->getObjects();
+    
+    for (auto* obj : allObjects) {
+        // Check if object has a Shape property (most 3D objects do)
+        App::Property* shapeProp = obj->getPropertyByName("Shape");
+        if (!shapeProp) {
+            continue;
+        }
+        
+        // Check if it's a relevant 3D object type
+        if (obj->isDerivedFrom(Part::Feature::getClassTypeId()) || 
+            obj->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+            
+            // Check if the object is visible in the 3D view
+            Gui::ViewProvider* vp = guiDoc->getViewProvider(obj);
+            if (vp && vp->isVisible()) {
+                visibleObjects.push_back(obj);
+            }
+        }
+    }
+    return visibleObjects;
+}
+
 TechDraw::DrawViewImage* TaskActiveView::createActiveView()
 {
     //    Base::Console().message("TAV::createActiveView()\n");
@@ -149,6 +184,9 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
     }
 
     //we are sure we have a 3D window!
+
+    // Capture visible 3D objects that will be represented in this ActiveView
+    std::vector<App::DocumentObject*> visible3DObjects = getVisible3DObjects(pageDocument, pageGuiDocument);
 
     const std::string objectName{"ActiveView"};
     std::string imageName = m_pageFeat->getDocument()->getUniqueObjectName(objectName.c_str());
@@ -229,6 +267,11 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
     TechDraw::DrawViewImage* newImg = dynamic_cast<TechDraw::DrawViewImage*>(newObj);
     if (!newObj || !newImg)
         throw Base::RuntimeError("TaskActiveView - new image object not found");
+    
+    // Set the Source property to reference the captured 3D objects
+    newImg->Source.setValues(visible3DObjects);
+    Base::Console().message("ActiveView created with %d 3D object references\n", visible3DObjects.size());
+    
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(newImg->getDocument());
     if (guiDoc) {
         Gui::ViewProvider* vp = guiDoc->getViewProvider(newImg);
