@@ -270,10 +270,36 @@ private:
      * @param sid: store any output string ID references
      * @return the hashed element name;
      */
-    MappedName hashElementName(const MappedName& name, ElementIDRefs& sids) const;
+    MappedName hashElementName(const MappedName& name, ElementIDRefs& sids)    const;
 
     /// Reverse hashElementName()
     MappedName dehashElementName(const MappedName& name) const;
+
+    /// Reverse fully hashed MappedName
+    MappedName fullDehashElementName(const MappedName& name) const;
+
+    struct ElementSection {
+        std::string stringData;
+        std::string postfix;
+        std::string opcode;
+        std::vector<std::string> geoIDs;
+    };
+
+    std::vector<ElementSection> compileElementSections(const std::string &name) const;
+
+    IndexedName complexFind(const MappedName &name) const;
+
+    struct ToponamingElement {
+        std::string normalName;
+        std::string dehashedName;
+        std::vector<ElementSection> splitSections;
+        std::vector<ElementSection> unfilteredSplitSections;
+        // example layout: {<"SIF": ["g2", "g54", "g66"]>, <"SKT": ["g2", "g54", "g66"]>}
+        std::vector<std::string> mainIDs;
+        std::vector<std::string> otherIDs;
+    };
+
+    ToponamingElement compileToponamingElement(MappedName name) const;
 
     // FIXME duplicate code? as in copy/paste
     const MappedNameRef* findMappedRef(const IndexedName& idx) const;

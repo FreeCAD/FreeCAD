@@ -717,7 +717,10 @@ MappedName ElementMap::hashElementName(const MappedName& name, ElementIDRefs& si
         }
         sids = tmp;
     }
-    return MappedName(sid.toString());
+    std::string sidString = sid.toString();
+    sidString.append("_");
+
+    return MappedName(sidString);
 }
 
 MappedName ElementMap::dehashElementName(const MappedName& name) const
@@ -751,6 +754,124 @@ MappedName ElementMap::dehashElementName(const MappedName& name) const
     //        correct?
     FC_TRACE("de-hash " << name << " -> " << ret);  // NOLINT
     return ret;
+}
+
+// TODO: maybe merge this into the above function? or make one public function and one private function?
+// this reverses the compression of hashed persistent names.
+// an example: #3d:2;:G3#3f;CUT;:H-1216:b,E --> g2;SKT;:H1215,E;FAC;:H1215:4,F;:G0;XTR;:H1215:8,F;:G3(g6;SKT;:H1213,E;:G;...
+MappedName ElementMap::fullDehashElementName(const MappedName& name) const {
+    std::string dehashedName;
+    std::vector<std::map<std::string, std::array<int, 2>>> dehashTree;
+    std::string currentTreeString = "";
+    std::string selTreeString = "";
+    std::string hashedString = "";
+    std::string dehashedString = "";
+
+    bool isDehashed = false;
+    bool dehash = false;
+    bool foundHash = false;
+    int currentTreePos = 0;
+    int i = 0;
+    int replaceStart = -1;
+    int replaceLen = -1;
+    int limit = 100000;
+    int limiti = 0;
+    std::map<std::string, std::array<int, 2>> insertMap = std::map<std::string, std::array<int, 2>>();
+    std::map<std::string, std::array<int, 2>> currentMap;
+    
+    insertMap[name.toString()] = std::array<int, 2>({-1, -1});
+    dehashTree.push_back(insertMap);
+
+    while(!isDehashed && limiti < limit) {
+        currentMap = dehashTree[currentTreePos];
+        currentTreeString = currentMap.begin()->first;
+        limiti++;
+
+        if(!dehash) {
+            if(i >= currentTreeString.size()) {
+                if(foundHash) {
+                    dehash = true;
+                    foundHash = false;
+                } else {
+                    if(currentTreePos == 0) {
+                        isDehashed = true;
+                        dehashedName = currentTreeString;
+                        break;
+                    }
+
+                    replaceStart = dehashTree[currentTreePos - 1].begin()->second[0];
+                    replaceLen = dehashTree[currentTreePos - 1].begin()->second[1];
+
+                    if(replaceStart != -1 && replaceLen != -1) {
+                        selTreeString = dehashTree[currentTreePos - 1].begin()->first;
+                        dehashTree[currentTreePos - 1].erase(selTreeString);
+
+                        selTreeString.replace(replaceStart, replaceLen, currentTreeString);
+                        dehashTree[currentTreePos - 1][selTreeString] = std::array<int, 2>({replaceStart, replaceLen});
+
+                        dehashTree.erase(dehashTree.begin() + currentTreePos);
+                        i = 0;
+                        currentTreePos--;
+                    }
+                }
+                continue;
+            }
+
+            if(currentTreeString[i] == '#' && !foundHash) {
+                hashedString = "";
+                foundHash = true;
+                dehash = false;
+
+                dehashTree[currentTreePos][currentTreeString] = std::array<int, 2>({i, -1});
+            } else if((currentTreeString[i] == '_' || currentTreeString[i] == ',' || currentTreeString[i] == ';') && foundHash) {
+                foundHash = false;
+                dehash = true;
+                int offset = 0;
+
+                if(currentTreeString[i] == '_') {
+                    offset++;
+                }
+
+                dehashTree[currentTreePos][currentTreeString] = std::array<int, 2>({currentMap[currentTreeString][0], static_cast<int>(hashedString.length()) + offset});
+            }
+
+            if(foundHash) {
+                hashedString += currentTreeString[i];
+            }
+
+            i++;
+        } else {
+            if(hashedString.size() > 1) {
+                dehashedString = dehashElementName(MappedName(hashedString)).toString();
+
+                if(dehashedString != hashedString) {
+                    currentTreePos++;
+
+                    i = 0;
+
+                    insertMap = std::map<std::string, std::array<int, 2>>();
+                    insertMap[dehashedString] = std::array<int, 2>({-1, -1});
+                    dehashTree.push_back(insertMap);
+                } else {
+                    hashedString.pop_back();
+                    continue;
+                }
+            }
+            dehash = false;
+            foundHash = false;
+        }
+    }
+
+    // cleanup to avoid memory leaks or unnecessary memory usage
+    dehashTree.shrink_to_fit();
+    currentTreeString.shrink_to_fit();
+    selTreeString.shrink_to_fit();
+    hashedString.shrink_to_fit();
+    dehashedString.shrink_to_fit();
+    insertMap.clear();
+    currentMap.clear();
+ 
+    return MappedName(dehashedName);
 }
 
 MappedName ElementMap::renameDuplicateElement(int index,
@@ -822,12 +943,251 @@ bool ElementMap::empty() const
     return mappedNames.empty() && childElementSize == 0;
 }
 
+// VVV test decompile VVV
+// g2;SKT;:H1215,E;FAC;:H1215:4,F;:G0;XTR;:H1215:8,F;:M3(g6;SKT;:H1213,E;:G;XTR;:H1213:7,F;K-1;:H1214:4,F);CUT;:H-1216:3a,E;:H1216,E
+std::vector<ElementMap::ElementSection> ElementMap::compileElementSections(const std::string &name) const {
+    std::vector<ElementMap::ElementSection> sections;
+    ElementMap::ElementSection currentSection = ElementMap::ElementSection();
+    std::vector<std::string> postfixes = {"M", "G", "U", "L", "MG"};
+    std::string currentOpCode = "";
+    std::string currentPostfix = "";
+    std::string currentPostfixBuffer = "";
+    std::string parensID = "";
+    bool foundOpCode = false;
+    int i = 0;
+    int parensLevel = 0;
+
+    for (i = 0; i < name.size(); i++) {
+        if (name[i] == '(') {
+            parensLevel++;
+            continue;
+        } else if (name[i] == ')') {
+            if (parensLevel == 1 && !parensID.empty()) {
+                currentSection.geoIDs.push_back(parensID);
+                parensID = "";
+            }
+
+            parensLevel--;
+
+            if (parensLevel < 0) {
+                parensLevel = 0;
+            }
+            continue;
+        }
+
+        if (parensLevel == 0) {
+            if (name[i] == ':' && i + 1 < name.size()) {
+                std::string splitString = name.substr(i + 1);
+                std::string foundPostfix = "";
+                bool hasAllowedPostfix = false;
+                
+                for (const auto &postfix : postfixes) {
+                    if (boost::starts_with(splitString, postfix)) {
+                        hasAllowedPostfix = true;
+                        foundPostfix = postfix;
+                        break;
+                    }
+                }
+
+                if (hasAllowedPostfix) {
+                    currentPostfix = foundPostfix;
+                }
+            }
+            
+            if (foundOpCode) {
+                if (name[i] == ';' || currentOpCode.size() == 3) {
+                    FC_WARN("found op code: " << currentOpCode);
+                    foundOpCode = false;
+                } else {
+                    currentOpCode.push_back(name[i]);
+                }
+            }
+
+            if (name[i] == ';' && (i >= name.size() || name[i + 1] != ':')) {
+                if (sections.size() == 0 && name[0] == 'g') {
+                    currentSection.geoIDs.push_back(currentSection.stringData);
+                }
+
+                currentSection.opcode = currentOpCode;
+                currentOpCode = "";
+                sections.push_back(currentSection);
+
+                foundOpCode = true;
+                currentSection = ElementMap::ElementSection();
+                currentSection.postfix = currentPostfixBuffer;
+                currentPostfixBuffer = currentPostfix;
+            } else {
+                currentSection.stringData.push_back(name[i]);
+            }
+        } else if(parensLevel == 1) {
+            if (name[i] == '|') {
+                currentSection.geoIDs.push_back(parensID);
+                parensID = "";
+            } else {
+                parensID.push_back(name[i]);
+            }
+        }
+    }
+
+    // currentSection.stringData.push_back(name[i - 1]);
+    currentSection.opcode = currentOpCode;
+    sections.push_back(currentSection);
+
+    return sections;
+}
+
+ElementMap::ToponamingElement ElementMap::compileToponamingElement(MappedName name) const {
+    ElementMap::ToponamingElement element = ElementMap::ToponamingElement();
+
+    element.normalName = name.toString();
+
+    if (hasher) {
+        element.dehashedName = fullDehashElementName(name).toString();
+    } else {
+        element.dehashedName = element.normalName;
+    }
+
+    element.unfilteredSplitSections = compileElementSections(element.dehashedName);
+    element.splitSections = element.unfilteredSplitSections;
+
+    for (auto &sec : element.splitSections) {
+        FC_WARN(sec.stringData);
+    }
+    FC_WARN("");
+
+    // do not filter at this stage
+    // for (const auto &data : element.unfilteredSplitSections) {
+    //     if (data.postfix != "M") {
+    //         element.splitSections.push_back(data);
+    //     }
+    // }
+
+    for (int i = 0; i < element.splitSections.size(); i++) {
+        if (element.splitSections[i].geoIDs.size() >= 1) {
+            if (i == 0) {
+                std::string geoID = element.splitSections[i].geoIDs[0];
+
+                if (i + 1 < element.splitSections.size() && boost::starts_with(element.splitSections[i + 1].stringData, "SKT")) {
+                    geoID.push_back(';');
+                    geoID.append(element.splitSections[i + 1].stringData);
+                }
+
+                element.mainIDs.push_back(geoID);
+            } else if (element.splitSections[i].opcode == "SIF") {
+                for (const auto &id : element.splitSections[i].geoIDs) {
+                    element.mainIDs.push_back(id);
+                }
+            } else if(!element.splitSections[i].opcode.empty()) {
+                FC_WARN("others opcode: " << element.splitSections[i].opcode);
+                for (const auto &id : element.splitSections[i].geoIDs) {
+                    FC_WARN("others id: " << id);
+
+                    element.otherIDs.push_back(id);
+                }
+            }
+        }
+    }
+
+    return element;
+}
+
+IndexedName ElementMap::complexFind(const MappedName& name) const {
+    FC_WARN("start complexFind");
+
+    ToponamingElement originalElement = compileToponamingElement(name);
+    FC_WARN("nocrash 1075");
+    ToponamingElement loopElement = ToponamingElement();
+    IndexedName foundName = IndexedName();
+    const int idOccurenceMin = 2;
+
+    FC_WARN("original check: " << originalElement.dehashedName);
+
+    // dont worry about childElements yet
+    for (const auto &loopName : mappedNames) {
+        loopElement = compileToponamingElement(loopName.first);
+
+        FC_WARN("loop check: " << loopElement.dehashedName);
+
+        if (
+            originalElement.splitSections.size() != loopElement.splitSections.size()
+            || (originalElement.splitSections.size() == 0 || loopElement.splitSections.size() == 0)
+        ) {
+            FC_WARN("size failed");
+            continue;
+        };
+
+        bool geoIDCheck = false;
+        std::vector<std::string> smallerIDList = originalElement.mainIDs;
+        std::vector<std::string> largerIDList = loopElement.mainIDs;
+        int occurences = 0;
+
+        if (originalElement.mainIDs.size() == 1 && loopElement.mainIDs.size() == 1) {
+            geoIDCheck = originalElement.mainIDs[0] == loopElement.mainIDs[0];
+        } else if (originalElement.mainIDs.size() != 0 && loopElement.mainIDs.size() != 1) {
+            if (originalElement.mainIDs.size() > loopElement.mainIDs.size()) {
+                smallerIDList = loopElement.mainIDs;
+                largerIDList = originalElement.mainIDs;
+            }
+
+            for (const auto &largerSec : largerIDList) {
+                FC_WARN("larger sec " << largerSec);
+                for (const auto &smallerSec : smallerIDList) {
+                    FC_WARN("smaller sec " << smallerSec);
+                    if (largerSec == smallerSec) {
+                        occurences++;
+                    }
+                }
+            }
+
+            if (idOccurenceMin <= occurences) {
+                geoIDCheck = true;
+            }
+        }
+
+        if (!geoIDCheck) {
+            FC_WARN("geo id check failed");
+            FC_WARN("larger size: " << largerIDList.size());
+            FC_WARN("smaller size: " << smallerIDList.size());
+            FC_WARN("occurences: " << occurences);
+            continue;
+        }
+
+        bool sectionCheck = true;
+
+        // the sections of the two elements to check against should already by the same size
+        for (int i = 2; i < originalElement.splitSections.size(); i++) {
+            if (originalElement.splitSections[i].stringData != loopElement.splitSections[i].stringData) {
+                sectionCheck = false;
+                break;
+            }
+        }
+
+        if (originalElement.otherIDs != loopElement.otherIDs) {
+            FC_WARN("orig ids size: " << originalElement.otherIDs.size());
+            FC_WARN("loop ids size: " << loopElement.otherIDs.size());
+            FC_WARN("other ids failed");
+            continue;
+        }
+
+        if (!sectionCheck) {
+            FC_WARN("section failed");
+            continue;
+        }
+
+
+        // getting this far in the loop means that the two elements are the same.
+        foundName = loopName.second;
+    }
+
+    return foundName;
+}
+
 IndexedName ElementMap::find(const MappedName& name, ElementIDRefs* sids) const
 {
     auto nameIter = mappedNames.find(name);
     if (nameIter == mappedNames.end()) {
         if (childElements.isEmpty()) {
-            return IndexedName();
+            return complexFind(name);
         }
 
         int len = 0;
