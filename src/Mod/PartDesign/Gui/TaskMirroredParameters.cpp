@@ -74,7 +74,7 @@ void TaskMirroredParameters::setupParameterUI(QWidget* widget)
             this,
             &TaskMirroredParameters::onPlaneChanged);
 
-    this->planeLinks.setCombo(*(ui->comboPlane));
+    this->planeLinks.setCombo(ui->comboPlane);
     ui->comboPlane->setEnabled(true);
 
     App::DocumentObject* sketch = getSketchObject();

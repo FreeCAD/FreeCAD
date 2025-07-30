@@ -136,32 +136,32 @@ void TaskPatternParameters::bindProperties()
 
     if (pattern->isDerivedFrom<PartDesign::LinearPattern>()) {
         auto* linear = static_cast<PartDesign::LinearPattern*>(pattern);
-        parametersWidget->bindProperties(linear->Direction,
-            linear->Reversed,
-            linear->Mode,
-            linear->Length,
-            linear->Offset,
-            linear->SpacingPattern,
-            linear->Occurrences,
+        parametersWidget->bindProperties(&linear->Direction,
+            &linear->Reversed,
+            &linear->Mode,
+            &linear->Length,
+            &linear->Offset,
+            &linear->SpacingPattern,
+            &linear->Occurrences,
             linear);
-        parametersWidget2->bindProperties(linear->Direction2,
-            linear->Reversed2,
-            linear->Mode2,
-            linear->Length2,
-            linear->Offset2,
-            linear->SpacingPattern2,
-            linear->Occurrences2,
+        parametersWidget2->bindProperties(&linear->Direction2,
+            &linear->Reversed2,
+            &linear->Mode2,
+            &linear->Length2,
+            &linear->Offset2,
+            &linear->SpacingPattern2,
+            &linear->Occurrences2,
             linear);
     }
     else if (pattern->isDerivedFrom<PartDesign::PolarPattern>()) {
         auto* polar = static_cast<PartDesign::PolarPattern*>(pattern);
-        parametersWidget->bindProperties(polar->Axis,
-            polar->Reversed,
-            polar->Mode,
-            polar->Angle,
-            polar->Offset,
-            polar->SpacingPattern,
-            polar->Occurrences,
+        parametersWidget->bindProperties(&polar->Axis,
+            &polar->Reversed,
+            &polar->Mode,
+            &polar->Angle,
+            &polar->Offset,
+            &polar->SpacingPattern,
+            &polar->Occurrences,
             polar);
     }
     else{
@@ -288,7 +288,7 @@ void TaskPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     App::DocumentObject* selObj = nullptr;
     getReferencedSelection(patternObj, msg, selObj, directions);
     if (!selObj) {
-        Base::Console().warning(tr("Invalid selection. Please select an edge, planar face, or datum line.").toStdString().c_str());
+        Base::Console().warning(tr("Invalid selection. Select an edge, planar face, or datum line.").toStdString().c_str());
         return;
     }
 

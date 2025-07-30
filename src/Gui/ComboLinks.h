@@ -27,8 +27,8 @@
 #include <vector>
 #include <string>
 
-#include <App/PropertyLinks.h> // For PropertyLinkSub
-#include <Base/Exception.h>    // For exceptions
+#include <App/PropertyLinks.h>
+#include <Base/Exception.h>
 
 // Forward declarations
 class QComboBox;
@@ -53,7 +53,7 @@ namespace Gui {
          * @param combo The combo box to manage. It will be cleared upon binding.
          * Do not add/remove items directly to/from the combo after binding.
          */
-        explicit ComboLinks(QComboBox& combo);
+        explicit ComboLinks(QComboBox* combo);
 
         /**
          * @brief Default constructor. Use setCombo() later.
@@ -65,17 +65,13 @@ namespace Gui {
          */
         ~ComboLinks();
 
-        // Disable copy/move semantics for simplicity with pointer management
-        ComboLinks(const ComboLinks&) = delete;
-        ComboLinks& operator=(const ComboLinks&) = delete;
-        ComboLinks(ComboLinks&&) = delete;
-        ComboLinks& operator=(ComboLinks&&) = delete;
+        FC_DISABLE_COPY_MOVE(ComboLinks)
 
         /**
          * @brief Binds the helper to a QComboBox. Clears the combo box.
          * @param combo The combo box to manage.
          */
-        void setCombo(QComboBox& combo);
+        void setCombo(QComboBox* combo);
 
         /**
          * @brief Adds an item to the combo box associated with a PropertyLinkSub.
@@ -162,7 +158,7 @@ namespace Gui {
 
 
     private:
-        QComboBox* _combo = nullptr;
+        QComboBox* combo = nullptr;
         App::Document* doc = nullptr; // Document context for validation
         std::vector<App::PropertyLinkSub*> linksInList; // Owned pointers
     };

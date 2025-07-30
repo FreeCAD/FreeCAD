@@ -69,7 +69,7 @@ LinearPattern::LinearPattern()
     ADD_PROPERTY_TYPE(Occurrences,(2), "Direction 1", (App::PropertyType)(App::Prop_None), "Direction");
     Occurrences.setConstraints(&intOccurrences);
     Mode.setEnums(ModeEnums);
-    setReadWriteStatusForMode(initialMode);
+    setReadWriteStatusForMode(LinearPatternDirection::First);
 
     ADD_PROPERTY_TYPE(Direction2,(nullptr),"Direction 2",(App::PropertyType)(App::Prop_None),"Direction");
     ADD_PROPERTY_TYPE(Reversed2,(0), "Direction 2", (App::PropertyType)(App::Prop_None), "Direction");
@@ -81,7 +81,7 @@ LinearPattern::LinearPattern()
     ADD_PROPERTY_TYPE(Occurrences2,(1), "Direction 2", (App::PropertyType)(App::Prop_None), "Direction");
     Occurrences2.setConstraints(&intOccurrences);
     Mode2.setEnums(ModeEnums);
-    setReadWriteStatusForMode2(initialMode);
+    setReadWriteStatusForMode(LinearPatternDirection::Second);
 }
 
 short LinearPattern::mustExecute() const
@@ -107,16 +107,19 @@ short LinearPattern::mustExecute() const
     return Transformed::mustExecute();
 }
 
-void LinearPattern::setReadWriteStatusForMode(LinearPatternMode mode)
+void LinearPattern::setReadWriteStatusForMode(LinearPatternDirection dir)
 {
-    Length.setReadOnly(mode != LinearPatternMode::Extent);
-    Offset.setReadOnly(mode != LinearPatternMode::Spacing);
-}
-
-void LinearPattern::setReadWriteStatusForMode2(LinearPatternMode mode)
-{
-    Length2.setReadOnly(mode != LinearPatternMode::Extent);
-    Offset2.setReadOnly(mode != LinearPatternMode::Spacing);
+    bool isExtentMode = false;
+    if (dir == LinearPatternDirection::First) {
+        isExtentMode = (Mode.getValue() == static_cast<long>(LinearPatternMode::Extent));
+        Length.setReadOnly(!isExtentMode);
+        Offset.setReadOnly(isExtentMode);
+    }
+    else {
+        isExtentMode = (Mode2.getValue() == static_cast<long>(LinearPatternMode::Extent));
+        Length2.setReadOnly(!isExtentMode);
+        Offset2.setReadOnly(isExtentMode);
+    }
 }
 
 const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App::DocumentObject*>)
@@ -128,113 +131,113 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
     }
 
     if (occurrences == 1 && occurrences2 == 1) {
-        return { gp_Trsf() };
-    }
-
-    double distance = Length.getValue();
-    double distance2 = Length2.getValue();
-    if (distance < Precision::Confusion() && occurrences != 1) {
-        throw Base::ValueError("Pattern length too small");
-    }
-    else if (distance2 < Precision::Confusion() && occurrences2 != 1) {
-        throw Base::ValueError("Pattern length2 too small");
-    }
-
-    gp_Vec offset, offset2;
-    if (occurrences != 1) {
-        offset = getDirectionFromProperty(Direction);
-        if (Reversed.getValue()) {
-            offset.Reverse();
-        }
-
-        if (Mode.getValue() == (int)LinearPatternMode::Extent && occurrences != 1) {
-            offset *= distance / (occurrences - 1);
-        }
-    }
-
-    if (occurrences2 != 1) {
-        offset2 = getDirectionFromProperty(Direction2);
-        if (Reversed2.getValue()) {
-            offset2.Reverse();
-        }
-
-        if (Mode2.getValue() == (int)LinearPatternMode::Extent && occurrences2 != 1) {
-            offset2 *= distance2 / (occurrences2 - 1);
-        }
+        return {gp_Trsf()};
     }
 
     // make sure spacings are correct size :
     updateSpacings();
 
-    const std::vector<double> spacings = Spacings.getValues();
-    const std::vector<double> pattern = SpacingPattern.getValues();
-    bool usePattern = pattern.size() > 1;
+    // Calculate the base offset vector and final step positions for each direction
+    gp_Vec offset1 = calculateOffsetVector(LinearPatternDirection::First);
+    std::vector<gp_Vec> steps1 = calculateSteps(LinearPatternDirection::First, offset1);
 
-    const std::vector<double> spacings2 = Spacings2.getValues();
-    const std::vector<double> pattern2 = SpacingPattern2.getValues();
-    bool usePattern2 = pattern2.size() > 1;
+    gp_Vec offset2 = calculateOffsetVector(LinearPatternDirection::Second);
+    std::vector<gp_Vec> steps2 = calculateSteps(LinearPatternDirection::Second, offset2);
 
-    double cumulativeSpacings = 0.0;
-    double cumulativeSpacings2 = 0.0;
-
+    // Combine the steps from both directions
     std::list<gp_Trsf> transformations;
-
-    std::vector<gp_Vec> steps1 { gp_Vec() };
-    for (int i = 1; i < occurrences; ++i) { // First is empty
-        gp_Vec step;
-        if (Mode.getValue() == (int)LinearPatternMode::Spacing) {
-            double spacing;
-            if (spacings[i - 1] != -1.0) {
-                spacing = spacings[i - 1];
-            }
-            else if (usePattern) {
-                spacing = pattern[(size_t)fmod(i - 1, pattern.size())];
-            }
-            else {
-                spacing = Offset.getValue();
-            }
-            cumulativeSpacings += spacing;
-            step = offset * cumulativeSpacings;
-        }
-        else {
-            step = offset * i;
-        }
-        steps1.push_back(step);
-    }
-
-    std::vector<gp_Vec> steps2 { gp_Vec() };
-    for (int j = 1; j < occurrences2; ++j) { // First is empty
-        gp_Vec step;
-
-        if (Mode2.getValue() == (int)LinearPatternMode::Spacing) {
-            double spacing2;
-            if (spacings2[j - 1] != -1.0) {
-                spacing2 = spacings2[j - 1];
-            }
-            else if (usePattern2) {
-                spacing2 = pattern2[(size_t)fmod(j - 1, pattern2.size())];
-            }
-            else {
-                spacing2 = Offset2.getValue();
-            }
-            cumulativeSpacings2 += spacing2;
-            step = offset2 * cumulativeSpacings2;
-        }
-        else {
-            step = offset2 * j;
-        }
-        steps2.push_back(step);
-    }
-
-    for (int i = 0; i < occurrences; ++i) {
-        for (int j = 0; j < occurrences2; ++j) {
+    for (const auto& step1 : steps1) {
+        for (const auto& step2 : steps2) {
             gp_Trsf trans;
-            trans.SetTranslation(steps1[i] + steps2[j]);
+            trans.SetTranslation(step1 + step2);
             transformations.push_back(trans);
         }
     }
 
     return transformations;
+}
+
+gp_Vec LinearPattern::calculateOffsetVector(LinearPatternDirection dir) const
+{
+    const auto& occurrencesProp =
+        (dir == LinearPatternDirection::First) ? Occurrences : Occurrences2;
+    int occurrences = occurrencesProp.getValue();
+    if (occurrences <= 1) {
+        return gp_Vec();  // Return zero vector if no transformation is needed
+    }
+
+    const auto& dirProp = (dir == LinearPatternDirection::First) ? Direction : Direction2;
+    const auto& reversedProp = (dir == LinearPatternDirection::First) ? Reversed : Reversed2;
+    const auto& modeProp = (dir == LinearPatternDirection::First) ? Mode : Mode2;
+    const auto& lengthProp = (dir == LinearPatternDirection::First) ? Length : Length2;
+
+    double distance = lengthProp.getValue();
+    if (distance < Precision::Confusion()) {
+        throw Base::ValueError("Pattern length too small");
+    }
+
+    gp_Vec offset = getDirectionFromProperty(dirProp);
+    if (reversedProp.getValue()) {
+        offset.Reverse();
+    }
+
+    // For 'Extent' mode, the vector represents one full step.
+    // For 'Spacing' mode, it's just a normalized direction vector.
+    if (modeProp.getValue() == static_cast<int>(LinearPatternMode::Extent)) {
+        offset *= distance / (occurrences - 1);
+    }
+
+    return offset;
+}
+
+std::vector<gp_Vec> LinearPattern::calculateSteps(LinearPatternDirection dir,
+                                                  const gp_Vec& offsetVector) const
+{
+    const auto& occurrencesProp =
+        (dir == LinearPatternDirection::First) ? Occurrences : Occurrences2;
+    const auto& modeProp = (dir == LinearPatternDirection::First) ? Mode : Mode2;
+    const auto& offsetValueProp = (dir == LinearPatternDirection::First) ? Offset : Offset2;
+    const auto& spacingsProp = (dir == LinearPatternDirection::First) ? Spacings : Spacings2;
+    const auto& spacingPatternProp =
+        (dir == LinearPatternDirection::First) ? SpacingPattern : SpacingPattern2;
+
+    int occurrences = occurrencesProp.getValue();
+    std::vector<gp_Vec> steps {gp_Vec()};  // First step is always zero
+    steps.reserve(occurrences);
+
+    if (occurrences <= 1) {
+        return steps;
+    }
+
+    if (modeProp.getValue() == static_cast<int>(LinearPatternMode::Spacing)) {
+        const std::vector<double> spacings = spacingsProp.getValues();
+        const std::vector<double> pattern = spacingPatternProp.getValues();
+        bool usePattern = pattern.size() > 1;
+        double cumulativeDistance = 0.0;
+
+        for (int i = 1; i < occurrences; ++i) {
+            double spacing;
+            // Spacing priority: individual spacing > pattern > global offset
+            if (spacings.at(i - 1) != -1.0) {
+                spacing = spacings.at(i - 1);
+            }
+            else if (usePattern) {
+                spacing = pattern.at(static_cast<size_t>(fmod(i - 1, pattern.size())));
+            }
+            else {
+                spacing = offsetValueProp.getValue();
+            }
+            cumulativeDistance += spacing;
+            steps.push_back(offsetVector * cumulativeDistance);
+        }
+    }
+    else {  // Extent Mode
+        for (int i = 1; i < occurrences; ++i) {
+            steps.push_back(offsetVector * i);
+        }
+    }
+
+    return steps;
 }
 
 gp_Dir LinearPattern::getDirectionFromProperty(const App::PropertyLinkSub& dirProp) const
@@ -250,8 +253,7 @@ gp_Dir LinearPattern::getDirectionFromProperty(const App::PropertyLinkSub& dirPr
     }
 
     gp_Dir dir;
-    if (refObject->isDerivedFrom<Part::Part2DObject>()) {
-        auto* refSketch = static_cast<Part::Part2DObject*>(refObject);
+    if (auto* refSketch = freecad_cast<Part::Part2DObject*>(refObject)) {
         Base::Axis axis;
         if (subStrings[0] == "H_Axis") {
             axis = refSketch->getAxis(Part::Part2DObject::H_Axis);
@@ -292,26 +294,22 @@ gp_Dir LinearPattern::getDirectionFromProperty(const App::PropertyLinkSub& dirPr
         }
         dir = gp_Dir(axis.getDirection().x, axis.getDirection().y, axis.getDirection().z);
     }
-    else if (refObject->isDerivedFrom<PartDesign::Plane>()) {
-        auto* plane = static_cast<PartDesign::Plane*>(refObject);
+    else if (auto* plane = freecad_cast<PartDesign::Plane*>(refObject)) {
         Base::Vector3d d = plane->getNormal();
         dir = gp_Dir(d.x, d.y, d.z);
     }
-    else if (refObject->isDerivedFrom<PartDesign::Line>()) {
-        auto* line = static_cast<PartDesign::Line*>(refObject);
+    else if (auto* line = freecad_cast<PartDesign::Line*>(refObject)) {
         Base::Vector3d d = line->getDirection();
         dir = gp_Dir(d.x, d.y, d.z);
     }
-    else if (refObject->isDerivedFrom<App::Line>()) {
-        auto* line = static_cast<App::Line*>(refObject);
+    else if (auto* line = freecad_cast<App::Line*>(refObject)) {
         Base::Vector3d d = line->getDirection();
         dir = gp_Dir(d.x, d.y, d.z);
     }
-    else if (refObject->isDerivedFrom<Part::Feature>()) {
+    else if (auto* refFeature = freecad_cast<Part::Feature*>(refObject)) {
         if (subStrings[0].empty()) {
             throw Base::ValueError("No direction reference specified");
         }
-        auto* refFeature = static_cast<Part::Feature*>(refObject);
         Part::TopoShape refShape = refFeature->Shape.getShape();
         TopoDS_Shape ref = refShape.getSubShape(subStrings[0].c_str());
 
@@ -351,19 +349,20 @@ gp_Dir LinearPattern::getDirectionFromProperty(const App::PropertyLinkSub& dirPr
 
 void LinearPattern::updateSpacings()
 {
-    updateSpacings(false);
-    updateSpacings(true);
+    updateSpacings(LinearPatternDirection::First);
+    updateSpacings(LinearPatternDirection::Second);
 }
 
-void LinearPattern::updateSpacings(bool isSecondDir)
+void LinearPattern::updateSpacings(LinearPatternDirection dir)
 {
+    bool isSecondDir = dir == LinearPatternDirection::Second;
 
     App::PropertyFloatList& spacingsProp = isSecondDir ? Spacings2 : Spacings;
     App::PropertyLength& offsetProp = isSecondDir ? Offset2 : Offset;
     const App::PropertyIntegerConstraint& occurrencesProp = isSecondDir ? Occurrences2 : Occurrences;
 
     std::vector<double> spacings = spacingsProp.getValues();
-    size_t targetCount = occurrencesProp.getValue() - 1; // 1 less spacing than there are occurences.
+    size_t targetCount = occurrencesProp.getValue() - 1; // 1 less spacing than there are occurrences.
 
     for (auto& spacing : spacings) {
         if (spacing == offsetProp.getValue()) {
@@ -408,62 +407,56 @@ void LinearPattern::onChanged(const App::Property* prop)
     auto mode2 = static_cast<LinearPatternMode>(Mode2.getValue());
 
     if (prop == &Mode) {
-        setReadWriteStatusForMode(mode);
+        setReadWriteStatusForMode(LinearPatternDirection::First);
     }
     else if (prop == &Occurrences) {
-        updateSpacings(false);
+        updateSpacings(LinearPatternDirection::First);
+        syncLengthAndOffset(LinearPatternDirection::First);
     }
+    else if (prop == &Offset && mode == LinearPatternMode::Spacing) {
+        syncLengthAndOffset(LinearPatternDirection::First);
+    }
+    else if (prop == &Length && mode == LinearPatternMode::Extent) {
+        syncLengthAndOffset(LinearPatternDirection::First);
+    }
+
     else if (prop == &Mode2) {
-        setReadWriteStatusForMode2(mode2);
+        setReadWriteStatusForMode(LinearPatternDirection::Second);
     }
     else if (prop == &Occurrences2) {
-        updateSpacings(true);
+        updateSpacings(LinearPatternDirection::Second);
+        syncLengthAndOffset(LinearPatternDirection::Second);
     }
-
-    int occurrences = Occurrences.getValue();
-    // Keep Length in sync with Offset, catch Occurrences changes
-    if (mode == LinearPatternMode::Spacing && (prop == &Offset || prop == &Occurrences)
-        && !Length.testStatus(App::Property::Status::Immutable)) {
-        if (occurrences == 1) {
-            Length.setValue(Offset.getValue());
-        }
-        else {
-            Length.setValue(Offset.getValue() * (occurrences - 1));
-        }
+    else if (prop == &Offset2 && mode2 == LinearPatternMode::Spacing) {
+        syncLengthAndOffset(LinearPatternDirection::Second);
     }
-
-    if (mode == LinearPatternMode::Extent && (prop == &Length || prop == &Occurrences)
-        && !Offset.testStatus(App::Property::Status::Immutable)) {
-        if (occurrences == 1) {
-            Offset.setValue(Length.getValue());
-        }
-        else {
-            Offset.setValue(Length.getValue() / (occurrences - 1));
-        }
-    }
-
-    int occurrences2 = Occurrences2.getValue();
-    if (mode2 == LinearPatternMode::Spacing && (prop == &Offset2 || prop == &Occurrences2)
-        && !Length2.testStatus(App::Property::Status::Immutable)) {
-        if (occurrences2 == 1) {
-            Length2.setValue(Offset2.getValue());
-        }
-        else {
-            Length2.setValue(Offset2.getValue() * (occurrences2 - 1));
-        }
-    }
-
-    if (mode2 == LinearPatternMode::Extent && (prop == &Length2 || prop == &Occurrences2)
-        && !Offset2.testStatus(App::Property::Status::Immutable)) {
-        if (occurrences2 == 1) {
-            Offset2.setValue(Length2.getValue());
-        }
-        else {
-            Offset2.setValue(Length2.getValue() / (occurrences2 - 1));
-        }
+    else if (prop == &Length2 && mode2 == LinearPatternMode::Extent) {
+        syncLengthAndOffset(LinearPatternDirection::Second);
     }
 
     Transformed::onChanged(prop);
+}
+
+void LinearPattern::syncLengthAndOffset(LinearPatternDirection dir)
+{
+    // Get references to the correct properties based on the direction
+    auto& modeProp = (dir == LinearPatternDirection::First) ? Mode : Mode2;
+    auto& lengthProp = (dir == LinearPatternDirection::First) ? Length : Length2;
+    auto& offsetProp = (dir == LinearPatternDirection::First) ? Offset : Offset2;
+    auto& occurrencesProp = (dir == LinearPatternDirection::First) ? Occurrences : Occurrences2;
+
+    auto mode = static_cast<LinearPatternMode>(modeProp.getValue());
+    int occurrences = occurrencesProp.getValue();
+    occurrences = occurrences <= 1 ? 1 : occurrences - 1;
+
+    if (mode == LinearPatternMode::Spacing
+        && !lengthProp.testStatus(App::Property::Status::Immutable)) {
+        lengthProp.setValue(offsetProp.getValue() * occurrences);
+    }
+    else if (mode == LinearPatternMode::Extent
+             && !offsetProp.testStatus(App::Property::Status::Immutable)) {
+        offsetProp.setValue(lengthProp.getValue() / occurrences);
+    }
 }
 
 }
