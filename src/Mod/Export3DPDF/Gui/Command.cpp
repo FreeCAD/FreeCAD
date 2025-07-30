@@ -40,6 +40,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/PropertyLinks.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Tools.h>
@@ -48,6 +49,18 @@
 #include <Gui/Command.h>
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Document.h>
+#include <Gui/ViewProvider.h>
+
+// Forward declarations to avoid heavy TechDraw dependencies
+namespace TechDraw {
+    class DrawPage;
+    class DrawViewImage;
+}
+
+namespace TechDrawGui {
+    class ViewProviderImage;
+}
 #include <Gui/Selection/Selection.h>
 
 #include "Command.h"
@@ -102,8 +115,121 @@ void StdCmdPrint3dPdf::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     
-    // Get current selection
-    std::vector<App::DocumentObject*> selection = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
+    // Check if we're in a TechDraw page context
+    App::Document* activeDoc = App::GetApplication().getActiveDocument();
+    std::vector<App::DocumentObject*> selection;
+    if (activeDoc) {
+        // Check if the document contains TechDraw pages (indicating TechDraw context)
+        std::vector<App::DocumentObject*> pages = activeDoc->getObjectsOfType(Base::Type::fromName("TechDraw::DrawPage"));
+        if (!pages.empty()) {
+            Base::Console().message("Found %d TechDraw page(s)\n", pages.size());
+            
+            // Iterate through pages to find ActiveViews with Enable3DPDFExport
+            for (auto* pageObj : pages) {
+                // Use dynamic_cast with base class to avoid heavy includes
+                if (!pageObj || !pageObj->isDerivedFrom(Base::Type::fromName("TechDraw::DrawPage"))) {
+                    continue;
+                }
+                
+                Base::Console().message("Checking page: %s\n", pageObj->getNameInDocument());
+                
+                // Use property access instead of direct method calls to avoid includes
+                App::Property* viewsProp = pageObj->getPropertyByName("Views");
+                if (!viewsProp) {
+                    continue;
+                }
+                
+                // Get views using property system to avoid header dependencies
+                App::PropertyLinkList* viewsList = dynamic_cast<App::PropertyLinkList*>(viewsProp);
+                if (!viewsList) {
+                    continue;
+                }
+                
+                const std::vector<App::DocumentObject*>& views = viewsList->getValues();
+                
+                for (auto* view : views) {
+                    // Check if this is a DrawViewImage (ActiveView is a type of DrawViewImage)
+                    if (!view || !view->isDerivedFrom(Base::Type::fromName("TechDraw::DrawViewImage"))) {
+                        continue;
+                    }
+                    
+                    // Check if this is an ActiveView
+                    std::string viewLabel = view->getNameInDocument();
+                    if (viewLabel.find("ActiveView") != std::string::npos) {
+                        Base::Console().message("Found ActiveView: %s\n", viewLabel.c_str());
+                        
+                        // Get the ViewProvider to check Enable3DPDFExport
+                        Gui::Document* guiDoc = Gui::Application::Instance->getDocument(view->getDocument());
+                        if (guiDoc) {
+                            Gui::ViewProvider* vp = guiDoc->getViewProvider(view);
+                            if (vp) {
+                                // Check Enable3DPDFExport property using property system
+                                App::Property* enable3DProp = vp->getPropertyByName("Enable3DPDFExport");
+                                if (enable3DProp) {
+                                    App::PropertyBool* enableBool = dynamic_cast<App::PropertyBool*>(enable3DProp);
+                                    if (enableBool && enableBool->getValue()) {
+                                        Base::Console().message("ActiveView has Enable3DPDFExport=true\n");
+                                        
+                                        // Get source objects using property system
+                                        App::Property* sourceProp = view->getPropertyByName("Source");
+                                        App::Property* xsourceProp = view->getPropertyByName("XSource");
+                                        
+                                        
+                                        if (sourceProp) {
+                                            App::PropertyLinkList* sourceList = dynamic_cast<App::PropertyLinkList*>(sourceProp);
+                                            if (sourceList) {
+                                                const std::vector<App::DocumentObject*>& sources = sourceList->getValues();
+                                                selection.insert(selection.end(), sources.begin(), sources.end());
+                                            }
+                                        }
+                                        
+                                        if (xsourceProp) {
+                                            App::PropertyLinkList* xsourceList = dynamic_cast<App::PropertyLinkList*>(xsourceProp);
+                                            if (xsourceList) {
+                                                const std::vector<App::DocumentObject*>& xsources = xsourceList->getValues();
+                                                selection.insert(selection.end(), xsources.begin(), xsources.end());
+                                            }
+                                        }
+                                        
+                                        Base::Console().message("ActiveView contains %d source objects:\n", selection.size());
+                                        
+                                        for (auto* obj : selection) {
+                                            if (obj) {
+                                                Base::Console().message("  - %s (%s)\n", 
+                                                                       obj->Label.getValue(), 
+                                                                       obj->getTypeId().getName());
+                                            }
+                                        }
+                                        
+                                        if (selection.empty()) {
+                                            Base::Console().message("  (No source objects stored in this ActiveView)\n");
+                                        }
+                                    }
+                                    else {
+                                        Base::Console().message("ActiveView has Enable3DPDFExport=false\n");
+                                    }
+                                }
+                                else {
+                                    Base::Console().message("Could not find Enable3DPDFExport property\n");
+                                }
+                            }
+                            else {
+                                Base::Console().message("Could not get ViewProvider for ActiveView\n");
+                            }
+                        }
+                        else {
+                            Base::Console().message("Could not get GUI document\n");
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            Base::Console().message("No TechDraw pages found\n");
+            selection = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
+        }
+    }
+    
     
     if (selection.empty()) {
         QMessageBox::warning(getMainWindow(),
