@@ -1462,25 +1462,66 @@ class ObjectSurface(PathOp.ObjectOp):
                 ADJPRTS = []
                 LMAX = []
                 soHasPnts = False
-                brkFlg = False
+                BrkFlagg = False
+                AddNewBrk = [] # Index of ADJPRTS items with New Break Points from Multi-Pass               
+                indexCnt = -1 # Index counter for AddNewBrk
                 for i in range(0, lenSO):
                     prt = SO[i]
                     lenPrt = len(prt)
                     if prt == "BRK":
-                        if brkFlg:
+                        if BrkFlagg:
                             ADJPRTS.append(prt)
                             LMAX.append(prt)
-                            brkFlg = False
+                            BrkFlagg = False
+                            indexCnt = indexCnt + 1  
                     else:
-                        (PTS, lMax) = self._planarMultipassPreProcess(obj, prt, prevDepth, lyrDep)
+                        (PTS, lMax, newBrk) = self._planarMultipassPreProcess(obj, prt, prevDepth, lyrDep)
                         if len(PTS) > 0:
                             ADJPRTS.append(PTS)
                             soHasPnts = True
-                            brkFlg = True
+                            BrkFlagg = True
                             LMAX.append(lMax)
+                            indexCnt = indexCnt + 1
+                            if newBrk is True:
+                                AddNewBrk.append(indexCnt)
+                            
+                # New Break Points  
+                # Items from ADJPRTS list with New Break Points. Split ADJPRTS between those New Break Points, 
+                # introduce a regular BRK item and reorient ADJPRTS. 
+                if len(AddNewBrk):
+                    AddNewBrk.sort(reverse=True)
+                    for ti in AddNewBrk:
+                        NewADJP = []
+                        CntIn = 1
+                        NBRKin = False
+                        
+                        for ri in ADJPRTS[ti]:
+                            if ri == 'NBRK':
+                                if CntIn > 1:
+                                    CntIn = CntIn + 1
+                                ADJPRTS.insert((ti+CntIn), ("BRK"))
+                                ADJPRTS.insert((ti+CntIn), NewADJP)
+                                NewADJP = []
+                                CntIn = CntIn + 1
+                                NBRKin = True                              
+                            else:            
+                                NewADJP.append(ri)
+                                # Still here for Spiral a New Break is needed 
+                                if obj.CutPattern == "Spiral" and NBRKin is False:
+                                    ADJPRTS.insert((ti+1), ("BRK"))
+                                    NewADJP = []
+                                    
+                        if len(NewADJP) > 0:
+                            if NBRKin is False:
+                                CntIn = 0
+                            ADJPRTS.insert((ti+(CntIn+1)), NewADJP)
+                            ADJPRTS.pop(ti)
+                            NewADJP = []  
+                                                                               
+                # End New Break Points
+                          
                 # Efor
                 lenAdjPrts = len(ADJPRTS)
-
                 # Process existing parts within current step over
                 prtsHasCmds = False
                 stepHasCmds = False
@@ -1598,22 +1639,74 @@ class ObjectSurface(PathOp.ObjectOp):
 
         return GCODE
 
-    def _planarMultipassPreProcess(self, obj, LN, prvDep, layDep):
+    def _planarMultipassPreProcess(self, obj, LN, prvDep, layDep):  
         ALL = []
-        PTS = []
+        PTS = [] 
         optLinTrans = obj.OptimizeStepOverTransitions
-        safe = math.ceil(obj.SafeHeight.Value)
+        ChecklayDep = obj.OpStartDepth.Value - obj.StepDown.Value  
+        newBreakPoints = False
+        newBrk = False    
 
-        if optLinTrans is True:
+        if optLinTrans is True and layDep != ChecklayDep:
+            BrkFlag = False
             for P in LN:
                 ALL.append(P)
-                # Handle layer depth AND hold points
+                # Handle layer depth AND hold new Break points
+                # Z Depth below/equal to layDep (Keep up to layDep)
                 if P.z <= layDep:
+                    ALL.append(P)
                     PTS.append(FreeCAD.Vector(P.x, P.y, layDep))
+                    BrkFlag = False
+                # Z Depth above previous Depth - if not wet BrkFlag
+                # Add New Break Point and drop move
                 elif P.z > prvDep:
-                    PTS.append(FreeCAD.Vector(P.x, P.y, safe))
+                    if BrkFlag is False:
+                        PTS.append('NBRK')
+                        BrkFlag = True
+                        newBreakPoints = True
+                # Z Depth above layDep (Keep Original Depth)
                 else:
+                    ALL.append(P)
                     PTS.append(FreeCAD.Vector(P.x, P.y, P.z))
+                    BrkFlag = False
+                    
+            # Handle New Break Points based on Pattern
+            # Easier to handle and observe here individually   
+            if newBreakPoints is True:
+                if obj.CutPattern in "Offset":
+                    Cnt = 0
+                    for i in range(0, len(PTS)):
+                        if PTS[i] == 'NBRK':
+                            PTS.pop(i-Cnt)
+                            Cnt = Cnt + 1
+                        else:
+                            newBrk = True
+                            break
+                    for i in range(len(PTS)-1, 0, -1):
+                        if PTS[i] == 'NBRK':
+                            PTS.pop(i)
+                        else:
+                            newBrk = True
+                            break
+                            
+                if obj.CutPattern in ["Line", "ZigZag", "CircularZigZag", "Circular"]:
+                    if PTS[0] == 'NBRK':
+                        PTS.pop(0)
+                    for i in range(len(PTS)-1, 0, -1):
+                        if PTS[1] == 'NBRK':
+                            PTS.pop(i)
+                        else:
+                            newBrk = True
+                            break
+                            
+                if obj.CutPattern == "Spiral":
+                    if PTS[0] == 'NBRK':
+                        PTS.pop(0)
+                    if len(PTS) > 1:
+                        if PTS[-1] == 'NBRK':
+                            del PTS[-1]
+                            newBrk = True                                                   
+                                    
             # Efor
         else:
             for P in LN:
@@ -1625,29 +1718,6 @@ class ObjectSurface(PathOp.ObjectOp):
                     PTS.append(FreeCAD.Vector(P.x, P.y, P.z))
             # Efor
 
-        if optLinTrans is True:
-            # Remove leading and trailing Hold Points
-            popList = []
-            for i in range(0, len(PTS)):  # identify leading string
-                if PTS[i].z == safe:
-                    popList.append(i)
-                else:
-                    break
-            popList.sort(reverse=True)
-            for p in popList:  # Remove hold points
-                PTS.pop(p)
-                ALL.pop(p)
-            popList = []
-            for i in range(len(PTS) - 1, -1, -1):  # identify trailing string
-                if PTS[i].z == safe:
-                    popList.append(i)
-                else:
-                    break
-            popList.sort(reverse=True)
-            for p in popList:  # Remove hold points
-                PTS.pop(p)
-                ALL.pop(p)
-
         # Determine max Z height for remaining points on line
         lMax = obj.FinalDepth.Value
         if len(ALL) > 0:
@@ -1656,8 +1726,8 @@ class ObjectSurface(PathOp.ObjectOp):
                 if P.z > lMax:
                     lMax = P.z
 
-        return (PTS, lMax)
-
+        return (PTS, lMax, newBrk)               
+        
     def _planarMultipassProcess(self, obj, PNTS, lMax):
         output = []
         optimize = obj.OptimizeLinearPaths
@@ -1741,6 +1811,7 @@ class ObjectSurface(PathOp.ObjectOp):
         cmds = []
         rtpd = False
         height = obj.SafeHeight.Value
+        ChecklayDep = obj.OpStartDepth.Value - obj.StepDown.Value
         # Allow cutter-down transitions with a distance up to 2x cutter
         # diameter. We might be able to extend this further to the
         # full-retract-and-rapid break even point in the future, but this will
@@ -1748,7 +1819,8 @@ class ObjectSurface(PathOp.ObjectOp):
         # to avoid inadvertent cutting.
         maxXYDistanceSqrd = (self.cutter.getDiameter() * 2) ** 2
 
-        if obj.OptimizeStepOverTransitions:
+        #if obj.OptimizeStepOverTransitions:
+        if obj.OptimizeStepOverTransitions and p2.z != ChecklayDep:
             if p1 and p2:
                 # Short distance within step over
                 xyDistanceSqrd = (p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2
