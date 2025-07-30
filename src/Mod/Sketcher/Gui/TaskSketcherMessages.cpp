@@ -99,17 +99,6 @@ void TaskSketcherMessages::onLabelStatusLinkClicked(const QString& str)
     }
 }
 
-void TaskSketcherMessages::onAutoUpdateStateChanged()
-{
-    QToolButton* btn = getSettingsButton();
-    bool state = std::as_const(btn)->actions()[0]->isChecked();
-
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher");
-    hGrp->SetBool("AutoRecompute", state);
-    sketchView->getSketchObject()->noRecomputes = !state;
-}
-
 void TaskSketcherMessages::createSettingsButtonActions()
 {
     QToolButton* btn = getSettingsButton();
@@ -121,18 +110,30 @@ void TaskSketcherMessages::createSettingsButtonActions()
     bool state = hGrp->GetBool("AutoRecompute", false);
 
     sketchView->getSketchObject()->noRecomputes = !state;
-    QAction* action = new QAction(tr("Auto Update"), this);
-    action->setToolTip(tr("Executes a recomputation of active document after every sketch action"));
-    action->setCheckable(true);
-    action->setChecked(state);
 
+    auto* autoUpdateAction = new QWidgetAction(this);
+    auto* containerWidget = new QWidget();
+    auto* layout = new QGridLayout(containerWidget);
+    auto* checkbox = new QCheckBox(tr("Auto Update"));
+    checkbox->setToolTip(tr("Executes a recomputation of active document after every sketch action"));
+    checkbox->setChecked(state);
+    layout->addWidget(checkbox, 0, 0, 1, 2);
+    containerWidget->setLayout(layout);
+    autoUpdateAction->setDefaultWidget(containerWidget);
+
+    connect(checkbox, &QCheckBox::toggled, this, [this](bool checked) {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Sketcher");
+        hGrp->SetBool("AutoRecompute", checked);
+        sketchView->getSketchObject()->noRecomputes = !checked;
+    });
 
     auto* gsa = new GridSpaceAction(this);
     auto* ssa = new SnapSpaceAction(this);
     auto* roa = new RenderingOrderAction(this);
 
     QMenu* myMenu = new QMenu(this);
-    myMenu->addAction(action);
+    myMenu->addAction(autoUpdateAction);
     myMenu->addSeparator();
     myMenu->addAction(gsa);
     myMenu->addSeparator();
@@ -148,10 +149,6 @@ void TaskSketcherMessages::createSettingsButtonActions()
     });
 
     QObject::connect(btn, &QToolButton::clicked, btn, &QToolButton::showMenu);
-    QObject::connect(std::as_const(myMenu)->actions()[0],
-        &QAction::changed,
-        this,
-        &TaskSketcherMessages::onAutoUpdateStateChanged);
 }
 
 #include "moc_TaskSketcherMessages.cpp"
