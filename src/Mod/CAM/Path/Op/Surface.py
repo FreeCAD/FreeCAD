@@ -1463,8 +1463,8 @@ class ObjectSurface(PathOp.ObjectOp):
                 LMAX = []
                 soHasPnts = False
                 BrkFlagg = False
-                AddNewBrk = [] # Index of ADJPRTS items with New Break Points from Multi-Pass               
-                indexCnt = -1 # Index counter for AddNewBrk
+                AddNewBrk = []  # Index of ADJPRTS items with New Break Points from Multi-Pass
+                indexCnt = -1  # Index counter for AddNewBrk
                 for i in range(0, lenSO):
                     prt = SO[i]
                     lenPrt = len(prt)
@@ -1473,9 +1473,11 @@ class ObjectSurface(PathOp.ObjectOp):
                             ADJPRTS.append(prt)
                             LMAX.append(prt)
                             BrkFlagg = False
-                            indexCnt = indexCnt + 1  
+                            indexCnt = indexCnt + 1
                     else:
-                        (PTS, lMax, newBrk) = self._planarMultipassPreProcess(obj, prt, prevDepth, lyrDep)
+                        (PTS, lMax, newBrk) = self._planarMultipassPreProcess(
+                            obj, prt, prevDepth, lyrDep
+                        )
                         if len(PTS) > 0:
                             ADJPRTS.append(PTS)
                             soHasPnts = True
@@ -1484,42 +1486,42 @@ class ObjectSurface(PathOp.ObjectOp):
                             indexCnt = indexCnt + 1
                             if newBrk is True:
                                 AddNewBrk.append(indexCnt)
-                            
-                # New Break Points  
-                # Items from ADJPRTS list with New Break Points. Split ADJPRTS between those New Break Points, 
-                # introduce a regular BRK item and reorient ADJPRTS. 
+
+                # New Break Points
+                # Items from ADJPRTS list with New Break Points. Split ADJPRTS between those New Break Points,
+                # introduce a regular BRK item and reorient ADJPRTS.
                 if len(AddNewBrk):
                     AddNewBrk.sort(reverse=True)
                     for ti in AddNewBrk:
                         NewADJP = []
                         CntIn = 1
                         NBRKin = False
-                        
+
                         for ri in ADJPRTS[ti]:
-                            if ri == 'NBRK':
+                            if ri == "NBRK":
                                 if CntIn > 1:
                                     CntIn = CntIn + 1
-                                ADJPRTS.insert((ti+CntIn), ("BRK"))
-                                ADJPRTS.insert((ti+CntIn), NewADJP)
+                                ADJPRTS.insert((ti + CntIn), ("BRK"))
+                                ADJPRTS.insert((ti + CntIn), NewADJP)
                                 NewADJP = []
                                 CntIn = CntIn + 1
-                                NBRKin = True                              
-                            else:            
+                                NBRKin = True
+                            else:
                                 NewADJP.append(ri)
-                                # Still here for Spiral a New Break is needed 
+                                # Still here for Spiral a New Break is needed
                                 if obj.CutPattern == "Spiral" and NBRKin is False:
-                                    ADJPRTS.insert((ti+1), ("BRK"))
+                                    ADJPRTS.insert((ti + 1), ("BRK"))
                                     NewADJP = []
-                                    
+
                         if len(NewADJP) > 0:
                             if NBRKin is False:
                                 CntIn = 0
-                            ADJPRTS.insert((ti+(CntIn+1)), NewADJP)
+                            ADJPRTS.insert((ti + (CntIn + 1)), NewADJP)
                             ADJPRTS.pop(ti)
-                            NewADJP = []  
-                                                                               
+                            NewADJP = []
+
                 # End New Break Points
-                          
+
                 # Efor
                 lenAdjPrts = len(ADJPRTS)
                 # Process existing parts within current step over
@@ -1639,13 +1641,13 @@ class ObjectSurface(PathOp.ObjectOp):
 
         return GCODE
 
-    def _planarMultipassPreProcess(self, obj, LN, prvDep, layDep):  
+    def _planarMultipassPreProcess(self, obj, LN, prvDep, layDep):
         ALL = []
-        PTS = [] 
+        PTS = []
         optLinTrans = obj.OptimizeStepOverTransitions
-        ChecklayDep = obj.OpStartDepth.Value - obj.StepDown.Value  
+        ChecklayDep = obj.OpStartDepth.Value - obj.StepDown.Value
         newBreakPoints = False
-        newBrk = False    
+        newBrk = False
 
         if optLinTrans is True and layDep != ChecklayDep:
             BrkFlag = False
@@ -1661,7 +1663,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 # Add New Break Point and drop move
                 elif P.z > prvDep:
                     if BrkFlag is False:
-                        PTS.append('NBRK')
+                        PTS.append("NBRK")
                         BrkFlag = True
                         newBreakPoints = True
                 # Z Depth above layDep (Keep Original Depth)
@@ -1669,44 +1671,44 @@ class ObjectSurface(PathOp.ObjectOp):
                     ALL.append(P)
                     PTS.append(FreeCAD.Vector(P.x, P.y, P.z))
                     BrkFlag = False
-                    
+
             # Handle New Break Points based on Pattern
-            # Easier to handle and observe here individually   
+            # Easier to handle and observe here individually
             if newBreakPoints is True:
                 if obj.CutPattern in "Offset":
                     Cnt = 0
                     for i in range(0, len(PTS)):
-                        if PTS[i] == 'NBRK':
-                            PTS.pop(i-Cnt)
+                        if PTS[i] == "NBRK":
+                            PTS.pop(i - Cnt)
                             Cnt = Cnt + 1
                         else:
                             newBrk = True
                             break
-                    for i in range(len(PTS)-1, 0, -1):
-                        if PTS[i] == 'NBRK':
+                    for i in range(len(PTS) - 1, 0, -1):
+                        if PTS[i] == "NBRK":
                             PTS.pop(i)
                         else:
                             newBrk = True
                             break
-                            
+
                 if obj.CutPattern in ["Line", "ZigZag", "CircularZigZag", "Circular"]:
-                    if PTS[0] == 'NBRK':
+                    if PTS[0] == "NBRK":
                         PTS.pop(0)
-                    for i in range(len(PTS)-1, 0, -1):
-                        if PTS[1] == 'NBRK':
+                    for i in range(len(PTS) - 1, 0, -1):
+                        if PTS[1] == "NBRK":
                             PTS.pop(i)
                         else:
                             newBrk = True
                             break
-                            
+
                 if obj.CutPattern == "Spiral":
-                    if PTS[0] == 'NBRK':
+                    if PTS[0] == "NBRK":
                         PTS.pop(0)
                     if len(PTS) > 1:
-                        if PTS[-1] == 'NBRK':
+                        if PTS[-1] == "NBRK":
                             del PTS[-1]
-                            newBrk = True                                                   
-                                    
+                            newBrk = True
+
             # Efor
         else:
             for P in LN:
