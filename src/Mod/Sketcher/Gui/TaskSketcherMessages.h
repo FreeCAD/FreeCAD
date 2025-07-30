@@ -41,7 +41,6 @@ public:
 private:
     void createSettingsButtonActions() override;
     void onLabelStatusLinkClicked(const QString&) override;
-    void onAutoUpdateStateChanged();
 
     void updateToolTip(const QString& link) override;
 
