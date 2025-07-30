@@ -644,8 +644,7 @@ def _get_param_dictionary():
                 ":/ui/preferences-dae.ui",
                 ":/ui/preferences-ifc.ui",
                 ":/ui/preferences-ifc-export.ui",
-                ":/ui/preferences-sh3d-import.ui",
-                ":/ui/preferences-webgl.ui",):
+                ":/ui/preferences-sh3d-import.ui",):
 
         # https://stackoverflow.com/questions/14750997/load-txt-file-from-resources-in-python
         fd = QtCore.QFile(fnm)
