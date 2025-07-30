@@ -42,14 +42,18 @@ public:
 
     FeatureAddSub();
 
-    Type getAddSubType();
+    bool isAdditive();
+    bool isSubtractive();
 
     short mustExecute() const override;
 
     virtual void getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape);
+    TopoDS_Shape subtractiveOp(const TopoDS_Shape &baseShape, const TopoDS_Shape &opShape);
+    App::DocumentObjectExecReturn* addSubOp(const TopoDS_Shape& baseShape,
+                                                           const TopoDS_Shape& opShape);
 
     Part::PropertyPartShape   AddSubShape;
-
+    App::PropertyBool         Outside;
 
 protected:
     Type addSubType{Additive};
