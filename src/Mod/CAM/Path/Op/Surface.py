@@ -1726,8 +1726,8 @@ class ObjectSurface(PathOp.ObjectOp):
                 if P.z > lMax:
                     lMax = P.z
 
-        return (PTS, lMax, newBrk)               
-        
+        return (PTS, lMax, newBrk)
+
     def _planarMultipassProcess(self, obj, PNTS, lMax):
         output = []
         optimize = obj.OptimizeLinearPaths
@@ -1819,7 +1819,6 @@ class ObjectSurface(PathOp.ObjectOp):
         # to avoid inadvertent cutting.
         maxXYDistanceSqrd = (self.cutter.getDiameter() * 2) ** 2
 
-        #if obj.OptimizeStepOverTransitions:
         if obj.OptimizeStepOverTransitions and p2.z != ChecklayDep:
             if p1 and p2:
                 # Short distance within step over
