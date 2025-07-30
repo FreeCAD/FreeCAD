@@ -2178,8 +2178,7 @@ QString EditModeConstraintCoinManager::getPresentationString(const Constraint* c
     return sDimFmt;
 }
 
-std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPickedPoint* Point,
-                                                                      const SbVec2s& cursorPos)
+std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPickedPoint* Point)
 {
     std::set<int> constrIndices;
     SoPath* path = Point->getPath();
@@ -2190,7 +2189,6 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
     if (tailFather2 != editModeScenegraphNodes.constrGroup) {
         return constrIndices;
     }
-
 
     SoNode* tail = path->getTail();
     SoNode* tailFather = path->getNode(path->getLength() - 2);
@@ -2236,25 +2234,13 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
                         // In the case of second icons (the same constraint has two icons at two
                         // different positions), the translation vectors have to be added, as the
                         // second ZoomTranslation operates on top of the first.
-                        //
-                        // Coordinates are projected on the sketch plane and then to the screen in
-                        // the interval [0 1] Then this result is converted to pixels using the
-                        // scale factor.
-
-                        SbVec3f absPos;
-                        SbVec3f trans;
-                        float scaleFactor;
 
                         auto translation = static_cast<SoZoomTranslation*>(
                             static_cast<SoSeparator*>(tailFather)
                                 ->getChild(static_cast<int>(
                                     ConstraintNodePosition::FirstTranslationIndex)));
 
-                        absPos = translation->abPos.getValue();
-
-                        trans = translation->translation.getValue();
-
-                        scaleFactor = translation->getScaleFactor();
+                        SbVec3f iconGroupPos = translation->abPos.getValue();
 
                         if (tail
                             != sep->getChild(
@@ -2264,46 +2250,28 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
                                     ->getChild(static_cast<int>(
                                         ConstraintNodePosition::SecondTranslationIndex)));
 
-                            absPos += translation2->abPos.getValue();
-
-                            trans += translation2->translation.getValue();
-
-                            scaleFactor = translation2->getScaleFactor();
+                            iconGroupPos += translation2->abPos.getValue();
                         }
 
-                        // Only the translation is scaled because this is how SoZoomTranslation
-                        // works
-                        SbVec3f constrPos = absPos + scaleFactor * trans;
-
-                        SbVec2f iconCoords = ViewProviderSketchCoinAttorney::getScreenCoordinates(
+                        SbVec2f iconGroupCoords =
+                            ViewProviderSketchCoinAttorney::getScreenCoordinates(
                             viewProvider,
-                            SbVec2f(constrPos[0], constrPos[1]));
+                            SbVec2f(iconGroupPos[0], iconGroupPos[1]));
 
-                        // cursorPos is SbVec2s in screen coordinates coming from SoEvent in
-                        // mousemove
-                        //
+                        SbVec2f cursorCoords = ViewProviderSketchCoinAttorney::getScreenCoordinates(
+                            viewProvider,
+                            SbVec2f(Point->getPoint()[0], Point->getPoint()[1]));
+
                         // Coordinates of the mouse cursor on the icon, origin at top-left for Qt
                         // but bottom-left for OIV.
                         // The coordinates are needed in Qt format, i.e. from top to bottom.
-                        int iconX = cursorPos[0] - iconCoords[0] + iconSize[0] / 2,
-                            iconY = cursorPos[1] - iconCoords[1] + iconSize[1] / 2;
-                        iconY = iconSize[1] - iconY;
+                        int iconX = cursorCoords[0] - iconGroupCoords[0] + iconSize[0] / 2;
+                        int iconY = iconGroupCoords[1] - cursorCoords[1];
 
                         for (ConstrIconBBVec::iterator b =
                                  combinedConstrBoxes[constrIdsStr].begin();
                              b != combinedConstrBoxes[constrIdsStr].end();
                              ++b) {
-
-#ifdef FC_DEBUG
-                            // Useful code to debug coordinates and bounding boxes that does
-                            // not need to be compiled in for any debug operations.
-
-                            /*Base::Console().log("Abs(%f,%f),Trans(%f,%f),Coords(%d,%d),iCoords(%f,%f),icon(%d,%d),isize(%d,%d),boundingbox([%d,%d],[%d,%d])\n",
-                             * absPos[0],absPos[1],trans[0], trans[1], cursorPos[0],
-                             * cursorPos[1], iconCoords[0], iconCoords[1], iconX, iconY,
-                             * iconSize[0], iconSize[1],
-                             * b->first.topLeft().x(),b->first.topLeft().y(),b->first.bottomRight().x(),b->first.bottomRight().y());*/
-#endif
 
                             if (b->first.contains(iconX, iconY)) {
                                 // We've found a bounding box that contains the mouse pointer!
