@@ -56,6 +56,16 @@ ConstraintHeatflux::ConstraintHeatflux()
                       App::Prop_None,
                       "Cavity radiation");
     ADD_PROPERTY_TYPE(CavityName, ("cav"), "ConstraintHeatflux", App::Prop_None, "Cavity name");
+    ADD_PROPERTY_TYPE(EnableAmplitude,
+                      (false),
+                      "ConstraintHeatflux",
+                      (App::PropertyType)(App::Prop_None),
+                      "Amplitude of the heat flux load");
+    ADD_PROPERTY_TYPE(AmplitudeValues,
+                      (std::vector<std::string> {"0, 0", "1, 1"}),
+                      "ConstraintHeatflux",
+                      (App::PropertyType)(App::Prop_None),
+                      "Amplitude values");
 }
 
 App::DocumentObjectExecReturn* ConstraintHeatflux::execute()
