@@ -25,6 +25,7 @@ __title__ = "FreeCAD FEM calculix amplitude"
 __author__ = "Jakub Michalski"
 __url__ = "https://www.freecad.org"
 
+
 def write_amplitude(f, ccxwriter):
 
     # write amplitude definitions for all analysis features that use them

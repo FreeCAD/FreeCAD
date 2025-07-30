@@ -67,9 +67,9 @@ def write_constraint(f, femobj, disp_obj, ccxwriter):
     # floats read from ccx should use {:.13G}, see comment in writer module
 
     if disp_obj.EnableAmplitude:
-    	f.write(f"*BOUNDARY, AMPLITUDE={disp_obj.Name}\n")
+        f.write(f"*BOUNDARY, AMPLITUDE={disp_obj.Name}\n")
     else:
-    	f.write("*BOUNDARY\n")
+        f.write("*BOUNDARY\n")
     if not disp_obj.xFree:
         f.write(
             "{},1,1,{}\n".format(
