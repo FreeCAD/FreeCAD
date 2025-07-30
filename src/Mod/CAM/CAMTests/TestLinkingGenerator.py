@@ -35,7 +35,7 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
             solids=[],
         )
         self.assertTrue(len(cmds) > 0)
-        self.assertEqual(cmds[0].Name, "G1")
+        self.assertEqual(cmds[0].Name, "G0")
 
     def test_same_position_returns_empty(self):
         cmds = generator.get_linking_moves(

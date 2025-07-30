@@ -55,6 +55,10 @@ def get_linking_moves(
         raise RuntimeError("No collision-free path found between start and target positions")
 
     cmds = Path.fromShape(wire).Commands
+
+    rapids = []
+    for cmd in cmds:
+        cmd.Name = "G0"
     return cmds
 
 
