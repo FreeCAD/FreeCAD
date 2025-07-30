@@ -2255,8 +2255,8 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
 
                         SbVec2f iconGroupCoords =
                             ViewProviderSketchCoinAttorney::getScreenCoordinates(
-                            viewProvider,
-                            SbVec2f(iconGroupPos[0], iconGroupPos[1]));
+                                viewProvider,
+                                SbVec2f(iconGroupPos[0], iconGroupPos[1]));
 
                         SbVec2f cursorCoords = ViewProviderSketchCoinAttorney::getScreenCoordinates(
                             viewProvider,
