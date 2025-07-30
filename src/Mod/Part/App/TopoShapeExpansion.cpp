@@ -974,7 +974,6 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
                     }
                 }
                 ss.str("");
-
                 ensureElementMap()->encodeElementName(shapetype[0], name, ss, &sids, Tag, op, other.Tag);
                 elementMap()->setElementName(element, name, Tag, &sids);
             }
@@ -4591,7 +4590,8 @@ TopoShape& TopoShape::makeElementDraft(const TopoShape& shape,
 TopoShape& TopoShape::makeElementFace(const TopoShape& shape,
                                       const char* op,
                                       const char* maker,
-                                      const gp_Pln* plane)
+                                      const gp_Pln* plane,
+                                      const int faceElementSupportLimit)
 {
     std::vector<TopoShape> shapes;
     if (shape.isNull()) {
@@ -4603,19 +4603,21 @@ TopoShape& TopoShape::makeElementFace(const TopoShape& shape,
     else {
         shapes.push_back(shape);
     }
-    return makeElementFace(shapes, op, maker, plane);
+    return makeElementFace(shapes, op, maker, plane, faceElementSupportLimit);
 }
 
 TopoShape& TopoShape::makeElementFace(const std::vector<TopoShape>& shapes,
                                       const char* op,
                                       const char* maker,
-                                      const gp_Pln* plane)
+                                      const gp_Pln* plane,
+                                      const int faceElementSupportLimit)
 {
     if (!maker || !maker[0]) {
         maker = "Part::FaceMakerBullseye";
     }
     std::unique_ptr<FaceMaker> mkFace = FaceMaker::ConstructFromType(maker);
     mkFace->MyHasher = Hasher;
+    mkFace->setElementSupportLimit(faceElementSupportLimit);
     mkFace->MyOp = op;
     if (plane) {
         mkFace->setPlane(*plane);
