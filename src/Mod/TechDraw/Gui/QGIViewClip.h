@@ -42,6 +42,9 @@ public:
 
     enum {Type = UserType::QGIViewClip};
     int type() const override { return Type;}
+    bool sceneEventFilter(QGraphicsItem *watched, QEvent *event) override;
+    bool selectionIsInGroup() const;
+    bool forwardEventToSelection(QGraphicsItem *watched, QEvent *event) const;
 
     void updateView(bool update = false) override;
 

@@ -25,10 +25,14 @@
 #ifndef _PreComp_
 # include <algorithm>    // std::find
 # include <QGraphicsScene>
+# include <QKeyEvent>
 #endif
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionObject.h>
 
 #include <Base/Console.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
 
 #include "QGIViewClip.h"
 #include "QGCustomClip.h"
@@ -37,10 +41,12 @@
 
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 QGIViewClip::QGIViewClip()
 {
     setHandlesChildEvents(false);
+    // setHandlesChildEvents(true);
     setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -156,3 +162,63 @@ void QGIViewClip::drawClip()
         }
     }
 }
+
+
+bool QGIViewClip::sceneEventFilter(QGraphicsItem *watched, QEvent *event)
+{
+    if (event->type() == QEvent::ShortcutOverride) {
+        // if we accept this event, we should get a regular keystroke event next
+        // which will be processed by QGVPage/QGVNavStyle keypress logic, but not forwarded to
+        // Std_Delete
+        auto* keyEvent = static_cast<QKeyEvent*>(event);
+        if (keyEvent->matches(QKeySequence::Delete))  {
+            if (selectionIsInGroup()) {
+                return forwardEventToSelection(watched, event);
+            }
+        }
+    }
+
+    return QGraphicsItem::sceneEventFilter(watched, event);
+}
+
+
+bool QGIViewClip::selectionIsInGroup() const
+{
+    bool single = false;
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(nullptr, DrawView::getClassTypeId(),
+                                           Gui::ResolveMode::OldStyleElement, single);
+    if (selection.empty()) {
+        return false;
+    }
+
+    auto* clipGroup = freecad_cast<DrawViewClip*>(getViewObject());
+    for (auto& selItem : selection) {
+        auto docObj = selItem.getObject();
+        if (!clipGroup->isViewInClip(docObj)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool QGIViewClip::forwardEventToSelection(QGraphicsItem *watched, QEvent *event) const
+{
+    bool single = false;
+    auto selection = Gui::Selection().getSelectionEx(nullptr, DrawViewPart::getClassTypeId(),
+                                           Gui::ResolveMode::OldStyleElement, single);
+    if (selection.empty()) {
+        return false;
+    }
+
+    // ?? if multiple views (docObjs) are in selection, what do we do? call each in succession while
+    //    summing the returned booleans?
+    App::DocumentObject* docObj = selection[0].getObject();
+    QGIView* qview = getQGIVByName(docObj->getNameInDocument());
+    if (!qview) {
+        return false;
+    }
+
+    return qview->pseudoEventFilter(watched, event);
+}
+
