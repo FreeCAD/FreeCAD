@@ -749,33 +749,15 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         }
         else {
             try {
-                // For "2 sides" resulting in two shapes, perform XOR: (A U B) - (A n B)
-                // We don't have a OpCodes for XOR so we need to do it manually?
-                TopoShape prism_A = prisms[0];
-                TopoShape prism_B = prisms[1];
-
-                TopoShape union_AB(0, getDocument()->getStringHasher());
-                TopoShape common_AB(0, getDocument()->getStringHasher());
-                
-                union_AB.makeElementFuse(prisms);
-
-                // 2. Calculate A_Intersection_B = Common(A, B)
-                common_AB.makeElementBoolean(Part::OpCodes::Common, {prism_A, prism_B});
-                if (common_AB.isNull() || common_AB.getShape().IsNull()) {
-                    prism = union_AB; // If no common part, XOR is just the union
-                }
-                else {
-                    // 3. Calculate XOR_Result = Cut(A_Union_B, A_Intersection_B)
-                    prism.makeElementBoolean(Part::OpCodes::Cut, {union_AB, common_AB});
-                }
+                prism.makeElementXor(prisms, Part::OpCodes::Prism);
             }
             catch (const Standard_Failure& e) {
                 return new App::DocumentObjectExecReturn(
-                    std::string("Failed to fuse extrusion sides (OCC): ") + e.GetMessageString());
+                    std::string("Failed to xor extrusion sides (OCC): ") + e.GetMessageString());
             }
             catch (const Base::Exception& e) {
                 return new App::DocumentObjectExecReturn(
-                    std::string("Failed to fuse extrusion sides: ") + e.what());
+                    std::string("Failed to xor extrusion sides: ") + e.what());
             }
         }
 
