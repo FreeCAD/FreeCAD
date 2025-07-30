@@ -24,6 +24,7 @@
 import TestApp
 
 from CAMTests.TestCAMSanity import TestCAMSanity
+from CAMTests.TestLinkingGenerator import TestGetLinkingMoves
 from CAMTests.TestPathProfile import TestPathProfile
 
 from CAMTests.TestPathAdaptive import TestPathAdaptive
