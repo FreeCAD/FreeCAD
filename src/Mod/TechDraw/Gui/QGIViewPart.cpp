@@ -111,13 +111,11 @@ QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant& valu
 
 bool QGIViewPart::sceneEventFilter(QGraphicsItem *watched, QEvent *event)
 {
-    // Base::Console().message("QGIVP::sceneEventFilter - event: %d watchedtype: %d\n",
-    //                         event->type(), watched->type() - QGraphicsItem::UserType);
     if (event->type() == QEvent::ShortcutOverride) {
         // if we accept this event, we should get a regular keystroke event next
         // which will be processed by QGVPage/QGVNavStyle keypress logic, but not forwarded to
         // Std_Delete
-        QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+        auto *keyEvent = static_cast<QKeyEvent*>(event);
         if (keyEvent->matches(QKeySequence::Delete))  {
             bool success = removeSelectedCosmetic();
             if (success) {

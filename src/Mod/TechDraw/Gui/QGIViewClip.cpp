@@ -25,10 +25,14 @@
 #ifndef _PreComp_
 # include <algorithm>    // std::find
 # include <QGraphicsScene>
+# include <QKeyEvent>
 #endif
+#include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionObject.h>
 
 #include <Base/Console.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
 
 #include "QGIViewClip.h"
 #include "QGCustomClip.h"
@@ -37,10 +41,12 @@
 
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 QGIViewClip::QGIViewClip()
 {
     setHandlesChildEvents(false);
+    // setHandlesChildEvents(true);
     setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -156,3 +162,58 @@ void QGIViewClip::drawClip()
         }
     }
 }
+
+
+bool QGIViewClip::sceneEventFilter(QGraphicsItem *watched, QEvent *event)
+{
+    if (event->type() == QEvent::ShortcutOverride) {
+        // if we accept this event, we should get a regular keystroke event next
+        // which will be processed by QGVPage/QGVNavStyle keypress logic, but not forwarded to
+        // Std_Delete
+        auto* keyEvent = static_cast<QKeyEvent*>(event);
+        if (keyEvent->matches(QKeySequence::Delete))  {
+            DrawView* selectedView = selectionIsInGroup();
+            if (selectedView) {
+                return forwardEventToSelection(getQGIVByName(selectedView->getNameInDocument()),
+                                               event);
+            }
+        }
+    }
+
+    return QGraphicsItem::sceneEventFilter(watched, event);
+}
+
+
+//! returns first view in the selection that is a member of this clip group with subelements selected.
+DrawView* QGIViewClip::selectionIsInGroup() const
+{
+    bool single = false;
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(nullptr, DrawView::getClassTypeId(),
+                                           Gui::ResolveMode::OldStyleElement, single);
+    if (selection.empty()) {
+        return {};
+    }
+
+    auto* clipGroup = freecad_cast<DrawViewClip*>(getViewObject());
+    for (auto& selItem : selection) {
+        auto view = freecad_cast<DrawView*>(selItem.getObject());
+        if (view &&
+            clipGroup->isViewInClip(view) &&
+            selItem.hasSubNames()) {
+            return view;
+        }
+    }
+
+    return {};
+}
+
+
+bool QGIViewClip::forwardEventToSelection(QGIView* qview, QEvent* event) const
+{
+    if (!qview) {
+        return false;
+    }
+
+    return qview->pseudoEventFilter(qview, event);
+}
+

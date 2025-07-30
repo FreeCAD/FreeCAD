@@ -748,7 +748,7 @@ QRectF QGIView::boundingRect() const
     return m_border->rect().adjusted(-2., -2., 2., 2.);     //allow for border line width  //TODO: fiddle brect if border off?
 }
 
-QGIView* QGIView::getQGIVByName(std::string name)
+QGIView* QGIView::getQGIVByName(std::string name) const
 {
     QList<QGraphicsItem*> qgItems = scene()->items();
     QList<QGraphicsItem*>::iterator it = qgItems.begin();
