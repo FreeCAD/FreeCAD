@@ -310,7 +310,11 @@ void ViewProviderHole::updateData(const App::Property* prop)
         return;
     }
 
-    boreTextureNode->filename.setValue(":/images/ThreadOverlay.png");
+    if (pcHole->ThreadDirection.getValue() != 0) {
+        boreTextureNode->filename.setValue(":/images/ThreadOverlayR.png");
+    } else {
+        boreTextureNode->filename.setValue(":/images/ThreadOverlayL.png");
+    }
     boreTextureNode->wrapS = SoTexture2::REPEAT;
     boreTextureNode->wrapT = SoTexture2::REPEAT;
 
@@ -424,7 +428,7 @@ bool ViewProviderHole::generateBoreMeshData(const PartDesign::Hole* pcHole, cons
                                             const gp_Dir& holeFeatureAxis, const gp_Pnt& axisLocationPnt,
                                             double& outMinProj, double& outMaxProj)
 {
-    double threadPitch = pcHole->getThreadPitch();
+    const double threadPitch = pcHole->getThreadPitch();
     if (threadPitch == 0.0) {
         return false;
     }
@@ -450,11 +454,11 @@ bool ViewProviderHole::generateBoreMeshData(const PartDesign::Hole* pcHole, cons
             }
         }
     }
-    gp_Vec refVecInPlane = (std::abs(holeFeatureAxis.Dot(gp_Dir(1,0,0))) < (1 -Precision::Confusion()))
+    gp_Vec refVecInPlane = (std::abs(holeFeatureAxis.Dot(gp_Dir(1,0,0))) < (1 - Precision::Confusion()))
                            ? holeFeatureAxis.Crossed(gp_Dir(1,0,0))
                            : holeFeatureAxis.Crossed(gp_Dir(0,1,0));
     refVecInPlane.Normalize();
-    gp_Vec crossRefVec = holeFeatureAxis.Crossed(refVecInPlane);
+    const gp_Vec crossRefVec = holeFeatureAxis.Crossed(refVecInPlane);
 
     for (const auto& face : boreFaces) {
         std::vector<gp_Pnt> meshPoints;
@@ -463,32 +467,28 @@ bool ViewProviderHole::generateBoreMeshData(const PartDesign::Hole* pcHole, cons
             continue;
         }
 
-        int vertexOffset = static_cast<int>(vertices.size());
+        std::vector<int> localToGlobalIndexMap(meshPoints.size());
 
-        for (const auto& pnt : meshPoints) {
-            vertices.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
+        for (size_t i = 0; i < meshPoints.size(); ++i) {
+            const auto& vertexPoint = meshPoints[i];
+            const gp_Vec toPoint(axisLocationPnt, vertexPoint);
+            const gp_Vec radialComponent = toPoint - (toPoint.Dot(holeFeatureAxis) * holeFeatureAxis);
 
-            gp_Vec toPoint(axisLocationPnt, pnt);
-            gp_Vec radial = toPoint - (toPoint.Dot(holeFeatureAxis) * holeFeatureAxis);
+            const float vCoord = static_cast<float>((toPoint.Dot(holeFeatureAxis) - outMinProj) / threadPitch);
 
-            // Calculate V-coordinate (axial direction)
-            if (radial.SquareMagnitude() >  std::pow(Precision::Confusion(), 2)) {
-                gp_Dir normal(radial);
-                normals.emplace_back(normal.X(), normal.Y(), normal.Z());
-            } else {
-                normals.emplace_back(holeFeatureAxis.X(), holeFeatureAxis.Y(), holeFeatureAxis.Z());
-            }
+            const double angleRad = std::atan2(radialComponent.Dot(crossRefVec), radialComponent.Dot(refVecInPlane));
+            float uCoord = static_cast<float>(angleRad / (2.0 * M_PI));
+            uCoord -= std::floor(uCoord);
 
-            // V-coordinate (axial direction)
-            double axialPos = toPoint.Dot(holeFeatureAxis);
-            float v_coord = static_cast<float>((axialPos - outMinProj) / threadPitch);
+            vertices.emplace_back(vertexPoint.X(), vertexPoint.Y(), vertexPoint.Z());
 
-            // U-coordinate (around the circumference)
-            double angleRad = std::atan2(radial.Dot(crossRefVec), radial.Dot(refVecInPlane));
-            float u_coord = static_cast<float>(angleRad / (2 * M_PI));
-            u_coord -= std::floor(u_coord);
+            const gp_Dir normalDir = (radialComponent.SquareMagnitude() > std::pow(Precision::Confusion(), 2))
+                                     ? gp_Dir(radialComponent)
+                                     : holeFeatureAxis;
+            normals.emplace_back(normalDir.X(), normalDir.Y(), normalDir.Z());
 
-            uvs.emplace_back(u_coord, v_coord);
+            uvs.emplace_back(uCoord, vCoord);
+            localToGlobalIndexMap[i] = static_cast<int>(vertices.size()) - 1;
         }
 
         for (const auto& facet : meshFacets) {
@@ -496,17 +496,51 @@ bool ViewProviderHole::generateBoreMeshData(const PartDesign::Hole* pcHole, cons
             Standard_Integer n2 = 1;
             Standard_Integer n3 = 1;
             facet.Get(n1, n2, n3);
-            indices.push_back(n1 - 1 + vertexOffset);
-            indices.push_back(n2 - 1 + vertexOffset);
-            indices.push_back(n3 - 1 + vertexOffset);
-            indices.push_back(-1); // End of face marker for SoIndexedFaceSet
+
+            std::array<int, 3> triangleIndices = {
+                localToGlobalIndexMap[static_cast<size_t>(n1 - 1)],
+                localToGlobalIndexMap[static_cast<size_t>(n2 - 1)],
+                localToGlobalIndexMap[static_cast<size_t>(n3 - 1)]
+            };
+
+            const float u0 = uvs[triangleIndices[0]][0];
+            const float u1 = uvs[triangleIndices[1]][0];
+            const float u2 = uvs[triangleIndices[2]][0];
+
+            constexpr float uvSeamThreshold = 0.5F;
+            const bool crossesSeam = std::abs(u0 - u1) > uvSeamThreshold ||
+                                     std::abs(u1 - u2) > uvSeamThreshold ||
+                                     std::abs(u2 - u0) > uvSeamThreshold;
+
+            if (crossesSeam) {
+                for (int j = 0; j < 3; ++j) {
+                    if (uvs[triangleIndices.at(j)][0] < uvSeamThreshold) {
+                        const int oldIndex = triangleIndices.at(j);
+
+                        SbVec2f newUV = uvs[oldIndex];
+                        newUV[0] += 1.0F;
+
+                        const int newIndex = static_cast<int>(vertices.size());
+                        vertices.push_back(vertices[oldIndex]);
+                        normals.push_back(normals[oldIndex]);
+                        uvs.push_back(newUV);
+
+                        triangleIndices.at(j) = newIndex;
+                    }
+                }
+            }
+            indices.push_back(triangleIndices[0]);
+            indices.push_back(triangleIndices[1]);
+            indices.push_back(triangleIndices[2]);
+            indices.push_back(-1);
         }
     }
 
     boreFaceCoordinates->point.setValues(0, static_cast<int>(vertices.size()), vertices.data());
     boreIndexedFaceSet->coordIndex.setValues(0, static_cast<int>(indices.size()), indices.data());
-    boreFacesTextureCoords->point.setValues(0, static_cast<int>(uvs.size()), uvs.data()); // This one is key!
+    boreFacesTextureCoords->point.setValues(0, static_cast<int>(uvs.size()), uvs.data());
     boreNormals->vector.setValues(0, static_cast<int>(normals.size()), normals.data());
     boreNormalBinding->value = SoNormalBinding::PER_VERTEX_INDEXED;
+
     return true;
 }
