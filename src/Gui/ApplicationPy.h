@@ -107,9 +107,7 @@ public:
     static PyObject* sAddWbManipulator         (PyObject *self,PyObject *args);
     static PyObject* sRemoveWbManipulator      (PyObject *self,PyObject *args);
 
-    static PyObject* sListUserEditModes        (PyObject *self,PyObject *args);
     static PyObject* sGetUserEditMode          (PyObject *self,PyObject *args);
-    static PyObject* sSetUserEditMode          (PyObject *self,PyObject *args);
 
     static PyObject* sSuspendWaitCursor        (PyObject *self, PyObject *args);
     static PyObject* sResumeWaitCursor         (PyObject *self, PyObject *args);
