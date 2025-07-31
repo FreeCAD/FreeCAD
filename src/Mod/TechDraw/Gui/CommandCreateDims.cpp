@@ -2086,8 +2086,13 @@ bool CmdTechDrawHorizontalExtentDimension::isActive()
 
 void execExtent(Gui::Command* cmd, const std::string& dimType)
 {
-    std::string transName = "Create Dimension " + dimType;
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", transName.c_str()));
+    const char* commandString = nullptr;
+    if (dimType == "DistanceX") {
+        commandString = QT_TRANSLATE_NOOP("Command", "Create Dimension DistanceX");
+    } else if (dimType == "DistanceY") {
+        commandString = QT_TRANSLATE_NOOP("Command", "Create Dimension DistanceY");
+    }
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", commandString));
 
     bool result = _checkDrawViewPart(cmd);
     if (!result) {
