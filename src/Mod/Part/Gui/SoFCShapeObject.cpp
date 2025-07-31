@@ -47,6 +47,23 @@
 
 using namespace PartGui;
 
+SO_NODE_SOURCE(SoFCShape);
+
+SoFCShape::SoFCShape()
+    : coords(new SoCoordinate3)
+    , norm(new SoNormal)
+    , faceset(new SoBrepFaceSet)
+    , lineset(new SoBrepEdgeSet)
+    , nodeset(new SoBrepPointSet)
+{
+    SO_NODE_CONSTRUCTOR(SoFCShape);
+}
+
+void SoFCShape::initClass()
+{
+    SO_NODE_INIT_CLASS(SoFCShape, SoSeparator, "Separator");
+}
+
 SO_NODE_SOURCE(SoFCControlPoints)
 
 void SoFCControlPoints::initClass()

@@ -75,6 +75,8 @@
 #include "ViewProviderSketchGeometryExtension.h"
 #include "Workbench.h"
 
+#include <Mod/Part/Gui/SoFCShapeObject.h>
+
 
 // clang-format off
 FC_LOG_LEVEL_INIT("Sketch", true, true)
@@ -485,7 +487,30 @@ QString ViewProviderSketch::ToolManager::getToolWidgetText() const
     }
 }
 
+/*************************** SoSketchFaces **************************/
 
+SO_NODE_SOURCE(SoSketchFaces);
+
+SoSketchFaces::SoSketchFaces(){
+    SO_NODE_CONSTRUCTOR(SoSketchFaces);
+
+    SO_NODE_ADD_FIELD(color, (SbColor(1.0f, 1.0f, 1.0f)));
+    SO_NODE_ADD_FIELD(transparency, (0.8));
+    //
+    auto* material = new SoMaterial;
+    material->diffuseColor.connectFrom(&color);
+    material->transparency.connectFrom(&transparency);
+
+    SoSeparator::addChild(material);
+    SoSeparator::addChild(coords);
+    SoSeparator::addChild(norm);
+    SoSeparator::addChild(faceset);
+}
+
+void SoSketchFaces::initClass()
+{
+    SO_NODE_INIT_CLASS(SoSketchFaces, SoFCShape, "FCShape");
+}
 
 /*************************** ViewProviderSketch **************************/
 
@@ -499,7 +524,6 @@ SbVec2s ViewProviderSketch::DoubleClick::newCursorPos;
 // Construction/Destruction
 
 /* TRANSLATOR SketcherGui::ViewProviderSketch */
-
 PROPERTY_SOURCE_WITH_EXTENSIONS(SketcherGui::ViewProviderSketch, PartGui::ViewProvider2DObject)
 
 
@@ -507,6 +531,8 @@ ViewProviderSketch::ViewProviderSketch()
     : SelectionObserver(false)
     , toolManager(this)
     , Mode(STATUS_NONE)
+    , pcSketchFaces(new SoSketchFaces)
+    , pcSketchFacesToggle(new SoToggleSwitch)
     , listener(nullptr)
     , editCoinManager(nullptr)
     , snapManager(nullptr)
@@ -612,6 +638,8 @@ ViewProviderSketch::ViewProviderSketch()
     cameraSensor.setFunction(&ViewProviderSketch::camSensCB);
 
     updateColorPropertiesVisibility();
+
+    pcSketchFacesToggle->addChild(pcSketchFaces);
 }
 
 ViewProviderSketch::~ViewProviderSketch()
@@ -1214,7 +1242,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     return true;
                 case STATUS_SELECT_Constraint: {
                     if (pp) {
-                        auto sels = preselection.PreselectConstraintSet;
+                        auto sels 
+                          preselection.PreselectConstraintSet;
                         for (int id : sels) {
                             std::stringstream ss;
                             ss << Sketcher::PropertyConstraintList::getConstraintName(id);
@@ -2968,14 +2997,16 @@ void ViewProviderSketch::updateData(const App::Property* prop) {
     }
 
     if (prop == &getSketchObject()->InternalShape) {
-        if (pInternalView) {
-            pInternalView->updateVisual();
-        }
-    }
-    else if (prop != &getSketchObject()->Constraints) {
-        signalElementsChanged();
+        const auto& shape = getSketchObject()->InternalShape.getValue();
+        setupCoinGeometry(shape,
+                          pcSketchFaces,
+                          Deviation.getValue(),
+                          AngularDeflection.getValue());
     }
 
+    if (prop != &getSketchObject()->Constraints) {
+        signalElementsChanged();
+    }
 }
 
 void ViewProviderSketch::slotSolverUpdate()
@@ -3008,6 +3039,8 @@ void ViewProviderSketch::slotSolverUpdate()
 
 void ViewProviderSketch::onChanged(const App::Property* prop)
 {
+    ViewProvider2DObject::onChanged(prop);
+
     if (prop == &VisualLayerList) {
         if (isInEditMode()) {
             // Configure and rebuild Coin SceneGraph
@@ -3021,15 +3054,14 @@ void ViewProviderSketch::onChanged(const App::Property* prop)
         return;
     }
 
-    ViewProvider2DObject::onChanged(prop);
+    if (prop == &Visibility) {
+        pcSketchFacesToggle->on = Visibility.getValue();
+        return;
+    }
 
-    if (pInternalView) {
-        if (prop == &Transparency) {
-            pInternalView->Transparency.setValue(Transparency.getValue());
-        }
-        else if (prop == &ShapeAppearance) {
-            pInternalView->ShapeAppearance.setValue(ShapeAppearance.getValue());
-        }
+    if (prop == &ShapeAppearance) {
+        pcSketchFaces->color.setValue(Base::convertTo<SbColor>(ShapeAppearance.getDiffuseColor()));
+        pcSketchFaces->transparency.setValue(ShapeAppearance.getTransparency());
     }
 }
 
@@ -3085,59 +3117,68 @@ void SketcherGui::ViewProviderSketch::finishRestoring()
         updateColorPropertiesVisibility();
     }
 
-    if (pInternalView && getSketchObject()->MakeInternals.getValue()) {
-        pInternalView->updateVisual();
+    if (getSketchObject()->MakeInternals.getValue()) {
+        updateVisual();
     }
 }
+
+// clang-format on
+bool ViewProviderSketch::getElementPicked(const SoPickedPoint* pp, std::string& subname) const
+{
+    if (pp->getPath()->containsNode(pcSketchFaces) && !isInEditMode()) {
+        if (ViewProvider2DObject::getElementPicked(pp, subname)) {
+            subname = SketchObject::internalPrefix() + subname;
+            auto& elementMap = getSketchObject()->getInternalElementMap();
+
+            if (auto it = elementMap.find(subname); it != elementMap.end()) {
+                subname = it->second;
+            }
+
+            return true;
+        }
+    }
+
+    return ViewProvider2DObject::getElementPicked(pp, subname);
+}
+
+bool ViewProviderSketch::getDetailPath(const char* subname,
+                                       SoFullPath* pPath,
+                                       bool append,
+                                       SoDetail*& det) const
+{
+    const auto getLastPartOfName = [](const char* subname) -> const char* {
+        const char* realName = strrchr(subname, '.');
+
+        return realName ? realName + 1 : subname;
+    };
+
+    if (!isInEditMode() && subname) {
+        const char* realName = getLastPartOfName(subname);
+
+        realName = SketchObject::convertInternalName(realName);
+        if (realName) {
+            auto len = pPath->getLength();
+            if (append) {
+                pPath->append(pcRoot);
+                pPath->append(pcModeSwitch);
+            }
+
+            if (!ViewProvider2DObject::getDetailPath(realName, pPath, false, det)) {
+                pPath->truncate(len);
+                return false;
+            }
+            return true;
+        }
+    }
+
+    return ViewProvider2DObject::getDetailPath(subname, pPath, append, det);
+}
+// clang-format off
 
 void ViewProviderSketch::attach(App::DocumentObject* pcFeat)
 {
     ViewProvider2DObject::attach(pcFeat);
-
-    if (pFaceRoot) {
-        // Commented lines are from RealThunder's branch, but they are
-        // not implemented in main. It may be interesting to look into those later.
-        pInternalView.reset(new PartGui::ViewProviderPart);
-        pInternalView->setShapePropertyName("InternalShape");
-        pInternalView->forceUpdate();
-        //pInternalView->MapFaceColor.setValue(false);
-        //pInternalView->MapLineColor.setValue(false);
-        //pInternalView->MapPointColor.setValue(false);
-        //pInternalView->MapTransparency.setValue(false);
-        //pInternalView->ForceMapColors.setValue(false);
-        pInternalView->ShapeAppearance.setValue(ShapeAppearance.getValue());
-        pInternalView->Lighting.setValue(1);
-        //pInternalView->enableFullSelectionHighlight(false, false, false);
-        pInternalView->setStatus(Gui::SecondaryView, true);
-        pInternalView->attach(getObject());
-        pInternalView->setDefaultMode(1);
-        //if (pInternalView->getModeSwitch()->isOfType(SoFCSwitch::getClassTypeId())) {
-        //    static_cast<SoFCSwitch*>(pInternalView->getModeSwitch())->defaultChild = 0;
-        //}
-        pInternalView->show();
-        pFaceRoot->addChild(pInternalView->getRoot());
-    }
-}
-
-const char* ViewProviderSketch::getDefaultDisplayMode() const
-{
-    return "Flat Lines";
-}
-
-void ViewProviderSketch::beforeDelete()
-{
-    ViewProvider2DObject::beforeDelete();
-    if (pInternalView) {
-        pInternalView->beforeDelete();
-    }
-}
-
-void ViewProviderSketch::reattach(App::DocumentObject *obj)
-{
-    ViewProvider2DObject::reattach(obj);
-    if (pInternalView) {
-        pInternalView->reattach(obj);
-    }
+    getAnnotation()->addChild(pcSketchFacesToggle);
 }
 
 void ViewProviderSketch::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)

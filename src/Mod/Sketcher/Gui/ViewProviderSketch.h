@@ -45,6 +45,9 @@
 #include "ShortcutListener.h"
 #include "Utils.h"
 
+#include <Gui/Inventor/SoToggleSwitch.h>
+#include <Mod/Part/Gui/ViewProviderPreviewExtension.h>
+
 
 class TopoDS_Shape;
 class TopoDS_Face;
@@ -96,6 +99,20 @@ class DrawSketchHandler;
 
 using GeoList = Sketcher::GeoList;
 using GeoListFacade = Sketcher::GeoListFacade;
+
+class PartGuiExport SoSketchFaces: public PartGui::SoFCShape
+{
+    using inherited = SoFCShape;
+    SO_NODE_HEADER(SoSketchFaces);
+
+public:
+    SoSketchFaces();
+
+    static void initClass();
+
+    SoSFColor color;
+    SoSFFloat transparency;
+};
 
 /** @brief The Sketch ViewProvider
  *
@@ -754,10 +771,6 @@ protected:
                        SoFullPath* pPath,
                        bool append,
                        SoDetail*& det) const override;
-    const char* getDefaultDisplayMode() const override;
-
-    void reattach(App::DocumentObject*) override;
-    void beforeDelete() override;
 
 private:
     /// function to handle OCCT BSpline weight calculation singularities and representation
@@ -958,7 +971,8 @@ private:
     std::string editObjName;
     std::string editSubName;
 
-    std::unique_ptr<PartGui::ViewProviderPart> pInternalView;
+    Gui::CoinPtr<SoSketchFaces> pcSketchFaces;
+    Gui::CoinPtr<SoToggleSwitch> pcSketchFacesToggle;
 
     ShortcutListener* listener;
 

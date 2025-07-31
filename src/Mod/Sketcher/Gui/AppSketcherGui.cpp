@@ -134,6 +134,7 @@ PyMOD_INIT_FUNC(SketcherGui)
     SketcherGui::ViewProviderCustom ::init();
     SketcherGui::ViewProviderCustomPython ::init();
     SketcherGui::SoZoomTranslation ::initClass();
+    SketcherGui::SoSketchFaces ::initClass();
     SketcherGui::PropertyConstraintListItem ::init();
     SketcherGui::ViewProviderSketchGeometryExtension ::init();
 

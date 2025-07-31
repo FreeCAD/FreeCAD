@@ -1361,6 +1361,11 @@ bool TopoShape::isValid() const
     return aChecker.IsValid() ? true : false;
 }
 
+bool TopoShape::isEmpty() const
+{
+    return Tools::isShapeEmpty(this->_Shape);
+}
+
 namespace Part {
 std::vector<std::string> buildShapeEnumVector()
 {
