@@ -6,27 +6,22 @@ from typing import List, Optional
 def get_linking_moves(
     start_position: Vector,
     target_position: Vector,
+    local_clearance: float,
     global_clearance: float,
     tool_shape: Part.Shape,  # required placeholder
-    local_clearance: Optional[float] = None,
     solids: Optional[List[Part.Shape]] = None,
-    retract_height_offset: float = 0.5,
+    retract_height_offset: Optional[float] = None,
 ) -> list:
-
     if start_position == target_position:
         return []
 
-    if local_clearance is None:
-        local_clearance = global_clearance
-
     if local_clearance > global_clearance:
-        raise ValueError("Operation safe plane must not exceed job safe plane")
+        raise ValueError("Local clearance must not exceed global clearance")
 
-    if retract_height_offset < 0:
+    if retract_height_offset is not None and retract_height_offset < 0:
         raise ValueError("Retract offset must be positive")
 
-
-    # build a fusion of solids to test collision
+    # Collision model
     collision_model = None
     if solids:
         solids = [s for s in solids if s]
@@ -35,31 +30,29 @@ def get_linking_moves(
         elif len(solids) > 1:
             collision_model = Part.makeFuse(solids)
 
-    # Build list of transit heights
-    if retract_height_offset > 0:
-        retract_height = max(start_position.z, target_position.z) + retract_height_offset
-        candidate_heights = {retract_height, local_clearance, global_clearance}
+    # Determine candidate heights
+    if retract_height_offset is not None:
+        if retract_height_offset > 0:
+            retract_height = max(start_position.z, target_position.z) + retract_height_offset
+            candidate_heights = {retract_height, local_clearance, global_clearance}
+        else:  # explicitly 0
+            retract_height = max(start_position.z, target_position.z)
+            candidate_heights = {retract_height, local_clearance, global_clearance}
     else:
         candidate_heights = {local_clearance, global_clearance}
 
     heights = sorted(candidate_heights, reverse=True)
 
-    wire = None
-    for height in candidate_heights:
-        trial_wire = make_linking_wire(start_position, target_position, height)
-        if is_wire_collision_free(trial_wire, collision_model):
-            wire = trial_wire
-            break
+    # Try each height
+    for height in heights:
+        wire = make_linking_wire(start_position, target_position, height)
+        if is_wire_collision_free(wire, collision_model):
+            cmds = Path.fromShape(wire).Commands
+            for cmd in cmds:
+                cmd.Name = "G0"
+            return cmds
 
-    if not wire:
-        raise RuntimeError("No collision-free path found between start and target positions")
-
-    cmds = Path.fromShape(wire).Commands
-
-    rapids = []
-    for cmd in cmds:
-        cmd.Name = "G0"
-    return cmds
+    raise RuntimeError("No collision-free path found between start and target positions")
 
 
 def make_linking_wire(start: Vector, target: Vector, z: float) -> Part.Wire:
