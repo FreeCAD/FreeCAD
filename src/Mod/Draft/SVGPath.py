@@ -321,8 +321,7 @@ class FaceTreeNode:
         ''' creates a flattened list of face-name tuples from the facetree
             content
         '''
-        result = []
-        result.append((self.name, self.face))
+        result = [(self.name, self.face)]
         for node in self.children:
             result.extend(node.flatten())
         return result  
@@ -707,7 +706,7 @@ class SvgPathParser:
             elif d in "Zz":
                 path.add_close()
                 
-        path.correct_endpoints();
+        path.correct_endpoints()
         self.shapes = path.create_edges()
         
         
@@ -723,14 +722,14 @@ class SvgPathParser:
                if True or not None Faces are generated from closed shapes.
         '''
         precision = svg_precision()
-        cnt = -1;
+        cnt = -1
         openShapes = []
         self.faces = FaceTreeNode()
         for sh in self.shapes:
             cnt += 1
             add_wire = True
             wr = _make_wire(sh, precision, checkclosed=True)
-            wrcpy = wr.copy();
+            wrcpy = wr.copy()
             wire_reason = ""
             if cnt > 0:
                 face_name = self.name + "_" + str(cnt)

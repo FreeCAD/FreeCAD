@@ -91,7 +91,7 @@ def makeFilletArc(M1,P,Q,N,r2,ccw):
     t1 = (-uv + math.sqrt(dd)) / uu
     t2 = (-uv - math.sqrt(dd)) / uu
 
-    if (abs(t1) < abs(t2)):
+    if abs(t1) < abs(t2):
         t = t1
     else:
         t = t2
@@ -104,7 +104,7 @@ def makeFilletArc(M1,P,Q,N,r2,ccw):
     S1 = M1.mult(r2/(r1+r2)).add(M2.mult(r1/(r1+r2)))
     S2 = M2.sub(br2)
 
-    return (S1, S2, M2)
+    return S1, S2, M2
 
 
 

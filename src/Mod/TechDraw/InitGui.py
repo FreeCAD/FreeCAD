@@ -48,9 +48,7 @@ class TechDrawWorkbench(Workbench):
             import TechDrawTools
         except ImportError as err:
             FreeCAD.Console.PrintError(
-                "Features from TechDrawTools package cannot be loaded. {err}\n".format(
-                    err=str(err)
-                )
+                f"Features from TechDrawTools package cannot be loaded. {err}\n"
             )
 
     def GetClassName(self):

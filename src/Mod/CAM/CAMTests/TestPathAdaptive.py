@@ -818,7 +818,7 @@ def pathOriginatesInBox(cmd, minPoint, maxPoint):
         if "X" in p and "Y" in p:
             x = p.get("X")
             y = p.get("Y")
-            if x > minPoint.x and y > minPoint.y and x < maxPoint.x and y < maxPoint.y:
+            if minPoint.x < x < maxPoint.x and y > minPoint.y and y < maxPoint.y:
                 return True
     return False
 

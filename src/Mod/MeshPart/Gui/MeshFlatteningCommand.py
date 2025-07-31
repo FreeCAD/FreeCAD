@@ -34,10 +34,7 @@ class BaseCommand(object):
         pass
 
     def IsActive(self):
-        if App.ActiveDocument is None:
-            return False
-        else:
-            return True
+        return not App.ActiveDocument is None
 
 
 class CreateFlatMesh(BaseCommand):

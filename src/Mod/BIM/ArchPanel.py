@@ -686,7 +686,7 @@ class PanelCut(Draft.DraftObject):
         else:
             inl = None
             outl = Part.Compound([outl.Wires[0]])
-        return (outl, inl, tag)
+        return outl, inl, tag
 
 
 class ViewProviderPanelCut(Draft.ViewProviderDraft):

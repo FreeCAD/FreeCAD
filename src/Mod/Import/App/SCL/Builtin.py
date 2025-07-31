@@ -228,7 +228,7 @@ def SIN(V):
 # Result : true or false depending on whether V has an actual or indeterminate (?) value.
 # EXAMPLE 131 { IF EXISTS ( a ) THEN ...
 def EXISTS(V):
-    if V == None:
+    if V is None:
         return False
     else:
         return True

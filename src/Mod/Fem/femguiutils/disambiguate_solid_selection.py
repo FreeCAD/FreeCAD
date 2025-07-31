@@ -110,8 +110,7 @@ def build_highlight_map(parent_part: "PartFeature", solid_indices: List[int]) ->
     unhighlighted_color = calculate_unhighlighted_color(parent_part)
 
     # build the highlighting map
-    highlight_colors_for_solid: highlight_map_t = {}
-    highlight_colors_for_solid[None] = unhighlighted_color
+    highlight_colors_for_solid: highlight_map_t = {None: unhighlighted_color}
     for idx in solid_indices:
         solid_faces = solid_parent_faces_indices(parent_part, idx)
 

@@ -70,8 +70,7 @@ class JobPreferencesPage:
 
     def saveStockSettings(self):
         if self.form.stockGroup.isChecked():
-            attrs = {}
-            attrs["version"] = 1
+            attrs = {"version": 1}
             typ = [
                 PathStock.StockType.CreateBox,
                 PathStock.StockType.CreateCylinder,

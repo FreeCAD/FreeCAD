@@ -27,7 +27,7 @@ import FreeCADGui as Gui
 from PySide import QtGui
 from freecad.utils import get_python_exe
 
-class RemoteDebugger():
+class RemoteDebugger:
     def __init__(self, parent=None):
         ui = App.getHomePath() + "Ext/freecad/gui/RemoteDebugger.ui"
         self.dialog = Gui.PySideUic.loadUi(ui)

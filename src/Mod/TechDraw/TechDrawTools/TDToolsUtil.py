@@ -85,7 +85,7 @@ def getSelVertexes(nVertex=1, nSel=0):
         if objectString[0:6] == 'Vertex':
             vertexes.append(view.getVertexBySelection(objectString))
 
-    if (len(vertexes) < nVertex):
+    if len(vertexes) < nVertex:
         displayMessage('TechDraw_Utils',
                         QT_TRANSLATE_NOOP('TechDraw_Utils','Select at least ')+
                         str(nVertex)+
@@ -116,7 +116,7 @@ def getSelEdges(nEdge=1, nSel=0):
         if objectString[0:4] == 'Edge':
             edges.append(view.getEdgeBySelection(objectString))
 
-    if (len(edges) < nEdge):
+    if len(edges) < nEdge:
         displayMessage('TechDraw_Utils',
                         QT_TRANSLATE_NOOP('TechDraw_Utils','Select at least ')+
                         str(nEdge)+
@@ -154,4 +154,4 @@ def getCoordinateVectors(view):
     px = wire2D.Edges[0].Vertexes[0].Point
     py = wire2D.Edges[1].Vertexes[0].Point
     pz = wire2D.Edges[2].Vertexes[0].Point
-    return (px,py,pz)
+    return px,py,pz

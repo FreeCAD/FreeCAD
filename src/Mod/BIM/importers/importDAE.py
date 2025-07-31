@@ -268,12 +268,12 @@ def export(
         findex = np.array([])
         m: Optional[Mesh.Mesh] = None
         if obj.isDerivedFrom("Part::Feature"):
-            FreeCAD.Console.PrintMessage(f"Exporting shape of object {obj.Name} (\"{obj.Label}\")" + "\n")
+            FreeCAD.Console.PrintMessage(f"Exporting shape of object {obj.Name} (\"{obj.Label}\")\n")
             new_shape = obj.Shape.copy()
             new_shape.Placement = obj.getGlobalPlacement()
             m = Mesh.Mesh(triangulate(new_shape))
         elif obj.isDerivedFrom("Mesh::Feature"):
-            FreeCAD.Console.PrintMessage(f"Exporting mesh of object {obj.Name} (\"{obj.Label}\")" + "\n")
+            FreeCAD.Console.PrintMessage(f"Exporting mesh of object {obj.Name} (\"{obj.Label}\")\n")
             m = obj.Mesh
         elif obj.isDerivedFrom("App::Part"):
             for child in obj.OutList:

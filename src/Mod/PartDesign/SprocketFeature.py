@@ -71,10 +71,7 @@ class CommandSprocket:
         FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name,0)")
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument:
-            return True
-        else:
-            return False
+        return FreeCAD.ActiveDocument
 
 
 class Sprocket:

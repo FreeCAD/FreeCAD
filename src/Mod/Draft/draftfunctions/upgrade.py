@@ -321,7 +321,7 @@ def upgrade(objects, delete=False, force=None):
             wires = [Part.Wire(cluster) for cluster in sorted_edges]
         except Part.OCCError:
             return False
-        if len(objects) > 1 and len(wires) == len(objects):
+        if 1 < len(objects) == len(wires):
             # we still have the same number of objects, we actually didn't join anything!
             return False
         new_list = []

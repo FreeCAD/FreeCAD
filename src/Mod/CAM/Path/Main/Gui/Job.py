@@ -1085,7 +1085,7 @@ class TaskPanel:
             return len(tc.InList) == 1
 
         # if anything is selected it can be edited
-        edit = True if self.form.toolControllerList.selectedItems() else False
+        edit = bool(self.form.toolControllerList.selectedItems())
         self.form.toolControllerEdit.setEnabled(edit)
 
         # can only delete what is selected
@@ -1331,7 +1331,7 @@ class TaskPanel:
         if selObject and selFeature:
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.Selection.addSelection(selObject, selFeature)
-        return (selObject, p)
+        return selObject, p
 
     def updateStockEditor(self, index, force=False):
         def setupFromBaseEdit():

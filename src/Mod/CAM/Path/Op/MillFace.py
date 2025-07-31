@@ -177,7 +177,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
                             for wire in shape.Wires[1:]:
                                 if obj.ExcludeRaisedAreas:
                                     ip = self.isPocket(b[0], shape, wire)
-                                    if ip is False:
+                                    if not ip:
                                         holes.append((b[0].Shape, wire))
                                 else:
                                     holes.append((b[0].Shape, wire))

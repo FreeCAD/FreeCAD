@@ -33,7 +33,7 @@ import Part
 def makeTube(outerRadius, innerRadius, height):
     outer_cylinder = Part.makeCylinder(outerRadius, height)
     shape = outer_cylinder
-    if innerRadius > 0 and innerRadius < outerRadius:
+    if 0 < innerRadius < outerRadius:
         inner_cylinder = Part.makeCylinder(innerRadius, height)
         shape = outer_cylinder.cut(inner_cylinder)
     return shape

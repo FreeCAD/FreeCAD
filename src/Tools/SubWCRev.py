@@ -94,10 +94,10 @@ class UnknownControl(VersionControl):
 class DebianChangelog(VersionControl):
     def extractInfo(self, srcdir, bindir):
         # Do not overwrite existing file with almost useless information
-        if os.path.exists(bindir + "/src/Build/Version.h.out"):
+        if os.path.exists(f"{bindir}/src/Build/Version.h.out"):
             return False
         try:
-            f = open(srcdir + "/debian/changelog")
+            f = open(f"{srcdir}/debian/changelog")
         except Exception:
             return False
         c = f.readline()
@@ -107,7 +107,7 @@ class DebianChangelog(VersionControl):
             self.rev = r.groups()[0] + " (Launchpad)"
 
         t = time.localtime()
-        self.date = ("%d/%02d/%02d %02d:%02d:%02d") % (
+        self.date = "%d/%02d/%02d %02d:%02d:%02d" % (
             t.tm_year,
             t.tm_mon,
             t.tm_mday,
@@ -124,7 +124,7 @@ class DebianChangelog(VersionControl):
 
 class BazaarControl(VersionControl):
     def extractInfo(self, srcdir, bindir):
-        info = os.popen("bzr log -l 1 %s" % (srcdir)).read()
+        info = os.popen("bzr log -l 1 %s" % srcdir).read()
         if len(info) == 0:
             return False
         lines = info.split("\n")
@@ -167,9 +167,7 @@ class DebianGitHub(VersionControl):
         try:
             import requests
 
-            request_url = "{}/repos/{}/{}/commits?per_page=1&sha={}".format(
-                base_url, owner, repo, sha
-            )
+            request_url = f"{base_url}/repos/{owner}/{repo}/commits?per_page=1&sha={sha}"
             commit_req = requests.get(request_url)
             if not commit_req.ok:
                 return False
@@ -183,7 +181,7 @@ class DebianGitHub(VersionControl):
         try:
             # Try to convert into the same format as GitControl
             t = time.strptime(commit_date, "%a, %d %b %Y %H:%M:%S GMT")
-            commit_date = ("%d/%02d/%02d %02d:%02d:%02d") % (
+            commit_date = "%d/%02d/%02d %02d:%02d:%02d" % (
                 t.tm_year,
                 t.tm_mon,
                 t.tm_mday,
@@ -193,7 +191,7 @@ class DebianGitHub(VersionControl):
             )
         except Exception:
             t = time.strptime(commit_date, "%Y%m%d%H%M")
-            commit_date = ("%d/%02d/%02d %02d:%02d:%02d") % (
+            commit_date = "%d/%02d/%02d %02d:%02d:%02d" % (
                 t.tm_year,
                 t.tm_mon,
                 t.tm_mday,
@@ -208,7 +206,7 @@ class DebianGitHub(VersionControl):
         try:
             # Try to determine the branch of the sha
             # There is no function of the rest API of GH but with the url below we get HTML code
-            branch_url = "https://github.com/{}/{}/branch_commits/{}".format(owner, repo, sha)
+            branch_url = f"https://github.com/{owner}/{repo}/branch_commits/{sha}"
             branch_req = requests.get(branch_url)
             if branch_req.ok:
                 html = branch_req.text
@@ -227,14 +225,14 @@ class DebianGitHub(VersionControl):
         except Exception:
             pass
 
-        self.url = "git://github.com/{}/{}.git {}".format(owner, repo, self.branch)
+        self.url = f"git://github.com/{owner}/{repo}.git {self.branch}"
         return True
 
     def writeVersion(self, lines):
         content = VersionControl.writeVersion(self, lines)
         content.append("// Git relevant stuff\n")
-        content.append('#define FCRepositoryHash   "%s"\n' % (self.hash))
-        content.append('#define FCRepositoryBranch "%s"\n' % (self.branch))
+        content.append('#define FCRepositoryHash   "%s"\n' % self.hash)
+        content.append('#define FCRepositoryBranch "%s"\n' % self.branch)
         return content
 
     def printInfo(self):
@@ -414,8 +412,8 @@ class GitControl(VersionControl):
     def writeVersion(self, lines):
         content = VersionControl.writeVersion(self, lines)
         content.append("// Git relevant stuff\n")
-        content.append('#define FCRepositoryHash   "%s"\n' % (self.hash))
-        content.append('#define FCRepositoryBranch "%s"\n' % (self.branch))
+        content.append('#define FCRepositoryHash   "%s"\n' % self.hash)
+        content.append('#define FCRepositoryBranch "%s"\n' % self.branch)
         return content
 
 
@@ -434,8 +432,8 @@ class Subversion(VersionControl):
         parser.setContentHandler(handler)
 
         # Create an XML stream with the required information and read in with a SAX parser
-        Ver = os.popen("svnversion %s -n" % (srcdir)).read()
-        Info = os.popen("svn info %s --xml" % (srcdir)).read()
+        Ver = os.popen("svnversion %s -n" % srcdir).read()
+        Info = os.popen("svn info %s --xml" % srcdir).read()
         try:
             inpsrc = xml.sax.InputSource()
             strio = StringIO.StringIO(Info)
@@ -523,16 +521,14 @@ def main():
     for i in vcs:
         if i.extractInfo(srcdir, bindir):
             # Open the template file and the version file
-            inp = open("%s/src/Build/Version.h.in" % (bindir))
-            lines = inp.readlines()
-            inp.close()
+            with open("%s/src/Build/Version.h.in" % bindir) as inp:
+                lines = inp.readlines()
             lines = i.writeVersion(lines)
-            out = open("%s/src/Build/Version.h.out" % (bindir), "w")
-            out.writelines(lines)
-            out.write("\n")
-            out.close()
+            with open("%s/src/Build/Version.h.out" % bindir, "w") as out:
+                out.writelines(lines)
+                out.write("\n")
             i.printInfo()
-            sys.stdout.write("%s/src/Build/Version.h.out written\n" % (bindir))
+            sys.stdout.write("%s/src/Build/Version.h.out written\n" % bindir)
             break
 
 

@@ -303,7 +303,7 @@ def parse(filename, doc):
             if _id[0] == "P":
                 # point
                 objects[_id] = getpoint(data)
-            elif ((_id[0] == "A") and params.get_param("ocaareas")):
+            elif (_id[0] == "A") and params.get_param("ocaareas"):
                 # area
                 objects[_id] = getarea(data)
                 createobject(_id, doc)

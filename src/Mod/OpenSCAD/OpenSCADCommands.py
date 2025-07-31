@@ -28,6 +28,7 @@ This Script includes the GUI Commands of the OpenSCAD module
 '''
 
 import FreeCAD
+
 import OpenSCADUtils
 
 if FreeCAD.GuiUp:
@@ -59,13 +60,13 @@ class ExplodeGroup:
                     zip(facecolor,defaultcolor))  for facecolor in shapecolor)
 
         def isgrey(shapecolor):
-            defaultcolor=(float.fromhex('0x1.99999ap-1'),float.fromhex(\
-                    '0x1.99999ap-1'),float.fromhex('0x1.99999ap-1'),0.0)
+            defaultcolor=(float.fromhex('0x1.99999ap-1'),float.fromhex(
+                '0x1.99999ap-1'),float.fromhex('0x1.99999ap-1'),0.0)
             return all(facecolor == defaultcolor  for facecolor in shapecolor)
 
         def randomcolor(transp=0.0):
             import random
-            return (random.random(),random.random(),random.random(),transp)
+            return random.random(),random.random(),random.random(),transp
 
         def explode(obj,color=True):
             if obj.isDerivedFrom('Part::Fuse') or \
@@ -73,8 +74,8 @@ class ExplodeGroup:
                     obj.isDerivedFrom('Part::Compound'):
                 plm = obj.Placement
                 outlist = obj.OutList[:]
-                if plm.isNull() or all((len(oo.InList)==1 and \
-                        not oo.isDerivedFrom('PartDesign::Feature')) \
+                if plm.isNull() or all((len(oo.InList)==1 and
+                                        not oo.isDerivedFrom('PartDesign::Feature')) \
                         for oo in obj.OutList):
                     obj.Document.removeObject(obj.Name)
                     for oo in outlist:
@@ -551,7 +552,6 @@ class Hull:
 
     def Activated(self):
         import Part
-        import OpenSCADFeatures
         import importCSG
         selection=FreeCADGui.Selection.getSelectionEx()
         objList = []
@@ -571,7 +571,6 @@ class Minkowski:
 
     def Activated(self):
         import Part
-        import OpenSCADFeatures
         import importCSG
         selection=FreeCADGui.Selection.getSelectionEx()
         objList = []

@@ -314,7 +314,7 @@ class CommandCamoticsSimulate:
         }
 
     def IsActive(self):
-        if bool(FreeCADGui.Selection.getSelection()) is False:
+        if not bool(FreeCADGui.Selection.getSelection()):
             return False
         try:
             job = FreeCADGui.Selection.getSelectionEx()[0].Object

@@ -55,27 +55,21 @@ class MaterialCommon(base_fempythonobject.BaseFemPythonObject):
         obj.addExtension("App::SuppressibleExtensionPython")
 
     def _get_properties(self):
-        prop = []
-
-        prop.append(
+        prop = [
             _PropHelper(
                 type="App::PropertyLinkSubListGlobal",
                 name="References",
                 group="Material",
                 doc="List of material shapes",
                 value=[],
-            )
-        )
-        prop.append(
+            ),
             _PropHelper(
                 type="App::PropertyEnumeration",
                 name="Category",
                 group="Material",
                 doc="Material type: fluid or solid",
                 value=["Solid", "Fluid"],
-            )
-        )
-        prop.append(
+            ),
             _PropHelper(
                 type="App::PropertyString",
                 name="UUID",
@@ -83,8 +77,8 @@ class MaterialCommon(base_fempythonobject.BaseFemPythonObject):
                 doc="Material UUID",
                 hidden=True,
                 value="",
-            )
-        )
+            ),
+        ]
 
         return prop
 

@@ -169,7 +169,7 @@ def tup(u, array=False):
     if array:
         return [u.x, u.y, u.z]
     else:
-        return (u.x, u.y, u.z)
+        return u.x, u.y, u.z
 
 
 def neg(u):
@@ -531,14 +531,14 @@ def getRotation(vector, reference=Vector(1, 0, 0)):
     """
     c = vector.cross(reference)
     if isNull(c):
-        return (0, 0, 0, 1.0)
+        return 0, 0, 0, 1.0
     c.normalize()
 
     q1 = math.sqrt((vector.Length**2) * (reference.Length**2))
     q2 = vector.dot(reference)
     Q = q1 + q2
 
-    return (c.x, c.y, c.z, Q)
+    return c.x, c.y, c.z, Q
 
 
 def isNull(vector, precision=None):
@@ -569,7 +569,7 @@ def isNull(vector, precision=None):
     x = round(vector.x, precision)
     y = round(vector.y, precision)
     z = round(vector.z, precision)
-    return (x == 0 and y == 0 and z == 0)
+    return x == 0 and y == 0 and z == 0
 
 
 def find(vector, vlist, precision=None):
@@ -880,18 +880,18 @@ def get_spherical_coords(x, y, z, precision=None):
     rad = v.Length
 
     if not bool(round(rad, precision)):
-        return (0, math.pi/2, 0)
+        return 0, math.pi / 2, 0
 
     theta = v.getAngle(z_axis)
     v.projectToPlane(Vector(0,0,0), z_axis)
     phi = v.getAngle(x_axis)
     if math.isnan(phi):
-        return (rad, theta, 0)
+        return rad, theta, 0
     # projected vector is on 3rd or 4th quadrant
     if v.dot(Vector(y_axis)) < 0:
         phi = -1*phi
 
-    return (rad, theta, phi)
+    return rad, theta, phi
 
 
 def get_cartesian_coords(radius, theta, phi):
@@ -917,7 +917,7 @@ def get_cartesian_coords(radius, theta, phi):
     y = radius*math.sin(theta)*math.sin(phi)
     z = radius*math.cos(theta)
 
-    return (x, y, z)
+    return x, y, z
 
 
 ##  @}

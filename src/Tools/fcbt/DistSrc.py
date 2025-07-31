@@ -43,6 +43,6 @@ FileTools.cpallWithFilter(
 
 # ====================================================================
 # zipping an archive
-os.popen("7z a -tzip " + DistDir + DistSrc + ".zip " + DistDir + DistSrc + " -mx9")
+os.popen(f"7z a -tzip {DistDir}{DistSrc}.zip {DistDir}{DistSrc} -mx9")
 
 FileTools.rmall(DistDir + DistSrc)

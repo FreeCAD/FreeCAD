@@ -208,7 +208,7 @@ class VPPostTableFieldData(view_base_fempostextractors.VPPostExtractor):
         name = QT_TRANSLATE_NOOP("FEM", "default")
         if self.ViewObject.Name:
             name = self.ViewObject.Name
-        return (QtGui.QPixmap(), name)
+        return QtGui.QPixmap(), name
 
     def get_default_color_property(self):
         return None

@@ -259,7 +259,7 @@ def setPostProcessorDefaults(processor, args, blacklist):
     pref = preferences()
     pref.SetString(PostProcessorDefault, processor)
     pref.SetString(PostProcessorDefaultArgs, args)
-    pref.SetString(PostProcessorBlacklist, "%s" % (blacklist))
+    pref.SetString(PostProcessorBlacklist, "%s" % blacklist)
 
 
 def setOutputFileDefaults(fileName, policy):

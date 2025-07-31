@@ -164,7 +164,7 @@ def _getMetacontainerChildren(container, isrightcontainer_func):
     result = []
     list_traversing_now = [container]  # list of Container instances
     list_to_be_traversed_next = []  # list of Container instances
-    visited_containers = set([container.Object])  # set of DocumentObjects
+    visited_containers = {container.Object}  # set of DocumentObjects
 
     while len(list_traversing_now) > 0:
         list_to_be_traversed_next = []
@@ -196,7 +196,7 @@ def isAContainer(obj, links_too=False):
     if obj.isDerivedFrom("App::Origin"):
         return True
     if obj.hasChildElement():
-        return True if links_too else False
+        return bool(links_too)
     return False
 
 
@@ -265,7 +265,7 @@ class ContainerError(RuntimeError):
 
 class NotAContainerError(ContainerError):
     def __init__(self, name="None"):
-        ContainerError.__init__(self, "'{}' is not recognized as container".format(name))
+        ContainerError.__init__(self, f"'{name}' is not recognized as container")
 
 
 class ContainerTreeError(ContainerError):

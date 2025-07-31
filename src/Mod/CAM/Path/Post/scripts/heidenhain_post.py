@@ -455,7 +455,7 @@ def export(objectslist, filename, argstring):
             # Rapid movement
             if command == "G0":
                 Spindle_Status = ""
-                if Spindle_Active == False:  # At first rapid movement we turn on spindle
+                if not Spindle_Active:  # At first rapid movement we turn on spindle
                     Spindle_Status += str(MACHINE_SPINDLE_DIRECTION)  # Activate spindle
                     Spindle_Active = True
                 else:  # At last rapid movement we turn off spindle
@@ -640,7 +640,7 @@ def HEIDEN_Line(line_Params, line_comp, line_feed, line_rapid, line_M_funct, Cmd
                 if j in STORED_COMPENSATED_OBJ[Cmd_Number].Parameters and j in line_Params:
                     if STORED_COMPENSATED_OBJ[Cmd_Number].Parameters[j] != line_Params[j]:
                         i = False
-            if i == False:
+            if not i:
                 H_Line_Params[1][0] = "R" + line_comp
         #                   we can skip this control if already in compensation
         #                   COMPENSATION_DIFF_STATUS[1] = False
@@ -796,7 +796,7 @@ def HEIDEN_Arc(arc_Params, arc_direction, arc_comp, arc_feed, arc_rapid, arc_M_f
                 if j in STORED_COMPENSATED_OBJ[Cmd_Number].Parameters and j in arc_Params:
                     if STORED_COMPENSATED_OBJ[Cmd_Number].Parameters[j] != arc_Params[j]:
                         i = False
-            if i == False:
+            if not i:
                 H_Arc_Params[1][0] = "R" + arc_comp
         # COMPENSATION_DIFF_STATUS[1] = False # we can skip this control if already in compensation
         else:
@@ -966,7 +966,7 @@ def HEIDEN_Drill(
     drill_Movement = "L"
     if G_FUNCTION_STORE["G91"]:  # incremental
         # update Z value to R + actual_Z if first call
-        if G_FUNCTION_STORE[drill_Type] == False:
+        if not G_FUNCTION_STORE[drill_Type]:
             MACHINE_LAST_POSITION["Z"] = drill_Defs["DIST"] + MACHINE_LAST_POSITION["Z"]
             drill_Movement = "L" + HEIDEN_Format(" Z", MACHINE_LAST_POSITION["Z"]) + drill_Rapid
             drill_Output.append(drill_Movement)
@@ -1009,7 +1009,7 @@ def HEIDEN_Drill(
         if drill_Defs[j] != STORED_CANNED_PARAMS[j]:
             i = False
 
-    if i == False:  # not same cycle, update and print
+    if not i:  # not same cycle, update and print
         for j in drill_Defs:
             STORED_CANNED_PARAMS[j] = drill_Defs[j]
 

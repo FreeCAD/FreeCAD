@@ -360,10 +360,10 @@ def parse(pathobj):
                 if c.Parameters:
                     CurrentState.update(c.Parameters)
             elif command.startswith("("):
-                output += "' " + command + "\n"
+                output += f"' {command}\n"
             else:
                 print("I don't know what the hell the command: ", end="")
-                print(command + " means.  Maybe I should support it.")
+                print(f"{command} means.  Maybe I should support it.")
     return output
 
 

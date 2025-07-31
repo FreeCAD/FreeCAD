@@ -410,7 +410,7 @@ class PostProcessor:
         # processing the arguments) or a string containing the argument list formatted
         # for output.  Either way the calling routine will need to handle the args value.
         #
-        return (flag, args)
+        return flag, args
 
     def process_postables(self) -> GCodeSections:
         """Postprocess the 'postables' in the job to g code sections."""

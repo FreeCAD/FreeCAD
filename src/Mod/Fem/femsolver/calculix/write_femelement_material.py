@@ -67,7 +67,7 @@ def write_femelement_material(f, ccxwriter):
             YM = FreeCAD.Units.Quantity(mat_obj.Material["YoungsModulus"])
             YM_in_MPa = YM.getValueAs("MPa").Value
             PR = float(mat_obj.Material["PoissonRatio"])
-        if is_density_needed() is True:
+        if is_density_needed():
             density = FreeCAD.Units.Quantity(mat_obj.Material["Density"])
             density_in_tonne_per_mm3 = density.getValueAs("t/mm^3").Value
         if ccxwriter.analysis_type == "thermomech":
@@ -107,7 +107,7 @@ def write_femelement_material(f, ccxwriter):
         if mat_obj.Category == "Solid":
             f.write("*ELASTIC\n")
             f.write(f"{YM_in_MPa:.13G},{PR:.13G}\n")
-        if is_density_needed() is True:
+        if is_density_needed():
             f.write("*DENSITY\n")
             f.write(f"{density_in_tonne_per_mm3:.13G}\n")
         if ccxwriter.analysis_type == "thermomech":

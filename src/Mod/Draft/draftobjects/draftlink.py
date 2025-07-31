@@ -60,7 +60,7 @@ class DraftLink(DraftObject):
     """
 
     def __init__(self, obj, tp):
-        self.use_link = False if obj else True
+        self.use_link = not bool(obj)
         super().__init__(obj, tp)
         if obj:
             self.attach(obj)

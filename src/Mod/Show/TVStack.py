@@ -88,7 +88,7 @@ class TVStack(object):
             tv = tvref()
             if tv.state == mTempoVis.S_ACTIVE:
                 if tv.has(detail):
-                    return (tv, tv.data[detail.full_key])
+                    return tv, tv.data[detail.full_key]
         return None
 
     def rebuild_index(self, start=0):

@@ -424,7 +424,7 @@ def _get_tag(target):
 
 
 def _get_material(target):
-    if (hasattr(target, "Material") and hasattr(target.Material, "Label")):
+    if hasattr(target, "Material") and hasattr(target.Material, "Label"):
         return [target.Material.Label]
     else:
         return [translate("draft", "Material not available for object")]

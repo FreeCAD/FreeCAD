@@ -45,18 +45,15 @@ class RegressionTests(unittest.TestCase):
             )
             ArcSketch.MapMode = "Deactivated"
 
-            geoList = []
-            geoList.append(
-                Part.ArcOfCircle(
-                    Part.Circle(
-                        Base.Vector(0.000000, 0.000000, 0.000000),
-                        Base.Vector(0.000000, 0.000000, 1.000000),
-                        10.000000,
-                    ),
-                    3.141593,
-                    6.283185,
-                )
-            )
+            geoList = [Part.ArcOfCircle(
+                Part.Circle(
+                    Base.Vector(0.000000, 0.000000, 0.000000),
+                    Base.Vector(0.000000, 0.000000, 1.000000),
+                    10.000000,
+                ),
+                3.141593,
+                6.283185,
+            )]
             ArcSketch.addGeometry(geoList, False)
             del geoList
 

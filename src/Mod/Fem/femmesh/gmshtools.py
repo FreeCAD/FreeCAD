@@ -300,7 +300,7 @@ class GmshTools:
         if param_working_dir is not None:
             self.working_dir = param_working_dir
             if femutils.check_working_dir(self.working_dir) is not True:
-                if create is True:
+                if create:
                     Console.PrintMessage(
                         "Dir given as parameter '{}' doesn't exist, "
                         "but parameter to create it is set to True. "
@@ -619,9 +619,10 @@ class GmshTools:
                                             elems, mr_obj.Name
                                         )
                                     )
-                        setting = {}
-                        setting["hwall_n"] = Units.Quantity(mr_obj.MinimumThickness).Value
-                        setting["ratio"] = mr_obj.GrowthRate
+                        setting = {
+                            "hwall_n": Units.Quantity(mr_obj.MinimumThickness).Value,
+                            "ratio": mr_obj.GrowthRate,
+                        }
                         setting["thickness"] = sum(
                             [
                                 setting["hwall_n"] * setting["ratio"] ** i
@@ -631,10 +632,7 @@ class GmshTools:
 
                         # hfar: cell dimension outside boundary
                         # should be set later if some character length is set
-                        if (
-                            self.clmax > setting["thickness"] * 0.8
-                            and self.clmax < setting["thickness"] * 1.6
-                        ):
+                        if setting["thickness"] * 0.8 < self.clmax < setting["thickness"] * 1.6:
                             setting["hfar"] = self.clmax
                         else:
                             # set a value for safety, it may works as background mesh cell size
@@ -858,7 +856,7 @@ class GmshTools:
             "5=Delaunay, 6=Frontal, 7=BAMG, 8=DelQuad, 9=Packing Parallelograms, 11=Quasi-structured Quad)\n"
         )
         if len(self.bl_setting_list) and self.dimension == 3:
-            geo.write("Mesh.Algorithm = " + "DelQuad" + ";\n")  # Frontal/DelQuad are tested
+            geo.write("Mesh.Algorithm = DelQuad;\n")  # Frontal/DelQuad are tested
         else:
             geo.write("Mesh.Algorithm = " + self.algorithm2D + ";\n")
         geo.write(

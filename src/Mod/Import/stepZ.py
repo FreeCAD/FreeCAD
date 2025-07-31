@@ -12,18 +12,19 @@
 # https://forum.freecad.org/viewtopic.php?t=20815
 
 
+import os
+import shutil
+import tempfile
+
 import FreeCAD
 import FreeCADGui
-import shutil
-import os
-import re
 import ImportGui
 import PySide
 from PySide import QtCore
 from PySide import QtGui
-import tempfile
 
 ___stpZversion___ = "1.4.0"
+
 # support both gz and zipfile archives
 # Catia seems to use gz, Inventor zipfile
 # improved import, open and export
@@ -31,29 +32,28 @@ ___stpZversion___ = "1.4.0"
 
 import gzip as gz
 import builtins
-import importlib
-
 
 import zipfile as zf
+
 
 # import stepZ; import importlib; importlib.reload(stepZ); stepZ.open(u"C:/Temp/brick.stpz")
 
 
-def mkz_string(input):
-    if isinstance(input, str):
-        return input
+def mkz_string(input_):
+    if isinstance(input_, str):
+        return input_
     else:
-        input = input.encode("utf-8")
-        return input
+        input_ = input_.encode("utf-8")
+        return input_
 
 
 ####
-def mkz_unicode(input):
-    if isinstance(input, str):
-        return input
+def mkz_unicode(input_):
+    if isinstance(input_, str):
+        return input_
     else:
-        input = input.decode("utf-8")
-        return input
+        input_ = input_.decode("utf-8")
+        return input_
 
 
 ####
@@ -78,13 +78,8 @@ def sayzerr(msg):
 
 
 def import_stpz(fn, fc, doc):
-
     # sayz(fn)
-    ext = os.path.splitext(os.path.basename(fn))[1]
     fname = os.path.splitext(os.path.basename(fn))[0]
-    basepath = os.path.split(fn)[0]
-    filepath = os.path.join(basepath, fname + ".stp")
-
     tempdir = tempfile.gettempdir()  # get the current temporary directory
     tempfilepath = os.path.join(tempdir, fname + ".stp")
 
@@ -99,14 +94,13 @@ def import_stpz(fn, fc, doc):
     try:
         os.remove(tempfilepath)
     except OSError:
-        sayzerr("error on removing " + tempfilepath + " file")
+        sayzerr(f"error on removing {tempfilepath} file")
 
 
 ###
 
 
 def open(filename, doc=None):
-
     if zf.is_zipfile(filename):
         with zf.ZipFile(filename, "r") as fz:
             file_names = fz.namelist()
@@ -127,7 +121,6 @@ def open(filename, doc=None):
 
 
 def insert(filename, doc):
-
     doc = FreeCAD.ActiveDocument
     open(filename, doc)
 
@@ -139,25 +132,12 @@ def export(objs, filename):
     """exporting to file folder"""
 
     # sayz(filename)
-    sayz("stpZ version " + ___stpZversion___)
-    ext = os.path.splitext(os.path.basename(filename))[1]
+    sayz(f"stpZ version {___stpZversion___}")
     fname = os.path.splitext(os.path.basename(filename))[0]
     basepath = os.path.split(filename)[0]
     tempdir = tempfile.gettempdir()  # get the current temporary directory
-
-    filepath = os.path.join(basepath, fname) + ".stp"
-    filepath_base = os.path.join(basepath, fname)
-
-    namefpath = os.path.join(basepath, fname)
-
     outfpath = os.path.join(basepath, fname) + ".stpZ"
-    outfpathT = os.path.join(tempdir, fname) + ".stpZ"
-    outfpath_stp = os.path.join(basepath, fname) + ".stp"
     outfpathT_stp = os.path.join(tempdir, fname) + ".stp"
-
-    outfpath_base = basepath
-    # outfpath_str = mkz_string(os.path.join(basepath,fname))
-    outfpath_str = os.path.join(basepath, fname) + ".stp"
     outfpathT_str = os.path.join(tempdir, fname) + ".stp"
 
     if os.path.exists(outfpathT_stp):

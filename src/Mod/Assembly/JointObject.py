@@ -912,8 +912,7 @@ class ViewProviderJoint:
 
     def getDisplayModes(self, obj):
         """Return a list of display modes."""
-        modes = []
-        modes.append("Wireframe")
+        modes = ["Wireframe"]
         return modes
 
     def getDefaultDisplayMode(self):

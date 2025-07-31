@@ -136,7 +136,7 @@ class Results(run.Results):
         prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
         if not prefs.GetBool("KeepResultsOnReRun", False):
             self.purge_results()
-        if result_reading is True:
+        if result_reading:
             self.load_results()
 
     def purge_results(self):

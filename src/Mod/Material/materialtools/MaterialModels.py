@@ -143,13 +143,8 @@ def getModelFromPath(filePath):
         uuid = model[base]["UUID"]
         name = model[base]["Name"]
 
-        data = {}
-        data["base"] = base
-        data["name"] = name
-        data["path"] = path.absolute()
-        data["uuid"] = uuid
-        data["model"] = model
-        data["dereferenced"] = False
+        data = {"base": base, "name": name, "path": path.absolute(), "uuid": uuid, "model": model,
+                "dereferenced": False}
         return data
     except Exception as ex:
         print("Unable to load '{0}'".format(path.absolute()))

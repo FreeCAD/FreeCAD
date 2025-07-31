@@ -377,7 +377,7 @@ def expandParentObject():
     trees = FreeCADGui.getMainWindow().findChildren(QtGui.QTreeWidget)
     for tree in trees:
         items = tree.selectedItems()
-        if items == []:
+        if not items:
             continue
         for item in items:
             tree.expandItem(item)

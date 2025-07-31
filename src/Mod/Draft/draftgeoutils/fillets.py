@@ -111,7 +111,7 @@ def fillet(lEdges, r, chamfer=False):
             return rndEdges
 
         dToCenter = r / math.sin(alpha/2.0)
-        dToTangent = (dToCenter**2-r**2)**(0.5)
+        dToTangent = (dToCenter**2-r**2) ** 0.5
         dirVect = App.Vector(U1)
         dirVect.scale(dToTangent, dToTangent, dToTangent)
         arcPt1 = lVertexes[1].Point.add(dirVect)
@@ -193,7 +193,7 @@ def fillet(lEdges, r, chamfer=False):
 
         toNewCent = newRadius**2 - dCenterToLine**2
         if toNewCent > 0:
-            toNewCent = abs(abs(projCenter) - toNewCent**(0.5))
+            toNewCent = abs(abs(projCenter) - toNewCent ** 0.5)
         else:
             print("DraftGeomUtils.fillet: Error: radius value ", r,
                   " is too high")
@@ -322,7 +322,7 @@ def fillet(lEdges, r, chamfer=False):
 
         x = ((dCentToCent**2 + newRadius[0]**2 - newRadius[1]**2)
              / (2*dCentToCent))
-        y = (newRadius[0]**2 - x**2)**(0.5)
+        y = (newRadius[0]**2 - x**2) ** 0.5
 
         CentToCent.normalize()
         toCenter[0].normalize()

@@ -63,8 +63,8 @@ def moveViews():
         return
 
     for o in dPage.OutList:
-        newName = "DraftView" + str(i).zfill(3)
-        print("moving " + o.Name + " to " + newName)
+        newName = "DraftView" + str(o).zfill(3)
+        print(f"moving {o.Name} to {newName}")
         svg = svgHead + o.ViewResult + svgTail
         no = FreeCAD.ActiveDocument.addObject("TechDraw::DrawViewSymbol", newName)
         no.Symbol = svg

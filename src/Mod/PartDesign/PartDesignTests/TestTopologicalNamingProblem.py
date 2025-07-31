@@ -49,7 +49,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         faces = [name for name in map.keys() if name.startswith("Face")]
         edges = [name for name in map.keys() if name.startswith("Edge")]
         vertexes = [name for name in map.keys() if name.startswith("Vertex")]
-        return (len(faces), len(edges), len(vertexes))
+        return len(faces), len(edges), len(vertexes)
 
     def testPadsOnBaseObject(self):
         """Simple TNP test case
@@ -626,7 +626,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertEqual( revolution.Shape.ElementReverseMap["Face9"].count(";"), 14)
         # Arrange for an UpToFace mode test
         revolution.Type = 3
-        revolution.UpToFace = (pad, ("Face4"))
+        revolution.UpToFace = (pad, "Face4")
         revolution.Reversed = 1
         revolution.Midplane = 0
         volume = (math.pi * 3 * 3 - math.pi * 2 * 2) * 2  / 4 * 3
@@ -656,29 +656,24 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         sketch.MapMode = 'FlatFace'
         doc.recompute()
 
-        geoList = []
-        geoList.append(Part.LineSegment(App.Vector(-44.107212, 34.404858, 0.000000), App.Vector(-44.107212, 9.881049, 0.000000)))
-        geoList.append(Part.LineSegment(App.Vector(-44.107212, 9.881049, 0.0000000), App.Vector(-10.297691, 9.881049, 0.000000)))
-        geoList.append(Part.LineSegment(App.Vector(-10.297691, 9.881049, 0.0000000), App.Vector(-10.297691, 34.404858, 0.00000)))
-        geoList.append(Part.LineSegment(App.Vector(-10.297691, 34.404858, 0.000000), App.Vector(-44.107212, 34.404858, 0.00000)))
+        geoList = [
+            Part.LineSegment(App.Vector(-44.107212, 34.404858, 0.000000), App.Vector(-44.107212, 9.881049, 0.000000)),
+            Part.LineSegment(App.Vector(-44.107212, 9.881049, 0.0000000), App.Vector(-10.297691, 9.881049, 0.000000)),
+            Part.LineSegment(App.Vector(-10.297691, 9.881049, 0.0000000), App.Vector(-10.297691, 34.404858, 0.00000)),
+            Part.LineSegment(App.Vector(-10.297691, 34.404858, 0.000000), App.Vector(-44.107212, 34.404858, 0.00000))]
         sketch.addGeometry(geoList, False)
         del geoList
 
-        constraintList = []
-        constraintList.append(Sketcher.Constraint('Coincident', 0, 2, 1, 1))
-        constraintList.append(Sketcher.Constraint('Coincident', 1, 2, 2, 1))
-        constraintList.append(Sketcher.Constraint('Coincident', 2, 2, 3, 1))
-        constraintList.append(Sketcher.Constraint('Coincident', 3, 2, 0, 1))
-        constraintList.append(Sketcher.Constraint('Vertical', 0))
-        constraintList.append(Sketcher.Constraint('Vertical', 2))
-        constraintList.append(Sketcher.Constraint('Horizontal', 1))
-        constraintList.append(Sketcher.Constraint('Horizontal', 3))
+        constraintList = [Sketcher.Constraint('Coincident', 0, 2, 1, 1), Sketcher.Constraint('Coincident', 1, 2, 2, 1),
+                          Sketcher.Constraint('Coincident', 2, 2, 3, 1), Sketcher.Constraint('Coincident', 3, 2, 0, 1),
+                          Sketcher.Constraint('Vertical', 0), Sketcher.Constraint('Vertical', 2),
+                          Sketcher.Constraint('Horizontal', 1), Sketcher.Constraint('Horizontal', 3)]
         sketch.addConstraint(constraintList)
         del constraintList
 
         doc.recompute()
         binder = body.newObject('PartDesign::ShapeBinder','ShapeBinder')
-        binder.Support = [sketch, (''),]
+        binder.Support = [sketch, '', ]
         binder.Visibility = False
         doc.recompute()
         revolve = body.newObject('PartDesign::Revolution','Revolution')
@@ -1180,14 +1175,11 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         sketch001.MapMode = "FlatFace"
         App.ActiveDocument.recompute()
 
-        geoList = []
-        geoList.append(
-            Part.Circle(
-                App.Vector(15.093666, 13.036922, 0.000000),
-                App.Vector(0.000000, 0.000000, 1.000000),
-                5.000000,
-            )
-        )
+        geoList = [Part.Circle(
+            App.Vector(15.093666, 13.036922, 0.000000),
+            App.Vector(0.000000, 0.000000, 1.000000),
+            5.000000,
+        )]
         sketch001.addGeometry(geoList, False)
         del geoList
         sketch001.addConstraint(Sketcher.Constraint("Radius", 0, 5.000000))
@@ -1217,43 +1209,26 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.getObject("Sketch001").Visibility = False
 
         # Modify the original sketch to generate TNP issue
-        geoList = []
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(2.510468, 22.837425, 0.000000),
-                App.Vector(2.510468, 19.933617, 0.000000),
-            )
-        )
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(2.510468, 19.933617, 0.000000),
-                App.Vector(4.869811, 19.933617, 0.000000),
-            )
-        )
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(4.869811, 19.933617, 0.000000),
-                App.Vector(4.869811, 22.837425, 0.000000),
-            )
-        )
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(4.869811, 22.837425, 0.000000),
-                App.Vector(2.510468, 22.837425, 0.000000),
-            )
-        )
+        geoList = [Part.LineSegment(
+            App.Vector(2.510468, 22.837425, 0.000000),
+            App.Vector(2.510468, 19.933617, 0.000000),
+        ), Part.LineSegment(
+            App.Vector(2.510468, 19.933617, 0.000000),
+            App.Vector(4.869811, 19.933617, 0.000000),
+        ), Part.LineSegment(
+            App.Vector(4.869811, 19.933617, 0.000000),
+            App.Vector(4.869811, 22.837425, 0.000000),
+        ), Part.LineSegment(
+            App.Vector(4.869811, 22.837425, 0.000000),
+            App.Vector(2.510468, 22.837425, 0.000000),
+        )]
         padSketch.addGeometry(geoList, False)
         del geoList
 
-        constraintList = []
-        constraintList.append(Sketcher.Constraint("Coincident", 4, 2, 5, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 5, 2, 6, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 6, 2, 7, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 7, 2, 4, 1))
-        constraintList.append(Sketcher.Constraint("Vertical", 4))
-        constraintList.append(Sketcher.Constraint("Vertical", 6))
-        constraintList.append(Sketcher.Constraint("Horizontal", 5))
-        constraintList.append(Sketcher.Constraint("Horizontal", 7))
+        constraintList = [Sketcher.Constraint("Coincident", 4, 2, 5, 1), Sketcher.Constraint("Coincident", 5, 2, 6, 1),
+                          Sketcher.Constraint("Coincident", 6, 2, 7, 1), Sketcher.Constraint("Coincident", 7, 2, 4, 1),
+                          Sketcher.Constraint("Vertical", 4), Sketcher.Constraint("Vertical", 6),
+                          Sketcher.Constraint("Horizontal", 5), Sketcher.Constraint("Horizontal", 7)]
         padSketch.addConstraint(constraintList)
         del constraintList
         doc.recompute()
@@ -1291,14 +1266,11 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         )
         sketch001.MapMode = "FlatFace"
 
-        geoList = []
-        geoList.append(
-            Part.Circle(
-                App.Vector(15.093666, 13.036922, 0.000000),
-                App.Vector(0.000000, 0.000000, 1.000000),
-                5.000000,
-            )
-        )
+        geoList = [Part.Circle(
+            App.Vector(15.093666, 13.036922, 0.000000),
+            App.Vector(0.000000, 0.000000, 1.000000),
+            5.000000,
+        )]
         sketch001.addGeometry(geoList, False)
         del geoList
         sketch001.addConstraint(Sketcher.Constraint("Radius", 0, 5.000000))
@@ -1367,31 +1339,19 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.Sketch.MapMode = "FlatFace"
         doc.recompute()
 
-        geoList = []
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(0.000000, 0.000000, 0.000000),
-                App.Vector(35.000000, 0.000000, 0.000000),
-            )
-        )
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(35.000000, 0.000000, 0.000000),
-                App.Vector(35.000000, 25.000000, 0.000000),
-            )
-        )
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(35.000000, 25.000000, 0.000000),
-                App.Vector(0.000000, 25.000000, 0.000000),
-            )
-        )
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(0.000000, 25.000000, 0.000000),
-                App.Vector(0.000000, 0.000000, 0.000000),
-            )
-        )
+        geoList = [Part.LineSegment(
+            App.Vector(0.000000, 0.000000, 0.000000),
+            App.Vector(35.000000, 0.000000, 0.000000),
+        ), Part.LineSegment(
+            App.Vector(35.000000, 0.000000, 0.000000),
+            App.Vector(35.000000, 25.000000, 0.000000),
+        ), Part.LineSegment(
+            App.Vector(35.000000, 25.000000, 0.000000),
+            App.Vector(0.000000, 25.000000, 0.000000),
+        ), Part.LineSegment(
+            App.Vector(0.000000, 25.000000, 0.000000),
+            App.Vector(0.000000, 0.000000, 0.000000),
+        )]
         doc.Sketch.addGeometry(geoList, False)
         del geoList
 
@@ -1452,14 +1412,11 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.getObject("Sketch001").MapMode = "FlatFace"
         doc.recompute()
 
-        geoList = []
-        geoList.append(
-            Part.Circle(
-                App.Vector(14.725412, 16.666899, 0.000000),
-                App.Vector(0.000000, 0.000000, 1.000000),
-                2.162720,
-            )
-        )
+        geoList = [Part.Circle(
+            App.Vector(14.725412, 16.666899, 0.000000),
+            App.Vector(0.000000, 0.000000, 1.000000),
+            2.162720,
+        )]
         doc.getObject("Sketch001").addGeometry(geoList, False)
         del geoList
 
@@ -1486,43 +1443,26 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.getObject("ShapeBinder").Visibility = False
         doc.getObject("Sketch001").Visibility = False
 
-        geoList = []
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(28.380075, 21.486303, 0.000000),
-                App.Vector(28.380075, 15.462212, 0.000000),
-            )
-        )
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(28.380075, 15.462212, 0.000000),
-                App.Vector(32.797741, 15.462212, 0.000000),
-            )
-        )
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(32.797741, 15.462212, 0.000000),
-                App.Vector(32.797741, 21.486303, 0.000000),
-            )
-        )
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(32.797741, 21.486303, 0.000000),
-                App.Vector(28.380075, 21.486303, 0.000000),
-            )
-        )
+        geoList = [Part.LineSegment(
+            App.Vector(28.380075, 21.486303, 0.000000),
+            App.Vector(28.380075, 15.462212, 0.000000),
+        ), Part.LineSegment(
+            App.Vector(28.380075, 15.462212, 0.000000),
+            App.Vector(32.797741, 15.462212, 0.000000),
+        ), Part.LineSegment(
+            App.Vector(32.797741, 15.462212, 0.000000),
+            App.Vector(32.797741, 21.486303, 0.000000),
+        ), Part.LineSegment(
+            App.Vector(32.797741, 21.486303, 0.000000),
+            App.Vector(28.380075, 21.486303, 0.000000),
+        )]
         doc.Sketch.addGeometry(geoList, False)
         del geoList
 
-        constraintList = []
-        constraintList.append(Sketcher.Constraint("Coincident", 4, 2, 5, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 5, 2, 6, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 6, 2, 7, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 7, 2, 4, 1))
-        constraintList.append(Sketcher.Constraint("Vertical", 4))
-        constraintList.append(Sketcher.Constraint("Vertical", 6))
-        constraintList.append(Sketcher.Constraint("Horizontal", 5))
-        constraintList.append(Sketcher.Constraint("Horizontal", 7))
+        constraintList = [Sketcher.Constraint("Coincident", 4, 2, 5, 1), Sketcher.Constraint("Coincident", 5, 2, 6, 1),
+                          Sketcher.Constraint("Coincident", 6, 2, 7, 1), Sketcher.Constraint("Coincident", 7, 2, 4, 1),
+                          Sketcher.Constraint("Vertical", 4), Sketcher.Constraint("Vertical", 6),
+                          Sketcher.Constraint("Horizontal", 5), Sketcher.Constraint("Horizontal", 7)]
         doc.Sketch.addConstraint(constraintList)
         del constraintList
 
@@ -1547,43 +1487,26 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.Sketch.MapMode = "FlatFace"
         doc.recompute()
 
-        geoList = []
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(0.000000, 0.000000, 0.000000),
-                App.Vector(35.000000, 0.000000, 0.000000),
-            )
-        )
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(35.000000, 0.000000, 0.000000),
-                App.Vector(35.000000, 25.000000, 0.000000),
-            )
-        )
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(35.000000, 25.000000, 0.000000),
-                App.Vector(0.000000, 25.000000, 0.000000),
-            )
-        )
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(0.000000, 25.000000, 0.000000),
-                App.Vector(0.000000, 0.000000, 0.000000),
-            )
-        )
+        geoList = [Part.LineSegment(
+            App.Vector(0.000000, 0.000000, 0.000000),
+            App.Vector(35.000000, 0.000000, 0.000000),
+        ), Part.LineSegment(
+            App.Vector(35.000000, 0.000000, 0.000000),
+            App.Vector(35.000000, 25.000000, 0.000000),
+        ), Part.LineSegment(
+            App.Vector(35.000000, 25.000000, 0.000000),
+            App.Vector(0.000000, 25.000000, 0.000000),
+        ), Part.LineSegment(
+            App.Vector(0.000000, 25.000000, 0.000000),
+            App.Vector(0.000000, 0.000000, 0.000000),
+        )]
         doc.Sketch.addGeometry(geoList, False)
         del geoList
 
-        constraintList = []
-        constraintList.append(Sketcher.Constraint("Coincident", 0, 2, 1, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 1, 2, 2, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 2, 2, 3, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 3, 2, 0, 1))
-        constraintList.append(Sketcher.Constraint("Horizontal", 0))
-        constraintList.append(Sketcher.Constraint("Horizontal", 2))
-        constraintList.append(Sketcher.Constraint("Vertical", 1))
-        constraintList.append(Sketcher.Constraint("Vertical", 3))
+        constraintList = [Sketcher.Constraint("Coincident", 0, 2, 1, 1), Sketcher.Constraint("Coincident", 1, 2, 2, 1),
+                          Sketcher.Constraint("Coincident", 2, 2, 3, 1), Sketcher.Constraint("Coincident", 3, 2, 0, 1),
+                          Sketcher.Constraint("Horizontal", 0), Sketcher.Constraint("Horizontal", 2),
+                          Sketcher.Constraint("Vertical", 1), Sketcher.Constraint("Vertical", 3)]
         doc.Sketch.addConstraint(constraintList)
         del constraintList
 
@@ -1628,14 +1551,11 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.getObject("Sketch001").MapMode = "FlatFace"
         doc.recompute()
 
-        geoList = []
-        geoList.append(
-            Part.Circle(
-                App.Vector(16.566162, 13.537925, 0.000000),
-                App.Vector(0.000000, 0.000000, 1.000000),
-                2.197371,
-            )
-        )
+        geoList = [Part.Circle(
+            App.Vector(16.566162, 13.537925, 0.000000),
+            App.Vector(0.000000, 0.000000, 1.000000),
+            2.197371,
+        )]
         doc.getObject("Sketch001").addGeometry(geoList, False)
         del geoList
 
@@ -1663,43 +1583,26 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.getObject("Binder").Visibility = False
         doc.getObject("Sketch001").Visibility = False
 
-        geoList = []
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(30.009926, 21.026653, 0.000000),
-                App.Vector(30.009926, 16.425089, 0.000000),
-            )
-        )
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(30.009926, 16.425089, 0.000000),
-                App.Vector(31.994911, 16.425089, 0.000000),
-            )
-        )
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(31.994911, 16.425089, 0.000000),
-                App.Vector(31.994911, 21.026653, 0.000000),
-            )
-        )
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(31.994911, 21.026653, 0.000000),
-                App.Vector(30.009926, 21.026653, 0.000000),
-            )
-        )
+        geoList = [Part.LineSegment(
+            App.Vector(30.009926, 21.026653, 0.000000),
+            App.Vector(30.009926, 16.425089, 0.000000),
+        ), Part.LineSegment(
+            App.Vector(30.009926, 16.425089, 0.000000),
+            App.Vector(31.994911, 16.425089, 0.000000),
+        ), Part.LineSegment(
+            App.Vector(31.994911, 16.425089, 0.000000),
+            App.Vector(31.994911, 21.026653, 0.000000),
+        ), Part.LineSegment(
+            App.Vector(31.994911, 21.026653, 0.000000),
+            App.Vector(30.009926, 21.026653, 0.000000),
+        )]
         doc.Sketch.addGeometry(geoList, False)
         del geoList
 
-        constraintList = []
-        constraintList.append(Sketcher.Constraint("Coincident", 4, 2, 5, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 5, 2, 6, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 6, 2, 7, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 7, 2, 4, 1))
-        constraintList.append(Sketcher.Constraint("Vertical", 4))
-        constraintList.append(Sketcher.Constraint("Vertical", 6))
-        constraintList.append(Sketcher.Constraint("Horizontal", 5))
-        constraintList.append(Sketcher.Constraint("Horizontal", 7))
+        constraintList = [Sketcher.Constraint("Coincident", 4, 2, 5, 1), Sketcher.Constraint("Coincident", 5, 2, 6, 1),
+                          Sketcher.Constraint("Coincident", 6, 2, 7, 1), Sketcher.Constraint("Coincident", 7, 2, 4, 1),
+                          Sketcher.Constraint("Vertical", 4), Sketcher.Constraint("Vertical", 6),
+                          Sketcher.Constraint("Horizontal", 5), Sketcher.Constraint("Horizontal", 7)]
         doc.Sketch.addConstraint(constraintList)
         del constraintList
 
@@ -1748,31 +1651,17 @@ class TestTopologicalNamingProblem(unittest.TestCase):
             6,
             11,
         )
-        geoList = []
-        geoList.append(
-            Part.LineSegment(App.Vector(x1, y1, 0.0), App.Vector(x1, y2, 0.0))
-        )
-        geoList.append(
-            Part.LineSegment(App.Vector(x1, y2, 0.0), App.Vector(x2, y2, 0.0))
-        )
-        geoList.append(
-            Part.LineSegment(App.Vector(x2, y2, 0.0), App.Vector(x2, y1, 0.0))
-        )
-        geoList.append(
-            Part.LineSegment(App.Vector(x2, y1, 0.0), App.Vector(x1, y1, 0.0))
-        )
+        geoList = [Part.LineSegment(App.Vector(x1, y1, 0.0), App.Vector(x1, y2, 0.0)),
+                   Part.LineSegment(App.Vector(x1, y2, 0.0), App.Vector(x2, y2, 0.0)),
+                   Part.LineSegment(App.Vector(x2, y2, 0.0), App.Vector(x2, y1, 0.0)),
+                   Part.LineSegment(App.Vector(x2, y1, 0.0), App.Vector(x1, y1, 0.0))]
         doc.Sketch.addGeometry(geoList, False)
         del geoList
 
-        constraintList = []
-        constraintList.append(Sketcher.Constraint("Coincident", 0, 2, 1, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 1, 2, 2, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 2, 2, 3, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 3, 2, 0, 1))
-        constraintList.append(Sketcher.Constraint("Horizontal", 0))
-        constraintList.append(Sketcher.Constraint("Horizontal", 2))
-        constraintList.append(Sketcher.Constraint("Vertical", 1))
-        constraintList.append(Sketcher.Constraint("Vertical", 3))
+        constraintList = [Sketcher.Constraint("Coincident", 0, 2, 1, 1), Sketcher.Constraint("Coincident", 1, 2, 2, 1),
+                          Sketcher.Constraint("Coincident", 2, 2, 3, 1), Sketcher.Constraint("Coincident", 3, 2, 0, 1),
+                          Sketcher.Constraint("Horizontal", 0), Sketcher.Constraint("Horizontal", 2),
+                          Sketcher.Constraint("Vertical", 1), Sketcher.Constraint("Vertical", 3)]
         doc.Sketch.addConstraint(constraintList)
         del constraintList
         body.addObject(doc.Sketch)
@@ -1850,31 +1739,17 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.recompute()
 
         x1, x2, y1, y2 = 4, 6, 6, 11
-        geoList = []
-        geoList.append(
-            Part.LineSegment(App.Vector(x1, y1, 0.0), App.Vector(x1, y2, 0.0))
-        )
-        geoList.append(
-            Part.LineSegment(App.Vector(x1, y2, 0.0), App.Vector(x2, y2, 0.0))
-        )
-        geoList.append(
-            Part.LineSegment(App.Vector(x2, y2, 0.0), App.Vector(x2, y1, 0.0))
-        )
-        geoList.append(
-            Part.LineSegment(App.Vector(x2, y1, 0.0), App.Vector(x1, y1, 0.0))
-        )
+        geoList = [Part.LineSegment(App.Vector(x1, y1, 0.0), App.Vector(x1, y2, 0.0)),
+                   Part.LineSegment(App.Vector(x1, y2, 0.0), App.Vector(x2, y2, 0.0)),
+                   Part.LineSegment(App.Vector(x2, y2, 0.0), App.Vector(x2, y1, 0.0)),
+                   Part.LineSegment(App.Vector(x2, y1, 0.0), App.Vector(x1, y1, 0.0))]
         doc.Sketch.addGeometry(geoList, False)
         del geoList
 
-        constraintList = []
-        constraintList.append(Sketcher.Constraint("Coincident", 0, 2, 1, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 1, 2, 2, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 2, 2, 3, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 3, 2, 0, 1))
-        constraintList.append(Sketcher.Constraint("Horizontal", 0))
-        constraintList.append(Sketcher.Constraint("Horizontal", 2))
-        constraintList.append(Sketcher.Constraint("Vertical", 1))
-        constraintList.append(Sketcher.Constraint("Vertical", 3))
+        constraintList = [Sketcher.Constraint("Coincident", 0, 2, 1, 1), Sketcher.Constraint("Coincident", 1, 2, 2, 1),
+                          Sketcher.Constraint("Coincident", 2, 2, 3, 1), Sketcher.Constraint("Coincident", 3, 2, 0, 1),
+                          Sketcher.Constraint("Horizontal", 0), Sketcher.Constraint("Horizontal", 2),
+                          Sketcher.Constraint("Vertical", 1), Sketcher.Constraint("Vertical", 3)]
         doc.Sketch.addConstraint(constraintList)
         del constraintList
         body.addObject(doc.Sketch)
@@ -1962,41 +1837,29 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.Sketch.AttachmentSupport = (doc.XY_Plane, [""])
         doc.Sketch.MapMode = "FlatFace"
         radius = 20
-        geoList = []
-        geoList.append(
-            Part.Circle(
-                App.Vector(-20, 20, 0.000000),
-                App.Vector(0.000000, 0.000000, 1.000000),
-                radius,
-            )
-        )
+        geoList = [Part.Circle(
+            App.Vector(-20, 20, 0.000000),
+            App.Vector(0.000000, 0.000000, 1.000000),
+            radius,
+        )]
         doc.Sketch.addGeometry(geoList, False)
-        geoList = []
-        geoList.append(
-            Part.Circle(
-                App.Vector(20, 20, 0.000000),
-                App.Vector(0.000000, 0.000000, 1.000000),
-                radius,
-            )
-        )
+        geoList = [Part.Circle(
+            App.Vector(20, 20, 0.000000),
+            App.Vector(0.000000, 0.000000, 1.000000),
+            radius,
+        )]
         doc.Sketch.addGeometry(geoList, False)
-        geoList = []
-        geoList.append(
-            Part.Circle(
-                App.Vector(20, -20, 0.000000),
-                App.Vector(0.000000, 0.000000, 1.000000),
-                radius,
-            )
-        )
+        geoList = [Part.Circle(
+            App.Vector(20, -20, 0.000000),
+            App.Vector(0.000000, 0.000000, 1.000000),
+            radius,
+        )]
         doc.Sketch.addGeometry(geoList, False)
-        geoList = []
-        geoList.append(
-            Part.Circle(
-                App.Vector(-20, -20, 0.000000),
-                App.Vector(0.000000, 0.000000, 1.000000),
-                radius,
-            )
-        )
+        geoList = [Part.Circle(
+            App.Vector(-20, -20, 0.000000),
+            App.Vector(0.000000, 0.000000, 1.000000),
+            radius,
+        )]
         doc.Sketch.addGeometry(geoList, False)
         del geoList
         doc.recompute()
@@ -2061,21 +1924,15 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.Body.newObject("Sketcher::SketchObject", "Sketch")
         doc.Sketch.AttachmentSupport = (doc.XY_Plane, [""])
         doc.Sketch.MapMode = "FlatFace"
-        geoList = []
-        geoList.append(Part.LineSegment(App.Vector(0, 0, 0), App.Vector(40, 0, 0)))
-        geoList.append(Part.LineSegment(App.Vector(40, 0, 0), App.Vector(40, 20, 0)))
-        geoList.append(Part.LineSegment(App.Vector(40, 20, 0), App.Vector(0, 20, 0)))
-        geoList.append(Part.LineSegment(App.Vector(0, 20, 0), App.Vector(0, 0, 0)))
+        geoList = [Part.LineSegment(App.Vector(0, 0, 0), App.Vector(40, 0, 0)),
+                   Part.LineSegment(App.Vector(40, 0, 0), App.Vector(40, 20, 0)),
+                   Part.LineSegment(App.Vector(40, 20, 0), App.Vector(0, 20, 0)),
+                   Part.LineSegment(App.Vector(0, 20, 0), App.Vector(0, 0, 0))]
         doc.Sketch.addGeometry(geoList, False)
-        constraintList = []
-        constraintList.append(Sketcher.Constraint("Coincident", 0, 2, 1, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 1, 2, 2, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 2, 2, 3, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 3, 2, 0, 1))
-        constraintList.append(Sketcher.Constraint("Horizontal", 0))
-        constraintList.append(Sketcher.Constraint("Horizontal", 2))
-        constraintList.append(Sketcher.Constraint("Vertical", 1))
-        constraintList.append(Sketcher.Constraint("Vertical", 3))
+        constraintList = [Sketcher.Constraint("Coincident", 0, 2, 1, 1), Sketcher.Constraint("Coincident", 1, 2, 2, 1),
+                          Sketcher.Constraint("Coincident", 2, 2, 3, 1), Sketcher.Constraint("Coincident", 3, 2, 0, 1),
+                          Sketcher.Constraint("Horizontal", 0), Sketcher.Constraint("Horizontal", 2),
+                          Sketcher.Constraint("Vertical", 1), Sketcher.Constraint("Vertical", 3)]
         doc.Sketch.addConstraint(constraintList)
         doc.recompute()
         doc.Body.newObject("PartDesign::Pad", "Pad")
@@ -2109,22 +1966,16 @@ class TestTopologicalNamingProblem(unittest.TestCase):
             ],
         )
         doc.Sketch001.MapMode = "FlatFace"
-        geoList = []
-        geoList.append(Part.LineSegment(App.Vector(5, 5, 0), App.Vector(5, 10, 0)))
-        geoList.append(Part.LineSegment(App.Vector(5, 10, 0), App.Vector(25, 10, 0)))
-        geoList.append(Part.LineSegment(App.Vector(25, 10, 0), App.Vector(25, 5, 0)))
-        geoList.append(Part.LineSegment(App.Vector(25, 5, 0), App.Vector(5, 5, 0)))
+        geoList = [Part.LineSegment(App.Vector(5, 5, 0), App.Vector(5, 10, 0)),
+                   Part.LineSegment(App.Vector(5, 10, 0), App.Vector(25, 10, 0)),
+                   Part.LineSegment(App.Vector(25, 10, 0), App.Vector(25, 5, 0)),
+                   Part.LineSegment(App.Vector(25, 5, 0), App.Vector(5, 5, 0))]
         doc.Sketch001.addGeometry(geoList, False)
         del geoList
-        constraintList = []
-        constraintList.append(Sketcher.Constraint("Coincident", 0, 2, 1, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 1, 2, 2, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 2, 2, 3, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 3, 2, 0, 1))
-        constraintList.append(Sketcher.Constraint("Vertical", 0))
-        constraintList.append(Sketcher.Constraint("Vertical", 2))
-        constraintList.append(Sketcher.Constraint("Horizontal", 1))
-        constraintList.append(Sketcher.Constraint("Horizontal", 3))
+        constraintList = [Sketcher.Constraint("Coincident", 0, 2, 1, 1), Sketcher.Constraint("Coincident", 1, 2, 2, 1),
+                          Sketcher.Constraint("Coincident", 2, 2, 3, 1), Sketcher.Constraint("Coincident", 3, 2, 0, 1),
+                          Sketcher.Constraint("Vertical", 0), Sketcher.Constraint("Vertical", 2),
+                          Sketcher.Constraint("Horizontal", 1), Sketcher.Constraint("Horizontal", 3)]
         doc.Sketch001.addConstraint(constraintList)
         doc.recompute()
         doc.Body.newObject("PartDesign::Pad", "Pad001")
@@ -2212,30 +2063,16 @@ class TestTopologicalNamingProblem(unittest.TestCase):
             ],
         )
         doc.Sketch001.MapMode = "FlatFace"
-        geoList = []
-        geoList.append(
-            Part.LineSegment(App.Vector(-5, 5, 0.000000), App.Vector(-5, -5, 0.000000))
-        )
-        geoList.append(
-            Part.LineSegment(App.Vector(-5, -5, 0.000000), App.Vector(5, -5, 0.000000))
-        )
-        geoList.append(
-            Part.LineSegment(App.Vector(5, -5, 0.000000), App.Vector(5, 5, 0.000000))
-        )
-        geoList.append(
-            Part.LineSegment(App.Vector(5, 5, 0.000000), App.Vector(-5, 5, 0.000000))
-        )
+        geoList = [Part.LineSegment(App.Vector(-5, 5, 0.000000), App.Vector(-5, -5, 0.000000)),
+                   Part.LineSegment(App.Vector(-5, -5, 0.000000), App.Vector(5, -5, 0.000000)),
+                   Part.LineSegment(App.Vector(5, -5, 0.000000), App.Vector(5, 5, 0.000000)),
+                   Part.LineSegment(App.Vector(5, 5, 0.000000), App.Vector(-5, 5, 0.000000))]
         doc.Sketch001.addGeometry(geoList, False)
         del geoList
-        constraintList = []
-        constraintList.append(Sketcher.Constraint("Coincident", 0, 2, 1, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 1, 2, 2, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 2, 2, 3, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 3, 2, 0, 1))
-        constraintList.append(Sketcher.Constraint("Vertical", 0))
-        constraintList.append(Sketcher.Constraint("Vertical", 2))
-        constraintList.append(Sketcher.Constraint("Horizontal", 1))
-        constraintList.append(Sketcher.Constraint("Horizontal", 3))
+        constraintList = [Sketcher.Constraint("Coincident", 0, 2, 1, 1), Sketcher.Constraint("Coincident", 1, 2, 2, 1),
+                          Sketcher.Constraint("Coincident", 2, 2, 3, 1), Sketcher.Constraint("Coincident", 3, 2, 0, 1),
+                          Sketcher.Constraint("Vertical", 0), Sketcher.Constraint("Vertical", 2),
+                          Sketcher.Constraint("Horizontal", 1), Sketcher.Constraint("Horizontal", 3)]
         doc.Sketch001.addConstraint(constraintList)
         constraintList = []
         doc.recompute()
@@ -2280,25 +2117,18 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.Body.newObject("Sketcher::SketchObject", "Sketch")
         doc.Sketch.AttachmentSupport = (doc.XY_Plane, [""])
         doc.Sketch.MapMode = "FlatFace"
-        geoList = []
-        geoList.append(Part.LineSegment(App.Vector(0, 0, 0), App.Vector(40, 0, 0)))
-        geoList.append(Part.LineSegment(App.Vector(40, 0, 0), App.Vector(40, 20, 0)))
-        geoList.append(Part.LineSegment(App.Vector(40, 20, 0), App.Vector(0, 20, 0)))
-        geoList.append(Part.LineSegment(App.Vector(0, 20, 0), App.Vector(0, 0, 0)))
+        geoList = [Part.LineSegment(App.Vector(0, 0, 0), App.Vector(40, 0, 0)),
+                   Part.LineSegment(App.Vector(40, 0, 0), App.Vector(40, 20, 0)),
+                   Part.LineSegment(App.Vector(40, 20, 0), App.Vector(0, 20, 0)),
+                   Part.LineSegment(App.Vector(0, 20, 0), App.Vector(0, 0, 0))]
         doc.Sketch.addGeometry(geoList, False)
-        constraintList = []
-        constraintList.append(Sketcher.Constraint("Coincident", 0, 2, 1, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 1, 2, 2, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 2, 2, 3, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 3, 2, 0, 1))
+        constraintList = [Sketcher.Constraint("Coincident", 0, 2, 1, 1), Sketcher.Constraint("Coincident", 1, 2, 2, 1),
+                          Sketcher.Constraint("Coincident", 2, 2, 3, 1), Sketcher.Constraint("Coincident", 3, 2, 0, 1),
+                          Sketcher.Constraint("Horizontal", 2), Sketcher.Constraint("Vertical", 1),
+                          Sketcher.Constraint("Vertical", 3), Sketcher.Constraint("DistanceX", 0, 40),
+                          Sketcher.Constraint("DistanceY", 1, 20), Sketcher.Constraint("DistanceX", 0, 1, 0),
+                          Sketcher.Constraint("DistanceY", 0, 1, 0)]
         # constraintList.append(Sketcher.Constraint("Horizontal", 0))
-        constraintList.append(Sketcher.Constraint("Horizontal", 2))
-        constraintList.append(Sketcher.Constraint("Vertical", 1))
-        constraintList.append(Sketcher.Constraint("Vertical", 3))
-        constraintList.append(Sketcher.Constraint("DistanceX", 0, 40))
-        constraintList.append(Sketcher.Constraint("DistanceY", 1, 20))
-        constraintList.append(Sketcher.Constraint("DistanceX", 0, 1, 0))
-        constraintList.append(Sketcher.Constraint("DistanceY", 0, 1, 0))
         doc.Sketch.addConstraint(constraintList)
         doc.recompute()
         doc.Body.newObject("PartDesign::Pad", "Pad")
@@ -2333,22 +2163,16 @@ class TestTopologicalNamingProblem(unittest.TestCase):
             ],
         )
         doc.Sketch001.MapMode = "FlatFace"
-        geoList = []
-        geoList.append(Part.LineSegment(App.Vector(5, 5, 0), App.Vector(5, 10, 0)))
-        geoList.append(Part.LineSegment(App.Vector(5, 10, 0), App.Vector(25, 10, 0)))
-        geoList.append(Part.LineSegment(App.Vector(25, 10, 0), App.Vector(25, 5, 0)))
-        geoList.append(Part.LineSegment(App.Vector(25, 5, 0), App.Vector(5, 5, 0)))
+        geoList = [Part.LineSegment(App.Vector(5, 5, 0), App.Vector(5, 10, 0)),
+                   Part.LineSegment(App.Vector(5, 10, 0), App.Vector(25, 10, 0)),
+                   Part.LineSegment(App.Vector(25, 10, 0), App.Vector(25, 5, 0)),
+                   Part.LineSegment(App.Vector(25, 5, 0), App.Vector(5, 5, 0))]
         doc.Sketch001.addGeometry(geoList, False)
         del geoList
-        constraintList = []
-        constraintList.append(Sketcher.Constraint("Coincident", 0, 2, 1, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 1, 2, 2, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 2, 2, 3, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 3, 2, 0, 1))
-        constraintList.append(Sketcher.Constraint("Vertical", 0))
-        constraintList.append(Sketcher.Constraint("Vertical", 2))
-        constraintList.append(Sketcher.Constraint("Horizontal", 1))
-        constraintList.append(Sketcher.Constraint("Horizontal", 3))
+        constraintList = [Sketcher.Constraint("Coincident", 0, 2, 1, 1), Sketcher.Constraint("Coincident", 1, 2, 2, 1),
+                          Sketcher.Constraint("Coincident", 2, 2, 3, 1), Sketcher.Constraint("Coincident", 3, 2, 0, 1),
+                          Sketcher.Constraint("Vertical", 0), Sketcher.Constraint("Vertical", 2),
+                          Sketcher.Constraint("Horizontal", 1), Sketcher.Constraint("Horizontal", 3)]
         doc.Sketch001.addConstraint(constraintList)
         doc.recompute()
         doc.Body.newObject("PartDesign::Pad", "Pad001")
@@ -2520,7 +2344,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # act
         # Set up the subshapebinder version
         binder = doc.Body.newObject("PartDesign::SubShapeBinder", "Binder")
-        binder.Support = [(doc.Fusion, (""))]
+        binder.Support = [(doc.Fusion, "")]
         doc.recompute()
 
         # Set up the base feature version
@@ -2574,41 +2398,24 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.recompute()
 
         doc.Body.newObject("Sketcher::SketchObject", "Sketch")
-        doc.Sketch.AttachmentSupport = (doc.getObject("BaseFeature"), ("Face8"))
+        doc.Sketch.AttachmentSupport = (doc.getObject("BaseFeature"), "Face8")
         doc.Sketch.MapMode = "FlatFace"
         doc.recompute()
-        geoList = []
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(12.0, 13.0, 0.000000), App.Vector(12.0, 11.0, 0.000000)
-            )
-        )
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(12.0, 11, 0.000000), App.Vector(14.0, 11.0, 0.000000)
-            )
-        )
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(14.0, 11, 0.000000), App.Vector(14.0, 13.0, 0.000000)
-            )
-        )
-        geoList.append(
-            Part.LineSegment(
-                App.Vector(14.0, 13.0, 0.000000), App.Vector(12, 13.0, 0.000000)
-            )
-        )
+        geoList = [Part.LineSegment(
+            App.Vector(12.0, 13.0, 0.000000), App.Vector(12.0, 11.0, 0.000000)
+        ), Part.LineSegment(
+            App.Vector(12.0, 11, 0.000000), App.Vector(14.0, 11.0, 0.000000)
+        ), Part.LineSegment(
+            App.Vector(14.0, 11, 0.000000), App.Vector(14.0, 13.0, 0.000000)
+        ), Part.LineSegment(
+            App.Vector(14.0, 13.0, 0.000000), App.Vector(12, 13.0, 0.000000)
+        )]
         doc.Sketch.addGeometry(geoList, False)
         del geoList
-        constraintList = []
-        constraintList.append(Sketcher.Constraint("Coincident", 0, 2, 1, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 1, 2, 2, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 2, 2, 3, 1))
-        constraintList.append(Sketcher.Constraint("Coincident", 3, 2, 0, 1))
-        constraintList.append(Sketcher.Constraint("Vertical", 0))
-        constraintList.append(Sketcher.Constraint("Vertical", 2))
-        constraintList.append(Sketcher.Constraint("Horizontal", 1))
-        constraintList.append(Sketcher.Constraint("Horizontal", 3))
+        constraintList = [Sketcher.Constraint("Coincident", 0, 2, 1, 1), Sketcher.Constraint("Coincident", 1, 2, 2, 1),
+                          Sketcher.Constraint("Coincident", 2, 2, 3, 1), Sketcher.Constraint("Coincident", 3, 2, 0, 1),
+                          Sketcher.Constraint("Vertical", 0), Sketcher.Constraint("Vertical", 2),
+                          Sketcher.Constraint("Horizontal", 1), Sketcher.Constraint("Horizontal", 3)]
         doc.Sketch.addConstraint(constraintList)
         del constraintList
         constraintList = []

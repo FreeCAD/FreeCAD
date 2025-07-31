@@ -134,12 +134,12 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
         """Test G0 command Generation."""
         self.single_compare(
             "G0 X10 Y20 Z30 A40 B50 C60 U70 V80 W90",
-            ("G0 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000"),
+            "G0 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000",
             "",
         )
         self.single_compare(
             "G00 X10 Y20 Z30 A40 B50 C60 U70 V80 W90",
-            ("G00 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000"),
+            "G00 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000",
             "",
         )
 
@@ -368,7 +368,7 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
         self.single_compare("G28", "G28", "")
         self.single_compare(
             "G28 X10 Y20 Z30 A40 B50 C60 U70 V80 W90",
-            ("G28 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000"),
+            "G28 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000",
             "",
         )
 
@@ -385,7 +385,7 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
         self.single_compare("G30", "G30", "")
         self.single_compare(
             "G30 X10 Y20 Z30 A40 B50 C60 U70 V80 W90",
-            ("G30 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000"),
+            "G30 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000",
             "",
         )
 
@@ -510,7 +510,7 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
                 "G43.1 X1.234567 Y2.345678 Z3.456789 A4.567891 B5.678912 C6.789123 "
                 "U7.891234 V8.912345 W9.123456"
             ),
-            ("G43.1 X0.0486 Y0.0923 Z0.1361 A4.5679 B5.6789 C6.7891 U0.3107 V0.3509 W0.3592"),
+            "G43.1 X0.0486 Y0.0923 Z0.1361 A4.5679 B5.6789 C6.7891 U0.3107 V0.3509 W0.3592",
             "--inches",
         )
 
@@ -1442,7 +1442,7 @@ G90
         """Test G92 command Generation."""
         self.single_compare(
             "G92 X10 Y20 Z30 A40 B50 C60 U70 V80 W90",
-            ("G92 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000"),
+            "G92 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 U70.000 V80.000 W90.000",
             "",
         )
 

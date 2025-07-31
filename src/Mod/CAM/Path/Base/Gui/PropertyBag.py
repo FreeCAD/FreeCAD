@@ -307,8 +307,8 @@ class TaskPanel(object):
             propname = self.obj.Proxy.addCustomProperty(typ, name, grp, info)
             if dialog.propertyIsEnumeration():
                 setattr(self.obj, name, dialog.propertyEnumerations())
-            return (propname, info)
-        return (None, None)
+            return propname, info
+        return None, None
 
     def propertyAdd(self):
         Path.Log.track()

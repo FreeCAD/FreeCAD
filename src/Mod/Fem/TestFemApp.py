@@ -39,16 +39,16 @@ from femtest.app.test_solver_elmer import TestSolverElmer as FemTest13
 from femtest.app.test_solver_z88 import TestSolverZ88 as FemTest14
 
 # dummy usage to get flake8 and lgtm quiet
-False if FemTest01.__name__ else True
-False if FemTest02.__name__ else True
-False if FemTest03.__name__ else True
-False if FemTest04.__name__ else True
-False if FemTest05.__name__ else True
-False if FemTest06.__name__ else True
-False if FemTest07.__name__ else True
-False if FemTest08.__name__ else True
-False if FemTest09.__name__ else True
-False if FemTest10.__name__ else True
-False if FemTest11.__name__ else True
-False if FemTest13.__name__ else True
-False if FemTest14.__name__ else True
+not bool(FemTest01.__name__)
+not bool(FemTest02.__name__)
+not bool(FemTest03.__name__)
+not bool(FemTest04.__name__)
+not bool(FemTest05.__name__)
+not bool(FemTest06.__name__)
+not bool(FemTest07.__name__)
+not bool(FemTest08.__name__)
+not bool(FemTest09.__name__)
+not bool(FemTest10.__name__)
+not bool(FemTest11.__name__)
+not bool(FemTest13.__name__)
+not bool(FemTest14.__name__)

@@ -226,7 +226,7 @@ class ToDo:
         if _DEBUG:
             _msg("Debug: delaying.\n"
                  "function: {}\n".format(f))
-        if ToDo.itinerary == []:
+        if not ToDo.itinerary:
             QtCore.QTimer.singleShot(0, ToDo.doTasks)
         ToDo.itinerary.append((f, arg))
 
@@ -278,7 +278,7 @@ class ToDo:
         if _DEBUG:
             _msg("Debug: delaying after.\n"
                  "function: {}\n".format(f))
-        if ToDo.afteritinerary == []:
+        if not ToDo.afteritinerary:
             QtCore.QTimer.singleShot(0, ToDo.doTasks)
         ToDo.afteritinerary.append((f, arg))
 

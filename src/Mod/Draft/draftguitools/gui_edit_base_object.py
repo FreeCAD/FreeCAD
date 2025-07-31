@@ -24,7 +24,7 @@
 # \brief Provides support functions to edit Arch objects.
 
 __title__ = "FreeCAD Draft Edit Tool"
-__author__ = ("Carlo Pavan")
+__author__ = "Carlo Pavan"
 __url__ = "https://www.freecad.org"
 
 ## \addtogroup draftguitools

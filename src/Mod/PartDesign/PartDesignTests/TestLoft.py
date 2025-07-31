@@ -151,10 +151,9 @@ class TestLoft(unittest.TestCase):
         coneBottomSketch.AttachmentSupport = (self.Doc.getObject('XY_Plane'), [''])
         coneBottomSketch.MapMode = 'FlatFace'
 
-        geoList = []
-        geoList.append(Part.Circle(Base.Vector(0.000000, 0.000000, 0.000000),
-                                   Base.Vector(0.000000, 0.000000, 1.000000),
-                                   25.000000))
+        geoList = [Part.Circle(Base.Vector(0.000000, 0.000000, 0.000000),
+                               Base.Vector(0.000000, 0.000000, 1.000000),
+                               25.000000)]
         coneBottomSketch.addGeometry(geoList, False)
         del geoList
 
@@ -162,10 +161,9 @@ class TestLoft(unittest.TestCase):
         coneBottomSketch.addConstraint(Sketcher.Constraint('Diameter', 0, 25.000000))
         coneBottomSketch.addConstraint(Sketcher.Constraint('Coincident', 0, 3, -1, 1))
 
-        geoList = []
-        geoList.append(Part.Circle(Base.Vector(0.000000, 0.000000, 0.000000),
-                                   Base.Vector(0.000000, 0.000000, 1.000000),
-                                   40.000000))
+        geoList = [Part.Circle(Base.Vector(0.000000, 0.000000, 0.000000),
+                               Base.Vector(0.000000, 0.000000, 1.000000),
+                               40.000000)]
         coneBottomSketch.addGeometry(geoList, False)
         del geoList
 
@@ -177,11 +175,9 @@ class TestLoft(unittest.TestCase):
         coneTopSketch.AttachmentSupport = (self.Doc.getObject('XY_Plane'), [''])
         coneTopSketch.MapMode = 'FlatFace'
 
-        geoList = []
-        geoList.append(
-            Part.Circle(Base.Vector(0.000000, 0.000000, 0.000000),
-                        Base.Vector(0.000000, 0.000000, 1.000000),
-                        8.000000))
+        geoList = [Part.Circle(Base.Vector(0.000000, 0.000000, 0.000000),
+                               Base.Vector(0.000000, 0.000000, 1.000000),
+                               8.000000)]
         coneTopSketch.addGeometry(geoList, False)
         del geoList
 
@@ -189,10 +185,9 @@ class TestLoft(unittest.TestCase):
         coneTopSketch.addConstraint(Sketcher.Constraint('Diameter', 0, 8.000000))
         coneTopSketch.addConstraint(Sketcher.Constraint('Coincident', 0, 3, -1, 1))
 
-        geoList = []
-        geoList.append(Part.Circle(Base.Vector(0.000000, 0.000000, 0.000000),
-                                   Base.Vector(0.000000, 0.000000, 1.000000),
-                                   15.000000))
+        geoList = [Part.Circle(Base.Vector(0.000000, 0.000000, 0.000000),
+                               Base.Vector(0.000000, 0.000000, 1.000000),
+                               15.000000)]
         coneTopSketch.addGeometry(geoList, False)
         del geoList
 

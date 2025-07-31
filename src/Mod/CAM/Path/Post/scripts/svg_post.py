@@ -175,7 +175,7 @@ class Svg(PostProcessor):
                 Path.Log.debug(f"Angle difference: {angle_diff:.2f} radians")
 
                 # Determine the large_arc_flag and sweep_flag
-                large_arc_flag = 1 if abs(angle_diff) > (math.pi) else 0
+                large_arc_flag = 1 if abs(angle_diff) > math.pi else 0
                 sweep_flag = 0 if angle_diff > 0 else 1
 
                 start_x = format_coord(start_point.x - xmin)

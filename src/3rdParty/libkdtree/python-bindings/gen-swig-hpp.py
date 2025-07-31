@@ -258,6 +258,7 @@ std::ostream& operator<<(std::ostream& out, RECORD_%i%s%s const& T)
     f.close()
 
 
+
 if __name__=="__main__":
     write_swig_file("py-kdtree.i.tmpl", "py-kdtree.i")
     write_hpp_file("py-kdtree.hpp.tmpl", "py-kdtree.hpp")

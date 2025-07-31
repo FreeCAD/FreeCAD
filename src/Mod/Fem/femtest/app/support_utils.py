@@ -68,7 +68,7 @@ def fcc_print(message):
 
 def get_namefromdef(strdel="", stradd=""):
     # https://code.activestate.com/recipes/66062-determining-current-function-name/
-    return (sys._getframe(1).f_code.co_name).replace(strdel, stradd)
+    return sys._getframe(1).f_code.co_name.replace(strdel, stradd)
 
 
 def get_defmake_count(fem_vtk_post=True):
@@ -135,21 +135,25 @@ def get_fem_test_defs():
     # write to file
     file_path = join(tempfile.gettempdir(), "test_commands.sh")
     cf = open(file_path, "w")
-    cf.write("# created by Python\n")
-    cf.write("'''\n")
-    cf.write("from femtest.app.support_utils import get_fem_test_defs\n")
-    cf.write("get_fem_test_defs()\n")
-    cf.write("\n")
-    cf.write("\n")
-    cf.write("# all FEM App tests\n")
-    cf.write("make -j 4 && ./bin/FreeCAD --run-test 'TestFemApp'\n")
-    cf.write("\n")
-    cf.write("make -j 4 && ./bin/FreeCADCmd --run-test 'TestFemApp'\n")
-    cf.write("\n")
-    cf.write("\n")
-    cf.write("'''\n")
-    cf.write("\n")
-    cf.write("# modules\n")
+    cf_lines = [
+        "# created by Python\n",
+        "'''\n",
+        "from femtest.app.support_utils import get_fem_test_defs\n",
+        "get_fem_test_defs()\n",
+        "\n",
+        "\n",
+        "# all FEM App tests\n",
+        "make -j 4 && ./bin/FreeCAD --run-test 'TestFemApp'\n",
+        "\n",
+        "make -j 4 && ./bin/FreeCADCmd --run-test 'TestFemApp'\n",
+        "\n",
+        "\n",
+        "'''\n",
+        "\n",
+        "# modules\n",
+    ]
+    for i in cf_lines:
+        cf.write(i)
     for m in collected_test_modules:
         cf.write(f"make -j 4 && ./bin/FreeCADCmd -t {m}\n")
     cf.write("\n")
@@ -388,7 +392,7 @@ def compare_stats(fea, stat_file, res_obj_name, loc_stat_types=None):
                 sf_content.append(li)
     sf.close()
     sf_content = force_unix_line_ends(sf_content)
-    if sf_content == []:
+    if not sf_content:
         return True
 
     # compare stats

@@ -526,4 +526,4 @@ def baseEncode(arr: list[int]) -> str:
         if len(buffer) > longest:
             longest = len(buffer)
     output = [("{:>" + str(longest) + "}").format(x) for x in output]  # pad each element
-    return str(longest) + ("").join(output)
+    return str(longest) + "".join(output)

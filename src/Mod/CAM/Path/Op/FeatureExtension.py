@@ -228,7 +228,7 @@ class Extension(object):
         self.length = length
         self.direction = direction
         self.extFaces = None
-        self.isDebug = True if Path.Log.getLevel(Path.Log.thisModule()) == 4 else False
+        self.isDebug = Path.Log.getLevel(Path.Log.thisModule()) == 4
 
         self.avoid = False
         if sub.startswith("Avoid_"):

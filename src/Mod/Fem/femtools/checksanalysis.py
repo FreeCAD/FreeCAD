@@ -100,7 +100,7 @@ def check_member_for_solver_calculix(analysis, solver, mesh, member):
     has_no_references = False
     for m in member.mats_linear:
         if len(m["Object"].References) == 0:
-            if has_no_references is True:
+            if has_no_references:
                 message += (
                     "More than one material has an empty references list "
                     "(Only one empty references list is allowed!).\n"
@@ -208,7 +208,7 @@ def check_member_for_solver_calculix(analysis, solver, mesh, member):
         has_nonlinear_material = False
         for nlm in member.mats_nonlinear:
             if nlm["Object"].LinearBaseMaterial == m["Object"]:
-                if has_nonlinear_material is False:
+                if not has_nonlinear_material:
                     has_nonlinear_material = True
                 else:
                     message += (
@@ -314,7 +314,7 @@ def check_member_for_solver_calculix(analysis, solver, mesh, member):
         has_no_references = False
         for b in member.geos_beamsection:
             if len(b["Object"].References) == 0:
-                if has_no_references is True:
+                if has_no_references:
                     message += (
                         "More than one beam section has an empty references "
                         "list (Only one empty references list is allowed!).\n"
@@ -340,7 +340,7 @@ def check_member_for_solver_calculix(analysis, solver, mesh, member):
         has_no_references = False
         for s in member.geos_shellthickness:
             if len(s["Object"].References) == 0:
-                if has_no_references is True:
+                if has_no_references:
                     message += (
                         "More than one shell thickness has an empty references "
                         "list (Only one empty references list is allowed!).\n"
@@ -360,7 +360,7 @@ def check_member_for_solver_calculix(analysis, solver, mesh, member):
         has_no_references = False
         for f in member.geos_fluidsection:
             if len(f["Object"].References) == 0:
-                if has_no_references is True:
+                if has_no_references:
                     message += (
                         "More than one fluid section has an empty references list "
                         "(Only one empty references list is allowed!).\n"

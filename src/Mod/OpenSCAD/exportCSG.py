@@ -94,8 +94,8 @@ def vertexs2polygon(vertex):
 
 def shape2polyhedron(shape):
     import MeshPart
-    return mesh2polyhedron(MeshPart.meshFromShape(Shape=shape,\
-        Deflection = params.GetFloat('meshdeflection', 0.0)))
+    return mesh2polyhedron(MeshPart.meshFromShape(Shape=shape,
+                                                  Deflection = params.GetFloat('meshdeflection', 0.0)))
 
 
 def process_object(csg,ob):
@@ -270,4 +270,4 @@ def export(exportList, filename):
     csg.write("}\n}\n")
     # close file
     csg.close()
-    FreeCAD.Console.PrintMessage("successfully exported" + " " + filename)
+    FreeCAD.Console.PrintMessage(f"successfully exported {filename}")

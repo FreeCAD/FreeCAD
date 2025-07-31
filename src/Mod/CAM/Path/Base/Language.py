@@ -48,7 +48,7 @@ class Instruction(object):
                 self.param = param
 
     def anglesOfTangents(self):
-        return (0, 0)
+        return 0, 0
 
     def setPositionBegin(self, begin):
         self.begin = begin
@@ -123,9 +123,9 @@ class MoveStraight(Instruction):
         begin = self.xyBegin()
         end = self.xyEnd()
         if end == begin:
-            return (0, 0)
+            return 0, 0
         a = Path.Geom.getAngle(end - begin)
-        return (a, a)
+        return a, a
 
     def isMove(self):
         return True

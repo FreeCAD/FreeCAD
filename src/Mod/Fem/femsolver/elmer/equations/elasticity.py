@@ -93,7 +93,7 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
             "App::PropertyBool",
             "DisplaceMesh",
             "Elasticity",
-            ("If mesh is deformed by displacement field.\nSet to False for 'Eigen Analysis'."),
+            "If mesh is deformed by displacement field.\nSet to False for 'Eigen Analysis'.",
             locked=True,
         )
         obj.addProperty(

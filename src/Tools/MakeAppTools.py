@@ -13,15 +13,12 @@ def replaceTemplate(dirName, oldName, newName):
         if not os.path.isdir(pathName):
             try:
                 print(pathName)
-                origFile = open(pathName)  # open file
-                lines = origFile.readlines()  # read the file...
-                origFile.close()  # ... and close it
-                output = open(pathName, "w")  # open the file again
-                for line in lines:
-                    if line.find(oldName) != -1:  # search for 'oldName' and replace it
-                        line = line.replace(oldName, newName)
-                    output.write(line)  # write the modified line back
-                output.close  # close the file
+                with open(pathName) as origFile, open(pathName, "w") as output:
+                    lines = origFile.readlines()
+                    for line in lines:
+                        if line.find(oldName) != -1:  # search for 'oldName' and replace it
+                            line = line.replace(oldName, newName)
+                        output.write(line)
             except Exception:
                 print("Error modifying ", pathName, " -- skipped")
                 print(sys.exc_info()[0], sys.exc_info()[1])
@@ -51,7 +48,7 @@ def copyTemplate(dirFrom, dirTo, oldName, newName, MatchFile, MatchDir):
                     hit = 1
                     break
             if hit:
-                print("Ignore file " + file)
+                print(f"Ignore file {file}")
                 continue
             try:
                 if verbose > 1:
@@ -68,7 +65,7 @@ def copyTemplate(dirFrom, dirTo, oldName, newName, MatchFile, MatchDir):
                     hit = 1
                     break
             if hit:
-                print("Ignore directory " + file)
+                print(f"Ignore directory {file}")
                 continue
             if verbose:
                 print("copying dir ", pathFrom, " to ", pathTo)

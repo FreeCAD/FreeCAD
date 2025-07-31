@@ -96,8 +96,8 @@ class Ellipse(gui_base_original.Creator):
         center = p1.add(halfdiag)
         p2 = p1.add(DraftVecUtils.project(diagonal, self.wp.v))
         p4 = p1.add(DraftVecUtils.project(diagonal, self.wp.u))
-        r1 = (p4.sub(p1).Length)/2
-        r2 = (p2.sub(p1).Length)/2
+        r1 = p4.sub(p1).Length / 2
+        r2 = p2.sub(p1).Length / 2
         try:
             # The command to run is built as a series of text strings
             # to be committed through the `draftutils.todo.ToDo` class.

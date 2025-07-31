@@ -39,7 +39,7 @@ class BaseAggregate(object):
 
     def __init__(self, bound1, bound2, base_type):
         # check that bound1<bound2
-        if bound1 != None and bound2 != None:
+        if bound1 is not None and bound2 is not None:
             if bound1 > bound2:
                 raise AssertionError("bound1 shall be less than or equal to bound2")
         self._bound1 = bound1
@@ -51,7 +51,7 @@ class BaseAggregate(object):
             raise IndexError(
                 "ARRAY index out of bound (lower bound is %i, passed %i)" % (self._bound1, index)
             )
-        elif self._bound2 != None and index > self._bound2:
+        elif self._bound2 is not None and index > self._bound2:
             raise IndexError(
                 "ARRAY index out of bound (upper bound is %i, passed %i)" % (self._bound2, index)
             )
@@ -63,7 +63,7 @@ class BaseAggregate(object):
             raise IndexError(
                 "ARRAY index out of bound (lower bound is %i, passed %i)" % (self._bound1, index)
             )
-        elif self._bound2 != None and index > self._bound2:
+        elif self._bound2 is not None and index > self._bound2:
             raise IndexError(
                 "ARRAY index out of bound (upper bound is %i, passed %i)" % (self._bound2, index)
             )
@@ -178,10 +178,7 @@ class ARRAY(BaseType.Type, BaseType.Aggregate):
         indeterminate, or False otherwise"""
         if None in self._container:
             return Unknown
-        if self.get_size() - len(set(self._container)) > 0:  # some items are repeated
-            return False
-        else:
-            return True
+        return not bool(self.get_size() - len(set(self._container)) > 0)  # some items are repeated
 
     def __getitem__(self, index):
         if index < self._bound_1:
@@ -194,7 +191,7 @@ class ARRAY(BaseType.Type, BaseType.Aggregate):
             )
         else:
             value = self._container[index - self._bound_1]
-            if not self._optional and value == None:
+            if not self._optional and value is None:
                 raise AssertionError(
                     "Not OPTIONAL prevent the value with index %i from being None (default). Please set the value first."
                     % index
@@ -263,7 +260,7 @@ class LIST(BaseType.Type, BaseType.Aggregate):
             raise TypeError("LIST lower bound must be an integer")
         # bound_2 can be set to None
         self._unbounded = False
-        if bound_2 == None:
+        if bound_2 is None:
             self._unbounded = True
         elif not type(bound_2) == int:
             raise TypeError("LIST upper bound must be an integer")
@@ -323,10 +320,7 @@ class LIST(BaseType.Type, BaseType.Aggregate):
         indeterminate, or False otherwise"""
         if None in self._container:
             return Unknown
-        if self.get_size() - len(set(self._container)) > 0:  # some items are repeated
-            return False
-        else:
-            return True
+        return not bool(self.get_size() - len(set(self._container)) > 0)  # some items are repeated
 
     def __getitem__(self, index):
         # case bounded
@@ -343,7 +337,7 @@ class LIST(BaseType.Type, BaseType.Aggregate):
                 )
             else:
                 value = self._container[index - self._bound_1]
-                if value == None:
+                if value is None:
                     raise AssertionError(
                         "Value with index %i not defined. Please set the value first." % index
                     )
@@ -356,7 +350,7 @@ class LIST(BaseType.Type, BaseType.Aggregate):
                 )
             else:
                 value = self._container[index - self._bound_1]
-                if value == None:
+                if value is None:
                     raise AssertionError(
                         "Value with index %i not defined. Please set the value first." % index
                     )
@@ -460,7 +454,7 @@ class BAG(BaseType.Type, BaseType.Aggregate):
             raise TypeError("LIST lower bound must be an integer")
         # bound_2 can be set to None
         self._unbounded = False
-        if bound_2 == None:
+        if bound_2 is None:
             self._unbounded = True
         elif not type(bound_2) == int:
             raise TypeError("LIST upper bound must be an integer")
@@ -526,10 +520,7 @@ class BAG(BaseType.Type, BaseType.Aggregate):
         indeterminate, or False otherwise"""
         if None in self._container:
             return Unknown
-        if self.get_size() - len(set(self._container)) > 0:  # some items are repeated
-            return False
-        else:
-            return True
+        return not bool(self.get_size() - len(set(self._container)) > 0)  # some items are repeated
 
 
 class SET(BaseType.Type, BaseType.Aggregate):
@@ -580,7 +571,7 @@ class SET(BaseType.Type, BaseType.Aggregate):
             raise TypeError("LIST lower bound must be an integer")
         # bound_2 can be set to None
         self._unbounded = False
-        if bound_2 == None:
+        if bound_2 is None:
             self._unbounded = True
         elif not type(bound_2) == int:
             raise TypeError("LIST upper bound must be an integer")

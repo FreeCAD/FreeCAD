@@ -90,7 +90,7 @@ def LinkFromStr(strlink, document):
     elif len(pieces) > 2:
         raise ValueError(translate('AttachmentEditor',"Failed to parse link (more than one colon encountered)",None))
 
-    return (feature,str(subname)) #wrap in str to remove unicode, which confuses assignment to PropertyLinkSubList.
+    return feature,str(subname)  #wrap in str to remove unicode, which confuses assignment to PropertyLinkSubList.
 
 def StrListFromRefs(references):
     '''input: PropertyLinkSubList. Output: list of strings for UI.'''
@@ -352,7 +352,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
                 i -= 1
         if i > len(self.refLines)-1:
             # all 4 references have been selected, finish
-            assert(self.auto_next)
+            assert self.auto_next
             self.i_active_ref = -1
             self.updateRefButtons()
             return
@@ -385,9 +385,9 @@ class AttachmentEditorTaskPanel(FrozenClass):
             pos.y = Q(self.form.attachmentOffsetY.text()).getValueAs(mm)
         if index==2:
             pos.z = Q(self.form.attachmentOffsetZ.text()).getValueAs(mm)
-        if index >= 0  and  index <= 2:
+        if 0 <= index <= 2:
             plm.Base = pos
-        if index >= 3  and  index <= 5:
+        if 3 <= index <= 5:
             yaw = Q(self.form.attachmentOffsetYaw.text()).getValueAs(deg)
             pitch = Q(self.form.attachmentOffsetPitch.text()).getValueAs(deg)
             roll = Q(self.form.attachmentOffsetRoll.text()).getValueAs(deg)
@@ -531,7 +531,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
                     cmb.append(u", ".join(refstr_userfriendly))
 
                 tip = mi['BriefDocu']
-                if (m != 'Deactivated'):
+                if m != 'Deactivated':
                     tip += u"\n\n"
                     tip += translate('AttachmentEditor', "Reference combinations:", None) + u" \n\n".join(cmb)
 

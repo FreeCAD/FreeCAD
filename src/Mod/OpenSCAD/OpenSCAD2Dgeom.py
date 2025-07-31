@@ -29,7 +29,7 @@ This Script includes python functions to convert imported dxf geometry to Faces
 
 from functools import reduce
 
-class Overlappingfaces():
+class Overlappingfaces:
     '''combines overlapping faces together'''
     def __init__(self,facelist):
         self.sortedfaces = sorted(facelist,key=(lambda shape: shape.Area),reverse=True)
@@ -63,17 +63,17 @@ class Overlappingfaces():
         for bigfacei, smallfacei in\
                 itertools.combinations(range(len(self.sortedfaces)),2):
             try:
-                overlap = Overlappingfaces.dofacesoverlapproximity(\
-                        self.sortedfaces[bigfacei],self.sortedfaces[smallfacei])
+                overlap = Overlappingfaces.dofacesoverlapproximity(
+                    self.sortedfaces[bigfacei],self.sortedfaces[smallfacei])
             except (NotImplementedError, Part.OCCError) as e:
                 try:
-                    overlap = Overlappingfaces.dofacesoverlapboolean(\
-                            self.sortedfaces[bigfacei],\
-                            self.sortedfaces[smallfacei])
+                    overlap = Overlappingfaces.dofacesoverlapboolean(
+                        self.sortedfaces[bigfacei],
+                        self.sortedfaces[smallfacei])
                 except Part.OCCError:
-                    overlap = Overlappingfaces.dofacesoverlapallverts(\
-                            self.sortedfaces[bigfacei],\
-                            self.sortedfaces[smallfacei])
+                    overlap = Overlappingfaces.dofacesoverlapallverts(
+                        self.sortedfaces[bigfacei],
+                        self.sortedfaces[smallfacei])
             if overlap:
                 smallinbig = self.isinsidedict.get(bigfacei,[])
                 smallinbig.append(smallfacei)
@@ -150,8 +150,8 @@ class Overlappingfaces():
                 if len(directchildren) == 1:
                     obj.Tool = addfeature(directchildren[0],subdict)
                 else:
-                    obj.Tool = doc.addObject("Part::MultiFuse",\
-                            "facesfromedges_union")
+                    obj.Tool = doc.addObject("Part::MultiFuse",
+                                             "facesfromedges_union")
                     obj.Tool.Shapes = [addfeature(child,subdict)\
                             for child in directchildren]
                     obj.Tool.ViewObject.hide()
@@ -254,7 +254,7 @@ def endpointdistance(edges):
     numedges=len(edges)
     if numedges == 1 and len(edges[0].Vertexes) == 1:
         return 0.0,0.0,0.0
-    outerdistance = edges[0].Vertexes[0].Point.sub(\
+    outerdistance = edges[0].Vertexes[0].Point.sub(
         edges[-1].Vertexes[-1].Point).Length
     if numedges > 1:
         innerdistances=[edges[i].Vertexes[-1].Point.sub(edges[i+1].\
@@ -291,7 +291,7 @@ def edgestowires(edgelist,eps=0.001):
     for path,debug in zip(*findConnectedEdges(edgelist,eps=eps,debug=True)):
         maxd,mind,outerd = endpointdistancedebuglist(debug)
         assert(maxd <= eps*2) # Assume the input to be broken
-        if maxd < eps*2 and maxd > 0.000001: # OCC won't like it if maxd > 0.02:
+        if eps*2 > maxd > 0.000001: # OCC won't like it if maxd > 0.02:
             print('endpointdistance max:%f min:%f, ends:%f' %(maxd,mind,outerd))
 
             if True:
@@ -407,8 +407,8 @@ def superWireReverse(debuglist,closed=False):
                     prev[0].Vertexes[-1*prev[1]].Point:
                 p1 = curr[0].Vertexes[-1*(not curr[1])].Point
             else:
-                p1 = median(curr[0].Vertexes[-1*(not curr[1])].Point,\
-                        prev[0].Vertexes[-1*prev[1]].Point)
+                p1 = median(curr[0].Vertexes[-1*(not curr[1])].Point,
+                            prev[0].Vertexes[-1*prev[1]].Point)
         else:
             p1 = curr[0].Vertexes[-1*(not curr[1])].Point
         if nexte:
@@ -416,8 +416,8 @@ def superWireReverse(debuglist,closed=False):
                 nexte[0].Vertexes[-1*(not nexte[1])].Point:
                 p2 = nexte[0].Vertexes[-1*(not nexte[1])].Point
             else:
-                p2 = median(curr[0].Vertexes[-1*(curr[1])].Point,\
-                        nexte[0].Vertexes[-1*(not nexte[1])].Point)
+                p2 = median(curr[0].Vertexes[-1*(curr[1])].Point,
+                            nexte[0].Vertexes[-1*(not nexte[1])].Point)
         else:
             p2 = curr[0].Vertexes[-1*(curr[1])].Point
         if isinstance(curr[0].Curve,(Part.LineSegment, Part.Line)):

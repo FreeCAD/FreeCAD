@@ -157,7 +157,7 @@ class TestPocket(unittest.TestCase):
         self.FaceNumber = 7
         self.Pocket001.UpToFace = (self.Pocket, ["Face"+str(self.FaceNumber)])
         self.Doc.recompute()
-        while (('Invalid' in self.Pocket001.State or round(self.Pocket001.Shape.Volume, 7) != 50.0) and self.FaceNumber < 11):
+        while ('Invalid' in self.Pocket001.State or round(self.Pocket001.Shape.Volume, 7) != 50.0) and self.FaceNumber < 11:
             self.FaceNumber += 1
             self.Pocket001.UpToFace = (self.Pocket, ["Face"+str(self.FaceNumber)])
             self.Doc.recompute()

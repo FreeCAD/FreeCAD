@@ -65,7 +65,7 @@ class FemInputWriter:
                 "A temporary directory is used.\n".format(dir_name)
             )
             make_tmp_dir = True
-        if make_tmp_dir is True:
+        if make_tmp_dir:
             from tempfile import mkdtemp
 
             dir_name = mkdtemp(prefix="fcfem_")

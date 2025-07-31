@@ -99,7 +99,7 @@ class TaskFillTemplateFields:
                 and listofkeys == reader.fieldnames
             ):
                 self.page = obj
-                if obj.Views == []:
+                if not obj.Views:
                     msgBox = QtGui.QMessageBox()
                     msgTitle = QtCore.QT_TRANSLATE_NOOP(
                         "Techdraw_FillTemplateFields",
@@ -148,7 +148,7 @@ class TaskFillTemplateFields:
                 dialogRow = 0
                 longestText = 0
                 for key, value in self.texts.items():
-                    App.Console.PrintLog("{0} = {1} | ".format(key, value))
+                    App.Console.PrintLog(f"{key} = {value} | ")
                     if str(key).lower() in CreatedByChkLst:
                         t1 = QtGui.QLabel(value)
                         self.la.addWidget(t1, dialogRow, 0)

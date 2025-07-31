@@ -226,8 +226,8 @@ def isDrillable(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1), a
     if list == type(obj):
         for shape in obj:
             if isDrillable(shape, candidate, tooldiameter, vector):
-                return (True, shape)
-        return (False, None)
+                return True, shape
+        return False, None
 
     if candidate.ShapeType not in ["Face", "Edge"]:
         raise TypeError("expected a Face or Edge. Got a {}".format(candidate.ShapeType))

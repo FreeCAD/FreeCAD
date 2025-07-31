@@ -443,7 +443,7 @@ def parse(pathobj):
             if command in ("G98", "G99"):
                 DRILL_RETRACT_MODE = command
 
-            if command in ("G90"):
+            if command in "G90":
                 MOTION_MODE = command
 
             if TRANSLATE_DRILL_CYCLES:
@@ -467,7 +467,7 @@ def parse(pathobj):
                         out += linenumber() + line
 
             if command == "message":
-                if OUTPUT_COMMENTS is False:
+                if not OUTPUT_COMMENTS:
                     out = []
                 else:
                     outstring.pop(0)  # remove the command

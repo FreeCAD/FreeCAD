@@ -48,7 +48,7 @@ def shapeOfMaxSize(list_of_shapes):
             max_size = v
             shape_max = sh
             count_max = 1
-        elif (1-rel_precision) * max_size <= v and v <= (1+rel_precision) * max_size :
+        elif (1 - rel_precision) * max_size <= v <= (1 + rel_precision) * max_size:
             count_max = count_max + 1
     if count_max > 1 :
         raise ValueError("There is more than one largest piece!")

@@ -377,7 +377,7 @@ class Shaft:
                     locations["%s%u" % (self.Fstr[ax], i)] = location
                     # Boundary condition
                     translations[ax].append((location,  0.0))
-                 if constraint.AxialFree == False:
+                 if not constraint.AxialFree:
                     coefficientsM[0].append(0)             # Reaction force contributes no moment around x axis
                  coefficientsM[1].append(location) # Reaction force contributes a positive moment around z axis
                  coefficientsM[2].append(-location) # Reaction force contributes a negative moment around y axis

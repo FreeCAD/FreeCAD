@@ -3,7 +3,7 @@
 This is a documentation of all GCodes used by the FreeCAD Path Workbench
 
 | Command      | Description                                                       | Supported parameters                   |
-| ---          | ---                                                               | ---                                    |
+|--------------|-------------------------------------------------------------------|----------------------------------------|
 | G0, G00      | Rapid move                                                        | X,Y,Z,A,B,C                            |
 | G1, G01      | Normal interpolated move                                          | X,Y,Z,A,B,C                            |
 | G2, G02      | Clockwise arc                                                     | X,Y,Z,A,B,C,I,J,K                      |

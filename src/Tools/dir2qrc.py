@@ -90,12 +90,12 @@ def main():
             sys.exit()
         if o in ("-a", "--auto"):
             Automatic = True
-        if o in ("--dist"):
+        if o in "--dist":
             ExtraDist = True
         if o in ("-o", "--out-file"):
             Output = a
         if o in ("-d", "--directory"):
-            print("Using path: " + a + "\n")
+            print(f"Using path: {a}\n")
             Dir = a
 
     if Automatic:
@@ -119,7 +119,7 @@ def updateResourceFile(Dir, Output, prefix=""):
     global Verbose
     Output = join(Dir, Output)
     file = open(Output, "w")
-    file.write(hhcHeader % (prefix))
+    file.write(hhcHeader % prefix)
     DirPath = Dir + os.path.sep
     filelist = []
     for root, dirs, files in os.walk(Dir):
@@ -130,12 +130,12 @@ def updateResourceFile(Dir, Output, prefix=""):
                 FilePath = FilePath.replace(".\\", "")
                 FilePath = FilePath.replace("\\", "/")
                 if Verbose:
-                    print(FilePathOrg + " -> " + FilePath)
+                    print(f"{FilePathOrg} -> {FilePath}")
                 filelist.append(FilePath)
 
     filelist.sort()
     for i in filelist:
-        file.write("        <file>" + i + "</file>\n")
+        file.write(f"        <file>{i}</file>\n")
 
     file.write(hhcFooter)
     file.close()
@@ -155,7 +155,7 @@ def makeTargetExtraDist(Dir):
                 FilePath = FilePathOrg.replace(DirPath, "")
                 FilePath = FilePath.replace(".\\", "")
                 FilePath = FilePath.replace("\\", "/")
-                print("\t\t%s \\" % (FilePath))
+                print(f"\t\t{FilePath} \\")
     print()
 
 

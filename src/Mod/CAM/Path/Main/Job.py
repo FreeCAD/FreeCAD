@@ -602,8 +602,7 @@ class ObjectJob:
 
     def templateAttrs(self, obj):
         """templateAttrs(obj) ... answer a dictionary with all properties of the receiver that should be stored in a template file."""
-        attrs = {}
-        attrs[JobTemplate.Version] = 1
+        attrs = {JobTemplate.Version: 1}
         if obj.PostProcessor:
             attrs[JobTemplate.PostProcessor] = obj.PostProcessor
             attrs[JobTemplate.PostProcessorArgs] = obj.PostProcessorArgs

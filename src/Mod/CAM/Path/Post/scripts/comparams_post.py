@@ -34,13 +34,13 @@ SHOW_EDITOR = True
 
 def fmt(num):
     fnum = ""
-    fnum += "%.3f" % (num)
+    fnum += "%.3f" % num
     return fnum
 
 
 def ffmt(num):
     fnum = ""
-    fnum += "%.1f" % (num)
+    fnum += "%.1f" % num
     return fnum
 
 

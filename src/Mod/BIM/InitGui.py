@@ -530,11 +530,11 @@ class BIMWorkbench(Workbench):
 
             def shouldShow(self):
                 if self.invert:
-                    return (FreeCAD.ActiveDocument != None) and (
+                    return (FreeCAD.ActiveDocument is not None) and (
                         FreeCADGui.Selection.getSelection() != []
                     )
                 else:
-                    return (FreeCAD.ActiveDocument != None) and (
+                    return (FreeCAD.ActiveDocument is not None) and (
                         not FreeCADGui.Selection.getSelection()
                     )
 

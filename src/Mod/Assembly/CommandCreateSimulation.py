@@ -434,9 +434,7 @@ class ViewProviderMotion:
 
         typeStr = "Linear" if self.app_obj.MotionType == "Linear" else "Angular"
 
-        self.app_obj.Label = "{label} ({type_})".format(
-            label=self.app_obj.Joint[0].Label, type_=translate("Assembly", typeStr)
-        )
+        self.app_obj.Label = f"{self.app_obj.Joint[0].Label} ({translate('Assembly', typeStr)})"
 
 
 class MotionEditDialog:
@@ -913,7 +911,7 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
 
     def onFrameChanged(self, val):
         self.assembly.updateForFrame(val)
-        self.form.FrameLabel.setText(translate("Assembly", "Frame" + " " + str(val)))
+        self.form.FrameLabel.setText(translate("Assembly", f"Frame {str(val)}"))
         time = float(val * self.simFeaturePy.cTimeStepOutput)
         self.form.FrameTimeLabel.setText(f"{time:.2f} s")
 

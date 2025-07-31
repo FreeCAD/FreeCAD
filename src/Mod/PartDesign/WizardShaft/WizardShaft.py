@@ -206,7 +206,7 @@ class WizardShaftGuiCallback:
 
     def isActive(self):
         global WizardShaftDlg
-        return (WizardShaftDlg is not None)
+        return WizardShaftDlg is not None
 
     def GetResources(self):
         IconPath = FreeCAD.ConfigGet("AppHomePath") + "Mod/PartDesign/WizardShaft/WizardShaft.svg"

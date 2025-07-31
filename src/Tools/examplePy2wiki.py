@@ -25,7 +25,8 @@ Version:
   0.1
 """
 
-import os, sys, string, getopt
+import getopt
+import sys
 
 
 def Process(line):
@@ -47,6 +48,7 @@ def main():
         sys.exit(2)
 
     # checking on the options
+    infile = outfile = False
     for o, a in opts:
         if o in ("-h", "--help"):
             sys.stderr.write(Usage)
@@ -55,7 +57,9 @@ def main():
             outfile = open(a, "w")
         if o in ("-i", "--in-file"):
             infile = open(a, "r")
-
+    if not infile or not outfile:
+        print(Usage)
+        sys.exit(1)
     lines = infile.readlines()
     for l in lines:
         outfile.write(Process(l))

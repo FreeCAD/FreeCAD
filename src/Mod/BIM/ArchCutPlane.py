@@ -45,8 +45,7 @@ if FreeCAD.GuiUp:
     from draftutils.translate import translate
 else:
     # \cond
-    def translate(ctxt, txt):
-        return txt
+    translate = lambda ctxt, txt: txt
     # \endcond
 
 

@@ -44,7 +44,7 @@ class CallableCheckWorkflow:
     def __call__(self):
         dialog = QApplication.activeModalWidget()
         self.test.assertIsNotNone(dialog, "Dialog box could not be found")
-        if (dialog is not None):
+        if dialog is not None:
             dialogcheck = CallableCheckDialogWasClosed(self.test)
             QtCore.QTimer.singleShot(500, dialogcheck)
             QtCore.QTimer.singleShot(0, dialog, QtCore.SLOT('accept()'))
@@ -62,7 +62,7 @@ class CallableCheckWarning:
     def __call__(self):
         dialog = QApplication.activeModalWidget()
         self.test.assertIsNotNone(dialog, "Input dialog box could not be found")
-        if (dialog is not None):
+        if dialog is not None:
             QtCore.QTimer.singleShot(0, dialog, QtCore.SLOT('accept()'))
 
 class CallableComboBox:
@@ -71,10 +71,10 @@ class CallableComboBox:
     def __call__(self):
         dialog = QApplication.activeModalWidget()
         self.test.assertIsNotNone(dialog, "Warning dialog box could not be found")
-        if (dialog is not None):
+        if dialog is not None:
             cbox = dialog.findChild(QtGui.QComboBox)
             self.test.assertIsNotNone(cbox, "ComboBox widget could not be found")
-            if (cbox is not None):
+            if cbox is not None:
                 QtCore.QTimer.singleShot(0, dialog, QtCore.SLOT('accept()'))
 
 App = FreeCAD
@@ -105,21 +105,15 @@ class PartDesignGuiTestCases(unittest.TestCase):
         self.Sketch.MapMode = 'FlatFace'
         self.BodySource.addObject(self.Sketch)
 
-        geoList = []
-        geoList.append(Part.LineSegment(App.Vector(2.0,8.0,0),App.Vector(8.0,8.0,0)))
-        geoList.append(Part.LineSegment(App.Vector(8.0,8.0,0),App.Vector(8.0,2.0,0)))
-        geoList.append(Part.LineSegment(App.Vector(8.0,2.0,0),App.Vector(2.0,2.0,0)))
-        geoList.append(Part.LineSegment(App.Vector(2.0,2.0,0),App.Vector(2.0,8.0,0)))
+        geoList = [Part.LineSegment(App.Vector(2.0, 8.0, 0), App.Vector(8.0, 8.0, 0)),
+                   Part.LineSegment(App.Vector(8.0, 8.0, 0), App.Vector(8.0, 2.0, 0)),
+                   Part.LineSegment(App.Vector(8.0, 2.0, 0), App.Vector(2.0, 2.0, 0)),
+                   Part.LineSegment(App.Vector(2.0, 2.0, 0), App.Vector(2.0, 8.0, 0))]
         self.Sketch.addGeometry(geoList,False)
-        conList = []
-        conList.append(Sketcher.Constraint('Coincident',0,2,1,1))
-        conList.append(Sketcher.Constraint('Coincident',1,2,2,1))
-        conList.append(Sketcher.Constraint('Coincident',2,2,3,1))
-        conList.append(Sketcher.Constraint('Coincident',3,2,0,1))
-        conList.append(Sketcher.Constraint('Horizontal',0))
-        conList.append(Sketcher.Constraint('Horizontal',2))
-        conList.append(Sketcher.Constraint('Vertical',1))
-        conList.append(Sketcher.Constraint('Vertical',3))
+        conList = [Sketcher.Constraint('Coincident', 0, 2, 1, 1), Sketcher.Constraint('Coincident', 1, 2, 2, 1),
+                   Sketcher.Constraint('Coincident', 2, 2, 3, 1), Sketcher.Constraint('Coincident', 3, 2, 0, 1),
+                   Sketcher.Constraint('Horizontal', 0), Sketcher.Constraint('Horizontal', 2),
+                   Sketcher.Constraint('Vertical', 1), Sketcher.Constraint('Vertical', 3)]
         self.Sketch.addConstraint(conList)
 
         self.Pad = self.Doc.addObject("PartDesign::Pad","Pad")
@@ -159,21 +153,15 @@ class PartDesignGuiTestCases(unittest.TestCase):
         self.Sketch.MapMode = 'FlatFace'
 
 
-        geoList = []
-        geoList.append(Part.LineSegment(App.Vector(-10.000000,10.000000,0),App.Vector(10.000000,10.000000,0)))
-        geoList.append(Part.LineSegment(App.Vector(10.000000,10.000000,0),App.Vector(10.000000,-10.000000,0)))
-        geoList.append(Part.LineSegment(App.Vector(10.000000,-10.000000,0),App.Vector(-10.000000,-10.000000,0)))
-        geoList.append(Part.LineSegment(App.Vector(-10.000000,-10.000000,0),App.Vector(-10.000000,10.000000,0)))
+        geoList = [Part.LineSegment(App.Vector(-10.000000, 10.000000, 0), App.Vector(10.000000, 10.000000, 0)),
+                   Part.LineSegment(App.Vector(10.000000, 10.000000, 0), App.Vector(10.000000, -10.000000, 0)),
+                   Part.LineSegment(App.Vector(10.000000, -10.000000, 0), App.Vector(-10.000000, -10.000000, 0)),
+                   Part.LineSegment(App.Vector(-10.000000, -10.000000, 0), App.Vector(-10.000000, 10.000000, 0))]
         self.Sketch.addGeometry(geoList,False)
-        conList = []
-        conList.append(Sketcher.Constraint('Coincident',0,2,1,1))
-        conList.append(Sketcher.Constraint('Coincident',1,2,2,1))
-        conList.append(Sketcher.Constraint('Coincident',2,2,3,1))
-        conList.append(Sketcher.Constraint('Coincident',3,2,0,1))
-        conList.append(Sketcher.Constraint('Horizontal',0))
-        conList.append(Sketcher.Constraint('Horizontal',2))
-        conList.append(Sketcher.Constraint('Vertical',1))
-        conList.append(Sketcher.Constraint('Vertical',3))
+        conList = [Sketcher.Constraint('Coincident', 0, 2, 1, 1), Sketcher.Constraint('Coincident', 1, 2, 2, 1),
+                   Sketcher.Constraint('Coincident', 2, 2, 3, 1), Sketcher.Constraint('Coincident', 3, 2, 0, 1),
+                   Sketcher.Constraint('Horizontal', 0), Sketcher.Constraint('Horizontal', 2),
+                   Sketcher.Constraint('Vertical', 1), Sketcher.Constraint('Vertical', 3)]
         self.Sketch.addConstraint(conList)
 
         self.Pad = self.Doc.addObject("PartDesign::Pad","Pad")
@@ -236,7 +224,7 @@ class PartDesignTransformed(unittest.TestCase):
 
     def tearDown(self):
         #closing doc
-        if (App.ActiveDocument is not None and App.ActiveDocument.Name == PartDesignTransformed):
+        if App.ActiveDocument is not None and App.ActiveDocument.Name == PartDesignTransformed:
             App.closeDocument("PartDesignTransformed")
         #print ("omit closing document for debugging")
 
@@ -300,7 +288,7 @@ class TestSubShapeBinder(unittest.TestCase):
 
         self.Doc.recompute()
         binder = body.newObject('PartDesign::SubShapeBinder','Binder')
-        binder.Support = [(box, ("Face1"))]
+        binder.Support = [(box, "Face1")]
 
         grp = App.ParamGet("User parameter:BaseApp/Preferences/Mod/PartDesign")
         packed_color = grp.GetUnsigned("DefaultDatumColor", 0xFFD70099)
