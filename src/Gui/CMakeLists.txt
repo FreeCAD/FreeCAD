@@ -389,6 +389,7 @@ SET(Gui_UIC_SRCS
     Dialogs/DlgAuthorization.ui
     Dialogs/DlgChooseIcon.ui
     Dialogs/DlgCreateNewPreferencePack.ui
+    Dialogs/DlgDocumentObject.ui
     Dialogs/DlgInputDialog.ui
     Dialogs/DlgKeyboard.ui
     Dialogs/DlgMacroExecute.ui
@@ -505,6 +506,7 @@ SET(Dialog_CPP_SRCS
     Dialogs/DlgAbout.cpp
     Dialogs/DlgActivateWindowImp.cpp
     Dialogs/DlgCreateNewPreferencePackImp.cpp
+    Dialogs/DlgDocumentObject.cpp
     Dialogs/DlgUnitsCalculatorImp.cpp
     Dialogs/DlgInputDialogImp.cpp
     Dialogs/DlgMacroExecuteImp.cpp
@@ -548,6 +550,7 @@ SET(Dialog_HPP_SRCS
     Dialogs/DlgActivateWindowImp.h
     Dialogs/DlgCreateNewPreferencePackImp.h
     Dialogs/DlgUnitsCalculatorImp.h
+    Dialogs/DlgDocumentObject.h
     Dialogs/DlgInputDialogImp.h
     Dialogs/DlgMacroExecuteImp.h
     Dialogs/DlgRunExternal.h
