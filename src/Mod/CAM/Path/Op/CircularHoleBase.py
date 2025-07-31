@@ -22,6 +22,7 @@
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
+import FreeCADGui
 import Path
 import Path.Op.Base as PathOp
 from Path.Base import Drillable
@@ -89,36 +90,41 @@ class ObjectOp(PathOp.ObjectOp):
 
     def holeDiameter(self, obj, base, sub):
         """holeDiameter(obj, base, sub) ... returns the diameter of the specified hole."""
-        try:
-            shape = base.Shape.getElement(sub)
-            if shape.ShapeType == "Vertex":
-                return 0
 
-            if shape.ShapeType == "Edge" and type(shape.Curve) == Part.Circle:
+        def minNonZeroValue(*args):
+            values = [value for value in args if value != 0]
+            return min(values)
+
+        shape = base.Shape.getElement(sub)
+        if shape.ShapeType == "Vertex":
+            return 0
+
+        if shape.ShapeType == "Edge":
+            if isinstance(shape.Curve, Part.Circle):
                 return shape.Curve.Radius * 2
-
-            if shape.ShapeType == "Face":
-                for i in range(len(shape.Edges)):
-                    if (
-                        type(shape.Edges[i].Curve) == Part.Circle
-                        and shape.Edges[i].Curve.Radius * 2 < shape.BoundBox.XLength * 1.1
-                        and shape.Edges[i].Curve.Radius * 2 > shape.BoundBox.XLength * 0.9
-                    ):
-                        return shape.Edges[i].Curve.Radius * 2
-
-            # for all other shapes the diameter is just the dimension in X.
-            # This may be inaccurate as the BoundBox is calculated on the tessellated geometry
-            Path.Log.warning(
-                translate(
-                    "CAM",
-                    "Hole diameter may be inaccurate due to tessellation on face. Consider selecting hole edge.",
+            else:
+                return minNonZeroValue(
+                    shape.BoundBox.XLength, shape.BoundBox.YLength, shape.Curve.length()
                 )
-            )
-            return shape.BoundBox.XLength
-        except Part.OCCError as e:
-            Path.Log.error(e)
 
-        return 0
+        if shape.ShapeType == "Face":
+            for edge in shape.Edges:
+                if (
+                    isinstance(edge.Curve, Part.Circle)
+                    and edge.Curve.Radius * 2 < shape.BoundBox.XLength * 1.1
+                    and edge.Curve.Radius * 2 > shape.BoundBox.XLength * 0.9
+                ):
+                    return edge.Curve.Radius * 2
+
+        # for all other shapes the diameter is just the boundbox dimension
+        # This may be inaccurate as the BoundBox is calculated on the tessellated geometry
+        Path.Log.warning(
+            translate(
+                "CAM",
+                "Hole diameter may be inaccurate due to tessellation on face. Consider selecting hole edge.",
+            )
+        )
+        return minNonZeroValue(shape.BoundBox.XLength, shape.BoundBox.YLength)
 
     def holePosition(self, obj, base, sub):
         """holePosition(obj, base, sub) ... returns a Vector for the position defined by the given features.
@@ -129,14 +135,18 @@ class ObjectOp(PathOp.ObjectOp):
             if shape.ShapeType == "Vertex":
                 return FreeCAD.Vector(shape.X, shape.Y, 0)
 
-            if shape.ShapeType == "Edge" and hasattr(shape.Curve, "Center"):
-                return FreeCAD.Vector(shape.Curve.Center.x, shape.Curve.Center.y, 0)
+            if shape.ShapeType == "Edge":
+                if hasattr(shape.Curve, "Center"):
+                    return FreeCAD.Vector(shape.Curve.Center.x, shape.Curve.Center.y, 0)
 
             if shape.ShapeType == "Face":
                 if hasattr(shape.Surface, "Center"):
                     return FreeCAD.Vector(shape.Surface.Center.x, shape.Surface.Center.y, 0)
-                if len(shape.Edges) == 1 and type(shape.Edges[0].Curve) == Part.Circle:
+                if len(shape.Edges) == 1 and isinstance(shape.Edges[0].Curve, Part.Circle):
                     return shape.Edges[0].Curve.Center
+
+            return FreeCAD.Vector(shape.CenterOfGravity.x, shape.CenterOfGravity.y, 0)
+
         except Part.OCCError as e:
             Path.Log.error(e)
 
@@ -179,13 +189,13 @@ class ObjectOp(PathOp.ObjectOp):
                             {
                                 "x": pos.x,
                                 "y": pos.y,
-                                "r": self.holeDiameter(obj, base, sub),
+                                "d": self.holeDiameter(obj, base, sub),
                             }
                         )
 
         if haveLocations(self, obj):
             for location in obj.Locations:
-                holes.append({"x": location.x, "y": location.y, "r": 0})
+                holes.append({"x": location.x, "y": location.y, "d": 0})
 
         if len(holes) > 0:
             holes = PathUtils.sort_locations(holes, ["x", "y"])
@@ -200,18 +210,28 @@ class ObjectOp(PathOp.ObjectOp):
 
     def findAllHoles(self, obj):
         """findAllHoles(obj) ... find all holes of all base models and assign as features."""
-        Path.Log.track()
-        job = self.getJob(obj)
-        if not job:
-            return
 
-        matchvector = None if job.JobType == "Multiaxis" else FreeCAD.Vector(0, 0, 1)
-        tooldiameter = obj.ToolController.Tool.Diameter
-
+        selection = FreeCADGui.Selection.getSelectionEx()
         features = []
-        for base in self.model:
-            features.extend(
-                Drillable.getDrillableTargets(base, ToolDiameter=tooldiameter, vector=matchvector)
-            )
+        for sel in selection:
+            baseObj = sel.Object
+            subNames = sel.SubElementNames if sel.SubElementNames else ("",)
+            features.append([baseObj, subNames])
+
+        if not features:
+            Path.Log.track()
+            job = self.getJob(obj)
+            if not job:
+                return
+
+            matchvector = None if job.JobType == "Multiaxis" else FreeCAD.Vector(0, 0, 1)
+            tooldiameter = obj.ToolController.Tool.Diameter
+
+            for base in self.model:
+                features.extend(
+                    Drillable.getDrillableTargets(
+                        base, ToolDiameter=tooldiameter, vector=matchvector
+                    )
+                )
         obj.Base = features
         obj.Disabled = []
