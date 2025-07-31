@@ -14,11 +14,6 @@ if(BUILD_FEM_NETGEN)
     add_definitions(-DFCWithNetgen ${NETGEN_DEFINITIONS})
 endif(BUILD_FEM_NETGEN)
 
-
-
-link_directories(${SMESH_LIB_PATH})
-
-
 set(Fem_LIBS
     Part
     FreeCADApp
@@ -213,6 +208,7 @@ target_include_directories(
     ${VTK_INCLUDE_DIRS}
 )
 
+target_link_directories(Fem PUBLIC ${SMESH_LIB_PATH})
 target_link_libraries(Fem ${Fem_LIBS} ${VTK_LIBRARIES})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Fem)

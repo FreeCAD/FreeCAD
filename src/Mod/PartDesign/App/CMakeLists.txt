@@ -2,7 +2,6 @@ include_directories(
     SYSTEM
     ${CMAKE_SOURCE_DIR}/src/3rdParty/json/single_include/nlohmann/
 )
-link_directories(${OCC_LIBRARY_DIR})
 
 generate_from_py(Body)
 generate_from_py(Feature)
@@ -143,6 +142,7 @@ target_include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
+target_link_directories(PartDesign PUBLIC ${OCC_LIBRARY_DIR})
 target_link_libraries(PartDesign ${PartDesign_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(PartDesign)
