@@ -36,8 +36,6 @@ ConstraintInitialTemperature::ConstraintInitialTemperature()
 {
     ADD_PROPERTY(initialTemperature, (300.0));
 
-    References.setStatus(App::Property::ReadOnly, true);
-    References.setStatus(App::Property::Hidden, true);
 }
 
 App::DocumentObjectExecReturn* ConstraintInitialTemperature::execute()
