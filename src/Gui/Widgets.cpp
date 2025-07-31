@@ -1675,31 +1675,42 @@ void adjustDialogPosition(QDialog* dialog) {
     if (!mw) {
         return;
     }
-    dialog->adjustSize(); // needed for modal dialogs to ensure the size is correct
-    const auto mainWindowRect = QRect(mw->mapToGlobal(QPoint(0, 0)), mw->size());
-    const auto initialDialogPos = dialog->mapToGlobal(QPoint(0, 0));
-    const auto dialogRect = QRect(initialDialogPos, dialog->frameGeometry().size());
-    if (mainWindowRect.contains(dialogRect)) {
+    
+    dialog->adjustSize(); // ensure correct size
+
+    const QRect mainWindowRect{ mw->mapToGlobal(QPoint(0, 0)), mw->size() };
+    const QRect dialogRect{ dialog->frameGeometry() };
+
+    const bool isFullyInside = mainWindowRect.contains(dialogRect);
+    if (isFullyInside) {
         return;
     }
 
-    QPoint adjustedDialogPos = initialDialogPos;
-    const int margin = 5;
-    if (dialogRect.intersects(mainWindowRect) && mainWindowRect.united(dialogRect) != mainWindowRect) {
-        if (dialogRect.right() > mainWindowRect.right()) {
-            adjustedDialogPos.setX(std::max(mainWindowRect.left() + margin, mainWindowRect.right() - dialogRect.width() - margin));
-        }
-        if (dialogRect.left() < mainWindowRect.left()) {
-            adjustedDialogPos.setX(mainWindowRect.left() + margin);
-        }
-        if (dialogRect.top() < mainWindowRect.top()) {
-            adjustedDialogPos.setY(mainWindowRect.top() + margin);
-        }
-        if (dialogRect.bottom() > mainWindowRect.bottom()) {
-            adjustedDialogPos.setY(mainWindowRect.bottom() - dialogRect.height() - margin);
-        }
+    const bool isCompletelyOutside = !mainWindowRect.intersects(dialogRect);
+    if (isCompletelyOutside) {
+        return;
     }
-    dialog->move(adjustedDialogPos);
+
+    const int margin = 5;
+    const QRect availableArea = mainWindowRect.adjusted(
+        margin, margin, -margin, -margin
+    );
+
+    QPoint adjustedTopLeft = dialogRect.topLeft();
+
+    adjustedTopLeft.setX(std::clamp(
+        adjustedTopLeft.x(),
+        availableArea.left(),
+        availableArea.right() - dialogRect.width()
+    ));
+
+    adjustedTopLeft.setY(std::clamp(
+        adjustedTopLeft.y(),
+        availableArea.top(),
+        availableArea.bottom() - dialogRect.height()
+    ));
+
+    dialog->move(adjustedTopLeft);
 }
 
 }
