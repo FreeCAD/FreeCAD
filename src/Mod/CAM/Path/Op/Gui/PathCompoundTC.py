@@ -32,6 +32,9 @@ from Path.Dressup.Utils import toolController
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
+from itertools import permutations
+from numpy import random
+import math
 import re
 import copy
 
@@ -100,14 +103,20 @@ class ObjectCompound:
         )
         obj.addProperty(
             "App::PropertyLength",
-            "LimitRetractBetweenOperations",
+            "LimitRetractHeight",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Limit retract height between operations"),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "MinTravel",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Sort path to get minimal travel length"),
         )
         obj.Active = True
         obj.RemoveG0X0Y0 = False
         obj.RetractThreshold = 0
-        obj.LimitRetractBetweenOperations = 100
+        obj.LimitRetractHeight = 100
         obj.ToolController = None
         obj.setEditorMode("CycleTime", 1)  # read-only
         obj.setEditorMode("ToolController", 3)  # read-only and hidden
@@ -161,139 +170,249 @@ class Compound:
     def __init__(self, obj):
         self.obj = obj
 
+    # Here we can change gcode by template
     def preprocessPath(self, pathObj):
-        # Here we can change gcode by template
+        isFullyDefined = False  # Position of the tool is unknown in the beginning
+        startX = None
+        startY = None
+        startZ = None
 
-        if self.obj.RetractThreshold or self.obj.RemoveG0X0Y0:
-            isFullyDefined = False  # Position of the tool is unknown in the beginning
-            startX = None
-            startY = None
-            startZ = None
+        positionPrev = FreeCAD.Vector()  # Any move prevision position
+        positionNext = FreeCAD.Vector()  # Any move next position
+        G123Prev = FreeCAD.Vector()  #     Mill processing prevision position
+        G123Next = FreeCAD.Vector()  #     Mill processing next position
+        tempG0 = []  #                     Temporary list for num G0 commands
+        uselessG0 = []  #                  List num commands G0 which need to remove
+        newCommands = []  #                New movements commands if exclude retract
+        g0x0y0 = []  #                     List commands G0 X0 Y0
+        lastF = None  #                    Last feed rate value
+        g0LimitZ = []  #                   List commands G0 which need replace Z
+        firstG123 = -1  #                  Number first G1|G2|G3 command
+        lastG123 = -1  #                   Number last G1|G2|G3 command
 
-            positionPrev = FreeCAD.Vector()  # Any move prevision position
-            positionNext = FreeCAD.Vector()  # Any move next position
-            G123Prev = FreeCAD.Vector()  #     Mill processing prevision position
-            G123Next = FreeCAD.Vector()  #     Mill processing next position
-            tempG0 = []  #                     Temporary list for num G0 commands
-            uselessG0 = []  #                  List num commands G0 which need to remove
-            newCommands = []  #                New movements commands if exclude retract
-            g0x0y0 = []  #                     List commands G0 X0 Y0
-            lastF = None  #                    Last feed rate value
-            g0LimitZ = []  #                   List commands G0 which need replace Z
-            firstG123 = -1  #                  Number first G1|G2|G3 command
-            lastG123 = -1  #                   Number last G1|G2|G3 command
+        for counter, command in enumerate(pathObj.Commands):
 
-            for counter, command in enumerate(pathObj.Commands):
+            # Mark movements G0 X0 Y0
+            if self.obj.RemoveG0X0Y0:
+                if re.search(r"^G0?[0]$", command.Name, re.IGNORECASE) and (
+                    command.x,
+                    command.y,
+                ) == (0, 0):
+                    g0x0y0.append(counter)
 
-                # Mark movements G0 X0 Y0
-                if self.obj.RemoveG0X0Y0:
-                    if re.search(r"^G0?[0]$", command.Name, re.IGNORECASE) and (
-                        command.x,
-                        command.y,
-                    ) == (0, 0):
-                        g0x0y0.append(counter)
+            # Storage for G0 which greater than limit Z
+            if re.search(r"^G0?[123]$", command.Name, re.IGNORECASE):
+                if firstG123 == -1:
+                    firstG123 = counter
+                lastG123 = counter
+            if (
+                re.search(r"^G0?[0]$", command.Name, re.IGNORECASE)
+                and command.z
+                and command.z > self.obj.LimitRetractHeight.Value
+            ):
+                g0LimitZ.append(counter)
 
-                # Storage for G0 which greater than limit Z
-                if re.search(r"^G0?[123]$", command.Name, re.IGNORECASE):
-                    if firstG123 == -1:
-                        firstG123 = counter
-                    lastG123 = counter
-                if (
-                    re.search(r"^G0?[0]$", command.Name, re.IGNORECASE)
-                    and command.z
-                    and command.z > self.obj.LimitRetractBetweenOperations.Value
-                ):
-                    g0LimitZ.append(counter)
+            # Mark retract with movements less than Threshold
+            if self.obj.RetractThreshold:
 
-                # Mark retract with movements less than Threshold
-                if self.obj.RetractThreshold:
+                if isFullyDefined and re.search(r"^G0?[0]$", command.Name, re.IGNORECASE):
+                    # Temporary storage for G0, which will be cleaned when meeting with G1|G2|G3
+                    tempG0.append(counter)
 
-                    if isFullyDefined and re.search(r"^G0?[0]$", command.Name, re.IGNORECASE):
-                        # Temporary storage for G0, which will be cleaned when meeting with G1|G2|G3
-                        tempG0.append(counter)
+                if isFullyDefined and re.search(r"^G0?[0123]$", command.Name, re.IGNORECASE):
+                    # Get position from any movement command
+                    positionNext.x = command.x if command.x else positionPrev.x
+                    positionNext.y = command.y if command.y else positionPrev.y
+                    positionNext.z = command.z if command.z else positionPrev.z
 
-                    if isFullyDefined and re.search(r"^G0?[0123]$", command.Name, re.IGNORECASE):
-                        # Get position from any movement command
-                        positionNext.x = command.x if command.x else positionPrev.x
-                        positionNext.y = command.y if command.y else positionPrev.y
-                        positionNext.z = command.z if command.z else positionPrev.z
+                if isFullyDefined and re.search(r"^G0?[123]$", command.Name, re.IGNORECASE):
+                    lastF = command.f if command.f else lastF
+                    # Get position from mill command
+                    G123Next.x = command.x if command.x else positionPrev.x
+                    G123Next.y = command.y if command.y else positionPrev.y
+                    G123Next.z = command.z if command.z else positionPrev.z
+                    # Distance between mill commands (do not take into account Z)
+                    p1 = copy.copy(G123Prev)
+                    p2 = copy.copy(positionNext)
+                    p1.z = 0
+                    p2.z = 0
+                    if tempG0 and p1.distanceToPoint(p2) <= self.obj.RetractThreshold:
+                        uselessG0.extend(tempG0)
+                        newCmd = Path.Command(f"G1 X{p2.x} Y{p2.y}")
+                        if lastF:
+                            newCmd.F = lastF
+                        newCommands.append([counter, newCmd])
+                    tempG0.clear()
 
-                    if isFullyDefined and re.search(r"^G0?[123]$", command.Name, re.IGNORECASE):
-                        lastF = command.f if command.f else lastF
-                        # Get position from mill command
-                        G123Next.x = command.x if command.x else positionPrev.x
-                        G123Next.y = command.y if command.y else positionPrev.y
-                        G123Next.z = command.z if command.z else positionPrev.z
-                        # Distance between mill commands (do not take into account Z)
-                        p1 = copy.copy(G123Prev)
-                        p2 = copy.copy(positionNext)
-                        p1.z = 0
-                        p2.z = 0
-                        if tempG0 and p1.distanceToPoint(p2) <= self.obj.RetractThreshold:
-                            uselessG0.extend(tempG0)
-                            newCmd = Path.Command(f"G1 X{p2.x} Y{p2.y}")
-                            if lastF:
-                                newCmd.F = lastF
-                            newCommands.append([counter, newCmd])
-                        tempG0.clear()
+                if not isFullyDefined and re.search(r"^G0?[0123]$", command.Name, re.IGNORECASE):
+                    # After start program, X, Y and Z is not defined
+                    # Define position from the few first commands
+                    startX = command.x if command.x else startX
+                    startY = command.y if command.y else startY
+                    startZ = command.z if command.z else startZ
+                    if startX and startY and startZ:
+                        isFullyDefined = True
+                        positionNext.x = startX
+                        positionNext.y = startY
+                        positionNext.z = startZ
+                        positionPrev = copy.copy(positionNext)
+                        G123Next = copy.copy(positionNext)
+                        G123Prev = copy.copy(positionNext)
 
-                    if not isFullyDefined and re.search(
-                        r"^G0?[0123]$", command.Name, re.IGNORECASE
-                    ):
-                        # After start program, X, Y and Z is not defined
-                        # Define position from the few first commands
-                        startX = command.x if command.x else startX
-                        startY = command.y if command.y else startY
-                        startZ = command.z if command.z else startZ
-                        if startX and startY and startZ:
-                            isFullyDefined = True
-                            positionNext.x = startX
-                            positionNext.y = startY
-                            positionNext.z = startZ
-                            positionPrev = copy.copy(positionNext)
-                            G123Next = copy.copy(positionNext)
-                            G123Prev = copy.copy(positionNext)
+                G123Prev = copy.copy(G123Next)
+                positionPrev = copy.copy(positionNext)
 
-                    G123Prev = copy.copy(G123Next)
-                    positionPrev = copy.copy(positionNext)
+        # Remove movements G0 X0 Y0
+        print("g0x0y0", g0x0y0)
+        for i in g0x0y0:
+            cmd = pathObj.Commands[i]
+            # Leave only Z movement
+            newCmd = Path.Command(f"{cmd.Name} Z{cmd.Z}")
+            pathObj.deleteCommand(i)
+            pathObj.insertCommand(newCmd, i)
 
-            # Remove movements G0 X0 Y0
-            for i in g0x0y0:
+        # Replace Z in movements G0
+        print("g0LimitZ", g0LimitZ)
+        for i in g0LimitZ:
+            if (i > firstG123) and (i < lastG123):
                 cmd = pathObj.Commands[i]
-                # Leave only Z movement
-                newCmd = Path.Command(f"{cmd.Name} Z{cmd.Z}")
+                cmd.z = self.obj.LimitRetractHeight.Value
                 pathObj.deleteCommand(i)
-                pathObj.insertCommand(newCmd, i)
+                pathObj.insertCommand(cmd, i)
 
-            # Replace Z in movements G0
-            for i in g0LimitZ:
-                if (i > firstG123) and (i < lastG123):
-                    cmd = pathObj.Commands[i]
-                    cmd.z = self.obj.LimitRetractBetweenOperations.Value
-                    pathObj.deleteCommand(i)
-                    pathObj.insertCommand(cmd, i)
+        # Remove useless movements G0
+        print("uselessG0", uselessG0)
+        for i in uselessG0:
+            cmd = pathObj.Commands[i]
+            newCmd = Path.Command(f"({cmd.toGCode()})")
+            pathObj.deleteCommand(i)
+            pathObj.insertCommand(newCmd, i)
 
-            # Remove useless movements G0
-            for i in uselessG0:
-                cmd = pathObj.Commands[i]
-                newCmd = Path.Command(f"({cmd.toGCode()})")
-                pathObj.deleteCommand(i)
-                pathObj.insertCommand(newCmd, i)
+        # Insert commands G1 between retracts (needed in some cases)
+        for i, newCmd in newCommands:
+            pathObj.insertCommand(newCmd, i)
 
-            # Insert commands G1 between retracts (needed in some cases)
-            for i, newCmd in newCommands:
-                pathObj.insertCommand(newCmd, i)
+    # Sort path to get minimal travel length
+    def sortPath(self, pathObj):
+        elements = []
+        startPoint = FreeCAD.Vector()
+        endPoint = FreeCAD.Vector()
+        el = {"startIndex": None, "endIndex": None, "startPoint": None, "endPoint": None}
+        for i, command in enumerate(pathObj.Commands):
+            # print()
+            # print(command)
+            # print(f" {startPoint}  {endPoint}")
+            if re.search(r"^G0?[0123]$", command.Name, re.IGNORECASE):
+                # Get position from any movement command
+                endPoint.x = command.x if command.x else startPoint.x
+                endPoint.y = command.y if command.y else startPoint.y
+                endPoint.z = command.z if command.z else startPoint.z
 
-        return pathObj
+            if el["startIndex"] is None and re.search(r"^G0?[0]$", command.Name, re.IGNORECASE):
+                # print(" start", i)
+                el["startIndex"] = i
+
+            if el["startPoint"] is None and re.search(r"^G0?[123]$", command.Name, re.IGNORECASE):
+                el["startPoint"] = copy.copy(startPoint)
+
+            if (
+                el["startIndex"] is not None
+                and el["startPoint"] is not None
+                and re.search(r"^G0?[0]$", command.Name, re.IGNORECASE)
+            ):
+                # print(" end", i)
+                el["endIndex"] = i
+                el["endPoint"] = copy.copy(endPoint)
+
+            if el["startIndex"] is not None and el["endIndex"] is not None:
+                elements.append(el)
+                # print()
+                # print("element", el)
+                # print(pathObj.Commands[el["startIndex"]])
+                # print(pathObj.Commands[el["endIndex"]])
+                el = {"startIndex": None, "endIndex": None, "startPoint": None, "endPoint": None}
+
+            startPoint = copy.copy(endPoint)
+
+        # print(*elements, sep="\n")
+
+        combAmount = math.factorial(len(elements))
+        print("combAmount", combAmount)
+        maxCombAmount = 500_000
+        minTravel = None
+
+        if combAmount > maxCombAmount:
+            # random way seaching optimal order
+            for counter in range(combAmount):
+                # print()
+                if counter > maxCombAmount:
+                    break
+                variant = random.permutation(elements)
+                travel = 0
+                for i, el in enumerate(variant):
+                    if i < len(variant) - 2:
+                        travel += variant[i]["endPoint"].distanceToPoint(
+                            variant[i + 1]["startPoint"]
+                        )
+
+                    if minTravel is not None and travel > minTravel:
+                        # no any sense to process this variant
+                        break
+
+                # print("travel", round(travel,1))
+                if minTravel is None or travel < minTravel:
+                    minTravel = travel
+                    optimalOrder = variant
+
+        else:
+            # brute-force seaching optimal order
+            perm = permutations(elements)
+            for counter, variant in enumerate(perm):
+                # print()
+                travel = 0
+                for i, el in enumerate(variant):
+                    if i < len(variant) - 2:
+                        travel += variant[i]["endPoint"].distanceToPoint(
+                            variant[i + 1]["startPoint"]
+                        )
+
+                    if minTravel is not None and travel > minTravel:
+                        # no any sense to process this variant
+                        break
+
+                # print("travel", round(travel,1))
+                if minTravel is None or travel < minTravel:
+                    minTravel = travel
+                    optimalOrder = variant
+        # order = [el["startPoint"] for el in optimalOrder]
+
+        print("counter", counter)
+        print("minTravel", round(minTravel, 1))
+        # print("optimal order", optimalOrder)
+        # print("optimal order", order)
+
+        sortedPath = Path.Path()
+        for el in optimalOrder:
+            sortedPath.addCommands(pathObj.Commands[el["startIndex"] : el["endIndex"] + 1])
+
+        return sortedPath
 
     def getPath(self):
         # Call this method on an instance of the class
         # to generate and return Path of the combined operations
-        combinedPathObj = Path.Path()
+        resultPathObj = Path.Path()
         for operation in self.obj.Group:
-            combinedPathObj.addCommands(operation.Path.Commands)
+            resultPathObj.addCommands(PathUtils.getPathWithPlacement(operation).Commands)
 
-        resultPathObj = self.preprocessPath(combinedPathObj)
+        if (
+            self.obj.RetractThreshold
+            or self.obj.RemoveG0X0Y0
+            or self.obj.LimitRetractHeight.Value < 100
+        ):
+            self.preprocessPath(resultPathObj)
+
+        if self.obj.MinTravel:
+            resultPathObj = self.sortPath(resultPathObj)
 
         # return combined and pre-processed Path object
         return resultPathObj
