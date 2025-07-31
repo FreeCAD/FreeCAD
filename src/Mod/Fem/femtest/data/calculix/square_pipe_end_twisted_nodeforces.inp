@@ -2581,8 +2581,8 @@ ConstraintFixed,6
 
 ***********************************************************
 ** constraints force node loads
-*CLOAD
 ** ConstraintForce1
+*CLOAD
 ** node load on shape: Forces:Vertex1
 1,1,-2777.78
 
@@ -2591,6 +2591,7 @@ ConstraintFixed,6
 
 
 ** ConstraintForce2
+*CLOAD
 ** node load on shape: Forces:Vertex2
 2,1,2777.78
 
@@ -2599,6 +2600,7 @@ ConstraintFixed,6
 
 
 ** ConstraintForce3
+*CLOAD
 ** node load on shape: Forces:Vertex20
 343,1,-5555.556
 
@@ -2616,6 +2618,7 @@ ConstraintFixed,6
 
 
 ** ConstraintForce4
+*CLOAD
 ** node load on shape: Forces:Vertex9
 131,1,5555.556
 
@@ -2633,6 +2636,7 @@ ConstraintFixed,6
 
 
 ** ConstraintForce5
+*CLOAD
 ** node load on shape: Forces:Vertex43
 1376,1,-11111.11166667
 
@@ -2653,6 +2657,7 @@ ConstraintFixed,6
 
 
 ** ConstraintForce6
+*CLOAD
 ** node load on shape: Forces:Vertex31
 758,1,11111.11166667
 
@@ -2673,6 +2678,7 @@ ConstraintFixed,6
 
 
 ** ConstraintForce7
+*CLOAD
 ** node load on shape: Forces:Vertex1
 1,2,-2777.78
 
@@ -2681,6 +2687,7 @@ ConstraintFixed,6
 
 
 ** ConstraintForce8
+*CLOAD
 ** node load on shape: Forces:Vertex8
 129,2,2777.78
 
@@ -2689,6 +2696,7 @@ ConstraintFixed,6
 
 
 ** ConstraintForce9
+*CLOAD
 ** node load on shape: Forces:Vertex3
 5,2,-5555.556
 
@@ -2706,6 +2714,7 @@ ConstraintFixed,6
 
 
 ** ConstraintForce10
+*CLOAD
 ** node load on shape: Forces:Vertex15
 238,2,5555.556
 
@@ -2723,6 +2732,7 @@ ConstraintFixed,6
 
 
 ** ConstraintForce11
+*CLOAD
 ** node load on shape: Forces:Vertex25
 429,2,-11111.11166667
 
@@ -2743,6 +2753,7 @@ ConstraintFixed,6
 
 
 ** ConstraintForce12
+*CLOAD
 ** node load on shape: Forces:Vertex37
 1067,2,11111.11166667
 
