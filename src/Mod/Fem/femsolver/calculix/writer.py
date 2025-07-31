@@ -159,6 +159,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_meshsets(inpfile, self.member.cons_planerotation, con_planerotation)
         self.write_constraints_meshsets(inpfile, self.member.cons_transform, con_transform)
         self.write_constraints_meshsets(inpfile, self.member.cons_temperature, con_temperature)
+        self.write_constraints_meshsets(inpfile, self.member.cons_initialtemperature, con_itemp)
         self.write_constraints_meshsets(
             inpfile, self.member.cons_electricchargedensity, con_electricchargedensity
         )
