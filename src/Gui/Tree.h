@@ -49,6 +49,7 @@ using DocumentObjectDataPtr = std::shared_ptr<DocumentObjectData>;
 class TreeWidgetItemDelegate;
 
 class DocumentItem;
+class Command;
 
 GuiExport bool isTreeViewDragging();
 
@@ -242,6 +243,7 @@ private:
     QAction* closeDocAction;
     QAction* searchObjectsAction;
     QAction* openFileLocationAction;
+    Command* skipRecomputeCommand;
     QTreeWidgetItem *contextItem;
     App::DocumentObject *searchObject;
     Gui::Document *searchDoc;
