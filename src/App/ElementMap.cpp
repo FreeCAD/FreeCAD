@@ -1212,14 +1212,10 @@ ElementMap::ToponamingElement ElementMap::compileToponamingElement(MappedName na
     // also add any modifiers with postfix geo IDs, because they will eventually describe a split operation
     // more accurately.
     for (const auto &data : element.unfilteredSplitSections) {
-        if (data.postfix != "M" || (data.postfixNumber != 0 || !data.postFixIDs.empty())) {
+        if (data.postfix != "M"  || (data.postfixNumber != 0 || !data.postFixIDs.empty())) {
             element.splitSections.push_back(data);
         }
     }
-
-    // for (const auto &sec : element.splitSections) {
-    //     FC_WARN("section: " << sec.stringData << " post: " << sec.postfix << " opcode: " << sec.opcode << " num: " << sec.postfixNumber << " eltype: " << sec.elementType);
-    // }
 
     int removeSections = 0;
 
@@ -1254,7 +1250,16 @@ ElementMap::ToponamingElement ElementMap::compileToponamingElement(MappedName na
 
     for (int i = 0; i < removeSections; i++) {
         element.splitSections.erase(element.splitSections.begin());
+        element.unfilteredSplitSections.erase(element.unfilteredSplitSections.begin());
     }
+
+    if (element.splitSections.empty() && !element.unfilteredSplitSections.empty()) {
+        element.splitSections = element.unfilteredSplitSections;
+    }
+
+    // for (const auto &sec : element.splitSections) {
+    //     FC_WARN("section: " << sec.stringData << " post: " << sec.postfix << " opcode: " << sec.opcode << " num: " << sec.postfixNumber << " eltype: " << sec.elementType);
+    // }
 
     return element;
 }
@@ -1286,6 +1291,7 @@ bool ElementMap::checkGeoIDsLists(std::vector<ElementMap::geoID> &list1, std::ve
 
 IndexedName ElementMap::complexFind(const MappedName& name) const {
     // auto begin = std::chrono::steady_clock::now();
+    // FC_WARN("start complex find");
 
     ToponamingElement originalElement = compileToponamingElement(name);
     ToponamingElement loopElement = ToponamingElement();
@@ -1310,8 +1316,11 @@ IndexedName ElementMap::complexFind(const MappedName& name) const {
 
         if (
             originalElement.splitSections.size() != loopElement.splitSections.size()
-            || (originalElement.splitSections.size() == 0 || loopElement.splitSections.size() == 0)
-        ) continue;
+            || (originalElement.splitSections.size() == 0 || loopElement.splitSections.size() == 0)) {
+            
+            // FC_WARN("size check failed");
+            continue;
+        }
 
         bool geoIDCheck = false;
         std::vector<ElementMap::geoID> smallerIDList = originalElement.mainIDs;
@@ -1357,6 +1366,8 @@ IndexedName ElementMap::complexFind(const MappedName& name) const {
             continue;
         }
 
+        int tagOccurences = 0;
+
         // the sections of the two elements to check against should already by the same size
         for (int i = 0; i < originalElement.splitSections.size(); i++) {
             if ((originalElement.splitSections[i].opcode != loopElement.splitSections[i].opcode)
@@ -1365,11 +1376,13 @@ IndexedName ElementMap::complexFind(const MappedName& name) const {
                     || originalElement.splitSections[i].opcode == "CHF"
                     || loopElement.splitSections[i].opcode == "FLT"
                     || loopElement.splitSections[i].opcode == "CHF"))*/) {
+                // FC_WARN("opCode failed");
                 sectionCheck = false;
                 break;
             }
 
             if (originalElement.splitSections[i].postfix != loopElement.splitSections[i].postfix) {
+                // FC_WARN("postfix failed");
                 sectionCheck = false;
                 break;
             }
@@ -1378,10 +1391,12 @@ IndexedName ElementMap::complexFind(const MappedName& name) const {
                 || loopElement.splitSections[i].postFixIDs.size() == 0)
                 && originalElement.splitSections[i].postfixNumber != loopElement.splitSections[i].postfixNumber) {
                 sectionCheck = false;
+                // FC_WARN("postfix numb fail");
                 break;
             }
 
-            int tagOccurences = 0;
+            tagOccurences = 0;
+
             std::vector<std::string> shortTagList = originalElement.splitSections[i].tags;
             std::vector<std::string> largeTagList = loopElement.splitSections[i].tags;
 
@@ -1392,20 +1407,26 @@ IndexedName ElementMap::complexFind(const MappedName& name) const {
 
             for (const auto &largeTag : largeTagList) {
                 for (const auto &smallTag : shortTagList) {
+                    // FC_WARN("largeTag: " << largeTag);
+                    // FC_WARN("smallTag: " << smallTag);
                     if (largeTag == smallTag) {
                         tagOccurences++;
                     }
                 }
             }
 
-            if (tagOccurences < (largeTagList.size() + tagOccurenceMin)) {
+            if (tagOccurences < (shortTagList.size() + tagOccurenceMin)) {
                 sectionCheck = false;
+                // FC_WARN("tag failed");
                 break;
             }
         }
 
         if (!sectionCheck) {
             // FC_WARN("section check fail");
+            // FC_WARN("tagOccurences: " << tagOccurences);
+            // FC_WARN("min: " << (shortTagList.size() + tagOccurenceMin));
+            // FC_WARN("\n");
             continue;
         }
 
@@ -1414,13 +1435,14 @@ IndexedName ElementMap::complexFind(const MappedName& name) const {
             continue;
         }
 
-
+    
         // getting this far in the loop means that the two elements are the same.
         foundName = loopName.second;
     }
 
     // auto end = std::chrono::steady_clock::now();
     // FC_WARN("time: " << (std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count()) << "ms");
+    // FC_WARN("complex find end");
 
     return foundName;
 }
