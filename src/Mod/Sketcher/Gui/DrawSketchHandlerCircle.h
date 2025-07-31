@@ -716,7 +716,7 @@ void DSHCircleController::addConstraints()
                                       firstCurve,
                                       handler->radius);
             }
-            
+
             const std::vector<Sketcher::Constraint*>& ConStr =
                 handler->sketchgui->getSketchObject()->Constraints.getValues();
             int index = static_cast<int>(ConStr.size()) - 1;
