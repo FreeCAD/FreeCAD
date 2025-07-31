@@ -1290,35 +1290,27 @@ bool ElementMap::checkGeoIDsLists(std::vector<ElementMap::geoID> &list1, std::ve
 }
 
 IndexedName ElementMap::complexFind(const MappedName& name) const {
-    // auto begin = std::chrono::steady_clock::now();
-    // FC_WARN("start complex find");
-
     ToponamingElement originalElement = compileToponamingElement(name);
     ToponamingElement loopElement = ToponamingElement();
     IndexedName foundName = IndexedName();
     const int idOccurenceMin = 2;
     const int tagOccurenceMin = -1; // -1 means only one tag can be missing
 
-    // FC_WARN("original name: " << originalElement.dehashedName);
-
     if (originalElement.splitSections.empty()) {
         return foundName;
     }
 
-    // dont worry about childElements yet
     for (const auto &loopName : mappedNames) {
         loopElement = compileToponamingElement(loopName.first);
 
         if (loopElement.splitSections.empty()) {
             continue;
         }
-        // FC_WARN("loop name: " << loopElement.dehashedName);
 
         if (
             originalElement.splitSections.size() != loopElement.splitSections.size()
             || (originalElement.splitSections.size() == 0 || loopElement.splitSections.size() == 0)) {
             
-            // FC_WARN("size check failed");
             continue;
         }
 
@@ -1355,14 +1347,12 @@ IndexedName ElementMap::complexFind(const MappedName& name) const {
         }
 
         if (!geoIDCheck) {
-            // FC_WARN("geo id fail");
             continue;
         }
 
         bool sectionCheck = true;
 
         if (!checkGeoIDsLists(originalElement.postFixIDs, loopElement.postFixIDs) || !checkGeoIDsLists(originalElement.opCodesIDs, loopElement.opCodesIDs)) {
-            // FC_WARN("post ids and opcodes ids fail");
             continue;
         }
 
@@ -1370,19 +1360,12 @@ IndexedName ElementMap::complexFind(const MappedName& name) const {
 
         // the sections of the two elements to check against should already by the same size
         for (int i = 0; i < originalElement.splitSections.size(); i++) {
-            if ((originalElement.splitSections[i].opcode != loopElement.splitSections[i].opcode)
-                /*|| (i == (originalElement.splitSections.size() - 1) 
-                    && (originalElement.splitSections[i].opcode == "FLT"
-                    || originalElement.splitSections[i].opcode == "CHF"
-                    || loopElement.splitSections[i].opcode == "FLT"
-                    || loopElement.splitSections[i].opcode == "CHF"))*/) {
-                // FC_WARN("opCode failed");
+            if ((originalElement.splitSections[i].opcode != loopElement.splitSections[i].opcode)) {
                 sectionCheck = false;
                 break;
             }
 
             if (originalElement.splitSections[i].postfix != loopElement.splitSections[i].postfix) {
-                // FC_WARN("postfix failed");
                 sectionCheck = false;
                 break;
             }
@@ -1391,7 +1374,6 @@ IndexedName ElementMap::complexFind(const MappedName& name) const {
                 || loopElement.splitSections[i].postFixIDs.size() == 0)
                 && originalElement.splitSections[i].postfixNumber != loopElement.splitSections[i].postfixNumber) {
                 sectionCheck = false;
-                // FC_WARN("postfix numb fail");
                 break;
             }
 
@@ -1407,8 +1389,6 @@ IndexedName ElementMap::complexFind(const MappedName& name) const {
 
             for (const auto &largeTag : largeTagList) {
                 for (const auto &smallTag : shortTagList) {
-                    // FC_WARN("largeTag: " << largeTag);
-                    // FC_WARN("smallTag: " << smallTag);
                     if (largeTag == smallTag) {
                         tagOccurences++;
                     }
@@ -1417,21 +1397,15 @@ IndexedName ElementMap::complexFind(const MappedName& name) const {
 
             if (tagOccurences < (shortTagList.size() + tagOccurenceMin)) {
                 sectionCheck = false;
-                // FC_WARN("tag failed");
                 break;
             }
         }
 
         if (!sectionCheck) {
-            // FC_WARN("section check fail");
-            // FC_WARN("tagOccurences: " << tagOccurences);
-            // FC_WARN("min: " << (shortTagList.size() + tagOccurenceMin));
-            // FC_WARN("\n");
             continue;
         }
 
         if (originalElement.unfilteredSplitSections.back().elementType != loopElement.unfilteredSplitSections.back().elementType) {
-            // FC_WARN("elementType check");
             continue;
         }
 
@@ -1439,10 +1413,6 @@ IndexedName ElementMap::complexFind(const MappedName& name) const {
         // getting this far in the loop means that the two elements are the same.
         foundName = loopName.second;
     }
-
-    // auto end = std::chrono::steady_clock::now();
-    // FC_WARN("time: " << (std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count()) << "ms");
-    // FC_WARN("complex find end");
 
     return foundName;
 }
