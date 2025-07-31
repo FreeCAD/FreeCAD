@@ -1,6 +1,8 @@
 add_library(Robot SHARED)
 
-include_directories(
+target_include_directories(
+    Robot
+    PRIVATE
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src

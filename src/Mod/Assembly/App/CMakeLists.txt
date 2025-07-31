@@ -1,17 +1,10 @@
 
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_BINARY_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 set(Assembly_LIBS
     Part
     PartDesign
-	Spreadsheet
+    Spreadsheet
     FreeCADApp
-	OndselSolver
+    OndselSolver
 )
 
 generate_from_py(AssemblyObject)
@@ -71,6 +64,14 @@ SET(Assembly_SRCS
 )
 
 add_library(Assembly SHARED ${Assembly_SRCS})
+target_include_directories(
+    Assembly
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 target_link_libraries(Assembly ${Assembly_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Assembly)

@@ -11,13 +11,6 @@ if(NOT ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
     endif()
 endif()
 
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}
-)
-
 # The XML files
 set(TechDrawGui_XML_SRCS
 )
@@ -472,8 +465,25 @@ if(FREECAD_USE_PCH)
     ADD_MSVC_PRECOMPILED_HEADER(TechDrawGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
 endif(FREECAD_USE_PCH)
 
-add_library(TechDrawGui SHARED ${TechDrawGui_SRCS} ${TechDrawGuiView_SRCS} ${TechDrawGuiViewProvider_SRCS}
-                               ${TechDrawGuiNav_SRCS} ${TechDrawGuiIcon_SVG} ${TechDrawGuiFonts} ${MRTE_SRCS})
+add_library(TechDrawGui SHARED
+    ${TechDrawGui_SRCS}
+    ${TechDrawGuiView_SRCS}
+    ${TechDrawGuiViewProvider_SRCS}
+    ${TechDrawGuiNav_SRCS}
+    ${TechDrawGuiIcon_SVG}
+    ${TechDrawGuiFonts}
+    ${MRTE_SRCS}
+)
+
+target_include_directories(
+    TechDrawGui
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
 target_link_libraries(TechDrawGui ${TechDrawGui_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(TechDrawGui)

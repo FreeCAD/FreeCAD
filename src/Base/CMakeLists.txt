@@ -11,7 +11,9 @@ if(BUILD_TRACY_FRAME_PROFILER)
     add_definitions(-DBUILD_TRACY_FRAME_PROFILER)
 endif()
 
-include_directories(
+target_include_directories(
+    FreeCADBase
+    PRIVATE
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
@@ -25,6 +27,7 @@ target_include_directories(
     ${Boost_INCLUDE_DIRS}
     ${PYCXX_INCLUDE_DIR}
     ${Python3_INCLUDE_DIRS}
+    ${QtCore_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${ZIPIOS_INCLUDES}
@@ -72,10 +75,6 @@ else(MSVC)
         ${ICU_LIBRARIES}
     )
 endif(MSVC)
-
-include_directories(
-    ${QtCore_INCLUDE_DIRS}
-)
 
 if(BUILD_TRACY_FRAME_PROFILER)
     list(APPEND FreeCADBase_LIBS TracyClient)

@@ -1,10 +1,3 @@
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_BINARY_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 set(MeasureGui_LIBS
     Measure
     #Part
@@ -76,6 +69,14 @@ SET(MeasureGuiIcon_SVG
 )
 
 add_library(MeasureGui SHARED ${MeasureGui_SRCS} ${MeasureGuiIcon_SVG})
+target_include_directories(
+    MeasureGui
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 target_link_libraries(MeasureGui ${MeasureGui_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(MeasureGui)

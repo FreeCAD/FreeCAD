@@ -1,11 +1,4 @@
 include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_BINARY_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
-include_directories(
     SYSTEM
     ${CMAKE_SOURCE_DIR}/src/3rdParty/json/single_include/nlohmann/
 )
@@ -141,6 +134,15 @@ SET(PartDesign_SRCS
 )
 
 add_library(PartDesign SHARED ${PartDesign_SRCS})
+target_include_directories(
+    PartDesign
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 target_link_libraries(PartDesign ${PartDesign_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(PartDesign)
