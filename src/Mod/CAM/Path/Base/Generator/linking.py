@@ -3,6 +3,7 @@ import Path
 from FreeCAD import Vector
 from typing import List, Optional
 
+
 def get_linking_moves(
     start_position: Vector,
     target_position: Vector,
@@ -64,7 +65,9 @@ def make_linking_wire(start: Vector, target: Vector, z: float) -> Part.Wire:
     return Part.Wire([e1, e2, e3])
 
 
-def is_wire_collision_free(wire: Part.Wire, solid: Optional[Part.Shape], tolerance: float = 0.001) -> bool:
+def is_wire_collision_free(
+    wire: Part.Wire, solid: Optional[Part.Shape], tolerance: float = 0.001
+) -> bool:
     if not solid:
         return True
     distance = wire.distToShape(solid)[0]
