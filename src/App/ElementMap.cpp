@@ -8,6 +8,7 @@
 
 #include "ElementMap.h"
 #include "ElementNamingUtils.h"
+// #include <chrono>
 
 #include "App/Application.h"
 #include "Base/Console.h"
@@ -718,7 +719,6 @@ MappedName ElementMap::hashElementName(const MappedName& name, ElementIDRefs& si
         sids = tmp;
     }
     std::string sidString = sid.toString();
-    sidString.append("_");
 
     return MappedName(sidString);
 }
@@ -943,19 +943,103 @@ bool ElementMap::empty() const
     return mappedNames.empty() && childElementSize == 0;
 }
 
+ElementMap::geoID ElementMap::makeGeoID(const std::string ID) const {
+    bool foundTag = false;
+    bool foundTagPos = false;
+    bool foundStartID = false;
+    std::string currentTag = "";
+    ElementMap::geoID ret = ElementMap::geoID();
+
+    for (int i = 0; i < ID.size(); i++) {
+        if (i == 0 && ID[i] == 'g') {
+            foundStartID = true;
+        } else if (ID[i] == ';' && foundStartID) {
+            foundStartID = false;
+        }
+
+        if (ID[i] == 'H') {
+            if (foundTag) {
+                if (currentTag != "H") ret.tags.push_back(currentTag);
+                
+                currentTag.clear();
+                foundTag = false;
+            } else {
+                foundTag = true;
+            }
+        }
+
+        if (foundTag) {
+            if (ID[i] == ':') {
+                foundTagPos = true;
+            } else if (ID[i] == ',' || ID[i] == ';') {
+                foundTag = false;
+                foundTagPos = false;
+
+                if (currentTag != "H") ret.tags.push_back(currentTag); // ignore empty tags
+                currentTag.clear();
+            }
+        }
+
+        if (foundTag && !foundTagPos) {
+            currentTag.push_back(ID[i]);
+        }
+
+        if (!foundTagPos) {
+            if (foundStartID) {
+                ret.startID.push_back(ID[i]);
+            }
+
+            ret.stringData.push_back(ID[i]);
+        }
+    }
+
+    if (!ret.stringData.empty()) {
+        char currentElementType = ret.stringData.back();
+
+        if (currentElementType == 'F' || currentElementType == 'E' || currentElementType == 'V') {
+            ret.elementType = currentElementType;
+        } else {
+            ret.elementType = '-';
+        }
+
+        // FC_WARN("geo id str: " << ret.stringData);
+        // FC_WARN("unfilt: " << ID);
+        // FC_WARN("geo id tags");
+        // for(const auto &tag : ret.tags) {
+        //     FC_WARN(tag);
+        // }
+        // FC_WARN("start id: " << ret.startID);
+        // FC_WARN("elType: " << ret.elementType);
+        // FC_WARN("");
+    }
+
+    return ret;
+}
+
 // VVV test decompile VVV
 // g2;SKT;:H1215,E;FAC;:H1215:4,F;:G0;XTR;:H1215:8,F;:M3(g6;SKT;:H1213,E;:G;XTR;:H1213:7,F;K-1;:H1214:4,F);CUT;:H-1216:3a,E;:H1216,E
 std::vector<ElementMap::ElementSection> ElementMap::compileElementSections(const std::string &name) const {
-    std::vector<ElementMap::ElementSection> sections;
     ElementMap::ElementSection currentSection = ElementMap::ElementSection();
+    std::vector<ElementMap::ElementSection> sections;
+    std::vector<ElementMap::geoID> postFixIDs;
+    std::vector<ElementMap::geoID> postFixIDsBuffer;
     std::vector<std::string> postfixes = {"M", "G", "U", "L", "MG"};
-    std::string currentOpCode = "";
-    std::string currentPostfix = "";
-    std::string currentPostfixBuffer = "";
-    std::string parensID = "";
+    std::string parensID;
+    std::string currentOpCode;
+    std::string currentPostfix;
+    std::string currentPostfixBuffer;
+    std::string currentTag;
+    std::string postfixNumberString;
+    std::string parensIDType; // postfix/opcode
     bool foundOpCode = false;
+    bool foundTag = false;
+    bool foundTagNum = false;
+    bool findPostfixNumber = false;
+    bool finishParensList = false;
     int i = 0;
     int parensLevel = 0;
+    int postfixNumber = 0;
+    int postfixNumberBuffer = 0;
 
     for (i = 0; i < name.size(); i++) {
         if (name[i] == '(') {
@@ -963,8 +1047,7 @@ std::vector<ElementMap::ElementSection> ElementMap::compileElementSections(const
             continue;
         } else if (name[i] == ')') {
             if (parensLevel == 1 && !parensID.empty()) {
-                currentSection.geoIDs.push_back(parensID);
-                parensID = "";
+                finishParensList = true;
             }
 
             parensLevel--;
@@ -972,57 +1055,120 @@ std::vector<ElementMap::ElementSection> ElementMap::compileElementSections(const
             if (parensLevel < 0) {
                 parensLevel = 0;
             }
-            continue;
         }
 
-        if (parensLevel == 0) {
+        if (parensLevel == 0 && !finishParensList) {
+            if (findPostfixNumber) {
+                if (name[i] == ':' || name[i] == ';' || name[i] == '(' || name[i] == ',' || name[i] == ')') {
+                    findPostfixNumber = false;
+
+                    if (!postfixNumberString.empty()) {
+                        postfixNumber = std::stoi(postfixNumberString);
+                        postfixNumberString.clear();
+                    } else {
+                        postfixNumber = 0;
+                    }
+                } else {
+                    if (std::isdigit(name[i])) {
+                        postfixNumberString.push_back(name[i]);
+                    }
+                }
+            }
+
             if (name[i] == ':' && i + 1 < name.size()) {
                 std::string splitString = name.substr(i + 1);
-                std::string foundPostfix = "";
-                bool hasAllowedPostfix = false;
                 
                 for (const auto &postfix : postfixes) {
                     if (boost::starts_with(splitString, postfix)) {
-                        hasAllowedPostfix = true;
-                        foundPostfix = postfix;
+                        currentPostfix = postfix;
+                        findPostfixNumber = true;
+                        postfixNumberString.clear();
+                        parensIDType = "postfix";
+
                         break;
                     }
                 }
+            } else if (name[i] == 'H') {
+                foundTag = true;
+            }
 
-                if (hasAllowedPostfix) {
-                    currentPostfix = foundPostfix;
+            if (foundTag) {
+                if (name[i] == ':' && !foundTagNum) {
+                    foundTagNum = true;
+                } else if (name[i] == ',' || name[i] == '(' || name[i] == ';') {
+                    if (!currentTag.empty()) {
+                        currentSection.tags.push_back(currentTag);
+                        currentTag.clear();
+                    }
+
+                    foundTag = false;
+                    foundTagNum = false;
+                } else if (!foundTagNum) {
+                    currentTag.push_back(name[i]);
                 }
             }
             
             if (foundOpCode) {
                 if (name[i] == ';' || currentOpCode.size() == 3) {
-                    FC_WARN("found op code: " << currentOpCode);
+                    parensIDType = "opcode";
                     foundOpCode = false;
                 } else {
                     currentOpCode.push_back(name[i]);
                 }
             }
 
-            if (name[i] == ';' && (i >= name.size() || name[i + 1] != ':')) {
-                if (sections.size() == 0 && name[0] == 'g') {
-                    currentSection.geoIDs.push_back(currentSection.stringData);
+            bool atEnd = false;
+
+            if (i >= (name.size() - 1)) {
+                atEnd = true;
+
+                currentSection.stringData.push_back(name[i]);
+                i++;
+            }
+
+            if (atEnd || (name[i] == ';' && (i >= name.size() || name[i + 1] != ':'))) {
+                if (i == 0) continue; // the id started with the prefix, 
+                                      // do not run anything else to avoid adding the
+                                      // prefix to any section or adding a blank seciton
+
+                char currentElementType = name[i - 1];
+
+                if (currentElementType == 'F' || currentElementType == 'E' || currentElementType == 'V') {
+                    currentSection.elementType = currentElementType;
+                } else {
+                    currentSection.elementType = '-';
                 }
 
                 currentSection.opcode = currentOpCode;
                 currentOpCode = "";
+                currentSection.postFixIDs = postFixIDsBuffer;
+                currentSection.postfix = currentPostfixBuffer;
+                currentSection.postfixNumber = postfixNumberBuffer;
                 sections.push_back(currentSection);
 
                 foundOpCode = true;
                 currentSection = ElementMap::ElementSection();
-                currentSection.postfix = currentPostfixBuffer;
+
                 currentPostfixBuffer = currentPostfix;
-            } else {
+                postfixNumberBuffer = postfixNumber;
+                postFixIDsBuffer = postFixIDs;
+
+                currentPostfix.clear();
+                postfixNumber = 0;
+                postFixIDs.clear();
+            } else if(!foundTagNum) {
                 currentSection.stringData.push_back(name[i]);
             }
-        } else if(parensLevel == 1) {
-            if (name[i] == '|') {
-                currentSection.geoIDs.push_back(parensID);
-                parensID = "";
+        } else if(parensLevel == 1 || finishParensList) {
+            if (name[i] == '|' || finishParensList) {
+                if (parensIDType == "postfix") {
+                    postFixIDs.push_back(makeGeoID(parensID));
+                } else if (parensIDType == "opcode") {
+                    currentSection.opCodeIDs.push_back(makeGeoID(parensID));
+                }
+
+                parensID.clear();
+                finishParensList = false;
             } else {
                 parensID.push_back(name[i]);
             }
@@ -1030,8 +1176,18 @@ std::vector<ElementMap::ElementSection> ElementMap::compileElementSections(const
     }
 
     // currentSection.stringData.push_back(name[i - 1]);
-    currentSection.opcode = currentOpCode;
-    sections.push_back(currentSection);
+    // char currentElementType = name.back();
+
+    // if (currentElementType == 'F' || currentElementType == 'E' || currentElementType == 'V') {
+    //     currentSection.elementType = currentElementType;
+    // } else {
+    //     currentSection.elementType = '-';
+    // }
+
+    // currentSection.postfix = currentPostfixBuffer;
+    // currentSection.postfixNumber = postfixNumberBuffer;
+    // currentSection.opcode = currentOpCode;
+    // sections.push_back(currentSection);
 
     return sections;
 }
@@ -1050,11 +1206,6 @@ ElementMap::ToponamingElement ElementMap::compileToponamingElement(MappedName na
     element.unfilteredSplitSections = compileElementSections(element.dehashedName);
     element.splitSections = element.unfilteredSplitSections;
 
-    for (auto &sec : element.splitSections) {
-        FC_WARN(sec.stringData);
-    }
-    FC_WARN("");
-
     // do not filter at this stage
     // for (const auto &data : element.unfilteredSplitSections) {
     //     if (data.postfix != "M") {
@@ -1062,67 +1213,131 @@ ElementMap::ToponamingElement ElementMap::compileToponamingElement(MappedName na
     //     }
     // }
 
+    // for (const auto &sec : element.splitSections) {
+    //     FC_WARN("section: " << sec.stringData << " post: " << sec.postfix << " opcode: " << sec.opcode << " num: " << sec.postfixNumber << " eltype: " << sec.elementType);
+    // }
+
+    int removeSections = 0;
+
     for (int i = 0; i < element.splitSections.size(); i++) {
-        if (element.splitSections[i].geoIDs.size() >= 1) {
-            if (i == 0) {
-                std::string geoID = element.splitSections[i].geoIDs[0];
+        // if (element.splitSections[i].geoIDs.size() >= 1) {
+        //     if (i == 0) {
+        //         std::string geoID = element.splitSections[i].geoIDs[0];
+
+        //         if (i + 1 < element.splitSections.size() && boost::starts_with(element.splitSections[i + 1].stringData, "SKT")) {
+        //             geoID.push_back(';');
+        //             geoID.append(element.splitSections[i + 1].stringData);
+        //             removeSections++;
+        //         }
+
+        //         removeSections++;
+        //         element.mainIDs.push_back(geoID);
+        //     } else if (element.splitSections[i].opcode == "SIF") {
+        //         for (const auto &id : element.splitSections[i].geoIDs) {
+        //             element.mainIDs.push_back(id);
+        //         }
+        //     } else if(!element.splitSections[i].opcode.empty()) {
+        //         // FC_WARN("others opcode: " << element.splitSections[i].opcode);
+        //         for (const auto &id : element.splitSections[i].geoIDs) {
+        //             // FC_WARN("others id: " << id);
+
+        //             element.otherIDs.push_back(id);
+        //         }
+        //     }
+        // }
+        if (i == 0) {
+            if (boost::starts_with(element.splitSections[i].stringData, "g")) {
+                std::string startID = element.splitSections[i].stringData;
 
                 if (i + 1 < element.splitSections.size() && boost::starts_with(element.splitSections[i + 1].stringData, "SKT")) {
-                    geoID.push_back(';');
-                    geoID.append(element.splitSections[i + 1].stringData);
+                    startID.push_back(';');
+                    startID.append(element.splitSections[i + 1].stringData);
+                    removeSections++;
                 }
 
-                element.mainIDs.push_back(geoID);
-            } else if (element.splitSections[i].opcode == "SIF") {
-                for (const auto &id : element.splitSections[i].geoIDs) {
-                    element.mainIDs.push_back(id);
-                }
-            } else if(!element.splitSections[i].opcode.empty()) {
-                FC_WARN("others opcode: " << element.splitSections[i].opcode);
-                for (const auto &id : element.splitSections[i].geoIDs) {
-                    FC_WARN("others id: " << id);
+                removeSections++;
+                element.mainIDs.push_back(makeGeoID(startID));
+            }
+        } else if (element.splitSections[i].opcode == "SIF") { // this section has edges that create a (S)ketch (I)nternal (F)ace
+            for (const auto &id : element.splitSections[i].opCodeIDs) {
+                element.mainIDs.push_back(id);
+            }
+        } else {
+            for (const auto &id : element.splitSections[i].opCodeIDs) {
+                element.opCodesIDs.push_back(id);
+            }
 
-                    element.otherIDs.push_back(id);
-                }
+            for (const auto &id : element.splitSections[i].postFixIDs) {
+                element.postFixIDs.push_back(id);
             }
         }
+    }
+
+    for (int i = 0; i < removeSections; i++) {
+        element.splitSections.erase(element.splitSections.begin());
     }
 
     return element;
 }
 
+bool ElementMap::checkGeoIDsLists(std::vector<ElementMap::geoID> &list1, std::vector<ElementMap::geoID> &list2) const {
+    if (list1.size() != list2.size()) return false;
+    bool tagCheck = true;
+    bool elementTypeCheck = true;
+    bool mainIDCheck = true;
+
+    for (const auto &id1 : list1) {
+        for (const auto &id2 : list2) {
+            if (id1.tags != id2.tags) {
+                tagCheck = false;
+            }
+
+            if (id1.elementType != id2.elementType) {
+                elementTypeCheck = false;
+            }
+
+            if (id1.startID != id2.startID) {
+                mainIDCheck = false;
+            }
+        }
+    }
+
+    return (tagCheck && elementTypeCheck && mainIDCheck);
+}
+
 IndexedName ElementMap::complexFind(const MappedName& name) const {
-    FC_WARN("start complexFind");
+    // auto begin = std::chrono::steady_clock::now();
 
     ToponamingElement originalElement = compileToponamingElement(name);
-    FC_WARN("nocrash 1075");
     ToponamingElement loopElement = ToponamingElement();
     IndexedName foundName = IndexedName();
     const int idOccurenceMin = 2;
+    const int tagOccurenceMin = -1; // -1 means only one tag can be missing
 
-    FC_WARN("original check: " << originalElement.dehashedName);
+    if (originalElement.splitSections.empty()) {
+        return foundName;
+    }
 
     // dont worry about childElements yet
     for (const auto &loopName : mappedNames) {
         loopElement = compileToponamingElement(loopName.first);
 
-        FC_WARN("loop check: " << loopElement.dehashedName);
+        if (loopElement.splitSections.empty()) {
+            continue;
+        }
 
         if (
             originalElement.splitSections.size() != loopElement.splitSections.size()
             || (originalElement.splitSections.size() == 0 || loopElement.splitSections.size() == 0)
-        ) {
-            FC_WARN("size failed");
-            continue;
-        };
+        ) continue;
 
         bool geoIDCheck = false;
-        std::vector<std::string> smallerIDList = originalElement.mainIDs;
-        std::vector<std::string> largerIDList = loopElement.mainIDs;
+        std::vector<ElementMap::geoID> smallerIDList = originalElement.mainIDs;
+        std::vector<ElementMap::geoID> largerIDList = loopElement.mainIDs;
         int occurences = 0;
 
         if (originalElement.mainIDs.size() == 1 && loopElement.mainIDs.size() == 1) {
-            geoIDCheck = originalElement.mainIDs[0] == loopElement.mainIDs[0];
+            geoIDCheck = checkGeoIDsLists(originalElement.mainIDs, loopElement.mainIDs);
         } else if (originalElement.mainIDs.size() != 0 && loopElement.mainIDs.size() != 1) {
             if (originalElement.mainIDs.size() > loopElement.mainIDs.size()) {
                 smallerIDList = loopElement.mainIDs;
@@ -1130,10 +1345,14 @@ IndexedName ElementMap::complexFind(const MappedName& name) const {
             }
 
             for (const auto &largerSec : largerIDList) {
-                FC_WARN("larger sec " << largerSec);
+                std::vector<geoID> list1;
+                list1.push_back(largerSec);
+
                 for (const auto &smallerSec : smallerIDList) {
-                    FC_WARN("smaller sec " << smallerSec);
-                    if (largerSec == smallerSec) {
+                    std::vector<geoID> list2;
+                    list2.push_back(smallerSec);
+
+                    if (checkGeoIDsLists(list1, list2)) {
                         occurences++;
                     }
                 }
@@ -1145,32 +1364,67 @@ IndexedName ElementMap::complexFind(const MappedName& name) const {
         }
 
         if (!geoIDCheck) {
-            FC_WARN("geo id check failed");
-            FC_WARN("larger size: " << largerIDList.size());
-            FC_WARN("smaller size: " << smallerIDList.size());
-            FC_WARN("occurences: " << occurences);
             continue;
         }
 
         bool sectionCheck = true;
 
+        if (!checkGeoIDsLists(originalElement.postFixIDs, loopElement.postFixIDs) || !checkGeoIDsLists(originalElement.opCodesIDs, loopElement.opCodesIDs)) {
+            continue;
+        }
+
         // the sections of the two elements to check against should already by the same size
-        for (int i = 2; i < originalElement.splitSections.size(); i++) {
-            if (originalElement.splitSections[i].stringData != loopElement.splitSections[i].stringData) {
+        for (int i = 0; i < originalElement.splitSections.size(); i++) {
+            if ((originalElement.splitSections[i].opcode != loopElement.splitSections[i].opcode)
+                /*|| (i == (originalElement.splitSections.size() - 1) 
+                    && (originalElement.splitSections[i].opcode == "FLT"
+                    || originalElement.splitSections[i].opcode == "CHF"
+                    || loopElement.splitSections[i].opcode == "FLT"
+                    || loopElement.splitSections[i].opcode == "CHF"))*/) {
+                sectionCheck = false;
+                break;
+            }
+
+            if (originalElement.splitSections[i].postfix != loopElement.splitSections[i].postfix) {
+                sectionCheck = false;
+                break;
+            }
+
+            if ((originalElement.splitSections[i].postFixIDs.size() == 0
+                || loopElement.splitSections[i].postFixIDs.size() == 0)
+                && originalElement.splitSections[i].postfixNumber != loopElement.splitSections[i].postfixNumber) {
+                sectionCheck = false;
+                break;
+            }
+
+            int tagOccurences = 0;
+            std::vector<std::string> shortTagList = originalElement.splitSections[i].tags;
+            std::vector<std::string> largeTagList = loopElement.splitSections[i].tags;
+
+            if (originalElement.splitSections[i].tags.size() > loopElement.splitSections[i].tags.size()) {
+                shortTagList = loopElement.splitSections[i].tags;
+                largeTagList = originalElement.splitSections[i].tags;
+            }
+
+            for (const auto &largeTag : largeTagList) {
+                for (const auto &smallTag : shortTagList) {
+                    if (largeTag == smallTag) {
+                        tagOccurences++;
+                    }
+                }
+            }
+
+            if (tagOccurences < (largeTagList.size() + tagOccurenceMin)) {
                 sectionCheck = false;
                 break;
             }
         }
 
-        if (originalElement.otherIDs != loopElement.otherIDs) {
-            FC_WARN("orig ids size: " << originalElement.otherIDs.size());
-            FC_WARN("loop ids size: " << loopElement.otherIDs.size());
-            FC_WARN("other ids failed");
+        if (!sectionCheck) {
             continue;
         }
 
-        if (!sectionCheck) {
-            FC_WARN("section failed");
+        if (originalElement.splitSections.back().elementType != loopElement.splitSections.back().elementType) {
             continue;
         }
 
@@ -1178,6 +1432,9 @@ IndexedName ElementMap::complexFind(const MappedName& name) const {
         // getting this far in the loop means that the two elements are the same.
         foundName = loopName.second;
     }
+
+    // auto end = std::chrono::steady_clock::now();
+    // FC_WARN("time: " << (std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count()) << "ms");
 
     return foundName;
 }

@@ -278,16 +278,29 @@ private:
     /// Reverse fully hashed MappedName
     MappedName fullDehashElementName(const MappedName& name) const;
 
+    struct geoID {
+        std::string stringData;
+        std::string startID;
+        std::string elementType;
+        std::vector<std::string> tags;
+    };
+
     struct ElementSection {
         std::string stringData;
         std::string postfix;
         std::string opcode;
-        std::vector<std::string> geoIDs;
+        std::vector<std::string> tags;
+        std::vector<geoID> postFixIDs;
+        std::vector<geoID> opCodeIDs;
+        char elementType = '-';
+        int postfixNumber = 0;
     };
 
     std::vector<ElementSection> compileElementSections(const std::string &name) const;
 
+    bool checkGeoIDsLists(std::vector<geoID> &list1, std::vector<geoID> &list2) const;
     IndexedName complexFind(const MappedName &name) const;
+    geoID makeGeoID(const std::string ID) const;
 
     struct ToponamingElement {
         std::string normalName;
@@ -295,8 +308,9 @@ private:
         std::vector<ElementSection> splitSections;
         std::vector<ElementSection> unfilteredSplitSections;
         // example layout: {<"SIF": ["g2", "g54", "g66"]>, <"SKT": ["g2", "g54", "g66"]>}
-        std::vector<std::string> mainIDs;
-        std::vector<std::string> otherIDs;
+        std::vector<geoID> mainIDs;
+        std::vector<geoID> opCodesIDs;
+        std::vector<geoID> postFixIDs;
     };
 
     ToponamingElement compileToponamingElement(MappedName name) const;
