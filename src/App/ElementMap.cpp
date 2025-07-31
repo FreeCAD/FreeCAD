@@ -774,18 +774,15 @@ MappedName ElementMap::fullDehashElementName(const MappedName& name) const {
     int i = 0;
     int replaceStart = -1;
     int replaceLen = -1;
-    int limit = 100000;
-    int limiti = 0;
     std::map<std::string, std::array<int, 2>> insertMap = std::map<std::string, std::array<int, 2>>();
     std::map<std::string, std::array<int, 2>> currentMap;
     
     insertMap[name.toString()] = std::array<int, 2>({-1, -1});
     dehashTree.push_back(insertMap);
 
-    while(!isDehashed && limiti < limit) {
+    while(!isDehashed) {
         currentMap = dehashTree[currentTreePos];
         currentTreeString = currentMap.begin()->first;
-        limiti++;
 
         if(!dehash) {
             if(i >= currentTreeString.size()) {
@@ -862,7 +859,6 @@ MappedName ElementMap::fullDehashElementName(const MappedName& name) const {
         }
     }
 
-    // cleanup to avoid memory leaks or unnecessary memory usage
     dehashTree.shrink_to_fit();
     currentTreeString.shrink_to_fit();
     selTreeString.shrink_to_fit();
