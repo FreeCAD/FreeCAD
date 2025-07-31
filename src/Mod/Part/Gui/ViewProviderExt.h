@@ -188,6 +188,7 @@ protected:
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop) override;
     bool loadParameter();
+    void updateVisual();
     void handleChangedPropertyName(Base::XMLReader& reader,
                                    const char* TypeName,
                                    const char* PropName) override;

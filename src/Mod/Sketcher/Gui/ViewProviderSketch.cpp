@@ -1242,8 +1242,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     return true;
                 case STATUS_SELECT_Constraint: {
                     if (pp) {
-                        auto sels 
-                          preselection.PreselectConstraintSet;
+                        auto sels = preselection.PreselectConstraintSet;
                         for (int id : sels) {
                             std::stringstream ss;
                             ss << Sketcher::PropertyConstraintList::getConstraintName(id);
