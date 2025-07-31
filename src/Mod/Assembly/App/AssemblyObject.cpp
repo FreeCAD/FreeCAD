@@ -1594,7 +1594,7 @@ bool AssemblyObject::isMbDJointValid(App::DocumentObject* joint)
 
     // If this joint is self-referential it must be ignored.
     if (getMbDPart(part1) == getMbDPart(part2)) {
-        Base::Console().warning(
+        Base::Console().Warning(
             "Assembly: Ignoring joint (%s) because its parts are connected by a fixed "
             "joint bundle. This joint is a conflicting or redundant constraint.\n",
             joint->getFullLabel());
