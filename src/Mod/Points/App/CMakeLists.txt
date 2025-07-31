@@ -73,7 +73,7 @@ endif(FREECAD_USE_PCH)
 target_sources(Points PRIVATE ${Points_SRCS} ${Points_Scripts})
 
 if (NOT FREECAD_USE_EXTERNAL_E57FORMAT)
-    link_directories(${CMAKE_BINARY_DIR}/src/3rdParty/libE57Format)
+    target_link_directories(Points PUBLIC ${CMAKE_BINARY_DIR}/src/3rdParty/libE57Format)
 endif()
 
 target_link_libraries(Points E57Format ${Points_LIBS})

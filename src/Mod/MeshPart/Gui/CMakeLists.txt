@@ -9,8 +9,6 @@ if(BUILD_FEM_NETGEN)
     add_definitions(-DHAVE_NETGEN)
 endif(BUILD_FEM_NETGEN)
 
-link_directories(${SMESH_LIB_PATH})
-
 set(MeshPartGui_LIBS
     MeshPart
     PartGui
@@ -75,6 +73,8 @@ target_include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
 )
+
+target_link_directories(MeshPartGui PUBLIC ${SMESH_LIB_PATH})
 target_link_libraries(MeshPartGui ${MeshPartGui_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(MeshPartGui)

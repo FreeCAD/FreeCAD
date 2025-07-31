@@ -13,8 +13,6 @@ if(BUILD_FEM_NETGEN)
     add_definitions(-DFCWithNetgen)
 endif(BUILD_FEM_NETGEN)
 
-link_directories(${SMESH_LIB_PATH})
-
 set(FemGui_LIBS
     Fem
     FreeCADGui
@@ -403,6 +401,8 @@ target_include_directories(
     ${SMESH_INCLUDE_DIR}
     ${VTK_INCLUDE_DIRS}
 )
+
+target_link_directories(FemGui PUBLIC ${SMESH_LIB_PATH})
 target_link_libraries(FemGui ${FemGui_LIBS} ${VTK_LIBRARIES})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(FemGui)

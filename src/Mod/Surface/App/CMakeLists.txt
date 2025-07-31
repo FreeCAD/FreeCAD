@@ -52,7 +52,6 @@ if(FREECAD_USE_PCH)
     ADD_MSVC_PRECOMPILED_HEADER(Surface PreCompiled.h PreCompiled.cpp PCH_SRCS)
 endif(FREECAD_USE_PCH)
 
-link_directories(${OCC_LIBRARY_DIR})
 add_library(Surface SHARED ${Surface_SRCS})
 target_include_directories(
     Surface
@@ -71,6 +70,7 @@ target_include_directories(
     ${FREETYPE_INCLUDE_DIRS}
 )
 
+target_link_directories(Surface PUBLIC ${OCC_LIBRARY_DIR})
 target_link_libraries(Surface ${Surface_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Surface)
