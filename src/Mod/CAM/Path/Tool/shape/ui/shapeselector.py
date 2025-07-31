@@ -24,6 +24,8 @@ import FreeCADGui
 from functools import partial
 from PySide import QtGui
 from ...camassets import cam_assets
+from Path.Tool.toolbit.mixins import TurningToolMixin
+from Path.Tool.toolbit.models.base import ToolBit
 from .. import ToolBitShape
 from .flowlayout import FlowLayout
 from .shapebutton import ShapeButton
@@ -65,12 +67,31 @@ class ShapeSelector:
 
     def update_shapes(self):
         # Retrieve each shape asset
-        builtin = cam_assets.fetch(asset_type="toolbitshape", store="builtin")
-        builtin = {c.id: c for c in builtin}
+        builtin_assets = cam_assets.fetch(asset_type="toolbitshape", store="builtin")
+
+        # Separate milling and turning assets
+        # Note: This assumes that all turning tools are instances of TurningToolMixin.
+        # TODO: expose _find_subclass_for_shape in ToolBit ?
+        milling_assets = [
+            b
+            for b in builtin_assets
+            if not issubclass(ToolBit._find_subclass_for_shape(b), TurningToolMixin)
+        ]
+        turning_assets = [
+            b
+            for b in builtin_assets
+            if issubclass(ToolBit._find_subclass_for_shape(b), TurningToolMixin)
+        ]
+
+        builtin = {c.id: c for c in milling_assets}
+        turning = {c.id: c for c in turning_assets}
+
         custom = cam_assets.fetch(asset_type="toolbitshape", store="local")
         for shape in custom:
             builtin.pop(shape.id, None)
+
         self._add_shapes(self.form.standardTools, builtin.values())
+        self._add_shapes(self.form.turningTools, turning.values())
         self._add_shapes(self.form.customTools, custom)
 
     def on_shape_button_clicked(self, shape):
