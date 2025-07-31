@@ -209,15 +209,8 @@ protected:
     SoBrepEdgeSet     * lineset;
     SoBrepPointSet    * nodeset;
 
-    Gui::CoinPtr<SoGroup> pFaceRoot;
-    Gui::CoinPtr<SoGroup> pFaceEdgeRoot;
-    Gui::CoinPtr<SoGroup> pEdgeRoot;
-    Gui::CoinPtr<SoGroup> pVertexRoot;
-
     bool VisualTouched;
     bool NormalsFromUV;
-
-    std::string shapePropName;
 
 private:
     Gui::ViewProviderFaceTexture texture;

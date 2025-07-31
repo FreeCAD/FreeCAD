@@ -1381,50 +1381,6 @@ void ViewProviderSketch::toggleWireSelelection(int clickedGeoId)
 
 }
 
-
-
-bool ViewProviderSketch::getElementPicked(const SoPickedPoint *pp, std::string &subname) const
-{
-    if (pInternalView && pp->getPath()->containsNode(pInternalView->getRoot()) && !isInEditMode()) {
-        if(pInternalView->getElementPicked(pp, subname)) {
-            subname = SketchObject::internalPrefix() + subname;
-            auto &elementMap = getSketchObject()->getInternalElementMap();
-            auto it = elementMap.find(subname);
-            if (it != elementMap.end()) {
-                subname = it->second;
-            }
-            return true;
-        }
-    }
-    return ViewProvider2DObject::getElementPicked(pp, subname);
-}
-
-bool ViewProviderSketch::getDetailPath(
-        const char *subname, SoFullPath *pPath, bool append, SoDetail *&det) const
-{
-    if (!isInEditMode() && pInternalView && subname) {
-        const char *realName = strrchr(subname, '.');
-        if (realName)
-            ++realName;
-        else
-            realName = subname;
-        realName = SketchObject::convertInternalName(realName);
-        if (realName) {
-            auto len = pPath->getLength();
-            if(append) {
-                pPath->append(pcRoot);
-                pPath->append(pcModeSwitch);
-            }
-            if (!pInternalView->getDetailPath(realName, pPath, false, det)) {
-                pPath->truncate(len);
-                return false;
-            }
-            return true;
-        }
-    }
-    return ViewProvider2DObject::getDetailPath(subname, pPath, append, det);
-}
-
 bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer)
 {
     // maximum radius for mouse moves when selecting a geometry before switching to drag mode

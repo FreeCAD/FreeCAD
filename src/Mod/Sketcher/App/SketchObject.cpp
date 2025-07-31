@@ -469,7 +469,7 @@ Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const
         joiner.setTightBound(true);
         joiner.setMergeEdges(true);
         joiner.addShape(edges);
-        Part::TopoShape result(getID(), getDocument()->getStringHasher()); // sketch objects probably shouldnt use an element map
+        Part::TopoShape result(getID(), getDocument()->getStringHasher());
         if (!joiner.Shape().IsNull()) {
             joiner.getResultWires(result, "SKF");
             result = result.makeElementFace(result.getSubTopoShapes(TopAbs_WIRE),
