@@ -24,6 +24,7 @@
 #define MEASURE_MEASUREMENT_H
 
 #include <gp_Pnt.hxx>
+#include <TopAbs_ShapeEnum.hxx>
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
@@ -115,7 +116,11 @@ public:
     bool linesAreParallel() const;
 
 protected:
-    TopoDS_Shape getShape(App::DocumentObject* obj, const char* subName) const;
+    // Hint parameter helps sort out coumpound shapes by specifying a subelement type
+    // use hint = TopAbs_COMPOUND to give no hint
+    TopoDS_Shape getShape(App::DocumentObject* obj,
+                          const char* subName,
+                          TopAbs_ShapeEnum hint = TopAbs_COMPOUND) const;
 
 private:
     MeasureType measureType;
