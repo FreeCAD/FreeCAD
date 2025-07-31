@@ -951,7 +951,7 @@ ElementMap::geoID ElementMap::makeGeoID(const std::string ID) const {
     ElementMap::geoID ret = ElementMap::geoID();
 
     for (int i = 0; i < ID.size(); i++) {
-        if (i == 0 && ID[i] == 'g') {
+        if (i == 0 && (ID[i] == 'g' || ID[i] == 'e')) {
             foundStartID = true;
         } else if (ID[i] == ';' && foundStartID) {
             foundStartID = false;
@@ -1204,14 +1204,18 @@ ElementMap::ToponamingElement ElementMap::compileToponamingElement(MappedName na
     }
 
     element.unfilteredSplitSections = compileElementSections(element.dehashedName);
-    element.splitSections = element.unfilteredSplitSections;
+    // element.splitSections = element.unfilteredSplitSections;
 
-    // do not filter at this stage
-    // for (const auto &data : element.unfilteredSplitSections) {
-    //     if (data.postfix != "M") {
-    //         element.splitSections.push_back(data);
-    //     }
-    // }
+    // only filter M tags with a postfix number of 0, since they add no value to the history of an element
+    // if there are other modifiers that describe the same operation, then they will have different numbers
+    // and therefore will be added. this will help preserve history
+    // also add any modifiers with postfix geo IDs, because they will eventually describe a split operation
+    // more accurately.
+    for (const auto &data : element.unfilteredSplitSections) {
+        if (data.postfix != "M" || (data.postfixNumber != 0 || !data.postFixIDs.empty())) {
+            element.splitSections.push_back(data);
+        }
+    }
 
     // for (const auto &sec : element.splitSections) {
     //     FC_WARN("section: " << sec.stringData << " post: " << sec.postfix << " opcode: " << sec.opcode << " num: " << sec.postfixNumber << " eltype: " << sec.elementType);
@@ -1220,31 +1224,6 @@ ElementMap::ToponamingElement ElementMap::compileToponamingElement(MappedName na
     int removeSections = 0;
 
     for (int i = 0; i < element.splitSections.size(); i++) {
-        // if (element.splitSections[i].geoIDs.size() >= 1) {
-        //     if (i == 0) {
-        //         std::string geoID = element.splitSections[i].geoIDs[0];
-
-        //         if (i + 1 < element.splitSections.size() && boost::starts_with(element.splitSections[i + 1].stringData, "SKT")) {
-        //             geoID.push_back(';');
-        //             geoID.append(element.splitSections[i + 1].stringData);
-        //             removeSections++;
-        //         }
-
-        //         removeSections++;
-        //         element.mainIDs.push_back(geoID);
-        //     } else if (element.splitSections[i].opcode == "SIF") {
-        //         for (const auto &id : element.splitSections[i].geoIDs) {
-        //             element.mainIDs.push_back(id);
-        //         }
-        //     } else if(!element.splitSections[i].opcode.empty()) {
-        //         // FC_WARN("others opcode: " << element.splitSections[i].opcode);
-        //         for (const auto &id : element.splitSections[i].geoIDs) {
-        //             // FC_WARN("others id: " << id);
-
-        //             element.otherIDs.push_back(id);
-        //         }
-        //     }
-        // }
         if (i == 0) {
             if (boost::starts_with(element.splitSections[i].stringData, "g")) {
                 std::string startID = element.splitSections[i].stringData;
@@ -1314,6 +1293,8 @@ IndexedName ElementMap::complexFind(const MappedName& name) const {
     const int idOccurenceMin = 2;
     const int tagOccurenceMin = -1; // -1 means only one tag can be missing
 
+    // FC_WARN("original name: " << originalElement.dehashedName);
+
     if (originalElement.splitSections.empty()) {
         return foundName;
     }
@@ -1325,6 +1306,7 @@ IndexedName ElementMap::complexFind(const MappedName& name) const {
         if (loopElement.splitSections.empty()) {
             continue;
         }
+        // FC_WARN("loop name: " << loopElement.dehashedName);
 
         if (
             originalElement.splitSections.size() != loopElement.splitSections.size()
@@ -1364,12 +1346,14 @@ IndexedName ElementMap::complexFind(const MappedName& name) const {
         }
 
         if (!geoIDCheck) {
+            // FC_WARN("geo id fail");
             continue;
         }
 
         bool sectionCheck = true;
 
         if (!checkGeoIDsLists(originalElement.postFixIDs, loopElement.postFixIDs) || !checkGeoIDsLists(originalElement.opCodesIDs, loopElement.opCodesIDs)) {
+            // FC_WARN("post ids and opcodes ids fail");
             continue;
         }
 
@@ -1421,10 +1405,12 @@ IndexedName ElementMap::complexFind(const MappedName& name) const {
         }
 
         if (!sectionCheck) {
+            // FC_WARN("section check fail");
             continue;
         }
 
-        if (originalElement.splitSections.back().elementType != loopElement.splitSections.back().elementType) {
+        if (originalElement.unfilteredSplitSections.back().elementType != loopElement.unfilteredSplitSections.back().elementType) {
+            // FC_WARN("elementType check");
             continue;
         }
 
