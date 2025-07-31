@@ -471,7 +471,6 @@ void DrawViewPart::postHlrTasks()
     if (ScaleType.isValue("Automatic") && !checkFit()) {
         double newScale = autoScale();
         Scale.setValue(newScale);
-        Scale.purgeTouched();
         partExec(m_saveShape);
     }
 
