@@ -1586,8 +1586,8 @@ bool AssemblyObject::isMbDJointValid(App::DocumentObject* joint)
     // When dragging a part, we are bundling fixed parts together.
     // This may lead to a conflicting joint that is self referencing a MbD part.
     // The solver crash when fed such a bad joint. So we make sure it does not happen.
-    App::DocumentObject* part1 = getMovingPartFromRef(this, joint, "Reference1");
-    App::DocumentObject* part2 = getMovingPartFromRef(this, joint, "Reference2");
+    App::DocumentObject* part1 = getMovingPartFromRef(joint, "Reference1");
+    App::DocumentObject* part2 = getMovingPartFromRef(joint, "Reference2");
     if (!part1 || !part2) {
         return false;
     }
