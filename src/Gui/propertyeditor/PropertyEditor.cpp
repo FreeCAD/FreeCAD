@@ -780,7 +780,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
 
     // rename property
     if (props.size() == 1 && canBeRefactored(*props.begin())) {
-            menu.addAction(tr("Rename property"))->setData(QVariant(MA_RenameProp));
+        menu.addAction(tr("Rename property"))->setData(QVariant(MA_RenameProp));
     }
 
     // remove property

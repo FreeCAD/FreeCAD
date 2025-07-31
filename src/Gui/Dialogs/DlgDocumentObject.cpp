@@ -364,8 +364,8 @@ void DlgDocumentObject::init(const App::DocumentObject* owner, bool filterOwner)
         auto item = new QTreeWidgetItem(ui->treeWidget);
         item->setIcon(0, docIcon);
         item->setText(0, QString::fromUtf8(d->Label.getValue()));
-        item->setData(0, Qt::UserRole, QByteArray(""));
-        item->setData(0, Qt::UserRole + 1, QByteArray(d->getName()));
+        item->setData(0, ObjectNameRole, QByteArray(""));
+        item->setData(0, DocNameRole, QByteArray(d->getName()));
         item->setFlags(Qt::ItemIsEnabled);
         item->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
         if (expandDocs.count(d)) {
@@ -658,7 +658,7 @@ DlgDocumentObject::findItem(App::DocumentObject* obj, const char* subname, bool*
         for (int i = 0, count = item->childCount(); i < count; ++i) {
             auto child = item->child(i);
             if (strcmp(o->getNameInDocument(),
-                       child->data(0, Qt::UserRole).toByteArray().constData())
+                       child->data(0, ObjectNameRole).toByteArray().constData())
                 == 0) {
                 item = child;
                 found = true;
@@ -741,7 +741,7 @@ _getSubObjectFromItem(std::ostringstream& ss, QTreeWidgetItem* item, const char*
 {
     auto parent = item->parent();
     assert(parent);
-    QByteArray nextName = parent->data(0, Qt::UserRole).toByteArray();
+    QByteArray nextName = parent->data(0, ObjectNameRole).toByteArray();
     if (nextName.isEmpty()) {
         return item;
     }
@@ -763,10 +763,10 @@ QList<App::SubObjectT> DlgDocumentObject::getSubObjectFromItem(QTreeWidgetItem* 
 
     std::ostringstream ss;
     auto parentItem =
-        _getSubObjectFromItem(ss, item, item->data(0, Qt::UserRole).toByteArray().constData());
+        _getSubObjectFromItem(ss, item, item->data(0, ObjectNameRole).toByteArray().constData());
 
-    App::SubObjectT sobj(parentItem->data(0, Qt::UserRole + 1).toByteArray().constData(),
-                         parentItem->data(0, Qt::UserRole).toByteArray().constData(),
+    App::SubObjectT sobj(parentItem->data(0, DocNameRole).toByteArray().constData(),
+                         parentItem->data(0, ObjectNameRole).toByteArray().constData(),
                          ss.str().c_str());
 
     QString elements;
@@ -833,8 +833,8 @@ void DlgDocumentObject::filterObjects()
 void DlgDocumentObject::filterItem(QTreeWidgetItem* item)
 {
     if (filterOwner &&
-        strcmp(item->data(0, Qt::UserRole).toByteArray().constData(), owner->getNameInDocument()) == 0 &&
-        strcmp(item->data(0, Qt::UserRole + 1).toByteArray().constData(), owner->getDocument()->getName()) == 0) {
+        strcmp(item->data(0, ObjectNameRole).toByteArray().constData(), owner->getNameInDocument()) == 0 &&
+        strcmp(item->data(0, DocNameRole).toByteArray().constData(), owner->getDocument()->getName()) == 0) {
         item->setHidden(true);
         return;
     }
@@ -974,8 +974,8 @@ QTreeWidgetItem* DlgDocumentObject::createItem(App::DocumentObject* obj, QTreeWi
     }
     item->setIcon(0, vp->getIcon());
     item->setText(0, QString::fromUtf8((obj)->Label.getValue()));
-    item->setData(0, Qt::UserRole, QByteArray(obj->getNameInDocument()));
-    item->setData(0, Qt::UserRole + 1, QByteArray(obj->getDocument()->getName()));
+    item->setData(0, ObjectNameRole, QByteArray(obj->getNameInDocument()));
+    item->setData(0, DocNameRole, QByteArray(obj->getDocument()->getName()));
 
     if (allowSubObject) {
         item->setChildIndicatorPolicy(!obj->getLinkedObject(true)->getOutList().empty()
@@ -986,7 +986,7 @@ QTreeWidgetItem* DlgDocumentObject::createItem(App::DocumentObject* obj, QTreeWi
 
     const char* typeName = obj->getTypeId().getName();
     QByteArray typeData = QByteArray::fromRawData(typeName, strlen(typeName) + 1);
-    item->setData(0, Qt::UserRole + 2, typeData);
+    item->setData(0, TypeNameRole, typeData);
 
     QByteArray proxyType;
     auto prop =
@@ -1012,7 +1012,7 @@ QTreeWidgetItem* DlgDocumentObject::createItem(App::DocumentObject* obj, QTreeWi
             }
         }
     }
-    item->setData(0, Qt::UserRole + 3, proxyType);
+    item->setData(0, ProxyTypeRole, proxyType);
 
     filterItem(item);
     return item;
@@ -1033,7 +1033,7 @@ QTreeWidgetItem* DlgDocumentObject::createTypeItem(Base::Type type)
             auto& typeItem = typeItems[typeData];
             if (!typeItem) {
                 typeItem = createTypeItem(parentType);
-                typeItem->setData(0, Qt::UserRole, typeData);
+                typeItem->setData(0, TypeNameRole, typeData);
             }
             item = typeItem;
         }
@@ -1055,7 +1055,7 @@ QTreeWidgetItem* DlgDocumentObject::createTypeItem(Base::Type type)
 
 bool DlgDocumentObject::filterType(QTreeWidgetItem* item)
 {
-    auto proxyType = item->data(0, Qt::UserRole + 3).toByteArray();
+    auto proxyType = item->data(0, ProxyTypeRole).toByteArray();
     QTreeWidgetItem* proxyItem = nullptr;
     if (proxyType.size()) {
         auto& pitem = typeItems[proxyType];
@@ -1063,12 +1063,12 @@ bool DlgDocumentObject::filterType(QTreeWidgetItem* item)
             pitem = new QTreeWidgetItem(ui->typeTree);
             pitem->setText(0, QString::fromLatin1(proxyType));
             pitem->setIcon(0, item->icon(0));
-            pitem->setData(0, Qt::UserRole, proxyType);
+            pitem->setData(0, TypeNameRole, proxyType);
         }
         proxyItem = pitem;
     }
 
-    auto typeData = item->data(0, Qt::UserRole + 2).toByteArray();
+    auto typeData = item->data(0, TypeNameRole).toByteArray();
     Base::Type type = Base::Type::fromName(typeData.constData());
     if (type.isBad()) {
         return false;
@@ -1077,7 +1077,7 @@ bool DlgDocumentObject::filterType(QTreeWidgetItem* item)
     QTreeWidgetItem*& typeItem = typeItems[typeData];
     if (!typeItem) {
         typeItem = createTypeItem(type);
-        typeItem->setData(0, Qt::UserRole, typeData);
+        typeItem->setData(0, TypeNameRole, typeData);
     }
 
     if (!proxyType.size()) {
@@ -1112,13 +1112,13 @@ void DlgDocumentObject::onItemExpanded(QTreeWidgetItem* item)
         return;
     }
 
-    QByteArray docName = item->data(0, Qt::UserRole + 1).toByteArray();
+    QByteArray docName = item->data(0, DocNameRole).toByteArray();
     auto doc = App::GetApplication().getDocument(docName);
     if (!doc) {
         return;
     }
 
-    QByteArray objName = item->data(0, Qt::UserRole).toByteArray();
+    QByteArray objName = item->data(0, ObjectNameRole).toByteArray();
     if (objName.isEmpty()) {
         for (auto obj : doc->getObjects()) {
             auto newItem = createItem(obj, item);
@@ -1159,7 +1159,7 @@ void DlgDocumentObject::onTypeTreeItemSelectionChanged()
     selectedTypes.clear();
     const auto items = ui->typeTree->selectedItems();
     for (auto item : items) {
-        selectedTypes.insert(item->data(0, Qt::UserRole).toByteArray());
+        selectedTypes.insert(item->data(0, TypeNameRole).toByteArray());
     }
 
     if (ui->checkObjectType->isChecked()) {
