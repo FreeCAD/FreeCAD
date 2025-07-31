@@ -31,11 +31,14 @@ from FreeCAD import Units
 def get_analysis_types():
     return ["thermomech"]
 
+
 def get_sets_name():
     return "constraints_initial_temperature_node_sets"
 
+
 def get_constraint_title():
     return "Initial temperature constraint"
+
 
 def write_meshdata_constraint(f, femobj, inittemp_obj, ccxwriter):
     if inittemp_obj.References and len(inittemp_obj.References) > 0:
@@ -45,17 +48,22 @@ def write_meshdata_constraint(f, femobj, inittemp_obj, ccxwriter):
     else:
         return
 
+
 def get_before_write_meshdata_constraint():
     return ""
+
 
 def get_after_write_meshdata_constraint():
     return ""
 
+
 def get_before_write_constraint():
     return "*INITIAL CONDITIONS,TYPE=TEMPERATURE\n"
 
+
 def get_after_write_constraint():
     return ""
+
 
 def write_constraint(f, femobj, inittemp_obj, ccxwriter):
 

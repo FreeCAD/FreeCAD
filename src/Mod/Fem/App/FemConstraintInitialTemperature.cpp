@@ -35,7 +35,6 @@ PROPERTY_SOURCE(Fem::ConstraintInitialTemperature, Fem::Constraint)
 ConstraintInitialTemperature::ConstraintInitialTemperature()
 {
     ADD_PROPERTY(initialTemperature, (300.0));
-
 }
 
 App::DocumentObjectExecReturn* ConstraintInitialTemperature::execute()
