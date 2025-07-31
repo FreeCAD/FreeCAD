@@ -2212,7 +2212,7 @@ QColumnView::item:selected {
 }
 
 QListView::item:selected {
-  background-color: @AccentBackgroundHoverColor;
+  background-color: @GeneralBackgroundHoverColor;
 }
 
 /* QTreeView::item:!selected:hover, */
