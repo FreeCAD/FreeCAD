@@ -46,12 +46,9 @@ public:
 
     void accept() override;
 
-    QList<App::SubObjectT> currentLinks() const;
-    QList<App::SubObjectT> originalLinks() const;
+    QList<App::SubObjectT> currentSubObjects() const;
 
-    void init(const App::DocumentObjectT &prop, bool tryFilter=true);
-
-    static QString linksToPython(const QList<App::SubObjectT>& links);
+    void init(const App::DocumentObject* owner, bool filterOwner=true);
 
     static QList<App::SubObjectT> getLinksFromProperty(const App::PropertyLinkBase *prop);
 
@@ -95,7 +92,7 @@ private:
     bool filterType(QTreeWidgetItem *item);
     QTreeWidgetItem *findItem(App::DocumentObject *obj, const char *subname=nullptr, bool *found=nullptr);
     void itemSearch(const QString &text, bool select);
-    QList<App::SubObjectT> getLinkFromItem(QTreeWidgetItem *, bool needSubName=true) const;
+    QList<App::SubObjectT> getSubObjectFromItem(QTreeWidgetItem *, bool needSubName=true) const;
 
 private:
     Ui_DlgDocumentObject* ui;
@@ -106,7 +103,8 @@ private:
     QPointer<QWidget> parentView;
     std::vector<App::SubObjectT> savedSelections;
 
-    App::DocumentObjectT objProp;
+    const App::DocumentObject* owner;
+    bool filterOwner;
     std::set<App::DocumentObject*> inList;
     std::map<App::Document*, QTreeWidgetItem*> docItems;
     std::map<App::DocumentObject*, QTreeWidgetItem*> itemMap;
@@ -114,7 +112,7 @@ private:
     std::set<QTreeWidgetItem*> subSelections;
     QList<QTreeWidgetItem*> selections;
     std::set<QByteArray> selectedTypes;
-    QList<App::SubObjectT> oldLinks;
+    // QList<App::SubObjectT> oldLinks;
     bool allowSubObject = false;
     bool singleSelect = false;
     bool singleParent = false;

@@ -243,7 +243,12 @@ QString DlgDocumentObject::formatLinks(App::Document* ownerDoc, QList<App::SubOb
                                              QLatin1String(links.size() > 3 ? " ..." : ""));
 }
 
-void DlgDocumentObject::init(const App::DocumentObjectT& prop, bool tryFilter)
+const int ObjectNameRole = Qt::UserRole;
+const int DocNameRole = Qt::UserRole + 1;
+const int TypeNameRole = Qt::UserRole + 2;
+const int ProxyTypeRole = Qt::UserRole + 3;
+
+void DlgDocumentObject::init(const App::DocumentObject* owner, bool filterOwner)
 {
     ui->treeWidget->blockSignals(true);
     ui->treeWidget->clear();
@@ -253,7 +258,6 @@ void DlgDocumentObject::init(const App::DocumentObjectT& prop, bool tryFilter)
     ui->typeTree->clear();
     ui->typeTree->blockSignals(false);
 
-    oldLinks.clear();
     docItems.clear();
     typeItems.clear();
     itemMap.clear();
@@ -264,57 +268,60 @@ void DlgDocumentObject::init(const App::DocumentObjectT& prop, bool tryFilter)
     subSelections.clear();
     selections.clear();
 
-    objProp = prop;
-    auto owner = objProp.getObject();
+    this->owner = owner;
     if (!owner || !owner->isAttachedToDocument()) {
         return;
     }
+    filterOwner = false;
+    this->filterOwner = filterOwner;
 
     ui->searchBox->setDocumentObject(owner);
 
-    auto propLink = freecad_cast<App::PropertyLinkBase*>(objProp.getProperty());
-    if (!propLink) {
-        return;
-    }
+    // auto propLink = freecad_cast<App::PropertyLinkBase*>(objProp.getProperty());
+    // if (!propLink) {
+    //     return;
+    // }
 
-    oldLinks = getLinksFromProperty(propLink);
+    // oldLinks = getLinksFromProperty(propLink);
 
-    if (propLink->getScope() != App::LinkScope::Hidden) {
-        // populate inList to filter out any objects that contains the owner object
-        // of the editing link property
-        inList = owner->getInListEx(true);
-        inList.insert(owner);
-    }
+    // if (propLink->getScope() != App::LinkScope::Hidden) {
+    //     // populate inList to filter out any objects that contains the owner object
+    //     // of the editing link property
+    //     inList = owner->getInListEx(true);
+    //     inList.insert(owner);
+    // }
 
     std::vector<App::Document*> docs;
 
     singleSelect = false;
-    if (propLink->isDerivedFrom<App::PropertyXLinkSub>()
-        || propLink->isDerivedFrom<App::PropertyLinkSub>()) {
-        allowSubObject = true;
-        singleParent = true;
-    }
-    else if (propLink->isDerivedFrom<App::PropertyLink>()) {
-        singleSelect = true;
-    }
-    else if (propLink->isDerivedFrom<App::PropertyLinkSubList>()) {
-        allowSubObject = true;
-    }
+    allowSubObject = false;
+    // if (propLink->isDerivedFrom<App::PropertyXLinkSub>()
+    //     || propLink->isDerivedFrom<App::PropertyLinkSub>()) {
+    //     allowSubObject = true;
+    //     singleParent = true;
+    // }
+    // else if (propLink->isDerivedFrom<App::PropertyLink>()) {
+    //     singleSelect = true;
+    // }
+    // else if (propLink->isDerivedFrom<App::PropertyLinkSubList>()) {
+    //     allowSubObject = true;
+    // }
 
-    if (App::PropertyXLink::supportXLink(propLink)) {
-        allowSubObject = true;
-        docs = App::GetApplication().getDocuments();
-    }
-    else {
-        docs.push_back(owner->getDocument());
-    }
+    docs = App::GetApplication().getDocuments();
 
-    bool isLinkList = false;
-    if (propLink->isDerivedFrom<App::PropertyXLinkList>()
-        || propLink->isDerivedFrom<App::PropertyLinkList>()) {
-        isLinkList = true;
-        allowSubObject = false;
-    }
+    // if (App::PropertyXLink::supportXLink(propLink)) {
+    //     allowSubObject = true;
+    // }
+    // else {
+    //     docs.push_back(owner->getDocument());
+    // }
+
+    //bool isLinkList = false;
+    // if (propLink->isDerivedFrom<App::PropertyXLinkList>()
+    //     || propLink->isDerivedFrom<App::PropertyLinkList>()) {
+    //     isLinkList = true;
+    //     allowSubObject = false;
+    // }
 
     if (singleSelect) {
         singleParent = true;
@@ -338,17 +345,19 @@ void DlgDocumentObject::init(const App::DocumentObjectT& prop, bool tryFilter)
 
     std::set<App::Document*> expandDocs;
 
-    if (oldLinks.empty()) {
-        expandDocs.insert(owner->getDocument());
-    }
-    else {
-        for (auto& link : oldLinks) {
-            auto doc = link.getDocument();
-            if (doc) {
-                expandDocs.insert(doc);
-            }
-        }
-    }
+    //expandDocs.insert(owner->getDocument());
+
+    // if (oldLinks.empty()) {
+    //     expandDocs.insert(owner->getDocument());
+    // }
+    // else {
+    //     for (auto& link : oldLinks) {
+    //         auto doc = link.getDocument();
+    //         if (doc) {
+    //             expandDocs.insert(doc);
+    //         }
+    //     }
+    // }
 
     QPixmap docIcon(Gui::BitmapFactory().pixmap("Document"));
     for (auto d : docs) {
@@ -365,77 +374,11 @@ void DlgDocumentObject::init(const App::DocumentObjectT& prop, bool tryFilter)
         docItems[d] = item;
     }
 
-    if (allowSubObject) {
-        if (propLink->testFlag(App::PropertyLinkBase::LinkSyncSubObject)) {
-            ui->checkSubObject->setChecked(true);
-        }
-        else {
-            for (auto& link : oldLinks) {
-                auto sobj = link.getSubObject();
-                if (sobj && sobj != link.getObject()) {
-                    ui->checkSubObject->setChecked(true);
-                    break;
-                }
-            }
-        }
-    }
+    if (filterOwner) {
+        Base::Type objType = owner->getTypeId();
 
-    if (oldLinks.isEmpty()) {
-        return;
-    }
-
-    // Try to select items corresponding to the current links inside the
-    // property
-    ui->treeWidget->blockSignals(true);
-    for (auto& link : oldLinks) {
-        onSelectionChanged(Gui::SelectionChanges(SelectionChanges::AddSelection,
-                                                 link.getDocumentName(),
-                                                 link.getObjectName(),
-                                                 link.getSubName()));
-    }
-    ui->treeWidget->blockSignals(false);
-
-    // For link list type property, try to auto filter type
-    if (tryFilter && isLinkList) {
-        Base::Type objType;
-        for (const auto& link : std::as_const(oldLinks)) {
-            auto obj = link.getSubObject();
-            if (!obj) {
-                continue;
-            }
-            if (objType.isBad()) {
-                objType = obj->getTypeId();
-                continue;
-            }
-            for (; objType != App::DocumentObject::getClassTypeId();
-                 objType = objType.getParent()) {
-                if (obj->isDerivedFrom(objType)) {
-                    break;
-                }
-            }
-        }
-
-        Base::Type baseType;
-        // get only geometric types
-        if (objType.isDerivedFrom(App::GeoFeature::getClassTypeId())) {
-            baseType = App::GeoFeature::getClassTypeId();
-        }
-        else {
-            baseType = App::DocumentObject::getClassTypeId();
-        }
-
-        // get the direct base class of App::DocumentObject which 'obj' is derived from
-        while (!objType.isBad()) {
-            Base::Type parType = objType.getParent();
-            if (parType == baseType) {
-                baseType = objType;
-                break;
-            }
-            objType = parType;
-        }
-
-        if (!baseType.isBad()) {
-            const char* name = baseType.getName();
+        if (!objType.isBad()) {
+            const char* name = objType.getName();
             auto it = typeItems.find(QByteArray::fromRawData(name, strlen(name) + 1));
             if (it != typeItems.end()) {
                 it->second->setSelected(true);
@@ -443,6 +386,38 @@ void DlgDocumentObject::init(const App::DocumentObjectT& prop, bool tryFilter)
             ui->checkObjectType->setChecked(true);
         }
     }
+
+
+
+    // if (tryFilter) {
+    //     Base::Type baseType;
+    //     // get only geometric types
+    //     if (objType.isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+    //         baseType = App::GeoFeature::getClassTypeId();
+    //     }
+    //     else {
+    //         baseType = App::DocumentObject::getClassTypeId();
+    //     }
+
+    //     // get the direct base class of App::DocumentObject which 'obj' is derived from
+    //     while (!objType.isBad()) {
+    //         Base::Type parType = objType.getParent();
+    //         if (parType == baseType) {
+    //             baseType = objType;
+    //             break;
+    //         }
+    //         objType = parType;
+    //     }
+
+    //     if (!baseType.isBad()) {
+    //         const char* name = baseType.getName();
+    //         auto it = typeItems.find(QByteArray::fromRawData(name, strlen(name) + 1));
+    //         if (it != typeItems.end()) {
+    //             it->second->setSelected(true);
+    //         }
+    //         ui->checkObjectType->setChecked(true);
+    //     }
+    // }
 }
 
 void DlgDocumentObject::onClicked(QAbstractButton* button)
@@ -458,7 +433,7 @@ void DlgDocumentObject::onClicked(QAbstractButton* button)
         Gui::Selection().clearSelection();
     }
     else if (button == refreshButton) {
-        init(objProp);
+        init(owner);
     }
 }
 
@@ -567,7 +542,7 @@ void DlgDocumentObject::onItemSelectionChanged()
 
     selections = newSelections;
 
-    auto sobjs = getLinkFromItem(newSelections.back());
+    auto sobjs = getSubObjectFromItem(newSelections.back());
     App::DocumentObject* obj = !sobjs.empty() ? sobjs.front().getObject() : nullptr;
     if (!obj) {
         Gui::Selection().clearSelection();
@@ -762,7 +737,7 @@ void DlgDocumentObject::accept()
 }
 
 static QTreeWidgetItem*
-_getLinkFromItem(std::ostringstream& ss, QTreeWidgetItem* item, const char* objName)
+_getSubObjectFromItem(std::ostringstream& ss, QTreeWidgetItem* item, const char* objName)
 {
     auto parent = item->parent();
     assert(parent);
@@ -771,13 +746,13 @@ _getLinkFromItem(std::ostringstream& ss, QTreeWidgetItem* item, const char* objN
         return item;
     }
 
-    item = _getLinkFromItem(ss, parent, nextName);
+    item = _getSubObjectFromItem(ss, parent, nextName);
     ss << objName << '.';
     return item;
 }
 
-QList<App::SubObjectT> DlgDocumentObject::getLinkFromItem(QTreeWidgetItem* item,
-                                                        bool needSubName) const
+QList<App::SubObjectT> DlgDocumentObject::getSubObjectFromItem(QTreeWidgetItem* item,
+                                                               bool needSubName) const
 {
     QList<App::SubObjectT> res;
 
@@ -788,7 +763,7 @@ QList<App::SubObjectT> DlgDocumentObject::getLinkFromItem(QTreeWidgetItem* item,
 
     std::ostringstream ss;
     auto parentItem =
-        _getLinkFromItem(ss, item, item->data(0, Qt::UserRole).toByteArray().constData());
+        _getSubObjectFromItem(ss, item, item->data(0, Qt::UserRole).toByteArray().constData());
 
     App::SubObjectT sobj(parentItem->data(0, Qt::UserRole + 1).toByteArray().constData(),
                          parentItem->data(0, Qt::UserRole).toByteArray().constData(),
@@ -821,7 +796,7 @@ void DlgDocumentObject::onTimer()
     if (!item) {
         return;
     }
-    auto sobjs = getLinkFromItem(item);
+    auto sobjs = getSubObjectFromItem(item);
     if (sobjs.isEmpty()) {
         return;
     }
@@ -835,52 +810,14 @@ void DlgDocumentObject::onTimer()
                                   Gui::SelectionChanges::MsgSource::TreeView);
 }
 
-QList<App::SubObjectT> DlgDocumentObject::currentLinks() const
+QList<App::SubObjectT> DlgDocumentObject::currentSubObjects() const
 {
     auto items = ui->treeWidget->selectedItems();
     QList<App::SubObjectT> res;
     for (auto item : items) {
-        res.append(getLinkFromItem(item));
+        res.append(getSubObjectFromItem(item));
     }
     return res;
-}
-
-QList<App::SubObjectT> DlgDocumentObject::originalLinks() const
-{
-    return oldLinks;
-}
-
-QString DlgDocumentObject::linksToPython(const QList<App::SubObjectT>& links)
-{
-    if (links.isEmpty()) {
-        return QLatin1String("None");
-    }
-
-    if (links.size() == 1) {
-        return QString::fromLatin1(links.front().getSubObjectPython(false).c_str());
-    }
-
-    std::ostringstream ss;
-
-    if (isLinkSub(links)) {
-        ss << '(' << links.front().getObjectPython() << ", [";
-        for (const auto& link : links) {
-            const auto& sub = link.getSubName();
-            if (!sub.empty()) {
-                ss << "u'" << Base::Tools::escapedUnicodeFromUtf8(sub.c_str()) << "',";
-            }
-        }
-        ss << "])";
-    }
-    else {
-        ss << '[';
-        for (const auto& link : links) {
-            ss << link.getSubObjectPython(false) << ',';
-        }
-        ss << ']';
-    }
-
-    return QString::fromLatin1(ss.str().c_str());
 }
 
 void DlgDocumentObject::filterObjects()
@@ -895,6 +832,12 @@ void DlgDocumentObject::filterObjects()
 
 void DlgDocumentObject::filterItem(QTreeWidgetItem* item)
 {
+    if (filterOwner &&
+        strcmp(item->data(0, Qt::UserRole).toByteArray().constData(), owner->getNameInDocument()) == 0 &&
+        strcmp(item->data(0, Qt::UserRole + 1).toByteArray().constData(), owner->getDocument()->getName()) == 0) {
+        item->setHidden(true);
+        return;
+    }
     if (filterType(item)) {
         item->setHidden(true);
         return;
@@ -936,7 +879,6 @@ void DlgDocumentObject::itemSearch(const QString& text, bool select)
         searchItem->setBackground(0, bgBrush);
     }
 
-    auto owner = objProp.getObject();
     if (!owner) {
         return;
     }
@@ -1005,6 +947,7 @@ void DlgDocumentObject::itemSearch(const QString& text, bool select)
     catch (...) {
     }
 }
+
 
 QTreeWidgetItem* DlgDocumentObject::createItem(App::DocumentObject* obj, QTreeWidgetItem* parent)
 {

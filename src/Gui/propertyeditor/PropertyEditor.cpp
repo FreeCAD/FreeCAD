@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <algorithm>
 #include <boost/algorithm/string/predicate.hpp>
 #include <QApplication>
 #include <QClipboard>
@@ -42,6 +43,7 @@
 
 #include "PropertyEditor.h"
 #include "Dialogs/DlgAddProperty.h"
+#include "Dialogs/DlgDocumentObject.h"
 #include "MainWindow.h"
 #include "PropertyItemDelegate.h"
 #include "PropertyModel.h"
@@ -728,6 +730,12 @@ enum MenuAction
     MA_Copy,
 };
 
+static bool canBeRefactored(const App::Property* prop)
+{
+    auto* obj = freecad_cast<App::DocumentObject*>(prop->getContainer());
+    return prop->canBeRefactored() && obj;
+}
+
 void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
 {
     QMenu menu;
@@ -771,12 +779,8 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
     }
 
     // rename property
-    if (props.size() == 1) {
-        auto prop = *props.begin();
-        if (prop->testStatus(App::Property::PropDynamic)
-            && !prop->testStatus(App::Property::LockDynamic)) {
+    if (props.size() == 1 && canBeRefactored(*props.begin())) {
             menu.addAction(tr("Rename property"))->setData(QVariant(MA_RenameProp));
-        }
     }
 
     // remove property
@@ -786,25 +790,17 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
     for (auto prop : props) {
         propType |= prop->getType();
         propStatus &= prop->getStatus();
-        if (!prop->testStatus(App::Property::PropDynamic)
-            || prop->testStatus(App::Property::LockDynamic)) {
+        if (!canBeRefactored(prop)) {
             canRemove = false;
+            break;
         }
     }
     if (canRemove) {
         menu.addAction(tr("Remove property"))->setData(QVariant(MA_RemoveProp));
     }
 
-    // move property
-    bool canMove = !props.empty();
-    for (auto prop : props) {
-        App::VarSet* varSet = freecad_cast<App::VarSet*>(prop->getContainer());
-        if (varSet == nullptr) {
-            canMove = false;
-            break;
-        }
-    }
-    if (canMove) {
+    if (props.size() > 0 && std::ranges::all_of(props, [](auto* prop) {
+        return canBeRefactored(prop); })) {
         menu.addAction(tr("Move property"))->setData(QVariant(MA_MoveProp));
     }
 
@@ -1014,6 +1010,11 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
         }
         case MA_MoveProp: {
             FC_MSG("Move property");
+            Gui::Dialog::DlgDocumentObject dlg(Gui::getMainWindow());
+            App::Property* prop = *props.begin();
+            auto* obj = freecad_cast<App::DocumentObject*>(prop->getContainer());
+            dlg.init(obj);
+            dlg.exec();
         }
         default:
             break;
