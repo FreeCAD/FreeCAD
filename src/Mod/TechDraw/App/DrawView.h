@@ -52,7 +52,7 @@ class TechDrawExport DrawView : public App::DocumentObject
 public:
     /// Constructor
     DrawView();
-    ~DrawView() override;
+    ~DrawView() override = default;
 
     App::PropertyDistance X;
     App::PropertyDistance Y;
