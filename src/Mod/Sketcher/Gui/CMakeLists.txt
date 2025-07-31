@@ -1,10 +1,3 @@
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_BINARY_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 set(SketcherGui_LIBS
     Sketcher
     PartGui
@@ -189,7 +182,20 @@ SET(SketcherGuiIcon_SVG
     Resources/icons/SketcherWorkbench.svg
 )
 
-add_library(SketcherGui SHARED ${SketcherGui_SRCS} ${SketcherGuiIcon_SVG})
+add_library(SketcherGui SHARED
+    ${SketcherGui_SRCS}
+    ${SketcherGuiIcon_SVG}
+)
+
+target_include_directories(
+    SketcherGui
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 target_link_libraries(SketcherGui ${SketcherGui_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(SketcherGui)

@@ -1,10 +1,4 @@
 include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
-include_directories(
     SYSTEM
     ${CMAKE_SOURCE_DIR}/src/3rdParty/json/single_include/nlohmann/
 )
@@ -252,6 +246,13 @@ SET(PartDesignGuiIcon_SVG
 )
 
 add_library(PartDesignGui SHARED ${PartDesignGui_SRCS} ${PartDesignGuiIcon_SVG})
+target_include_directories(
+    PartDesignGui
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 target_link_libraries(PartDesignGui ${PartDesignGui_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(PartDesignGui)

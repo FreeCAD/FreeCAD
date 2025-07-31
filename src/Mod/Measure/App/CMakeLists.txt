@@ -1,10 +1,3 @@
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_BINARY_DIR}/src
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 set(Measure_LIBS
     Part
     FreeCADApp
@@ -70,6 +63,16 @@ if(FREECAD_USE_PCH)
 endif(FREECAD_USE_PCH)
 
 add_library(Measure SHARED ${Measure_SRCS})
+
+target_include_directories(
+    Measure
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 target_link_libraries(Measure ${Measure_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Measure)

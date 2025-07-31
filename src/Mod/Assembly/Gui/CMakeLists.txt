@@ -1,7 +1,3 @@
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
 
 set(AssemblyGui_LIBS
     Assembly
@@ -84,6 +80,13 @@ SET(AssemblyGuiIcon_SVG
 )
 
 add_library(AssemblyGui SHARED ${AssemblyGui_SRCS} ${AssemblyGuiIcon_SVG})
+
+target_include_directories(
+    AssemblyGui
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 
 if(WIN32)
     target_compile_definitions(AssemblyGui PRIVATE _USE_MATH_DEFINES)

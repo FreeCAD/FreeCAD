@@ -15,20 +15,6 @@ if(BUILD_FEM_NETGEN)
 endif(BUILD_FEM_NETGEN)
 
 
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_BINARY_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
-include_directories(
-    SYSTEM
-    ${SMESH_INCLUDE_DIR}
-    ${NETGEN_INCLUDE_DIRS}
-    ${VTK_INCLUDE_DIRS}
-)
-
 
 link_directories(${SMESH_LIB_PATH})
 
@@ -208,6 +194,25 @@ if(FREECAD_USE_PCH)
 endif(FREECAD_USE_PCH)
 
 add_library(Fem SHARED ${Fem_SRCS})
+
+target_include_directories(
+    Fem
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+target_include_directories(
+    Fem
+    SYSTEM
+    PUBLIC
+    ${SMESH_INCLUDE_DIR}
+    ${NETGEN_INCLUDE_DIRS}
+    ${VTK_INCLUDE_DIRS}
+)
+
 target_link_libraries(Fem ${Fem_LIBS} ${VTK_LIBRARIES})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Fem)

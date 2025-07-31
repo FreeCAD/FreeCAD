@@ -2,19 +2,6 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     add_definitions(-fext-numeric-literals) #fix for gcc and qt5
 endif()
 
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_BINARY_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
-include_directories(
-    SYSTEM
-    ${OCC_INCLUDE_DIR}
-    ${EIGEN3_INCLUDE_DIR}
-)
-
 set(Path_LIBS
     Part
     area-native
@@ -117,6 +104,23 @@ SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 #endif(WIN32)
 
 add_library(Path SHARED ${Path_SRCS})
+
+target_include_directories(
+    Path
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+target_include_directories(
+    Path
+    SYSTEM
+    PUBLIC
+    ${OCC_INCLUDE_DIR}
+    ${EIGEN3_INCLUDE_DIR}
+)
 target_link_libraries(Path ${Path_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Path)
