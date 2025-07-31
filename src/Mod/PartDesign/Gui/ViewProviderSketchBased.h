@@ -23,7 +23,7 @@
 #ifndef VIEWPROVIDERSKETCHBASED_H_QKP3UG9A
 #define VIEWPROVIDERSKETCHBASED_H_QKP3UG9A
 
-#include "ViewProviderAddSub.h"
+#include "ViewProvider.h"
 
 namespace PartDesignGui {
 
@@ -41,7 +41,7 @@ public:
     ~ViewProviderSketchBased() override;
 
     /// grouping handling
-    std::vector<App::DocumentObject*> claimChildren()const override;
+    std::vector<App::DocumentObject*> claimChildren() const override;
 
     bool onDelete(const std::vector<std::string> &) override;
 
