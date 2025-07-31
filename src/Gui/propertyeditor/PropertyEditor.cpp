@@ -36,6 +36,7 @@
 #include <App/Application.h>
 #include <App/AutoTransaction.h>
 #include <App/Document.h>
+#include <App/VarSet.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
 
@@ -714,6 +715,7 @@ enum MenuAction
     MA_RemoveProp,
     MA_RenameProp,
     MA_AddProp,
+    MA_MoveProp,
     MA_EditPropGroup,
     MA_Transient,
     MA_Output,
@@ -791,6 +793,19 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
     }
     if (canRemove) {
         menu.addAction(tr("Remove property"))->setData(QVariant(MA_RemoveProp));
+    }
+
+    // move property
+    bool canMove = !props.empty();
+    for (auto prop : props) {
+        App::VarSet* varSet = freecad_cast<App::VarSet*>(prop->getContainer());
+        if (varSet == nullptr) {
+            canMove = false;
+            break;
+        }
+    }
+    if (canMove) {
+        menu.addAction(tr("Move property"))->setData(QVariant(MA_MoveProp));
     }
 
     // add a separator between adding/removing properties and the rest
@@ -996,6 +1011,9 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
                 }
             }
             break;
+        }
+        case MA_MoveProp: {
+            FC_MSG("Move property");
         }
         default:
             break;
