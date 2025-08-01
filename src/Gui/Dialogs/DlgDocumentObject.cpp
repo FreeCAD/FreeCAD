@@ -126,129 +126,129 @@ DlgDocumentObject::~DlgDocumentObject()
     delete ui;
 }
 
-QList<App::SubObjectT> DlgDocumentObject::getLinksFromProperty(const App::PropertyLinkBase* prop)
-{
-    QList<App::SubObjectT> res;
-    if (!prop) {
-        return res;
-    }
+// QList<App::SubObjectT> DlgDocumentObject::getLinksFromProperty(const App::PropertyLinkBase* prop)
+// {
+//     QList<App::SubObjectT> res;
+//     if (!prop) {
+//         return res;
+//     }
 
-    std::vector<App::DocumentObject*> objs;
-    std::vector<std::string> subs;
-    prop->getLinks(objs, true, &subs, false);
-    if (subs.empty()) {
-        for (auto obj : objs) {
-            res.push_back(App::SubObjectT(obj, nullptr));
-        }
-    }
-    else if (objs.size() == 1) {
-        for (auto& sub : subs) {
-            res.push_back(App::SubObjectT(objs.front(), sub.c_str()));
-        }
-    }
-    else {
-        int i = 0;
-        for (auto obj : objs) {
-            res.push_back(App::SubObjectT(obj, subs[i++].c_str()));
-        }
-    }
-    return res;
-}
+//     std::vector<App::DocumentObject*> objs;
+//     std::vector<std::string> subs;
+//     prop->getLinks(objs, true, &subs, false);
+//     if (subs.empty()) {
+//         for (auto obj : objs) {
+//             res.push_back(App::SubObjectT(obj, nullptr));
+//         }
+//     }
+//     else if (objs.size() == 1) {
+//         for (auto& sub : subs) {
+//             res.push_back(App::SubObjectT(objs.front(), sub.c_str()));
+//         }
+//     }
+//     else {
+//         int i = 0;
+//         for (auto obj : objs) {
+//             res.push_back(App::SubObjectT(obj, subs[i++].c_str()));
+//         }
+//     }
+//     return res;
+// }
 
-QString
-DlgDocumentObject::formatObject(App::Document* ownerDoc, App::DocumentObject* obj, const char* sub)
-{
-    if (!obj || !obj->isAttachedToDocument()) {
-        return QLatin1String("?");
-    }
+// QString
+// DlgDocumentObject::formatObject(App::Document* ownerDoc, App::DocumentObject* obj, const char* sub)
+// {
+//     if (!obj || !obj->isAttachedToDocument()) {
+//         return QLatin1String("?");
+//     }
 
-    const char* objName = obj->getNameInDocument();
-    std::string _objName;
-    if (ownerDoc && ownerDoc != obj->getDocument()) {
-        _objName = obj->getFullName();
-        objName = _objName.c_str();
-    }
+//     const char* objName = obj->getNameInDocument();
+//     std::string _objName;
+//     if (ownerDoc && ownerDoc != obj->getDocument()) {
+//         _objName = obj->getFullName();
+//         objName = _objName.c_str();
+//     }
 
-    if (!sub || !sub[0]) {
-        if (obj->Label.getStrValue() == obj->getNameInDocument()) {
-            return QLatin1String(objName);
-        }
-        return QStringLiteral("%1 (%2)").arg(QString::fromUtf8(obj->Label.getValue()),
-                                                  QLatin1String(objName));
-    }
+//     if (!sub || !sub[0]) {
+//         if (obj->Label.getStrValue() == obj->getNameInDocument()) {
+//             return QLatin1String(objName);
+//         }
+//         return QStringLiteral("%1 (%2)").arg(QString::fromUtf8(obj->Label.getValue()),
+//                                                   QLatin1String(objName));
+//     }
 
-    auto sobj = obj->getSubObject(sub);
-    if (!sobj || sobj->Label.getStrValue() == sobj->getNameInDocument()) {
-        return QStringLiteral("%1.%2").arg(QLatin1String(objName), QString::fromUtf8(sub));
-    }
+//     auto sobj = obj->getSubObject(sub);
+//     if (!sobj || sobj->Label.getStrValue() == sobj->getNameInDocument()) {
+//         return QStringLiteral("%1.%2").arg(QLatin1String(objName), QString::fromUtf8(sub));
+//     }
 
-    return QStringLiteral("%1 (%2.%3)")
-        .arg(QString::fromUtf8(sobj->Label.getValue()),
-             QLatin1String(objName),
-             QString::fromUtf8(sub));
-}
+//     return QStringLiteral("%1 (%2.%3)")
+//         .arg(QString::fromUtf8(sobj->Label.getValue()),
+//              QLatin1String(objName),
+//              QString::fromUtf8(sub));
+// }
 
-static inline bool isLinkSub(const QList<App::SubObjectT>& links)
-{
-    for (const auto& link : links) {
-        if (&link == &links.front()) {
-            continue;
-        }
-        if (link.getDocumentName() != links.front().getDocumentName()
-            || link.getObjectName() != links.front().getObjectName()) {
-            return false;
-        }
-    }
-    return true;
-}
+// static inline bool isLinkSub(const QList<App::SubObjectT>& links)
+// {
+//     for (const auto& link : links) {
+//         if (&link == &links.front()) {
+//             continue;
+//         }
+//         if (link.getDocumentName() != links.front().getDocumentName()
+//             || link.getObjectName() != links.front().getObjectName()) {
+//             return false;
+//         }
+//     }
+//     return true;
+// }
 
-QString DlgDocumentObject::formatLinks(App::Document* ownerDoc, QList<App::SubObjectT> links)
-{
-    if (!ownerDoc || links.empty()) {
-        return {};
-    }
+// QString DlgDocumentObject::formatLinks(App::Document* ownerDoc, QList<App::SubObjectT> links)
+// {
+//     if (!ownerDoc || links.empty()) {
+//         return {};
+//     }
 
-    auto obj = links.front().getObject();
-    if (!obj) {
-        return QLatin1String("?");
-    }
+//     auto obj = links.front().getObject();
+//     if (!obj) {
+//         return QLatin1String("?");
+//     }
 
-    if (links.size() == 1 && links.front().getSubName().empty()) {
-        return formatObject(ownerDoc, links.front());
-    }
+//     if (links.size() == 1 && links.front().getSubName().empty()) {
+//         return formatObject(ownerDoc, links.front());
+//     }
 
-    QStringList list;
-    if (isLinkSub(links)) {
-        int i = 0;
-        for (auto& link : links) {
-            list << QString::fromUtf8(link.getSubName().c_str());
-            if (++i >= 3) {
-                break;
-            }
-        }
-        return QStringLiteral("%1 [%2%3]")
-            .arg(formatObject(ownerDoc, obj, nullptr),
-                 list.join(QLatin1String(", ")),
-                 QLatin1String(links.size() > 3 ? " ..." : ""));
-    }
+//     QStringList list;
+//     if (isLinkSub(links)) {
+//         int i = 0;
+//         for (auto& link : links) {
+//             list << QString::fromUtf8(link.getSubName().c_str());
+//             if (++i >= 3) {
+//                 break;
+//             }
+//         }
+//         return QStringLiteral("%1 [%2%3]")
+//             .arg(formatObject(ownerDoc, obj, nullptr),
+//                  list.join(QLatin1String(", ")),
+//                  QLatin1String(links.size() > 3 ? " ..." : ""));
+//     }
 
-    int i = 0;
-    for (auto& link : links) {
-        list << formatObject(ownerDoc, link);
-        if (++i >= 3) {
-            break;
-        }
-    }
-    return QStringLiteral("[%1%2]").arg(list.join(QLatin1String(", ")),
-                                             QLatin1String(links.size() > 3 ? " ..." : ""));
-}
+//     int i = 0;
+//     for (auto& link : links) {
+//         list << formatObject(ownerDoc, link);
+//         if (++i >= 3) {
+//             break;
+//         }
+//     }
+//     return QStringLiteral("[%1%2]").arg(list.join(QLatin1String(", ")),
+//                                              QLatin1String(links.size() > 3 ? " ..." : ""));
+// }
 
 const int ObjectNameRole = Qt::UserRole;
 const int DocNameRole = Qt::UserRole + 1;
 const int TypeNameRole = Qt::UserRole + 2;
 const int ProxyTypeRole = Qt::UserRole + 3;
 
-void DlgDocumentObject::init(const App::DocumentObject* owner, bool filterOwner)
+void DlgDocumentObject::init(const App::DocumentObject* owner, bool filterOwner, bool filterTypeOwner, bool expandTypeOwner)
 {
     ui->treeWidget->blockSignals(true);
     ui->treeWidget->clear();
@@ -272,7 +272,6 @@ void DlgDocumentObject::init(const App::DocumentObject* owner, bool filterOwner)
     if (!owner || !owner->isAttachedToDocument()) {
         return;
     }
-    filterOwner = false;
     this->filterOwner = filterOwner;
 
     ui->searchBox->setDocumentObject(owner);
@@ -343,10 +342,6 @@ void DlgDocumentObject::init(const App::DocumentObject* owner, bool filterOwner)
         ui->treeWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     }
 
-    std::set<App::Document*> expandDocs;
-
-    //expandDocs.insert(owner->getDocument());
-
     // if (oldLinks.empty()) {
     //     expandDocs.insert(owner->getDocument());
     // }
@@ -358,6 +353,22 @@ void DlgDocumentObject::init(const App::DocumentObject* owner, bool filterOwner)
     //         }
     //     }
     // }
+
+    std::set<App::Document*> expandDocs;
+
+    if (expandTypeOwner) {
+        Base::Type objType = owner->getTypeId();
+        for (auto& doc : docs) {
+            for (auto& obj : doc->getObjects()) {
+                if (obj->getTypeId() == objType) {
+                    expandDocs.insert(doc);
+                }
+            }
+        }
+    }
+    else {
+        expandDocs.insert(owner->getDocument());
+    }
 
     QPixmap docIcon(Gui::BitmapFactory().pixmap("Document"));
     for (auto d : docs) {
@@ -374,7 +385,7 @@ void DlgDocumentObject::init(const App::DocumentObject* owner, bool filterOwner)
         docItems[d] = item;
     }
 
-    if (filterOwner) {
+    if (filterTypeOwner) {
         Base::Type objType = owner->getTypeId();
 
         if (!objType.isBad()) {
@@ -386,7 +397,6 @@ void DlgDocumentObject::init(const App::DocumentObject* owner, bool filterOwner)
             ui->checkObjectType->setChecked(true);
         }
     }
-
 
 
     // if (tryFilter) {

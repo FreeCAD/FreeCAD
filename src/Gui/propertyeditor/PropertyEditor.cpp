@@ -37,7 +37,7 @@
 #include <App/Application.h>
 #include <App/AutoTransaction.h>
 #include <App/Document.h>
-#include <App/VarSet.h>
+#include <App/Property.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
 
@@ -709,6 +709,53 @@ void PropertyEditor::renameProperty(const App::Property& prop)
     }
 }
 
+static bool refactorPossible(const App::SubObjectT& subObj, const App::Property* prop)
+{
+    App::DocumentObject* obj = subObj.getSubObject();
+    if (obj == nullptr) {
+        return false;
+    }
+    if (obj->getPropertyByName(prop->getName())) {
+        FC_ERR(obj->getFullName() << " already has property " << prop->getName());
+        return false;
+    }
+    return true;
+}
+
+static void addProperty(QList<App::SubObjectT>& objs, App::Property* oldProp)
+{
+    for (auto& subObj : objs) {
+        App::DocumentObject* obj = subObj.getSubObject();
+        App::Property* newProp = obj->addDynamicProperty(oldProp->getTypeId().getName(),
+                                                         oldProp->getName(),
+                                                         oldProp->getGroup(),
+                                                         oldProp->getDocumentation(),
+                                                         oldProp->getType(),
+                                                         oldProp->isReadOnly(),
+                                                         oldProp->testStatus(App::Property::Hidden));
+        newProp->Paste(*oldProp);
+    }
+}
+
+static void moveProperties(std::unordered_set<App::Property*>& props,
+                           QList<App::SubObjectT>& subObjects)
+{
+    for (auto& prop : props) {
+        if (std::ranges::any_of(subObjects, [&prop](const App::SubObjectT& subObj) {
+            return !refactorPossible(subObj, prop); })) {
+            return;
+        }
+    }
+
+    App::AutoTransaction committer(props.size() == 1 ? "Move property" : "Move properties");
+
+    for (auto& prop : props) {
+        addProperty(subObjects, prop);
+        App::PropertyContainer* container = prop->getContainer();
+        container->removeDynamicProperty(prop->getName());
+    }
+}
+
 enum MenuAction
 {
     MA_AutoExpand,
@@ -1014,7 +1061,11 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             App::Property* prop = *props.begin();
             auto* obj = freecad_cast<App::DocumentObject*>(prop->getContainer());
             dlg.init(obj);
-            dlg.exec();
+            if (dlg.exec() == QDialog::Rejected) {
+                break;
+            }
+            QList<App::SubObjectT> subObjects = dlg.currentSubObjects();
+            moveProperties(props, subObjects);
         }
         default:
             break;

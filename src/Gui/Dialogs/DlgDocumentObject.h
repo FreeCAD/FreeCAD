@@ -48,17 +48,20 @@ public:
 
     QList<App::SubObjectT> currentSubObjects() const;
 
-    void init(const App::DocumentObject* owner, bool filterOwner=true);
+    void init(const App::DocumentObject* owner,
+              bool filterOwner=true,
+              bool filterTypeOwner=true,
+              bool expandTypeOwner=true);
 
-    static QList<App::SubObjectT> getLinksFromProperty(const App::PropertyLinkBase *prop);
+    // static QList<App::SubObjectT> getLinksFromProperty(const App::PropertyLinkBase *prop);
 
-    static QString formatObject(App::Document *ownerDoc, App::DocumentObject *obj, const char *sub);
+    // static QString formatObject(App::Document *ownerDoc, App::DocumentObject *obj, const char *sub);
 
-    static inline QString formatObject(App::Document *ownerDoc, const App::SubObjectT &sobj) {
-        return formatObject(ownerDoc, sobj.getObject(), sobj.getSubName().c_str());
-    }
+    // static inline QString formatObject(App::Document *ownerDoc, const App::SubObjectT &sobj) {
+    //     return formatObject(ownerDoc, sobj.getObject(), sobj.getSubName().c_str());
+    // }
 
-    static QString formatLinks(App::Document *ownerDoc, QList<App::SubObjectT> links);
+    // static QString formatLinks(App::Document *ownerDoc, QList<App::SubObjectT> links);
 
 protected:
     void showEvent(QShowEvent *) override;
