@@ -360,7 +360,6 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
         if (preselectcross == 0) {
             editModeScenegraphNodes.OriginPointMaterial->diffuseColor =
                 drawingParameters.PreselectColor;
-
         }
         else if (preselectpoint != -1) {
             preselectpointmfid = coinMapping.getIndexLayer(preselectpoint);
