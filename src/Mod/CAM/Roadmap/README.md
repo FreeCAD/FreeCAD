@@ -33,27 +33,23 @@ Any CAM application meeting the needs above must provide functionality in these 
 
 *(ADRs - Architecture Decision Report)*
 
-
-*(NOTE: THESE ARE ALL **EXAMPLES**.  NOT ACTUAL/AGREED ADRS.)*
-
-| ADR                           | Description                                                                                                |
-| ----------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| [ADR-001](<./ADR/ADR-001.md>) | Use Dressups to modify base operations                                                                     |
-| [ADR-002](<./ADR/ADR-002.md>) | Internal representation of tool path                                                                       |
-| [ADR-003](<./ADR/ADR-003.md>) | Height planes to safely move tools within and between operations                                           |
-| [ADR-004](<./ADR/ADR-004.md>) | Standardized vocabulary around rotation of cutter, direction of cut, and conventional vs. climb operations |
-| [ADR-005](<./ADR/ADR-005.md>) | Triggering Tool Path Recompute in Task Panels                                                              |
-| [ADR-006](<./ADR/ADR-006.md>) | Handling of user selected geometry in operations<br>                                                       |
+| ADR                           | Description                                                                                                | Status |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------- | ------ |
+| [ADR-002](<./ADR/ADR-002.md>) | Internal representation of tool path                                                                       | Legacy |
+| [ADR-003](<./ADR/ADR-003.md>) | Height planes to safely move tools within and between operations                                           | Draft  |
+| [ADR-004](<./ADR/ADR-004.md>) | Standardized vocabulary around rotation of cutter, direction of cut, and conventional vs. climb operations | Draft  |
+| [ADR-005](<./ADR/ADR-005.md>) | Triggering Tool Path Recompute in Task Panels                                                              | Draft  |
+| [ADR-006](<./ADR/ADR-006.md>) | Handling of user selected geometry in operations<br>                                                       | Draft  |
 
 # ⚠️ Pain Points
 *(this section functions like an FAQ.  It helps keep users from creating duplicate issues.  It gives new developers a first place to connect)*
 
 Perennial complaints from users:
 
-- Visualization of first rapid move in operation makes it appear as though tool
-  returns to origin between ops (It doesn't)
 - Climb vs Conventional terminology not consistently used
 - Safe Height vs Clearance Height confusing
+- Visualization of first rapid move in operation makes it appear as though tool
+  returns to origin between ops (It doesn't)
 - Arrays of similar gcode
 - Lack of F & S calculation
 
@@ -64,95 +60,20 @@ We agree these things should get collective attention because they are larger th
 
 *(If you have an idea for a project, create a pull request adding it to this section. Changes will be discussed in the PR and at periodic meetups)*
 
-*(To keep focused and moving forward, we should voluntarily limit this list to ~8-10 items)*
+*(To keep focused and moving forward, we should voluntarily limit this list to ~8-10 active items)*
 
 *(Each project will have a corresponding github project to connect related issues and pull requests)*
 
 *(You may, of course, work on anything that you like and submit pull requests. However, be warned that pull requests will be judged on the priorities noted below and new features that are outside of the discussed projects will receive additional scrutiny)*
 
-
-## Implement the 'Better Tool Library' approach to tool management
-
-## Circular Hole Improvement
-
-### Why is it a priority
-- Moving between circular hole targets has complexity not present in other operations.  Addressing the shortcomings of linking moves for circular hole operations will allow this logic to be reused in other operations.
-- Handling of target selection get be generalized to other operations and has overlapping functionality with Sanity
-- Circular holes generates more complex path commands that need special handling in the simulator
-- There are numerous other circular hole operation strategies we would like to implement.
-- Refactoring Post-processor logic should consider centralizing the handling and decomposition of circular hole commands
-- There is overlap with the Helix work initiative
-### Deliverables & Discussions
-   - linking generator
-   - Improved UI for circular hole targets
-	   - strategy selector
-	   - Sortable targets
-	   - filterable targets
-	   - Correct handling of preselected geometry
-   - base class logic for decomposing drill commands
-   - framework for tool/op validation and squawks.
-### Related Epics
-- Helix Work
-
-| EPIC                                  | Why it should be a priority                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Goals                                                                                                                                                                                                        |                         | Issue(s)                                         |
-| ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------- | ------------------------------------------------ |
-| stabilize the BTL tool implementation | Incorporating the BTL approach to tools has caused some regressions.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |                                                                                                                                                                                                              |                         | #21430 #21855 #18598 #9466 #22228                |
-| Overhaul the Entry dressup(s)         | We currently hav both ramp and leadin/out dressup.  These could be consolidated into a single dressup with multiple strategies possible. Ramp lacks a UI task panel. Ramp also has a helical entry strategy that duplicates code from helix and from adaptive operation.  Adaptive operation has its own helix entry method.  The result is a confusing jumble of functionality and code that is hard to work on                                                                                                                                                                                                                                                                                                                    |                                                                                                                                                                                                              |                         | #16897 #10621 #22137 #8150 #14380 #16144         |
-| Helix work                            | Helices are used in at least three different places; Helix Op, Ramp entry, and Adaptive clearing.  This is a lot of duplicated code with inconsistent features. Centralizing the logic to a helix generator would allow us to first put it under unit tests and then incrmentally replace the duplicated logic in each place where it is used. This will provice a more robust solution that is easier to extend and maintain and also give the users a consistent set of features related to helices everywhere                                                                                                                                                                                                                    |                                                                                                                                                                                                              | Circular Holes<br>Entry | #22469, #13455, #22357, #8149, #17737, PR #21971 |
-| Climb / Conventional                  | Overhal all operations to use Climb / Conventional vs CW / CCW where it makes sense. (Laser, Drag Knife, Plasma doesn't care)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |                                                                                                                                                                                                              |                         | #14314                                           |
-| Feeds / Speed Warnings                | Improve / fix regression on warning user if a Tool Controller doesn't have feeds & speed applied to it                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                              |                         |                                                  |
-| Circular Hole Improvements            | - Moving between circular hole targets has complexity not present in other operations.  Addressing the shortcomings of linking moves for circular hole operations will allow this logic to be reused in other operations.<br>- Handling of target selection get be generalized to other operations and has overlapping functionality with Sanity<br>- Circular holes generates more complex path commands that need special handling in the simulator<br>- There are numerous other circular hole operation strategies we would like to implement.<br>- Refactoring Post-processor logic should consider centralizing the handling and decomposition of circular hole commands<br>- There is overlap with the Helix work initiative | - linking generator<br>- Improved UI for circular hole targets<br>- Improved UI for 'strategies'<br>- base class logic for decomposing drill commands<br>- framework for tool/op validation and squawks.<br> | Helix<br>Entry <br>     | #22599, #9405 #16205                             |
-| Pocket Improvements                   | - Pocketing is a fundamental CAM operation<br>- Handling of intermediate geometry is inconsistent and buggy (extensions)<br>- Proper refactoring allows for deprecating adaptive and strategy switching<br>- Proper handling of intermediate geometry allow for an massively improved facing operation                                                                                                                                                                                                                                                                                                                                                                                                                              | - consolidate and refactor extension logic<br>- Adaptive generator<br>- Improved facemill (millface) operation                                                                                               | Entry                   | #15994, #16221, #16215, #8272, #15992            |
-|                                       |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |                                                                                                                                                                                                              |                         |                                                  |
-
-
-Temporarily including this list to make review easier
-
-| ID     | Title                                                                                                                               | Author           | Priority |
-| ------ | ----------------------------------------------------------------------------------------------------------------------------------- | ---------------- | -------- |
-| #22728 | CAM: Fix seach tool controller in Operations group                                                                                  | tarman3          |          |
-| #22669 | [CAM] LeadInOut new features                                                                                                        | davidgilkaufman  | P2       |
-| #22602 | CAM: fix G0 regression in drilling                                                                                                  | J-Dunn           | P1       |
-| #22598 | Fix path dressup array test case                                                                                                    | emmanuel-ferdman |          |
-| #22578 | Core: Generation of python bindings for CAM                                                                                         | z0r0             |          |
-| #22569 | CAM: revert grbl_post regression                                                                                                    | J-Dunn           | P1       |
-| #22500 | CAM: select rows instead of cells in drilling panel                                                                                 | jffmichi         |          |
-| #22484 | CAM: RampEntry Dressup - Remove X0Y0 from beginning                                                                                 | tarman3          | P2       |
-| #22468 | CAM: Dressup Tag - Automatic for multiprofile                                                                                       | tarman3          |          |
-| #22405 | CAM: Path.Base.Language - isStraight() and isArc()                                                                                  | tarman3          |          |
-| #22392 | CAM: fix: CAM tests use files from user asset dir                                                                                   | knipknap         |          |
-| #22357 | CAM: Adaptive - Helix generator                                                                                                     | tarman3          | P2       |
-| #22350 | CAM: Update UI strings for consistency                                                                                              | ryankembrey      |          |
-| #22336 | [CAM] Correctly process Adaptive extensions                                                                                         | dbtayl           |          |
-| #22335 | CAM: Add Turning Tools                                                                                                              | dubstar-04       | P4       |
-| #22304 | CAM: Task panel - Select shapes from several objects                                                                                | tarman3          |          |
-| #22250 | CAM: Dogbone - fix for Pocket                                                                                                       | tarman3          |          |
-| #22228 | CAM: Various bugfixes for CAM tool management                                                                                       | knipknap         | P2       |
-| #22226 | CAM: Engrave dual direction                                                                                                         | tarman3          | P4       |
-| #22204 | CAM: integrate new simulator as MDI widget into main window                                                                         | jffmichi         | P4       |
-| #22153 | CAM: cleanup: add test for DetachedDocumentObject and deduplicate code                                                              | knipknap         |          |
-| #22151 | CAM: Add a machine editor for mills, lathes and their spindles                                                                      | knipknap         |          |
-| #22080 | CAM: Fix Path.Geom.cmdsForEdge for BSplineCurve                                                                                     | tarman3          |          |
-| #21971 | CAM: Helix improve behavior                                                                                                         | tarman3          | P2       |
-| #21944 | [CAM] Fix ramp dressup performance                                                                                                  | davidgilkaufman  |          |
-| #21940 | [CAM] Add Turning Operations                                                                                                        | dubstar-04       |          |
-| #21923 | CAM: LinuxCNC post - Start coolant only after the tool back to the workpiece                                                        | tarman3          |          |
-| #21820 | CAM: Mirror Dressup                                                                                                                 | tarman3          |          |
-| #21769 | CAM: Replace the main library editor dialog and add copy & paste & drag & drop support                                              | knipknap         |          |
-| #21756 | CAM: Update PathUtils.py                                                                                                            | papaathome       |          |
-| #21738 | CAM: RetractThreshold                                                                                                               | tarman3          |          |
-| #21700 | CAM: Waterline - Grid Dropcutter                                                                                                    | tarman3          | P4       |
-| #21605 | CAM: ZigZagOffset - extra offset for ZigZag before Offset                                                                           | tarman3          |          |
-| #21578 | CAM: Dragknife dressup adds unnecessary maneuvers                                                                                   | lagnat           | P3       |
-| #21508 | CAM: PathShapeTC with class ObjectPathShape                                                                                         | tarman3          |          |
-| #21507 | CAM: Path Compound with Tool Controller                                                                                             | tarman3          | P4       |
-| #21220 | CAM: Adaptive: Fix bspline processing                                                                                               | dbtayl           | P3       |
-| #20981 | CAM: adds optional arc move G2/G3 translation to G1 linear moves, to support CNC machines which do not support G2/G3 moves directly | jalapenopuzzle   |          |
-| #16990 | Rename Label2 to Description                                                                                                        | matt-taylor-git  | P3       |
-| #14960 | [CAM] User friendly error messages                                                                                                  | phaseloop        |          |
-| #6680  | [Path] Kerf widening for profiles                                                                                                   | sliptonic        |          |
-| #6677  | Path: Add a new waterline algorithm named Grid Dropcutter                                                                           | belov-oleg       |          |
-
+| Epic                                                                            | Description                                                         | Status   |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------- | -------- |
+| [Better Tool Library](Epics/Better%20Tool%20Library.md)                         | Implement the 'Better Tool Library' approach to tool management     | Active   |
+| [Circular Holes Improvement](Epics/Circular%20Holes%20Improvement.md)           | Improve handling of circular features                               | Proposed |
+| [Entry Dressup Improvements](Epics/Entry%20Dressup%20Improvements.md)           | Evaluate and improve the strategies for entry moves to an operation | Proposed |
+| [Helix Improvements](Epics/Helix.md)                                            | Improve helix path calculation. Reduce duplicated logic             | Proposed |
+| [Climb Conventional nomenclature](Epics/Climb%20Conventional%20nomenclature.md) | Standardize terminology for tool engagment across all operations    | Proposed |
+| [Pocket Improvements](Epics/Pocket%20Improvements.md)                           | Make pocketing more intuitive and robust                            | Proposed |
 # Priorities
 *(When evaluating Pull Requests, the following priorities will be considered)*
 
