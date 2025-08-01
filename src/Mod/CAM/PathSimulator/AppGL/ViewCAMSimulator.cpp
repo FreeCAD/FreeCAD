@@ -15,6 +15,8 @@
 #include <QStackedLayout>
 #include <QPointer>
 
+#include <Inventor/nodes/SoCamera.h>
+
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -22,12 +24,11 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/SoFCDB.h>
-#include <Inventor/nodes/SoCamera.h>
-
-#include "DlgCAMSimulator.h"
 #include "GuiDisplay.h"
+#include "DlgCAMSimulator.h"
 #include "Dummy3DViewer.h"
-#include "CAMSimulatorSettings.h"
+#include "View3DSettings.h"
+#include "CAMSettings.h"
 
 using namespace std::literals;
 using namespace Gui;
@@ -153,11 +154,17 @@ void ViewCAMSimulator::applySettings()
 {
     assert(mDummyViewer && mDlg);
 
-    const ParameterGrp::handle hGrp =
+    const ParameterGrp::handle hGrpView =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
 
-    mViewSettings = std::make_unique<CAMSimulatorSettings>(hGrp, *mDummyViewer, *mDlg);
+    const ParameterGrp::handle hGrpCAM =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/CAM");
+
+    mViewSettings = std::make_unique<CAMSimulator::View3DSettings>(hGrpView, *mDummyViewer, *mDlg);
+    mCAMSettings = std::make_unique<CAMSettings>(hGrpCAM, *mDlg);
+
     mViewSettings->applySettings();
+    mCAMSettings->applySettings();
 }
 
 ViewCAMSimulator* ViewCAMSimulator::clone()

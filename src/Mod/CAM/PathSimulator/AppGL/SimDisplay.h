@@ -68,6 +68,8 @@ public:
     void UpdateWindowScale(int width, int height);
     void UpdateCamera(const SoCamera& camera);
 
+    void SetPathColor(const vec3& normal, const vec3& rapid);
+
 public:
     bool updateDisplay = false;
     bool displayInitiated = false;
