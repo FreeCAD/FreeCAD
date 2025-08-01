@@ -83,7 +83,7 @@ MillPathSegment::MillPathSegment(const EndMill& _endmill,
         }
         else {
             mStepAngRad = asinf(mResolution / mRadius);
-            if (mStepAngRad > MAX_SEG_DEG) {
+            if (std::isnan(mStepAngRad) || mStepAngRad > MAX_SEG_DEG) {
                 mStepAngRad = MAX_SEG_DEG;
             }
             else if (mStepAngRad < NIN_SEG_DEG) {

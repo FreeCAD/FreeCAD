@@ -5,8 +5,8 @@
  *      Author: jffmichi
  */
 
-#ifndef PATHSIMULATOR_CAMSIMULATORSETTINGS_H_
-#define PATHSIMULATOR_CAMSIMULATORSETTINGS_H_
+#ifndef PATHSIMULATOR_VIEW3DSETTINGS_H_
+#define PATHSIMULATOR_VIEW3DSETTINGS_H_
 
 #include <Gui/View3DSettings.h>
 
@@ -16,12 +16,10 @@ namespace CAMSimulator
 class Dummy3DViewer;
 class DlgCAMSimulator;
 
-class CAMSimulatorSettings: public Gui::View3DSettings
+class View3DSettings: public Gui::View3DSettings
 {
 public:
-    explicit CAMSimulatorSettings(ParameterGrp::handle hGrp,
-                                  Dummy3DViewer& view,
-                                  DlgCAMSimulator& dlg);
+    explicit View3DSettings(ParameterGrp::handle hGrp, Dummy3DViewer& view, DlgCAMSimulator& dlg);
 
     void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason) override;
 
