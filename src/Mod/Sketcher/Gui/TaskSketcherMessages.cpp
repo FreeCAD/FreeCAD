@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 #include <QAction>
 #include <QMenu>
+#include <QCheckBox>
 #endif
 
 #include <Gui/Application.h>
@@ -128,24 +129,24 @@ void TaskSketcherMessages::createSettingsButtonActions()
         sketchView->getSketchObject()->noRecomputes = !checked;
     });
 
-    auto* gsa = new GridSpaceAction(this);
-    auto* ssa = new SnapSpaceAction(this);
-    auto* roa = new RenderingOrderAction(this);
+    auto* gridAction = new GridSpaceAction(this);
+    auto* snapAction = new SnapSpaceAction(this);
+    auto* renderingAction = new RenderingOrderAction(this);
 
     QMenu* myMenu = new QMenu(this);
     myMenu->addAction(autoUpdateAction);
     myMenu->addSeparator();
-    myMenu->addAction(gsa);
+    myMenu->addAction(gridAction);
     myMenu->addSeparator();
-    myMenu->addAction(ssa);
+    myMenu->addAction(snapAction);
     myMenu->addSeparator();
-    myMenu->addAction(roa);
+    myMenu->addAction(renderingAction);
     btn->setMenu(myMenu);
 
-    QObject::connect(myMenu, &QMenu::aboutToShow, [gsa, ssa, roa]() {
-        gsa->updateWidget();
-        ssa->updateWidget(true);
-        roa->updateWidget();
+    QObject::connect(myMenu, &QMenu::aboutToShow, [gridAction, snapAction, renderingAction]() {
+        gridAction->updateWidget();
+        snapAction->updateWidget(true);
+        renderingAction->updateWidget();
     });
 
     QObject::connect(btn, &QToolButton::clicked, btn, &QToolButton::showMenu);
