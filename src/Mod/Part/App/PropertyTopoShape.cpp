@@ -67,7 +67,6 @@ void PropertyPartShape::setValue(const TopoShape& sh)
 {
     aboutToSetValue();
     _Shape = sh;
-
     auto obj = freecad_cast<App::DocumentObject*>(getContainer());
     if(obj) {
         if(_Shape.getElementMap().size() != sh.getElementMap().size()) {
@@ -78,10 +77,10 @@ void PropertyPartShape::setValue(const TopoShape& sh)
 
         auto tag = obj->getID();
         if(_Shape.Tag && tag!=_Shape.Tag) {
-            auto hasher = _Shape.Hasher ? _Shape.Hasher : obj->getDocument()->getStringHasher();
+            auto hasher = _Shape.Hasher?_Shape.Hasher:obj->getDocument()->getStringHasher();
 
             _Shape.reTagElementMap(tag,hasher);
-        } else 
+        } else
             _Shape.Tag = obj->getID();
         if (!_Shape.Hasher && _Shape.hasChildElementMap()) {
             _Shape.Hasher = obj->getDocument()->getStringHasher();
@@ -96,11 +95,9 @@ void PropertyPartShape::setValue(const TopoDS_Shape& sh, bool resetElementMap)
 {
     aboutToSetValue();
     auto obj = dynamic_cast<App::DocumentObject*>(getContainer());
-    if(obj) {
+    if(obj)
         _Shape.Tag = obj->getID();
-    }
     _Shape.setShape(sh,resetElementMap);
-    
     hasSetValue();
     _Ver.clear();
 }
