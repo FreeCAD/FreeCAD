@@ -702,4 +702,17 @@ const MillSimulationState& MillSimulation::GetState() const
     return *this;
 }
 
+void MillSimulation::SetBackgroundColor(const vec3& c)
+{
+    bgndColor[0] = c[0];
+    bgndColor[1] = c[1];
+    bgndColor[2] = c[2];
+}
+
+void MillSimulation::SetPathColor(const vec3& normal, const vec3& rapid)
+{
+    simDisplay.SetPathColor(normal, rapid);
+}
+
+
 }  // namespace CAMSimulator

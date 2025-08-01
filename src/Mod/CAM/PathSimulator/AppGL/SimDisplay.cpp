@@ -454,6 +454,17 @@ void SimDisplay::RenderResultSSAO(bool recalculate)
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
+void SimDisplay::SetPathColor(const vec3& normal, const vec3& rapid)
+{
+    pathLineColor[0] = normal[0];
+    pathLineColor[1] = normal[1];
+    pathLineColor[2] = normal[2];
+
+    // TODO: Different color for rapid moves is not supported for now.
+
+    (void)rapid;
+}
+
 void SimDisplay::SetupLinePathPass(int curSegment, bool isHidden)
 {
     glEnable(GL_DEPTH_TEST);
@@ -465,6 +476,7 @@ void SimDisplay::SetupLinePathPass(int curSegment, bool isHidden)
     shaderLinePath.Activate();
     pathLineColor[3] = isHidden ? 0.1f : 1.0f;
     shaderLinePath.UpdateObjColorAlpha(pathLineColor);
+    shaderLinePath.UpdateObjColor(pathLineColorPassed);
     shaderLinePath.UpdateCurSegment(curSegment);
     shaderLinePath.UpdateViewMat(mMatLookAt);
 }
@@ -585,7 +597,6 @@ void SimDisplay::UpdateProjectionMatrix()
     shaderSSAO.UpdateProjectionMat(projmat);
     shaderLinePath.Activate();
     shaderLinePath.UpdateProjectionMat(projmat);
-    shaderLinePath.UpdateObjColor(pathLineColorPassed);
 
     projmat[2][2] *= 0.99999F;
     shaderGeomCloser.Activate();

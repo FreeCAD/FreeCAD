@@ -310,6 +310,8 @@ void DlgCAMSimulator::setStockShape(const Part::TopoShape& shape, float resoluti
     if (mDummyViewer) {
         mDummyViewer->setStockShape(shape);
     }
+
+    update();
 }
 
 void DlgCAMSimulator::setStockVisible(bool b)
@@ -323,6 +325,8 @@ void DlgCAMSimulator::setStockVisible(bool b)
     if (mDummyViewer) {
         mDummyViewer->setStockVisible(b);
     }
+
+    update();
 }
 
 void DlgCAMSimulator::setBaseShape(const Part::TopoShape& shape, float resolution)
@@ -332,6 +336,8 @@ void DlgCAMSimulator::setBaseShape(const Part::TopoShape& shape, float resolutio
     if (mDummyViewer) {
         mDummyViewer->setBaseShape(shape);
     }
+
+    update();
 }
 
 void DlgCAMSimulator::setBaseVisible(bool b)
@@ -345,6 +351,21 @@ void DlgCAMSimulator::setBaseVisible(bool b)
     if (mDummyViewer) {
         mDummyViewer->setBaseVisible(b);
     }
+
+    update();
+}
+
+void DlgCAMSimulator::setBackgroundColor(const QColor& c)
+{
+    mMillSimulator->SetBackgroundColor({c.redF(), c.greenF(), c.blueF()});
+    update();
+}
+
+void DlgCAMSimulator::setPathColor(const QColor& normal, const QColor& rapid)
+{
+    const vec3 vnormal = {normal.redF(), normal.greenF(), normal.blueF()};
+    const vec3 vrapid = {rapid.redF(), rapid.greenF(), rapid.blueF()};
+    mMillSimulator->SetPathColor(vnormal, vrapid);
 }
 
 void DlgCAMSimulator::timerEvent(QTimerEvent* event)
