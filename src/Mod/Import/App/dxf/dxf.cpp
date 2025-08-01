@@ -2659,7 +2659,7 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */)
                 continue;
             }
             if (!ReadSection()) {
-                throw Base::Exception("Failed to read DXF section (returned false).");
+                throw Base::RuntimeError("Failed to read DXF section (returned false).");
             }
         }
         FinishImport();
@@ -2682,18 +2682,19 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */)
     catch (const std::exception& e) {
         // This catches all standard C++ exceptions and converts them
         // to a FreeCAD exception, which the binding layer can handle.
-        throw Base::Exception(e.what());
+        throw Base::RuntimeError(e.what());
     }
     catch (...) {
         // This is a catch-all for any other non-standard C++ exceptions.
-        throw Base::Exception("An unknown, non-standard C++ exception occurred during DXF import.");
+        throw Base::RuntimeError(
+            "An unknown, non-standard C++ exception occurred during DXF import.");
     }
 }
 
 bool CDxfRead::ReadSection()
 {
     if (!get_next_record()) {
-        throw Base::Exception("Unexpected end of file after SECTION tag.");
+        throw Base::RuntimeError("Unexpected end of file after SECTION tag.");
     }
     if (m_record_type != eName) {
         ImportError("Ignored SECTION with no name record\n");
@@ -2702,31 +2703,31 @@ bool CDxfRead::ReadSection()
 
     if (IsObjectName("HEADER")) {
         if (!ReadHeaderSection()) {
-            throw Base::Exception("Failed while reading HEADER section.");
+            throw Base::RuntimeError("Failed while reading HEADER section.");
         }
         return true;
     }
     if (IsObjectName("TABLES")) {
         if (!ReadTablesSection()) {
-            throw Base::Exception("Failed while reading TABLES section.");
+            throw Base::RuntimeError("Failed while reading TABLES section.");
         }
         return true;
     }
     if (IsObjectName("BLOCKS")) {
         if (!ReadBlocksSection()) {
-            throw Base::Exception("Failed while reading BLOCKS section.");
+            throw Base::RuntimeError("Failed while reading BLOCKS section.");
         }
         return true;
     }
     if (IsObjectName("ENTITIES")) {
         if (!ReadEntitiesSection()) {
-            throw Base::Exception("Failed while reading ENTITIES section.");
+            throw Base::RuntimeError("Failed while reading ENTITIES section.");
         }
         return true;
     }
 
     if (!ReadIgnoredSection()) {
-        throw Base::Exception("Failed while reading an unknown/ignored section.");
+        throw Base::RuntimeError("Failed while reading an unknown/ignored section.");
     }
 
     return true;
@@ -2825,13 +2826,13 @@ bool CDxfRead::ReadHeaderSection()
         std::string currentVarName = m_record_data;
         if (!ReadVariable()) {
             // If ReadVariable returns false, throw an exception with the variable name.
-            throw Base::Exception("Failed while reading value for HEADER variable: "
-                                  + currentVarName);
+            throw Base::RuntimeError("Failed while reading value for HEADER variable: "
+                                     + currentVarName);
         }
     }
 
     // If the loop finishes without finding ENDSEC, it's an error.
-    throw Base::Exception("Unexpected end of file inside HEADER section.");
+    throw Base::RuntimeError("Unexpected end of file inside HEADER section.");
 }
 
 bool CDxfRead::ReadVariable()
