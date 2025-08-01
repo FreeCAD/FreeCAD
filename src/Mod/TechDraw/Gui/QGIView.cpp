@@ -36,6 +36,7 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
+#include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection/Selection.h>
@@ -166,8 +167,7 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
     //    Base::Console().message("QGIV::itemChange(%d)\n", change);
     if(change == ItemPositionChange && scene()) {
         QPointF newPos = value.toPointF();            //position within parent!
-
-        TechDraw::DrawView *viewObj = getViewObject();
+        TechDraw::DrawView* viewObj = getViewObject();
         auto* dpgi = dynamic_cast<TechDraw::DrawProjGroupItem*>(viewObj);
         if (dpgi && dpgi->getPGroup()) {
             // restrict movements of secondary views.
@@ -189,14 +189,6 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
             }
         }
 
-                // tell the feature that we have moved
-        Gui::ViewProvider *vp = getViewProvider(viewObj);
-        if (vp && !vp->isRestoring()) {
-            snapping = true; // avoid triggering updateView by the VP updateData
-            viewObj->setPosition(Rez::appX(newPos.x()), Rez::appX(-newPos.y()));
-            snapping = false;
-        }
-
         return newPos;
     }
 
@@ -204,12 +196,51 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
         if(isSelected()) {
             m_colCurrent = getSelectColor();
         } else {
+            dragFinished();
             m_colCurrent = PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor());
         }
         drawBorder();
     }
 
     return QGraphicsItemGroup::itemChange(change, value);
+}
+void QGIView::dragFinished()
+{
+    double currX = viewObj->X.getValue();
+    double currY = viewObj->Y.getValue();
+    double candidateX = Rez::appX(pos().x());
+    double candidateY = Rez::appX(-pos().y());
+    bool setX = false;
+    bool setY = false;
+
+    if (!DrawUtil::fpCompare(currX, candidateX, 0.001)) {  // 0.001mm tolerance
+        setX = true;
+    }
+    if (!DrawUtil::fpCompare(currY, candidateY, 0.001)) {
+        setY = true;
+    }
+
+    if (!setX && !setY) {
+        return;
+    }
+
+    Gui::Command::openCommand("Drag view");
+    // tell the feature that we have moved
+    Gui::ViewProvider *vp = getViewProvider(viewObj);
+    if (vp && !vp->isRestoring()) {
+        snapping = true; // avoid triggering updateView by the VP updateData
+        if (setX) {
+            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.X = %f",
+                                viewObj->getNameInDocument(), candidateX);
+        }
+        if (setY) {
+            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Y = %f",
+                                viewObj->getNameInDocument(), candidateY);
+        }
+
+        snapping = false;
+    }
+    Gui::Command::commitCommand();
 }
 
 //! align this view with others.  newPosition is in this view's parent's coord
@@ -442,6 +473,7 @@ void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
         m_multiselectActivated = false;
     }
 
+    dragFinished();
     QGraphicsItemGroup::mouseReleaseEvent(event);
 
     event->setModifiers(originalModifiers);
