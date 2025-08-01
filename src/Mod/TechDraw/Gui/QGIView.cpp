@@ -32,6 +32,7 @@
 #endif
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
@@ -207,6 +208,10 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 }
 void QGIView::dragFinished()
 {
+    if (!viewObj) {
+        return;
+    }
+
     double currX = viewObj->X.getValue();
     double currY = viewObj->Y.getValue();
     double candidateX = Rez::appX(pos().x());
@@ -225,7 +230,11 @@ void QGIView::dragFinished()
         return;
     }
 
-    Gui::Command::openCommand("Drag view");
+    bool ownTransaction = (viewObj->getDocument()->getTransactionID(true) == 0);
+
+    if (ownTransaction) {
+        Gui::Command::openCommand("Drag view");
+    }
     // tell the feature that we have moved
     Gui::ViewProvider *vp = getViewProvider(viewObj);
     if (vp && !vp->isRestoring()) {
@@ -241,7 +250,9 @@ void QGIView::dragFinished()
 
         snapping = false;
     }
-    Gui::Command::commitCommand();
+    if (ownTransaction) {
+        Gui::Command::commitCommand();
+    }
 }
 
 //! align this view with others.  newPosition is in this view's parent's coord
