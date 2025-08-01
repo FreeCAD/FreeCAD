@@ -2606,7 +2606,6 @@ QToolBar > Gui--WorkbenchComboBox QAbstractItemView {
   border: 1px solid @GeneralBorderColor;
   padding-left: -27px;
   background-color: transparent;
-  selection-background-color: yellow;
 }
 
 /* Below is a fix for indentation in properties*/
