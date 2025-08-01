@@ -551,7 +551,7 @@ struct CoinMapping
         if (geoid == -1) {
             return MultiFieldId(-1, 0, 0);
         }
-        
+
         auto indexit = GeoElementId2SetId.find(Sketcher::GeoElementId(geoid, pos));
 
         if (indexit != GeoElementId2SetId.end()) {
