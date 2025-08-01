@@ -2331,7 +2331,7 @@ bool CDxfRead::ReadDimension()
     switch ((eDimensionType_t)dimensionType) {
         case eLinear:
         case eAligned:
-            OnReadDimension(start, end, linePosition, Base::toRadians(rotation));
+            OnReadDimension(start, end, linePosition, dimensionType, Base::toRadians(rotation));
             break;
         default:
             UnsupportedFeature("Dimension type '%d'", dimensionType);

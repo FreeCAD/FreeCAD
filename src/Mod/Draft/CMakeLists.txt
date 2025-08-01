@@ -20,6 +20,7 @@ SET(Draft_SRCS_base
 SET(Draft_import
     importAirfoilDAT.py
     importDXF.py
+    DxfImportDialog.py
     importDWG.py
     importOCA.py
     importSVG.py

@@ -16,6 +16,9 @@ file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Blending)
 generate_from_xml(Blending/BlendPointPy)
 generate_from_xml(Blending/BlendCurvePy)
 
+generate_from_py_(Blending/BlendPointPy)
+generate_from_py_(Blending/BlendCurvePy)
+
 set(Surface_LIBS
   FreeCADApp
   Part
