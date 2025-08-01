@@ -60,6 +60,7 @@ from . import write_femelement_material
 from . import write_femelement_matgeosets
 from . import write_footer
 from . import write_mesh
+from . import write_amplitude
 from . import write_step_equation
 from . import write_step_output
 from .. import writerbase
@@ -181,6 +182,9 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_propdata(inpfile, self.member.cons_tie, con_tie)
         self.write_constraints_propdata(inpfile, self.member.cons_transform, con_transform)
         self.write_constraints_propdata(inpfile, self.member.cons_rigidbody, con_rigidbody)
+
+        # amplitudes
+        write_amplitude.write_amplitude(inpfile, self)
 
         # step equation
         write_step_equation.write_step_equation(inpfile, self)

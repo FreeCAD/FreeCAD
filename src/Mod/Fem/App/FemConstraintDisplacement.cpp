@@ -148,6 +148,16 @@ ConstraintDisplacement::ConstraintDisplacement()
                       "ConstraintDisplacement",
                       App::Prop_None,
                       "Rotation in local Z direction");
+    ADD_PROPERTY_TYPE(EnableAmplitude,
+                      (false),
+                      "ConstraintDisplacement",
+                      (App::PropertyType)(App::Prop_None),
+                      "Amplitude of the displacement boundary condition");
+    ADD_PROPERTY_TYPE(AmplitudeValues,
+                      (std::vector<std::string> {"0, 0", "1, 1"}),
+                      "ConstraintFDisplacement",
+                      (App::PropertyType)(App::Prop_None),
+                      "Amplitude values");
 }
 
 App::DocumentObjectExecReturn* ConstraintDisplacement::execute()
