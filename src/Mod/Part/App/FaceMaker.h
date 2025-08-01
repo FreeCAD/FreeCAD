@@ -62,6 +62,15 @@ public:
     const TopoShape &getTopoShape() const;
     const TopoShape &TopoFace() const;
 
+    /**
+     * @brief setElementSupportLimit: sets minElementNames to newLimit,
+     * minElementNames determines how many edges can be used to define the support of a face.
+     * -1 means infinite number
+     * the default is 1
+     * @param newLimit
+     */
+    void setElementSupportLimit(const int newLimit = 1);
+
     virtual void addWire(const TopoDS_Wire& w);
     /**
      * @brief addShape: add another wire, edge, or compound. If compound is

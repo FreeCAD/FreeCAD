@@ -115,6 +115,8 @@ std::string StringID::toString(int index) const
     if (index != 0) {
         ss << ':' << index;
     }
+    ss << '_'; // deliminator to make dehashing easier
+    
     return ss.str();
 }
 

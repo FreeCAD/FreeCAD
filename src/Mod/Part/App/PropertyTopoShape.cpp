@@ -281,14 +281,11 @@ void PropertyPartShape::Save (Base::Writer &writer) const
     }
     std::string version;
     // If exporting, do not export mapped element name, but still make a mark
-    auto const version_valid = _Ver.size() && (_Ver != "?");
-    if (owner) {
-        if (!owner->isExporting()) {
-            version = version_valid ? _Ver : owner->getElementMapVersion(this);
-        }
-    } else {
-        version = version_valid ? _Ver : _Shape.getElementMapVersion();
-    }
+    if(owner) {
+        if(!owner->isExporting())
+            version = _Ver.size()?_Ver:owner->getElementMapVersion(this);
+    }else
+        version = _Ver.size()?_Ver:_Shape.getElementMapVersion();
     writer.Stream() << " ElementMap=\"" << version << '"';
 
     bool binary = writer.getMode("BinaryBrep");
@@ -386,7 +383,7 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
             if (owner ? owner->checkElementMapVersion(this, _Ver.c_str())
                       : _Shape.checkElementMapVersion(_Ver.c_str())) {
                 auto ver = owner?owner->getElementMapVersion(this):_Shape.getElementMapVersion();
-                if(!owner || !owner->getNameInDocument() || !_Shape.getElementMapSize()) {
+                if(!owner || !owner->getNameInDocument()) { // do not check the map size, as it might not be restored yet.
                     _Ver = ver;
                 } else {
                     // version mismatch, signal for regenerating.
@@ -394,7 +391,7 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
                     if(warnedDoc != owner->getDocument()->getName()) {
                         warnedDoc = owner->getDocument()->getName();
                         FC_WARN("Recomputation required for document '" << warnedDoc
-                                                                        << "' on geo element version change in " << getFullName()
+                                                                        << "' on toponaming change for " << getFullName()
                                                                         << ": " << _Ver << " -> " << ver);
                     }
                     owner->getDocument()->addRecomputeObject(owner);
