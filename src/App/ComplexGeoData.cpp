@@ -288,6 +288,15 @@ ComplexGeoData::getElementName(const char* name, ElementIDRefs* sid, bool copy) 
         result.name = MappedName(name);
     }
     result.index = getIndexedName(result.name, sid);
+
+    // if complexFind is used to find the correct element, 
+    // then the mapped name of the output will be different than what it is set to already.
+    // eventually a variable in IndexedName will need to be created to contain the new
+    // mapped name.
+    if (result.index != IndexedName()) {
+        result.name = getMappedName(result.index, false, sid);
+    }
+
     return result;
 }
 
