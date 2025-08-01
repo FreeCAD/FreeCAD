@@ -1278,6 +1278,8 @@ MappedElement ElementMap::complexFind(const MappedName& name) const {
     MappedElement foundName = MappedElement();
     const int idOccurenceMin = 2;
     const int tagOccurenceMin = -1; // -1 means only one tag can be missing
+    int foundUnfilteredSizeDifference = -1; // -1 is the start, 
+    //                                         it will never go below 0 during the check
 
     // FC_WARN("start complex find");
     // FC_WARN("orig name: " << originalElement.dehashedName);
@@ -1402,13 +1404,19 @@ MappedElement ElementMap::complexFind(const MappedName& name) const {
         }
 
     
-        // getting this far in the loop means that the two elements are the same.
-        foundName = MappedElement();
-        foundName.name = loopName.first;
-        foundName.index = loopName.second;
+        // do a "score" check to see if the number of filtered out tags is smaller in the name found here
+        // is smaller than that of the already found name. -1 is checked first, because that indicates that
+        // foundName had never been set.
+        int currentUnfilteredSizeDifference = abs(static_cast<int>(originalElement.unfilteredSplitSections.size() 
+                                                  - loopElement.unfilteredSplitSections.size()));
+
+        if (foundUnfilteredSizeDifference == -1 || foundUnfilteredSizeDifference > currentUnfilteredSizeDifference) {
+            foundName = MappedElement(loopName.first, loopName.second);
+            foundUnfilteredSizeDifference = currentUnfilteredSizeDifference;
+        }
     }
 
-    FC_WARN("finish complex find");
+    // FC_WARN("finish complex find");
     return foundName;
 }
 
@@ -1473,7 +1481,6 @@ MappedElement ElementMap::findMatching(const MappedName& name, ElementIDRefs* si
     auto nameIter = mappedNames.find(name);
     if (nameIter == mappedNames.end()) {
         if (childElements.isEmpty()) {
-            FC_WARN("try return complex find");
             return complexFind(name);
         }
 
