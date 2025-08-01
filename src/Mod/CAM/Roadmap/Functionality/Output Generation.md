@@ -13,15 +13,16 @@
 # 🟨 Professional Grade
 *Features usually present or expected in the state-of-the-art applications*
 
-| Feature                      | Description                                                         | Assessment                                                                                                          |
-| ---------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| Preflight Checks             | Catch and flag obvious problems before generating output            | Sanity check can catch some errors.  Requires running the check manually.                                           |
-| Post-Processor Customization | Control modal vs explicit axes, tool change blocks, headers/footers | Customization with flags in the Job output tab.  Posts are inconsistent.                                            |
-| Advanced Customizatoin       | Allow customization of output beyond the trivial. Allow customizing the post with an editing/customization tool                  | Requires editing the python file.<br>Requires copying the post file to a specific location.  Clunky and unintuitive |
-| Subprogram Support           | Generate G-code with subprograms and subroutines                    | NONE                                                                                                                |
-| Setup Page Generation        | Instructions, checklists, warnings, and errors for the operator     | DONE                                                                                                                |
-| G-code Decomposition         | Break arcs/canned cycles into linear segments or explicit moves     | NONE                                                                                                                |
-| Coordinate Conversion        | Convert absolute to relative (G91), center arcs to relative (G91.1) | NONE                                                                                                                |
+| Feature                      | Description                                                                                                                                  | Assessment                                                                                                          |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Preflight Checks             | Catch and flag obvious problems before generating output                                                                                     | Sanity check can catch some errors.  Requires running the check manually.                                           |
+| Post-Processor Customization | Control modal vs explicit axes, tool change blocks, headers/footers                                                                          | Customization with flags in the Job output tab.  Posts are inconsistent.                                            |
+| Advanced Customizatoin       | Allow customization of output beyond the trivial. Allow customizing the post with an editing/customization tool                              | Requires editing the python file.<br>Requires copying the post file to a specific location.  Clunky and unintuitive |
+| Subprogram Support           | Generate G-code with subprograms and subroutines                                                                                             | NONE                                                                                                                |
+| Setup Page Generation        | Instructions, checklists, warnings, and errors for the operator                                                                              | DONE                                                                                                                |
+| G-code Decomposition         | Break arcs/canned cycles into linear segments or explicit moves                                                                              | NONE                                                                                                                |
+| Coordinate Conversion        | Convert absolute to relative (G91), center arcs to relative (G91.1)                                                                          | NONE                                                                                                                |
+| Coolant Control              | Coolant control should be started at the most desirable point to avoid wasting coolant during a tool change or before it is actually needed. | Current coolant control turns on when the TC is loaded.  Inefficient                                                |
 
 ---
 
