@@ -2205,14 +2205,17 @@ QColumnView::item:pressed {
   background-color: @GeneralBackgroundHoverColor;
 }
 
+QListView::item:selected,
 QTableView::item:selected,
 QTreeView::item:selected,
 QColumnView::item:selected {
   background-color: @AccentBackgroundColor;
 }
 
-QListView::item:selected {
-  background-color: @GeneralBackgroundHoverColor;
+QTableView::item:hover,
+QColumnView::item:hover,
+QListView::item:hover {
+  background-color: @AccentHoverColor;
 }
 
 /* QTreeView::item:!selected:hover, */
