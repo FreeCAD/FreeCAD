@@ -84,8 +84,6 @@ class _CommandSelectLoop:
             traceback.print_exc(exc)
             return False
 
-
-
     def Activated(self):
         from PathScripts.PathUtils import horizontalEdgeLoop, horizontalFaceLoop
 
