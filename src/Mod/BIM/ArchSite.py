@@ -198,12 +198,18 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False,tz=None):
                                 h = "SUMMER"
                     hourpos.append((h,ep))
         if i < 7:
-            sunpaths.append(Part.makePolygon(pts))
+            if len(pts) > 1:
+                b_spline = Part.BSplineCurve()
+                b_spline.buildFromPoles(pts)
+                sunpaths.append(b_spline.toShape())
 
     for h in hpts:
         if complete:
             h.append(h[0])
-        hourpaths.append(Part.makePolygon(h))
+        if len(h) > 1:
+            b_spline = Part.BSplineCurve()
+            b_spline.buildFromPoles(h)
+            hourpaths.append(b_spline.toShape())
 
     # cut underground lines
     sz = 2.1*scale
@@ -577,6 +583,9 @@ class _Site(ArchIFC.IfcProduct):
             obj.addProperty("App::PropertyInteger","TimeZone","Site",QT_TRANSLATE_NOOP("App::Property","The time zone where this site is located"), locked=True)
         if not "EPWFile" in pl:
             obj.addProperty("App::PropertyFileIncluded","EPWFile","Site",QT_TRANSLATE_NOOP("App::Property","An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one"), locked=True)
+        if not "SunRay" in pl:
+            obj.addProperty("App::PropertyLink", "SunRay", "Sun", QT_TRANSLATE_NOOP("App::Property", "The generated sun ray object"), locked=True)
+            obj.setEditorMode("SunRay", ["ReadOnly", "Hidden"])
 
     def onDocumentRestored(self,obj):
         """Method run when the document is restored. Re-adds the properties."""
@@ -810,6 +819,22 @@ class _ViewProviderSite:
             vobj.addProperty("App::PropertyVector", "CompassPosition", "Compass", QT_TRANSLATE_NOOP("App::Property", "The position of the Compass relative to the Site placement"), locked=True)
         if not "UpdateDeclination" in pl:
             vobj.addProperty("App::PropertyBool", "UpdateDeclination", "Compass", QT_TRANSLATE_NOOP("App::Property", "Update the Declination value based on the compass rotation"), locked=True)
+        if not "ShowSunPosition" in pl:
+            vobj.addProperty("App::PropertyBool", "ShowSunPosition", "Sun", QT_TRANSLATE_NOOP("App::Property", "Show the sun position for a specific date and time"), locked=True)
+        if not "SunDateMonth" in pl:
+            vobj.addProperty("App::PropertyIntegerConstraint", "SunDateMonth", "Sun", QT_TRANSLATE_NOOP("App::Property", "The month of the year to show the sun position"), locked=True)
+            vobj.SunDateMonth = (6, 1, 12, 1) # Default to June
+        if not "SunDateDay" in pl:
+            vobj.addProperty("App::PropertyIntegerConstraint", "SunDateDay", "Sun", QT_TRANSLATE_NOOP("App::Property", "The day of the month to show the sun position"), locked=True)
+            # 31 is a safe maximum; the datetime object will handle invalid dates like Feb 31.
+            vobj.SunDateDay =  (21, 1, 31, 1) # Default to the 21st (solstice)
+        if not "SunTimeHour" in pl:
+            vobj.addProperty("App::PropertyFloatConstraint", "SunTimeHour", "Sun", QT_TRANSLATE_NOOP("App::Property", "The hour of the day to show the sun position"), locked=True)
+            # Use 23.99 to avoid issues with hour 24
+            vobj.SunTimeHour = (12.0, 0.0, 23.5, 0.5) # Default to noon
+        if not "ShowHourLabels" in pl:
+            vobj.addProperty("App::PropertyBool", "ShowHourLabels", "Sun", QT_TRANSLATE_NOOP("App::Property", "Show text labels for key hours on the sun path"), locked=True)
+            vobj.ShowHourLabels = True # Show hour labels by default
 
     def getIcon(self):
         """Return the path to the appropriate icon.
@@ -936,6 +961,67 @@ class _ViewProviderSite:
         self.rotateCompass(vobj)
         vobj.Annotation.addChild(self.compass.rootNode)
 
+        self.sunSwitch = coin.SoSwitch() # Toggle the sun sphere on and off
+        self.sunSwitch.whichChild = -1   # -1 means hidden
+
+        self.sunSep = coin.SoSeparator() # A separator to group all sun elements
+        self.sunTransform = coin.SoTransform() # Position the sphere
+        self.sunMaterial = coin.SoMaterial()
+        self.sunMaterial.diffuseColor.setValue(1, 1, 0) # Yellow color
+        self.sunSphere = coin.SoSphere()
+
+        # Assemble the scene graph for the sphere
+        self.sunSep.addChild(self.sunTransform)
+        self.sunSep.addChild(self.sunMaterial)
+        self.sunSep.addChild(self.sunSphere)
+        self.sunSwitch.addChild(self.sunSep)
+
+        # Add the entire sun assembly to the object's annotation node
+        vobj.Annotation.addChild(self.sunSwitch)
+
+        def setup_path_segment(color_tuple):
+            separator = coin.SoSeparator()
+            material = coin.SoMaterial()
+            material.diffuseColor.setValue(color_tuple)
+            node = coin.SoSeparator() # This will hold the geometry
+            separator.addChild(material)
+            separator.addChild(node)
+            self.sunSwitch.addChild(separator)
+            return node
+
+        # Create nodes for different segments of the sun path representing
+        # morning, midday, and afternoon with distinct colors.
+        self.sunPathMorningNode = setup_path_segment((0.2, 0.8, 1.0))   # Sky Blue
+        self.sunPathMiddayNode = setup_path_segment((1.0, 0.75, 0.0))  # Golden Yellow / Amber
+        self.sunPathAfternoonNode = setup_path_segment((1.0, 0.35, 0.0)) # Orange-Red
+
+        # Create nodes for the hour marker points.
+        self.hourMarkerSep = coin.SoSeparator()
+        self.hourMarkerMaterial = coin.SoMaterial()
+        self.hourMarkerMaterial.diffuseColor.setValue(0.8, 0.8, 0.8) # Grey
+
+        self.hourMarkerDrawStyle = coin.SoDrawStyle()
+        self.hourMarkerDrawStyle.pointSize.setValue(5) # Set a visible point size (e.g., 5 pixels)
+        self.hourMarkerDrawStyle.style.setValue(coin.SoDrawStyle.POINTS)
+
+        self.hourMarkerCoords = coin.SoCoordinate3()
+        self.hourMarkerSet = coin.SoPointSet()
+
+        self.hourMarkerSep.addChild(self.hourMarkerMaterial)
+        self.hourMarkerSep.addChild(self.hourMarkerDrawStyle)
+        self.hourMarkerSep.addChild(self.hourMarkerCoords)
+        self.hourMarkerSep.addChild(self.hourMarkerSet)
+        self.sunSwitch.addChild(self.hourMarkerSep)
+
+        # Create nodes for the hour labels.
+        self.hourLabelSep = coin.SoSeparator()
+        self.hourLabelMaterial = coin.SoMaterial()
+        self.hourLabelMaterial.diffuseColor.setValue(0.8, 0.8, 0.8) # Same grey as markers
+        self.hourLabelFont = coin.SoFont()
+        self.hourLabelSep.addChild(self.hourLabelMaterial)
+        self.hourLabelSep.addChild(self.hourLabelFont)
+        self.sunSwitch.addChild(self.hourLabelSep)
+
     def updateData(self,obj,prop):
         """Method called when the host object has a property changed.
 
@@ -1013,6 +1099,16 @@ class _ViewProviderSite:
             switch.whichChild = idx
 
     def onChanged(self,vobj,prop):
+        from pivy import coin
+
+        if prop == 'Visibility':
+            if vobj.Visibility:
+                # When the site becomes visible, check if the sun elements should also be shown.
+                if vobj.ShowSunPosition:
+                    self.sunSwitch.whichChild = coin.SO_SWITCH_ALL
+            else:
+                # When the site is hidden, always hide the sun elements.
+                self.sunSwitch.whichChild = coin.SO_SWITCH_NONE
 
         # onChanged is called multiple times when a document is opened.
         # Some display mode nodes can be missing during initial calls.
@@ -1048,6 +1144,10 @@ class _ViewProviderSite:
                         del self.diagramnode
                 else:
                     self.diagramswitch.whichChild = -1
+        elif prop in [
+            "ShowSunPosition", "SunDateMonth", "SunDateDay", "SunTimeHour",
+            "SolarDiagramScale", "SolarDiagramPosition", "ShowHourLabels"]:
+            self.updateSunPosition(vobj)
         elif prop == "WindRose":
             if hasattr(self,"windrosenode"):
                 del self.windrosenode
@@ -1183,3 +1283,179 @@ class _ViewProviderSite:
     def loads(self,state):
 
         return None
+
+    def updateSunPosition(self, vobj):
+        """Calculates sun position and updates the sphere, path arc, and ray object."""
+        import math
+        import Part
+        import datetime
+        from pivy import coin
+
+        obj = vobj.Object
+
+        # Handle the visibility toggle for all elements
+        self.sunPathMorningNode.removeAllChildren()
+        self.sunPathMiddayNode.removeAllChildren()
+        self.sunPathAfternoonNode.removeAllChildren()
+        self.hourLabelSep.removeAllChildren()
+        self.hourMarkerCoords.point.deleteValues(0)
+
+        if not vobj.ShowSunPosition:
+            self.sunSwitch.whichChild = -1 # Hide the Pivy sphere and path
+            if obj.SunRay and hasattr(obj.SunRay, "ViewObject"):
+                obj.SunRay.ViewObject.Visibility = False
+            return
+
+        self.sunSwitch.whichChild = coin.SO_SWITCH_ALL # Show sphere and path
+
+        dt_object_for_label = None
+
+        try:
+            from ladybug import location, sunpath
+            loc = location.Location(latitude=obj.Latitude, longitude=obj.Longitude, time_zone=obj.TimeZone)
+            sp = sunpath.Sunpath.from_location(loc)
+            is_ladybug = True
+        except ImportError:
+            try:
+                import pysolar.solar as solar
+                is_ladybug = False
+            except ImportError:
+                FreeCAD.Console.PrintError("Ladybug or Pysolar module not found. Cannot calculate sun position.\n")
+                return
+
+        morning_points, midday_points, afternoon_points = [], [], []
+        self.hourMarkerCoords.point.deleteValues(0) # Clear previous marker coordinates
+        marker_coords = []
+
+        for hour_float in [h / 2.0 for h in range(48)]: # Loop from 0.0 to 23.5
+            if is_ladybug:
+                sun = sp.calculate_sun(month=vobj.SunDateMonth, day=vobj.SunDateDay, hour=hour_float)
+                alt = sun.altitude
+                az = sun.azimuth
+            else:
+                tz = datetime.timezone(datetime.timedelta(hours=obj.TimeZone))
+                dt = datetime.datetime(2023, vobj.SunDateMonth, vobj.SunDateDay, int(hour_float), int((hour_float % 1)*60), tzinfo=tz)
+                alt = solar.get_altitude(obj.Latitude, obj.Longitude, dt)
+                az = solar.get_azimuth(obj.Latitude, obj.Longitude, dt)
+
+            if alt > 0:
+                alt_rad = math.radians(alt)
+                az_rad = math.radians(90 - az)
+                xy_proj = math.cos(alt_rad) * vobj.SolarDiagramScale
+                x = math.cos(az_rad) * xy_proj
+                y = math.sin(az_rad) * xy_proj
+                z = math.sin(alt_rad) * vobj.SolarDiagramScale
+                point = FreeCAD.Vector(x, y, z)
+                if hour_float < 10:
+                    morning_points.append(point)
+                elif hour_float <= 14:
+                    midday_points.append(point)
+                else:
+                    afternoon_points.append(point)
+                # Check if the current time is a full hour
+                if hour_float % 1 == 0:
+                    marker_coords.append(FreeCAD.Vector(x, y, z))
+
+                if hasattr(vobj, "ShowHourLabels") and vobj.ShowHourLabels:
+                    if vobj.ShowHourLabels and (hour_float in [9.0, 12.0, 15.0]):
+                        # Create a text node for the label
+                        text_node = coin.SoText2()
+                        text_node.string = f"{int(hour_float)}h"
+
+                        # Create a transform to position the text slightly offset from the marker
+                        text_transform = coin.SoTransform()
+                        offset_vec = FreeCAD.Vector(x, y, z).normalize() * (vobj.SolarDiagramScale * 0.03)
+                        text_pos = FreeCAD.Vector(x, y, z).add(offset_vec)
+                        text_transform.translation.setValue(text_pos.x, text_pos.y, text_pos.z)
+
+                        # Add a separator for this specific label
+                        label_sep = coin.SoSeparator()
+                        label_sep.addChild(text_transform)
+                        label_sep.addChild(text_node)
+                        self.hourLabelSep.addChild(label_sep)
+
+        if marker_coords:
+            self.hourMarkerCoords.point.setValues(marker_coords)
+
+        if len(morning_points) > 1:
+            path_b_spline = Part.BSplineCurve()
+            path_b_spline.buildFromPoles(morning_points)
+            self.sunPathMorningNode.addChild(toNode(path_b_spline.toShape()))
+
+        if len(midday_points) > 1:
+            # To connect midday to morning, we need the last point from the morning list
+            if morning_points:
+                midday_points.insert(0, morning_points[-1])
+            path_b_spline = Part.BSplineCurve()
+            path_b_spline.buildFromPoles(midday_points)
+            self.sunPathMiddayNode.addChild(toNode(path_b_spline.toShape()))
+
+        if len(afternoon_points) > 1:
+            # To connect afternoon to midday, we need the last point from the midday list
+            if midday_points:
+                afternoon_points.insert(0, midday_points[-1])
+            path_b_spline = Part.BSplineCurve()
+            path_b_spline.buildFromPoles(afternoon_points)
+            self.sunPathAfternoonNode.addChild(toNode(path_b_spline.toShape()))
+
+        self.hourLabelFont.size = vobj.SolarDiagramScale * 0.015
+
+        # Sun sphere and sun ray logic
+        if is_ladybug:
+            sun = sp.calculate_sun(month=vobj.SunDateMonth, day=vobj.SunDateDay, hour=vobj.SunTimeHour)
+            altitude_deg, azimuth_deg = sun.altitude, sun.azimuth
+            dt_object_for_label = datetime.datetime(2023, vobj.SunDateMonth, vobj.SunDateDay, int(vobj.SunTimeHour), int((vobj.SunTimeHour % 1)*60))
+        else:
+            tz = datetime.timezone(datetime.timedelta(hours=obj.TimeZone))
+            dt_object_for_label = datetime.datetime(2023, vobj.SunDateMonth, vobj.SunDateDay, int(vobj.SunTimeHour), int((vobj.SunTimeHour % 1)*60), tzinfo=tz)
+            altitude_deg = solar.get_altitude(obj.Latitude, obj.Longitude, dt_object_for_label)
+            azimuth_deg = solar.get_azimuth(obj.Latitude, obj.Longitude, dt_object_for_label)
+
+        altitude_rad = math.radians(altitude_deg)
+        azimuth_rad = math.radians(90 - azimuth_deg)
+        xy_proj = math.cos(altitude_rad) * vobj.SolarDiagramScale
+        x = math.cos(azimuth_rad) * xy_proj
+        y = math.sin(azimuth_rad) * xy_proj
+        z = math.sin(altitude_rad) * vobj.SolarDiagramScale
+        sun_pos_3d = vobj.SolarDiagramPosition.add(FreeCAD.Vector(x, y, z)) # Final absolute position
+
+        self.sunTransform.translation.setValue(sun_pos_3d.x, sun_pos_3d.y, sun_pos_3d.z)
+        self.sunSphere.radius = vobj.SolarDiagramScale * 0.02
+
+        try:
+            ray_object = obj.SunRay
+            if not ray_object: raise AttributeError
+            ray_object.Start = sun_pos_3d
+            ray_object.End = vobj.SolarDiagramPosition
+            ray_object.ViewObject.Visibility = True
+        except (AttributeError, ReferenceError):
+            ray_object = Draft.make_line(sun_pos_3d, vobj.SolarDiagramPosition)
+            vo = ray_object.ViewObject
+            vo.LineColor = (1.0, 1.0, 0.0)
+            vo.DrawStyle = "Dashed"
+            vo.ArrowType = "Arrow"
+            vo.LineWidth = 2
+            vo.EndArrow = True
+            vo.ArrowSize = vobj.SolarDiagramScale * 0.015
+
+            if hasattr(obj, "addObject"):
+                obj.addObject(ray_object)
+            obj.SunRay = ray_object
+
+        ray_object.recompute()
+
+        # Add and update custom data properties
+        if not hasattr(ray_object, "Altitude"):
+            ray_object.addProperty("App::PropertyAngle", "Altitude", "Sun Data", QT_TRANSLATE_NOOP("App::Property", "The altitude of the sun above the horizon"), locked=True)
+            ray_object.setEditorMode("Altitude", ["ReadOnly", "Hidden"])
+            ray_object.addProperty("App::PropertyAngle", "Azimuth", "Sun Data", QT_TRANSLATE_NOOP("App::Property", "The compass direction of the sun (0° is North)"), locked=True)
+            ray_object.setEditorMode("Azimuth", ["ReadOnly", "Hidden"])
+            ray_object.addProperty("App::PropertyString", "Time", "Sun Data", QT_TRANSLATE_NOOP("App::Property", "The date and time for this sun position"), locked=True)
+            ray_object.setEditorMode("Time", ["ReadOnly", "Hidden"])
+
+        ray_object.Altitude = math.radians(altitude_deg)
+        ray_object.Azimuth = math.radians(azimuth_deg)
+        time_string = dt_object_for_label.strftime("%B %d, %H:%M")
+        ray_object.Time = time_string
+        ray_object.Label = f"Sun Ray ({time_string})"
+
