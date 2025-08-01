@@ -276,25 +276,28 @@ ComplexGeoData::getElementName(const char* name, ElementIDRefs* sid, bool copy) 
     }
 
     MappedElement result;
-    // Strip out the trailing '.XXXX' if any
-    const char* dot = strchr(name, '.');
-    if (dot) {
-        result.name = MappedName(name, static_cast<int>(dot - name));
-    }
-    else if (copy) {
-        result.name = name;
-    }
-    else {
-        result.name = MappedName(name);
-    }
-    result.index = getIndexedName(result.name, sid);
 
-    // if complexFind is used to find the correct element, 
-    // then the mapped name of the output will be different than what it is set to already.
-    // eventually a variable in IndexedName will need to be created to contain the new
-    // mapped name.
-    if (result.index != IndexedName()) {
-        result.name = getMappedName(result.index, false, sid);
+    flushElementMap();
+    if (_elementMap) {
+        const char* dot = strchr(name, '.');
+        MappedName mappedName = MappedName(name);
+
+        if (dot) {
+            mappedName = MappedName(name, static_cast<int>(dot - name));
+        } 
+
+        result = _elementMap->findMatching(mappedName, sid);
+
+        if (result.name.empty()) {
+            result.name = mappedName;
+        }
+
+        // if we want to copy the original unfiltered name, then do so.
+        // this should not be done before running findMatching, as this
+        // will include the dot which we do not want at that stage.
+        if (copy) {
+            result.name = name;
+        }
     }
 
     return result;

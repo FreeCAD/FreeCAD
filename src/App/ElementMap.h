@@ -154,6 +154,11 @@ public:
 
     IndexedName find(const MappedName& name, ElementIDRefs* sids = nullptr) const;
 
+    // this method finds the correct MappedName and IndexedName from the input MappedName
+    // the reason you need a MappedName is because it might need to use complexFind to 
+    // find an equivelent name that is not the same as the input.
+    MappedElement findMatching(const MappedName& name, ElementIDRefs* sids = nullptr) const;
+
     MappedName find(const IndexedName& idx, ElementIDRefs* sids = nullptr) const;
 
     std::vector<std::pair<MappedName, ElementIDRefs>> findAll(const IndexedName& idx) const;
@@ -299,7 +304,7 @@ private:
     std::vector<ElementSection> compileElementSections(const std::string &name) const;
 
     bool checkGeoIDsLists(std::vector<geoID> &list1, std::vector<geoID> &list2) const;
-    IndexedName complexFind(const MappedName &name) const;
+    MappedElement complexFind(const MappedName &name) const;
     geoID makeGeoID(const std::string ID) const;
 
     struct ToponamingElement {

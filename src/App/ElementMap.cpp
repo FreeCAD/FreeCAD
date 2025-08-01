@@ -1192,13 +1192,10 @@ ElementMap::ToponamingElement ElementMap::compileToponamingElement(MappedName na
     element.unfilteredSplitSections = compileElementSections(element.dehashedName);
     // element.splitSections = element.unfilteredSplitSections;
 
-    // only filter M tags with a postfix number of 0, since they add no value to the history of an element
-    // if there are other modifiers that describe the same operation, then they will have different numbers
-    // and therefore will be added. this will help preserve history
-    // also add any modifiers with postfix geo IDs, because they will eventually describe a split operation
-    // more accurately.
+    // filter out sections with the postfix of 'M'
+    // it must also have a number of 0 and a postfix id list size of 0
     for (const auto &data : element.unfilteredSplitSections) {
-        if (data.postfix != "M"  || (data.postfixNumber != 0 || !data.postFixIDs.empty())) {
+        if (data.postfix != "M" || (data.postfixNumber != 0 || !data.postFixIDs.empty())) {
             element.splitSections.push_back(data);
         }
     }
@@ -1275,15 +1272,15 @@ bool ElementMap::checkGeoIDsLists(std::vector<ElementMap::geoID> &list1, std::ve
     return (tagCheck && elementTypeCheck && mainIDCheck);
 }
 
-IndexedName ElementMap::complexFind(const MappedName& name) const {
+MappedElement ElementMap::complexFind(const MappedName& name) const {
     ToponamingElement originalElement = compileToponamingElement(name);
     ToponamingElement loopElement = ToponamingElement();
-    IndexedName foundName = IndexedName();
+    MappedElement foundName = MappedElement();
     const int idOccurenceMin = 2;
     const int tagOccurenceMin = -1; // -1 means only one tag can be missing
 
-    FC_WARN("start complex find");
-    FC_WARN("orig name: " << originalElement.dehashedName);
+    // FC_WARN("start complex find");
+    // FC_WARN("orig name: " << originalElement.dehashedName);
 
     if (originalElement.dehashedName.empty()) {
         return foundName;
@@ -1295,12 +1292,12 @@ IndexedName ElementMap::complexFind(const MappedName& name) const {
         if (loopElement.dehashedName.empty()) {
             continue;
         }
-        FC_WARN("loop name: " << loopElement.dehashedName);
+        // FC_WARN("loop name: " << loopElement.dehashedName);
 
         if (originalElement.splitSections.size() != loopElement.splitSections.size()) {
-            FC_WARN("orig: " << originalElement.splitSections.size());
-            FC_WARN("loop: " << loopElement.splitSections.size());
-            FC_WARN("size failed");
+            // FC_WARN("orig: " << originalElement.splitSections.size());
+            // FC_WARN("loop: " << loopElement.splitSections.size());
+            // FC_WARN("size failed");
             continue;
         }
 
@@ -1337,14 +1334,14 @@ IndexedName ElementMap::complexFind(const MappedName& name) const {
         }
 
         if (!geoIDCheck) {
-            FC_WARN("geo id check failed");
+            // FC_WARN("geo id check failed");
             continue;
         }
 
         bool sectionCheck = true;
 
         if (!checkGeoIDsLists(originalElement.postFixIDs, loopElement.postFixIDs) || !checkGeoIDsLists(originalElement.opCodesIDs, loopElement.opCodesIDs)) {
-            FC_WARN("check postfixes and opcodes ids failed");
+            // FC_WARN("check postfixes and opcodes ids failed");
             continue;
         }
 
@@ -1388,27 +1385,30 @@ IndexedName ElementMap::complexFind(const MappedName& name) const {
             }
 
             if (tagOccurences < (shortTagList.size() + tagOccurenceMin)) {
-                FC_WARN("tag failed");
+                // FC_WARN("tag failed");
                 sectionCheck = false;
                 break;
             }
         }
 
         if (!sectionCheck) {
-            FC_WARN("section check failed");
+            // FC_WARN("section check failed");
             continue;
         }
 
         if (originalElement.unfilteredSplitSections.back().elementType != loopElement.unfilteredSplitSections.back().elementType) {
-            FC_WARN("element type failed");
+            // FC_WARN("element type failed");
             continue;
         }
 
     
         // getting this far in the loop means that the two elements are the same.
-        foundName = loopName.second;
+        foundName = MappedElement();
+        foundName.name = loopName.first;
+        foundName.index = loopName.second;
     }
 
+    FC_WARN("finish complex find");
     return foundName;
 }
 
@@ -1417,7 +1417,7 @@ IndexedName ElementMap::find(const MappedName& name, ElementIDRefs* sids) const
     auto nameIter = mappedNames.find(name);
     if (nameIter == mappedNames.end()) {
         if (childElements.isEmpty()) {
-            return complexFind(name);
+            return (complexFind(name).index);
         }
 
         int len = 0;
@@ -1466,6 +1466,68 @@ IndexedName ElementMap::find(const MappedName& name, ElementIDRefs* sids) const
         }
     }
     return nameIter->second;
+}
+
+MappedElement ElementMap::findMatching(const MappedName& name, ElementIDRefs* sids) const
+{
+    auto nameIter = mappedNames.find(name);
+    if (nameIter == mappedNames.end()) {
+        if (childElements.isEmpty()) {
+            FC_WARN("try return complex find");
+            return complexFind(name);
+        }
+
+        int len = 0;
+        if (name.findTagInElementName(nullptr, &len, nullptr, nullptr, false, false) < 0) {
+            return MappedElement();
+        }
+        QByteArray key = name.toRawBytes(len);
+        auto it = this->childElements.find(key);
+        if (it == this->childElements.end()) {
+            return MappedElement();
+        }
+
+        const auto& child = *it.value().childMap;
+        MappedElement res;
+
+        MappedName childName = MappedName::fromRawData(name, 0, len);
+        if (child.elementMap) {
+            res = child.elementMap->findMatching(childName, sids);
+        }
+        else {
+            res = MappedElement(childName, childName.toIndexedName());
+        }
+
+        if (res.index && boost::equals(res.index.getType(), child.indexedName.getType())
+            && child.indexedName.getIndex() <= res.index.getIndex()
+            && child.indexedName.getIndex() + child.count > res.index.getIndex()) {
+            res.index.setIndex(res.index.getIndex() + it.value().childMap->offset);
+
+            if (res.name.empty()) {
+                res.name = name;
+            }
+
+            return res;
+        }
+
+        return MappedElement();
+    }
+
+    if (sids) {
+        const MappedNameRef* ref = findMappedRef(nameIter->second);
+        for (; ref; ref = ref->next.get()) {
+            if (ref->name == name) {
+                if (sids->empty()) {
+                    *sids = ref->sids;
+                }
+                else {
+                    *sids += ref->sids;
+                }
+                break;
+            }
+        }
+    }
+    return MappedElement(nameIter->first, nameIter->second);
 }
 
 MappedName ElementMap::find(const IndexedName& idx, ElementIDRefs* sids) const
