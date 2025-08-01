@@ -212,8 +212,17 @@ public:
 
     bool renameDynamicProperty(Property* prop, const char* newName);
 
+    bool moveDynamicProperty(Property* prop, PropertyContainer* targetContainer);
+
+
 private:
+    enum class SignalOption : bool {
+        NoSignal = false,
+        EmitSignal = true
+    };
+
     std::string getUniquePropertyName(const PropertyContainer& pc, const char* Name) const;
+    bool _removeDynamicProperty(const char* name, SignalOption signalOption);
 
 private:
     bmi::multi_index_container<
