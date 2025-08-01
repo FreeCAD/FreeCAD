@@ -1,4 +1,4 @@
-# STATUS: 
+# STATUS:
 ACTIVE/PROPOSED/DELAYED/REJECTED
 
 # Why it is a priority

@@ -1,5 +1,5 @@
 
-# STATUS: 
+# STATUS:
 PROPOSED
 
 # Why it is a priority

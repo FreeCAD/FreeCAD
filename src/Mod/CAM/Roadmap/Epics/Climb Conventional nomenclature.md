@@ -1,4 +1,4 @@
-# STATUS: 
+# STATUS:
 ACTIVE/PROPOSED/DELAYED/REJECTED
 
 # Why it is a priority
@@ -19,5 +19,3 @@ ACTIVE/PROPOSED/DELAYED/REJECTED
 
 # Related Epics
 *(list any other epics (draft, active, delayed) that relate)*
-
-
