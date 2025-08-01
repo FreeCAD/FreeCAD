@@ -179,13 +179,13 @@ class ObjectOp(PathOp.ObjectOp):
                             {
                                 "x": pos.x,
                                 "y": pos.y,
-                                "r": self.holeDiameter(obj, base, sub),
+                                "d": self.holeDiameter(obj, base, sub),
                             }
                         )
 
         if haveLocations(self, obj):
             for location in obj.Locations:
-                holes.append({"x": location.x, "y": location.y, "r": 0})
+                holes.append({"x": location.x, "y": location.y, "d": 0})
 
         if len(holes) > 0:
             holes = PathUtils.sort_locations(holes, ["x", "y"])
