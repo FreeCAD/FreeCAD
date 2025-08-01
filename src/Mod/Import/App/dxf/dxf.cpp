@@ -109,6 +109,7 @@ CDxfWrite::CDxfWrite(const char* filepath)
     // m_blkRecordHandle(0x110),
     m_polyOverride(false)
     , m_layerName("none")
+    , m_currentColor(256)  // default color is "by layer" (256)
 {
     // start the file
     Base::FileInfo fi(filepath);
@@ -487,6 +488,104 @@ void CDxfWrite::makeBlockSectionHead()
     }
 }
 
+void CDxfWrite::writeBlock(const std::string& blockName, const double basePoint[3])
+{
+    if (m_version > 12) {
+        std::string blkRecordHandle = getBlkRecordHandle();
+        addBlockName(blockName, blkRecordHandle);
+    }
+
+    (*m_ssBlock) << "  0\n";
+    (*m_ssBlock) << "BLOCK\n";
+    (*m_ssBlock) << "  5\n";
+    m_currentBlock = getBlockHandle();
+    (*m_ssBlock) << m_currentBlock << "\n";
+    if (m_version > 12) {
+        (*m_ssBlock) << "330\n";
+        (*m_ssBlock) << m_blkRecordList.back() << "\n";  // Use the handle we just added
+        (*m_ssBlock) << "100\n";
+        (*m_ssBlock) << "AcDbEntity\n";
+    }
+    (*m_ssBlock) << "  8\n";
+    (*m_ssBlock) << "0\n";  // Blocks are defined on layer 0
+    if (m_version > 12) {
+        (*m_ssBlock) << "100\n";
+        (*m_ssBlock) << "AcDbBlockBegin\n";
+    }
+    (*m_ssBlock) << "  2\n";
+    (*m_ssBlock) << blockName << "\n";
+    (*m_ssBlock) << " 70\n";
+    (*m_ssBlock) << "   0\n";  // Flags
+    (*m_ssBlock) << " 10\n";
+    (*m_ssBlock) << basePoint[0] << "\n";
+    (*m_ssBlock) << " 20\n";
+    (*m_ssBlock) << basePoint[1] << "\n";
+    (*m_ssBlock) << " 30\n";
+    (*m_ssBlock) << basePoint[2] << "\n";
+    (*m_ssBlock) << "  3\n";
+    (*m_ssBlock) << blockName << "\n";
+    (*m_ssBlock) << "  1\n";
+    (*m_ssBlock) << "\n";  // Path name (empty)
+}
+
+void CDxfWrite::writeEndBlock(const std::string& /*blockName*/)
+{
+    std::string endBlkHandle = getBlockHandle();
+    (*m_ssBlock) << "  0\n";
+    (*m_ssBlock) << "ENDBLK\n";
+    (*m_ssBlock) << "  5\n";
+    (*m_ssBlock) << endBlkHandle << "\n";
+    if (m_version > 12) {
+        (*m_ssBlock) << "330\n";
+        (*m_ssBlock) << m_blkRecordList.back() << "\n";  // Corresponds to the last BLOCK
+        (*m_ssBlock) << "100\n";
+        (*m_ssBlock) << "AcDbEntity\n";
+        (*m_ssBlock) << "100\n";
+        (*m_ssBlock) << "AcDbBlockEnd\n";
+    }
+}
+
+void CDxfWrite::writeInsert(const std::string& blockName,
+                            const double insertionPoint[3],
+                            double scale,
+                            double rotation)
+{
+    (*m_ssEntity) << "  0\n";
+    (*m_ssEntity) << "INSERT\n";
+    (*m_ssEntity) << "  5\n";
+    (*m_ssEntity) << getEntityHandle() << "\n";
+    if (m_version > 12) {
+        (*m_ssEntity) << "330\n";
+        (*m_ssEntity) << m_saveModelSpaceHandle << "\n";
+        (*m_ssEntity) << "100\n";
+        (*m_ssEntity) << "AcDbEntity\n";
+    }
+    (*m_ssEntity) << "  8\n";
+    (*m_ssEntity) << getLayerName() << "\n";
+    (*m_ssEntity) << " 62\n";
+    (*m_ssEntity) << m_currentColor << "\n";
+    if (m_version > 12) {
+        (*m_ssEntity) << "100\n";
+        (*m_ssEntity) << "AcDbBlockReference\n";
+    }
+    (*m_ssEntity) << "  2\n";
+    (*m_ssEntity) << blockName << "\n";
+    (*m_ssEntity) << " 10\n";
+    (*m_ssEntity) << insertionPoint[0] << "\n";
+    (*m_ssEntity) << " 20\n";
+    (*m_ssEntity) << insertionPoint[1] << "\n";
+    (*m_ssEntity) << " 30\n";
+    (*m_ssEntity) << insertionPoint[2] << "\n";
+    (*m_ssEntity) << " 41\n";
+    (*m_ssEntity) << scale << "\n";  // X scale factor
+    (*m_ssEntity) << " 42\n";
+    (*m_ssEntity) << scale << "\n";  // Y scale factor
+    (*m_ssEntity) << " 43\n";
+    (*m_ssEntity) << scale << "\n";  // Z scale factor
+    (*m_ssEntity) << " 50\n";
+    (*m_ssEntity) << rotation << "\n";  // Rotation angle
+}
+
 std::string CDxfWrite::getPlateFile(std::string fileSpec)
 {
     std::stringstream outString;
@@ -596,6 +695,8 @@ void CDxfWrite::putLine(const Base::Vector3d& start,
     }
     (*outStream) << "  8" << endl;           // Group code for layer name
     (*outStream) << getLayerName() << endl;  // Layer number
+    (*outStream) << " 62\n";                 // Group code for color
+    (*outStream) << m_currentColor << "\n";  // Color index
     if (m_version > 12) {
         (*outStream) << "100" << endl;
         (*outStream) << "AcDbLine" << endl;
@@ -724,6 +825,119 @@ void CDxfWrite::writePolyline(const LWPolyDataOut& pd)
     (*m_ssEntity) << getEntityHandle() << endl;
     (*m_ssEntity) << "  8" << endl;
     (*m_ssEntity) << getLayerName() << endl;
+}
+
+void CDxfWrite::writePolyFace(const std::vector<point3D>& vertices,
+                              const std::vector<std::vector<int>>& faces)
+{
+    // A Polyface Mesh is a POLYLINE entity with bit 6 (64) set in its flags (group 70).
+    (*m_ssEntity) << "  0\n";
+    (*m_ssEntity) << "POLYLINE\n";
+    (*m_ssEntity) << "  5\n";
+    (*m_ssEntity) << getEntityHandle() << "\n";
+    if (m_version > 12) {
+        (*m_ssEntity) << "330\n";
+        (*m_ssEntity) << m_saveModelSpaceHandle << "\n";
+        (*m_ssEntity) << "100\n";
+        (*m_ssEntity) << "AcDbEntity\n";
+    }
+    (*m_ssEntity) << "  8\n";
+    (*m_ssEntity) << getLayerName() << "\n";
+    (*m_ssEntity) << " 62\n";
+    (*m_ssEntity) << m_currentColor << "\n";
+    if (m_version > 12) {
+        (*m_ssEntity) << "100\n";
+        (*m_ssEntity) << "AcDb3dPolyline\n";
+    }
+    (*m_ssEntity) << " 66\n";
+    (*m_ssEntity) << "     1\n";  // Vertices follow flag
+    (*m_ssEntity) << " 10\n";
+    (*m_ssEntity) << "0.0\n";
+    (*m_ssEntity) << " 20\n";
+    (*m_ssEntity) << "0.0\n";
+    (*m_ssEntity) << " 30\n";
+    (*m_ssEntity) << "0.0\n";
+    (*m_ssEntity) << " 70\n";
+    (*m_ssEntity) << "    64\n";  // Flag for Polyface Mesh
+
+    // Write all the unique vertices first
+    for (const auto& v : vertices) {
+        (*m_ssEntity) << "  0\n";
+        (*m_ssEntity) << "VERTEX\n";
+        (*m_ssEntity) << "  5\n";
+        (*m_ssEntity) << getEntityHandle() << "\n";
+        if (m_version > 12) {
+            (*m_ssEntity) << "330\n";
+            (*m_ssEntity) << m_saveModelSpaceHandle << "\n";
+            (*m_ssEntity) << "100\n";
+            (*m_ssEntity) << "AcDbEntity\n";
+            (*m_ssEntity) << "100\n";
+            (*m_ssEntity) << "AcDbVertex\n";
+            (*m_ssEntity) << "100\n";
+            (*m_ssEntity) << "AcDb3dPolylineVertex\n";
+        }
+        (*m_ssEntity) << "  8\n";
+        (*m_ssEntity) << getLayerName() << "\n";
+        (*m_ssEntity) << " 10\n";
+        (*m_ssEntity) << v.x << "\n";
+        (*m_ssEntity) << " 20\n";
+        (*m_ssEntity) << v.y << "\n";
+        (*m_ssEntity) << " 30\n";
+        (*m_ssEntity) << v.z << "\n";
+        (*m_ssEntity) << " 70\n";
+        (*m_ssEntity) << "    32\n";  // Polyface mesh vertex flag
+    }
+
+    // Write the face definitions
+    for (const auto& f : faces) {
+        (*m_ssEntity) << "  0\n";
+        (*m_ssEntity) << "VERTEX\n";
+        (*m_ssEntity) << "  5\n";
+        (*m_ssEntity) << getEntityHandle() << "\n";
+        if (m_version > 12) {
+            (*m_ssEntity) << "330\n";
+            (*m_ssEntity) << m_saveModelSpaceHandle << "\n";
+            (*m_ssEntity) << "100\n";
+            (*m_ssEntity) << "AcDbEntity\n";
+            (*m_ssEntity) << "100\n";
+            (*m_ssEntity) << "AcDbVertex\n";
+            (*m_ssEntity) << "100\n";
+            (*m_ssEntity) << "AcDbFaceRecord\n";
+        }
+        (*m_ssEntity) << "  8\n";
+        (*m_ssEntity) << getLayerName() << "\n";
+        (*m_ssEntity) << " 10\n";
+        (*m_ssEntity) << "0.0\n";
+        (*m_ssEntity) << " 20\n";
+        (*m_ssEntity) << "0.0\n";
+        (*m_ssEntity) << " 30\n";
+        (*m_ssEntity) << "0.0\n";
+        (*m_ssEntity) << " 70\n";
+        (*m_ssEntity) << "   128\n";  // Polyface mesh face flag
+
+        // The vertex indices for the face
+        // DXF uses 1-based indices
+        if (f.size() >= 1) {
+            (*m_ssEntity) << " 71" << endl << f[0] << "\n";
+        }
+        if (f.size() >= 2) {
+            (*m_ssEntity) << " 72" << endl << f[1] << "\n";
+        }
+        if (f.size() >= 3) {
+            (*m_ssEntity) << " 73" << endl << f[2] << "\n";
+        }
+        if (f.size() >= 4) {
+            (*m_ssEntity) << " 74" << endl << f[3] << "\n";
+        }
+    }
+
+    // End the sequence
+    (*m_ssEntity) << "  0\n";
+    (*m_ssEntity) << "SEQEND\n";
+    (*m_ssEntity) << "  5\n";
+    (*m_ssEntity) << getEntityHandle() << "\n";
+    (*m_ssEntity) << "  8\n";
+    (*m_ssEntity) << getLayerName() << "\n";
 }
 
 void CDxfWrite::writePoint(const double* point)
@@ -1045,8 +1259,10 @@ void CDxfWrite::putText(const char* text,
         (*outStream) << "100" << endl;
         (*outStream) << "AcDbEntity" << endl;
     }
-    (*outStream) << "  8" << endl;
+    (*outStream) << "  8\n";  // Group code for layer name
     (*outStream) << getLayerName() << endl;
+    (*outStream) << " 62\n";  // Group code for color
+    (*outStream) << m_currentColor << "\n";
     if (m_version > 12) {
         (*outStream) << "100" << endl;
         (*outStream) << "AcDbText" << endl;
@@ -1170,8 +1386,10 @@ void CDxfWrite::writeLinearDim(const double* textMidPoint,
         (*m_ssEntity) << "100" << endl;
         (*m_ssEntity) << "AcDbEntity" << endl;
     }
-    (*m_ssEntity) << "  8" << endl;
+    (*m_ssEntity) << "  8" << endl;  // Group code for layer name
     (*m_ssEntity) << getLayerName() << endl;
+    (*m_ssEntity) << " 62" << endl;  // Group code for color
+    (*m_ssEntity) << m_currentColor << endl;
     if (m_version > 12) {
         (*m_ssEntity) << "100" << endl;
         (*m_ssEntity) << "AcDbDimension" << endl;
