@@ -193,7 +193,7 @@ DocumentObject* GeoFeature::resolveElement(const DocumentObject* obj,
         elementName = geo->getElementName(element, type);
     }
     else {
-        const auto& names = geo->getElementName(element, type);
+        const auto& names = geo->getElementName(element, type); // elementMap.find gets called here, eventually.
         std::string prefix(subname, element - subname);
         if (!names.newName.empty()) {
             elementName.newName = prefix + names.newName;
