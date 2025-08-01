@@ -46,7 +46,7 @@ TaskSolverMessages::TaskSolverMessages(const QPixmap& icon,
     , ui(new Ui_TaskSolverMessages)
 {
     // we need a separate container widget to add all controls to
-    proxy = new QWidget(this);
+    auto* proxy = new QWidget(this);
     ui->setupUi(proxy);
     setupConnections();
 
@@ -87,10 +87,6 @@ TaskSolverMessages::TaskSolverMessages(const QPixmap& icon,
     createSettingsButtonActions();
 }
 
-TaskSolverMessages::~TaskSolverMessages()
-{
-}
-
 void TaskSolverMessages::setupConnections()
 {
     connect(ui->labelStatusLink,
@@ -113,7 +109,7 @@ void TaskSolverMessages::slotSetUp(const QString& state, const QString& msg, con
     updateToolTip(link);
 }
 
-void TaskSolverMessages::setLinkTooltip(const QString tooltip)
+void TaskSolverMessages::setLinkTooltip(const QString& tooltip)
 {
     ui->labelStatusLink->setToolTip(tooltip);
 }
