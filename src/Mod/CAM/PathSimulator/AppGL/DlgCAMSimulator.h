@@ -109,6 +109,9 @@ public:
     void setBaseShape(const Part::TopoShape& shape, float resolution);
     void setBaseVisible(bool b);
 
+    void setBackgroundColor(const QColor& c);
+    void setPathColor(const QColor& normal, const QColor& rapid);
+
 Q_SIGNALS:
     void simulationStarted();
 

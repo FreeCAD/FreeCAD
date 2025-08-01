@@ -70,8 +70,10 @@ SET(CAMSimulator_SRCS_Core
     Dummy3DViewer.h
     TopoShapeViewProvider.cpp
     TopoShapeViewProvider.h
-    CAMSimulatorSettings.cpp
-    CAMSimulatorSettings.h
+    CAMSettings.cpp
+    CAMSettings.h
+    View3DSettings.cpp
+    View3DSettings.h
 )
 
 

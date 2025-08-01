@@ -19,15 +19,14 @@ class View3DSettings;
 
 namespace CAMSimulator
 {
+class GuiDisplay;
 class DlgCAMSimulator;
 class Dummy3DViewer;
-class GuiDisplay;
-class CAMSimulatorSettings;
+class View3DSettings;
+class CAMSettings;
 
 class ViewCAMSimulator: public Gui::MDIView
 {
-    friend class CAMSimulatorSettings;
-
 public:
     ViewCAMSimulator(Gui::Document* pcDocument,
                      QWidget* parent,
@@ -54,7 +53,8 @@ protected:
     DlgCAMSimulator* mDlg = nullptr;
     Dummy3DViewer* mDummyViewer = nullptr;
 
-    std::unique_ptr<CAMSimulatorSettings> mViewSettings;
+    std::unique_ptr<View3DSettings> mViewSettings;
+    std::unique_ptr<CAMSettings> mCAMSettings;
 };
 
 }  // namespace CAMSimulator
