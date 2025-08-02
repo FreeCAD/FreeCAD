@@ -1,4 +1,4 @@
-/******************************************************************************
+    /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
@@ -20,24 +20,18 @@
  *                                                                            *
  ******************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskLinearPatternParameters_H
-#define GUI_TASKVIEW_TaskLinearPatternParameters_H
+#ifndef GUI_TASKVIEW_TaskPatternParameters_H
+#define GUI_TASKVIEW_TaskPatternParameters_H
 
 #include "TaskTransformedParameters.h"
-#include "ViewProviderLinearPattern.h"
+#include "ViewProviderTransformed.h"
 
 
 class QTimer;
-class Ui_TaskLinearPatternParameters;
+class Ui_TaskPatternParameters;
 
-namespace App
-{
-class Property;
-}
-
-namespace Gui
-{
-class ViewProvider;
+namespace PartGui {
+    class PatternParametersWidget;
 }
 
 namespace PartDesignGui
@@ -45,17 +39,17 @@ namespace PartDesignGui
 
 class TaskMultiTransformParameters;
 
-class TaskLinearPatternParameters: public TaskTransformedParameters
+class TaskPatternParameters : public TaskTransformedParameters
 {
     Q_OBJECT
 
 public:
     /// Constructor for task with ViewProvider
-    explicit TaskLinearPatternParameters(ViewProviderTransformed* TransformedView,
+    explicit TaskPatternParameters(ViewProviderTransformed* TransformedView,
                                          QWidget* parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
-    TaskLinearPatternParameters(TaskMultiTransformParameters* parentTask, QWidget* parameterWidget);
-    ~TaskLinearPatternParameters() override;
+    TaskPatternParameters(TaskMultiTransformParameters* parentTask, QWidget* parameterWidget);
+    ~TaskPatternParameters() override;
 
     void apply() override;
 
@@ -64,47 +58,49 @@ protected:
 
 private Q_SLOTS:
     void onUpdateViewTimer();
-    void onDirectionChanged(int num);
-    void onCheckReverse(bool on);
-    void onModeChanged(int mode);
-    void onLength(double length);
-    void onOffset(double offset);
-    void onOccurrences(uint number);
-    void onUpdateView(bool /*unused*/) override;
+    // Slot to handle reference selection request from the widget
+    void onParameterWidgetRequestReferenceSelection();
+    void onParameterWidgetRequestReferenceSelection2();
+    // Slot to handle parameter changes from the widget
+    void onParameterWidgetParametersChanged();
+    // Update view signal (might be redundant now)
+    void onUpdateView(bool on) override;
+
 
 private:
     void setupParameterUI(QWidget* widget) override;
     void retranslateParameterUI(QWidget* widget) override;
 
-    void connectSignals();
     void updateUI();
-    void adaptVisibilityToMode();
     void kickUpdateViewTimer() const;
 
-    void getDirection(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
-    bool getReverse() const;
-    int getMode() const;
-    double getLength() const;
-    double getOffset() const;
-    unsigned getOccurrences() const;
+    void bindProperties();
 
-private:
-    std::unique_ptr<Ui_TaskLinearPatternParameters> ui;
+    // Task-specific logic remains
+    void showOriginAxes(bool show);
+    void enterReferenceSelectionMode();
+    void exitReferenceSelectionMode(); // Ensure this clears gates etc.
+
+    PartGui::PatternParametersWidget* parametersWidget = nullptr;
+    PartGui::PatternParametersWidget* parametersWidget2 = nullptr;
+
+    PartGui::PatternParametersWidget* activeDirectionWidget = nullptr;
+
+    std::unique_ptr<Ui_TaskPatternParameters> ui;
     QTimer* updateViewTimer = nullptr;
-
-    ComboLinks dirLinks;
 };
 
 
 /// simulation dialog for the TaskView
-class TaskDlgLinearPatternParameters: public TaskDlgTransformedParameters
+class TaskDlgLinearPatternParameters : public TaskDlgTransformedParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgLinearPatternParameters(ViewProviderLinearPattern* LinearPatternView);
+    explicit TaskDlgLinearPatternParameters(ViewProviderTransformed* LinearPatternView);
 };
 
 }  // namespace PartDesignGui
 
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif // GUI_TASKVIEW_TaskPatternParameters_H
+

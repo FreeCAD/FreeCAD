@@ -27,11 +27,19 @@
 #include <App/PropertyUnits.h>
 #include "FeatureTransformed.h"
 
+class gp_Vec;
+
 namespace PartDesign
 {
 enum class LinearPatternMode {
-    length,
-    offset
+    Extent,
+    Spacing
+};
+
+enum class LinearPatternDirection : std::uint8_t
+{
+    First,
+    Second
 };
 
 class PartDesignExport LinearPattern : public PartDesign::Transformed
@@ -47,6 +55,18 @@ public:
     App::PropertyLength      Length;
     App::PropertyLength      Offset;
     App::PropertyIntegerConstraint Occurrences;
+    App::PropertyFloatList   Spacings;
+    App::PropertyFloatList   SpacingPattern;
+
+    App::PropertyLinkSub     Direction2;
+    App::PropertyBool        Reversed2;
+    App::PropertyEnumeration Mode2;
+    App::PropertyLength      Length2;
+    App::PropertyLength      Offset2;
+    App::PropertyIntegerConstraint Occurrences2;
+    App::PropertyFloatList   Spacings2;
+    App::PropertyFloatList   SpacingPattern2;
+
 
    /** @name methods override feature */
     //@{
@@ -85,7 +105,16 @@ protected:
 private:
     static const char* ModeEnums[];
 
-    void setReadWriteStatusForMode(LinearPatternMode mode);
+    gp_Dir getDirectionFromProperty(const App::PropertyLinkSub& dirProp) const;
+
+    void setReadWriteStatusForMode(LinearPatternDirection dir);
+    void syncLengthAndOffset(LinearPatternDirection dir);
+
+    void updateSpacings();
+    void updateSpacings(LinearPatternDirection dir);
+
+    gp_Vec calculateOffsetVector(LinearPatternDirection dir) const;
+    std::vector<gp_Vec> calculateSteps(LinearPatternDirection dir, const gp_Vec& offsetVector) const;
 };
 
 } //namespace PartDesign
