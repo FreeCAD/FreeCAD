@@ -1216,7 +1216,11 @@ QWidget* GridSpaceAction::createWidget(QWidget* parent)
 
     languageChange();
 
+#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+    QObject::connect(gridShow, &QCheckBox::checkStateChanged, [this](int state) {
+#else
     QObject::connect(gridShow, &QCheckBox::stateChanged, [this](int state) {
+#endif
         auto* sketchView = getView();
 
         if (sketchView) {
@@ -1225,7 +1229,11 @@ QWidget* GridSpaceAction::createWidget(QWidget* parent)
         }
     });
 
+#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+    QObject::connect(gridAutoSpacing, &QCheckBox::checkStateChanged, [this](int state) {
+#else
     QObject::connect(gridAutoSpacing, &QCheckBox::stateChanged, [this](int state) {
+#endif
         auto* sketchView = getView();
 
         if (sketchView) {
@@ -1234,7 +1242,11 @@ QWidget* GridSpaceAction::createWidget(QWidget* parent)
         }
     });
 
+#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+    QObject::connect(snapToGrid, &QCheckBox::checkStateChanged, [this](int state) {
+#else
     QObject::connect(snapToGrid, &QCheckBox::stateChanged, [this](int state) {
+#endif
         ParameterGrp::handle hGrp = this->getParameterPath();
         hGrp->SetBool("SnapToGrid", state == Qt::Checked);
     });
@@ -1471,15 +1483,12 @@ QWidget* SnapSpaceAction::createWidget(QWidget* parent)
 
 #if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
     QObject::connect(snapToObjects, &QCheckBox::checkStateChanged, [this](int state) {
-        ParameterGrp::handle hGrp = this->getParameterPath();
-        hGrp->SetBool("SnapToObjects", state == Qt::Checked);
-    });
 #else
     QObject::connect(snapToObjects, &QCheckBox::stateChanged, [this](int state) {
+#endif
         ParameterGrp::handle hGrp = this->getParameterPath();
         hGrp->SetBool("SnapToObjects", state == Qt::Checked);
     });
-#endif
 
     QObject::connect(
         snapAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), [this](double val) {
@@ -1646,13 +1655,12 @@ bool CmdSketcherSnap::isActive()
 /* Rendering Order */
 RenderingOrderAction::RenderingOrderAction(QObject* parent)
         : QWidgetAction(parent)
-    {
-        setEnabled(false);
-    }
+{
+    setEnabled(false);
+}
 
 void RenderingOrderAction::updateWidget()
 {
-
     auto hGrp = getParameterPath();
 
     // 1->Normal Geometry, 2->Construction, 3->External
@@ -1660,30 +1668,38 @@ void RenderingOrderAction::updateWidget()
     int midid = hGrp->GetInt("MidRenderGeometryId", 2);
     int lowid = hGrp->GetInt("LowRenderGeometryId", 3);
 
+    auto idToText = [this](int id) -> QString {
+        switch (id) {
+        case 1:
+            return tr("Normal geometry");
+        case 2:
+            return tr("Construction geometry");
+        case 3:
+            return tr("External geometry");
+        default:
+            // Fallback for an unexpected ID
+            return tr("Unknown geometry");
+        }
+    };
+
     {
         QSignalBlocker block(this);
         list->clear();
 
-        QListWidgetItem* newItem = new QListWidgetItem;
-        newItem->setData(Qt::UserRole, QVariant(topid));
-        newItem->setText(topid == 1       ? tr("Normal geometry")
-                                : topid == 2 ? tr("Construction geometry")
-                                            : tr("External geometry"));
-        list->insertItem(0, newItem);
+        QListWidgetItem* itemTop = new QListWidgetItem;
+        itemTop->setData(Qt::UserRole, QVariant(topid));
+        itemTop->setText(idToText(topid));
+        list->insertItem(0, itemTop);
 
-        newItem = new QListWidgetItem;
-        newItem->setData(Qt::UserRole, QVariant(midid));
-        newItem->setText(midid == 1       ? tr("Normal geometry")
-                                : midid == 2 ? tr("Construction geometry")
-                                            : tr("External geometry"));
-        list->insertItem(1, newItem);
+        QListWidgetItem* itemMid = new QListWidgetItem;
+        itemMid->setData(Qt::UserRole, QVariant(midid));
+        itemMid->setText(idToText(midid));
+        list->insertItem(1, itemMid);
 
-        newItem = new QListWidgetItem;
-        newItem->setData(Qt::UserRole, QVariant(lowid));
-        newItem->setText(lowid == 1       ? tr("Normal geometry")
-                                : lowid == 2 ? tr("Construction geometry")
-                                            : tr("External geometry"));
-        list->insertItem(2, newItem);
+        QListWidgetItem* itemLow = new QListWidgetItem;
+        itemLow->setData(Qt::UserRole, QVariant(lowid));
+        itemLow->setText(idToText(lowid));
+        list->insertItem(2, itemLow);
     }
 }
 
@@ -1909,3 +1925,4 @@ void CreateSketcherCommands()
     rcCmdMgr.addCommand(new CmdRenderingOrder());
 }
 // clang-format on
+
