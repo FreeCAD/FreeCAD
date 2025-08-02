@@ -970,7 +970,6 @@ class _Structure(ArchComponent.Component):
                                 clusterTransformed.append(edgesTransformed)
                             for clusterT in clusterTransformed:
                                 baseShapeWires.append(Part.Wire(clusterT))
-                            faceMaker = 'Bullseye'
 
                         if not baseShapeWires:
                             baseShapeWires = obj.Base.Shape.Wires
