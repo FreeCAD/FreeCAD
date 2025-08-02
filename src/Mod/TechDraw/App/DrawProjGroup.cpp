@@ -150,16 +150,9 @@ void DrawProjGroup::onChanged(const App::Property* prop)
         }
     }
 
-    //        if ( ScaleType.isValue("Automatic") ||
-    //             ScaleType.isValue("Custom") ){
-    //            //just documenting that nothing is required here
-    //            //DrawView::onChanged will sort out Scale hidden/readonly/etc
-    //        }
-
     if (prop == &Rotation) {
         if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
             Rotation.setValue(0.0);
-            purgeTouched();
         }
         return;
     }
@@ -169,8 +162,6 @@ void DrawProjGroup::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn* DrawProjGroup::execute()
 {
-    //    Base::Console().message("DPG::execute() - %s - waitingForChildren: %d\n",
-    //                            getNameInDocument(), waitingForChildren());
     if (!keepUpdated())
         return App::DocumentObject::StdReturn;
 
@@ -490,13 +481,11 @@ App::DocumentObject* DrawProjGroup::addProjection(const char* viewProjType)
         }
         else {//Front
             Anchor.setValue(view);
-            Anchor.purgeTouched();
             requestPaint();//make sure the group object is on the Gui page
             view->LockPosition.setValue(
                 true);//lock "Front" position within DPG (note not Page!).
             view->LockPosition.setStatus(App::Property::ReadOnly,
                                             true);//Front should stay locked.
-            view->LockPosition.purgeTouched();
         }
     }
     return view;
@@ -984,8 +973,6 @@ void DrawProjGroup::updateChildrenScale()
         }
 
         view->Scale.setValue(getScale());
-        view->Scale.purgeTouched();
-        view->purgeTouched();
     }
 }
 
@@ -1128,9 +1115,7 @@ void DrawProjGroup::updateSecondaryDirs()
         ProjDirection type = static_cast<ProjDirection>(v->Type.getValue());
         data = saveVals[type];
         v->Direction.setValue(data.first);
-        v->Direction.purgeTouched();
         v->XDirection.setValue(data.second);
-        v->XDirection.purgeTouched();
     }
     recomputeChildren();
 }
