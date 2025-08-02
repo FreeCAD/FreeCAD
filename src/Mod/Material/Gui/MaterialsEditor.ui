@@ -148,7 +148,7 @@
           <item row="5" column="0">
            <widget class="QLabel" name="labelSourceReference">
             <property name="text">
-             <string>Source Reference</string>
+             <string>Source reference</string>
             </property>
            </widget>
           </item>
@@ -199,10 +199,10 @@
           <item>
            <widget class="QPushButton" name="buttonFavorite">
             <property name="toolTip">
-             <string>Add to favorites</string>
+             <string>Adds or removes to/from favorites</string>
             </property>
             <property name="text">
-             <string notr="true">*</string>
+             <string>Toggle Favorite</string>
             </property>
            </widget>
           </item>
