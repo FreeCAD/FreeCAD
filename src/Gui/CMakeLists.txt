@@ -441,6 +441,7 @@ SET(Gui_UIC_SRCS
     TaskView/TaskAppearance.ui
     TaskView/TaskOrientation.ui
     TaskView/TaskImage.ui
+    TaskView/TaskSolverMessages.ui
     TaskView/TaskSelectLinkProperty.ui
     TaskElementColors.ui
     Dialogs/DlgObjectSelection.ui
@@ -853,6 +854,9 @@ SET(Task_View_SRCS
     TaskView/TaskSelectLinkProperty.cpp
     TaskView/TaskSelectLinkProperty.h
     TaskView/TaskSelectLinkProperty.ui
+    TaskView/TaskSolverMessages.cpp
+    TaskView/TaskSolverMessages.h
+    TaskView/TaskSolverMessages.ui
     TaskView/TaskEditControl.cpp
     TaskView/TaskEditControl.h
     TaskView/TaskEditControl.ui
@@ -1426,6 +1430,7 @@ if(MSVC)
         TaskView/TaskOrientation.cpp
         TaskView/TaskImage.cpp
         TaskView/TaskSelectLinkProperty.cpp
+        TaskView/TaskSolverMessages.ui
         TaskView/TaskEditControl.cpp
         TaskView/TaskView.cpp
         ${Command_CPP_SRCS}
