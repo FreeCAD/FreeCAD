@@ -38,7 +38,7 @@ const std::string & ViewProviderChamfer::featureName() const {
 
 void ViewProviderChamfer::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    addDefaultAction(menu, QObject::tr("Edit chamfer"));
+    addDefaultAction(menu, QObject::tr("Edit Chamfer"));
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 

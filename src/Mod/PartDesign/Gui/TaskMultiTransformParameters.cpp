@@ -80,34 +80,34 @@ void TaskMultiTransformParameters::setupParameterUI(QWidget* widget)
                     this,
                     &TaskMultiTransformParameters::onTransformDelete);
     ui->listTransformFeatures->addAction(action);
-    action = new QAction(tr("Add mirrored transformation"), ui->listTransformFeatures);
+    action = new QAction(tr("Add Mirror Transformation"), ui->listTransformFeatures);
     action->connect(action,
                     &QAction::triggered,
                     this,
                     &TaskMultiTransformParameters::onTransformAddMirrored);
     ui->listTransformFeatures->addAction(action);
-    action = new QAction(tr("Add linear pattern"), ui->listTransformFeatures);
+    action = new QAction(tr("Add Linear Pattern"), ui->listTransformFeatures);
     action->connect(action,
                     &QAction::triggered,
                     this,
                     &TaskMultiTransformParameters::onTransformAddLinearPattern);
     ui->listTransformFeatures->addAction(action);
-    action = new QAction(tr("Add polar pattern"), ui->listTransformFeatures);
+    action = new QAction(tr("Add Polar Pattern"), ui->listTransformFeatures);
     action->connect(action,
                     &QAction::triggered,
                     this,
                     &TaskMultiTransformParameters::onTransformAddPolarPattern);
     ui->listTransformFeatures->addAction(action);
-    action = new QAction(tr("Add scaled transformation"), ui->listTransformFeatures);
+    action = new QAction(tr("Add Scale Transformation"), ui->listTransformFeatures);
     action->connect(action,
                     &QAction::triggered,
                     this,
                     &TaskMultiTransformParameters::onTransformAddScaled);
     ui->listTransformFeatures->addAction(action);
-    action = new QAction(tr("Move up"), ui->listTransformFeatures);
+    action = new QAction(tr("Move Up"), ui->listTransformFeatures);
     action->connect(action, &QAction::triggered, this, &TaskMultiTransformParameters::onMoveUp);
     ui->listTransformFeatures->addAction(action);
-    action = new QAction(tr("Move down"), ui->listTransformFeatures);
+    action = new QAction(tr("Move Down"), ui->listTransformFeatures);
     action->connect(action, &QAction::triggered, this, &TaskMultiTransformParameters::onMoveDown);
     ui->listTransformFeatures->addAction(action);
     ui->listTransformFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -141,7 +141,7 @@ void TaskMultiTransformParameters::setupParameterUI(QWidget* widget)
         editHint = false;
     }
     else {
-        ui->listTransformFeatures->addItem(tr("Right-click to add"));
+        ui->listTransformFeatures->addItem(tr("Right-click to add a transformation"));
         editHint = true;
     }
 }
@@ -257,14 +257,14 @@ void TaskMultiTransformParameters::onTransformActivated(const QModelIndex& index
 void TaskMultiTransformParameters::onTransformAddMirrored()
 {
     closeSubTask();
-    std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("Mirrored");
+    std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("Mirror");
     auto pcBody = dynamic_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getTopTransformedObject()));
     if (!pcBody) {
         return;
     }
 
     if (isEnabledTransaction()) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Mirrored"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Mirror"));
     }
 
     FCMD_OBJ_CMD(pcBody, "newObject('PartDesign::Mirrored','"<<newFeatName<<"')");
@@ -294,14 +294,14 @@ void TaskMultiTransformParameters::onTransformAddLinearPattern()
     // See CmdPartDesignLinearPattern
     //
     closeSubTask();
-    std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("LinearPattern");
+    std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("Linear Pattern");
     auto pcBody = dynamic_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getTopTransformedObject()));
     if (!pcBody) {
         return;
     }
 
     if (isEnabledTransaction()) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make LinearPattern"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Linear Pattern"));
     }
 
     FCMD_OBJ_CMD(pcBody, "newObject('PartDesign::LinearPattern','"<<newFeatName<<"')");
@@ -338,14 +338,14 @@ void TaskMultiTransformParameters::onTransformAddLinearPattern()
 void TaskMultiTransformParameters::onTransformAddPolarPattern()
 {
     closeSubTask();
-    std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("PolarPattern");
+    std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("Polar Pattern");
     auto pcBody = dynamic_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getTopTransformedObject()));
     if (!pcBody) {
         return;
     }
 
     if (isEnabledTransaction()) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "PolarPattern"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Polar Pattern"));
     }
 
     FCMD_OBJ_CMD(pcBody, "newObject('PartDesign::PolarPattern','"<<newFeatName<<"')");
@@ -375,14 +375,14 @@ void TaskMultiTransformParameters::onTransformAddPolarPattern()
 void TaskMultiTransformParameters::onTransformAddScaled()
 {
     closeSubTask();
-    std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("Scaled");
+    std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("Scale");
     auto pcBody = dynamic_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getTopTransformedObject()));
     if (!pcBody) {
         return;
     }
 
     if (isEnabledTransaction()) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Scaled"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Scale"));
     }
 
     FCMD_OBJ_CMD(pcBody, "newObject('PartDesign::Scaled','"<<newFeatName<<"')");

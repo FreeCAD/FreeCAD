@@ -38,7 +38,7 @@ public:
     /// constructor
     ViewProviderChamfer()
         { sPixmap = "PartDesign_Chamfer.svg";
-          menuName = tr("Chamfer parameters");}
+          menuName = tr("Chamfer Parameters");}
 
     /// return "Chamfer"
     const std::string & featureName() const override;

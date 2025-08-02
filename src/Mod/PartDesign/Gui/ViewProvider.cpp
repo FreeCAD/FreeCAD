@@ -74,7 +74,8 @@ bool ViewProvider::doubleClicked()
 void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QIcon iconObject = mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap("Part_ColorFace.svg"));
-    QAction* act = menu->addAction(iconObject, QObject::tr("Set colors..."), receiver, member);
+    QAction* act = menu->addAction(iconObject, QObject::tr("Set Face Colors"), receiver, member);
+
     act->setData(QVariant((int)ViewProvider::Color));
     // Call the extensions
     Gui::ViewProvider::setupContextMenu(menu, receiver, member);
@@ -104,7 +105,7 @@ bool ViewProvider::setEdit(int ModNum)
         if (dlg && !featureDlg) {
             QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
+            msgBox.setInformativeText(QObject::tr("Close this dialog?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
             msgBox.setDefaultButton(QMessageBox::Yes);
             int ret = msgBox.exec();
