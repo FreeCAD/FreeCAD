@@ -46,11 +46,11 @@ class CommandCreateAssembly:
     def GetResources(self):
         return {
             "Pixmap": "Geoassembly",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateAssembly", "Create Assembly"),
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateAssembly", "New Assembly"),
             "Accel": "A",
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_CreateAssembly",
-                "Create an assembly object in the current document, or in the current active assembly (if any). Limit of one root assembly per file.",
+                "Creates an assembly object in the current document, or in the current active assembly (if any). Limit of one root assembly per file.",
             ),
             "CmdType": "ForEdit",
         }
@@ -68,7 +68,7 @@ class CommandCreateAssembly:
         return App.ActiveDocument is not None
 
     def Activated(self):
-        App.setActiveTransaction("Create assembly")
+        App.setActiveTransaction("New Assembly")
 
         activeAssembly = UtilsAssembly.activeAssembly()
         Gui.addModule("UtilsAssembly")
