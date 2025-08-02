@@ -978,9 +978,8 @@ void EditModeCoinManager::createEditModeInventorNodes()
 
     editModeScenegraphNodes.EditCurvesDrawStyle = new SoDrawStyle;
     editModeScenegraphNodes.EditCurvesDrawStyle->setName("EditCurvesDrawStyle");
-    editModeScenegraphNodes.EditCurvesDrawStyle->lineWidth = 3
-        * drawingParameters
-              .pixelScalingFactor;  // This default value will be overriden in drawEdit()
+    editModeScenegraphNodes.EditCurvesDrawStyle->lineWidth =
+        3 * drawingParameters.pixelScalingFactor;  // Default value will be overridden in drawEdit()
     editCurvesRoot->addChild(editModeScenegraphNodes.EditCurvesDrawStyle);
 
     editModeScenegraphNodes.EditCurveSet = new SoLineSet;
