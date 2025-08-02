@@ -95,7 +95,6 @@ class Split(gui_base_original.Modifier):
         cmd_list = [
             "obj = FreeCAD.ActiveDocument." + wire,
             "new = Draft.split(obj, " + point + ", " + index + ")",
-            "Draft.format_object(new, obj)",
             "FreeCAD.ActiveDocument.recompute()"
         ]
 
