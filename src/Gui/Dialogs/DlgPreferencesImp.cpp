@@ -769,20 +769,23 @@ void DlgPreferencesImp::showResetOptions()
     auto groupText = currentGroupItem->text();
 
     // Reset per page
-    QAction* pageAction = menu.addAction(tr("Reset Page '%1'…").arg(pageText), this, [&] {
+    QAction* pageAction = menu.addAction(tr("Reset Page '%1'").arg(pageText), this, [&] {
+
         restorePageDefaults(currentPageItem);
     });
     pageAction->setToolTip(tr("Resets the user settings for the page '%1'").arg(pageText));
 
     // Reset per group
-    QAction* groupAction = menu.addAction(tr("Reset Group '%1'…").arg(groupText),
+    QAction* groupAction = menu.addAction(tr("Reset Group '%1'").arg(groupText),
+
                                           this,
                                           [&] { restorePageDefaults(static_cast<PreferencesPageItem*>(currentPageItem->parent())); });
     groupAction->setToolTip(tr("Resets the user settings for the group '%1'").arg(groupText));
 
     // Reset all
     QAction* allAction =
-        menu.addAction(tr("Reset All…"), this, &DlgPreferencesImp::restoreDefaults);
+        menu.addAction(tr("Reset All"), this, &DlgPreferencesImp::restoreDefaults);
+
     allAction->setToolTip(tr("Resets the user settings entirely"));
 
     connect(&menu, &QMenu::hovered, [&menu](QAction* hover) {

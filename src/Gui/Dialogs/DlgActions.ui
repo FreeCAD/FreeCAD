@@ -142,7 +142,7 @@
                  </size>
                 </property>
                 <property name="text">
-                 <string notr="true">…</string>
+                 <string>Choose Icon</string>
                 </property>
                </widget>
               </item>

@@ -60,7 +60,8 @@ Std_TestQM::Std_TestQM()
   : Command("Std_TestQM")
 {
     sGroup        = "Standard-Test";
-    sMenuText = "Test Translation Files…";
+    sMenuText = "Test Translation Files";
+
     sToolTipText  = "Runs a test to verify .qm translation files";
     sWhatsThis    = "Std_TestQM";
     sStatusTip    = sToolTipText;

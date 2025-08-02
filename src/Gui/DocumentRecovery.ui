@@ -79,7 +79,7 @@ The 'Status' column shows whether the document could be recovered.</string>
       <bool>true</bool>
      </property>
      <property name="text">
-      <string>Cleanup…</string>
+      <string>Cleanup</string>
      </property>
     </widget>
    </item>

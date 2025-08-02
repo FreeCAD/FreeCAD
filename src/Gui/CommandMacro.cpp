@@ -50,7 +50,8 @@ StdCmdDlgMacroRecord::StdCmdDlgMacroRecord()
   : Command("Std_DlgMacroRecord")
 {
     sGroup        = "Macro";
-    sMenuText     = QT_TR_NOOP("Record &Macro…");
+    sMenuText     = QT_TR_NOOP("Record &Macro");
+
     sToolTipText  = QT_TR_NOOP("Opens a dialog to record a macro");
     sWhatsThis    = "Std_DlgMacroRecord";
     sStatusTip    = sToolTipText;
@@ -93,7 +94,8 @@ StdCmdDlgMacroExecute::StdCmdDlgMacroExecute()
   : Command("Std_DlgMacroExecute")
 {
     sGroup        = "Macro";
-    sMenuText     = QT_TR_NOOP("Ma&cros…");
+    sMenuText     = QT_TR_NOOP("Ma&cros");
+
     sToolTipText  = QT_TR_NOOP("Opens a dialog to execute a recorded macro");
     sWhatsThis    = "Std_DlgMacroExecute";
     sStatusTip    = sToolTipText;
@@ -148,7 +150,8 @@ StdCmdMacroAttachDebugger::StdCmdMacroAttachDebugger()
   : Command("Std_MacroAttachDebugger")
 {
     sGroup        = "Macro";
-    sMenuText     = QT_TR_NOOP("&Attach to Remote Debugger…");
+    sMenuText     = QT_TR_NOOP("&Attach to Remote Debugger");
+
     sToolTipText  = QT_TR_NOOP("Attaches to a remotely running debugger");
     sWhatsThis    = "Std_MacroAttachDebugger";
     sStatusTip    = sToolTipText;

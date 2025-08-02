@@ -521,7 +521,8 @@ StdCmdMergeProjects::StdCmdMergeProjects()
 {
     sAppModule    = "File";
     sGroup        = "File";
-    sMenuText     = QT_TR_NOOP("&Merge Document…");
+    sMenuText     = QT_TR_NOOP("&Merge Document");
+
     sToolTipText  = QT_TR_NOOP("Merges another FreeCAD document into the active one");
 
     sWhatsThis    = "Std_MergeProjects";
@@ -575,7 +576,8 @@ StdCmdDependencyGraph::StdCmdDependencyGraph()
 {
     // setting the
     sGroup        = "Tools";
-    sMenuText     = QT_TR_NOOP("Dependency Gra&ph…");
+    sMenuText     = QT_TR_NOOP("Dependency Gra&ph");
+
     sToolTipText  = QT_TR_NOOP("Shows the dependency graph of the objects in the active document");
     sStatusTip    = sToolTipText;
     sWhatsThis    = "Std_DependencyGraph";
@@ -607,7 +609,8 @@ StdCmdExportDependencyGraph::StdCmdExportDependencyGraph()
   : Command("Std_ExportDependencyGraph")
 {
     sGroup        = "Tools";
-    sMenuText     = QT_TR_NOOP("Export Dependency &Graph…");
+    sMenuText     = QT_TR_NOOP("Export Dependency &Graph");
+
     QT_TR_NOOP("Exports the dependency graph as a Graphviz (.gv) file");
 
     sStatusTip    = sToolTipText;
@@ -737,7 +740,8 @@ StdCmdSaveCopy::StdCmdSaveCopy()
   :Command("Std_SaveCopy")
 {
   sGroup        = "File";
-  sMenuText     = QT_TR_NOOP("Save Cop&y…");
+  sMenuText     = QT_TR_NOOP("Save Cop&y");
+
   sToolTipText  = QT_TR_NOOP("Saves a copy of the active document under a new file name");
   sWhatsThis    = "Std_SaveCopy";
   sStatusTip    = sToolTipText;
@@ -831,7 +835,8 @@ StdCmdProjectInfo::StdCmdProjectInfo()
 {
   // setting the
   sGroup        = "File";
-  sMenuText     = QT_TR_NOOP("Doc&ument Information…");
+  sMenuText     = QT_TR_NOOP("Doc&ument Information");
+
   sToolTipText  = QT_TR_NOOP("Shows information about the active document");
   sWhatsThis    = "Std_ProjectInfo";
   sStatusTip    = sToolTipText;
@@ -862,7 +867,8 @@ StdCmdProjectUtil::StdCmdProjectUtil()
     // setting the
     sGroup        = "Tools";
     sWhatsThis    = "Std_ProjectUtil";
-    sMenuText     = QT_TR_NOOP("Do&cument Utility…");
+    sMenuText     = QT_TR_NOOP("Do&cument Utility");
+
     sToolTipText  = QT_TR_NOOP("Extracts or creates document files");
     sStatusTip    = sToolTipText;
     sPixmap       = "Std_ProjectUtil";
@@ -889,7 +895,8 @@ StdCmdPrint::StdCmdPrint()
   :Command("Std_Print")
 {
     sGroup        = "File";
-    sMenuText     = QT_TR_NOOP("&Print…");
+    sMenuText     = QT_TR_NOOP("&Print");
+
     sToolTipText  = QT_TR_NOOP("Prints the active document");
     sWhatsThis    = "Std_Print";
     sStatusTip    = sToolTipText;
@@ -921,7 +928,8 @@ StdCmdPrintPreview::StdCmdPrintPreview()
   :Command("Std_PrintPreview")
 {
     sGroup        = "File";
-    sMenuText     = QT_TR_NOOP("Print Previe&w…");
+    sMenuText     = QT_TR_NOOP("Print Previe&w");
+
     sToolTipText  = QT_TR_NOOP("Previews the active document before printing");
     sWhatsThis    = "Std_PrintPreview";
     sStatusTip    = sToolTipText;
@@ -951,7 +959,8 @@ StdCmdPrintPdf::StdCmdPrintPdf()
   :Command("Std_PrintPdf")
 {
     sGroup        = "File";
-    sMenuText     = QT_TR_NOOP("Export P&DF…");
+    sMenuText     = QT_TR_NOOP("Export P&DF");
+
     sToolTipText  = QT_TR_NOOP("Exports the active document as a PDF file");
     sWhatsThis    = "Std_PrintPdf";
     sStatusTip    = sToolTipText;
@@ -1521,7 +1530,8 @@ StdCmdTransform::StdCmdTransform()
   : Command("Std_Transform")
 {
     sGroup        = "Edit";
-    sMenuText     = QT_TR_NOOP("Transform…");
+    sMenuText     = QT_TR_NOOP("Transform");
+
     sToolTipText  = QT_TR_NOOP("Transforms the selected object");
     sStatusTip    = sToolTipText;
     sWhatsThis    = "Std_Transform";
@@ -1547,7 +1557,8 @@ StdCmdPlacement::StdCmdPlacement()
   : Command("Std_Placement")
 {
     sGroup        = "Edit";
-    sMenuText     = QT_TR_NOOP("P&lacement…");
+    sMenuText     = QT_TR_NOOP("P&lacement");
+
     sToolTipText  = QT_TR_NOOP("Opens the placement editor to adjust the placement of the selected object");
 
     sStatusTip    = sToolTipText;
@@ -1630,7 +1641,8 @@ StdCmdAlignment::StdCmdAlignment()
   : Command("Std_Alignment")
 {
     sGroup        = "Edit";
-    sMenuText     = QT_TR_NOOP("Ali&gn…");
+    sMenuText     = QT_TR_NOOP("Ali&gn To…");
+
     sToolTipText  = QT_TR_NOOP("Aligns the selected objects");
     sStatusTip    = sToolTipText;
     sWhatsThis    = "Std_Alignment";

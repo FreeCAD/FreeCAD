@@ -232,7 +232,8 @@ StdCmdWindows::StdCmdWindows()
   : Command("Std_Windows")
 {
     sGroup        = "Window";
-    sMenuText     = QT_TR_NOOP("&Windows…");
+    sMenuText     = QT_TR_NOOP("Choose Open &Window");
+
     sToolTipText  = QT_TR_NOOP("Displays the open windows");
     sWhatsThis    = "Std_Windows";
     sStatusTip    = sToolTipText;

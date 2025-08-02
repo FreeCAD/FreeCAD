@@ -481,7 +481,7 @@ display the splash screen.</string>
            <item>
             <widget class="QPushButton" name="SaveNewPreferencePack">
              <property name="text">
-              <string>Save as New…</string>
+              <string>Save as New</string>
              </property>
             </widget>
            </item>
@@ -494,14 +494,14 @@ display the splash screen.</string>
               </sizepolicy>
              </property>
              <property name="text">
-              <string>Manage…</string>
+              <string>Manage</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="RevertToSavedConfig">
              <property name="text">
-              <string>Revert…</string>
+              <string>Revert</string>
              </property>
             </widget>
            </item>

@@ -285,14 +285,14 @@
          <item>
           <widget class="QPushButton" name="newButton">
            <property name="text">
-            <string>New…</string>
+            <string>New</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="renameButton">
            <property name="text">
-            <string>Rename…</string>
+            <string>Rename</string>
            </property>
           </widget>
          </item>

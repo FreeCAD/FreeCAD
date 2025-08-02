@@ -422,7 +422,7 @@
 Select a set and then press the button to view said configurations.</string>
           </property>
           <property name="text">
-           <string>Mouse…</string>
+           <string>Mouse Configuration</string>
           </property>
          </widget>
         </item>
