@@ -87,6 +87,8 @@ TaskSolverMessages::TaskSolverMessages(const QPixmap& icon,
     createSettingsButtonActions();
 }
 
+TaskSolverMessages::~TaskSolverMessages() = default;
+
 void TaskSolverMessages::setupConnections()
 {
     connect(ui->labelStatusLink,
