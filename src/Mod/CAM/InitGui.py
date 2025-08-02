@@ -344,6 +344,7 @@ class CAMWorkbench(Workbench):
                     "Profile" in selectedName
                     or "Contour" in selectedName
                     or "Dressup" in selectedName
+                    or "Pocket" in selectedName
                 ):
                     self.appendContextMenu("", "Separator")
                     # self.appendContextMenu("", ["Set_StartPoint"])
