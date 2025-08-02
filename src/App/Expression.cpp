@@ -1745,6 +1745,7 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case TANH:
     case TRUNC:
     case VNORMALIZE:
+    case NOT:
         if (args.size() != 1)
             ARGUMENT_THROW("exactly one required.");
         break;
@@ -1755,6 +1756,10 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case TRANSLATIONM:
         if (args.size() != 1 && args.size() != 3)
             ARGUMENT_THROW("exactly one or three required.");
+        break;
+    case IF:
+        if (args.size() != 3)
+            ARGUMENT_THROW("exactly three required.");
         break;
     case ATAN2:
     case MOD:
@@ -1810,6 +1815,8 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case MIN:
     case STDDEV:
     case SUM:
+    case AND:
+    case OR:
         if (args.empty())
             ARGUMENT_THROW("at least one required.");
         break;
@@ -1973,6 +1980,36 @@ public:
     }
 };
 
+class AndCollector : public Collector {
+public:
+    void collect(Quantity value) override
+    {
+        if (first) {
+            q = Quantity(value.getValue() == 0 ? 0 : 1);
+            first = false;
+            return;
+        }
+        if (value.getValue() == 0) {
+            q = Quantity(0);
+        }
+    }
+};
+
+class OrCollector : public Collector {
+public:
+    void collect(Quantity value) override
+    {
+        if (first) {
+            q = Quantity(value.getValue() == 0 ? 0 : 1);
+            first = false;
+            return;
+        }
+        if (value.getValue() != 0) {
+            q = Quantity(1);
+        }
+    }
+};
+
 Py::Object FunctionExpression::evalAggregate(
         const Expression *owner, int f, const std::vector<Expression*> &args)
 {
@@ -1996,6 +2033,12 @@ Py::Object FunctionExpression::evalAggregate(
         break;
     case MAX:
         c = std::make_unique<MaxCollector>();
+        break;
+    case AND:
+        c = std::make_unique<AndCollector>();
+        break;
+    case OR:
+        c = std::make_unique<OrCollector>();
         break;
     default:
         assert(false);
@@ -2378,6 +2421,11 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
             return Py::asObject(new Base::VectorPy(vector1));
         }
     }
+    case IF: {
+        Py::Object condObj = args[0]->getPyValue();
+        int select = pyToQuantity(condObj, expr, "Invalid condition.").getValue() != 0.0 ? 1 : 2;
+        return args[select]->getPyValue();
+    }
     }
 
     Py::Object e1 = args[0]->getPyValue();
@@ -2499,6 +2547,9 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         if (v1.isDimensionlessOrUnit(Unit::Length) && v2.isDimensionlessOrUnit(Unit::Length) && v3.isDimensionlessOrUnit(Unit::Length))
             break;
         _EXPR_THROW("Translation units must be a length or dimensionless.", expr);
+    case NOT:
+        unit = Unit();
+        break;
     default:
         _EXPR_THROW("Unknown function: " << f,0);
     }
@@ -2590,6 +2641,9 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
             value)));
     case TRANSLATIONM:
         return translationMatrix(v1.getValue(), v2.getValue(), v3.getValue());
+    case NOT:
+        output = value == 0 ? 1 : 0;
+        break;
     default:
         _EXPR_THROW("Unknown function: " << f,0);
     }
@@ -2691,6 +2745,8 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
         ss << "tanh("; break;;
     case TRUNC:
         ss << "trunc("; break;;
+    case IF:
+        ss << "if("; break;;
     case VANGLE:
         ss << "vangle("; break;;
     case VCROSS:
@@ -2773,6 +2829,12 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
         ss << "stddev("; break;;
     case SUM:
         ss << "sum("; break;;
+    case AND:
+        ss << "and("; break;;
+    case OR:
+        ss << "or("; break;;
+    case NOT:
+        ss << "not("; break;;
     default:
         ss << fname << "("; break;;
     }
@@ -3623,6 +3685,7 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["tan"] = FunctionExpression::TAN;
         registered_functions["tanh"] = FunctionExpression::TANH;
         registered_functions["trunc"] = FunctionExpression::TRUNC;
+        registered_functions["if"] = FunctionExpression::IF;
         registered_functions["vangle"] = FunctionExpression::VANGLE;
         registered_functions["vcross"] = FunctionExpression::VCROSS;
         registered_functions["vdot"] = FunctionExpression::VDOT;
@@ -3662,6 +3725,8 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["hiddenref"] = FunctionExpression::HIDDENREF;
         registered_functions["href"] = FunctionExpression::HREF;
 
+        registered_functions["not"] = FunctionExpression::NOT;
+
         // Aggregates
         registered_functions["average"] = FunctionExpression::AVERAGE;
         registered_functions["count"] = FunctionExpression::COUNT;
@@ -3669,6 +3734,8 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["min"] = FunctionExpression::MIN;
         registered_functions["stddev"] = FunctionExpression::STDDEV;
         registered_functions["sum"] = FunctionExpression::SUM;
+        registered_functions["and"] = FunctionExpression::AND;
+        registered_functions["or"] = FunctionExpression::OR;
 
         has_registered_functions = true;
     }

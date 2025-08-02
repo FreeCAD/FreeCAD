@@ -82,7 +82,7 @@ input:     exp                                  { ScanResult = $1; valueExpressi
      |     unit_exp                             { ScanResult = $1; unitExpression = true;                                         }
      ;
 
-unit_num: num unit_exp %prec NUM_AND_UNIT       { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::UNIT, $2);  } 
+unit_num: num unit_exp %prec NUM_AND_UNIT       { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::UNIT, $2);  }
         | num us_building_unit num us_building_unit %prec NUM_AND_UNIT   { $$ = new OperatorExpression(DocumentObject, new OperatorExpression(DocumentObject, $1, OperatorExpression::UNIT, $2), OperatorExpression::ADD, new OperatorExpression(DocumentObject, $3, OperatorExpression::UNIT, $4));}
         ;
 
@@ -112,10 +112,13 @@ num:       ONE                                  { $$ = new NumberExpression(Docu
 
 args: exp                                       { $$.push_back($1);                                                               }
     | range                                     { $$.push_back($1);                                                               }
+    | cond                                      { $$.push_back($1);                                                               }
     | args ',' exp                              { $1.push_back($3);  $$ = $1;                                                     }
     | args ';' exp                              { $1.push_back($3);  $$ = $1;                                                     }
     | args ',' range                            { $1.push_back($3);  $$ = $1;                                                     }
     | args ';' range                            { $1.push_back($3);  $$ = $1;                                                     }
+    | args ',' cond                             { $1.push_back($3);  $$ = $1;                                                     }
+    | args ';' cond                             { $1.push_back($3);  $$ = $1;                                                     }
     ;
 
 range: id_or_cell ':' id_or_cell                { $$ = new RangeExpression(DocumentObject, $1, $3);                               }

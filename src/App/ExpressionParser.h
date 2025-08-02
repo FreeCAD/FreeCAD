@@ -321,6 +321,7 @@ public:
         TAN,
         TANH,
         TRUNC,
+        IF,
 
         // Vector
         VANGLE,
@@ -365,6 +366,9 @@ public:
         HIDDENREF,  // hidden reference that has no dependency check
         HREF,       // deprecated alias of HIDDENREF
 
+        // Non aggregated logical
+        NOT,   // logical NOT
+
         // Aggregates
         AGGREGATES,
 
@@ -374,6 +378,10 @@ public:
         MIN,
         STDDEV,
         SUM,
+
+        // Logical aggregates, evaluates to {0,1}
+        AND,  // logical AND
+        OR,  // logical OR
 
         // Last one
         LAST,
