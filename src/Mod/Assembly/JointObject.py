@@ -174,6 +174,8 @@ class Joint:
     def __init__(self, joint, type_index):
         joint.Proxy = self
 
+        joint.addExtension("App::SuppressibleExtensionPython")
+
         joint.addProperty(
             "App::PropertyEnumeration",
             "JointType",
@@ -196,6 +198,7 @@ class Joint:
         self.migrationScript2(joint)
         self.migrationScript3(joint)
         self.migrationScript4(joint)
+        self.migrationScript5(joint)
 
         # First Joint Connector
         if not hasattr(joint, "Reference1"):
@@ -313,19 +316,6 @@ class Joint:
                 ),
                 locked=True,
             )
-
-        if not hasattr(joint, "Activated"):
-            joint.addProperty(
-                "App::PropertyBool",
-                "Activated",
-                "Joint",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "This indicates if the joint is active.",
-                ),
-                locked=True,
-            )
-            joint.Activated = True
 
         if not hasattr(joint, "EnableLengthMin"):
             joint.addProperty(
@@ -563,6 +553,23 @@ class Joint:
         processReference("Reference1")
         processReference("Reference2")
 
+    def migrationScript5(self, joint):
+        if not joint.hasExtension("App::SuppressibleExtensionPython"):
+            joint.addExtension("App::SuppressibleExtensionPython")
+
+        if App.GuiUp:
+            if not joint.ViewObject.hasExtension("Gui::ViewProviderSuppressibleExtensionPython"):
+                joint.ViewObject.addExtension("Gui::ViewProviderSuppressibleExtensionPython")
+
+        if hasattr(joint, "Activated"):
+            activated = joint.Activated
+            if not activated:
+                print(
+                    "The 'Activated' property has been replaced by the 'Suppressed' property. Your file has a deactivated joint that is being migrated. If you open back this file in an older version, it will not be deactivated anymore."
+                )
+            joint.removeProperty("Activated")
+            joint.Suppressed = not activated
+
     def dumps(self):
         return None
 
@@ -573,6 +580,9 @@ class Joint:
         for obj in joint.InList:
             if obj.isDerivedFrom("Assembly::AssemblyObject"):
                 return obj
+            elif obj.isDerivedFrom("Assembly::AssemblyLink"):
+                return self.getAssembly(obj)
+
         return None
 
     def setJointType(self, joint, newType):
@@ -744,10 +754,10 @@ class Joint:
 
         isAssembly = assembly.Type == "Assembly"
         if isAssembly:
-            joint.Activated = False
+            joint.Suppressed = True
             part1Connected = assembly.isPartConnected(part1)
             part2Connected = assembly.isPartConnected(part2)
-            joint.Activated = True
+            joint.Suppressed = False
         else:
             part1Connected = True
             part2Connected = False
@@ -850,6 +860,8 @@ class ViewProviderJoint:
 
         vobj.Proxy = self
 
+        vobj.addExtension("Gui::ViewProviderSuppressibleExtensionPython")
+
     def attach(self, vobj):
         """Setup the scene sub-graph of the view provider, this method is mandatory"""
         self.app_obj = vobj.Object
@@ -945,6 +957,24 @@ class ViewProviderJoint:
             return ":/icons/Assembly_CreateJointPulleys.svg"
 
         return ":/icons/Assembly_CreateJoint.svg"
+
+    def getOverlayIcons(self):
+        """
+        Return a dictionary of overlay icons.
+        Keys are positions from Gui.IconPosition.
+        Values are the icon resource names.
+        """
+
+        overlays = {}
+
+        assembly = self.app_obj.Proxy.getAssembly(self.app_obj)
+        # Assuming Reference1 corresponds to the first part link
+        if hasattr(self.app_obj, "Reference1"):
+            part = UtilsAssembly.getMovingPart(assembly, self.app_obj.Reference1)
+            if part is not None and not assembly.isPartConnected(part):
+                overlays[Gui.IconPosition.BottomLeft] = "Part_Detached"
+
+        return overlays
 
     def dumps(self):
         """When saving the document this object gets stored using Python's json module.\

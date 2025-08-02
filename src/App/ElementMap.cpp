@@ -8,6 +8,7 @@
 
 #include "ElementMap.h"
 #include "ElementNamingUtils.h"
+// #include <chrono>
 
 #include "App/Application.h"
 #include "Base/Console.h"
@@ -717,7 +718,9 @@ MappedName ElementMap::hashElementName(const MappedName& name, ElementIDRefs& si
         }
         sids = tmp;
     }
-    return MappedName(sid.toString());
+    std::string sidString = sid.toString();
+
+    return MappedName(sidString);
 }
 
 MappedName ElementMap::dehashElementName(const MappedName& name) const
@@ -1276,7 +1279,6 @@ MappedElement ElementMap::complexFind(const MappedName& name) const {
         if (loopElement.dehashedName.empty()) {
             continue;
         }
-
         if (originalElement.splitSections.size() != loopElement.splitSections.size()) {
             continue;
         }
@@ -1390,7 +1392,6 @@ MappedElement ElementMap::complexFind(const MappedName& name) const {
             foundUnfilteredSizeDifference = currentUnfilteredSizeDifference;
         }
     }
-
     return foundName;
 }
 
@@ -1399,7 +1400,7 @@ IndexedName ElementMap::find(const MappedName& name, ElementIDRefs* sids) const
     auto nameIter = mappedNames.find(name);
     if (nameIter == mappedNames.end()) {
         if (childElements.isEmpty()) {
-            return IndexedName();
+            return (complexFind(name).index);
         }
 
         int len = 0;
@@ -1453,8 +1454,19 @@ IndexedName ElementMap::find(const MappedName& name, ElementIDRefs* sids) const
 MappedElement ElementMap::findMappedElement(const MappedName &name, ElementIDRefs* sids) const {
     auto nameIter = mappedNames.find(name);
     if (nameIter == mappedNames.end()) {
+        if (migrationEnabled && !migrationList.empty()) {
+            for (const auto &item : migrationList) {
+                if (item.oldElement.name.toString() == name.toString()) {
+                    FC_WARN("found migration! old name: " << item.oldElement.name);
+                    FC_WARN("found migration! new name: " << item.newElement.name);
+                    return item.newElement;
+                }
+            }
+        }
+
         if (childElements.isEmpty()) {
-            return complexFind(name);
+            FC_WARN("ret emp 1");
+            return MappedElement();
         }
 
         int len = 0;
@@ -1481,8 +1493,7 @@ MappedElement ElementMap::findMappedElement(const MappedName &name, ElementIDRef
         if (res.index && boost::equals(res.index.getType(), child.indexedName.getType())
             && child.indexedName.getIndex() <= res.index.getIndex()
             && child.indexedName.getIndex() + child.count > res.index.getIndex()) {
-            res.index.setIndex(res.index.getIndex() + it.value().childMap->offset);
-            
+            res.index.setIndex(res.index.getIndex() + it.value().childMap->offset);            
             // return the original name, since the mapped one is likely incorrect.
             return MappedElement(name, res.index);
         }
@@ -1822,9 +1833,10 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
 
         ChildMapInfo* entry = nullptr;
 
-        // do child mapping only if the child element count >= 5
-        const int threshold {5};
-        if (child.count >= threshold || !child.elementMap) {
+        // this is old code that caused extra shape tags and faulty code to check
+        // if there are duplicated tags
+
+        if (!child.elementMap) {
             encodeElementName(child.indexedName[0],
                               tmp,
                               ss,
@@ -1846,7 +1858,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
             }
         }
 
-        if (!entry) {
+        if (entry == nullptr) {
             IndexedName childIdx(child.indexedName);
             IndexedName idx(childIdx.getType(), childIdx.getIndex() + child.offset);
             for (int i = 0; i < child.count; ++i, ++childIdx, ++idx) {
@@ -1863,14 +1875,15 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
                 }
                 ss.str("");
                 encodeElementName(idx[0],
-                                  name,
-                                  ss,
-                                  &sids,
-                                  masterTag,
-                                  child.postfix.constData(),
-                                  child.tag);
+                                    name,
+                                    ss,
+                                    &sids,
+                                    masterTag,
+                                    child.postfix.constData(),
+                                    child.tag);
                 setElementName(idx, name, masterTag, &sids);
             }
+
             continue;
         }
 
@@ -1883,7 +1896,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
             // disambiguation. We don't need to extract the index.
             ss.str("");
             ss << ELEMENT_MAP_PREFIX << ":C" << entry->index - 1;
-
+            
             tmp.clear();
             encodeElementName(child.indexedName[0],
                               tmp,
@@ -2014,6 +2027,38 @@ long ElementMap::getElementHistory(const MappedName& name,
         tag = tag2;
         if (history) {
             history->push_back(ret.copy());
+        }
+    }
+}
+
+void ElementMap::enableMigration(std::vector<Data::MappedElement> &oldMap) {
+    std::vector<MappedElement> newMap = getAll();
+
+    if (newMap.size() == oldMap.size()) {
+        migrationEnabled = true;
+        std::vector<std::string> mappedIndexedNames;
+
+        // run two loops because the order of each item will vary.
+        for (const auto &oldItem : oldMap) {
+            std::string oldItemStr = oldItem.index.toString();
+
+            for (const auto &newItem : newMap) { 
+                std::string newItemStr = newItem.index.toString();
+
+                if (!oldItemStr.empty() && oldItemStr == newItemStr && oldItem.name.toString() != newItem.name.toString()) {
+                    if (std::find(mappedIndexedNames.begin(), 
+                                    mappedIndexedNames.end(), 
+                                    oldItemStr) == mappedIndexedNames.end()) 
+                    {
+                        mappedIndexedNames.push_back(oldItemStr);
+                        MigrationItem migrationItem = MigrationItem();
+
+                        migrationItem.oldElement = oldItem;
+                        migrationItem.newElement = newItem;
+                        migrationList.push_back(migrationItem);
+                    }
+                }
+            }
         }
     }
 }

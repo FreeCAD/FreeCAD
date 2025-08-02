@@ -82,6 +82,7 @@ public:
     static constexpr const char *RuledSurface = "RSF";
     static constexpr const char *Mirror = "MIR";
     static constexpr const char *Sketch = "SKT";
+    static constexpr const char *SketchInternalFace = "SIF";
     static constexpr const char *SketchExport = "SKE";
     static constexpr const char *Shapebinder = "BND";
     static constexpr const char *ThruSections = "TRU";

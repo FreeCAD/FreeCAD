@@ -126,23 +126,20 @@ class Trimex(gui_base_original.Modifier):
             self.obj = sel.Object
             if len(self.obj.Shape.Faces) == 1:
                 # simple extrude mode, the object itself is extruded
-                self.extrudeMode = True
-                self.ghost = [trackers.ghostTracker([self.obj])]
-                self.normal = self.obj.Shape.Faces[0].normalAt(0.5, 0.5)
-                self.ghost += [trackers.lineTracker() for _ in self.obj.Shape.Vertexes]
+                pass
             elif len(sel.SubObjects) == 1 and sel.SubObjects[0].ShapeType == "Face":
                 # face extrude mode, a new object is created
                 self.obj = self.doc.addObject("Part::Feature", "Face")
                 self.obj.Shape = sel.SubObjects[0]
-                self.extrudeMode = True
-                self.ghost = [trackers.ghostTracker([self.obj])]
-                self.normal = self.obj.Shape.Faces[0].normalAt(0.5, 0.5)
-                self.ghost += [trackers.lineTracker() for _ in self.obj.Shape.Vertexes]
             else:
                 self.obj = None
                 self.finish()
                 _err(translate("draft", "Only a single face can be extruded."))
                 return
+            self.extrudeMode = True
+            self.normal = self.obj.Shape.Faces[0].normalAt(0.5, 0.5)
+            self.ghost = [trackers.ghostTracker([self.obj]), trackers.lineTracker(dotted=True)]
+            self.ghost += [trackers.lineTracker() for _ in self.obj.Shape.Vertexes]
         else:
             # normal wire trimex mode
             self.color = self.obj.ViewObject.LineColor
@@ -201,6 +198,8 @@ class Trimex(gui_base_original.Modifier):
         if arg["Type"] == "SoKeyboardEvent":
             if arg["Key"] == "ESCAPE":
                 self.finish()
+        elif not self.ui.mouse:
+            pass
         elif arg["Type"] == "SoLocation2Event":  # mouse movement detection
             self.shift = gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_constrain_key())
             self.alt = gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key())
@@ -271,10 +270,14 @@ class Trimex(gui_base_original.Modifier):
         if real:
             return delta
         self.ghost[0].trans.translation.setValue([delta.x, delta.y, delta.z])
-        for i in range(1, len(self.ghost)):
-            base = self.obj.Shape.Vertexes[i-1].Point
+        # Update the dotted lineTracker:
+        self.ghost[1].p1(self.newpoint)
+        self.ghost[1].p2(self.newpoint + dvec)
+        # Update the vertex lineTrackers:
+        for i in range(2, len(self.ghost)):
+            base = self.obj.Shape.Vertexes[i-2].Point
             self.ghost[i].p1(base)
-            self.ghost[i].p2(base.add(delta))
+            self.ghost[i].p2(base + delta)
         return delta.Length
 
     def redraw(self, point, snapped=None, shift=False, alt=False, real=None):

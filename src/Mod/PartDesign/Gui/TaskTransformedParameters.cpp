@@ -569,7 +569,6 @@ void TaskTransformedParameters::exitSelectionMode()
         clearButtons();
         selectionMode = SelectionMode::None;
         Gui::Selection().rmvSelectionGate();
-        showObject();
     }
     catch (Base::Exception& exc) {
         exc.reportException();

@@ -114,6 +114,7 @@ private:
 private:
     TopoShape _Shape;
     std::string _Ver;
+    bool needsToMigrate = false;
     mutable int _HasherIndex = 0;
     mutable bool _SaveHasher = false;
 };

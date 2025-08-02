@@ -102,6 +102,8 @@ class Rotate(gui_base_original.Modifier):
         """
         if arg["Type"] == "SoKeyboardEvent" and arg["Key"] == "ESCAPE":
             self.finish()
+        elif not self.ui.mouse:
+            pass
         elif arg["Type"] == "SoLocation2Event":
             self.handle_mouse_move_event(arg)
         elif (arg["Type"] == "SoMouseButtonEvent"

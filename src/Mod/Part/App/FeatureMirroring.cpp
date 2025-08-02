@@ -38,6 +38,7 @@
 # include <TopExp_Explorer.hxx>
 #endif
 
+#include <App/Document.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
 #include <App/Link.h>
 #include <App/Datums.h>
@@ -263,7 +264,7 @@ App::DocumentObjectExecReturn *Mirroring::execute()
         auto shape = Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
         if (shape.isNull())
             Standard_Failure::Raise("Cannot mirror empty shape");
-        this->Shape.setValue(TopoShape(0).makeElementMirror(shape,ax2));
+        this->Shape.setValue(TopoShape(0, getDocument()->getStringHasher()).makeElementMirror(shape,ax2));
         copyMaterial(link);
 
         return Part::Feature::execute();

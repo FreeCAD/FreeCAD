@@ -66,14 +66,26 @@ PropertyPartShape::~PropertyPartShape() = default;
 void PropertyPartShape::setValue(const TopoShape& sh)
 {
     aboutToSetValue();
+    TopoShape oldShape = _Shape;
     _Shape = sh;
+
     auto obj = freecad_cast<App::DocumentObject*>(getContainer());
     if(obj) {
+        if (needsToMigrate && obj->getDocument() && !obj->getDocument()->isAnyRestoring()) {
+            _Shape.enableMigration(oldShape.getElementMap());
+            needsToMigrate = false;
+        }
+        if(_Shape.getElementMap().size() != sh.getElementMap().size()) {
+            TopoShape res(obj->getID(), sh.Hasher, _Shape.getShape());
+            res.mapSubElement(_Shape);
+            _Shape = res;
+        }
         auto tag = obj->getID();
         if(_Shape.Tag && tag!=_Shape.Tag) {
-            auto hasher = _Shape.Hasher?_Shape.Hasher:obj->getDocument()->getStringHasher();
+            auto hasher = _Shape.Hasher ? _Shape.Hasher : obj->getDocument()->getStringHasher();
+
             _Shape.reTagElementMap(tag,hasher);
-        } else
+        } else 
             _Shape.Tag = obj->getID();
         if (!_Shape.Hasher && _Shape.hasChildElementMap()) {
             _Shape.Hasher = obj->getDocument()->getStringHasher();
@@ -88,9 +100,11 @@ void PropertyPartShape::setValue(const TopoDS_Shape& sh, bool resetElementMap)
 {
     aboutToSetValue();
     auto obj = dynamic_cast<App::DocumentObject*>(getContainer());
-    if(obj)
+    if(obj) {
         _Shape.Tag = obj->getID();
+    }
     _Shape.setShape(sh,resetElementMap);
+    
     hasSetValue();
     _Ver.clear();
 }
@@ -271,14 +285,11 @@ void PropertyPartShape::Save (Base::Writer &writer) const
     }
     std::string version;
     // If exporting, do not export mapped element name, but still make a mark
-    auto const version_valid = _Ver.size() && (_Ver != "?");
-    if (owner) {
-        if (!owner->isExporting()) {
-            version = version_valid ? _Ver : owner->getElementMapVersion(this);
-        }
-    } else {
-        version = version_valid ? _Ver : _Shape.getElementMapVersion();
-    }
+    if(owner) {
+        if(!owner->isExporting())
+            version = _Ver.size()?_Ver:owner->getElementMapVersion(this);
+    }else
+        version = _Ver.size()?_Ver:_Shape.getElementMapVersion();
     writer.Stream() << " ElementMap=\"" << version << '"';
 
     bool binary = writer.getMode("BinaryBrep");
@@ -376,7 +387,7 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
             if (owner ? owner->checkElementMapVersion(this, _Ver.c_str())
                       : _Shape.checkElementMapVersion(_Ver.c_str())) {
                 auto ver = owner?owner->getElementMapVersion(this):_Shape.getElementMapVersion();
-                if(!owner || !owner->getNameInDocument() || !_Shape.getElementMapSize()) {
+                if(!owner || !owner->getNameInDocument()) {
                     _Ver = ver;
                 } else {
                     // version mismatch, signal for regenerating.
@@ -384,10 +395,13 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
                     if(warnedDoc != owner->getDocument()->getName()) {
                         warnedDoc = owner->getDocument()->getName();
                         FC_WARN("Recomputation required for document '" << warnedDoc
-                                                                        << "' on geo element version change in " << getFullName()
+                                                                        << "' on toponaming change for " << getFullName()
                                                                         << ": " << _Ver << " -> " << ver);
                     }
                     owner->getDocument()->addRecomputeObject(owner);
+
+                    // tell the element map that it needs to migrate
+                    needsToMigrate = true;
                 }
             }
         }

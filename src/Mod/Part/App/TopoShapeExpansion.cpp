@@ -974,7 +974,6 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
                     }
                 }
                 ss.str("");
-
                 ensureElementMap()->encodeElementName(shapetype[0], name, ss, &sids, Tag, op, other.Tag);
                 elementMap()->setElementName(element, name, Tag, &sids);
             }
@@ -2057,6 +2056,14 @@ TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent
     }
 
     return shapeMap.getTopoShape(*this, idx);
+}
+
+void TopoShape::enableMigration(std::vector<Data::MappedElement> oldMap) {
+    auto elementMap = this->elementMap(true);
+
+    if (elementMap && !oldMap.empty()) {
+        elementMap->enableMigration(oldMap);
+    }
 }
 
 static const std::string& _getElementMapVersion()
@@ -4591,7 +4598,8 @@ TopoShape& TopoShape::makeElementDraft(const TopoShape& shape,
 TopoShape& TopoShape::makeElementFace(const TopoShape& shape,
                                       const char* op,
                                       const char* maker,
-                                      const gp_Pln* plane)
+                                      const gp_Pln* plane,
+                                      const int faceElementSupportLimit)
 {
     std::vector<TopoShape> shapes;
     if (shape.isNull()) {
@@ -4603,19 +4611,21 @@ TopoShape& TopoShape::makeElementFace(const TopoShape& shape,
     else {
         shapes.push_back(shape);
     }
-    return makeElementFace(shapes, op, maker, plane);
+    return makeElementFace(shapes, op, maker, plane, faceElementSupportLimit);
 }
 
 TopoShape& TopoShape::makeElementFace(const std::vector<TopoShape>& shapes,
                                       const char* op,
                                       const char* maker,
-                                      const gp_Pln* plane)
+                                      const gp_Pln* plane,
+                                      const int faceElementSupportLimit)
 {
     if (!maker || !maker[0]) {
         maker = "Part::FaceMakerBullseye";
     }
     std::unique_ptr<FaceMaker> mkFace = FaceMaker::ConstructFromType(maker);
     mkFace->MyHasher = Hasher;
+    mkFace->setElementSupportLimit(faceElementSupportLimit);
     mkFace->MyOp = op;
     if (plane) {
         mkFace->setPlane(*plane);
@@ -5241,15 +5251,15 @@ bool TopoShape::isLinearEdge(Base::Vector3d* dir, Base::Vector3d* base) const
         return false;
     }
 
-    if (!GeomCurve::isLinear(BRepAdaptor_Curve(TopoDS::Edge(getShape())).Curve().Curve(),
-                             dir,
-                             base)) {
+    auto tdsEdge = TopoDS::Edge(getShape());
+    if (tdsEdge.IsNull()) {
         return false;
     }
 
     // BRep_Tool::Curve() will transform the returned geometry, so no need to
     // check the shape's placement.
-    return true;
+    auto curve = BRepAdaptor_Curve(tdsEdge).Curve().Curve();
+    return curve && GeomCurve::isLinear(curve);
 }
 
 bool TopoShape::isPlanarFace(double tol) const

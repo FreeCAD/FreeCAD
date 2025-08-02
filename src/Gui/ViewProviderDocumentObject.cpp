@@ -331,8 +331,8 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
     // save Object pointer
     pcObject = pcObj;
 
-    if(pcObj && pcObj->isAttachedToDocument() &&
-       Visibility.getValue()!=pcObj->Visibility.getValue())
+    if (pcObj && pcObj->isAttachedToDocument()
+        && Visibility.getValue()!=pcObj->Visibility.getValue())
         pcObj->Visibility.setValue(Visibility.getValue());
 
     // Retrieve the supported display modes of the view provider

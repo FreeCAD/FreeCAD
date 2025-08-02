@@ -574,6 +574,53 @@ class DraftDimensionGuiTools(GuiTools):
             obj.ViewObject.TextPosition = v
 
 
+class DraftLabelGuiTools(GuiTools):
+
+    def __init__(self):
+        pass
+
+    def get_edit_points(self, obj):
+        editpoints = []
+        if obj.StraightDirection != "Custom":
+            editpoints.append(obj.Points[0])
+            editpoints.append(obj.Points[1])
+            editpoints.append(obj.Points[2])
+            if editpoints[0].isEqual(editpoints[1], 0.001):
+                # If StraightDistance == 0.0, editpoint 1 is exactly on editpoint 0 => Move slightly editpoint 1 to allow selection of editpoint 0
+                editpoints[1] = 0.9 * editpoints[1] + 0.1 * editpoints[2]
+        else:
+            pass # TODO : support custom direction with any number of points
+        return editpoints
+
+    def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
+        if obj.StraightDirection != "Custom":
+            if node_idx == 0:
+                vector_p1_p2 = obj.Placement.inverse().multVec(obj.Points[1]) - obj.Placement.inverse().multVec(v)
+                if obj.StraightDirection == "Horizontal":
+                    if round(vector_p1_p2.y, utils.precision()) == 0.0:
+                        obj.StraightDistance = vector_p1_p2.x
+                elif obj.StraightDirection == "Vertical":
+                    if round(vector_p1_p2.x, utils.precision()) == 0.0:
+                        obj.StraightDistance = vector_p1_p2.y
+                obj.Placement.Base = v
+            elif node_idx == 1:
+                vector_p1_p2 = obj.Placement.inverse().multVec(v) - obj.Placement.inverse().multVec(obj.Placement.Base)
+                if obj.StraightDirection == "Horizontal":
+                    if round(vector_p1_p2.y, utils.precision()) == 0.0:
+                        obj.StraightDistance = vector_p1_p2.x
+                    else:
+                        obj.Placement.Base = obj.Placement.Base + (v - obj.Points[1])
+                elif obj.StraightDirection == "Vertical":
+                    if round(vector_p1_p2.x, utils.precision()) == 0.0:
+                        obj.StraightDistance = vector_p1_p2.y
+                    else:
+                        obj.Placement.Base = obj.Placement.Base + (v - obj.Points[1])
+            elif node_idx == 2:
+                obj.TargetPoint = v
+        else:
+            pass # TODO : support custom direction with any number of points
+
+
 class DraftBezCurveGuiTools(GuiTools):
 
     def __init__(self):
