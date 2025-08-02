@@ -126,7 +126,7 @@ Requires to re-enter edit mode to take effect.</string>
          <string>Allows to leave the sketch edit mode by pressing the Esc key</string>
         </property>
         <property name="text">
-         <string>Esc can leave sketch edit mode</string>
+         <string>Esc key can leave sketch edit mode</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -145,7 +145,7 @@ Requires to re-enter edit mode to take effect.</string>
          <string>Notifies about automatic constraint substitutions</string>
         </property>
         <property name="text">
-         <string>Notify automatic constraint substitutions</string>
+         <string>Notify about automatic constraint substitutions</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -183,7 +183,7 @@ Requires to re-enter edit mode to take effect.</string>
          <string>Unifies the horizontal and vertical constraints to an automatic command</string>
         </property>
         <property name="text">
-         <string>Auto tool for horizontal/vertical constraints</string>
+         <string>Unified tool for automatic horizontal/vertical constraints</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -221,7 +221,7 @@ Requires to re-enter edit mode to take effect.</string>
          <string>Always adds external geometry as construction geometry. Otherwise, it is added according to the current construction mode.</string>
         </property>
         <property name="text">
-         <string>Always add external geometry as reference</string>
+         <string>Always add external geometry as construction</string>
         </property>
         <property name="checked">
          <bool>false</bool>

@@ -41,7 +41,7 @@ using namespace Gui::TaskView;
 namespace sp = std::placeholders;
 
 TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch* sketchView)
-    : TaskBox(Gui::BitmapFactory().pixmap("Sketcher_Sketch"), tr("Solver messages"), true, nullptr)
+    : TaskBox(Gui::BitmapFactory().pixmap("Sketcher_Sketch"), tr("Solver Messages"), true, nullptr)
     , sketchView(sketchView)
     , ui(new Ui_TaskSketcherMessages)
 {
@@ -96,7 +96,7 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch* sketchView)
 
     sketchView->getSketchObject()->noRecomputes = !state;
 
-    QAction* action = new QAction(tr("Auto Update"), this);
+    QAction* action = new QAction(tr("Auto-update"), this);
     action->setToolTip(tr("Executes a recomputation of active document after every sketch action"));
     action->setCheckable(true);
     action->setChecked(state);
