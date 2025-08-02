@@ -266,7 +266,7 @@ void CrossSections::apply()
         section->purgeTouched();
     }
 #else
-    Base::SequencerLauncher seq("Cross-sections...", obj.size() * (d.size() +1));
+    Base::SequencerLauncher seq("Cross-sections…", obj.size() * (d.size() + 1));
     Gui::Command::runCommand(Gui::Command::App, "import Part\n");
     Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base\n");
     for (auto it : obj) {

@@ -177,7 +177,7 @@ bool LoftWidget::accept()
 
     int count = d->ui.selector->selectedTreeWidget()->topLevelItemCount();
     if (count < 2) {
-        QMessageBox::critical(this, tr("Too few elements"), tr("At least two vertices, edges, wires or faces are required."));
+        QMessageBox::critical(this, tr("Too few elements"), tr("At least 2 vertices, edges, wires, or faces are required."));
         return false;
     }
     for (int i=0; i<count; i++) {

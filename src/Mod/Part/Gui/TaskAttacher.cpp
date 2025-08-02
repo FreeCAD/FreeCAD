@@ -341,7 +341,7 @@ bool TaskAttacher::updatePreview()
             ui->message->setStyleSheet(QStringLiteral("QLabel{color: green;}"));
         }
     }
-    QString splmLabelText = attached ? tr("Attachment Offset (in local coordinates):") : tr("Attachment Offset (inactive - not attached):");
+    QString splmLabelText = attached ? tr("Attachment offset (in its local coordinate system):") : tr("Attachment offset (inactive - not attached):");
     ui->groupBox_AttachmentOffset->setTitle(splmLabelText);
     ui->groupBox_AttachmentOffset->setEnabled(attached);
 
@@ -876,7 +876,7 @@ void TaskAttacher::updateRefButton(int idx)
     b->setChecked(iActiveRef == idx);
 
     if (iActiveRef == idx) {
-        b->setText(tr("Selecting..."));
+        b->setText(tr("Selecting…"));
     }
     else if (idx < static_cast<int>(this->lastSuggestResult.references_Types.size())) {
         b->setText(AttacherGui::getShapeTypeText(this->lastSuggestResult.references_Types[idx]));
@@ -1293,7 +1293,7 @@ bool TaskDlgAttacher::accept()
         Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Datum dialog: Input error"), QCoreApplication::translate("Exception", e.what()));
+        QMessageBox::warning(parameter, tr("Datum dialog: input error"), QCoreApplication::translate("Exception", e.what()));
         return false;
     }
 

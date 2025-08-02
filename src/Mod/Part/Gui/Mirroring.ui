@@ -11,19 +11,19 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Mirroring</string>
+   <string>Mirror</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="3" column="0" colspan="2">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Base point</string>
+      <string>Base Point</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>x</string>
+         <string>X</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -46,7 +46,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>y</string>
+         <string>Y</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -69,7 +69,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>z</string>
+         <string>Z</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -95,7 +95,7 @@
    <item row="1" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Mirror plane:</string>
+      <string>Mirror plane</string>
      </property>
     </widget>
    </item>
@@ -103,17 +103,17 @@
     <widget class="QComboBox" name="comboBox">
      <item>
       <property name="text">
-       <string>XY plane</string>
+       <string>XY-plane</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>XZ plane</string>
+       <string>XZ-plane</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>YZ plane</string>
+       <string>YZ-plane</string>
       </property>
      </item>
      <item>
