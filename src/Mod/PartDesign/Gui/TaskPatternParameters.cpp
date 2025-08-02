@@ -225,6 +225,7 @@ void TaskPatternParameters::exitReferenceSelectionMode()
 
     hideBase();
     Gui::getMainWindow()->showMessage(QString());
+    activeDirectionWidget = nullptr;
 }
 
 
@@ -242,6 +243,7 @@ void TaskPatternParameters::onUpdateViewTimer()
 void TaskPatternParameters::onParameterWidgetRequestReferenceSelection()
 {
     // The embedded widget wants to enter reference selection mode
+    activeDirectionWidget = parametersWidget;
     enterReferenceSelectionMode();
     selectionMode = SelectionMode::Reference;
 }
@@ -249,8 +251,9 @@ void TaskPatternParameters::onParameterWidgetRequestReferenceSelection()
 void TaskPatternParameters::onParameterWidgetRequestReferenceSelection2()
 {
     // The embedded widget wants to enter reference selection mode
+    activeDirectionWidget = parametersWidget2;
     enterReferenceSelectionMode();
-    selectionMode = SelectionMode::Reference2;
+    selectionMode = SelectionMode::Reference;
 }
 
 void TaskPatternParameters::onParameterWidgetParametersChanged()
@@ -293,18 +296,17 @@ void TaskPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 
     // Note: ReferenceSelection has already checked the selection for validity
-    if (selectionMode == SelectionMode::Reference 
-        || selectionMode == SelectionMode::Reference2 
+    if (selectionMode == SelectionMode::Reference
         || selObj->isDerivedFrom<App::Line>()) {
         setupTransaction();
 
         if (patternObj->isDerivedFrom<PartDesign::LinearPattern>()) {
             auto* linearPattern = static_cast<PartDesign::LinearPattern*>(patternObj);
-            if (selectionMode == SelectionMode::Reference2) {
-                linearPattern->Direction2.setValue(selObj, directions);
+            if (activeDirectionWidget == parametersWidget) {
+                linearPattern->Direction.setValue(selObj, directions);
             }
             else {
-                linearPattern->Direction.setValue(selObj, directions);
+                linearPattern->Direction2.setValue(selObj, directions);
             }
         }
         else if(patternObj->isDerivedFrom<PartDesign::PolarPattern>()) {
@@ -377,3 +379,4 @@ TaskDlgLinearPatternParameters::TaskDlgLinearPatternParameters(
 }
 
 #include "moc_TaskPatternParameters.cpp"
+
