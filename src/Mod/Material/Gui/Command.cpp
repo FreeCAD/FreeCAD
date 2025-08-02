@@ -51,7 +51,7 @@ CmdMaterialEdit::CmdMaterialEdit()
 {
     sAppModule = "Material";
     sGroup = QT_TR_NOOP("Material");
-    sMenuText = QT_TR_NOOP("Edit…");
+    sMenuText = QT_TR_NOOP("Edit");
     sToolTipText = QT_TR_NOOP("Edits material properties");
     sWhatsThis = "Material_Edit";
     sStatusTip = sToolTipText;
@@ -85,7 +85,7 @@ StdCmdSetAppearance::StdCmdSetAppearance()
     : Command("Std_SetAppearance")
 {
     sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("&Appearance…");
+    sMenuText = QT_TR_NOOP("&Appearance");
     sToolTipText = QT_TR_NOOP("Sets the display properties of the selected object");
     sWhatsThis = "Std_SetAppearance";
     sStatusTip = QT_TR_NOOP("Sets the display properties of the selected object");
@@ -114,7 +114,7 @@ StdCmdSetMaterial::StdCmdSetMaterial()
     : Command("Std_SetMaterial")
 {
     sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("&Material…");
+    sMenuText = QT_TR_NOOP("&Material");
     sToolTipText = QT_TR_NOOP("Sets the material of the selected object");
     sWhatsThis = "Std_SetMaterial";
     sStatusTip = QT_TR_NOOP("Sets the material of the selected object");
@@ -143,7 +143,7 @@ CmdInspectAppearance::CmdInspectAppearance()
     : Command("Materials_InspectAppearance")
 {
     sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("Inspect Appearance…");
+    sMenuText = QT_TR_NOOP("Inspect Appearance");
     sToolTipText = QT_TR_NOOP("Inspects the appearance properties of the selected object");
     sWhatsThis = "Materials_InspectAppearance";
     sStatusTip = QT_TR_NOOP("Inspect the appearance properties of the selected object");
@@ -170,7 +170,7 @@ CmdInspectMaterial::CmdInspectMaterial()
     : Command("Materials_InspectMaterial")
 {
     sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("Inspect Material…");
+    sMenuText = QT_TR_NOOP("Inspect Material");
     sToolTipText = QT_TR_NOOP("Inspects the material properties of the selected object");
     sWhatsThis = "Materials_InspectMaterial";
     sStatusTip = QT_TR_NOOP("Inspect the material properties of the selected object");
@@ -199,7 +199,7 @@ CmdMigrateToExternal::CmdMigrateToExternal()
     : Command("Materials_MigrateToExternal")
 {
     sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("Migrate…");
+    sMenuText = QT_TR_NOOP("Migrate");
     sToolTipText = QT_TR_NOOP("Migrates the materials to the external materials manager");
     sWhatsThis = "Materials_MigrateToDatabase";
     sStatusTip = QT_TR_NOOP("Migrate existing materials to the external materials manager");

@@ -393,7 +393,7 @@
         <item row="1" column="1">
          <widget class="QPushButton" name="buttonColorPlot">
           <property name="text">
-           <string notr="true">Color Plot…</string>
+           <string notr="true">Color Plot</string>
           </property>
          </widget>
         </item>
@@ -403,7 +403,7 @@
         <item row="0" column="1">
          <widget class="QPushButton" name="buttonCustomAppearance">
           <property name="text">
-           <string notr="true">Appearance…</string>
+           <string notr="true">Appearance</string>
           </property>
          </widget>
         </item>
