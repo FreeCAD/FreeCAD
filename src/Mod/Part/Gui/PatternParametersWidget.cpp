@@ -201,15 +201,16 @@ void PatternParametersWidget::setTitle(const QString& title)
 {
     ui->groupBox->setTitle(title);
 }
+
 void PatternParametersWidget::setCheckable(bool on)
 {
     ui->groupBox->setCheckable(on);
 }
+
 void PatternParametersWidget::setChecked(bool on)
 {
     ui->groupBox->setChecked(on);
 }
-
 
 // --- Slots ---
 
@@ -302,8 +303,7 @@ void PatternParametersWidget::addSpacingRow(double value)
     rowLayout->setSpacing(3);
 
     int newIndex = dynamicSpacingRows.count();
-    // Use qApp->translate for dynamic labels
-    QLabel* label = new QLabel(qApp->translate("PartGui::PatternParameters", "Spacing %1").arg(newIndex + 2), rowWidget);
+    QLabel* label = new QLabel(tr("Spacing %1").arg(newIndex + 2), rowWidget);
 
     Gui::QuantitySpinBox* spinBox = new Gui::QuantitySpinBox(rowWidget);
     Base::Unit unit = type == PatternType::Linear ? Base::Unit::Length : Base::Unit::Angle;
@@ -313,7 +313,7 @@ void PatternParametersWidget::addSpacingRow(double value)
 
     QToolButton* removeButton = new QToolButton(rowWidget);
     removeButton->setIcon(Gui::BitmapFactory().iconFromTheme("list-remove"));
-    removeButton->setToolTip(qApp->translate("PartGui::PatternParameters", "Remove this spacing definition."));
+    removeButton->setToolTip(tr("Remove this spacing definition."));
     removeButton->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
 
     rowLayout->addWidget(label);
@@ -383,9 +383,8 @@ void PatternParametersWidget::onRemoveSpacingButtonClicked(QWidget* rowWidget)
     // Update labels of subsequent rows
     for (int i = indexToRemove; i < dynamicSpacingRows.count(); ++i) {
         QWidget* row = dynamicSpacingRows.at(i);
-        QLabel* label = row->findChild<QLabel*>();
-        if (label) {
-            label->setText(qApp->translate("PartGui::PatternParameters", "Spacing %1").arg(i + 2));
+        if (QLabel* label = row->findChild<QLabel*>()) {
+            label->setText(tr("Spacing %1").arg(i + 2));
         }
     }
 
