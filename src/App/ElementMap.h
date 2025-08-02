@@ -156,6 +156,11 @@ public:
 
     IndexedName find(const MappedName& name, ElementIDRefs* sids = nullptr) const;
 
+    // this method finds the correct MappedName and IndexedName from the input MappedName
+    // the reason you need a MappedName is because it might need to use complexFind to 
+    // find an equivelent name that is not the same as the input.
+    MappedElement findMatching(const MappedName& name, ElementIDRefs* sids = nullptr) const;
+
     MappedName find(const IndexedName& idx, ElementIDRefs* sids = nullptr) const;
 
     std::vector<std::pair<MappedName, ElementIDRefs>> findAll(const IndexedName& idx) const;
@@ -275,10 +280,50 @@ private:
      * @param sid: store any output string ID references
      * @return the hashed element name;
      */
-    MappedName hashElementName(const MappedName& name, ElementIDRefs& sids) const;
+    MappedName hashElementName(const MappedName& name, ElementIDRefs& sids)    const;
 
     /// Reverse hashElementName()
     MappedName dehashElementName(const MappedName& name) const;
+
+    /// Reverse fully hashed MappedName
+    MappedName fullDehashElementName(const MappedName& name) const;
+
+    struct geoID {
+        std::string stringData;
+        std::string startID;
+        std::string elementType;
+        std::vector<std::string> tags;
+    };
+
+    struct ElementSection {
+        std::string stringData;
+        std::string postfix;
+        std::string opcode;
+        std::vector<std::string> tags;
+        std::vector<geoID> postFixIDs;
+        std::vector<geoID> opCodeIDs;
+        char elementType = '-';
+        int postfixNumber = 0;
+    };
+
+    std::vector<ElementSection> compileElementSections(const std::string &name) const;
+
+    bool checkGeoIDsLists(std::vector<geoID> &list1, std::vector<geoID> &list2) const;
+    MappedElement complexFind(const MappedName &name) const;
+    geoID makeGeoID(const std::string ID) const;
+
+    struct ToponamingElement {
+        std::string normalName;
+        std::string dehashedName;
+        std::vector<ElementSection> splitSections;
+        std::vector<ElementSection> unfilteredSplitSections;
+        // example layout: {<"SIF": ["g2", "g54", "g66"]>, <"SKT": ["g2", "g54", "g66"]>}
+        std::vector<geoID> mainIDs;
+        std::vector<geoID> opCodesIDs;
+        std::vector<geoID> postFixIDs;
+    };
+
+    ToponamingElement compileToponamingElement(MappedName name) const;
 
     // FIXME duplicate code? as in copy/paste
     const MappedNameRef* findMappedRef(const IndexedName& idx) const;

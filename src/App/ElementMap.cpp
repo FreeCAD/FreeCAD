@@ -8,6 +8,7 @@
 
 #include "ElementMap.h"
 #include "ElementNamingUtils.h"
+// #include <chrono>
 
 #include "App/Application.h"
 #include "Base/Console.h"
@@ -717,7 +718,9 @@ MappedName ElementMap::hashElementName(const MappedName& name, ElementIDRefs& si
         }
         sids = tmp;
     }
-    return MappedName(sid.toString());
+    std::string sidString = sid.toString();
+
+    return MappedName(sidString);
 }
 
 MappedName ElementMap::dehashElementName(const MappedName& name) const
@@ -751,6 +754,120 @@ MappedName ElementMap::dehashElementName(const MappedName& name) const
     //        correct?
     FC_TRACE("de-hash " << name << " -> " << ret);  // NOLINT
     return ret;
+}
+
+// TODO: maybe merge this into the above function? or make one public function and one private function?
+// this reverses the compression of hashed persistent names.
+// an example: #3d:2;:G3#3f;CUT;:H-1216:b,E --> g2;SKT;:H1215,E;FAC;:H1215:4,F;:G0;XTR;:H1215:8,F;:G3(g6;SKT;:H1213,E;:G;...
+MappedName ElementMap::fullDehashElementName(const MappedName& name) const {
+    std::string dehashedName;
+    std::vector<std::map<std::string, std::array<int, 2>>> dehashTree;
+    std::string currentTreeString = "";
+    std::string selTreeString = "";
+    std::string hashedString = "";
+    std::string dehashedString = "";
+
+    bool isDehashed = false;
+    bool dehash = false;
+    bool foundHash = false;
+    int currentTreePos = 0;
+    int i = 0;
+    int replaceStart = -1;
+    int replaceLen = -1;
+    std::map<std::string, std::array<int, 2>> insertMap = std::map<std::string, std::array<int, 2>>();
+    std::map<std::string, std::array<int, 2>> currentMap;
+    
+    insertMap[name.toString()] = std::array<int, 2>({-1, -1});
+    dehashTree.push_back(insertMap);
+
+    while(!isDehashed) {
+        currentMap = dehashTree[currentTreePos];
+        currentTreeString = currentMap.begin()->first;
+
+        if(!dehash) {
+            if(i >= currentTreeString.size()) {
+                if(foundHash) {
+                    dehash = true;
+                    foundHash = false;
+                } else {
+                    if(currentTreePos == 0) {
+                        isDehashed = true;
+                        dehashedName = currentTreeString;
+                        break;
+                    }
+
+                    replaceStart = dehashTree[currentTreePos - 1].begin()->second[0];
+                    replaceLen = dehashTree[currentTreePos - 1].begin()->second[1];
+
+                    if(replaceStart != -1 && replaceLen != -1) {
+                        selTreeString = dehashTree[currentTreePos - 1].begin()->first;
+                        dehashTree[currentTreePos - 1].erase(selTreeString);
+
+                        selTreeString.replace(replaceStart, replaceLen, currentTreeString);
+                        dehashTree[currentTreePos - 1][selTreeString] = std::array<int, 2>({replaceStart, replaceLen});
+
+                        dehashTree.erase(dehashTree.begin() + currentTreePos);
+                        i = 0;
+                        currentTreePos--;
+                    }
+                }
+                continue;
+            }
+
+            if(currentTreeString[i] == '#' && !foundHash) {
+                hashedString = "";
+                foundHash = true;
+                dehash = false;
+
+                dehashTree[currentTreePos][currentTreeString] = std::array<int, 2>({i, -1});
+            } else if((currentTreeString[i] == '_' || currentTreeString[i] == ',' || currentTreeString[i] == ';') && foundHash) {
+                foundHash = false;
+                dehash = true;
+                int offset = 0;
+
+                if(currentTreeString[i] == '_') {
+                    offset++;
+                }
+
+                dehashTree[currentTreePos][currentTreeString] = std::array<int, 2>({currentMap[currentTreeString][0], static_cast<int>(hashedString.length()) + offset});
+            }
+
+            if(foundHash) {
+                hashedString += currentTreeString[i];
+            }
+
+            i++;
+        } else {
+            if(hashedString.size() > 1) {
+                dehashedString = dehashElementName(MappedName(hashedString)).toString();
+
+                if(dehashedString != hashedString) {
+                    currentTreePos++;
+
+                    i = 0;
+
+                    insertMap = std::map<std::string, std::array<int, 2>>();
+                    insertMap[dehashedString] = std::array<int, 2>({-1, -1});
+                    dehashTree.push_back(insertMap);
+                } else {
+                    hashedString.pop_back();
+                    continue;
+                }
+            }
+            dehash = false;
+            foundHash = false;
+        }
+    }
+
+    dehashTree.shrink_to_fit();
+    currentTreeString.shrink_to_fit();
+    selTreeString.shrink_to_fit();
+    hashedString.shrink_to_fit();
+    dehashedString.shrink_to_fit();
+    insertMap.clear();
+    currentMap.clear();
+ 
+    return MappedName(dehashedName);
 }
 
 MappedName ElementMap::renameDuplicateElement(int index,
@@ -822,12 +939,493 @@ bool ElementMap::empty() const
     return mappedNames.empty() && childElementSize == 0;
 }
 
+ElementMap::geoID ElementMap::makeGeoID(const std::string ID) const {
+    bool foundTag = false;
+    bool foundTagPos = false;
+    bool foundStartID = false;
+    std::string currentTag = "";
+    ElementMap::geoID ret = ElementMap::geoID();
+
+    for (int i = 0; i < ID.size(); i++) {
+        if (i == 0 && (ID[i] == 'g' || ID[i] == 'e')) {
+            foundStartID = true;
+        } else if (ID[i] == ';' && foundStartID) {
+            foundStartID = false;
+        }
+
+        if (ID[i] == 'H') {
+            if (foundTag) {
+                if (currentTag != "H" && ret.tags.size() < 1) ret.tags.push_back(currentTag);
+                
+                currentTag.clear();
+                foundTag = false;
+            } else {
+                foundTag = true;
+            }
+        }
+
+        if (foundTag) {
+            if (ID[i] == ':') {
+                foundTagPos = true;
+            } else if (ID[i] == ',' || ID[i] == ';') {
+                foundTag = false;
+                foundTagPos = false;
+
+                if (currentTag != "H" && ret.tags.size() < 1) ret.tags.push_back(currentTag); // ignore empty tags
+                currentTag.clear();
+            }
+        }
+
+        if (foundTag && !foundTagPos) {
+            currentTag.push_back(ID[i]);
+        }
+
+        if (!foundTagPos) {
+            if (foundStartID) {
+                ret.startID.push_back(ID[i]);
+            }
+
+            ret.stringData.push_back(ID[i]);
+        }
+    }
+
+    if (!ret.stringData.empty()) {
+        char currentElementType = ret.stringData.back();
+
+        if (currentElementType == 'F' || currentElementType == 'E' || currentElementType == 'V') {
+            ret.elementType = currentElementType;
+        } else {
+            ret.elementType = '-';
+        }
+    }
+
+    return ret;
+}
+
+// VVV test decompile VVV
+// g2;SKT;:H1215,E;FAC;:H1215:4,F;:G0;XTR;:H1215:8,F;:M3(g6;SKT;:H1213,E;:G;XTR;:H1213:7,F;K-1;:H1214:4,F);CUT;:H-1216:3a,E;:H1216,E
+std::vector<ElementMap::ElementSection> ElementMap::compileElementSections(const std::string &name) const {
+    ElementMap::ElementSection currentSection = ElementMap::ElementSection();
+    std::vector<ElementMap::ElementSection> sections;
+    std::vector<ElementMap::geoID> postFixIDs;
+    std::vector<ElementMap::geoID> postFixIDsBuffer;
+    std::vector<std::string> postfixes = {"M", "G", "U", "L", "MG"};
+    std::string parensID;
+    std::string currentOpCode;
+    std::string currentPostfix;
+    std::string currentPostfixBuffer;
+    std::string currentTag;
+    std::string postfixNumberString;
+    std::string parensIDType; // postfix/opcode
+    bool foundOpCode = false;
+    bool foundTag = false;
+    bool foundTagNum = false;
+    bool findPostfixNumber = false;
+    bool finishParensList = false;
+    int i = 0;
+    int parensLevel = 0;
+    int postfixNumber = 0;
+    int postfixNumberBuffer = 0;
+
+    for (i = 0; i < name.size(); i++) {
+        if (name[i] == '(') {
+            parensLevel++;
+            continue;
+        } else if (name[i] == ')') {
+            if (parensLevel == 1 && !parensID.empty()) {
+                finishParensList = true;
+            }
+
+            parensLevel--;
+
+            if (parensLevel < 0) {
+                parensLevel = 0;
+            }
+        }
+
+        if (parensLevel == 0 && !finishParensList) {
+            if (findPostfixNumber) {
+                if (name[i] == ':' || name[i] == ';' || name[i] == '(' || name[i] == ',' || name[i] == ')') {
+                    findPostfixNumber = false;
+
+                    if (!postfixNumberString.empty()) {
+                        postfixNumber = std::stoi(postfixNumberString);
+                        postfixNumberString.clear();
+                    } else {
+                        postfixNumber = 0;
+                    }
+                } else {
+                    if (std::isdigit(name[i])) {
+                        postfixNumberString.push_back(name[i]);
+                    }
+                }
+            }
+
+            if (name[i] == ':' && i + 1 < name.size()) {
+                std::string splitString = name.substr(i + 1);
+                
+                for (const auto &postfix : postfixes) {
+                    if (boost::starts_with(splitString, postfix)) {
+                        currentPostfix = postfix;
+                        findPostfixNumber = true;
+                        postfixNumberString.clear();
+                        parensIDType = "postfix";
+
+                        break;
+                    }
+                }
+            } else if (name[i] == 'H') {
+                foundTag = true;
+            }
+
+            if (foundTag) {
+                if (name[i] == ':' && !foundTagNum) {
+                    foundTagNum = true;
+                } else if (name[i] == ',' || name[i] == '(' || name[i] == ';') {
+                    if (!currentTag.empty()) {
+                        currentSection.tags.push_back(currentTag);
+                        currentTag.clear();
+                    }
+
+                    foundTag = false;
+                    foundTagNum = false;
+                } else if (!foundTagNum) {
+                    currentTag.push_back(name[i]);
+                }
+            }
+            
+            if (foundOpCode) {
+                if (name[i] == ';' || currentOpCode.size() == 3) {
+                    parensIDType = "opcode";
+                    foundOpCode = false;
+                } else {
+                    currentOpCode.push_back(name[i]);
+                }
+            }
+
+            bool atEnd = false;
+
+            if (i >= (name.size() - 1)) {
+                atEnd = true;
+
+                currentSection.stringData.push_back(name[i]);
+                i++;
+            }
+
+            if (atEnd || (name[i] == ';' && (i >= name.size() || name[i + 1] != ':'))) {
+                if (i == 0) continue; // the id started with the prefix, 
+                                      // do not run anything else to avoid adding the
+                                      // prefix to any section or adding a blank seciton
+
+                char currentElementType = name[i - 1];
+
+                if (currentElementType == 'F' || currentElementType == 'E' || currentElementType == 'V') {
+                    currentSection.elementType = currentElementType;
+                } else {
+                    currentSection.elementType = '-';
+                }
+
+                currentSection.opcode = currentOpCode;
+                currentOpCode = "";
+                currentSection.postFixIDs = postFixIDsBuffer;
+                currentSection.postfix = currentPostfixBuffer;
+                currentSection.postfixNumber = postfixNumberBuffer;
+                sections.push_back(currentSection);
+
+                foundOpCode = true;
+                currentSection = ElementMap::ElementSection();
+
+                currentPostfixBuffer = currentPostfix;
+                postfixNumberBuffer = postfixNumber;
+                postFixIDsBuffer = postFixIDs;
+
+                currentPostfix.clear();
+                postfixNumber = 0;
+                postFixIDs.clear();
+            } else if(!foundTagNum) {
+                currentSection.stringData.push_back(name[i]);
+            }
+        } else if(parensLevel == 1 || finishParensList) {
+            if (name[i] == '|' || finishParensList) {
+                if (parensIDType == "postfix") {
+                    postFixIDs.push_back(makeGeoID(parensID));
+                } else if (parensIDType == "opcode") {
+                    currentSection.opCodeIDs.push_back(makeGeoID(parensID));
+                }
+
+                parensID.clear();
+                finishParensList = false;
+            } else {
+                parensID.push_back(name[i]);
+            }
+        }
+    }
+
+    // currentSection.stringData.push_back(name[i - 1]);
+    // char currentElementType = name.back();
+
+    // if (currentElementType == 'F' || currentElementType == 'E' || currentElementType == 'V') {
+    //     currentSection.elementType = currentElementType;
+    // } else {
+    //     currentSection.elementType = '-';
+    // }
+
+    // currentSection.postfix = currentPostfixBuffer;
+    // currentSection.postfixNumber = postfixNumberBuffer;
+    // currentSection.opcode = currentOpCode;
+    // sections.push_back(currentSection);
+
+    return sections;
+}
+
+ElementMap::ToponamingElement ElementMap::compileToponamingElement(MappedName name) const {
+    ElementMap::ToponamingElement element = ElementMap::ToponamingElement();
+
+    element.normalName = name.toString();
+
+    if (hasher) {
+        element.dehashedName = fullDehashElementName(name).toString();
+    } else {
+        element.dehashedName = element.normalName;
+    }
+
+    element.unfilteredSplitSections = compileElementSections(element.dehashedName);
+    // element.splitSections = element.unfilteredSplitSections;
+
+    // filter out sections with the postfix of 'M'
+    // it must also have a number of 0 and a postfix id list size of 0
+    for (const auto &data : element.unfilteredSplitSections) {
+        if (data.postfix != "M" || (data.postfixNumber != 0 || !data.postFixIDs.empty())) {
+            element.splitSections.push_back(data);
+        }
+    }
+
+    int removeSections = 0;
+
+    for (int i = 0; i < element.splitSections.size(); i++) {
+        if (i == 0) {
+            if (boost::starts_with(element.splitSections[i].stringData, "g") || boost::starts_with(element.splitSections[i].stringData, "e")) {
+                std::string startID = element.splitSections[i].stringData;
+
+                if (i + 1 < element.splitSections.size() && boost::starts_with(element.splitSections[i + 1].stringData, "SKT")) {
+                    startID.push_back(';');
+                    startID.append(element.splitSections[i + 1].stringData);
+                    removeSections++;
+                }
+
+                removeSections++;
+                element.mainIDs.push_back(makeGeoID(startID));
+            }
+        } else if (element.splitSections[i].opcode == "SIF") { // this section has edges that create a (S)ketch (I)nternal (F)ace
+            for (const auto &id : element.splitSections[i].opCodeIDs) {
+                element.mainIDs.push_back(id);
+            }
+        } else {
+            for (const auto &id : element.splitSections[i].opCodeIDs) {
+                element.opCodesIDs.push_back(id);
+            }
+
+            for (const auto &id : element.splitSections[i].postFixIDs) {
+                element.postFixIDs.push_back(id);
+            }
+        }
+    }
+
+    for (int i = 0; i < removeSections; i++) {
+        element.splitSections.erase(element.splitSections.begin());
+        element.unfilteredSplitSections.erase(element.unfilteredSplitSections.begin());
+    }
+
+    if (element.splitSections.empty() && !element.unfilteredSplitSections.empty()) {
+        element.splitSections = element.unfilteredSplitSections;
+    }
+
+    // for (const auto &sec : element.splitSections) {
+    //     FC_WARN("section: " << sec.stringData << " post: " << sec.postfix << " opcode: " << sec.opcode << " num: " << sec.postfixNumber << " eltype: " << sec.elementType);
+    // }
+
+    return element;
+}
+
+bool ElementMap::checkGeoIDsLists(std::vector<ElementMap::geoID> &list1, std::vector<ElementMap::geoID> &list2) const {
+    if (list1.size() != list2.size()) return false;
+    bool tagCheck = true;
+    bool elementTypeCheck = true;
+    bool mainIDCheck = true;
+
+    for (const auto &id1 : list1) {
+        for (const auto &id2 : list2) {
+            if (id1.tags != id2.tags) {
+                tagCheck = false;
+            }
+
+            if (id1.elementType != id2.elementType) {
+                elementTypeCheck = false;
+            }
+
+            if (id1.startID != id2.startID) {
+                mainIDCheck = false;
+            }
+        }
+    }
+
+    return (tagCheck && elementTypeCheck && mainIDCheck);
+}
+
+MappedElement ElementMap::complexFind(const MappedName& name) const {
+    ToponamingElement originalElement = compileToponamingElement(name);
+    ToponamingElement loopElement = ToponamingElement();
+    MappedElement foundName = MappedElement();
+    const int idOccurenceMin = 2;
+    const int tagOccurenceMin = -1; // -1 means only one tag can be missing
+    int foundUnfilteredSizeDifference = -1; // -1 is the start, 
+    //                                         it will never go below 0 during the check
+
+    // FC_WARN("start complex find");
+    // FC_WARN("orig name: " << originalElement.dehashedName);
+
+    if (originalElement.dehashedName.empty()) {
+        return foundName;
+    }
+
+    for (const auto &loopName : mappedNames) {
+        loopElement = compileToponamingElement(loopName.first);
+
+        if (loopElement.dehashedName.empty()) {
+            continue;
+        }
+        // FC_WARN("loop name: " << loopElement.dehashedName);
+
+        if (originalElement.splitSections.size() != loopElement.splitSections.size()) {
+            // FC_WARN("orig: " << originalElement.splitSections.size());
+            // FC_WARN("loop: " << loopElement.splitSections.size());
+            // FC_WARN("size failed");
+            continue;
+        }
+
+        bool geoIDCheck = false;
+        std::vector<ElementMap::geoID> smallerIDList = originalElement.mainIDs;
+        std::vector<ElementMap::geoID> largerIDList = loopElement.mainIDs;
+        int occurences = 0;
+
+        if (originalElement.mainIDs.size() == 1 && loopElement.mainIDs.size() == 1) {
+            geoIDCheck = checkGeoIDsLists(originalElement.mainIDs, loopElement.mainIDs);
+        } else if (originalElement.mainIDs.size() > 1 && loopElement.mainIDs.size() > 1) {
+            if (originalElement.mainIDs.size() > loopElement.mainIDs.size()) {
+                smallerIDList = loopElement.mainIDs;
+                largerIDList = originalElement.mainIDs;
+            }
+
+            for (const auto &largerSec : largerIDList) {
+                std::vector<geoID> list1;
+                list1.push_back(largerSec);
+
+                for (const auto &smallerSec : smallerIDList) {
+                    std::vector<geoID> list2;
+                    list2.push_back(smallerSec);
+
+                    if (checkGeoIDsLists(list1, list2)) {
+                        occurences++;
+                    }
+                }
+            }
+
+            if (idOccurenceMin <= occurences) {
+                geoIDCheck = true;
+            }
+        }
+
+        if (!geoIDCheck) {
+            // FC_WARN("geo id check failed");
+            continue;
+        }
+
+        bool sectionCheck = true;
+
+        if (!checkGeoIDsLists(originalElement.postFixIDs, loopElement.postFixIDs) || !checkGeoIDsLists(originalElement.opCodesIDs, loopElement.opCodesIDs)) {
+            // FC_WARN("check postfixes and opcodes ids failed");
+            continue;
+        }
+
+        int tagOccurences = 0;
+
+        // the sections of the two elements to check against should already by the same size
+        for (int i = 0; i < originalElement.splitSections.size(); i++) {
+            if ((originalElement.splitSections[i].opcode != loopElement.splitSections[i].opcode)) {
+                sectionCheck = false;
+                break;
+            }
+
+            if (originalElement.splitSections[i].postfix != loopElement.splitSections[i].postfix) {
+                sectionCheck = false;
+                break;
+            }
+
+            if ((originalElement.splitSections[i].postFixIDs.size() == 0
+                || loopElement.splitSections[i].postFixIDs.size() == 0)
+                && originalElement.splitSections[i].postfixNumber != loopElement.splitSections[i].postfixNumber) {
+                sectionCheck = false;
+                break;
+            }
+
+            tagOccurences = 0;
+
+            std::vector<std::string> shortTagList = originalElement.splitSections[i].tags;
+            std::vector<std::string> largeTagList = loopElement.splitSections[i].tags;
+
+            if (originalElement.splitSections[i].tags.size() > loopElement.splitSections[i].tags.size()) {
+                shortTagList = loopElement.splitSections[i].tags;
+                largeTagList = originalElement.splitSections[i].tags;
+            }
+
+            for (const auto &largeTag : largeTagList) {
+                for (const auto &smallTag : shortTagList) {
+                    if (largeTag == smallTag) {
+                        tagOccurences++;
+                    }
+                }
+            }
+
+            if (tagOccurences < (shortTagList.size() + tagOccurenceMin)) {
+                // FC_WARN("tag failed");
+                sectionCheck = false;
+                break;
+            }
+        }
+
+        if (!sectionCheck) {
+            // FC_WARN("section check failed");
+            continue;
+        }
+
+        if (originalElement.unfilteredSplitSections.back().elementType != loopElement.unfilteredSplitSections.back().elementType) {
+            // FC_WARN("element type failed");
+            continue;
+        }
+
+    
+        // do a "score" check to see if the number of filtered out tags is smaller in the name found here
+        // is smaller than that of the already found name. -1 is checked first, because that indicates that
+        // foundName had never been set.
+        int currentUnfilteredSizeDifference = abs(static_cast<int>(originalElement.unfilteredSplitSections.size() 
+                                                  - loopElement.unfilteredSplitSections.size()));
+
+        if (foundUnfilteredSizeDifference == -1 || foundUnfilteredSizeDifference > currentUnfilteredSizeDifference) {
+            foundName = MappedElement(loopName.first, loopName.second);
+            foundUnfilteredSizeDifference = currentUnfilteredSizeDifference;
+        }
+    }
+
+    // FC_WARN("finish complex find");
+    return foundName;
+}
+
 IndexedName ElementMap::find(const MappedName& name, ElementIDRefs* sids) const
 {
     auto nameIter = mappedNames.find(name);
     if (nameIter == mappedNames.end()) {
         if (childElements.isEmpty()) {
-            return IndexedName();
+            return (complexFind(name).index);
         }
 
         int len = 0;
@@ -920,8 +1518,7 @@ MappedElement ElementMap::findMappedElement(const MappedName &name, ElementIDRef
         if (res.index && boost::equals(res.index.getType(), child.indexedName.getType())
             && child.indexedName.getIndex() <= res.index.getIndex()
             && child.indexedName.getIndex() + child.count > res.index.getIndex()) {
-            res.index.setIndex(res.index.getIndex() + it.value().childMap->offset);
-            
+            res.index.setIndex(res.index.getIndex() + it.value().childMap->offset);            
             // return the original name, since the mapped one is likely incorrect.
             return MappedElement(name, res.index);
         }
@@ -1261,9 +1858,10 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
 
         ChildMapInfo* entry = nullptr;
 
-        // do child mapping only if the child element count >= 5
-        const int threshold {5};
-        if (child.count >= threshold || !child.elementMap) {
+        // this is old code that caused extra shape tags and faulty code to check
+        // if there are duplicated tags
+
+        if (!child.elementMap) {
             encodeElementName(child.indexedName[0],
                               tmp,
                               ss,
@@ -1285,7 +1883,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
             }
         }
 
-        if (!entry) {
+        if (entry == nullptr) {
             IndexedName childIdx(child.indexedName);
             IndexedName idx(childIdx.getType(), childIdx.getIndex() + child.offset);
             for (int i = 0; i < child.count; ++i, ++childIdx, ++idx) {
@@ -1302,14 +1900,15 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
                 }
                 ss.str("");
                 encodeElementName(idx[0],
-                                  name,
-                                  ss,
-                                  &sids,
-                                  masterTag,
-                                  child.postfix.constData(),
-                                  child.tag);
+                                    name,
+                                    ss,
+                                    &sids,
+                                    masterTag,
+                                    child.postfix.constData(),
+                                    child.tag);
                 setElementName(idx, name, masterTag, &sids);
             }
+
             continue;
         }
 
@@ -1322,7 +1921,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
             // disambiguation. We don't need to extract the index.
             ss.str("");
             ss << ELEMENT_MAP_PREFIX << ":C" << entry->index - 1;
-
+            
             tmp.clear();
             encodeElementName(child.indexedName[0],
                               tmp,

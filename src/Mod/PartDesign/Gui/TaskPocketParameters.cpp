@@ -151,6 +151,7 @@ TaskDlgPocketParameters::TaskDlgPocketParameters(ViewProviderPocket *PocketView)
     : TaskDlgExtrudeParameters(PocketView), parameters(new TaskPocketParameters(PocketView))
 {
     Content.push_back(parameters);
+    Content.push_back(preview);
 }
 
 #include "moc_TaskPocketParameters.cpp"
