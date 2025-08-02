@@ -78,10 +78,15 @@ const float labelCaptionFudge = 0.2f;   // temp fiddle for devel
 
 QGIView::QGIView()
     :QGraphicsItemGroup(),
+    m_isHovered(false),
     viewObj(nullptr),
     m_innerView(false),
     m_multiselectActivated(false),
-    snapping(false)
+    snapping(false),
+    m_label(new QGCustomLabel()),
+    m_border(new QGCustomBorder()),
+    m_caption(new QGICaption()),
+    m_lock(new QGCustomImage())
 {
     setCacheMode(QGraphicsItem::NoCache);
     setHandlesChildEvents(false);
@@ -98,18 +103,15 @@ QGIView::QGIView()
     m_decorPen.setStyle(Qt::DashLine);
     m_decorPen.setWidth(0); // 0 => 1px "cosmetic pen"
 
-    m_label = new QGCustomLabel();
     addToGroup(m_label);
-    m_border = new QGCustomBorder();
     addToGroup(m_border);
-    m_caption = new QGICaption();
     addToGroup(m_caption);
-    m_lock = new QGCustomImage();
     m_lock->setParentItem(m_border);
     m_lock->load(QStringLiteral(":/icons/TechDraw_Lock.svg"));
     QSize sizeLock = m_lock->imageSize();
     m_lockWidth = (double) sizeLock.width();
     m_lockHeight = (double) sizeLock.height();
+
     m_lock->hide();
 }
 
@@ -201,12 +203,31 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
     }
 
     if (change == ItemSelectedHasChanged && scene()) {
-        if(isSelected()) {
+        bool thisViewIsSelected = value.toBool();
+        bool anyChildSelected = false;
+        if (!thisViewIsSelected) { // Only check children if this view is becoming unselected
+            anyChildSelected = 
+                std::ranges::any_of(childItems(), [](QGraphicsItem* child) {
+                    return child->isSelected();
+                });
+        }
+        if(thisViewIsSelected || anyChildSelected || isSelected()) {
             m_colCurrent = getSelectColor();
+            m_border->show();
+            m_label->show();
+            m_lock->setVisible(getViewObject()->isLocked() && getViewObject()->showLock());
         } else {
-            m_colCurrent = PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor());
+            if (!m_isHovered) {
+                m_colCurrent = PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor());
+                m_border->hide();
+                m_label->hide();
+                m_lock->hide();
+            } else {
+                m_colCurrent = getPreColor();
+            }
         }
         drawBorder();
+        update();
     }
 
     return QGraphicsItemGroup::itemChange(change, value);
@@ -449,27 +470,46 @@ void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 
 void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
-    //    Base::Console().message("QGIV::hoverEnterEvent()\n");
-    Q_UNUSED(event);
-    // TODO don't like this but only solution at the minute (MLP)
+    QGraphicsItemGroup::hoverEnterEvent(event);
+
+    m_isHovered = true; 
+
     if (isSelected()) {
         m_colCurrent = getSelectColor();
-        setFocus();
     } else {
         m_colCurrent = getPreColor();
     }
-    drawBorder();
+
+    m_border->show();
+    m_label->show();
+    
+    m_lock->setVisible(getViewObject()->isLocked() && getViewObject()->showLock());
+
+    drawBorder(); 
+    update(); 
 }
+
 
 void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
-    Q_UNUSED(event);
-    if(isSelected()) {
+    QGraphicsItemGroup::hoverLeaveEvent(event);
+
+    m_isHovered = false; 
+
+    if (isSelected()) {
         m_colCurrent = getSelectColor();
+        m_border->show();
+        m_label->show();
+        m_lock->setVisible(getViewObject()->isLocked() && getViewObject()->showLock());
     } else {
         m_colCurrent = PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor());
+        m_border->hide();
+        m_label->hide();
+        m_lock->hide(); 
     }
-    drawBorder();
+
+    drawBorder(); 
+    update(); 
 }
 
 //sets position in /Gui(graphics), not /App
@@ -523,6 +563,10 @@ void QGIView::updateView(bool forceUpdate)
     if (!TechDraw::DrawUtil::fpCompare(appRotation, guiRotation)) {
         rotateView();
     }
+
+    drawBorder(); // Draw the border then hide it so the label knows where to position itself
+    m_border->hide();
+    m_label->hide();
 
     QGIView::draw();
 }
@@ -595,19 +639,15 @@ void QGIView::draw()
         }
     }
     if (isVisible()) {
-        drawBorder();
         show();
     } else {
         hide();
     }
 }
 
-void QGIView::drawCaption()
+void QGIView::prepareCaption()
 {
-    //    Base::Console().message("QGIV::drawCaption()\n");
-    prepareGeometryChange();
-    QRectF displayArea = customChildrenBoundingRect();
-    m_caption->setDefaultTextColor(m_colCurrent);
+    m_caption->setDefaultTextColor(prefNormalColor());
     m_font.setFamily(Preferences::labelFontQString());
     int fontSize = exactFontSize(Preferences::labelFont(),
                                  Preferences::labelFontSizeMM());
@@ -615,39 +655,46 @@ void QGIView::drawCaption()
     m_caption->setFont(m_font);
     QString captionStr = QString::fromUtf8(getViewObject()->Caption.getValue());
     m_caption->setPlainText(captionStr);
-    QRectF captionArea = m_caption->boundingRect();
-    QPointF displayCenter = displayArea.center();
-    m_caption->setX(displayCenter.x() - captionArea.width()/2.);
-    double labelHeight = (1 - labelCaptionFudge) * m_label->boundingRect().height();
-    auto vp = static_cast<ViewProviderDrawingView*>(getViewProvider(getViewObject()));
-    if (getFrameState() || vp->KeepLabel.getValue()) {            //place below label if label visible
-        m_caption->setY(displayArea.bottom() + labelHeight);
-    } else {
-        m_caption->setY(displayArea.bottom() + labelCaptionFudge * Preferences::labelFontSizeMM());
-    }
-    m_caption->show();
 }
+
+void QGIView::layoutDecorations(const QRectF& contentArea,
+                              const QRectF& captionRect,
+                              const QRectF& labelRect,
+                              QRectF& outFrameRect,
+                              QPointF& outCaptionPos,
+                              QPointF& outLabelPos,
+                              QPointF& outLockPos) const
+{
+    const qreal padding = 100.0;
+    QRectF paddedContentArea = contentArea.adjusted(-padding, -padding, padding, padding);
+
+    double frameWidth = qMax(paddedContentArea.width(), labelRect.width());
+    double frameHeight = paddedContentArea.height() + (captionRect.height() / 2) + labelRect.height();
+
+    outFrameRect = QRectF(paddedContentArea.center().x() - (frameWidth / 2),
+                          paddedContentArea.top(),
+                          frameWidth,
+                          frameHeight);
+
+    outLabelPos = QPointF(outFrameRect.center().x() - (labelRect.width() / 2),
+                          outFrameRect.bottom() - labelRect.height());
+
+    double view_width = getViewObject()->getRect().x();
+    outCaptionPos = QPointF(view_width - (captionRect.width() / 2),
+                            outLabelPos.y() - captionRect.height());
+
+    outLockPos = QPointF(outFrameRect.left(), outFrameRect.bottom() - m_lockHeight);
+}
+
 
 void QGIView::drawBorder()
 {
-    //    Base::Console().message("QGIV::drawBorder() - %s\n", getViewName());
+    // Base::Console().message("QGIV::drawBorder() - %s\n", getViewName());
     auto feat = getViewObject();
     if (!feat)
         return;
 
-    drawCaption();   //always draw caption
-
-    auto vp = static_cast<ViewProviderDrawingView*>(getViewProvider(getViewObject()));
-    if (!getFrameState() && !vp->KeepLabel.getValue()) {
-        m_label->hide();
-        m_border->hide();
-        m_lock->hide();
-        return;
-    }
-
-    m_label->hide();
-    m_border->hide();
-    m_lock->hide();
+    prepareCaption();
 
     m_label->setDefaultTextColor(m_colCurrent);
     m_font.setFamily(Preferences::labelFontQString());
@@ -655,55 +702,34 @@ void QGIView::drawBorder()
                                  Preferences::labelFontSizeMM());
     m_font.setPixelSize(fontSize);
     m_label->setFont(m_font);
-
-    QString labelStr = QString::fromStdString( getViewObject()->Label.getValue() );
+    QString labelStr = QString::fromStdString(getViewObject()->Label.getValue());
     m_label->setPlainText(labelStr);
-    QRectF labelArea = m_label->boundingRect();                //m_label coords
-    double labelWidth = m_label->boundingRect().width();
-    double labelHeight = (1 - labelCaptionFudge) * m_label->boundingRect().height();
 
-    QBrush b(Qt::NoBrush);
-    m_border->setBrush(b);
+    QRectF contentArea = customChildrenBoundingRect();
+    QRectF captionRect = m_caption->boundingRect();
+    QRectF labelRect = m_label->boundingRect();
+
+
+    QRectF finalFrameRect;
+    QPointF finalCaptionPos, finalLabelPos, finalLockPos;
+
+    layoutDecorations(contentArea, captionRect, labelRect,
+                      finalFrameRect, finalCaptionPos, finalLabelPos, finalLockPos);
+
+
+    m_caption->setPos(finalCaptionPos);
+    m_label->setPos(finalLabelPos);
+    m_lock->setPos(finalLockPos);
+    m_lock->setZValue(ZVALUE::LOCK);
+
+    m_border->setBrush(Qt::NoBrush);
     m_decorPen.setColor(m_colCurrent);
     m_border->setPen(m_decorPen);
-
-    QRectF displayArea = customChildrenBoundingRect();
-    double displayWidth = displayArea.width();
-    double displayHeight = displayArea.height();
-    QPointF displayCenter = displayArea.center();
-    m_label->setX(displayCenter.x() - labelArea.width()/2.);
-    m_label->setY(displayArea.bottom());
-
-    double frameWidth = displayWidth;
-    if (labelWidth > displayWidth) {
-        frameWidth = labelWidth;
-    }
-    double frameHeight = labelHeight + displayHeight;
-
-    QRectF frameArea = QRectF(displayCenter.x() - frameWidth/2.,
-                              displayArea.top(),
-                              frameWidth,
-                              frameHeight);
-
-    double lockX = frameArea.left();
-    double lockY = frameArea.bottom() - m_lockHeight;
-    if (feat->isLocked() &&
-        feat->showLock()) {
-        m_lock->setZValue(ZVALUE::LOCK);
-        m_lock->setPos(lockX, lockY);
-        m_lock->show();
-    } else {
-        m_lock->hide();
-    }
+    m_border->setPos(0., 0.);
+    // Adjust the final border to make space for the label
+    m_border->setRect(finalFrameRect.adjusted(-2, -2, 2, -labelRect.height() + 2));
 
     prepareGeometryChange();
-    m_border->setRect(frameArea.adjusted(-2, -2, 2,2));
-    m_border->setPos(0., 0.);
-
-    m_label->show();
-    if (getFrameState()) {
-        m_border->show();
-    }
 }
 
 void QGIView::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -726,14 +752,12 @@ QRectF QGIView::customChildrenBoundingRect() const
         if (!child->isVisible()) {
             continue;
         }
-        if (child->type() != UserType::QGIViewDimension &&
-            child->type() != UserType::QGILeaderLine &&
+        if (            
             child->type() != UserType::QGIRichAnno &&
             child->type() != UserType::QGEPath &&
             child->type() != UserType::QGMText &&
             child->type() != UserType::QGCustomBorder &&
             child->type() != UserType::QGCustomLabel &&
-            child->type() != UserType::QGIWeldSymbol &&
             child->type() != UserType::QGICaption &&
             child->type() != UserType::QGICMark) {
             QRectF childRect = mapFromItem(child, child->boundingRect()).boundingRect();
@@ -745,7 +769,18 @@ QRectF QGIView::customChildrenBoundingRect() const
 
 QRectF QGIView::boundingRect() const
 {
-    return m_border->rect().adjusted(-2., -2., 2., 2.);     //allow for border line width  //TODO: fiddle brect if border off?
+    QRectF totalRect = customChildrenBoundingRect();
+    totalRect = totalRect.united(m_border->rect());
+    totalRect = totalRect.united(m_label->boundingRect().translated(m_label->pos()));
+    totalRect = totalRect.united(m_caption->boundingRect().translated(m_caption->pos()));
+
+    if (m_lock && m_lock->isVisible()) {
+        totalRect = totalRect.united(m_border->mapRectToParent(m_lock->boundingRect().translated(m_lock->pos())));
+    }
+    if (totalRect.isEmpty()) {
+        return QRectF(0, 0, 1, 1);
+    }
+    return totalRect;
 }
 
 QGIView* QGIView::getQGIVByName(std::string name)
@@ -811,23 +846,6 @@ void QGIView::removeChild(QGIView* child)
         prepareGeometryChange();
         scene()->removeItem(child);
     }
-}
-
-bool QGIView::getFrameState()
-{
-    //    Base::Console().message("QGIV::getFrameState() - %s\n", getViewName());
-    TechDraw::DrawView* dv = getViewObject();
-    if (!dv) return true;
-
-    TechDraw::DrawPage* page = dv->findParentPage();
-    if (!page) return true;
-
-    Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
-    Gui::ViewProvider* vp = activeGui->getViewProvider(page);
-    ViewProviderPage* vpp = freecad_cast<ViewProviderPage*>(vp);
-    if (!vpp) return true;
-
-    return vpp->getFrameState();
 }
 
 void QGIView::hideFrame()

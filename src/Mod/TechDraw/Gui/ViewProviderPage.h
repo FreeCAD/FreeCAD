@@ -122,9 +122,6 @@ public:
 
     Gui::MDIView* getMDIView() const override;
 
-    bool getFrameState() const;
-    void setFrameState(bool state);
-    void toggleFrameState();
     void setTemplateMarkers(bool state) const;
 
     bool canDelete(App::DocumentObject* obj) const override;
