@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
- *                                                                          *
+ *   Copyright (c) 2012 Jan Rheinländer jrheinlaender@users.sourceforge.net *
  *   Copyright (c) 2025 AstoCAD                  <hello@astocad.com>        *
  *                                                                          *
  *   This file is part of FreeCAD.                                          *
@@ -47,7 +47,6 @@ namespace Gui {
     ComboLinks::~ComboLinks()
     {
         clear(); // Deletes owned pointers in linksInList
-        combo = nullptr; // Don't delete, not owned
     }
 
     void ComboLinks::setCombo(QComboBox* combobox)
