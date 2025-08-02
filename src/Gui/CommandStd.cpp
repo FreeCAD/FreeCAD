@@ -574,8 +574,8 @@ StdCmdFreeCADDonation::StdCmdFreeCADDonation()
   :Command("Std_FreeCADDonation")
 {
     sGroup        = "Help";
-    sMenuText     = QT_TR_NOOP("Support FreeCA&D");
-    sToolTipText  = QT_TR_NOOP("Support FreeCAD development");
+    sMenuText     = QT_TR_NOOP("Donate to FreeCA&D");
+    sToolTipText  = QT_TR_NOOP("Support the FreeCAD development");
     sWhatsThis    = "Std_FreeCADDonation";
     sStatusTip    = sToolTipText;
     sPixmap       = "internet-web-browser";
@@ -586,8 +586,42 @@ void StdCmdFreeCADDonation::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
-    std::string url = hURLGrp->GetASCII("DonatePage", "https://wiki.freecad.org/Donate");
+    std::string url = hURLGrp->GetASCII("DonatePage", "https://www.freecad.org/sponsor");
     hURLGrp->SetASCII("DonatePage", url.c_str());
+    OpenURLInBrowser(url.c_str());
+}
+
+//===========================================================================
+// Std_FreeDevHandbook
+
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDevHandbook)
+
+StdCmdDevHandbook::StdCmdDevHandbook()
+
+    : Command("Std_DevHandbook")
+{
+    sGroup = "Help";
+    sMenuText = QT_TR_NOOP("Developers Handbook");
+
+    sToolTipText = QT_TR_NOOP("Handbook about FreeCAD development");
+
+    sWhatsThis = "Std_DevHandbook";
+    sStatusTip = sToolTipText;
+    sPixmap = "internet-web-browser";
+    eType = 0;
+}
+
+void StdCmdDevHandbook::activated(int iMsg)
+
+{
+    Q_UNUSED(iMsg);
+    ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Websites");
+    std::string url = hURLGrp->GetASCII("DevHandbook", "https://freecad.github.io/DevelopersHandbook/");
+
+    hURLGrp->SetASCII("DevHandbook", url.c_str());
     OpenURLInBrowser(url.c_str());
 }
 
@@ -648,34 +682,6 @@ void StdCmdFreeCADUserHub::activated(int iMsg)
 }
 
 //===========================================================================
-// Std_FreeCADPowerUserHub
-//===========================================================================
-
-DEF_STD_CMD(StdCmdFreeCADPowerUserHub)
-
-StdCmdFreeCADPowerUserHub::StdCmdFreeCADPowerUserHub()
-  :Command("Std_FreeCADPowerUserHub")
-{
-    sGroup        = "Help";
-    sMenuText     = QT_TR_NOOP("&Python Scripting Documentation");
-    sToolTipText  = QT_TR_NOOP("Opens the Python Scripting documentation");
-    sWhatsThis    = "Std_FreeCADPowerUserHub";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "applications-python";
-    eType         = 0;
-}
-
-void StdCmdFreeCADPowerUserHub::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    std::string defaulturl = QCoreApplication::translate(this->className(),"https://wiki.freecad.org/Power_users_hub").toStdString();
-    ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
-    std::string url = hURLGrp->GetASCII("PowerUsers", defaulturl.c_str());
-    hURLGrp->SetASCII("PowerUsers", url.c_str());
-    OpenURLInBrowser(url.c_str());
-}
-
-//===========================================================================
 // Std_FreeCADForum
 //===========================================================================
 
@@ -702,59 +708,6 @@ void StdCmdFreeCADForum::activated(int iMsg)
     hURLGrp->SetASCII("UserForum", url.c_str());
     OpenURLInBrowser(url.c_str());
 }
-
-//===========================================================================
-// Std_FreeCADFAQ
-//===========================================================================
-
-DEF_STD_CMD(StdCmdFreeCADFAQ)
-
-StdCmdFreeCADFAQ::StdCmdFreeCADFAQ()
-  :Command("Std_FreeCADFAQ")
-{
-    sGroup        = "Help";
-    sMenuText     = QT_TR_NOOP("FreeCAD FA&Q");
-    sToolTipText  = QT_TR_NOOP("Opens the Frequently Asked Questions");
-    sWhatsThis    = "Std_FreeCADFAQ";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "internet-web-browser";
-    eType         = 0;
-}
-
-void StdCmdFreeCADFAQ::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    std::string defaulturl = QCoreApplication::translate(this->className(),"https://wiki.freecad.org/Frequently_asked_questions").toStdString();
-    ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
-    std::string url = hURLGrp->GetASCII("FAQ", defaulturl.c_str());
-    hURLGrp->SetASCII("FAQ", url.c_str());
-    OpenURLInBrowser(url.c_str());
-}
-
-//===========================================================================
-// Std_PythonWebsite
-//===========================================================================
-
-DEF_STD_CMD(StdCmdPythonWebsite)
-
-StdCmdPythonWebsite::StdCmdPythonWebsite()
-  :Command("Std_PythonWebsite")
-{
-    sGroup        = "Help";
-    sMenuText     = QT_TR_NOOP("Python Website");
-    sToolTipText  = QT_TR_NOOP("The official Python website");
-    sWhatsThis    = "Std_PythonWebsite";
-    sStatusTip    = QT_TR_NOOP("Python Website");
-    sPixmap       = "applications-python";
-    eType         = 0;
-}
-
-void StdCmdPythonWebsite::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    OpenURLInBrowser("https://www.python.org");
-}
-
 
 //===========================================================================
 // Std_ReportBug
@@ -964,12 +917,7 @@ StdCmdReloadStyleSheet::StdCmdReloadStyleSheet()
 
 void StdCmdReloadStyleSheet::activated(int )
 {
-    auto mw = getMainWindow();
-
-    auto qssFile = mw->property("fc_currentStyleSheet").toString();
-    auto tiledBackground = mw->property("fc_tiledBackground").toBool();
-
-    Gui::Application::Instance->setStyleSheet(qssFile, tiledBackground);
+    Application::Instance->reloadStyleSheet();
 }
 
 namespace Gui {
@@ -996,15 +944,13 @@ void CreateStdCommands()
     rcCmdMgr.addCommand(new StdCmdFreeCADWebsite());
     rcCmdMgr.addCommand(new StdCmdFreeCADDonation());
     rcCmdMgr.addCommand(new StdCmdFreeCADUserHub());
-    rcCmdMgr.addCommand(new StdCmdFreeCADPowerUserHub());
     rcCmdMgr.addCommand(new StdCmdFreeCADForum());
-    rcCmdMgr.addCommand(new StdCmdFreeCADFAQ());
-    rcCmdMgr.addCommand(new StdCmdPythonWebsite());
     rcCmdMgr.addCommand(new StdCmdReportBug());
     rcCmdMgr.addCommand(new StdCmdTextDocument());
     rcCmdMgr.addCommand(new StdCmdUnitsCalculator());
     rcCmdMgr.addCommand(new StdCmdUserEditMode());
     rcCmdMgr.addCommand(new StdCmdReloadStyleSheet());
+    rcCmdMgr.addCommand(new StdCmdDevHandbook());
     //rcCmdMgr.addCommand(new StdCmdDownloadOnlineHelp());
     //rcCmdMgr.addCommand(new StdCmdDescription());
 }

@@ -639,6 +639,19 @@ class _Window(ArchComponent.Component):
                         widths = host.OverrideWidth
                     elif host.Width:
                         widths = [host.Width.Value]
+
+                    # TODO Below codes copied and adopted from ArchWall.py.
+                    #      Consider adding a variable to store the layer's
+                    #      thickness as deduced, so the figure there could be
+                    #      used directly without re-calculated here below.
+                    if hasattr(host,"Material"):
+                        if host.Material:
+                            if hasattr(host.Material,"Materials"):
+                                thicknesses = [abs(t) for t in host.Material.Thicknesses]
+                                totalThk = sum(thicknesses)
+                                # Append totalThk to widths, find max below
+                                widths.append(totalThk)
+
                 if widths:
                     width = max(widths)
                     # +100mm to ensure subtract is through at the moment

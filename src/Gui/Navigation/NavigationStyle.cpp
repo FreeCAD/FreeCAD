@@ -722,7 +722,14 @@ void NavigationStyle::reorientCamera(SoCamera* camera, const SbRotation& rotatio
         SbVec3f direction;
         camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
         
+#if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 405)
+        // Large focal distance puts the camera far away which causes Coin's auto clipping
+        // calculations to add more slack (more space between near and far plane) and thus reduces
+        // chances or hidden geometry.
+        constexpr float orthographicFocalDistance = 250;
+#else
         constexpr float orthographicFocalDistance = 1;
+#endif
         camera->position = getFocalPoint() - orthographicFocalDistance * direction;
         camera->focalDistance = orthographicFocalDistance;
     }

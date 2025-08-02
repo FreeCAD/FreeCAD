@@ -102,7 +102,6 @@ struct DrawingParameters
     /** @name Rendering Coin Colors **/
     //@{
     static SbColor InformationColor;                       // Information Overlay Color
-    static SbColor CreateCurveColor;                       // Color for Edit Curves during creation
     static SbColor CrossColorH;                            // Color for the Horizontal Axis
     static SbColor CrossColorV;                            // Color for the Vertical Axis
     static SbColor InvalidSketchColor;                     // Color for rendering an invalid sketch
@@ -499,12 +498,31 @@ struct CoinMapping
     {
         return CurvIdToGeoId[layerindex][sublayerindex][curveindex];
     }
+
+    bool isValidCurveId(int curveindex, int layerindex, int sublayerindex = 0) const
+    {
+        // clang-format off
+        return static_cast<int>(CurvIdToGeoId.size()) > layerindex &&
+               static_cast<int>(CurvIdToGeoId[layerindex].size()) > sublayerindex &&
+               static_cast<int>(CurvIdToGeoId[layerindex][sublayerindex].size()) > curveindex;
+        // clang-format on
+    }
+
     /// given the MF index of a point and the coin layer in which it is drawn returns the GeoId of
     /// the point
     int getPointGeoId(int pointindex, int layerindex)
     {
         return PointIdToGeoId[layerindex][pointindex];
     }
+
+    bool isValidPointId(int pointindex, int layerindex) const
+    {
+        // clang-format off
+        return static_cast<int>(PointIdToGeoId.size()) > layerindex &&
+               static_cast<int>(PointIdToGeoId[layerindex].size()) > pointindex;
+        // clang-format on
+    }
+
     /// given the MF index of a point and the coin layer in which it is drawn returns the PosId of
     /// the point
     Sketcher::PointPos getPointPosId(int pointindex, int layerindex)

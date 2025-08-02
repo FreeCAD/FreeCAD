@@ -29,8 +29,6 @@ import PathScripts.PathUtils as PathUtils
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-from PySide import QtCore
-
 __doc__ = "Class and implementation of CAM Vcarve operation"
 
 PRIMARY = 0
@@ -115,12 +113,12 @@ def _collectVoronoiWires(vd):
 def _sortVoronoiWires(wires, start=FreeCAD.Vector(0, 0, 0)):
     def closestTo(start, point):
         p = None
-        l = None
+        length = None
         for i in point:
-            if l is None or l > start.distanceToPoint(point[i]):
-                l = start.distanceToPoint(point[i])
+            if length is None or length > start.distanceToPoint(point[i]):
+                length = start.distanceToPoint(point[i])
                 p = i
-        return (p, l)
+        return (p, length)
 
     begin = {}
     end = {}
@@ -204,8 +202,20 @@ class _Geometry(object):
         return _Geometry(zStart + zOff, max(zStop + zOff, zFinal), zScale, zStepDown)
 
     @classmethod
-    def FromObj(cls, obj):
-        zStart = obj.BaseShapes[0].Shape.BoundBox.ZMax
+    def FromObj(cls, obj, model):
+        if obj.BaseShapes and hasattr(obj.BaseShapes[0], "Shape"):
+            zStart = obj.BaseShapes[0].Shape.BoundBox.ZMax
+        elif obj.Base and obj.Base[0][0] and hasattr(obj.Base[0][0], "Shape"):
+            if len(obj.Base[0]) > 1 and "Face" in obj.Base[0][1][0]:
+                faceName = obj.Base[0][1][0]
+                faceIndex = int(faceName.replace("Face", "")) - 1
+                face = obj.Base[0][0].Shape.Faces[faceIndex]
+                zStart = face.BoundBox.ZMax
+            else:
+                zStart = obj.Base[0][0].Shape.BoundBox.ZMax
+        else:
+            zStart = model.Shape.BoundBox.ZMax
+            Path.Log.error("Base object not set")
         finalDepth = obj.FinalDepth.Value
         stepDown = abs(obj.StepDown.Value)
 
@@ -497,10 +507,10 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         pathlist = []
         pathlist.append(Path.Command("(starting)"))
 
+        geom = _Geometry.FromObj(obj, self.model[0])
+
         # iterate over each face separately
         for face, wires in self.buildMedialWires(obj, faces).items():
-
-            geom = _Geometry.FromObj(obj)
 
             # If using depth step-down, calculate maximum usable depth for current face.
             # This is done to avoid adding additional step-down engraving passes when it
@@ -583,7 +593,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                     )
                 )
 
-        except Exception as e:
+        except Exception:
             Path.Log.warning(
                 "Error processing Base object. Engraving operation will produce no output."
             )
@@ -627,7 +637,6 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
         for face, wires in self.voronoiDebugCache.items():
             for wire in wires:
-                lastEdge = None
                 currentPartWire = Part.Wire()
                 currentPartWire.fixTolerance(0.01)
                 for edge in wire:

@@ -188,6 +188,8 @@ struct DxfImportStats
     std::map<std::string, int> entityCounts;
     std::map<std::string, std::string> importSettings;
     std::map<std::string, std::vector<std::pair<int, std::string>>> unsupportedFeatures;
+    std::map<std::string, int> systemBlockCounts;
+
     int totalEntitiesCreated = 0;
 };
 
@@ -936,6 +938,7 @@ public:
     virtual void OnReadDimension(const Base::Vector3d& /*start*/,
                                  const Base::Vector3d& /*end*/,
                                  const Base::Vector3d& /*point*/,
+                                 int /*dimensionType*/,
                                  double /*rotation*/)
     {}
     virtual void OnReadPolyline(std::list<VertexInfo>& /*vertices*/, int /*flags*/)

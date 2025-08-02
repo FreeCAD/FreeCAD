@@ -30,6 +30,7 @@
 
 #include "ViewProviderGeometryObject.h"
 #include "Document.h"
+#include "BitmapFactory.h"
 
 class SoSensor;
 class SoDragger;
@@ -55,6 +56,8 @@ public:
 
     // Returns the icon
     QIcon getIcon() const;
+    // returns a map of position -> icon name.
+    std::map<BitmapFactoryInst::Position, std::string> getOverlayIcons() const;
     bool claimChildren(std::vector<App::DocumentObject*>&) const;
     ValueT useNewSelectionModel() const;
     void onSelectionChanged(const SelectionChanges&);
@@ -138,6 +141,7 @@ private:
 
 #define FC_PY_VIEW_OBJECT \
     FC_PY_ELEMENT(getIcon) \
+    FC_PY_ELEMENT(getOverlayIcons) \
     FC_PY_ELEMENT(claimChildren) \
     FC_PY_ELEMENT(useNewSelectionModel) \
     FC_PY_ELEMENT(getElementPicked) \
@@ -222,6 +226,29 @@ public:
         else
             icon = ViewProviderT::mergeGreyableOverlayIcons(icon);
         return icon;
+    }
+
+    QIcon mergeColorfulOverlayIcons(const QIcon& orig) const override
+    {
+        QIcon currentIcon = orig;
+
+        // Get the map of overlay names from the Python implementation
+        std::map<BitmapFactoryInst::Position, std::string> overlayMap = imp->getOverlayIcons();
+
+        if (!overlayMap.empty()) {
+            // Use the static instance of BitmapFactory to perform the merge
+            for (const auto& [position, name] : overlayMap) {
+                static const QSize overlayIconSize  { 10, 10 };
+                QPixmap overlayPixmap =
+                    Gui::BitmapFactory().pixmapFromSvg(name.c_str(), overlayIconSize);
+                if (!overlayPixmap.isNull()) {
+                    currentIcon =
+                        Gui::BitmapFactoryInst::mergePixmap(currentIcon, overlayPixmap, position);
+                }
+            }
+        }
+
+        return ViewProviderT::mergeColorfulOverlayIcons(currentIcon);
     }
 
     std::vector<App::DocumentObject*> claimChildren() const override {

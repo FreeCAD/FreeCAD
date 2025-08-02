@@ -38,7 +38,7 @@
      <item row="0" column="1">
       <widget class="QLabel" name="Type">
        <property name="text">
-        <string>Ressonance frequencies</string>
+        <string>Resonant frequencies</string>
        </property>
       </widget>
      </item>

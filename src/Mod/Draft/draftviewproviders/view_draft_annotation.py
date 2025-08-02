@@ -239,7 +239,7 @@ class ViewProviderDraftAnnotation(object):
         if mode != 0:
             return None
 
-        if utils.get_type(vobj.Object) in ("AngularDimension", "Label"):
+        if utils.get_type(vobj.Object) == "AngularDimension":
             return False # Required, else edit mode is entered.
 
         if not "Draft_Edit" in Gui.listCommands():

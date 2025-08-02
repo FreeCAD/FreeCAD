@@ -118,17 +118,17 @@ namespace Gui
 
     //! @name View Constants for spacing
     //@{
-      float fontHeight;                           //!< height of the current qApp default font.
-      float direction;                            //!< controls top to bottom or bottom to top direction.
-      float verticalSpacing;                      //!< pixels between top and bottom of text to background rectangle.
-      float rowHeight;                            //!< height of background rectangle.
-      float iconSize;                             //!< size of icon to match font.
-      float pointSize;                            //!< size of the connection point.
-      float pointSpacing;                         //!< spacing between pofloat columns.
-      float pointToIcon;                          //!< spacing from last column points to first icon.
-      float iconToIcon;                           //!< spacing between icons.
-      float iconToText;                           //!< spacing between last icon and text.
-      float rowPadding;                           //!< spaces added to rectangle background width ends.
+      qreal fontHeight;                           //!< height of the current qApp default font.
+      qreal direction;                            //!< controls top to bottom or bottom to top direction.
+      qreal verticalSpacing;                      //!< pixels between top and bottom of text to background rectangle.
+      qreal rowHeight;                            //!< height of background rectangle.
+      qreal iconSize;                             //!< size of icon to match font.
+      qreal pointSize;                            //!< size of the connection point.
+      qreal pointSpacing;                         //!< spacing between pofloat columns.
+      qreal pointToIcon;                          //!< spacing from last column points to first icon.
+      qreal iconToIcon;                           //!< spacing between icons.
+      qreal iconToText;                           //!< spacing between last icon and text.
+      qreal rowPadding;                           //!< spaces added to rectangle background width ends.
       std::vector<QBrush> backgroundBrushes;      //!< brushes to paint background rectangles.
       std::vector<QBrush> forgroundBrushes;       //!< brushes to paint points, connectors, text.
       void setupViewConstants();

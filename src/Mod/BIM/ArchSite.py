@@ -791,7 +791,7 @@ class _ViewProviderSite:
             vobj.addProperty("App::PropertyBool","SolarDiagram","Site",QT_TRANSLATE_NOOP("App::Property","Show solar diagram or not"), locked=True)
         if not "SolarDiagramScale" in pl:
             vobj.addProperty("App::PropertyFloat","SolarDiagramScale","Site",QT_TRANSLATE_NOOP("App::Property","The scale of the solar diagram"), locked=True)
-            vobj.SolarDiagramScale = 1
+            vobj.SolarDiagramScale = 20000.0 # Default diagram of 20 m radius
         if not "SolarDiagramPosition" in pl:
             vobj.addProperty("App::PropertyVector","SolarDiagramPosition","Site",QT_TRANSLATE_NOOP("App::Property","The position of the solar diagram"), locked=True)
         if not "SolarDiagramColor" in pl:
@@ -978,19 +978,12 @@ class _ViewProviderSite:
         """
 
         from pivy import coin
-
-        def find_node(parent, nodetype):
-            for i in range(parent.getNumChildren()):
-                if isinstance(parent.getChild(i), nodetype):
-                    return parent.getChild(i)
-            return None
+        from draftutils import gui_utils
 
         if not hasattr(self, "terrain_switches"):
-            if vobj.RootNode.getNumChildren() > 2:
-                main_switch = find_node(vobj.RootNode, coin.SoSwitch)
-                if not main_switch:
-                    return
-                if main_switch.getNumChildren() == 4:   # Check if all display modes are available.
+            if vobj.RootNode.getNumChildren():
+                main_switch = gui_utils.find_coin_node(vobj.RootNode, coin.SoSwitch)  # The display mode switch.
+                if main_switch is not None and main_switch.getNumChildren() == 4:  # Check if all display modes are available.
                     self.terrain_switches = []
                     for node in tuple(main_switch.getChildren()):
                         new_switch = coin.SoSwitch()

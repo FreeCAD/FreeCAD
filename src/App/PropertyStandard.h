@@ -29,7 +29,6 @@
 #include <string>
 #include <vector>
 #include <boost/dynamic_bitset.hpp>
-#include <boost/filesystem/path.hpp>
 #include <Base/Uuid.h>
 
 #include "Property.h"

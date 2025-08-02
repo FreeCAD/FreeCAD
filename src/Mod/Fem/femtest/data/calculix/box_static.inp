@@ -507,8 +507,8 @@ FemConstraintFixed,3
 
 ***********************************************************
 ** constraints force node loads
-*CLOAD
 ** FemConstraintForce
+*CLOAD
 ** node loads on shape: Box:Face6
 2,3,-0
 4,3,-0

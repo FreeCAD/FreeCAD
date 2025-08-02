@@ -1,0 +1,16 @@
+c_compiler:
+- if: win
+  then: vs2022
+cxx_compiler:
+- if: win
+  then: vs2022
+
+c_stdlib_version:
+- if: osx and x86_64
+  then: "10.13"
+MACOSX_SDK_VERSION:
+- if: osx and x86_64
+  then: "10.13"
+MACOSX_DEPLOYMENT_TARGET:
+- if: osx and x86_64
+  then: "10.13"

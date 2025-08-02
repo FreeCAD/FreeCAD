@@ -121,7 +121,6 @@
             "lhs": "${hostSystemName}",
             "rhs": "Linux"
         },
-        "cmakeExecutable": "${sourceDir}/conda/cmake.sh",
         "cacheVariables": {
           "CMAKE_C_COMPILER": {
             "type": "STRING",
@@ -150,6 +149,10 @@
           "OCC_INCLUDE_DIR": {
             "type": "FILEPATH",
             "value": "$env{CONDA_PREFIX}/include/opencascade"
+          },
+          "OCC_LIBRARY_DIR": {
+            "type": "FILEPATH",
+            "value": "$env{CONDA_PREFIX}/lib"
           }
         }
       },
@@ -161,7 +164,6 @@
             "lhs": "${hostSystemName}",
             "rhs": "Darwin"
         },
-        "cmakeExecutable": "${sourceDir}/conda/cmake.sh",
         "cacheVariables": {
           "CMAKE_IGNORE_PREFIX_PATH": {
             "type": "STRING",
@@ -178,6 +180,10 @@
           "OCC_INCLUDE_DIR": {
             "type": "FILEPATH",
             "value": "$env{CONDA_PREFIX}/include/opencascade"
+          },
+          "OCC_LIBRARY_DIR": {
+            "type": "FILEPATH",
+            "value": "$env{CONDA_PREFIX}/lib"
           }
         }
       },
@@ -189,7 +195,6 @@
             "lhs": "${hostSystemName}",
             "rhs": "Windows"
         },
-        "cmakeExecutable": "${sourceDir}/conda/cmake.cmd",
         "cacheVariables": {
           "CMAKE_INSTALL_PREFIX": {
             "type": "FILEPATH",
@@ -202,6 +207,10 @@
           "OCC_INCLUDE_DIR": {
             "type": "FILEPATH",
             "value": "$env{CONDA_PREFIX}/Library/include/opencascade"
+          },
+          "OCC_LIBRARY_DIR": {
+            "type": "FILEPATH",
+            "value": "$env{CONDA_PREFIX}/Library/lib"
           }
         }
       },

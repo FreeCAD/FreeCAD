@@ -673,8 +673,11 @@ public:
 
     QIcon getIcon(QPixmap px) {
         static int iconSize = -1;
-        if(iconSize < 0)
-            iconSize = QApplication::style()->standardPixmap(QStyle::SP_DirClosedIcon).width();
+        if (iconSize < 0) {
+            auto sampleIcon = QApplication::style()->standardPixmap(QStyle::SP_DirClosedIcon);
+            double pixelRatio = sampleIcon.devicePixelRatio();
+            iconSize = static_cast<int>(sampleIcon.width() / pixelRatio);
+        }
 
         if(!isLinked())
             return QIcon();

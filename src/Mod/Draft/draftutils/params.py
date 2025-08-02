@@ -558,6 +558,7 @@ def _get_param_dictionary():
         "PrecastHoleSpacing":          ("float",     0.0),
         "PrecastRiser":                ("float",     0.0),
         "PrecastTread":                ("float",     0.0),
+        "ProfilePreset":               ("string",    ""),
         "ScheduleColumnWidth0":        ("int",       100),
         "ScheduleColumnWidth1":        ("int",       100),
         "ScheduleColumnWidth2":        ("int",       50),
@@ -642,7 +643,8 @@ def _get_param_dictionary():
                 ":/ui/preferences-dae.ui",
                 ":/ui/preferences-ifc.ui",
                 ":/ui/preferences-ifc-export.ui",
-                ":/ui/preferences-sh3d-import.ui",):
+                ":/ui/preferences-sh3d-import.ui",
+                ":/ui/preferences-webgl.ui",):
 
         # https://stackoverflow.com/questions/14750997/load-txt-file-from-resources-in-python
         fd = QtCore.QFile(fnm)
