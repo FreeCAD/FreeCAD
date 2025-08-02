@@ -82,7 +82,7 @@ class PostProcessorFactory:
     """Factory class for creating post processors."""
 
     @staticmethod
-    def get_post_processor(job, postname):
+    def get_post_processor(job, postname, operations):
         # Log initial debug message
         Path.Log.debug("PostProcessorFactory.get_post_processor()")
 
@@ -109,17 +109,19 @@ class PostProcessorFactory:
 
                 try:
                     PostClass = getattr(module, class_name)
-                    return PostClass(job)
+                    return PostClass(job, operations)
                 except AttributeError:
                     # Return an instance of WrapperPost if no valid module is found
                     Path.Log.debug(f"Post processor {postname} is a script")
-                    return WrapperPost(job, module_path, module_name)
+                    return WrapperPost(job, operations, module_path, module_name)
+
+        return None
 
 
 class PostProcessor:
     """Base Class.  All non-legacy postprocessors should inherit from this class."""
 
-    def __init__(self, job, tooltip, tooltipargs, units, *args, **kwargs):
+    def __init__(self, job, operations, tooltip, tooltipargs, units, *args, **kwargs):
         self._tooltip = tooltip
         self._tooltipargs = tooltipargs
         self._units = units
@@ -127,6 +129,11 @@ class PostProcessor:
         self._args = args
         self._kwargs = kwargs
         self.reinitialize()
+
+        if operations:
+            self._operations = operations
+        elif job.Operations:
+            self._operations = job.Operations.Group
 
     @classmethod
     def exists(cls, processor):
@@ -193,7 +200,8 @@ class PostProcessor:
                 sublist = [__fixtureSetup(index, f, self._job)]
 
                 # Now generate the gcode
-                for obj in self._job.Operations.Group:
+                # for obj in self._job.Operations.Group:
+                for obj in self._operations:
                     tc = PathUtil.toolControllerForOp(obj)
                     if tc is not None and PathUtil.activeForOp(obj):
                         if tc.ToolNumber != currTool:
@@ -230,7 +238,8 @@ class PostProcessor:
                     postlist.append((toolstring, sublist))
 
             Path.Log.track(self._job.PostProcessorOutputFile)
-            for idx, obj in enumerate(self._job.Operations.Group):
+            # for idx, obj in enumerate(self._job.Operations.Group):
+            for idx, obj in enumerate(self._operations):
                 Path.Log.track(obj.Label)
 
                 # check if the operation is active
@@ -276,7 +285,8 @@ class PostProcessor:
             currTool = None
 
             # Now generate the gcode
-            for obj in self._job.Operations.Group:
+            # for obj in self._job.Operations.Group:
+            for obj in self._operations:
 
                 # check if the operation is active
                 if not PathUtil.activeForOp(obj):
@@ -465,8 +475,11 @@ class PostProcessor:
 class WrapperPost(PostProcessor):
     """Wrapper class for old post processors that are scripts."""
 
-    def __init__(self, job, script_path, module_name, *args, **kwargs):
-        super().__init__(job, tooltip=None, tooltipargs=None, units=None, *args, **kwargs)
+    def __init__(self, job, operations, script_path, module_name, *args, **kwargs):
+        super().__init__(
+            job, operations, tooltip=None, tooltipargs=None, units=None, *args, **kwargs
+        )
+        self.operations = operations
         self.script_path = script_path
         self.module_name = module_name
         Path.Log.debug(f"WrapperPost.__init__({script_path})")
