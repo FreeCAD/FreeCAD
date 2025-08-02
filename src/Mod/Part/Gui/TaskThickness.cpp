@@ -39,9 +39,12 @@
 #include <Gui/Selection/SelectionFilter.h>
 #include <Gui/Selection/SelectionObject.h>
 #include <Gui/ViewProvider.h>
+#include <Gui/Inventor/Draggers/Gizmo.h>
+#include <Gui/Inventor/Draggers/GizmoHelper.h>
 #include <Mod/Part/App/PartFeatures.h>
 
 #include "TaskThickness.h"
+#include "ViewProvider.h"
 #include "ui_TaskOffset.h"
 
 
@@ -112,6 +115,8 @@ ThicknessWidget::ThicknessWidget(Part::Thickness* thickness, QWidget* parent)
     d->ui.selfIntersection->setChecked(selfint);
 
     d->ui.spinOffset->bind(d->thickness->Value);
+
+    setupGizmos();
 }
 
 ThicknessWidget::~ThicknessWidget()
@@ -196,6 +201,10 @@ void ThicknessWidget::onFacesButtonToggled(bool on)
         Gui::Application::Instance->hideViewProvider(d->thickness);
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate(new Private::FaceSelection(d->thickness->Faces.getValue()));
+
+        if (gizmos) {
+            gizmos->visible = false;
+        }
     }
     else {
         QList<QWidget*> c = this->findChildren<QWidget*>();
@@ -220,6 +229,11 @@ void ThicknessWidget::onFacesButtonToggled(bool on)
         Gui::Application::Instance->hideViewProvider(d->thickness->Faces.getValue());
         if (d->ui.updateView->isChecked())
             d->thickness->getDocument()->recomputeFeature(d->thickness);
+
+        if (gizmos) {
+            gizmos->visible = true;
+            setGizmoPositions();
+        }
     }
 }
 
@@ -292,6 +306,57 @@ void ThicknessWidget::changeEvent(QEvent *e)
         d->ui.retranslateUi(this);
         d->ui.labelOffset->setText(tr("Thickness"));
     }
+}
+
+void ThicknessWidget::setupGizmos()
+{
+    if (!Gui::Gizmos::isEnabled()) {
+        return;
+    }
+
+    gizmos = std::make_unique<Gui::Gizmos>();
+
+    auto linearGizmo = new Gui::LinearGizmo;
+    connect(d->ui.spinOffset, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), [linearGizmo](double value) { linearGizmo->setDragLength(value); });
+    linearGizmo->setProperty(d->ui.spinOffset);
+
+    gizmos->addGizmo(linearGizmo);
+    gizmos->initGizmos();
+
+    setGizmoPositions();
+
+    auto vp = dynamic_cast<ViewProviderPart*>(Gui::Application::Instance->getViewProvider(d->thickness));
+    assert(vp);
+    vp->attachGizmos(gizmos.get());
+}
+
+void ThicknessWidget::setGizmoPositions()
+{
+    if (!gizmos) {
+        return;
+    }
+
+    Part::Thickness* thickness = getObject();
+    auto base = thickness->getTopoShape(thickness->Faces.getValue(), Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+    auto faces = thickness->Faces.getSubValues(true);
+
+    if (faces.size() != 0) {
+        Part::TopoShape face = base.getSubTopoShape(faces[0].c_str());
+        if (face.getShape().ShapeType() == TopAbs_FACE) {
+            auto edges = getAdjacentEdgesFromFace(face);
+            assert(edges.size() != 0);
+            DraggerPlacementProps props = getDraggerPlacementFromEdgeAndFace(edges[0], face);
+
+            // The part thickness operation by default goes creates towards outside
+            // so -props.dir is taken 
+            gizmos->getGizmo(0)->setDraggerPlacement(props.position, -props.dir);
+
+            gizmos->visible = true;
+
+            return;
+        }
+    }
+    // gizmos->visible = false;
 }
 
 

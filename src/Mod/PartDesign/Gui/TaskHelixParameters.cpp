@@ -21,19 +21,23 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "Gui/Inventor/Draggers/SoLinearDragger.h"
 #include "PreCompiled.h"
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Origin.h>
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/WaitCursor.h>
+#include <Mod/Part/App/Tools.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
+#include <Gui/Inventor/Draggers/GizmoHelper.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureHelix.h>
 
@@ -74,6 +78,8 @@ TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix* Helix
     connectSlots();
     setFocus();
     showCoordinateAxes();
+
+    setupGizmos(HelixView);
 }
 
 void TaskHelixParameters::initializeHelix()
@@ -526,6 +532,8 @@ void TaskHelixParameters::onAxisChanged(int num)
 
         recomputeFeature();
         updateStatus();
+
+        setGizmoPositions();
     }
     catch (const Base::Exception& e) {
         e.reportException();
@@ -561,6 +569,8 @@ void TaskHelixParameters::onReversedChanged(bool on)
         propReversed->setValue(on);
         recomputeFeature();
         updateUI();
+
+        setGizmoPositions();
     }
 }
 
@@ -701,6 +711,54 @@ void TaskHelixParameters::apply()  // NOLINT
     FCMD_OBJ_CMD(tobj, "Growth = " << propGrowth->getValue());
     FCMD_OBJ_CMD(tobj, "LeftHanded = " << (propLeftHanded->getValue() ? 1 : 0));
     FCMD_OBJ_CMD(tobj, "Reversed = " << (propReversed->getValue() ? 1 : 0));
+}
+
+void TaskHelixParameters::setupGizmos(ViewProviderHelix* vp)
+{
+    if (!Gizmos::isEnabled()) {
+        return;
+    }
+
+    gizmos = std::make_unique<Gizmos>();
+
+    auto heightGizmo = new Gui::LinearGizmo;
+    connect(ui->height, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), [heightGizmo](double value) { heightGizmo->setDragLength(value); });
+    heightGizmo->setProperty(ui->height);
+
+    connect(ui->inputMode, qOverload<int>(&QComboBox::currentIndexChanged), [heightGizmo] (int index) {
+        if (index == static_cast<int>(HelixMode::pitch_turns_angle)) {
+            heightGizmo->getDraggerContainer()->visible = false;
+        } else {
+            heightGizmo->getDraggerContainer()->visible = true;
+        }
+    });
+
+    gizmos->addGizmo(heightGizmo);
+    gizmos->initGizmos();
+
+    setGizmoPositions();
+
+    vp->attachGizmos(gizmos.get());
+}
+
+void TaskHelixParameters::setGizmoPositions()
+{
+    if (!gizmos) {
+        return;
+    }
+
+    auto helix = getObject<PartDesign::Helix>();
+    double reversed = propReversed->getValue()? -1.0 : 1.0;
+    auto profileCog = helix->getProfileShape().centerOfGravity();
+    assert(profileCog);
+    Base::Vector3d axisDir = helix->Axis.getValue() * reversed;
+    Base::Vector3d basePos = helix->Base.getValue();
+
+    // Project the centre point of the helix to a plane passing through the com of the profile
+    // and along the helix axis
+    Base::Vector3d pos = basePos + axisDir.Dot(profileCog.value() - basePos) * axisDir;
+
+    gizmos->getGizmo(0)->setDraggerPlacement(pos, axisDir);
 }
 
 

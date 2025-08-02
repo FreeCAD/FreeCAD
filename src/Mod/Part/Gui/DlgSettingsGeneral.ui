@@ -21,11 +21,11 @@
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkBooleanCheck" native="true">
-        <property name="text" stdset="0">
+       <widget class="Gui::PrefCheckBox" name="checkBooleanCheck">
+        <property name="text">
          <string>Automatically check model after boolean operation</string>
         </property>
-        <property name="checked" stdset="0">
+        <property name="checked">
          <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -37,11 +37,11 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkBooleanRefine" native="true">
-        <property name="text" stdset="0">
+       <widget class="Gui::PrefCheckBox" name="checkBooleanRefine">
+        <property name="text">
          <string>Automatically refine model after boolean operation</string>
         </property>
-        <property name="checked" stdset="0">
+        <property name="checked">
          <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -53,11 +53,11 @@
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkSketchBaseRefine" native="true">
-        <property name="text" stdset="0">
+       <widget class="Gui::PrefCheckBox" name="checkSketchBaseRefine">
+        <property name="text">
          <string>Automatically refine model after sketch-based operation</string>
         </property>
-        <property name="checked" stdset="0">
+        <property name="checked">
          <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -84,8 +84,8 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkObjectNaming" native="true">
-        <property name="text" stdset="0">
+       <widget class="Gui::PrefCheckBox" name="checkObjectNaming">
+        <property name="text">
          <string>Add name of base object</string>
         </property>
         <property name="prefEntry" stdset="0">
@@ -207,13 +207,26 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="enableGizmos">
+        <property name="text">
+         <string>Show interactive draggers during Part Design tasks</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>EnableGizmos</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/PartDesign</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
    <item>
     <spacer>
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
@@ -227,13 +240,13 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::PrefComboBox</class>
-   <extends>QComboBox</extends>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QWidget</extends>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

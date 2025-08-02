@@ -21,6 +21,11 @@
  ***************************************************************************/
 
 
+#include "Gui/Inventor/Draggers/GizmoHelper.h"
+#include "Gui/Inventor/Draggers/SoLinearDragger.h"
+#include "Gui/Inventor/Draggers/SoRotationDragger.h"
+#include <Gui/Utilities.h>
+
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -37,6 +42,15 @@
 #include <Gui/Tools.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/PartDesign/App/FeatureChamfer.h>
+#include <Mod/Part/App/Geometry.h>
+
+#include <TopoDS.hxx>
+#include <BRep_Tool.hxx>
+#include <BRepGProp.hxx>
+#include <GProp_GProps.hxx>
+#include <GeomAPI_ProjectPointOnSurf.hxx>
+#include <Base/Converter.h>
+#include <Mod/Part/App/Tools.h>
 
 #include "ui_TaskChamferParameters.h"
 #include "TaskChamferParameters.h"
@@ -112,6 +126,8 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp* DressUpView, Q
     else {
         hideOnError();
     }
+
+    setupGizmos(DressUpView);
 }
 
 void TaskChamferParameters::setUpUI(PartDesign::Chamfer* pcChamfer)
@@ -162,6 +178,10 @@ void TaskChamferParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (selectionMode == refSel) {
             referenceSelected(msg, ui->listWidgetReferences);
         }
+    } else if (msg.Type == Gui::SelectionChanges::ClrSelection) {
+        // TODO: the gizmo position should be only recalculated when the feature associated
+        // with the gizmo is removed from the list
+        setGizmoPositions();
     }
 }
 
@@ -188,6 +208,7 @@ void TaskChamferParameters::setButtons(const selectionModes mode)
 void TaskChamferParameters::onRefDeleted()
 {
     TaskDressUpParameters::deleteRef(ui->listWidgetReferences);
+    setGizmoPositions();
 }
 
 void TaskChamferParameters::onAddAllEdges()
@@ -326,6 +347,96 @@ void TaskChamferParameters::apply()
     if (ui->listWidgetReferences->count() == 0) {
         Base::Console().warning(tr("Empty chamfer created !\n").toStdString().c_str());
     }
+}
+
+void TaskChamferParameters::setupGizmos(ViewProviderDressUp* vp)
+{
+    if (!Gizmos::isEnabled()) {
+        return;
+    }
+
+    gizmos = std::make_unique<Gizmos>();
+
+    auto linearGizmo = new Gui::LinearGizmo;
+    connect(ui->chamferSize, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), [linearGizmo](double value) { linearGizmo->setDragLength(value); });
+    linearGizmo->setProperty(ui->chamferSize);
+
+    auto linearGizmo2 = new Gui::LinearGizmo;
+    connect(ui->chamferSize2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), [linearGizmo2](double value) { linearGizmo2->setDragLength(value); });
+    linearGizmo2->setProperty(ui->chamferSize2);
+
+    auto rotationGizmo = new Gui::RotationGizmo;
+    connect(ui->chamferAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), [rotationGizmo](double value) { rotationGizmo->setRotAngle(value); });
+    rotationGizmo->setProperty(ui->chamferAngle);
+
+    connect(ui->chamferType, qOverload<int>(&QComboBox::currentIndexChanged), [linearGizmo, linearGizmo2, rotationGizmo] (int index) {
+        switch (index) {
+            case 0:
+                linearGizmo->getDraggerContainer()->visible = true;
+                linearGizmo2->getDraggerContainer()->visible = false;
+                rotationGizmo->getDraggerContainer()->visible = false;
+
+                break;
+            case 1:
+                linearGizmo->getDraggerContainer()->visible = true;
+                linearGizmo2->getDraggerContainer()->visible = true;
+                rotationGizmo->getDraggerContainer()->visible = false;
+
+                break;
+            case 2:
+                linearGizmo->getDraggerContainer()->visible = true;
+                linearGizmo2->getDraggerContainer()->visible = false;
+                rotationGizmo->getDraggerContainer()->visible = true;
+
+        }
+    });
+
+    connect(ui->flipDirection, &QCheckBox::toggled, [linearGizmo, linearGizmo2] (bool) {
+        GizmoPlacement placement = linearGizmo->getDraggerPlacement();
+        GizmoPlacement placement2 = linearGizmo2->getDraggerPlacement();
+
+        linearGizmo->setDraggerPlacement(placement2.pos, placement2.dir);
+        linearGizmo2->setDraggerPlacement(placement.pos, placement.dir);
+    });
+
+    gizmos->addGizmo(linearGizmo);
+    gizmos->addGizmo(linearGizmo2);
+    gizmos->addGizmo(rotationGizmo);
+    gizmos->initGizmos();
+
+    setGizmoPositions();
+
+    vp->attachGizmos(gizmos.get());
+}
+
+void TaskChamferParameters::setGizmoPositions()
+{
+    if (!gizmos) {
+        return;
+    }
+
+    auto linearGizmo = gizmos->getGizmo<LinearGizmo>(0);
+    auto linearGizmo2 = gizmos->getGizmo<LinearGizmo>(1);
+    auto rotationGizmo = gizmos->getGizmo<RotationGizmo>(2);
+
+    auto chamfer = getObject<PartDesign::Chamfer>();
+    auto baseShape = chamfer->getBaseTopoShape();
+    auto shapes = chamfer->getContinuousEdges(baseShape);
+    assert(shapes.size() != 0);
+
+    Part::TopoShape edge = shapes[0];
+    auto [face1, face2] = getAdjacentFacesFromEdge(edge, baseShape);
+
+    DraggerPlacementProps props = getDraggerPlacementFromEdgeAndFace(edge, face1);
+    linearGizmo->Gizmo::setDraggerPlacement(props.position, props.dir);
+
+    rotationGizmo->Gizmo::setDraggerPlacement(props.position, -props.dir);
+    rotationGizmo->getDraggerContainer()->setArcNormalDirection(Base::convertTo<SbVec3f>(-props.tangent));
+    rotationGizmo->getDraggerContainer()->visible = false;
+
+    DraggerPlacementProps props2 = getDraggerPlacementFromEdgeAndFace(edge, face2);
+    linearGizmo2->Gizmo::setDraggerPlacement(props2.position, props2.dir);
+    linearGizmo2->getDraggerContainer()->visible = false;
 }
 
 //**************************************************************************

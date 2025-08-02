@@ -83,11 +83,11 @@ void alignGridLayoutColumns(const std::list<QGridLayout*>& layouts, unsigned col
 TaskTransform::TaskTransform(Gui::ViewProviderDragger* vp,
                              Gui::SoTransformDragger* dragger,
                              QWidget* parent,
-                             App::SubObjectPlacementProvider* subObjectPlacemenProvider,
+                             App::SubObjectPlacementProvider* subObjectPlacementProvider,
                              App::CenterOfMassProvider* centerOfMassProvider)
     : TaskBox(Gui::BitmapFactory().pixmap("Std_TransformManip.svg"), tr("Transform"), false, parent)
     , vp(vp)
-    , subObjectPlacementProvider(subObjectPlacemenProvider)
+    , subObjectPlacementProvider(subObjectPlacementProvider)
     , centerOfMassProvider(centerOfMassProvider)
     , dragger(dragger)
     , ui(new Ui_TaskTransformDialog)
