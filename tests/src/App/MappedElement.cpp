@@ -244,8 +244,9 @@ TEST_F(MappedElementTest, comparatorThreeComplexHexNamesInMap)
 
     // Collect keys in order
     std::vector<std::string> keys;
-    for (const auto& kv : testMap)
+    for (const auto& kv : testMap) {
         keys.push_back(kv.first.toString());
+    }
 
     // Print for debug (optional)
     // for (const auto& k : keys) std::cout << k << std::endl;
@@ -253,11 +254,9 @@ TEST_F(MappedElementTest, comparatorThreeComplexHexNamesInMap)
     // The expected order depends on your comparator logic.
     // If you want to check the exact order, set it here:
     // (Replace with the correct expected order if needed)
-    std::vector<std::string> expectedOrder = {
-        "#19c9:e;:U;FUS;:Hce4:7,E",
-        "#1dadb:11;:L#1061a;FUS;:H:d,E",
-        "#1dae6:8;:L#1dae4;FUS;:H:d,E"
-    };
+    std::vector<std::string> expectedOrder = {"#19c9:e;:U;FUS;:Hce4:7,E",
+                                              "#1dadb:11;:L#1061a;FUS;:H:d,E",
+                                              "#1dae6:8;:L#1dae4;FUS;:H:d,E"};
 
     EXPECT_EQ(keys, expectedOrder);
 }
@@ -277,20 +276,21 @@ TEST_F(MappedElementTest, comparatorLargerWorkedExampleWithMap)
     testMap[name1] = 2;
     testMap[name2] = 3;
     testMap[name3] = 4;
-    testMap[name0] = 5;  // Duplicate, should not affect size
-    testMap[name1] = 6;  // Duplicate, should not affect size
-    testMap[name4] = 7;  // New entry
-    testMap[name4] = 8;  // Duplicate, should not affect size
-    testMap[name2] = 9;  // Duplicate, should not affect size
-    testMap[name3] = 10; // Duplicate, should not affect size
+    testMap[name0] = 5;   // Duplicate, should not affect size
+    testMap[name1] = 6;   // Duplicate, should not affect size
+    testMap[name4] = 7;   // New entry
+    testMap[name4] = 8;   // Duplicate, should not affect size
+    testMap[name2] = 9;   // Duplicate, should not affect size
+    testMap[name3] = 10;  // Duplicate, should not affect size
 
     // Assert: map should have 5 unique keys
     EXPECT_EQ(testMap.size(), 5);
 
     // Collect keys in order
     std::vector<std::string> keys;
-    for (const auto& kv : testMap)
+    for (const auto& kv : testMap) {
         keys.push_back(kv.first.toString());
+    }
 
     // Print for debug (optional)
     // for (const auto& k : keys) std::cout << k << std::endl;
@@ -298,13 +298,11 @@ TEST_F(MappedElementTest, comparatorLargerWorkedExampleWithMap)
     // The expected order depends on your comparator logic.
     // If you want to check the exact order, set it here:
     // (Replace with the correct expected order if needed)
-    std::vector<std::string> expectedOrder = {
-        "Edge123;:U;FUS;:Hce4:7,E",
-        "Edge999;;:L#1dae4;FUS;:H:d,E",
-        "#1dad:e;:U;FUS;:Hce4:7,E",
-        "#1dadb:11;:L#1061a;FUS;:H:d,E",
-        "#1dae6:8;:L#1dae4;FUS;:H:d,E"
-    };
+    std::vector<std::string> expectedOrder = {"Edge123;:U;FUS;:Hce4:7,E",
+                                              "Edge999;;:L#1dae4;FUS;:H:d,E",
+                                              "#1dad:e;:U;FUS;:Hce4:7,E",
+                                              "#1dadb:11;:L#1061a;FUS;:H:d,E",
+                                              "#1dae6:8;:L#1dae4;FUS;:H:d,E"};
 
     EXPECT_EQ(keys, expectedOrder);
 }
