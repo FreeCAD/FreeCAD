@@ -35,6 +35,7 @@
 
 #include <App/Datums.h>
 #include <Base/Axis.h>
+#include <Mod/Part/App/Tools.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/Part2DObject.h>
 
@@ -183,7 +184,7 @@ gp_Vec LinearPattern::calculateOffsetVector(LinearPatternDirection dir) const
 
     // For 'Extent' mode, the vector represents one full step.
     // For 'Spacing' mode, it's just a normalized direction vector.
-    if (modeProp.getValue() == static_cast<int>(LinearPatternMode::Extent)) {
+    if (static_cast<LinearPatternMode>(modeProp.getValue()) == LinearPatternMode::Extent) {
         offset *= distance / (occurrences - 1);
     }
 
@@ -215,19 +216,21 @@ std::vector<gp_Vec> LinearPattern::calculateSteps(LinearPatternDirection dir,
         bool usePattern = pattern.size() > 1;
         double cumulativeDistance = 0.0;
 
-        for (int i = 1; i < occurrences; ++i) {
-            double spacing;
-            // Spacing priority: individual spacing > pattern > global offset
+        // Spacing priority: individual spacing > pattern > global offset
+        const auto spacingAt = [&](unsigned i) {
             if (spacings.at(i - 1) != -1.0) {
-                spacing = spacings.at(i - 1);
+                return spacings.at(i - 1);
             }
-            else if (usePattern) {
-                spacing = pattern.at(static_cast<size_t>(fmod(i - 1, pattern.size())));
+
+            if (usePattern) {
+                return pattern.at(static_cast<size_t>(fmod(i - 1, pattern.size())));
             }
-            else {
-                spacing = offsetValueProp.getValue();
-            }
-            cumulativeDistance += spacing;
+
+            return offsetValueProp.getValue();
+        };
+
+        for (int i = 1; i < occurrences; ++i) {
+            cumulativeDistance += spacingAt(i);
             steps.push_back(offsetVector * cumulativeDistance);
         }
     }
@@ -344,7 +347,7 @@ gp_Dir LinearPattern::getDirectionFromProperty(const App::PropertyLinkSub& dirPr
     TopLoc_Location invObjLoc = this->getLocation().Inverted();
     dir.Transform(invObjLoc.Transformation());
 
-    return gp_Vec(dir.X(), dir.Y(), dir.Z());
+    return Base::convertTo<gp_Vec>(dir);
 }
 
 void LinearPattern::updateSpacings()
@@ -460,3 +463,4 @@ void LinearPattern::syncLengthAndOffset(LinearPatternDirection dir)
 }
 
 }
+
