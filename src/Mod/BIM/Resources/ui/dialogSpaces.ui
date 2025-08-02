@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Spaces manager</string>
+   <string>Spaces Manager</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>This screen will allow you to check the spaces configuration of your project and change some attributes.</string>
+      <string>This screen enables checking the spaces configuration and editing of attributes in the project.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -112,7 +112,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Space information</string>
+      <string>Space Information</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="3" column="0">

@@ -45,7 +45,7 @@ class Arch_Level:
         return {'Pixmap'  : 'Arch_Floor',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Level","Level"),
                 'Accel': "L, V",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Level","Creates a Building Part object that represents a level.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Level","Creates a building part object that represents a level")}
 
     def IsActive(self):
 
@@ -74,7 +74,7 @@ class Arch_Building:
         return {'Pixmap'  : 'Arch_Building',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Building","Building"),
                 'Accel': "B, U",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Building","Creates a building object.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Building","Creates a building object")}
 
     def IsActive(self):
 
