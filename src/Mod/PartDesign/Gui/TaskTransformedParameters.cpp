@@ -212,22 +212,22 @@ void TaskTransformedParameters::onFeatureItemChanged(QListWidgetItem* item)
     std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
     bool isChecked = (item->checkState() == Qt::Checked);
     auto it = std::ranges::find(originals, changedObj);
-    bool changed = false;
+    bool isChanged = false;
 
     if (isChecked) {
         if (it == originals.end()) {
             originals.push_back(changedObj);
-            changed = true;
+            isChanged = true;
         }
     }
     else {
         if (it != originals.end()) {
             originals.erase(it);
-            changed = true;
+            isChanged = true;
         }
     }
 
-    if (changed) {
+    if (isChanged) {
         setupTransaction();
         pcTransformed->Originals.setValues(originals);
         if (ui->checkBoxUpdateView->isChecked()) {
@@ -571,3 +571,4 @@ bool TaskDlgTransformedParameters::reject()
 
 
 #include "moc_TaskTransformedParameters.cpp"
+
