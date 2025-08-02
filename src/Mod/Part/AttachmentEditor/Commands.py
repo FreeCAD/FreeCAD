@@ -76,7 +76,7 @@ class CommandEditAttachment:
     'Command to edit attachment'
     def GetResources(self):
         return {'Pixmap': 'Part_Attachment',
-                'MenuText': QT_TRANSLATE_NOOP("Part_EditAttachment","Attachment…"),
+                'MenuText': QT_TRANSLATE_NOOP("Part_EditAttachment","Attachment"),
                 'Accel': "",
                 'ToolTip': QT_TRANSLATE_NOOP("Part_EditAttachment","Opens the attachment editor to change the attachment of the selected object")}
 

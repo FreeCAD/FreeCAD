@@ -51,7 +51,7 @@
          </size>
         </property>
         <property name="text">
-         <string notr="true">…</string>
+         <string>Search File</string>
         </property>
        </widget>
       </item>

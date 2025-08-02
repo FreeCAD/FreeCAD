@@ -98,7 +98,8 @@
         <item>
          <widget class="QPushButton" name="selectButton">
           <property name="text">
-           <string>Box Selection…</string>
+           <string>Box Selection</string>
+
           </property>
          </widget>
         </item>

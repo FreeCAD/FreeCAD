@@ -212,7 +212,8 @@ CmdPartPrimitives::CmdPartPrimitives()
 {
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Primitives…");
+    sMenuText     = QT_TR_NOOP("Primitive");
+
     sToolTipText  = QT_TR_NOOP("Creates solid geometric primitives parametrically");
     sWhatsThis    = "Part_Primitives";
     sStatusTip    = sToolTipText;
@@ -494,7 +495,8 @@ CmdPartCompJoinFeatures::CmdPartCompJoinFeatures()
 {
     sAppModule      = "Part";
     sGroup          = QT_TR_NOOP("Part");
-    sMenuText       = QT_TR_NOOP("Join Shapes…");
+    sMenuText       = QT_TR_NOOP("Join Shapes");
+
     sToolTipText    = QT_TR_NOOP("Joins the selected walled shapes");
     sWhatsThis      = "Part_CompJoinFeatures";
     sStatusTip      = sToolTipText;
@@ -600,7 +602,8 @@ CmdPartCompSplitFeatures::CmdPartCompSplitFeatures()
 {
     sAppModule      = "Part";
     sGroup          = QT_TR_NOOP("Part");
-    sMenuText       = QT_TR_NOOP("Split Shapes…");
+    sMenuText       = QT_TR_NOOP("Split Shapes");
+
     sToolTipText    = QT_TR_NOOP("Shape splitting and compsolid creation tools");
     sWhatsThis      = "Part_CompSplitFeatures";
     sStatusTip      = sToolTipText;
@@ -928,7 +931,8 @@ CmdPartImport::CmdPartImport()
 {
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Import CAD File…");
+    sMenuText     = QT_TR_NOOP("Import CAD File");
+
     sToolTipText  = QT_TR_NOOP("Imports a CAD file");
     sWhatsThis    = "Part_Import";
     sStatusTip    = sToolTipText;
@@ -991,7 +995,8 @@ CmdPartExport::CmdPartExport()
 {
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Export CAD File…");
+    sMenuText     = QT_TR_NOOP("Export CAD File");
+
     sToolTipText  = QT_TR_NOOP("Exports to a CAD file");
     sWhatsThis    = "Part_Export";
     sStatusTip    = sToolTipText;
@@ -1039,7 +1044,8 @@ CmdPartImportCurveNet::CmdPartImportCurveNet()
 {
     sAppModule  = "Part";
     sGroup      = QT_TR_NOOP("Part");
-    sMenuText   = QT_TR_NOOP("Import Curve Network…");
+    sMenuText   = QT_TR_NOOP("Import Curve Network");
+
     sToolTipText= QT_TR_NOOP("Imports a curve network");
     sWhatsThis  = "Part_ImportCurveNet";
     sStatusTip  = sToolTipText;
@@ -1518,7 +1524,8 @@ CmdPartBuilder::CmdPartBuilder()
 {
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Shape Builder…");
+    sMenuText     = QT_TR_NOOP("Shape Builder");
+
     sToolTipText  = QT_TR_NOOP("Advanced utility to create shapes");
     sWhatsThis    = "Part_Builder";
     sStatusTip    = sToolTipText;
@@ -1900,7 +1907,8 @@ CmdShapeInfo::CmdShapeInfo()
 {
     sAppModule    = "Part";
     sGroup        = "Part";
-    sMenuText     = "Shape Info…";
+    sMenuText     = "Shape Info";
+
     sToolTipText  = "Displays information about the selected shape";
     sWhatsThis    = "Part_ShapeInfo";
     sStatusTip    = sToolTipText;
