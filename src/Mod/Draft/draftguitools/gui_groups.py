@@ -70,7 +70,7 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
     def GetResources(self):
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_AddToGroup",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_AddToGroup", "Add to Group…"),
+                "MenuText": QT_TRANSLATE_NOOP("Draft_AddToGroup", "Add to Group"),
                 "ToolTip": QT_TRANSLATE_NOOP("Draft_AddToGroup", "Adds or removes the selected objects to/from a group")}
 
     def Activated(self):
@@ -90,7 +90,7 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
                        + ["---"] \
                        + [obj.Label for obj in objs] \
                        + ["---"] \
-                       + [translate("draft", "Add to New Group…")]
+                       + [translate("draft", "Add to New Group")]
         self.icons   = [self.ui.getIcon(":/icons/list-remove.svg")] \
                        + [None] \
                        + [obj.ViewObject.Icon for obj in objs] \
@@ -256,7 +256,7 @@ class SetAutoGroup(gui_base.GuiCommandSimplest):
                       + ["---"] \
                       + [obj.Label for obj in lyrs] \
                       + ["---"] \
-                      + [translate("draft", "New Layer…")]
+                      + [translate("draft", "New Layer")]
         self.icons  = [self.ui.getIcon(":/icons/button_invalid.svg")] \
                       + [None] \
                       + [obj.ViewObject.Icon for obj in grps] \

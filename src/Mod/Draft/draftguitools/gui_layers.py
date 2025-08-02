@@ -93,7 +93,7 @@ class AddToLayer(gui_base.GuiCommandNeedsSelection):
     def GetResources(self):
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_AddToLayer",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_AddToLayer", "Add to Layer…"),
+                "MenuText": QT_TRANSLATE_NOOP("Draft_AddToLayer", "Add to Layer"),
                 "ToolTip": QT_TRANSLATE_NOOP("Draft_AddToLayer", "Adds or removes the selected objects to/from a layer")}
 
     def Activated(self):
@@ -113,7 +113,7 @@ class AddToLayer(gui_base.GuiCommandNeedsSelection):
                        + ["---"] \
                        + [obj.Label for obj in objs] \
                        + ["---"] \
-                       + [translate("draft", "Add to New Layer…")]
+                       + [translate("draft", "Add to New Layer")]
         self.icons   = [self.ui.getIcon(":/icons/list-remove.svg")] \
                        + [None] \
                        + [obj.ViewObject.Icon for obj in objs] \
@@ -179,7 +179,7 @@ class LayerManager:
     def GetResources(self):
 
         return {"Pixmap"  : "Draft_LayerManager",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_LayerManager", "Manage Layers…"),
+                "MenuText": QT_TRANSLATE_NOOP("Draft_LayerManager", "Manage Layers"),
                 "ToolTip" : QT_TRANSLATE_NOOP("Draft_LayerManager", "Allows to modify the layers")}
 
     def IsActive(self):

@@ -425,7 +425,7 @@ Negative values will result in copies produced in the negative direction.</strin
       <item row="1" column="0">
        <widget class="QPushButton" name="button_reset_Z">
         <property name="toolTip">
-         <string>Resets the distance</string>
+         <string>Resets the distances</string>
         </property>
         <property name="text">
          <string>Reset Z</string>

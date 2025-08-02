@@ -57,7 +57,7 @@ class ShapeString(gui_base.GuiCommandBase):
         """Set icon, menu and tooltip."""
 
         return {"Pixmap": "Draft_ShapeString",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_ShapeString", "ShapeString"),
+                "MenuText": QT_TRANSLATE_NOOP("Draft_ShapeString", "Shape From Text"),
                 "ToolTip": QT_TRANSLATE_NOOP("Draft_ShapeString", "Creates a shape from a text string by choosing a specific font and a placement")}
 
     def Activated(self):

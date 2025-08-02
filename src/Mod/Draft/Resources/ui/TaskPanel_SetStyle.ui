@@ -242,7 +242,7 @@
            <widget class="QComboBox" name="DisplayMode">
             <item>
              <property name="text">
-              <string>Flat lines</string>
+              <string>Flat Lines</string>
              </property>
             </item>
             <item>
@@ -483,7 +483,7 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</string>
           <item row="0" column="1">
            <widget class="QCheckBox" name="ShowUnit">
             <property name="toolTip">
-             <string>Adds a unit symbol to the dimension texts</string>
+             <string>Adds a unit symbol to dimension texts</string>
             </property>
             <property name="text">
              <string/>

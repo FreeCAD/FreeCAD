@@ -75,7 +75,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         """Set icon, menu and tooltip."""
         return {'Pixmap': ":icons/Draft_Annotation_Style.svg",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_AnnotationStyleEditor",
-                                              "Annotation Styles…"),
+                                              "Annotation Styles"),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_AnnotationStyleEditor",
                                              "Opens an editor to manage or create annotation styles")}
 

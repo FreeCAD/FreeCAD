@@ -158,7 +158,7 @@ class Stretch(gui_base_original.Modifier):
         """Add point to defined selection rectangle."""
         if self.step == 1:
             # first rctangle point
-            _toolmsg(translate("draft", "Pick opposite point "
+            _toolmsg(translate("draft", "Select the opposite point "
                                     "of the selection rectangle"))
             self.ui.setRelative(-1)
             self.rectracker.setorigin(point)
