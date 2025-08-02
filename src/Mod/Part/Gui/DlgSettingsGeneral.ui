@@ -156,7 +156,7 @@
          <string>Switch to task panel when entering PartDesign workbench</string>
         </property>
         <property name="toolTip" stdset="0">
-         <string>Automatically switch to the task panel when the PartDesign workbench is activated</string>
+         <string>Automatically switch to the task panel when the Part Design workbench is activated</string>
         </property>
         <property name="checked" stdset="0">
          <bool>true</bool>
