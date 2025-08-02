@@ -822,8 +822,9 @@ class TaskPanel:
         self.preCleanup()
         self.setupGlobal.reject()
         self.setupOps.reject()
-        FreeCAD.ActiveDocument.abortTransaction()
-        if self.deleteOnReject and FreeCAD.ActiveDocument.getObject(self.name):
+        if not self.deleteOnReject:
+            FreeCAD.ActiveDocument.abortTransaction()
+        elif self.deleteOnReject and FreeCAD.ActiveDocument.getObject(self.name):
             Path.Log.info("Uncreate Job")
             FreeCAD.ActiveDocument.openTransaction("Uncreate Job")
             if self.obj.ViewObject.Proxy.onDelete(self.obj.ViewObject, None):
