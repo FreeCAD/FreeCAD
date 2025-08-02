@@ -153,7 +153,7 @@
       <item>
        <widget class="Gui::PrefCheckBox" name="checkSwitchToTask" native="true">
         <property name="text" stdset="0">
-         <string>Switch to task panel when entering PartDesign workbench</string>
+         <string>Switch to task panel when entering Part Design workbench</string>
         </property>
         <property name="toolTip" stdset="0">
          <string>Automatically switch to the task panel when the Part Design workbench is activated</string>
