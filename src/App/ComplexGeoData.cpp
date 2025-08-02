@@ -276,20 +276,26 @@ ComplexGeoData::getElementName(const char* name, ElementIDRefs* sid, bool copy) 
     }
 
     MappedElement result;
-    // Strip out the trailing '.XXXX' if any
-    const char* dot = strchr(name, '.');
-    if (dot) {
-        result.name = MappedName(name, static_cast<int>(dot - name));
+
+    flushElementMap();
+    if (_elementMap) {
+        const char* dot = strchr(name, '.');
+        MappedName mappedName = MappedName(name);
+
+        if (dot) {
+            mappedName = MappedName(name, static_cast<int>(dot - name));
+        } 
+
+        result = _elementMap->findMappedElement(mappedName, sid);
+
+        if (result.name.empty() || copy) {
+            result.name = mappedName;
+        }
     }
-    else if (copy) {
-        result.name = name;
-    }
-    else {
-        result.name = MappedName(name);
-    }
-    result.index = getIndexedName(result.name, sid);
+
     return result;
 }
+
 
 std::vector<std::pair<MappedName, ElementIDRefs>>
 ComplexGeoData::getElementMappedNames(const IndexedName& element, bool needUnmapped) const
