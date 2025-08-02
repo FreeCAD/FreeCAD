@@ -66,9 +66,14 @@ PropertyPartShape::~PropertyPartShape() = default;
 void PropertyPartShape::setValue(const TopoShape& sh)
 {
     aboutToSetValue();
+    TopoShape oldShape = _Shape;
     _Shape = sh;
     auto obj = freecad_cast<App::DocumentObject*>(getContainer());
     if(obj) {
+        if (needsToMigrate && obj->getDocument() && !obj->getDocument()->isAnyRestoring()) {
+            _Shape.enableMigration(oldShape.getElementMap());
+            needsToMigrate = false;
+        }
         auto tag = obj->getID();
         if(_Shape.Tag && tag!=_Shape.Tag) {
             auto hasher = _Shape.Hasher?_Shape.Hasher:obj->getDocument()->getStringHasher();
@@ -376,7 +381,7 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
             if (owner ? owner->checkElementMapVersion(this, _Ver.c_str())
                       : _Shape.checkElementMapVersion(_Ver.c_str())) {
                 auto ver = owner?owner->getElementMapVersion(this):_Shape.getElementMapVersion();
-                if(!owner || !owner->getNameInDocument() || !_Shape.getElementMapSize()) {
+                if(!owner || !owner->getNameInDocument()) {
                     _Ver = ver;
                 } else {
                     // version mismatch, signal for regenerating.
@@ -388,6 +393,9 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
                                                                         << ": " << _Ver << " -> " << ver);
                     }
                     owner->getDocument()->addRecomputeObject(owner);
+
+                    // tell the element map that it needs to migrate
+                    needsToMigrate = true;
                 }
             }
         }

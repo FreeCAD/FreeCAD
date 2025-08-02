@@ -878,6 +878,74 @@ IndexedName ElementMap::find(const MappedName& name, ElementIDRefs* sids) const
     return nameIter->second;
 }
 
+MappedElement ElementMap::findMappedElement(const MappedName &name, ElementIDRefs* sids) const {
+    auto nameIter = mappedNames.find(name);
+    if (nameIter == mappedNames.end()) {
+        if (migrationEnabled && !migrationList.empty()) {
+            for (const auto &item : migrationList) {
+                if (item.oldElement.name.toString() == name.toString()) {
+                    FC_WARN("found migration! old name: " << item.oldElement.name);
+                    FC_WARN("found migration! new name: " << item.newElement.name);
+                    return item.newElement;
+                }
+            }
+        }
+
+        if (childElements.isEmpty()) {
+            FC_WARN("ret emp 1");
+            return MappedElement();
+        }
+
+        int len = 0;
+        if (name.findTagInElementName(nullptr, &len, nullptr, nullptr, false, false) < 0) {
+            return MappedElement();
+        }
+        QByteArray key = name.toRawBytes(len);
+        auto it = this->childElements.find(key);
+        if (it == this->childElements.end()) {
+            return MappedElement();
+        }
+
+        const auto& child = *it.value().childMap;
+        MappedElement res;
+
+        MappedName childName = MappedName::fromRawData(name, 0, len);
+        if (child.elementMap) {
+            res = child.elementMap->findMappedElement(childName, sids);
+        }
+        else {
+            res = MappedElement(childName, childName.toIndexedName());
+        }
+
+        if (res.index && boost::equals(res.index.getType(), child.indexedName.getType())
+            && child.indexedName.getIndex() <= res.index.getIndex()
+            && child.indexedName.getIndex() + child.count > res.index.getIndex()) {
+            res.index.setIndex(res.index.getIndex() + it.value().childMap->offset);
+            
+            // return the original name, since the mapped one is likely incorrect.
+            return MappedElement(name, res.index);
+        }
+
+        return MappedElement();
+    }
+
+    if (sids) {
+        const MappedNameRef* ref = findMappedRef(nameIter->second);
+        for (; ref; ref = ref->next.get()) {
+            if (ref->name == name) {
+                if (sids->empty()) {
+                    *sids = ref->sids;
+                }
+                else {
+                    *sids += ref->sids;
+                }
+                break;
+            }
+        }
+    }
+    return MappedElement(nameIter->first, nameIter->second);
+}
+
 MappedName ElementMap::find(const IndexedName& idx, ElementIDRefs* sids) const
 {
     if (!idx) {
@@ -1385,6 +1453,38 @@ long ElementMap::getElementHistory(const MappedName& name,
         tag = tag2;
         if (history) {
             history->push_back(ret.copy());
+        }
+    }
+}
+
+void ElementMap::enableMigration(std::vector<Data::MappedElement> &oldMap) {
+    std::vector<MappedElement> newMap = getAll();
+
+    if (newMap.size() == oldMap.size()) {
+        migrationEnabled = true;
+        std::vector<std::string> mappedIndexedNames;
+
+        // run two loops because the order of each item will vary.
+        for (const auto &oldItem : oldMap) {
+            std::string oldItemStr = oldItem.index.toString();
+
+            for (const auto &newItem : newMap) { 
+                std::string newItemStr = newItem.index.toString();
+
+                if (!oldItemStr.empty() && oldItemStr == newItemStr && oldItem.name.toString() != newItem.name.toString()) {
+                    if (std::find(mappedIndexedNames.begin(), 
+                                    mappedIndexedNames.end(), 
+                                    oldItemStr) == mappedIndexedNames.end()) 
+                    {
+                        mappedIndexedNames.push_back(oldItemStr);
+                        MigrationItem migrationItem = MigrationItem();
+
+                        migrationItem.oldElement = oldItem;
+                        migrationItem.newElement = newItem;
+                        migrationList.push_back(migrationItem);
+                    }
+                }
+            }
         }
     }
 }
