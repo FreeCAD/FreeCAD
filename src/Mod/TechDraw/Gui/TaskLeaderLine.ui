@@ -35,7 +35,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>Base View</string>
+        <string>Base view</string>
        </property>
       </widget>
      </item>
@@ -111,7 +111,7 @@
       <widget class="QPushButton" name="pbTracker">
        <property name="toolTip">
         <string>First pick the start point of the line,
-then at least a second point.
+then at least one more point.
 You can pick further points to get line segments.</string>
        </property>
        <property name="text">
@@ -146,7 +146,7 @@ You can pick further points to get line segments.</string>
      <item row="0" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Start Symbol</string>
+        <string>Start symbol</string>
        </property>
       </widget>
      </item>
@@ -166,7 +166,7 @@ You can pick further points to get line segments.</string>
      <item row="1" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>End Symbol</string>
+        <string>End symbol</string>
        </property>
       </widget>
      </item>
@@ -275,7 +275,7 @@ You can pick further points to get line segments.</string>
        </property>
        <item>
         <property name="text">
-         <string>NoLine</string>
+         <string>No line</string>
         </property>
         <property name="icon">
          <iconset resource="Resources/TechDraw.qrc">
