@@ -74,7 +74,8 @@ bool ViewProvider::doubleClicked()
 void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QIcon iconObject = mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap("Part_ColorFace.svg"));
-    QAction* act = menu->addAction(iconObject, QObject::tr("Set colors…"), receiver, member);
+    QAction* act = menu->addAction(iconObject, QObject::tr("Set Face Colors"), receiver, member);
+
     act->setData(QVariant((int)ViewProvider::Color));
     // Call the extensions
     Gui::ViewProvider::setupContextMenu(menu, receiver, member);

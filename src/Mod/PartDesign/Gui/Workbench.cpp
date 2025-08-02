@@ -49,7 +49,8 @@ namespace sp = std::placeholders;
     qApp->translate("Workbench", "Dress-Up Features");
     qApp->translate("Workbench", "Transformation Features");
     qApp->translate("Workbench", "Sprocket…");
-    qApp->translate("Workbench", "Involute Gear…");
+    qApp->translate("Workbench", "Involute Gear");
+
     qApp->translate("Workbench", "Shaft Design Wizard");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Face Tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Edge Tools");
