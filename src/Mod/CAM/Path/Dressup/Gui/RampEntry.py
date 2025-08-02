@@ -98,6 +98,16 @@ class ObjectDressup:
                 "The depth where the ramp dressup is enabled. Above this ramps are not generated, but motion commands are passed through as is.",
             ),
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "Approximation",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Split B-Spline by arcs and ignore not vertical arcs axis (experimental).",
+            ),
+        )
+        obj.setEditorMode("Approximation", 2)  # hide
 
         # populate the enumerations
         for n in self.propertyEnumerations():
@@ -188,6 +198,17 @@ class ObjectDressup:
 
     def onDocumentRestored(self, obj):
         self.setEditorProperties(obj)
+        if not hasattr(obj, "Approximation"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "Approximation",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Split B-Spline by arcs and ignore not vertical arcs axis (experimental).",
+                ),
+            )
+            obj.setEditorMode("Approximation", 2)  # hide
 
     def setup(self, obj):
         obj.Angle = 60
@@ -223,6 +244,30 @@ class ObjectDressup:
         self.angle = obj.Angle
         self.method = obj.Method
         self.wire, self.rapids = Path.Geom.wireForPath(PathUtils.getPathWithPlacement(obj.Base))
+
+        # indexes of edges from which position of axes is determined
+        counter = 0
+        self.indexPos = {"X": None, "Y": None, "Z": None}
+        for cmd in obj.Base.Path.Commands:
+            if not cmd.x and not cmd.y and not cmd.z:
+                # command is not move
+                continue
+            if self.indexPos["X"] is None and cmd.x is not None:
+                self.indexPos["X"] = counter
+            if self.indexPos["Y"] is None and cmd.y is not None:
+                self.indexPos["Y"] = counter
+            if self.indexPos["Z"] is None and cmd.z is not None:
+                self.indexPos["Z"] = counter
+            if (
+                self.indexPos["X"] is not None
+                and self.indexPos["Y"] is not None
+                and self.indexPos["Z"] is not None
+            ):
+                # all axes determined
+                break
+            else:
+                counter += 1
+
         if self.method in ["RampMethod1", "RampMethod2", "RampMethod3"]:
             self.outedges = self.generateRamps()
         else:
@@ -446,9 +491,9 @@ class ObjectDressup:
 
     def createRampEdge(self, originalEdge, startPoint, endPoint):
         # Path.Log.debug("Create edge from [{},{},{}] to [{},{},{}]".format(startPoint.x,startPoint.y, startPoint.z, endPoint.x, endPoint.y, endPoint.z))
-        if type(originalEdge.Curve) == Part.Line or type(originalEdge.Curve) == Part.LineSegment:
+        if type(originalEdge.Curve) in [Part.Line, Part.LineSegment]:
             return Part.makeLine(startPoint, endPoint)
-        elif type(originalEdge.Curve) == Part.Circle:
+        elif type(originalEdge.Curve) is Part.Circle:
             firstParameter = originalEdge.Curve.parameter(startPoint)
             lastParameter = originalEdge.Curve.parameter(endPoint)
             arcMid = originalEdge.valueAt((firstParameter + lastParameter) / 2)
@@ -466,9 +511,9 @@ class ObjectDressup:
             # reverse the start and end points
             startPoint = edge.valueAt(edge.LastParameter)
             endPoint = edge.valueAt(edge.FirstParameter)
-            if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
+            if type(edge.Curve) in [Part.Line, Part.LineSegment]:
                 outedges.append(Part.makeLine(startPoint, endPoint))
-            elif type(edge.Curve) == Part.Circle:
+            elif type(edge.Curve) is Part.Circle:
                 arcMid = edge.valueAt((edge.FirstParameter + edge.LastParameter) / 2)
                 outedges.append(Part.Arc(startPoint, arcMid, endPoint).toShape())
             else:
@@ -484,9 +529,9 @@ class ObjectDressup:
         return minZ
 
     def getSplitPoint(self, edge, remaining):
-        if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
+        if type(edge.Curve) in [Part.Line, Part.LineSegment]:
             return edge.valueAt(remaining)
-        elif type(edge.Curve) == Part.Circle:
+        elif type(edge.Curve) is Part.Circle:
             param = remaining / edge.Curve.Radius
             return edge.valueAt(param)
 
@@ -749,18 +794,25 @@ class ObjectDressup:
 
     def createCommands(self, obj, edges):
         commands = []
-        for edge in edges:
+        for index, edge in enumerate(edges):
             israpid = False
             for redge in self.rapids:
                 if Path.Geom.edgesMatch(edge, redge):
                     israpid = True
             if israpid:
                 v = edge.valueAt(edge.LastParameter)
-                commands.append(Path.Command("G0", {"X": v.x, "Y": v.y, "Z": v.z}))
+                params = dict()
+                if index >= self.indexPos["X"]:
+                    params["X"] = v.x
+                if index >= self.indexPos["Y"]:
+                    params["Y"] = v.y
+                if index >= self.indexPos["Z"]:
+                    params["Z"] = v.z
+                commands.append(Path.Command("G00", params))
             else:
-                commands.extend(Path.Geom.cmdsForEdge(edge))
+                commands.extend(Path.Geom.cmdsForEdge(edge, approximation=obj.Approximation))
 
-        lastCmd = Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 0.0})
+        lastCmd = Path.Command("G00", {"X": 0.0, "Y": 0.0, "Z": 0.0})
 
         outCommands = []
 
