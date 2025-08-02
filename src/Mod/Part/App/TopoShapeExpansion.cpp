@@ -2058,6 +2058,14 @@ TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent
     return shapeMap.getTopoShape(*this, idx);
 }
 
+void TopoShape::enableMigration(std::vector<Data::MappedElement> oldMap) {
+    auto elementMap = this->elementMap(true);
+
+    if (elementMap && !oldMap.empty()) {
+        elementMap->enableMigration(oldMap);
+    }
+}
+
 static const std::string& _getElementMapVersion()
 {
     static std::string _ver;

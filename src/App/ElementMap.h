@@ -152,6 +152,8 @@ public:
 
     bool empty() const;
 
+    MappedElement findMappedElement(const MappedName &name, ElementIDRefs* sids = nullptr) const;
+
     IndexedName find(const MappedName& name, ElementIDRefs* sids = nullptr) const;
 
     // this method finds the correct MappedName and IndexedName from the input MappedName
@@ -206,6 +208,9 @@ public:
                            long masterTag,
                            MappedName* original = nullptr,
                            std::vector<MappedName>* history = nullptr) const;
+    
+    // true enables, false disables.
+    void enableMigration(std::vector<Data::MappedElement> &oldMap);
 
     /** Iterate through the history of the give element name with a given callback
      *
@@ -356,6 +361,19 @@ private:
         MappedChildElements* childMap = nullptr;
         std::map<ElementMap*, int> mapIndices;
     };
+
+    // this is an individual item for use in migration
+    // it contains two MappedElements
+    // this is it's own struct incase i need to add more specific data
+    // for migration.
+    struct MigrationItem
+    {
+        MappedElement oldElement;
+        MappedElement newElement;
+    };
+
+    std::vector<MigrationItem> migrationList;
+    bool migrationEnabled;
 
     QHash<QByteArray, ChildMapInfo> childElements;
     std::size_t childElementSize = 0;

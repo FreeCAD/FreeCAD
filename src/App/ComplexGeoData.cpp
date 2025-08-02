@@ -286,7 +286,7 @@ ComplexGeoData::getElementName(const char* name, ElementIDRefs* sid, bool copy) 
             mappedName = MappedName(name, static_cast<int>(dot - name));
         } 
 
-        result = _elementMap->findMatching(mappedName, sid);
+        result = _elementMap->findMappedElement(mappedName, sid);
 
         if (result.name.empty()) {
             result.name = mappedName;
