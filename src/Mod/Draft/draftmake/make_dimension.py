@@ -367,7 +367,7 @@ def make_linear_dimension_obj(edge_object, i1=1, i2=2, dim_line=None):
         return None
     if (not hasattr(edge_object.Shape, "Vertexes")
             or len(edge_object.Shape.Vertexes) < 1):
-        _err(translate("draft","Wrong input: object doesn't have at least one element in 'Vertexes' to use for measuring."))
+        _err(translate("draft","Wrong input: object does not have at least 1 element in 'Vertexes' to use for measuring."))
         return None
 
     try:

@@ -56,8 +56,8 @@ class Draft_SelectPlane:
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_SelectPlane",
                 "Accel": "W, P",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_SelectPlane", "Select working plane"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_SelectPlane", "Select 3 vertices, one or more shapes or an object to define a working plane.")}
+                "MenuText": QT_TRANSLATE_NOOP("Draft_SelectPlane", "Working Plane"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_SelectPlane", "Defines the working plane from 3 vertices, 1 or more shapes, or an object")}
 
     def IsActive(self):
         """Return True when this command should be available."""
