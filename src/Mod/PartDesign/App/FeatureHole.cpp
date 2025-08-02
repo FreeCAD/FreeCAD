@@ -781,6 +781,8 @@ Hole::Hole()
 
     ADD_PROPERTY_TYPE(ModelThread, (false), "Hole", App::Prop_None, "Model actual thread");
 
+    ADD_PROPERTY_TYPE(CosmeticThread, (true), "Hole", App::Prop_None, "Texture the thread");
+
     ADD_PROPERTY_TYPE(ThreadType, (0L), "Hole", App::Prop_None, "Thread type");
     ThreadType.setEnums(ThreadTypeEnums);
 
@@ -1590,6 +1592,8 @@ void Hole::onChanged(const App::Property* prop)
         // thread class and direction are only sensible if threaded
         // fit only sensible if not threaded
         if (Threaded.getValue()) {
+            CosmeticThread.setValue(!ModelThread.getValue());
+            CosmeticThread.setReadOnly(ModelThread.getValue());
             ThreadClass.setReadOnly(false);
             ThreadDirection.setReadOnly(false);
             ThreadFit.setReadOnly(true);
@@ -1602,6 +1606,8 @@ void Hole::onChanged(const App::Property* prop)
                 TaperedAngle.setValue(getThreadProfileAngle());
         }
         else {
+            CosmeticThread.setValue(false);
+            CosmeticThread.setReadOnly(true);
             ThreadClass.setReadOnly(true);
             ThreadDirection.setReadOnly(true);
             if (type == "None")
@@ -1622,6 +1628,8 @@ void Hole::onChanged(const App::Property* prop)
         // Diameter parameter depends on this
         updateDiameterParam();
         UseCustomThreadClearance.setReadOnly(!ModelThread.getValue());
+        CosmeticThread.setValue(Threaded.getValue() && !ModelThread.getValue());
+        CosmeticThread.setReadOnly(ModelThread.getValue());
     }
     else if (prop == &DrillPoint) {
         if (DrillPoint.getValue() == 1) {

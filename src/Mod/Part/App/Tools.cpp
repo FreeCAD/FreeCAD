@@ -282,7 +282,16 @@ bool Part::Tools::getTriangulation(const TopoDS_Face& face, std::vector<gp_Pnt>&
 #else
         hTria->Triangle(i).Get(n1, n2, n3);
 #endif
-        --n1; --n2; --n3;
+        // NOTE: This line was commented out on purpose:
+        // --n1; --n2; --n3;
+        // OpenCascade's Poly_Triangulation::Triangle().Get()
+        // returns 1-based indices, and Poly_Triangle (used in 'facets') is expected to store
+        // these original 1-based indices. Consumers of this triangulation (e.g., rendering code
+        // that uses SoIndexedFaceSet) are responsible for converting 1-based indices to 0-based
+        // (by subtracting 1) as required by their APIs.
+        //
+        // This change prevents a "double-decrement" issue that resulted in negative indices,
+        // causing erroneous polygons on render
 
         // change orientation of the triangles
         if (orient != TopAbs_FORWARD) {
