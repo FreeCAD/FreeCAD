@@ -50,6 +50,8 @@
 #include "TemplateTextField.h"
 #include "ZVALUE.h"
 #include "DrawGuiUtil.h"
+#include "ViewProviderPage.h"
+
 
 
 
@@ -258,6 +260,12 @@ void QGISVGTemplate::clearClickHandles()
 
 void QGISVGTemplate::createClickHandles()
 {
+    auto* qgsPage = dynamic_cast<QGSPage*>(scene());
+    if (!qgsPage ||
+        !qgsPage->getViewProviderPage()->getFrameState()) {
+        return;
+    }
+
     prepareGeometryChange();
     TechDraw::DrawSVGTemplate* svgTemplate = getSVGTemplate();
     if (svgTemplate->isRestoring()) {
