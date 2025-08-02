@@ -115,6 +115,7 @@ std::string StringID::toString(int index) const
     if (index != 0) {
         ss << ':' << index;
     }
+    ss << '_';
     return ss.str();
 }
 
