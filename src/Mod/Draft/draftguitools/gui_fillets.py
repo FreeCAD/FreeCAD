@@ -67,7 +67,7 @@ class Fillet(gui_base_original.Creator):
         return {"Pixmap": "Draft_Fillet",
                 "Accel": "F,I",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_Fillet", "Fillet"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Fillet", "Creates a fillet between 2 selected wires or edges")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Fillet", "Creates a fillet between 2 selected edges")}
 
     def Activated(self, name="Fillet"):
         """Execute when the command is called."""
@@ -76,7 +76,7 @@ class Fillet(gui_base_original.Creator):
         if self.ui:
             self.chamfer = params.get_param("FilletChamferMode")
             self.delete = params.get_param("FilletDeleteMode")
-            label = translate("draft", "Fillet Radius")
+            label = translate("draft", "Fillet radius")
             tooltip = translate("draft", "Radius of the fillet")
 
             # Call the task panel defined in DraftGui to enter a radius.

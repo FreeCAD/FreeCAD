@@ -85,7 +85,7 @@ class Dimension(gui_base_original.Creator):
         return {'Pixmap': 'Draft_Dimension',
                 'Accel': "D, I",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Dimension", "Dimension"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Dimension", "Creates a dimension for the selected objects")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Dimension", "Creates a linear dimension for a straight edge, a circular edge, or 2 picked points, or an angular dimension for 2 straight edges")}
 
     def Activated(self, dir_vec=None):
         """Execute when the command is called."""
@@ -263,7 +263,7 @@ class Dimension(gui_base_original.Creator):
         _cmd_list = ['_dim_ = ' + _cmd,
                      'Draft.autogroup(_dim_)',
                      'FreeCAD.ActiveDocument.recompute()']
-        self.commit(translate("draft", "Create Dimension (Radial)"),
+        self.commit(translate("draft", "Create Dimension"),
                     _cmd_list)
 
     def createObject(self):

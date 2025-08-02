@@ -64,7 +64,7 @@ class LineSlope(gui_base.GuiCommandNeedsSelection):
 
         return {"Pixmap": "Draft_Slope",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_Slope", "Set Slope"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Slope", "Sets the slope of the selected line by changing the value of the Z value of one of its points.\nIf a polyline is selected, it will apply the slope transformation to each of its segments.\n\nThe slope will always change the Z value, therefore this command only works well for\nstraight Draft lines that are drawn in the XY-plane.")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Slope", "Sets the slope of the selected line by changing the value of the Z value of one of its points.\nIf a polyline is selected, it will apply the slope transformation to each of its segments.\n\nThe slope will always change the Z value, therefore this command only works well for\nstraight Draft lines that are drawn on the XY-plane.")}
 
     def Activated(self):
         """Execute when the command is called."""

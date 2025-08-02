@@ -57,7 +57,7 @@ class Draft_SelectPlane:
         return {"Pixmap": "Draft_SelectPlane",
                 "Accel": "W, P",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_SelectPlane", "Working Plane"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_SelectPlane", "Defines the working plane from 3 selected vertices")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_SelectPlane", "Defines the working plane from 3 vertices, 1 or more shapes, or an object")}
 
     def IsActive(self):
         """Return True when this command should be available."""

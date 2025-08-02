@@ -212,7 +212,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         elif index == 1:
             # Add new... entry
             reply = QtWidgets.QInputDialog.getText(None,
-                                                   translate("draft", "Create new style"),
+                                                   translate("draft", "New Style"),
                                                    translate("draft", "Style name"))
             if reply[1]:
                 # OK or Enter pressed
@@ -279,7 +279,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         style = self.form.comboBoxStyles.itemText(index)
 
         reply = QtWidgets.QInputDialog.getText(None,
-                                               translate("draft", "Rename style"),
+                                               translate("draft", "Rename Style"),
                                                translate("draft", "New name"),
                                            QtWidgets.QLineEdit.Normal,
                                            style)

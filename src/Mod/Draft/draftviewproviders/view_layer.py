@@ -515,7 +515,7 @@ class ViewProviderLayer:
         menu.addAction(action_activate)
 
         action_reassign = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Apply.svg"),
-                                        translate("draft", "Reassign Properties"),
+                                        translate("draft", "Reassign Properties of Layer"),
                                         menu)
         action_reassign.triggered.connect(self.reassign_props)
         menu.addAction(action_reassign)

@@ -92,7 +92,7 @@ class ViewProviderWorkingPlaneProxy:
         action1 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),"Save Camera Position",menu)
         QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.writeCamera)
         menu.addAction(action1)
-        action2 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),"Save Objects Visibility",menu)
+        action2 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),"Save Visibility of Objects",menu)
         QtCore.QObject.connect(action2,QtCore.SIGNAL("triggered()"),self.writeState)
         menu.addAction(action2)
 

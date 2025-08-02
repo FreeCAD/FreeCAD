@@ -134,7 +134,7 @@ class ToggleDisplayMode(gui_base.GuiCommandNeedsSelection):
         d = {'Pixmap': 'Draft_SwitchMode',
              'Accel': "Shift+Space",
              'MenuText': QT_TRANSLATE_NOOP("Draft_ToggleDisplayMode","Toggle Wireframe"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_ToggleDisplayMode","Switches the view style of the selected objects from flatlines to wireframe and back")}
+             'ToolTip': QT_TRANSLATE_NOOP("Draft_ToggleDisplayMode","Switches the view style of the selected objects from Flat Lines to Wireframe and back")}
         return d
 
     def Activated(self):

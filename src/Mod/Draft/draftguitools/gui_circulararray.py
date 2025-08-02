@@ -53,7 +53,7 @@ class CircularArray(gui_base.GuiCommandBase):
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_CircularArray",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_CircularArray", "Circular Array"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_CircularArray", "Creates copies of the selected object, and places the copies in a radial pattern\ncreating various circular layers.\n\nThe array can be turned into an orthogonal or a polar array by changing its type.")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_CircularArray", "Creates copies of the selected object, and places the copies in a radial pattern\ncreating various circular layers.\nThe array can be turned into an orthogonal or a polar array by changing its type.")}
 
     def Activated(self):
         """Execute when the command is called.

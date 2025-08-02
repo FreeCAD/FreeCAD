@@ -253,7 +253,7 @@ class CubicBezCurve(gui_lines.Line):
         return {"Pixmap": "Draft_CubicBezCurve",
                 # "Accel": "B, Z",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Cubic Bézier Curve"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Clicking and dragging allows to define segments.\nControl points and properties of each knot can be edited after creation.\nHold Shift to constrain.")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Clicking and dragging allows to define segments.\nControl points and properties of each knot can be edited after creation.")}
 
     def Activated(self):
         """Execute when the command is called.

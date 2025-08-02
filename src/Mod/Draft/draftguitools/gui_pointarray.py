@@ -65,7 +65,7 @@ class PointArray(gui_base_original.Modifier):
 
         return {'Pixmap': 'Draft_PointArray',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_PointArray", "Point Array"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_PointArray", "Creates copies of the selected base object at the points of a point object")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_PointArray", "Creates copies of the selected object at the points of a point object")}
 
     def Activated(self, name="Point array"):
         """Execute when the command is called."""
@@ -130,7 +130,7 @@ class PointLinkArray(PointArray):
 
         return {'Pixmap': 'Draft_PointLinkArray',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_PointLinkArray", "Point Link Array"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_PointLinkArray", "Creates linked copies of the selected base object at the points of a point object")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_PointLinkArray", "Creates linked copies of the selected object at the points of a point object")}
 
     def Activated(self):
         """Execute when the command is called."""

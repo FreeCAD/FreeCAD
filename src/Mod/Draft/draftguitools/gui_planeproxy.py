@@ -44,7 +44,7 @@ class Draft_WorkingPlaneProxy:
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_PlaneProxy",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_WorkingPlaneProxy", "Working Plane Proxy"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_WorkingPlaneProxy", "Creates a proxy object from the current working plane and allows to restore the camera position and visibility of objects")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_WorkingPlaneProxy", "Creates a proxy object from the current working plane that allows to restore the camera position and visibility of objects")}
 
     def IsActive(self):
         """Return True when this command should be available."""

@@ -49,7 +49,7 @@ class Split(gui_base_original.Modifier):
         return {"Pixmap": "Draft_Split",
                 "Accel": "S, P",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_Split", "Split"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Split", "Splits the selected line or polyline into 2 independent lines\nor polylines by clicking anywhere along the original object")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Split", "Splits the selected line or polyline at a specified point")}
 
     def Activated(self):
         """Execute when the command is called."""

@@ -45,7 +45,7 @@ class ApplyStyle(gui_base_original.Modifier):
         return {
             "Pixmap": "Draft_Apply",
             "MenuText": QT_TRANSLATE_NOOP("Draft_ApplyStyle", "Apply Current Style"),
-            "ToolTip": QT_TRANSLATE_NOOP("Draft_ApplyStyle", "Applies the current style defined in the toolbar (line width and colors) to the selected objects and groups")
+            "ToolTip": QT_TRANSLATE_NOOP("Draft_ApplyStyle", "Applies the current style to the selected objects and groups")
         }
 
     def IsActive(self):

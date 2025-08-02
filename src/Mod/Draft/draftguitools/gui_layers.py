@@ -68,7 +68,7 @@ class Layer(gui_base.GuiCommandSimplest):
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_Layer",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_Layer", "New Layer"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Layer", "Adds a layer to the document.\nObjects added to this layer can share the same visual appearance.")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Layer", "Adds a layer to the document.\nObjects added to this layer can share the same visual appearance properties.")}
 
     def Activated(self):
         """Execute when the command is called.
@@ -94,7 +94,7 @@ class AddToLayer(gui_base.GuiCommandNeedsSelection):
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_AddToLayer",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_AddToLayer", "Add to Layer"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_AddToLayer", "Adds or removes the selected objects to/from a layer")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_AddToLayer", "Adds selected objects to a layer, or removes them from any layer")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -145,7 +145,7 @@ class AddToLayer(gui_base.GuiCommandNeedsSelection):
             from PySide import QtWidgets
             txt, ok = QtWidgets.QInputDialog.getText(
                 None,
-                translate("draft", "Create new layer"),
+                translate("draft", "New layer"),
                 translate("draft", "Layer name"),
                 text=translate("draft", "Layer", "Object label")
             )

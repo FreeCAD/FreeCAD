@@ -73,7 +73,7 @@ class Trimex(gui_base_original.Modifier):
 
         return {'Pixmap': 'Draft_Trimex',
                 'Accel': "T, R",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Trimex", "Trim-Ex"),
+                'MenuText': QT_TRANSLATE_NOOP("Draft_Trimex", "Trimex"),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_Trimex",
                     "Trims or extends the selected object, or extrudes single faces")}
 
@@ -151,7 +151,7 @@ class Trimex(gui_base_original.Modifier):
                 if isinstance(e.Curve,(Part.BSplineCurve, Part.BezierCurve)):
                     self.obj = None
                     self.finish()
-                    _err(translate("draft", "Trimex is not supported yet on this type of object"))
+                    _err(translate("draft", "Trimex does not support this object type"))
                     return
             self.obj.ViewObject.LineColor = (0.5, 0.5, 0.5)
             self.obj.ViewObject.LineWidth = 1

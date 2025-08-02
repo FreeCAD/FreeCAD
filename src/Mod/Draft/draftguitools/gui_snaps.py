@@ -63,8 +63,8 @@ class Draft_Snap_Lock(Draft_Snap_Base):
     def GetResources(self):
         return {"Pixmap":    "Draft_Snap_Lock",
                 "Accel":     "Shift+S",
-                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Lock", "Snapping"),
-                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Lock", "Enables or disables the snapping behavior"),
+                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Lock", "Snap Lock"),
+                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Lock", "Enables or disables snapping globally"),
                 "CmdType":   "NoTransaction",
                 "Checkable": self.isChecked()}
 
@@ -108,7 +108,7 @@ class Draft_Snap_Grid(Draft_Snap_Base):
     def GetResources(self):
         return {"Pixmap":    "Draft_Snap_Grid",
                 "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Grid", "Snap Grid"),
-                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Grid", "Snaps to the intersections of the grid lines"),
+                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Grid", "Snaps to the intersections of grid lines"),
                 "CmdType":   "NoTransaction",
                 "Checkable": self.isChecked()}
 
@@ -219,7 +219,7 @@ class Draft_Snap_Ortho(Draft_Snap_Base):
 
     def GetResources(self):
         return {"Pixmap":    "Draft_Snap_Ortho",
-                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Ortho", "Snap Orthogonal"),
+                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Ortho", "Snap Ortho"),
                 "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Ortho", "Snaps to imaginary lines that cross the previous point at multiples of 45°"),
                 "CmdType":   "NoTransaction",
                 "Checkable": self.isChecked()}

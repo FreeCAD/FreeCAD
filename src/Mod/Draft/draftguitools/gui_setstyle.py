@@ -60,8 +60,8 @@ class Draft_SetStyle:
         return {
             "Pixmap": "Draft_Apply",
             "Accel": "S, S",
-            "MenuText": QT_TRANSLATE_NOOP("Draft_SetStyle", "Apply Style"),
-            "ToolTip": QT_TRANSLATE_NOOP("Draft_SetStyle", "Applies the current style settings to the selected objects")
+            "MenuText": QT_TRANSLATE_NOOP("Draft_SetStyle", "Set Style"),
+            "ToolTip": QT_TRANSLATE_NOOP("Draft_SetStyle", "Sets the default style and can apply the style to objects")
         }
 
     def Activated(self):

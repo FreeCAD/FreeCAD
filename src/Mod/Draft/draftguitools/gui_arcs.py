@@ -61,7 +61,7 @@ class Arc(gui_base_original.Creator):
         return {"Pixmap": "Draft_Arc",
                 "Accel": "A, R",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_Arc", "Arc"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Arc", "Creates a circular arc by a center point and a radius")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Arc", "Creates a circular arc from a center point and a radius")}
 
     def Activated(self):
         """Execute when the command is called."""

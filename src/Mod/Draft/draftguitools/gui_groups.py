@@ -71,7 +71,7 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_AddToGroup",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_AddToGroup", "Add to Group"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_AddToGroup", "Adds or removes the selected objects to/from a group")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_AddToGroup", "Adds selected objects to a group, or removes them from any group")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -167,7 +167,7 @@ class SelectGroup(gui_base.GuiCommandNeedsSelection):
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_SelectGroup",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_SelectGroup", "Select Group"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_SelectGroup", "Selects the contents of the selected groups. For selected non-group objects, the contents of the parent group are selected.")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_SelectGroup", "Selects the contents of selected groups. For selected non-group objects, the contents of the goup they are in are selected.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -290,7 +290,7 @@ class SetAutoGroup(gui_base.GuiCommandSimplest):
             # "New layer..."
             txt, ok = QtWidgets.QInputDialog.getText(
                 None,
-                translate("draft", "Create new layer"),
+                translate("draft", "New Layer"),
                 translate("draft", "Layer name"),
                 text=translate("draft", "Layer", "Object label")
             )
@@ -396,7 +396,7 @@ class AddNamedGroup(gui_base.GuiCommandSimplest):
 
         txt, ok = QtWidgets.QInputDialog.getText(
             None,
-            translate("draft", "New group"),
+            translate("draft", "New Group"),
             translate("draft", "Group name"),
             text=translate("draft", "Group", "Object label")
         )
