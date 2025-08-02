@@ -1925,4 +1925,3 @@ void CreateSketcherCommands()
     rcCmdMgr.addCommand(new CmdRenderingOrder());
 }
 // clang-format on
-
