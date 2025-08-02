@@ -182,8 +182,7 @@ protected:
     enum class SelectionMode
     {
         None,
-        Reference,
-        Reference2
+        Reference
     };
 
     ViewProviderTransformed* TransformedView = nullptr;
@@ -225,3 +224,4 @@ protected:
 }  // namespace PartDesignGui
 
 #endif  // GUI_TASKVIEW_TASKAPPERANCE_H
+
