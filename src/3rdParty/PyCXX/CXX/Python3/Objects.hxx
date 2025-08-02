@@ -1787,7 +1787,6 @@ namespace Py
     typedef std::basic_string<Py_UNICODE> unicodestring;
     extern Py_UNICODE unicode_null_string[1];
 #endif
-    typedef std::basic_string<Py_UCS4> ucs4string;
     extern Py_UCS4 ucs4_null_string[1];
 
     class PYCXX_EXPORT Byte: public Object
@@ -2193,13 +2192,6 @@ namespace Py
         }
 #endif
 
-#if !defined( Py_UNICODE_WIDE ) && !defined( Py_LIMITED_API )
-        String &operator=( const ucs4string &v )
-        {
-            set( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, reinterpret_cast<const Py_UCS4 *>( v.data() ), v.length() ), true );
-            return *this;
-        }
-#endif
         // Encode
         Bytes encode( const char *encoding, const char *error="strict" ) const
         {
@@ -2229,19 +2221,6 @@ namespace Py
         }
 #endif
 #endif
-
-        ucs4string as_ucs4string() const
-        {
-            Py_UCS4 *buf = new Py_UCS4[ size() ];
-            if( PyUnicode_AsUCS4( ptr(), buf, size(), 0 ) == NULL )
-            {
-                ifPyErrorThrowCxxException();
-            }
-            ucs4string ucs4( buf, size() );
-            delete[] buf;
-
-            return ucs4;
-        }
 
         operator std::string() const
         {
