@@ -125,15 +125,15 @@ Model::Model(QObject *parentIn, const Gui::Document &documentIn) : QGraphicsScen
 
   renameAction = new QAction(this);
   renameAction->setText(tr("Rename"));
-  renameAction->setStatusTip(tr("Rename object"));
+  renameAction->setStatusTip(tr("Renames the object"));
 #ifndef Q_OS_MAC
   renameAction->setShortcut(Qt::Key_F2);
 #endif
   connect(renameAction, &QAction::triggered, this, &Model::renameAcceptedSlot);
 
   editingFinishedAction = new QAction(this);
-  editingFinishedAction->setText(tr("Finish editing"));
-  editingFinishedAction->setStatusTip(tr("Finish editing object"));
+  editingFinishedAction->setText(tr("Finish Editing"));
+  editingFinishedAction->setStatusTip(tr("Finishes editing the object"));
   connect(this->editingFinishedAction, &QAction::triggered,
           this, &Model::editingFinishedSlot);
 
