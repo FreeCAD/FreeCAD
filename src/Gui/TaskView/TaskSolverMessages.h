@@ -46,7 +46,7 @@ class GuiExport TaskSolverMessages: public Gui::TaskView::TaskBox
 public:
     explicit TaskSolverMessages(const QPixmap& icon,
                                 const QString& title);
-    ~TaskSolverMessages() override = default;
+    ~TaskSolverMessages() override;
     FC_DISABLE_COPY_MOVE(TaskSolverMessages)
 
     void slotSetUp(const QString& state,
