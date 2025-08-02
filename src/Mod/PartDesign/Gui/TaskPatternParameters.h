@@ -1,4 +1,4 @@
-/******************************************************************************
+    /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
@@ -84,6 +84,8 @@ private:
     PartGui::PatternParametersWidget* parametersWidget = nullptr;
     PartGui::PatternParametersWidget* parametersWidget2 = nullptr;
 
+    PartGui::PatternParametersWidget* activeDirectionWidget = nullptr;
+
     std::unique_ptr<Ui_TaskPatternParameters> ui;
     QTimer* updateViewTimer = nullptr;
 };
@@ -101,3 +103,4 @@ public:
 }  // namespace PartDesignGui
 
 #endif // GUI_TASKVIEW_TaskPatternParameters_H
+
