@@ -1356,15 +1356,6 @@ QComboBox:editable {
   background-color: @TextEditFieldBackgroundColor;
 }
 
-QComboBox QAbstractItemView {
-  border: 1px solid @GeneralBorderColor;
-  padding-left: -27px;
-  background-color: transparent;
-}
-
-QComboBox QAbstractItemView:hover {
-  background-color: @GeneralBackgroundHoverColor;
-}
 
 QComboBox QAbstractItemView:selected {
   background-color: @GeneralBackgroundHoverColor;
@@ -2221,6 +2212,12 @@ QColumnView::item:selected {
   background-color: @AccentBackgroundColor;
 }
 
+QTableView::item:hover,
+QColumnView::item:hover,
+QListView::item:hover {
+  background-color: @AccentHoverColor;
+}
+
 /* QTreeView::item:!selected:hover, */
 QListView::item:!selected:hover,
 QTableView::item:!selected:hover,
@@ -2606,6 +2603,9 @@ QGroupBox[objectName="matOpsGrpBox"] QPushButton {
 QToolBar > Gui--WorkbenchComboBox QAbstractItemView {
   min-width: 180px;
   margin-left: 30px;
+  border: 1px solid @GeneralBorderColor;
+  padding-left: -27px;
+  background-color: transparent;
 }
 
 /* Below is a fix for indentation in properties*/
