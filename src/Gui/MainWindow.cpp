@@ -417,7 +417,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         NotificationArea* notificationArea = new NotificationArea(statusBar());
         notificationArea->setObjectName(QStringLiteral("notificationArea"));
         //: A context menu action used to show or hide the 'notificationArea' toolbar widget
-        notificationArea->setWindowTitle(tr("Notification area"));
+        notificationArea->setWindowTitle(tr("Notification Area"));
         notificationArea->setStyleSheet(QStringLiteral("text-align:center;"));
         statusBar()->addPermanentWidget(notificationArea);
     }
@@ -798,15 +798,15 @@ int MainWindow::confirmSave(App::Document *doc, QWidget *parent, bool addCheckbo
     box.setObjectName(QStringLiteral("confirmSave"));
     box.setIcon(QMessageBox::Question);
     box.setWindowFlags(box.windowFlags() | Qt::WindowStaysOnTopHint);
-    box.setWindowTitle(QObject::tr("Unsaved document"));
+    box.setWindowTitle(QObject::tr("Unsaved Document"));
     const QString docName = QString::fromStdString(doc->Label.getStrValue());
     const QString text = (!docName.isEmpty()
-                          ? QObject::tr("Do you want to save your changes to document '%1' before closing?").arg(docName)
-                          : QObject::tr("Do you want to save your changes to document before closing?"));
+                          ? QObject::tr("Save all changes to document '%1' before closing?").arg(docName)
+                          : QObject::tr("Save all changes to document before closing?"));
     box.setText(text);
 
 
-    box.setInformativeText(QObject::tr("If you don't save, your changes will be lost."));
+    box.setInformativeText(QObject::tr("Otherwise, all changes will be lost."));
     box.setStandardButtons(QMessageBox::Discard | QMessageBox::Cancel | QMessageBox::Save);
     box.setDefaultButton(QMessageBox::Save);
     box.setEscapeButton(QMessageBox::Cancel);
@@ -925,7 +925,7 @@ bool MainWindow::closeAllDocuments (bool close)
         int ret = QMessageBox::question(
             getMainWindow(),
             QObject::tr("%1 Document(s) not saved").arg(QString::number(failedSaves)),
-            QObject::tr("Some documents could not be saved. Do you want to cancel closing?"),
+            QObject::tr("Some documents could not be saved. Cancel closing?"),
             QMessageBox::Discard | QMessageBox::Cancel,
             QMessageBox::Discard);
         if (ret == QMessageBox::Cancel)
@@ -1987,7 +1987,7 @@ QMimeData * MainWindow::createMimeDataFromSelection () const
     bool hasXLink = App::PropertyXLink::hasXLink(sel,&unsaved);
     if(!unsaved.empty()) {
         QMessageBox::critical(getMainWindow(), tr("Unsaved document"),
-            tr("The exported object contains external link. Please save the document"
+            tr("The exported object contains external link. Save the document"
                 "at least once before exporting."));
         return nullptr;
     }
@@ -2080,7 +2080,7 @@ void MainWindow::insertFromMimeData (const QMimeData * mimeData)
     if(hasXLink && !doc->isSaved()) {
         int ret = QMessageBox::question(getMainWindow(), tr("Unsaved document"),
             tr("To link to external objects, the document must be saved at least once.\n"
-               "Do you want to save the document now?"),
+               "Save the document now?"),
             QMessageBox::Yes,QMessageBox::No);
         if(ret != QMessageBox::Yes || !Application::Instance->getDocument(doc)->saveAs())
             return;

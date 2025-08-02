@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Add property</string>
+   <string>Add Property</string>
   </property>
   <layout class="QFormLayout" name="formLayout">
    <item row="0" column="0">
@@ -47,7 +47,7 @@
    <item row="3" column="0">
     <widget class="QLabel" name="label_doc">
      <property name="toolTip">
-      <string>Verbose description of the new property.</string>
+      <string>Verbose description of the new property</string>
      </property>
      <property name="text">
       <string>Documentation</string>
@@ -57,7 +57,7 @@
    <item row="3" column="1">
     <widget class="QPlainTextEdit" name="edtDoc">
      <property name="toolTip">
-      <string>Verbose description of the new property.</string>
+      <string>Verbose description of the new property</string>
      </property>
     </widget>
    </item>
@@ -68,7 +68,7 @@
 In this case the prefix will be automatically trimmed when shown in the property editor.
 However, the property is still used in a script with the full name, like 'obj.Group_Name'.
 
-If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</string>
+If this is not checked, the property must be uniquely named, and it is accessed like 'obj.Name'.</string>
      </property>
      <property name="text">
       <string>Prefix group name</string>

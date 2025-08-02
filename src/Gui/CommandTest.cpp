@@ -60,8 +60,9 @@ Std_TestQM::Std_TestQM()
   : Command("Std_TestQM")
 {
     sGroup        = "Standard-Test";
-    sMenuText     = "Test translation files...";
-    sToolTipText  = "Test function to check .qm translation files";
+    sMenuText = "Test Translation Files";
+
+    sToolTipText  = "Runs a test to verify .qm translation files";
     sWhatsThis    = "Std_TestQM";
     sStatusTip    = sToolTipText;
 }
@@ -98,8 +99,8 @@ Std_TestReloadQM::Std_TestReloadQM()
   : Command("Std_TestReloadQM")
 {
     sGroup        = "Standard-Test";
-    sMenuText     = "Reload translation files";
-    sToolTipText  = "Test function to check .qm translation files";
+    sMenuText     = "Reload Translation Files";
+    sToolTipText  = "Reloads the translation files";
     sWhatsThis    = "Std_TestReloadQM";
     sStatusTip    = sToolTipText;
 }
@@ -294,7 +295,7 @@ CmdTestCmdFuncs::CmdTestCmdFuncs()
   : Command("Std_TestCmdFuncs")
 {
     sGroup          = "Standard-Test";
-    sMenuText       = "Test functions";
+    sMenuText       = "Test Functions";
     sToolTipText    = "Test functions";
     sWhatsThis      = "Std_TestCmdFuncs";
     sStatusTip      = sToolTipText;
@@ -344,7 +345,7 @@ CmdTestProgress1::CmdTestProgress1()
   : Command("Std_TestProgress1")
 {
     sGroup          = "Standard-Test";
-    sMenuText       = "Breakable bar";
+    sMenuText       = "Breakable Bar";
     sToolTipText    = "Test a breakable progress bar";
     sWhatsThis      = "Std_TestProgress1";
     sStatusTip      = sToolTipText;
@@ -386,7 +387,7 @@ CmdTestProgress2::CmdTestProgress2()
   : Command("Std_TestProgress2")
 {
     sGroup          = "Standard-Test";
-    sMenuText       = "Unbreakable bar";
+    sMenuText       = "Unbreakable Bar";
     sToolTipText    = "Test a unbreakable progress bar";
     sWhatsThis      = "Std_TestProgress2";
     sStatusTip      = sToolTipText;
@@ -429,7 +430,7 @@ CmdTestProgress3::CmdTestProgress3()
   : Command("Std_TestProgress3")
 {
     sGroup          = "Standard-Test";
-    sMenuText       = "Nested progress bar";
+    sMenuText       = "Nested Progress Bar";
     sToolTipText    = "Test nested progress bar";
     sWhatsThis      = "Std_TestProgress3";
     sStatusTip      = sToolTipText;
@@ -499,7 +500,7 @@ CmdTestProgress4::CmdTestProgress4()
   : Command("Std_TestProgress4")
 {
     sGroup          = "Standard-Test";
-    sMenuText       = "Mixed nested bar";
+    sMenuText       = "Mixed Nested Bar";
     sToolTipText    = "Test a mixed up nested progress bar";
     sWhatsThis      = "Std_TestProgress4";
     sStatusTip      = sToolTipText;
@@ -554,7 +555,7 @@ CmdTestProgress5::CmdTestProgress5()
   : Command("Std_TestProgress5")
 {
     sGroup          = "Standard-Test";
-    sMenuText       = "From thread";
+    sMenuText       = "From Thread";
     sToolTipText    = "Test a progress bar from a thread";
     sWhatsThis      = "Std_TestProgress5";
     sStatusTip      = sToolTipText;
@@ -712,9 +713,9 @@ CmdTestConsoleOutput::CmdTestConsoleOutput()
   : Command("Std_TestConsoleOutput")
 {
     sGroup      = "Standard-Test";
-    sMenuText   = QT_TR_NOOP("Test console output");
+    sMenuText   = QT_TR_NOOP("Test Console Output");
     sToolTipText= QT_TR_NOOP("Run test cases to verify console messages");
-    sStatusTip  = QT_TR_NOOP("Run test cases to verify console messages");
+    sStatusTip  = sToolTipText;
 }
 
 namespace Gui {

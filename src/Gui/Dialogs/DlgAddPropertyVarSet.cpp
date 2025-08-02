@@ -183,7 +183,7 @@ void DlgAddPropertyVarSet::setWidgetForLabel(const char* labelName, QWidget* wid
 
     int labelRow = findLabelRow(labelName, formLayout);
     if (labelRow < 0) {
-        FC_ERR("Couldn't find row for '" << labelName << "'");
+        FC_ERR("Could not find row for '" << labelName << "'");
         return;
     }
 
@@ -439,7 +439,7 @@ void DlgAddPropertyVarSet::initializeValue()
 
 void DlgAddPropertyVarSet::setTitle()
 {
-    setWindowTitle(tr("Add a property to %1").arg(QString::fromStdString(varSet->getFullName())));
+    setWindowTitle(tr("Add a Property to %1").arg(QString::fromStdString(varSet->getFullName())));
 }
 
 void DlgAddPropertyVarSet::setOkEnabled(bool enabled)

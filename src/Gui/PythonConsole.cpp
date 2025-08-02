@@ -827,7 +827,7 @@ void PythonConsole::runSource(const QString& line)
         int ret = QMessageBox::Yes;
         if (check) {
             ret = QMessageBox::question(this, tr("System exit"),
-                tr("The application is still running.\nDo you want to exit without saving your data?"),
+                tr("The application is still running.\nExit without saving all data?"),
                 QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
         }
         if (ret == QMessageBox::Yes) {
@@ -1297,16 +1297,16 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
     a->setShortcut(QKeySequence(QStringLiteral("CTRL+C")));
     a->setEnabled(textCursor().hasSelection());
 
-    a = menu.addAction(tr("&Copy command"), this, &PythonConsole::onCopyCommand);
+    a = menu.addAction(tr("&Copy Command"), this, &PythonConsole::onCopyCommand);
     a->setEnabled(textCursor().hasSelection());
 
-    a = menu.addAction(tr("&Copy history"), this, &PythonConsole::onCopyHistory);
+    a = menu.addAction(tr("&Copy History"), this, &PythonConsole::onCopyHistory);
     a->setEnabled(!d->history.isEmpty());
 
-    a = menu.addAction( tr("Save history as..."), this, &PythonConsole::onSaveHistoryAs);
+    a = menu.addAction(tr("Save History As…"), this, &PythonConsole::onSaveHistoryAs);
     a->setEnabled(!d->history.isEmpty());
 
-    QAction* saveh = menu.addAction(tr("Save history"));
+    QAction* saveh = menu.addAction(tr("Save History"));
     saveh->setToolTip(tr("Saves Python history across %1 sessions").arg(qApp->applicationName()));
     saveh->setCheckable(true);
     saveh->setChecked(d->hGrpSettings->GetBool("SavePythonHistory", false));
@@ -1322,14 +1322,14 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
     a->setShortcut(QKeySequence(QStringLiteral("CTRL+A")));
     a->setEnabled(!document()->isEmpty());
 
-    a = menu.addAction(tr("Clear console"), this, &PythonConsole::onClearConsole);
+    a = menu.addAction(tr("Clear Console"), this, &PythonConsole::onClearConsole);
     a->setEnabled(!document()->isEmpty());
 
     menu.addSeparator();
-    menu.addAction( tr("Insert file name..."), this, &PythonConsole::onInsertFileName);
+    menu.addAction(tr("Insert File Name…"), this, &PythonConsole::onInsertFileName);
     menu.addSeparator();
 
-    QAction* wrap = menu.addAction(tr("Word wrap"));
+    QAction* wrap = menu.addAction(tr("Word Wrap"));
     wrap->setCheckable(true);
 
     wrap->setChecked(d->hGrpSettings->GetBool("PythonWordWrap", true));

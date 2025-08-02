@@ -239,11 +239,11 @@ bool ApplicationCache::performAction(qint64 total)
         QString path = QString::fromStdString(App::Application::getUserCachePath());
         QMessageBox msgBox(Gui::getMainWindow());
         msgBox.setIcon(QMessageBox::Warning);
-        msgBox.setWindowTitle(tr("Cache directory"));
+        msgBox.setWindowTitle(tr("Cache Directory"));
 
         QString hint = tr("The cache directory %1 exceeds the size of %2.").arg(path, ApplicationCache::toString(limit));
-        QString ask = tr("Do you want to clear it now?");
-        QString warn = tr("Warning: Please make sure that this is the only running %1 instance "
+        QString ask = tr("Clear it now?");
+        QString warn = tr("Warning: Make sure that this is the only running %1 instance "
                           "and that no documents are opened as this may result into data loss!").arg(QCoreApplication::applicationName());
 
         msgBox.setText(QStringLiteral("%1 %2\n\n\n%3").arg(hint, ask, warn));

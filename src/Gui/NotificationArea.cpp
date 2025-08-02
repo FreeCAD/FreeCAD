@@ -693,7 +693,7 @@ protected:
                 menu.addSeparator();
 
                 QAction* delnotifications =
-                    menu.addAction(tr("Delete user notifications"),
+                    menu.addAction(tr("Delete User Notifications"),
                                    this,
                                    &NotificationsAction::deleteNotifications);
 
@@ -975,7 +975,7 @@ void NotificationArea::mousePressEvent(QMouseEvent* e)
         //NOLINTBEGIN
         NotificationsAction* na = static_cast<NotificationsAction*>(pImp->notificationaction);
 
-        QAction* delnotifications = menu.addAction(tr("Delete user notifications"), [&]() {
+        QAction* delnotifications = menu.addAction(tr("Delete User Notifications"), [&]() {
             // guard to avoid modifying the notification list and indices while creating the tooltip
             lock_guard<std::mutex> g(pImp->mutexNotification);
             na->deleteNotifications();
@@ -1086,11 +1086,11 @@ void NotificationArea::showConfirmationDialog(const QString& notifiername, const
 {
     auto confirmMsg = QObject::tr("Notifier:") + QStringLiteral(" ") + notifiername + QStringLiteral("\n\n") + message
         + QStringLiteral("\n\n")
-        + QObject::tr("Do you want to skip confirmation of further critical message notifications "
+        + QObject::tr("Skip confirmation of further critical message notifications "
                       "while loading the file?");
 
     auto button = QMessageBox::critical(getMainWindow()->activeWindow(),
-                                        QObject::tr("Critical Message"),
+                                        QObject::tr("Critical message"),
                                         confirmMsg,
                                         QMessageBox::Yes | QMessageBox::No,
                                         QMessageBox::No);

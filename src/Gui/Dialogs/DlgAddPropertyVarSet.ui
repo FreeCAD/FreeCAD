@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Add property</string>
+   <string>Add Property</string>
   </property>
   <layout class="QFormLayout" name="formLayout">
    <item row="0" column="0">

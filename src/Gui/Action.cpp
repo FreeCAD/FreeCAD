@@ -722,7 +722,7 @@ void WorkbenchGroup::refreshWorkbenchList()
         action->setObjectName(wbName);
         action->setIcon(px);
         action->setToolTip(tip);
-        action->setStatusTip(tr("Select the '%1' workbench").arg(name));
+        action->setStatusTip(tr("Selects the '%1' workbench").arg(name));
         if (index < 9) {
             action->setShortcut(QKeySequence(QStringLiteral("W,%1").arg(index + 1)));
         }
@@ -1137,7 +1137,7 @@ void RecentMacrosAction::setFiles(const QStringList& files)
     }
     // Raise a single warning no matter how many conflicts
     if (!existingCommands.isEmpty()) {
-        auto msgMain = QStringLiteral("Recent macros : keyboard shortcut(s)");
+        auto msgMain = QStringLiteral("Recent macros : keyboard shortcuts");
         for (int index = 0; index < accel_col.size(); index++) {
             msgMain += QStringLiteral(" %1").arg(accel_col[index]);
         }
