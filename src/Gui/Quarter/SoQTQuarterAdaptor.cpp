@@ -27,6 +27,8 @@
 #include <Inventor/SbPlane.h>
 #include <Inventor/SoEventManager.h>
 #include <Inventor/SoPickedPoint.h>
+#include <Inventor/SbMatrix.h>
+#include <Inventor/SbViewVolume.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoSearchAction.h>
@@ -666,7 +668,12 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::draw2DString(
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    glOrtho(0.0, glsize[0], 0.0, glsize[1], -1, 1);
+
+    SbViewVolume vv;
+    vv.ortho(0.0, glsize[0], 0.0, glsize[1], -1, 1);
+    SbMatrix affine, proj;
+    vv.getMatrices(affine, proj);
+    glLoadMatrixf((float*)proj);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
