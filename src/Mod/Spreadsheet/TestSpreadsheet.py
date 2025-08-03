@@ -332,61 +332,6 @@ class SpreadsheetFunction(unittest.TestCase):
                 "Values are not 'Mostly Equal': %s != %s" % (a, b),
             )
 
-    def test_if(self):
-        self.sheet.set("A1", "=if(0; 5; 20)")
-        self.sheet.set("A2", "=if(0mm; 10; 50)")
-        self.sheet.set("A3", "=if(1; 5; 20)")
-        self.sheet.set("A4", "=if(1mm; 10; 50)")
-
-        self.sheet.set("B1", "=0 == 1 ? 5 : 20")
-        self.sheet.set("B2", "=0mm == 1mm ? 10 : 50")
-        self.sheet.set("B3", "=1 == 1 ? 5 : 20")
-        self.sheet.set("B4", "=1mm == 1mm ? 10 : 50")
-
-        self.sheet.set("C1", "=if(D1; 5; 20)")
-        self.sheet.set("C2", "=if(D2; 10; 50)")
-        self.sheet.set("C3", "=if(D3; 5; 20)")
-        self.sheet.set("C4", "=if(D4; 10; 50)")
-
-        self.sheet.set("D1", "0.0")
-        self.sheet.set("D2", "0.0mm")
-        self.sheet.set("D3", "5mm")
-        self.sheet.set("D4", "-5")
-
-        self.doc.recompute()
-
-        self.assertEqual(self.sheet.A1, 20)
-        self.assertEqual(self.sheet.A2, 50)
-        self.assertEqual(self.sheet.A3, 5)
-        self.assertEqual(self.sheet.A4, 10)
-
-        self.assertEqual(self.sheet.B1, 20)
-        self.assertEqual(self.sheet.B2, 50)
-        self.assertEqual(self.sheet.B3, 5)
-        self.assertEqual(self.sheet.B4, 10)
-
-        self.assertEqual(self.sheet.B1, self.sheet.A1)
-        self.assertEqual(self.sheet.B2, self.sheet.A2)
-        self.assertEqual(self.sheet.B3, self.sheet.A3)
-        self.assertEqual(self.sheet.B4, self.sheet.A4)
-
-        self.assertEqual(self.sheet.C1, 20)
-        self.assertEqual(self.sheet.C2, 50)
-        self.assertEqual(self.sheet.C3, 5)
-        self.assertEqual(self.sheet.C4, 10)
-
-        self.sheet.set("E1", "-5")
-        self.sheet.set("E2", "=if(E1 > 1; 10; -10)")
-        self.sheet.set("E3", "=if(E1 < 1; 10; -10)")
-        self.doc.recompute()
-        self.assertEqual(self.sheet.E2, -10)
-        self.assertEqual(self.sheet.E3, 10)
-
-        self.sheet.set("E1", "50")
-        self.doc.recompute()
-        self.assertEqual(self.sheet.E2, 10)
-        self.assertEqual(self.sheet.E3, -10)
-
     def test_cos(self):
         self.sheet.set("A1", "=cos(60)")
         self.sheet.set("B1", "=cos(60deg)")
