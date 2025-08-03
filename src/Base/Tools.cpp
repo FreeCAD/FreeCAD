@@ -61,6 +61,24 @@ bool isValidSubsequentChar(UChar32 c)
             || category == U_COMBINING_SPACING_MARK || category == U_CONNECTOR_PUNCTUATION);
 }
 
+bool isPyKeyword(const std::string& word)
+{
+    Base::PyGILStateLocker lock;
+    PyObject* keyword_module = PyImport_ImportModule("keyword");
+    if (!keyword_module) {
+        Base::PyException::throwException();
+    }
+
+    PyObject* iskeyword = PyObject_GetAttrString(keyword_module, "iskeyword");
+    PyObject* arg = PyUnicode_FromString(word.c_str());
+    bool result = PyObject_IsTrue(PyObject_CallFunctionObjArgs(iskeyword, arg, NULL));
+
+    Py_DECREF(arg);
+    Py_DECREF(iskeyword);
+    Py_DECREF(keyword_module);
+    return result;
+}
+
 std::string unicodeCharToStdString(UChar32 c)
 {
     icu::UnicodeString uChar(c);
@@ -83,7 +101,7 @@ std::string Base::Tools::getIdentifier(const std::string& name)
     // first character, but *is* a valid later character
     UChar32 firstChar = uName.char32At(0);
     const int32_t firstCharLength = U16_LENGTH(firstChar);
-    if (!isValidFirstChar(firstChar)) {
+    if (!isValidFirstChar(firstChar) || isPyKeyword(name)) {
         result << "_";
         if (isValidSubsequentChar(firstChar)) {
             result << unicodeCharToStdString(firstChar);
