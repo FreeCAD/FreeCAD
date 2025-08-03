@@ -660,11 +660,6 @@ void DSHArcSlotControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
 
             if (thirdParam->isSet) {
                 radius = thirdParam->getValue();
-                if (radius < Precision::Confusion()) {
-                    unsetOnViewParameter(thirdParam.get());
-                    return;
-                }
-
                 onSketchPos = handler->centerPoint + radius * dir.Normalize();
             }
 
@@ -679,17 +674,11 @@ void DSHArcSlotControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
 
             if (fifthParam->isSet) {
                 double arcAngle = Base::toRadians(fifthParam->getValue());
-                if (fmod(fabs(arcAngle), 2 * std::numbers::pi) < Precision::Confusion()) {
-                    unsetOnViewParameter(fifthParam.get());
-                }
-                else {
-                    handler->arcAngle = arcAngle;
-
-                    double length = (onSketchPos - handler->centerPoint).Length();
-                    double angle = handler->startAngleBackup + arcAngle;
-                    onSketchPos.x = handler->centerPoint.x + cos(angle) * length;
-                    onSketchPos.y = handler->centerPoint.y + sin(angle) * length;
-                }
+                handler->arcAngle = arcAngle;
+                double length = (onSketchPos - handler->centerPoint).Length();
+                double angle = handler->startAngleBackup + arcAngle;
+                onSketchPos.x = handler->centerPoint.x + cos(angle) * length;
+                onSketchPos.y = handler->centerPoint.y + sin(angle) * length;
             }
         } break;
         case SelectMode::SeekFourth: {
@@ -697,18 +686,7 @@ void DSHArcSlotControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
 
             if (sixthParam->isSet) {
                 double radius2 = sixthParam->getValue();
-                if ((fabs(radius2) < Precision::Confusion()
-                     && handler->constructionMethod()
-                         == DrawSketchHandlerArcSlot::ConstructionMethod::ArcSlot)
-                    || (fabs(handler->radius - radius2) < Precision::Confusion()
-                        && handler->constructionMethod()
-                            == DrawSketchHandlerArcSlot::ConstructionMethod::RectangleSlot)) {
-                    unsetOnViewParameter(sixthParam.get());
-                }
-                else {
-                    onSketchPos =
-                        handler->centerPoint + Base::Vector2d(handler->radius + radius2, 0.);
-                }
+                onSketchPos = handler->centerPoint + Base::Vector2d(handler->radius + radius2, 0.);
             }
         } break;
         default:
