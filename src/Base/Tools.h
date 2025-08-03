@@ -348,8 +348,9 @@ struct BaseExport Tools
 {
     /**
      * Given an arbitrary string, ensure that it conforms to Python3 identifier rules, replacing
-     * invalid characters with an underscore. If the first character is invalid, prepends an
-     * underscore to the name. See https://unicode.org/reports/tr31/ for complete naming rules.
+     * invalid characters with an underscore. If the first character is invalid or the string is
+     * a reserved keyword, prepends an underscore to the name.
+     * See https://unicode.org/reports/tr31/ for complete naming rules.
      * @param String to be checked and sanitized.
      * @return A std::string that is a valid Python 3 identifier.
      */

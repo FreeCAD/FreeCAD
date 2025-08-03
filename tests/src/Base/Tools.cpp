@@ -155,5 +155,10 @@ TEST(BaseToolsSuite, TestGetIdentifier)
 
     // Full-width digit (U+FF11, looks like '1')
     EXPECT_EQ(Base::Tools::getIdentifier("１start"), "_１start");
+
+    // python reserved keyword
+    EXPECT_EQ(Base::Tools::getIdentifier("while"), "_while");
+    // valid reserved keywords from expression engine should be accepted
+    EXPECT_EQ(Base::Tools::getIdentifier("mm"), "mm");
 }
 // NOLINTEND(cppcoreguidelines-*,readability-*)
