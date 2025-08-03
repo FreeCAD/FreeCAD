@@ -1949,10 +1949,6 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                 || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
                 if (onViewParameters[OnViewParameter::Third]->isSet) {
                     double length = onViewParameters[OnViewParameter::Third]->getValue();
-                    if (fabs(length) < Precision::Confusion()) {
-                        unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
-                        return;
-                    }
 
                     if (handler->constructionMethod() == ConstructionMethod::Diagonal) {
                         int sign = (onSketchPos.x - handler->corner1.x) >= 0 ? 1 : -1;
@@ -1964,10 +1960,6 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                 }
                 if (onViewParameters[OnViewParameter::Fourth]->isSet) {
                     double width = onViewParameters[OnViewParameter::Fourth]->getValue();
-                    if (fabs(width) < Precision::Confusion()) {
-                        unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
-                        return;
-                    }
 
                     if (handler->constructionMethod() == ConstructionMethod::Diagonal) {
                         int sign = (onSketchPos.y - handler->corner1.y) >= 0 ? 1 : -1;
@@ -1987,10 +1979,6 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
 
                 if (onViewParameters[OnViewParameter::Third]->isSet) {
                     length = onViewParameters[OnViewParameter::Third]->getValue();
-                    if (length < Precision::Confusion()) {
-                        unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
-                        return;
-                    }
 
                     onSketchPos = handler->corner1 + length * dir.Normalize();
                 }
@@ -2010,12 +1998,6 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                 if (onViewParameters[OnViewParameter::Fourth]->isSet) {
                     onSketchPos.y = onViewParameters[OnViewParameter::Fourth]->getValue();
                 }
-                if (onViewParameters[OnViewParameter::Third]->isSet
-                    && onViewParameters[OnViewParameter::Fourth]->isSet
-                    && (onSketchPos - handler->center).Length() < Precision::Confusion()) {
-                    unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
-                    unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
-                }
             }
         } break;
         case SelectMode::SeekThird: {
@@ -2031,10 +2013,6 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                 else {
                     if (onViewParameters[OnViewParameter::Sixth]->isSet) {
                         double thickness = onViewParameters[OnViewParameter::Sixth]->getValue();
-                        if (thickness <= -std::min(handler->width, handler->length) / 2) {
-                            unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
-                            return;
-                        }
 
                         Base::Vector2d u = (handler->corner2 - handler->corner1).Normalize();
                         Base::Vector2d v = (handler->corner4 - handler->corner1).Normalize();
@@ -2051,20 +2029,12 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
 
                 if (onViewParameters[OnViewParameter::Fifth]->isSet) {
                     width = onViewParameters[OnViewParameter::Fifth]->getValue();
-                    if (width < Precision::Confusion()) {
-                        unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
-                        return;
-                    }
 
                     onSketchPos = handler->corner2Initial + width * dir.Normalize();
                 }
                 if (onViewParameters[OnViewParameter::Sixth]->isSet) {
                     double angle =
                         Base::toRadians(onViewParameters[OnViewParameter::Sixth]->getValue());
-                    if (fmod(angle, std::numbers::pi) < Precision::Confusion()) {
-                        unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
-                        return;
-                    }
 
                     int sign1 =
                         handler->getPointSideOfVector(onSketchPos,
@@ -2088,20 +2058,12 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                 double width = dir.Length();
                 if (onViewParameters[OnViewParameter::Fifth]->isSet) {
                     width = onViewParameters[OnViewParameter::Fifth]->getValue();
-                    if (width < Precision::Confusion()) {
-                        unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
-                        return;
-                    }
 
                     onSketchPos = handler->corner1 + width * dir.Normalize();
                 }
                 if (onViewParameters[OnViewParameter::Sixth]->isSet) {
                     double c =
                         Base::toRadians(onViewParameters[OnViewParameter::Sixth]->getValue());
-                    if (fmod(c, std::numbers::pi) < Precision::Confusion()) {
-                        unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
-                        return;
-                    }
 
                     double a = asin(width * sin(std::numbers::pi - c)
                                     / (handler->corner3 - handler->corner1).Length());
@@ -2125,10 +2087,6 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
 
                 if (onViewParameters[OnViewParameter::Sixth]->isSet) {
                     double thickness = onViewParameters[OnViewParameter::Sixth]->getValue();
-                    if (thickness <= -std::min(handler->width, handler->length) / 2) {
-                        unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
-                        return;
-                    }
 
                     Base::Vector2d u = (handler->corner2 - handler->corner1).Normalize();
                     Base::Vector2d v = (handler->corner4 - handler->corner1).Normalize();
@@ -2152,10 +2110,6 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                 else {
                     if (onViewParameters[OnViewParameter::Eighth]->isSet) {
                         double thickness = onViewParameters[OnViewParameter::Eighth]->getValue();
-                        if (thickness <= -std::min(handler->width, handler->length) / 2) {
-                            unsetOnViewParameter(onViewParameters[OnViewParameter::Eighth].get());
-                            return;
-                        }
 
                         Base::Vector2d u = (handler->corner2 - handler->corner1).Normalize();
                         Base::Vector2d v = (handler->corner4 - handler->corner1).Normalize();
@@ -2175,10 +2129,6 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
         case SelectMode::SeekFifth: {
             if (onViewParameters[OnViewParameter::Eighth]->isSet) {
                 double thickness = onViewParameters[OnViewParameter::Eighth]->getValue();
-                if (thickness <= -std::min(handler->width, handler->length) / 2) {
-                    unsetOnViewParameter(onViewParameters[OnViewParameter::Eighth].get());
-                    return;
-                }
 
                 Base::Vector2d u = (handler->corner2 - handler->corner1).Normalize();
                 Base::Vector2d v = (handler->corner4 - handler->corner1).Normalize();

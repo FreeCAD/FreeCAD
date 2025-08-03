@@ -558,11 +558,6 @@ void DSHEllipseControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
 
                 if (thirdParam->isSet) {
                     length = thirdParam->getValue();
-                    if (length < Precision::Confusion()) {
-                        unsetOnViewParameter(thirdParam.get());
-                        return;
-                    }
-
                     onSketchPos = handler->centerPoint + length * dir.Normalize();
                 }
 
@@ -581,11 +576,6 @@ void DSHEllipseControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
                     onSketchPos.y = fourthParam->getValue();
                 }
 
-                if (thirdParam->isSet && fourthParam->isSet
-                    && (onSketchPos - handler->apoapsis).Length() < Precision::Confusion()) {
-                    unsetOnViewParameter(thirdParam.get());
-                    unsetOnViewParameter(fourthParam.get());
-                }
             }
         } break;
         case SelectMode::SeekThird: {
@@ -610,12 +600,6 @@ void DSHEllipseControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
 
                 if (sixthParam->isSet) {
                     onSketchPos.y = sixthParam->getValue();
-                }
-
-                if (fifthParam->isSet && sixthParam->isSet
-                    && areCollinear(handler->apoapsis, handler->periapsis, onSketchPos)) {
-                    unsetOnViewParameter(fifthParam.get());
-                    unsetOnViewParameter(sixthParam.get());
                 }
             }
         } break;
