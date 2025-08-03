@@ -46,13 +46,13 @@ jobs:
       CCACHE_COMPILERCHECK: "%compiler%" # default:mtime
       CCACHE_MAXSIZE: 1G
       CCACHE_COMPRESS: true
-      CCACHE_COMPRESSLEVEL: 1
+      CCACHE_COMPRESSLEVEL: 5
       CCACHE_NOHASHDIR: true
       CCACHE_DIRECT: true
       #CCACHE_SLOPPINESS: "pch_defines,time_macros" # Can't get PCH to work on Windows
       CCACHE_LOGFILE: C:/logs/ccache.log
       ## Have to use C:\ because not enough space on workspace drive
-      builddir: C:/FC/build/release/
+      builddir: C:/FC/build/debug/
       libpackdir: C:/FC/libpack/
       cacheKey: Windows
       ccachebindir: C:/FC/ccache/
@@ -119,9 +119,9 @@ jobs:
       - name: Configuring CMake
         run: >
           cmake -B"${{ env.builddir }}" .
-          --preset release
+          --preset debug
           -DCMAKE_VS_NO_COMPILE_BATCHING=ON
-          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_BUILD_TYPE=Debug
           -DFREECAD_USE_PCH=OFF
           -DFREECAD_RELEASE_PDB=OFF
           -DFREECAD_LIBPACK_DIR="${{ env.libpackdir }}"
@@ -135,7 +135,7 @@ jobs:
       - name: Compiling sources
         run: |
           cd $env:builddir
-          msbuild ALL_BUILD.vcxproj /m /p:Configuration=Release /p:TrackFileAccess=false /p:CLToolPath=${{ env.ccachebindir }}
+          msbuild ALL_BUILD.vcxproj /m /p:Configuration=Debug /p:TrackFileAccess=false /p:CLToolPath=${{ env.ccachebindir }}
 
       - name: Print Ccache statistics after build
         run: |
@@ -145,7 +145,7 @@ jobs:
         if: false # Disabled because seems to not function on Windows build
         timeout-minutes: 1
         run: |
-          . ${{ env.builddir }}\tests\Release\Tests_run --gtest_output=json:${{ env.reportdir }}gtest_results.json # 2>&1 | tee -filepath ${{ env.logdir }}\unitTests.log
+          . ${{ env.builddir }}\tests\Debug\Tests_run --gtest_output=json:${{ env.reportdir }}gtest_results.json # 2>&1 | tee -filepath ${{ env.logdir }}\unitTests.log
 
       - name: FreeCAD CLI tests
         run: |
