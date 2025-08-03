@@ -677,6 +677,26 @@ class StockFromExistingEdit(StockEdit):
         if job.Stock in solids:
             # regardless, what stock is/was, it's not a valid choice
             solids.remove(job.Stock)
+        excludeIndexes = []
+        for index, model in enumerate(solids):
+            if [ob.Name for ob in model.InListRecursive if "Tools" in ob.Name]:
+                excludeIndexes.append(index)
+            elif hasattr(model, "PathResource"):
+                excludeIndexes.append(index)
+            elif model.InList and hasattr(model.InList[0], "ToolBitID"):
+                excludeIndexes.append(index)
+            elif hasattr(model, "ToolBitID"):
+                excludeIndexes.append(index)
+            elif model.TypeId == "App::DocumentObjectGroup":
+                excludeIndexes.append(index)
+            elif hasattr(model, "StockType"):
+                excludeIndexes.append(index)
+            elif not model.ViewObject.ShowInTree:
+                excludeIndexes.append(index)
+
+        for i in sorted(excludeIndexes, reverse=True):
+            del solids[i]
+
         return sorted(solids, key=lambda c: c.Label)
 
     def setFields(self, obj):
@@ -692,9 +712,9 @@ class StockFromExistingEdit(StockEdit):
             for i, solid in enumerate(self.candidates(obj)):
                 self.form.stockExisting.addItem(solid.Label, solid)
                 label = "{}-{}".format(self.StockLabelPrefix, solid.Label)
-
                 if label == stockName:
                     index = i
+
             self.form.stockExisting.setCurrentIndex(index if index != -1 else 0)
 
         if not self.IsStock(obj):
@@ -1415,7 +1435,7 @@ class TaskPanel:
 
     def isValidDatumSelection(self, sel):
         if sel.ShapeType in ["Vertex", "Edge", "Face"]:
-            if hasattr(sel, "Curve") and type(sel.Curve) not in [Part.Circle]:
+            if hasattr(sel, "Curve") and not isinstance(sel.Curve, Part.Circle):
                 return False
             return True
 
@@ -1424,7 +1444,7 @@ class TaskPanel:
 
     def isValidAxisSelection(self, sel):
         if sel.ShapeType in ["Vertex", "Edge", "Face"]:
-            if hasattr(sel, "Curve") and type(sel.Curve) in [Part.Circle]:
+            if hasattr(sel, "Curve") and isinstance(sel.Curve, Part.Circle):
                 return False
             if hasattr(sel, "Surface") and sel.Surface.curvature(0, 0, "Max") != 0:
                 return False
