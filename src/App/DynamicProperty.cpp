@@ -468,30 +468,32 @@ bool DynamicProperty::renameDynamicProperty(Property* prop,
 bool DynamicProperty::moveDynamicProperty(Property* prop,
                                           PropertyContainer* targetContainer)
 {
-    auto& propIndex = props.get<1>();
-    auto propIt = propIndex.find(prop);
-    if (propIt == propIndex.end()) {
-        return false;
-    }
-    const PropData& data = *propIt;
-
-    if (propIt->property->testStatus(Property::LockDynamic)) {
-        FC_THROWM(Base::RuntimeError, "Property " << prop->getName() << " is locked");
-    }
-
     const char* propertyName = prop->getName();
     if (targetContainer->getPropertyByName(propertyName) != nullptr) {
         FC_THROWM(Base::NameError,
                   "Property " << targetContainer->getFullName() << '.' << propertyName << " already exists");
     }
+    std::unique_ptr<Property>temp(prop->Copy());
+
+    bool isRemoved = _removeDynamicProperty(propertyName, SignalOption::NoSignal);
+
+    if (!isRemoved) {
+        FC_THROWM(Base::RuntimeError,
+                  "Failed to remove property " << propertyName << " from container "
+                                                << prop->getContainer()->getFullName());
+    }
 
     Property* newProp = targetContainer->addDynamicProperty(
             prop->getTypeId().getName(), propertyName, prop->getGroup(), prop->getDocumentation(),
             prop->getType(), prop->isReadOnly(), prop->testStatus(Property::Hidden));
-    newProp->Paste(*prop);
-    GetApplication().signalMoveDynamicProperty(*prop, *targetContainer);
-    _removeDynamicProperty(prop->getName(), SignalOption::NoSignal);
+    if (newProp == nullptr) {
+        FC_THROWM(Base::RuntimeError,
+                  "Failed to move property " << propertyName << " to container "
+                                             << targetContainer->getFullName());
+    }
+    newProp->Paste(*temp);
 
+    GetApplication().signalMoveDynamicProperty(*prop, *targetContainer);
 
     return true;
 }

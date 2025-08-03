@@ -65,4 +65,50 @@ protected:
     static App::Document* doc;
 };
 
+class MoveProperty: public ::testing::Test
+{
+protected:
+    static void SetUpTestSuite()
+    {
+        tests::initApplication();
+        std::string docName1 = App::GetApplication().getUniqueDocumentName("test");
+        std::string docName2 = App::GetApplication().getUniqueDocumentName("test");
+        doc1 = App::GetApplication().newDocument(docName1.c_str());
+        doc2 = App::GetApplication().newDocument(docName2.c_str());
+    }
+
+    void SetUp() override
+    {
+        varSet1Doc1 = freecad_cast<App::VarSet*>(doc1->addObject("App::VarSet", "VarSet"));
+        varSet2Doc1 = freecad_cast<App::VarSet*>(doc1->addObject("App::VarSet", "VarSet"));
+        varSetDoc2 = freecad_cast<App::VarSet*>(doc2->addObject("App::VarSet", "VarSet"));
+
+        prop = freecad_cast<App::PropertyInteger*>(
+            varSet1Doc1->addDynamicProperty("App::PropertyInteger", "Variable", "Variables"));
+        prop->setValue(value);
+    }
+
+    void TearDown() override
+    {
+        doc1->removeObject(varSet1Doc1->getNameInDocument());
+        doc1->removeObject(varSet2Doc1->getNameInDocument());
+        doc2->removeObject(varSetDoc2->getNameInDocument());
+    }
+
+    static void TearDownTestSuite()
+    {
+        App::GetApplication().closeDocument(doc1->getName());
+        App::GetApplication().closeDocument(doc2->getName());
+    }
+
+    const long value = 123;
+
+    App::VarSet* varSet1Doc1;
+    App::VarSet* varSet2Doc1;
+    App::VarSet* varSetDoc2;
+    App::PropertyInteger* prop;
+
+    static App::Document* doc1;
+    static App::Document* doc2;
+};
 #endif

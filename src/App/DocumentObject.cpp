@@ -722,6 +722,30 @@ bool DocumentObject::renameDynamicProperty(Property* prop, const char* name)
     return renamed;
 }
 
+bool DocumentObject::moveDynamicProperty(Property* prop, PropertyContainer* targetContainer)
+{
+    auto* targetObj = freecad_cast<DocumentObject*>(targetContainer);
+    if (targetObj == nullptr) {
+        return false;
+    }
+    if (targetObj == this) {
+        return false;
+    }
+
+    Property* movedProp = targetObj->addDynamicProperty(prop->getTypeId().getName(),
+                                                        prop->getName(),
+                                                        prop->getGroup(),
+                                                        prop->getDocumentation(),
+                                                        prop->getType(),
+                                                        prop->isReadOnly(),
+                                                        prop->testStatus(App::Property::Hidden));
+    if (movedProp == nullptr) {
+        return false;
+    }
+    movedProp->Paste(*prop);
+    return removeDynamicProperty(prop->getName());
+}
+
 App::Property* DocumentObject::addDynamicProperty(const char* type,
                                                   const char* name,
                                                   const char* group,
