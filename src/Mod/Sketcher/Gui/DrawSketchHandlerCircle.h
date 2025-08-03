@@ -503,8 +503,6 @@ void DSHCircleControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
                 if (fourthParam->isSet) {
                     onSketchPos.y = fourthParam->getValue();
                 }
-
-
             }
         } break;
         case SelectMode::SeekThird: {  // 3 rims only

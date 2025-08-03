@@ -575,7 +575,6 @@ void DSHEllipseControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
                 if (fourthParam->isSet) {
                     onSketchPos.y = fourthParam->getValue();
                 }
-
             }
         } break;
         case SelectMode::SeekThird: {
