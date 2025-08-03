@@ -54,6 +54,8 @@ jobs:
       CCACHE_MAXSIZE: 1G
       CCACHE_COMPRESS: true
       CCACHE_COMPRESSLEVEL: 5
+      CCACHE_DIRECT: true
+      CCACHE_NOHASHDIR: true
       config: debug
       builddir: ${{ github.workspace }}/build/debug/
       cacheKey: pixi-${{ matrix.os }}
