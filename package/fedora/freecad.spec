@@ -33,7 +33,7 @@
 
 Name:           %{name}
 Epoch:          1
-Version:        1.0.1
+Version:        1.0.2
 Release:        {{{git_commit_no}}}%{?dist}
 Summary:        A general purpose 3D CAD modeler
 Group:          Applications/Engineering
