@@ -465,25 +465,16 @@ bool DynamicProperty::renameDynamicProperty(Property* prop,
     return true;
 }
 
-bool DynamicProperty::moveDynamicProperty(Property* prop,
-                                          PropertyContainer* targetContainer)
+Property* DynamicProperty::moveDynamicProperty(Property* prop,
+                                               PropertyContainer* targetContainer)
 {
     const char* propertyName = prop->getName();
     if (targetContainer->getPropertyByName(propertyName) != nullptr) {
         FC_THROWM(Base::NameError,
                   "Property " << targetContainer->getFullName() << '.' << propertyName << " already exists");
     }
-    std::unique_ptr<Property>temp(prop->Copy());
 
-    bool isRemoved = _removeDynamicProperty(propertyName, SignalOption::NoSignal);
-
-    if (!isRemoved) {
-        FC_THROWM(Base::RuntimeError,
-                  "Failed to remove property " << propertyName << " from container "
-                                                << prop->getContainer()->getFullName());
-    }
-
-    Property* newProp = targetContainer->addDynamicProperty(
+    Property* newProp = targetContainer->dynamicProps.addDynamicProperty(*targetContainer,
             prop->getTypeId().getName(), propertyName, prop->getGroup(), prop->getDocumentation(),
             prop->getType(), prop->isReadOnly(), prop->testStatus(Property::Hidden));
     if (newProp == nullptr) {
@@ -491,11 +482,20 @@ bool DynamicProperty::moveDynamicProperty(Property* prop,
                   "Failed to move property " << propertyName << " to container "
                                              << targetContainer->getFullName());
     }
-    newProp->Paste(*temp);
+    newProp->Paste(*prop);
 
     GetApplication().signalMoveDynamicProperty(*prop, *targetContainer);
 
-    return true;
+    bool isRemoved = _removeDynamicProperty(propertyName, SignalOption::NoSignal);
+
+    if (!isRemoved) {
+        targetContainer->dynamicProps._removeDynamicProperty(newProp->getName(), SignalOption::NoSignal);
+        FC_THROWM(Base::RuntimeError,
+                  "Failed to remove property " << propertyName << " from container "
+                                                << prop->getContainer()->getFullName());
+    }
+
+    return newProp;
 }
 
 const char* DynamicProperty::getPropertyName(const Property* prop) const

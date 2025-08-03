@@ -558,12 +558,13 @@ public:
    * @param[in] prop The property to move.
    * @param[in] targetContainer The container to which the property is moved.
    *
-   * @return `true` if the property was moved; `false` otherwise.
+   * @return a pointer to the moved property if successful; `nullptr` if the
+   * target container is the same as the current one.
    * @throw Base::NameError If the property already exists in the container.
    */
-  virtual bool moveDynamicProperty(Property *prop, PropertyContainer *targetContainer) {
+  virtual Property* moveDynamicProperty(Property *prop, PropertyContainer *targetContainer) {
       if (this == targetContainer) {
-          return false;
+          return nullptr;
       }
       return dynamicProps.moveDynamicProperty(prop, targetContainer);
   }

@@ -398,16 +398,17 @@ App::Document* MoveProperty::doc2 {nullptr};
 TEST_F(MoveProperty, movePropertySimple)
 {
     // Act
-    bool isMoved = varSet1Doc1->moveDynamicProperty(prop, varSet2Doc1);
+    App::Property* movedProp = varSet1Doc1->moveDynamicProperty(prop, varSet2Doc1);
 
     // Assert
-    EXPECT_TRUE(isMoved);
+    ASSERT_TRUE(movedProp != nullptr);
+    EXPECT_EQ(movedProp->getContainer(), varSet2Doc1);
     EXPECT_EQ(varSet1Doc1->getDynamicPropertyByName("Variable"), nullptr);
 
-    auto* movedProp =
+    auto* movedPropWithType =
         freecad_cast<App::PropertyInteger*>(varSet2Doc1->getDynamicPropertyByName("Variable"));
-    ASSERT_TRUE(movedProp != nullptr);
-    EXPECT_EQ(movedProp->getValue(), value);
+    ASSERT_TRUE(movedPropWithType != nullptr);
+    EXPECT_EQ(movedPropWithType->getValue(), value);
 }
 
 // Tests whether we can move a property to a container in a different document

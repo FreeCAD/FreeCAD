@@ -22,6 +22,7 @@
  ***************************************************************************/
 
 
+#include "App/Expression.h"
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <stack>
@@ -722,28 +723,59 @@ bool DocumentObject::renameDynamicProperty(Property* prop, const char* name)
     return renamed;
 }
 
-bool DocumentObject::moveDynamicProperty(Property* prop, PropertyContainer* targetContainer)
+Property* DocumentObject::moveDynamicProperty(Property* prop,
+                                              PropertyContainer* targetContainer)
 {
     auto* targetObj = freecad_cast<DocumentObject*>(targetContainer);
     if (targetObj == nullptr) {
-        return false;
+        FC_THROWM(Base::TypeError,
+                 "DocumentObject::moveDynamicProperty(): targetContainer is not a DocumentObject");
     }
     if (targetObj == this) {
-        return false;
+        return nullptr;
     }
 
-    Property* movedProp = targetObj->addDynamicProperty(prop->getTypeId().getName(),
-                                                        prop->getName(),
-                                                        prop->getGroup(),
-                                                        prop->getDocumentation(),
-                                                        prop->getType(),
-                                                        prop->isReadOnly(),
-                                                        prop->testStatus(App::Property::Hidden));
-    if (movedProp == nullptr) {
-        return false;
+    if (!_pDoc || testStatus(ObjectStatus::Destroy)) {
+        return nullptr;
     }
-    movedProp->Paste(*prop);
-    return removeDynamicProperty(prop->getName());
+
+    if (prop == nullptr || prop->testStatus(App::Property::LockDynamic)) {
+        return nullptr;
+    }
+
+    if (prop->isDerivedFrom<PropertyLinkBase>()) {
+        clearOutListCache();
+    }
+
+    _pDoc->addOrRemovePropertyOfObject(this, prop, false);
+
+    auto expressions = ExpressionEngine.getExpressions();
+    std::vector<std::shared_ptr<Expression>> expressionsToMove;
+    std::vector<ObjectIdentifier> idsToClear;
+
+    for (const auto& it : expressions) {
+        if (it.first.getProperty() == prop) {
+            std::shared_ptr<Expression> newExpr(it.second->copy());
+            expressionsToMove.push_back(newExpr);
+            idsToClear.push_back(it.first);
+        }
+    }
+
+    for (const auto& it : idsToClear) {
+        ExpressionEngine.setValue(it, std::shared_ptr<Expression>());
+    }
+
+    auto* newProp = TransactionalObject::moveDynamicProperty(prop, targetContainer);
+    if (newProp && _pDoc) {
+        _pDoc->addOrRemovePropertyOfObject(targetObj, prop, true);
+    }
+
+    ObjectIdentifier newPropId = ObjectIdentifier(*newProp);
+    for (auto& it : expressionsToMove) {
+        targetObj->setExpression(newPropId, it);
+    }
+
+    return newProp;
 }
 
 App::Property* DocumentObject::addDynamicProperty(const char* type,

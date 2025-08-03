@@ -212,7 +212,7 @@ public:
 
     bool renameDynamicProperty(Property* prop, const char* newName);
 
-    bool moveDynamicProperty(Property* prop, PropertyContainer* targetContainer);
+    Property* moveDynamicProperty(Property* prop, PropertyContainer* targetContainer);
 
 
 private:
