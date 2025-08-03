@@ -541,6 +541,7 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
         }
 
         editModeScenegraphNodes.PointsMaterials[l]->diffuseColor.finishEditing();
+        editModeScenegraphNodes.PointsCoordinate[l]->point.finishEditing();
     }
 
     editModeScenegraphNodes.RootCrossMaterials->diffuseColor.finishEditing();
