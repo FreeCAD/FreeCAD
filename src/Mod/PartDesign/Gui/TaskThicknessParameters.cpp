@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 
+#include "Gui/Inventor/Draggers/GizmoHelper.h"
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -51,6 +52,8 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp* DressUpVie
 {
     addContainerWidget();
     initControls();
+
+    setupGizmos(DressUpView);
 }
 
 void TaskThicknessParameters::addContainerWidget()
@@ -200,6 +203,10 @@ void TaskThicknessParameters::onReversedChanged(bool on)
     if (PartDesign::Thickness* thickness = onBeforeChange()) {
         thickness->Reversed.setValue(on);
         onAfterChange(thickness);
+
+        if (gizmos) {
+            reverseGizmoDir(gizmos->getGizmo<LinearGizmo>(0));
+        }
     }
 }
 
@@ -258,6 +265,49 @@ void TaskThicknessParameters::apply()
     // Alert user if he created an empty feature
     if (ui->listWidgetReferences->count() == 0) {
         Base::Console().warning(tr("Empty thickness created !\n").toStdString().c_str());
+    }
+}
+
+void TaskThicknessParameters::setupGizmos(ViewProviderDressUp* vp)
+{
+    if (!Gizmos::isEnabled()) {
+        return;
+    }
+
+    gizmos = std::make_unique<Gizmos>();
+
+    auto linearGizmo = new Gui::LinearGizmo;
+    connect(ui->Value, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), [linearGizmo](double value) { linearGizmo->setDragLength(value); });
+    linearGizmo->setProperty(ui->Value);
+
+    gizmos->addGizmo(linearGizmo);
+    gizmos->initGizmos();
+
+    setGizmoPositions();
+
+    vp->attachGizmos(gizmos.get());
+}
+
+void TaskThicknessParameters::setGizmoPositions()
+{
+    if (!gizmos) {
+        return;
+    }
+
+    auto thickness = getObject<PartDesign::Thickness>();
+    auto baseShape = thickness->getBaseTopoShape();
+    auto shapes = thickness->getContinuousEdges(baseShape);
+    auto faces = thickness->getFaces(baseShape);
+
+    if (shapes.size() != 0 || faces.size() != 0) {
+        Part::TopoShape edge = shapes[0];
+        DraggerPlacementProps props = getDraggerPlacementFromEdgeAndFace(edge, faces[0]);
+
+        gizmos->getGizmo(0)->setDraggerPlacement(props.position, props.dir);
+
+        gizmos->visible = true;
+    } else {
+        gizmos->visible = false;
     }
 }
 

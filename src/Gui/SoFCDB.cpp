@@ -53,6 +53,7 @@
 #include "Inventor/Draggers/SoTransformDragger.h"
 #include "Inventor/Draggers/SoLinearDragger.h"
 #include "Inventor/Draggers/SoRotationDragger.h"
+#include "Inventor/Draggers/Gizmo.h"
 #include "Navigation/GestureNavigationStyle.h"
 #include "Navigation/NavigationStyle.h"
 #include "Navigation/SiemensNXNavigationStyle.h"
@@ -152,6 +153,7 @@ void Gui::SoFCDB::init()
     SoRotatorGeometryKit            ::initClass();
     SoRotatorGeometry               ::initClass();
     SoToggleSwitch                  ::initClass();
+    Gizmos                          ::initClass();
     SmSwitchboard                   ::initClass();
     SoFCSeparator                   ::initClass();
     SoFCSelectionRoot               ::initClass();

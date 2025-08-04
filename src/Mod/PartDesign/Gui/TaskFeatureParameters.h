@@ -104,8 +104,10 @@ protected:
         blockUpdate = value;
     }
 
-private:
+protected:
     PartDesignGui::ViewProvider *vp;
+
+private:
     bool blockUpdate;
 };
 

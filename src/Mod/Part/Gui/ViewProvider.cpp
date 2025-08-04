@@ -20,6 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "Gui/View3DInventorViewer.h"
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -30,6 +31,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Gui/CommandT.h>
+#include <Gui/Inventor/Draggers/Gizmo.h>
 
 #include "ViewProvider.h"
 
@@ -107,6 +109,30 @@ void ViewProviderPart::applyTransparency(float transparency, std::vector<App::Ma
             }
         }
     }
+}
+
+void ViewProviderPart::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
+{
+    ViewProviderPartExt::setEditViewer(viewer, ModNum);
+
+    if (gizmos) {
+        gizmos->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
+
+        auto originPlacement = App::GeoFeature::getGlobalPlacement(getObject())
+            * getObjectPlacement().inverse();
+        gizmos->attachViewer(viewer, originPlacement);
+    }
+}
+
+void ViewProviderPart::attachGizmos(Gui::Gizmos* gizmos)
+{
+    assert(gizmos);
+    this->gizmos = gizmos;
+}
+
+void ViewProviderPart::detachGizmos()
+{
+    this->gizmos = nullptr;
 }
 
 // ----------------------------------------------------------------------------

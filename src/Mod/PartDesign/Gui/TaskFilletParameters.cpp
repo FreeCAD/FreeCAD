@@ -30,11 +30,16 @@
 #endif
 
 #include <Base/Interpreter.h>
+#include <Base/Converter.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Gui/Inventor/Draggers/GizmoHelper.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/PartDesign/App/FeatureFillet.h>
+#include <Mod/Part/App/Attacher.h>
+#include <Mod/Part/App/Geometry.h>
+#include <Mod/Part/App/Tools.h>
 
 #include "ui_TaskFilletParameters.h"
 #include "TaskFilletParameters.h"
@@ -103,6 +108,8 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp* DressUpView, QWi
     else {
         hideOnError();
     }
+
+    setupGizmos(DressUpView);
 }
 
 void TaskFilletParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -114,6 +121,10 @@ void TaskFilletParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (selectionMode == refSel) {
             referenceSelected(msg, ui->listWidgetReferences);
         }
+    } else if (msg.Type == Gui::SelectionChanges::ClrSelection) {
+        // TODO: the gizmo position should be only recalculated when the feature associated
+        // with the gizmo is removed from the list
+        setGizmoPositions();
     }
 }
 
@@ -140,6 +151,7 @@ void TaskFilletParameters::setButtons(const selectionModes mode)
 void TaskFilletParameters::onRefDeleted()
 {
     TaskDressUpParameters::deleteRef(ui->listWidgetReferences);
+    setGizmoPositions();
 }
 
 void TaskFilletParameters::onAddAllEdges()
@@ -192,6 +204,50 @@ void TaskFilletParameters::apply()
     if (ui->listWidgetReferences->count() == 0) {
         std::string text = tr("Empty fillet created!").toStdString();
         Base::Console().warning("%s\n", text.c_str());
+    }
+}
+
+void TaskFilletParameters::setupGizmos(ViewProviderDressUp* vp)
+{
+    if (!Gizmos::isEnabled()) {
+        return;
+    }
+
+    gizmos = std::make_unique<Gizmos>();
+
+    auto linearGizmo = new Gui::LinearGizmo;
+    connect(ui->filletRadius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), [linearGizmo](double value) { linearGizmo->setDragLength(value); });
+    linearGizmo->setProperty(ui->filletRadius);
+
+    gizmos->addGizmo(linearGizmo);
+    gizmos->initGizmos();
+
+    setGizmoPositions();
+
+    vp->attachGizmos(gizmos.get());
+}
+
+void TaskFilletParameters::setGizmoPositions()
+{
+    if (!gizmos) {
+        return;
+    }
+
+    auto fillet = getObject<PartDesign::Fillet>();
+    Part::TopoShape baseShape = fillet->getBaseTopoShape();
+    std::vector<Part::TopoShape> shapes = fillet->getContinuousEdges(baseShape);
+
+    if (shapes.size() != 0) {
+        // Attach the arrow to the first edge
+        Part::TopoShape edge = shapes[0];
+        TopoDS_Face face = getAdjacentFacesFromEdge(edge, baseShape).first;
+        DraggerPlacementProps props = getDraggerPlacementFromEdgeAndFace(edge, face);
+
+        gizmos->getGizmo(0)->setDraggerPlacement(props.position, props.dir);
+
+        gizmos->visible = true;
+    } else {
+        gizmos->visible = false;
     }
 }
 

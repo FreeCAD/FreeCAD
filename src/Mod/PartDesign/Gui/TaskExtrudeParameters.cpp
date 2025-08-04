@@ -20,6 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "Gui/Inventor/Draggers/SoLinearDragger.h"
+#include "Gui/Inventor/Draggers/SoRotationDragger.h"
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QSignalBlocker>
@@ -31,6 +33,7 @@
 #include <Base/UnitsApi.h>
 #include <Gui/Command.h>
 #include <Gui/Tools.h>
+#include <Gui/Inventor/Draggers/Gizmo.h>
 #include <Mod/PartDesign/App/FeatureExtrude.h>
 #include <Mod/Part/Gui/ReferenceHighlighter.h>
 
@@ -65,8 +68,6 @@ TaskExtrudeParameters::TaskExtrudeParameters(ViewProviderExtrude* SketchBasedVie
 
     this->groupLayout()->addWidget(proxy);
 }
-
-TaskExtrudeParameters::~TaskExtrudeParameters() = default;
 
 void TaskExtrudeParameters::setupDialog()
 {
@@ -190,6 +191,8 @@ void TaskExtrudeParameters::setupDialog()
 
     // Due to signals attached after changes took took into effect we should update the UI now.
     updateUI(index);
+
+    setupGizmos();
 }
 
 void TaskExtrudeParameters::readValuesFromHistory()
@@ -1210,6 +1213,95 @@ void TaskExtrudeParameters::handleLineFaceNameClick()
 void TaskExtrudeParameters::handleLineFaceNameNo()
 {
     ui->lineFaceName->setPlaceholderText(tr("No face selected"));
+}
+
+void PartDesignGui::TaskExtrudeParameters::setupGizmos()
+{
+    if (Gizmos::isEnabled() == false) {
+        return;
+    }
+
+    gizmos = std::make_unique<Gizmos>();
+
+    auto linearGizmo = new Gui::LinearGizmo;
+    auto linearGizmo2 = new Gui::LinearGizmo;
+    auto rotationGizmo = new Gui::RotationGizmo;
+    auto rotationGizmo2 = new Gui::RotationGizmo;
+
+    connect(ui->lengthEdit, qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged), [linearGizmo](double value) { linearGizmo->setDragLength(value); });
+    connect(ui->checkBoxMidplane, &QCheckBox::toggled, [linearGizmo, this](bool checked) {linearGizmo->multFactor *= checked? 0.5 : 2; linearGizmo->setDragLength(ui->lengthEdit->value().getValue());});
+    linearGizmo->setProperty(ui->lengthEdit);
+
+    connect(ui->lengthEdit2, qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged), [linearGizmo2](double value) { linearGizmo2->setDragLength(value); });
+    linearGizmo2->setProperty(ui->lengthEdit2);
+
+    connect(ui->taperEdit, qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged), [rotationGizmo](double value) { rotationGizmo->setRotAngle(value); });
+    rotationGizmo->setProperty(ui->taperEdit);
+
+    connect(ui->taperEdit2, qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged), [rotationGizmo2](double value) { rotationGizmo2->setRotAngle(value); });
+    rotationGizmo2->setProperty(ui->taperEdit2);
+
+    connect(ui->changeMode, qOverload<int>(&QComboBox::currentIndexChanged), [rotationGizmo, linearGizmo, rotationGizmo2, linearGizmo2] (int index) {
+        switch (static_cast<Mode>(index)) {
+        case Mode::Dimension:
+            linearGizmo->getDraggerContainer()->visible = true;
+            linearGizmo2->getDraggerContainer()->visible = false;
+            rotationGizmo->getDraggerContainer()->visible = true;
+            rotationGizmo2->getDraggerContainer()->visible = false;
+            break;
+        case Mode::TwoDimensions:
+            linearGizmo->getDraggerContainer()->visible = true;
+            linearGizmo2->getDraggerContainer()->visible = true;
+            rotationGizmo->getDraggerContainer()->visible = true;
+            rotationGizmo2->getDraggerContainer()->visible = true;
+            break;
+        default:
+            linearGizmo->getDraggerContainer()->visible = false;
+            linearGizmo2->getDraggerContainer()->visible = false;
+            rotationGizmo->getDraggerContainer()->visible = false;
+            rotationGizmo2->getDraggerContainer()->visible = false;
+        }
+    });
+
+    connect(ui->checkBoxReversed, &QCheckBox::toggled, [rotationGizmo, linearGizmo, rotationGizmo2, linearGizmo2](bool) {
+        GizmoPlacement placement = linearGizmo->getDraggerPlacement();
+        SoLinearDraggerContainer* draggerContainer = linearGizmo->getDraggerContainer();
+        linearGizmo->setDraggerPlacement(placement.pos, -draggerContainer->getPointerDirection());
+        // This is to ensure that the rotation dragger is positioned correctly after the reverse
+        draggerContainer->getDragger()->translation.touch();
+
+        placement = linearGizmo2->getDraggerPlacement();
+        draggerContainer = linearGizmo2->getDraggerContainer();
+        linearGizmo2->setDraggerPlacement(placement.pos, -draggerContainer->getPointerDirection());
+        draggerContainer->getDragger()->translation.touch();
+
+        placement = rotationGizmo->getDraggerPlacement();
+        rotationGizmo->setDraggerPlacement(placement.pos, -rotationGizmo->getDraggerContainer()->getPointerDirection());
+
+        placement = rotationGizmo2->getDraggerPlacement();
+        rotationGizmo2->setDraggerPlacement(placement.pos, -rotationGizmo2->getDraggerContainer()->getPointerDirection());
+    });
+
+    gizmos->addGizmo(rotationGizmo);
+    gizmos->addGizmo(linearGizmo);
+    gizmos->addGizmo(rotationGizmo2);
+    gizmos->addGizmo(linearGizmo2);
+    gizmos->initGizmos();
+
+    auto extrude = getObject<PartDesign::FeatureExtrude>();
+    PartDesign::TopoShape shape = extrude->getProfileShape();
+    Base::Vector3d center;
+    shape.getCenterOfGravity(center);
+    linearGizmo->Gizmo::setDraggerPlacement(center, extrude->getProfileNormal());
+    rotationGizmo->placeOverLinearGizmo(linearGizmo);
+    linearGizmo2->Gizmo::setDraggerPlacement(center, -extrude->getProfileNormal());
+    rotationGizmo2->placeOverLinearGizmo(linearGizmo2);
+
+    vp->attachGizmos(gizmos.get());
+
+    // These gizmos shouldn't be visible until the user set type to two dimensions
+    rotationGizmo2->getDraggerContainer()->visible = false;
+    linearGizmo2->getDraggerContainer()->visible = false;
 }
 
 TaskDlgExtrudeParameters::TaskDlgExtrudeParameters(PartDesignGui::ViewProviderExtrude* vp)

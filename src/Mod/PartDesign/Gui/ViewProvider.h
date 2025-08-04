@@ -93,6 +93,9 @@ protected:
     std::string oldWb;
     App::DocumentObject* oldTip{nullptr};
     bool isSetTipIcon{false};
+
+private:
+    Gui::Gizmos* gizmos = nullptr;
 };
 
 using ViewProviderPython = Gui::ViewProviderFeaturePythonT<ViewProvider>;

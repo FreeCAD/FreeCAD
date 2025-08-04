@@ -167,7 +167,8 @@ public:
     SoSFVec3f translation;
     SoSFBool visible;
 
-    void setPointerDirection(const Base::Vector3d& dir);
+    SbVec3f getPointerDirection();
+    void setPointerDirection(const SbVec3f& dir);
 
     SoLinearDragger* getDragger();
 
