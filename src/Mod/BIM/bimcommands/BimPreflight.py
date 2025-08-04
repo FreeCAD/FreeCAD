@@ -727,7 +727,7 @@ class BIM_Preflight_TaskPanel:
                     msg += o.Label + "\n"
                 msg += "\n" + translate(
                     "BIM",
-                    "To enable exporting of these quantities, use the IFC quantities manager tool located under menu Manage -> Manage IFC Quantities…",
+                    "To enable exporting of these quantities, use the IFC quantities manager tool located under menu Manage -> Manage IFC Quantities",
                 )
             if msg:
                 self.failed(test)
