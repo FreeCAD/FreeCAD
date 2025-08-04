@@ -36,7 +36,6 @@
 #include <App/DocumentObject.h>
 #include <App/ExpressionParser.h>
 #include <App/VarSet.h>
-#include <Base/Tools.h>
 
 #include "Dialogs/DlgExpressionInput.h"
 #include "ui_DlgExpressionInput.h"
@@ -445,14 +444,9 @@ static bool isNamePropOk(const QString& nameProp, App::DocumentObject* obj,
         return false;
     }
 
-    if (!Base::Tools::isValidPyIdentifier(name)) {
-        message << "Invalid property name (must only contain alphanumericals, underscore, "
-                << "and must not start with digit";
-        return false;
-    }
-
-    if (ExpressionParser::isTokenAUnit(name) || ExpressionParser::isTokenAConstant(name)) {
-        message << name << " is a reserved word";
+    if (!ExpressionParser::isValidFCIdentifier(name)) {
+        message << "Invalid property name (must only contain alphanumericals and underscores, "
+                << "must not start with a digit and must not be a reserved word)";
         return false;
     }
 
@@ -679,7 +673,7 @@ static bool isNameGroupOk(const QString& nameGroup,
                           std::stringstream& message)
 {
     std::string name = nameGroup.toStdString();
-    if (name.empty() || !Base::Tools::isValidPyIdentifier(name)) {
+    if (!ExpressionParser::isValidFCIdentifier(name)) {
         message << "Invalid group name (must only contain alphanumericals, underscore, "
                 << "and must not start with digit";
         return false;
