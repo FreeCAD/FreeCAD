@@ -679,7 +679,7 @@ static bool isNameGroupOk(const QString& nameGroup,
                           std::stringstream& message)
 {
     std::string name = nameGroup.toStdString();
-    if (name.empty() || !Base::Tools::isValidPyIdentifier(name)) {
+    if (!ExpressionParser::isValidFCIdentifier(name)) {
         message << "Invalid group name (must only contain alphanumericals, underscore, "
                 << "and must not start with digit";
         return false;

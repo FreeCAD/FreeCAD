@@ -3587,7 +3587,7 @@ std::string Document::getUniqueObjectName(const char* proposedName) const
     if (!proposedName || *proposedName == '\0') {
         return {};
     }
-    std::string cleanName = Base::Tools::getPyIdentifier(proposedName);
+    std::string cleanName = ExpressionParser::getFCIdentifier(proposedName);
 
     if (!d->objectNameManager.containsName(cleanName)) {
         // Not in use yet, name is OK
