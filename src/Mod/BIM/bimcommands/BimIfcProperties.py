@@ -132,7 +132,7 @@ class BIM_IfcProperties:
             [translate("BIM", "Add property")] + self.plabels
         )
         self.form.comboPset.addItems(
-            [translate("BIM", "Add property set…"), translate("BIM", "New…")]
+            [translate("BIM", "Add property set"), translate("BIM", "New")]
             + self.psetkeys
         )
 
