@@ -53,7 +53,7 @@ class PolarArray(gui_base.GuiCommandBase):
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_PolarArray",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_PolarArray", "Polar Array"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_PolarArray", "Creates copies of the selected object in a polar pattern defined by a center of rotation and an angle")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_PolarArray", "Creates copies of the selected object in a polar pattern")}
 
     def Activated(self):
         """Execute when the command is called.

@@ -158,7 +158,7 @@ class Stretch(gui_base_original.Modifier):
         """Add point to defined selection rectangle."""
         if self.step == 1:
             # first rctangle point
-            _toolmsg(translate("draft", "Select the opposite point "
+            _toolmsg(translate("draft", "Pick the opposite point "
                                     "of the selection rectangle"))
             self.ui.setRelative(-1)
             self.rectracker.setorigin(point)
@@ -453,7 +453,7 @@ class Stretch(gui_base_original.Modifier):
                             done = True
                         if not done:
                             # otherwise create a wire copy and stretch it instead
-                            _msg(translate("draft", "Turning 1 rectangle into a wire"))
+                            _msg(translate("draft", "Turning a rectangle into a wire"))
                             pts = []
                             vts = ops[0].Shape.Vertexes
                             for i in range(4):
