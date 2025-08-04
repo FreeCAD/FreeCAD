@@ -268,23 +268,9 @@ class ToolControllerEditor(object):
         except Exception as e:
             Path.Log.error("Error updating TC: {}".format(e))
 
-    def refresh(self):
-        self.controller.blockSignals(True)
-        self.updateToolController()
-        self.updateUi()
-        self.controller.blockSignals(False)
-
     def setupUi(self):
         if self.editor:
             self.editor.setupUI()
-
-        self.controller.tcName.editingFinished.connect(self.refresh)
-        self.controller.horizFeed.editingFinished.connect(self.refresh)
-        self.controller.vertFeed.editingFinished.connect(self.refresh)
-        self.controller.horizRapid.editingFinished.connect(self.refresh)
-        self.controller.vertRapid.editingFinished.connect(self.refresh)
-        self.controller.spindleSpeed.editingFinished.connect(self.refresh)
-        self.controller.spindleDirection.currentIndexChanged.connect(self.refresh)
 
 
 class TaskPanel:
@@ -357,6 +343,9 @@ class DlgToolControllerEdit:
             Path.Log.info("revert")
             self.obj.Proxy.setFromTemplate(self.obj, restoreTC)
             rc = True
+        else:
+            self.editor.updateToolController()
+            self.obj.Proxy.execute(self.obj)
         return rc
 
 
