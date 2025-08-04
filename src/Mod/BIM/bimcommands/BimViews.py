@@ -41,7 +41,7 @@ class BIM_Views:
     def GetResources(self):
         return {
             "Pixmap": "BIM_Views",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_Views", "Views Manager…"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_Views", "Views Manager"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_Views", "Shows or hides the views manager"
             ),
