@@ -1365,7 +1365,7 @@ class StructureTaskPanel(ArchComponent.ComponentTaskPanel):
 
         self.selectToolButton = QtGui.QPushButton(self.extrusion_widget)
         self.selectToolButton.setIcon(QtGui.QIcon())
-        self.selectToolButton.setText(QtGui.QApplication.translate("Arch", "Select Tool…", None))
+        self.selectToolButton.setText(QtGui.QApplication.translate("Arch", "Select Tool", None))
         self.selectToolButton.setToolTip(QtGui.QApplication.translate("Arch", "Select object or edges to be used as a Tool (extrusion path)", None))
         lay.addWidget(self.selectToolButton)
         QtCore.QObject.connect(self.selectToolButton, QtCore.SIGNAL("clicked()"), self.setSelectionFromTool)
