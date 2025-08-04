@@ -25,6 +25,7 @@
 #include <QApplication>
 #include <QCheckBox>
 #include <QGridLayout>
+#include <QVBoxLayout>
 #include <QInputDialog>
 #include <QLabel>
 #include <QMenu>
@@ -58,6 +59,7 @@
 #include "TaskSketcherValidation.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
+#include "Command.h"
 
 // Hint: this is to prevent to re-format big parts of the file. Remove it later again.
 // clang-format off
@@ -1129,118 +1131,155 @@ bool CmdSketcherViewSection::isActive()
 }
 
 /* Grid tool */
-class GridSpaceAction: public QWidgetAction
+GridSpaceAction::GridSpaceAction(QObject* parent)
+    : QWidgetAction(parent)
 {
-    Q_DECLARE_TR_FUNCTIONS(GridSpaceAction)
-public:
-    GridSpaceAction(QObject* parent)
-        : QWidgetAction(parent)
-    {
-        setEnabled(false);
+    setEnabled(false);
+}
+
+void GridSpaceAction::updateWidget()
+{
+    auto* sketchView = getView();
+
+    if (sketchView) {
+
+        auto updateCheckBox = [](QCheckBox* checkbox, bool value) {
+            auto checked = checkbox->checkState() == Qt::Checked;
+
+            if (value != checked) {
+                const QSignalBlocker blocker(checkbox);
+                checkbox->setChecked(value);
+            }
+        };
+
+        auto updateCheckBoxFromProperty = [updateCheckBox](QCheckBox* checkbox,
+                                                            App::PropertyBool& property) {
+            auto propvalue = property.getValue();
+
+            updateCheckBox(checkbox, propvalue);
+        };
+
+        updateCheckBoxFromProperty(gridShow, sketchView->ShowGrid);
+
+        updateCheckBoxFromProperty(gridAutoSpacing, sketchView->GridAuto);
+
+        ParameterGrp::handle hGrp = getParameterPath();
+        updateCheckBox(snapToGrid, hGrp->GetBool("SnapToGrid", false));
+
+        gridSizeBox->setValue(sketchView->GridSize.getValue());
     }
+}
 
-    void updateWidget()
-    {
+void GridSpaceAction::languageChange()
+{
+    gridShow->setText(tr("Display grid"));
+    gridShow->setToolTip(tr("Toggles the visibility of the grid in the active sketch"));
+    gridShow->setStatusTip(gridAutoSpacing->toolTip());
 
+    gridAutoSpacing->setText(tr("Grid auto-spacing"));
+    gridAutoSpacing->setToolTip(tr("Automatically adjusts the grid spacing based on the zoom level"));
+    gridAutoSpacing->setStatusTip(gridAutoSpacing->toolTip());
+
+    sizeLabel->setText(tr("Spacing"));
+    gridSizeBox->setToolTip(tr("Distance between two subsequent grid lines"));
+
+    snapToGrid->setText(tr("Snap to grid"));
+    snapToGrid->setToolTip(
+        tr("New points will snap to the nearest grid line.\nPoints must be set closer than a "
+            "fifth of the grid spacing to a grid line to snap."));
+    snapToGrid->setStatusTip(snapToGrid->toolTip());
+}
+
+QWidget* GridSpaceAction::createWidget(QWidget* parent)
+{
+    gridShow = new QCheckBox();
+
+    gridAutoSpacing = new QCheckBox();
+
+    snapToGrid = new QCheckBox();
+
+    sizeLabel = new QLabel();
+
+    gridSizeBox = new Gui::QuantitySpinBox();
+    gridSizeBox->setProperty("unit", QVariant(QStringLiteral("mm")));
+    gridSizeBox->setObjectName(QStringLiteral("gridSize"));
+    gridSizeBox->setMaximum(99999999.0);
+    gridSizeBox->setMinimum(0.001);
+
+    QWidget* gridSizeW = new QWidget(parent);
+    auto* layout = new QGridLayout(gridSizeW);
+    layout->addWidget(gridShow, 0, 0, 1, 2);
+    layout->addWidget(gridAutoSpacing, 1, 0, 1, 2);
+    layout->addWidget(snapToGrid, 2, 0, 1, 2);
+    layout->addWidget(sizeLabel, 3, 0);
+    layout->addWidget(gridSizeBox, 3, 1);
+
+    languageChange();
+
+#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+    QObject::connect(gridShow, &QCheckBox::checkStateChanged, [this](int state) {
+#else
+    QObject::connect(gridShow, &QCheckBox::stateChanged, [this](int state) {
+#endif
         auto* sketchView = getView();
 
         if (sketchView) {
-
-            auto updateCheckBox = [](QCheckBox* checkbox, bool value) {
-                auto checked = checkbox->checkState() == Qt::Checked;
-
-                if (value != checked) {
-                    const QSignalBlocker blocker(checkbox);
-                    checkbox->setChecked(value);
-                }
-            };
-
-            auto updateCheckBoxFromProperty = [updateCheckBox](QCheckBox* checkbox,
-                                                               App::PropertyBool& property) {
-                auto propvalue = property.getValue();
-
-                updateCheckBox(checkbox, propvalue);
-            };
-
-            updateCheckBoxFromProperty(gridAutoSpacing, sketchView->GridAuto);
-
-            gridSizeBox->setValue(sketchView->GridSize.getValue());
+            auto enable = (state == Qt::Checked);
+            sketchView->ShowGrid.setValue(enable);
         }
-    }
-
-    void languageChange()
-    {
-        gridAutoSpacing->setText(tr("Grid auto spacing"));
-        gridAutoSpacing->setToolTip(tr("Automatically adjusts the grid spacing based on the zoom level"));
-        gridAutoSpacing->setStatusTip(gridAutoSpacing->toolTip());
-
-        sizeLabel->setText(tr("Spacing"));
-        gridSizeBox->setToolTip(tr("Distance between two subsequent grid lines"));
-    }
-
-protected:
-    QWidget* createWidget(QWidget* parent) override
-    {
-        gridAutoSpacing = new QCheckBox();
-
-        sizeLabel = new QLabel();
-
-        gridSizeBox = new Gui::QuantitySpinBox();
-        gridSizeBox->setProperty("unit", QVariant(QStringLiteral("mm")));
-        gridSizeBox->setObjectName(QStringLiteral("gridSize"));
-        gridSizeBox->setMaximum(99999999.0);
-        gridSizeBox->setMinimum(0.001);
-
-        QWidget* gridSizeW = new QWidget(parent);
-        auto* layout = new QGridLayout(gridSizeW);
-        layout->addWidget(gridAutoSpacing, 0, 0, 1, 2);
-        layout->addWidget(sizeLabel, 1, 0);
-        layout->addWidget(gridSizeBox, 1, 1);
-
-        languageChange();
+    });
 
 #if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
-        QObject::connect(gridAutoSpacing, &QCheckBox::checkStateChanged, [this](int state) {
+    QObject::connect(gridAutoSpacing, &QCheckBox::checkStateChanged, [this](int state) {
 #else
-        QObject::connect(gridAutoSpacing, &QCheckBox::stateChanged, [this](int state) {
+    QObject::connect(gridAutoSpacing, &QCheckBox::stateChanged, [this](int state) {
 #endif
-            auto* sketchView = getView();
+        auto* sketchView = getView();
 
-            if (sketchView) {
-                auto enable = (state == Qt::Checked);
-                sketchView->GridAuto.setValue(enable);
-            }
-        });
-
-        QObject::connect(gridSizeBox,
-                         qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-                         [this](double val) {
-                             auto* sketchView = getView();
-                             if (sketchView) {
-                                 sketchView->GridSize.setValue(val);
-                             }
-                         });
-
-        return gridSizeW;
-    }
-
-private:
-    ViewProviderSketch* getView()
-    {
-        Gui::Document* doc = Gui::Application::Instance->activeDocument();
-
-        if (doc) {
-            return dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+        if (sketchView) {
+            auto enable = (state == Qt::Checked);
+            sketchView->GridAuto.setValue(enable);
         }
+    });
 
-        return nullptr;
+#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+    QObject::connect(snapToGrid, &QCheckBox::checkStateChanged, [this](int state) {
+#else
+    QObject::connect(snapToGrid, &QCheckBox::stateChanged, [this](int state) {
+#endif
+        ParameterGrp::handle hGrp = this->getParameterPath();
+        hGrp->SetBool("SnapToGrid", state == Qt::Checked);
+    });
+
+    QObject::connect(gridSizeBox,
+                        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+                        [this](double val) {
+                            auto* sketchView = getView();
+                            if (sketchView) {
+                                sketchView->GridSize.setValue(val);
+                            }
+                        });
+
+    return gridSizeW;
+}
+
+ViewProviderSketch* GridSpaceAction::getView()
+{
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+
+    if (doc) {
+        return dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     }
 
-private:
-    QCheckBox* gridAutoSpacing;
-    QLabel* sizeLabel;
-    Gui::QuantitySpinBox* gridSizeBox;
-};
+    return nullptr;
+}
+
+ParameterGrp::handle GridSpaceAction::getParameterPath()
+    {
+        return App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
+    }
+
 
 class CmdSketcherGrid: public Gui::Command
 {
@@ -1371,133 +1410,101 @@ bool CmdSketcherGrid::isActive()
 }
 
 /* Snap tool */
-class SnapSpaceAction: public QWidgetAction
-{
-    Q_DECLARE_TR_FUNCTIONS(SnapSpaceAction)
-public:
-    SnapSpaceAction(QObject* parent)
+SnapSpaceAction::SnapSpaceAction(QObject* parent)
         : QWidgetAction(parent)
     {
         setEnabled(false);
     }
 
-    void updateWidget(bool snapenabled)
-    {
+void SnapSpaceAction::updateWidget(bool snapenabled)
+{
 
-        auto updateCheckBox = [](QCheckBox* checkbox, bool value) {
-            auto checked = checkbox->checkState() == Qt::Checked;
+    auto updateCheckBox = [](QCheckBox* checkbox, bool value) {
+        auto checked = checkbox->checkState() == Qt::Checked;
 
-            if (value != checked) {
-                const QSignalBlocker blocker(checkbox);
-                checkbox->setChecked(value);
-            }
-        };
+        if (value != checked) {
+            const QSignalBlocker blocker(checkbox);
+            checkbox->setChecked(value);
+        }
+    };
 
-        auto updateSpinBox = [](Gui::QuantitySpinBox* spinbox, double value) {
-            auto currentvalue = spinbox->rawValue();
+    auto updateSpinBox = [](Gui::QuantitySpinBox* spinbox, double value) {
+        auto currentvalue = spinbox->rawValue();
 
-            if (currentvalue != value) {
-                const QSignalBlocker blocker(spinbox);
-                spinbox->setValue(value);
-            }
-        };
+        if (currentvalue != value) {
+            const QSignalBlocker blocker(spinbox);
+            spinbox->setValue(value);
+        }
+    };
 
-        ParameterGrp::handle hGrp = getParameterPath();
+    ParameterGrp::handle hGrp = getParameterPath();
 
-        updateCheckBox(snapToObjects, hGrp->GetBool("SnapToObjects", true));
+    updateCheckBox(snapToObjects, hGrp->GetBool("SnapToObjects", true));
 
-        updateCheckBox(snapToGrid, hGrp->GetBool("SnapToGrid", false));
+    updateSpinBox(snapAngle, hGrp->GetFloat("SnapAngle", 5.0));
 
-        updateSpinBox(snapAngle, hGrp->GetFloat("SnapAngle", 5.0));
+    snapToObjects->setEnabled(snapenabled);
+    angleLabel->setEnabled(snapenabled);
+    snapAngle->setEnabled(snapenabled);
+}
 
-        snapToObjects->setEnabled(snapenabled);
-        snapToGrid->setEnabled(snapenabled);
-        angleLabel->setEnabled(snapenabled);
-        snapAngle->setEnabled(snapenabled);
-    }
+void SnapSpaceAction::languageChange()
+{
+    snapToObjects->setText(tr("Snap to objects"));
+    snapToObjects->setToolTip(tr("New points will snap to the currently preselected object. It "
+                                    "will also snap to the middle of lines and arcs."));
+    snapToObjects->setStatusTip(snapToObjects->toolTip());
 
-    void languageChange()
-    {
-        snapToObjects->setText(tr("Snap to objects"));
-        snapToObjects->setToolTip(tr("New points will snap to the currently preselected object. It "
-                                     "will also snap to the middle of lines and arcs."));
-        snapToObjects->setStatusTip(snapToObjects->toolTip());
+    angleLabel->setText(tr("Snap angle"));
+    snapAngle->setToolTip(
+        tr("Angular step for tools that use 'Snap at angle'. Hold Ctrl to "
+            "enable 'Snap at angle'. The angle starts from the positive X axis of the sketch."));
+}
 
-        snapToGrid->setText(tr("Snap to grid"));
-        snapToGrid->setToolTip(
-            tr("New points will snap to the nearest grid line.\nPoints must be set closer than a "
-               "fifth of the grid spacing to a grid line to snap."));
-        snapToGrid->setStatusTip(snapToGrid->toolTip());
+QWidget* SnapSpaceAction::createWidget(QWidget* parent)
+{
+    snapToObjects = new QCheckBox();
 
-        angleLabel->setText(tr("Snap angle"));
-        snapAngle->setToolTip(
-            tr("Sets the angular step for tools using 'Snap at angle' (e.g., line). Hold Ctrl to "
-               "enable 'Snap at angle'. The angle starts from the positive X-axis of the sketch."));
-    }
+    angleLabel = new QLabel();
 
-protected:
-    QWidget* createWidget(QWidget* parent) override
-    {
-        snapToObjects = new QCheckBox();
+    snapAngle = new Gui::QuantitySpinBox();
+    snapAngle->setProperty("unit", QVariant(QStringLiteral("deg")));
+    snapAngle->setObjectName(QStringLiteral("snapAngle"));
+    snapAngle->setMaximum(99999999.0);
+    snapAngle->setMinimum(0);
 
-        snapToGrid = new QCheckBox();
+    QWidget* snapW = new QWidget(parent);
+    auto* layout = new QGridLayout(snapW);
+    layout->addWidget(snapToObjects, 0, 0, 1, 2);
+    layout->addWidget(angleLabel, 1, 0);
+    layout->addWidget(snapAngle, 1, 1);
 
-        angleLabel = new QLabel();
-
-        snapAngle = new Gui::QuantitySpinBox();
-        snapAngle->setProperty("unit", QVariant(QStringLiteral("deg")));
-        snapAngle->setObjectName(QStringLiteral("snapAngle"));
-        snapAngle->setMaximum(99999999.0);
-        snapAngle->setMinimum(0);
-
-        QWidget* snapW = new QWidget(parent);
-        auto* layout = new QGridLayout(snapW);
-        layout->addWidget(snapToGrid, 0, 0, 1, 2);
-        layout->addWidget(snapToObjects, 1, 0, 1, 2);
-        layout->addWidget(angleLabel, 2, 0);
-        layout->addWidget(snapAngle, 2, 1);
-
-        languageChange();
+    languageChange();
 
 #if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
-        QObject::connect(snapToObjects, &QCheckBox::checkStateChanged, [this](int state) {
+    QObject::connect(snapToObjects, &QCheckBox::checkStateChanged, [this](int state) {
 #else
-        QObject::connect(snapToObjects, &QCheckBox::stateChanged, [this](int state) {
+    QObject::connect(snapToObjects, &QCheckBox::stateChanged, [this](int state) {
 #endif
+        ParameterGrp::handle hGrp = this->getParameterPath();
+        hGrp->SetBool("SnapToObjects", state == Qt::Checked);
+    });
+
+    QObject::connect(
+        snapAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), [this](double val) {
             ParameterGrp::handle hGrp = this->getParameterPath();
-            hGrp->SetBool("SnapToObjects", state == Qt::Checked);
-        });
-#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
-        QObject::connect(snapToGrid, &QCheckBox::checkStateChanged, [this](int state) {
-#else
-        QObject::connect(snapToGrid, &QCheckBox::stateChanged, [this](int state) {
-#endif
-            ParameterGrp::handle hGrp = this->getParameterPath();
-            hGrp->SetBool("SnapToGrid", state == Qt::Checked);
+            hGrp->SetFloat("SnapAngle", val);
         });
 
-        QObject::connect(
-            snapAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), [this](double val) {
-                ParameterGrp::handle hGrp = this->getParameterPath();
-                hGrp->SetFloat("SnapAngle", val);
-            });
+    return snapW;
+}
 
-        return snapW;
-    }
+ParameterGrp::handle SnapSpaceAction::getParameterPath()
+{
+    return App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
+}
 
-private:
-    ParameterGrp::handle getParameterPath()
-    {
-        return App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
-    }
-
-private:
-    QCheckBox* snapToObjects;
-    QCheckBox* snapToGrid;
-    QLabel* angleLabel;
-    Gui::QuantitySpinBox* snapAngle;
-};
 
 class CmdSketcherSnap: public Gui::Command, public ParameterGrp::ObserverType
 {
@@ -1646,111 +1653,113 @@ bool CmdSketcherSnap::isActive()
 
 
 /* Rendering Order */
-class RenderingOrderAction: public QWidgetAction
-{
-    Q_DECLARE_TR_FUNCTIONS(RenderingOrderAction)
-public:
-    RenderingOrderAction(QObject* parent)
+RenderingOrderAction::RenderingOrderAction(QObject* parent)
         : QWidgetAction(parent)
-    {
-        setEnabled(false);
-    }
+{
+    setEnabled(false);
+}
 
-    void updateWidget()
-    {
+void RenderingOrderAction::updateWidget()
+{
+    auto hGrp = getParameterPath();
 
-        auto hGrp = getParameterPath();
+    // 1->Normal Geometry, 2->Construction, 3->External
+    int topid = hGrp->GetInt("TopRenderGeometryId", 1);
+    int midid = hGrp->GetInt("MidRenderGeometryId", 2);
+    int lowid = hGrp->GetInt("LowRenderGeometryId", 3);
 
-        // 1->Normal Geometry, 2->Construction, 3->External
-        int topid = hGrp->GetInt("TopRenderGeometryId", 1);
-        int midid = hGrp->GetInt("MidRenderGeometryId", 2);
-        int lowid = hGrp->GetInt("LowRenderGeometryId", 3);
-
-        {
-            QSignalBlocker block(this);
-            list->clear();
-
-            QListWidgetItem* newItem = new QListWidgetItem;
-            newItem->setData(Qt::UserRole, QVariant(topid));
-            newItem->setText(topid == 1       ? tr("Normal Geometry")
-                                 : topid == 2 ? tr("Construction Geometry")
-                                              : tr("External Geometry"));
-            list->insertItem(0, newItem);
-
-            newItem = new QListWidgetItem;
-            newItem->setData(Qt::UserRole, QVariant(midid));
-            newItem->setText(midid == 1       ? tr("Normal Geometry")
-                                 : midid == 2 ? tr("Construction Geometry")
-                                              : tr("External Geometry"));
-            list->insertItem(1, newItem);
-
-            newItem = new QListWidgetItem;
-            newItem->setData(Qt::UserRole, QVariant(lowid));
-            newItem->setText(lowid == 1       ? tr("Normal Geometry")
-                                 : lowid == 2 ? tr("Construction Geometry")
-                                              : tr("External Geometry"));
-            list->insertItem(2, newItem);
+    auto idToText = [this](int id) -> QString {
+        switch (id) {
+        case 1:
+            return tr("Normal geometry");
+        case 2:
+            return tr("Construction geometry");
+        case 3:
+            return tr("External geometry");
+        default:
+            // Fallback for an unexpected ID
+            return tr("Unknown geometry");
         }
-    }
+    };
 
-    void languageChange()
     {
-        updateWidget();
+        QSignalBlocker block(this);
+        list->clear();
+
+        QListWidgetItem* itemTop = new QListWidgetItem;
+        itemTop->setData(Qt::UserRole, QVariant(topid));
+        itemTop->setText(idToText(topid));
+        list->insertItem(0, itemTop);
+
+        QListWidgetItem* itemMid = new QListWidgetItem;
+        itemMid->setData(Qt::UserRole, QVariant(midid));
+        itemMid->setText(idToText(midid));
+        list->insertItem(1, itemMid);
+
+        QListWidgetItem* itemLow = new QListWidgetItem;
+        itemLow->setData(Qt::UserRole, QVariant(lowid));
+        itemLow->setText(idToText(lowid));
+        list->insertItem(2, itemLow);
     }
+}
 
-protected:
-    QWidget* createWidget(QWidget* parent) override
-    {
-        list = new QListWidget();
-        list->setDragDropMode(QAbstractItemView::InternalMove);
-        list->setDefaultDropAction(Qt::MoveAction);
-        list->setSelectionMode(QAbstractItemView::SingleSelection);
-        list->setDragEnabled(true);
+void RenderingOrderAction::languageChange()
+{
+    updateWidget();
+}
 
-        QWidget* renderingWidget = new QWidget(parent);
-        auto* layout = new QGridLayout(renderingWidget);
-        layout->addWidget(list, 0, 0, 0, 0);
+QWidget* RenderingOrderAction::createWidget(QWidget* parent)
+{
+    list = new QListWidget();
+    list->setDragDropMode(QAbstractItemView::InternalMove);
+    list->setDefaultDropAction(Qt::MoveAction);
+    list->setSelectionMode(QAbstractItemView::SingleSelection);
+    list->setDragEnabled(true);
+    list->setFixedSize(200, 50);
 
-        languageChange();
 
-        // Handle change in the order of the list entries
-        QObject::connect(list->model(),
-                         &QAbstractItemModel::rowsMoved,
-                         [this](const QModelIndex& sourceParent,
-                                int sourceStart,
-                                int sourceEnd,
-                                const QModelIndex& destinationParent,
-                                int destinationRow) {
-                             Q_UNUSED(sourceParent)
-                             Q_UNUSED(sourceStart)
-                             Q_UNUSED(sourceEnd)
-                             Q_UNUSED(destinationParent)
-                             Q_UNUSED(destinationRow)
+    QWidget* renderingWidget = new QWidget(parent);
+    auto* label = new QLabel(tr("Rendering order"), renderingWidget);
+    auto* layout = new QVBoxLayout(renderingWidget);
+    layout->addWidget(label);
+    layout->addWidget(list);
 
-                             int topid = list->item(0)->data(Qt::UserRole).toInt();
-                             int midid = list->item(1)->data(Qt::UserRole).toInt();
-                             int lowid = list->item(2)->data(Qt::UserRole).toInt();
+    languageChange();
 
-                             auto hGrp = getParameterPath();
+    // Handle change in the order of the list entries
+    QObject::connect(list->model(),
+                        &QAbstractItemModel::rowsMoved,
+                        [this](const QModelIndex& sourceParent,
+                            int sourceStart,
+                            int sourceEnd,
+                            const QModelIndex& destinationParent,
+                            int destinationRow) {
+                            Q_UNUSED(sourceParent)
+                            Q_UNUSED(sourceStart)
+                            Q_UNUSED(sourceEnd)
+                            Q_UNUSED(destinationParent)
+                            Q_UNUSED(destinationRow)
 
-                             hGrp->SetInt("TopRenderGeometryId", topid);
-                             hGrp->SetInt("MidRenderGeometryId", midid);
-                             hGrp->SetInt("LowRenderGeometryId", lowid);
-                         });
+                            int topid = list->item(0)->data(Qt::UserRole).toInt();
+                            int midid = list->item(1)->data(Qt::UserRole).toInt();
+                            int lowid = list->item(2)->data(Qt::UserRole).toInt();
 
-        return renderingWidget;
-    }
+                            auto hGrp = getParameterPath();
 
-private:
-    ParameterGrp::handle getParameterPath()
+                            hGrp->SetInt("TopRenderGeometryId", topid);
+                            hGrp->SetInt("MidRenderGeometryId", midid);
+                            hGrp->SetInt("LowRenderGeometryId", lowid);
+                        });
+
+    return renderingWidget;
+}
+
+ParameterGrp::handle RenderingOrderAction::getParameterPath()
     {
         return App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
     }
 
-private:
-    QListWidget* list;
-};
 
 class CmdRenderingOrder: public Gui::Command, public ParameterGrp::ObserverType
 {
