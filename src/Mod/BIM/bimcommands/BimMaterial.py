@@ -184,7 +184,7 @@ class BIM_Material:
             context1.triggered.connect(self.onStartRename)
             context2 = self.contextMenu.addAction(translate("BIM", "Duplicate"))
             context2.triggered.connect(self.onDuplicate)
-            context3 = self.contextMenu.addAction(translate("BIM", "Merge to…"))
+            context3 = self.contextMenu.addAction(translate("BIM", "Merge To…"))
             context3.triggered.connect(self.onMergeTo)
             context4 = self.contextMenu.addAction(translate("BIM", "Delete"))
             context4.triggered.connect(self.onDelete)
