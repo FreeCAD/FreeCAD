@@ -34,6 +34,7 @@
 #include <xercesc/framework/MemBufFormatTarget.hpp>
 #include <xercesc/framework/MemBufInputSource.hpp>
 #include <xercesc/parsers/XercesDOMParser.hpp>
+#include <xercesc/sax/EntityResolver.hpp>
 #include <xercesc/sax/ErrorHandler.hpp>
 #include <xercesc/sax/SAXParseException.hpp>
 #include <sstream>
@@ -1859,6 +1860,17 @@ int ParameterManager::LoadDocument(const char* sFileName)
     }
 }
 
+class NoOpEntityResolver: public XERCES_CPP_NAMESPACE_QUALIFIER EntityResolver
+{
+public:
+    InputSource* resolveEntity(const XMLCh* const publicId, const XMLCh* const systemId) override
+    {
+        (void)publicId;
+        (void)systemId;
+        return nullptr;  // Block all external entity resolution
+    }
+};
+
 int ParameterManager::LoadDocument(const XERCES_CPP_NAMESPACE_QUALIFIER InputSource& inputSource)
 {
     //
@@ -1866,49 +1878,47 @@ int ParameterManager::LoadDocument(const XERCES_CPP_NAMESPACE_QUALIFIER InputSou
     //  The parser will call back to methods of the ErrorHandler if it
     //  discovers errors during the course of parsing the XML document.
     //
-    auto parser = new XercesDOMParser;
+    auto parser = std::make_unique<XercesDOMParser>();
+    auto entityBlocker = std::make_unique<NoOpEntityResolver>();
     parser->setValidationScheme(gValScheme);
     parser->setDoNamespaces(gDoNamespaces);
     parser->setDoSchema(gDoSchema);
     parser->setValidationSchemaFullChecking(gSchemaFullChecking);
     parser->setCreateEntityReferenceNodes(gDoCreate);
     parser->setDisableDefaultEntityResolution(true);
+    parser->setEntityResolver(entityBlocker.get());
 
-    auto errReporter = new DOMTreeErrorReporter();
-    parser->setErrorHandler(errReporter);
+    auto errReporter = std::make_unique<DOMTreeErrorReporter>();
+    parser->setErrorHandler(errReporter.get());
 
     //
     //  Parse the XML file, catching any XML exceptions that might propagate
     //  out of it.
     //
-    bool errorsOccured = false;
+    bool errorsOccurred = false;
     try {
         parser->parse(inputSource);
     }
     catch (const XMLException& e) {
         std::cerr << "An error occurred during parsing\n   Message: " << StrX(e.getMessage())
-                  << std::endl;
-        errorsOccured = true;
+                  << "\n";
+        errorsOccurred = true;
     }
     catch (const DOMException& e) {
         std::cerr << "A DOM error occurred during parsing\n   DOMException code: " << e.code
-                  << std::endl;
-        errorsOccured = true;
+                  << "\n";
+        errorsOccurred = true;
     }
     catch (...) {
-        std::cerr << "An error occurred during parsing\n " << std::endl;
-        errorsOccured = true;
+        std::cerr << "An error occurred during parsing\n " << "\n";
+        errorsOccurred = true;
     }
 
-    if (errorsOccured) {
-        delete parser;
-        delete errReporter;
+    if (errorsOccurred) {
         return 0;
     }
 
     _pDocument = parser->adoptDocument();
-    delete parser;
-    delete errReporter;
 
     if (!_pDocument) {
         throw XMLBaseException("Malformed Parameter document: Invalid document");

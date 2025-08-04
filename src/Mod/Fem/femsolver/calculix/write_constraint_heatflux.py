@@ -76,7 +76,12 @@ def write_meshdata_constraint(f, femobj, heatflux_obj, ccxwriter):
     else:
         return
 
-    f.write(f"*{heatflux_key_word}\n")
+    if heatflux_obj.EnableAmplitude:
+        heatflux_amplitude = f", AMPLITUDE={heatflux_obj.Name}"
+    else:
+        heatflux_amplitude = ""
+
+    f.write(f"*{heatflux_key_word}{heatflux_amplitude}\n")
     for ref_shape in femobj["HeatFluxFaceTable"]:
         elem_string = ref_shape[0]
         face_table = ref_shape[1]

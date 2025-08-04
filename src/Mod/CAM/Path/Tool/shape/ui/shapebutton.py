@@ -20,16 +20,13 @@
 # *                                                                         *
 # ***************************************************************************
 from PySide import QtGui, QtCore
+from .shapewidget import ShapeWidget
 
 
 class ShapeButton(QtGui.QToolButton):
     def __init__(self, shape, parent=None):
         super(ShapeButton, self).__init__(parent)
         self.shape = shape
-
-        # Remove default text handling and use a custom layout
-        # self.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
-        # self.setText(f"{shape.label}\n{shape.id}")
 
         self.vbox = QtGui.QVBoxLayout(self)
         self.vbox.setAlignment(
@@ -38,8 +35,7 @@ class ShapeButton(QtGui.QToolButton):
         self.vbox.setContentsMargins(0, 0, 0, 0)
         self.vbox.setSpacing(0)
 
-        self.icon_widget = QtGui.QLabel()
-        self.icon_widget.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
+        self.icon_widget = ShapeWidget(self.shape, QtCore.QSize(71, 70))
 
         self.label_widget = QtGui.QLabel(shape.label)
         self.label_widget.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
@@ -60,22 +56,7 @@ class ShapeButton(QtGui.QToolButton):
 
         self.setFixedSize(128, 128)
         self.setBaseSize(128, 128)
-        # Adjust icon size to make space for text.
-        # Total height is 128. Let's allocate 70 for icon, 25 for label, 25 for ID.
-        self.icon_size = QtCore.QSize(71, 70)
-        # self.setIconSize(self.icon_size) # Removed as custom layout handles sizing
-
-        self._update_icon()
 
     def set_text(self, text):
         # Update the text of the label widget
         self.label_widget.setText(text)
-
-    def _update_icon(self):
-        icon = self.shape.get_icon()
-        if icon:
-            # Set the pixmap on the icon_widget QLabel
-            pixmap = icon.get_qpixmap(self.icon_size)
-            self.icon_widget.setPixmap(pixmap)
-        else:
-            self.icon_widget.clear()  # Clear pixmap if no icon

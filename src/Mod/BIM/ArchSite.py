@@ -791,7 +791,7 @@ class _ViewProviderSite:
             vobj.addProperty("App::PropertyBool","SolarDiagram","Site",QT_TRANSLATE_NOOP("App::Property","Show solar diagram or not"), locked=True)
         if not "SolarDiagramScale" in pl:
             vobj.addProperty("App::PropertyFloat","SolarDiagramScale","Site",QT_TRANSLATE_NOOP("App::Property","The scale of the solar diagram"), locked=True)
-            vobj.SolarDiagramScale = 1
+            vobj.SolarDiagramScale = 20000.0 # Default diagram of 20 m radius
         if not "SolarDiagramPosition" in pl:
             vobj.addProperty("App::PropertyVector","SolarDiagramPosition","Site",QT_TRANSLATE_NOOP("App::Property","The position of the solar diagram"), locked=True)
         if not "SolarDiagramColor" in pl:

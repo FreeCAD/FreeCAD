@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>900</height>
+    <width>750</width>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -41,14 +41,14 @@
            </property>
            <property name="sizeIncrement">
             <size>
-             <width>1000</width>
-             <height>1000</height>
+             <width>650</width>
+             <height>850</height>
             </size>
            </property>
            <property name="baseSize">
             <size>
-             <width>1000</width>
-             <height>1000</height>
+             <width>650</width>
+             <height>850</height>
             </size>
            </property>
            <property name="currentIndex">

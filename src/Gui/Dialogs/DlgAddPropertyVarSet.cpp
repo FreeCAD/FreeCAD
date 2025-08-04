@@ -47,6 +47,7 @@ FC_LOG_LEVEL_INIT("DlgAddPropertyVarSet", true, true)
 
 using namespace Gui;
 using namespace Gui::Dialog;
+using namespace Gui::PropertyEditor;
 
 const std::string DlgAddPropertyVarSet::GroupBase = "Base";
 
@@ -58,6 +59,7 @@ const std::string DlgAddPropertyVarSet::GroupBase = "Base";
  * - provide a value field as soon as possible (see #16189),
  *   - keep the value if the name of the property is changed,
  * - support units (see #15557),
+ * - support enumerations (see #15553),
  * - make OK available as soon as there is a valid property (see #17474), and
  * - support expressions (see #19716).
  *
@@ -285,11 +287,37 @@ void DlgAddPropertyVarSet::removeSelectionEditor()
     }
 }
 
-void DlgAddPropertyVarSet::addEditor(PropertyEditor::PropertyItem* propertyItem)
+void DlgAddPropertyVarSet::addEnumEditor(PropertyItem* propertyItem)
+{
+    auto* values =
+        static_cast<PropertyStringListItem*>(PropertyStringListItem::create());
+    values->setParent(propertyItem);
+    values->setPropertyName(QLatin1String(QT_TRANSLATE_NOOP("App::Property", "Enum")));
+    if (propertyItem->childCount() > 0) {
+        auto* child = propertyItem->takeChild(0);
+        delete child;
+    }
+    propertyItem->appendChild(values);
+    editor.reset(values->createEditor(this, [this]() {
+        this->valueChangedEnum();
+    }, FrameOption::WithFrame));
+}
+
+void DlgAddPropertyVarSet::addNormalEditor(PropertyItem* propertyItem)
 {
     editor.reset(propertyItem->createEditor(this, [this]() {
         this->valueChanged();
-    }, PropertyEditor::FrameOption::WithFrame));
+    }, FrameOption::WithFrame));
+}
+
+void DlgAddPropertyVarSet::addEditor(PropertyItem* propertyItem)
+{
+    if (isEnumPropertyItem()) {
+        addEnumEditor(propertyItem);
+    }
+    else {
+        addNormalEditor(propertyItem);
+    }
     if (editor == nullptr) {
         return;
     }
@@ -303,9 +331,7 @@ void DlgAddPropertyVarSet::addEditor(PropertyEditor::PropertyItem* propertyItem)
     // To set the data in the editor, we need to set the data in the
     // propertyItem.  The propertyItem needs to have a property set to make
     // sure that we get a correct value and the unit.
-    propertyItem->setEditorData(
-            editor.get(),
-            propertyItem->data(PropertyEditor::PropertyItem::ValueColumn, Qt::EditRole));
+    setEditorData(propertyItem->data(PropertyItem::ValueColumn, Qt::EditRole));
     editor->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     editor->setObjectName(QStringLiteral("editor"));
 
@@ -330,6 +356,7 @@ bool DlgAddPropertyVarSet::isTypeWithEditor(const Base::Type& type)
 
     static const std::initializer_list<Base::Type> typesWithEditor = {
         // These types have editors but not necessarily their subtypes.
+        App::PropertyEnumeration::getClassTypeId(),
         App::PropertyFile::getClassTypeId(),
         App::PropertyFloatList::getClassTypeId(),
         App::PropertyFont::getClassTypeId(),
@@ -356,13 +383,13 @@ bool DlgAddPropertyVarSet::isTypeWithEditor(const std::string& type)
     return isTypeWithEditor(propType);
 }
 
-static PropertyEditor::PropertyItem *createPropertyItem(App::Property *prop)
+static PropertyItem *createPropertyItem(App::Property *prop)
 {
     const char *editor = prop->getEditorName();
     if (Base::Tools::isNullOrEmpty(editor)) {
         return nullptr;
     }
-    return PropertyEditor::PropertyItemFactory::instance().createPropertyItem(editor);
+    return PropertyItemFactory::instance().createPropertyItem(editor);
 }
 
 void DlgAddPropertyVarSet::createEditorForType(const Base::Type& type)
@@ -523,12 +550,48 @@ void DlgAddPropertyVarSet::removeEditor()
     editor = nullptr;
 }
 
+bool DlgAddPropertyVarSet::isEnumPropertyItem() const
+{
+    return ui->comboBoxType->currentText() ==
+        QString::fromLatin1(App::PropertyEnumeration::getClassTypeId().getName());
+}
+
+QVariant DlgAddPropertyVarSet::getEditorData() const
+{
+    if (isEnumPropertyItem()) {
+        PropertyItem* child = propertyItem->child(0);
+        if (child == nullptr) {
+            return {};
+        }
+        return child->editorData(editor.get());
+    }
+
+    return propertyItem->editorData(editor.get());
+}
+
+void DlgAddPropertyVarSet::setEditorData(const QVariant& data)
+{
+    if (isEnumPropertyItem()) {
+        PropertyItem* child = propertyItem->child(0);
+        if (child == nullptr) {
+            return;
+        }
+        child->setEditorData(editor.get(), data);
+    }
+    else {
+        propertyItem->setEditorData(editor.get(), data);
+    }
+}
+
 void DlgAddPropertyVarSet::setEditor(bool valueNeedsReset)
 {
     if (editor && !valueNeedsReset) {
-        QVariant data = propertyItem->editorData(editor.get());
+        QVariant data = getEditorData();
         addEditor(propertyItem.get());
-        propertyItem->setEditorData(editor.get(), data);
+        if (editor == nullptr) {
+            return;
+        }
+        setEditorData(data);
         removeSelectionEditor();
     }
     else if (propertyItem) {
@@ -581,7 +644,6 @@ bool DlgAddPropertyVarSet::clearBoundProperty()
 {
     // Both a property link and an expression are bound to a property and as a
     // result need the value to be reset.
-    using PropertyLinkItem = Gui::PropertyEditor::PropertyLinkItem;
     bool isPropertyLinkItem = qobject_cast<PropertyLinkItem*>(propertyItem.get()) != nullptr;
     bool valueNeedsReset = isPropertyLinkItem || propertyItem->hasExpression();
 
@@ -665,6 +727,24 @@ void DlgAddPropertyVarSet::changeEvent(QEvent* e)
         setTitle();
     }
     QDialog::changeEvent(e);
+}
+
+void DlgAddPropertyVarSet::valueChangedEnum()
+{
+    auto* propEnum =
+        static_cast<App::PropertyEnumeration*>(propertyItem->getFirstProperty());
+    if (propEnum == nullptr || propertyItem->childCount() == 0) {
+        return;
+    }
+
+    auto* values = static_cast<PropertyStringListItem*>(propertyItem->child(0));
+    QVariant data = values->editorData(editor.get());
+    QStringList enumValues = data.toStringList();
+    // convert to std::vector<std::string>
+    std::vector<std::string> enumValuesVec;
+    std::ranges::transform(enumValues, std::back_inserter(enumValuesVec),
+                               [](const QString& value) { return value.toStdString(); });
+    propEnum->setEnums(enumValuesVec);
 }
 
 void DlgAddPropertyVarSet::valueChanged()
