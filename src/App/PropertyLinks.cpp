@@ -1557,9 +1557,8 @@ void PropertyLinkSub::afterRestore()
     _ShadowSubList.resize(_cSubList.size());
     if (!_pcLinkSub || !_pcLinkSub->isAttachedToDocument()) {
         return;
-    } else {
-        updateElementReferences(_pcLinkSub, true);
     }
+    updateElementReferences(_pcLinkSub, true);
     if (!testFlag(LinkRestoreLabel)) {
         return;
     }
@@ -2710,9 +2709,6 @@ void PropertyLinkSubList::setPyObject(PyObject* value)
 void PropertyLinkSubList::afterRestore()
 {
     assert(_lSubList.size() == _ShadowSubList.size());
-    // if (_pcLink) {
-    //     updateElementReferences(_pcLink, true);
-    // }
     if (!testFlag(LinkRestoreLabel)) {
         return;
     }
@@ -4074,9 +4070,8 @@ void PropertyXLink::afterRestore()
     assert(_SubList.size() == _ShadowSubList.size());
     if (!_pcLink || !_pcLink->isAttachedToDocument()) {
         return;
-    } else {
-        updateElementReferences(_pcLink, true);
     }
+    updateElementReferences(_pcLink, true);
 
     if (!testFlag(LinkRestoreLabel)) {
         return;
