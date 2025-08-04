@@ -189,6 +189,8 @@ class CommandPathToolController(object):
 class ToolControllerEditor(object):
     def __init__(self, obj, asDialog):
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/DlgToolControllerEdit.ui")
+        self.controller = FreeCADGui.PySideUic.loadUi(":/panels/ToolControllerEdit.ui")
+        self.form.tc_layout.addWidget(self.controller)
         if not asDialog:
             self.form.buttonBox.hide()
         self.obj = obj
@@ -196,15 +198,13 @@ class ToolControllerEditor(object):
         comboToPropertyMap = [("spindleDirection", "SpindleDir")]
         enumTups = PathToolController.ToolController.propertyEnumerations(dataType="raw")
 
-        PathGuiUtil.populateCombobox(self.form, enumTups, comboToPropertyMap)
-        self.vertFeed = PathGuiUtil.QuantitySpinBox(self.form.vertFeed, obj, "VertFeed")
-        self.horizFeed = PathGuiUtil.QuantitySpinBox(self.form.horizFeed, obj, "HorizFeed")
-        self.vertRapid = PathGuiUtil.QuantitySpinBox(self.form.vertRapid, obj, "VertRapid")
-        self.horizRapid = PathGuiUtil.QuantitySpinBox(self.form.horizRapid, obj, "HorizRapid")
+        PathGuiUtil.populateCombobox(self.controller, enumTups, comboToPropertyMap)
+        self.vertFeed = PathGuiUtil.QuantitySpinBox(self.controller.vertFeed, obj, "VertFeed")
+        self.horizFeed = PathGuiUtil.QuantitySpinBox(self.controller.horizFeed, obj, "HorizFeed")
+        self.vertRapid = PathGuiUtil.QuantitySpinBox(self.controller.vertRapid, obj, "VertRapid")
+        self.horizRapid = PathGuiUtil.QuantitySpinBox(self.controller.horizRapid, obj, "HorizRapid")
 
         self.editor = None
-        self.form.toolBox.widget(1).hide()
-        self.form.toolBox.removeItem(1)
 
     def selectInComboBox(self, name, combo):
         """selectInComboBox(name, combo) ...
@@ -230,21 +230,21 @@ class ToolControllerEditor(object):
 
     def updateUi(self):
         tc = self.obj
-        self.form.tcName.setText(tc.Label)
-        self.form.tcNumber.setValue(tc.ToolNumber)
+        self.controller.tcName.setText(tc.Label)
+        self.controller.tcNumber.setValue(tc.ToolNumber)
         self.horizFeed.updateWidget()
         self.horizRapid.updateWidget()
         self.vertFeed.updateWidget()
         self.vertRapid.updateWidget()
-        self.form.spindleSpeed.setValue(tc.SpindleSpeed)
+        self.controller.spindleSpeed.setValue(tc.SpindleSpeed)
 
-        self.selectInComboBox(tc.SpindleDir, self.form.spindleDirection)
+        self.selectInComboBox(tc.SpindleDir, self.controller.spindleDirection)
 
-        # index = self.form.spindleDirection.findText(
+        # index = self.controller.spindleDirection.findText(
         #     tc.SpindleDir, QtCore.Qt.MatchFixedString
         # )
         # if index >= 0:
-        #     self.form.spindleDirection.setCurrentIndex(index)
+        #     self.controller.spindleDirection.setCurrentIndex(index)
 
         if self.editor:
             self.editor.updateUI()
@@ -252,14 +252,14 @@ class ToolControllerEditor(object):
     def updateToolController(self):
         tc = self.obj
         try:
-            tc.Label = self.form.tcName.text()
-            tc.ToolNumber = self.form.tcNumber.value()
+            tc.Label = self.controller.tcName.text()
+            tc.ToolNumber = self.controller.tcNumber.value()
             self.horizFeed.updateProperty()
             self.vertFeed.updateProperty()
             self.horizRapid.updateProperty()
             self.vertRapid.updateProperty()
-            tc.SpindleSpeed = self.form.spindleSpeed.value()
-            tc.SpindleDir = self.form.spindleDirection.currentData()
+            tc.SpindleSpeed = self.controller.spindleSpeed.value()
+            tc.SpindleDir = self.controller.spindleDirection.currentData()
 
             if self.editor:
                 self.editor.updateTool()
@@ -269,22 +269,22 @@ class ToolControllerEditor(object):
             Path.Log.error("Error updating TC: {}".format(e))
 
     def refresh(self):
-        self.form.blockSignals(True)
+        self.controller.blockSignals(True)
         self.updateToolController()
         self.updateUi()
-        self.form.blockSignals(False)
+        self.controller.blockSignals(False)
 
     def setupUi(self):
         if self.editor:
             self.editor.setupUI()
 
-        self.form.tcName.editingFinished.connect(self.refresh)
-        self.form.horizFeed.editingFinished.connect(self.refresh)
-        self.form.vertFeed.editingFinished.connect(self.refresh)
-        self.form.horizRapid.editingFinished.connect(self.refresh)
-        self.form.vertRapid.editingFinished.connect(self.refresh)
-        self.form.spindleSpeed.editingFinished.connect(self.refresh)
-        self.form.spindleDirection.currentIndexChanged.connect(self.refresh)
+        self.controller.tcName.editingFinished.connect(self.refresh)
+        self.controller.horizFeed.editingFinished.connect(self.refresh)
+        self.controller.vertFeed.editingFinished.connect(self.refresh)
+        self.controller.horizRapid.editingFinished.connect(self.refresh)
+        self.controller.vertRapid.editingFinished.connect(self.refresh)
+        self.controller.spindleSpeed.editingFinished.connect(self.refresh)
+        self.controller.spindleDirection.currentIndexChanged.connect(self.refresh)
 
 
 class TaskPanel:
