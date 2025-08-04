@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Macro recording</string>
+   <string>Record Macro</string>
   </property>
   <layout class="QVBoxLayout">
    <property name="spacing">
@@ -32,7 +32,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Macro name:</string>
+      <string>Macro Name</string>
      </property>
      <layout class="QGridLayout">
       <property name="leftMargin">
@@ -59,7 +59,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>Macro path:</string>
+      <string>Macro Path</string>
      </property>
      <layout class="QHBoxLayout">
       <property name="spacing">
@@ -93,7 +93,7 @@
          </size>
         </property>
         <property name="text">
-         <string notr="true">...</string>
+         <string>Choose Folder</string>
         </property>
        </widget>
       </item>

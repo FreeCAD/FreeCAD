@@ -569,7 +569,7 @@ bool View3DInventor::setCamera(const char* pCamera)
 {
     SoCamera * CamViewer = _viewer->getSoRenderManager()->getCamera();
     if (!CamViewer) {
-        throw Base::RuntimeError("No camera set so far...");
+        throw Base::RuntimeError("No camera set so far…");
     }
 
     SoInput in;

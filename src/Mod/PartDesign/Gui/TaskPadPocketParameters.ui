@@ -167,8 +167,7 @@
          <item>
           <widget class="QToolButton" name="buttonShapeFace">
            <property name="toolTip">
-            <string>Click button to enter selection mode,
-         click again to end selection</string>
+            <string>Toggles between selection and preview mode</string>
            </property>
            <property name="text">
             <string>Select</string>
@@ -249,7 +248,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="labelEdge">
           <property name="text">
-           <string>Direction/edge:</string>
+           <string>Direction/edge</string>
           </property>
          </widget>
         </item>
@@ -266,7 +265,7 @@ from the model as reference</string>
           </item>
           <item>
            <property name="text">
-            <string>Select reference...</string>
+            <string>Select reference…</string>
            </property>
           </item>
           <item>
@@ -304,14 +303,14 @@ the sketch plane's normal vector will be used</string>
          <item row="0" column="0">
           <widget class="QLabel" name="labelXSkew">
            <property name="text">
-            <string>x</string>
+            <string>X</string>
            </property>
           </widget>
          </item>
          <item row="0" column="1">
           <widget class="Gui::DoubleSpinBox" name="XDirectionEdit">
            <property name="toolTip">
-            <string>x-component of direction vector</string>
+            <string>X-component of direction vector</string>
            </property>
            <property name="keyboardTracking">
             <bool>false</bool>
@@ -333,14 +332,14 @@ the sketch plane's normal vector will be used</string>
          <item row="1" column="0">
           <widget class="QLabel" name="labelYSkew">
            <property name="text">
-            <string>y</string>
+            <string>Y</string>
            </property>
           </widget>
          </item>
          <item row="1" column="1">
           <widget class="Gui::DoubleSpinBox" name="YDirectionEdit">
            <property name="toolTip">
-            <string>y-component of direction vector</string>
+            <string>Y-component of direction vector</string>
            </property>
            <property name="keyboardTracking">
             <bool>false</bool>
@@ -362,14 +361,14 @@ the sketch plane's normal vector will be used</string>
          <item row="2" column="0">
           <widget class="QLabel" name="labelZSkew">
            <property name="text">
-            <string>z</string>
+            <string>Z</string>
            </property>
           </widget>
          </item>
          <item row="2" column="1">
           <widget class="Gui::DoubleSpinBox" name="ZDirectionEdit">
            <property name="toolTip">
-            <string>z-component of direction vector</string>
+            <string>Z-component of direction vector</string>
            </property>
            <property name="keyboardTracking">
             <bool>false</bool>

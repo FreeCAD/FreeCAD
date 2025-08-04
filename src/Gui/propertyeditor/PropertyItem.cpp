@@ -1580,7 +1580,7 @@ PropertyEditorWidget::PropertyEditorWidget(QWidget* parent)
     lineEdit->setReadOnly(true);
     layout->addWidget(lineEdit);
 
-    button = new QPushButton(QLatin1String("..."), this);
+    button = new QPushButton(QLatin1String("…"), this);
 #if defined(Q_OS_MACOS)
     button->setAttribute(
         Qt::WA_LayoutUsesWidgetRect);  // layout size from QMacStyle was not correct
@@ -4543,12 +4543,12 @@ LinkLabel::LinkLabel(QWidget* parent, const App::Property* prop)
     label->setTextInteractionFlags(Qt::TextBrowserInteraction);
     layout->addWidget(label);
 
-    editButton = new QPushButton(QLatin1String("..."), this);
+    editButton = new QPushButton(QLatin1String("…"), this);
 #if defined(Q_OS_MACOS)
     editButton->setAttribute(
         Qt::WA_LayoutUsesWidgetRect);  // layout size from QMacStyle was not correct
 #endif
-    editButton->setToolTip(tr("Change the linked object"));
+    editButton->setToolTip(tr("Changes the linked object"));
     layout->addWidget(editButton);
 
     this->setFocusPolicy(Qt::StrongFocus);

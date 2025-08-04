@@ -38,7 +38,7 @@ public:
     /// constructor
     ViewProviderFillet()
         { sPixmap = "PartDesign_Fillet.svg";
-          menuName = tr("Fillet parameters"); }
+          menuName = tr("Fillet Parameters"); }
 
     /// return "Fillet"
     const std::string & featureName() const override;

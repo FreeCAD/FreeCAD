@@ -576,7 +576,7 @@ class CommandDressupDragknife:
     def GetResources(self):
         return {
             "Pixmap": "CAM_Dressup",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_DressupDragKnife", "DragKnife"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_DressupDragKnife", "Drag Knife"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_DressupDragKnife",
                 "Modifies a toolpath to add dragknife corner actions",
@@ -596,7 +596,7 @@ class CommandDressupDragknife:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("CAM_DressupDragKnife", "Please select one toolpath object") + "\n"
+                translate("CAM_DressupDragKnife", "Select one toolpath object") + "\n"
             )
             return
         if not selection[0].isDerivedFrom("Path::Feature"):
@@ -606,7 +606,7 @@ class CommandDressupDragknife:
             return
         if selection[0].isDerivedFrom("Path::FeatureCompoundPython"):
             FreeCAD.Console.PrintError(
-                translate("CAM_DressupDragKnife", "Please select a toolpath object")
+                translate("CAM_DressupDragKnife", "Select a toolpath object")
             )
             return
 
@@ -639,4 +639,4 @@ if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand("CAM_DressupDragKnife", CommandDressupDragknife())
 
-FreeCAD.Console.PrintLog("Loading CAM_DressupDragKnife... done\n")
+FreeCAD.Console.PrintLog("Loading CAM_DressupDragKnife… done\n")

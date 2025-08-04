@@ -51,7 +51,7 @@ class _CommandCompoundFilter:
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_CompoundFilter", "Compound Filter"),
                 'Accel': "",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_CompoundFilter",
-                                                    "Filter out objects from a selected compound "
+                                                    "Filters out objects from the selected compound "
                                                     "by characteristics like volume,\n"
                                                     "area, or length, or by choosing specific items.\n"
                                                     "If a second object is selected, it will be used "
@@ -68,7 +68,7 @@ class _CommandCompoundFilter:
                                  "First select a shape that is a compound. "
                                  "If a second object is selected (optional) "
                                  "it will be treated as a stencil.", None))
-            mb.setWindowTitle(translate("Part_CompoundFilter", "Bad selection", None))
+            mb.setWindowTitle(translate("Part_CompoundFilter", "Bad Selection", None))
             mb.exec_()
 
     def IsActive(self):
@@ -109,7 +109,7 @@ def cmdCreateCompoundFilter(name):
         error_text1 = translate("Part_CompoundFilter", "Computing the result failed with an error:")
         error_text2 = translate("Part_CompoundFilter", "Click 'Continue' to create the feature anyway, or 'Abort' to cancel.")
         mb.setText(error_text1 + "\n\n" + str(err) + "\n\n" + error_text2)
-        mb.setWindowTitle(translate("Part_CompoundFilter","Bad selection", None))
+        mb.setWindowTitle(translate("Part_CompoundFilter","Bad Selection", None))
         btnAbort = mb.addButton(QtGui.QMessageBox.StandardButton.Abort)
         btnOK = mb.addButton(translate("Part_SplitFeatures", "Continue", None), QtGui.QMessageBox.ButtonRole.ActionRole)
         mb.setDefaultButton(btnOK)

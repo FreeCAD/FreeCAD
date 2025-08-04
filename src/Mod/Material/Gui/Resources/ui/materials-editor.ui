@@ -19,7 +19,7 @@
      <item>
       <widget class="QGroupBox" name="groupBox_3">
        <property name="title">
-        <string>Material card</string>
+        <string>Material Card</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
@@ -67,7 +67,7 @@
                  <string>Opens an existing material card</string>
                 </property>
                 <property name="text">
-                 <string>Open...</string>
+                 <string>Open…</string>
                 </property>
                </widget>
               </item>
@@ -77,7 +77,7 @@
                  <string>Saves this material as a card</string>
                 </property>
                 <property name="text">
-                 <string>Save as...</string>
+                 <string>Save As…</string>
                 </property>
                </widget>
               </item>
@@ -93,7 +93,7 @@
      <item>
       <widget class="QGroupBox" name="groupBox_4">
        <property name="title">
-        <string>Material parameter</string>
+        <string>Material Parameter</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_5">
         <item>
@@ -112,7 +112,7 @@
      <item>
       <widget class="QGroupBox" name="groupBox_2">
        <property name="title">
-        <string>Add / remove parameter</string>
+        <string>Add/Remove Parameter</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
@@ -123,14 +123,14 @@
           <item>
            <widget class="QPushButton" name="ButtonAddProperty">
             <property name="text">
-             <string>Add property</string>
+             <string>Add Property</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="ButtonDeleteProperty">
             <property name="text">
-             <string>Delete property</string>
+             <string>Delete Property</string>
             </property>
            </widget>
           </item>

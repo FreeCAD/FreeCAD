@@ -36,7 +36,7 @@ TaskDlgFeatureParameters *ViewProviderLinearPattern::getEditDialog() {
 
 void ViewProviderLinearPattern::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    addDefaultAction(menu, QObject::tr("Edit linear pattern"));
+    addDefaultAction(menu, QObject::tr("Edit Linear Pattern"));
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 

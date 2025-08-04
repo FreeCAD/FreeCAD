@@ -35,7 +35,7 @@ class BIM_Extrude:
     def GetResources(self):
         return {
             "Pixmap": "Part_Extrude",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_Extrude", "Extrude..."),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_Extrude", "Extrude"),
             "ToolTip": QT_TRANSLATE_NOOP("BIM_Extrude", "Extrudes a selected 2D shape"),
         }
 

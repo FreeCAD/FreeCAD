@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="postProcessingGroup">
      <property name="toolTip">
-      <string>If enabled, include all post processing settings in the template.</string>
+      <string>If enabled, include all post processing settings in the template</string>
      </property>
      <property name="title">
       <string>Post Processing</string>
@@ -35,7 +35,7 @@
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="toolTip">
-         <string>Hint about the current post processing configuration.</string>
+         <string>Hint about the current post processing configuration</string>
         </property>
        </widget>
       </item>
@@ -45,7 +45,7 @@
    <item>
     <widget class="QGroupBox" name="toolsGroup">
      <property name="toolTip">
-      <string>If enabled, tool controller definitions are stored in the template.</string>
+      <string>If enabled, tool controller definitions are stored in the template</string>
      </property>
      <property name="title">
       <string>Tools</string>
@@ -57,7 +57,7 @@
       <item>
        <widget class="QListWidget" name="toolsList">
         <property name="toolTip">
-         <string>Check all tool controllers which should be included in the template.</string>
+         <string>Check all tool controllers which should be included in the template</string>
         </property>
        </widget>
       </item>
@@ -67,9 +67,7 @@
    <item>
     <widget class="QGroupBox" name="settingsGroup">
      <property name="toolTip">
-      <string>Enable to include values of the SetupSheet in the template.
-
-Any values of the SetupSheet that are changed from their default are preselected. If this field not selected the current SetupSheet was not modified.</string>
+      <string>Includes SetupSheet values in the template. Any SetupSheet values modified from their default are preselected.</string>
      </property>
      <property name="title">
       <string>Setup Sheet</string>
@@ -81,10 +79,10 @@ Any values of the SetupSheet that are changed from their default are preselected
       <item row="1" column="0">
        <widget class="QCheckBox" name="settingOperationHeights">
         <property name="toolTip">
-         <string>Enable to include the default heights for operations in the template.</string>
+         <string>Enable to include the default heights for operations in the template</string>
         </property>
         <property name="text">
-         <string>Operation Heights</string>
+         <string>Operation heights</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -94,7 +92,7 @@ Any values of the SetupSheet that are changed from their default are preselected
       <item row="1" column="1">
        <widget class="QCheckBox" name="settingOperationDepths">
         <property name="text">
-         <string>Operation Depths</string>
+         <string>Operation depths</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -104,10 +102,10 @@ Any values of the SetupSheet that are changed from their default are preselected
       <item row="2" column="0">
        <widget class="QCheckBox" name="settingToolRapid">
         <property name="toolTip">
-         <string>Enable to include the default rapid tool speeds in the template.</string>
+         <string>Enable to include the default rapid tool speeds in the template</string>
         </property>
         <property name="text">
-         <string>Tool Rapid Speeds</string>
+         <string>Tool rapid speeds</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -117,7 +115,7 @@ Any values of the SetupSheet that are changed from their default are preselected
       <item row="2" column="1">
        <widget class="QCheckBox" name="settingCoolant">
         <property name="toolTip">
-         <string>Enable to include the default coolant mode in the template.</string>
+         <string>Enable to include the default coolant mode in the template</string>
         </property>
         <property name="text">
          <string>Coolant Mode</string>
@@ -160,9 +158,9 @@ Note that this option is disabled if a stock object from an existing solid is us
         <property name="toolTip">
          <string>If enabled, the current size settings for the stock object are included in the template.
 
-For Box and Cylinder stocks this means the actual size of the stock solid being created.
+For box and cylinder stocks this means the actual size of the stock solid being created.
 
-For stock from the Base object's bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job's Base object and apply the stored extra settings.</string>
+For stock from the base object's bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job's base object and apply the stored extra settings.</string>
         </property>
         <property name="text">
          <string>Extent</string>
@@ -181,14 +179,14 @@ For stock from the Base object's bounding box it means the extra material in all
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="toolTip">
-         <string>Hint about the current stock extent setting.</string>
+         <string>Hint about the current stock extent setting</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
        <widget class="QCheckBox" name="stockPlacement">
         <property name="toolTip">
-         <string>If enabled, the current placement of the stock solid is stored in the template.</string>
+         <string>If enabled, the current placement of the stock solid is stored in the template</string>
         </property>
         <property name="text">
          <string>Placement</string>
@@ -207,7 +205,7 @@ For stock from the Base object's bounding box it means the extra material in all
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="toolTip">
-         <string>Hint about the current stock placement.</string>
+         <string>Hint about the current stock placement</string>
         </property>
        </widget>
       </item>

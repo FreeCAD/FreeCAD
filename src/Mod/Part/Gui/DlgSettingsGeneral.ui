@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>Model settings</string>
+      <string>Model Settings</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
@@ -55,7 +55,7 @@
       <item row="2" column="0">
        <widget class="Gui::PrefCheckBox" name="checkSketchBaseRefine" native="true">
         <property name="text" stdset="0">
-         <string>Automatically refine model after sketch-based operation</string>
+         <string>Automatically refine model after applying operations</string>
         </property>
         <property name="checked" stdset="0">
          <bool>true</bool>
@@ -80,7 +80,7 @@
       <bool>false</bool>
      </property>
      <property name="title">
-      <string>Object naming</string>
+      <string>Object Naming</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
@@ -108,7 +108,7 @@
       </size>
      </property>
      <property name="title">
-      <string>Features settings</string>
+      <string>Features Settings</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
@@ -187,7 +187,7 @@
       <item>
        <widget class="QLabel" name="warningLabel">
         <property name="text">
-         <string>These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</string>
+         <string>These settings are experimental and may result in decreased stability, problems and undefined behaviors</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -197,7 +197,7 @@
       <item>
        <widget class="Gui::PrefCheckBox" name="checkAllowCompoundBody">
         <property name="text">
-         <string>Allow multiple solids in Part Design Body by default (experimental)</string>
+         <string>Allow multiple solids in Part Design bodies by default</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>AllowCompoundDefault</cstring>

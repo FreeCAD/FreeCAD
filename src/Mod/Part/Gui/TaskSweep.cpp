@@ -337,7 +337,7 @@ bool SweepWidget::accept()
         return false;
     }
     if (!ok) {
-        QMessageBox::critical(this, tr("Invalid selection"), tr("Select one or more edges from a single object."));
+        QMessageBox::critical(this, tr("Invalid selection"), tr("Select at least 1 edge from a single object."));
         return false;
     }
     for (int i=0; i<count; i++) {
@@ -486,7 +486,7 @@ void TaskSweep::clicked(int id)
 {
     if (id == QDialogButtonBox::Help) {
         QString help = QApplication::translate("PartGui::TaskSweep",
-            "Select one or more profiles and select an edge or wire\n"
+            "Select at least 1 profile and an edge or wire\n"
             "in the 3D view for the sweep path.");
         if (!label) {
             label = new Gui::StatusWidget(widget);

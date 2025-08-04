@@ -886,7 +886,7 @@ void ViewProviderPartExt::setupContextMenu(QMenu* menu, QObject* receiver, const
 {
     QIcon iconObject = mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap("Part_ColorFace.svg"));
     Gui::ViewProviderGeometryObject::setupContextMenu(menu, receiver, member);
-    QAction* act = menu->addAction(iconObject, QObject::tr("Set appearance per face..."), receiver, member);
+    QAction* act = menu->addAction(iconObject, QObject::tr("Appearance per Face"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Color));
 }
 
