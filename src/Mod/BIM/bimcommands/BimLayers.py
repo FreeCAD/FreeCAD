@@ -54,7 +54,7 @@ class BIM_Layers:
 
         return {
             "Pixmap": "BIM_Layers",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_Layers", "Manage Layers…"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_Layers", "Manage Layers"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_Layers", "Sets/modifies the different layers of your BIM project"
             ),
