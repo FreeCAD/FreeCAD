@@ -433,6 +433,7 @@ class _BaseSolverCalculix:
             )
             obj.ExcludeBendingStiffness = False
 
+
 class Proxy(solverbase.Proxy, _BaseSolverCalculix):
     """The Fem::FemSolver's Proxy python type, add solver specific properties"""
 

@@ -116,9 +116,13 @@ def write_femelement_geometry(f, ccxwriter):
                 if ccxwriter.solver_obj.ModelSpace == "3D":
                     offset = shellth_obj.Offset
                     if ccxwriter.solver_obj.ExcludeBendingStiffness:
-                        section_def = f"*MEMBRANE SECTION, {elsetdef}{material}, OFFSET={offset:.13G}\n"
+                        section_def = (
+                            f"*MEMBRANE SECTION, {elsetdef}{material}, OFFSET={offset:.13G}\n"
+                        )
                     else:
-                        section_def = f"*SHELL SECTION, {elsetdef}{material}, OFFSET={offset:.13G}\n"
+                        section_def = (
+                            f"*SHELL SECTION, {elsetdef}{material}, OFFSET={offset:.13G}\n"
+                        )
                 else:
                     section_def = f"*SOLID SECTION, {elsetdef}{material}\n"
                 thickness = shellth_obj.Thickness.getValueAs("mm").Value
