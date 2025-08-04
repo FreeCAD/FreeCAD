@@ -474,5 +474,13 @@ bool TaskDlgDressUpParameters::reject()
     getViewObject<ViewProviderDressUp>()->highlightReferences(false);
     return TaskDlgFeatureParameters::reject();
 }
+void TaskDlgDressUpParameters::activate()
+{
+    parameter->attachSelection();
+}
+void TaskDlgDressUpParameters::deactivate()
+{
+    parameter->detachSelection();
+}
 
 #include "moc_TaskDressUpParameters.cpp"

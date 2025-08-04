@@ -181,15 +181,6 @@ bool TaskDlgFeatureParameters::accept()
         App::DocumentObject* previous = static_cast<PartDesign::Feature*>(feature)->getBaseObject(/* silent = */ true );
         Gui::cmdAppObjectHide(previous);
 
-        // detach the task panel from the selection to avoid to invoke
-        // eventually onAddSelection when the selection changes
-        std::vector<QWidget*> subwidgets = getDialogContent();
-        for (auto it : subwidgets) {
-            TaskSketchBasedParameters* param = qobject_cast<TaskSketchBasedParameters*>(it);
-            if (param)
-                param->detachSelection();
-        }
-
         Gui::cmdGuiDocument(feature, "resetEdit()");
         Gui::Command::commitCommand();
     } catch (const Base::Exception& e) {
@@ -214,15 +205,6 @@ bool TaskDlgFeatureParameters::reject()
     // (at least in the body case)
     App::DocumentObject* previous = feature->getBaseObject(/* silent = */ true );
 
-    // detach the task panel from the selection to avoid to invoke
-    // eventually onAddSelection when the selection changes
-    std::vector<QWidget*> subwidgets = getDialogContent();
-    for (auto it : subwidgets) {
-        TaskSketchBasedParameters* param = qobject_cast<TaskSketchBasedParameters*>(it);
-        if (param)
-            param->detachSelection();
-    }
-
     // roll back the done things which may delete the feature
     document->abortTransaction();
 
@@ -245,6 +227,29 @@ bool TaskDlgFeatureParameters::reject()
     Gui::cmdGuiDocument(document, "resetEdit()");
 
     return true;
+}
+void TaskDlgFeatureParameters::activate()
+{
+    std::vector<QWidget*> subwidgets = getDialogContent();
+    for (auto it : subwidgets) {
+        TaskSketchBasedParameters* param = qobject_cast<TaskSketchBasedParameters*>(it);
+        if (param) {
+            param->attachSelection();
+        }
+    }
+}
+void TaskDlgFeatureParameters::deactivate()
+{
+    // detach the task panel from the selection to avoid to invoke
+    // eventually onAddSelection when the selection changes
+    std::vector<QWidget*> subwidgets = getDialogContent();
+    for (auto it : subwidgets) {
+        TaskSketchBasedParameters* param = qobject_cast<TaskSketchBasedParameters*>(it);
+        if (param) {
+            param->detachSelection();
+        }
+    }
+
 }
 
 #include "moc_TaskFeatureParameters.cpp"
