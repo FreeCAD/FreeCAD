@@ -53,7 +53,7 @@ class IFC_Diff:
         )
         return {
             "Pixmap": "IFC",
-            "MenuText": QT_TRANSLATE_NOOP("IFC_Diff", "IFC Diff…"),
+            "MenuText": QT_TRANSLATE_NOOP("IFC_Diff", "IFC Diff"),
             "ToolTip": tt,
             "Accel": "I, D",
         }
