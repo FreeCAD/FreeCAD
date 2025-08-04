@@ -127,6 +127,12 @@
        </property>
        <item>
         <widget class="QFrame" name="ctrlArea">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="autoFillBackground">
           <bool>true</bool>
          </property>
@@ -145,6 +151,12 @@
           </property>
           <item>
            <widget class="QLabel" name="label">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
              <string>Result</string>
             </property>
@@ -152,6 +164,12 @@
           </item>
           <item>
            <widget class="QLabel" name="msg">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="palette">
              <palette>
               <active>
@@ -204,6 +222,9 @@
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Policy::Fixed</enum>
+       </property>
        <property name="sizeHint" stdset="0">
         <size>
          <width>0</width>
@@ -219,7 +240,7 @@
      <item>
       <widget class="Gui::ExpressionTextEdit" name="expression">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Ignored" vsizetype="Expanding">
+        <sizepolicy hsizetype="Ignored" vsizetype="MinimumExpanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>

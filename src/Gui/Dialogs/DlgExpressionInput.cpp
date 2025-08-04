@@ -37,6 +37,7 @@
 #include <App/ExpressionParser.h>
 #include <App/VarSet.h>
 #include <Base/Tools.h>
+#include <regex>
 
 #include "Dialogs/DlgExpressionInput.h"
 #include "ui_DlgExpressionInput.h"
@@ -110,6 +111,9 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     }
     else {
         ui->expression->setMinimumHeight(50);
+        ui->msg->setWordWrap(true);
+        ui->msg->setMaximumHeight(500);
+        ui->msg->setMinimumWidth(200);
         ui->horizontalSpacer_3->changeSize(0, 2);
         ui->verticalLayout->setContentsMargins(9, 9, 9, 9);
         this->adjustSize();
@@ -324,12 +328,12 @@ void DlgExpressionInput::checkExpression(const QString& text)
                 }
 
                 numberRange.throwIfOutOfRange(value);
-
-                ui->msg->setText(QString::fromStdString(msg));
+                message = msg;
             }
             else {
-                ui->msg->setText(QString::fromStdString(result->toString()));
+                message = result->toString();
             }
+            setMsgText();
 
         }
 }
@@ -358,7 +362,8 @@ void DlgExpressionInput::textChanged()
         }
     }
     catch (Base::Exception & e) {
-        ui->msg->setText(QString::fromUtf8(e.what()));
+        message = e.what();
+        setMsgText();
         QPalette p(ui->msg->palette());
         p.setColor(QPalette::WindowText, Qt::red);
         ui->msg->setPalette(p);
@@ -760,6 +765,44 @@ void DlgExpressionInput::updateVarSetInfo(bool checkExpr)
         okBtn->setEnabled(false);
         reportVarSetInfo("Select a variable set.");
     }
+}
+
+void DlgExpressionInput::resizeEvent(QResizeEvent *event)
+{
+    // When the dialog is resized, message text may need to be re-wrapped
+    if (!this->message.empty() && event->size() != event->oldSize()) {
+        setMsgText();
+    }
+    QDialog::resizeEvent(event);  
+}
+
+void DlgExpressionInput::setMsgText()
+{
+    if (!this->message.size()) {
+        return;
+    }
+
+    const QFontMetrics msgFontMetrics{ ui->msg->font() };
+
+    // find words longer than length of msg widget
+    // then insert newline to wrap it
+    std::string wrappedMsg{};
+    static constexpr int msgContentMargins = 10;
+    const int maxWordLength = (ui->msg->width() - msgContentMargins) / msgFontMetrics.averageCharWidth(); 
+
+    const auto wrappableWordPattern = std::regex{ "\\S{" + std::to_string(maxWordLength) + "}" };
+    auto it = std::sregex_iterator{ this->message.cbegin(), this->message.cend(), wrappableWordPattern };
+    const auto it_end = std::sregex_iterator{};
+
+    int lastPos = 0;
+    for (; it != it_end; ++it) {
+        wrappedMsg += this->message.substr(lastPos, it->position() - lastPos);
+        wrappedMsg += it->str() + "\n";
+        lastPos = it->position() + it->length();
+    }
+    wrappedMsg += this->message.substr(lastPos);
+
+    ui->msg->setText(QString::fromStdString(wrappedMsg));
 }
 
 #include "moc_DlgExpressionInput.cpp"

@@ -85,6 +85,7 @@ public Q_SLOTS:
 protected:
     void mouseReleaseEvent(QMouseEvent*) override;
     void mousePressEvent(QMouseEvent*) override;
+    void resizeEvent(QResizeEvent*) override;
 
 private:
     Base::Type getTypePath();
@@ -99,6 +100,7 @@ private:
     bool reportGroup(QString& nameGroup);
     void updateVarSetInfo(bool checkExpr = true);
     void acceptWithVarSet();
+    void setMsgText();
 
 private Q_SLOTS:
     void textChanged();
@@ -115,6 +117,7 @@ private:
     bool discarded;
     const Base::Unit impliedUnit;
     NumberRange numberRange;
+    std::string message;
 
     int minimumWidth;
 
