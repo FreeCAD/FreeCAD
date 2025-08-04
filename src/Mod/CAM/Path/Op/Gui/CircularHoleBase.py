@@ -179,7 +179,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         """clearBase() ... Clear push button callback"""
         self.obj.Base = []
         self.obj.Disabled = []
-        #self.obj.Proxy.findAllHoles(self.obj)
+        # self.obj.Proxy.findAllHoles(self.obj)
 
         self.obj.Proxy.execute(self.obj)
         FreeCAD.ActiveDocument.recompute()
