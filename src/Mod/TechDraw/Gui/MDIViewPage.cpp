@@ -316,7 +316,8 @@ void MDIViewPage::printPdf()
     filter << QObject::tr("PDF (*.pdf)");
     filter << QObject::tr("All Files (*.*)");
     QString fn =
-        Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export Page as PDF…"),
+        Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export Page as PDF"),
+
                                          QString(), filter.join(QLatin1String(";;")));
     if (fn.isEmpty()) {
         return;
