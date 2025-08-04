@@ -105,7 +105,8 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
 
     connect(m_exportPDFAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::savePDF));
 
-    m_printAllAction = new QAction(tr("Print All Pages…"), this);
+    m_printAllAction = new QAction(tr("Print All Pages"), this);
+
     connect(m_printAllAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::printAllPages));
 
     isSelectionBlocked = false;
