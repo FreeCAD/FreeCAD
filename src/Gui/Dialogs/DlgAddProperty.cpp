@@ -98,9 +98,7 @@ void DlgAddProperty::accept()
 {
     std::string name = ui->edtName->text().toUtf8().constData();
     std::string group = ui->edtGroup->text().toUtf8().constData();
-    if(name.empty() || group.empty()
-            || name != Base::Tools::getIdentifier(name)
-            || group != Base::Tools::getIdentifier(group))
+    if(!App::ExpressionParser::isValidFCIdentifier(name) || !App::ExpressionParser::isValidFCIdentifier(group))
     {
         QMessageBox::critical(getMainWindow(),
             QObject::tr("Invalid name"),

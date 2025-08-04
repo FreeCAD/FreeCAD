@@ -29,12 +29,12 @@
 #endif
 
 #include <Base/Reader.h>
-#include <Base/Tools.h>
 #include <Base/UniqueNameManager.h>
 #include <Base/Writer.h>
 
 #include "DynamicProperty.h"
 #include "Application.h"
+#include "ExpressionParser.h"
 #include "Property.h"
 #include "PropertyContainer.h"
 
@@ -210,7 +210,7 @@ Property* DynamicProperty::addDynamicProperty(PropertyContainer& pc,
                   "Property " << pc.getFullName() << '.' << name << " already exists");
     }
 
-    if (Base::Tools::getIdentifier(name) != name) {
+    if (!ExpressionParser::isValidFCIdentifier(name)) {
         FC_THROWM(Base::NameError, "Invalid property name '" << name << "'");
     }
 
@@ -316,7 +316,7 @@ bool DynamicProperty::removeDynamicProperty(const char* name)
 
 std::string DynamicProperty::getUniquePropertyName(const PropertyContainer& pc, const char* Name) const
 {
-    std::string cleanName = Base::Tools::getIdentifier(Name);
+    std::string cleanName = ExpressionParser::getFCIdentifier(Name);
 
     // We test if the property already exists by finding it, which is not much more expensive than
     // having a separate propertyExists(name) method. This avoids building the UniqueNameManager
@@ -433,7 +433,7 @@ bool DynamicProperty::renameDynamicProperty(Property* prop,
                   "Property " << container->getFullName() << '.' << newName << " already exists");
     }
 
-    if (Base::Tools::getIdentifier(newName) != newName) {
+    if (!ExpressionParser::isValidFCIdentifier(newName)) {
         FC_THROWM(Base::NameError, "Invalid property name '" << newName << "'");
     }
 
