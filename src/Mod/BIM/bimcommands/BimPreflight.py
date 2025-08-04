@@ -803,7 +803,7 @@ class BIM_Preflight_TaskPanel:
                     msg += o.Label + "\n"
                 msg += "\n" + translate(
                     "BIM",
-                    "To add common property sets to these objects, use the IFC properties manager tool located under menu Manage -> Manage IFC Properties…",
+                    "To add common property sets to these objects, use the IFC properties manager tool located under menu Manage -> Manage IFC Properties",
                 )
             if msg:
                 self.failed(test)
