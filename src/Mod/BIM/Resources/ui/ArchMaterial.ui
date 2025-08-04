@@ -27,7 +27,7 @@
      </property>
      <item>
       <property name="text">
-       <string>Choose preset…</string>
+       <string>Choose preset</string>
       </property>
      </item>
     </widget>
