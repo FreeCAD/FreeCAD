@@ -70,7 +70,7 @@ class BIM_IfcQuantities:
         return {
             "Pixmap": "BIM_IfcQuantities",
             "MenuText": QT_TRANSLATE_NOOP(
-                "BIM_IfcQuantities", "Manage IFC Quantities…"
+                "BIM_IfcQuantities", "Manage IFC Quantities"
             ),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_IfcQuantities",
