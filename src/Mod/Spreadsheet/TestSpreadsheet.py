@@ -219,7 +219,7 @@ class SpreadsheetAggregates(unittest.TestCase):
             )
         )
 
-    def test_all(self):
+    def test_and(self):
         self.sheet.set("C20", "4")
         self.sheet.set("C21", "5")
         self.sheet.set("C22", "6")
@@ -256,7 +256,7 @@ class SpreadsheetAggregates(unittest.TestCase):
         self.assertEqual(self.sheet.B5, 0)
         self.assertEqual(self.sheet.B6, 0)
 
-    def test_any(self):
+    def test_or(self):
         self.sheet.set("C20", "4")
         self.sheet.set("C21", "5")
         self.sheet.set("C22", "6")
@@ -660,6 +660,12 @@ class SpreadsheetFunction(unittest.TestCase):
         self.assertEqual(self.sheet.G20, 1)
         self.assertEqual(self.sheet.H20, 1)
         self.assertEqual(self.sheet.I20, 0)
+
+        self.sheet.set("J21", f"=not(not({1e-7}))")
+        self.sheet.set("J22", f"=not(not({1e-8}))")
+        self.doc.recompute()
+        self.assertEqual(self.sheet.J21, 1)
+        self.assertEqual(self.sheet.J22, 0)
 
 
 #############################################################################################

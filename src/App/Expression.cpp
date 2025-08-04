@@ -52,6 +52,7 @@
 #include <Base/RotationPy.h>
 #include <Base/Tools.h>
 #include <Base/VectorPy.h>
+#include <Base/Precision.h>
 
 #include "ExpressionParser.h"
 
@@ -166,6 +167,15 @@ static inline T &&cast(App::any &&value) {
 #else
     return App::any_cast<T&&>(std::move(value));
 #endif
+}
+
+namespace
+{
+
+inline bool asBool(double value) {
+    return std::fabs(value) >= Base::Precision::Confusion();
+}
+
 }
 
 std::string unquote(const std::string & input)
@@ -1981,11 +1991,11 @@ public:
     void collect(Quantity value) override
     {
         if (first) {
-            q = Quantity(value.getValue() == 0 ? 0 : 1);
+            q = Quantity(asBool(value.getValue()) ? 1 : 0);
             first = false;
             return;
         }
-        if (value.getValue() == 0) {
+        if (!asBool(value.getValue())) {
             q = Quantity(0);
         }
     }
@@ -1996,11 +2006,11 @@ public:
     void collect(Quantity value) override
     {
         if (first) {
-            q = Quantity(value.getValue() == 0 ? 0 : 1);
+            q = Quantity(asBool(value.getValue()) ? 1 : 0);
             first = false;
             return;
         }
-        if (value.getValue() != 0) {
+        if (asBool(value.getValue())) {
             q = Quantity(1);
         }
     }
@@ -2633,7 +2643,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
     case TRANSLATIONM:
         return translationMatrix(v1.getValue(), v2.getValue(), v3.getValue());
     case NOT:
-        output = value == 0 ? 1 : 0;
+        output = asBool(value) ? 0 : 1;
         break;
     default:
         _EXPR_THROW("Unknown function: " << f,0);
