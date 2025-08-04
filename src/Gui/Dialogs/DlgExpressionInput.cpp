@@ -445,7 +445,7 @@ static bool isNamePropOk(const QString& nameProp, App::DocumentObject* obj,
         return false;
     }
 
-    if (name != Base::Tools::getIdentifier(name)) {
+    if (!Base::Tools::isValidPyIdentifier(name)) {
         message << "Invalid property name (must only contain alphanumericals, underscore, "
                 << "and must not start with digit";
         return false;
@@ -679,7 +679,7 @@ static bool isNameGroupOk(const QString& nameGroup,
                           std::stringstream& message)
 {
     std::string name = nameGroup.toStdString();
-    if (name.empty() || name != Base::Tools::getIdentifier(name)) {
+    if (name.empty() || !Base::Tools::isValidPyIdentifier(name)) {
         message << "Invalid group name (must only contain alphanumericals, underscore, "
                 << "and must not start with digit";
         return false;
