@@ -1892,7 +1892,7 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
     }
 
     std::string PageName = page->getNameInDocument();
-    openCommand(QT_TRANSLATE_NOOP("Command", "Save page to DXF…"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Save page to DXF"));
     doCommand(Doc, "import TechDraw");
     fileName = Base::Tools::escapeEncodeFilename(fileName);
     auto filespec = DU::cleanFilespecBackslash(fileName.toStdString());
