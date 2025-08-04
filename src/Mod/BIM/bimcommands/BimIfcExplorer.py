@@ -41,7 +41,7 @@ class BIM_IfcExplorer:
 
         return {
             "Pixmap": "IFC",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_IfcExplorer", "IFC Explorer…"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_IfcExplorer", "IFC Explorer"),
             "ToolTip": QT_TRANSLATE_NOOP("BIM_IfcExplorer", "Opens the IFC explorer utility"),
         }
 
