@@ -167,7 +167,7 @@ CmdTechDrawPageTemplate::CmdTechDrawPageTemplate() : Command("TechDraw_PageTempl
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("New Page From Template…");
+    sMenuText = QT_TR_NOOP("New Page From Template");
     sToolTipText = QT_TR_NOOP("Creates a new page from a custom template");
     sWhatsThis = "TechDraw_PageTemplate";
     sStatusTip = sToolTipText;
