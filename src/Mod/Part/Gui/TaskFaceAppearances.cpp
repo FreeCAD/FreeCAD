@@ -508,5 +508,13 @@ bool TaskFaceAppearances::reject()
 {
     return widget->reject();
 }
+void TaskFaceAppearances::activate()
+{
+    widget->attachSelection();
+}
+void TaskFaceAppearances::deactivate()
+{
+    widget->detachSelection();
+}
 
 #include "moc_TaskFaceAppearances.cpp"

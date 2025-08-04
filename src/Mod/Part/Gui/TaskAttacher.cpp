@@ -1274,7 +1274,12 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
 
 TaskDlgAttacher::TaskDlgAttacher(Gui::ViewProviderDocumentObject* ViewProvider, bool createBox,
     std::function<void()> onAccept, std::function<void()> onReject)
-    : TaskDialog(), ViewProvider(ViewProvider), parameter(nullptr), onAccept(onAccept), onReject(onReject), accepted(false)
+    : TaskDialog()
+    , ViewProvider(ViewProvider)
+    , parameter(nullptr)
+    , onAccept(onAccept)
+    , onReject(onReject)
+    , accepted(false)
 {
     assert(ViewProvider);
     setDocumentName(ViewProvider->getDocument()->getDocument()->getName());
@@ -1312,8 +1317,9 @@ bool TaskDlgAttacher::accept()
     try {
         Gui::DocumentT doc(getDocumentName());
         Gui::Document* document = doc.getDocument();
-        if (!document || !ViewProvider)
+        if (!document || !ViewProvider) {
             return true;
+        }
 
         Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
         auto obj = ViewProvider->getObject();
@@ -1368,6 +1374,18 @@ bool TaskDlgAttacher::reject()
     accepted = false;
 
     return true;
+}
+void TaskDlgAttacher::activate()
+{
+    if (parameter) {
+        parameter->attachSelection();
+    }
+}
+void TaskDlgAttacher::deactivate()
+{
+    if (parameter) {
+        parameter->detachSelection();
+    }
 }
 
 #include "moc_TaskAttacher.cpp"

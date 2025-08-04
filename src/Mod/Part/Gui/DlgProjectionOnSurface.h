@@ -162,6 +162,8 @@ public:
     bool accept() override;
     bool reject() override;
     void clicked(int id) override;
+    void activate() override;
+    void deactivate() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
     {
@@ -239,6 +241,8 @@ public:
 public:
     bool accept() override;
     bool reject() override;
+    void activate() override;
+    void deactivate() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
     {

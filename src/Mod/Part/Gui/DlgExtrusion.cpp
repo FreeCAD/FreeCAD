@@ -792,6 +792,14 @@ void TaskExtrusion::clicked(int id)
         };
     }
 }
+void TaskExtrusion::activate()
+{
+    widget->attachSelection();
+}
+void TaskExtrusion::deactivate()
+{
+    widget->detachSelection();
+}
 
 #include "moc_DlgExtrusion.cpp"
 
