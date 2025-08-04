@@ -55,7 +55,7 @@
      <item row="1" column="1">
       <widget class="Gui::QuantitySpinBox" name="sbY">
        <property name="toolTip">
-        <string>Enter coordinates or select a point with the mouse</string>
+        <string>Enter coordinates or pick a point with the mouse</string>
        </property>
        <property name="unit" stdset="0">
         <string notr="true">mm</string>
@@ -72,7 +72,7 @@
      <item row="2" column="1">
       <widget class="Gui::QuantitySpinBox" name="sbZ">
        <property name="toolTip">
-        <string>Enter coordinates or select a point with the mouse</string>
+        <string>Enter coordinates or pick a point with the mouse</string>
        </property>
        <property name="unit" stdset="0">
         <string notr="true">mm</string>
