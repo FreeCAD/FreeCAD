@@ -27,11 +27,16 @@
           <x>0</x>
           <y>0</y>
           <width>880</width>
-          <height>487</height>
+          <height>448</height>
          </rect>
         </property>
         <attribute name="label">
          <string>Standard Tools</string>
+        </attribute>
+       </widget>
+       <widget class="QWidget" name="turningTools">
+        <attribute name="label">
+         <string>Turning Tools</string>
         </attribute>
        </widget>
        <widget class="QWidget" name="customTools">
@@ -40,7 +45,7 @@
           <x>0</x>
           <y>0</y>
           <width>880</width>
-          <height>487</height>
+          <height>448</height>
          </rect>
         </property>
         <attribute name="label">
