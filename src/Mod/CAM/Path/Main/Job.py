@@ -521,7 +521,7 @@ class ObjectJob:
 
     def onChanged(self, obj, prop):
         if prop == "PostProcessor" and obj.PostProcessor:
-            processor = PostProcessorFactory.get_post_processor(obj, obj.PostProcessor)
+            processor = PostProcessorFactory.get_post_processor(obj, obj.PostProcessor, None)
             self.tooltip = processor.tooltip
             self.tooltipArgs = processor.tooltipArgs
 
