@@ -2167,7 +2167,7 @@ class ComponentTaskPanel:
                                                  QtGui.QApplication.translate("Arch", "Value", None)])
 
         # set combos
-        self.ifcEditor.comboProperty.addItems([QtGui.QApplication.translate("Arch", "Add property…", None)]+self.plabels)
+        self.ifcEditor.comboProperty.addItems([QtGui.QApplication.translate("Arch", "Add property", None)]+self.plabels)
         self.ifcEditor.comboPset.addItems([QtGui.QApplication.translate("Arch", "Add property set…", None),
                                            QtGui.QApplication.translate("Arch", "New...", None)]+self.psetkeys)
 
