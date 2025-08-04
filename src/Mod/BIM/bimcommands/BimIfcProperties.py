@@ -129,7 +129,7 @@ class BIM_IfcProperties:
 
         # set combos
         self.form.comboProperty.addItems(
-            [translate("BIM", "Add property…")] + self.plabels
+            [translate("BIM", "Add property")] + self.plabels
         )
         self.form.comboPset.addItems(
             [translate("BIM", "Add property set…"), translate("BIM", "New…")]
