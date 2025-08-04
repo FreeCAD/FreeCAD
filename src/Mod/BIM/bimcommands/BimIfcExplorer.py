@@ -123,7 +123,7 @@ class BIM_IfcExplorer:
 
         # draw the toolbar buttons
         self.openAction = QtGui.QAction(translate("BIM", "Open"), None)
-        self.openAction.setToolTip(translate("BIM", "Open another IFC file…"))
+        self.openAction.setToolTip(translate("BIM", "Open another IFC file"))
         self.openAction.triggered.connect(self.open)
         self.openAction.setIcon(QtGui.QIcon(":/icons/document-open.svg"))
         toolbar.addAction(self.openAction)
