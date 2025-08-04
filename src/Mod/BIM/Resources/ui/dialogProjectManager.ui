@@ -39,7 +39,7 @@
        </property>
        <item>
         <property name="text">
-         <string>Use preset…</string>
+         <string>Use preset</string>
         </property>
        </item>
       </widget>
