@@ -1850,7 +1850,7 @@ DEF_STD_CMD_A(CmdTechDrawExportPageDXF)
 CmdTechDrawExportPageDXF::CmdTechDrawExportPageDXF() : Command("TechDraw_ExportPageDXF")
 {
     sGroup = QT_TR_NOOP("File");
-    sMenuText = QT_TR_NOOP("Export Page as DXF…");
+    sMenuText = QT_TR_NOOP("Export Page as DXF");
     sToolTipText = QT_TR_NOOP("Exports the current page as a DXF");
     sWhatsThis = "TechDraw_ExportPageDXF";
     sStatusTip = sToolTipText;
