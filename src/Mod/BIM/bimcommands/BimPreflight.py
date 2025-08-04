@@ -895,7 +895,7 @@ class BIM_Preflight_TaskPanel:
                 )
                 msg += translate(
                     "BIM",
-                    "To fix the property sets of these objects, use the IFC properties manager tool located under menu Manage -> Manage IFC Properties…",
+                    "To fix the property sets of these objects, use the IFC properties manager tool located under menu Manage -> Manage IFC Properties",
                 )
             if msg:
                 self.failed(test)
