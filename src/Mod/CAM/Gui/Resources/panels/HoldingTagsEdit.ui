@@ -123,7 +123,7 @@
          <bool>false</bool>
         </property>
         <property name="text">
-         <string>Edit…</string>
+         <string>Edit</string>
         </property>
        </widget>
       </item>
