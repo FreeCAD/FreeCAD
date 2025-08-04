@@ -101,7 +101,8 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
 
     connect(m_exportDXFAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::saveDXF));
 
-    m_exportPDFAction = new QAction(tr("Export PDF…"), this);
+    m_exportPDFAction = new QAction(tr("Export PDF"), this);
+
     connect(m_exportPDFAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::savePDF));
 
     m_printAllAction = new QAction(tr("Print All Pages…"), this);
