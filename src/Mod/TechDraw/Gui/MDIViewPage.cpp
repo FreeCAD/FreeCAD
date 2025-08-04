@@ -517,7 +517,8 @@ void MDIViewPage::saveDXF()
     filter << QStringLiteral("DXF (*.dxf)");
     filter << QObject::tr("All files (*.*)");
     QString fn =
-        Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as DXF…"),
+        Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as DXF"),
+
                                          defaultFileName(), filter.join(QLatin1String(";;")));
     if (fn.isEmpty()) {
         return;
