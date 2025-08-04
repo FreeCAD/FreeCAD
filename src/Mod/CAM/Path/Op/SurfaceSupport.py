@@ -2652,6 +2652,7 @@ class OCL_Tool:
                 "drill": "ConeCutter",
                 "engraver": "ConeCutter",
                 "v_bit": "ConeCutter",
+                "v-bit": "ConeCutter",
                 "vbit": "ConeCutter",
                 "chamfer": "None",
             }
