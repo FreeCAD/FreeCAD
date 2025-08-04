@@ -486,7 +486,7 @@ class BIM_ProjectManager:
 
     def fillPresets(self):
         self.form.presets.clear()
-        self.form.presets.addItem(translate("BIM", "User preset…"))
+        self.form.presets.addItem(translate("BIM", "User preset"))
         presetdir = os.path.join(FreeCAD.getUserAppDataDir(), "BIM")
         if os.path.isdir(presetdir):
             for f in os.listdir(presetdir):
