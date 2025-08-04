@@ -1241,8 +1241,11 @@ void PropertyExpressionEngine::onRenameDynamicProperty(const App::Property& prop
 void PropertyExpressionEngine::onMoveDynamicProperty(const App::Property& prop,
                                                      const PropertyContainer& targetContainer)
 {
+    FC_MSG("onMoveDynamicProperty():");
     ObjectIdentifier oldNameId = ObjectIdentifier(prop);
     ObjectIdentifier newNameId = ObjectIdentifier(&targetContainer, std::string(prop.getName()));
+    FC_MSG("  container: " << getContainer()->getFullName());
+    FC_MSG("  renaming " << oldNameId.toString() << " -> " << newNameId.toString());
     const std::map<ObjectIdentifier, ObjectIdentifier> paths = {
         {oldNameId, newNameId},
     };

@@ -726,21 +726,45 @@ bool DocumentObject::renameDynamicProperty(Property* prop, const char* name)
 Property* DocumentObject::moveDynamicProperty(Property* prop,
                                               PropertyContainer* targetContainer)
 {
+    if (prop == nullptr) {
+        FC_THROWM(Base::RuntimeError, "The property does not exist");
+    }
+
+    const char* propertyName = prop->getName();
+
+    if (targetContainer == nullptr) {
+        FC_THROWM(Base::RuntimeError, "The target container does not exist");
+    }
+
+    if (targetContainer == this) {
+        FC_THROWM(Base::RuntimeError,
+                  "Cannot move property " << propertyName << " to its own container");
+    }
+
+    if (targetContainer->getPropertyByName(propertyName) != nullptr) {
+        FC_THROWM(Base::NameError,
+                  "Property " << targetContainer->getFullName() << '.' << propertyName << " already exists");
+    }
+
+    if (!prop->testStatus(App::Property::PropDynamic)) {
+        FC_THROWM(Base::RuntimeError,
+                  "Property " << propertyName << " is not dynamic");
+    }
+
+    if (prop->testStatus(App::Property::LockDynamic)) {
+        FC_THROWM(Base::RuntimeError,
+                 "Property " << propertyName << " is locked");
+    }
+
     auto* targetObj = freecad_cast<DocumentObject*>(targetContainer);
     if (targetObj == nullptr) {
         FC_THROWM(Base::TypeError,
-                 "DocumentObject::moveDynamicProperty(): targetContainer is not a DocumentObject");
-    }
-    if (targetObj == this) {
-        return nullptr;
+                  "Container " << targetContainer->getFullName() << " is not a DocumentObject");
     }
 
     if (!_pDoc || testStatus(ObjectStatus::Destroy)) {
-        return nullptr;
-    }
-
-    if (prop == nullptr || prop->testStatus(App::Property::LockDynamic)) {
-        return nullptr;
+        FC_THROWM(Base::RuntimeError,
+                  "Object " << getFullName() << " is being destroyed");;
     }
 
     if (prop->isDerivedFrom<PropertyLinkBase>()) {

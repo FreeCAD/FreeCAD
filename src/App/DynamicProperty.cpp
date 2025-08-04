@@ -468,7 +468,20 @@ bool DynamicProperty::renameDynamicProperty(Property* prop,
 Property* DynamicProperty::moveDynamicProperty(Property* prop,
                                                PropertyContainer* targetContainer)
 {
+    if (prop == nullptr) {
+        FC_THROWM(Base::RuntimeError, "The property does not exist");
+    }
+
     const char* propertyName = prop->getName();
+
+    if (targetContainer == nullptr) {
+        FC_THROWM(Base::TypeError, "The target container does not exist");
+    }
+
+    if (prop->testStatus(Property::LockDynamic)) {
+        FC_THROWM(Base::RuntimeError, "Property " << prop->getName() << " is locked");
+    }
+
     if (targetContainer->getPropertyByName(propertyName) != nullptr) {
         FC_THROWM(Base::NameError,
                   "Property " << targetContainer->getFullName() << '.' << propertyName << " already exists");
@@ -486,10 +499,10 @@ Property* DynamicProperty::moveDynamicProperty(Property* prop,
 
     GetApplication().signalMoveDynamicProperty(*prop, *targetContainer);
 
-    bool isRemoved = _removeDynamicProperty(propertyName, SignalOption::NoSignal);
+    bool isRemoved = removeDynamicProperty(propertyName);
 
     if (!isRemoved) {
-        targetContainer->dynamicProps._removeDynamicProperty(newProp->getName(), SignalOption::NoSignal);
+        targetContainer->dynamicProps.removeDynamicProperty(newProp->getName());
         FC_THROWM(Base::RuntimeError,
                   "Failed to remove property " << propertyName << " from container "
                                                 << prop->getContainer()->getFullName());
