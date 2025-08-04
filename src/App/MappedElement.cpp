@@ -31,16 +31,28 @@
 #include "DocumentObject.h"
 #include "MappedElement.h"
 
+#include <algorithm>
+
 using namespace Data;
 
 // hextoa converts a single hex character to its integer value.
 inline
 int hextoa(char c)
 {
-    return (c >= '0' && c <= '9') ? c - '0'
-             : (c >= 'a' && c <= 'f') ? c - 'a' + 10
-             : (c >= 'A' && c <= 'F') ? c - 'A' + 10
-             : -1; // invalid
+    constexpr int HEX_OFFSET = 10;
+    if (c >= '0' && c <= '9') {
+        return c - '0';
+    }
+
+    if (c >= 'a' && c <= 'f') {
+        return c - 'a' + HEX_OFFSET;
+    }
+
+    if (c >= 'A' && c <= 'F') {
+        return c - 'A' + HEX_OFFSET;
+    }
+
+    return -1; // invalid
 }
 
 
@@ -74,7 +86,7 @@ int getIntLength(const MappedName& name, int start)
 
     int i = start;
     for (; i < len; ++i) {
-        if (!std::isdigit(name[i])) {
+        if (std::isdigit(name[i]) == 0) {
             break; // not a digit, stop counting
         }
     }
@@ -132,8 +144,8 @@ int compareHashed(const MappedName& left, const MappedName& right)
     // They are the same length and both are hex values, compare the hex digits.
     int i = 1;
     for (; i <= leftLength; ++i) {
-        int leftValue = hextoa((char)left[i]);
-        int rightValue = hextoa((char)right[i]);
+        int leftValue = hextoa(left[i]);
+        int rightValue = hextoa(right[i]);
 
         if (leftValue != rightValue) {
             return leftValue < rightValue ? -1 : 1;

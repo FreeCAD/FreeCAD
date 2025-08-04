@@ -1,6 +1,11 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include <gtest/gtest.h>
+#include <utility>
+#include <map>
+#include <string>
+#include <vector>
+
 
 #include "App/IndexedName.h"
 #include "App/MappedElement.h"
