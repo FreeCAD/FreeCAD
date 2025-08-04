@@ -588,7 +588,7 @@ std::string Application::getUniqueDocumentName(const char* Name, bool tempDoc) c
     if (!Name || *Name == '\0') {
         return {};
     }
-    std::string CleanName = Base::Tools::getPyIdentifier(Name);
+    std::string CleanName = ExpressionParser::getFCIdentifier(Name);
 
     // name in use?
     auto pos = DocMap.find(CleanName);

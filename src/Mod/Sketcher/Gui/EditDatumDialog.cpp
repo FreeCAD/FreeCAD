@@ -41,6 +41,7 @@
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <App/Datums.h>
+#include <App/ExpressionParser.h>
 
 #include "EditDatumDialog.h"
 #include "CommandSketcherTools.h"
@@ -59,7 +60,7 @@ using namespace SketcherGui;
 bool SketcherGui::checkConstraintName(const Sketcher::SketchObject* sketch,
                                       std::string constraintName)
 {
-    if (!Base::Tools::isValidPyIdentifier(constraintName)) {
+    if (!App::ExpressionParser::isValidFCIdentifier(constraintName)) {
         Gui::NotifyUserError(
             sketch,
             QT_TRANSLATE_NOOP("Notifications", "Value Error"),
