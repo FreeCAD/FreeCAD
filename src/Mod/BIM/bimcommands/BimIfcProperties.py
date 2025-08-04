@@ -42,7 +42,7 @@ class BIM_IfcProperties:
         return {
             "Pixmap": "BIM_IfcProperties",
             "MenuText": QT_TRANSLATE_NOOP(
-                "BIM_IfcProperties", "Manage IFC Properties…"
+                "BIM_IfcProperties", "Manage IFC Properties"
             ),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_IfcProperties",
