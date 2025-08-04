@@ -1807,7 +1807,7 @@ DEF_STD_CMD_A(CmdTechDrawExportPageSVG)
 CmdTechDrawExportPageSVG::CmdTechDrawExportPageSVG() : Command("TechDraw_ExportPageSVG")
 {
     sGroup = QT_TR_NOOP("File");
-    sMenuText = QT_TR_NOOP("Export Page as SVG…");
+    sMenuText = QT_TR_NOOP("Export Page as SVG");
     sToolTipText = QT_TR_NOOP("Exports the current page as an SVG");
     sWhatsThis = "TechDraw_ExportPageSVG";
     sStatusTip = sToolTipText;
