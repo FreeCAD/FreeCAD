@@ -77,7 +77,6 @@ public:
     bool discardedFormula() const { return discarded; }
 
     QPoint expressionPosition() const;
-    void   setExpressionInputSize(int width, int height);
 
 public Q_SLOTS:
     void show();
@@ -86,6 +85,7 @@ public Q_SLOTS:
 protected:
     void mouseReleaseEvent(QMouseEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
+    void resizeEvent(QResizeEvent* event) override;
 
 private:
     Base::Type getTypePath();
@@ -109,6 +109,7 @@ private:
                              const App::DocumentObject* obj, QString& message) const;
     bool isGroupNameValid(const QString& nameGroup,
                           QString& message) const;
+    void setMsgText();
 
 private Q_SLOTS:
     void textChanged();
@@ -127,7 +128,7 @@ private:
     const Base::Unit impliedUnit;
     NumberRange numberRange;
 
-    int minimumWidth;
+    std::string message;
 
     bool varSetsVisible;
     QPushButton* okBtn = nullptr;
