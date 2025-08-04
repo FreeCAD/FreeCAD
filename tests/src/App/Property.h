@@ -90,9 +90,22 @@ protected:
 
     void TearDown() override
     {
+        // std::cout << "pending recompute varSet1Doc1? " <<
+        // varSet1Doc1->testStatus(App::ObjectStatus::PendingRecompute)
+        //           << std::endl;
+        // std::cout << "pending recompute varSet1Doc1? " <<
+        // varSet2Doc1->testStatus(App::ObjectStatus::PendingRecompute)
+        //           << std::endl;
+        // doc1->recompute();
+        for (auto* obj : doc1->topologicalSort()) {
+            std::cout << "removing object: " << obj->getNameInDocument() << std::endl;
+            doc1->removeObject(obj->getNameInDocument());
+        }
         // doc1->removeObject(varSet1Doc1->getNameInDocument());
         // doc1->removeObject(varSet2Doc1->getNameInDocument());
-        // doc2->removeObject(varSetDoc2->getNameInDocument());
+        // doc1->recompute();
+        doc2->removeObject(varSetDoc2->getNameInDocument());
+        // doc2->recompute();
     }
 
     static void TearDownTestSuite()
