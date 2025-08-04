@@ -837,7 +837,7 @@ class ViewProviderBuildingPart:
                                self.writeCamera)
         menu.addAction(actionWriteCamera)
 
-        actionCreateGroup = QtGui.QAction(translate("Arch", "Create group…"),
+        actionCreateGroup = QtGui.QAction(translate("Arch", "New Group"),
                                           menu)
         QtCore.QObject.connect(actionCreateGroup,
                                QtCore.SIGNAL("triggered()"),
