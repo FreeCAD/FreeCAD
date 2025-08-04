@@ -488,7 +488,7 @@ bool DlgAddPropertyVarSet::isNameValid()
     std::string name = ui->lineEditName->text().toStdString();
 
     return !name.empty() &&
-        name == Base::Tools::getIdentifier(name) &&
+        Base::Tools::isValidPyIdentifier(name) &&
         !App::ExpressionParser::isTokenAConstant(name) &&
         !App::ExpressionParser::isTokenAUnit(name) &&
         !propertyExists(name);
@@ -497,7 +497,7 @@ bool DlgAddPropertyVarSet::isNameValid()
 bool DlgAddPropertyVarSet::isGroupValid()
 {
     std::string group = comboBoxGroup.currentText().toStdString();
-    return !group.empty() && group == Base::Tools::getIdentifier(group);
+    return !group.empty() && Base::Tools::isValidPyIdentifier(group);
 }
 
 bool DlgAddPropertyVarSet::isTypeValid()
@@ -526,7 +526,7 @@ void DlgAddPropertyVarSet::showStatusMessage()
     else if (name.empty()) {
         error.clear();
     }
-    else if (name != Base::Tools::getIdentifier(name)) {
+    else if (!Base::Tools::isValidPyIdentifier(name)) {
         error = tr("Invalid property name '%1'").arg(text);
     }
     else if (propertyExists(name)) {

@@ -480,7 +480,7 @@ bool DlgExpressionInput::isPropertyNameValid(const QString& nameProp,
         return false;
     }
 
-    if (name != Base::Tools::getIdentifier(name)) {
+    if (!Base::Tools::isValidPyIdentifier(name)) {
         message = withPrefix(tr(InvalidIdentifierMessage));
         return false;
     }
@@ -848,7 +848,7 @@ bool DlgExpressionInput::isGroupNameValid(const QString& nameGroup,
     }
     std::string name = nameGroup.toStdString();
 
-    if (name != Base::Tools::getIdentifier(name)) {
+    if (!Base::Tools::isValidPyIdentifier(name)) {
         message = withPrefix(tr(InvalidIdentifierMessage));
         return false;
     }

@@ -59,7 +59,7 @@ using namespace SketcherGui;
 bool SketcherGui::checkConstraintName(const Sketcher::SketchObject* sketch,
                                       std::string constraintName)
 {
-    if (constraintName != Base::Tools::getIdentifier(constraintName)) {
+    if (!Base::Tools::isValidPyIdentifier(constraintName)) {
         Gui::NotifyUserError(
             sketch,
             QT_TRANSLATE_NOOP("Notifications", "Value Error"),

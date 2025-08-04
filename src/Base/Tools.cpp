@@ -88,7 +88,7 @@ std::string unicodeCharToStdString(UChar32 c)
 
 };  // namespace
 
-std::string Base::Tools::getIdentifier(const std::string& name)
+std::string Base::Tools::getPyIdentifier(const std::string& name)
 {
     if (name.empty()) {
         return "_";
@@ -125,6 +125,11 @@ std::string Base::Tools::getIdentifier(const std::string& name)
     }
 
     return result.str();
+}
+
+bool Base::Tools::isValidPyIdentifier(const std::string& name)
+{
+    return (name == getPyIdentifier(name));
 }
 
 std::wstring Base::Tools::widen(const std::string& str)

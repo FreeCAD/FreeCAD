@@ -354,7 +354,8 @@ struct BaseExport Tools
      * @param String to be checked and sanitized.
      * @return A std::string that is a valid Python 3 identifier.
      */
-    static std::string getIdentifier(const std::string& name);
+    static std::string getPyIdentifier(const std::string& name);
+    static bool isValidPyIdentifier(const std::string& name);
     static std::wstring widen(const std::string& str);
     static std::string narrow(const std::wstring& str);
     static std::string escapedUnicodeFromUtf8(const char* s);
