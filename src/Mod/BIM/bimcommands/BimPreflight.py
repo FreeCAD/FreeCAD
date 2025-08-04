@@ -61,7 +61,7 @@ class BIM_Preflight:
     def GetResources(self):
         return {
             "Pixmap": "BIM_Preflight",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_Preflight", "Preflight Checks…"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_Preflight", "Preflight Checks"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_Preflight",
                 "Checks several characteristics of this model before exporting to IFC",
