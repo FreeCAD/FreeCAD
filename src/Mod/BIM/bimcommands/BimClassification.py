@@ -41,7 +41,7 @@ class BIM_Classification:
         return {
             "Pixmap": "BIM_Classification",
             "MenuText": QT_TRANSLATE_NOOP(
-                "BIM_Classification", "Manage Classification…"
+                "BIM_Classification", "Manage Classification"
             ),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_Classification",
