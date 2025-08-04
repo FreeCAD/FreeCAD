@@ -36,7 +36,7 @@ class BIM_IfcElements:
     def GetResources(self):
         return {
             "Pixmap": "BIM_IfcElements",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_IfcElements", "Manage IFC Elements…"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_IfcElements", "Manage IFC Elements"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_IfcElements",
                 "Manages how the different elements of the BIM project will be exported to IFC",
