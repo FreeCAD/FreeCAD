@@ -85,7 +85,7 @@ class BIM_Library:
     def GetResources(self):
         return {
             "Pixmap": "BIM_Library",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_Library", "Objects Library…"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_Library", "Objects Library"),
             "ToolTip": QT_TRANSLATE_NOOP("BIM_Library", "Opens the objects library"),
         }
 
