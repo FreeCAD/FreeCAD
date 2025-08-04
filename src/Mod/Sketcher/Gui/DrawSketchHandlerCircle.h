@@ -781,4 +781,3 @@ void DSHCircleController::addConstraints()
 
 
 #endif  // SKETCHERGUI_DrawSketchHandlerCircle_H
-
