@@ -727,22 +727,22 @@ PyObject* PropertyContainerPy::renameProperty(PyObject* args) const
     PY_CATCH
 }
 
-PyObject* PropertyContainerPy::moveProperty(PyObject* args) const
-{
-    char* name {};
-    PyObject* targetContainerObj {};
-    if (PyArg_ParseTuple(args, "sO", &name, &targetContainerObj) == 0) {
-        return nullptr;
-    }
+// PyObject* PropertyContainerPy::moveProperty(PyObject* args) const
+// {
+//     char* name {};
+//     PyObject* targetContainerObj {};
+//     if (PyArg_ParseTuple(args, "sO", &name, &targetContainerObj) == 0) {
+//         return nullptr;
+//     }
 
-    try {
-        PropertyContainer* targetContainer =
-            static_cast<PropertyContainerPy*>(targetContainerObj)->getPropertyContainerPtr();
-        Property* prop = getPropertyContainerPtr()->getDynamicPropertyByName(name);
-        prop->getContainer()->moveDynamicProperty(prop, targetContainer);
-        Py_Return;
-    }
-    catch (const Base::Exception& e) {
-        throw Py::RuntimeError(e.what());
-    }
-}
+//     try {
+//         PropertyContainer* targetContainer =
+//             static_cast<PropertyContainerPy*>(targetContainerObj)->getPropertyContainerPtr();
+//         Property* prop = getPropertyContainerPtr()->getDynamicPropertyByName(name);
+//         prop->getContainer()->moveDynamicProperty(prop, targetContainer);
+//         Py_Return;
+//     }
+//     catch (const Base::Exception& e) {
+//         throw Py::RuntimeError(e.what());
+//     }
+// }

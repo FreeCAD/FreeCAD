@@ -53,7 +53,7 @@ public:
     void onRelabeledDocument(const App::Document& doc) override;
     void onRenameDynamicProperty(const App::Property& prop, const char* oldName) override;
     void onMoveDynamicProperty(const App::Property& prop,
-                               const App::PropertyContainer& targetContainer) override;
+                               const App::DocumentObject& targetObj) override;
 
     void updateElementReference(App::DocumentObject* feature,
                                 bool reverse = false,

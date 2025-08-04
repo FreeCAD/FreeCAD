@@ -629,6 +629,7 @@ TEST_F(MoveProperty, updateExpressionMovedProp)
         App::Property* movedProp = nullptr;
         movedProp = varSet1Doc1->moveDynamicProperty(prop, varSet2Doc1);
         varSet1Doc1->ExpressionEngine.execute();
+        varSet2Doc1->ExpressionEngine.execute();
 
         // Assert after the move
         ASSERT_TRUE(movedProp != nullptr);

@@ -87,10 +87,10 @@ void PropertyExpressionContainer::slotRenameDynamicProperty(const App::Property&
 }
 
 void PropertyExpressionContainer::slotMoveDynamicProperty(const App::Property& prop,
-                                                          const App::PropertyContainer& targetContainer)
+                                                          const App::DocumentObject& targetObj)
 {
     for (auto container : _ExprContainers) {
-        container->onMoveDynamicProperty(prop, targetContainer);
+        container->onMoveDynamicProperty(prop, targetObj);
     }
 }
 
@@ -1239,13 +1239,18 @@ void PropertyExpressionEngine::onRenameDynamicProperty(const App::Property& prop
 }
 
 void PropertyExpressionEngine::onMoveDynamicProperty(const App::Property& prop,
-                                                     const PropertyContainer& targetContainer)
+                                                     const DocumentObject& targetObj)
 {
     FC_MSG("onMoveDynamicProperty():");
+    std::cout << "onMoveDynamicProperty()\n";
     ObjectIdentifier oldNameId = ObjectIdentifier(prop);
-    ObjectIdentifier newNameId = ObjectIdentifier(&targetContainer, std::string(prop.getName()));
-    FC_MSG("  container: " << getContainer()->getFullName());
+    ObjectIdentifier newNameId = ObjectIdentifier(&targetObj, std::string(prop.getName()));
+    if (getContainer() != nullptr) {
+        FC_MSG("  container: " << getContainer()->getFullName());
+        std::cout << "  container: " << getContainer()->getFullName() << "\n";
+    }
     FC_MSG("  renaming " << oldNameId.toString() << " -> " << newNameId.toString());
+    std::cout << "  renaming " << oldNameId.toString() << " -> " << newNameId.toString() <<"\n";
     const std::map<ObjectIdentifier, ObjectIdentifier> paths = {
         {oldNameId, newNameId},
     };

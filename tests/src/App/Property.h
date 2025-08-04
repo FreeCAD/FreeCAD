@@ -90,9 +90,9 @@ protected:
 
     void TearDown() override
     {
-        doc1->removeObject(varSet1Doc1->getNameInDocument());
-        doc1->removeObject(varSet2Doc1->getNameInDocument());
-        doc2->removeObject(varSetDoc2->getNameInDocument());
+        // doc1->removeObject(varSet1Doc1->getNameInDocument());
+        // doc1->removeObject(varSet2Doc1->getNameInDocument());
+        // doc2->removeObject(varSetDoc2->getNameInDocument());
     }
 
     static void TearDownTestSuite()

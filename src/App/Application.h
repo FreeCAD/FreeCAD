@@ -311,7 +311,7 @@ public:
     boost::signals2::signal<void (const App::Property&, const char*)> signalRenameDynamicProperty;
     /// signal on moving a dynamic property
     boost::signals2::signal<void (const App::Property&,
-                                  const App::PropertyContainer&)> signalMoveDynamicProperty;
+                                  const App::DocumentObject&)> signalMoveDynamicProperty;
     /// signal on about removing a dynamic property
     boost::signals2::signal<void (const App::Property&)> signalRemoveDynamicProperty;
     /// signal on about changing the editor mode of a property

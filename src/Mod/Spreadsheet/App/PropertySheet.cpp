@@ -1589,10 +1589,10 @@ void PropertySheet::onRenameDynamicProperty(const App::Property& prop, const cha
 }
 
 void PropertySheet::onMoveDynamicProperty(const App::Property& prop,
-                                          const App::PropertyContainer& targetContainer)
+                                          const App::DocumentObject& targetObj)
 {
     ObjectIdentifier oldNameId = ObjectIdentifier(prop);
-    ObjectIdentifier newNameId = ObjectIdentifier(&targetContainer, std::string(prop.getName()));
+    ObjectIdentifier newNameId = ObjectIdentifier(&targetObj, std::string(prop.getName()));
     const std::map<ObjectIdentifier, ObjectIdentifier> paths = {
         {oldNameId, newNameId},
     };

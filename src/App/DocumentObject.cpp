@@ -724,7 +724,7 @@ bool DocumentObject::renameDynamicProperty(Property* prop, const char* name)
 }
 
 Property* DocumentObject::moveDynamicProperty(Property* prop,
-                                              PropertyContainer* targetContainer)
+                                              DocumentObject* targetObj)
 {
     if (prop == nullptr) {
         FC_THROWM(Base::RuntimeError, "The property does not exist");
@@ -732,18 +732,18 @@ Property* DocumentObject::moveDynamicProperty(Property* prop,
 
     const char* propertyName = prop->getName();
 
-    if (targetContainer == nullptr) {
+    if (targetObj == nullptr) {
         FC_THROWM(Base::RuntimeError, "The target container does not exist");
     }
 
-    if (targetContainer == this) {
+    if (targetObj == this) {
         FC_THROWM(Base::RuntimeError,
                   "Cannot move property " << propertyName << " to its own container");
     }
 
-    if (targetContainer->getPropertyByName(propertyName) != nullptr) {
+    if (targetObj->getPropertyByName(propertyName) != nullptr) {
         FC_THROWM(Base::NameError,
-                  "Property " << targetContainer->getFullName() << '.' << propertyName << " already exists");
+                  "Property " << targetObj->getFullName() << '.' << propertyName << " already exists");
     }
 
     if (!prop->testStatus(App::Property::PropDynamic)) {
@@ -756,12 +756,6 @@ Property* DocumentObject::moveDynamicProperty(Property* prop,
                  "Property " << propertyName << " is locked");
     }
 
-    auto* targetObj = freecad_cast<DocumentObject*>(targetContainer);
-    if (targetObj == nullptr) {
-        FC_THROWM(Base::TypeError,
-                  "Container " << targetContainer->getFullName() << " is not a DocumentObject");
-    }
-
     if (!_pDoc || testStatus(ObjectStatus::Destroy)) {
         FC_THROWM(Base::RuntimeError,
                   "Object " << getFullName() << " is being destroyed");;
@@ -771,7 +765,20 @@ Property* DocumentObject::moveDynamicProperty(Property* prop,
         clearOutListCache();
     }
 
-    _pDoc->addOrRemovePropertyOfObject(this, prop, false);
+    if (_pDoc) {
+        _pDoc->addOrRemovePropertyOfObject(this, prop, false);
+    }
+
+    Property* newProp = targetObj->dynamicProps.addDynamicProperty(
+            *targetObj, prop->getTypeId().getName(), propertyName,
+            prop->getGroup(), prop->getDocumentation(), prop->getType(),
+            prop->isReadOnly(), prop->testStatus(Property::Hidden));
+    if (newProp == nullptr) {
+        FC_THROWM(Base::RuntimeError,
+                  "Failed to move property " << propertyName << " to container "
+                                             << targetObj->getFullName());
+    }
+    newProp->Paste(*prop);
 
     auto expressions = ExpressionEngine.getExpressions();
     std::vector<std::shared_ptr<Expression>> expressionsToMove;
@@ -789,14 +796,48 @@ Property* DocumentObject::moveDynamicProperty(Property* prop,
         ExpressionEngine.setValue(it, std::shared_ptr<Expression>());
     }
 
-    auto* newProp = TransactionalObject::moveDynamicProperty(prop, targetContainer);
-    if (newProp && _pDoc) {
+    //auto* newProp = TransactionalObject::moveDynamicProperty(prop, targetContainer);
+    if (_pDoc) {
         _pDoc->addOrRemovePropertyOfObject(targetObj, prop, true);
     }
 
+    std::cout << "  expressions to move:\n";
+
+    std::map<ObjectIdentifier, ObjectIdentifier> paths;
     ObjectIdentifier newPropId = ObjectIdentifier(*newProp);
     for (auto& it : expressionsToMove) {
+        std::cout << "    this expr: " << it->toString() << "\n";
+        //ExpressionPtr e = it->replaceObject(targetObj, this, this);
+        std::map<ObjectIdentifier, bool> ids = it->getIdentifiers();
+        // for each identifier, check whether it is local
+        // iterate over all the object identifiers of ids and discard the boolean value
+        // in the for loop deconstruct the pair
+        for (const auto& [id, _] : ids) {
+            if (!id.hasDocumentObjectName()) {
+                ObjectIdentifier newOne = ObjectIdentifier(id);
+                newOne.setDocumentObjectName(this, true);
+                paths.emplace(id, newOne);
+                std::cout << "    replacing: " << id.toString() << " with "
+                          << newOne.toString() << "\n";
+            }
+        }
+
+        std::cout << "    replaced with: " << it->toString() << "\n";
         targetObj->setExpression(newPropId, it);
+    }
+    
+    targetObj->ExpressionEngine.renameObjectIdentifiers(
+            paths);
+
+    GetApplication().signalMoveDynamicProperty(*prop, *targetObj);
+
+    bool isRemoved = dynamicProps.removeDynamicProperty(propertyName);
+
+    if (!isRemoved) {
+        targetObj->dynamicProps.removeDynamicProperty(newProp->getName());
+        FC_THROWM(Base::RuntimeError,
+                  "Failed to remove property " << propertyName << " from container "
+                                                << prop->getContainer()->getFullName());
     }
 
     return newProp;

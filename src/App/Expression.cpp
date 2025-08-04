@@ -1056,6 +1056,8 @@ public:
             DocumentObject *oldObj, DocumentObject *newObj)
         : parent(parent),oldObj(oldObj),newObj(newObj)
     {
+        std::cout << "ReplaceObjectExpressionVisitor: parent=" << parent->getFullName()
+                  << ", oldObj=" << oldObj->getFullName() << ", newObj=" << newObj->getFullName() << std::endl;
     }
 
     void visit(Expression &e) override {
@@ -2985,23 +2987,31 @@ bool VariableExpression::_renameObjectIdentifier(
     const ObjectIdentifier& path,
     ExpressionVisitor& visitor)
 {
+    std::cout << "VariableExpression::_renameObjectIdentifier()\n";
+    std::cout << "  path: " << path.toString() << "\n";
     const auto& oldPath = var.canonicalPath();
+    std::cout << "  oldPath: " << oldPath.toString() << "\n";
     auto it = paths.find(oldPath);
     if (it != paths.end()) {
         visitor.aboutToChange();
         const bool originalHasDocumentObjectName = var.hasDocumentObjectName();
+        std::cout << "  originalHasDocumentObjectName: " << originalHasDocumentObjectName << "\n";
         ObjectIdentifier::String originalDocumentObjectName = var.getDocumentObjectName();
+        std::cout << "  originalDocumentObjectName: " << originalDocumentObjectName.toString() << "\n";
         std::string originalSubObjectName = var.getSubObjectName();
         if (path.getOwner()) {
+            std::cout << "  there is an owner\n";
             var = it->second.relativeTo(path);
         }
         else {
+            std::cout << "  there is not an owner\n";
             var = it->second;
         }
         if (originalHasDocumentObjectName) {
             var.setDocumentObjectName(std::move(originalDocumentObjectName),
                                       true,
                                       originalSubObjectName);
+            std::cout << "  the document object name was set.";
         }
         return true;
     }
@@ -3015,7 +3025,7 @@ void VariableExpression::_collectReplacement(
         App::DocumentObject *newObj) const
 {
     ObjectIdentifier path;
-    if(var.replaceObject(path,parent,oldObj,newObj))
+    if (var.replaceObject(path,parent,oldObj,newObj))
         paths[var.canonicalPath()] = std::move(path);
 }
 

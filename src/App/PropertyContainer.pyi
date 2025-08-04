@@ -226,16 +226,16 @@ class PropertyContainer(Persistence):
         """
         ...
 
-    @constmethod
-    def moveProperty(self, name: str, targetContainer: PropertyContainer) -> None:
-        """
-        moveProperty(name, targetContainer) -> None
+    # @constmethod
+    # def moveProperty(self, name: str, targetContainer: PropertyContainer) -> None:
+    #     """
+    #     moveProperty(name, targetContainer) -> None
 
-        Move a property to the target container.
+    #     Move a property to the target container.
 
-        name : str
-            The name of the property to move.
-        targetContainer : PropertyContainer
-            The target container to move the property to.
-        """
-        ...
+    #     name : str
+    #         The name of the property to move.
+    #     targetContainer : PropertyContainer
+    #         The target container to move the property to.
+    #     """
+    #     ...

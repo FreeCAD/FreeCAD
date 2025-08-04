@@ -552,6 +552,7 @@ public:
       return dynamicProps.renameDynamicProperty(prop, name);
   }
 
+#if 0
   /**
    * @brief Move the dynamic property to a a container..
    *
@@ -571,6 +572,7 @@ public:
       }
       return dynamicProps.moveDynamicProperty(prop, targetContainer);
   }
+#endif
 
   /**
    * @brief Remove a dynamic property.

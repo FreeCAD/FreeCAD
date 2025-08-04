@@ -465,6 +465,7 @@ bool DynamicProperty::renameDynamicProperty(Property* prop,
     return true;
 }
 
+#if 0
 Property* DynamicProperty::moveDynamicProperty(Property* prop,
                                                PropertyContainer* targetContainer)
 {
@@ -510,6 +511,7 @@ Property* DynamicProperty::moveDynamicProperty(Property* prop,
 
     return newProp;
 }
+#endif
 
 const char* DynamicProperty::getPropertyName(const Property* prop) const
 {
