@@ -1099,6 +1099,14 @@ bool TaskFilletEdges::reject()
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
     return true;
 }
+void TaskFilletEdges::activate()
+{
+    widget->attachSelection();
+}
+void TaskFilletEdges::deactivate()
+{
+    widget->detachSelection();
+}
 
 // --------------------------------------------------------------
 
