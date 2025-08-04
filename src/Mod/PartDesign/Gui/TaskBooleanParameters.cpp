@@ -429,9 +429,15 @@ bool TaskDlgBooleanParameters::reject()
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
     }
 
-
-
     return true;
+}
+void TaskDlgBooleanParameters::activate()
+{
+    parameter->attachSelection();
+}
+void TaskDlgBooleanParameters::deactivate()
+{
+    parameter->detachSelection();
 }
 
 

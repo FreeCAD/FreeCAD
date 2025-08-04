@@ -421,5 +421,13 @@ bool TaskDlgShapeBinder::reject()
     }
     return true;
 }
+void TaskDlgShapeBinder::activate()
+{
+    parameter->attachSelection();
+}
+void TaskDlgShapeBinder::deactivate()
+{
+    parameter->detachSelection();
+}
 
 #include "moc_TaskShapeBinder.cpp"
