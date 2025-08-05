@@ -112,7 +112,7 @@ void TaskSelectLineAttributes::changeEvent(QEvent *e)
 
 void TaskSelectLineAttributes::setUiEdit()
 {
-    setWindowTitle(tr("Select line attributes"));
+    setWindowTitle(tr("Select Line Attributes"));
     int lineStyle = LineFormat::getCurrentLineFormat().getStyle();
     // line numbering starts at 1, not 0
     DrawGuiUtil::loadLineStyleChoices(ui->cbLineStyle, m_lineGenerator);

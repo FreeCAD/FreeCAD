@@ -59,9 +59,9 @@ class CommandSprocket:
 
     def GetResources(self):
         return {'Pixmap'  : 'PartDesign_Sprocket',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PartDesign_Sprocket","Sprocket..."),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("PartDesign_Sprocket","Sprocket"),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PartDesign_Sprocket","Creates or edit the sprocket definition.")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PartDesign_Sprocket","Creates or edits the sprocket definition.")}
 
     def Activated(self):
 

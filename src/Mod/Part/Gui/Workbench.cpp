@@ -85,7 +85,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_Tube";
 
     Gui::MenuItem* copy = new Gui::MenuItem;
-    copy->setCommand("Create a copy");
+    copy->setCommand("Copy");
     *copy << "Part_SimpleCopy"
           << "Part_TransformedCopy"
           << "Part_ElementCopy"
@@ -121,10 +121,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* part = new Gui::MenuItem;
     root->insertItem(item, part);
     part->setCommand("&Part");
-    *part << "Part_Import"
-          << "Part_Export"
-          << "Separator"
-          << "Part_BoxSelection"
+    *part << "Part_BoxSelection"
           << "Separator";
     *part << prim
           << "Part_Primitives"
@@ -135,17 +132,13 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_MakeSolid"
           << "Part_ReverseShape"
           << copy
-          << "Part_CheckGeometry"
-          << "Part_Defeaturing"
-          << "Materials_InspectAppearance"
-          << "Materials_InspectMaterial"
           << "Separator"
           << bop << join << split << compound
           << "Separator";
     if (hasSketcher) {
       *part << "Sketcher_NewSketch";
     }
-      *part << "Part_Extrude"
+    *part << "Part_Extrude"
           << "Part_Revolve"
           << "Part_Mirror"
           << "Part_Scale"
@@ -161,8 +154,14 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_Offset2D"
           << "Part_Thickness"
           << "Part_ProjectionOnSurface"
+          << "Part_SectionCut"
           << "Separator"
-          << "Part_EditAttachment";
+          << "Part_EditAttachment"
+          << "Separator"
+          << "Part_CheckGeometry"
+          << "Part_Defeaturing"
+          << "Materials_InspectAppearance"
+          << "Materials_InspectMaterial";
 
     Gui::MenuItem* view = root->findItem("&View");
     if (view) {

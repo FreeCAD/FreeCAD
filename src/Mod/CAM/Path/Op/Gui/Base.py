@@ -1292,8 +1292,8 @@ class CommandSetStartPoint:
     def GetResources(self):
         return {
             "Pixmap": "CAM_StartPoint",
-            "MenuText": QT_TRANSLATE_NOOP("PathOp", "Pick Start Point"),
-            "ToolTip": QT_TRANSLATE_NOOP("PathOp", "Pick Start Point"),
+            "MenuText": QT_TRANSLATE_NOOP("PathOp", "Start Point Selection"),
+            "ToolTip": QT_TRANSLATE_NOOP("PathOp", "Selects the start point"),
         }
 
     def IsActive(self):
@@ -1416,4 +1416,4 @@ def SetupOperation(name, objFactory, opPageClass, pixmap, menuText, toolTip, set
 
 FreeCADGui.addCommand("CAM_SetStartPoint", CommandSetStartPoint())
 
-FreeCAD.Console.PrintLog("Loading PathOpGui... done\n")
+FreeCAD.Console.PrintLog("Loading PathOpGui… done\n")

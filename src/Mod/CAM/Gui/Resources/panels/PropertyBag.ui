@@ -52,14 +52,14 @@
       <item>
        <widget class="QPushButton" name="modify">
         <property name="text">
-         <string>Modify...</string>
+         <string>Modify</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="add">
         <property name="text">
-         <string>Add...</string>
+         <string>Add</string>
         </property>
        </widget>
       </item>

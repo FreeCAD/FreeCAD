@@ -462,10 +462,10 @@ SET(Tools_Shape_SRCS
     Tools/Shape/slittingsaw.svg
     Tools/Shape/tap.fcstd
     Tools/Shape/tap.svg
-    Tools/Shape/threadmill.fcstd
-    Tools/Shape/threadmill.svg
-    Tools/Shape/vbit.fcstd
-    Tools/Shape/vbit.svg
+    Tools/Shape/thread-mill.fcstd
+    Tools/Shape/thread-mill.svg
+    Tools/Shape/v-bit.fcstd
+    Tools/Shape/v-bit.svg
 )
 
 SET(Tests_SRCS

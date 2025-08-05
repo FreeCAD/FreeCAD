@@ -250,6 +250,187 @@ class TestLoft(unittest.TestCase):
         self.assertAlmostEqual(pad.Shape.Volume, frustumVolume + padVolume)     # contains volume of previous in Body
         self.assertAlmostEqual(body.Shape.Volume, frustumVolume + padVolume)    # Overall body volume matches
 
+    def testTwoFacesAdditiveLoftCase(self):
+        """Test issue #19183: Loft tool "Loft between faces no longer works"""
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+
+        sketch1 = body.newObject("Sketcher::SketchObject", "Sketch")
+
+        sketch1.addGeometry(
+            Part.LineSegment(
+                Base.Vector(-2.060394, -1.332045, 0),
+                Base.Vector(-19.922129, -27.589359, 0),
+            ),
+            False,
+        )
+        sketch1.addGeometry(
+            Part.LineSegment(
+                Base.Vector(1.940183, -1.501086, 0),
+                Base.Vector(16.928263, -28.265512, 0),
+            ),
+            False,
+        )
+        sketch1.addGeometry(
+            Part.ArcOfCircle(
+                Part.Circle(
+                    Base.Vector(0.418837, -1.275699, 0), Base.Vector(0, 0, 1), 32.879378
+                ),
+                -1.751723,
+                -1.454683,
+            ),
+            False,
+        )
+        sketch1.addGeometry(
+            Part.ArcOfCircle(
+                Part.Circle(
+                    Base.Vector(-9.385396, -30.124937, 0),
+                    Base.Vector(0, 0, 1),
+                    8.359959,
+                ),
+                2.847554,
+                4.831818,
+            ),
+            False,
+        )
+        sketch1.addGeometry(
+            Part.ArcOfCircle(
+                Part.Circle(
+                    Base.Vector(3.236143, -29.279745, 0),
+                    Base.Vector(0, 0, 1),
+                    11.449505,
+                ),
+                -1.076432,
+                0.044306,
+            ),
+            False,
+        )
+        sketch1.addConstraint(Sketcher.Constraint("Coincident", 0, 1, 1, 1))
+        sketch1.addConstraint(Sketcher.Constraint("Coincident", 0, 1, 2, 3))
+        sketch1.addConstraint(Sketcher.Constraint("Coincident", 0, 1, -1, 1))
+        sketch1.addConstraint(Sketcher.Constraint("Tangent", 0, 2, 3, 1))
+        sketch1.addConstraint(Sketcher.Constraint("Tangent", 1, 2, 4, 2))
+        sketch1.addConstraint(Sketcher.Constraint("Tangent", 2, 1, 3, 2))
+        sketch1.addConstraint(Sketcher.Constraint("Tangent", 2, 2, 4, 1))
+        sketch1.addConstraint(Sketcher.Constraint("Symmetric", 0, 2, 1, 2, -2))
+        sketch1.addConstraint(Sketcher.Constraint("Symmetric", 2, 1, 2, 2, -2))
+        sketch1.delConstraint(8)
+        sketch1.addConstraint(Sketcher.Constraint("Radius", 2, 39.936694))
+        sketch1.setDatum(8, Units.Quantity("40.000000 mm"))
+        sketch1.addConstraint(Sketcher.Constraint("DistanceX", 2, 1, 2, 2, 16.771341))
+        sketch1.setDatum(9, Units.Quantity("10.000000 mm"))
+        sketch1.addConstraint(Sketcher.Constraint("Distance", 0, 30.965710))
+        sketch1.setDatum(10, Units.Quantity("30.000000 mm"))
+
+        sketch2 = body.newObject("Sketcher::SketchObject", "Sketch001")
+        sketch2.addGeometry(
+            Part.LineSegment(
+                Base.Vector(-2.060394, -1.332045, 0),
+                Base.Vector(-19.922129, -27.589359, 0),
+            ),
+            False,
+        )
+        sketch2.addGeometry(
+            Part.LineSegment(
+                Base.Vector(1.940183, -1.501086, 0),
+                Base.Vector(16.928263, -28.265512, 0),
+            ),
+            False,
+        )
+        sketch2.addGeometry(
+            Part.ArcOfCircle(
+                Part.Circle(
+                    Base.Vector(0.418837, -1.275699, 0), Base.Vector(0, 0, 1), 32.879378
+                ),
+                -1.751723,
+                -1.454683,
+            ),
+            False,
+        )
+        sketch2.addGeometry(
+            Part.ArcOfCircle(
+                Part.Circle(
+                    Base.Vector(-9.385396, -30.124937, 0),
+                    Base.Vector(0, 0, 1),
+                    8.359959,
+                ),
+                2.847554,
+                4.831818,
+            ),
+            False,
+        )
+        sketch2.addGeometry(
+            Part.ArcOfCircle(
+                Part.Circle(
+                    Base.Vector(3.236143, -29.279745, 0),
+                    Base.Vector(0, 0, 1),
+                    11.449505,
+                ),
+                -1.076432,
+                0.044306,
+            ),
+            False,
+        )
+        sketch2.addConstraint(Sketcher.Constraint("Coincident", 0, 1, 1, 1))
+        sketch2.addConstraint(Sketcher.Constraint("Coincident", 0, 1, 2, 3))
+        sketch2.addConstraint(Sketcher.Constraint("Coincident", 0, 1, -1, 1))
+        sketch2.addConstraint(Sketcher.Constraint("Tangent", 0, 2, 3, 1))
+        sketch2.addConstraint(Sketcher.Constraint("Tangent", 1, 2, 4, 2))
+        sketch2.addConstraint(Sketcher.Constraint("Tangent", 2, 1, 3, 2))
+        sketch2.addConstraint(Sketcher.Constraint("Tangent", 2, 2, 4, 1))
+        sketch2.addConstraint(Sketcher.Constraint("Symmetric", 0, 2, 1, 2, -2))
+        sketch2.addConstraint(Sketcher.Constraint("Symmetric", 2, 1, 2, 2, -2))
+        sketch2.delConstraint(8)
+        sketch2.addConstraint(Sketcher.Constraint("Radius", 2, 39.936694))
+        sketch2.setDatum(8, Units.Quantity("30.000000 mm"))
+        sketch2.addConstraint(Sketcher.Constraint("Radius", 3, 1.020288))
+        sketch2.setDatum(9, Units.Quantity("3.600000 mm"))
+        sketch2.addConstraint(Sketcher.Constraint("DistanceX", 2, 1, 2, 2, 10.926759))
+        sketch2.setDatum(10, Units.Quantity("10.000000 mm"))
+        self.Doc.recompute()
+
+        pad1 = body.newObject("PartDesign::Pad", "Pad")
+
+        pad1.Profile = sketch1
+        pad1.Length = 10.000000
+        pad1.TaperAngle = 0.000000
+        pad1.Reversed = 1
+        self.Doc.recompute()
+        sketch1.Visibility = False
+
+        pad2 = body.newObject("PartDesign::Pad", "Pad001")
+
+        pad2.Profile = sketch2
+        pad2.Length = 10.000000
+        pad2.TaperAngle = 0.000000
+        self.Doc.recompute()
+        sketch2.Visibility = False
+        pad1.Visibility = False
+        pad2.Visibility = True
+        body.Tip = pad2
+        self.assertGreater(pad2.Shape.Volume, 8715.0)  # 8720.024151557787 pre-Loft
+
+        loft = body.newObject("PartDesign::AdditiveLoft", "AdditiveLoft")
+        loft.Profile = (
+            self.Doc.getObject("Pad001"),
+            [
+                "Face7",
+            ],
+        )
+        loft.Sections = [
+            (
+                self.Doc.getObject("Pad001"),
+                [
+                    "Face10",
+                ],
+            )
+        ]
+        loft.Closed = False
+
+        self.Doc.recompute()
+        body.Tip = loft
+        self.assertGreater(body.Shape.Volume, 9220.0)  # 9221.776241582389 post-Loft
+        self.Doc.recompute()
+
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument("PartDesignTestLoft")

@@ -102,7 +102,7 @@ class BIM_Material:
             searchLayout = QtGui.QHBoxLayout()
             searchLayout.setSpacing(2)
             searchBox = MatLineEdit(self.dlg)
-            searchBox.setPlaceholderText(translate("BIM", "Search..."))
+            searchBox.setPlaceholderText(translate("BIM", "Search…"))
             searchBox.setToolTip(translate("BIM", "Searches object labels"))
             self.dlg.searchBox = searchBox
             searchLayout.addWidget(searchBox)
@@ -184,7 +184,7 @@ class BIM_Material:
             context1.triggered.connect(self.onStartRename)
             context2 = self.contextMenu.addAction(translate("BIM", "Duplicate"))
             context2.triggered.connect(self.onDuplicate)
-            context3 = self.contextMenu.addAction(translate("BIM", "Merge to..."))
+            context3 = self.contextMenu.addAction(translate("BIM", "Merge To…"))
             context3.triggered.connect(self.onMergeTo)
             context4 = self.contextMenu.addAction(translate("BIM", "Delete"))
             context4.triggered.connect(self.onDelete)
@@ -629,7 +629,7 @@ class Arch_MaterialToolsCommand:
     def GetCommands(self):
         return tuple(['Arch_Material','Arch_MultiMaterial'])
     def GetResources(self):
-        return { 'MenuText': QT_TRANSLATE_NOOP("Arch_MaterialTools",'Material tools'),
+        return { 'MenuText': QT_TRANSLATE_NOOP("Arch_MaterialTools",'Material Tools'),
                  'ToolTip': QT_TRANSLATE_NOOP("Arch_MaterialTools",'Material tools')
                }
     def IsActive(self):

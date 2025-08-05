@@ -85,8 +85,8 @@ CmdPartDesignBody::CmdPartDesignBody()
 {
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
-    sMenuText     = QT_TR_NOOP("Create body");
-    sToolTipText  = QT_TR_NOOP("Create a new body and make it active");
+    sMenuText     = QT_TR_NOOP("New Body");
+    sToolTipText  = QT_TR_NOOP("Creates a new body and activtes it");
     sWhatsThis    = "PartDesign_Body";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Body";
@@ -112,12 +112,12 @@ void CmdPartDesignBody::activated(int iMsg)
                     PartDesign::Body::findBodyOf ( baseFeature ) ) {
                 // Prevent creating bodies based on features already belonging to other bodies
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Bad base feature"),
-                        QObject::tr("Body can't be based on a PartDesign feature."));
+                        QObject::tr("A body cannot be based on a Part Design feature."));
                 baseFeature = nullptr;
             }
             else if (PartDesign::Body::findBodyOf ( baseFeature )){
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Bad base feature"),
-                        QObject::tr("%1 already belongs to a body, can't use it as base feature for another body.")
+                        QObject::tr("%1 already belongs to a body and cannot be used as a base feature for another body.")
                                      .arg(QString::fromUtf8(baseFeature->Label.getValue())));
                 baseFeature = nullptr;
             }
@@ -313,7 +313,7 @@ CmdPartDesignMigrate::CmdPartDesignMigrate()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Migrate");
-    sToolTipText  = QT_TR_NOOP("Migrate document to the modern PartDesign workflow");
+    sToolTipText  = QT_TR_NOOP("Migrates the document to the modern Part Design workflow");
     sWhatsThis    = "PartDesign_Migrate";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Migrate";
@@ -343,7 +343,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
         } else {
             // Huh? nothing to migrate?
             QMessageBox::warning ( nullptr, QObject::tr ( "Nothing to migrate" ),
-                    QObject::tr ( "No PartDesign features found that don't belong to a body."
+                    QObject::tr ( "No Part Design features found that do not belong to a body."
                         " Nothing to migrate." ) );
         }
         return;
@@ -429,7 +429,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
     }
 
     // do the actual migration
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Migrate legacy Part Design features to Bodies"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Migrate legacy Part Design features to bodies"));
 
     for ( auto chainIt = featureChains.begin(); !featureChains.empty();
             featureChains.erase (chainIt), chainIt = featureChains.begin () ) {
@@ -527,8 +527,8 @@ CmdPartDesignMoveTip::CmdPartDesignMoveTip()
 {
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
-    sMenuText     = QT_TR_NOOP("Set tip");
-    sToolTipText  = QT_TR_NOOP("Move the tip of the body");
+    sMenuText     = QT_TR_NOOP("Set Tip");
+    sToolTipText  = QT_TR_NOOP("Moves the tip of the body to the selected feature");
     sWhatsThis    = "PartDesign_MoveTip";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_MoveTip";
@@ -555,11 +555,11 @@ void CmdPartDesignMoveTip::activated(int iMsg)
 
     if (!selFeature) {
         QMessageBox::warning (nullptr, QObject::tr( "Selection error" ),
-                QObject::tr( "Select exactly one PartDesign feature or a body." ) );
+                QObject::tr( "Select exactly one Part Design feature or a body." ) );
         return;
     } else if (!body) {
         QMessageBox::warning (nullptr, QObject::tr( "Selection error" ),
-                QObject::tr( "Couldn't determine a body for the selected feature '%s'.", selFeature->Label.getValue() ) );
+                QObject::tr( "Could not determine a body for the selected feature '%s'.", selFeature->Label.getValue() ) );
         return;
     } else if ( !selFeature->isDerivedFrom(PartDesign::Feature::getClassTypeId () ) &&
             selFeature != body && body->BaseFeature.getValue() != selFeature ) {
@@ -606,7 +606,7 @@ CmdPartDesignDuplicateSelection::CmdPartDesignDuplicateSelection()
 {
     sAppModule      = "PartDesign";
     sGroup          = QT_TR_NOOP("PartDesign");
-    sMenuText       = QT_TR_NOOP("Duplicate selected &object");
+    sMenuText       = QT_TR_NOOP("Duplicate &Object");
     sToolTipText    = QT_TR_NOOP("Duplicates the selected object and adds it to the active body");
     sWhatsThis      = "PartDesign_DuplicateSelection";
     sStatusTip      = sToolTipText;
@@ -619,7 +619,7 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
 
     std::vector<App::DocumentObject*> beforeFeatures = getDocument()->getObjects();
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Duplicate a PartDesign object"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Duplicate a Part Design object"));
     doCommand(Doc,"FreeCADGui.runCommand('Std_DuplicateSelection')");
 
     if (pcActiveBody) {
@@ -666,7 +666,7 @@ CmdPartDesignMoveFeature::CmdPartDesignMoveFeature()
 {
     sAppModule      = "PartDesign";
     sGroup          = QT_TR_NOOP("PartDesign");
-    sMenuText       = QT_TR_NOOP("Move object to other body");
+    sMenuText       = QT_TR_NOOP("Move Object To…");
     sToolTipText    = QT_TR_NOOP("Moves the selected object to another body");
     sWhatsThis      = "PartDesign_MoveFeature";
     sStatusTip      = sToolTipText;
@@ -709,7 +709,7 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
     if (source_bodies.size() != 1) {
         //show messagebox and cancel
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Features cannot be moved"),
-            QObject::tr("Only features of a single source Body can be moved"));
+            QObject::tr("Only features of a single source body can be moved"));
         return;
     }
 
@@ -833,8 +833,8 @@ CmdPartDesignMoveFeatureInTree::CmdPartDesignMoveFeatureInTree()
 {
     sAppModule      = "PartDesign";
     sGroup          = QT_TR_NOOP("PartDesign");
-    sMenuText       = QT_TR_NOOP("Move object after other object");
-    sToolTipText    = QT_TR_NOOP("Moves the selected object and insert it after another object");
+    sMenuText = QT_TR_NOOP("Move Feature After…");
+    sToolTipText    = QT_TR_NOOP("Moves the selected feature after another feature in the same body");
     sWhatsThis      = "PartDesign_MoveFeatureInTree";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_MoveFeatureInTree";
@@ -887,17 +887,22 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
         items.push_back( QString::fromUtf8 ( feat->Label.getValue() ) );
     }
 
-    QString text = QInputDialog::getItem(Gui::getMainWindow(),
-        qApp->translate("PartDesign_MoveFeatureInTree", "Select feature"),
+    QString text = QInputDialog::getItem(
+        Gui::getMainWindow(),
+        qApp->translate("PartDesign_MoveFeatureInTree", "Move Feature After…"),
         qApp->translate("PartDesign_MoveFeatureInTree", "Select a feature from the list"),
-        items, 0, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
+        items,
+        0,
+        false,
+        &ok,
+        Qt::MSWindowsFixedSizeDialogHint);
     if (!ok)
         return;
     int index = items.indexOf(text);
     // first object is the beginning of the body
     App::DocumentObject* target = index != 0 ? model[index-1] : nullptr;
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Move an object inside tree"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Move a feature inside body"));
 
     App::DocumentObject* lastObject = target;
     for ( auto feat: features ) {
@@ -959,9 +964,9 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
         && lastObject->isDerivedFrom<PartDesign::Feature>() ) {
         QMessageBox msgBox(Gui::getMainWindow());
         msgBox.setIcon(QMessageBox::Question);
-        msgBox.setWindowTitle(qApp->translate("PartDesign_MoveFeatureInTree", "Move tip"));
+        msgBox.setWindowTitle(qApp->translate("PartDesign_MoveFeatureInTree", "Move Tip"));
         msgBox.setText(qApp->translate("PartDesign_MoveFeatureInTree", "The moved feature appears after the currently set tip."));
-        msgBox.setInformativeText(qApp->translate("PartDesign_MoveFeatureInTree", "Do you want the last feature to be the new tip?"));
+        msgBox.setInformativeText(qApp->translate("PartDesign_MoveFeatureInTree", "Set tip to last feature?"));
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setDefaultButton(QMessageBox::No);
         int ret = msgBox.exec();

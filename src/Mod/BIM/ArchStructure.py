@@ -203,7 +203,7 @@ class CommandStructuresFromSelection:
     def GetResources(self):
         return {'Pixmap': 'Arch_MultipleStructures',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_StructuresFromSelection", "Multiple Structures"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_StructuresFromSelection", "Create multiple BIM Structures from a selected base, using each selected edge as an extrusion path")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_StructuresFromSelection", "Creates multiple BIM Structures from a selected base, using each selected edge as an extrusion path")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -229,7 +229,7 @@ class CommandStructuresFromSelection:
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
         else:
-            FreeCAD.Console.PrintError(translate("Arch", "Please select the base object first and then the edges to use as extrusion paths") + "\n")
+            FreeCAD.Console.PrintError(translate("Arch", "Select the base object first and then the edges to use as extrusion paths") + "\n")
 
 
 class CommandStructuralSystem:
@@ -263,7 +263,7 @@ class CommandStructuralSystem:
                 FreeCAD.ActiveDocument.commitTransaction()
                 FreeCAD.ActiveDocument.recompute()
             else:
-                FreeCAD.Console.PrintError(translate("Arch", "Please select at least an axis object") + "\n")
+                FreeCAD.Console.PrintError(translate("Arch", "Select at least an axis object") + "\n")
 
 
 class _CommandStructure:
@@ -856,7 +856,7 @@ class _Structure(ArchComponent.Component):
                     try:
                         shi = evi.makePipe(shi)
                     except Part.OCCError:
-                        FreeCAD.Console.PrintError(translate("Arch","Error: The base shape couldn't be extruded along this tool object")+"\n")
+                        FreeCAD.Console.PrintError(translate("Arch","Error: The base shape could not be extruded along this tool object")+"\n")
                         return
                 base.append(shi)
                 extrusion_length += evi.Length
@@ -1364,7 +1364,7 @@ class StructureTaskPanel(ArchComponent.ComponentTaskPanel):
 
         self.selectToolButton = QtGui.QPushButton(self.extrusion_widget)
         self.selectToolButton.setIcon(QtGui.QIcon())
-        self.selectToolButton.setText(QtGui.QApplication.translate("Arch", "Select tool...", None))
+        self.selectToolButton.setText(QtGui.QApplication.translate("Arch", "Select Tool", None))
         self.selectToolButton.setToolTip(QtGui.QApplication.translate("Arch", "Select object or edges to be used as a Tool (extrusion path)", None))
         lay.addWidget(self.selectToolButton)
         QtCore.QObject.connect(self.selectToolButton, QtCore.SIGNAL("clicked()"), self.setSelectionFromTool)
@@ -1498,7 +1498,7 @@ class StructureTaskPanel(ArchComponent.ComponentTaskPanel):
         self.Object.Tool = objectList
         QtCore.QObject.disconnect(self.selectToolButton, QtCore.SIGNAL("clicked()"), self.setToolFromSelection)
         QtCore.QObject.connect(self.selectToolButton, QtCore.SIGNAL("clicked()"), self.setSelectionFromTool)
-        self.selectToolButton.setText(QtGui.QApplication.translate("Arch", "Select tool...", None))
+        self.selectToolButton.setText(QtGui.QApplication.translate("Arch", "Select Tool", None))
 
     def accept(self):
 
@@ -1588,7 +1588,7 @@ class _StructuralSystem(ArchComponent.Component): # OBSOLETE - All Arch objects 
                             if base.Volume < 0:
                                 base.reverse()
                             if base.Volume < 0:
-                                FreeCAD.Console.PrintError(translate("Arch","Couldn't compute a shape"))
+                                FreeCAD.Console.PrintError(translate("Arch","Could not compute a shape"))
                                 return
                             base = base.removeSplitter()
                             obj.Shape = base
@@ -1648,7 +1648,7 @@ if FreeCAD.GuiUp:
         def GetCommands(self):
             return ("Arch_Structure", "Arch_StructuralSystem", "Arch_StructuresFromSelection")
         def GetResources(self):
-            return { "MenuText": QT_TRANSLATE_NOOP("Arch_StructureTools", "Structure tools"),
+            return { "MenuText": QT_TRANSLATE_NOOP("Arch_StructureTools", "Structure Tools"),
                      "ToolTip": QT_TRANSLATE_NOOP("Arch_StructureTools", "Structure tools")
                    }
         def IsActive(self):

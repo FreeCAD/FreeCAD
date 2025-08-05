@@ -68,6 +68,18 @@ class DetachedDocumentObject:
                 # Initialize Quantity properties with a default value
                 self._properties[name] = FreeCAD.Units.Quantity(0.0)
 
+    def removeProperty(self, name: str) -> None:
+        """Removes a property from the detached object."""
+        if name in self._properties:
+            if name in self.PropertiesList:
+                self.PropertiesList.remove(name)
+            del self._properties[name]
+            self._property_groups.pop(name, None)
+            self._property_types.pop(name, None)
+            self._property_docs.pop(name, None)
+            self._editor_modes.pop(name, None)
+            self._property_enums.pop(name, None)
+
     def getPropertyByName(self, name: str) -> Any:
         """Mimics FreeCAD DocumentObject.getPropertyByName."""
         return self._properties.get(name)

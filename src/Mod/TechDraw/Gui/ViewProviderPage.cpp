@@ -84,7 +84,7 @@ ViewProviderPage::ViewProviderPage()
 
     // NOLINTBEGIN
     ADD_PROPERTY_TYPE(ShowGrid, (PreferencesGui::showGrid()), group, App::Prop_None,
-                      "Show or hide a grid on this Page");
+                      "Show or hide a grid on this page");
     ADD_PROPERTY_TYPE(GridSpacing, (PreferencesGui::gridSpacing()), group,
                       (App::PropertyType::Prop_None), "Grid line spacing in mm");
     // NOLINTEND
@@ -229,6 +229,7 @@ void ViewProviderPage::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     QAction* act = menu->addAction(QObject::tr("Show drawing"), receiver, member);
     act->setData(QVariant((int)ShowDrawing));
     QAction* act2 = menu->addAction(QObject::tr("Toggle Keep Updated"), receiver, member);
+
     act2->setData(QVariant((int)ToggleUpdate));
 }
 

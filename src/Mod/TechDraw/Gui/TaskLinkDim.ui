@@ -51,7 +51,7 @@
           <item>
            <widget class="QLabel" name="lblLinkThis">
             <property name="text">
-             <string>Link This 3D Geometry</string>
+             <string>Link this 3D geometry</string>
             </property>
            </widget>
           </item>
@@ -150,7 +150,7 @@
           <item>
            <widget class="QLabel" name="lblToThese">
             <property name="text">
-             <string>To These Dimensions</string>
+             <string>To these dimensions</string>
             </property>
            </widget>
           </item>

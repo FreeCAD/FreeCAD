@@ -36,7 +36,7 @@
         </property>
         <property name="text">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can reorder workbenches by drag and drop or sort them by right-clicking on any workbench and select &lt;span style=&quot;  font-weight:600; font-style:italic;&quot;&gt;Sort alphabetically&lt;/span&gt;. Additional workbenches can be installed through the addon manager.&lt;/p&gt;&lt;p&gt;
-Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+Currently installed workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -75,14 +75,14 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
         <item>
          <widget class="QLabel" name="WorkbenchSelectorItemLabel">
           <property name="text">
-           <string>Workbench selector items style:</string>
+           <string>Workbench selector items style</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QComboBox" name="WorkbenchSelectorItem">
           <property name="toolTip">
-           <string>Customize how the items are displayed.</string>
+           <string>Customizes how the items are displayed</string>
           </property>
          </widget>
         </item>
@@ -108,14 +108,14 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
         <item>
          <widget class="QLabel" name="WorkbenchSelectorTypeLabel">
           <property name="text">
-           <string>Workbench selector type:</string>
+           <string>Workbench selector type</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QComboBox" name="WorkbenchSelectorType">
           <property name="toolTip">
-           <string>Choose the workbench selector widget type (restart required).</string>
+           <string>Choose the workbench selector widget type (restart required)</string>
           </property>
          </widget>
         </item>
@@ -150,14 +150,14 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
         <item>
          <widget class="QLabel" name="autoModuleLabel">
           <property name="text">
-           <string>Start up workbench:</string>
+           <string>Default workbench</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QComboBox" name="AutoloadModuleCombo">
           <property name="toolTip">
-           <string>Choose which workbench will be activated and shown
+           <string>Changes which workbench will be activated and shown
 after FreeCAD launches</string>
           </property>
          </widget>
@@ -167,7 +167,7 @@ after FreeCAD launches</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="CheckBox_WbByTab">
         <property name="toolTip">
-         <string>If checked, application will remember which workbench is active for each tab of the viewport</string>
+         <string>Remembers which workbench is active for each tab of the viewport</string>
         </property>
         <property name="text">
          <string>Remember active workbench by tab</string>

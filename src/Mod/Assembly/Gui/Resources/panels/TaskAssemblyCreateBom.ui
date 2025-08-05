@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Create Bill Of Materials</string>
+   <string>Bill of Materials</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0" colspan="2">
     <widget class="Gui::PrefCheckBox" name="CheckBox_detailSubAssemblies">
      <property name="toolTip">
-      <string>If checked, Sub assemblies children will be added to the bill of materials.</string>
+      <string>Includes children of sub-assemblies in the bill of materials</string>
      </property>
      <property name="text">
       <string>Sub-assemblies children</string>
@@ -36,7 +36,7 @@
    <item row="1" column="0" colspan="2">
     <widget class="Gui::PrefCheckBox" name="CheckBox_detailParts">
      <property name="toolTip">
-      <string>If checked, Parts children will be added to the bill of materials.</string>
+      <string>Include child parts in the bill of materials</string>
      </property>
      <property name="text">
       <string>Parts children</string>
@@ -55,7 +55,7 @@
    <item row="2" column="0" colspan="2">
     <widget class="Gui::PrefCheckBox" name="CheckBox_onlyParts">
      <property name="toolTip">
-      <string>If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.</string>
+      <string>Adds only part containers and sub-assemblies to the bill of materials. Solids (e.g. bodies, fasteners, primitives) are excluded.</string>
      </property>
      <property name="text">
       <string>Only parts</string>
@@ -83,7 +83,7 @@
       <item row="1" column="0">
        <widget class="QPushButton" name="btnAddColumn">
         <property name="text">
-         <string>Add column</string>
+         <string>Add Column</string>
         </property>
        </widget>
       </item>

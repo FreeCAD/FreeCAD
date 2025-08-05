@@ -436,7 +436,7 @@ CmdSketcherReorientSketch::CmdSketcherReorientSketch()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Reorient Sketch…");
+    sMenuText = QT_TR_NOOP("Reorient Sketch");
     sToolTipText = QT_TR_NOOP("Places the selected sketch on one of the global coordinate planes.\n"
                               "This will clear the AttachmentSupport property.");
     sWhatsThis = "Sketcher_ReorientSketch";
@@ -573,7 +573,7 @@ CmdSketcherMapSketch::CmdSketcherMapSketch()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Attach Sketch…");
+    sMenuText = QT_TR_NOOP("Attach Sketch");
     sToolTipText = QT_TR_NOOP(
         "Attaches a sketch to the selected geometry element");
     sWhatsThis = "Sketcher_MapSketch";
@@ -829,7 +829,7 @@ CmdSketcherValidateSketch::CmdSketcherValidateSketch()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Validate Sketch…");
+    sMenuText = QT_TR_NOOP("Validate Sketch");
     sToolTipText = QT_TR_NOOP("Validates a sketch by checking for missing coincidences,\n"
                               "invalid constraints, and degenerate geometry");
     sWhatsThis = "Sketcher_ValidateSketch";

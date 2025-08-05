@@ -707,7 +707,7 @@ class TrackChunk(ChunkBase):
             for typ,attr in self.keyframe_fields:
                 flo.write("%s    %s = %r\n" % (indent,attr,getattr(kf,attr)))
         if n < self.nkeys:
-            flo.write("%s    ...\n" % indent)
+            flo.write("%s    …\n" % indent)
 
 
 #
@@ -1008,7 +1008,7 @@ class POINT_ARRAY(ArrayChunk):
                       % (indent,self.array[i,0],self.array[i,1],
                          self.array[i,2]))
         if n < self.npoints:
-            flo.write("%s            ...\n" % indent)
+            flo.write("%s            …\n" % indent)
     def write_array(self):
         s = numpy.array(self.array).astype(numpy.float32)
         return array_to_string_destructive(s)
@@ -1048,7 +1048,7 @@ class FACE_ARRAY(ArrayChunk):
                       % (indent,self.array[i,0],self.array[i,1],
                          self.array[i,2],self.array[i,3]))
         if n < self.nfaces:
-            flo.write("%s            ...\n" % indent)
+            flo.write("%s            …\n" % indent)
     def write_array(self):
         s = numpy.array(self.array).astype(numpy.uint16)
         return array_to_string_destructive(s)
@@ -1070,7 +1070,7 @@ class MSH_MAT_GROUP(ArrayChunk):
         for i in range(n):
             flo.write("%s    %10d\n" % (indent,self.array[i]))
         if n < self.mfaces:
-            flo.write("%s            ...\n" % indent)
+            flo.write("%s            …\n" % indent)
     def write_array(self):
         s = numpy.array(self.array).astype(numpy.uint16)
         return array_to_string_destructive(s)
@@ -1096,7 +1096,7 @@ class TEX_VERTS(ArrayChunk):
             flo.write("%s    %12.4g%12.4g\n"
                       % (indent,self.array[i,0],self.array[i,1]))
         if n < self.npoints:
-            flo.write("%s            ...\n" % indent)
+            flo.write("%s            …\n" % indent)
     def write_array(self):
         s = numpy.array(self.array).astype(numpy.float32)
         return array_to_string_destructive(s)
@@ -1117,7 +1117,7 @@ class SMOOTH_GROUP(ArrayChunk):
         for i in range(n):
             flo.write("%s    %10d\n" % (indent,self.array[i]))
         if n < len(self.array):
-            flo.write("%s            ...\n" % indent)
+            flo.write("%s            …\n" % indent)
     def write_array(self):
         s = numpy.array(self.array).astype(numpy.uint32)
         return array_to_string_destructive(s)

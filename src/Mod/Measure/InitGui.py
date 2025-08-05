@@ -39,6 +39,6 @@ import FreeCAD
 
 FreeCAD.MeasureManager.addMeasureType(
     "CENTEROFMASS",
-    "Center of Mass",
+    "Center of mass",
     MeasureCOM,
 )

@@ -17,7 +17,7 @@
    <item row="0" column="0">
     <widget class="Gui::PrefCheckBox" name="checkBoxEnableEscape">
      <property name="toolTip">
-      <string>Allows leaving edit mode when pressing Esc button</string>
+      <string>Allows leaving edit mode when pressing the Esc key</string>
      </property>
      <property name="text">
       <string>Esc leaves edit mode</string>
@@ -36,7 +36,7 @@
    <item row="1" column="0">
     <widget class="Gui::PrefCheckBox" name="checkBoxSolverDebug">
      <property name="toolTip">
-      <string>Log the dragging steps of the solver. Useful if you want to report a bug.
+      <string>Log the dragging steps of the solver. Useful to report a bug.
 The files are named "runPreDrag.asmt" and "dragging.log" and are located in the default directory of std::ofstream (on Windows it's the desktop)</string>
      </property>
      <property name="text">
@@ -56,14 +56,14 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
    <item row="2" column="0">
     <widget class="QLabel" name="groundFirstPartLabel">
      <property name="text">
-      <string>Ground first part:</string>
+      <string>Ground first part</string>
      </property>
     </widget>
    </item>
    <item row="2" column="1">
     <widget class="QComboBox" name="groundFirstPart">
      <property name="toolTip">
-      <string>When you insert the first part in the assembly, you can choose to ground the part automatically.</string>
+      <string>When inserting the first part in the assembly, it can be grounded automatically</string>
      </property>
      <property name="currentIndex">
       <number>0</number>
