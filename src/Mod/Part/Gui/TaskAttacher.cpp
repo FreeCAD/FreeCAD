@@ -1346,7 +1346,6 @@ bool TaskDlgAttacher::accept()
         Gui::cmdGuiDocument(obj, "resetEdit()");
 
         Gui::Command::commitCommand(tid);
-        tid = 0;
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Datum dialog: input error"), QCoreApplication::translate("Exception", e.what()));
@@ -1369,7 +1368,6 @@ bool TaskDlgAttacher::reject()
     if (document) {
         // roll back the done things
         Gui::Command::abortCommand(tid);
-        tid = 0;
         Gui::Command::doCommand(Gui::Command::Gui,"%s.resetEdit()", doc.getGuiDocumentPython().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"%s.recompute()", doc.getAppDocumentPython().c_str());
     }

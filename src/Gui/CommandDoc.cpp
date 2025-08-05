@@ -2001,7 +2001,7 @@ protected:
             }
             commitCommand(tid);
         } catch (const Base::Exception& e) {
-            abortCommand();
+            abortCommand(tid);
             QMessageBox::critical(getMainWindow(), QObject::tr("Failed to paste expressions"),
                 QString::fromLatin1(e.what()));
             e.reportException();

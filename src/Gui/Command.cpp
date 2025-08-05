@@ -671,16 +671,16 @@ void Command::commitCommand()
 {
     App::GetApplication().closeActiveTransaction();
 }
-void Command::commitCommand(int tid)
+void Command::commitCommand(int& tid)
 {
     if (tid != 0) {
         App::GetApplication().closeActiveTransaction(false, tid);
+        tid = 0;
     }
 }
 void Command::commitSelf()
 {
     commitCommand(currentTransactionID);
-    currentTransactionID = 0;
 }
 int Command::transactionID() const
 {
@@ -694,16 +694,16 @@ void Command::abortCommand()
 {
     App::GetApplication().closeActiveTransaction(true);
 }
-void Command::abortCommand(int tid)
+void Command::abortCommand(int& tid)
 {
     if (tid != 0) {
         App::GetApplication().closeActiveTransaction(true, tid);
+        tid = 0;
     }
 }
 void Command::abortSelf()
 {
     abortCommand(currentTransactionID);
-    currentTransactionID = 0;
 }
 bool Command::hasPendingCommand()
 {
