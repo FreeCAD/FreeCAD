@@ -22,7 +22,6 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#include <qmdisubwindow.h>
 
 #ifndef _PreComp_
 #include <QApplication>
@@ -31,6 +30,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QListView>
+#include <QMdiSubWindow>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QScrollArea>
@@ -377,15 +377,12 @@ void StartView::postStart(PostStartBehavior behavior)
             Gui::Application::Instance->activateWorkbench(wb.c_str());
         }
     }
-    auto closeStart = hGrp->GetBool("closeStart", false);
-    if (closeStart) {
+    if (auto closeStart = hGrp->GetBool("closeStart", false)) {
         for (QWidget* w = this; w != nullptr; w = w->parentWidget()) {
-            auto mdiSub = qobject_cast<QMdiSubWindow*>(w);
-            if (mdiSub == nullptr) {
-                continue;
+            if (auto mdiSub = qobject_cast<QMdiSubWindow*>(w)) {
+                mdiSub->close();
+                return;
             }
-            mdiSub->close();
-            return;
         }
     }
 }
