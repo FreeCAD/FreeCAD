@@ -567,6 +567,8 @@ void Document::commitTransaction() // NOLINT
         // This will iterate over all documents and ask them to
         // commit their transaction if their ID matches
         GetApplication().closeActiveTransaction(false, d->activeUndoTransaction->getID());
+    } else {
+        d->bookedTransaction = 0; // Reset booked transaction even if it was not used
     }
 }
 
@@ -620,6 +622,8 @@ void Document::abortTransaction() const
     }
     if (d->activeUndoTransaction) {
         GetApplication().closeActiveTransaction(true, d->activeUndoTransaction->getID());
+    } else {
+        d->bookedTransaction = 0; // Reset booked transaction even if it was not used
     }
 }
 
