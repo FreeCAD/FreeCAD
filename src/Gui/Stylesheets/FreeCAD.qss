@@ -711,12 +711,16 @@ QScrollBar::handle:vertical {
   border-top: 1px solid @GeneralBorderColor;
   border-bottom: 1px solid @GeneralBorderColor;
   min-height: 20px;
-
   background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 @ButtonTopBackgroundColor, stop:1 @ButtonBottomBackgroundColor);
 }
 
 QScrollBar::handle:vertical:focus {
   border: 1px solid @AccentColor;
+}
+
+QScrollBar::handle:vertical:hover {
+  background-color: @GeneralBackgroundHoverColor;
+  border: 1px @ButtonTopBackgroundColor;
 }
 
 QScrollBar::add-line, QScrollBar::sub-line {
@@ -1787,8 +1791,8 @@ QDockWidget QTabBar { /*tabbar in dockwidget */
 }
 
 QTabBar#mdiAreaTabBar::tab:bottom:selected {
-  background-color: @3DViewBackgroundRefColor;
-  border-top: @3DViewBackgroundRefColor;
+  background-color: @ActiveTabBackgroundColor;
+  border-top: @ActiveTabBackgroundColor;
 }
 
 /*tabbar for files. */
@@ -1873,7 +1877,7 @@ QTabBar::tab:top, QDockWidget QTabBar::tab:top {
   margin-left: 0px;
   margin-right: 0px;
   min-width: 5px;
-  background-color: @GeneralDisabledBackgroundColor ;
+  background-color: @InActiveTabBackgroundColor;
   border-top: 1px solid @GeneralBorderColor;
   border-bottom: 1px solid @GeneralBorderColor;
   border-left: 1px solid @GeneralBorderColor;
@@ -1883,9 +1887,9 @@ QTabBar::tab:top, QDockWidget QTabBar::tab:top {
 }
 
 QTabBar::tab:top:selected, QDockWidget QTabBar::tab:top:selected {
-  background-color: @GeneralBackgroundColor;
+  background-color: @ActiveTabBackgroundColor;
   border-top: 1px solid @GeneralBorderColor;
-  border-bottom: 1px solid @GeneralBackgroundColor;
+  border-bottom: 1px solid @ActiveTabBackgroundColor;
   border-left: 1px solid @GeneralBorderColor;
   border-right: 1px solid @GeneralBorderColor;
   margin-top: 0px;
@@ -1904,7 +1908,7 @@ QTabBar::tab:top:!selected:hover, QDockWidget QTabBar::tab:top:!selected:hover {
 
 QTabBar::tab:bottom, QDockWidget QTabBar::tab:bottom {
   min-width: 5px;
-  background-color: @GeneralDisabledBackgroundColor ;
+  background-color: @InActiveTabBackgroundColor;
   border-bottom: 1px solid @GeneralBorderColor;
   border-top: 1px solid @GeneralBorderColor;
   border-left: 1px solid @GeneralBorderColor;
@@ -1914,9 +1918,9 @@ QTabBar::tab:bottom, QDockWidget QTabBar::tab:bottom {
 }
 
 QTabBar::tab:bottom:selected, QDockWidget QTabBar::tab:bottom:selected {
-  background-color: @GeneralBackgroundColor;
+  background-color: @ActiveTabBackgroundColor;
   border-bottom: 1px solid @GeneralBorderColor;
-  border-top: 1px solid @GeneralBackgroundColor;
+  border-top: 1px solid @ActiveTabBackgroundColor;
   border-left: 1px solid @GeneralBorderColor;
   border-right: 1px solid @GeneralBorderColor;
   margin-bottom: 0px;
@@ -1935,7 +1939,7 @@ QTabBar::tab:bottom:!selected:hover, QDockWidget QTabBar::tab:bottom:!selected:h
 
 QTabBar::tab:left, QDockWidget QTabBar::tab:left {
   min-height: 5px;
-  background-color: @GeneralDisabledBackgroundColor ;
+  background-color: @InActiveTabBackgroundColor;
   border-bottom: 1px solid @GeneralBorderColor;
   border-right: 1px solid @GeneralBorderColor;
   border-left: 1px solid @GeneralBorderColor;
@@ -1945,9 +1949,9 @@ QTabBar::tab:left, QDockWidget QTabBar::tab:left {
 }
 
 QTabBar::tab:left:selected, QDockWidget QTabBar::tab:left:selected {
-  background-color: @GeneralBackgroundColor;
+  background-color: @ActiveTabBackgroundColor;
   border-bottom: 1px solid @GeneralBorderColor;
-  border-right: 1px solid @GeneralBackgroundColor;
+  border-right: 1px solid @ActiveTabBackgroundColor;
   border-left: 1px solid @GeneralBorderColor;
   border-top: 1px solid @GeneralBorderColor;
   margin-left: 0px;
@@ -1965,7 +1969,7 @@ QTabBar::tab:left:!selected:hover, QDockWidget QTabBar::tab:left:!selected:hover
 
 QTabBar::tab:right, QDockWidget QTabBar::tab:right {
   min-height: 5px;
-  background-color: @GeneralDisabledBackgroundColor ;
+  background-color: @InActiveTabBackgroundColor;
   border-bottom: 1px solid @GeneralBorderColor;
   border-left: 1px solid @GeneralBorderColor;
   border-right: 1px solid @GeneralBorderColor;
@@ -1975,9 +1979,9 @@ QTabBar::tab:right, QDockWidget QTabBar::tab:right {
 }
 
 QTabBar::tab:right:selected, QDockWidget QTabBar::tab:right:selected {
-  background-color: @GeneralBackgroundColor;
+  background-color: @ActiveTabBackgroundColor;
   border-bottom: 1px solid @GeneralBorderColor;
-  border-left: 1px solid @GeneralBackgroundColor;
+  border-left: 1px solid @ActiveTabBackgroundColor;
   border-left: 1px solid @GeneralBorderColor;
   border-top: 1px solid @GeneralBorderColor;
   margin-right: 0px;
@@ -2452,7 +2456,7 @@ QDateEdit::drop-down, QDateTimeEdit::drop-down {
   subcontrol-origin: padding;
   subcontrol-position: top right;
   width: 12px;
-  border-left: 1px solid ;
+  border-left: 1px solid;
 }
 
 QDateEdit::down-arrow, QDateTimeEdit::down-arrow {
