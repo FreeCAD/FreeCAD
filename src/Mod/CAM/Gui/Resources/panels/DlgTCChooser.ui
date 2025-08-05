@@ -20,13 +20,13 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Choose a Tool Controller</string>
+   <string>Tool Controller Selection</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Tool Controller</string>
+      <string>Tool controller</string>
      </property>
     </widget>
    </item>

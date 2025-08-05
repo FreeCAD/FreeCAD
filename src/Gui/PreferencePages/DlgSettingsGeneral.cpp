@@ -648,7 +648,7 @@ void DlgSettingsGeneral::recreatePreferencePackMenu()
             }
         }
         if (button->isEnabled()) {
-            button->setToolTip(tr("Apply the %1 preference pack").arg(QString::fromStdString(pack.first)));
+            button->setToolTip(tr("Applies the %1 preference pack").arg(QString::fromStdString(pack.first)));
             connect(button, &QPushButton::clicked, this, [this, pack]() { onLoadPreferencePackClicked(pack.first); });
         }
         ui->PreferencePacks->setCellWidget(row, 2, button);

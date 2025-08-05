@@ -65,7 +65,7 @@ class BIM_Diff:
                 "",
                 translate(
                     "BIM",
-                    "The document currently viewed must be your main one. The other contains newer objects that you wish to merge into this one. Make sure only the objects you wish to compare are visible in both. Proceed?",
+                    "The current document must be the main one. The other contains newer objects to merge into it. Ensure that only the objects intended for comparison are visible in both documents. Proceed?",
                 ),
                 QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                 QtGui.QMessageBox.No,
@@ -210,7 +210,7 @@ class BIM_Diff:
                             )
                             toselect.append(obj)
                     else:
-                        print("Object", obj.Label, "doesn't exist yet in main doc")
+                        print("Object", obj.Label, "does not exist yet in main document")
                         toselect.append(obj)
                         additions.append(obj)
 
@@ -220,7 +220,7 @@ class BIM_Diff:
                             "Part::Feature"
                         ):  # don't count building parts
                             print(
-                                "Object", obj.Label, "doesn't exist anymore in new doc"
+                                "Object", obj.Label, "does not exist anymore in new document"
                             )
                             subtractions.append(obj)
 
@@ -262,7 +262,7 @@ class BIM_Diff:
                         print(
                             "Object",
                             obj.Label,
-                            "has no ID and wasn't found in the new doc",
+                            "has no ID and was not found in the new document",
                         )
                         subtractions.append(obj)
 
@@ -275,7 +275,7 @@ class BIM_Diff:
                 for obj in otherdoc.Objects:
                     if Draft.getType(obj) == "Material":
                         if not obj.Label in matnames:
-                            print("Material", obj.Label, "doesn't exist in main doc")
+                            print("Material", obj.Label, "does not exist in main document")
                             toselect.append(obj)
                             newmats[obj.Label] = obj
 
@@ -347,7 +347,7 @@ class BIM_Diff:
                         + " "
                         + translate(
                             "BIM",
-                            "objects still have the same shape but have a different material. Do you wish to update them in the main document?",
+                            "objects still have the same shape but have a different material. Update them in the main document?",
                         ),
                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                         QtGui.QMessageBox.No,
@@ -413,7 +413,7 @@ class BIM_Diff:
                         for name, id in newids.items():
                             obj = activedoc.getObject(name)
                             if obj:
-                                print("Transferring new id to object", obj.Label)
+                                print("Transferring new ID to object", obj.Label)
                                 a = obj.IfcData
                                 a["IfcUID"] = id
                                 obj.IfcData = a
@@ -482,7 +482,7 @@ class BIM_Diff:
                         "",
                         translate(
                             "BIM",
-                            "Do you wish to colorize the objects that have moved in yellow in the other file (to serve as a diff)?",
+                            "Colorize the objects that have moved in yellow in the other file (to serve as a diff)?",
                         ),
                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                         QtGui.QMessageBox.No,
@@ -503,7 +503,7 @@ class BIM_Diff:
                         "",
                         translate(
                             "BIM",
-                            "Do you wish to colorize the objects that have been modified in orange in the other file (to serve as a diff)?",
+                            "Colorize the objects that have been modified in orange in the other file (to serve as a diff)?",
                         ),
                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                         QtGui.QMessageBox.No,
@@ -526,7 +526,7 @@ class BIM_Diff:
                         + " "
                         + translate(
                             "BIM",
-                            "objects don't exist anymore in the new document. Move them to a 'To Delete' group?",
+                            "objects do not exist anymore in the new document. Move them to a 'To Delete' group?",
                         ),
                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                         QtGui.QMessageBox.No,
@@ -543,7 +543,7 @@ class BIM_Diff:
                         "",
                         translate(
                             "BIM",
-                            "Do you wish to colorize the objects that have been removed in red in the other file (to serve as a diff)?",
+                            "Colorize the objects that have been removed in red in the other file (to serve as a diff)?",
                         ),
                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                         QtGui.QMessageBox.No,
@@ -562,7 +562,7 @@ class BIM_Diff:
                         "",
                         translate(
                             "BIM",
-                            "Do you wish to colorize the objects that have been added in green in the other file (to serve as a diff)?",
+                            "Colorize the objects that have been added in green in the other file (to serve as a diff)?",
                         ),
                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                         QtGui.QMessageBox.No,
@@ -583,7 +583,7 @@ class BIM_Diff:
                 "",
                 translate(
                     "BIM",
-                    "You need two documents open to run this tool. One which is your main document, and one that contains new objects that you wish to compare against the existing one. Make sure only the objects you wish to compare in both documents are visible.",
+                    "Two documents are required to be open to run this tool. One which is the main document, and one that contains new objects to compare against the existing one. Make sure only the objects to compare in both documents are visible.",
                 ),
             )
 

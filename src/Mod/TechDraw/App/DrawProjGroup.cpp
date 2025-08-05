@@ -508,7 +508,7 @@ int DrawProjGroup::removeProjection(const char* viewProjType)
     // TODO: shouldn't be able to delete "Front" unless deleting whole group
     if (checkViewProjType(viewProjType)) {
         if (!hasProjection(viewProjType)) {
-            throw Base::RuntimeError("The projection doesn't exist in the group");
+            throw Base::RuntimeError("The projection does not exist in the group");
         }
 
         // Iterate through the child views and find the projection type

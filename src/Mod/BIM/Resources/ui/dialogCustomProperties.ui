@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Custom properties</string>
+   <string>Custom Properties</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -41,14 +41,14 @@
    <item>
     <widget class="QLineEdit" name="lineEdit_2">
      <property name="toolTip">
-      <string>A description for this property, can be in any language.</string>
+      <string>A description of this property. Supports any language.</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QRadioButton" name="radioButton_2">
      <property name="toolTip">
-      <string>The property will be hidden in the interface, and can only be modified via Python script</string>
+      <string>The property will be hidden in the interface, and can only be modified via Python scripting</string>
      </property>
      <property name="text">
       <string>Hidden</string>

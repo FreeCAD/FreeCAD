@@ -668,6 +668,7 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     this->skipRecomputeAction->setCheckable(true);
     connect(this->skipRecomputeAction, &QAction::toggled,
             this, &TreeWidget::onSkipRecompute);
+    this->skipRecomputeCommand = Gui::Application::Instance->commandManager().getCommandByName("Std_ToggleSkipRecompute");
 
     this->allowPartialRecomputeAction = new QAction(this);
     this->allowPartialRecomputeAction->setCheckable(true);
@@ -1053,8 +1054,14 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
                 }
             }
             contextMenu.addAction(this->selectDependentsAction);
-            this->skipRecomputeAction->setChecked(doc->testStatus(App::Document::SkipRecompute));
-            contextMenu.addAction(this->skipRecomputeAction);
+            if (doc == App::GetApplication().getActiveDocument() && this->skipRecomputeCommand != nullptr) {
+                // if active document is selected, use Command
+                this->skipRecomputeCommand->addTo(&contextMenu);
+            } else {
+                // if other document is selected or Command load fails, edit selected Document directly
+                this->skipRecomputeAction->setChecked(doc->testStatus(App::Document::SkipRecompute));
+                contextMenu.addAction(this->skipRecomputeAction);
+            }         
             this->allowPartialRecomputeAction->setChecked(doc->testStatus(App::Document::AllowPartialRecompute));
             if (doc->testStatus(App::Document::SkipRecompute))
                 contextMenu.addAction(this->allowPartialRecomputeAction);
@@ -1124,14 +1131,14 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     if (docs.size() >= 2) {
         contextMenu.addSeparator();
         App::Document* activeDoc = App::GetApplication().getActiveDocument();
-        subMenu.setTitle(tr("Activate document"));
+        subMenu.setTitle(tr("Activate Document"));
         contextMenu.addMenu(&subMenu);
         QAction* active = nullptr;
         for (auto it = docs.begin(); it != docs.end(); ++it) {
             QString label = QString::fromUtf8((*it)->Label.getValue());
             QAction* action = subMenuGroup.addAction(label);
             action->setCheckable(true);
-            action->setStatusTip(tr("Activate document %1").arg(label));
+            action->setStatusTip(tr("Activates document %1").arg(label));
             action->setData(QByteArray((*it)->getName()));
             if (*it == activeDoc) active = action;
         }
@@ -1143,13 +1150,13 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
 
     // add a submenu to present the settings of the tree.
     QMenu settingsMenu;
-    settingsMenu.setTitle(tr("Tree settings"));
+    settingsMenu.setTitle(tr("Tree Settings"));
     contextMenu.addSeparator();
     contextMenu.addMenu(&settingsMenu);
 
-    QAction* action = new QAction(tr("Show description"), this);
-    QAction* internalNameAction = new QAction(tr("Show internal name"), this);
-    action->setStatusTip(tr("Show a description column for items. An item's description can be set by pressing F2 (or your OS's edit button) or by editing the 'label2' property."));
+    QAction* action = new QAction(tr("Show Description"), this);
+    QAction* internalNameAction = new QAction(tr("Show Internal Name"), this);
+    action->setStatusTip(tr("Shows a description column for items. An item's description can be set by by editing the 'label2' property."));
     action->setCheckable(true);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
@@ -1164,7 +1171,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     });
 
 
-    internalNameAction->setStatusTip(tr("Show an internal name column for items."));
+    internalNameAction->setStatusTip(tr("Shows an internal name column for items."));
     internalNameAction->setCheckable(true);
 
     internalNameAction->setChecked(!hGrp->GetBool("HideInternalNames", true));
@@ -3353,50 +3360,50 @@ void TreeWidget::setupText()
     this->headerItem()->setText(2, tr("Internal name"));
 
     this->showHiddenAction->setText(tr("Show items hidden in tree view"));
-    this->showHiddenAction->setStatusTip(tr("Show items that are marked as 'hidden' in the tree view"));
+    this->showHiddenAction->setStatusTip(tr("Shows items that are marked as 'hidden' in the tree view"));
 
     this->toggleVisibilityInTreeAction->setText(tr("Toggle visibility in tree view"));
     this->toggleVisibilityInTreeAction->setStatusTip(tr("Toggles the visibility of selected items in the tree view"));
 
     this->createGroupAction->setText(tr("Create group"));
-    this->createGroupAction->setStatusTip(tr("Create a group"));
+    this->createGroupAction->setStatusTip(tr("Creates a group"));
 
     this->relabelObjectAction->setText(tr("Rename"));
-    this->relabelObjectAction->setStatusTip(tr("Rename object"));
+    this->relabelObjectAction->setStatusTip(tr("Renames object"));
 
     this->finishEditingAction->setText(tr("Finish editing"));
-    this->finishEditingAction->setStatusTip(tr("Finish editing object"));
+    this->finishEditingAction->setStatusTip(tr("Finishes editing object"));
 
     this->selectDependentsAction->setText(tr("Add dependent objects to selection"));
     this->selectDependentsAction->setStatusTip(tr("Adds all dependent objects to the selection"));
 
     this->closeDocAction->setText(tr("Close document"));
-    this->closeDocAction->setStatusTip(tr("Close the document"));
+    this->closeDocAction->setStatusTip(tr("Closes the document"));
 
 #ifdef Q_OS_MAC
     this->openFileLocationAction->setText(tr("Reveal in Finder"));
-    this->openFileLocationAction->setStatusTip(tr("Reveal the current file location in Finder"));
+    this->openFileLocationAction->setStatusTip(tr("Reveals the current file location in Finder"));
 #else
     this->openFileLocationAction->setText(tr("Open File Location"));
-    this->openFileLocationAction->setStatusTip(tr("Open the current file location"));
+    this->openFileLocationAction->setStatusTip(tr("Opens the current file location"));
 #endif
 
     this->reloadDocAction->setText(tr("Reload document"));
-    this->reloadDocAction->setStatusTip(tr("Reload a partially loaded document"));
+    this->reloadDocAction->setStatusTip(tr("Reloads a partially loaded document"));
 
     this->skipRecomputeAction->setText(tr("Skip recomputes"));
-    this->skipRecomputeAction->setStatusTip(tr("Enable or disable recomputations of document"));
+    this->skipRecomputeAction->setStatusTip(tr("Enables or disables the recomputations of document"));
 
     this->allowPartialRecomputeAction->setText(tr("Allow partial recomputes"));
     this->allowPartialRecomputeAction->setStatusTip(
-        tr("Enable or disable recomputating editing object when 'skip recomputation' is enabled"));
+        tr("Enables or disables the recomputating editing object when 'skip recomputation' is enabled"));
 
     this->markRecomputeAction->setText(tr("Mark to recompute"));
-    this->markRecomputeAction->setStatusTip(tr("Mark this object to be recomputed"));
+    this->markRecomputeAction->setStatusTip(tr("Marks this object to be recomputed"));
     this->markRecomputeAction->setIcon(BitmapFactory().iconFromTheme("Std_MarkToRecompute"));
 
     this->recomputeObjectAction->setText(tr("Recompute object"));
-    this->recomputeObjectAction->setStatusTip(tr("Recompute the selected object"));
+    this->recomputeObjectAction->setStatusTip(tr("Recomputes the selected object"));
     this->recomputeObjectAction->setIcon(BitmapFactory().iconFromTheme("view-refresh"));
 }
 
@@ -3739,7 +3746,7 @@ void TreePanel::itemSearch(const QString& text)
 TreeDockWidget::TreeDockWidget(Gui::Document* pcDocument, QWidget* parent)
     : DockWindow(pcDocument, parent)
 {
-    setWindowTitle(tr("Tree view"));
+    setWindowTitle(tr("Tree View"));
     auto panel = new TreePanel("TreeView", this);
     auto pLayout = new QGridLayout(this);
     pLayout->setSpacing(0);

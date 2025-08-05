@@ -84,12 +84,12 @@ wbListItem::wbListItem(const QString& wbName, bool enabled, bool startupWb, bool
 
     // 1: Enable checkbox
     enableCheckBox = new QCheckBox(this);
-    enableCheckBox->setToolTip(tr("If unchecked, %1 will not appear in the available workbenches.").arg(wbDisplayName));
+    enableCheckBox->setToolTip(tr("Toggles the visibility of %1 in the available workbenches").arg(wbDisplayName));
     enableCheckBox->setChecked(enabled);
     if (startupWb) {
         enableCheckBox->setChecked(true);
         enableCheckBox->setEnabled(false);
-        enableCheckBox->setToolTip(tr("This is the current startup module, and must be enabled."));
+        enableCheckBox->setToolTip(tr("This is the current startup module, and must be enabled"));
     }
     connect(enableCheckBox, &QCheckBox::toggled, this, [this](bool checked) { onWbToggled(checked); });
 
@@ -112,7 +112,7 @@ wbListItem::wbListItem(const QString& wbName, bool enabled, bool startupWb, bool
 
     // 4: shortcut
     shortcutLabel = new QLabel(QStringLiteral("(W, %1)").arg(index + 1), this);
-    shortcutLabel->setToolTip(tr("Shortcut to activate this workbench."));
+    shortcutLabel->setToolTip(tr("Shortcut to activate this workbench"));
     shortcutLabel->setEnabled(enableCheckBox->isChecked());
     shortcutLabel->setVisible(index < 9);
 
@@ -128,7 +128,7 @@ wbListItem::wbListItem(const QString& wbName, bool enabled, bool startupWb, bool
     // 5: Autoloaded checkBox.
     autoloadCheckBox = new QCheckBox(this);
     autoloadCheckBox->setText(tr("Auto-load"));
-    autoloadCheckBox->setToolTip(tr("If checked, %1 will be loaded automatically when FreeCAD starts up").arg(wbDisplayName));
+    autoloadCheckBox->setToolTip(tr("Loads %1 automatically when FreeCAD starts").arg(wbDisplayName));
     autoloadCheckBox->setEnabled(enableCheckBox->isChecked());
 
     if (startupWb) { // Figure out whether to check and/or disable this checkBox:
@@ -236,7 +236,7 @@ DlgSettingsWorkbenchesImp::DlgSettingsWorkbenchesImp( QWidget* parent )
     ui->wbList->setDragEnabled(true);
     ui->wbList->setDefaultDropAction(Qt::MoveAction);
 
-    QAction* sortAction = new QAction(tr("Sort alphabetically"), this);
+    QAction* sortAction = new QAction(tr("Sort Alphabetically"), this);
     connect(sortAction, &QAction::triggered, this, &DlgSettingsWorkbenchesImp::sortEnabledWorkbenches);
 
     QMenu* contextMenu = new QMenu(ui->wbList);
@@ -523,7 +523,7 @@ void DlgSettingsWorkbenchesImp::loadWorkbenchSelector()
     // workbench selector items style
     int itemStyleIndex = hGrp->GetInt("WorkbenchSelectorItem", 0);
     ui->WorkbenchSelectorItem->clear();
-    ui->WorkbenchSelectorItem->addItem(tr("Icon & Text"));
+    ui->WorkbenchSelectorItem->addItem(tr("Icon and text"));
     ui->WorkbenchSelectorItem->addItem(tr("Icon"));
     ui->WorkbenchSelectorItem->addItem(tr("Text"));
     ui->WorkbenchSelectorItem->setCurrentIndex(itemStyleIndex);
@@ -534,7 +534,7 @@ void DlgSettingsWorkbenchesImp::translateWorkbenchSelector()
     ui->WorkbenchSelectorType->setItemText(0, tr("ComboBox"));
     ui->WorkbenchSelectorType->setItemText(1, tr("TabBar"));
 
-    ui->WorkbenchSelectorItem->setItemText(0, tr("Icon & Text"));
+    ui->WorkbenchSelectorItem->setItemText(0, tr("Icon and text"));
     ui->WorkbenchSelectorItem->setItemText(1, tr("Icon"));
     ui->WorkbenchSelectorItem->setItemText(2, tr("Text"));
 }

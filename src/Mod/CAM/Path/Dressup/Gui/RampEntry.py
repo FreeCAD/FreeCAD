@@ -60,7 +60,7 @@ class ObjectDressup:
             "App::PropertyAngle",
             "Angle",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Angle of ramp."),
+            QT_TRANSLATE_NOOP("App::Property", "Angle of ramp"),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
@@ -861,10 +861,10 @@ class CommandPathDressupRampEntry:
     def GetResources(self):
         return {
             "Pixmap": "CAM_Dressup",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_DressupRampEntry", "RampEntry"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_DressupRampEntry", "Ramp Entry"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_DressupRampEntry",
-                "Creates a Ramp Entry Dress-up object from a selected toolpath",
+                "Creates a ramp entry dress-up object from a selected toolpath",
             ),
         }
 
@@ -879,9 +879,7 @@ class CommandPathDressupRampEntry:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            Path.Log.error(
-                translate("CAM_DressupRampEntry", "Please select one toolpath object") + "\n"
-            )
+            Path.Log.error(translate("CAM_DressupRampEntry", "Select one toolpath object") + "\n")
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
@@ -890,7 +888,7 @@ class CommandPathDressupRampEntry:
             )
             return
         if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
-            Path.Log.error(translate("CAM_DressupRampEntry", "Please select a Profile object"))
+            Path.Log.error(translate("CAM_DressupRampEntry", "Select a Profile object"))
             return
 
         # everything ok!
@@ -918,4 +916,4 @@ if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand("CAM_DressupRampEntry", CommandPathDressupRampEntry())
 
-Path.Log.notice("Loading CAM_DressupRampEntry... done\n")
+Path.Log.notice("Loading CAM_DressupRampEntry… done\n")

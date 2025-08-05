@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>FreeCAD UnitTest</string>
+   <string>FreeCAD Unit Test</string>
   </property>
   <property name="sizeGripEnabled">
    <bool>true</bool>
@@ -41,7 +41,7 @@
       <item>
        <widget class="QLabel" name="textLabelTest">
         <property name="text">
-         <string>Select test name:</string>
+         <string>Select test name</string>
         </property>
        </widget>
       </item>
@@ -185,7 +185,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="textLabelRun">
         <property name="text">
-         <string>Run:</string>
+         <string>Run</string>
         </property>
        </widget>
       </item>
@@ -202,7 +202,7 @@
       <item row="1" column="2">
        <widget class="QLabel" name="textLabelFail">
         <property name="text">
-         <string>Failures:</string>
+         <string>Failures</string>
         </property>
        </widget>
       </item>
@@ -219,7 +219,7 @@
       <item row="1" column="4">
        <widget class="QLabel" name="textLabelErr">
         <property name="text">
-         <string>Errors:</string>
+         <string>Errors</string>
         </property>
        </widget>
       </item>
@@ -236,7 +236,7 @@
       <item row="1" column="6">
        <widget class="QLabel" name="textLabelRem">
         <property name="text">
-         <string>Remaining:</string>
+         <string>Remaining</string>
         </property>
        </widget>
       </item>
@@ -256,7 +256,7 @@
    <item row="2" column="0">
     <widget class="QGroupBox" name="groupBox2">
      <property name="title">
-      <string>Failures and errors</string>
+      <string>Failures and Errors</string>
      </property>
      <layout class="QGridLayout">
       <property name="margin">

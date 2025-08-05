@@ -56,7 +56,7 @@ class ArchTest(unittest.TestCase):
         App.setActiveDocument("ArchTest")
 
     def testRebar(self):
-        App.Console.PrintLog ('Checking Arch Rebar...\n')
+        App.Console.PrintLog ('Checking Arch Rebar…\n')
         s = Arch.makeStructure(length=2,width=3,height=5)
         sk = App.ActiveDocument.addObject('Sketcher::SketchObject','Sketch')
         sk.AttachmentSupport = (s,["Face6"])

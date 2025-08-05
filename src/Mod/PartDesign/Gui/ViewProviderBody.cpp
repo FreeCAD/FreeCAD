@@ -118,7 +118,7 @@ void ViewProviderBody::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     Q_UNUSED(member);
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
 
-    QAction* act = menu->addAction(tr("Active body"));
+    QAction* act = menu->addAction(tr("Active Body"));
     act->setCheckable(true);
     act->setChecked(isActiveBody());
     func->trigger(act, [this]() {

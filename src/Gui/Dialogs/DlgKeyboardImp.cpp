@@ -149,7 +149,7 @@ void DlgCustomKeyboardImp::initCommandCompleter(QLineEdit* edit,
                                                 QTreeWidget* commandTreeWidget,
                                                 QTreeWidgetItem* separatorItem)
 {
-    edit->setPlaceholderText(tr("Type to search..."));
+    edit->setPlaceholderText(tr("Type to search…"));
     auto completer = new CommandCompleter(edit, edit);
 
     QObject::connect(completer, &CommandCompleter::commandActivated, [=](const QByteArray& name) {

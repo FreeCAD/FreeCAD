@@ -132,7 +132,7 @@ FaceUnwrapper::FaceUnwrapper(const TopoDS_Face& face)
     const Handle(Poly_Triangulation) & triangulation = BRep_Tool::Triangulation(face, location);
 
     if (triangulation.IsNull()) {
-        throw std::runtime_error("null triangulation in face construction");
+        throw std::runtime_error("Null triangulation in face construction");
     }
 
     Standard_Integer numNodes = triangulation->NbNodes();
@@ -185,7 +185,7 @@ ColMat<double, 3> FaceUnwrapper::interpolateFlatFace(const TopoDS_Face& face)
 {
     if (this->uv_nodes.size() == 0) {
         throw(std::runtime_error("no uv-coordinates found, interpolating with nurbs is only "
-                                 "possible if the Flattener was constructed with a nurbs."));
+                                 "possible if the flattener was constructed with a nurbs."));
     }
 
     // extract xyz poles, knots, weights, degree
@@ -244,7 +244,7 @@ FaceUnwrapper::FaceUnwrapper(ColMat<double, int(3)> xyz_nodes, ColMat<long int, 
 std::vector<ColMat<double, 3>> FaceUnwrapper::getFlatBoundaryNodes()
 {
     if (this->ze_nodes.size() == 0) {
-        throw(std::runtime_error("flat vertices not xet computed"));
+        throw(std::runtime_error("Flat vertices not yet computed"));
     }
 
     ColMat<double, 3> flat_vertices;

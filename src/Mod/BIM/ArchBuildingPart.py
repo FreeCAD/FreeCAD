@@ -836,7 +836,7 @@ class ViewProviderBuildingPart:
                                self.writeCamera)
         menu.addAction(actionWriteCamera)
 
-        actionCreateGroup = QtGui.QAction(translate("Arch", "Create group..."),
+        actionCreateGroup = QtGui.QAction(translate("Arch", "New Group"),
                                           menu)
         QtCore.QObject.connect(actionCreateGroup,
                                QtCore.SIGNAL("triggered()"),
@@ -943,7 +943,7 @@ class ViewProviderBuildingPart:
 
         if hasattr(self,"Object"):
             if not self.Object.Height.Value:
-                FreeCAD.Console.PrintError("This level has no height value. Please define a height before using this function.\n")
+                FreeCAD.Console.PrintError("This level has no height value. Define a height before using this function.\n")
                 return
             height = self.Object.Height.Value
             ng = []
