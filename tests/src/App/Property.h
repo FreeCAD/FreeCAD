@@ -110,7 +110,9 @@ protected:
 
     void testMoveProperty(App::DocumentObject* target);
 
-    void testMovePropertyExpression(App::DocumentObject* source, const char* exprString);
+    void testMovePropertyExpression(App::DocumentObject* source,
+                                    App::DocumentObject* target,
+                                    const char* exprString);
 
     static void TearDownTestSuite()
     {
