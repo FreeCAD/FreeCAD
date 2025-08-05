@@ -25,6 +25,7 @@
 
 #include <Base/UnitsApi.h>
 #include <Gui/CommandT.h>
+#include <Gui/Document.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/WaitCursor.h>
 
@@ -68,7 +69,7 @@ void ShapeFromMesh::perform()
     meshes = Gui::Selection().getObjectsOfType(meshid);
 
     Gui::doCommandT(Gui::Command::Doc, "import Part");
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Convert mesh"));
+    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Convert mesh"));
 
     for (auto it : meshes) {
         App::Document* doc = it->getDocument();
@@ -86,7 +87,7 @@ void ShapeFromMesh::perform()
         Gui::doCommandT(Gui::Command::Doc, "del __shape__");
     }
 
-    Gui::Command::commitCommand();
+    Gui::Application::Instance->activeDocument()->commitCommand();
 }
 
 void ShapeFromMesh::accept()
