@@ -19,7 +19,7 @@
 
 using namespace Export3DPDF;
 
-bool Export3DPDFCore::convertTessellationToPRC(const std::vector<TessellationData>& tessellationData, const std::string& outputPath)
+bool Export3DPDFCore::convertTessellationToPRC(const std::vector<TessellationData>& tessellationData, const std::string& outputPath, double pageWidthPoints, double pageHeightPoints)
 {
     try {
         Base::Console().message("Converting %zu objects to PRC format...\n", tessellationData.size());
@@ -36,7 +36,7 @@ bool Export3DPDFCore::convertTessellationToPRC(const std::vector<TessellationDat
         
         // Create 3D PDF from PRC
         std::string pdfPath = outputPath + ".pdf";
-        if (!embedPRCInPDF(prcPath, pdfPath)) {
+        if (!embedPRCInPDF(prcPath, pdfPath, pageWidthPoints, pageHeightPoints)) {
             Base::Console().error("Failed to create 3D PDF\n");
             return false;
         }
@@ -180,7 +180,7 @@ std::string Export3DPDFCore::createPRCFile(const std::vector<TessellationData>& 
     }
 }
 
-bool Export3DPDFCore::embedPRCInPDF(const std::string& prcPath, const std::string& pdfPath)
+bool Export3DPDFCore::embedPRCInPDF(const std::string& prcPath, const std::string& pdfPath, double pageWidthPoints, double pageHeightPoints)
 {
     try {
         Base::Console().message("Creating 3D PDF from PRC file: %s\n", prcPath.c_str());
@@ -215,9 +215,14 @@ bool Export3DPDFCore::embedPRCInPDF(const std::string& prcPath, const std::strin
         HPDF_SetInfoAttr(pdf, HPDF_INFO_PRODUCER, "FreeCAD 3D PDF Export");
         HPDF_SetInfoAttr(pdf, HPDF_INFO_TITLE, "FreeCAD 3D Model");
         
-        // Create a page (A4 landscape)
+        // Create a page with dimensions from TechDraw page
         HPDF_Page page = HPDF_AddPage(pdf);
-        HPDF_Page_SetSize(page, HPDF_PAGE_SIZE_A4, HPDF_PAGE_LANDSCAPE);
+        HPDF_Page_SetWidth(page, pageWidthPoints);
+        HPDF_Page_SetHeight(page, pageHeightPoints);
+        
+        Base::Console().message("PDF page size: %.1f x %.1f points (%.1f x %.1f mm)\n",
+                               pageWidthPoints, pageHeightPoints,
+                               pageWidthPoints / 2.834645669, pageHeightPoints / 2.834645669);
         
         // Load PRC/U3D data into PDF
         HPDF_Image u3d = HPDF_LoadU3DFromMem(pdf, prcBuffer.data(), static_cast<HPDF_UINT>(prcSize));
@@ -227,8 +232,9 @@ bool Export3DPDFCore::embedPRCInPDF(const std::string& prcPath, const std::strin
             return false;
         }
         
-        // Create 3D annotation (covers most of the page)
-        HPDF_Rect rect = {50, 50, 750, 550}; // left, bottom, right, top
+        // Create 3D annotation (covers most of the page with 50-point margins)
+        double margin = 50.0;
+        HPDF_Rect rect = {margin, margin, pageWidthPoints - margin, pageHeightPoints - margin}; // left, bottom, right, top
         HPDF_Annotation annot = HPDF_Page_Create3DAnnot(page, rect, HPDF_TRUE, HPDF_FALSE, u3d, NULL);
         if (!annot) {
             Base::Console().error("Failed to create 3D annotation\n");

@@ -45,10 +45,14 @@ public:
      * @brief Convert tessellation data to PRC format and create 3D PDF
      * @param tessellationData Vector of tessellation data for multiple objects
      * @param outputPath Path where the 3D PDF should be saved
+     * @param pageWidthPoints Page width in points (default: A4 width)
+     * @param pageHeightPoints Page height in points (default: A4 height)
      * @return true if successful, false otherwise
      */
     static bool convertTessellationToPRC(const std::vector<TessellationData>& tessellationData, 
-                                       const std::string& outputPath);
+                                       const std::string& outputPath,
+                                       double pageWidthPoints = 595.276,
+                                       double pageHeightPoints = 841.89);
 
     /**
      * @brief Create a PRC file from tessellation data
@@ -63,9 +67,13 @@ public:
      * @brief Create a 3D PDF from PRC file data
      * @param prcPath Path to the PRC file
      * @param pdfPath Path where the 3D PDF should be saved
+     * @param pageWidthPoints Page width in points (default: A4 width)
+     * @param pageHeightPoints Page height in points (default: A4 height)
      * @return true if successful, false otherwise
      */
-    static bool embedPRCInPDF(const std::string& prcPath, const std::string& pdfPath);
+    static bool embedPRCInPDF(const std::string& prcPath, const std::string& pdfPath,
+                             double pageWidthPoints = 595.276,
+                             double pageHeightPoints = 841.89);
 
 private:
     Export3DPDFCore() = default;  // Static class, no instances

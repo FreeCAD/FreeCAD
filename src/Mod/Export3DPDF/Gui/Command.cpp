@@ -118,6 +118,8 @@ void StdCmdPrint3dPdf::activated(int iMsg)
     // Check if we're in a TechDraw page context
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     std::vector<App::DocumentObject*> selection;
+    double pageWidthPoints = 595.276;   // A4 width default
+    double pageHeightPoints = 841.89;   // A4 height default
     if (activeDoc) {
         // Check if the document contains TechDraw pages (indicating TechDraw context)
         std::vector<App::DocumentObject*> pages = activeDoc->getObjectsOfType(Base::Type::fromName("TechDraw::DrawPage"));
@@ -169,6 +171,116 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                                     App::PropertyBool* enableBool = dynamic_cast<App::PropertyBool*>(enable3DProp);
                                     if (enableBool && enableBool->getValue()) {
                                         Base::Console().message("ActiveView has Enable3DPDFExport=true\n");
+                                        
+                                        // Extract page dimensions from the TechDraw page
+                                        try {
+                                            // Access PageWidth and PageHeight properties
+                                            doCommand(Command::Doc,
+                                                "import FreeCAD as App\n"
+                                                "page_obj = App.getDocument('%s').getObject('%s')\n"
+                                                "if page_obj:\n"
+                                                "    try:\n"
+                                                "        width_mm = page_obj.PageWidth\n"
+                                                "        height_mm = page_obj.PageHeight\n"
+                                                "        print('PAGE_DIMENSIONS')\n"
+                                                "        print('WIDTH_MM:', width_mm)\n"
+                                                "        print('HEIGHT_MM:', height_mm)\n"
+                                                "        print('PAGE_DIMENSIONS_END')\n"
+                                                "        App.Console.PrintMessage('Page dimensions: {:.1f} x {:.1f} mm\\n'.format(width_mm, height_mm))\n"
+                                                "    except Exception as e:\n"
+                                                "        App.Console.PrintWarning('Failed to get page dimensions: {}\\n'.format(str(e)))\n"
+                                                "        print('PAGE_DIMENSIONS_ERROR')\n"
+                                                "else:\n"
+                                                "    App.Console.PrintWarning('Page object not found\\n')\n"
+                                                "    print('PAGE_DIMENSIONS_ERROR')",
+                                                pageObj->getDocument()->getName(), pageObj->getNameInDocument());
+                                            
+                                            // Wait for the Python command to complete
+                                            QCoreApplication::processEvents();
+                                            QThread::msleep(50);
+                                            
+                                            // Extract dimensions using a temporary file approach (similar to tessellation)
+                                            std::string tempDimFile = "page_dimensions_" + std::string(pageObj->getNameInDocument()) + ".tmp";
+                                            doCommand(Command::Doc,
+                                                "import FreeCAD as App\n"
+                                                "page_obj = App.getDocument('%s').getObject('%s')\n"
+                                                "if page_obj:\n"
+                                                "    try:\n"
+                                                "        width_mm = page_obj.PageWidth\n"
+                                                "        height_mm = page_obj.PageHeight\n"
+                                                "        with open('%s', 'w') as f:\n"
+                                                "            f.write('WIDTH_MM\\n')\n"
+                                                "            f.write(str(width_mm) + '\\n')\n"
+                                                "            f.write('HEIGHT_MM\\n')\n"
+                                                "            f.write(str(height_mm) + '\\n')\n"
+                                                "            f.write('END\\n')\n"
+                                                "        App.Console.PrintMessage('Successfully extracted page dimensions: {:.1f} x {:.1f} mm\\n'.format(width_mm, height_mm))\n"
+                                                "    except Exception as e:\n"
+                                                "        App.Console.PrintWarning('Failed to get page dimensions: {}\\n'.format(str(e)))\n",
+                                                pageObj->getDocument()->getName(), pageObj->getNameInDocument(), tempDimFile.c_str());
+                                            
+                                            // Wait for the Python command to complete
+                                            QCoreApplication::processEvents();
+                                            QThread::msleep(100);
+                                            
+                                            // Read the page dimensions from the temporary file
+                                            double pageWidthMM = 297.0;   // A4 landscape width default
+                                            double pageHeightMM = 210.0;  // A4 landscape height default
+                                            
+                                            std::ifstream dimFile(tempDimFile);
+                                            if (dimFile.is_open()) {
+                                                std::string line;
+                                                bool readingWidth = false;
+                                                bool readingHeight = false;
+                                                
+                                                while (std::getline(dimFile, line)) {
+                                                    if (line == "WIDTH_MM") {
+                                                        readingWidth = true;
+                                                        readingHeight = false;
+                                                    } else if (line == "HEIGHT_MM") {
+                                                        readingWidth = false;
+                                                        readingHeight = true;
+                                                    } else if (line == "END") {
+                                                        break;
+                                                    } else if (readingWidth) {
+                                                        try {
+                                                            pageWidthMM = std::stod(line);
+                                                            Base::Console().message("Extracted page width: %.1f mm\n", pageWidthMM);
+                                                        } catch (const std::exception& e) {
+                                                            Base::Console().warning("Failed to parse page width: %s\n", e.what());
+                                                        }
+                                                        readingWidth = false;
+                                                    } else if (readingHeight) {
+                                                        try {
+                                                            pageHeightMM = std::stod(line);
+                                                            Base::Console().message("Extracted page height: %.1f mm\n", pageHeightMM);
+                                                        } catch (const std::exception& e) {
+                                                            Base::Console().warning("Failed to parse page height: %s\n", e.what());
+                                                        }
+                                                        readingHeight = false;
+                                                    }
+                                                }
+                                                dimFile.close();
+                                                
+                                                // Clean up temporary file
+                                                std::remove(tempDimFile.c_str());
+                                                
+                                                Base::Console().message("Successfully extracted page dimensions: %.1f x %.1f mm\n",
+                                                                       pageWidthMM, pageHeightMM);
+                                            } else {
+                                                Base::Console().warning("Failed to read page dimensions from temp file, using A4 defaults\n");
+                                            }
+                                            
+                                            // Convert mm to points (1 mm = 2.834645669 points)
+                                            pageWidthPoints = pageWidthMM * 2.834645669;
+                                            pageHeightPoints = pageHeightMM * 2.834645669;
+                                            
+                                            Base::Console().message("Using page dimensions: %.1f x %.1f mm (%.1f x %.1f points)\n",
+                                                                   pageWidthMM, pageHeightMM, pageWidthPoints, pageHeightPoints);
+                                            
+                                        } catch (const std::exception& e) {
+                                            Base::Console().warning("Failed to extract page dimensions, using A4 defaults: %s\n", e.what());
+                                        }
                                         
                                         // Get source objects using property system
                                         App::Property* sourceProp = view->getPropertyByName("Source");
@@ -524,10 +636,13 @@ void StdCmdPrint3dPdf::activated(int iMsg)
     
     // Now convert tessellation data to PRC format
     Base::Console().message("Converting tessellation data to PRC format...\n");
+    Base::Console().message("PDF will use page dimensions: %.1f x %.1f points (%.1f x %.1f mm)\n",
+                           pageWidthPoints, pageHeightPoints,
+                           pageWidthPoints / 2.834645669, pageHeightPoints / 2.834645669);
     
     if (!tessData.empty()) {
-        // Convert to PRC format using the user-selected path
-        bool success = Export3DPDF::Export3DPDFCore::convertTessellationToPRC(tessData, outputPath);
+        // Convert to PRC format using the user-selected path and extracted page dimensions
+        bool success = Export3DPDF::Export3DPDFCore::convertTessellationToPRC(tessData, outputPath, pageWidthPoints, pageHeightPoints);
         
         if (success) {
             Base::Console().message("3D PDF export completed successfully: %s.pdf\n", outputPath.c_str());
