@@ -202,6 +202,7 @@ protected:
     std::function<void()> onAccept;
     std::function<void()> onReject;
     bool accepted;
+    int tid;
 };
 
 } //namespace PartDesignGui
