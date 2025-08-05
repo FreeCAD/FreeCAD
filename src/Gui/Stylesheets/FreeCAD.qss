@@ -91,10 +91,25 @@ Gui--PropertyEditor--PropertyEditor > QWidget > QFrame:focus {
   background-color: @AccentColor;/* same as focused background color */}
 /* hack to hide weird redundant information inside cells with links and no editable data (but editable via "..." button) */
 Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QLabel {
-  background-color: @TextUrlColor;/* same as focused background color */
-  border-radius: @InputFieldBorderRadius;
+  background-color: @PrimaryColor;/* same as focused background color */
+  /* border-radius: @InputFieldBorderRadius; */
 }
 
+/* Pushbutton style for "..." inside Placement cell which launches Placement tool */
+Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QPushButton,
+Gui--PropertyEditor--PropertyEditor > QWidget > PushButton {
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor);
+  border: 1px solid @GeneralBorderColor;
+  min-width: 16px; /* reset it due to larger value on regular QPushButton, same or bigger value as regular QPushButton min-height */
+  border-radius: @InputFieldBorderRadius;
+  margin: 0px; /* reset */
+  padding: 0px; /* reset */
+}
+
+Gui--PropertyEditor--PropertyEditor > QWidget > QPushButton {
+    text-align:left;
+    padding-left: 2px;
+}
 /*==================================================================================================
 Main window
 ==================================================================================================*/
@@ -123,12 +138,10 @@ Gui--MDIView QLabel{
 Gui--MDIView QScrollArea{
   border: 1px solid @GeneralBorderColor;
   background-color: transparent;/* Added to maintain consistency */}
+
 /* QWidget ----------------------------------------------------------------
 This causes much load time. DONT USE "QWidget { " This causes a lot of lag.
 */
-
-
-
 
 QColorDialog {
   background-color: @DialogBackgroundColor;
@@ -271,7 +284,7 @@ QCheckBox::indicator:unchecked:hover, QCheckBox::indicator:unchecked:focus, QChe
 
 QCheckBox::indicator:unchecked:disabled {
   background-color: @GeneralDisabledBackgroundColor;
-  border: 1px solid @GeneralBorderHoverColor;
+  border: 1px solid @CheckBoxBorderColor;
 }
 
 QCheckBox::indicator:checked {
@@ -288,6 +301,7 @@ QCheckBox::indicator:checked:disabled {
   /* background-color: @PrimaryColor; */
   border: 1px solid @CheckBoxBorderColor;
   image: url(qss:@IconsLocationFolderName/check-mark-lightgray.svg);
+  background-color: @GeneralDisabledBackgroundColor;
 }
 
 QCheckBox::indicator:indeterminate {
@@ -299,6 +313,7 @@ QCheckBox::indicator:indeterminate {
 QCheckBox::indicator:indeterminate:disabled {
   /* background-color: @PrimaryColor; */
   border: 1px solid @CheckBoxBorderColor;
+  background-color: @GeneralDisabledBackgroundColor;
   image: url(qss:@IconsLocationFolderName/indeterminate-mark-lightgray.svg);
 }
 
