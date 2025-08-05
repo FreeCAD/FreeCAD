@@ -420,12 +420,14 @@ public:
     void renameSelf(const std::string& name);
     /// Commit the Undo transaction on the active document
     static void commitCommand();
-    static void commitCommand(int tid);
+    /// Commit a command with a specified transaction id and nullifies the id
+    static void commitCommand(int& tid);
     void commitSelf();
 
     /// Abort the Undo transaction on the active document
     static void abortCommand();
-    static void abortCommand(int tid);
+    /// Abort a command with a specified transaction id and nullifies the id
+    static void abortCommand(int& tid);
     void abortSelf();
 
     int transactionID() const;
