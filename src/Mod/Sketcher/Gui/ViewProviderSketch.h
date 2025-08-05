@@ -766,7 +766,7 @@ private:
     /** @name preselection functions */
     //@{
     /// helper to detect preselection
-    bool detectAndShowPreselection(SoPickedPoint* Point, const SbVec2s& cursorPos);
+    bool detectAndShowPreselection(SoPickedPoint* Point);
     int getPreselectPoint() const;
     int getPreselectCurve() const;
     int getPreselectCross() const;
