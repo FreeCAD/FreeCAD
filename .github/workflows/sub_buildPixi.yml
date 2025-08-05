@@ -49,16 +49,18 @@ jobs:
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ inputs.allowedToFail }}
     env:
-      CCACHE_DIR: ${{ github.workspace }}/ccache
-      CCACHE_CONFIGPATH: ${{ github.workspace }}/ccache/config
-      CCACHE_MAXSIZE: 1G
       CCACHE_COMPRESS: true
       CCACHE_COMPRESSLEVEL: 5
-      CCACHE_DIRECT: true
+      CCACHE_CONFIGPATH: ${{ github.workspace }}/ccache/config
+      CCACHE_DIR: ${{ github.workspace }}/ccache
+      CCACHE_MAXSIZE: 1G
+      CCACHE_NODIRECT: true
       CCACHE_NOHASHDIR: true
-      config: debug
-      builddir: ${{ github.workspace }}/build/debug/
+      CCACHE_NOINODECACHE: true
+      CCACHE_SLOPPINESS: "include_file_ctime,include_file_mtime,pch_defines,time_macros"
+      builddir: ${{ github.workspace }}/build/release/
       cacheKey: pixi-${{ matrix.os }}
+      config: release
       logdir: ${{ github.workspace }}/logs/
       reportdir: ${{ github.workspace }}/report/
       reportfilename: ${{ inputs.artifactBasename }}-${{ matrix.os }}-report.md
@@ -145,6 +147,7 @@ jobs:
         pixi run build-${{ env.config }}
 
     - name: Print ccache statistics after Build
+      if: always()
       run: |
         pixi run ccache -s
 

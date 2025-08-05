@@ -42,20 +42,22 @@ jobs:
     runs-on: windows-latest
     continue-on-error: ${{ inputs.allowedToFail }}
     env:
-      CCACHE_DIR: C:/FC/cache/
       CCACHE_COMPILERCHECK: "%compiler%" # default:mtime
-      CCACHE_MAXSIZE: 1G
       CCACHE_COMPRESS: true
-      CCACHE_COMPRESSLEVEL: 1
-      CCACHE_NOHASHDIR: true
-      CCACHE_DIRECT: true
-      #CCACHE_SLOPPINESS: "pch_defines,time_macros" # Can't get PCH to work on Windows
+      CCACHE_COMPRESSLEVEL: 5
+      CCACHE_DIR: C:/FC/cache/
       CCACHE_LOGFILE: C:/logs/ccache.log
+      CCACHE_MAXSIZE: 1G
+      CCACHE_NODIRECT: true
+      CCACHE_NOHASHDIR: true
+      CCACHE_NOINODECACHE: true
+      CCACHE_SLOPPINESS: "include_file_ctime,include_file_mtime,pch_defines,time_macros" # Can't get PCH to work on Windows
       ## Have to use C:\ because not enough space on workspace drive
       builddir: C:/FC/build/release/
-      libpackdir: C:/FC/libpack/
       cacheKey: Windows
       ccachebindir: C:/FC/ccache/
+      config: release
+      libpackdir: C:/FC/libpack/
       logdir: C:/logs/
       reportdir: C:/report/
       reportfilename: ${{ inputs.artifactBasename }}-report.md
@@ -119,7 +121,7 @@ jobs:
       - name: Configuring CMake
         run: >
           cmake -B"${{ env.builddir }}" .
-          --preset release
+          --preset ${{ env.config }}
           -DCMAKE_VS_NO_COMPILE_BATCHING=ON
           -DCMAKE_BUILD_TYPE=Release
           -DFREECAD_USE_PCH=OFF
@@ -138,6 +140,7 @@ jobs:
           msbuild ALL_BUILD.vcxproj /m /p:Configuration=Release /p:TrackFileAccess=false /p:CLToolPath=${{ env.ccachebindir }}
 
       - name: Print Ccache statistics after build
+        if: always()
         run: |
           . $env:ccachebindir\ccache -s
 
