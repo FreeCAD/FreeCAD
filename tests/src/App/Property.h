@@ -108,11 +108,15 @@ protected:
         // doc2->recompute();
     }
 
+    void assertMovedProperty(App::Property* property, App::DocumentObject* target);
+
     void testMoveProperty(App::DocumentObject* target);
 
     void testMovePropertyExpression(App::DocumentObject* source,
                                     App::DocumentObject* target,
                                     const char* exprString);
+
+    void testUndoProperty(App::DocumentObject* target);
 
     static void TearDownTestSuite()
     {

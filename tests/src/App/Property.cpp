@@ -394,21 +394,27 @@ TEST_F(RenameProperty, redoRenameProperty)
 App::Document* MoveProperty::doc1 {nullptr};
 App::Document* MoveProperty::doc2 {nullptr};
 
-// Helper function to test moving a property
-void MoveProperty::testMoveProperty(App::DocumentObject* target)
-{
-    // Act
-    App::Property* movedProp = varSet1Doc1->moveDynamicProperty(prop, target);
+void MoveProperty::assertMovedProperty(App::Property* property, App::DocumentObject* target)
 
-    // Assert
-    ASSERT_TRUE(movedProp != nullptr);
-    EXPECT_EQ(movedProp->getContainer(), target);
+{
+    ASSERT_TRUE(property != nullptr);
+    EXPECT_EQ(property->getContainer(), target);
     EXPECT_EQ(varSet1Doc1->getDynamicPropertyByName("Variable"), nullptr);
 
     auto* movedPropWithType =
         freecad_cast<App::PropertyInteger*>(target->getDynamicPropertyByName("Variable"));
     ASSERT_TRUE(movedPropWithType != nullptr);
     EXPECT_EQ(movedPropWithType->getValue(), value);
+}
+
+// Helper function to test moving a property
+void MoveProperty::testMoveProperty(App::DocumentObject* target)
+{
+    // Act
+    App::Property* movedProp = varSet1Doc1->moveDynamicProperty(prop, target);
+
+    assertMovedProperty(movedProp, target);
+    // Assert
 }
 
 // Tests whether we can move a property to a different container
@@ -422,40 +428,6 @@ TEST_F(MoveProperty, movePropertyOtherDoc)
 {
     testMoveProperty(varSetDoc2);
 }
-
-// // Tests whether we can move a property to a different container
-// TEST_F(MoveProperty, movePropertySimple)
-// {
-//     // Act
-//     App::Property* movedProp = varSet1Doc1->moveDynamicProperty(prop, varSet2Doc1);
-
-//     // Assert
-//     ASSERT_TRUE(movedProp != nullptr);
-//     EXPECT_EQ(movedProp->getContainer(), varSet2Doc1);
-//     EXPECT_EQ(varSet1Doc1->getDynamicPropertyByName("Variable"), nullptr);
-
-//     auto* movedPropWithType =
-//         freecad_cast<App::PropertyInteger*>(varSet2Doc1->getDynamicPropertyByName("Variable"));
-//     ASSERT_TRUE(movedPropWithType != nullptr);
-//     EXPECT_EQ(movedPropWithType->getValue(), value);
-// }
-
-// // Tests whether we can move a property to a container in a different document
-// TEST_F(MoveProperty, movePropertyOtherDoc)
-// {
-//     // Act
-//     App::Property* movedProp = varSet1Doc1->moveDynamicProperty(prop, varSetDoc2);
-
-//     // Assert
-//     ASSERT_TRUE(movedProp != nullptr);
-//     EXPECT_EQ(movedProp->getContainer(), varSetDoc2);
-//     EXPECT_EQ(varSet1Doc1->getDynamicPropertyByName("Variable"), nullptr);
-
-//     auto* movedPropWithType =
-//         freecad_cast<App::PropertyInteger*>(varSetDoc2->getDynamicPropertyByName("Variable"));
-//     ASSERT_TRUE(movedPropWithType != nullptr);
-//     EXPECT_EQ(movedPropWithType->getValue(), value);
-// }
 
 // Tests whether we can move a static property
 TEST_F(MoveProperty, moveStaticProperty)
@@ -550,144 +522,76 @@ TEST_F(MoveProperty, updateExpressionTargetContainer)
     testMovePropertyExpression(varSet2Doc1, varSet2Doc1, "Variable");
 }
 
-// Tests whether we can move a property that is used in an expression in the
-// originating container
+// Tests whether we can move a property to another document that is used in an
+// expression in the originating container
 TEST_F(MoveProperty, updateExpressionOriginatingContainerOtherDoc)
 {
-    // // Arrange
-    // const auto* prop2 = freecad_cast<App::PropertyInteger*>(
-    //     varSet1Doc1->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables"));
-
-    // App::ObjectIdentifier path(*prop2);
-    // std::shared_ptr<App::Expression> expr(App::Expression::parse(varSet1Doc1, "Variable"));
-    // varSet1Doc1->setExpression(path, expr);
-    // varSet1Doc1->ExpressionEngine.execute();
-
-    // // Assert before the move
-    // EXPECT_EQ(prop->getValue(), value);
-    // EXPECT_EQ(prop2->getValue(), value);
-
-    // // Act
-    // App::Property* movedProp = varSet1Doc1->moveDynamicProperty(prop, varSetDoc2);
-    // varSet1Doc1->ExpressionEngine.execute();
-
-    // // Assert after the move
-    // ASSERT_TRUE(movedProp != nullptr);
-    // EXPECT_EQ(varSet1Doc1->getPropertyByName("Variable"), nullptr);
-
-    // auto* movedPropWithType =
-    //     freecad_cast<App::PropertyInteger*>(varSetDoc2->getDynamicPropertyByName("Variable"));
-    // ASSERT_TRUE(movedPropWithType != nullptr);
-    // EXPECT_EQ(movedPropWithType->getValue(), value);
-    // EXPECT_STREQ(varSet1Doc1->ExpressionEngine.getExpressions().begin()->second->toString().c_str(),
-    //              "test1#VarSet.Variable");
-
     testMovePropertyExpression(varSet1Doc1, varSetDoc2, "test1#VarSet.Variable");
 }
 
-// Tests whether we can move a property that is used in an expression in the
-// target container
+// Tests whether we can move a property to another document that is used in an
+// expression in the target container
 TEST_F(MoveProperty, updateExpressionTargetContainerOtherDoc)
 {
-    // Arrange
-    // const auto* prop2 = freecad_cast<App::PropertyInteger*>(
-    //     varSetDoc2->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables"));
-
-    // App::ObjectIdentifier path(*prop2);
-    // std::shared_ptr<App::Expression> expr(App::Expression::parse(varSet1Doc1, "Variable"));
-    // doc1->saveAs("test.FCStd");
-    // doc2->saveAs("test1.FCStd");
-    // varSetDoc2->setExpression(path, expr);
-    // varSetDoc2->ExpressionEngine.execute();
-
-    // // Assert before the move
-    // EXPECT_EQ(prop->getValue(), value);
-    // EXPECT_EQ(prop2->getValue(), value);
-
-    // // Act
-    // App::Property* movedProp = varSet1Doc1->moveDynamicProperty(prop, varSetDoc2);
-    // varSetDoc2->ExpressionEngine.execute();
-
-    // // Assert after the move
-    // ASSERT_TRUE(movedProp != nullptr);
-    // EXPECT_EQ(varSet1Doc1->getPropertyByName("Variable"), nullptr);
-
-    // auto* movedPropWithType =
-    //     freecad_cast<App::PropertyInteger*>(varSetDoc2->getDynamicPropertyByName("Variable"));
-    // ASSERT_TRUE(movedPropWithType != nullptr);
-    // EXPECT_EQ(movedPropWithType->getValue(), value);
-    // EXPECT_STREQ(varSetDoc2->ExpressionEngine.getExpressions().begin()->second->toString().c_str(),
-    //              "Variable");
-
     testMovePropertyExpression(varSetDoc2, varSetDoc2, "Variable");
 }
 
 // Tests whether we can move a property that obtains its value from an expression.
 TEST_F(MoveProperty, updateExpressionMovedProp)
 {
-    try {
-        // Arrange
-        auto* prop2 = freecad_cast<App::PropertyInteger*>(
-            varSet1Doc1->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables"));
-        int valueVar2 = 10;
-        prop2->setValue(valueVar2);
+    // Arrange
+    auto* prop2 = freecad_cast<App::PropertyInteger*>(
+        varSet1Doc1->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables"));
+    int valueVar2 = 10;
+    prop2->setValue(valueVar2);
 
-        App::ObjectIdentifier path(*prop);
-        std::shared_ptr<App::Expression> expr(App::Expression::parse(varSet1Doc1, "Variable2"));
-        varSet1Doc1->setExpression(path, expr);
-        varSet1Doc1->ExpressionEngine.execute();
+    App::ObjectIdentifier path(*prop);
+    std::shared_ptr<App::Expression> expr(App::Expression::parse(varSet1Doc1, "Variable2"));
+    varSet1Doc1->setExpression(path, expr);
+    varSet1Doc1->ExpressionEngine.execute();
 
-        // Assert before the move
-        EXPECT_EQ(prop->getValue(), valueVar2);
-        EXPECT_EQ(prop2->getValue(), valueVar2);
+    // Assert before the move
+    EXPECT_EQ(prop->getValue(), valueVar2);
+    EXPECT_EQ(prop2->getValue(), valueVar2);
 
-        // Act
-        App::Property* movedProp = nullptr;
-        movedProp = varSet1Doc1->moveDynamicProperty(prop, varSet2Doc1);
-        varSet1Doc1->ExpressionEngine.execute();
-        varSet2Doc1->ExpressionEngine.execute();
+    // Act
+    App::Property* movedProp = nullptr;
+    movedProp = varSet1Doc1->moveDynamicProperty(prop, varSet2Doc1);
+    varSet1Doc1->ExpressionEngine.execute();
+    varSet2Doc1->ExpressionEngine.execute();
 
-        // Assert after the move
-        ASSERT_TRUE(movedProp != nullptr);
-        EXPECT_EQ(varSet1Doc1->getPropertyByName("Variable"), nullptr);
-        EXPECT_EQ(varSet1Doc1->ExpressionEngine.getExpressions().size(), 0);
+    // Assert after the move
+    ASSERT_TRUE(movedProp != nullptr);
+    EXPECT_EQ(varSet1Doc1->getPropertyByName("Variable"), nullptr);
+    EXPECT_EQ(varSet1Doc1->ExpressionEngine.getExpressions().size(), 0);
 
-        auto* movedPropWithType =
-            freecad_cast<App::PropertyInteger*>(varSet2Doc1->getDynamicPropertyByName("Variable"));
-        ASSERT_TRUE(movedPropWithType != nullptr);
-        EXPECT_EQ(movedPropWithType->getValue(), valueVar2);
+    auto* movedPropWithType =
+        freecad_cast<App::PropertyInteger*>(varSet2Doc1->getDynamicPropertyByName("Variable"));
+    ASSERT_TRUE(movedPropWithType != nullptr);
+    EXPECT_EQ(movedPropWithType->getValue(), valueVar2);
 
-        std::map<App::ObjectIdentifier, const App::Expression*> expressions =
-            varSet2Doc1->ExpressionEngine.getExpressions();
-        ASSERT_EQ(expressions.size(), 1);
-        EXPECT_STREQ(expressions.begin()->first.getPropertyName().c_str(), "Variable");
-        EXPECT_STREQ(expressions.begin()->second->toString().c_str(), "VarSet.Variable2");
-    }
-    catch (const Base::Exception& e) {
-        FAIL() << "fail: " << e.what();
-    }
+    std::map<App::ObjectIdentifier, const App::Expression*> expressions =
+        varSet2Doc1->ExpressionEngine.getExpressions();
+    ASSERT_EQ(expressions.size(), 1);
+    EXPECT_STREQ(expressions.begin()->first.getPropertyName().c_str(), "Variable");
+    EXPECT_STREQ(expressions.begin()->second->toString().c_str(), "VarSet.Variable2");
 }
 
-// Tests whether we can move a property and undo it
-TEST_F(MoveProperty, undoMoveProperty)
+void MoveProperty::testUndoProperty(App::DocumentObject* target)
 {
     // Arrange
     doc1->setUndoMode(1);
+    doc2->setUndoMode(1);
 
     // Act
     App::Property* movedProp = nullptr;
     {
         App::AutoTransaction transaction("Move Property");
-        movedProp = varSet1Doc1->moveDynamicProperty(prop, varSet2Doc1);
+        movedProp = varSet1Doc1->moveDynamicProperty(prop, target);
     }
 
     // Assert
-    ASSERT_TRUE(movedProp != nullptr);
-    EXPECT_EQ(varSet1Doc1->getPropertyByName("Variable"), nullptr);
-    auto* movedPropWithType =
-        freecad_cast<App::PropertyInteger*>(varSet2Doc1->getDynamicPropertyByName("Variable"));
-    ASSERT_TRUE(movedPropWithType != nullptr);
-    EXPECT_EQ(movedPropWithType->getValue(), value);
+    assertMovedProperty(movedProp, target);
 
     // Act: Undo the move
     bool undone = doc1->undo();
@@ -698,8 +602,43 @@ TEST_F(MoveProperty, undoMoveProperty)
         freecad_cast<App::PropertyInteger*>(varSet1Doc1->getDynamicPropertyByName("Variable"));
     ASSERT_TRUE(originalProp != nullptr);
     EXPECT_EQ(originalProp->getValue(), value);
-    EXPECT_EQ(varSet2Doc1->getPropertyByName("Variable"), nullptr);
+    EXPECT_EQ(target->getPropertyByName("Variable"), nullptr);
 }
+
+// Tests whether we can move a property and undo it
+TEST_F(MoveProperty, undoMoveProperty)
+{
+    testUndoProperty(varSet2Doc1);
+}
+
+// Tests whether we can move a property to a container in a different document
+TEST_F(MoveProperty, undoMovePropertyOtherDoc)
+{
+    testUndoProperty(varSetDoc2);
+}
+
+#if 0
+void MoveProperty::testUndoMovePropertyExpression(App::DocumentObject* sourceProp2,
+                                                  App::DocumentObject* target,
+                                                  const char* exprString)
+{
+    // Arrange
+    doc1->setUndoMode(1);
+    doc2->setUndoMode(1);
+
+    testMove
+
+    // Act: Undo the move
+    bool undone = doc1->undo();
+}
+
+
+
+
+
+
+
+
 
 
 // Tests whether we can undo and redo a property move
@@ -747,31 +686,4 @@ TEST_F(MoveProperty, redoMoveProperty)
     EXPECT_EQ(movedPropWithType->getValue(), value);
 }
 
-// // Tests whether we can move a property to a container in a different document
-// TEST_F(MoveProperty, undoMovePropertyOtherDoc)
-// {
-//     // Arrange
-//     doc->setUndoMode(1);
-
-//     // Act
-//     App::Property* movedProp = nullptr;
-//     {
-//         AutoTransaction transaction("Move Property");
-//         movedProp = varSet1Doc1->moveDynamicProperty(prop, varSetDoc2);
-//     }
-
-//     // Assert
-//     ASSERT_TRUE(movedProp != nullptr);
-//     EXPECT_EQ(movedProp->getContainer(), varSetDoc2);
-//     EXPECT_EQ(varSet1Doc1->getDynamicPropertyByName("Variable"), nullptr);
-
-//     auto* movedPropWithType =
-//         freecad_cast<App::PropertyInteger*>(varSetDoc2->getDynamicPropertyByName("Variable"));
-//     ASSERT_TRUE(movedPropWithType != nullptr);
-//     EXPECT_EQ(movedPropWithType->getValue(), value);
-
-//     // Act: Undo the move
-//     bool undone = doc->undo();
-
-//     // Assert: The property should be back to its original container and value
-// }
+#endif
