@@ -209,7 +209,6 @@ public:
     {
         touched = false;
         Gui::Command::abortCommand(tid);
-        tid = 0;
         Selection().clearSelection();
 
         Application::Instance->unsetEditDocumentIf([this](Gui::Document* editdoc) {
@@ -226,7 +225,6 @@ public:
             touched = false;
         }
         Gui::Command::commitCommand(tid);
-        tid = 0;
 
         Application::Instance->unsetEditDocumentIf([this](Gui::Document* editdoc) {
             return editdoc->getEditViewProvider() == vp;

@@ -730,12 +730,10 @@ void DrawSketchHandler::openCommand(const std::string& name)
 void DrawSketchHandler::commitCommand()
 {
     Gui::Command::commitCommand(currentTransactionID);
-    currentTransactionID = 0;
 }
 void DrawSketchHandler::abortCommand()
 {
     Gui::Command::abortCommand(currentTransactionID);
-    currentTransactionID = 0;
 }
 
 int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggestedConstraints,

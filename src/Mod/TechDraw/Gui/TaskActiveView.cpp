@@ -81,7 +81,6 @@ TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat)
     m_previewImageFeat = createActiveView();
     if (!m_previewImageFeat) {
         Gui::Command::abortCommand(m_tid);
-        m_tid = 0;
         this->setEnabled(false);
         return;
     }
@@ -107,7 +106,6 @@ bool TaskActiveView::accept()
 {
     if (m_previewImageFeat) {
         Gui::Command::commitCommand(m_tid);
-        m_tid = 0;
         m_imageFeat = m_previewImageFeat;
         m_previewImageFeat = nullptr;
     }
@@ -119,7 +117,6 @@ bool TaskActiveView::reject()
 {
     if (m_previewImageFeat) {
         Gui::Command::abortCommand(m_tid);
-        m_tid = 0;
         m_previewImageFeat = nullptr;
     }
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");

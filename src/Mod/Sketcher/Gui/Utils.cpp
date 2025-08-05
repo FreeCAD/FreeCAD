@@ -178,7 +178,6 @@ void SketcherGui::closeAndRecompute(int& tid, bool abort, Sketcher::SketchObject
         tryAutoRecompute(Obj);
         Gui::Command::commitCommand(tid);
     }
-    tid = 0;
 }
 
 std::string SketcherGui::getStrippedPythonExceptionString(const Base::Exception& e)
