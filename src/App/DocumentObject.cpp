@@ -765,9 +765,6 @@ Property* DocumentObject::moveDynamicProperty(Property* prop,
         clearOutListCache();
     }
 
-    if (_pDoc) {
-        _pDoc->addOrRemovePropertyOfObject(this, prop, false);
-    }
 
     Property* newProp = targetObj->dynamicProps.addDynamicProperty(
             *targetObj, prop->getTypeId().getName(), propertyName,
@@ -777,6 +774,10 @@ Property* DocumentObject::moveDynamicProperty(Property* prop,
         FC_THROWM(Base::RuntimeError,
                   "Failed to move property " << propertyName << " to container "
                                              << targetObj->getFullName());
+    }
+    if (_pDoc) {
+        std::cout << "addOrRemovePropertyOfObject: add\n";
+        _pDoc->addOrRemovePropertyOfObject(targetObj, newProp, true);
     }
     newProp->Paste(*prop);
 
@@ -797,9 +798,6 @@ Property* DocumentObject::moveDynamicProperty(Property* prop,
     }
 
     //auto* newProp = TransactionalObject::moveDynamicProperty(prop, targetContainer);
-    if (_pDoc) {
-        _pDoc->addOrRemovePropertyOfObject(targetObj, prop, true);
-    }
 
     std::cout << "  expressions to move:\n";
 
@@ -825,16 +823,20 @@ Property* DocumentObject::moveDynamicProperty(Property* prop,
         std::cout << "    replaced with: " << it->toString() << "\n";
         targetObj->setExpression(newPropId, it);
     }
-    
+
     targetObj->ExpressionEngine.renameObjectIdentifiers(
             paths);
 
     GetApplication().signalMoveDynamicProperty(*prop, *targetObj);
 
+    if (_pDoc) {
+        std::cout << "addOrRemovePropertyOfObject: remove\n";
+        _pDoc->addOrRemovePropertyOfObject(this, prop, false);
+    }
     bool isRemoved = dynamicProps.removeDynamicProperty(propertyName);
 
     if (!isRemoved) {
-        targetObj->dynamicProps.removeDynamicProperty(newProp->getName());
+        //targetObj->dynamicProps.removeDynamicProperty(newProp->getName());
         FC_THROWM(Base::RuntimeError,
                   "Failed to remove property " << propertyName << " from container "
                                                 << prop->getContainer()->getFullName());

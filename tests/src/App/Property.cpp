@@ -605,8 +605,7 @@ TEST_F(MoveProperty, updateExpressionTargetContainerOtherDoc)
                  "Variable");
 }
 
-// Tests whether we can move a property that is used in an expression in the
-// originating container
+// Tests whether we can move a property that obtains its value from an expression.
 TEST_F(MoveProperty, updateExpressionMovedProp)
 {
     try {
@@ -652,8 +651,6 @@ TEST_F(MoveProperty, updateExpressionMovedProp)
     }
 }
 
-#if 0
-
 // Tests whether we can move a property and undo it
 TEST_F(MoveProperty, undoMoveProperty)
 {
@@ -661,33 +658,35 @@ TEST_F(MoveProperty, undoMoveProperty)
     doc1->setUndoMode(1);
 
     // Act
-    bool isMoved = false;
+    App::Property* movedProp = nullptr;
     {
         App::AutoTransaction transaction("Move Property");
-        isMoved = varSet1Doc1->moveDynamicProperty(prop, varSet2Doc1);
+        movedProp = varSet1Doc1->moveDynamicProperty(prop, varSet2Doc1);
     }
 
     // Assert
-    EXPECT_TRUE(isMoved);
-    EXPECT_EQ(varSet1Doc1->getPropertyByName("Variable"), nullptr);
-    auto* movedProp =
-        freecad_cast<App::PropertyInteger*>(varSet2Doc1->getDynamicPropertyByName("Variable"));
     ASSERT_TRUE(movedProp != nullptr);
-    EXPECT_EQ(movedProp->getValue(), value);
+    EXPECT_EQ(varSet1Doc1->getPropertyByName("Variable"), nullptr);
+    auto* movedPropWithType =
+        freecad_cast<App::PropertyInteger*>(varSet2Doc1->getDynamicPropertyByName("Variable"));
+    ASSERT_TRUE(movedPropWithType != nullptr);
+    EXPECT_EQ(movedPropWithType->getValue(), value);
 
     // Act: Undo the move
     bool undone = doc1->undo();
 
     // Assert: The property should be back to its original container and value
     EXPECT_TRUE(undone);
-    EXPECT_TRUE(varSet1Doc1->getPropertyByName("Variable") != nullptr);
-
     auto* originalProp =
         freecad_cast<App::PropertyInteger*>(varSet1Doc1->getDynamicPropertyByName("Variable"));
     ASSERT_TRUE(originalProp != nullptr);
     EXPECT_EQ(originalProp->getValue(), value);
     EXPECT_EQ(varSet2Doc1->getPropertyByName("Variable"), nullptr);
 }
+
+
+#if 0
+
 
 // Tests whether we can undo and redo a property move
 TEST_F(MoveProperty, redoMoveProperty)
