@@ -108,6 +108,8 @@ protected:
         // doc2->recompute();
     }
 
+    void testMoveProperty(App::DocumentObject* target);
+
     static void TearDownTestSuite()
     {
         App::GetApplication().closeDocument(doc1->getName());
