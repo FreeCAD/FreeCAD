@@ -110,6 +110,8 @@ protected:
 
     void testMoveProperty(App::DocumentObject* target);
 
+    void testMovePropertyExpression(App::DocumentObject* source, const char* exprString);
+
     static void TearDownTestSuite()
     {
         App::GetApplication().closeDocument(doc1->getName());
