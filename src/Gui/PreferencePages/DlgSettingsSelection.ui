@@ -25,7 +25,7 @@
         <property name="text">
          <string/>
         </property>
-        <property name="color" stdset="0">
+        <property name="color">
          <color>
           <red>28</red>
           <green>173</green>
@@ -71,7 +71,7 @@
         <item>
          <spacer name="horizSpacer_1">
           <property name="orientation">
-           <enum>Qt::Vertical</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -95,7 +95,7 @@ Larger value eases to pick things, but can make small features impossible to sel
       </string>
           </property>
           <property name="inputMethodHints">
-           <set>Qt::ImhNone</set>
+           <set>Qt::InputMethodHint::ImhPreferNumbers</set>
           </property>
           <property name="suffix">
            <string notr="true"> px</string>
@@ -127,7 +127,7 @@ Larger value eases to pick things, but can make small features impossible to sel
         <property name="text">
          <string/>
         </property>
-        <property name="color" stdset="0">
+        <property name="color">
          <color>
           <red>225</red>
           <green>225</green>
@@ -245,34 +245,9 @@ Larger value eases to pick things, but can make small features impossible to sel
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="title">
-      <string>Task watcher</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkBoxShowTaskWatcher">
-        <property name="text">
-         <string>Show task watcher and update suggested actions based on selection</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>ShowTaskWatcher</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>General</cstring>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
@@ -286,11 +261,6 @@ Larger value eases to pick things, but can make small features impossible to sel
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::ColorButton</class>
    <extends>QPushButton</extends>
    <header>Gui/Widgets.h</header>
@@ -298,6 +268,11 @@ Larger value eases to pick things, but can make small features impossible to sel
   <customwidget>
    <class>Gui::PrefColorButton</class>
    <extends>Gui::ColorButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
