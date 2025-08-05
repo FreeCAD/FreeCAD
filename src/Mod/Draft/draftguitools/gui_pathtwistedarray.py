@@ -98,7 +98,7 @@ class PathTwistedArray(gui_base_original.Modifier):
             _cmd_list = ["_obj_ = " + _cmd,
                          "Draft.autogroup(_obj_)",
                          "App.ActiveDocument.recompute()"]
-            self.commit(translate("draft","Path Twisted Array"), _cmd_list)
+            self.commit(translate("draft","Create Path Twisted Array"), _cmd_list)
 
         # Commit the transaction and execute the commands
         # through the parent class

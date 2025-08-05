@@ -98,7 +98,7 @@ class Clone(gui_base_original.Modifier):
             _wrn(translate("draft", "Cannot clone objects without a shape, skipping them"))
 
         Gui.addModule("Draft")
-        App.ActiveDocument.openTransaction(translate("Draft", "Clone"))
+        App.ActiveDocument.openTransaction(translate("Draft", "Create Clone"))
         for idx, obj in enumerate(objs_shape):
             cmd = "Draft.make_clone(FreeCAD.ActiveDocument." + obj.Name + ")"
             Gui.doCommand("clone" + str(idx) + " = " + cmd)

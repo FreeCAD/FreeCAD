@@ -301,7 +301,7 @@ class TaskPanelOrthoArray:
                      "App.ActiveDocument.recompute()"]
 
         # We commit the command list through the parent command
-        self.source_command.commit(translate("draft","Orthogonal Array"), _cmd_list)
+        self.source_command.commit(translate("draft","Create Orthogonal Array"), _cmd_list)
 
     def get_numbers(self):
         """Get the number of elements from the widgets."""

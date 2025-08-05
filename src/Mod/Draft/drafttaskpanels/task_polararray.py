@@ -228,7 +228,7 @@ class TaskPanelPolarArray:
                      "App.ActiveDocument.recompute()"]
 
         # We commit the command list through the parent command
-        self.source_command.commit(translate("draft","Polar Array"), _cmd_list)
+        self.source_command.commit(translate("draft","Create Polar Array"), _cmd_list)
 
     def get_number_angle(self):
         """Get the number and angle parameters from the widgets."""

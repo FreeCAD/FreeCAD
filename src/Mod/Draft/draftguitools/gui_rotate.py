@@ -55,7 +55,7 @@ class Rotate(gui_base_original.Modifier):
         return {"Pixmap": "Draft_Rotate",
                 "Accel": "R, O",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_Rotate", "Rotate"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Rotate", "Rotates the selected objects based on a center of rotation, an initial angle, and a final angle.\nIf the \"Copy\" option is active, it will create rotated copies.")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Rotate", "Rotates the selected objects.\nIf the \"Copy\" option is active, it will create rotated copies.")}
 
     def Activated(self):
         """Execute when the command is called."""

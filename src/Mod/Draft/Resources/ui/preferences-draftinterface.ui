@@ -825,7 +825,7 @@
          <string>If checked, the annotation scale widget is displayed in the Draft status bar</string>
         </property>
         <property name="text">
-         <string>Show the annotation scale widget in the Draft workbench</string>
+         <string>Show the Annotation Scale Widget in the Draft Workbench</string>
         </property>
         <property name="checked">
          <bool>true</bool>

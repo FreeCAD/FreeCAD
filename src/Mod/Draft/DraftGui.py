@@ -592,7 +592,7 @@ class DraftToolBar:
         self.isSubelementMode.setText(translate("draft", "Modify subelements") + " (" + _get_incmd_shortcut("SubelementMode") + ")")
         self.isSubelementMode.setToolTip(translate("draft", "If checked, subelements will be modified instead of entire objects"))
         self.textOkButton.setText(translate("draft", "Create Text"))
-        self.textOkButton.setToolTip(translate("draft", "Creates the text object or finishes it))
+        self.textOkButton.setToolTip(translate("draft", "Creates the text object and finishes the command))
         self.retranslateTray(widget)
 
         # Update the maximum width of the push buttons
