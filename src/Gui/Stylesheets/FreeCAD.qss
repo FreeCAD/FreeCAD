@@ -91,10 +91,25 @@ Gui--PropertyEditor--PropertyEditor > QWidget > QFrame:focus {
   background-color: @AccentColor;/* same as focused background color */}
 /* hack to hide weird redundant information inside cells with links and no editable data (but editable via "..." button) */
 Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QLabel {
-  background-color: @TextUrlColor;/* same as focused background color */
-  border-radius: @InputFieldBorderRadius;
+  background-color: @PrimaryColor;/* same as focused background color */
+  /* border-radius: @InputFieldBorderRadius; */
 }
 
+/* Pushbutton style for "..." inside Placement cell which launches Placement tool */
+Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QPushButton,
+Gui--PropertyEditor--PropertyEditor > QWidget > PushButton {
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor);
+  border: 1px solid @GeneralBorderColor;
+  min-width: 16px; /* reset it due to larger value on regular QPushButton, same or bigger value as regular QPushButton min-height */
+  border-radius: @InputFieldBorderRadius;
+  margin: 0px; /* reset */
+  padding: 0px; /* reset */
+}
+
+Gui--PropertyEditor--PropertyEditor > QWidget > QPushButton {
+    text-align:left;
+    padding-left: 2px;
+}
 /*==================================================================================================
 Main window
 ==================================================================================================*/
@@ -123,12 +138,10 @@ Gui--MDIView QLabel{
 Gui--MDIView QScrollArea{
   border: 1px solid @GeneralBorderColor;
   background-color: transparent;/* Added to maintain consistency */}
+
 /* QWidget ----------------------------------------------------------------
 This causes much load time. DONT USE "QWidget { " This causes a lot of lag.
 */
-
-
-
 
 QColorDialog {
   background-color: @DialogBackgroundColor;
@@ -271,7 +284,7 @@ QCheckBox::indicator:unchecked:hover, QCheckBox::indicator:unchecked:focus, QChe
 
 QCheckBox::indicator:unchecked:disabled {
   background-color: @GeneralDisabledBackgroundColor;
-  border: 1px solid @GeneralBorderHoverColor;
+  border: 1px solid @CheckBoxBorderColor;
 }
 
 QCheckBox::indicator:checked {
@@ -288,6 +301,7 @@ QCheckBox::indicator:checked:disabled {
   /* background-color: @PrimaryColor; */
   border: 1px solid @CheckBoxBorderColor;
   image: url(qss:@IconsLocationFolderName/check-mark-lightgray.svg);
+  background-color: @GeneralDisabledBackgroundColor;
 }
 
 QCheckBox::indicator:indeterminate {
@@ -299,6 +313,7 @@ QCheckBox::indicator:indeterminate {
 QCheckBox::indicator:indeterminate:disabled {
   /* background-color: @PrimaryColor; */
   border: 1px solid @CheckBoxBorderColor;
+  background-color: @GeneralDisabledBackgroundColor;
   image: url(qss:@IconsLocationFolderName/indeterminate-mark-lightgray.svg);
 }
 
@@ -503,7 +518,7 @@ QMenu::item {
   padding-left: 5px;
   padding-top: 4px;
   padding-bottom: 4px;
-  padding-right: 50px;
+  padding-right: 5px;
   /* Reserve space for selection border */}
 
 QMenu::item:selected {
@@ -696,12 +711,16 @@ QScrollBar::handle:vertical {
   border-top: 1px solid @GeneralBorderColor;
   border-bottom: 1px solid @GeneralBorderColor;
   min-height: 20px;
-
   background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 @ButtonTopBackgroundColor, stop:1 @ButtonBottomBackgroundColor);
 }
 
 QScrollBar::handle:vertical:focus {
   border: 1px solid @AccentColor;
+}
+
+QScrollBar::handle:vertical:hover {
+  background-color: @GeneralBackgroundHoverColor;
+  border: 1px @ButtonTopBackgroundColor;
 }
 
 QScrollBar::add-line, QScrollBar::sub-line {
@@ -717,7 +736,7 @@ QScrollBar::add-line:horizontal:hover, QScrollBar::sub-line:horizontal:hover {
   background-color: @GeneralBackgroundHoverColor;
 }
 
-QScrollBar::right-arrow, QScrollbar::left-arrow, QScrollBar::up-arrow, QScrollBar::down-arrow {
+QScrollBar::right-arrow, QScrollBar::left-arrow, QScrollBar::up-arrow, QScrollBar::down-arrow {
   margin: 2px;
 }
 
@@ -1348,7 +1367,7 @@ QComboBox {
   border-radius: @InputFieldBorderRadius;
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor );
   padding-left: 4px;
-  padding-right: 2px;
+  padding-right: 18px; /* 18px for the check-mark that says which item is active */
   min-height: 22px;
 }
 
@@ -1777,8 +1796,8 @@ QDockWidget QTabBar { /*tabbar in dockwidget */
 }
 
 QTabBar#mdiAreaTabBar::tab:bottom:selected {
-  background-color: @3DViewBackgroundRefColor;
-  border-top: @3DViewBackgroundRefColor;
+  background-color: @ActiveTabBackgroundColor;
+  border-top: @ActiveTabBackgroundColor;
 }
 
 /*tabbar for files. */
@@ -1863,7 +1882,7 @@ QTabBar::tab:top, QDockWidget QTabBar::tab:top {
   margin-left: 0px;
   margin-right: 0px;
   min-width: 5px;
-  background-color: @GeneralDisabledBackgroundColor ;
+  background-color: @InActiveTabBackgroundColor;
   border-top: 1px solid @GeneralBorderColor;
   border-bottom: 1px solid @GeneralBorderColor;
   border-left: 1px solid @GeneralBorderColor;
@@ -1873,9 +1892,9 @@ QTabBar::tab:top, QDockWidget QTabBar::tab:top {
 }
 
 QTabBar::tab:top:selected, QDockWidget QTabBar::tab:top:selected {
-  background-color: @GeneralBackgroundColor;
+  background-color: @ActiveTabBackgroundColor;
   border-top: 1px solid @GeneralBorderColor;
-  border-bottom: 1px solid @GeneralBackgroundColor;
+  border-bottom: 1px solid @ActiveTabBackgroundColor;
   border-left: 1px solid @GeneralBorderColor;
   border-right: 1px solid @GeneralBorderColor;
   margin-top: 0px;
@@ -1894,7 +1913,7 @@ QTabBar::tab:top:!selected:hover, QDockWidget QTabBar::tab:top:!selected:hover {
 
 QTabBar::tab:bottom, QDockWidget QTabBar::tab:bottom {
   min-width: 5px;
-  background-color: @GeneralDisabledBackgroundColor ;
+  background-color: @InActiveTabBackgroundColor;
   border-bottom: 1px solid @GeneralBorderColor;
   border-top: 1px solid @GeneralBorderColor;
   border-left: 1px solid @GeneralBorderColor;
@@ -1904,9 +1923,9 @@ QTabBar::tab:bottom, QDockWidget QTabBar::tab:bottom {
 }
 
 QTabBar::tab:bottom:selected, QDockWidget QTabBar::tab:bottom:selected {
-  background-color: @GeneralBackgroundColor;
+  background-color: @ActiveTabBackgroundColor;
   border-bottom: 1px solid @GeneralBorderColor;
-  border-top: 1px solid @GeneralBackgroundColor;
+  border-top: 1px solid @ActiveTabBackgroundColor;
   border-left: 1px solid @GeneralBorderColor;
   border-right: 1px solid @GeneralBorderColor;
   margin-bottom: 0px;
@@ -1925,7 +1944,7 @@ QTabBar::tab:bottom:!selected:hover, QDockWidget QTabBar::tab:bottom:!selected:h
 
 QTabBar::tab:left, QDockWidget QTabBar::tab:left {
   min-height: 5px;
-  background-color: @GeneralDisabledBackgroundColor ;
+  background-color: @InActiveTabBackgroundColor;
   border-bottom: 1px solid @GeneralBorderColor;
   border-right: 1px solid @GeneralBorderColor;
   border-left: 1px solid @GeneralBorderColor;
@@ -1935,9 +1954,9 @@ QTabBar::tab:left, QDockWidget QTabBar::tab:left {
 }
 
 QTabBar::tab:left:selected, QDockWidget QTabBar::tab:left:selected {
-  background-color: @GeneralBackgroundColor;
+  background-color: @ActiveTabBackgroundColor;
   border-bottom: 1px solid @GeneralBorderColor;
-  border-right: 1px solid @GeneralBackgroundColor;
+  border-right: 1px solid @ActiveTabBackgroundColor;
   border-left: 1px solid @GeneralBorderColor;
   border-top: 1px solid @GeneralBorderColor;
   margin-left: 0px;
@@ -1955,7 +1974,7 @@ QTabBar::tab:left:!selected:hover, QDockWidget QTabBar::tab:left:!selected:hover
 
 QTabBar::tab:right, QDockWidget QTabBar::tab:right {
   min-height: 5px;
-  background-color: @GeneralDisabledBackgroundColor ;
+  background-color: @InActiveTabBackgroundColor;
   border-bottom: 1px solid @GeneralBorderColor;
   border-left: 1px solid @GeneralBorderColor;
   border-right: 1px solid @GeneralBorderColor;
@@ -1965,9 +1984,9 @@ QTabBar::tab:right, QDockWidget QTabBar::tab:right {
 }
 
 QTabBar::tab:right:selected, QDockWidget QTabBar::tab:right:selected {
-  background-color: @GeneralBackgroundColor;
+  background-color: @ActiveTabBackgroundColor;
   border-bottom: 1px solid @GeneralBorderColor;
-  border-left: 1px solid @GeneralBackgroundColor;
+  border-left: 1px solid @ActiveTabBackgroundColor;
   border-left: 1px solid @GeneralBorderColor;
   border-top: 1px solid @GeneralBorderColor;
   margin-right: 0px;
@@ -2442,7 +2461,7 @@ QDateEdit::drop-down, QDateTimeEdit::drop-down {
   subcontrol-origin: padding;
   subcontrol-position: top right;
   width: 12px;
-  border-left: 1px solid ;
+  border-left: 1px solid;
 }
 
 QDateEdit::down-arrow, QDateTimeEdit::down-arrow {
@@ -2605,14 +2624,10 @@ QGroupBox[objectName="matOpsGrpBox"] QPushButton {
   min-width: 235px;
 }
 
-QToolBar > Gui--WorkbenchComboBox QAbstractItemView {
-  min-width: 180px;
-  margin-left: 30px;
-  border: 1px solid @GeneralBorderColor;
-  padding-left: -27px;
-  background-color: transparent;
-}
 
+Gui--WorkbenchComboBox {
+padding-right: -10px;
+}
 /* Below is a fix for indentation in properties*/
 
 
