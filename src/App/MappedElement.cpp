@@ -71,8 +71,13 @@ bool ElementNameComparator::operator()(const MappedName& leftName,
                 break;
             }
         }
+
+                            
+                          
+
+
         if (res < 0) {
-            return true;
+return true;
         }
         if (res > 0) {
             return false;
@@ -100,14 +105,7 @@ bool ElementNameComparator::operator()(const MappedName& leftName,
         auto ac = (unsigned char)leftName[currentIndex];
         auto bc = (unsigned char)rightName[currentIndex];
         if (std::isdigit(bc) == 0) {
-            if (std::isdigit(ac) != 0) {
-                return true;
-            }
-            if (ac < bc) {
-                return true;
-            }
-            if (ac > bc) {
-                return false;
+            if (std::isdigit(ac) != 0) {return true;}         if (ac < bc) {                return true;            }            if (ac > bc) {                return false;
             }
         }
         else if (std::isdigit(ac) == 0) {
