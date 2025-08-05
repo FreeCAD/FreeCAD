@@ -50,17 +50,22 @@ jobs:
     runs-on: ubuntu-22.04
     continue-on-error: ${{ inputs.allowedToFail }}
     env:
-      CCACHE_DIR: ${{ github.workspace }}/ccache
-      CCACHE_CONFIGPATH: ${{ github.workspace }}/ccache/config
-      CCACHE_MAXSIZE: 1G
       CCACHE_COMPILERCHECK: "%compiler% -dumpfullversion -dumpversion" # default:mtime
       CCACHE_COMPRESS: true
-      CCACHE_COMPRESSLEVEL: 1
+      CCACHE_COMPRESSLEVEL: 5
+      CCACHE_CONFIGPATH: ${{ github.workspace }}/ccache/config
+      CCACHE_DIR: ${{ github.workspace }}/ccache
+      CCACHE_MAXSIZE: 1G
+      CCACHE_NODIRECT: true
+      CCACHE_NOHASHDIR: true
+      CCACHE_NOINODECACHE: true
+      CCACHE_SLOPPINESS: "include_file_ctime,include_file_mtime,pch_defines,time_macros"
       CC: /usr/bin/gcc
       CXX: /usr/bin/g++
       #CC: /usr/bin/clang
       #CXX: /usr/bin/clang++
       builddir: ${{ github.workspace }}/build/release/
+      config: release
       logdir: /tmp/logs/
       reportdir: /tmp/report/
       reportfilename: ${{ inputs.artifactBasename }}-report.md
@@ -133,7 +138,7 @@ jobs:
       - name: CMake Configure
         uses: ./.github/workflows/actions/linux/configure
         with:
-          extraParameters: -G Ninja --preset release
+          extraParameters: -G Ninja --preset ${{ env.config }}
           builddir: ${{ env.builddir }}
           logFile: ${{ env.logdir }}Cmake.log
           errorFile: ${{ env.logdir }}CmakeErrors.log
@@ -148,6 +153,7 @@ jobs:
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
 
       - name: Print ccache statistics after Build
+        if: always()
         run: |
           ccache -s
 
