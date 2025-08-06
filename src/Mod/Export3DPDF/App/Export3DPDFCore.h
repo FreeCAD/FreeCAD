@@ -47,12 +47,18 @@ public:
      * @param outputPath Path where the 3D PDF should be saved
      * @param pageWidthPoints Page width in points (default: A4 width)
      * @param pageHeightPoints Page height in points (default: A4 height)
+     * @param backgroundR Background red component (0.0-1.0, default: gray)
+     * @param backgroundG Background green component (0.0-1.0, default: gray)
+     * @param backgroundB Background blue component (0.0-1.0, default: gray)
      * @return true if successful, false otherwise
      */
     static bool convertTessellationToPRC(const std::vector<TessellationData>& tessellationData, 
                                        const std::string& outputPath,
                                        double pageWidthPoints = 595.276,
-                                       double pageHeightPoints = 841.89);
+                                       double pageHeightPoints = 841.89,
+                                       double backgroundR = 0.5,
+                                       double backgroundG = 0.5,
+                                       double backgroundB = 0.5);
 
     /**
      * @brief Create a PRC file from tessellation data
@@ -69,11 +75,17 @@ public:
      * @param pdfPath Path where the 3D PDF should be saved
      * @param pageWidthPoints Page width in points (default: A4 width)
      * @param pageHeightPoints Page height in points (default: A4 height)
+     * @param backgroundR Background red component (0.0-1.0, default: gray)
+     * @param backgroundG Background green component (0.0-1.0, default: gray)
+     * @param backgroundB Background blue component (0.0-1.0, default: gray)
      * @return true if successful, false otherwise
      */
     static bool embedPRCInPDF(const std::string& prcPath, const std::string& pdfPath,
                              double pageWidthPoints = 595.276,
-                             double pageHeightPoints = 841.89);
+                             double pageHeightPoints = 841.89,
+                             double backgroundR = 0.5,
+                             double backgroundG = 0.5,
+                             double backgroundB = 0.5);
 
 private:
     Export3DPDFCore() = default;  // Static class, no instances

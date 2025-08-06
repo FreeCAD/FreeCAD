@@ -30,7 +30,9 @@
 
 #include <App/Document.h>
 #include <App/GeoFeature.h>
+#include <App/PropertyStandard.h>
 #include <Base/Console.h>
+#include <Base/Color.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -280,6 +282,20 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
             if (vpImage) {
                 vpImage->Crop.setValue(ui->cbCrop->isChecked());
                 vpImage->Enable3DPDFExport.setValue(ui->cb3DPDFExport->isChecked());
+                
+                // Store background settings
+                vpImage->NoBackground.setValue(ui->cbNoBG->isChecked());
+                vpImage->SolidBackground.setValue(ui->cbbg->isChecked()); // Note: using "cbbg" from UI file
+                
+                // Store background color
+                QColor bgColor = ui->ccBgColor->color();
+                Base::Color freecadColor(bgColor.redF(), bgColor.greenF(), bgColor.blueF(), bgColor.alphaF());
+                vpImage->BackgroundColor.setValue(freecadColor);
+                
+                Base::Console().message("ActiveView background settings: NoBackground=%s, SolidBackground=%s, Color=(%.2f,%.2f,%.2f)\n",
+                                       ui->cbNoBG->isChecked() ? "true" : "false",
+                                       ui->cbbg->isChecked() ? "true" : "false",
+                                       bgColor.redF(), bgColor.greenF(), bgColor.blueF());
             }
         }
     }

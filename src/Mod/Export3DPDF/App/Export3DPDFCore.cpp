@@ -19,7 +19,7 @@
 
 using namespace Export3DPDF;
 
-bool Export3DPDFCore::convertTessellationToPRC(const std::vector<TessellationData>& tessellationData, const std::string& outputPath, double pageWidthPoints, double pageHeightPoints)
+bool Export3DPDFCore::convertTessellationToPRC(const std::vector<TessellationData>& tessellationData, const std::string& outputPath, double pageWidthPoints, double pageHeightPoints, double backgroundR, double backgroundG, double backgroundB)
 {
     try {
         Base::Console().message("Converting %zu objects to PRC format...\n", tessellationData.size());
@@ -36,7 +36,7 @@ bool Export3DPDFCore::convertTessellationToPRC(const std::vector<TessellationDat
         
         // Create 3D PDF from PRC
         std::string pdfPath = outputPath + ".pdf";
-        if (!embedPRCInPDF(prcPath, pdfPath, pageWidthPoints, pageHeightPoints)) {
+        if (!embedPRCInPDF(prcPath, pdfPath, pageWidthPoints, pageHeightPoints, backgroundR, backgroundG, backgroundB)) {
             Base::Console().error("Failed to create 3D PDF\n");
             return false;
         }
@@ -180,7 +180,7 @@ std::string Export3DPDFCore::createPRCFile(const std::vector<TessellationData>& 
     }
 }
 
-bool Export3DPDFCore::embedPRCInPDF(const std::string& prcPath, const std::string& pdfPath, double pageWidthPoints, double pageHeightPoints)
+bool Export3DPDFCore::embedPRCInPDF(const std::string& prcPath, const std::string& pdfPath, double pageWidthPoints, double pageHeightPoints, double backgroundR, double backgroundG, double backgroundB)
 {
     try {
         Base::Console().message("Creating 3D PDF from PRC file: %s\n", prcPath.c_str());
@@ -223,6 +223,8 @@ bool Export3DPDFCore::embedPRCInPDF(const std::string& prcPath, const std::strin
         Base::Console().message("PDF page size: %.1f x %.1f points (%.1f x %.1f mm)\n",
                                pageWidthPoints, pageHeightPoints,
                                pageWidthPoints / 2.834645669, pageHeightPoints / 2.834645669);
+        Base::Console().message("PDF background color: (%.3f, %.3f, %.3f)\n",
+                               backgroundR, backgroundG, backgroundB);
         
         // Load PRC/U3D data into PDF
         HPDF_Image u3d = HPDF_LoadU3DFromMem(pdf, prcBuffer.data(), static_cast<HPDF_UINT>(prcSize));
@@ -234,7 +236,10 @@ bool Export3DPDFCore::embedPRCInPDF(const std::string& prcPath, const std::strin
         
         // Create 3D annotation (covers most of the page with 50-point margins)
         double margin = 50.0;
-        HPDF_Rect rect = {margin, margin, pageWidthPoints - margin, pageHeightPoints - margin}; // left, bottom, right, top
+        HPDF_Rect rect = {static_cast<HPDF_REAL>(margin), 
+                         static_cast<HPDF_REAL>(margin), 
+                         static_cast<HPDF_REAL>(pageWidthPoints - margin), 
+                         static_cast<HPDF_REAL>(pageHeightPoints - margin)}; // left, bottom, right, top
         HPDF_Annotation annot = HPDF_Page_Create3DAnnot(page, rect, HPDF_TRUE, HPDF_FALSE, u3d, NULL);
         if (!annot) {
             Base::Console().error("Failed to create 3D annotation\n");
@@ -252,7 +257,7 @@ bool Export3DPDFCore::embedPRCInPDF(const std::string& prcPath, const std::strin
         
         // Configure 3D view settings
         HPDF_3DView_SetLighting(view, "CAD");
-        HPDF_3DView_SetBackgroundColor(view, 0.5, 0.5, 0.5); // Gray background
+        HPDF_3DView_SetBackgroundColor(view, backgroundR, backgroundG, backgroundB);
         
         // Set camera position (isometric-like view)
         HPDF_3DView_SetCamera(view, 

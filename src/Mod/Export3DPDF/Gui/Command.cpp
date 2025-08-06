@@ -41,7 +41,9 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
+#include <App/PropertyStandard.h>
 #include <Base/Console.h>
+#include <Base/Color.h>
 #include <Base/FileInfo.h>
 #include <Base/Tools.h>
 
@@ -120,6 +122,7 @@ void StdCmdPrint3dPdf::activated(int iMsg)
     std::vector<App::DocumentObject*> selection;
     double pageWidthPoints = 595.276;   // A4 width default
     double pageHeightPoints = 841.89;   // A4 height default
+    double backgroundR = 0.5, backgroundG = 0.5, backgroundB = 0.5;  // Default gray background
     if (activeDoc) {
         // Check if the document contains TechDraw pages (indicating TechDraw context)
         std::vector<App::DocumentObject*> pages = activeDoc->getObjectsOfType(Base::Type::fromName("TechDraw::DrawPage"));
@@ -280,6 +283,53 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                                             
                                         } catch (const std::exception& e) {
                                             Base::Console().warning("Failed to extract page dimensions, using A4 defaults: %s\n", e.what());
+                                        }
+                                        
+                                        // Extract background settings from the ActiveView ViewProvider
+                                        try {
+                                            App::Property* noBackgroundProp = vp->getPropertyByName("NoBackground");
+                                            App::Property* solidBackgroundProp = vp->getPropertyByName("SolidBackground");
+                                            App::Property* backgroundColorProp = vp->getPropertyByName("BackgroundColor");
+                                            
+                                            bool noBackground = false;
+                                            bool solidBackground = false;
+                                            
+                                            if (noBackgroundProp) {
+                                                App::PropertyBool* noBgBool = dynamic_cast<App::PropertyBool*>(noBackgroundProp);
+                                                if (noBgBool) {
+                                                    noBackground = noBgBool->getValue();
+                                                }
+                                            }
+                                            
+                                            if (solidBackgroundProp) {
+                                                App::PropertyBool* solidBgBool = dynamic_cast<App::PropertyBool*>(solidBackgroundProp);
+                                                if (solidBgBool) {
+                                                    solidBackground = solidBgBool->getValue();
+                                                }
+                                            }
+                                            
+                                            if (noBackground) {
+                                                // No background = white color
+                                                backgroundR = 1.0; backgroundG = 1.0; backgroundB = 1.0;
+                                                Base::Console().message("Using white background (No Background = true)\n");
+                                            } else if (solidBackground && backgroundColorProp) {
+                                                // Use the specified background color
+                                                App::PropertyColor* colorProp = dynamic_cast<App::PropertyColor*>(backgroundColorProp);
+                                                if (colorProp) {
+                                                    Base::Color bgColor = colorProp->getValue();
+                                                    backgroundR = bgColor.r;
+                                                    backgroundG = bgColor.g;
+                                                    backgroundB = bgColor.b;
+                                                    Base::Console().message("Using solid background color: (%.3f, %.3f, %.3f)\n", 
+                                                                           backgroundR, backgroundG, backgroundB);
+                                                }
+                                            } else {
+                                                // Keep default gray background
+                                                Base::Console().message("Using default gray background\n");
+                                            }
+                                            
+                                        } catch (const std::exception& e) {
+                                            Base::Console().warning("Failed to extract background settings, using default: %s\n", e.what());
                                         }
                                         
                                         // Get source objects using property system
@@ -639,10 +689,12 @@ void StdCmdPrint3dPdf::activated(int iMsg)
     Base::Console().message("PDF will use page dimensions: %.1f x %.1f points (%.1f x %.1f mm)\n",
                            pageWidthPoints, pageHeightPoints,
                            pageWidthPoints / 2.834645669, pageHeightPoints / 2.834645669);
+    Base::Console().message("PDF will use background color: (%.3f, %.3f, %.3f)\n",
+                           backgroundR, backgroundG, backgroundB);
     
     if (!tessData.empty()) {
-        // Convert to PRC format using the user-selected path and extracted page dimensions
-        bool success = Export3DPDF::Export3DPDFCore::convertTessellationToPRC(tessData, outputPath, pageWidthPoints, pageHeightPoints);
+        // Convert to PRC format using the user-selected path, page dimensions, and background color
+        bool success = Export3DPDF::Export3DPDFCore::convertTessellationToPRC(tessData, outputPath, pageWidthPoints, pageHeightPoints, backgroundR, backgroundG, backgroundB);
         
         if (success) {
             Base::Console().message("3D PDF export completed successfully: %s.pdf\n", outputPath.c_str());
