@@ -378,7 +378,6 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
 
     int sketcherfontSize = hGrp->GetInt("EditSketcherFontSize", defaultFontSizePixels);
 
-    double dpi = Client.getApplicationLogicalDPIX();
     double devicePixelRatio = Client.getDevicePixelRatio();
 
     // simple scaling factor for hardcoded pixel values in the Sketcher
@@ -388,11 +387,9 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
     // SoDatumLabel takes the size in points, not in pixels. This is because it uses QFont
     // internally. Coin, at least our coin at this time, takes pixels, not points.
 
-    Client.drawingParameters.coinFontSize =
-        std::lround(sketcherfontSize * devicePixelRatio);  // this is in pixels
+    Client.drawingParameters.coinFontSize = std::lround(sketcherfontSize * devicePixelRatio);  // in pixels
     Client.drawingParameters.labelFontSize =
-        std::lround(sketcherfontSize * devicePixelRatio * 72.0f
-                    / dpi);  // this is in points, as SoDatumLabel uses points
+        std::lround(sketcherfontSize * devicePixelRatio * 0.75);  // in points, as SoDatumLabel uses points
     Client.drawingParameters.constraintIconSize =
         std::lround(0.8 * sketcherfontSize * devicePixelRatio);
 
@@ -1158,3 +1155,4 @@ SoSeparator* EditModeCoinManager::getRootEditNode()
 {
     return editModeScenegraphNodes.EditRoot;
 }
+
