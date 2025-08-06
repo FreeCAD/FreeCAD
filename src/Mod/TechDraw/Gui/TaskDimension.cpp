@@ -25,7 +25,7 @@
 # include <cmath>
 # include <limits>
 # include <QMessageBox>
-#include <regex>
+# include <regex>
 #endif // #ifndef _PreComp_
 
 #include <App/Document.h>
