@@ -2304,6 +2304,7 @@ void CreateTechDrawCommandsExtensions()
     rcCmdMgr.addCommand(new CmdTechDrawExtensionHoleCircle());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionVertexAtIntersection());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionDrawCirclesGroup());
+    rcCmdMgr.addCommand(new CmdTechDrawCosmeticCircle());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionDrawCosmCircle());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionDrawCosmArc());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionDrawCosmCircle3Points());

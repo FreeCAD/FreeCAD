@@ -136,9 +136,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *toolcenter << "TechDraw_ExtensionVertexAtIntersection";
     *toolcenter << "TechDraw_CommandAddOffsetVertex";
     *toolcenter << "Separator";
+    *toolcenter << "TechDraw_CosmeticCircle";
     *toolcenter << "TechDraw_ExtensionDrawCosmCircle";
-    *toolcenter << "TechDraw_ExtensionDrawCosmArc";
     *toolcenter << "TechDraw_ExtensionDrawCosmCircle3Points";
+    *toolcenter << "TechDraw_ExtensionDrawCosmArc";
     *toolcenter << "TechDraw_ExtensionLineParallel";
     *toolcenter << "TechDraw_ExtensionLinePerpendicular";
 
