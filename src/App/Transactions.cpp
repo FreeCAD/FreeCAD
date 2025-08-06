@@ -151,6 +151,7 @@ bool Transaction::hasObject(const TransactionalObject* Obj) const
 void Transaction::changeProperty(TransactionalObject* Obj,
                                  std::function<void(TransactionObject* to)> changeFunc)
 {
+    std::cout << "changeProperty\n";
     auto& index = _Objects.get<1>();
     auto pos = index.find(Obj);
 
@@ -170,13 +171,27 @@ void Transaction::changeProperty(TransactionalObject* Obj,
 
 void Transaction::renameProperty(TransactionalObject* Obj, const Property* pcProp, const char* oldName)
 {
+    std::cout << "renameProperty\n";
+    std::cout << "  adding a change to rename\n";
     changeProperty(Obj, [pcProp, oldName](TransactionObject* to) {
         to->renameProperty(pcProp, oldName);
     });
 }
 
+void Transaction::moveProperty(TransactionalObject* Obj, const Property* pcProp,
+                               TransactionalObject* target, Property* newProp)
+{
+    std::cout << "moveProperty\n";
+    std::cout << "  adding a change to move property\n";
+    changeProperty(Obj, [pcProp, target, newProp](TransactionObject* to) {
+        to->moveProperty(pcProp, target, newProp);
+    });
+}
+
 void Transaction::addOrRemoveProperty(TransactionalObject* Obj, const Property* pcProp, bool add)
 {
+    std::cout << "addOrRemoveProperty\n";
+    std::cout << "  adding a change to add or remove property\n";
     changeProperty(Obj, [pcProp, add](TransactionObject* to) {
         to->addOrRemoveProperty(pcProp, add);
     });
@@ -218,6 +233,7 @@ void Transaction::apply(Document& Doc, bool forward)
 
 void Transaction::addObjectNew(TransactionalObject* Obj)
 {
+    std::cout << "addObjectNew\n";
     auto& index = _Objects.get<1>();
     auto pos = index.find(Obj);
     if (pos != index.end()) {
@@ -247,6 +263,7 @@ void Transaction::addObjectNew(TransactionalObject* Obj)
 
 void Transaction::addObjectDel(const TransactionalObject* Obj)
 {
+    std::cout << "addObjectDel\n";
     auto& index = _Objects.get<1>();
     auto pos = index.find(Obj);
 
@@ -268,6 +285,7 @@ void Transaction::addObjectDel(const TransactionalObject* Obj)
 
 void Transaction::addObjectChange(const TransactionalObject* Obj, const Property* Prop)
 {
+    std::cout << "addObjectChange\n";
     auto& index = _Objects.get<1>();
     auto pos = index.find(Obj);
 
@@ -333,6 +351,19 @@ void TransactionObject::applyChn(Document& /*Doc*/, TransactionalObject* pcObj, 
             auto& data = v.second;
             auto prop = const_cast<Property*>(data.propertyOrig);
 
+            if (data.propertyTarget && data.target) {
+                // This means we are undoing/redoing a move operation
+                if (data.target->isAttachedToDocument()) {
+                    // If the target object is still in the document, we can
+                    // move the property to it.
+                    auto* obj = freecad_cast<DocumentObject*>(data.target);
+                    if (obj) {
+                        auto* newTarget = freecad_cast<DocumentObject*>(data.source);
+                        obj->moveDynamicProperty(data.propertyTarget, newTarget);
+                    }
+                }
+                continue;
+            }
             if (!data.nameOrig.empty()) {
                 // This means we are undoing/redoing a rename operation
                 Property* currentProp = pcObj->getDynamicPropertyByName(data.name.c_str());
@@ -436,6 +467,28 @@ void TransactionObject::renameProperty(const Property* pcProp, const char* oldNa
             pcProp->getContainer()->getDynamicPropertyData(pcProp);
     }
     data.nameOrig = oldName;
+}
+
+void TransactionObject::moveProperty(const Property* pcProp,
+                                     TransactionalObject* target,
+                                     Property* newProp)
+{
+    if (!pcProp || !pcProp->getContainer() || !target) {
+        return;
+    }
+
+    auto& data = _PropChangeMap[pcProp->getID()];
+    if (data.name.empty()) {
+        static_cast<DynamicProperty::PropData&>(data) =
+            pcProp->getContainer()->getDynamicPropertyData(pcProp);
+    }
+    // the property that is about to be moved
+    data.property = pcProp->Copy();
+    data.propertyType = pcProp->getTypeId();
+    data.property->setStatusValue(pcProp->getStatus());
+    data.target = target;
+    data.source = pcProp->getContainer();
+    data.propertyTarget = newProp;
 }
 
 void TransactionObject::addOrRemoveProperty(const Property* pcProp, bool add)

@@ -522,6 +522,8 @@ public:
     /// \internal add or remove property from a transactional object
     void addOrRemovePropertyOfObject(TransactionalObject*, const Property* prop, bool add);
     void renamePropertyOfObject(TransactionalObject*, const Property* prop, const char* newName);
+    void movePropertyOfObject(TransactionalObject*, const Property* prop,
+                              TransactionalObject* target, Property* newProp);
     //@}
 
     /** @name dependency stuff */

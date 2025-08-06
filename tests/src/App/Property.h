@@ -112,11 +112,21 @@ protected:
 
     void testMoveProperty(App::DocumentObject* target);
 
+    void testMovePropertyExpressionWithAct(App::DocumentObject* sourceProp2,
+                                           App::DocumentObject* target,
+                                           const char* exprString,
+                                           const std::function<App::Property*()>& act);
+
     void testMovePropertyExpression(App::DocumentObject* source,
                                     App::DocumentObject* target,
                                     const char* exprString);
 
     void testUndoProperty(App::DocumentObject* target);
+
+    void testUndoMovePropertyExpression(App::DocumentObject* sourceProp2,
+                                        App::DocumentObject* target,
+                                        const char* exprString,
+                                        const char* exprStringAfterUndo);
 
     static void TearDownTestSuite()
     {

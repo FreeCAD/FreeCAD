@@ -775,11 +775,12 @@ Property* DocumentObject::moveDynamicProperty(Property* prop,
                   "Failed to move property " << propertyName << " to container "
                                              << targetObj->getFullName());
     }
-    if (_pDoc) {
-        std::cout << "addOrRemovePropertyOfObject: add\n";
-        _pDoc->addOrRemovePropertyOfObject(targetObj, newProp, true);
-    }
     newProp->Paste(*prop);
+    if (_pDoc) {
+        std::cout << "movePropertyOfObject: add\n";
+        _pDoc->movePropertyOfObject(this, prop, targetObj, newProp);
+        //_pDoc->addOrRemovePropertyOfObject(targetObj, newProp, true);
+    }
 
     auto expressions = ExpressionEngine.getExpressions();
     std::vector<std::shared_ptr<Expression>> expressionsToMove;
@@ -829,10 +830,10 @@ Property* DocumentObject::moveDynamicProperty(Property* prop,
 
     GetApplication().signalMoveDynamicProperty(*prop, *targetObj);
 
-    if (_pDoc) {
-        std::cout << "addOrRemovePropertyOfObject: remove\n";
-        _pDoc->addOrRemovePropertyOfObject(this, prop, false);
-    }
+    // if (_pDoc) {
+    //     std::cout << "addOrRemovePropertyOfObject: remove\n";
+    //     _pDoc->addOrRemovePropertyOfObject(this, prop, false);
+    // }
     bool isRemoved = dynamicProps.removeDynamicProperty(propertyName);
 
     if (!isRemoved) {
