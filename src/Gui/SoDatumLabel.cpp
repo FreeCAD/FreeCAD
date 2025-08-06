@@ -1692,8 +1692,9 @@ SoDatumLabel::AngleGeometry SoDatumLabel::calculateAngleGeometry(const SbVec3f* 
     geom.v1 = SbVec3f(cos(geom.startangle), sin(geom.startangle), 0);
     geom.v2 = SbVec3f(cos(geom.endangle), sin(geom.endangle), 0);
 
-    if (geom.range < 0) {
+    if (geom.range < 0 || geom.length < 0) {
         std::swap(geom.v1, geom.v2);
+        geom.textMargin = -geom.textMargin;
     }
 
     geom.pnt1 = geom.p0 + (geom.r - geom.endLineLength1) * geom.v1;

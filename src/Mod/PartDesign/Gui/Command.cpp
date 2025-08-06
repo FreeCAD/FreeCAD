@@ -2023,7 +2023,7 @@ void CmdPartDesignMirrored::activated(int iMsg)
         finishTransformed(cmd, Feat);
     };
 
-    prepareTransformed(pcActiveBody, this, "Mirror", worker);
+    prepareTransformed(pcActiveBody, this, "Mirrored", worker);
 }
 
 bool CmdPartDesignMirrored::isActive()
