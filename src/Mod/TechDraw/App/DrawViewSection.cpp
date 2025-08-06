@@ -652,7 +652,6 @@ void DrawViewSection::postHlrTasks()
     if (ScaleType.isValue("Automatic") && !checkFit()) {
         double newScale = autoScale();
         Scale.setValue(newScale);
-        Scale.purgeTouched();
         sectionExec(m_saveShape);
     }
     overrideKeepUpdated(false);
