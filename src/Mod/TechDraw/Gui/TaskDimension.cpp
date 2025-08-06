@@ -42,6 +42,7 @@
 #include "TaskDimension.h"
 #include "QGIViewDimension.h"
 #include "ViewProviderDimension.h"
+#include <regex>
 
 
 using namespace Gui;
@@ -54,6 +55,21 @@ TaskDimension::TaskDimension(QGIViewDimension *parent, ViewProviderDimension *di
     m_dimensionVP(dimensionVP)
 {
     ui->setupUi(this);
+
+    std::string currentFormat = parent->getDimFeat()->FormatSpec.getStrValue();
+    std::smatch match;
+    std::regex specRegex("%\\.([0-9]+)([fFrRgGwWeE])");
+
+    if (std::regex_search(currentFormat, match, specRegex) && match.size() > 2) {
+        int numDecimals = std::stoi(match[1].str());
+        m_originalFormatChar = match[2].str();
+        ui->sbNumDec->setValue(numDecimals);
+    } else {
+        ui->sbNumDec->setValue(2);
+        m_originalFormatChar = "w";
+    }
+
+    connect(ui->sbNumDec, qOverload<int>(&QSpinBox::valueChanged), this, &TaskDimension::onNumDecChanged);
 
     // Tolerancing
     ui->cbTheoreticallyExact->setChecked(parent->getDimFeat()->TheoreticalExact.getValue());
@@ -279,6 +295,17 @@ void TaskDimension::onFormatSpecifierChanged()
 {
     m_parent->getDimFeat()->FormatSpec.setValue(ui->leFormatSpecifier->text().toUtf8().constData());
     recomputeFeature();
+}
+
+void TaskDimension::onNumDecChanged(int decimals)
+{
+    std::string newFormatSpec = "%." + std::to_string(decimals) + m_originalFormatChar;
+
+    ui->leFormatSpecifier->blockSignals(true);
+    ui->leFormatSpecifier->setText(QString::fromStdString(newFormatSpec));
+    ui->leFormatSpecifier->blockSignals(false);
+
+    onFormatSpecifierChanged();
 }
 
 void TaskDimension::onArbitraryChanged()
