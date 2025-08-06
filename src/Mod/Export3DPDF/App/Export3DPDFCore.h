@@ -52,13 +52,18 @@ public:
      * @param backgroundB Background blue component (0.0-1.0, default: gray)
      * @return true if successful, false otherwise
      */
-    static bool convertTessellationToPRC(const std::vector<TessellationData>& tessellationData, 
-                                       const std::string& outputPath,
-                                       double pageWidthPoints = 595.276,
-                                       double pageHeightPoints = 841.89,
-                                       double backgroundR = 0.5,
-                                       double backgroundG = 0.5,
-                                       double backgroundB = 0.5);
+        static bool convertTessellationToPRC(const std::vector<TessellationData>& tessellationData, 
+                                        const std::string& outputPath,
+                                        double pageWidthPoints = 595.276,
+                                        double pageHeightPoints = 841.89,
+                                        double backgroundR = 0.5,
+                                        double backgroundG = 0.5,
+                                        double backgroundB = 0.5,
+                                        double activeViewX = 0.0,
+                                        double activeViewY = 0.0,
+                                        double activeViewScale = 1.0,
+                                        double activeViewWidth = 100.0,
+                                        double activeViewHeight = 100.0);
 
     /**
      * @brief Create a PRC file from tessellation data
@@ -85,7 +90,12 @@ public:
                              double pageHeightPoints = 841.89,
                              double backgroundR = 0.5,
                              double backgroundG = 0.5,
-                             double backgroundB = 0.5);
+                             double backgroundB = 0.5,
+                             double activeViewX = 0.0,
+                             double activeViewY = 0.0,
+                             double activeViewScale = 1.0,
+                             double activeViewWidth = 100.0,
+                             double activeViewHeight = 100.0);
 
 private:
     Export3DPDFCore() = default;  // Static class, no instances

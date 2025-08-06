@@ -19,7 +19,7 @@
 
 using namespace Export3DPDF;
 
-bool Export3DPDFCore::convertTessellationToPRC(const std::vector<TessellationData>& tessellationData, const std::string& outputPath, double pageWidthPoints, double pageHeightPoints, double backgroundR, double backgroundG, double backgroundB)
+bool Export3DPDFCore::convertTessellationToPRC(const std::vector<TessellationData>& tessellationData, const std::string& outputPath, double pageWidthPoints, double pageHeightPoints, double backgroundR, double backgroundG, double backgroundB, double activeViewX, double activeViewY, double activeViewScale, double activeViewWidth, double activeViewHeight)
 {
     try {
         Base::Console().message("Converting %zu objects to PRC format...\n", tessellationData.size());
@@ -36,7 +36,7 @@ bool Export3DPDFCore::convertTessellationToPRC(const std::vector<TessellationDat
         
         // Create 3D PDF from PRC
         std::string pdfPath = outputPath + ".pdf";
-        if (!embedPRCInPDF(prcPath, pdfPath, pageWidthPoints, pageHeightPoints, backgroundR, backgroundG, backgroundB)) {
+        if (!embedPRCInPDF(prcPath, pdfPath, pageWidthPoints, pageHeightPoints, backgroundR, backgroundG, backgroundB, activeViewX, activeViewY, activeViewScale, activeViewWidth, activeViewHeight)) {
             Base::Console().error("Failed to create 3D PDF\n");
             return false;
         }
@@ -180,7 +180,7 @@ std::string Export3DPDFCore::createPRCFile(const std::vector<TessellationData>& 
     }
 }
 
-bool Export3DPDFCore::embedPRCInPDF(const std::string& prcPath, const std::string& pdfPath, double pageWidthPoints, double pageHeightPoints, double backgroundR, double backgroundG, double backgroundB)
+bool Export3DPDFCore::embedPRCInPDF(const std::string& prcPath, const std::string& pdfPath, double pageWidthPoints, double pageHeightPoints, double backgroundR, double backgroundG, double backgroundB, double activeViewX, double activeViewY, double activeViewScale, double activeViewWidth, double activeViewHeight)
 {
     try {
         Base::Console().message("Creating 3D PDF from PRC file: %s\n", prcPath.c_str());
@@ -234,12 +234,46 @@ bool Export3DPDFCore::embedPRCInPDF(const std::string& prcPath, const std::strin
             return false;
         }
         
-        // Create 3D annotation (covers most of the page with 50-point margins)
-        double margin = 50.0;
-        HPDF_Rect rect = {static_cast<HPDF_REAL>(margin), 
-                         static_cast<HPDF_REAL>(margin), 
-                         static_cast<HPDF_REAL>(pageWidthPoints - margin), 
-                         static_cast<HPDF_REAL>(pageHeightPoints - margin)}; // left, bottom, right, top
+        // Calculate 3D annotation position based on ActiveView position and size
+        // Convert ActiveView position and dimensions from TechDraw coordinates to PDF coordinates
+        // TechDraw: Y-axis points up, origin at bottom-left, units in mm
+        // PDF: Y-axis points up, origin at bottom-left, units in points
+        
+        double viewWidthPoints = activeViewWidth * 2.834645669;  // Convert mm to points
+        double viewHeightPoints = activeViewHeight * 2.834645669;
+        double viewXPoints = activeViewX * 2.834645669;
+        double viewYPoints = activeViewY * 2.834645669;
+        
+        // Calculate the annotation rectangle in PDF coordinate system
+        // In TechDraw: (X,Y) represents the CENTER of the ActiveView, not bottom-left corner
+        // So we need to calculate the actual bounds by offsetting by half width/height
+        double halfWidthPoints = viewWidthPoints / 2.0;
+        double halfHeightPoints = viewHeightPoints / 2.0;
+        
+        // Calculate bounds around the center point
+        double annotLeft = viewXPoints - halfWidthPoints;
+        double annotRight = viewXPoints + halfWidthPoints;
+        
+        // For Y coordinate: TechDraw Y increases upward, PDF Y also increases upward
+        // Both have origin at bottom-left, so NO coordinate flipping needed
+        double annotBottom = viewYPoints - halfHeightPoints;
+        double annotTop = viewYPoints + halfHeightPoints;
+        
+        Base::Console().message("ActiveView positioning calculation:\n");
+        Base::Console().message("  - TechDraw center position: (%.2f, %.2f) mm, size: %.2f x %.2f mm\n", 
+                               activeViewX, activeViewY, activeViewWidth, activeViewHeight);
+        Base::Console().message("  - PDF center position: (%.2f, %.2f) points, size: %.2f x %.2f points\n", 
+                               viewXPoints, viewYPoints, viewWidthPoints, viewHeightPoints);
+        Base::Console().message("  - 3D annotation bounds: left=%.2f, bottom=%.2f, right=%.2f, top=%.2f\n", 
+                               annotLeft, annotBottom, annotRight, annotTop);
+        Base::Console().message("  - ActiveView bounds in TechDraw: X(%.2f to %.2f), Y(%.2f to %.2f) mm\n",
+                               activeViewX - activeViewWidth/2, activeViewX + activeViewWidth/2,
+                               activeViewY - activeViewHeight/2, activeViewY + activeViewHeight/2);
+        
+        HPDF_Rect rect = {static_cast<HPDF_REAL>(annotLeft), 
+                         static_cast<HPDF_REAL>(annotBottom), 
+                         static_cast<HPDF_REAL>(annotRight), 
+                         static_cast<HPDF_REAL>(annotTop)}; // left, bottom, right, top
         HPDF_Annotation annot = HPDF_Page_Create3DAnnot(page, rect, HPDF_TRUE, HPDF_FALSE, u3d, NULL);
         if (!annot) {
             Base::Console().error("Failed to create 3D annotation\n");

@@ -42,6 +42,7 @@
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
+#include <App/PropertyUnits.h>
 #include <Base/Console.h>
 #include <Base/Color.h>
 #include <Base/FileInfo.h>
@@ -123,6 +124,10 @@ void StdCmdPrint3dPdf::activated(int iMsg)
     double pageWidthPoints = 595.276;   // A4 width default
     double pageHeightPoints = 841.89;   // A4 height default
     double backgroundR = 0.5, backgroundG = 0.5, backgroundB = 0.5;  // Default gray background
+    
+    // Variables for ActiveView positioning and scaling
+    double activeViewX = 0.0, activeViewY = 0.0, activeViewScale = 1.0;
+    double activeViewWidth = 100.0, activeViewHeight = 100.0;
     if (activeDoc) {
         // Check if the document contains TechDraw pages (indicating TechDraw context)
         std::vector<App::DocumentObject*> pages = activeDoc->getObjectsOfType(Base::Type::fromName("TechDraw::DrawPage"));
@@ -365,6 +370,65 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                                         
                                         if (selection.empty()) {
                                             Base::Console().message("  (No source objects stored in this ActiveView)\n");
+                                        }
+                                        
+                                        // Extract position and scale information from ActiveView using property system
+                                        try {
+                                            // Extract position properties  
+                                            App::Property* xProp = view->getPropertyByName("X");
+                                            App::Property* yProp = view->getPropertyByName("Y");
+                                            App::Property* scaleProp = view->getPropertyByName("Scale");
+                                            App::Property* widthProp = view->getPropertyByName("Width");
+                                            App::Property* heightProp = view->getPropertyByName("Height");
+                                            
+                                            // Use the existing global variables declared at function scope
+                                            
+                                            if (xProp) {
+                                                App::PropertyDistance* xDist = dynamic_cast<App::PropertyDistance*>(xProp);
+                                                if (xDist) {
+                                                    activeViewX = xDist->getValue();
+                                                }
+                                            }
+                                            
+                                            if (yProp) {
+                                                App::PropertyDistance* yDist = dynamic_cast<App::PropertyDistance*>(yProp);
+                                                if (yDist) {
+                                                    activeViewY = yDist->getValue();
+                                                }
+                                            }
+                                            
+                                            if (scaleProp) {
+                                                App::PropertyFloatConstraint* scaleFloat = dynamic_cast<App::PropertyFloatConstraint*>(scaleProp);
+                                                if (scaleFloat) {
+                                                    activeViewScale = scaleFloat->getValue();
+                                                }
+                                            }
+                                            
+                                            if (widthProp) {
+                                                App::PropertyFloat* widthFloat = dynamic_cast<App::PropertyFloat*>(widthProp);
+                                                if (widthFloat) {
+                                                    activeViewWidth = widthFloat->getValue();
+                                                }
+                                            }
+                                            
+                                            if (heightProp) {
+                                                App::PropertyFloat* heightFloat = dynamic_cast<App::PropertyFloat*>(heightProp);
+                                                if (heightFloat) {
+                                                    activeViewHeight = heightFloat->getValue();
+                                                }
+                                            }
+                                            
+                                            Base::Console().message("ActiveView position and scale:\n");
+                                            Base::Console().message("  - Position: (%.2f, %.2f) mm\n", activeViewX, activeViewY);
+                                            Base::Console().message("  - Scale: %.3f\n", activeViewScale);
+                                            Base::Console().message("  - Size: %.2f x %.2f mm\n", activeViewWidth, activeViewHeight);
+                                            
+                                            // Store these values for later use in PDF generation
+                                            // These will be used to position the 3D annotation precisely
+                                            // We'll modify the convertTessellationToPRC call to pass these values
+                                            
+                                        } catch (const std::exception& e) {
+                                            Base::Console().warning("Failed to extract ActiveView position/scale: %s\n", e.what());
                                         }
                                     }
                                     else {
@@ -691,10 +755,12 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                            pageWidthPoints / 2.834645669, pageHeightPoints / 2.834645669);
     Base::Console().message("PDF will use background color: (%.3f, %.3f, %.3f)\n",
                            backgroundR, backgroundG, backgroundB);
+    Base::Console().message("PDF will use ActiveView positioning: (%.2f, %.2f) mm, scale: %.3f, size: %.2f x %.2f mm\n",
+                           activeViewX, activeViewY, activeViewScale, activeViewWidth, activeViewHeight);
     
     if (!tessData.empty()) {
-        // Convert to PRC format using the user-selected path, page dimensions, and background color
-        bool success = Export3DPDF::Export3DPDFCore::convertTessellationToPRC(tessData, outputPath, pageWidthPoints, pageHeightPoints, backgroundR, backgroundG, backgroundB);
+        // Convert to PRC format using the user-selected path, page dimensions, background color, and ActiveView positioning
+        bool success = Export3DPDF::Export3DPDFCore::convertTessellationToPRC(tessData, outputPath, pageWidthPoints, pageHeightPoints, backgroundR, backgroundG, backgroundB, activeViewX, activeViewY, activeViewScale, activeViewWidth, activeViewHeight);
         
         if (success) {
             Base::Console().message("3D PDF export completed successfully: %s.pdf\n", outputPath.c_str());
