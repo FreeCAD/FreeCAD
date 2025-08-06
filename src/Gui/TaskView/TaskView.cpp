@@ -849,7 +849,6 @@ void TaskView::addTaskWatcher()
     if (!ActiveWatcher.empty()) {
         TaskWatcherPanel->actionPanel->addStretch();
     }
-    updateWatcher();
 
     // Workaround to avoid a crash in Qt. See also
     // https://forum.freecad.org/viewtopic.php?f=8&t=39187
@@ -913,6 +912,7 @@ void TaskView::setShownTaskInfo(int index)
     int stackedIndex = 0;
     int initIndex = currentIndex();
     if (index < 0 || index >= taskInfos.size()) {
+        updateWatcher();
         stackedIndex = 0; // Show task watcher
     } else {
         stackedIndex = index + 1;
