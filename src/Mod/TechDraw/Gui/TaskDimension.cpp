@@ -25,6 +25,7 @@
 # include <cmath>
 # include <limits>
 # include <QMessageBox>
+#include <regex>
 #endif // #ifndef _PreComp_
 
 #include <App/Document.h>
@@ -42,8 +43,6 @@
 #include "TaskDimension.h"
 #include "QGIViewDimension.h"
 #include "ViewProviderDimension.h"
-#include <regex>
-
 
 using namespace Gui;
 using namespace TechDraw;
