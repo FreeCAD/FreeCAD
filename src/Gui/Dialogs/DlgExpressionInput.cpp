@@ -119,7 +119,6 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
         ui->msg->setWordWrap(true);
         ui->msg->setMaximumHeight(200);
         ui->msg->setMinimumWidth(280);
-        ui->horizontalSpacer_3->changeSize(0, 2);
         ui->verticalLayout->setContentsMargins(9, 9, 9, 9);
         this->adjustSize();
         // It is strange that (at least on Linux) DlgExpressionInput will shrink
