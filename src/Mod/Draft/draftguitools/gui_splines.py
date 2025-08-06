@@ -57,8 +57,8 @@ class BSpline(gui_lines.Line):
 
         return {'Pixmap': 'Draft_BSpline',
                 'Accel': "B, S",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_BSpline", "B-spline"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_BSpline", "Creates a multiple-point B-spline.\nSHIFT to constrain.")}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_BSpline", "B-Spline"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_BSpline", "Creates a multiple-point B-spline")}
 
     def Activated(self):
         """Execute when the command is called.
@@ -184,7 +184,7 @@ class BSpline(gui_lines.Line):
                              'spline = ' + _cmd,
                              'Draft.autogroup(spline)',
                              'FreeCAD.ActiveDocument.recompute()']
-                self.commit(translate("draft", "Create B-spline"),
+                self.commit(translate("draft", "Create B-Spline"),
                             _cmd_list)
             except Exception:
                 _err("Draft: error delaying commit")

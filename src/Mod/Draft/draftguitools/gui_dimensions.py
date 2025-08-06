@@ -85,7 +85,7 @@ class Dimension(gui_base_original.Creator):
         return {'Pixmap': 'Draft_Dimension',
                 'Accel': "D, I",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Dimension", "Dimension"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Dimension", "Creates a dimension.\n\n- Pick three points to create a simple linear dimension.\n- Select a straight line to create a linear dimension linked to that line.\n- Select an arc or circle to create a radius or diameter dimension linked to that arc.\n- Select two straight lines to create an angular dimension between them.\nSHIFT to constrain, E or ALT to select an edge or arc.\n\nYou may select a single line or single circular arc before launching this command\nto create the corresponding linked dimension.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Dimension", "Creates a linear dimension for a straight edge, a circular edge, or 2 picked points, or an angular dimension for 2 straight edges")}
 
     def Activated(self, dir_vec=None):
         """Execute when the command is called."""
@@ -263,7 +263,7 @@ class Dimension(gui_base_original.Creator):
         _cmd_list = ['_dim_ = ' + _cmd,
                      'Draft.autogroup(_dim_)',
                      'FreeCAD.ActiveDocument.recompute()']
-        self.commit(translate("draft", "Create Dimension (radial)"),
+        self.commit(translate("draft", "Create Dimension"),
                     _cmd_list)
 
     def createObject(self):
@@ -484,7 +484,7 @@ class Dimension(gui_base_original.Creator):
                                                     self.angles.append(self.arctrack.getAngle(pt))
                                             self.link = [self.link[0], ob]
                                         else:
-                                            _msg(translate("draft", "Edges don't intersect!"))
+                                            _msg(translate("draft", "Edges do not intersect!"))
                                             self.finish()
                                             return
                                 self.dimtrack.on()

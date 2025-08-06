@@ -870,7 +870,7 @@ class Plane(PlaneBase):
             for n in range(len(shapes)):
                 if not DraftGeomUtils.are_coplanar(shapes[shape_ref], shapes[n]):
                     _wrn(translate(
-                        "draft", "{} and {} aren't coplanar".format(
+                        "draft", "{} and {} are not coplanar".format(
                         names[shape_ref],names[n])) + "\n")
                     return False
         else:
@@ -880,7 +880,7 @@ class Plane(PlaneBase):
                 poly = Part.makePolygon(points)
                 if not DraftGeomUtils.is_planar(poly):
                     _wrn(translate(
-                        "draft", "All Shapes must be coplanar") + "\n")
+                        "draft", "All shapes must be coplanar") + "\n")
                     return False
                 normal = DraftGeomUtils.get_normal(poly)
             else:
@@ -888,7 +888,7 @@ class Plane(PlaneBase):
 
         if not normal:
             _wrn(translate(
-                "draft", "Selected Shapes must define a plane") + "\n")
+                "draft", "Selected shapes must define a plane") + "\n")
             return False
 
         # set center of mass

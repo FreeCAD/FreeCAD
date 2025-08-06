@@ -80,7 +80,7 @@ class TaskPanelPolarArray:
     def __init__(self):
 
         self.form = Gui.PySideUic.loadUi(":/ui/TaskPanel_PolarArray.ui")
-        self.form.setWindowTitle(translate("draft", "Polar array"))
+        self.form.setWindowTitle(translate("draft", "Polar Array"))
         self.form.setWindowIcon(QtGui.QIcon(":/icons/Draft_PolarArray.svg"))
 
         # -------------------------------------------------------------------
@@ -157,19 +157,19 @@ class TaskPanelPolarArray:
         the interface may not allow one to input wrong data.
         """
         if not selection:
-            _err(translate("draft","At least one element must be selected."))
+            _err(translate("draft","At least 1 element must be selected"))
             return False
 
         # TODO: this should handle multiple objects.
         # Each of the elements of the selection should be tested.
         obj = selection[0]
         if obj.isDerivedFrom("App::FeaturePython"):
-            _err(translate("draft","Selection is not suitable for array."))
+            _err(translate("draft","Selection is not suitable for array"))
             _err(translate("draft","Object:") + " {}".format(selection[0].Label))
             return False
 
         if number < 2:
-            _err(translate("draft","Number of elements must be at least 2."))
+            _err(translate("draft","Number of elements must be at least 2"))
             return False
 
         if angle > 360:
@@ -228,7 +228,7 @@ class TaskPanelPolarArray:
                      "App.ActiveDocument.recompute()"]
 
         # We commit the command list through the parent command
-        self.source_command.commit(translate("draft","Polar array"), _cmd_list)
+        self.source_command.commit(translate("draft","Create Polar Array"), _cmd_list)
 
     def get_number_angle(self):
         """Get the number and angle parameters from the widgets."""
@@ -275,7 +275,7 @@ class TaskPanelPolarArray:
             state = self.tr_true
         else:
             state = self.tr_false
-        _msg(translate("draft","Create Link array:") + " {}".format(state))
+        _msg(translate("draft","Create link array:") + " {}".format(state))
 
     def set_link(self):
         """Execute as a callback when the link checkbox changes."""
