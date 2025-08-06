@@ -1157,4 +1157,3 @@ SoSeparator* EditModeCoinManager::getRootEditNode()
 {
     return editModeScenegraphNodes.EditRoot;
 }
-
