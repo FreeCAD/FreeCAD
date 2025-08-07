@@ -426,6 +426,7 @@ TaskDlgPolarPatternParameters::TaskDlgPolarPatternParameters(
     parameter = new TaskPolarPatternParameters(PolarPatternView);
 
     Content.push_back(parameter);
+    Content.push_back(preview);
 }
 
 #include "moc_TaskPolarPatternParameters.cpp"

@@ -32,7 +32,6 @@
 #include <Gui/Command.h>
 #include <Gui/Tools.h>
 #include <Mod/PartDesign/App/FeatureExtrude.h>
-#include <Mod/Part/Gui/ReferenceHighlighter.h>
 
 #include "ui_TaskPadPocketParameters.h"
 #include "TaskExtrudeParameters.h"

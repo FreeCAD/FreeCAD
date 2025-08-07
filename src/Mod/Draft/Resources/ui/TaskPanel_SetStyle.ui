@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Style settings</string>
+   <string>Style Settings</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_1">
    <item>
@@ -37,7 +37,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Save the current style as a preset...</string>
+        <string>Saves the current style as a preset</string>
        </property>
        <property name="text">
         <string/>
@@ -60,7 +60,7 @@
        <item>
         <widget class="QGroupBox" name="groupBox_1">
          <property name="title">
-          <string>Shape appearance</string>
+          <string>Shape Appearance</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_1" columnstretch="1,0" columnminimumwidth="0,100">
           <item row="0" column="0">
@@ -386,7 +386,7 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</string>
        <item>
         <widget class="QGroupBox" name="groupBox_5">
          <property name="title">
-          <string>Lines and arrows</string>
+          <string>Lines and Arrows</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_5" columnstretch="1,0" columnminimumwidth="0,100">
           <item row="0" column="0">
@@ -483,7 +483,7 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</string>
           <item row="0" column="1">
            <widget class="QCheckBox" name="ShowUnit">
             <property name="toolTip">
-             <string>If checked, a unit symbol is added to dimension texts</string>
+             <string>Adds a unit symbol to dimension texts</string>
             </property>
             <property name="text">
              <string/>

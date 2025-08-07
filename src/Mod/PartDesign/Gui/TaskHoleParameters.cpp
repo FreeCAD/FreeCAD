@@ -241,8 +241,6 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
             this, &TaskHoleParameters::baseProfileTypeChanged);
     // clang-format on
 
-    getViewObject()->show();
-
     ui->Diameter->bind(pcHole->Diameter);
     ui->HoleCutDiameter->bind(pcHole->HoleCutDiameter);
     ui->HoleCutDepth->bind(pcHole->HoleCutDepth);
@@ -1161,6 +1159,7 @@ TaskDlgHoleParameters::TaskDlgHoleParameters(ViewProviderHole* HoleView)
     parameter = new TaskHoleParameters(HoleView);
 
     Content.push_back(parameter);
+    Content.push_back(preview);
 }
 
 TaskDlgHoleParameters::~TaskDlgHoleParameters() = default;

@@ -55,6 +55,7 @@
 #include "QuantitySpinBox_p.h"
 #include "Tools.h"
 #include "Dialogs/ui_DlgTreeWidget.h"
+#include "MainWindow.h"
 
 using namespace Gui;
 using namespace App;
@@ -1606,6 +1607,7 @@ void ExpLineEdit::openFormulaDialog()
     QPoint pos = mapToGlobal(QPoint(0,0));
     box->move(pos-box->expressionPosition());
     box->setExpressionInputSize(width(), height());
+    Gui::adjustDialogPosition(box);
 }
 
 void ExpLineEdit::finishFormulaDialog()
@@ -1663,5 +1665,54 @@ bool ButtonGroup::exclusive() const
     return _exclusive;
 }
 
+namespace Gui {
+
+void adjustDialogPosition(QDialog* dialog) {
+    if (!dialog) {
+        return;
+    }
+    const MainWindow* mw = getMainWindow();
+    if (!mw) {
+        return;
+    }
+    
+    dialog->adjustSize(); // ensure correct size
+
+    const QRect mainWindowRect{ mw->mapToGlobal(QPoint(0, 0)), mw->size() };
+    const QRect dialogRect{ dialog->frameGeometry() };
+
+    const bool isFullyInside = mainWindowRect.contains(dialogRect);
+    if (isFullyInside) {
+        return;
+    }
+
+    const bool isCompletelyOutside = !mainWindowRect.intersects(dialogRect);
+    if (isCompletelyOutside) {
+        return;
+    }
+
+    const int margin = 5;
+    const QRect availableArea = mainWindowRect.adjusted(
+        margin, margin, -margin, -margin
+    );
+
+    QPoint adjustedTopLeft = dialogRect.topLeft();
+
+    adjustedTopLeft.setX(std::clamp(
+        adjustedTopLeft.x(),
+        availableArea.left(),
+        availableArea.right() - dialogRect.width()
+    ));
+
+    adjustedTopLeft.setY(std::clamp(
+        adjustedTopLeft.y(),
+        availableArea.top(),
+        availableArea.bottom() - dialogRect.height()
+    ));
+
+    dialog->move(adjustedTopLeft);
+}
+
+}
 
 #include "moc_Widgets.cpp"

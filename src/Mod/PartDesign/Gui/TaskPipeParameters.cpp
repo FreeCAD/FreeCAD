@@ -1132,6 +1132,7 @@ TaskDlgPipeParameters::TaskDlgPipeParameters(ViewProviderPipe* PipeView, bool ne
     Content.push_back(parameter);
     Content.push_back(orientation);
     Content.push_back(scaling);
+    Content.push_back(preview);
 
     parameter->stateHandler = stateHandler;
     orientation->stateHandler = stateHandler;
