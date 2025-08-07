@@ -235,12 +235,12 @@ class Label(DraftAnnotation):
         super().onDocumentRestored(obj)
         gui_utils.restore_view_object(obj, vp_module="view_label", vp_class="ViewProviderLabel")
 
-        if not getattr(obj, "ViewObject", None):
+        vobj = getattr(obj, "ViewObject", None)
+        if vobj is None:
             return
-        vobj = obj.ViewObject
-        if hasattr(vobj, "FontName") and hasattr(vobj, "FontSize"):
-            return
-        self.update_properties_0v21(obj, vobj)
+
+        if not hasattr(vobj, "FontName") or not hasattr(vobj, "FontSize"):
+            self.update_properties_0v21(obj, vobj)
 
     def loads(self, state):
         self.Type = "Label"
