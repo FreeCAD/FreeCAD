@@ -26,6 +26,7 @@
 
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
+#include <Mod/PartDesign/App/Feature.h>
 #include <Gui/ViewProviderOriginGroupExtension.h>
 #include <QCoreApplication>
 
@@ -77,6 +78,9 @@ public:
      * @note datums are counted as their base point only
      */
     SbBox3f getBoundBox ();
+
+    PartDesign::Feature* getShownFeature() const;
+    ViewProvider* getShownViewProvider() const;
 
     /** Check whether objects can be added to the view provider by drag and drop */
     bool canDropObjects() const override;
