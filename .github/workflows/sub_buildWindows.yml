@@ -122,6 +122,7 @@ jobs:
         run: >
           cmake -B"${{ env.builddir }}" .
           --preset ${{ env.config }}
+          -G Ninja
           -DCMAKE_VS_NO_COMPILE_BATCHING=ON
           -DCMAKE_BUILD_TYPE=Release
           -DFREECAD_USE_PCH=OFF
