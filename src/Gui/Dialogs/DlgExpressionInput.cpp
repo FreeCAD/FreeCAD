@@ -937,8 +937,8 @@ void DlgExpressionInput::setMsgText()
     // find words longer than length of msg widget
     // then insert newline to wrap it
     std::string wrappedMsg{};
-    static constexpr int msgContentMargins = 50;
-    const int maxWordLength = (ui->msg->width() - msgContentMargins) / msgFontMetrics.averageCharWidth(); 
+    const int msgContentWidth = ui->msg->width() * 0.85; // 0.85 is a magic number for some padding
+    const int maxWordLength = msgContentWidth / msgFontMetrics.averageCharWidth(); 
 
     const auto wrappableWordPattern = std::regex{ "\\S{" + std::to_string(maxWordLength) + "}" };
     auto it = std::sregex_iterator{ this->message.cbegin(), this->message.cend(), wrappableWordPattern };
@@ -953,6 +953,14 @@ void DlgExpressionInput::setMsgText()
     wrappedMsg += this->message.substr(lastPos);
 
     ui->msg->setText(QString::fromStdString(wrappedMsg));
+    
+    // elide text if it is going out of widget bounds 
+    // note: this is only 'rough elide', as this text is usually not very long;
+    const int msgLinesLimit = 3;
+    if (wrappedMsg.size() > msgContentWidth / msgFontMetrics.averageCharWidth() * msgLinesLimit) {
+        const QString elidedMsg = msgFontMetrics.elidedText(QString::fromStdString(wrappedMsg), Qt::ElideRight, msgContentWidth * msgLinesLimit);
+        ui->msg->setText(elidedMsg);
+    }
 }
 
 #include "moc_DlgExpressionInput.cpp"
