@@ -518,7 +518,7 @@ QMenu::item {
   padding-left: 5px;
   padding-top: 4px;
   padding-bottom: 4px;
-  padding-right: 50px;
+  padding-right: 5px;
   /* Reserve space for selection border */}
 
 QMenu::item:selected {
