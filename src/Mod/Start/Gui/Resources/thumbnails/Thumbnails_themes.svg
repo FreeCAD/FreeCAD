@@ -12,6 +12,9 @@
    sodipodi:docname="Thumbnails_themes.svg"
    inkscape:export-batch-path="..\..\github repros\FreeCAD_MisterMaker\src\Mod\Start\Gui\Resources\thumbnails"
    inkscape:export-batch-name="Theme_thumbnail_dark.png"
+   inkscape:export-filename="Theme_thumbnail_light.png"
+   inkscape:export-xdpi="45"
+   inkscape:export-ydpi="45"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -27,8 +30,8 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      inkscape:zoom="0.49764326"
-     inkscape:cx="243.14606"
-     inkscape:cy="275.29761"
+     inkscape:cx="258.2171"
+     inkscape:cy="494.33001"
      inkscape:window-width="1920"
      inkscape:window-height="1028"
      inkscape:window-x="1913"
@@ -1555,7 +1558,7 @@
      inkscape:groupmode="layer"
      id="layer1"><g
        id="Theme_thumbnail_dark"
-       inkscape:export-filename="dark.svg"
+       inkscape:export-filename="Theme_thumbnail_dark.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
        style="image-rendering:optimizeQuality"
@@ -1963,7 +1966,7 @@
            rx="1.9551494"
            ry="1.9381649" /></g></g><g
        id="Theme_thumbnail_light"
-       inkscape:export-filename="dark.svg"
+       inkscape:export-filename="Theme_thumbnail_light.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
        style="image-rendering:optimizeQuality"
@@ -2361,7 +2364,7 @@
              y="24.479385"
              ry="2.5376582"
              transform="translate(2.8013474,2.3485316)" /><path
-             style="fill:none;stroke:#444b8b;stroke-width:0.765;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4.8;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot-4);marker-mid:url(#marker19-2);marker-end:url(#marker19-2)"
+             style="fill:none;stroke:#535353;stroke-width:0.765;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4.8;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot-4);marker-mid:url(#marker19-2);marker-end:url(#marker19-2)"
              d="M 31.376036,75.941771 45.702308,54.905135 61.920393,67.106961 47.628167,86.562339"
              id="path17-7"
              sodipodi:nodetypes="cccc" /><ellipse
