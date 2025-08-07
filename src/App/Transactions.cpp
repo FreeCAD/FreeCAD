@@ -151,8 +151,8 @@ bool Transaction::hasObject(const TransactionalObject* Obj) const
 void Transaction::changeProperty(TransactionalObject* Obj,
                                  std::function<void(TransactionObject* to)> changeFunc)
 {
-    std::cout << "changeProperty\n";
     auto& index = _Objects.get<1>();
+    std::cout << "changeProperty: " << &_Objects << "\n";
     auto pos = index.find(Obj);
 
     TransactionObject* To;

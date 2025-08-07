@@ -766,8 +766,8 @@ Property* DocumentObject::moveDynamicProperty(Property* prop,
     }
 
 
-    Property* newProp = targetObj->dynamicProps.addDynamicProperty(
-            *targetObj, prop->getTypeId().getName(), propertyName,
+    Property* newProp = targetObj->addDynamicProperty(
+            prop->getTypeId().getName(), propertyName,
             prop->getGroup(), prop->getDocumentation(), prop->getType(),
             prop->isReadOnly(), prop->testStatus(Property::Hidden));
     if (newProp == nullptr) {
@@ -776,11 +776,11 @@ Property* DocumentObject::moveDynamicProperty(Property* prop,
                                              << targetObj->getFullName());
     }
     newProp->Paste(*prop);
-    if (_pDoc) {
-        std::cout << "movePropertyOfObject: add\n";
-        _pDoc->movePropertyOfObject(this, prop, targetObj, newProp);
-        //_pDoc->addOrRemovePropertyOfObject(targetObj, newProp, true);
-    }
+    // if (_pDoc) {
+    //     std::cout << "movePropertyOfObject: add\n";
+    //     _pDoc->movePropertyOfObject(this, prop, targetObj, newProp);
+    //     //_pDoc->addOrRemovePropertyOfObject(targetObj, newProp, true);
+    // }
 
     auto expressions = ExpressionEngine.getExpressions();
     std::vector<std::shared_ptr<Expression>> expressionsToMove;
@@ -795,7 +795,7 @@ Property* DocumentObject::moveDynamicProperty(Property* prop,
     }
 
     for (const auto& it : idsToClear) {
-        ExpressionEngine.setValue(it, std::shared_ptr<Expression>());
+        setExpression(it, std::shared_ptr<Expression>());
     }
 
     //auto* newProp = TransactionalObject::moveDynamicProperty(prop, targetContainer);
@@ -834,7 +834,7 @@ Property* DocumentObject::moveDynamicProperty(Property* prop,
     //     std::cout << "addOrRemovePropertyOfObject: remove\n";
     //     _pDoc->addOrRemovePropertyOfObject(this, prop, false);
     // }
-    bool isRemoved = dynamicProps.removeDynamicProperty(propertyName);
+    bool isRemoved = removeDynamicProperty(propertyName);
 
     if (!isRemoved) {
         //targetObj->dynamicProps.removeDynamicProperty(newProp->getName());
