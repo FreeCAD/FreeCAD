@@ -241,7 +241,10 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
             this, &TaskHoleParameters::baseProfileTypeChanged);
     // clang-format on
 
-    getViewObject()->show();
+    Gui::ViewProvider* viewProv = getViewObject();
+    if (viewProv) {
+        viewProv->show();
+    }
 
     ui->Diameter->bind(pcHole->Diameter);
     ui->HoleCutDiameter->bind(pcHole->HoleCutDiameter);
