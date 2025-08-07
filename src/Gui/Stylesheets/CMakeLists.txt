@@ -7,7 +7,7 @@ SET(Stylesheets_Files
 )
 
 SET(Overlay_Stylesheets_Files
-    "overlay/FreeCAD Overlay.qss"
+    "overlay/Freecad Overlay.qss"
 	#remove below after testing new stylesheet system 8/6/2025
 	"overlay/Dark Theme + Dark Background.qss"
     "overlay/Dark Theme + Light Background.qss"
