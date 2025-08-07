@@ -82,6 +82,8 @@
 #include <Gui/Selection/SoFCSelectionAction.h>
 #include <Gui/Selection/SoFCUnifiedSelection.h>
 #include <Gui/ViewParams.h>
+#include <Gui/Utilities.h>
+
 #include <Mod/Part/App/ShapeMapHasher.h>
 #include <Mod/Part/App/Tools.h>
 
@@ -564,7 +566,7 @@ std::vector<Base::Vector3d> ViewProviderPartExt::getModelPoints(const SoPickedPo
     try {
         std::vector<Base::Vector3d> pts;
         std::string element = this->getElement(pp->getDetail());
-        const auto &shape = Part::Feature::getTopoShape(getObject(), Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+        const auto &shape = getRenderedShape();
 
         TopoDS_Shape subShape = shape.getSubShape(element.c_str());
 
@@ -926,6 +928,389 @@ void ViewProviderPartExt::unsetEdit(int ModNum)
     }
 }
 
+void ViewProviderPartExt::setupCoinGeometry(TopoDS_Shape shape,
+                           SoCoordinate3* coords,
+                           SoBrepFaceSet* faceset,
+                           SoNormal* norm,
+                           SoBrepEdgeSet* lineset,
+                           SoBrepPointSet* nodeset,
+                           double deviation,
+                           double angularDeflection,
+                           bool normalsFromUV)
+{
+    if (Part::Tools::isShapeEmpty(shape)) {
+        coords->point.setNum(0);
+        norm->vector.setNum(0);
+        faceset->coordIndex.setNum(0);
+        faceset->partIndex.setNum(0);
+        lineset->coordIndex.setNum(0);
+        nodeset->startIndex.setValue(0);
+        return;
+    }
+
+    // time measurement and book keeping
+    Base::TimeElapsed startTime;
+
+    [[maybe_unused]]
+    int numTriangles = 0, numNodes = 0, numNorms = 0, numFaces = 0, numEdges = 0, numLines = 0;
+
+    std::set<int> faceEdges;
+
+    // calculating the deflection value
+    Standard_Real deflection = Part::Tools::getDeflection(shape, deviation);
+
+    // Since OCCT 7.6 a value of equal 0 is not allowed any more, this can happen if a single
+    // vertex should be displayed.
+    if (deflection < gp::Resolution()) {
+        deflection = Precision::Confusion();
+    }
+
+    // For very big objects the computed deflection can become very high and thus leads to a
+    // useless tessellation. To avoid this the upper limit is set to 20.0 See also forum:
+    // https://forum.freecad.org/viewtopic.php?t=77521
+    // deflection = std::min(deflection, 20.0);
+
+    // create or use the mesh on the data structure
+    Standard_Real AngDeflectionRads = Base::toRadians(angularDeflection);
+
+    IMeshTools_Parameters meshParams;
+    meshParams.Deflection = deflection;
+    meshParams.Relative = Standard_False;
+    meshParams.Angle = AngDeflectionRads;
+    meshParams.InParallel = Standard_True;
+    meshParams.AllowQualityDecrease = Standard_True;
+
+    BRepMesh_IncrementalMesh(shape, meshParams);
+
+    // We must reset the location here because the transformation data
+    // are set in the placement property
+    TopLoc_Location aLoc;
+    shape.Location(aLoc);
+
+    // count triangles and nodes in the mesh
+    TopTools_IndexedMapOfShape faceMap;
+    TopExp::MapShapes(shape, TopAbs_FACE, faceMap);
+    for (int i = 1; i <= faceMap.Extent(); i++) {
+        Handle(Poly_Triangulation) mesh = BRep_Tool::Triangulation(TopoDS::Face(faceMap(i)), aLoc);
+
+        if (mesh.IsNull()) {
+            mesh = Part::Tools::triangulationOfFace(TopoDS::Face(faceMap(i)));
+        }
+
+        // Note: we must also count empty faces
+        if (!mesh.IsNull()) {
+            numTriangles += mesh->NbTriangles();
+            numNodes += mesh->NbNodes();
+            numNorms += mesh->NbNodes();
+        }
+
+        TopExp_Explorer xp;
+        for (xp.Init(faceMap(i), TopAbs_EDGE); xp.More(); xp.Next()) {
+            faceEdges.insert(Part::ShapeMapHasher {}(xp.Current()));
+        }
+        numFaces++;
+    }
+
+    // get an indexed map of edges
+    TopTools_IndexedMapOfShape edgeMap;
+    TopExp::MapShapes(shape, TopAbs_EDGE, edgeMap);
+
+    // key is the edge number, value the coord indexes. This is needed to keep the same order as
+    // the edges.
+    std::map<int, std::vector<int32_t>> lineSetMap;
+    std::set<int> edgeIdxSet;
+    std::vector<int32_t> edgeVector;
+
+    // count and index the edges
+    for (int i = 1; i <= edgeMap.Extent(); i++) {
+        edgeIdxSet.insert(i);
+        numEdges++;
+
+        const TopoDS_Edge& aEdge = TopoDS::Edge(edgeMap(i));
+        TopLoc_Location aLoc;
+
+        // handling of the free edge that are not associated to a face
+        // Note: The assumption that if for an edge BRep_Tool::Polygon3D
+        // returns a valid object is wrong. This e.g. happens for ruled
+        // surfaces which gets created by two edges or wires.
+        // So, we have to store the hashes of the edges associated to a face.
+        // If the hash of a given edge is not in this list we know it's really
+        // a free edge.
+        int hash = Part::ShapeMapHasher {}(aEdge);
+        if (faceEdges.find(hash) == faceEdges.end()) {
+            Handle(Poly_Polygon3D) aPoly = Part::Tools::polygonOfEdge(aEdge, aLoc);
+            if (!aPoly.IsNull()) {
+                int nbNodesInEdge = aPoly->NbNodes();
+                numNodes += nbNodesInEdge;
+            }
+        }
+    }
+
+    // handling of the vertices
+    TopTools_IndexedMapOfShape vertexMap;
+    TopExp::MapShapes(shape, TopAbs_VERTEX, vertexMap);
+    numNodes += vertexMap.Extent();
+
+    // create memory for the nodes and indexes
+    coords->point.setNum(numNodes);
+    norm->vector.setNum(numNorms);
+    faceset->coordIndex.setNum(numTriangles * 4);
+    faceset->partIndex.setNum(numFaces);
+
+    // get the raw memory for fast fill up
+    SbVec3f* verts = coords->point.startEditing();
+    SbVec3f* norms = norm->vector.startEditing();
+    int32_t* index = faceset->coordIndex.startEditing();
+    int32_t* parts = faceset->partIndex.startEditing();
+
+    // preset the normal vector with null vector
+    for (int i = 0; i < numNorms; i++) {
+        norms[i] = SbVec3f(0.0, 0.0, 0.0);
+    }
+
+    int ii = 0, faceNodeOffset = 0, faceTriaOffset = 0;
+    for (int i = 1; i <= faceMap.Extent(); i++, ii++) {
+        TopLoc_Location aLoc;
+        const TopoDS_Face& actFace = TopoDS::Face(faceMap(i));
+        // get the mesh of the shape
+        Handle(Poly_Triangulation) mesh = BRep_Tool::Triangulation(actFace, aLoc);
+        if (mesh.IsNull()) {
+            mesh = Part::Tools::triangulationOfFace(actFace);
+        }
+        if (mesh.IsNull()) {
+            parts[ii] = 0;
+            continue;
+        }
+
+        // getting the transformation of the shape/face
+        gp_Trsf myTransf;
+        Standard_Boolean identity = true;
+        if (!aLoc.IsIdentity()) {
+            identity = false;
+            myTransf = aLoc.Transformation();
+        }
+
+        // getting size of node and triangle array of this face
+        int nbNodesInFace = mesh->NbNodes();
+        int nbTriInFace = mesh->NbTriangles();
+        // check orientation
+        TopAbs_Orientation orient = actFace.Orientation();
+
+        // cycling through the poly mesh
+#if OCC_VERSION_HEX < 0x070600
+        const Poly_Array1OfTriangle& Triangles = mesh->Triangles();
+        const TColgp_Array1OfPnt& Nodes = mesh->Nodes();
+        TColgp_Array1OfDir Normals(Nodes.Lower(), Nodes.Upper());
+#else
+        int numNodes = mesh->NbNodes();
+        TColgp_Array1OfDir Normals(1, numNodes);
+#endif
+        if (normalsFromUV) {
+            Part::Tools::getPointNormals(actFace, mesh, Normals);
+        }
+
+        for (int g = 1; g <= nbTriInFace; g++) {
+            // Get the triangle
+            Standard_Integer N1, N2, N3;
+#if OCC_VERSION_HEX < 0x070600
+            Triangles(g).Get(N1, N2, N3);
+#else
+            mesh->Triangle(g).Get(N1, N2, N3);
+#endif
+
+            // change orientation of the triangle if the face is reversed
+            if (orient != TopAbs_FORWARD) {
+                Standard_Integer tmp = N1;
+                N1 = N2;
+                N2 = tmp;
+            }
+
+            // get the 3 points of this triangle
+#if OCC_VERSION_HEX < 0x070600
+            gp_Pnt V1(Nodes(N1)), V2(Nodes(N2)), V3(Nodes(N3));
+#else
+            gp_Pnt V1(mesh->Node(N1)), V2(mesh->Node(N2)), V3(mesh->Node(N3));
+#endif
+
+            // get the 3 normals of this triangle
+            gp_Vec NV1, NV2, NV3;
+            if (normalsFromUV) {
+                NV1.SetXYZ(Normals(N1).XYZ());
+                NV2.SetXYZ(Normals(N2).XYZ());
+                NV3.SetXYZ(Normals(N3).XYZ());
+            }
+            else {
+                gp_Vec v1 = Base::convertTo<gp_Vec>(V1);
+                gp_Vec v2 = Base::convertTo<gp_Vec>(V2);
+                gp_Vec v3 = Base::convertTo<gp_Vec>(V3);
+
+                gp_Vec normal = (v2 - v1) ^ (v3 - v1);
+                NV1 = normal;
+                NV2 = normal;
+                NV3 = normal;
+            }
+
+            // transform the vertices and normals to the place of the face
+            if (!identity) {
+                V1.Transform(myTransf);
+                V2.Transform(myTransf);
+                V3.Transform(myTransf);
+                if (normalsFromUV) {
+                    NV1.Transform(myTransf);
+                    NV2.Transform(myTransf);
+                    NV3.Transform(myTransf);
+                }
+            }
+
+            // add the normals for all points of this triangle
+            norms[faceNodeOffset + N1 - 1] += Base::convertTo<SbVec3f>(NV1);
+            norms[faceNodeOffset + N2 - 1] += Base::convertTo<SbVec3f>(NV2);
+            norms[faceNodeOffset + N3 - 1] += Base::convertTo<SbVec3f>(NV3);
+
+            // set the vertices
+            verts[faceNodeOffset + N1 - 1] = Base::convertTo<SbVec3f>(V1);
+            verts[faceNodeOffset + N2 - 1] = Base::convertTo<SbVec3f>(V2);
+            verts[faceNodeOffset + N3 - 1] = Base::convertTo<SbVec3f>(V3);
+
+            // set the index vector with the 3 point indexes and the end delimiter
+            index[faceTriaOffset * 4 + 4 * (g - 1)]     = faceNodeOffset + N1 - 1;
+            index[faceTriaOffset * 4 + 4 * (g - 1) + 1] = faceNodeOffset + N2 - 1;
+            index[faceTriaOffset * 4 + 4 * (g - 1) + 2] = faceNodeOffset + N3 - 1;
+            index[faceTriaOffset * 4 + 4 * (g - 1) + 3] = SO_END_FACE_INDEX;
+        }
+
+        parts[ii] = nbTriInFace;  // new part
+
+        // handling the edges lying on this face
+        TopExp_Explorer Exp;
+        for (Exp.Init(actFace, TopAbs_EDGE); Exp.More(); Exp.Next()) {
+            const TopoDS_Edge& curEdge = TopoDS::Edge(Exp.Current());
+            // get the overall index of this edge
+            int edgeIndex = edgeMap.FindIndex(curEdge);
+            edgeVector.push_back((int32_t)edgeIndex - 1);
+            // already processed this index ?
+            if (edgeIdxSet.find(edgeIndex) != edgeIdxSet.end()) {
+
+                // this holds the indices of the edge's triangulation to the current polygon
+                Handle(Poly_PolygonOnTriangulation) aPoly =
+                    BRep_Tool::PolygonOnTriangulation(curEdge, mesh, aLoc);
+                if (aPoly.IsNull()) {
+                    continue;  // polygon does not exist
+                }
+
+                // getting the indexes of the edge polygon
+                const TColStd_Array1OfInteger& indices = aPoly->Nodes();
+                for (Standard_Integer i = indices.Lower(); i <= indices.Upper(); i++) {
+                    int nodeIndex = indices(i);
+                    int index = faceNodeOffset + nodeIndex - 1;
+                    lineSetMap[edgeIndex].push_back(index);
+
+                    // usually the coordinates for this edge are already set by the
+                    // triangles of the face this edge belongs to. However, there are
+                    // rare cases where some points are only referenced by the polygon
+                    // but not by any triangle. Thus, we must apply the coordinates to
+                    // make sure that everything is properly set.
+#if OCC_VERSION_HEX < 0x070600
+                    gp_Pnt p(Nodes(nodeIndex));
+#else
+                    gp_Pnt p(mesh->Node(nodeIndex));
+#endif
+                    if (!identity) {
+                        p.Transform(myTransf);
+                    }
+                    verts[index] = Base::convertTo<SbVec3f>(p);
+                }
+
+                // remove the handled edge index from the set
+                edgeIdxSet.erase(edgeIndex);
+            }
+        }
+
+        edgeVector.push_back(-1);
+
+        // counting up the per Face offsets
+        faceNodeOffset += nbNodesInFace;
+        faceTriaOffset += nbTriInFace;
+    }
+
+    // handling of the free edges
+    for (int i = 1; i <= edgeMap.Extent(); i++) {
+        const TopoDS_Edge& aEdge = TopoDS::Edge(edgeMap(i));
+        Standard_Boolean identity = true;
+        gp_Trsf myTransf;
+        TopLoc_Location aLoc;
+
+        // handling of the free edge that are not associated to a face
+        int hash = Part::ShapeMapHasher {}(aEdge);
+        if (faceEdges.find(hash) == faceEdges.end()) {
+            Handle(Poly_Polygon3D) aPoly = Part::Tools::polygonOfEdge(aEdge, aLoc);
+            if (!aPoly.IsNull()) {
+                if (!aLoc.IsIdentity()) {
+                    identity = false;
+                    myTransf = aLoc.Transformation();
+                }
+
+                const TColgp_Array1OfPnt& aNodes = aPoly->Nodes();
+                int nbNodesInEdge = aPoly->NbNodes();
+
+                gp_Pnt pnt;
+                for (Standard_Integer j = 1; j <= nbNodesInEdge; j++) {
+                    pnt = aNodes(j);
+                    if (!identity) {
+                        pnt.Transform(myTransf);
+                    }
+                    int index = faceNodeOffset + j - 1;
+                    verts[index] = Base::convertTo<SbVec3f>(pnt);
+                    lineSetMap[i].push_back(index);
+                }
+
+                faceNodeOffset += nbNodesInEdge;
+            }
+        }
+    }
+
+    nodeset->startIndex.setValue(faceNodeOffset);
+    for (int i = 0; i < vertexMap.Extent(); i++) {
+        const TopoDS_Vertex& aVertex = TopoDS::Vertex(vertexMap(i + 1));
+        gp_Pnt pnt = BRep_Tool::Pnt(aVertex);
+
+        verts[faceNodeOffset + i] = Base::convertTo<SbVec3f>(pnt);
+    }
+
+    // normalize all normals
+    for (int i = 0; i < numNorms; i++) {
+        norms[i].normalize();
+    }
+
+    std::vector<int32_t> lineSetCoords;
+    for (const auto& it : lineSetMap) {
+        lineSetCoords.insert(lineSetCoords.end(), it.second.begin(), it.second.end());
+        lineSetCoords.push_back(-1);
+    }
+
+    // preset the index vector size
+    numLines = lineSetCoords.size();
+    lineset->coordIndex.setNum(numLines);
+    int32_t* lines = lineset->coordIndex.startEditing();
+
+    int l = 0;
+    for (auto it = lineSetCoords.begin(); it != lineSetCoords.end(); ++it, l++) {
+        lines[l] = *it;
+    }
+
+    // end the editing of the nodes
+    coords->point.finishEditing();
+    norm->vector.finishEditing();
+    faceset->coordIndex.finishEditing();
+    faceset->partIndex.finishEditing();
+    lineset->coordIndex.finishEditing();
+
+#   ifdef FC_DEBUG
+    Base::Console().log("ViewProvider update time: %f s\n",Base::TimeElapsed::diffTimeF(startTime,Base::TimeElapsed()));
+    Base::Console().log("Shape mesh info: Faces:%d Edges:%d Nodes:%d Triangles:%d IdxVec:%d\n",numFaces,numEdges,numNodes,numTriangles,numLines);
+#   endif
+}
+
 void ViewProviderPartExt::updateVisual()
 {
     Gui::SoUpdateVBOAction action;
@@ -943,381 +1328,29 @@ void ViewProviderPartExt::updateVisual()
     haction.apply(this->lineset);
     haction.apply(this->nodeset);
 
-    TopoDS_Shape cShape = Part::Feature::getShape(getObject(), Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
-    if (cShape.IsNull()) {
-        coords  ->point      .setNum(0);
-        norm    ->vector     .setNum(0);
-        faceset ->coordIndex .setNum(0);
-        faceset ->partIndex  .setNum(0);
-        lineset ->coordIndex .setNum(0);
-        nodeset ->startIndex .setValue(0);
-        VisualTouched = false;
-        return;
-    }
-
-    // time measurement and book keeping
-    Base::TimeElapsed start_time;
-    int numTriangles=0,numNodes=0,numNorms=0,numFaces=0,numEdges=0,numLines=0;
-    std::set<int> faceEdges;
-
     try {
-        // calculating the deflection value
-        Bnd_Box bounds;
-        BRepBndLib::Add(cShape, bounds);
-        bounds.SetGap(0.0);
-        Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
-        bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
-        Standard_Real deflection = ((xMax-xMin)+(yMax-yMin)+(zMax-zMin))/300.0 * Deviation.getValue();
+        TopoDS_Shape cShape = getRenderedShape().getShape();
 
-        // Since OCCT 7.6 a value of equal 0 is not allowed any more, this can happen if a single vertex
-        // should be displayed.
-        if (deflection < gp::Resolution()) {
-            deflection = Precision::Confusion();
-        }
+        setupCoinGeometry(cShape,
+                          coords,
+                          faceset,
+                          norm,
+                          lineset,
+                          nodeset,
+                          Deviation.getValue(),
+                          AngularDeflection.getValue(),
+                          NormalsFromUV);
 
-        // For very big objects the computed deflection can become very high and thus leads to a useless
-        // tessellation. To avoid this the upper limit is set to 20.0
-        // See also forum: https://forum.freecad.org/viewtopic.php?t=77521
-        //deflection = std::min(deflection, 20.0);
-
-        // create or use the mesh on the data structure
-        Standard_Real AngDeflectionRads = Base::toRadians(AngularDeflection.getValue());
-
-        IMeshTools_Parameters meshParams;
-        meshParams.Deflection = deflection;
-        meshParams.Relative = Standard_False;
-        meshParams.Angle = AngDeflectionRads;
-        meshParams.InParallel = Standard_True;
-        meshParams.AllowQualityDecrease = Standard_True;
-
-        BRepMesh_IncrementalMesh(cShape, meshParams);
-
-        // We must reset the location here because the transformation data
-        // are set in the placement property
-        TopLoc_Location aLoc;
-        cShape.Location(aLoc);
-
-        // count triangles and nodes in the mesh
-        TopTools_IndexedMapOfShape faceMap;
-        TopExp::MapShapes(cShape, TopAbs_FACE, faceMap);
-        for (int i=1; i <= faceMap.Extent(); i++) {
-            Handle (Poly_Triangulation) mesh = BRep_Tool::Triangulation(TopoDS::Face(faceMap(i)), aLoc);
-            if (mesh.IsNull()) {
-                mesh = Part::Tools::triangulationOfFace(TopoDS::Face(faceMap(i)));
-            }
-            // Note: we must also count empty faces
-            if (!mesh.IsNull()) {
-                numTriangles += mesh->NbTriangles();
-                numNodes     += mesh->NbNodes();
-                numNorms     += mesh->NbNodes();
-            }
-
-            TopExp_Explorer xp;
-            for (xp.Init(faceMap(i),TopAbs_EDGE);xp.More();xp.Next()) {
-                faceEdges.insert(Part::ShapeMapHasher{}(xp.Current()));
-            }
-            numFaces++;
-        }
-
-        // get an indexed map of edges
-        TopTools_IndexedMapOfShape edgeMap;
-        TopExp::MapShapes(cShape, TopAbs_EDGE, edgeMap);
-
-         // key is the edge number, value the coord indexes. This is needed to keep the same order as the edges.
-        std::map<int, std::vector<int32_t> > lineSetMap;
-        std::set<int>          edgeIdxSet;
-        std::vector<int32_t>   edgeVector;
-
-        // count and index the edges
-        for (int i=1; i <= edgeMap.Extent(); i++) {
-            edgeIdxSet.insert(i);
-            numEdges++;
-
-            const TopoDS_Edge& aEdge = TopoDS::Edge(edgeMap(i));
-            TopLoc_Location aLoc;
-
-            // handling of the free edge that are not associated to a face
-            // Note: The assumption that if for an edge BRep_Tool::Polygon3D
-            // returns a valid object is wrong. This e.g. happens for ruled
-            // surfaces which gets created by two edges or wires.
-            // So, we have to store the hashes of the edges associated to a face.
-            // If the hash of a given edge is not in this list we know it's really
-            // a free edge.
-            int hash = Part::ShapeMapHasher{}(aEdge);
-            if (faceEdges.find(hash) == faceEdges.end()) {
-                Handle(Poly_Polygon3D) aPoly = Part::Tools::polygonOfEdge(aEdge, aLoc);
-                if (!aPoly.IsNull()) {
-                    int nbNodesInEdge = aPoly->NbNodes();
-                    numNodes += nbNodesInEdge;
-                }
-            }
-        }
-
-        // handling of the vertices
-        TopTools_IndexedMapOfShape vertexMap;
-        TopExp::MapShapes(cShape, TopAbs_VERTEX, vertexMap);
-        numNodes += vertexMap.Extent();
-
-        // create memory for the nodes and indexes
-        coords  ->point      .setNum(numNodes);
-        norm    ->vector     .setNum(numNorms);
-        faceset ->coordIndex .setNum(numTriangles*4);
-        faceset ->partIndex  .setNum(numFaces);
-        // get the raw memory for fast fill up
-        SbVec3f* verts = coords  ->point       .startEditing();
-        SbVec3f* norms = norm    ->vector      .startEditing();
-        int32_t* index = faceset ->coordIndex  .startEditing();
-        int32_t* parts = faceset ->partIndex   .startEditing();
-
-        // preset the normal vector with null vector
-        for (int i=0;i < numNorms;i++)
-            norms[i]= SbVec3f(0.0,0.0,0.0);
-
-        int ii = 0,faceNodeOffset=0,faceTriaOffset=0;
-        for (int i=1; i <= faceMap.Extent(); i++, ii++) {
-            TopLoc_Location aLoc;
-            const TopoDS_Face &actFace = TopoDS::Face(faceMap(i));
-            // get the mesh of the shape
-            Handle (Poly_Triangulation) mesh = BRep_Tool::Triangulation(actFace,aLoc);
-            if (mesh.IsNull()) {
-                mesh = Part::Tools::triangulationOfFace(actFace);
-            }
-            if (mesh.IsNull()) {
-                parts[ii] = 0;
-                continue;
-            }
-
-            // getting the transformation of the shape/face
-            gp_Trsf myTransf;
-            Standard_Boolean identity = true;
-            if (!aLoc.IsIdentity()) {
-                identity = false;
-                myTransf = aLoc.Transformation();
-            }
-
-            // getting size of node and triangle array of this face
-            int nbNodesInFace = mesh->NbNodes();
-            int nbTriInFace   = mesh->NbTriangles();
-            // check orientation
-            TopAbs_Orientation orient = actFace.Orientation();
-
-
-            // cycling through the poly mesh
-#if OCC_VERSION_HEX < 0x070600
-            const Poly_Array1OfTriangle& Triangles = mesh->Triangles();
-            const TColgp_Array1OfPnt& Nodes = mesh->Nodes();
-            TColgp_Array1OfDir Normals (Nodes.Lower(), Nodes.Upper());
-#else
-            int numNodes =  mesh->NbNodes();
-            TColgp_Array1OfDir Normals (1, numNodes);
-#endif
-            if (NormalsFromUV)
-                Part::Tools::getPointNormals(actFace, mesh, Normals);
-
-            for (int g=1;g<=nbTriInFace;g++) {
-                // Get the triangle
-                Standard_Integer N1,N2,N3;
-#if OCC_VERSION_HEX < 0x070600
-                Triangles(g).Get(N1,N2,N3);
-#else
-                mesh->Triangle(g).Get(N1,N2,N3);
-#endif
-
-                // change orientation of the triangle if the face is reversed
-                if ( orient != TopAbs_FORWARD ) {
-                    Standard_Integer tmp = N1;
-                    N1 = N2;
-                    N2 = tmp;
-                }
-
-                // get the 3 points of this triangle
-#if OCC_VERSION_HEX < 0x070600
-                gp_Pnt V1(Nodes(N1)), V2(Nodes(N2)), V3(Nodes(N3));
-#else
-                gp_Pnt V1(mesh->Node(N1)), V2(mesh->Node(N2)), V3(mesh->Node(N3));
-#endif
-
-                // get the 3 normals of this triangle
-                gp_Vec NV1, NV2, NV3;
-                if (NormalsFromUV) {
-                    NV1.SetXYZ(Normals(N1).XYZ());
-                    NV2.SetXYZ(Normals(N2).XYZ());
-                    NV3.SetXYZ(Normals(N3).XYZ());
-                }
-                else {
-                    gp_Vec v1(V1.X(),V1.Y(),V1.Z()),
-                           v2(V2.X(),V2.Y(),V2.Z()),
-                           v3(V3.X(),V3.Y(),V3.Z());
-                    gp_Vec normal = (v2-v1)^(v3-v1);
-                    NV1 = normal;
-                    NV2 = normal;
-                    NV3 = normal;
-                }
-
-                // transform the vertices and normals to the place of the face
-                if (!identity) {
-                    V1.Transform(myTransf);
-                    V2.Transform(myTransf);
-                    V3.Transform(myTransf);
-                    if (NormalsFromUV) {
-                        NV1.Transform(myTransf);
-                        NV2.Transform(myTransf);
-                        NV3.Transform(myTransf);
-                    }
-                }
-
-                // add the normals for all points of this triangle
-                norms[faceNodeOffset+N1-1] += SbVec3f(NV1.X(),NV1.Y(),NV1.Z());
-                norms[faceNodeOffset+N2-1] += SbVec3f(NV2.X(),NV2.Y(),NV2.Z());
-                norms[faceNodeOffset+N3-1] += SbVec3f(NV3.X(),NV3.Y(),NV3.Z());
-
-                // set the vertices
-                verts[faceNodeOffset+N1-1].setValue((float)(V1.X()),(float)(V1.Y()),(float)(V1.Z()));
-                verts[faceNodeOffset+N2-1].setValue((float)(V2.X()),(float)(V2.Y()),(float)(V2.Z()));
-                verts[faceNodeOffset+N3-1].setValue((float)(V3.X()),(float)(V3.Y()),(float)(V3.Z()));
-
-                // set the index vector with the 3 point indexes and the end delimiter
-                index[faceTriaOffset*4+4*(g-1)]   = faceNodeOffset+N1-1;
-                index[faceTriaOffset*4+4*(g-1)+1] = faceNodeOffset+N2-1;
-                index[faceTriaOffset*4+4*(g-1)+2] = faceNodeOffset+N3-1;
-                index[faceTriaOffset*4+4*(g-1)+3] = SO_END_FACE_INDEX;
-            }
-
-            parts[ii] = nbTriInFace; // new part
-
-            // handling the edges lying on this face
-            TopExp_Explorer Exp;
-            for(Exp.Init(actFace,TopAbs_EDGE);Exp.More();Exp.Next()) {
-                const TopoDS_Edge &curEdge = TopoDS::Edge(Exp.Current());
-                // get the overall index of this edge
-                int edgeIndex = edgeMap.FindIndex(curEdge);
-                edgeVector.push_back((int32_t)edgeIndex-1);
-                // already processed this index ?
-                if (edgeIdxSet.find(edgeIndex)!=edgeIdxSet.end()) {
-
-                    // this holds the indices of the edge's triangulation to the current polygon
-                    Handle(Poly_PolygonOnTriangulation) aPoly = BRep_Tool::PolygonOnTriangulation(curEdge, mesh, aLoc);
-                    if (aPoly.IsNull())
-                        continue; // polygon does not exist
-
-                    // getting the indexes of the edge polygon
-                    const TColStd_Array1OfInteger& indices = aPoly->Nodes();
-                    for (Standard_Integer i=indices.Lower();i <= indices.Upper();i++) {
-                        int nodeIndex = indices(i);
-                        int index = faceNodeOffset+nodeIndex-1;
-                        lineSetMap[edgeIndex].push_back(index);
-
-                        // usually the coordinates for this edge are already set by the
-                        // triangles of the face this edge belongs to. However, there are
-                        // rare cases where some points are only referenced by the polygon
-                        // but not by any triangle. Thus, we must apply the coordinates to
-                        // make sure that everything is properly set.
-#if OCC_VERSION_HEX < 0x070600
-                        gp_Pnt p(Nodes(nodeIndex));
-#else
-                        gp_Pnt p(mesh->Node(nodeIndex));
-#endif
-                        if (!identity)
-                            p.Transform(myTransf);
-                        verts[index].setValue((float)(p.X()),(float)(p.Y()),(float)(p.Z()));
-                    }
-
-                    // remove the handled edge index from the set
-                    edgeIdxSet.erase(edgeIndex);
-                }
-            }
-
-            edgeVector.push_back(-1);
-
-            // counting up the per Face offsets
-            faceNodeOffset += nbNodesInFace;
-            faceTriaOffset += nbTriInFace;
-        }
-
-        // handling of the free edges
-        for (int i=1; i <= edgeMap.Extent(); i++) {
-            const TopoDS_Edge& aEdge = TopoDS::Edge(edgeMap(i));
-            Standard_Boolean identity = true;
-            gp_Trsf myTransf;
-            TopLoc_Location aLoc;
-
-            // handling of the free edge that are not associated to a face
-            int hash = Part::ShapeMapHasher{}(aEdge);
-            if (faceEdges.find(hash) == faceEdges.end()) {
-                Handle(Poly_Polygon3D) aPoly = Part::Tools::polygonOfEdge(aEdge, aLoc);
-                if (!aPoly.IsNull()) {
-                    if (!aLoc.IsIdentity()) {
-                        identity = false;
-                        myTransf = aLoc.Transformation();
-                    }
-
-                    const TColgp_Array1OfPnt& aNodes = aPoly->Nodes();
-                    int nbNodesInEdge = aPoly->NbNodes();
-
-                    gp_Pnt pnt;
-                    for (Standard_Integer j=1;j <= nbNodesInEdge;j++) {
-                        pnt = aNodes(j);
-                        if (!identity)
-                            pnt.Transform(myTransf);
-                        int index = faceNodeOffset+j-1;
-                        verts[index].setValue((float)(pnt.X()),(float)(pnt.Y()),(float)(pnt.Z()));
-                        lineSetMap[i].push_back(index);
-                    }
-
-                    faceNodeOffset += nbNodesInEdge;
-                }
-            }
-        }
-
-        nodeset->startIndex.setValue(faceNodeOffset);
-        for (int i=0; i<vertexMap.Extent(); i++) {
-            const TopoDS_Vertex& aVertex = TopoDS::Vertex(vertexMap(i+1));
-            gp_Pnt pnt = BRep_Tool::Pnt(aVertex);
-            verts[faceNodeOffset+i].setValue((float)(pnt.X()),(float)(pnt.Y()),(float)(pnt.Z()));
-        }
-
-        // normalize all normals
-        for (int i = 0; i< numNorms ;i++)
-            norms[i].normalize();
-
-        std::vector<int32_t> lineSetCoords;
-        for (const auto & it : lineSetMap) {
-            lineSetCoords.insert(lineSetCoords.end(), it.second.begin(), it.second.end());
-            lineSetCoords.push_back(-1);
-        }
-
-        // preset the index vector size
-        numLines =  lineSetCoords.size();
-        lineset ->coordIndex .setNum(numLines);
-        int32_t* lines = lineset ->coordIndex  .startEditing();
-
-        int l=0;
-        for (std::vector<int32_t>::const_iterator it=lineSetCoords.begin();it!=lineSetCoords.end();++it,l++)
-            lines[l] = *it;
-
-        // end the editing of the nodes
-        coords  ->point       .finishEditing();
-        norm    ->vector      .finishEditing();
-        faceset ->coordIndex  .finishEditing();
-        faceset ->partIndex   .finishEditing();
-        lineset ->coordIndex  .finishEditing();
+        VisualTouched = false;
     }
     catch (const Standard_Failure& e) {
         FC_ERR("Cannot compute Inventor representation for the shape of "
                << pcObject->getFullName() << ": " << e.GetMessageString());
     }
     catch (...) {
-        FC_ERR("Cannot compute Inventor representation for the shape of " << pcObject->getFullName());
+        FC_ERR("Cannot compute Inventor representation for the shape of "
+               << pcObject->getFullName());
     }
-
-#   ifdef FC_DEBUG
-        // printing some information
-        Base::Console().log("ViewProvider update time: %f s\n",Base::TimeElapsed::diffTimeF(start_time,Base::TimeElapsed()));
-        Base::Console().log("Shape tria info: Faces:%d Edges:%d Nodes:%d Triangles:%d IdxVec:%d\n",numFaces,numEdges,numNodes,numTriangles,numLines);
-#   else
-    (void)numEdges;
-#   endif
-    VisualTouched = false;
 
     // The material has to be checked again
     setHighlightedFaces(ShapeAppearance.getValues());

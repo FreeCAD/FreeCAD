@@ -64,7 +64,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(AnnotationStyleEditor, self).__init__(name=translate("draft","Annotation style editor"))
+        super(AnnotationStyleEditor, self).__init__(name=translate("draft","Annotation Style Editor"))
         self.doc = None
         self.styles = {}
         self.renamed = {}
@@ -75,9 +75,9 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         """Set icon, menu and tooltip."""
         return {'Pixmap': ":icons/Draft_Annotation_Style.svg",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_AnnotationStyleEditor",
-                                              "Annotation styles..."),
+                                              "Annotation Styles"),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_AnnotationStyleEditor",
-                                             "Manage or create annotation styles")}
+                                             "Opens an editor to manage or create annotation styles")}
 
     def Activated(self):
         """Execute when the command is called.
@@ -212,8 +212,8 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         elif index == 1:
             # Add new... entry
             reply = QtWidgets.QInputDialog.getText(None,
-                                                   translate("draft", "Create new style"),
-                                                   translate("draft", "Style name:"))
+                                                   translate("draft", "New Style"),
+                                                   translate("draft", "Style name"))
             if reply[1]:
                 # OK or Enter pressed
                 name = reply[0].strip()
@@ -254,7 +254,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         if self.get_style_users(style):
             reply = QtWidgets.QMessageBox.question(None,
                                                    translate("draft", "Style in use"),
-                                                   translate("draft", "This style is used by some objects in this document. Are you sure?"),
+                                                   translate("draft", "This style is used by some objects in this document. Proceed?"),
                                                    QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
                                                    QtWidgets.QMessageBox.No)
             if reply == QtWidgets.QMessageBox.No:
@@ -279,8 +279,8 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         style = self.form.comboBoxStyles.itemText(index)
 
         reply = QtWidgets.QInputDialog.getText(None,
-                                               translate("draft", "Rename style"),
-                                               translate("draft", "New name:"),
+                                               translate("draft", "Rename Style"),
+                                               translate("draft", "New name"),
                                            QtWidgets.QLineEdit.Normal,
                                            style)
         if reply[1]:
@@ -302,7 +302,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         """Import styles from a json file."""
         filename = QtWidgets.QFileDialog.getOpenFileName(
             QtWidgets.QApplication.activeWindow(),
-            translate("draft","Open styles file"),
+            translate("draft","Open Styles File"),
             None,
             translate("draft","JSON files (*.json *.JSON)"))
         if filename and filename[0]:
@@ -322,7 +322,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         """Export styles to a json file."""
         filename = QtWidgets.QFileDialog.getSaveFileName(
             QtWidgets.QApplication.activeWindow(),
-            translate("draft","Save styles file"),
+            translate("draft","Save Styles File"),
             None,
             translate("draft","JSON file (*.json)"))
         if filename and filename[0]:

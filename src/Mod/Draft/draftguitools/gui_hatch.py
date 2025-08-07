@@ -50,7 +50,7 @@ class Draft_Hatch(gui_base.GuiCommandNeedsSelection):
             task.setDocumentName(FreeCADGui.ActiveDocument.Document.Name)
             task.setAutoCloseOnDeletedDocument(True)
         else:
-            FreeCAD.Console.PrintError(translate("Draft", "You must choose a base object before using this command") + "\n")
+            FreeCAD.Console.PrintError(translate("Draft", "Choose a base object before using this command") + "\n")
 
 
 class Draft_Hatch_TaskPanel:

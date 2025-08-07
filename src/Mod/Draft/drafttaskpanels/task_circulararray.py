@@ -80,7 +80,7 @@ class TaskPanelCircularArray:
     def __init__(self):
 
         self.form = Gui.PySideUic.loadUi(":/ui/TaskPanel_CircularArray.ui")
-        self.form.setWindowTitle(translate("draft", "Circular array"))
+        self.form.setWindowTitle(translate("draft", "Circular Array"))
         self.form.setWindowIcon(QtGui.QIcon(":/icons/Draft_CircularArray.svg"))
 
         # -------------------------------------------------------------------
@@ -172,18 +172,18 @@ class TaskPanelCircularArray:
         the interface may not allow one to input wrong data.
         """
         if not selection:
-            _err(translate("draft","At least one element must be selected."))
+            _err(translate("draft","At least 1 element must be selected"))
             return False
 
         if number < 2:
-            _err(translate("draft","Number of layers must be at least 2."))
+            _err(translate("draft","Number of layers must be at least 2"))
             return False
 
         # TODO: this should handle multiple objects.
         # Each of the elements of the selection should be tested.
         obj = selection[0]
         if obj.isDerivedFrom("App::FeaturePython"):
-            _err(translate("draft","Selection is not suitable for array."))
+            _err(translate("draft","Selection is not suitable for array"))
             _err(translate("draft","Object:") + " {}".format(selection[0].Label))
             return False
 
@@ -194,7 +194,7 @@ class TaskPanelCircularArray:
             self.r_distance = abs(r_distance)
 
         if tan_distance == 0:
-            _err(translate("draft","Tangential distance cannot be zero."))
+            _err(translate("draft","Tangential distance cannot be 0"))
             return False
         elif tan_distance < 0:
             _wrn(translate("draft","Tangential distance is negative. It is made positive to proceed."))
@@ -254,7 +254,7 @@ class TaskPanelCircularArray:
                      "App.ActiveDocument.recompute()"]
 
         # We commit the command list through the parent command
-        self.source_command.commit(translate("draft","Circular array"), _cmd_list)
+        self.source_command.commit(translate("draft","Create Circular Array"), _cmd_list)
 
     def get_distances(self):
         """Get the distance parameters from the widgets."""

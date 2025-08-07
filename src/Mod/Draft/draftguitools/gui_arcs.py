@@ -61,7 +61,7 @@ class Arc(gui_base_original.Creator):
         return {"Pixmap": "Draft_Arc",
                 "Accel": "A, R",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_Arc", "Arc"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Arc", "Creates a circular arc by a center point and a radius.\nSHIFT to constrain.")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Arc", "Creates a circular arc from a center point and a radius")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -509,8 +509,8 @@ class Arc_3Points(gui_base.GuiCommandBase):
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_Arc_3Points",
                 "Accel": "A, T",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Arc by 3 points"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Creates a circular arc by 3 points.\nSHIFT to constrain.")}
+                "MenuText": QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Arc From 3 Points"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Creates a circular arc from 3 points")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -531,7 +531,7 @@ class Arc_3Points(gui_base.GuiCommandBase):
         Gui.Snapper.getPoint(callback=self.getPoint,
                              movecallback=self.drawArc)
         Gui.Snapper.ui.sourceCmd = self
-        Gui.Snapper.ui.setTitle(title=translate("draft", "Arc by 3 points"),
+        Gui.Snapper.ui.setTitle(title=translate("draft", "Arc From 3 Points"),
                                 icon="Draft_Arc_3Points")
         Gui.Snapper.ui.continueCmd.show()
 
@@ -575,7 +575,7 @@ class Arc_3Points(gui_base.GuiCommandBase):
                                  callback=self.getPoint,
                                  movecallback=self.drawArc)
             Gui.Snapper.ui.sourceCmd = self
-            Gui.Snapper.ui.setTitle(title=translate("draft", "Arc by 3 points"),
+            Gui.Snapper.ui.setTitle(title=translate("draft", "Arc From 3 Points"),
                                     icon="Draft_Arc_3Points")
             Gui.Snapper.ui.continueCmd.show()
 
@@ -594,7 +594,7 @@ class Arc_3Points(gui_base.GuiCommandBase):
             if params.get_param("UsePartPrimitives"):
                 _cmd_list.append("Draft.select(circle)")
             _cmd_list.append("FreeCAD.ActiveDocument.recompute()")
-            self.commit(translate("draft", "Create Arc by 3 points"), _cmd_list)
+            self.commit(translate("draft", "Create Arc From 3 Points"), _cmd_list)
             self.finish(cont=None)
 
     def drawArc(self, point, info):
@@ -641,8 +641,8 @@ class ArcGroup:
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {"MenuText": QT_TRANSLATE_NOOP("Draft_ArcTools", "Arc tools"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_ArcTools", "Create various types of circular arcs.")}
+        return {"MenuText": QT_TRANSLATE_NOOP("Draft_ArcTools", "Arc Tools"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_ArcTools", "Tools to create various types of circular arcs")}
 
     def GetCommands(self):
         """Return a tuple of commands in the group."""

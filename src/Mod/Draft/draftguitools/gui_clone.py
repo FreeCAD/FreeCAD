@@ -69,7 +69,7 @@ class Clone(gui_base_original.Modifier):
         return {"Pixmap": "Draft_Clone",
                 "Accel": "C, L",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_Clone", "Clone"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Clone", "Creates a clone of the selected objects.\nThe resulting clone can be scaled in each of its three directions.")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Clone", "Creates a clone of the selected objects")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -91,14 +91,14 @@ class Clone(gui_base_original.Modifier):
             return
         objs_shape = [obj for obj in objs if hasattr(obj, "Shape")]
         if not objs_shape:
-            _wrn(translate("draft", "Cannot clone object(s) without a Shape, aborting"))
+            _wrn(translate("draft", "Cannot clone objects without a shape, aborting"))
             self.finish()
             return
         elif len(objs_shape) < len(objs):
-            _wrn(translate("draft", "Cannot clone object(s) without a Shape, skipping them"))
+            _wrn(translate("draft", "Cannot clone objects without a shape, skipping them"))
 
         Gui.addModule("Draft")
-        App.ActiveDocument.openTransaction(translate("Draft", "Clone"))
+        App.ActiveDocument.openTransaction(translate("Draft", "Create Clone"))
         for idx, obj in enumerate(objs_shape):
             cmd = "Draft.make_clone(FreeCAD.ActiveDocument." + obj.Name + ")"
             Gui.doCommand("clone" + str(idx) + " = " + cmd)
