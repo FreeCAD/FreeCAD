@@ -116,7 +116,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
             self.form.deleteBase.setEnabled(False)
 
     def deleteBase(self):
-        """deleteBase() ... callback for push button"""
+        """deleteBase() ... callback for Remove button"""
         Path.Log.track()
         selected = [self.form.baseList.row(item) for item in self.form.baseList.selectedItems()]
         self.form.baseList.blockSignals(True)
@@ -166,7 +166,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         self.form.baseList.itemChanged.connect(self.checkedChanged)
 
     def resetBase(self):
-        """resetBase() ... Reset push button callback"""
+        """resetBase() ... Auto-select button callback"""
         self.obj.Base = []
         self.obj.Disabled = []
         self.obj.Proxy.findAllHoles(self.obj)
@@ -175,8 +175,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         FreeCAD.ActiveDocument.recompute()
 
     def clearBase(self):
-        print("entering clearBase")
-        """clearBase() ... Clear push button callback"""
+        """clearBase() ... Clear All button callback"""
         self.obj.Base = []
         self.obj.Disabled = []
         self.obj.Proxy.execute(self.obj)
