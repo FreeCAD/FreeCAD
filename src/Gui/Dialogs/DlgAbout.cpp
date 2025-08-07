@@ -144,6 +144,7 @@ AboutDialog::AboutDialog(QWidget* parent)
     showCollectionInformation();
     showPrivacyPolicy();
     showOrHideImage(rect);
+    findSolversVersions();
 }
 
 /**
@@ -188,6 +189,64 @@ void AboutDialog::showOrHideImage(const QRect& rect)
     if (height() > rect.height()) {
         ui->labelSplashPicture->hide();
     }
+}
+
+void AboutDialog::findSolversVersions()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Fem/Ccx");
+    std::map<std::string, std::string> &config = App::Application::Config();
+
+    auto getVersion = [](const QByteArray &input){
+        const QString output = QString::fromLatin1(input).remove(QLatin1Char('\n'));
+        const QStringList words = output.split(QLatin1Char(' '));
+        const QRegularExpression re(QStringLiteral("Version:?"));
+        const qsizetype index = words.indexOf(re);
+        return (index != -1 ? words.at(index + 1): QString{}).toStdString();
+    };
+
+    // ccx
+    {
+    bool useStandardCcxLocation = hGrp->GetBool("UseStandardCcxLocation", true);
+    const QString fileName = (useStandardCcxLocation ? QStringLiteral("ccx")
+                                                     : QString::fromStdString( hGrp->GetASCII("ccxBinaryPath", "") ));
+    auto solverProcess = new QProcess(this);
+    auto finishedFun = [solverProcess, getVersion, &config](){
+        const QByteArray solversOutput = solverProcess->readAll();
+        config["Calculix"] = getVersion(solversOutput);
+    };
+    connect(solverProcess, qOverload<int,QProcess::ExitStatus>(&QProcess::finished), finishedFun);
+    solverProcess->start(fileName, {QStringLiteral("-v")});
+    } // end of ccx
+
+    // ElmerSolver
+    {
+    bool UseStandardElmerLocation = hGrp->GetBool("UseStandardElmerLocation", true);
+    const QString fileName = (UseStandardElmerLocation ? QStringLiteral("ElmerSolver")
+                                                       : QString::fromStdString( hGrp->GetASCII("elmerBinaryPath", "") ));
+
+    auto solverProcess = new QProcess(this);
+    auto finishedFun = [solverProcess, getVersion, &config](){
+        const QByteArray solversOutput = solverProcess->readAll();
+        config["ElmerSolver"] = getVersion(solversOutput);
+    };
+    connect(solverProcess, qOverload<int,QProcess::ExitStatus>(&QProcess::finished), finishedFun);
+    solverProcess->start(fileName, {QStringLiteral("-v")});
+    } // end of ElmerSolver
+
+    // mystran
+    {
+    bool UseStandardMystranLocation = hGrp->GetBool("UseStandardMystranLocation", true);
+    const QString fileName = (UseStandardMystranLocation ? QStringLiteral("mystran")
+                                                         : QString::fromStdString( hGrp->GetASCII("mystranBinaryPath", "") ));
+    auto solverProcess = new QProcess(this);
+    auto finishedFun = [solverProcess, getVersion, &config](){
+        const QByteArray solversOutput = solverProcess->readAll();
+        config["MYSTRAN"] = getVersion(solversOutput);
+    };
+    connect(solverProcess, &QProcess::readyReadStandardOutput, finishedFun);
+    connect(solverProcess, &QProcess::readyReadStandardOutput, &QProcess::kill);
+    solverProcess->start(fileName, {QString{}});
+    } // end of mystran
 }
 
 void AboutDialog::setupLabels()
