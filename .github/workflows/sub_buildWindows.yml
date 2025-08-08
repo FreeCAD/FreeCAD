@@ -125,6 +125,8 @@ jobs:
           -G Ninja
           -DCMAKE_VS_NO_COMPILE_BATCHING=ON
           -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_C_COMPILER:STRING="cl.exe" ^
+          -DCMAKE_CXX_COMPILER:STRING="cl.exe" ^
           -DFREECAD_USE_PCH=OFF
           -DFREECAD_RELEASE_PDB=OFF
           -DFREECAD_LIBPACK_DIR="${{ env.libpackdir }}"
