@@ -420,32 +420,12 @@ void DSHLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
             if (handler->constructionMethod() == ConstructionMethod::OnePointWidthHeight) {
                 if (thirdParam->isSet) {
                     double length = thirdParam->getValue();
-                    if (fabs(length) < Precision::Confusion()) {
-                        // Both cannot be 0
-                        if (fourthParam->isSet) {
-                            double width = fourthParam->getValue();
-                            if (fabs(width) < Precision::Confusion()) {
-                                unsetOnViewParameter(thirdParam.get());
-                                return;
-                            }
-                        }
-                    }
                     int sign = (onSketchPos.x - handler->startPoint.x) >= 0 ? 1 : -1;
                     onSketchPos.x = handler->startPoint.x + sign * length;
                 }
 
                 if (fourthParam->isSet) {
                     double width = fourthParam->getValue();
-                    if (fabs(width) < Precision::Confusion()) {
-                        // Both cannot be 0
-                        if (thirdParam->isSet) {
-                            double length = thirdParam->getValue();
-                            if (fabs(length) < Precision::Confusion()) {
-                                unsetOnViewParameter(fourthParam.get());
-                                return;
-                            }
-                        }
-                    }
                     int sign = (onSketchPos.y - handler->startPoint.y) >= 0 ? 1 : -1;
                     onSketchPos.y = handler->startPoint.y + sign * width;
                 }
@@ -460,10 +440,6 @@ void DSHLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
 
                 if (thirdParam->isSet) {
                     length = thirdParam->getValue();
-                    if (length < Precision::Confusion()) {
-                        unsetOnViewParameter(thirdParam.get());
-                        return;
-                    }
 
                     onSketchPos = handler->startPoint + length * dir.Normalize();
                 }
@@ -484,11 +460,7 @@ void DSHLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
                 }
             }
 
-            if (thirdParam->isSet && fourthParam->isSet
-                && (onSketchPos - handler->startPoint).Length() < Precision::Confusion()) {
-                unsetOnViewParameter(thirdParam.get());
-                unsetOnViewParameter(fourthParam.get());
-            }
+
         } break;
         default:
             break;
