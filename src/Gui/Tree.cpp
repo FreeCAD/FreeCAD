@@ -3359,25 +3359,25 @@ void TreeWidget::setupText()
     this->headerItem()->setText(1, tr("Description"));
     this->headerItem()->setText(2, tr("Internal name"));
 
-    this->showHiddenAction->setText(tr("Show items hidden in tree view"));
+    this->showHiddenAction->setText(tr("Show Items Hidden in Tree View"));
     this->showHiddenAction->setStatusTip(tr("Shows items that are marked as 'hidden' in the tree view"));
 
-    this->toggleVisibilityInTreeAction->setText(tr("Toggle visibility in tree view"));
+    this->toggleVisibilityInTreeAction->setText(tr("Toggle Visibility in Tree View"));
     this->toggleVisibilityInTreeAction->setStatusTip(tr("Toggles the visibility of selected items in the tree view"));
 
-    this->createGroupAction->setText(tr("Create group"));
+    this->createGroupAction->setText(tr("Create Group"));
     this->createGroupAction->setStatusTip(tr("Creates a group"));
 
     this->relabelObjectAction->setText(tr("Rename"));
     this->relabelObjectAction->setStatusTip(tr("Renames object"));
 
-    this->finishEditingAction->setText(tr("Finish editing"));
+    this->finishEditingAction->setText(tr("Finish Editing"));
     this->finishEditingAction->setStatusTip(tr("Finishes editing object"));
 
-    this->selectDependentsAction->setText(tr("Add dependent objects to selection"));
+    this->selectDependentsAction->setText(tr("Add Dependent Objects to Selection"));
     this->selectDependentsAction->setStatusTip(tr("Adds all dependent objects to the selection"));
 
-    this->closeDocAction->setText(tr("Close document"));
+    this->closeDocAction->setText(tr("Close Document"));
     this->closeDocAction->setStatusTip(tr("Closes the document"));
 
 #ifdef Q_OS_MAC
@@ -3388,21 +3388,21 @@ void TreeWidget::setupText()
     this->openFileLocationAction->setStatusTip(tr("Opens the current file location"));
 #endif
 
-    this->reloadDocAction->setText(tr("Reload document"));
+    this->reloadDocAction->setText(tr("Reload Document"));
     this->reloadDocAction->setStatusTip(tr("Reloads a partially loaded document"));
 
-    this->skipRecomputeAction->setText(tr("Skip recomputes"));
+    this->skipRecomputeAction->setText(tr("Skip Recomputes"));
     this->skipRecomputeAction->setStatusTip(tr("Enables or disables the recomputations of document"));
 
-    this->allowPartialRecomputeAction->setText(tr("Allow partial recomputes"));
+    this->allowPartialRecomputeAction->setText(tr("Allow Partial Recomputes"));
     this->allowPartialRecomputeAction->setStatusTip(
         tr("Enables or disables the recomputating editing object when 'skip recomputation' is enabled"));
 
-    this->markRecomputeAction->setText(tr("Mark to recompute"));
+    this->markRecomputeAction->setText(tr("Mark to Recompute"));
     this->markRecomputeAction->setStatusTip(tr("Marks this object to be recomputed"));
     this->markRecomputeAction->setIcon(BitmapFactory().iconFromTheme("Std_MarkToRecompute"));
 
-    this->recomputeObjectAction->setText(tr("Recompute object"));
+    this->recomputeObjectAction->setText(tr("Recompute Object"));
     this->recomputeObjectAction->setStatusTip(tr("Recomputes the selected object"));
     this->recomputeObjectAction->setIcon(BitmapFactory().iconFromTheme("view-refresh"));
 }

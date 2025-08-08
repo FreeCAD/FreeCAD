@@ -878,7 +878,7 @@ StdCmdToggleVisibility::StdCmdToggleVisibility()
 void StdCmdToggleVisibility::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    TransactionView transaction(getActiveGuiDocument(), QT_TRANSLATE_NOOP("Command", "Toggle visibility"));
+    TransactionView transaction(getActiveGuiDocument(), QT_TRANSLATE_NOOP("Command", "Toggle Visibility"));
     Selection().setVisible(SelectionSingleton::VisToggle);
 }
 
@@ -912,7 +912,7 @@ StdCmdToggleTransparency::StdCmdToggleTransparency()
 void StdCmdToggleTransparency::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    getActiveGuiDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Toggle transparency"));
+    getActiveGuiDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Toggle Transparency"));
 
     std::vector<Gui::SelectionSingleton::SelObj> sels = Gui::Selection().getCompleteSelection();
 
@@ -1029,7 +1029,7 @@ void StdCmdToggleSelectability::activated(int iMsg)
             continue;
         }
 
-        TransactionView transaction(pcDoc, QT_TRANSLATE_NOOP("Command", "Toggle selectability"));
+        TransactionView transaction(pcDoc, QT_TRANSLATE_NOOP("Command", "Toggle Selectability"));
 
         for (const auto & ft : sel) {
             ViewProvider *pr = pcDoc->getViewProviderByName(ft->getNameInDocument());
@@ -1157,7 +1157,7 @@ StdCmdToggleObjects::StdCmdToggleObjects()
   : Command("Std_ToggleObjects")
 {
     sGroup        = "Standard-View";
-    sMenuText     = QT_TR_NOOP("To&ggle all Objects");
+    sMenuText     = QT_TR_NOOP("To&ggle All Objects");
     sToolTipText  = QT_TR_NOOP("Toggles the visibility of all objects in the active document");
     sStatusTip    = sToolTipText;
     sWhatsThis    = "Std_ToggleObjects";
@@ -1198,7 +1198,7 @@ StdCmdShowObjects::StdCmdShowObjects()
   : Command("Std_ShowObjects")
 {
     sGroup        = "Standard-View";
-    sMenuText     = QT_TR_NOOP("Show &all Objects");
+    sMenuText     = QT_TR_NOOP("Show &All Objects");
     sToolTipText  = QT_TR_NOOP("Shows all objects in the document");
     sStatusTip    = sToolTipText;
     sWhatsThis    = "Std_ShowObjects";
@@ -1235,7 +1235,7 @@ StdCmdHideObjects::StdCmdHideObjects()
   : Command("Std_HideObjects")
 {
     sGroup        = "Standard-View";
-    sMenuText     = QT_TR_NOOP("Hide all &Objects");
+    sMenuText     = QT_TR_NOOP("Hide All &Objects");
     sToolTipText  = QT_TR_NOOP("Hides all objects in the document");
     sStatusTip    = sToolTipText;
     sWhatsThis    = "Std_HideObjects";
@@ -3088,7 +3088,7 @@ StdCmdTreeSelectAllInstances::StdCmdTreeSelectAllInstances()
   : Command("Std_TreeSelectAllInstances")
 {
     sGroup        = "View";
-    sMenuText     = QT_TR_NOOP("Select all Instances");
+    sMenuText     = QT_TR_NOOP("Select All Instances");
     sToolTipText  = QT_TR_NOOP("Selects all instances of the currently selected object");
     sWhatsThis    = "Std_TreeSelectAllInstances";
     sStatusTip    = sToolTipText;
@@ -3141,7 +3141,7 @@ StdCmdSceneInspector::StdCmdSceneInspector()
 {
     // setting the
     sGroup        = "Tools";
-    sMenuText     = QT_TR_NOOP("Scene I&nspector…");
+    sMenuText     = QT_TR_NOOP("Scene I&nspector");
     sToolTipText  = QT_TR_NOOP("Opens the scene inspector");
     sWhatsThis    = "Std_SceneInspector";
     sStatusTip    = sToolTipText;
@@ -3174,7 +3174,7 @@ StdCmdTextureMapping::StdCmdTextureMapping()
 {
     // setting the
     sGroup        = "Tools";
-    sMenuText     = QT_TR_NOOP("Text&ure Mapping…");
+    sMenuText     = QT_TR_NOOP("Text&ure Mapping");
     sToolTipText  = QT_TR_NOOP("Maps textures to shapes");
     sWhatsThis    = "Std_TextureMapping";
     sStatusTip    = sToolTipText;
@@ -3201,7 +3201,7 @@ StdCmdDemoMode::StdCmdDemoMode()
   : Command("Std_DemoMode")
 {
     sGroup        = "Standard-View";
-    sMenuText     = QT_TR_NOOP("View &Turntable…");
+    sMenuText     = QT_TR_NOOP("View &Turntable");
     sToolTipText  = QT_TR_NOOP("Opens a turntable view");
     sWhatsThis    = "Std_DemoMode";
     sStatusTip    = sToolTipText;
@@ -3601,7 +3601,7 @@ StdCmdDockOverlayAll::StdCmdDockOverlayAll()
   :Command("Std_DockOverlayAll")
 {
   sGroup        = "View";
-  sMenuText     = QT_TR_NOOP("Toggle Overl&ay for all Panels");
+  sMenuText     = QT_TR_NOOP("Toggle Overl&ay for All Panels");
   sToolTipText  = QT_TR_NOOP("Toggled overlay mode for all docked panels");
   sWhatsThis    = "Std_DockOverlayAll";
   sStatusTip    = sToolTipText;

@@ -672,7 +672,7 @@ FileChooser::FileChooser ( QWidget * parent )
     connect(lineEdit, &QLineEdit::textChanged, this, &FileChooser::fileNameChanged);
     connect(lineEdit, &QLineEdit::editingFinished, this, &FileChooser::editingFinished);
 
-    button = new QPushButton(QLatin1String("…"), this);
+    button = new QPushButton(QStringLiteral("…"), this);
 
 #if defined (Q_OS_MACOS)
     button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
@@ -741,12 +741,12 @@ void FileChooser::chooseFile()
     QString fn;
     if ( mode() == File ) {
         if (acceptMode() == AcceptOpen)
-            fn = QFileDialog::getOpenFileName(this, tr( "Select a file" ), prechosenDirectory, _filter, nullptr, dlgOpt);
+            fn = QFileDialog::getOpenFileName(this, tr( "Select a File" ), prechosenDirectory, _filter, nullptr, dlgOpt);
         else
-            fn = QFileDialog::getSaveFileName(this, tr( "Select a file" ), prechosenDirectory, _filter, nullptr, dlgOpt);
+            fn = QFileDialog::getSaveFileName(this, tr( "Select a File" ), prechosenDirectory, _filter, nullptr, dlgOpt);
     } else {
         QFileDialog::Options option = QFileDialog::ShowDirsOnly | dlgOpt;
-        fn = QFileDialog::getExistingDirectory( this, tr( "Select a directory" ), prechosenDirectory,option );
+        fn = QFileDialog::getExistingDirectory( this, tr( "Select a Directory" ), prechosenDirectory,option );
     }
 
     if (!fn.isEmpty()) {
@@ -818,7 +818,7 @@ void FileChooser::setButtonText(const QString& txt)
 {
     button->setText(txt);
     int w1 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), txt);
-    int w2 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), QLatin1String(" … "));
+    int w2 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), QStringLiteral(" … "));
     button->setMinimumWidth(std::max(w1, w2));
     Q_EMIT buttonTextChanged(txt);
 }

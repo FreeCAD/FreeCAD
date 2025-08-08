@@ -190,7 +190,7 @@ if crashes occur when multiple cores are set.</string>
           </item>
           <item>
            <property name="text">
-            <string>Do not import Arch objects</string>
+            <string>Do not import BIM objects</string>
            </property>
           </item>
          </widget>
