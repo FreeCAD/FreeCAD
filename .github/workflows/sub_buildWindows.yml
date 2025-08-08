@@ -123,7 +123,6 @@ jobs:
 
       - name: Configuring CMake
         run: >
-          . C:\Program Files\Microsoft Visual Studio\2022\Enterprise
           cmake -B"${{ env.builddir }}" .
           --preset ${{ env.config }}
           -G Ninja
