@@ -118,15 +118,19 @@ jobs:
         with:
           cmake-version: '3.31.6'
 
+      - name: Setup Visual Studio
+        uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756 # v1.13.0
+
       - name: Configuring CMake
         run: >
+          . C:\Program Files\Microsoft Visual Studio\2022\Enterprise
           cmake -B"${{ env.builddir }}" .
           --preset ${{ env.config }}
           -G Ninja
           -DCMAKE_VS_NO_COMPILE_BATCHING=ON
           -DCMAKE_BUILD_TYPE=Release
-          -DCMAKE_C_COMPILER:STRING="cl.exe" ^
-          -DCMAKE_CXX_COMPILER:STRING="cl.exe" ^
+          -DCMAKE_C_COMPILER:STRING="cl.exe"
+          -DCMAKE_CXX_COMPILER:STRING="cl.exe"
           -DFREECAD_USE_PCH=OFF
           -DFREECAD_RELEASE_PDB=OFF
           -DFREECAD_LIBPACK_DIR="${{ env.libpackdir }}"
@@ -135,13 +139,10 @@ jobs:
           -DFREECAD_COPY_LIBPACK_BIN_TO_BUILD=ON
           -DFREECAD_COPY_PLUGINS_BIN_TO_BUILD=ON
 
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@6fb02220983dee41ce7ae257b6f4d8f9bf5ed4ce # v2.0.0
-
       - name: Compiling sources
         run: |
           cd $env:builddir
-          msbuild ALL_BUILD.vcxproj /m /p:Configuration=Release /p:TrackFileAccess=false /p:CLToolPath=${{ env.ccachebindir }}
+          cmake --build "${{ env.builddir }}"
 
       - name: Print Ccache statistics after build
         if: always()
