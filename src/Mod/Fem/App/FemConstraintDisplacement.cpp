@@ -155,7 +155,7 @@ ConstraintDisplacement::ConstraintDisplacement()
                       "Amplitude of the displacement boundary condition");
     ADD_PROPERTY_TYPE(AmplitudeValues,
                       (std::vector<std::string> {"0, 0", "1, 1"}),
-                      "ConstraintFDisplacement",
+                      "ConstraintDisplacement",
                       (App::PropertyType)(App::Prop_None),
                       "Amplitude values");
 }
