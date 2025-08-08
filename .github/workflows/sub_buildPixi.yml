@@ -124,7 +124,7 @@ jobs:
     - name: Restore Compiler Cache
       id: cache-restore
       if: always()
-      uses: actions/cache/restore@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+      uses: actions/cache/restore@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
       with:
         path: ${{ env.CCACHE_DIR }}
         key: FC-${{ env.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
@@ -209,7 +209,7 @@ jobs:
     - name: Save Compiler Cache
       id: cache-save
       if: always()
-      uses: actions/cache/save@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+      uses: actions/cache/save@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
       with:
         path: ${{ env.CCACHE_DIR }}
         key: FC-${{ env.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
