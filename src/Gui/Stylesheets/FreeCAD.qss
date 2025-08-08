@@ -1367,7 +1367,7 @@ QComboBox {
   border-radius: @InputFieldBorderRadius;
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor );
   padding-left: 4px;
-  padding-right: 2px;
+  padding-right: 18px; /* 18px for the check-mark that says which item is active */
   min-height: 22px;
 }
 
