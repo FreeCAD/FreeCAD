@@ -953,8 +953,8 @@ void DlgPreferencesImp::restartIfRequired()
         restartBox.setDefaultButton(QMessageBox::Cancel);
         auto okBtn = restartBox.button(QMessageBox::Ok);
         auto cancelBtn = restartBox.button(QMessageBox::Cancel);
-        okBtn->setText(tr("Restart now"));
-        cancelBtn->setText(tr("Restart later"));
+        okBtn->setText(tr("Restart Now"));
+        cancelBtn->setText(tr("Restart Later"));
 
         int exec = restartBox.exec();
 

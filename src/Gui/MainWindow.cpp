@@ -590,7 +590,7 @@ bool MainWindow::setupReportView()
         auto pcReport = new ReportOutput(this);
         pcReport->setWindowIcon(BitmapFactory().pixmap("MacroEditor"));
         pcReport->setObjectName
-            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Report view")));
+            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Report View")));
 
         DockWindowManager* pDockMgr = DockWindowManager::instance();
         pDockMgr->registerDockWindow("Std_ReportView", pcReport);
@@ -610,7 +610,7 @@ bool MainWindow::setupPythonConsole()
         auto pcPython = new PythonConsole(this);
         pcPython->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
         pcPython->setObjectName
-            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Python console")));
+            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Python Console")));
 
         DockWindowManager* pDockMgr = DockWindowManager::instance();
         pDockMgr->registerDockWindow("Std_PythonView", pcPython);

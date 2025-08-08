@@ -237,7 +237,7 @@ CmdPointsConvert::CmdPointsConvert()
 {
     sAppModule = "Points";
     sGroup = QT_TR_NOOP("Points");
-    sMenuText = QT_TR_NOOP("Convert to Points…");
+    sMenuText = QT_TR_NOOP("Convert to Points");
     sToolTipText = QT_TR_NOOP("Converts to points");
     sWhatsThis = "Points_Convert";
     sStatusTip = sToolTipText;

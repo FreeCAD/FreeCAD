@@ -839,16 +839,16 @@ void PythonConsole::runSource(const QString& line)
         }
     }
     catch (const Py::Exception&) {
-        QMessageBox::critical(this, tr("Python console"), tr("Unhandled PyCXX exception."));
+        QMessageBox::critical(this, tr("Python Console"), tr("Unhandled PyCXX exception."));
     }
     catch (const Base::Exception&) {
-        QMessageBox::critical(this, tr("Python console"), tr("Unhandled FreeCAD exception."));
+        QMessageBox::critical(this, tr("Python Console"), tr("Unhandled FreeCAD exception."));
     }
     catch (const std::exception&) {
-        QMessageBox::critical(this, tr("Python console"), tr("Unhandled std C++ exception."));
+        QMessageBox::critical(this, tr("Python Console"), tr("Unhandled std C++ exception."));
     }
     catch (...) {
-        QMessageBox::critical(this, tr("Python console"), tr("Unhandled unknown C++ exception."));
+        QMessageBox::critical(this, tr("Python Console"), tr("Unhandled unknown C++ exception."));
     }
 
     printPrompt(incomplete ? PythonConsole::Incomplete

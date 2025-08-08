@@ -2649,13 +2649,13 @@ void ViewProviderLink::_setupContextMenu(
         const auto actions = menu->actions();
         for(auto action : actions) {
             if(action->data().toInt() == ViewProvider::Color) {
-                action->setText(QObject::tr("Override Colors…"));
+                action->setText(QObject::tr("Override Colors"));
                 found = true;
                 break;
             }
         }
         if(!found) {
-            QAction* act = menu->addAction(QObject::tr("Override Colors…"), receiver, member);
+            QAction* act = menu->addAction(QObject::tr("Override Colors"), receiver, member);
             act->setData(QVariant((int)ViewProvider::Color));
         }
     }

@@ -81,7 +81,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_Sphere"
           << "Part_Cone"
           << "Part_Torus"
-          << "Separator"
           << "Part_Tube";
 
     Gui::MenuItem* copy = new Gui::MenuItem;

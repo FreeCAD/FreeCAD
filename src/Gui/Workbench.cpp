@@ -570,7 +570,7 @@ std::list<std::string> Workbench::listCommandbars() const
     qApp->translate("MAC_APPLICATION_MENU", "Hide %1");
     qApp->translate("MAC_APPLICATION_MENU", "Hide Others");
     qApp->translate("MAC_APPLICATION_MENU", "Show All");
-    qApp->translate("MAC_APPLICATION_MENU", "Preferences…");
+    qApp->translate("MAC_APPLICATION_MENU", "Preferences");
     qApp->translate("MAC_APPLICATION_MENU", "Quit %1");
     qApp->translate("MAC_APPLICATION_MENU", "About %1");
 #endif

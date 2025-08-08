@@ -474,7 +474,7 @@ display the splash screen.</string>
            <item>
             <widget class="QPushButton" name="ImportConfig">
              <property name="text">
-              <string>Import Configuration…</string>
+              <string>Import Configuration</string>
              </property>
             </widget>
            </item>

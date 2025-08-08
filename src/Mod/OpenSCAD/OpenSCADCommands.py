@@ -183,7 +183,7 @@ class MirrorMeshFeature:
         FreeCAD.ActiveDocument.recompute()
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_MirrorMeshFeature',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MirrorMeshFeature', 'Mirror Mesh Feature...'),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MirrorMeshFeature', 'Mirror Mesh Feature'),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MirrorMeshFeature', 'Mirrors the mesh')}
 
 class ScaleMeshFeature:
@@ -212,7 +212,7 @@ class ScaleMeshFeature:
         FreeCAD.ActiveDocument.recompute()
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_ScaleMeshFeature',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ScaleMeshFeature', 'Scale Mesh Feature…'),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ScaleMeshFeature', 'Scale Mesh Feature'),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ScaleMeshFeature', 'Scales the mesh')}
 
 
@@ -242,7 +242,7 @@ class ResizeMeshFeature:
         FreeCAD.ActiveDocument.recompute()
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_ResizeMeshFeature',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ResizeMeshFeature', 'Resize Mesh Feature…'),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ResizeMeshFeature', 'Resize Mesh Feature'),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ResizeMeshFeature', 'Resizes the mesh')}
 
 
@@ -526,7 +526,7 @@ class AddOpenSCADElement:
 
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_AddOpenSCADElement',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_AddOpenSCADElement', 'Add OpenSCAD Element…'),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_AddOpenSCADElement', 'Add OpenSCAD Element'),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_AddOpenSCADElement',
                             'Adds an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary')}
 
@@ -541,7 +541,7 @@ class OpenSCADMeshBoolean:
 
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_MeshBooleans',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MeshBoolean','Mesh Boolean…'),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MeshBoolean','Mesh Boolean'),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MeshBoolean',
                             'Exports objects as meshes and use OpenSCAD to perform a boolean operation')}
 
