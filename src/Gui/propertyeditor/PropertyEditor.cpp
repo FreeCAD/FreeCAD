@@ -796,7 +796,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             contextIndex = propertyModel->buddy(contextIndex);
             setCurrentIndex(contextIndex);
             // menu.addSeparator();
-            menu.addAction(tr("Expression…"))->setData(QVariant(MA_Expression));
+            menu.addAction(tr("Expression"))->setData(QVariant(MA_Expression));
         }
     }
 

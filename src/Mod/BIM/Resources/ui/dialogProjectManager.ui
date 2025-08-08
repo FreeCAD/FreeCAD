@@ -56,7 +56,7 @@
         <string>The settings below can be saved as a preset. Presets are stored as .txt files in the local FreeCAD user folder</string>
        </property>
        <property name="text">
-        <string>Save preset</string>
+        <string>Save Preset</string>
        </property>
        <property name="icon">
         <iconset theme="gtk-save">

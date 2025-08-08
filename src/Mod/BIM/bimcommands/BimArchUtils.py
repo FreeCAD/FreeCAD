@@ -294,7 +294,7 @@ class Arch_ToggleIfcBrepFlag:
 
     def GetResources(self):
         return {'Pixmap'  : 'Arch_ToggleIfcBrepFlag',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_ToggleIfcBrepFlag","Toggle IFC B-rep Flag"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_ToggleIfcBrepFlag","Toggle IFC B-Rep Flag"),
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_ToggleIfcBrepFlag","Forces an object to be exported as B-rep or not")}
 
     def IsActive(self):

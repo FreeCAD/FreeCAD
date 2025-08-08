@@ -229,7 +229,7 @@ bool ViewProviderPage::onDelete(const std::vector<std::string>& parms)
 void ViewProviderPage::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     Gui::ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
-    QAction* act = menu->addAction(QObject::tr("Show drawing"), receiver, member);
+    QAction* act = menu->addAction(QObject::tr("Show Drawing"), receiver, member);
     act->setData(QVariant((int)ShowDrawing));
     QAction* act2 = menu->addAction(QObject::tr("Toggle Keep Updated"), receiver, member);
 

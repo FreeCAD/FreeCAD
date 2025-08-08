@@ -996,7 +996,7 @@ LabelButton::LabelButton (QWidget * parent)
     label->setAutoFillBackground(true);
     layout->addWidget(label);
 
-    button = new QPushButton(QLatin1String("…"), this);
+    button = new QPushButton(QStringLiteral("…"), this);
 #if defined (Q_OS_MACOS)
     button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
 #endif
@@ -1384,7 +1384,7 @@ LabelEditor::LabelEditor (QWidget * parent)
     connect(lineEdit, &QLineEdit::textChanged,
             this, &LabelEditor::validateText);
 
-    button = new QPushButton(QLatin1String("…"), this);
+    button = new QPushButton(QStringLiteral("…"), this);
 #if defined (Q_OS_MACOS)
     button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
 #endif
@@ -1460,7 +1460,7 @@ void LabelEditor::setButtonText(const QString& txt)
 {
     button->setText(txt);
     int w1 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), txt);
-    int w2 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), QLatin1String(" … "));
+    int w2 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), QStringLiteral(" … "));
     button->setFixedWidth((w1 > w2 ? w1 : w2));
 }
 
