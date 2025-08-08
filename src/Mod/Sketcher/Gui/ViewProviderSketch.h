@@ -26,7 +26,7 @@
 #include <Inventor/SoRenderManager.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <QCoreApplication>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <memory>
 
 #include <Base/Parameter.h>
@@ -671,19 +671,19 @@ public:
     /** @name Signals for controlling information in Task dialogs */
     //@{
     /// signals if the constraints list has changed
-    boost::signals2::signal<void()> signalConstraintsChanged;
+    fastsignals::signal<void()> signalConstraintsChanged;
     /// signals if the sketch has been set up
-    boost::signals2::signal<
+    fastsignals::signal<
         void(const QString& state, const QString& msg, const QString& url, const QString& linkText)>
         signalSetUp;
     /// signals if the elements list has changed
-    boost::signals2::signal<void()> signalElementsChanged;
+    fastsignals::signal<void()> signalElementsChanged;
     //@}
 
     /** @name Register slot for signal */
     //@{
     template<typename F>
-    boost::signals2::connection registerToolChanged(F&& f)
+    fastsignals::connection registerToolChanged(F&& f)
     {
         return signalToolChanged.connect(std::forward<F>(f));
     }
@@ -823,7 +823,7 @@ private:
     /** @name signals*/
     //@{
     /// signals a tool change
-    boost::signals2::signal<void(const std::string& toolname)> signalToolChanged;
+    fastsignals::signal<void(const std::string& toolname)> signalToolChanged;
     //@}
 
     void slotToolWidgetChanged(QWidget* newwidget);
@@ -925,9 +925,9 @@ private:
     //@}
 
 private:
-    boost::signals2::connection connectUndoDocument;
-    boost::signals2::connection connectRedoDocument;
-    boost::signals2::connection connectSolverUpdate;
+    fastsignals::connection connectUndoDocument;
+    fastsignals::connection connectRedoDocument;
+    fastsignals::connection connectSolverUpdate;
 
     // modes while sketching
     SketchMode Mode;
@@ -956,7 +956,7 @@ private:
 
     ViewProviderParameters viewProviderParameters;
 
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectionToolWidget;
 
     SoNodeSensor cameraSensor;
