@@ -239,8 +239,11 @@ bool Export3DPDFCore::embedPRCInPDF(const std::string& prcPath, const std::strin
         // TechDraw: Y-axis points up, origin at bottom-left, units in mm
         // PDF: Y-axis points up, origin at bottom-left, units in points
         
-        double viewWidthPoints = activeViewWidth * 2.834645669;  // Convert mm to points
-        double viewHeightPoints = activeViewHeight * 2.834645669;
+        // Apply scale factor to the view dimensions before converting to points
+        double scaledViewWidth = activeViewWidth * activeViewScale;
+        double scaledViewHeight = activeViewHeight * activeViewScale;
+        double viewWidthPoints = scaledViewWidth * 2.834645669;  // Convert scaled mm to points
+        double viewHeightPoints = scaledViewHeight * 2.834645669;
         double viewXPoints = activeViewX * 2.834645669;
         double viewYPoints = activeViewY * 2.834645669;
         
@@ -260,15 +263,17 @@ bool Export3DPDFCore::embedPRCInPDF(const std::string& prcPath, const std::strin
         double annotTop = viewYPoints + halfHeightPoints;
         
         Base::Console().message("ActiveView positioning calculation:\n");
-        Base::Console().message("  - TechDraw center position: (%.2f, %.2f) mm, size: %.2f x %.2f mm\n", 
-                               activeViewX, activeViewY, activeViewWidth, activeViewHeight);
-        Base::Console().message("  - PDF center position: (%.2f, %.2f) points, size: %.2f x %.2f points\n", 
-                               viewXPoints, viewYPoints, viewWidthPoints, viewHeightPoints);
+        Base::Console().message("  - TechDraw center position: (%.2f, %.2f) mm, original size: %.2f x %.2f mm, scale: %.3f\n", 
+                               activeViewX, activeViewY, activeViewWidth, activeViewHeight, activeViewScale);
+        Base::Console().message("  - Scaled size: %.2f x %.2f mm (%.2f x %.2f points)\n", 
+                               scaledViewWidth, scaledViewHeight, viewWidthPoints, viewHeightPoints);
+        Base::Console().message("  - PDF center position: (%.2f, %.2f) points\n", 
+                               viewXPoints, viewYPoints);
         Base::Console().message("  - 3D annotation bounds: left=%.2f, bottom=%.2f, right=%.2f, top=%.2f\n", 
                                annotLeft, annotBottom, annotRight, annotTop);
-        Base::Console().message("  - ActiveView bounds in TechDraw: X(%.2f to %.2f), Y(%.2f to %.2f) mm\n",
-                               activeViewX - activeViewWidth/2, activeViewX + activeViewWidth/2,
-                               activeViewY - activeViewHeight/2, activeViewY + activeViewHeight/2);
+        Base::Console().message("  - Scaled ActiveView bounds in TechDraw: X(%.2f to %.2f), Y(%.2f to %.2f) mm\n",
+                               activeViewX - scaledViewWidth/2, activeViewX + scaledViewWidth/2,
+                               activeViewY - scaledViewHeight/2, activeViewY + scaledViewHeight/2);
         
         HPDF_Rect rect = {static_cast<HPDF_REAL>(annotLeft), 
                          static_cast<HPDF_REAL>(annotBottom), 
