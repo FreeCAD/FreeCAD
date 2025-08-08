@@ -949,6 +949,18 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.getContents("A51"), "=+(-1 + 1)")
         self.assertEqual(sheet.getContents("A52"), "=+(-1 + -1)")
 
+        # More ternary operator precedence tests
+        sheet.set("X1", "1")
+        sheet.set("X2", "10")
+        sheet.set("X3", "100")
+        sheet.set("X4", "1000")
+        sheet.set("Y1", "= X1 ? 0 : 1   ?   X2 ? 2 : 3   :   X3 ? 4 : 5")
+        sheet.set("Y2", "= X1 + X2 ? X3 - 2 : 3 + X4")
+
+        self.doc.recompute()
+        self.assertEqual(sheet.getContents("Y1"), "=X1 ? 0 : (1 ? (X2 ? 2 : 3) : (X3 ? 4 : 5))")
+        self.assertEqual(sheet.Y2, 98)
+
     def testNumbers(self):
         """Test different numbers"""
         sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
@@ -1917,12 +1929,20 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.PropH = "5 mm"
         sheet.addProperty("App::PropertyInteger", "PropI", "", "")
         sheet.PropI = -5
+        sheet.addProperty("App::PropertyString", "PropS", "", "")
+        sheet.PropS = "This is a test"
+        sheet.addProperty("App::PropertyString", "PropSEmpty", "", "")
 
         sheet.set("G1", "= Spreadsheet.PropTrue ? 10 : 20")
         sheet.set("G2", "= Spreadsheet.PropFalse ? 10 : 20")
         sheet.set("G3", "= Spreadsheet.PropL ? 10 : 20")
         sheet.set("G4", "= Spreadsheet.PropH ? 10 : 20")
         sheet.set("G5", "= Spreadsheet.PropI ? 10 : 20")
+        sheet.set("G6", "= Spreadsheet.PropS ? 10 : 20")
+        sheet.set("G7", "= Spreadsheet.PropSEmpty ? 10 : 20")
+        sheet.set("G8", "= <<Test>> ? 10 : 20")
+        sheet.set("G9", "= <<>> ? 10 : 20")
+        sheet.set("G10", "= <<Spreadsheet>> ? 10 : 20")
 
         self.doc.recompute()
 
@@ -1960,3 +1980,10 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.get("G3"), 20)
         self.assertEqual(sheet.get("G4"), 10)
         self.assertEqual(sheet.get("G5"), 10)
+
+        # Non numeric conditions
+        self.assertEqual(sheet.get("G6"), 10)
+        self.assertEqual(sheet.get("G7"), 20)
+        self.assertEqual(sheet.get("G8"), 10)
+        self.assertEqual(sheet.get("G9"), 20)
+        self.assertEqual(sheet.get("G10"), 10)
