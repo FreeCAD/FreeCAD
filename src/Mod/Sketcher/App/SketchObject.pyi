@@ -255,6 +255,18 @@ class SketchObject(Part2DObject):
         """
         ...
 
+    def delConstraints(self, constraintIndices: List[int], updateGeometry: bool) -> None:
+        """
+        Delete multiple constraints from a sketch
+
+        delConstraints(constraintIndices: List[int], updateGeometry: bool)
+
+            Args:
+                constraintIndices: The zero-based indices of the constraints to delete
+                updateGeometry: Wheter to update the geometry after solve
+        """
+        ...
+
     def renameConstraint(self, constraintIndex: int, name: str) -> None:
         """
         Rename a constraint in the sketch.
