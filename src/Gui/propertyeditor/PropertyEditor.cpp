@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <algorithm>
 #include <boost/algorithm/string/predicate.hpp>
 #include <QApplication>
 #include <QClipboard>
@@ -36,11 +37,13 @@
 #include <App/Application.h>
 #include <App/AutoTransaction.h>
 #include <App/Document.h>
+#include <App/Property.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
 
 #include "PropertyEditor.h"
 #include "Dialogs/DlgAddProperty.h"
+#include "Dialogs/DlgDocumentObject.h"
 #include "MainWindow.h"
 #include "PropertyItemDelegate.h"
 #include "PropertyModel.h"
@@ -694,13 +697,74 @@ void PropertyEditor::removeProperty(const App::Property& prop)
     }
 }
 
+void PropertyEditor::renameProperty(const App::Property& prop)
+{
+    for (auto & it : propList) {
+        // find the given property in the list and rename it if it's there
+        auto pos = std::ranges::find(it.second, &prop);
+        if (pos != it.second.end()) {
+            propertyModel->renameProperty(prop);
+            break;
+        }
+    }
+}
+
+static bool refactorPossible(const App::SubObjectT& subObj, const App::Property* prop)
+{
+    App::DocumentObject* obj = subObj.getSubObject();
+    if (obj == nullptr) {
+        return false;
+    }
+    if (obj->getPropertyByName(prop->getName())) {
+        FC_ERR(obj->getFullName() << " already has property " << prop->getName());
+        return false;
+    }
+    return true;
+}
+
+static void addProperty(QList<App::SubObjectT>& objs, App::Property* oldProp)
+{
+    for (auto& subObj : objs) {
+        App::DocumentObject* obj = subObj.getSubObject();
+        App::Property* newProp = obj->addDynamicProperty(oldProp->getTypeId().getName(),
+                                                         oldProp->getName(),
+                                                         oldProp->getGroup(),
+                                                         oldProp->getDocumentation(),
+                                                         oldProp->getType(),
+                                                         oldProp->isReadOnly(),
+                                                         oldProp->testStatus(App::Property::Hidden));
+        newProp->Paste(*oldProp);
+    }
+}
+
+static void moveProperties(std::unordered_set<App::Property*>& props,
+                           QList<App::SubObjectT>& subObjects)
+{
+    for (auto& prop : props) {
+        if (std::ranges::any_of(subObjects, [&prop](const App::SubObjectT& subObj) {
+            return !refactorPossible(subObj, prop); })) {
+            return;
+        }
+    }
+
+    App::AutoTransaction committer(props.size() == 1 ? "Move property" : "Move properties");
+
+    for (auto& prop : props) {
+        addProperty(subObjects, prop);
+        App::PropertyContainer* container = prop->getContainer();
+        container->removeDynamicProperty(prop->getName());
+    }
+}
+
 enum MenuAction
 {
     MA_AutoExpand,
     MA_ShowHidden,
     MA_Expression,
     MA_RemoveProp,
+    MA_RenameProp,
     MA_AddProp,
+    MA_MoveProp,
     MA_EditPropGroup,
     MA_Transient,
     MA_Output,
@@ -712,6 +776,12 @@ enum MenuAction
     MA_CopyOnChange,
     MA_Copy,
 };
+
+static bool canBeRefactored(const App::Property* prop)
+{
+    auto* obj = freecad_cast<App::DocumentObject*>(prop->getContainer());
+    return prop->canBeRefactored() && obj;
+}
 
 void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
 {
@@ -755,6 +825,11 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
         menu.addAction(tr("Rename Property Group"))->setData(QVariant(MA_EditPropGroup));
     }
 
+    // rename property
+    if (props.size() == 1 && canBeRefactored(*props.begin())) {
+        menu.addAction(tr("Rename property"))->setData(QVariant(MA_RenameProp));
+    }
+
     // remove property
     bool canRemove = !props.empty();
     unsigned long propType = 0;
@@ -762,13 +837,18 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
     for (auto prop : props) {
         propType |= prop->getType();
         propStatus &= prop->getStatus();
-        if (!prop->testStatus(App::Property::PropDynamic)
-            || prop->testStatus(App::Property::LockDynamic)) {
+        if (!canBeRefactored(prop)) {
             canRemove = false;
+            break;
         }
     }
     if (canRemove) {
         menu.addAction(tr("Remove Property"))->setData(QVariant(MA_RemoveProp));
+    }
+
+    if (props.size() > 0 && std::ranges::all_of(props, [](auto* prop) {
+        return canBeRefactored(prop); })) {
+        menu.addAction(tr("Move property"))->setData(QVariant(MA_MoveProp));
     }
 
     // add a separator between adding/removing properties and the rest
@@ -911,6 +991,38 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             dlg.exec();
             return;
         }
+        case MA_RenameProp: {
+            if (props.size() != 1) {
+                break;
+            }
+
+            App::Property* prop = *props.begin();
+            if (!prop->testStatus(App::Property::PropDynamic)
+                || prop->testStatus(App::Property::LockDynamic)) {
+                break;
+            }
+
+            App::AutoTransaction committer("Rename property");
+            const char* oldName = prop->getName();
+            QString res = QInputDialog::getText(Gui::getMainWindow(),
+                                                tr("Rename property"),
+                                                tr("Property name:"),
+                                                QLineEdit::Normal,
+                                                QString::fromUtf8(oldName));
+            if (res.isEmpty()) {
+                break;
+            }
+
+            std::string newName = res.toUtf8().constData();
+            try {
+                prop->getContainer()->renameDynamicProperty(prop, newName.c_str());
+            }
+            catch (Base::Exception& e) {
+                e.reportException();
+                break;
+            }
+            break;
+        }
         case MA_EditPropGroup: {
             // This operation is not undoable yet.
             const char* groupName = (*props.begin())->getGroup();
@@ -942,6 +1054,18 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
                 }
             }
             break;
+        }
+        case MA_MoveProp: {
+            FC_MSG("Move property");
+            Gui::Dialog::DlgDocumentObject dlg(Gui::getMainWindow());
+            App::Property* prop = *props.begin();
+            auto* obj = freecad_cast<App::DocumentObject*>(prop->getContainer());
+            dlg.init(obj);
+            if (dlg.exec() == QDialog::Rejected) {
+                break;
+            }
+            QList<App::SubObjectT> subObjects = dlg.currentSubObjects();
+            moveProperties(props, subObjects);
         }
         default:
             break;

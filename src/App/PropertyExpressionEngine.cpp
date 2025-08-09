@@ -55,6 +55,8 @@ PropertyExpressionContainer::PropertyExpressionContainer()
             PropertyExpressionContainer::slotRelabelDocument);
         GetApplication().signalRenameDynamicProperty.connect(
             PropertyExpressionContainer::slotRenameDynamicProperty);
+        GetApplication().signalMoveDynamicProperty.connect(
+            PropertyExpressionContainer::slotMoveDynamicProperty);
     }
     _ExprContainers.insert(this);
 }
@@ -81,6 +83,14 @@ void PropertyExpressionContainer::slotRenameDynamicProperty(const App::Property&
 {
     for (auto container : _ExprContainers) {
         container->onRenameDynamicProperty(prop, oldName);
+    }
+}
+
+void PropertyExpressionContainer::slotMoveDynamicProperty(const App::Property& prop,
+                                                          const App::DocumentObject& targetObj)
+{
+    for (auto container : _ExprContainers) {
+        container->onMoveDynamicProperty(prop, targetObj);
     }
 }
 
@@ -1221,6 +1231,26 @@ void PropertyExpressionEngine::onRenameDynamicProperty(const App::Property& prop
 {
     ObjectIdentifier oldNameId = ObjectIdentifier(prop.getContainer(), std::string(oldName));
     ObjectIdentifier newNameId = ObjectIdentifier(prop);
+    const std::map<ObjectIdentifier, ObjectIdentifier> paths = {
+        {oldNameId, newNameId},
+    };
+
+    renameObjectIdentifiers(paths);
+}
+
+void PropertyExpressionEngine::onMoveDynamicProperty(const App::Property& prop,
+                                                     const DocumentObject& targetObj)
+{
+    FC_MSG("onMoveDynamicProperty():");
+    std::cout << "onMoveDynamicProperty()\n";
+    ObjectIdentifier oldNameId = ObjectIdentifier(prop);
+    ObjectIdentifier newNameId = ObjectIdentifier(&targetObj, std::string(prop.getName()));
+    if (getContainer() != nullptr) {
+        FC_MSG("  container: " << getContainer()->getFullName());
+        std::cout << "  container: " << getContainer()->getFullName() << "\n";
+    }
+    FC_MSG("  renaming " << oldNameId.toString() << " -> " << newNameId.toString());
+    std::cout << "  renaming " << oldNameId.toString() << " -> " << newNameId.toString() <<"\n";
     const std::map<ObjectIdentifier, ObjectIdentifier> paths = {
         {oldNameId, newNameId},
     };

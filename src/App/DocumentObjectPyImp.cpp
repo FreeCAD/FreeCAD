@@ -1004,3 +1004,23 @@ void DocumentObjectPy::setNoTouch(Py::Boolean value)
 {
     getDocumentObjectPtr()->setStatus(ObjectStatus::NoTouch, value.isTrue());
 }
+
+PyObject* DocumentObjectPy::moveProperty(PyObject* args) const
+{
+    char* name {};
+    PyObject* targetObjObj {};
+    if (PyArg_ParseTuple(args, "sO", &name, &targetObjObj) == 0) {
+        return nullptr;
+    }
+
+    try {
+        DocumentObject* targetObj =
+            static_cast<DocumentObjectPy*>(targetObjObj)->getDocumentObjectPtr();
+        Property* prop = getDocumentObjectPtr()->getDynamicPropertyByName(name);
+        getDocumentObjectPtr()->moveDynamicProperty(prop, targetObj);
+        Py_Return;
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+}

@@ -25,10 +25,10 @@
 #define SRC_APP_PROPERTYCONTAINER_H_
 
 #include <map>
-#include <cstring>
 #include <vector>
 #include <string>
 #include <Base/Persistence.h>
+#include "Base/Exception.h"
 
 #include "DynamicProperty.h"
 
@@ -536,7 +536,7 @@ public:
    * @return `true` if the update was successful; `false` otherwise.
    */
   bool changeDynamicProperty(const Property *prop, const char *group, const char *doc) {
-      return dynamicProps.changeDynamicProperty(prop,group,doc);
+      return dynamicProps.changeDynamicProperty(prop, group, doc);
   }
 
   /**
@@ -549,8 +549,30 @@ public:
    * @throw Base::NameError If the new name is invalid or already exists.
    */
   virtual bool renameDynamicProperty(Property *prop, const char *name) {
-      return dynamicProps.renameDynamicProperty(prop,name);
+      return dynamicProps.renameDynamicProperty(prop, name);
   }
+
+#if 0
+  /**
+   * @brief Move the dynamic property to a a container..
+   *
+   * @param[in] prop The property to move.
+   * @param[in] targetContainer The container to which the property is moved.
+   *
+   * @return a pointer to the moved property if successful; `nullptr` if the
+   * target container is the same as the current one.
+   * @throw Base::NameError If the property already exists in the container.
+   * @throw Base::RuntimeError On various runtime errors,such as when the
+   *   property is locked or the target container is invalid.
+   */
+  virtual Property* moveDynamicProperty(Property *prop, PropertyContainer *targetContainer) {
+      if (targetContainer == this){
+          FC_THROWM(Base::RuntimeError,
+                    "Cannot move the property to its own container");
+      }
+      return dynamicProps.moveDynamicProperty(prop, targetContainer);
+  }
+#endif
 
   /**
    * @brief Remove a dynamic property.

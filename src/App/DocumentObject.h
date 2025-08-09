@@ -570,6 +570,8 @@ public:
 
     bool renameDynamicProperty(Property *prop, const char *name) override;
 
+    virtual Property* moveDynamicProperty(Property* prop, DocumentObject* targetContainer);
+
     App::Property* addDynamicProperty(const char* type,
                                       const char* name = nullptr,
                                       const char* group = nullptr,

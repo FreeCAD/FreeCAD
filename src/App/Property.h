@@ -399,6 +399,19 @@ public:
     }
 
     /**
+     * @brief Test if the property can be refactored.
+     *
+     * @return True if the property can be refactored, false otherwise.
+     */
+    bool canBeRefactored() const
+    {
+        return testStatus(App::Property::PropDynamic)
+            && !testStatus(App::Property::Immutable)
+            && !testStatus(App::Property::ReadOnly)
+            && !testStatus(App::Property::LockDynamic);
+    }
+
+    /**
      * @brief Set the status of the property.
      *
      * Sets the status of the property given a specific position.
