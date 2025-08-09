@@ -423,6 +423,16 @@ class _BaseSolverCalculix:
             )
             obj.BucklingAccuracy = 0.01
 
+        if not hasattr(obj, "ExcludeBendingStiffness"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "ExcludeBendingStiffness",
+                "Fem",
+                "Exclude bending stiffness to replace shells with membranes",
+                locked=True,
+            )
+            obj.ExcludeBendingStiffness = False
+
 
 class Proxy(solverbase.Proxy, _BaseSolverCalculix):
     """The Fem::FemSolver's Proxy python type, add solver specific properties"""
