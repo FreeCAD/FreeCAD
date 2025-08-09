@@ -82,6 +82,7 @@ private:
     void slotChangePropertyView(const Gui::ViewProvider&, const App::Property&);
     void slotAppendDynamicProperty(const App::Property&);
     void slotRemoveDynamicProperty(const App::Property&);
+    void slotRenameDynamicProperty(const App::Property&, const char* oldName);
     void slotChangePropertyEditor(const App::Document&, const App::Property&);
     void slotRollback();
     void slotActiveDocument(const Gui::Document&);
@@ -99,6 +100,7 @@ private:
     Connection connectPropView;
     Connection connectPropAppend;
     Connection connectPropRemove;
+    Connection connectPropRename;
     Connection connectPropChange;
     Connection connectUndoDocument;
     Connection connectRedoDocument;
