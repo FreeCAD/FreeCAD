@@ -104,7 +104,6 @@ void CmdPartDesignBody::activated(int iMsg)
     App::DocumentObject* baseFeature = nullptr;
     bool addtogroup = false;
 
-
     if (!features.empty()) {
         if (features.size() == 1) {
             baseFeature = features[0];
@@ -184,8 +183,8 @@ void CmdPartDesignBody::activated(int iMsg)
         }
     }
 
-
-    openCommand(QT_TRANSLATE_NOOP("Command", "Add a Body"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Add a Body"));
+    bool openedModal = false;
 
     std::string bodyName = getUniqueObjectName("Body");
     const char* bodyString = bodyName.c_str();
@@ -212,7 +211,7 @@ void CmdPartDesignBody::activated(int iMsg)
         }
     }
     addModule(Gui,"PartDesignGui"); // import the Gui module only once a session
-
+    
     if (actPart) {
         doCommand(Doc,"App.activeDocument().%s.addObject(App.ActiveDocument.%s)",
                  actPart->getNameInDocument(), bodyString);
@@ -278,15 +277,22 @@ void CmdPartDesignBody::activated(int iMsg)
                     std::string docname = getDocument()->getName();
                     auto quitter = [docname]() {
                         Gui::Document* document = Gui::Application::Instance->getDocument(docname.c_str());
-                        if (document)
+                        if (document) {
                             document->abortCommand();
+                        }
                     };
 
                     // Show dialog and let user pick plane
                     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
                     if (!dlg) {
                         Gui::Selection().clearSelection();
-                        Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes, status, accepter, worker, true, quitter));
+                        openedModal = true;
+                        Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes,
+                                                                                        status,
+                                                                                        accepter,
+                                                                                        worker,
+                                                                                        true,
+                                                                                        quitter));
                     }
                 }
             }
@@ -294,6 +300,10 @@ void CmdPartDesignBody::activated(int iMsg)
     }
 
     updateActive();
+
+    if (!openedModal) {
+        commitSelf();
+    }
 }
 
 bool CmdPartDesignBody::isActive()
@@ -429,7 +439,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
     }
 
     // do the actual migration
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Migrate legacy Part Design features to bodies"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Migrate legacy Part Design features to bodies"));
 
     for ( auto chainIt = featureChains.begin(); !featureChains.empty();
             featureChains.erase (chainIt), chainIt = featureChains.begin () ) {
@@ -574,7 +584,7 @@ void CmdPartDesignMoveTip::activated(int iMsg)
         return;
     }
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Move tip to selected feature"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Move tip to selected feature"));
 
     if (selFeature == body) {
         FCMD_OBJ_CMD(body,"Tip = None");
@@ -619,7 +629,7 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
 
     std::vector<App::DocumentObject*> beforeFeatures = getDocument()->getObjects();
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Duplicate a Part Design object"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Duplicate a Part Design object"));
     doCommand(Doc,"FreeCADGui.runCommand('Std_DuplicateSelection')");
 
     if (pcActiveBody) {
@@ -648,6 +658,8 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
     }
 
     updateActive();
+
+    commitSelf();
 }
 
 bool CmdPartDesignDuplicateSelection::isActive()
@@ -746,7 +758,7 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
 
     PartDesign::Body* target = static_cast<PartDesign::Body*>(target_bodies[index]);
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Move an object"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Move an object"));
 
     std::stringstream stream;
     stream << "features_ = [" << getObjectCmd(features.back());
@@ -819,6 +831,8 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
     }*/
 
     updateActive();
+
+    commitSelf();
 }
 
 bool CmdPartDesignMoveFeature::isActive()
@@ -902,7 +916,7 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     // first object is the beginning of the body
     App::DocumentObject* target = index != 0 ? model[index-1] : nullptr;
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Move a feature inside body"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Move a feature inside body"));
 
     App::DocumentObject* lastObject = target;
     for ( auto feat: features ) {
@@ -953,7 +967,7 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
         QMessageBox::critical (nullptr, QObject::tr( "Dependency violation" ),
                 QObject::tr( "Early feature must not depend on later feature.\n\n")
                     + QString::fromUtf8(ss.str().c_str()));
-        abortCommand();
+        abortSelf();
         return;
     }
 
@@ -975,6 +989,8 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     }
 
     updateActive();
+
+    commitSelf();
 }
 
 bool CmdPartDesignMoveFeatureInTree::isActive()

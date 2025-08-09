@@ -416,11 +416,20 @@ bool TaskDlgShapeBinder::reject()
     if (!vp.expired()) {
         App::Document* doc = vp->getObject()->getDocument();
         // roll back the done things (deletes 'vp')
-        Gui::Command::abortCommand();
+        // Gui::Command::abortCommand();
+        doc->abortTransaction();
         Gui::cmdGuiDocument(doc, "resetEdit()");
         Gui::cmdAppDocument(doc, "recompute()");
     }
     return true;
+}
+void TaskDlgShapeBinder::activate()
+{
+    parameter->attachSelection();
+}
+void TaskDlgShapeBinder::deactivate()
+{
+    parameter->detachSelection();
 }
 
 #include "moc_TaskShapeBinder.cpp"

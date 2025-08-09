@@ -73,7 +73,7 @@ public:
 
     void drawGrid(bool cameraUpdate = false);
 
-    void setEnabled(bool enable);
+    void setEnabled(Gui::View3DInventor* view_);
     bool getEnabled();
 
     SoSeparator * getGridRoot();
@@ -114,7 +114,7 @@ private:
 private:
     ViewProviderGridExtension * vp;
 
-    bool enabled = false;
+    Gui::View3DInventor* view { nullptr };
     double computedGridValue = 10;
 
     bool isTooManySegmentsNotified = false;
@@ -230,10 +230,9 @@ void GridExtensionP::computeGridSize(const Gui::View3DInventorViewer* viewer)
 
 void GridExtensionP::createGrid(bool cameraUpdate)
 {
-    auto view = dynamic_cast<Gui::View3DInventor*>(Gui::Application::Instance->editDocument()->getActiveView());
-
-    if(!view)
+    if(!view) {
         return;
+    }
 
     Gui::View3DInventorViewer* viewer = view->getViewer();
 
@@ -385,17 +384,16 @@ Base::Vector3d GridExtensionP::getCamCenterInSketchCoordinates() const
     return center;
 }
 
-void GridExtensionP::setEnabled(bool enable)
+void GridExtensionP::setEnabled(Gui::View3DInventor* view_)
 {
-    enabled=enable;
+    view = view_;
 
     drawGrid();
-
 }
 
 bool GridExtensionP::getEnabled()
 {
-    return enabled;
+    return view != nullptr;
 }
 
 void GridExtensionP::createEditModeInventorNodes()
@@ -412,8 +410,9 @@ SoSeparator * GridExtensionP::getGridRoot()
     return GridRoot;
 }
 
-void GridExtensionP::drawGrid(bool cameraUpdate) {
-    if (vp->ShowGrid.getValue() && enabled) {
+void GridExtensionP::drawGrid(bool cameraUpdate) 
+{
+    if (vp->ShowGrid.getValue() && getEnabled()) {
         createGrid(cameraUpdate);
     }
     else {
@@ -439,9 +438,9 @@ ViewProviderGridExtension::ViewProviderGridExtension()
 
 ViewProviderGridExtension::~ViewProviderGridExtension() = default;
 
-void ViewProviderGridExtension::setGridEnabled(bool enable)
+void ViewProviderGridExtension::setGridEnabled(Gui::View3DInventor* view)
 {
-    pImpl->setEnabled(enable);
+    pImpl->setEnabled(view);
 }
 
 void ViewProviderGridExtension::drawGrid(bool cameraUpdate)

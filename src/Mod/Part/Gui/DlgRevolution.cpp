@@ -583,5 +583,13 @@ bool TaskRevolution::accept()
     widget->accept();
     return (widget->result() == QDialog::Accepted);
 }
+void TaskRevolution::activate()
+{
+    widget->attachSelection();
+}
+void TaskRevolution::deactivate()
+{
+    widget->detachSelection();
+}
 
 #include "moc_DlgRevolution.cpp"

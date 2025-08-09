@@ -140,7 +140,7 @@ CmdPartBox2::CmdPartBox2()
 void CmdPartBox2::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    openCommand(QT_TRANSLATE_NOOP("Command", "Part Box Create"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Part Box Create"));
     doCommand(Doc,"from FreeCAD import Base");
     doCommand(Doc,"import Part");
     doCommand(Doc,"__fb__ = App.ActiveDocument.addObject(\"Part::Box\",\"PartBox\")");
@@ -149,7 +149,7 @@ void CmdPartBox2::activated(int iMsg)
     doCommand(Doc,"__fb__.Width = 100.0");
     doCommand(Doc,"__fb__.Height = 100.0");
     doCommand(Doc,"del __fb__");
-    commitCommand();
+    commitSelf();
     updateActive();
 }
 
@@ -181,7 +181,7 @@ CmdPartBox3::CmdPartBox3()
 void CmdPartBox3::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    openCommand(QT_TRANSLATE_NOOP("Command", "Part Box Create"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Part Box Create"));
     doCommand(Doc,"from FreeCAD import Base");
     doCommand(Doc,"import Part");
     doCommand(Doc,"__fb__ = App.ActiveDocument.addObject(\"Part::Box\",\"PartBox\")");
@@ -190,7 +190,7 @@ void CmdPartBox3::activated(int iMsg)
     doCommand(Doc,"__fb__.Width = 100.0");
     doCommand(Doc,"__fb__.Height = 100.0");
     doCommand(Doc,"del __fb__");
-    commitCommand();
+    commitSelf();
     updateActive();
 }
 
@@ -229,7 +229,7 @@ void CmdPartPrimitives::activated(int iMsg)
 
 bool CmdPartPrimitives::isActive()
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()));
 }
 
 namespace PartGui {
@@ -334,12 +334,12 @@ void CmdPartCut::activated(int iMsg)
         names.push_back(Base::Tools::quoted(it.getFeatName()));
     }
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Part Cut"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Part Cut"));
     doCommand(Doc, "from BOPTools import BOPFeatures");
     doCommand(Doc, "bp = BOPFeatures.BOPFeatures(App.activeDocument())");
     doCommand(Doc, "bp.make_cut([%s])", Base::Tools::joinList(names).c_str());
     updateActive();
-    commitCommand();
+    commitSelf();
 }
 
 bool CmdPartCut::isActive()
@@ -393,12 +393,12 @@ void CmdPartCommon::activated(int iMsg)
         names.push_back(Base::Tools::quoted(it.getFeatName()));
     }
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Common"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Common"));
     doCommand(Doc, "from BOPTools import BOPFeatures");
     doCommand(Doc, "bp = BOPFeatures.BOPFeatures(App.activeDocument())");
     doCommand(Doc, "bp.make_multi_common([%s])", Base::Tools::joinList(names).c_str());
     updateActive();
-    commitCommand();
+    commitSelf();
 }
 
 bool CmdPartCommon::isActive()
@@ -471,12 +471,12 @@ void CmdPartFuse::activated(int iMsg)
         names.push_back(Base::Tools::quoted(it.getFeatName()));
     }
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Fusion"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Fusion"));
     doCommand(Doc, "from BOPTools import BOPFeatures");
     doCommand(Doc, "bp = BOPFeatures.BOPFeatures(App.activeDocument())");
     doCommand(Doc, "bp.make_multi_fuse([%s])", Base::Tools::joinList(names).c_str());
     updateActive();
-    commitCommand();
+    commitSelf();
 }
 
 bool CmdPartFuse::isActive()
@@ -861,11 +861,11 @@ void CmdPartCompound::activated(int iMsg)
     }
     str << "]";
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Compound"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Compound"));
     doCommand(Doc,"App.activeDocument().addObject(\"Part::Compound\",\"%s\")",FeatName.c_str());
     runCommand(Doc,str.str().c_str());
     updateActive();
-    commitCommand();
+    commitSelf();
 }
 
 bool CmdPartCompound::isActive()
@@ -905,7 +905,7 @@ void CmdPartSection::activated(int iMsg)
     std::string BaseName  = Sel[0].getFeatName();
     std::string ToolName  = Sel[1].getFeatName();
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Section"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Section"));
     doCommand(Doc,"App.activeDocument().addObject(\"Part::Section\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Base = App.activeDocument().%s",FeatName.c_str(),BaseName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Tool = App.activeDocument().%s",FeatName.c_str(),ToolName.c_str());
@@ -913,7 +913,7 @@ void CmdPartSection::activated(int iMsg)
     doCommand(Gui,"Gui.activeDocument().hide('%s')",ToolName.c_str());
     doCommand(Gui,"Gui.activeDocument().%s.LineMaterial = Gui.activeDocument().%s.ShapeAppearance[0]",FeatName.c_str(),BaseName.c_str());
     updateActive();
-    commitCommand();
+    commitSelf();
 }
 
 bool CmdPartSection::isActive()
@@ -958,7 +958,7 @@ void CmdPartImport::activated(int iMsg)
             return;
 
         fn = Base::Tools::escapeEncodeFilename(fn);
-        openCommand(QT_TRANSLATE_NOOP("Command", "Import Part"));
+        openSelf(QT_TRANSLATE_NOOP("Command", "Import Part"));
         if (select == filter[1] ||
             select == filter[3]) {
             doCommand(Doc, "import ImportGui");
@@ -968,7 +968,7 @@ void CmdPartImport::activated(int iMsg)
             doCommand(Doc, "import Part");
             doCommand(Doc, "Part.insert(\"%s\",\"%s\")", (const char*)fn.toUtf8(), pDoc->getName());
         }
-        commitCommand();
+        commitSelf();
 
         std::list<Gui::MDIView*> views = getActiveGuiDocument()->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId());
         for (auto view : views) {
@@ -1067,10 +1067,10 @@ void CmdPartImportCurveNet::activated(int iMsg)
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")));
     if (!fn.isEmpty()) {
         QFileInfo fi; fi.setFile(fn);
-        openCommand(QT_TRANSLATE_NOOP("Command", "Part Import Curve Net"));
+        openSelf(QT_TRANSLATE_NOOP("Command", "Part Import Curve Net"));
         doCommand(Doc,"f = App.activeDocument().addObject(\"Part::CurveNet\",\"%s\")", (const char*)fi.baseName().toLatin1());
         doCommand(Doc,"f.FileName = \"%s\"",(const char*)fn.toLatin1());
-        commitCommand();
+        commitSelf();
         updateActive();
     }
 }
@@ -1183,7 +1183,7 @@ void CmdPartReverseShape::activated(int iMsg)
     Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType
         (App::DocumentObject::getClassTypeId());
-    openCommand(QT_TRANSLATE_NOOP("Command", "Reverse"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Reverse"));
     for (auto it : objs) {
         const TopoDS_Shape& shape = Part::Feature::getShape(it, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (!shape.IsNull()) {
@@ -1214,7 +1214,7 @@ void CmdPartReverseShape::activated(int iMsg)
         }
     }
 
-    commitCommand();
+    commitSelf();
     updateActive();
 }
 
@@ -1243,7 +1243,7 @@ CmdPartBoolean::CmdPartBoolean()
 void CmdPartBoolean::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(getDocument());
     if (!dlg)
         dlg = new PartGui::TaskBooleanOperation();
     Gui::Control().showDialog(dlg);
@@ -1251,7 +1251,7 @@ void CmdPartBoolean::activated(int iMsg)
 
 bool CmdPartBoolean::isActive()
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -1279,7 +1279,7 @@ void CmdPartExtrude::activated(int iMsg)
 
 bool CmdPartExtrude::isActive()
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -1308,7 +1308,7 @@ void CmdPartScale::activated(int iMsg)
 
 bool CmdPartScale::isActive()
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -1334,7 +1334,7 @@ void CmdPartMakeFace::activated(int iMsg)
     auto sketches = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink);
     if(sketches.empty())
         return;
-    openCommand(QT_TRANSLATE_NOOP("Command", "Make face"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Make face"));
 
     try {
         App::DocumentT doc(sketches.front()->getDocument());
@@ -1348,11 +1348,11 @@ void CmdPartMakeFace::activated(int iMsg)
         str << ")";
 
         runCommand(Doc,str.str().c_str());
-        commitCommand();
+        commitSelf();
         updateActive();
     }
     catch (...) {
-        abortCommand();
+        abortSelf();
         throw;
     }
 }
@@ -1360,7 +1360,7 @@ void CmdPartMakeFace::activated(int iMsg)
 bool CmdPartMakeFace::isActive()
 {
     return (Gui::Selection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink) > 0 &&
-            !Gui::Control().activeDialog());
+            !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -1388,7 +1388,7 @@ void CmdPartRevolve::activated(int iMsg)
 
 bool CmdPartRevolve::isActive()
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -1416,7 +1416,7 @@ void CmdPartFillet::activated(int iMsg)
 
 bool CmdPartFillet::isActive()
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -1444,7 +1444,7 @@ void CmdPartChamfer::activated(int iMsg)
 
 bool CmdPartChamfer::isActive()
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -1472,7 +1472,7 @@ void CmdPartMirror::activated(int iMsg)
 
 bool CmdPartMirror::isActive()
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -1495,7 +1495,7 @@ CmdPartCrossSections::CmdPartCrossSections()
 void CmdPartCrossSections::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(getDocument());
     if (!dlg) {
         std::vector<Part::TopoShape> shapes = PartGui::getShapesFromSelection();
         Base::BoundBox3d bbox;
@@ -1510,7 +1510,7 @@ void CmdPartCrossSections::activated(int iMsg)
 bool CmdPartCrossSections::isActive()
 {
     bool hasShapes = PartGui::hasShapesInSelection();
-    return (hasShapes && !Gui::Control().activeDialog());
+    return (hasShapes && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -1540,7 +1540,7 @@ void CmdPartBuilder::activated(int iMsg)
 
 bool CmdPartBuilder::isActive()
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -1569,7 +1569,7 @@ void CmdPartLoft::activated(int iMsg)
 
 bool CmdPartLoft::isActive()
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -1598,7 +1598,7 @@ void CmdPartSweep::activated(int iMsg)
 
 bool CmdPartSweep::isActive()
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -1635,7 +1635,7 @@ void CmdPartOffset::activated(int iMsg)
     App::DocumentObject* shape = shapes.front();
     std::string offset = getUniqueObjectName("Offset");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Make Offset"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Make Offset"));
     doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Offset\",\"%s\")",offset.c_str());
     doCommand(Doc,"App.ActiveDocument.%s.Source = App.ActiveDocument.%s" ,offset.c_str(), shape->getNameInDocument());
     doCommand(Doc,"App.ActiveDocument.%s.Value = 1.0",offset.c_str());
@@ -1652,7 +1652,7 @@ bool CmdPartOffset::isActive()
 {
      bool hasShapes = PartGui::hasShapesInSelection();
      std::vector<App::DocumentObject*> docobjs = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
-     return (hasShapes && !Gui::Control().activeDialog() && docobjs.size() == 1);
+     return (hasShapes && !Gui::Control().activeDialog(getDocument()) && docobjs.size() == 1);
 }
 
 
@@ -1691,7 +1691,7 @@ void CmdPartOffset2D::activated(int iMsg)
     App::DocumentObject* shape = shapes.front();
     std::string offset = getUniqueObjectName("Offset2D");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Make 2D Offset"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Make 2D Offset"));
     doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Offset2D\",\"%s\")",offset.c_str());
     doCommand(Doc,"App.ActiveDocument.%s.Source = App.ActiveDocument.%s" ,offset.c_str(), shape->getNameInDocument());
     doCommand(Doc,"App.ActiveDocument.%s.Value = 1.0",offset.c_str());
@@ -1707,7 +1707,7 @@ bool CmdPartOffset2D::isActive()
 {
     bool hasShapes = PartGui::hasShapesInSelection();
     std::vector<App::DocumentObject*> docobjs = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
-    return (hasShapes && !Gui::Control().activeDialog() && docobjs.size() == 1);
+    return (hasShapes && !Gui::Control().activeDialog(getDocument()) && docobjs.size() == 1);
 }
 
 //===========================================================================
@@ -1800,7 +1800,7 @@ bool CmdPartCompOffset::isActive()
 {
     bool hasShapes = PartGui::hasShapesInSelection();
     std::vector<App::DocumentObject*> docobjs = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
-    return (hasShapes && !Gui::Control().activeDialog() && docobjs.size() == 1);
+    return (hasShapes && !Gui::Control().activeDialog(getDocument()) && docobjs.size() == 1);
 }
 //===========================================================================
 // Part_Thickness
@@ -1870,7 +1870,7 @@ void CmdPartThickness::activated(int iMsg)
 
     std::string thick = getUniqueObjectName("Thickness");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Make Thickness"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Make Thickness"));
     doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Thickness\",\"%s\")",thick.c_str());
     doCommand(Doc,"App.ActiveDocument.%s.Faces = %s" ,thick.c_str(), selection.c_str());
     doCommand(Doc,"App.ActiveDocument.%s.Value = 1.0",thick.c_str());
@@ -1889,7 +1889,7 @@ void CmdPartThickness::activated(int iMsg)
 bool CmdPartThickness::isActive()
 {
     bool objectsSelected = Gui::Selection().countObjectsOfType<Part::Feature>(nullptr, Gui::ResolveMode::FollowLink) > 0;
-    return (objectsSelected && !Gui::Control().activeDialog());
+    return (objectsSelected && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -2035,13 +2035,13 @@ void CmdPartRuledSurface::activated(int iMsg)
         return;
     }
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create ruled surface"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Create ruled surface"));
     doCommand(Doc, "FreeCAD.ActiveDocument.addObject('Part::RuledSurface', 'Ruled Surface')");
     doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.Curve1=(FreeCAD.ActiveDocument.%s,['%s'])"
               ,obj1.c_str(), link1.c_str());
     doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.Curve2=(FreeCAD.ActiveDocument.%s,['%s'])"
               ,obj2.c_str(), link2.c_str());
-    commitCommand();
+    commitSelf();
     updateActive();
 }
 
@@ -2071,7 +2071,7 @@ CmdCheckGeometry::CmdCheckGeometry()
 void CmdCheckGeometry::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(getDocument());
     if (!dlg)
         dlg = new PartGui::TaskCheckGeometryDialog();
     Gui::Control().showDialog(dlg);
@@ -2080,7 +2080,7 @@ void CmdCheckGeometry::activated(int iMsg)
 bool CmdCheckGeometry::isActive()
 {
     bool hasShapes = PartGui::hasShapesInSelection();
-    return (hasShapes && !Gui::Control().activeDialog());
+    return (hasShapes && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -2117,7 +2117,7 @@ void CmdColorPerFace::activated(int iMsg)
 bool CmdColorPerFace::isActive()
 {
     bool objectSelected = Gui::Selection().countObjectsOfType<Part::Feature>() == 1;
-    return (hasActiveDocument() && !Gui::Control().activeDialog() && objectSelected);
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()) && objectSelected);
 }
 
 //===========================================================================
@@ -2180,7 +2180,7 @@ void CmdPartProjectionOnSurface::activated(int iMsg)
 
 bool CmdPartProjectionOnSurface::isActive()
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return (hasActiveDocument() && !Gui::Control().activeDialog(getDocument()));
 }
 
 //===========================================================================
@@ -2263,7 +2263,7 @@ void CmdPartCoordinateSystem::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Add coordinate system"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Add coordinate system"));
 
     std::string name = getUniqueObjectName("LCS");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::LocalCoordinateSystem','%s')", name.c_str());
@@ -2297,7 +2297,7 @@ void CmdPartDatumPlane::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Add datum plane"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Add datum plane"));
 
     std::string name = getUniqueObjectName("DatumPlane");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumPlane','%s')", name.c_str());
@@ -2330,7 +2330,7 @@ void CmdPartDatumLine::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Add datum line"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Add datum line"));
 
     std::string name = getUniqueObjectName("DatumLine");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumLine','%s')", name.c_str());
@@ -2363,7 +2363,7 @@ void CmdPartDatumPoint::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Add datum point"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Add datum point"));
 
     std::string name = getUniqueObjectName("DatumPoint");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumPoint','%s')", name.c_str());

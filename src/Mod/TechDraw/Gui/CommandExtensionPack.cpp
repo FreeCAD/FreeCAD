@@ -124,7 +124,7 @@ void execHoleCircle(Gui::Command* cmd)
                              QObject::tr("Fewer than three circles selected"));
         return;
     }
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Bolt circle centerlines"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Bolt circle centerlines"));
 
     // make the bolt hole circle from 3 scaled and rotated points
     Base::Vector3d bigCenter =
@@ -158,7 +158,7 @@ void execHoleCircle(Gui::Command* cmd)
     cmd->getSelection().clearSelection();
     objFeat->refreshCEGeoms();
     objFeat->requestPaint();
-    Gui::Command::commitCommand();
+    cmd->commitSelf();
 }
 }// namespace TechDrawGui
 
@@ -202,7 +202,7 @@ void execCircleCenterLines(Gui::Command* cmd)
     if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw circle centerlines"))) {
         return;
     }
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Circle Centerlines"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Circle Centerlines"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     for (const std::string& Name : SubNames) {
         int GeoId = TechDraw::DrawUtil::getIndexFromName(Name);
@@ -232,7 +232,7 @@ void execCircleCenterLines(Gui::Command* cmd)
     cmd->getSelection().clearSelection();
     objFeat->refreshCEGeoms();
     objFeat->requestPaint();
-    Gui::Command::commitCommand();
+    cmd->commitSelf();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionCircleCenterLines)
@@ -371,7 +371,7 @@ void execThreadHoleSide(Gui::Command* cmd)
     if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Thread Hole Side"))) {
         return;
     }
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Thread Hole Side"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Cosmetic Thread Hole Side"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() >= 2) {
         _createThreadLines(SubNames, objFeat, ThreadFactor);
@@ -379,7 +379,7 @@ void execThreadHoleSide(Gui::Command* cmd)
     cmd->getSelection().clearSelection();
     objFeat->refreshCEGeoms();
     objFeat->requestPaint();
-    Gui::Command::commitCommand();
+    cmd->commitSelf();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionThreadHoleSide)
@@ -422,7 +422,7 @@ void execThreadBoltSide(Gui::Command* cmd)
     if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Thread Bolt Side")))  {
         return;
     }
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Thread Bolt Side"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Cosmetic Thread Bolt Side"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() >= 2) {
         _createThreadLines(SubNames, objFeat, ThreadFactor);
@@ -430,7 +430,7 @@ void execThreadBoltSide(Gui::Command* cmd)
     cmd->getSelection().clearSelection();
     objFeat->refreshCEGeoms();
     objFeat->requestPaint();
-    Gui::Command::commitCommand();
+    cmd->commitSelf();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionThreadBoltSide)
@@ -474,7 +474,7 @@ void execThreadHoleBottom(Gui::Command* cmd)
     if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Thread Hole Bottom"))) {
         return;
     }
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic thread hole bottom"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Cosmetic thread hole bottom"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     for (const std::string& Name : SubNames) {
         _createThreadCircle(Name, objFeat, ThreadFactor);
@@ -482,7 +482,7 @@ void execThreadHoleBottom(Gui::Command* cmd)
     cmd->getSelection().clearSelection();
     objFeat->refreshCEGeoms();
     objFeat->requestPaint();
-    Gui::Command::commitCommand();
+    cmd->commitSelf();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionThreadHoleBottom)
@@ -525,7 +525,7 @@ void execThreadBoltBottom(Gui::Command* cmd)
     if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Thread Bolt Bottom")))  {
         return;
     }
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Thread Bolt Bottom"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Cosmetic Thread Bolt Bottom"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     for (const std::string& Name : SubNames) {
         _createThreadCircle(Name, objFeat, ThreadFactor);
@@ -533,7 +533,7 @@ void execThreadBoltBottom(Gui::Command* cmd)
     cmd->getSelection().clearSelection();
     objFeat->refreshCEGeoms();
     objFeat->requestPaint();
-    Gui::Command::commitCommand();
+    cmd->commitSelf();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionThreadBoltBottom)
@@ -751,7 +751,7 @@ void CmdTechDrawExtensionChangeLineAttributes::activated(int iMsg)
     if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw change line attributes"))) {
         return;
     }
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Change line attributes"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Change line attributes"));
     const std::vector<std::string> subNames = selection[0].getSubNames();
     for (const std::string& name : subNames) {
         int num = DrawUtil::getIndexFromName(name);
@@ -772,7 +772,7 @@ void CmdTechDrawExtensionChangeLineAttributes::activated(int iMsg)
     getSelection().clearSelection();
     objFeat->refreshCEGeoms();
     objFeat->requestPaint();
-    Gui::Command::commitCommand();
+    commitSelf();
 }
 
 bool CmdTechDrawExtensionChangeLineAttributes::isActive()
@@ -810,7 +810,7 @@ void CmdTechDrawExtensionVertexAtIntersection::activated(int iMsg)
     if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw cosmetic intersection vertices")))  {
         return;
     }
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic intersection vertices"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Cosmetic intersection vertices"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() >= 2) {
         std::string GeoType1 = TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]);
@@ -832,7 +832,7 @@ void CmdTechDrawExtensionVertexAtIntersection::activated(int iMsg)
     getSelection().clearSelection();
     objFeat->refreshCVGeoms();
     objFeat->requestPaint();
-    Gui::Command::commitCommand();
+    commitSelf();
 }
 
 bool CmdTechDrawExtensionVertexAtIntersection::isActive()
@@ -856,7 +856,7 @@ void execDrawCosmArc(Gui::Command* cmd)
     if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw cosmetic arc")))  {
         return;
     }
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic arc"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Cosmetic arc"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     std::vector<Base::Vector3d> vertexPoints;
     vertexPoints = _getVertexPoints(SubNames, objFeat);
@@ -880,7 +880,7 @@ void execDrawCosmArc(Gui::Command* cmd)
         objFeat->refreshCEGeoms();
         objFeat->requestPaint();
         cmd->getSelection().clearSelection();
-        Gui::Command::commitCommand();
+        cmd->commitSelf();
     }
 }
 
@@ -925,7 +925,7 @@ void execDrawCosmCircle(Gui::Command* cmd)
     if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw cosmetic circle"))) {
         return;
     }
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Circle"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Cosmetic Circle"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     std::vector<Base::Vector3d> vertexPoints;
     vertexPoints = _getVertexPoints(SubNames, objFeat);
@@ -940,7 +940,7 @@ void execDrawCosmCircle(Gui::Command* cmd)
         objFeat->refreshCEGeoms();
         objFeat->requestPaint();
         cmd->getSelection().clearSelection();
-        Gui::Command::commitCommand();
+        cmd->commitSelf();
     }
 }
 
@@ -985,7 +985,7 @@ void execDrawCosmCircle3Points(Gui::Command* cmd)
     if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Circle 3 Points")))  {
         return;
     }
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Circle 3 Points"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Cosmetic Circle 3 Points"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     std::vector<Base::Vector3d> vertexPoints;
     vertexPoints = _getVertexPoints(SubNames, objFeat);
@@ -1003,7 +1003,7 @@ void execDrawCosmCircle3Points(Gui::Command* cmd)
         objFeat->refreshCEGeoms();
         objFeat->requestPaint();
         cmd->getSelection().clearSelection();
-        Gui::Command::commitCommand();
+        cmd->commitSelf();
     }
 }
 
@@ -1159,7 +1159,7 @@ void execLineParallelPerpendicular(Gui::Command* cmd, bool isParallel)
     if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Line Parallel/Perpendicular"))) {
         return;
     }
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Line Parallel/Perpendicular"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Cosmetic Line Parallel/Perpendicular"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() >= 2) {
         std::string GeoType1 = TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]);
@@ -1203,7 +1203,7 @@ void execLineParallelPerpendicular(Gui::Command* cmd, bool isParallel)
         objFeat->requestPaint();
         cmd->getSelection().clearSelection();
     }
-    Gui::Command::commitCommand();
+    cmd->commitSelf();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionLineParallel)
@@ -1391,7 +1391,7 @@ void CmdTechDrawExtensionLockUnlockView::activated(int iMsg)
         return;
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Lock/Unlock View"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Lock/Unlock View"));
     for (auto& sel : selection) {
         auto* obj = static_cast<TechDraw::DrawViewPart*>(sel.getObject());
 
@@ -1401,7 +1401,7 @@ void CmdTechDrawExtensionLockUnlockView::activated(int iMsg)
             obj->LockPosition.setValue(lockPosition);
         }
     }
-    Gui::Command::commitCommand();
+    commitSelf();
 }
 
 bool CmdTechDrawExtensionLockUnlockView::isActive()
@@ -1423,7 +1423,7 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
     if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Extend/Shorten Line"))) {
         return;
     }
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Extend/shorten line"));
+    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Extend/shorten line"));
     const std::vector<std::string> subNames = selection[0].getSubNames();
     if (!subNames.empty()) {
         std::string name = subNames[0];
@@ -1495,7 +1495,7 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
             }
         }
     }
-    Gui::Command::commitCommand();
+    cmd->commitSelf();
 }
 
 DEF_STD_CMD_A(CmdTechDrawExtensionExtendLine)
@@ -1719,7 +1719,7 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     }
 
     // if area calculation was successful, start the command
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Calculate Face Area"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Calculate Face Area"));
     // at first we create the balloon
     std::string balloonName = _createBalloon(this, objFeat);
     TechDraw::DrawViewBalloon* balloon = nullptr;
@@ -1771,7 +1771,7 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
         viewProvider->LineVisible.setValue(false);
         viewProvider->Color.setValue(Base::Color(1.0, 0.0, 0.0));
     }
-    Gui::Command::commitCommand();
+    commitSelf();
     objFeat->touch(true);
     Gui::Command::updateActive();
 }
@@ -1845,7 +1845,7 @@ void CmdTechDrawExtensionArcLengthAnnotation::activated(int iMsg)
     }
 
     // We have calculated the length, let's start the command
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Calculate Edge Length"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Calculate Edge Length"));
 
     // First we need to create the balloon
     std::string balloonName = _createBalloon(this, objFeat);
@@ -1909,7 +1909,7 @@ void CmdTechDrawExtensionArcLengthAnnotation::activated(int iMsg)
     }
 
     // Close the command and update the view
-    Gui::Command::commitCommand();
+    commitSelf();
     objFeat->touch(true);
     Gui::Command::updateActive();
 }

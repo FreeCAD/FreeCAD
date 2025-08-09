@@ -40,11 +40,12 @@
 #endif
 
 #include <App/Document.h>
+#include <App/ImagePlane.h>
+#include <Gui/Document.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
 #include <Gui/TaskView/TaskImage.h>
-#include <App/ImagePlane.h>
 
 #include "ViewProviderImagePlane.h"
 
@@ -185,7 +186,7 @@ void ViewProviderImagePlane::manipulateImage()
 {
     auto dialog = new TaskImageDialog(getObject<Image::ImagePlane>());
 
-    Gui::Control().showDialog(dialog);
+    Gui::Control().showDialog(dialog, getDocument()->getDocument());
 }
 
 void ViewProviderImagePlane::resizePlane(float xsize, float ysize)

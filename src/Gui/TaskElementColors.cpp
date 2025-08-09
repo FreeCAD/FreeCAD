@@ -66,6 +66,7 @@ public:
     bool busy;
     long onTopMode;
     bool touched;
+    int tid {0}; // Transaction id
 
     std::string editDoc;
     std::string editObj;
@@ -79,15 +80,13 @@ public:
         , vpDoc(vp->getDocument())
         , editElement(element)
     {
-        auto doc = Application::Instance->editDocument();
-        if (doc) {
-            auto editVp = doc->getInEdit(&vpParent, &editSub);
-            if (editVp == vp) {
-                auto obj = vpParent->getObject();
-                editDoc = obj->getDocument()->getName();
-                editObj = obj->getNameInDocument();
-                editSub = Data::noElementName(editSub.c_str());
-            }
+        if (auto editDoc = Application::Instance->editDocument([this, &vp](Gui::Document* editDoc) {
+            return editDoc->getInEdit(&vpParent, &editSub) == vp;
+        })) {
+            auto obj = vpParent->getObject();
+            this->editDoc = obj->getDocument()->getName();
+            this->editObj = obj->getNameInDocument();
+            this->editSub = Data::noElementName(editSub.c_str());
         }
         if (editDoc.empty()) {
             vpParent = vp;
@@ -198,8 +197,8 @@ public:
             std::string sub = qPrintable(item->data(Qt::UserRole + 1).value<QString>());
             info.emplace(sub, Base::Color::fromValue<QColor>(col));
         }
-        if (!App::GetApplication().getActiveTransaction()) {
-            App::GetApplication().setActiveTransaction("Set colors");
+        if (tid == 0) {
+            tid = Gui::Command::openCommand(vpDoc->getDocument(), "Set colors");
         }
         vp->setElementColors(info);
         touched = true;
@@ -209,8 +208,12 @@ public:
     void reset()
     {
         touched = false;
-        App::GetApplication().closeActiveTransaction(true);
+        Gui::Command::abortCommand(tid);
         Selection().clearSelection();
+
+        Application::Instance->unsetEditDocumentIf([this](Gui::Document* editdoc) {
+            return editdoc->getEditViewProvider() == vp;
+        });
     }
 
     void accept()
@@ -221,7 +224,11 @@ public:
             obj->getDocument()->recompute(obj->getInListRecursive());
             touched = false;
         }
-        App::GetApplication().closeActiveTransaction();
+        Gui::Command::commitCommand(tid);
+
+        Application::Instance->unsetEditDocumentIf([this](Gui::Document* editdoc) {
+            return editdoc->getEditViewProvider() == vp;
+        });
     }
 
     void removeAll()
@@ -433,14 +440,14 @@ void ElementColors::onTopClicked(bool checked)
 void ElementColors::slotDeleteDocument(const Document& Doc)
 {
     if (d->vpDoc == &Doc || d->editDoc == Doc.getDocument()->getName()) {
-        Control().closeDialog();
+        Control().closeDialog(Doc.getDocument());
     }
 }
 
 void ElementColors::slotDeleteObject(const ViewProvider& obj)
 {
     if (d->vp == &obj) {
-        Control().closeDialog();
+        Control().closeDialog(d->vpDoc->getDocument());
     }
 }
 
@@ -537,14 +544,12 @@ void ElementColors::onRemoveAllClicked()
 bool ElementColors::accept()
 {
     d->accept();
-    Application::Instance->setEditDocument(nullptr);
     return true;
 }
 
 bool ElementColors::reject()
 {
     d->reset();
-    Application::Instance->setEditDocument(nullptr);
     return true;
 }
 

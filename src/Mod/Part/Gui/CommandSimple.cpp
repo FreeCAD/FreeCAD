@@ -67,7 +67,7 @@ void CmdPartSimpleCylinder::activated(int iMsg)
     if (dlg.exec()== QDialog::Accepted) {
         Base::Vector3d dir = dlg.getDirection();
         Base::Vector3d pos = dlg.getPosition();
-        openCommand(QT_TRANSLATE_NOOP("Command", "Create Part Cylinder"));
+        openSelf(QT_TRANSLATE_NOOP("Command", "Create Part Cylinder"));
         doCommand(Doc,"from FreeCAD import Base");
         doCommand(Doc,"import Part");
         doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Feature\",\"Cylinder\")"
@@ -78,7 +78,7 @@ void CmdPartSimpleCylinder::activated(int iMsg)
                      ,dlg.getLength()
                      ,pos.x,pos.y,pos.z
                      ,dir.x,dir.y,dir.z);
-        commitCommand();
+        commitSelf();
         updateActive();
         doCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
     }
@@ -177,7 +177,7 @@ void CmdPartPointsFromMesh::activated(int iMsg)
     }
 
     Gui::WaitCursor wc;
-    openCommand(QT_TRANSLATE_NOOP("Command", "Points from geometry"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Points from geometry"));
 
     Base::PyGILStateLocker lock;
     try {
@@ -199,7 +199,7 @@ void CmdPartPointsFromMesh::activated(int iMsg)
         e.reportException();
     }
 
-    commitCommand();
+    commitSelf();
 }
 
 bool CmdPartPointsFromMesh::isActive()
@@ -226,7 +226,8 @@ CmdPartSimpleCopy::CmdPartSimpleCopy()
 
 static void _copyShape(const char *cmdName, bool resolve,bool needElement=false, bool refine=false) {
     Gui::WaitCursor wc;
-    Gui::Command::openCommand(cmdName);
+    
+    int tid = Gui::Command::openActiveDocumentCommand(cmdName);
     for(auto &sel : Gui::Selection().getSelectionEx("*", App::DocumentObject::getClassTypeId(),
                                                     resolve ? Gui::ResolveMode::OldStyleElement : Gui::ResolveMode::NoResolve)) {
         std::map<std::string,App::DocumentObject*> subMap;
@@ -267,7 +268,7 @@ static void _copyShape(const char *cmdName, bool resolve,bool needElement=false,
             Gui::Command::copyVisual(newObj, "PointColor", v.second);
         }
     }
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
     Gui::Command::updateActive();
 }
 
@@ -364,7 +365,7 @@ void CmdPartRefineShape::activated(int iMsg)
         Gui::WaitCursor wc;
         Base::Type partid = Base::Type::fromName("Part::Feature");
         std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(partid);
-        openCommand(QT_TRANSLATE_NOOP("Command", "Refine shape"));
+        openSelf(QT_TRANSLATE_NOOP("Command", "Refine shape"));
         std::for_each(objs.begin(), objs.end(), [](App::DocumentObject* obj) {
             try {
                 App::DocumentObjectT objT(obj);
@@ -385,7 +386,7 @@ void CmdPartRefineShape::activated(int iMsg)
                 Base::Console().warning("%s: %s\n", obj->Label.getValue(), e.what());
             }
         });
-        commitCommand();
+        commitSelf();
         updateActive();
     }
     else {
@@ -421,7 +422,7 @@ void CmdPartDefeaturing::activated(int iMsg)
     Gui::WaitCursor wc;
     Base::Type partid = Base::Type::fromName("Part::Feature");
     std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx(nullptr, partid);
-    openCommand(QT_TRANSLATE_NOOP("Command", "Defeaturing"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Defeaturing"));
     for (std::vector<Gui::SelectionObject>::iterator it = objs.begin(); it != objs.end(); ++it) {
         try {
             std::string shape;
@@ -455,7 +456,7 @@ void CmdPartDefeaturing::activated(int iMsg)
             Base::Console().warning("%s: %s\n", it->getFeatName(), e.what());
         }
     }
-    commitCommand();
+    commitSelf();
     updateActive();
 }
 
