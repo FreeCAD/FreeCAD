@@ -448,6 +448,43 @@ PyObject* SketchObjectPy::delConstraint(PyObject* args)
 
     Py_Return;
 }
+PyObject* SketchObjectPy::delConstraints(PyObject* args)
+{
+    PyObject* pcObj;
+    PyObject* updateGeometry = Py_True;
+
+    if (!PyArg_ParseTuple(args, "O|O!", &pcObj, &PyBool_Type, &updateGeometry)) {
+        return nullptr;
+    }
+
+    if (PyObject_TypeCheck(pcObj, &(PyList_Type)) || PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
+
+        std::vector<int> constraintIdList;
+        Py::Sequence list(pcObj);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            if (PyLong_Check((*it).ptr())) {
+                constraintIdList.push_back(PyLong_AsLong((*it).ptr()));
+            }
+        }
+
+        if (this->getSketchObjectPtr()->delConstraints(constraintIdList,
+                                                       Base::asBoolean(updateGeometry))
+            == -1) {
+            std::stringstream str;
+            str << "Not able to delete constraints, invalid indices";
+            PyErr_SetString(PyExc_ValueError, str.str().c_str());
+            return nullptr;
+        }
+
+        Py_Return;
+    }
+
+    std::string error = std::string("type must be list of constraint indices (int), not ");
+    error += pcObj->ob_type->tp_name;
+    throw Py::TypeError(error);
+
+    Py_Return;
+}
 
 PyObject* SketchObjectPy::renameConstraint(PyObject* args)
 {

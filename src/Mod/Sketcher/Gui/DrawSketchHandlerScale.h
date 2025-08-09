@@ -106,12 +106,13 @@ public:
 
             createShape(false);
 
-            commandAddShapeGeometryAndConstraints();
-
             if (deleteOriginal) {
+                deleteOriginalConstraints();
                 deleteOriginalGeos();
                 reassignFacadeIds();
             }
+
+            commandAddShapeGeometryAndConstraints();
 
             Gui::Command::commitCommand();
         }
@@ -243,6 +244,7 @@ private:
 private:
     std::vector<int> listOfGeoIds;
     std::vector<long> listOfFacadeIds;
+    std::vector<int> listOfModifiedConstrIds;  // Ids of original constraints which where modified
     Base::Vector2d referencePoint, startPoint, endPoint;
     bool deleteOriginal;
     bool abortOnFail;  // When the scale operation is part of a larger transaction, one might want
@@ -278,6 +280,22 @@ private:
         try {
             Gui::cmdAppObjectArgs(sketchgui->getObject(),
                                   "setGeometryIds([%s])",
+                                  stream.str().c_str());
+        }
+        catch (const Base::Exception& e) {
+            Base::Console().error("%s\n", e.what());
+        }
+    }
+    void deleteOriginalConstraints()
+    {
+        std::stringstream stream;
+        for (size_t j = 0; j < listOfModifiedConstrIds.size() - 1; j++) {
+            stream << listOfModifiedConstrIds[j] << ",";
+        }
+        stream << listOfModifiedConstrIds[listOfModifiedConstrIds.size() - 1];
+        try {
+            Gui::cmdAppObjectArgs(sketchgui->getObject(),
+                                  "delConstraints([%s], False)",
                                   stream.str().c_str());
         }
         catch (const Base::Exception& e) {
@@ -398,17 +416,24 @@ private:
             addLineToShapeGeometry(toVector3d(referencePoint), toVector3d(endPoint), true);
         }
         else {
-            int firstCurveCreated = getHighestCurveIndex() + 1;
+            int firstCurveCreated = 0;
+            if (deleteOriginal) {
+                // Geo ids will be removed so we offset it some more
+                firstCurveCreated = getHighestCurveIndex() + 1 - listOfGeoIds.size();
+            }
+            else {
+                firstCurveCreated = getHighestCurveIndex() + 1;
+            }
 
             const std::vector<Constraint*>& vals = Obj->Constraints.getValues();
-            // avoid applying equal several times if cloning distanceX and distanceY of the
-            // same part.
-            std::vector<int> geoIdsWhoAlreadyHasEqual = {};
 
-            for (auto& cstr : vals) {
+            for (size_t i = 0; i < vals.size(); ++i) {
+                Constraint* cstr = vals[i];
+
                 if (skipConstraint(cstr)) {
                     continue;
                 }
+                listOfModifiedConstrIds.push_back(i);
 
                 auto newConstr = std::unique_ptr<Constraint>(cstr->copy());
                 newConstr->First = offsetGeoID(newConstr->First, firstCurveCreated);
