@@ -302,6 +302,8 @@ public:
         , hi(_hi)
     {}
 
+    Int128& operator=(const Int128&) = default;
+
     Int128& operator=(const long64& val)
     {
         lo = (ulong64)val;
