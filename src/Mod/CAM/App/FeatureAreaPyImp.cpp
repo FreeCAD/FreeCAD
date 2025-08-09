@@ -52,7 +52,7 @@ PyObject* FeatureAreaPy::getArea(PyObject* args)
 
 PyObject* FeatureAreaPy::setParams(PyObject* args, PyObject* keywds)
 {
-    static const std::array<const char*, 43> kwlist {PARAM_FIELD_STRINGS(NAME, AREA_PARAMS_CONF),
+    static const std::array<const char*, 44> kwlist {PARAM_FIELD_STRINGS(NAME, AREA_PARAMS_CONF),
                                                      nullptr};
 
     // Declare variables defined in the NAME field of the CONF parameter list
