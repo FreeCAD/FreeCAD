@@ -90,9 +90,6 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
     m_toggleKeepUpdatedAction = new QAction(tr("Toggle &Keep Updated"), this);
     connect(m_toggleKeepUpdatedAction, &QAction::triggered, this, &MDIViewPage::toggleKeepUpdated);
 
-    m_toggleFrameAction = new QAction(tr("Toggle &Frames"), this);
-    connect(m_toggleFrameAction, &QAction::triggered, this, &MDIViewPage::toggleFrame);
-
     m_exportSVGAction = new QAction(tr("&Export SVG"), this);
 
     connect(m_exportSVGAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::saveSVG));
@@ -440,7 +437,6 @@ void MDIViewPage::contextMenuEvent(QContextMenuEvent* event)
     //    Base::Console().message("MDIVP::contextMenuEvent() - reason: %d\n", event->reason());
     if (isContextualMenuEnabled) {
         QMenu menu;
-        menu.addAction(m_toggleFrameAction);
         menu.addAction(m_toggleKeepUpdatedAction);
         menu.addAction(m_exportSVGAction);
         menu.addAction(m_exportDXFAction);
@@ -449,8 +445,6 @@ void MDIViewPage::contextMenuEvent(QContextMenuEvent* event)
         menu.exec(event->globalPos());
     }
 }
-
-void MDIViewPage::toggleFrame() { m_vpPage->toggleFrameState(); }
 
 void MDIViewPage::toggleKeepUpdated()
 {

@@ -292,78 +292,6 @@ bool CmdTechDrawImage::isActive()
     return DrawGuiUtil::needPage(this);
 }
 
-//===========================================================================
-// TechDraw_ToggleFrame
-//===========================================================================
-
-DEF_STD_CMD_AC(CmdTechDrawToggleFrame)
-
-CmdTechDrawToggleFrame::CmdTechDrawToggleFrame()
-  : Command("TechDraw_ToggleFrame")
-{
-    sAppModule      = "TechDraw";
-    sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Toggle View Frames");
-    sToolTipText    = QT_TR_NOOP("Toggles the visibility of the view frames");
-    sWhatsThis      = "TechDraw_Toggle";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "actions/TechDraw_ToggleFrame";
-}
-
-Gui::Action *CmdTechDrawToggleFrame::createAction()
-{
-    Gui::Action *action = Gui::Command::createAction();
-    action->setCheckable(true);
-
-    return action;
-}
-
-void CmdTechDrawToggleFrame::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
-    if (!page) {
-        return;
-    }
-
-    Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
-    Gui::ViewProvider* vp = activeGui->getViewProvider(page);
-    ViewProviderPage* vpPage = freecad_cast<ViewProviderPage*>(vp);
-
-    if (!vpPage) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No TechDraw page"),
-            QObject::tr("A TechDraw page is required for this command"));
-        return;
-    }
-
-    vpPage->toggleFrameState();
-
-    Gui::Action *action = this->getAction();
-    if (action) {
-        action->setBlockedChecked(!vpPage->getFrameState());
-    }
-}
-
-//! true if the active tab is a TechDraw Page.
-// There is an assumption here that you would only want to toggle the frames on a page when you are
-// currently looking at that page
-bool CmdTechDrawToggleFrame::isActive()
-{
-    auto mvp = qobject_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
-    if (!mvp) {
-        return false;
-    }
-
-    ViewProviderPage* vpp = mvp->getViewProviderPage();
-
-    Gui::Action* action = this->getAction();
-    if (action) {
-        action->setBlockedChecked(vpp && !vpp->getFrameState());
-    }
-
-    return true;
-}
-
 void CreateTechDrawCommandsDecorate()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -371,7 +299,6 @@ void CreateTechDrawCommandsDecorate()
     rcCmdMgr.addCommand(new CmdTechDrawHatch());
     rcCmdMgr.addCommand(new CmdTechDrawGeometricHatch());
     rcCmdMgr.addCommand(new CmdTechDrawImage());
-    rcCmdMgr.addCommand(new CmdTechDrawToggleFrame());
 //    rcCmdMgr.addCommand(new CmdTechDrawLeaderLine());
 //    rcCmdMgr.addCommand(new CmdTechDrawRichTextAnnotation());
 }
