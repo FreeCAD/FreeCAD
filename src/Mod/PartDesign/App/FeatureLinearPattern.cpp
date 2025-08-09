@@ -161,6 +161,10 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
         PartDesign::Line* line = static_cast<PartDesign::Line*>(refObject);
         Base::Vector3d d = line->getDirection();
         dir = gp_Dir(d.x, d.y, d.z);
+    } else if (refObject->isDerivedFrom<App::Plane>()) {
+        App::Plane* plane = static_cast<App::Plane*>(refObject);
+        Base::Vector3d d = plane->getDirection();
+        dir = gp_Dir(d.x, d.y, d.z);
     } else if (refObject->isDerivedFrom<App::Line>()) {
         App::Line* line = static_cast<App::Line*>(refObject);
         Base::Vector3d d = line->getDirection();

@@ -74,6 +74,11 @@ bool Property::isValidName(const char* name)
     return !Base::Tools::isNullOrEmpty(name);
 }
 
+const char* Property::getLabel() const
+{
+    return father ? father->getPropertyLabel(this) : getName();
+}
+
 std::string Property::getFullName() const
 {
     std::string name;
