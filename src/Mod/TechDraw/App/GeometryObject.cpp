@@ -395,7 +395,7 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input, cons
 //of the main hlr routine. Only the visible hard edges are returned, so this method
 //is only suitable for simple shapes that have no hidden edges, like faces or wires.
 //TODO: allow use of perspective projector
-TopoDS_Shape GeometryObject::projectSimpleShape(const TopoDS_Shape& shape, const gp_Ax2& CS)
+TopoDS_Shape GeometryObject::projectSimpleShape(const TopoDS_Shape& shape, const gp_Ax2& CS, bool invertYRequired)
 {
     //    Base::Console().message("GO::()\n");
     if (shape.IsNull()) {
@@ -412,7 +412,9 @@ TopoDS_Shape GeometryObject::projectSimpleShape(const TopoDS_Shape& shape, const
     HLRBRep_HLRToShape hlrToShape(brep_hlr);
     TopoDS_Shape hardEdges = hlrToShape.VCompound();
     BRepLib::BuildCurves3d(hardEdges);
-    hardEdges =ShapeUtils::invertGeometry(hardEdges);
+    if (invertYRequired) {
+        hardEdges =ShapeUtils::invertGeometry(hardEdges);
+    }
 
     return hardEdges;
 }
