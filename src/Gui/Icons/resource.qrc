@@ -38,7 +38,10 @@
         <file>clear-selection.svg</file>
         <file>colors.svg</file>
         <file>critical-info.svg</file>
+        <file>cursor-pan.svg</file>
         <file>cursor-through.svg</file>
+        <file>cursor-rotate.svg</file>
+        <file>cursor-zoom.svg</file>
         <file>dagViewFail.svg</file>
         <file>dagViewPass.svg</file>
         <file>dagViewPending.svg</file>
