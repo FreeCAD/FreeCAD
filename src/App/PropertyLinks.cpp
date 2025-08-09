@@ -1555,7 +1555,11 @@ static bool updateLinkReference(App::PropertyLinkBase* prop,
 void PropertyLinkSub::afterRestore()
 {
     _ShadowSubList.resize(_cSubList.size());
-    if (!testFlag(LinkRestoreLabel) || !_pcLinkSub || !_pcLinkSub->isAttachedToDocument()) {
+    if (!_pcLinkSub || !_pcLinkSub->isAttachedToDocument()) {
+        return;
+    }
+    updateElementReferences(_pcLinkSub, true);
+    if (!testFlag(LinkRestoreLabel)) {
         return;
     }
     setFlag(LinkRestoreLabel, false);
@@ -4064,9 +4068,15 @@ int PropertyXLink::checkRestore(std::string* msg) const
 void PropertyXLink::afterRestore()
 {
     assert(_SubList.size() == _ShadowSubList.size());
-    if (!testFlag(LinkRestoreLabel) || !_pcLink || !_pcLink->isAttachedToDocument()) {
+    if (!_pcLink || !_pcLink->isAttachedToDocument()) {
         return;
     }
+    updateElementReferences(_pcLink, true);
+
+    if (!testFlag(LinkRestoreLabel)) {
+        return;
+    }
+
     setFlag(LinkRestoreLabel, false);
     for (size_t i = 0; i < _SubList.size(); ++i) {
         restoreLabelReference(_pcLink, _SubList[i], &_ShadowSubList[i]);
