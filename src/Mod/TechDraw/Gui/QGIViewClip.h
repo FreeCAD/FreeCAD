@@ -28,6 +28,11 @@
 #include "QGIView.h"
 #include "QGIUserTypes.h"
 
+namespace TechDraw
+{
+class DrawView;
+}
+
 namespace TechDrawGui
 {
 class QGCustomRect;
@@ -42,6 +47,9 @@ public:
 
     enum {Type = UserType::QGIViewClip};
     int type() const override { return Type;}
+    bool sceneEventFilter(QGraphicsItem *watched, QEvent *event) override;
+    TechDraw::DrawView* selectionIsInGroup() const;
+    bool forwardEventToSelection(QGIView* qview, QEvent *event) const;
 
     void updateView(bool update = false) override;
 

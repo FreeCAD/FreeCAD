@@ -173,8 +173,10 @@ public:
     template <typename T>
     std::vector<T> getObjects(std::vector<int> indexes);
 
+    bool pseudoEventFilter(QGraphicsItem *watched, QEvent *event) { return sceneEventFilter(watched, event); }
+
 protected:
-    QGIView* getQGIVByName(std::string name);
+    QGIView* getQGIVByName(std::string name) const;
 
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
     // Preselection events:
