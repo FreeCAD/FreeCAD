@@ -5314,7 +5314,7 @@ TopoShape TopoShape::splitWires(std::vector<TopoShape>* inner, SplitWireReorient
     return TopoShape {};
 }
 
-bool TopoShape::isLinearEdge(Base::Vector3d* dir, Base::Vector3d* base) const
+bool TopoShape::isLinearEdge() const
 {
     if (isNull() || getShape().ShapeType() != TopAbs_EDGE) {
         return false;
