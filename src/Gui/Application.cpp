@@ -775,7 +775,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                 checkRestoreError(doc);
                 checkForRecomputes();
                 if (activeDocument()) {
-                    activeDocument()->setModified(false);
+                    activeDocument()->setModified(Document::ModificationType::Reset);
                 }
             }
             else {
@@ -807,7 +807,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                 }
 
                 if (doc) {
-                    doc->setModified(true);
+                    doc->setModified(Document::ModificationType::OutOfTransaction);
 
                     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
                         "User parameter:BaseApp/Preferences/View");
@@ -2681,7 +2681,7 @@ App::Document* Application::reopen(App::Document* doc)
             }
             if (reset) {
                 v.second->getDocument()->purgeTouched();
-                v.second->setModified(false);
+                v.second->setModified(Document::ModificationType::Reset);
             }
         }
     }
