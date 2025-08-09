@@ -330,7 +330,6 @@ private:
 
         float aspectRatio =  (float) srcw / (float) srch;
         float imgHeight = scale * (float) (srch);
-        float imgWidth  = aspectRatio * imgHeight;
 
         // get the points stored in the pnt field
         const SbVec3f *points = label->pnts.getValues(0);
@@ -342,7 +341,6 @@ private:
         SoDatumLabel::DiameterGeometry geom = label->calculateDiameterGeometry(points);
 
         std::vector<SbVec3f> corners;
-        float margin = imgHeight / 4.0F;
 
         // include main points and line segment points around text
         corners.push_back(geom.p1);
