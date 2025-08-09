@@ -1,4 +1,4 @@
-configure_file(ThirdPartyLibraries.html.cmake
+configure_file(ThirdPartyLibraries.html
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/ThirdPartyLibraries.html)
 configure_file(LICENSE.html
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/LICENSE.html COPYONLY)
