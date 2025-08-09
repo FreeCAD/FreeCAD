@@ -90,6 +90,7 @@ protected:
     void showPrivacyPolicy();
     void showOrHideImage(const QRect& rect);
     void addModuleInfo(QTextStream& inout_str, const QString& modPath, bool& inout_first);
+    void findSolversVersions(void);
 
 protected:
     QPixmap aboutImage() const;
