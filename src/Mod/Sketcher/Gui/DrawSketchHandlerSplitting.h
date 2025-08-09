@@ -195,7 +195,6 @@ private:
 
 private:
     std::vector<Base::Vector2d> EditMarkers;
-    bool mousePressed = false;
 
 public:
     std::list<Gui::InputHint> getToolHints() const override
