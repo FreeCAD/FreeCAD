@@ -737,6 +737,16 @@ EditModeCoinManager::detectPreselection(SoPickedPoint* Point, const SbVec2s& cur
     SoPath* path = Point->getPath();
     SoNode* tail = path->getTail();  // Tail is directly the node containing points and curves
 
+    // checking for a hit on the separate Origin Point
+    if (tail == editModeScenegraphNodes.OriginPointSet) {
+        const SoDetail* point_detail = Point->getDetail(editModeScenegraphNodes.OriginPointSet);
+        if (point_detail && point_detail->getTypeId() == SoPointDetail::getClassTypeId()) {
+            result.PointIndex = -1;  // The logical ID of the origin
+            result.Cross = PreselectionResult::Axes::RootPoint;
+            return result;
+        }
+    }
+
     for (int l = 0; l < geometryLayerParameters.getCoinLayerCount(); l++) {
         // checking for a hit in the points
         if (tail == editModeScenegraphNodes.PointSet[l]) {
@@ -965,6 +975,33 @@ void EditModeCoinManager::createEditModeInventorNodes()
     editModeScenegraphNodes.RootCrossSet->setName("RootCrossLineSet");
     crossRoot->addChild(editModeScenegraphNodes.RootCrossSet);
 
+    // stuff for the Origin Point
+    SoGroup* originPointRoot = new Gui::SoSkipBoundingGroup;
+    originPointRoot->setName("OriginPointRoot_SkipBBox");
+    editModeScenegraphNodes.EditRoot->addChild(originPointRoot);
+
+    editModeScenegraphNodes.OriginPointMaterial = new SoMaterial;
+    editModeScenegraphNodes.OriginPointMaterial->setName("OriginPointMaterial");
+    originPointRoot->addChild(editModeScenegraphNodes.OriginPointMaterial);
+
+    editModeScenegraphNodes.OriginPointDrawStyle = new SoDrawStyle;
+    editModeScenegraphNodes.OriginPointDrawStyle->setName("OriginPointDrawStyle");
+    editModeScenegraphNodes.OriginPointDrawStyle->pointSize =
+        8 * drawingParameters.pixelScalingFactor;
+    originPointRoot->addChild(editModeScenegraphNodes.OriginPointDrawStyle);
+
+    editModeScenegraphNodes.OriginPointCoordinate = new SoCoordinate3;
+    editModeScenegraphNodes.OriginPointCoordinate->setName("OriginPointCoordinate");
+    // A default position, which will be updated later
+    editModeScenegraphNodes.OriginPointCoordinate->point.set1Value(0, SbVec3f(0.0f, 0.0f, 0.0f));
+    originPointRoot->addChild(editModeScenegraphNodes.OriginPointCoordinate);
+
+    editModeScenegraphNodes.OriginPointSet = new SoMarkerSet;
+    editModeScenegraphNodes.OriginPointSet->setName("OriginPointSet");
+    editModeScenegraphNodes.OriginPointSet->markerIndex =
+        Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED", drawingParameters.markerSize);
+    originPointRoot->addChild(editModeScenegraphNodes.OriginPointSet);
+
     // stuff for the EditCurves +++++++++++++++++++++++++++++++++++++++
     SoSeparator* editCurvesRoot = new SoSeparator;
     editModeScenegraphNodes.EditRoot->addChild(editCurvesRoot);
@@ -1131,6 +1168,11 @@ void EditModeCoinManager::updateInventorNodeSizes()
             Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED",
                                                          drawingParameters.markerSize);
     }
+
+    editModeScenegraphNodes.OriginPointDrawStyle->pointSize =
+        8 * drawingParameters.pixelScalingFactor;
+    editModeScenegraphNodes.OriginPointSet->markerIndex =
+        Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED", drawingParameters.markerSize);
 
     editModeScenegraphNodes.RootCrossDrawStyle->lineWidth =
         2 * drawingParameters.pixelScalingFactor;
