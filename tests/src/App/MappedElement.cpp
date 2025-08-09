@@ -274,6 +274,7 @@ TEST_F(MappedElementTest, comparatorLargerWorkedExampleWithMap)
     Data::MappedName name2("#1dadb:11;:L#1061a;FUS;:H:d,E");
     Data::MappedName name3("#1dae6:8;:L#1dae4;FUS;:H:d,E");
     Data::MappedName name4("Edge999;;:L#1dae4;FUS;:H:d,E");
+    Data::MappedName name5("g4v2;SKT;:H1234,F;:H5678:2,E;:G0(g1;SKT;:H9012,E);XTR;:H3456:2,F");
 
 
     std::map<Data::MappedName, int, Data::ElementNameComparator> testMap;
@@ -287,9 +288,10 @@ TEST_F(MappedElementTest, comparatorLargerWorkedExampleWithMap)
     testMap[name4] = 8;   // Duplicate, should not affect size
     testMap[name2] = 9;   // Duplicate, should not affect size
     testMap[name3] = 10;  // Duplicate, should not affect size
+    testMap[name5] = 11;
 
     // Assert: map should have 5 unique keys
-    EXPECT_EQ(testMap.size(), 5);
+    EXPECT_EQ(testMap.size(), 6);
 
     // Collect keys in order
     std::vector<std::string> keys;
@@ -303,11 +305,13 @@ TEST_F(MappedElementTest, comparatorLargerWorkedExampleWithMap)
     // The expected order depends on your comparator logic.
     // If you want to check the exact order, set it here:
     // (Replace with the correct expected order if needed)
-    std::vector<std::string> expectedOrder = {"Edge123;:U;FUS;:Hce4:7,E",
-                                              "Edge999;;:L#1dae4;FUS;:H:d,E",
-                                              "#1dad:e;:U;FUS;:Hce4:7,E",
-                                              "#1dadb:11;:L#1061a;FUS;:H:d,E",
-                                              "#1dae6:8;:L#1dae4;FUS;:H:d,E"};
+    std::vector<std::string> expectedOrder = {
+        "Edge123;:U;FUS;:Hce4:7,E",
+        "Edge999;;:L#1dae4;FUS;:H:d,E",
+        "g4v2;SKT;:H1234,F;:H5678:2,E;:G0(g1;SKT;:H9012,E);XTR;:H3456:2,F",
+        "#1dad:e;:U;FUS;:Hce4:7,E",
+        "#1dadb:11;:L#1061a;FUS;:H:d,E",
+        "#1dae6:8;:L#1dae4;FUS;:H:d,E"};
 
     EXPECT_EQ(keys, expectedOrder);
 }
