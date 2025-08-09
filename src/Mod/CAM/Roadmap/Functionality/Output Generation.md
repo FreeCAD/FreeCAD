@@ -23,6 +23,7 @@
 | G-code Decomposition         | Break arcs/canned cycles into linear segments or explicit moves                                                                              | NONE                                                                                                                |
 | Coordinate Conversion        | Convert absolute to relative (G91), center arcs to relative (G91.1)                                                                          | NONE                                                                                                                |
 | Coolant Control              | Coolant control should be started at the most desirable point to avoid wasting coolant during a tool change or before it is actually needed. | Current coolant control turns on when the TC is loaded.  Inefficient                                                |
+| Advanced g-code generation   | It should be possible to write postprocessors to generate any valid gcode                                                                    | Some gcode features are not possible                                                                                |
 
 ---
 

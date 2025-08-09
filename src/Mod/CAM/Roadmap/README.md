@@ -49,6 +49,7 @@ Perennial complaints from users:
   returns to origin between ops (It doesn't)
 - Arrays of similar gcode
 - Lack of F & S calculation
+- Selecting and using tools (tool controllers) is cumbersome
 
 # 🚀 Initiatives and Projects (Epics)
 
