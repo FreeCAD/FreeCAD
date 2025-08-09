@@ -26,6 +26,7 @@ import Path
 import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
 
+import Path.Dressup.Utils as PathDressup
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -249,11 +250,14 @@ class ObjectOp(PathOp.ObjectOp):
                 for op in self.job.Operations.Group:
                     if self in [x.Proxy for x in [op] + op.OutListRecursive if hasattr(x, "Proxy")]:
                         break
-                    if hasattr(op, "Active") and op.Active and op.Path:
+                    baseOp = PathDressup.baseOp(op)
+                    if not getattr(op, "ApplyToRestMachining", None):
+                        op = baseOp
+                    if getattr(baseOp, "Active", None) and op.Path:
                         tool = (
-                            op.Proxy.tool
-                            if hasattr(op.Proxy, "tool")
-                            else op.ToolController.Proxy.getTool(op.ToolController)
+                            baseOp.Proxy.tool
+                            if hasattr(baseOp.Proxy, "tool")
+                            else baseOp.ToolController.Proxy.getTool(baseOp.ToolController)
                         )
                         diameter = tool.Diameter.getValueAs("mm")
                         dz = (
