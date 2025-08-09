@@ -1108,7 +1108,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
     else if (Button == 2) {
         if (pressed) {
             blockContextMenu = false;
-            
+
             // Do things depending on the mode of the user interaction
             switch (Mode) {
                 case STATUS_NONE: {
@@ -4124,7 +4124,7 @@ bool ViewProviderSketch::isInEditMode() const
 void ViewProviderSketch::generateContextMenu()
 {
     if (blockContextMenu) return;
-    
+
     int selectedEdges = 0;
     int selectedLines = 0;
     int selectedConics = 0;
