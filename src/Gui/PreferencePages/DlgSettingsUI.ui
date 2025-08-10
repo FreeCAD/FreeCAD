@@ -505,7 +505,7 @@
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="showTaskWatcherCheckBox">
         <property name="text">
-         <string>Suggest actions based on selection</string>
+         <string>Suggest actions in the task view based on the selection</string>
         </property>
         <property name="checked">
          <bool>true</bool>
