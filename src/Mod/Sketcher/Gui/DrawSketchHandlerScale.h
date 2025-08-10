@@ -261,7 +261,7 @@ private:
         stream << listOfGeoIds[listOfGeoIds.size() - 1];
         try {
             Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                  "delGeometries([%s])",
+                                  "delGeometries([%s], True)",
                                   stream.str().c_str());
         }
         catch (const Base::Exception& e) {
@@ -295,7 +295,7 @@ private:
         stream << listOfModifiedConstrIds[listOfModifiedConstrIds.size() - 1];
         try {
             Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                  "delConstraints([%s], False)",
+                                  "delConstraints([%s], False, True)",
                                   stream.str().c_str());
         }
         catch (const Base::Exception& e) {
@@ -433,7 +433,6 @@ private:
                 if (skipConstraint(cstr)) {
                     continue;
                 }
-                listOfModifiedConstrIds.push_back(i);
 
                 auto newConstr = std::unique_ptr<Constraint>(cstr->copy());
                 newConstr->First = offsetGeoID(newConstr->First, firstCurveCreated);
@@ -462,6 +461,7 @@ private:
                 }
                 // (cstr->Type == Block || cstr->Type == Weight)
 
+                listOfModifiedConstrIds.push_back(i);
                 ShapeConstraints.push_back(std::move(newConstr));
             }
         }
