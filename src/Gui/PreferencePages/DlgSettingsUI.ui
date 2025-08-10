@@ -499,7 +499,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_4">
      <property name="title">
-      <string>Suggested actions</string>
+      <string>Suggested Actions</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
