@@ -58,7 +58,7 @@ using namespace Gui;
 
 TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder* view, bool newObj, QWidget* parent)
     : Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("PartDesign_ShapeBinder"),
-        tr("Datum shape parameters"), true, parent)
+        tr("Datum Shape Parameters"), true, parent)
     , SelectionObserver(view)
     , ui(new Ui_TaskShapeBinder)
     , vp(view)

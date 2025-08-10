@@ -19,7 +19,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>X:</string>
+        <string>X</string>
        </property>
       </widget>
      </item>
@@ -40,7 +40,7 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Y:</string>
+        <string>Y</string>
        </property>
       </widget>
      </item>
@@ -61,7 +61,7 @@
      <item>
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Z:</string>
+        <string>Z</string>
        </property>
       </widget>
      </item>
@@ -83,7 +83,7 @@
    <item>
     <widget class="QCheckBox" name="checkBox">
      <property name="text">
-      <string>Grid Snap in</string>
+      <string>Grid snap in</string>
      </property>
     </widget>
    </item>

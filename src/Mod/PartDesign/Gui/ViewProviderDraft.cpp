@@ -39,7 +39,7 @@ const std::string & ViewProviderDraft::featureName() const {
 
 void ViewProviderDraft::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    addDefaultAction(menu, QObject::tr("Edit draft"));
+    addDefaultAction(menu, QObject::tr("Edit Draft"));
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 

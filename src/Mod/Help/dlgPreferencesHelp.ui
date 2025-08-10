@@ -26,8 +26,8 @@
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>This will fetch the documentation from pages rendered on GitHub.
-This is currently not available...</string>
+         <string>Fetches the documentation from pages rendered on GitHub.
+This is currently not available.</string>
         </property>
         <property name="text">
          <string>GitHub (online)</string>
@@ -84,10 +84,10 @@ to get French translation of the documentation.</string>
        <widget class="Gui::PrefFileChooser" name="fileChooser">
         <property name="toolTip">
          <string>Set this to a custom URL or the folder where the help files are located.
-You can easily download the documentation for offline use by using the Addon
-Manager and installing the &quot;offline-documentation&quot; addon. If this
-field is left blank, FreeCAD will automatically search for the help files at
-the default location ($USERAPPDATADIR/Mod/offline-documentation).</string>
+Documentation can be downloaded for offline use via the Addon Manager and installing the
+&quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
+automatically search for the help files at the default location
+($USERAPPDATADIR/Mod/offline-documentation).</string>
         </property>
         <property name="mode">
          <enum>Gui::FileChooser::Directory</enum>
@@ -109,7 +109,7 @@ the default location ($USERAPPDATADIR/Mod/offline-documentation).</string>
          <enum>Qt::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>    Translation suffix:</string>
+         <string>Translation suffix</string>
         </property>
        </widget>
       </item>
@@ -167,7 +167,7 @@ custom stylesheet below and can look nicer than the wiki option. The 'Markdown' 
       <item>
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</string>
+         <string>Note: if PySide Web components are not found on the system, help pages will open in the default web browser regardless of the options below.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -177,10 +177,10 @@ custom stylesheet below and can look nicer than the wiki option. The 'Markdown' 
       <item>
        <widget class="Gui::PrefRadioButton" name="radioBrowser">
         <property name="toolTip">
-         <string>The documentation will open in your default web browser.</string>
+         <string>The documentation will open in the default web browser</string>
         </property>
         <property name="text">
-         <string>In your default web browser</string>
+         <string>In the default web browser</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -196,7 +196,7 @@ custom stylesheet below and can look nicer than the wiki option. The 'Markdown' 
       <item>
        <widget class="Gui::PrefRadioButton" name="radioTab">
         <property name="toolTip">
-         <string>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component</string>
+         <string>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component.</string>
         </property>
         <property name="text">
          <string>In a FreeCAD tab</string>
@@ -218,8 +218,8 @@ custom stylesheet below and can look nicer than the wiki option. The 'Markdown' 
          <bool>true</bool>
         </property>
         <property name="toolTip">
-         <string>The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</string>
+        <string>Documentation opens in a dockable dialog within FreeCAD, allowing simultaneous work in the 3D view.
+Requires the PySide QtWebengineWidgets component.</string>
         </property>
         <property name="text">
          <string>In a separate, embeddable dialog</string>
@@ -246,16 +246,15 @@ which allows you to keep it open while working in the 3D view. This requires the
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>      Custom stylesheet:</string>
+           <string>Custom stylesheet</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="Gui::PrefFileChooser" name="styleSheet">
           <property name="toolTip">
-           <string>You can here indicate the path to an alternative CSS file to be used
-to style the Markdown pages. This will only work if you have selected the
-Markdown version above.</string>
+          <string>Specify the path to an alternative CSS file for styling Markdown pages.
+This only applies if Markdown is selected above.</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>StyleSheet</cstring>

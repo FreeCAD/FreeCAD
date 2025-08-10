@@ -73,14 +73,20 @@ def scan_directory(directory, recursive=False):
         file_dir = os.path.dirname(full_path)
         rpaths_processed = set()
         for rpath in rpaths:
+            if rpath == "@loader_path":
+                rpath = "@loader_path/"
+
             if os.path.isabs(rpath) and os.path.samefile(file_dir, rpath):
                 if scanmode:
                     print(f'\nFound absolute path in LC_RPATH: {rpath}\nIn: {full_path}')
                 else:
                     remove_rpath(full_path, rpath)
+
             if rpath in rpaths_processed:
-                print(f'\nFound duplicate RPATH: {rpath}\nIn: {full_path}')
-                remove_rpath(full_path, rpath)
+                if scanmode:
+                    print(f'\nFound duplicate RPATH: {rpath}\nIn: {full_path}')
+                else:
+                    remove_rpath(full_path, rpath)
             rpaths_processed.add(rpath)
         for reexport_dylib in reexport_dylibs:
             if os.path.isabs(reexport_dylib):

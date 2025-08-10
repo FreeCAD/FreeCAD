@@ -53,8 +53,8 @@ CmdPartSimpleCylinder::CmdPartSimpleCylinder()
 {
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Create Cylinder...");
-    sToolTipText  = QT_TR_NOOP("Create a Cylinder");
+    sMenuText     = QT_TR_NOOP("Cylinder");
+    sToolTipText  = QT_TR_NOOP("Creates a solid cylinder");
     sWhatsThis    = "Part_SimpleCylinder";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Cylinder_Parametric";
@@ -103,8 +103,8 @@ CmdPartShapeFromMesh::CmdPartShapeFromMesh()
 {
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Create shape from mesh...");
-    sToolTipText  = QT_TR_NOOP("Create shape from selected mesh object");
+    sMenuText     = QT_TR_NOOP("Shape From Mesh");
+    sToolTipText  = QT_TR_NOOP("Creates a shape from the selected mesh");
     sWhatsThis    = "Part_ShapeFromMesh";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Shape_from_Mesh";
@@ -131,8 +131,8 @@ CmdPartPointsFromMesh::CmdPartPointsFromMesh()
 {
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Create points object from geometry");
-    sToolTipText  = QT_TR_NOOP("Create selectable points object from selected geometric object");
+    sMenuText     = QT_TR_NOOP("Points From Shape");
+    sToolTipText  = QT_TR_NOOP("Creates distributed points from the selected shape");
     sWhatsThis    = "Part_PointsFromMesh";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_PointsFromMesh";
@@ -217,8 +217,8 @@ CmdPartSimpleCopy::CmdPartSimpleCopy()
 {
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Create simple copy");
-    sToolTipText  = QT_TR_NOOP("Create a simple non-parametric copy");
+    sMenuText     = QT_TR_NOOP("Simple Copy");
+    sToolTipText  = QT_TR_NOOP("Creates a simple non-parametric copy of the selected shapes");
     sWhatsThis    = "Part_SimpleCopy";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_3D_object";
@@ -292,8 +292,8 @@ CmdPartTransformedCopy::CmdPartTransformedCopy()
 {
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Create transformed copy");
-    sToolTipText  = QT_TR_NOOP("Create a non-parametric copy with transformed placement");
+    sMenuText     = QT_TR_NOOP("Transformed Copy");
+    sToolTipText  = QT_TR_NOOP("Creates a non-parametric copy with transformed placement of the selected shapes");
     sWhatsThis    = "Part_TransformCopy";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Transformed_Copy.svg";
@@ -320,8 +320,8 @@ CmdPartElementCopy::CmdPartElementCopy()
 {
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Create shape element copy");
-    sToolTipText  = QT_TR_NOOP("Create a non-parametric copy of the selected shape element");
+    sMenuText     = QT_TR_NOOP("Shape Element Copy");
+    sToolTipText  = QT_TR_NOOP("Creates a non-parametric copy of the selected shape element");
     sWhatsThis    = "Part_ElementCopy";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Element_Copy.svg";
@@ -348,8 +348,8 @@ CmdPartRefineShape::CmdPartRefineShape()
 {
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Refine shape");
-    sToolTipText  = QT_TR_NOOP("Refine the copy of a shape");
+    sMenuText     = QT_TR_NOOP("Refine Shape");
+    sToolTipText  = QT_TR_NOOP("Creates a refined copy of the selected shapes");
     sWhatsThis    = "Part_RefineShape";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Refine_Shape";
@@ -409,7 +409,7 @@ CmdPartDefeaturing::CmdPartDefeaturing()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Defeaturing");
-    sToolTipText  = QT_TR_NOOP("Remove feature from a shape");
+    sToolTipText  = QT_TR_NOOP("Removes the selected features from a shape");
     sWhatsThis    = "Part_Defeaturing";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Defeaturing";

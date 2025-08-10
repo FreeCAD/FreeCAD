@@ -43,8 +43,13 @@
 #include <vector>
 
 
+namespace Part
+{
+class TopoShape;
+}
 class gp_Lin;
 class gp_Pln;
+class Bnd_Box;
 
 namespace Base {
 // Specialization for gp_Pnt
@@ -235,6 +240,66 @@ public:
      * and false otherwise, plane case included.
      */
     static bool isConcave(const TopoDS_Face &face, const gp_Pnt &pointOfVue, const gp_Dir &direction);
+
+    /**
+     * \copydoc Part::Tools::isShapeEmpty(const TopoDS_Shape&)
+     */
+    static bool isShapeEmpty(const TopoShape& shape);
+
+    /**
+     * \brief Determines whether the given \ref TopoDS_Shape is empty.
+     *
+     * This function evaluates whether a given shape is considered "empty."
+     *
+     * A shape is empty if:
+     * - It is null (uninitialized).
+     * - It is a compound shape (i.e., a container for sub-shapes), but all its sub-shapes are empty.
+     * - It does not have any geometry.
+     *
+     * \param[in] shape The shape to evaluate.
+     * \return `true` if the shape is empty, otherwise `false`.
+     */
+    static bool isShapeEmpty(const TopoDS_Shape& shape);
+
+    /**
+     * \brief Computes the bounding box for the given TopoDS_Shape.
+     *
+     * This function calculates the axis-aligned bounding box for the specified shape.
+     * The bounding box represents the spatial boundaries of the shape in 3D space.
+     *
+     * \param[in] shape The shape for which the bounding box is to be calculated.
+     * \return A \ref Bnd_Box object containing the minimum and maximum extents of the shape
+     * in the X, Y, and Z dimensions.
+     */
+    static Bnd_Box getBounds(const TopoDS_Shape& shape);
+
+    /**
+     * \brief Calculates the deflection value based on the bounding box and a deviation factor.
+     *
+     * This function computes a deflection value that is typically used for
+     * meshing or approximation. The deflection is derived from the dimensions
+     * of the bounding box and scaled by a given deviation value.
+     *
+     * \param[in] bounds The bounding box dimensions of a shape.
+     * \param[in] deviation The deviation factor to apply.
+     *
+     * \return The computed deflection value.
+     */
+    static Standard_Real getDeflection(const Bnd_Box& bounds, double deviation);
+
+    /**
+     * \brief Computes the deflection value for a given shape and a deviation factor.
+     *
+     * This function calculates the deflection value for the specified shape by
+     * first determining its bounding box and then using the bounding box dimensions
+     * to compute the deflection. The deviation factor provides additional scaling.
+     *
+     * \param[in] shape The shape for which the deflection value is to be computed.
+     * \param[in] deviation The deviation factor to apply.
+     *
+     * \return The computed deflection value.
+     */
+    static Standard_Real getDeflection(const TopoDS_Shape& shape, double deviation);
 };
 
 } //namespace Part

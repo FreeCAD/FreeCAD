@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Document information</string>
+   <string>Document Information</string>
   </property>
   <property name="sizeGripEnabled">
    <bool>true</bool>
@@ -44,7 +44,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="textLabelName">
         <property name="text">
-         <string>&amp;Name:</string>
+         <string>&amp;Name</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -70,7 +70,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="textLabelPath">
         <property name="text">
-         <string>Path:</string>
+         <string>Path</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -93,7 +93,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="textLabelUuid">
         <property name="text">
-         <string>UUID:</string>
+         <string>UUID</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -116,7 +116,7 @@
       <item row="3" column="0">
        <widget class="QLabel" name="textLabelProgramVersion">
         <property name="text">
-         <string>Program version:</string>
+         <string>Program version</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -139,7 +139,7 @@
       <item row="4" column="0">
        <widget class="QLabel" name="textLabelUnitSystem">
         <property name="text">
-         <string>Unit System:</string>
+         <string>Unit system</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -156,7 +156,7 @@
       <item row="5" column="0">
        <widget class="QLabel" name="textLabelCreator">
         <property name="text">
-         <string>Created &amp;by:</string>
+         <string>Created &amp;by</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -179,7 +179,7 @@
       <item row="6" column="0">
        <widget class="QLabel" name="textLabelCreateDate">
         <property name="text">
-         <string>Creation &amp;date:</string>
+         <string>Creation &amp;date</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -205,7 +205,7 @@
       <item row="7" column="0">
        <widget class="QLabel" name="textLabelLastMod">
         <property name="text">
-         <string>&amp;Last modified by:</string>
+         <string>&amp;Last modified by</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -228,7 +228,7 @@
       <item row="8" column="0">
        <widget class="QLabel" name="textLabelLastModDate">
         <property name="text">
-         <string>Last &amp;modification date:</string>
+         <string>Last &amp;modification date</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -254,7 +254,7 @@
       <item row="9" column="0">
        <widget class="QLabel" name="textLabelCompany">
         <property name="text">
-         <string>Com&amp;pany:</string>
+         <string>Com&amp;pany</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -277,7 +277,7 @@
       <item row="10" column="0">
        <widget class="QLabel" name="textLabelLicense">
         <property name="text">
-         <string>License information:</string>
+         <string>License information</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -305,7 +305,7 @@
         <item>
          <widget class="QPushButton" name="pushButtonOpenURL">
           <property name="text">
-           <string>Open in browser</string>
+           <string>Open in Browser</string>
           </property>
          </widget>
         </item>
@@ -314,7 +314,7 @@
       <item row="12" column="0">
        <widget class="QLabel" name="textLabelComment">
         <property name="text">
-         <string>&amp;Comment:</string>
+         <string>&amp;Comment</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

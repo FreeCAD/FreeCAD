@@ -40,13 +40,18 @@ public:
     /// constructor
     ViewProviderDressUp()  = default;
     /// destructor
-    ~ViewProviderDressUp() override         = default;
+    ~ViewProviderDressUp() override = default;
+
+    void attach(App::DocumentObject* pcObject) override;
 
     /// grouping handling
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
     /// Highlight the references that have been selected
     void highlightReferences(const bool on);
+
+    /// Set preview parameters to indicate error state
+    void setErrorState(bool error);
 
     /**
      * Returns the feature Name associated with the view provider.

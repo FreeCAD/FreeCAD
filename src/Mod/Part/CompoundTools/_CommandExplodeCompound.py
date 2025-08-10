@@ -47,11 +47,10 @@ class _CommandExplodeCompound:
     "Command to explode a compound"
     def GetResources(self):
         return {'Pixmap': "Part_ExplodeCompound",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_ExplodeCompound", "Explode compound"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_ExplodeCompound", "Explode Compound"),
                 'Accel': "",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_ExplodeCompound",
-                                                    "Split up a compound of shapes into separate objects.\n"
-                                                    "It will create a 'Compound Filter' for each shape.")}
+                                                    "Splits up a compound of shapes into separate objects, creating a compound filter for each shape")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelection()) == 1:
@@ -60,7 +59,7 @@ class _CommandExplodeCompound:
             mb = QtGui.QMessageBox()
             mb.setIcon(mb.Icon.Warning)
             mb.setText(translate("Part_ExplodeCompound", "First select a shape that is a compound.", None))
-            mb.setWindowTitle(translate("Part_ExplodeCompound", "Bad selection", None))
+            mb.setWindowTitle(translate("Part_ExplodeCompound", "Bad Selection", None))
             mb.exec_()
 
     def IsActive(self):

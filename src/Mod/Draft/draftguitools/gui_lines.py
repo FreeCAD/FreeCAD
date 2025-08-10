@@ -61,7 +61,7 @@ class Line(gui_base_original.Creator):
         return {'Pixmap': 'Draft_Line',
                 'Accel': "L,I",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Line", "Line"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Line", "Creates a 2-point line.\nSHIFT to constrain.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Line", "Creates a 2-point line")}
 
     def Activated(self, name=QT_TRANSLATE_NOOP("draft", "Line"), icon="Draft_Line", task_title=None):
         """Execute when the command is called."""
@@ -308,7 +308,7 @@ class Wire(Line):
         return {'Pixmap': 'Draft_Wire',
                 'Accel': "P, L",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Wire", "Polyline"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Wire", "Creates a multiple-points line (polyline).\nSHIFT to constrain.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Wire", "Creates a polyline")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -330,8 +330,8 @@ class Wire(Line):
                     w = Part.Wire(Part.__sortEdges__(edges))
                 except Exception:
                     _err(translate("draft",
-                                   "Unable to create a Wire "
-                                   "from selected objects"))
+                                   "Unable to create a wire "
+                                   "from the selected objects"))
                 else:
                     # Points of the new fused Wire in string form
                     # 'FreeCAD.Vector(x,y,z), FreeCAD.Vector(x1,y1,z1), ...'

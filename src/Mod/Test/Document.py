@@ -431,7 +431,7 @@ class DocumentBasicCases(unittest.TestCase):
 
         # test if the method override works
         class SpecialGroup:
-            def allowObject(self, obj):
+            def allowObject(self, ext, obj):
                 return False
 
         callback = SpecialGroup()
@@ -444,7 +444,7 @@ class DocumentBasicCases(unittest.TestCase):
             grp2.addObject(obj)
             self.assertTrue(len(grp2.Group) == 0)
         except Exception:
-            self.assertTrue(True)
+            self.assertTrue(False)
 
         self.Doc.removeObject(grp.Name)
         self.Doc.removeObject(grp2.Name)
@@ -721,7 +721,7 @@ class SaveRestoreSpecialGroup:
         obj.addExtension("App::GroupExtensionPython")
         obj.Proxy = self
 
-    def allowObject(self, obj):
+    def allowObject(self, ext, obj):
         return False
 
 

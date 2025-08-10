@@ -39,6 +39,9 @@ class FemExport ConstraintHeatflux: public Fem::Constraint
 public:
     ConstraintHeatflux();
 
+    App::PropertyBool EnableAmplitude;
+    App::PropertyStringList AmplitudeValues;
+
     App::PropertyTemperature AmbientTemp;
     /*App::PropertyFloat FaceTemp;*/
     App::PropertyThermalTransferCoefficient FilmCoef;

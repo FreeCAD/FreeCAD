@@ -80,7 +80,7 @@ const QString TaskFeaturePick::getFeatureStatusString(const featureStatus st)
         case basePlane:
             return tr("Base plane");
         case afterTip:
-            return tr("Feature is located after the tip feature");
+            return tr("Feature is located after the tip of the body");
     }
 
     return QString();

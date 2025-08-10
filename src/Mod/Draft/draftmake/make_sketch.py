@@ -97,7 +97,7 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
 
         if not DraftGeomUtils.is_planar(shape, tol):
             App.Console.PrintError(translate("draft",
-                                   "All Shapes must be planar") + "\n")
+                                   "All shapes must be planar") + "\n")
             return None
 
         if DraftGeomUtils.get_normal(shape, tol):
@@ -113,7 +113,7 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
         for shape in shapes_list[1:]:
             if not DraftGeomUtils.are_coplanar(shapes_list[0], shape, tol):
                 App.Console.PrintError(translate("draft",
-                                       "All Shapes must be coplanar") + "\n")
+                                       "All shapes must be coplanar") + "\n")
                 return None
         # define sketch normal
         normal = DraftGeomUtils.get_normal(shapes_list[0], tol)
@@ -130,7 +130,7 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
             else:
                 if not DraftGeomUtils.is_planar(poly, tol):
                     App.Console.PrintError(translate("draft",
-                                           "All Shapes must be coplanar") + "\n")
+                                           "All shapes must be coplanar") + "\n")
                     return None
                 normal = DraftGeomUtils.get_shape_normal(poly)
         else:

@@ -89,6 +89,7 @@ public:
 
 public Q_SLOTS:
     void valueChanged();
+    void valueChangedEnum();
 
 private:
     enum class TransactionOption : bool {
@@ -110,6 +111,11 @@ private:
     void initializeTypes();
 
     void removeSelectionEditor();
+    QVariant getEditorData() const;
+    void setEditorData(const QVariant& data);
+    bool isEnumPropertyItem() const;
+    void addEnumEditor(PropertyEditor::PropertyItem* propertyItem);
+    void addNormalEditor(PropertyEditor::PropertyItem* propertyItem);
     void addEditor(PropertyEditor::PropertyItem* propertyItem);
     bool isTypeWithEditor(const Base::Type& type);
     bool isTypeWithEditor(const std::string& type);

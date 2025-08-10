@@ -24,11 +24,11 @@
 #ifndef PARTGUI_ViewProviderPipe_H
 #define PARTGUI_ViewProviderPipe_H
 
-#include "ViewProviderAddSub.h"
+#include "ViewProvider.h"
 
 namespace PartDesignGui {
 
-class PartDesignGuiExport ViewProviderPipe : public ViewProviderAddSub
+class PartDesignGuiExport ViewProviderPipe : public ViewProvider
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderPipe);
 
@@ -54,8 +54,6 @@ public:
 
 protected:
     QIcon getIcon() const override;
-    bool setEdit(int ModNum) override;
-    void unsetEdit(int ModNum) override;
 
     /// Returns a newly created TaskDlgPipeParameters
     TaskDlgFeatureParameters *getEditDialog() override;

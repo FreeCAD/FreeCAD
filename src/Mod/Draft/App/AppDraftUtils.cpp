@@ -43,6 +43,6 @@ PyMOD_INIT_FUNC(DraftUtils)
         PyMOD_Return(nullptr);
     }
     PyObject* mod = DraftUtils::initModule();
-    Base::Console().log("Loading DraftUtils module... done\n");
+    Base::Console().log("Loading DraftUtils module… done\n");
     PyMOD_Return(mod);
 }

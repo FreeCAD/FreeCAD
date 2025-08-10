@@ -34,7 +34,7 @@ class BIM_Offset2D:
 
     def GetResources(self):
         return {"Pixmap":"Part_Offset2D",
-                "MenuText": QT_TRANSLATE_NOOP("Part_Offset2D", "2D Offset..."),
+                "MenuText": QT_TRANSLATE_NOOP("Part_Offset2D", "2D Offset"),
                 "ToolTip": QT_TRANSLATE_NOOP(
                 "Part_Offset2D", "Utility to offset planar shapes"
             ),

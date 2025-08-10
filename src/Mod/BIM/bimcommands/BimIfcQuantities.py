@@ -70,11 +70,11 @@ class BIM_IfcQuantities:
         return {
             "Pixmap": "BIM_IfcQuantities",
             "MenuText": QT_TRANSLATE_NOOP(
-                "BIM_IfcQuantities", "Manage IFC quantities..."
+                "BIM_IfcQuantities", "Manage IFC Quantities"
             ),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_IfcQuantities",
-                "Manage how the quantities of different elements of of your BIM project will be exported to IFC",
+                "Manages how the quantities of different elements of the BIM project will be exported to IFC",
             ),
         }
 

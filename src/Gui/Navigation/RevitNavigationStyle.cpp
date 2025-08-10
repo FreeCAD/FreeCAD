@@ -52,7 +52,7 @@ const char* RevitNavigationStyle::mouseButtons(ViewerMode mode)
     case NavigationStyle::PANNING:
         return QT_TR_NOOP("Press middle mouse button");
     case NavigationStyle::DRAGGING:
-        return QT_TR_NOOP("Press SHIFT and middle mouse button");
+        return QT_TR_NOOP("Press Shift and middle mouse button");
     case NavigationStyle::ZOOMING:
         return QT_TR_NOOP("Scroll middle mouse button");
     default:

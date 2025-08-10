@@ -39,10 +39,22 @@
 #include "ViewProviderDressUp.h"
 #include "TaskDressUpParameters.h"
 
+#include <Gui/Utilities.h>
+
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderDressUp,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderDressUp, PartDesignGui::ViewProvider)
 
+
+void ViewProviderDressUp::attach(App::DocumentObject* pcObject)
+{
+    ViewProvider::attach(pcObject);
+
+    const Base::Color magenta(1.0F, 0.0F, 1.0F);
+    PreviewColor.setValue(magenta);
+
+    setErrorState(false);
+}
 
 void ViewProviderDressUp::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
@@ -73,7 +85,7 @@ bool ViewProviderDressUp::setEdit(int ModNum) {
         } else {
             QMessageBox::warning ( nullptr, QObject::tr("Feature error"),
                     QObject::tr("%1 misses a base feature.\n"
-                           "This feature is broken and can't be edited.")
+                           "This feature is broken and cannot be edited.")
                         .arg( QString::fromLatin1(dressUp->getNameInDocument()) )
                 );
             return false;
@@ -119,5 +131,15 @@ void ViewProviderDressUp::highlightReferences(const bool on)
         vp->unsetHighlightedFaces();
         vp->unsetHighlightedEdges();
     }
+}
+
+void ViewProviderDressUp::setErrorState(bool error)
+{
+    const Base::Color red(1.0, 0.0, 0.0);
+
+    constexpr float errorTransparency = 0.95F;
+
+    pcPreviewShape->transparency = error ? errorTransparency : PartGui::SoPreviewShape::defaultTransparency;
+    pcPreviewShape->color = Base::convertTo<SbColor>(error ? red : PreviewColor.getValue());
 }
 

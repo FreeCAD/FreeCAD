@@ -108,7 +108,7 @@ class CommandPathPost:
             "Pixmap": "CAM_Post",
             "MenuText": QT_TRANSLATE_NOOP("CAM_Post", "Post Process"),
             "Accel": "P, P",
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_Post", "Post Process the selected Job"),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_Post", "Post Processes the selected job"),
         }
 
     def IsActive(self):
@@ -262,4 +262,4 @@ if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand("CAM_Post", CommandPathPost())
 
-FreeCAD.Console.PrintLog("Loading PathPost... done\n")
+FreeCAD.Console.PrintLog("Loading PathPost… done\n")
