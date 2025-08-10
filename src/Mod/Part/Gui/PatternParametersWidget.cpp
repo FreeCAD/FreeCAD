@@ -36,6 +36,7 @@
 
 #include <App/DocumentObject.h>
 #include <App/PropertyUnits.h>
+#include <Base/Tools.h>
 #include <Gui/ComboLinks.h>
 #include <Gui/QuantitySpinBox.h>
 #include <Gui/SpinBox.h>
@@ -54,27 +55,23 @@ PatternParametersWidget::PatternParametersWidget(PatternType type, QWidget* pare
     connectSignals();
 }
 
-PatternParametersWidget::~PatternParametersWidget()
-{
-    // ui is managed by unique_ptr
-    // Bound properties are managed externally
-    // Dynamic spacing rows are deleted by clearDynamicSpacingRows or Qt's parent mechanism
-}
+PatternParametersWidget::~PatternParametersWidget() = default;
 
 void PatternParametersWidget::setupUiElements()
 {
     // Configure UI elements if needed (e.g., icons for mode)
-    QIcon icon1 = Gui::BitmapFactory().iconFromTheme("Part_LinearPattern_extent");
-    QIcon icon2 = Gui::BitmapFactory().iconFromTheme("Part_LinearPattern_spacing");
-    ui->comboMode->setItemIcon(0, icon1);
-    ui->comboMode->setItemIcon(1, icon2);
+    QIcon iconExtent = Gui::BitmapFactory().iconFromTheme("Part_LinearPattern_extent");
+    QIcon iconSpacing = Gui::BitmapFactory().iconFromTheme("Part_LinearPattern_spacing");
+
+    ui->comboMode->setItemIcon(0, iconExtent);
+    ui->comboMode->setItemIcon(1, iconSpacing);
 
     if (type == PatternType::Polar) {
         setTitle(tr("Axis"));
     }
 
     // Set combo box helper
-    dirLinks.setCombo(*(ui->comboDirection));
+    dirLinks.setCombo(ui->comboDirection);
 }
 
 void PatternParametersWidget::connectSignals()
@@ -100,23 +97,23 @@ void PatternParametersWidget::connectSignals()
     // Note: Connections for dynamic rows are done in addSpacingRow()
 }
 
-void PatternParametersWidget::bindProperties(App::PropertyLinkSub& directionProp,
-    App::PropertyBool& reversedProp,
-    App::PropertyEnumeration& modeProp,
-    App::PropertyQuantity& lengthProp,
-    App::PropertyQuantity& offsetProp,
-    App::PropertyFloatList& spacingPatternProp,
-    App::PropertyIntegerConstraint& occurrencesProp,
+void PatternParametersWidget::bindProperties(App::PropertyLinkSub* directionProp,
+    App::PropertyBool* reversedProp,
+    App::PropertyEnumeration* modeProp,
+    App::PropertyQuantity* lengthProp,
+    App::PropertyQuantity* offsetProp,
+    App::PropertyFloatList* spacingPatternProp,
+    App::PropertyIntegerConstraint* occurrencesProp,
     App::DocumentObject* feature)
 {
     // Store pointers to the properties
-    m_directionProp = &directionProp;
-    m_reversedProp = &reversedProp;
-    m_modeProp = &modeProp;
-    m_extentProp = &lengthProp;
-    m_spacingProp = &offsetProp;
-    m_spacingPatternProp = &spacingPatternProp;
-    m_occurrencesProp = &occurrencesProp;
+    m_directionProp = directionProp;
+    m_reversedProp = reversedProp;
+    m_modeProp = modeProp;
+    m_extentProp = lengthProp;
+    m_spacingProp = offsetProp;
+    m_spacingPatternProp = spacingPatternProp;
+    m_occurrencesProp = occurrencesProp;
     m_feature = feature; // Store feature for context (units, etc.)
 
     ui->spinExtent->bind(*m_extentProp);
@@ -152,15 +149,15 @@ void PatternParametersWidget::updateUI()
     if (blockUpdate || !m_feature) { // Need properties to be bound
         return;
     }
-    blockUpdate = true;
+    Base::StateLocker locker(blockUpdate, true);
 
     // Update direction combo
     if (dirLinks.setCurrentLink(*m_directionProp) == -1) {
         // failed to set current, because the link isn't in the list yet
         if (m_directionProp->getValue()) {
-            QString refStr = QString::fromLatin1(m_directionProp->getValue()->getNameInDocument()) + QStringLiteral(":") +
-                QString::fromLatin1(m_directionProp->getSubValues().front().c_str());
-
+            QString refStr =
+                QStringLiteral("%1:%2").arg(QString::fromLatin1(m_directionProp->getValue()->getNameInDocument()),
+                                            QString::fromLatin1(m_directionProp->getSubValues().front().c_str()));
             dirLinks.addLink(*m_directionProp, refStr);
             dirLinks.setCurrentLink(*m_directionProp);
         }
@@ -175,8 +172,6 @@ void PatternParametersWidget::updateUI()
     rebuildDynamicSpacingUI();
 
     adaptVisibilityToMode();
-
-    blockUpdate = false;
 }
 
 
@@ -206,15 +201,16 @@ void PatternParametersWidget::setTitle(const QString& title)
 {
     ui->groupBox->setTitle(title);
 }
+
 void PatternParametersWidget::setCheckable(bool on)
 {
     ui->groupBox->setCheckable(on);
 }
+
 void PatternParametersWidget::setChecked(bool on)
 {
     ui->groupBox->setChecked(on);
 }
-
 
 // --- Slots ---
 
@@ -307,8 +303,7 @@ void PatternParametersWidget::addSpacingRow(double value)
     rowLayout->setSpacing(3);
 
     int newIndex = dynamicSpacingRows.count();
-    // Use qApp->translate for dynamic labels
-    QLabel* label = new QLabel(qApp->translate("PartGui::PatternParameters", "Spacing %1").arg(newIndex + 2), rowWidget);
+    QLabel* label = new QLabel(tr("Spacing %1").arg(newIndex + 2), rowWidget);
 
     Gui::QuantitySpinBox* spinBox = new Gui::QuantitySpinBox(rowWidget);
     Base::Unit unit = type == PatternType::Linear ? Base::Unit::Length : Base::Unit::Angle;
@@ -318,7 +313,7 @@ void PatternParametersWidget::addSpacingRow(double value)
 
     QToolButton* removeButton = new QToolButton(rowWidget);
     removeButton->setIcon(Gui::BitmapFactory().iconFromTheme("list-remove"));
-    removeButton->setToolTip(qApp->translate("PartGui::PatternParameters", "Remove this spacing definition."));
+    removeButton->setToolTip(tr("Remove this spacing definition."));
     removeButton->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
 
     rowLayout->addWidget(label);
@@ -335,8 +330,6 @@ void PatternParametersWidget::addSpacingRow(double value)
     connect(removeButton, &QToolButton::clicked, this, [this, rowWidget]() {
         this->onRemoveSpacingButtonClicked(rowWidget);
     });
-
-    // rowWidget->show(); // Usually not needed when added to a visible layout
 }
 
 void PatternParametersWidget::rebuildDynamicSpacingUI()
@@ -390,9 +383,8 @@ void PatternParametersWidget::onRemoveSpacingButtonClicked(QWidget* rowWidget)
     // Update labels of subsequent rows
     for (int i = indexToRemove; i < dynamicSpacingRows.count(); ++i) {
         QWidget* row = dynamicSpacingRows.at(i);
-        QLabel* label = row->findChild<QLabel*>();
-        if (label) {
-            label->setText(qApp->translate("PartGui::PatternParameters", "Spacing %1").arg(i + 2));
+        if (QLabel* label = row->findChild<QLabel*>()) {
+            label->setText(tr("Spacing %1").arg(i + 2));
         }
     }
 

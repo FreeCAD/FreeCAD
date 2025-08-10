@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
- *                                                                          *
+ *   Copyright (c) 2012 Jan Rheinländer jrheinlaender@users.sourceforge.net *
  *   Copyright (c) 2025 AstoCAD                  <hello@astocad.com>        *
  *                                                                          *
  *   This file is part of FreeCAD.                                          *
@@ -36,35 +36,34 @@
 
 namespace Gui {
 
-    ComboLinks::ComboLinks(QComboBox& combo)
-        : _combo(&combo)
+    ComboLinks::ComboLinks(QComboBox* combo)
+        : combo(combo)
     {
-        if (_combo) {
-            _combo->clear();
+        if (combo) {
+            combo->clear();
         }
     }
 
     ComboLinks::~ComboLinks()
     {
         clear(); // Deletes owned pointers in linksInList
-        _combo = nullptr; // Don't delete, not owned
     }
 
-    void ComboLinks::setCombo(QComboBox& combo)
+    void ComboLinks::setCombo(QComboBox* combobox)
     {
         clear(); // Clear old state if any
-        _combo = &combo;
-        if (_combo) {
-            _combo->clear();
+        combo = combobox;
+        if (combo) {
+            combo->clear();
         }
     }
 
     int ComboLinks::addLink(const App::PropertyLinkSub& lnk, const QString& itemText, int userData)
     {
-        if (!_combo) {
+        if (!combo) {
             return -1;
         }
-        int newIndex = _combo->count();
+        int newIndex = combo->count();
         int finalUserData = (userData == -1) ? newIndex : userData;
 
         // Store link internally (create a copy)
@@ -73,7 +72,7 @@ namespace Gui {
         linksInList.push_back(newLink);
 
         // Add to combo box
-        _combo->addItem(itemText, QVariant(finalUserData));
+        combo->addItem(itemText, QVariant(finalUserData));
 
         // Track document context from the first valid object link
         if (!doc && newLink->getValue()) {
@@ -96,13 +95,13 @@ namespace Gui {
 
     int ComboLinks::addLinkBefore(const App::PropertyLinkSub& lnk, const QString& itemText, int targetUserData, int userData)
     {
-        if (!_combo) {
+        if (!combo) {
             return -1;
         }
 
         int insertPos = -1;
-        for (int i = 0; i < _combo->count(); ++i) {
-            if (_combo->itemData(i).toInt() == targetUserData) {
+        for (int i = 0; i < combo->count(); ++i) {
+            if (combo->itemData(i).toInt() == targetUserData) {
                 insertPos = i;
                 break;
             }
@@ -116,20 +115,20 @@ namespace Gui {
 
         if (insertPos != -1) {
             linksInList.insert(linksInList.begin() + insertPos, newLink);
-            _combo->insertItem(insertPos, itemText, QVariant(finalUserData));
+            combo->insertItem(insertPos, itemText, QVariant(finalUserData));
         }
         else {
             // Target not found, append to end
-            insertPos = _combo->count();
+            insertPos = combo->count();
             linksInList.push_back(newLink);
-            _combo->addItem(itemText, QVariant(finalUserData));
+            combo->addItem(itemText, QVariant(finalUserData));
         }
 
         // Update user data for subsequent items if default (-1) was used and inserting
         if (userData == -1 && insertPos != -1 && insertPos < count() - 1) {
             for (int i = insertPos + 1; i < count(); ++i) {
-                if (_combo->itemData(i).toInt() == i - 1) { // Check if it was using default index
-                    _combo->setItemData(i, QVariant(i));
+                if (combo->itemData(i).toInt() == i - 1) { // Check if it was using default index
+                    combo->setItemData(i, QVariant(i));
                 }
             }
         }
@@ -145,12 +144,10 @@ namespace Gui {
 
     void ComboLinks::clear()
     {
-        if (_combo) {
+        if (combo) {
             // Block signals while clearing to prevent issues if connected elsewhere
-            bool wasBlocked = _combo->signalsBlocked();
-            _combo->blockSignals(true);
-            _combo->clear();
-            _combo->blockSignals(wasBlocked);
+            QSignalBlocker blocker(combo);
+            combo->clear();
         }
         for (App::PropertyLinkSub* linkPtr : linksInList) {
             delete linkPtr; // Delete the objects pointed to
@@ -174,41 +171,39 @@ namespace Gui {
 
     App::PropertyLinkSub& ComboLinks::getCurrentLink() const
     {
-        assert(_combo);
-        return getLink(_combo->currentIndex());
+        assert(combo);
+        return getLink(combo->currentIndex());
 
     }
 
     int ComboLinks::getUserData(int index) const
     {
-        if (!_combo || index < 0 || index >= _combo->count()) {
+        if (!combo || index < 0 || index >= combo->count()) {
             return -1; // Indicate invalid index or no combo
         }
-        return _combo->itemData(index).toInt();
+        return combo->itemData(index).toInt();
     }
 
     int ComboLinks::getCurrentUserData() const
     {
-        if (!_combo) {
+        if (!combo) {
             return -1;
         }
-        return _combo->currentData().toInt();
+        return combo->currentData().toInt();
     }
 
 
     int ComboLinks::setCurrentLink(const App::PropertyLinkSub& lnk)
     {
-        if (!_combo) {
+        if (!combo) {
             return -1;
         }
         for (size_t i = 0; i < linksInList.size(); ++i) {
-            const App::PropertyLinkSub& it = *(linksInList[i]);
+            const App::PropertyLinkSub* it = linksInList[i];
             // Compare object pointer and sub-values vector
-            if (lnk.getValue() == it.getValue() && lnk.getSubValues() == it.getSubValues()) {
-                bool wasBlocked = _combo->signalsBlocked();
-                _combo->blockSignals(true);
-                _combo->setCurrentIndex(static_cast<int>(i));
-                _combo->blockSignals(wasBlocked);
+            if (lnk.getValue() == it->getValue() && lnk.getSubValues() == it->getSubValues()) {
+                QSignalBlocker blocker(combo);
+                combo->setCurrentIndex(static_cast<int>(i));
                 return static_cast<int>(i);
             }
         }
@@ -217,7 +212,7 @@ namespace Gui {
 
     int ComboLinks::count() const
     {
-        return _combo ? _combo->count() : 0;
+        return combo ? combo->count() : 0;
     }
 
 } // namespace Gui

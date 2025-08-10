@@ -90,13 +90,13 @@ namespace PartGui {
          * @param occurrencesProp Reference to the Occurrences property (PropertyIntegerConstraint).
          * @param feature The feature object itself, needed for context (e.g., units).
          */
-        void bindProperties(App::PropertyLinkSub& directionProp,
-            App::PropertyBool& reversedProp,
-            App::PropertyEnumeration& modeProp,
-            App::PropertyQuantity& lengthProp,
-            App::PropertyQuantity& offsetProp,
-            App::PropertyFloatList& spacingPatternProp,
-            App::PropertyIntegerConstraint& occurrencesProp,
+        void bindProperties(App::PropertyLinkSub* directionProp,
+            App::PropertyBool* reversedProp,
+            App::PropertyEnumeration* modeProp,
+            App::PropertyQuantity* lengthProp,
+            App::PropertyQuantity* offsetProp,
+            App::PropertyFloatList* spacingPatternProp,
+            App::PropertyIntegerConstraint* occurrencesProp,
             App::DocumentObject* feature); // Pass feature for context
 
 
@@ -200,9 +200,6 @@ namespace PartGui {
         App::DocumentObject* m_feature = nullptr; // Store feature for context
 
         bool blockUpdate = false; // Prevents signal loops
-
-        // Helpers for direction combo box
-        static const int SELECT_REFERENCE_INDEX = -10; // Special index for "Select reference..."
 
         // Store pointers to dynamically created widgets for removal and access
         QList<QWidget*> dynamicSpacingRows;
