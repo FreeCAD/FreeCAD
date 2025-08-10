@@ -393,15 +393,15 @@ void TaskTransformedParameters::removeItemFromListWidget(QListWidget* widget,
     }
 }
 
-void TaskTransformedParameters::fillAxisCombo(ComboLinks& combolinks, Part::Part2DObject* sketch)
+void TaskTransformedParameters::fillAxisCombo(Gui::ComboLinks& combolinks, Part::Part2DObject* sketch)
 {
     combolinks.clear();
 
     // add sketch axes
     if (sketch) {
-        combolinks.addLink(sketch, "N_Axis", tr("Normal sketch axis"));
-        combolinks.addLink(sketch, "V_Axis", tr("Vertical sketch axis"));
         combolinks.addLink(sketch, "H_Axis", tr("Horizontal sketch axis"));
+        combolinks.addLink(sketch, "V_Axis", tr("Vertical sketch axis"));
+        combolinks.addLink(sketch, "N_Axis", tr("Normal sketch axis"));
         for (int i = 0; i < sketch->getAxisCount(); i++) {
             QString itemText = tr("Construction line %1").arg(i + 1);
             std::stringstream sub;
@@ -430,7 +430,8 @@ void TaskTransformedParameters::fillAxisCombo(ComboLinks& combolinks, Part::Part
     combolinks.addLink(nullptr, std::string(), tr("Select reference…"));
 }
 
-void TaskTransformedParameters::fillPlanesCombo(ComboLinks& combolinks, Part::Part2DObject* sketch)
+void TaskTransformedParameters::fillPlanesCombo(Gui::ComboLinks& combolinks,
+                                                Part::Part2DObject* sketch)
 {
     combolinks.clear();
 

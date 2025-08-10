@@ -28,7 +28,7 @@
      <property name="title">
       <string>Direction</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <layout class="QVBoxLayout" name="mainLayout">
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
@@ -54,15 +54,15 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_Mode">
-        <item>
+       <layout class="QFormLayout" name="formLayout">
+        <item row="0" column="0">
          <widget class="QLabel" name="labelMode">
           <property name="text">
            <string>Mode</string>
           </property>
          </widget>
         </item>
-        <item>
+        <item row="0" column="1">
          <widget class="QComboBox" name="comboMode">
           <item>
            <property name="text">
@@ -76,125 +76,85 @@
           </item>
          </widget>
         </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QWidget" name="extentWrapper" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout_Length">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QLabel" name="labelLength">
-           <property name="text">
-            <string>Length</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="Gui::QuantitySpinBox" name="spinExtent" native="true">
-           <property name="keyboardTracking" stdset="0">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QWidget" name="spacingWrapper" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout_Offset">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QLabel" name="labelOffset">
-           <property name="text">
-            <string>Spacing</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="Gui::QuantitySpinBox" name="spinSpacing" native="true">
-           <property name="keyboardTracking" stdset="0">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QToolButton" name="addSpacingButton">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>Add spacing to create spacing patterns.</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>:/icons/list-add.svg</normaloff>:/icons/list-add.svg</iconset>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QWidget" name="spacingPatternWidget" native="true">
-        <layout class="QVBoxLayout" name="spacingPatternLayout">
-          <property name="spacing">
-           <number>3</number>
-          </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_Occurrences">
-        <item>
-         <widget class="QLabel" name="labelOccurrences">
+        <item row="1" column="0">
+         <widget class="QLabel" name="labelLength">
           <property name="text">
-           <string>Occurrences</string>
+           <string>Length</string>
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="Gui::UIntSpinBox" name="spinOccurrences"/>
+        <item row="1" column="1">
+         <widget class="Gui::QuantitySpinBox" name="spinExtent" native="true">
+          <property name="keyboardTracking" stdset="0">
+           <bool>false</bool>
+          </property>
+         </widget>
         </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="labelOffset">
+          <property name="text">
+           <string>Spacing</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QWidget" name="spacingControlsWidget" native="true">
+          <layout class="QHBoxLayout" name="spacingControlsLayout">
+           <property name="spacing">
+            <number>3</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="Gui::QuantitySpinBox" name="spinSpacing" native="true">
+             <property name="keyboardTracking" stdset="0">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="addSpacingButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Add spacing to create spacing patterns.</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>:/icons/list-add.svg</normaloff>:/icons/list-add.svg</iconset>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="labelOccurrences">
+           <property name="text">
+            <string>Occurrences</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="Gui::UIntSpinBox" name="spinOccurrences"/>
+         </item>
        </layout>
       </item>
       <item>
