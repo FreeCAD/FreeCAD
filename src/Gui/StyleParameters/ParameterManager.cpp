@@ -31,30 +31,31 @@
 #include <QRegularExpression>
 #include <QString>
 #include <ranges>
+#include <utility>
 #include <variant>
 #endif
 
 namespace Gui::StyleParameters
 {
 
-Length Length::operator+(const Length& rhs) const
+Numeric Numeric::operator+(const Numeric& rhs) const
 {
     ensureEqualUnits(rhs);
     return {value + rhs.value, unit};
 }
 
-Length Length::operator-(const Length& rhs) const
+Numeric Numeric::operator-(const Numeric& rhs) const
 {
     ensureEqualUnits(rhs);
     return {value - rhs.value, unit};
 }
 
-Length Length::operator-() const
+Numeric Numeric::operator-() const
 {
     return {-value, unit};
 }
 
-Length Length::operator/(const Length& rhs) const
+Numeric Numeric::operator/(const Numeric& rhs) const
 {
     if (rhs.value == 0) {
         THROWM(Base::RuntimeError, "Division by zero");
@@ -68,7 +69,7 @@ Length Length::operator/(const Length& rhs) const
     return {value / rhs.value, unit};
 }
 
-Length Length::operator*(const Length& rhs) const
+Numeric Numeric::operator*(const Numeric& rhs) const
 {
     if (rhs.unit.empty() || unit.empty()) {
         return {value * rhs.value, unit};
@@ -78,7 +79,7 @@ Length Length::operator*(const Length& rhs) const
     return {value * rhs.value, unit};
 }
 
-void Length::ensureEqualUnits(const Length& rhs) const
+void Numeric::ensureEqualUnits(const Numeric& rhs) const
 {
     if (unit != rhs.unit) {
         THROWM(Base::RuntimeError,
@@ -90,8 +91,8 @@ void Length::ensureEqualUnits(const Length& rhs) const
 
 std::string Value::toString() const
 {
-    if (std::holds_alternative<Length>(*this)) {
-        auto [value, unit] = std::get<Length>(*this);
+    if (std::holds_alternative<Numeric>(*this)) {
+        auto [value, unit] = std::get<Numeric>(*this);
         return fmt::format("{}{}", value, unit);
     }
 

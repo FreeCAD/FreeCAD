@@ -59,8 +59,8 @@ TEST_F(ParserTest, ParseNumbers)
         Parser parser("42");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 42.0);
         EXPECT_EQ(length.unit, "");
     }
@@ -69,8 +69,8 @@ TEST_F(ParserTest, ParseNumbers)
         Parser parser("10.5px");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 10.5);
         EXPECT_EQ(length.unit, "px");
     }
@@ -79,8 +79,8 @@ TEST_F(ParserTest, ParseNumbers)
         Parser parser("2.5em");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 2.5);
         EXPECT_EQ(length.unit, "em");
     }
@@ -89,8 +89,8 @@ TEST_F(ParserTest, ParseNumbers)
         Parser parser("100%");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 100.0);
         EXPECT_EQ(length.unit, "%");
     }
@@ -163,8 +163,8 @@ TEST_F(ParserTest, ParseParameterReferences)
         Parser parser("@TestParam");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 10.0);
         EXPECT_EQ(length.unit, "px");
     }
@@ -184,8 +184,8 @@ TEST_F(ParserTest, ParseParameterReferences)
         Parser parser("@TestNumber");
         auto expr = parser.parse();
         auto result = expr->evaluate({.manager = &manager, .context = {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 5.0);
         EXPECT_EQ(length.unit, "");
     }
@@ -198,8 +198,8 @@ TEST_F(ParserTest, ParseArithmeticOperations)
         Parser parser("10 + 5");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 15.0);
         EXPECT_EQ(length.unit, "");
     }
@@ -208,8 +208,8 @@ TEST_F(ParserTest, ParseArithmeticOperations)
         Parser parser("10px + 5px");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 15.0);
         EXPECT_EQ(length.unit, "px");
     }
@@ -218,8 +218,8 @@ TEST_F(ParserTest, ParseArithmeticOperations)
         Parser parser("10 - 5");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 5.0);
         EXPECT_EQ(length.unit, "");
     }
@@ -228,8 +228,8 @@ TEST_F(ParserTest, ParseArithmeticOperations)
         Parser parser("10px - 5px");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 5.0);
         EXPECT_EQ(length.unit, "px");
     }
@@ -238,8 +238,8 @@ TEST_F(ParserTest, ParseArithmeticOperations)
         Parser parser("10 * 5");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 50.0);
         EXPECT_EQ(length.unit, "");
     }
@@ -248,8 +248,8 @@ TEST_F(ParserTest, ParseArithmeticOperations)
         Parser parser("10px * 2");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 20.0);
         EXPECT_EQ(length.unit, "px");
     }
@@ -258,8 +258,8 @@ TEST_F(ParserTest, ParseArithmeticOperations)
         Parser parser("10 / 2");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 5.0);
         EXPECT_EQ(length.unit, "");
     }
@@ -268,8 +268,8 @@ TEST_F(ParserTest, ParseArithmeticOperations)
         Parser parser("10px / 2");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 5.0);
         EXPECT_EQ(length.unit, "px");
     }
@@ -282,8 +282,8 @@ TEST_F(ParserTest, ParseComplexExpressions)
         Parser parser("(10 + 5) * 2");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 30.0);
         EXPECT_EQ(length.unit, "");
     }
@@ -292,8 +292,8 @@ TEST_F(ParserTest, ParseComplexExpressions)
         Parser parser("(10px + 5px) * 2");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 30.0);
         EXPECT_EQ(length.unit, "px");
     }
@@ -302,8 +302,8 @@ TEST_F(ParserTest, ParseComplexExpressions)
         Parser parser("@TestParam + 5px");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 15.0);
         EXPECT_EQ(length.unit, "px");
     }
@@ -312,8 +312,8 @@ TEST_F(ParserTest, ParseComplexExpressions)
         Parser parser("@TestParam * @TestNumber");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 50.0);
         EXPECT_EQ(length.unit, "px");
     }
@@ -326,8 +326,8 @@ TEST_F(ParserTest, ParseUnaryOperations)
         Parser parser("+10");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 10.0);
         EXPECT_EQ(length.unit, "");
     }
@@ -336,8 +336,8 @@ TEST_F(ParserTest, ParseUnaryOperations)
         Parser parser("-10");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, -10.0);
         EXPECT_EQ(length.unit, "");
     }
@@ -346,8 +346,8 @@ TEST_F(ParserTest, ParseUnaryOperations)
         Parser parser("-10px");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, -10.0);
         EXPECT_EQ(length.unit, "px");
     }
@@ -476,8 +476,8 @@ TEST_F(ParserTest, ParseWhitespace)
         Parser parser("  10  +  5  ");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 15.0);
         EXPECT_EQ(length.unit, "");
     }
@@ -486,8 +486,8 @@ TEST_F(ParserTest, ParseWhitespace)
         Parser parser("10px+5px");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 15.0);
         EXPECT_EQ(length.unit, "px");
     }
@@ -528,8 +528,8 @@ TEST_F(ParserTest, ParseEdgeCases)
         Parser parser("42");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 42.0);
         EXPECT_EQ(length.unit, "");
     }
@@ -551,8 +551,8 @@ TEST_F(ParserTest, ParseEdgeCases)
         Parser parser("@TestParam");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 10.0);
         EXPECT_EQ(length.unit, "px");
     }
@@ -565,8 +565,8 @@ TEST_F(ParserTest, ParseOperatorPrecedence)
         Parser parser("2 + 3 * 4");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 14.0);  // 2 + (3 * 4) = 2 + 12 = 14
         EXPECT_EQ(length.unit, "");
     }
@@ -575,8 +575,8 @@ TEST_F(ParserTest, ParseOperatorPrecedence)
         Parser parser("10 - 3 * 2");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 4.0);  // 10 - (3 * 2) = 10 - 6 = 4
         EXPECT_EQ(length.unit, "");
     }
@@ -585,8 +585,8 @@ TEST_F(ParserTest, ParseOperatorPrecedence)
         Parser parser("20 / 4 + 3");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 8.0);  // (20 / 4) + 3 = 5 + 3 = 8
         EXPECT_EQ(length.unit, "");
     }
@@ -599,8 +599,8 @@ TEST_F(ParserTest, ParseNestedParentheses)
         Parser parser("((2 + 3) * 4)");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 20.0);  // (5) * 4 = 20
         EXPECT_EQ(length.unit, "");
     }
@@ -609,8 +609,8 @@ TEST_F(ParserTest, ParseNestedParentheses)
         Parser parser("(10 - (3 + 2)) * 2");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 10.0);  // (10 - 5) * 2 = 5 * 2 = 10
         EXPECT_EQ(length.unit, "");
     }

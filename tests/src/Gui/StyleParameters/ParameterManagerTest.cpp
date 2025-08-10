@@ -66,8 +66,8 @@ TEST_F(ParameterManagerTest, BasicParameterResolution)
 {
     {
         auto result = manager.resolve("BaseSize");
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 16.0);  // Should get value from source2 (later source)
         EXPECT_EQ(length.unit, "px");
     }
@@ -96,16 +96,16 @@ TEST_F(ParameterManagerTest, ParameterReferences)
 {
     {
         auto result = manager.resolve("Margin");
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 32.0);  // @BaseSize * 2 = 16 * 2 = 32
         EXPECT_EQ(length.unit, "px");
     }
 
     {
         auto result = manager.resolve("Padding");
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 8.0);  // @BaseSize / 2 = 16 / 2 = 8
         EXPECT_EQ(length.unit, "px");
     }
@@ -116,15 +116,15 @@ TEST_F(ParameterManagerTest, Caching)
 {
     // First resolution should cache the result
     auto result1 = manager.resolve("BaseSize");
-    EXPECT_TRUE(std::holds_alternative<Length>(result1));
+    EXPECT_TRUE(std::holds_alternative<Numeric>(result1));
 
     // Second resolution should use cached value
     auto result2 = manager.resolve("BaseSize");
-    EXPECT_TRUE(std::holds_alternative<Length>(result2));
+    EXPECT_TRUE(std::holds_alternative<Numeric>(result2));
 
     // Results should be identical
-    auto length1 = std::get<Length>(result1);
-    auto length2 = std::get<Length>(result2);
+    auto length1 = std::get<Numeric>(result1);
+    auto length2 = std::get<Numeric>(result2);
     EXPECT_DOUBLE_EQ(length1.value, length2.value);
     EXPECT_EQ(length1.unit, length2.unit);
 }
@@ -134,8 +134,8 @@ TEST_F(ParameterManagerTest, CacheInvalidation)
 {
     // Initial resolution
     auto result1 = manager.resolve("BaseSize");
-    EXPECT_TRUE(std::holds_alternative<Length>(result1));
-    auto length1 = std::get<Length>(result1);
+    EXPECT_TRUE(std::holds_alternative<Numeric>(result1));
+    auto length1 = std::get<Numeric>(result1);
     EXPECT_DOUBLE_EQ(length1.value, 16.0);
 
     // Reload should clear cache
@@ -143,8 +143,8 @@ TEST_F(ParameterManagerTest, CacheInvalidation)
 
     // Resolution after reload should work the same
     auto result2 = manager.resolve("BaseSize");
-    EXPECT_TRUE(std::holds_alternative<Length>(result2));
-    auto length2 = std::get<Length>(result2);
+    EXPECT_TRUE(std::holds_alternative<Numeric>(result2));
+    auto length2 = std::get<Numeric>(result2);
     EXPECT_DOUBLE_EQ(length2.value, 16.0);
     EXPECT_EQ(length1.unit, length2.unit);
 }
@@ -164,8 +164,8 @@ TEST_F(ParameterManagerTest, SourcePriority)
 
     // Should get value from the latest source (highest priority)
     auto result = manager.resolve("BaseSize");
-    EXPECT_TRUE(std::holds_alternative<Length>(result));
-    auto length = std::get<Length>(result);
+    EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+    auto length = std::get<Numeric>(result);
     EXPECT_DOUBLE_EQ(length.value, 24.0);
     EXPECT_EQ(length.unit, "px");
 }
@@ -279,16 +279,16 @@ TEST_F(ParameterManagerTest, ComplexExpressions)
 
     {
         auto result = manager.resolve("ComplexMargin");
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 40.0);  // (16 + 4) * 2 = 20 * 2 = 40
         EXPECT_EQ(length.unit, "px");
     }
 
     {
         auto result = manager.resolve("ComplexPadding");
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        auto length = std::get<Numeric>(result);
         EXPECT_DOUBLE_EQ(length.value, 7.0);  // (16 - 2) / 2 = 14 / 2 = 7
         EXPECT_EQ(length.unit, "px");
     }

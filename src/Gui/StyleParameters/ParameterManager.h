@@ -51,7 +51,7 @@ class Parser;
  * represents a dimensionless length that can be used as a scalar. This struct does not care about
  * unit conversions as its uses do not require it.
  */
-struct Length
+struct Numeric
 {
     /// Numeric value of the length.
     double value;
@@ -66,11 +66,11 @@ struct Length
      * and hence act as a scalar.
      *
      * @code{c++}
-     * Length a { 10, "px" };
-     * Length b { 5, "px" };
+     * Numeric a { 10, "px" };
+     * Numeric b { 5, "px" };
      *
-     * Length differentUnit { 3, "rem" }
-     * Length scalar { 2, "" };
+     * Numeric differentUnit { 3, "rem" }
+     * Numeric scalar { 2, "" };
      *
      * // basic operations with the same unit are allowed
      * auto sum = a + b; // 15 px
@@ -85,16 +85,16 @@ struct Length
      * @endcode
      * @{
      */
-    Length operator+(const Length& rhs) const;
-    Length operator-(const Length& rhs) const;
-    Length operator-() const;
+    Numeric operator+(const Numeric& rhs) const;
+    Numeric operator-(const Numeric& rhs) const;
+    Numeric operator-() const;
 
-    Length operator/(const Length& rhs) const;
-    Length operator*(const Length& rhs) const;
+    Numeric operator/(const Numeric& rhs) const;
+    Numeric operator*(const Numeric& rhs) const;
     /// @}
 
 private:
-    void ensureEqualUnits(const Length& rhs) const;
+    void ensureEqualUnits(const Numeric& rhs) const;
 };
 
 /**

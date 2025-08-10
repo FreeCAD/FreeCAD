@@ -72,7 +72,7 @@ struct GuiExport ParameterReference: public Expr
 
 struct GuiExport Number: public Expr
 {
-    Length value;
+    Numeric value;
 
     Number(double value, std::string unit)
         : value({value, std::move(unit)})

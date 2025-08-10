@@ -65,8 +65,8 @@ QString typeOfTokenValue(const Gui::StyleParameters::Value& value)
             [](const std::string&) {
                 return QWidget::tr("Generic");
             },
-            [](const Gui::StyleParameters::Length&) {
-                return QWidget::tr("Length");
+            [](const Gui::StyleParameters::Numeric&) {
+                return QWidget::tr("Numeric");
             },
             [](const Base::Color&) {
                 return QWidget::tr("Color");

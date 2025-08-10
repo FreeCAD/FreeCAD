@@ -80,7 +80,7 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
         // 100 required by Qt.
         //
         // NOLINTNEXTLINE(*-magic-numbers)
-        auto amount = 100 + static_cast<int>(std::get<Length>(amountArg).value);
+        auto amount = 100 + static_cast<int>(std::get<Numeric>(amountArg).value);
 
         if (functionName == "lighten") {
             return Base::Color::fromValue(color.lighter(amount));
@@ -118,7 +118,7 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
         auto firstColor = std::get<Base::Color>(firstColorArg);
         auto secondColor = std::get<Base::Color>(secondColorArg);
 
-        auto amount = Base::fromPercent(static_cast<long>(std::get<Length>(amountArg).value));
+        auto amount = Base::fromPercent(static_cast<long>(std::get<Numeric>(amountArg).value));
 
         return Base::Color(
             (1 - amount) * firstColor.r + amount * secondColor.r,
@@ -146,12 +146,12 @@ Value BinaryOp::evaluate(const EvaluationContext& context) const
     Value lval = left->evaluate(context);
     Value rval = right->evaluate(context);
 
-    if (!std::holds_alternative<Length>(lval) || !std::holds_alternative<Length>(rval)) {
+    if (!std::holds_alternative<Numeric>(lval) || !std::holds_alternative<Numeric>(rval)) {
         THROWM(Base::ExpressionError, "Math operations are supported only on lengths");
     }
 
-    auto lhs = std::get<Length>(lval);
-    auto rhs = std::get<Length>(rval);
+    auto lhs = std::get<Numeric>(lval);
+    auto rhs = std::get<Numeric>(rval);
 
     switch (op) {
         case Operator::Add:
@@ -174,7 +174,7 @@ Value UnaryOp::evaluate(const EvaluationContext& context) const
         THROWM(Base::ExpressionError, "Unary operations on colors are not supported");
     }
 
-    auto v = std::get<Length>(val);
+    auto v = std::get<Numeric>(val);
     switch (op) {
         case Operator::Add:
             return v;
