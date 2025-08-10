@@ -95,9 +95,9 @@ std::string Value::toString() const
         return fmt::format("{}{}", value, unit);
     }
 
-    if (std::holds_alternative<QColor>(*this)) {
-        auto color = std::get<QColor>(*this);
-        return fmt::format("#{:0>6x}", 0xFFFFFF & color.rgb());  // NOLINT(*-magic-numbers)
+    if (std::holds_alternative<Base::Color>(*this)) {
+        auto color = std::get<Base::Color>(*this);
+        return fmt::format("#{:0>6x}", color.getPackedRGB() >> 8);  // NOLINT(*-magic-numbers)
     }
 
     return std::get<std::string>(*this);

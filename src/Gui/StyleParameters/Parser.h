@@ -83,9 +83,9 @@ struct GuiExport Number: public Expr
 
 struct GuiExport Color: public Expr
 {
-    QColor color;
+    Base::Color color;
 
-    explicit Color(QColor color)
+    explicit Color(Base::Color color)
         : color(std::move(color))
     {}
 

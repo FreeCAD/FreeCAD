@@ -24,6 +24,7 @@
 #include <gtest/gtest.h>
 
 #include <Gui/Application.h>
+#include <Gui/Utilities.h>
 #include <Gui/StyleParameters/ParameterManager.h>
 
 using namespace Gui::StyleParameters;
@@ -73,20 +74,20 @@ TEST_F(ParameterManagerTest, BasicParameterResolution)
 
     {
         auto result = manager.resolve("PrimaryColor");
-        EXPECT_TRUE(std::holds_alternative<QColor>(result));
-        auto color = std::get<QColor>(result);
-        EXPECT_EQ(color.red(), 255);
-        EXPECT_EQ(color.green(), 0);
-        EXPECT_EQ(color.blue(), 0);
+        EXPECT_TRUE(std::holds_alternative<Base::Color>(result));
+        auto color = std::get<Base::Color>(result);
+        EXPECT_EQ(color.r, 1);
+        EXPECT_EQ(color.g, 0);
+        EXPECT_EQ(color.b, 0);
     }
 
     {
         auto result = manager.resolve("SecondaryColor");
-        EXPECT_TRUE(std::holds_alternative<QColor>(result));
-        auto color = std::get<QColor>(result);
-        EXPECT_EQ(color.red(), 0);
-        EXPECT_EQ(color.green(), 255);
-        EXPECT_EQ(color.blue(), 0);
+        EXPECT_TRUE(std::holds_alternative<Base::Color>(result));
+        auto color = std::get<Base::Color>(result);
+        EXPECT_EQ(color.r, 0);
+        EXPECT_EQ(color.g, 1);
+        EXPECT_EQ(color.b, 0);
     }
 }
 
@@ -294,10 +295,10 @@ TEST_F(ParameterManagerTest, ComplexExpressions)
 
     {
         auto result = manager.resolve("ColorWithFunction");
-        EXPECT_TRUE(std::holds_alternative<QColor>(result));
-        auto color = std::get<QColor>(result);
+        EXPECT_TRUE(std::holds_alternative<Base::Color>(result));
+        auto color = std::get<Base::Color>(result).asValue<QColor>();
         // Should be lighter than the original red
-        EXPECT_GT(color.lightness(), QColor("#ff0000").lightness());
+        EXPECT_GT(color.lightness(), QColor(0xff0000).lightness());
     }
 }
 

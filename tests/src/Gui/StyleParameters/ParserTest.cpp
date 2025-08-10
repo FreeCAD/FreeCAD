@@ -23,7 +23,7 @@
 
 #include <gtest/gtest.h>
 
-#include <QColor>
+#include <Gui/Utilities.h>
 
 #include <Gui/StyleParameters/Parser.h>
 #include <Gui/StyleParameters/ParameterManager.h>
@@ -103,56 +103,56 @@ TEST_F(ParserTest, ParseColors)
         Parser parser("#ff0000");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<QColor>(result));
-        auto color = std::get<QColor>(result);
-        EXPECT_EQ(color.red(), 255);
-        EXPECT_EQ(color.green(), 0);
-        EXPECT_EQ(color.blue(), 0);
+        EXPECT_TRUE(std::holds_alternative<Base::Color>(result));
+        auto color = std::get<Base::Color>(result);
+        EXPECT_EQ(color.r, 1);
+        EXPECT_EQ(color.g, 0);
+        EXPECT_EQ(color.b, 0);
     }
 
     {
         Parser parser("#00ff00");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<QColor>(result));
-        auto color = std::get<QColor>(result);
-        EXPECT_EQ(color.red(), 0);
-        EXPECT_EQ(color.green(), 255);
-        EXPECT_EQ(color.blue(), 0);
+        EXPECT_TRUE(std::holds_alternative<Base::Color>(result));
+        auto color = std::get<Base::Color>(result);
+        EXPECT_EQ(color.r, 0);
+        EXPECT_EQ(color.g, 1);
+        EXPECT_EQ(color.b, 0);
     }
 
     {
         Parser parser("#0000ff");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<QColor>(result));
-        auto color = std::get<QColor>(result);
-        EXPECT_EQ(color.red(), 0);
-        EXPECT_EQ(color.green(), 0);
-        EXPECT_EQ(color.blue(), 255);
+        EXPECT_TRUE(std::holds_alternative<Base::Color>(result));
+        auto color = std::get<Base::Color>(result);
+        EXPECT_EQ(color.r, 0);
+        EXPECT_EQ(color.g, 0);
+        EXPECT_EQ(color.b, 1);
     }
 
     {
         Parser parser("rgb(255, 0, 0)");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<QColor>(result));
-        auto color = std::get<QColor>(result);
-        EXPECT_EQ(color.red(), 255);
-        EXPECT_EQ(color.green(), 0);
-        EXPECT_EQ(color.blue(), 0);
+        EXPECT_TRUE(std::holds_alternative<Base::Color>(result));
+        auto color = std::get<Base::Color>(result);
+        EXPECT_EQ(color.r, 1);
+        EXPECT_EQ(color.g, 0);
+        EXPECT_EQ(color.b, 0);
     }
 
     {
         Parser parser("rgba(255, 0, 0, 128)");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<QColor>(result));
-        auto color = std::get<QColor>(result);
-        EXPECT_EQ(color.red(), 255);
-        EXPECT_EQ(color.green(), 0);
-        EXPECT_EQ(color.blue(), 0);
-        EXPECT_EQ(color.alpha(), 128);
+        EXPECT_TRUE(std::holds_alternative<Base::Color>(result));
+        auto color = std::get<Base::Color>(result);
+        EXPECT_DOUBLE_EQ(color.r, 1);
+        EXPECT_DOUBLE_EQ(color.g, 0);
+        EXPECT_DOUBLE_EQ(color.b, 0);
+        EXPECT_NEAR(color.a, 128 / 255.0, 1e-6);
     }
 }
 
@@ -173,11 +173,11 @@ TEST_F(ParserTest, ParseParameterReferences)
         Parser parser("@TestColor");
         auto expr = parser.parse();
         auto result = expr->evaluate({.manager = &manager, .context = {}});
-        EXPECT_TRUE(std::holds_alternative<QColor>(result));
-        auto color = std::get<QColor>(result);
-        EXPECT_EQ(color.red(), 255);
-        EXPECT_EQ(color.green(), 0);
-        EXPECT_EQ(color.blue(), 0);
+        EXPECT_TRUE(std::holds_alternative<Base::Color>(result));
+        auto color = std::get<Base::Color>(result);
+        EXPECT_EQ(color.r, 1);
+        EXPECT_EQ(color.g, 0);
+        EXPECT_EQ(color.b, 0);
     }
 
     {
@@ -360,30 +360,30 @@ TEST_F(ParserTest, ParseFunctionCalls)
         Parser parser("lighten(#ff0000, 20)");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<QColor>(result));
-        auto color = std::get<QColor>(result);
+        EXPECT_TRUE(std::holds_alternative<Base::Color>(result));
+        auto color = std::get<Base::Color>(result).asValue<QColor>();
         // The result should be lighter than the original red
-        EXPECT_GT(color.lightness(), QColor("#ff0000").lightness());
+        EXPECT_GT(color.lightness(), QColor(0xff0000).lightness());
     }
 
     {
         Parser parser("darken(#ff0000, 20)");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<QColor>(result));
-        auto color = std::get<QColor>(result);
+        EXPECT_TRUE(std::holds_alternative<Base::Color>(result));
+        auto color = std::get<Base::Color>(result).asValue<QColor>();
         // The result should be darker than the original red
-        EXPECT_LT(color.lightness(), QColor("#ff0000").lightness());
+        EXPECT_LT(color.lightness(), QColor(0xff0000).lightness());
     }
 
     {
         Parser parser("lighten(@TestColor, 20)");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<QColor>(result));
-        auto color = std::get<QColor>(result);
+        EXPECT_TRUE(std::holds_alternative<Base::Color>(result));
+        auto color = std::get<Base::Color>(result).asValue<QColor>();
         // The result should be lighter than the original red
-        EXPECT_GT(color.lightness(), QColor("#ff0000").lightness());
+        EXPECT_GT(color.lightness(), QColor(0xff0000).lightness());
     }
 }
 
@@ -496,11 +496,11 @@ TEST_F(ParserTest, ParseWhitespace)
         Parser parser("rgb(255,0,0)");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<QColor>(result));
-        auto color = std::get<QColor>(result);
-        EXPECT_EQ(color.red(), 255);
-        EXPECT_EQ(color.green(), 0);
-        EXPECT_EQ(color.blue(), 0);
+        EXPECT_TRUE(std::holds_alternative<Base::Color>(result));
+        auto color = std::get<Base::Color>(result);
+        EXPECT_EQ(color.r, 1);
+        EXPECT_EQ(color.g, 0);
+        EXPECT_EQ(color.b, 0);
     }
 }
 
@@ -539,11 +539,11 @@ TEST_F(ParserTest, ParseEdgeCases)
         Parser parser("#ff0000");
         auto expr = parser.parse();
         auto result = expr->evaluate({&manager, {}});
-        EXPECT_TRUE(std::holds_alternative<QColor>(result));
-        auto color = std::get<QColor>(result);
-        EXPECT_EQ(color.red(), 255);
-        EXPECT_EQ(color.green(), 0);
-        EXPECT_EQ(color.blue(), 0);
+        EXPECT_TRUE(std::holds_alternative<Base::Color>(result));
+        auto color = std::get<Base::Color>(result);
+        EXPECT_EQ(color.r, 1);
+        EXPECT_EQ(color.g, 0);
+        EXPECT_EQ(color.b, 0);
     }
 
     // Single parameter reference

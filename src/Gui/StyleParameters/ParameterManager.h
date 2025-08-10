@@ -107,9 +107,9 @@ private:
  *
  * As a rule, operations can be only performed over values of the same type.
  */
-struct Value : std::variant<Length, QColor, std::string>
+struct Value : std::variant<Numeric, Base::Color, std::string>
 {
-    using std::variant<Length, QColor, std::string>::variant;
+    using std::variant<Numeric, Base::Color, std::string>::variant;
 
     /**
      * Converts the object into its string representation.

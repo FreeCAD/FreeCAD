@@ -30,6 +30,7 @@
 #include "ui_DlgThemeEditor.h"
 #include "BitmapFactory.h"
 
+#include <Utilities.h>
 #include <Base/ServiceProvider.h>
 #include <Base/Tools.h>
 
@@ -67,7 +68,7 @@ QString typeOfTokenValue(const Gui::StyleParameters::Value& value)
             [](const Gui::StyleParameters::Length&) {
                 return QWidget::tr("Length");
             },
-            [](const QColor&) {
+            [](const Base::Color&) {
                 return QWidget::tr("Color");
             }
         },
@@ -529,8 +530,8 @@ QVariant StyleParametersModel::data(const QModelIndex& index, int role) const
         }
 
         if (role == Qt::DecorationRole) {
-            if (index.column() == ParameterPreview && std::holds_alternative<QColor>(value)) {
-                return colorPreview(std::get<QColor>(value));
+            if (index.column() == ParameterPreview && std::holds_alternative<Base::Color>(value)) {
+                return colorPreview(std::get<Base::Color>(value).asValue<QColor>());
             }
         }
     }

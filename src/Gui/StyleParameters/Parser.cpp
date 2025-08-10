@@ -26,6 +26,7 @@
 #include "Parser.h"
 #include "ParameterManager.h"
 
+#include <Utilities.h>
 #include <Base/Tools.h>
 
 #ifndef _PreComp_
@@ -67,12 +68,12 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
         auto colorArg = arguments[0]->evaluate(context);
         auto amountArg = arguments[1]->evaluate(context);
 
-        if (!std::holds_alternative<QColor>(colorArg)) {
+        if (!std::holds_alternative<Base::Color>(colorArg)) {
             THROWM(Base::ExpressionError,
                    fmt::format("'{}' is not supported for colors", functionName));
         }
 
-        auto color = std::get<QColor>(colorArg);
+        auto color = std::get<Base::Color>(colorArg).asValue<QColor>();
 
         // In Qt if you want to make color 20% darker or lighter, you need to pass 120 as the value
         // we, however, want users to pass only the relative difference, hence we need to add the
@@ -82,11 +83,11 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
         auto amount = 100 + static_cast<int>(std::get<Length>(amountArg).value);
 
         if (functionName == "lighten") {
-            return color.lighter(amount);
+            return Base::Color::fromValue(color.lighter(amount));
         }
 
         if (functionName == "darken") {
-            return color.darker(amount);
+            return Base::Color::fromValue(color.darker(amount));
         }
 
         return {};
@@ -104,25 +105,25 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
         auto secondColorArg = arguments[1]->evaluate(context);
         auto amountArg = arguments[2]->evaluate(context);
 
-        if (!std::holds_alternative<QColor>(firstColorArg)) {
+        if (!std::holds_alternative<Base::Color>(firstColorArg)) {
             THROWM(Base::ExpressionError,
                    fmt::format("first argument of '{}' must be color", functionName));
         }
 
-        if (!std::holds_alternative<QColor>(secondColorArg)) {
+        if (!std::holds_alternative<Base::Color>(secondColorArg)) {
             THROWM(Base::ExpressionError,
                    fmt::format("second argument of '{}' must be color", functionName));
         }
 
-        auto firstColor = std::get<QColor>(firstColorArg);
-        auto secondColor = std::get<QColor>(secondColorArg);
+        auto firstColor = std::get<Base::Color>(firstColorArg);
+        auto secondColor = std::get<Base::Color>(secondColorArg);
 
-        auto amount = Base::fromPercent(std::get<Length>(amountArg).value);
+        auto amount = Base::fromPercent(static_cast<long>(std::get<Length>(amountArg).value));
 
-        return QColor::fromRgbF(
-            (1 - amount) * firstColor.redF() + amount * secondColor.redF(),
-            (1 - amount) * firstColor.greenF() + amount * secondColor.greenF(),
-            (1 - amount) * firstColor.blueF() + amount * secondColor.blueF()
+        return Base::Color(
+            (1 - amount) * firstColor.r + amount * secondColor.r,
+            (1 - amount) * firstColor.g + amount * secondColor.g,
+            (1 - amount) * firstColor.b + amount * secondColor.b
         );
     };
 
@@ -169,7 +170,7 @@ Value BinaryOp::evaluate(const EvaluationContext& context) const
 Value UnaryOp::evaluate(const EvaluationContext& context) const
 {
     Value val = operand->evaluate(context);
-    if (std::holds_alternative<QColor>(val)) {
+    if (std::holds_alternative<Base::Color>(val)) {
         THROWM(Base::ExpressionError, "Unary operations on colors are not supported");
     }
 
@@ -286,7 +287,7 @@ std::unique_ptr<Expr> Parser::parseColor()
             int b = std::stoi(input.substr(pos, 2), nullptr, hexadecimalBase);
             pos += 2;
 
-            return std::make_unique<Color>(QColor(r, g, b));
+            return std::make_unique<Color>(Base::Color(r / 255.0, g / 255.0, b / 255.0));
     };
 
     const auto parseFunctionStyleColor = [&]() {
@@ -313,7 +314,7 @@ std::unique_ptr<Expr> Parser::parseColor()
         if (!match(')')) {
             THROWM(Base::ParserError, fmt::format("Expected ')' after color arguments, got '{}'", input[pos]));
         }
-        return std::make_unique<Color>(QColor(r, g, b, a));
+        return std::make_unique<Color>(Base::Color(r / 255.0, g / 255.0, b / 255.0, a / 255.0));
     };
 
     skipWhitespace();
