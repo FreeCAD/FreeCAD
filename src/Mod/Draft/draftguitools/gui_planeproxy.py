@@ -52,7 +52,7 @@ class Draft_WorkingPlaneProxy:
 
     def Activated(self):
         """Execute when the command is called."""
-        App.ActiveDocument.openTransaction("Create WP proxy")
+        App.ActiveDocument.openTransaction("Create Working Plane Proxy")
         Gui.addModule("Draft")
         Gui.addModule("WorkingPlane")
         Gui.doCommand("pl = WorkingPlane.get_working_plane().get_placement()")
