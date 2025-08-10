@@ -42,7 +42,7 @@ namespace Gui::StyleParameters
 
 Value ParameterReference::evaluate(const EvaluationContext& context) const
 {
-    return context.manager->resolve(name, context.context);
+    return context.manager->resolve(name, context.context).value_or("@" + name);
 }
 
 Value Number::evaluate([[maybe_unused]] const EvaluationContext& context) const

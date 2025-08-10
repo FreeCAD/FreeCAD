@@ -260,12 +260,16 @@ std::string ParameterManager::replacePlaceholders(const std::string& expression,
         QString::fromStdString(expression),
         [&](const QRegularExpressionMatch& match) {
             auto tokenName = match.captured(1).toStdString();
-
             auto tokenValue = resolve(tokenName, context);
-            context.visited.erase(tokenName);
 
-            return QString::fromStdString(tokenValue.toString());
-        }
+            if (!tokenValue) {
+                Base::Console().warning("Requested non-existent style parameter token '%s'.\n", tokenName);
+                return QStringLiteral("");
+            }
+
+            context.visited.erase(tokenName);
+            return QString::fromStdString(tokenValue->toString());
+    }
     ).toStdString();
     // clang-format on
 }
@@ -293,18 +297,18 @@ std::optional<std::string> ParameterManager::expression(const std::string& name)
     return {};
 }
 
-Value ParameterManager::resolve(const std::string& name, ResolveContext context) const
+std::optional<Value> ParameterManager::resolve(const std::string& name,
+                                               ResolveContext context) const
 {
     std::optional<Parameter> maybeParameter = this->parameter(name);
 
     if (!maybeParameter) {
-        Base::Console().warning("Requested non-existent design token '%s'.\n", name);
-        return std::string {};
+        return std::nullopt;
     }
 
     if (context.visited.contains(name)) {
-        Base::Console().warning("The design token '%s' contains circular-reference.\n", name);
-        return expression(name).value_or(std::string {});
+        Base::Console().warning("The style parameter '%s' contains circular-reference.\n", name);
+        return expression(name);
     }
 
     const Parameter& token = *maybeParameter;

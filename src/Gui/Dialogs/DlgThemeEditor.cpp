@@ -514,6 +514,10 @@ QVariant StyleParametersModel::data(const QModelIndex& index, int role) const
         const auto& [name, token, _] = *parameterItem;
         const auto& value = manager->resolve(name.toStdString());
 
+        if (!value) {
+            return {};
+        }
+
         if (role == Qt::DisplayRole) {
             if (index.column() == ParameterName) {
                 return name;
@@ -522,16 +526,16 @@ QVariant StyleParametersModel::data(const QModelIndex& index, int role) const
                 return QString::fromStdString(token.value);
             }
             if (index.column() == ParameterType) {
-                return typeOfTokenValue(value);
+                return typeOfTokenValue(*value);
             }
             if (index.column() == ParameterPreview) {
-                return QString::fromStdString(value.toString());
+                return QString::fromStdString(value->toString());
             }
         }
 
         if (role == Qt::DecorationRole) {
-            if (index.column() == ParameterPreview && std::holds_alternative<Base::Color>(value)) {
-                return colorPreview(std::get<Base::Color>(value).asValue<QColor>());
+            if (index.column() == ParameterPreview && std::holds_alternative<Base::Color>(*value)) {
+                return colorPreview(std::get<Base::Color>(*value).asValue<QColor>());
             }
         }
     }
