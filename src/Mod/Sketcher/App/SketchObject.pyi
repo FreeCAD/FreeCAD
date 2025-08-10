@@ -111,7 +111,7 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def delGeometry(self, geoId: int) -> None:
+    def delGeometry(self, geoId: int, noSolve: bool) -> None:
         """
         Delete a geometric object from the sketch.
 
@@ -123,7 +123,7 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def delGeometries(self, geoIds: List[int]) -> None:
+    def delGeometries(self, geoIds: List[int], noSolve: bool) -> None:
         """
         Delete a list of geometric objects from the sketch.
 
@@ -244,7 +244,7 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def delConstraint(self, constraintIndex: int) -> None:
+    def delConstraint(self, constraintIndex: int, noSolve: bool) -> None:
         """
         Delete a constraint from the sketch.
 
@@ -255,7 +255,9 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def delConstraints(self, constraintIndices: List[int], updateGeometry: bool) -> None:
+    def delConstraints(
+        self, constraintIndices: List[int], updateGeometry: bool, noSolve: bool
+    ) -> None:
         """
         Delete multiple constraints from a sketch
 
