@@ -328,3 +328,22 @@ TEST_F(ParameterManagerTest, ErrorHandling)
     EXPECT_TRUE(invalidResult.has_value());
     EXPECT_TRUE(std::holds_alternative<std::string>(*invalidResult));
 }
+
+DEFINE_STYLE_PARAMETER(BaseSize, Numeric(8, "px"));
+
+TEST_F(ParameterManagerTest, ResolveParameterDefinition)
+{
+    auto result = manager.resolve(BaseSize);
+    EXPECT_DOUBLE_EQ(result.value, 16);
+    EXPECT_EQ(result.unit, "px");
+}
+
+
+DEFINE_STYLE_PARAMETER(MarginSize, Numeric(16, "px"));
+
+TEST_F(ParameterManagerTest, ResolveParameterDefinitionDefault)
+{
+    auto result = manager.resolve(MarginSize);
+    EXPECT_DOUBLE_EQ(result.value, 16);
+    EXPECT_EQ(result.unit, "px");
+}
