@@ -736,7 +736,7 @@ QScrollBar::add-line:horizontal:hover, QScrollBar::sub-line:horizontal:hover {
   background-color: @GeneralBackgroundHoverColor;
 }
 
-QScrollBar::right-arrow, QScrollbar::left-arrow, QScrollBar::up-arrow, QScrollBar::down-arrow {
+QScrollBar::right-arrow, QScrollBar::left-arrow, QScrollBar::up-arrow, QScrollBar::down-arrow {
   margin: 2px;
 }
 
