@@ -34,7 +34,7 @@ set(AssemblyGui_UIC_SRCS
 )
 
 SET(Python_SRCS
-    ViewProviderAssemblyPy.xml
+    ViewProviderAssemblyPy.pyi
     ViewProviderAssemblyPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})

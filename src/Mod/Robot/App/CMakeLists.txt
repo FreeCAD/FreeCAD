@@ -28,13 +28,13 @@ generate_from_py(RobotObjectPy)
 
 
 SET(Python_SRCS
-    Robot6AxisPy.xml
+    Robot6AxisPy.pyi
     Robot6AxisPyImp.cpp
-    TrajectoryPy.xml
+    TrajectoryPy.pyi
     TrajectoryPyImp.cpp
-    RobotObjectPy.xml
+    RobotObjectPy.pyi
     RobotObjectPyImp.cpp
-    WaypointPy.xml
+    WaypointPy.pyi
     WaypointPyImp.cpp
 )
 

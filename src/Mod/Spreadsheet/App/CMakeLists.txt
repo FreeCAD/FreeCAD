@@ -19,19 +19,19 @@ set(Spreadsheet_SRCS
     PreCompiled.h
     PropertySheet.cpp
     PropertySheet.h
-    PropertySheetPy.xml
+    PropertySheetPy.pyi
     PropertySheetPyImp.cpp
     PropertyColumnWidths.cpp
     PropertyColumnWidths.h
-    PropertyColumnWidthsPy.xml
+    PropertyColumnWidthsPy.pyi
     PropertyColumnWidthsPyImp.cpp
     PropertyRowHeights.cpp
     PropertyRowHeights.h
-    PropertyRowHeightsPy.xml
+    PropertyRowHeightsPy.pyi
     PropertyRowHeightsPyImp.cpp
     Sheet.cpp
     Sheet.h
-    SheetPy.xml
+    SheetPy.pyi
     SheetPyImp.cpp
     SheetObserver.cpp
     SheetObserver.h

@@ -39,17 +39,17 @@ generate_from_py(ViewProviderFemPostPipelinePy)
 generate_from_py(ViewProviderFemPostFilterPy)
 
 SET(Python_SRCS
-    ViewProviderFemConstraintPy.xml
+    ViewProviderFemConstraintPy.pyi
     ViewProviderFemConstraintPyImp.cpp
-    ViewProviderFemMeshPy.xml
+    ViewProviderFemMeshPy.pyi
     ViewProviderFemMeshPyImp.cpp
 )
 if(BUILD_FEM_VTK)
     set(Python_SRCS
         ${Python_SRCS}
-        ViewProviderFemPostPipelinePy.xml
+        ViewProviderFemPostPipelinePy.pyi
         ViewProviderFemPostPipelinePyImp.cpp
-        ViewProviderFemPostFilterPy.xml
+        ViewProviderFemPostFilterPy.pyi
         ViewProviderFemPostFilterPyImp.cpp
     )
 endif(BUILD_FEM_VTK)

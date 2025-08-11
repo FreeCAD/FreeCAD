@@ -45,7 +45,7 @@ SET(Points_SRCS
     AppPointsPy.cpp
     Points.cpp
     Points.h
-    PointsPy.xml
+    PointsPy.pyi
     PointsPyImp.cpp
     PointsAlgos.cpp
     PointsAlgos.h

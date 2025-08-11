@@ -29,7 +29,7 @@ SET(Import_SRCS
     ReaderIges.h
     ReaderStep.cpp
     ReaderStep.h
-    StepShapePy.xml
+    StepShapePy.pyi
     StepShape.h
     StepShape.cpp
     StepShapePyImp.cpp

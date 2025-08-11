@@ -208,59 +208,59 @@ SET(Geometry_SRCS
 )
 
 SET(Python_SRCS
-    DrawPagePy.xml
+    DrawPagePy.pyi
     DrawPagePyImp.cpp
-    DrawViewPy.xml
+    DrawViewPy.pyi
     DrawViewPyImp.cpp
-    DrawViewPartPy.xml
+    DrawViewPartPy.pyi
     DrawViewPartPyImp.cpp
-    DrawViewSymbolPy.xml
+    DrawViewSymbolPy.pyi
     DrawViewSymbolPyImp.cpp
-    DrawTemplatePy.xml
+    DrawTemplatePy.pyi
     DrawTemplatePyImp.cpp
-    DrawParametricTemplatePy.xml
+    DrawParametricTemplatePy.pyi
     DrawParametricTemplatePyImp.cpp
-    DrawSVGTemplatePy.xml
+    DrawSVGTemplatePy.pyi
     DrawSVGTemplatePyImp.cpp
-    DrawViewClipPy.xml
+    DrawViewClipPy.pyi
     DrawViewClipPyImp.cpp
-    DrawViewDimensionPy.xml
+    DrawViewDimensionPy.pyi
     DrawViewDimensionPyImp.cpp
-    DrawViewDimExtentPy.xml
+    DrawViewDimExtentPy.pyi
     DrawViewDimExtentPyImp.cpp
-    DrawHatchPy.xml
+    DrawHatchPy.pyi
     DrawHatchPyImp.cpp
-    DrawGeomHatchPy.xml
+    DrawGeomHatchPy.pyi
     DrawGeomHatchPyImp.cpp
-    DrawViewCollectionPy.xml
+    DrawViewCollectionPy.pyi
     DrawViewCollectionPyImp.cpp
-    DrawProjGroupPy.xml
+    DrawProjGroupPy.pyi
     DrawProjGroupPyImp.cpp
-    DrawProjGroupItemPy.xml
+    DrawProjGroupItemPy.pyi
     DrawProjGroupItemPyImp.cpp
-    DrawViewAnnotationPy.xml
+    DrawViewAnnotationPy.pyi
     DrawViewAnnotationPyImp.cpp
-    DrawLeaderLinePy.xml
+    DrawLeaderLinePy.pyi
     DrawLeaderLinePyImp.cpp
-    DrawRichAnnoPy.xml
+    DrawRichAnnoPy.pyi
     DrawRichAnnoPyImp.cpp
-    GeomFormatPy.xml
+    GeomFormatPy.pyi
     GeomFormatPyImp.cpp
-    CenterLinePy.xml
+    CenterLinePy.pyi
     CenterLinePyImp.cpp
-    CosmeticEdgePy.xml
+    CosmeticEdgePy.pyi
     CosmeticEdgePyImp.cpp
-    CosmeticVertexPy.xml
+    CosmeticVertexPy.pyi
     CosmeticVertexPyImp.cpp
-    DrawTilePy.xml
+    DrawTilePy.pyi
     DrawTilePyImp.cpp
-    DrawTileWeldPy.xml
+    DrawTileWeldPy.pyi
     DrawTileWeldPyImp.cpp
-    DrawWeldSymbolPy.xml
+    DrawWeldSymbolPy.pyi
     DrawWeldSymbolPyImp.cpp
-    CosmeticExtensionPy.xml
+    CosmeticExtensionPy.pyi
     CosmeticExtensionPyImp.cpp
-    DrawBrokenViewPy.xml
+    DrawBrokenViewPy.pyi
     DrawBrokenViewPyImp.cpp
 )
 

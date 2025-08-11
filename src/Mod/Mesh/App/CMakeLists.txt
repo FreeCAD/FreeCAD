@@ -37,11 +37,11 @@ generate_from_py(MeshPointPy)
 generate_from_py(MeshPy)
 
 SET(Mesh_XML_SRCS
-    EdgePy.xml
-    FacetPy.xml
-    MeshFeaturePy.xml
-    MeshPointPy.xml
-    MeshPy.xml
+    EdgePy.pyi
+    FacetPy.pyi
+    MeshFeaturePy.pyi
+    MeshPointPy.pyi
+    MeshPy.pyi
 )
 SOURCE_GROUP("XML" FILES ${Mesh_XML_SRCS})
 

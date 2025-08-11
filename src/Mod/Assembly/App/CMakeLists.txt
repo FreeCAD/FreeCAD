@@ -24,19 +24,19 @@ generate_from_py(SimulationGroupPy)
 
 
 SET(Python_SRCS
-    AssemblyObjectPy.xml
+    AssemblyObjectPy.pyi
     AssemblyObjectPyImp.cpp
-    AssemblyLinkPy.xml
+    AssemblyLinkPy.pyi
     AssemblyLinkPyImp.cpp
-    BomObjectPy.xml
+    BomObjectPy.pyi
     BomObjectPyImp.cpp
-    BomGroupPy.xml
+    BomGroupPy.pyi
     BomGroupPyImp.cpp
-    JointGroupPy.xml
+    JointGroupPy.pyi
     JointGroupPyImp.cpp
-    ViewGroupPy.xml
+    ViewGroupPy.pyi
     ViewGroupPyImp.cpp
-    SimulationGroupPy.xml
+    SimulationGroupPy.pyi
     SimulationGroupPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})

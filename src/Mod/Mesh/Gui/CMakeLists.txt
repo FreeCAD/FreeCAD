@@ -18,7 +18,7 @@ set(MeshGui_LIBS
 generate_from_py(ViewProviderMeshPy)
 
 SET(MeshGui_XML_SRCS
-    ViewProviderMeshPy.xml
+    ViewProviderMeshPy.pyi
 )
 SOURCE_GROUP("XML" FILES ${MeshGui_XML_SRCS})
 

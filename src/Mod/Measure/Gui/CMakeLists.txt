@@ -38,7 +38,7 @@ SET(MeasureGui_SRCS
     Resources/Measure.qrc
     PreCompiled.cpp
     PreCompiled.h
-    QuickMeasurePy.xml
+    QuickMeasurePy.pyi
     QuickMeasurePyImp.cpp
     QuickMeasure.cpp
     QuickMeasure.h

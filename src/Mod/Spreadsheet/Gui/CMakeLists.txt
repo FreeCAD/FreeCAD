@@ -7,7 +7,7 @@ generate_from_py(ViewProviderSpreadsheetPy)
 
 # The XML files
 set(SpreadsheetGui_XML_SRCS
-    ViewProviderSpreadsheetPy.xml
+    ViewProviderSpreadsheetPy.pyi
 )
 
 set(SpreadsheetGui_LIBS

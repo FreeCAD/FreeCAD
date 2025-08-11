@@ -16,7 +16,7 @@ set(CAMSimulator_LIBS
 )
 
 SET(CAMSimulator_SRCS_Python
-    CAMSimPy.xml
+    CAMSimPy.pyi
     CAMSimPyImp.cpp
 )
 

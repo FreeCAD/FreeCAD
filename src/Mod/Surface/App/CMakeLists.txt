@@ -23,9 +23,9 @@ set(Surface_LIBS
 
 # BlendPoint Wrapper
 SET(BlendingPy_SRCS
-  Blending/BlendPointPy.xml
+  Blending/BlendPointPy.pyi
   Blending/BlendPointPyImp.cpp
-  Blending/BlendCurvePy.xml
+  Blending/BlendCurvePy.pyi
   Blending/BlendCurvePyImp.cpp
 )
 SOURCE_GROUP("Blending" FILES ${BlendingPy_SRCS})
