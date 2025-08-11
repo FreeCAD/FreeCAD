@@ -53,7 +53,7 @@
           <property name="toolTip">
            <string>This color might be used by your theme to let you customize it.</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>85</red>
             <green>123</green>
@@ -119,7 +119,7 @@
           <property name="toolTip">
            <string>This color might be used by your theme to let you customize it.</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>85</red>
             <green>123</green>
@@ -145,7 +145,7 @@
           <property name="toolTip">
            <string>This color might be used by your theme to let you customize it.</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>85</red>
             <green>123</green>
@@ -497,10 +497,32 @@
     </widget>
    </item>
    <item>
-    <spacer name="spacer_3">
-     <property name="orientation">
-      <enum>Qt::Orientation::Vertical</enum>
+    <widget class="QGroupBox" name="groupBox_4">
+     <property name="title">
+      <string>Suggested Actions</string>
      </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="showTaskWatcherCheckBox">
+        <property name="text">
+         <string>Suggest actions in the task view based on the selection</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowTaskWatcher</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>General</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="spacer_3">
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
