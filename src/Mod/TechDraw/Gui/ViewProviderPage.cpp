@@ -83,15 +83,12 @@ ViewProviderPage::ViewProviderPage()
     static const char* group = "Grid";
 
     // NOLINTBEGIN
-    ADD_PROPERTY_TYPE(ShowFrames, (true), group, App::Prop_None,
-                      "Show or hide view frames and labels on this page");
     ADD_PROPERTY_TYPE(ShowGrid, (PreferencesGui::showGrid()), group, App::Prop_None,
                       "Show or hide a grid on this page");
     ADD_PROPERTY_TYPE(GridSpacing, (PreferencesGui::gridSpacing()), group,
                       (App::PropertyType::Prop_None), "Grid line spacing in mm");
     // NOLINTEND
 
-    ShowFrames.setStatus(App::Property::Hidden, true);
     // Do not show in property editor   why? wf  WF: because DisplayMode applies only to coin and we
     // don't use coin.
     DisplayMode.setStatus(App::Property::Hidden, true);
@@ -436,19 +433,6 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren() const
 }
 
 bool ViewProviderPage::isShow() const { return Visibility.getValue(); }
-
-bool ViewProviderPage::getFrameState() const { return ShowFrames.getValue(); }
-
-void ViewProviderPage::setFrameState(bool state) { ShowFrames.setValue(state); }
-
-void ViewProviderPage::toggleFrameState()
-{
-    if (m_graphicsScene) {
-        setFrameState(!getFrameState());
-        m_graphicsScene->refreshViews();
-        setTemplateMarkers(getFrameState());
-    }
-}
 
 void ViewProviderPage::setTemplateMarkers(bool state) const
 {
