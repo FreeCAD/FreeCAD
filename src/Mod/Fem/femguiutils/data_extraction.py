@@ -125,7 +125,7 @@ class DataExtraction(_BasePostTaskPanel):
         if not algo:
             self.data_model.setTable(vtkTable())
 
-        if vtkVersion.GetVTKMajorVersion() > 9 and vtkVersion.GetVTKMinorVersion() > 3:
+        if vtkVersion.GetVTKMajorVersion() >= 9 and vtkVersion.GetVTKMinorVersion() >= 3:
             filter = vtkAttributeDataToTableFilter()
         else:
             filter = vtkDataObjectToTable()
