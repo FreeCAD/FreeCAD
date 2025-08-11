@@ -2994,12 +2994,39 @@ void Application::logStatus()
 
 void Application::LoadParameters()
 {
-    // Init parameter sets ===========================================================
-    //
+    // Make user.cfg and system.cfg version-dependent
+    std::string versionSuffix;
+    auto itMajor = mConfig.find("BuildVersionMajor");
+    auto itMinor = mConfig.find("BuildVersionMinor");
+    // Removed itPoint
+    if (itMajor != mConfig.end() && itMinor != mConfig.end()) {
+        versionSuffix = fmt::format(".{}.{}", itMajor->second, itMinor->second);
+
+        // Check for old user.cfg and system.cfg without version suffix
+        std::string oldUserCfg = mConfig["UserConfigPath"] + "user.cfg";
+        std::string oldSystemCfg = mConfig["UserConfigPath"] + "system.cfg";
+        std::string newUserCfg = mConfig["UserConfigPath"] + "user" + versionSuffix + ".cfg";
+        std::string newSystemCfg = mConfig["UserConfigPath"] + "system" + versionSuffix + ".cfg";
+
+        // If new config does not exist but old does, copy old to new (import settings on first boot)
+        if (!QFileInfo(QString::fromStdString(newUserCfg)).exists() &&
+            QFileInfo(QString::fromStdString(oldUserCfg)).exists()) {
+            QFile::copy(QString::fromStdString(oldUserCfg), QString::fromStdString(newUserCfg));
+        }
+        if (!QFileInfo(QString::fromStdString(newSystemCfg)).exists() &&
+            QFileInfo(QString::fromStdString(oldSystemCfg)).exists()) {
+            QFile::copy(QString::fromStdString(oldSystemCfg), QString::fromStdString(newSystemCfg));
+        }
+    }
+    else {
+        // If version is not set, use empty suffix
+        versionSuffix = "";
+    }
+
     if (mConfig.find("UserParameter") == mConfig.end())
-        mConfig["UserParameter"]   = mConfig["UserConfigPath"] + "user.cfg";
+        mConfig["UserParameter"]   = mConfig["UserConfigPath"] + "user" + versionSuffix + ".cfg";
     if (mConfig.find("SystemParameter") == mConfig.end())
-        mConfig["SystemParameter"] = mConfig["UserConfigPath"] + "system.cfg";
+        mConfig["SystemParameter"] = mConfig["UserConfigPath"] + "system" + versionSuffix + ".cfg";
 
     // create standard parameter sets
     _pcSysParamMngr = ParameterManager::Create();
@@ -3644,7 +3671,7 @@ void Application::getVerboseCommonInfo(QTextStream& str, const std::map<std::str
     const QString deskSess =
         QProcessEnvironment::systemEnvironment().value(QStringLiteral("DESKTOP_SESSION"),
                                                     QString());
-  
+
     const QString major = getValueOrEmpty(mConfig, "BuildVersionMajor");
     const QString minor = getValueOrEmpty(mConfig, "BuildVersionMinor");
     const QString point = getValueOrEmpty(mConfig, "BuildVersionPoint");
