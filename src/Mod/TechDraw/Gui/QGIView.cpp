@@ -219,10 +219,11 @@ void QGIView::dragFinished()
     bool setX = false;
     bool setY = false;
 
-    if (!DrawUtil::fpCompare(currX, candidateX, 0.001)) {  // 0.001mm tolerance
+    const double tolerance = 0.001;  // mm
+    if (!DrawUtil::fpCompare(currX, candidateX, tolerance)) {
         setX = true;
     }
-    if (!DrawUtil::fpCompare(currY, candidateY, 0.001)) {
+    if (!DrawUtil::fpCompare(currY, candidateY, tolerance)) {
         setY = true;
     }
 
