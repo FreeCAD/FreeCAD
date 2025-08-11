@@ -14,21 +14,13 @@ set(Assembly_LIBS
 	OndselSolver
 )
 
-generate_from_xml(AssemblyObjectPy)
-generate_from_xml(AssemblyLinkPy)
-generate_from_xml(BomObjectPy)
-generate_from_xml(BomGroupPy)
-generate_from_xml(JointGroupPy)
-generate_from_xml(ViewGroupPy)
-generate_from_xml(SimulationGroupPy)
-
-generate_from_py_(AssemblyObjectPy)
-generate_from_py_(AssemblyLinkPy)
-generate_from_py_(BomObjectPy)
-generate_from_py_(BomGroupPy)
-generate_from_py_(JointGroupPy)
-generate_from_py_(ViewGroupPy)
-generate_from_py_(SimulationGroupPy)
+generate_from_py(AssemblyObjectPy)
+generate_from_py(AssemblyLinkPy)
+generate_from_py(BomObjectPy)
+generate_from_py(BomGroupPy)
+generate_from_py(JointGroupPy)
+generate_from_py(ViewGroupPy)
+generate_from_py(SimulationGroupPy)
 
 
 SET(Python_SRCS

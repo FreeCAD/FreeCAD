@@ -10,11 +10,8 @@ set(Measure_LIBS
     FreeCADApp
 )
 
-generate_from_xml(MeasurementPy)
-generate_from_xml(MeasureBasePy)
-
-generate_from_py_(MeasurementPy)
-generate_from_py_(MeasureBasePy)
+generate_from_py(MeasurementPy)
+generate_from_py(MeasureBasePy)
 
 SET(Python_SRCS
     MeasurementPy.xml

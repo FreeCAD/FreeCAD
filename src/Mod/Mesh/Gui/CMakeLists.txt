@@ -15,8 +15,7 @@ set(MeshGui_LIBS
     FreeCADGui
 )
 
-generate_from_xml(ViewProviderMeshPy)
-generate_from_py_(ViewProviderMeshPy)
+generate_from_py(ViewProviderMeshPy)
 
 SET(MeshGui_XML_SRCS
     ViewProviderMeshPy.xml

@@ -72,15 +72,10 @@ if(BUILD_FEM_VTK)
         FemPostBranchFilterPy.xml
         FemPostBranchFilterPyImp.cpp
     )
-    generate_from_xml(FemPostObjectPy)
-    generate_from_xml(FemPostPipelinePy)
-    generate_from_xml(FemPostFilterPy)
-    generate_from_xml(FemPostBranchFilterPy)
-
-    generate_from_py_(FemPostObjectPy)
-    generate_from_py_(FemPostPipelinePy)
-    generate_from_py_(FemPostFilterPy)
-    generate_from_py_(FemPostBranchFilterPy)
+    generate_from_py(FemPostObjectPy)
+    generate_from_py(FemPostPipelinePy)
+    generate_from_py(FemPostFilterPy)
+    generate_from_py(FemPostBranchFilterPy)
 
 endif(BUILD_FEM_VTK)
 SOURCE_GROUP("Python" FILES ${Python_SRCS})

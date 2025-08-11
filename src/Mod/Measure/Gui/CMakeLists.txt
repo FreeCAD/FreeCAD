@@ -28,8 +28,7 @@ SET(MeasureGui_UIC_SRCS
     DlgPrefsMeasureAppearanceImp.ui
 )
 
-generate_from_xml(QuickMeasurePy)
-generate_from_py_(QuickMeasurePy)
+generate_from_py(QuickMeasurePy)
 
 SET(MeasureGui_SRCS
     ${CMAKE_SOURCE_DIR}/src/Mod/Measure/InitGui.py
