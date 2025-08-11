@@ -308,7 +308,7 @@ class CrowdinUpdater:
         files_info = self._get_files_info()
         futures = []
 
-        with concurrent.futures.ThreadPoolExecutor() as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
             for ts_file in ts_files:
                 if self.multithread:
                     future = executor.submit(
@@ -320,6 +320,7 @@ class CrowdinUpdater:
 
         # This blocks until all futures are complete and will also throw any exception
         for future in futures:
+            print(f"{future.result()} done.")
             future.result()
 
 
