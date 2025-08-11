@@ -68,6 +68,7 @@ SET(CAMSimulator_SRCS_Core
 
 
 generate_from_xml(CAMSimPy)
+generate_from_py_(CAMSimPy)
 
 
 SOURCE_GROUP("Module" FILES ${CAMSimulator_SRCS_Module})
