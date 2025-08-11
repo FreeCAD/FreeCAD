@@ -22,8 +22,8 @@ modeler made primarily to design real-life objects of any size.
 Parametric modeling allows you to easily modify your design by going back into 
 your model history to change its parameters. 
 
-* **Create 3D from 2D and back** FreeCAD lets you to sketch geometry constrained
- 2D shapes and use them as a base to build other objects. 
+* **Create 3D from 2D and back** FreeCAD lets you sketch geometry-constrained
+ 2D shapes and use them as a base to build other objects.
  It contains many components to adjust dimensions or extract design details from 
  3D models to create high quality production-ready drawings.
 

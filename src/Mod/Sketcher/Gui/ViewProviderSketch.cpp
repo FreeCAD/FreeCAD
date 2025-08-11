@@ -3259,7 +3259,7 @@ void ViewProviderSketch::UpdateSolverInformation()
     bool hasMalformed = getSketchObject()->getLastHasMalformedConstraints();
 
     if (getSketchObject()->Geometry.getSize() == 0) {
-        signalSetUp(QStringLiteral("empty_sketch"), tr("Empty sketch"), QString(), QString());
+        signalSetUp(QStringLiteral("empty"), tr("Empty sketch"), QString(), QString());
     }
     else if (dofs < 0 || hasConflicts) {// over-constrained sketch
         signalSetUp(

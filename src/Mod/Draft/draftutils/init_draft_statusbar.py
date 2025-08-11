@@ -238,7 +238,7 @@ def init_draft_statusbar_snap():
 
     # check if the toolbar is available, without it the required actions
     # may be missing:
-    if mw.findChild(QtWidgets.QToolBar, "Draft snap") is None:
+    if mw.findChild(QtWidgets.QToolBar, "Draft Snap") is None:
         return
 
     # snap widget:

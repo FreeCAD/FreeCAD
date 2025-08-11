@@ -195,6 +195,20 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
     auto viewOrientationFactor =
         ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider);
 
+    // Origin point
+    auto preselectcross = ViewProviderSketchCoinAttorney::getPreselectCross(viewProvider);
+    if (preselectcross == 0) {  // 0 means the RootPoint is preselected
+        editModeScenegraphNodes.OriginPointMaterial->diffuseColor =
+            drawingParameters.PreselectColor;
+    }
+    else {
+        editModeScenegraphNodes.OriginPointMaterial->diffuseColor =
+            drawingParameters.FullyConstraintElementColor;
+    }
+    editModeScenegraphNodes.OriginPointCoordinate->point.set1Value(
+        0,
+        SbVec3f(0, 0, viewOrientationFactor * drawingParameters.zRootPoint));
+
     for (auto l = 0; l < geometryLayerParameters.getCoinLayerCount(); l++) {
         float x, y, z;
         int PtNum = editModeScenegraphNodes.PointsMaterials[l]->diffuseColor.getNum();
@@ -224,7 +238,7 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
             else if (issketchinvalid) {
                 pcolor[i] = drawingParameters.InvalidSketchColor;
             }
-            else if (!(i == 0 && l == 0) && sketchFullyConstrained) {
+            else if (sketchFullyConstrained) {
                 // root point is not coloured nor external
                 pcolor[i] = drawingParameters.FullyConstrainedColor;
             }
@@ -302,37 +316,32 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
                                              drawingParameters.zMidPoints,
                                              drawingParameters.zMidPoints);
 
-        for (int i = 0; i < PtNum; i++) {  // 0 is the origin
-            if (i == 0 && l == 0) {        // reset root point to lowest
-                pverts[i].setValue(0, 0, viewOrientationFactor * drawingParameters.zRootPoint);
+        for (int i = 0; i < PtNum; i++) {
+            if (!coinMapping.isValidPointId(i, l)) {
+                continue;
             }
-            else {
-                if (!coinMapping.isValidPointId(i, l)) {
-                    continue;
+
+            int GeoId = coinMapping.getPointGeoId(i, l);
+            Sketcher::PointPos PosId = coinMapping.getPointPosId(i, l);
+            pverts[i].getValue(x, y, z);
+            auto geom = geolistfacade.getGeometryFacadeFromGeoId(GeoId);
+            bool isExternal = GeoId < -1;
+
+            if (geom) {
+                z = viewOrientationFactor * zNormPoint;
+
+                if (isCoincident(GeoId, PosId)) {
+                    z = viewOrientationFactor * drawingParameters.zLowPoints;
                 }
-
-                int GeoId = coinMapping.getPointGeoId(i, l);
-                Sketcher::PointPos PosId = coinMapping.getPointPosId(i, l);
-                pverts[i].getValue(x, y, z);
-                auto geom = geolistfacade.getGeometryFacadeFromGeoId(GeoId);
-                bool isExternal = GeoId < -1;
-
-                if (geom) {
-                    z = viewOrientationFactor * zNormPoint;
-
-                    if (isCoincident(GeoId, PosId)) {
-                        z = viewOrientationFactor * drawingParameters.zLowPoints;
+                else {
+                    if (isExternal || isInternalAlignedGeom(GeoId)) {
+                        z = viewOrientationFactor * drawingParameters.zRootPoint;
                     }
-                    else {
-                        if (isExternal || isInternalAlignedGeom(GeoId)) {
-                            z = viewOrientationFactor * drawingParameters.zRootPoint;
-                        }
-                        else if (geom->getConstruction()) {
-                            z = viewOrientationFactor * zConstrPoint;
-                        }
+                    else if (geom->getConstruction()) {
+                        z = viewOrientationFactor * zConstrPoint;
                     }
-                    pverts[i].setValue(x, y, z);
                 }
+                pverts[i].setValue(x, y, z);
             }
         }
 
@@ -349,9 +358,8 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
         MultiFieldId preselectpointmfid;
 
         if (preselectcross == 0) {
-            if (l == 0) {  // cross only in layer 0
-                pcolor[0] = drawingParameters.PreselectColor;
-            }
+            editModeScenegraphNodes.OriginPointMaterial->diffuseColor =
+                drawingParameters.PreselectColor;
         }
         else if (preselectpoint != -1) {
             preselectpointmfid = coinMapping.getIndexLayer(preselectpoint);
@@ -367,7 +375,8 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
 
         ViewProviderSketchCoinAttorney::executeOnSelectionPointSet(
             viewProvider,
-            [pcolor,
+            [this,
+             pcolor,
              pverts,
              PtNum,
              preselectpointmfid,
@@ -377,6 +386,13 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
              raisePoint,
              viewOrientationFactor](const int i) {
                 auto pointindex = coinMapping.getIndexLayer(i);
+
+                if (pointindex.fieldIndex == -1) {  // It's the origin
+                    editModeScenegraphNodes.OriginPointMaterial->diffuseColor =
+                        drawingParameters.SelectColor;
+                    return;
+                }
+
                 if (layerId == pointindex.layerId && pointindex.fieldIndex >= 0
                     && pointindex.fieldIndex < PtNum) {
                     pcolor[pointindex.fieldIndex] = (preselectpointmfid == pointindex)

@@ -32,16 +32,17 @@
 #include <string>
 #endif
 
-#include <App/DocumentObjectPy.h>
 #include <Base/Console.h>
 #include <Base/Matrix.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
 
+#include "Expression.h"
 #include "Application.h"
 #include "ElementNamingUtils.h"
 #include "Document.h"
 #include "DocumentObject.h"
+#include "DocumentObjectPy.h"
 #include "DocumentObjectExtension.h"
 #include "DocumentObjectGroup.h"
 #include "GeoFeatureGroupExtension.h"
@@ -715,10 +716,33 @@ bool DocumentObject::removeDynamicProperty(const char* name)
 bool DocumentObject::renameDynamicProperty(Property* prop, const char* name)
 {
     std::string oldName = prop->getName();
+
+    auto expressions = ExpressionEngine.getExpressions();
+    std::vector<std::shared_ptr<Expression>> expressionsToMove;
+    std::vector<App::ObjectIdentifier> idsWithExprsToRemove;
+
+    for (const auto& [id, expr] : expressions) {
+        if (id.getProperty() == prop) {
+            idsWithExprsToRemove.push_back(id);
+            expressionsToMove.emplace_back(expr->copy());
+        }
+    }
+
+    for (const auto& it : idsWithExprsToRemove) {
+        ExpressionEngine.setValue(it, std::shared_ptr<Expression>());
+    }
+
     bool renamed = TransactionalObject::renameDynamicProperty(prop, name);
     if (renamed && _pDoc) {
         _pDoc->renamePropertyOfObject(this, prop, oldName.c_str());
     }
+
+
+    App::ObjectIdentifier idNewProp(prop->getContainer(), std::string(name));
+    for (auto& exprToMove : expressionsToMove) {
+        ExpressionEngine.setValue(idNewProp, exprToMove);
+    }
+
     return renamed;
 }
 
