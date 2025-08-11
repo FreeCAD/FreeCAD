@@ -2479,7 +2479,7 @@ PlotWidget {
 SKETCHER
 ==================================================================================================*/
 
-Gui--StatefulLabel[state="empty_sketch"] {
+Gui--StatefulLabel[state="empty"] {
   color : @SketcherEmptySketchColor}
 Gui--StatefulLabel[state="under_constrained"] {
   color : @SketcherUnderConstrainedColor;
