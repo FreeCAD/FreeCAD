@@ -4,15 +4,8 @@ from Base.BaseClass import BaseClass
 from Base.Metadata import constmethod, export
 
 @export(
-    Father="BaseClassPy",
-    Name="VoronoiEdgePy",
-    Twin="VoronoiEdge",
-    TwinPointer="VoronoiEdge",
-    PythonName="Path.Voronoi.Edge",
     Include="Mod/CAM/App/VoronoiEdge.h",
     Namespace="Path",
-    FatherInclude="Base/BaseClassPy.h",
-    FatherNamespace="Base",
     RichCompare=True,
     Constructor=True,
     Delete=True,

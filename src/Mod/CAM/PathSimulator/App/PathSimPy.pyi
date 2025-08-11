@@ -4,14 +4,8 @@ from Base.BaseClass import BaseClass
 from Base.Metadata import export
 
 @export(
-    Father="BaseClassPy",
-    Name="PathSimPy",
-    Twin="PathSim",
-    TwinPointer="PathSim",
     Include="Mod/CAM/PathSimulator/App/PathSim.h",
     Namespace="PathSimulator",
-    FatherInclude="Base/BaseClassPy.h",
-    FatherNamespace="Base",
     ReadOnly=["Tool"],
     Constructor=True,
     Delete=True,

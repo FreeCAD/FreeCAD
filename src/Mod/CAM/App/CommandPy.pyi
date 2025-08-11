@@ -3,14 +3,8 @@ from Base.Persistence import Persistence
 from Base.Placement import Placement
 
 @export(
-    Father="PersistencePy",
-    Name="CommandPy",
-    Twin="Command",
-    TwinPointer="Command",
     Include="Mod/CAM/App/Command.h",
     Namespace="Path",
-    FatherInclude="Base/PersistencePy.h",
-    FatherNamespace="Base",
     Delete=True,
     Constructor=True,
 )

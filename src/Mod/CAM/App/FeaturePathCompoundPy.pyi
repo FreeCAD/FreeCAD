@@ -5,14 +5,8 @@ from Base.Metadata import export
 from App.DocumentObject import DocumentObject
 
 @export(
-    Father="DocumentObjectPy",
-    Name="FeaturePathCompoundPy",
-    Twin="FeaturePathCompound",
-    TwinPointer="FeatureCompound",
     Include="Mod/CAM/App/FeaturePathCompound.h",
     Namespace="Path",
-    FatherInclude="App/DocumentObjectPy.h",
-    FatherNamespace="App",
 )
 class FeaturePathCompoundPy(DocumentObject):
     """
