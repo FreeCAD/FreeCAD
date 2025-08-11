@@ -301,6 +301,7 @@ TaskDlgDraftParameters::TaskDlgDraftParameters(ViewProviderDraft* DressUpView)
     parameter = new TaskDraftParameters(DressUpView);
 
     Content.push_back(parameter);
+    Content.push_back(preview);
 }
 
 TaskDlgDraftParameters::~TaskDlgDraftParameters() = default;
