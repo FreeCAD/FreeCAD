@@ -10,13 +10,13 @@
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="241"/>
-      <source>Add tool</source>
-      <translation>新增工具</translation>
+      <source>Tool</source>
+      <translation>工具</translation>
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="242"/>
-      <source>Add a tool shape to the robot</source>
-      <translation>将工具形状添加到机器人</translation>
+      <source>Adds a tool shape to the robot</source>
+      <translation type="unfinished">Adds a tool shape to the robot</translation>
     </message>
   </context>
   <context>
@@ -28,13 +28,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="164"/>
-      <source>Place robot...</source>
-      <translation>放置机器人...</translation>
+      <source>Place Robot</source>
+      <translation type="unfinished">Place Robot</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="165"/>
-      <source>Place a robot (experimental!)</source>
-      <translation>放置机器人(实验!)</translation>
+      <source>Places a robot in the scene</source>
+      <translation type="unfinished">Places a robot in the scene</translation>
     </message>
   </context>
   <context>
@@ -46,13 +46,13 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="56"/>
-      <source>Create trajectory</source>
-      <translation>创建轨迹</translation>
+      <source>Trajectory</source>
+      <translation>轨迹</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="57"/>
-      <source>Create a new empty trajectory</source>
-      <translation>创建一个新的空轨迹</translation>
+      <source>Creates a new empty trajectory</source>
+      <translation type="unfinished">Creates a new empty trajectory</translation>
     </message>
   </context>
   <context>
@@ -64,13 +64,13 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="361"/>
-      <source>Edge to Trajectory...</source>
-      <translation>边缘到轨迹...</translation>
+      <source>Edge to Trajectory</source>
+      <translation type="unfinished">Edge to Trajectory</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="362"/>
-      <source>Generate a Trajectory from a set of edges</source>
-      <translation>由一组边生成轨迹</translation>
+      <source>Generates a trajectory from the selected edges</source>
+      <translation type="unfinished">Generates a trajectory from the selected edges</translation>
     </message>
   </context>
   <context>
@@ -82,13 +82,13 @@
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="47"/>
-      <source>Kuka compact subroutine...</source>
-      <translation>库卡精简子程式...</translation>
+      <source>Kuka Compact Subroutine</source>
+      <translation type="unfinished">Kuka Compact Subroutine</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="48"/>
-      <source>Export the trajectory as a compact KRL subroutine.</source>
-      <translation>以精简 KRL 子程式导出轨迹。</translation>
+      <source>Exports the trajectory as a compact KRL subroutine</source>
+      <translation type="unfinished">Exports the trajectory as a compact KRL subroutine</translation>
     </message>
   </context>
   <context>
@@ -100,13 +100,13 @@
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="122"/>
-      <source>Kuka full subroutine...</source>
-      <translation>库卡完整子例程...</translation>
+      <source>Kuka Full Subroutine</source>
+      <translation type="unfinished">Kuka Full Subroutine</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="123"/>
-      <source>Export the trajectory as a full KRL subroutine.</source>
-      <translation>导出轨迹为完整 KRL 子例程.</translation>
+      <source>Exports the trajectory as a full KRL subroutine</source>
+      <translation type="unfinished">Exports the trajectory as a full KRL subroutine</translation>
     </message>
   </context>
   <context>
@@ -123,8 +123,8 @@
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="194"/>
-      <source>Insert a Kuka IR125 into the document.</source>
-      <translation>将库卡 IR125 导入文档.</translation>
+      <source>Inserts a Kuka IR125 robot into the scene</source>
+      <translation type="unfinished">Inserts a Kuka IR125 robot into the scene</translation>
     </message>
   </context>
   <context>
@@ -141,8 +141,8 @@
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="99"/>
-      <source>Insert a Kuka IR16 into the document.</source>
-      <translation>将库卡 IR16 导入文档.</translation>
+      <source>Inserts a Kuka IR16 robot into the scene</source>
+      <translation type="unfinished">Inserts a Kuka IR16 robot into the scene</translation>
     </message>
   </context>
   <context>
@@ -159,8 +159,8 @@
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="147"/>
-      <source>Insert a Kuka IR210 into the document.</source>
-      <translation>将库卡 IR210 导入文档.</translation>
+      <source>Inserts a Kuka IR210 robot into the scene</source>
+      <translation type="unfinished">Inserts a Kuka IR210 robot into the scene</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="48"/>
-      <source>Insert a Kuka IR500 into the document.</source>
-      <translation>将库卡 IR500 导入文档.</translation>
+      <source>Inserts a Kuka IR500 into the document</source>
+      <translation type="unfinished">Inserts a Kuka IR500 into the document</translation>
     </message>
   </context>
   <context>
@@ -195,8 +195,8 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="91"/>
-      <source>Insert robot Tool location into trajectory</source>
-      <translation>导入机器人工具位置到轨迹</translation>
+      <source>Inserts the robot tool location into the trajectory</source>
+      <translation type="unfinished">Inserts the robot tool location into the trajectory</translation>
     </message>
   </context>
   <context>
@@ -208,13 +208,13 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="159"/>
-      <source>Insert in trajectory</source>
-      <translation>在轨迹中插入</translation>
+      <source>Insert in Trajectory</source>
+      <translation type="unfinished">Insert in Trajectory</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="160"/>
-      <source>Insert preselection position into trajectory (W)</source>
-      <translation>预选位置插入轨迹(W)</translation>
+      <source>Inserts the preselection position into the trajectory (W)</source>
+      <translation type="unfinished">Inserts the preselection position into the trajectory (W)</translation>
     </message>
   </context>
   <context>
@@ -226,9 +226,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="111"/>
+      <source>Move to Home</source>
+      <translation type="unfinished">Move to Home</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="112"/>
-      <source>Move to home</source>
-      <translation>移动到初始</translation>
+      <source>Moves to the home position</source>
+      <translation type="unfinished">Moves to the home position</translation>
     </message>
   </context>
   <context>
@@ -240,13 +244,13 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="236"/>
-      <source>Set default orientation</source>
-      <translation>设置默认方向</translation>
+      <source>Set Default Orientation</source>
+      <translation type="unfinished">Set Default Orientation</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="238"/>
-      <source>Set the default orientation for subsequent commands for waypoint creation</source>
-      <translation>设置随后命令的默认方向，以创建航点</translation>
+      <source>Sets the default orientation for subsequent commands for waypoint creation</source>
+      <translation type="unfinished">Sets the default orientation for subsequent commands for waypoint creation</translation>
     </message>
   </context>
   <context>
@@ -258,13 +262,13 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="280"/>
-      <source>Set default values</source>
-      <translation>设置默认值</translation>
+      <source>Set Default Values</source>
+      <translation type="unfinished">Set Default Values</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="281"/>
-      <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
-      <translation>设置为随后创建航点命令的速度、加速和连续性的默认值</translation>
+      <source>Sets the default values for speed, acceleration, and continuity for subsequent commands of waypoint creation</source>
+      <translation type="unfinished">Sets the default values for speed, acceleration, and continuity for subsequent commands of waypoint creation</translation>
     </message>
   </context>
   <context>
@@ -276,45 +280,49 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="52"/>
+      <source>Set Home Position</source>
+      <translation type="unfinished">Set Home Position</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="53"/>
-      <source>Set the home position</source>
-      <translation>设置初始位置</translation>
+      <source>Sets the home position</source>
+      <translation type="unfinished">Sets the home position</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotSimulate</name>
     <message>
-      <location filename="../../Command.cpp" line="211"/>
+      <location filename="../../Command.cpp" line="212"/>
       <source>Robot</source>
       <translation>机器人</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="212"/>
-      <source>Simulate a trajectory</source>
-      <translation>模拟轨迹</translation>
+      <location filename="../../Command.cpp" line="213"/>
+      <source>Simulate Trajectory</source>
+      <translation type="unfinished">Simulate Trajectory</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="213"/>
-      <source>Run a simulation on a trajectory</source>
-      <translation>在轨迹上模拟</translation>
+      <location filename="../../Command.cpp" line="214"/>
+      <source>Simulates robot movement along a selected trajectory</source>
+      <translation type="unfinished">Simulates robot movement along a selected trajectory</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotTrajectoryCompound</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="483"/>
+      <location filename="../../CommandTrajectory.cpp" line="482"/>
       <source>Robot</source>
       <translation>机器人</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="484"/>
-      <source>Trajectory compound...</source>
-      <translation>复合轨迹...</translation>
+      <location filename="../../CommandTrajectory.cpp" line="483"/>
+      <source>Trajectory Compound</source>
+      <translation type="unfinished">Trajectory Compound</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="485"/>
-      <source>Group and connect some trajectories to one</source>
-      <translation>将轨迹组合并连接成一个</translation>
+      <location filename="../../CommandTrajectory.cpp" line="484"/>
+      <source>Groups and connects multiple trajectories into one</source>
+      <translation type="unfinished">Groups and connects multiple trajectories into one</translation>
     </message>
   </context>
   <context>
@@ -326,26 +334,26 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="427"/>
-      <source>Dress-up trajectory...</source>
-      <translation>修饰轨迹...</translation>
+      <source>Dress-Up Trajectory</source>
+      <translation type="unfinished">Dress-Up Trajectory</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="429"/>
-      <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-      <translation>创建覆盖轨迹部分设定的修饰对象</translation>
+      <location filename="../../CommandTrajectory.cpp" line="428"/>
+      <source>Creates a dress-up object that overrides aspects of a trajectory</source>
+      <translation type="unfinished">Creates a dress-up object that overrides aspects of a trajectory</translation>
     </message>
   </context>
   <context>
     <name>Gui::TaskView::TaskWatcherCommands</name>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
-      <source>Trajectory tools</source>
-      <translation>轨迹工具</translation>
+      <source>Trajectory Tools</source>
+      <translation type="unfinished">Trajectory Tools</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
-      <source>Robot tools</source>
-      <translation>机器人工具</translation>
+      <source>Robot Tools</source>
+      <translation type="unfinished">Robot Tools</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
@@ -356,16 +364,16 @@
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../Command.cpp" line="71"/>
+      <location filename="../../Command.cpp" line="130"/>
+      <location filename="../../Command.cpp" line="236"/>
+      <location filename="../../CommandExport.cpp" line="62"/>
+      <location filename="../../CommandExport.cpp" line="137"/>
       <location filename="../../CommandInsertRobot.cpp" line="260"/>
       <location filename="../../CommandTrajectory.cpp" line="106"/>
       <location filename="../../CommandTrajectory.cpp" line="173"/>
       <location filename="../../CommandTrajectory.cpp" line="192"/>
-      <location filename="../../CommandTrajectory.cpp" line="464"/>
-      <location filename="../../Command.cpp" line="71"/>
-      <location filename="../../Command.cpp" line="130"/>
-      <location filename="../../Command.cpp" line="235"/>
-      <location filename="../../CommandExport.cpp" line="62"/>
-      <location filename="../../CommandExport.cpp" line="137"/>
+      <location filename="../../CommandTrajectory.cpp" line="463"/>
       <source>Wrong selection</source>
       <translation>选择错误</translation>
     </message>
@@ -380,20 +388,20 @@
       <translation>选择一个机器人</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="107"/>
-      <location filename="../../Command.cpp" line="236"/>
+      <location filename="../../Command.cpp" line="237"/>
       <location filename="../../CommandExport.cpp" line="63"/>
       <location filename="../../CommandExport.cpp" line="138"/>
+      <location filename="../../CommandTrajectory.cpp" line="107"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>选择一个机器人和一个轨迹对象.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="243"/>
+      <location filename="../../Command.cpp" line="244"/>
       <source>Trajectory not valid</source>
       <translation>无效轨迹</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="244"/>
+      <location filename="../../Command.cpp" line="245"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
       <translation>需要至少两个航点来模拟。</translation>
     </message>
@@ -467,7 +475,7 @@
       <translation>加速度: (如 1 m/s^2 或 3 cm/s^2)</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="465"/>
+      <location filename="../../CommandTrajectory.cpp" line="464"/>
       <source>Select the Trajectory which you want to dress up.</source>
       <translation>选择您要遵循的轨迹.</translation>
     </message>
@@ -477,14 +485,14 @@
       <translation>修改</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="74"/>
+      <location filename="../../Workbench.cpp" line="73"/>
       <source>No robot files installed</source>
       <translation>未安装机器人文件</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="75"/>
-      <source>Please visit %1 and copy the files to %2</source>
-      <translation>请访问 %1 并复制文件到 %2</translation>
+      <location filename="../../Workbench.cpp" line="74"/>
+      <source>Visit %1 and copy the files to %2</source>
+      <translation type="unfinished">Visit %1 and copy the files to %2</translation>
     </message>
   </context>
   <context>
@@ -554,8 +562,8 @@
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="29"/>
-      <source>Hide / Show</source>
-      <translation>隐藏/显示</translation>
+      <source>Hide/Show</source>
+      <translation type="unfinished">Hide/Show</translation>
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="47"/>
@@ -569,8 +577,8 @@
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="72"/>
-      <source>Sizing Value:</source>
-      <translation>调整大小的值:</translation>
+      <source>Sizing Value</source>
+      <translation type="unfinished">Sizing Value</translation>
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="103"/>
@@ -753,7 +761,7 @@
     </message>
     <message>
       <location filename="../../TaskRobotMessages.ui" line="20"/>
-      <source>clear</source>
+      <source>Clear</source>
       <translation>清除</translation>
     </message>
   </context>
@@ -853,65 +861,65 @@
       <translation>修饰参数</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="20"/>
-      <source>Speed &amp; Acceleration:</source>
-      <translation>速度和加速度:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="29"/>
-      <source>Speed:</source>
-      <translation>速度:</translation>
-    </message>
-    <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="55"/>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="92"/>
       <source>Use</source>
       <translation>使用</translation>
     </message>
     <message>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="20"/>
+      <source>Speed &amp; acceleration</source>
+      <translation type="unfinished">Speed &amp; acceleration</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="29"/>
+      <source>Speed</source>
+      <translation>速度</translation>
+    </message>
+    <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="66"/>
-      <source>Accel:</source>
-      <translation>加速:</translation>
+      <source>Acceleration</source>
+      <translation type="unfinished">Acceleration</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="102"/>
-      <source>Don't change Cont</source>
-      <translation>不要更改连续</translation>
+      <source>Do not change continuous mode</source>
+      <translation type="unfinished">Do not change continuous mode</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="107"/>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="108"/>
       <source>Continues</source>
       <translation>连续</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="112"/>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="113"/>
       <source>Discontinues</source>
       <translation>中止</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="127"/>
-      <source>Position and Orientation:</source>
-      <translation>位置和方向:</translation>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="128"/>
+      <source>Position and orientation</source>
+      <translation type="unfinished">Position and orientation</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="159"/>
-      <source>Don't change Position &amp; Orientation</source>
-      <translation>不要改变位置和方向</translation>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="160"/>
+      <source>Don not change position &amp; orientation</source>
+      <translation type="unfinished">Don not change position &amp; orientation</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="164"/>
-      <source>Use Orientation</source>
-      <translation>使用方向</translation>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="165"/>
+      <source>Use orientation</source>
+      <translation type="unfinished">Use orientation</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="169"/>
-      <source>Add Position</source>
-      <translation>添加位置</translation>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="170"/>
+      <source>Add position</source>
+      <translation type="unfinished">Add position</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="174"/>
-      <source>Add Orientation</source>
-      <translation>添加定位</translation>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="175"/>
+      <source>Add orientation</source>
+      <translation type="unfinished">Add orientation</translation>
     </message>
   </context>
   <context>
@@ -923,18 +931,18 @@
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
-      <source>Insert Robots</source>
-      <translation>导入机器人</translation>
+      <source>Insert Robot</source>
+      <translation>插入机器人</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="50"/>
+      <source>Export Trajectory</source>
+      <translation type="unfinished">Export Trajectory</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>&amp;Robot</source>
       <translation>机器人(&amp;R)</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="50"/>
-      <source>Export trajectory</source>
-      <translation>导出轨迹</translation>
     </message>
   </context>
 </TS>

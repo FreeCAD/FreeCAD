@@ -10,13 +10,13 @@
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="241"/>
-      <source>Add tool</source>
-      <translation>Προσθήκη εργαλείου</translation>
+      <source>Tool</source>
+      <translation>Εργαλείο</translation>
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="242"/>
-      <source>Add a tool shape to the robot</source>
-      <translation>Προσθήκη ενός σχήματος εργαλείου στο ρομπότ</translation>
+      <source>Adds a tool shape to the robot</source>
+      <translation type="unfinished">Adds a tool shape to the robot</translation>
     </message>
   </context>
   <context>
@@ -28,13 +28,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="164"/>
-      <source>Place robot...</source>
-      <translation>Τοποθέτηση ρομπότ...</translation>
+      <source>Place Robot</source>
+      <translation type="unfinished">Place Robot</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="165"/>
-      <source>Place a robot (experimental!)</source>
-      <translation>Τοποθέτηση ενός ρομπότ (πειραματική!)</translation>
+      <source>Places a robot in the scene</source>
+      <translation type="unfinished">Places a robot in the scene</translation>
     </message>
   </context>
   <context>
@@ -46,13 +46,13 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="56"/>
-      <source>Create trajectory</source>
-      <translation>Δημιουργία τροχιάς</translation>
+      <source>Trajectory</source>
+      <translation type="unfinished">Trajectory</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="57"/>
-      <source>Create a new empty trajectory</source>
-      <translation>Δημιουργήστε μια νέα κενή τροχία</translation>
+      <source>Creates a new empty trajectory</source>
+      <translation type="unfinished">Creates a new empty trajectory</translation>
     </message>
   </context>
   <context>
@@ -64,13 +64,13 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="361"/>
-      <source>Edge to Trajectory...</source>
-      <translation>Ακμή της Τροχιάς...</translation>
+      <source>Edge to Trajectory</source>
+      <translation type="unfinished">Edge to Trajectory</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="362"/>
-      <source>Generate a Trajectory from a set of edges</source>
-      <translation>Δημιουργήστε μια Τροχιά από ένα σύνολο ακμών</translation>
+      <source>Generates a trajectory from the selected edges</source>
+      <translation type="unfinished">Generates a trajectory from the selected edges</translation>
     </message>
   </context>
   <context>
@@ -82,13 +82,13 @@
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="47"/>
-      <source>Kuka compact subroutine...</source>
-      <translation>Συμπαγής υπορουτίνα Kuka...</translation>
+      <source>Kuka Compact Subroutine</source>
+      <translation type="unfinished">Kuka Compact Subroutine</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="48"/>
-      <source>Export the trajectory as a compact KRL subroutine.</source>
-      <translation>Εξαγωγή της τροχιάς ως μιας συμπαγούς υπορουτίνας KRL.</translation>
+      <source>Exports the trajectory as a compact KRL subroutine</source>
+      <translation type="unfinished">Exports the trajectory as a compact KRL subroutine</translation>
     </message>
   </context>
   <context>
@@ -100,13 +100,13 @@
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="122"/>
-      <source>Kuka full subroutine...</source>
-      <translation>Πλήρης υπορουτίνα Kuka...</translation>
+      <source>Kuka Full Subroutine</source>
+      <translation type="unfinished">Kuka Full Subroutine</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="123"/>
-      <source>Export the trajectory as a full KRL subroutine.</source>
-      <translation>Εξαγωγή της τροχιάς ως μιας πλήρους υπορουτίνας KRL.</translation>
+      <source>Exports the trajectory as a full KRL subroutine</source>
+      <translation type="unfinished">Exports the trajectory as a full KRL subroutine</translation>
     </message>
   </context>
   <context>
@@ -123,8 +123,8 @@
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="194"/>
-      <source>Insert a Kuka IR125 into the document.</source>
-      <translation>Εισαγωγή ενός ρομπότ Kuka IR125 στο έγγραφο.</translation>
+      <source>Inserts a Kuka IR125 robot into the scene</source>
+      <translation type="unfinished">Inserts a Kuka IR125 robot into the scene</translation>
     </message>
   </context>
   <context>
@@ -141,8 +141,8 @@
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="99"/>
-      <source>Insert a Kuka IR16 into the document.</source>
-      <translation>Εισαγωγή ενός ρομπότ Kuka IR16 στο έγγραφο.</translation>
+      <source>Inserts a Kuka IR16 robot into the scene</source>
+      <translation type="unfinished">Inserts a Kuka IR16 robot into the scene</translation>
     </message>
   </context>
   <context>
@@ -159,8 +159,8 @@
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="147"/>
-      <source>Insert a Kuka IR210 into the document.</source>
-      <translation>Εισαγωγή ενός ρομπότ Kuka IR210 στο έγγραφο.</translation>
+      <source>Inserts a Kuka IR210 robot into the scene</source>
+      <translation type="unfinished">Inserts a Kuka IR210 robot into the scene</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="48"/>
-      <source>Insert a Kuka IR500 into the document.</source>
-      <translation>Εισαγωγή ενός ρομπότ Kuka IR500 στο έγγραφο.</translation>
+      <source>Inserts a Kuka IR500 into the document</source>
+      <translation type="unfinished">Inserts a Kuka IR500 into the document</translation>
     </message>
   </context>
   <context>
@@ -195,8 +195,8 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="91"/>
-      <source>Insert robot Tool location into trajectory</source>
-      <translation>Εισαγωγή της θέσης του Εργαλείου ρομπότ στην τροχιά</translation>
+      <source>Inserts the robot tool location into the trajectory</source>
+      <translation type="unfinished">Inserts the robot tool location into the trajectory</translation>
     </message>
   </context>
   <context>
@@ -208,13 +208,13 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="159"/>
-      <source>Insert in trajectory</source>
-      <translation>Εισαγωγή στην τροχιά</translation>
+      <source>Insert in Trajectory</source>
+      <translation type="unfinished">Insert in Trajectory</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="160"/>
-      <source>Insert preselection position into trajectory (W)</source>
-      <translation>Εισαγωγή της θέσης προεπιλογής στην τροχιά (W)</translation>
+      <source>Inserts the preselection position into the trajectory (W)</source>
+      <translation type="unfinished">Inserts the preselection position into the trajectory (W)</translation>
     </message>
   </context>
   <context>
@@ -226,9 +226,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="111"/>
+      <source>Move to Home</source>
+      <translation type="unfinished">Move to Home</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="112"/>
-      <source>Move to home</source>
-      <translation>Μετακίνηση στην θέση εκκίνησης</translation>
+      <source>Moves to the home position</source>
+      <translation type="unfinished">Moves to the home position</translation>
     </message>
   </context>
   <context>
@@ -240,13 +244,13 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="236"/>
-      <source>Set default orientation</source>
-      <translation>Ορισμός προεπιλεγμένου προσανατολισμού</translation>
+      <source>Set Default Orientation</source>
+      <translation type="unfinished">Set Default Orientation</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="238"/>
-      <source>Set the default orientation for subsequent commands for waypoint creation</source>
-      <translation>Ορισμός του προεπιλεγμένου προσανατολισμού για μεταγενέστερες εντολές δημιουργίας σημείου διέλευσης</translation>
+      <source>Sets the default orientation for subsequent commands for waypoint creation</source>
+      <translation type="unfinished">Sets the default orientation for subsequent commands for waypoint creation</translation>
     </message>
   </context>
   <context>
@@ -258,13 +262,13 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="280"/>
-      <source>Set default values</source>
-      <translation>Ορισμός προεπιλεγμένων τιμών</translation>
+      <source>Set Default Values</source>
+      <translation type="unfinished">Set Default Values</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="281"/>
-      <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
-      <translation>Ορισμός προεπιλεγμένων τιμών ταχύτητας, επιτάχυνσης και συνέχειας για μεταγενέστερες εντολές δημιουργίας σημείου διέλευσης</translation>
+      <source>Sets the default values for speed, acceleration, and continuity for subsequent commands of waypoint creation</source>
+      <translation type="unfinished">Sets the default values for speed, acceleration, and continuity for subsequent commands of waypoint creation</translation>
     </message>
   </context>
   <context>
@@ -276,45 +280,49 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="52"/>
+      <source>Set Home Position</source>
+      <translation type="unfinished">Set Home Position</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="53"/>
-      <source>Set the home position</source>
-      <translation>Ορισμός της θέσης εκκίνησης</translation>
+      <source>Sets the home position</source>
+      <translation type="unfinished">Sets the home position</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotSimulate</name>
     <message>
-      <location filename="../../Command.cpp" line="211"/>
+      <location filename="../../Command.cpp" line="212"/>
       <source>Robot</source>
       <translation>Ρομπότ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="212"/>
-      <source>Simulate a trajectory</source>
-      <translation>Προσομοίωση μιας τροχιάς</translation>
+      <location filename="../../Command.cpp" line="213"/>
+      <source>Simulate Trajectory</source>
+      <translation type="unfinished">Simulate Trajectory</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="213"/>
-      <source>Run a simulation on a trajectory</source>
-      <translation>Εκτέλεση μιας προσομοίωσης τροχιάς</translation>
+      <location filename="../../Command.cpp" line="214"/>
+      <source>Simulates robot movement along a selected trajectory</source>
+      <translation type="unfinished">Simulates robot movement along a selected trajectory</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotTrajectoryCompound</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="483"/>
+      <location filename="../../CommandTrajectory.cpp" line="482"/>
       <source>Robot</source>
       <translation>Ρομπότ</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="484"/>
-      <source>Trajectory compound...</source>
-      <translation>Σύνθετη τροχιά...</translation>
+      <location filename="../../CommandTrajectory.cpp" line="483"/>
+      <source>Trajectory Compound</source>
+      <translation type="unfinished">Trajectory Compound</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="485"/>
-      <source>Group and connect some trajectories to one</source>
-      <translation>Ομαδοποίηση και ένωση μερικών τροχιών σε μια</translation>
+      <location filename="../../CommandTrajectory.cpp" line="484"/>
+      <source>Groups and connects multiple trajectories into one</source>
+      <translation type="unfinished">Groups and connects multiple trajectories into one</translation>
     </message>
   </context>
   <context>
@@ -326,26 +334,26 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="427"/>
-      <source>Dress-up trajectory...</source>
-      <translation>Αναδιαμόρφωση τροχιάς...</translation>
+      <source>Dress-Up Trajectory</source>
+      <translation type="unfinished">Dress-Up Trajectory</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="429"/>
-      <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-      <translation>Δημιουργήστε ένα αντικείμενο αναδιαμόρφωσης που αντικαθιστά κάποιες πτυχές μιας τροχιάς</translation>
+      <location filename="../../CommandTrajectory.cpp" line="428"/>
+      <source>Creates a dress-up object that overrides aspects of a trajectory</source>
+      <translation type="unfinished">Creates a dress-up object that overrides aspects of a trajectory</translation>
     </message>
   </context>
   <context>
     <name>Gui::TaskView::TaskWatcherCommands</name>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
-      <source>Trajectory tools</source>
-      <translation>Εργαλεία τροχιάς</translation>
+      <source>Trajectory Tools</source>
+      <translation type="unfinished">Trajectory Tools</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
-      <source>Robot tools</source>
-      <translation>Εργαλεία ρομπότ</translation>
+      <source>Robot Tools</source>
+      <translation type="unfinished">Robot Tools</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
@@ -356,16 +364,16 @@
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../Command.cpp" line="71"/>
+      <location filename="../../Command.cpp" line="130"/>
+      <location filename="../../Command.cpp" line="236"/>
+      <location filename="../../CommandExport.cpp" line="62"/>
+      <location filename="../../CommandExport.cpp" line="137"/>
       <location filename="../../CommandInsertRobot.cpp" line="260"/>
       <location filename="../../CommandTrajectory.cpp" line="106"/>
       <location filename="../../CommandTrajectory.cpp" line="173"/>
       <location filename="../../CommandTrajectory.cpp" line="192"/>
-      <location filename="../../CommandTrajectory.cpp" line="464"/>
-      <location filename="../../Command.cpp" line="71"/>
-      <location filename="../../Command.cpp" line="130"/>
-      <location filename="../../Command.cpp" line="235"/>
-      <location filename="../../CommandExport.cpp" line="62"/>
-      <location filename="../../CommandExport.cpp" line="137"/>
+      <location filename="../../CommandTrajectory.cpp" line="463"/>
       <source>Wrong selection</source>
       <translation>Λάθος επιλογή</translation>
     </message>
@@ -380,20 +388,20 @@
       <translation>Επιλέξτε ένα Ρομπότ</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="107"/>
-      <location filename="../../Command.cpp" line="236"/>
+      <location filename="../../Command.cpp" line="237"/>
       <location filename="../../CommandExport.cpp" line="63"/>
       <location filename="../../CommandExport.cpp" line="138"/>
+      <location filename="../../CommandTrajectory.cpp" line="107"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Επιλέξτε ένα Ρομπότ και ένα Αντικείμενο Τροχιάς.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="243"/>
+      <location filename="../../Command.cpp" line="244"/>
       <source>Trajectory not valid</source>
       <translation>Η τροχιά δεν είναι έγκυρη</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="244"/>
+      <location filename="../../Command.cpp" line="245"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
       <translation>Απαιτούνται τουλάχιστον δύο σημεία της τροχιά για προσομοίωση.</translation>
     </message>
@@ -467,7 +475,7 @@
       <translation>επιτάχυνση: (π.χ. 1 μέτρο/δευτερόλεπτο^2 ή 3 εκατοστά/δευτερόλεπτο^2)</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="465"/>
+      <location filename="../../CommandTrajectory.cpp" line="464"/>
       <source>Select the Trajectory which you want to dress up.</source>
       <translation>Επιλέξτε την Τροχιά που θέλετε να αναδιαμορφώσετε.</translation>
     </message>
@@ -477,14 +485,14 @@
       <translation>Τροποποίηση</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="74"/>
+      <location filename="../../Workbench.cpp" line="73"/>
       <source>No robot files installed</source>
       <translation>Δεν έχουν εγκατασταθεί αρχεία ρομπότ</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="75"/>
-      <source>Please visit %1 and copy the files to %2</source>
-      <translation>Παρακαλώ επισκεφθείτε το %1 και αντιγράψτε τα αρχεία στο %2</translation>
+      <location filename="../../Workbench.cpp" line="74"/>
+      <source>Visit %1 and copy the files to %2</source>
+      <translation type="unfinished">Visit %1 and copy the files to %2</translation>
     </message>
   </context>
   <context>
@@ -554,8 +562,8 @@
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="29"/>
-      <source>Hide / Show</source>
-      <translation>Απόκρυψη / Εμφάνιση</translation>
+      <source>Hide/Show</source>
+      <translation type="unfinished">Hide/Show</translation>
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="47"/>
@@ -569,8 +577,8 @@
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="72"/>
-      <source>Sizing Value:</source>
-      <translation>Τιμή Μεγέθους:</translation>
+      <source>Sizing Value</source>
+      <translation type="unfinished">Sizing Value</translation>
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="103"/>
@@ -753,8 +761,8 @@
     </message>
     <message>
       <location filename="../../TaskRobotMessages.ui" line="20"/>
-      <source>clear</source>
-      <translation>εκκαθάριση</translation>
+      <source>Clear</source>
+      <translation>Εκκαθάριση</translation>
     </message>
   </context>
   <context>
@@ -853,65 +861,65 @@
       <translation type="unfinished">Dress Up Parameter</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="20"/>
-      <source>Speed &amp; Acceleration:</source>
-      <translation>Ταχύτητα &amp; Επιτάχυνση:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="29"/>
-      <source>Speed:</source>
-      <translation>Ταχύτητα:</translation>
-    </message>
-    <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="55"/>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="92"/>
       <source>Use</source>
       <translation>Χρήση</translation>
     </message>
     <message>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="20"/>
+      <source>Speed &amp; acceleration</source>
+      <translation type="unfinished">Speed &amp; acceleration</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="29"/>
+      <source>Speed</source>
+      <translation>Ταχύτητα</translation>
+    </message>
+    <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="66"/>
-      <source>Accel:</source>
-      <translation>Επιτάχυνση:</translation>
+      <source>Acceleration</source>
+      <translation type="unfinished">Acceleration</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="102"/>
-      <source>Don't change Cont</source>
-      <translation>Διατήρηση της Συνέχειας</translation>
+      <source>Do not change continuous mode</source>
+      <translation type="unfinished">Do not change continuous mode</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="107"/>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="108"/>
       <source>Continues</source>
       <translation>Συνεχίζει</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="112"/>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="113"/>
       <source>Discontinues</source>
       <translation>Διακόπτεται</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="127"/>
-      <source>Position and Orientation:</source>
-      <translation>Θέση και Προσανατολισμός:</translation>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="128"/>
+      <source>Position and orientation</source>
+      <translation type="unfinished">Position and orientation</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="159"/>
-      <source>Don't change Position &amp; Orientation</source>
-      <translation>Διατήρηση Θέσης &amp; Προσανατολισμού</translation>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="160"/>
+      <source>Don not change position &amp; orientation</source>
+      <translation type="unfinished">Don not change position &amp; orientation</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="164"/>
-      <source>Use Orientation</source>
-      <translation>Χρήση Προσανατολισμού</translation>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="165"/>
+      <source>Use orientation</source>
+      <translation type="unfinished">Use orientation</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="169"/>
-      <source>Add Position</source>
-      <translation>Προσθήκη Θέσης</translation>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="170"/>
+      <source>Add position</source>
+      <translation type="unfinished">Add position</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="174"/>
-      <source>Add Orientation</source>
-      <translation>Προσθήκη Προσανατολισμού</translation>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="175"/>
+      <source>Add orientation</source>
+      <translation type="unfinished">Add orientation</translation>
     </message>
   </context>
   <context>
@@ -923,18 +931,18 @@
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
-      <source>Insert Robots</source>
+      <source>Insert Robot</source>
       <translation>Εισαγωγή Ρομπότ</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="50"/>
+      <source>Export Trajectory</source>
+      <translation type="unfinished">Export Trajectory</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>&amp;Robot</source>
       <translation>&amp;Ρομπότ</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="50"/>
-      <source>Export trajectory</source>
-      <translation>Εξαγωγή τροχιάς</translation>
     </message>
   </context>
 </TS>
