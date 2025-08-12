@@ -3004,6 +3004,11 @@ void Application::LoadParameters()
         versionSuffix = "Version unknown";
     }
 
+    // Add "-dev" if this is a development version
+    if (isDevelopmentVersion()) {
+        versionSuffix += "-dev";
+    }
+
     // Build versioned config directory path: UserConfigPath/version +suffix/
     std::string baseConfigPath = mConfig["UserConfigPath"];
     if (!baseConfigPath.empty() && (baseConfigPath.back() == '/' || baseConfigPath.back() == '\\')) {
@@ -3031,6 +3036,10 @@ void Application::LoadParameters()
         int minor = itMinor != mConfig.end() ? std::stoi(itMinor->second) : 0;
         if (minor > 0) {
             std::string prevVersion = fmt::format("Version {}.{}", major, minor - 1);
+            // Add "-dev" if current is dev, check previous dev as well
+            if (isDevelopmentVersion()) {
+                prevVersion += "-dev";
+            }
             candidateDirs.push_back(baseConfigPath + PATHSEP + prevVersion + PATHSEP);
         }
         // 2. Top-level config dir (unversioned)
