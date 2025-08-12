@@ -358,7 +358,7 @@ CmdRobotEdge2Trac::CmdRobotEdge2Trac()
 {
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
-    sMenuText = QT_TR_NOOP("Edge to Trajectory…");
+    sMenuText = QT_TR_NOOP("Edge to Trajectory");
     sToolTipText = QT_TR_NOOP("Generates a trajectory from the selected edges");
     sWhatsThis = "Robot_Edge2Trac";
     sStatusTip = sToolTipText;
@@ -424,7 +424,7 @@ CmdRobotTrajectoryDressUp::CmdRobotTrajectoryDressUp()
 {
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
-    sMenuText = QT_TR_NOOP("Dress-Up Trajectory…");
+    sMenuText = QT_TR_NOOP("Dress-Up Trajectory");
     sToolTipText = QT_TR_NOOP("Creates a dress-up object that overrides aspects of a trajectory");
     sWhatsThis = "Robot_TrajectoryDressUp";
     sStatusTip = sToolTipText;
@@ -480,7 +480,7 @@ CmdRobotTrajectoryCompound::CmdRobotTrajectoryCompound()
 {
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
-    sMenuText = QT_TR_NOOP("Trajectory Compound…");
+    sMenuText = QT_TR_NOOP("Trajectory Compound");
     sToolTipText = QT_TR_NOOP("Groups and connects multiple trajectories into one");
     sWhatsThis = "Robot_TrajectoryCompound";
     sStatusTip = sToolTipText;

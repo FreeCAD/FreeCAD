@@ -610,9 +610,7 @@ StdCmdExportDependencyGraph::StdCmdExportDependencyGraph()
 {
     sGroup        = "Tools";
     sMenuText     = QT_TR_NOOP("Export Dependency &Graph");
-
-    QT_TR_NOOP("Exports the dependency graph as a Graphviz (.gv) file");
-
+    sToolTipText  = QT_TR_NOOP("Exports the dependency graph as a Graphviz (.gv) file");
     sStatusTip    = sToolTipText;
     sWhatsThis    = "Std_ExportDependencyGraph";
     eType         = 0;
@@ -2068,3 +2066,4 @@ void CreateDocCommands()
 }
 
 } // namespace Gui
+

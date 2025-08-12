@@ -52,6 +52,7 @@
 #include "Command.h"
 #include "Dialogs/DlgExpressionInput.h"
 #include "Tools.h"
+#include "Widgets.h"
 
 
 using namespace Gui;
@@ -618,6 +619,7 @@ void QuantitySpinBox::openFormulaDialog()
     QPoint pos = mapToGlobal(QPoint(0,0));
     box->move(pos-box->expressionPosition());
     box->setExpressionInputSize(width(), height());
+    Gui::adjustDialogPosition(box);
 
     Q_EMIT showFormulaDialog(true);
 }

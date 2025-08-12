@@ -140,6 +140,7 @@ TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad *PadView, bool /*newO
     : TaskDlgExtrudeParameters(PadView), parameters(new TaskPadParameters(PadView))
 {
     Content.push_back(parameters);
+    Content.push_back(preview);
 }
 
 //==== calls from the TaskView ===============================================================

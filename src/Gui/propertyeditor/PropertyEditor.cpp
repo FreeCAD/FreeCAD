@@ -696,12 +696,25 @@ void PropertyEditor::removeProperty(const App::Property& prop)
     }
 }
 
+void PropertyEditor::renameProperty(const App::Property& prop)
+{
+    for (auto & it : propList) {
+        // find the given property in the list and rename it if it's there
+        auto pos = std::ranges::find(it.second, &prop);
+        if (pos != it.second.end()) {
+            propertyModel->renameProperty(prop);
+            break;
+        }
+    }
+}
+
 enum MenuAction
 {
     MA_AutoExpand,
     MA_ShowHidden,
     MA_Expression,
     MA_RemoveProp,
+    MA_RenameProp,
     MA_AddProp,
     MA_EditPropGroup,
     MA_Transient,
@@ -757,6 +770,15 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
         menu.addAction(tr("Rename Property Group"))->setData(QVariant(MA_EditPropGroup));
     }
 
+    // rename property
+    if (props.size() == 1) {
+        auto prop = *props.begin();
+        if (prop->testStatus(App::Property::PropDynamic)
+            && !prop->testStatus(App::Property::LockDynamic)) {
+            menu.addAction(tr("Rename property"))->setData(QVariant(MA_RenameProp));
+        }
+    }
+
     // remove property
     bool canRemove = !props.empty();
     unsigned long propType = 0;
@@ -798,7 +820,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             contextIndex = propertyModel->buddy(contextIndex);
             setCurrentIndex(contextIndex);
             // menu.addSeparator();
-            menu.addAction(tr("Expression…"))->setData(QVariant(MA_Expression));
+            menu.addAction(tr("Expression"))->setData(QVariant(MA_Expression));
         }
     }
 
@@ -912,6 +934,38 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             Gui::Dialog::DlgAddProperty dlg(Gui::getMainWindow(), std::move(containers));
             dlg.exec();
             return;
+        }
+        case MA_RenameProp: {
+            if (props.size() != 1) {
+                break;
+            }
+
+            App::Property* prop = *props.begin();
+            if (!prop->testStatus(App::Property::PropDynamic)
+                || prop->testStatus(App::Property::LockDynamic)) {
+                break;
+            }
+
+            App::AutoTransaction committer("Rename property");
+            const char* oldName = prop->getName();
+            QString res = QInputDialog::getText(Gui::getMainWindow(),
+                                                tr("Rename property"),
+                                                tr("Property name"),
+                                                QLineEdit::Normal,
+                                                QString::fromUtf8(oldName));
+            if (res.isEmpty()) {
+                break;
+            }
+
+            std::string newName = res.toUtf8().constData();
+            try {
+                prop->getContainer()->renameDynamicProperty(prop, newName.c_str());
+            }
+            catch (Base::Exception& e) {
+                e.reportException();
+                break;
+            }
+            break;
         }
         case MA_EditPropGroup: {
             // This operation is not undoable yet.

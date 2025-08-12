@@ -71,7 +71,6 @@ public:
                         QWidget * widget = nullptr ) override;
     bool sceneEventFilter(QGraphicsItem *watched, QEvent *event) override;
 
-
     void toggleCache(bool state) override;
     void toggleCosmeticLines(bool state);
     void setViewPartFeature(TechDraw::DrawViewPart *obj);
@@ -134,6 +133,8 @@ protected:
     QGIFace* drawFace(TechDraw::FacePtr f, int idx);
 
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
 
     TechDraw::DrawHatch* faceIsHatched(int i, std::vector<TechDraw::DrawHatch*> hatchObjs) const;
     TechDraw::DrawGeomHatch* faceIsGeomHatched(int i, std::vector<TechDraw::DrawGeomHatch*> geomObjs) const;
@@ -148,12 +149,14 @@ protected:
     bool formatGeomFromCenterLine(std::string cTag, QGIEdge* item);
 
     bool showCenterMarks();
+    QList<QGraphicsItem*> m_vertexItems;
     bool showVertices();
 
 private:
     QList<QGraphicsItem*> deleteItems;
     PathBuilder* m_pathBuilder;
     TechDraw::LineGenerator* m_dashedLineGenerator;
+    QMetaObject::Connection m_selectionChangedConnection;
 
 };
 

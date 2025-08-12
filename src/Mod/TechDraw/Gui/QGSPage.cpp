@@ -1080,8 +1080,6 @@ void QGSPage::saveSvg(QString filename)
 
     Gui::Selection().clearSelection();
 
-    bool saveState = m_vpPage->getFrameState();
-    m_vpPage->setFrameState(false);
     m_vpPage->setTemplateMarkers(false);
     setExportingSvg(true);
 
@@ -1109,8 +1107,6 @@ void QGSPage::saveSvg(QString filename)
     render(&p, targetRect, sourceRect);//note: scene render, not item render!
     p.end();
 
-    m_vpPage->setFrameState(saveState);
-    m_vpPage->setTemplateMarkers(saveState);
     setExportingSvg(false);
     if (templateVisible && svgTemplate) {
         svgTemplate->show();

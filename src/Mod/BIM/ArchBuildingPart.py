@@ -821,7 +821,7 @@ class ViewProviderBuildingPart:
             menu.addAction(actionActivate)
 
         actionSetWorkingPlane = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),
-                                              translate("Arch", "Set working plane"),
+                                              translate("Arch", "Set Working Plane"),
                                               menu)
         QtCore.QObject.connect(actionSetWorkingPlane,
                                QtCore.SIGNAL("triggered()"),
@@ -829,7 +829,7 @@ class ViewProviderBuildingPart:
         menu.addAction(actionSetWorkingPlane)
 
         actionWriteCamera = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),
-                                          translate("Arch", "Write camera position"),
+                                          translate("Arch", "Write Camera Position"),
                                           menu)
         QtCore.QObject.connect(actionWriteCamera,
                                QtCore.SIGNAL("triggered()"),
@@ -843,14 +843,14 @@ class ViewProviderBuildingPart:
                                self.createGroup)
         menu.addAction(actionCreateGroup)
 
-        actionReorder = QtGui.QAction(translate("Arch", "Reorder children alphabetically"),
+        actionReorder = QtGui.QAction(translate("Arch", "Reorder Children Alphabetically"),
                                       menu)
         QtCore.QObject.connect(actionReorder,
                                QtCore.SIGNAL("triggered()"),
                                self.reorder)
         menu.addAction(actionReorder)
 
-        actionCloneUp = QtGui.QAction(translate("Arch", "Clone level up"),
+        actionCloneUp = QtGui.QAction(translate("Arch", "Clone Level Up"),
                                       menu)
         QtCore.QObject.connect(actionCloneUp,
                                QtCore.SIGNAL("triggered()"),

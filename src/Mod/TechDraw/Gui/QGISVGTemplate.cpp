@@ -52,7 +52,6 @@
 #include "DrawGuiUtil.h"
 
 
-
 namespace {
     QFont getFont(QDomElement& elem)
     {
@@ -323,12 +322,13 @@ void QGISVGTemplate::createClickHandles()
         auto item(new TemplateTextField(this, svgTemplate, name.toStdString()));
         auto autoValue = svgTemplate->getAutofillByEditableName(name);
         item->setAutofill(autoValue);
-
+        constexpr double TopPadFactor{0.15};
+        constexpr double BottomPadFactor{0.2};
         QMarginsF padding(
             0.0,
-            0.15 * tightTextRect.height(),
+            TopPadFactor * tightTextRect.height(),
             0.0,
-            0.2 * tightTextRect.height()
+            BottomPadFactor * tightTextRect.height()
         );
         QRectF clickrect = tightTextRect.marginsAdded(padding);
         QPolygonF clickpoly = SVGTransform.map(clickrect);
@@ -339,6 +339,7 @@ void QGISVGTemplate::createClickHandles()
         QPointF bottomRight = clickpoly.at(2);
         item->setLine(bottomLeft, bottomRight);
         item->setLineColor(PreferencesGui::templateClickBoxColor());
+        item->hideLine();
         item->setZValue(ZVALUE::SVGTEMPLATE + 1);
 
         addToGroup(item);

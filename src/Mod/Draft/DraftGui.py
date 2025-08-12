@@ -193,7 +193,7 @@ class DraftToolBar:
         self.baseWidget = DraftBaseWidget()
         self.tray = FreeCADGui.UiLoader().createWidget("Gui::ToolBar")
         self.tray.setObjectName("Draft tray")
-        self.tray.setWindowTitle("Draft tray")
+        self.tray.setWindowTitle("Draft Tray")
         self.toptray = self.tray
         self.bottomtray = self.tray
         self.setupTray()
@@ -525,24 +525,24 @@ class DraftToolBar:
         self.promptlabel.setText(translate("draft", "active command:"))
         self.cmdlabel.setText(translate("draft", "None"))
         self.cmdlabel.setToolTip(translate("draft", "Active Draft command"))
-        self.xValue.setToolTip(translate("draft", "X coordinate of point"))
+        self.xValue.setToolTip(translate("draft", "X coordinate of the point"))
         self.labelx.setText(translate("draft", "X"))
         self.labely.setText(translate("draft", "Y"))
         self.labelz.setText(translate("draft", "Z"))
-        self.yValue.setToolTip(translate("draft", "Y coordinate of point"))
-        self.zValue.setToolTip(translate("draft", "Z coordinate of point"))
-        self.pointButton.setText(translate("draft", "Enter point"))
+        self.yValue.setToolTip(translate("draft", "Y coordinate of the point"))
+        self.zValue.setToolTip(translate("draft", "Z coordinate of the point"))
+        self.pointButton.setText(translate("draft", "Enter Point"))
         self.pointButton.setToolTip(translate(
             "draft","Enter a point with given coordinates"))
         self.labellength.setText(translate("draft", "Length"))
         self.labelangle.setText(translate("draft", "Angle"))
-        self.lengthValue.setToolTip(translate("draft", "Length of current segment"))
-        self.angleValue.setToolTip(translate("draft", "Angle of current segment"))
+        self.lengthValue.setToolTip(translate("draft", "Length of the current segment"))
+        self.angleValue.setToolTip(translate("draft", "Angle of the current segment"))
         self.angleLock.setToolTip(translate(
-            "draft", "Check this to lock the current angle")\
+            "draft", "Locks the current angle")\
             + " (" + _get_incmd_shortcut("Length") + ")")
         self.labelRadius.setText(translate("draft", "Radius"))
-        self.radiusValue.setToolTip(translate("draft", "Radius of Circle"))
+        self.radiusValue.setToolTip(translate("draft", "Radius of the circle"))
         self.isRelative.setText(translate(
             "draft", "Relative") + " (" + _get_incmd_shortcut("Relative") + ")")
         self.isRelative.setToolTip(translate(
@@ -565,10 +565,10 @@ class DraftToolBar:
         self.continueCmd.setText(translate(
             "draft", "Continue") + " (" + _get_incmd_shortcut("Continue") + ")")
         self.continueCmd.setToolTip(translate(
-            "draft", "If checked, command will not finish until you press "
+            "draft", "If checked, the command will not finish until pressing "
                      + "the command button again"))
         self.chainedModeCmd.setText(translate("draft", "Chained mode"))
-        self.chainedModeCmd.setToolTip(translate("draft", "If checked, the next Dimension will be placed in a chain" \
+        self.chainedModeCmd.setToolTip(translate("draft", "If checked, the next dimension will be placed in a chain" \
                                        " with the previously placed Dimension"))
         self.occOffset.setText(translate("draft", "OCC-style offset"))
         self.occOffset.setToolTip(translate(
@@ -580,9 +580,9 @@ class DraftToolBar:
         self.closeButton.setToolTip(translate("draft", "Finishes and closes the current line"))
         self.wipeButton.setText(translate("draft", "Wipe") + " (" + _get_incmd_shortcut("Wipe") + ")")
         self.wipeButton.setToolTip(translate("draft", "Wipes the existing segments of this line and starts again from the last point"))
-        self.orientWPButton.setText(translate("draft", "Set WP") + " (" + _get_incmd_shortcut("SetWP") + ")")
+        self.orientWPButton.setText(translate("draft", "Set Working Plane") + " (" + _get_incmd_shortcut("SetWP") + ")")
         self.orientWPButton.setToolTip(translate("draft", "Reorients the working plane on the last segment"))
-        self.selectButton.setText(translate("draft", "Select edge") + " (" + _get_incmd_shortcut("SelectEdge") + ")")
+        self.selectButton.setText(translate("draft", "Select Edge") + " (" + _get_incmd_shortcut("SelectEdge") + ")")
         self.selectButton.setToolTip(translate("draft", "Selects an existing edge to be measured by this dimension"))
         self.numFacesLabel.setText(translate("draft", "Sides"))
         self.numFaces.setToolTip(translate("draft", "Number of sides"))
@@ -591,8 +591,8 @@ class DraftToolBar:
         self.isCopy.setToolTip(translate("draft", "If checked, objects will be copied instead of moved"))
         self.isSubelementMode.setText(translate("draft", "Modify subelements") + " (" + _get_incmd_shortcut("SubelementMode") + ")")
         self.isSubelementMode.setToolTip(translate("draft", "If checked, subelements will be modified instead of entire objects"))
-        self.textOkButton.setText(translate("draft", "Create text"))
-        self.textOkButton.setToolTip(translate("draft", "Press this button to create the text object, or finish your text with two blank lines"))
+        self.textOkButton.setText(translate("draft", "Create Text"))
+        self.textOkButton.setToolTip(translate("draft", "Creates the text object and finishes the command"))
         self.retranslateTray(widget)
 
         # Update the maximum width of the push buttons
@@ -614,8 +614,8 @@ class DraftToolBar:
 
     def retranslateTray(self,widget=None):
 
-        self.styleButton.setToolTip(translate("draft", "Change default style for new objects"))
-        self.constrButton.setToolTip(translate("draft", "Toggle construction mode"))
+        self.styleButton.setToolTip(translate("draft", "Changes the default style for new objects"))
+        self.constrButton.setToolTip(translate("draft", "Toggles construction mode"))
         self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))
 
 
@@ -773,7 +773,7 @@ class DraftToolBar:
 
     def labelUi(self,title=translate("draft","Label"),callback=None):
         w = QtWidgets.QWidget()
-        w.setWindowTitle(translate("draft","Label type"))
+        w.setWindowTitle(translate("draft","Label Type"))
         l = QtWidgets.QVBoxLayout(w)
         combo = QtWidgets.QComboBox()
         from draftobjects.label import get_label_types
@@ -1661,7 +1661,7 @@ class DraftToolBar:
                                  "Draft_Scale","Draft_Offset",
                                  "Draft_Trimex","Draft_Upgrade",
                                  "Draft_Downgrade","Draft_Edit"]
-                self.title = translate("draft", "Modify objects")
+                self.title = translate("draft", "Modify Objects")
             def shouldShow(self):
                 return (FreeCAD.ActiveDocument is not None) and (FreeCADGui.Selection.getSelection() != [])
 
@@ -1816,7 +1816,7 @@ class FacebinderTaskPanel:
         TaskPanel.setWindowTitle(QtWidgets.QApplication.translate("draft", "Faces", None))
         self.delButton.setText(QtWidgets.QApplication.translate("draft", "Remove", None))
         self.addButton.setText(QtWidgets.QApplication.translate("draft", "Add", None))
-        self.title.setText(QtWidgets.QApplication.translate("draft", "Facebinder elements", None))
+        self.title.setText(QtWidgets.QApplication.translate("draft", "Facebinder Elements", None))
 
 #def translateWidget(w, context=None, disAmb=None):
 #    '''translator for items where retranslateUi() is unavailable.

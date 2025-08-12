@@ -86,7 +86,7 @@ CmdPartDesignBody::CmdPartDesignBody()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("New Body");
-    sToolTipText  = QT_TR_NOOP("Creates a new body and activtes it");
+    sToolTipText  = QT_TR_NOOP("Creates a new body and activates it");
     sWhatsThis    = "PartDesign_Body";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Body";

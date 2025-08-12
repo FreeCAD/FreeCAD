@@ -55,10 +55,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskDressUpParameters */
 
 TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, bool selectEdges, bool selectFaces, QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap(DressUpView->featureIcon().c_str()),
-              DressUpView->menuName,
-              true,
-              parent)
+    : TaskFeatureParameters(DressUpView, parent, DressUpView->featureIcon(), DressUpView->menuName)
     , proxy(nullptr)
     , deleteAction(nullptr)
     , addAllEdgesAction(nullptr)
@@ -70,25 +67,12 @@ TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, b
     transactionID = DressUpView->getObject()->getDocument()->getBookedTransactionID();
 
     selectionMode = none;
-    showObject();
 }
 
 TaskDressUpParameters::~TaskDressUpParameters()
 {
     // make sure to remove selection gate in all cases
     Gui::Selection().rmvSelectionGate();
-}
-
-const QString TaskDressUpParameters::btnPreviewStr()
-{
-    const QString text{ tr("Preview") };
-    return text;
-}
-
-const QString TaskDressUpParameters::btnSelectStr()
-{
-    const QString text{ tr("Select") };
-    return text;
 }
 
 void TaskDressUpParameters::setupTransaction()
@@ -152,7 +136,7 @@ void TaskDressUpParameters::addAllEdges(QListWidget* widget)
     if (!base) {
         return;
     }
-    int count = Part::Feature::getTopoShape(base, Part::ShapeOption::ResolveLink 
+    int count = Part::Feature::getTopoShape(base, Part::ShapeOption::ResolveLink
                                                 | Part::ShapeOption::Transform).countSubShapes(TopAbs_EDGE);
     auto subValues = pcDressUp->Base.getSubValues(false);
     std::size_t len = subValues.size();
@@ -283,6 +267,16 @@ void TaskDressUpParameters::tryAddSelection(const std::string& doc,
     }
 }
 
+QString TaskDressUpParameters::startSelectionLabel()
+{
+    return tr("Select");
+}
+
+QString TaskDressUpParameters::stopSelectionLabel()
+{
+    return tr("Confirm Selection");
+}
+
 void TaskDressUpParameters::itemClickedTimeout() {
     // executed after double-click time passed
     wasDoubleClicked = false;
@@ -369,34 +363,7 @@ void TaskDressUpParameters::removeItemFromListWidget(QListWidget* widget, const 
 void TaskDressUpParameters::hideOnError()
 {
     App::DocumentObject* dressup = DressUpView->getObject();
-    if (dressup->isError())
-        hideObject();
-    else
-        showObject();
-}
-
-void TaskDressUpParameters::setDressUpVisibility(bool visible)
-{
-    App::DocumentObject* base = getBase();
-    if (base) {
-        App::DocumentObject* duv = DressUpView->getObject();
-        if (duv->Visibility.getValue() != visible) {
-            duv->Visibility.setValue(visible);
-        }
-        if (base->Visibility.getValue() == visible) {
-            base->Visibility.setValue(!visible);
-        }
-    }
-}
-
-void TaskDressUpParameters::hideObject()
-{
-    setDressUpVisibility(false);
-}
-
-void TaskDressUpParameters::showObject()
-{
-    setDressUpVisibility(true);
+    DressUpView->setErrorState(dressup->isError());
 }
 
 ViewProviderDressUp* TaskDressUpParameters::getDressUpView() const
@@ -428,22 +395,29 @@ void TaskDressUpParameters::setSelectionMode(selectionModes mode)
     setButtons(mode);
 
     if (mode == none) {
-        showObject();
-
         Gui::Selection().rmvSelectionGate();
 
         // remove any highlights and selections
         DressUpView->highlightReferences(false);
+
+        if (previouslyShownViewProvider != nullptr) {
+            // restore the previously shown view provider
+            previouslyShownViewProvider->show();
+            previouslyShownViewProvider = nullptr;
+        }
     }
     else {
-        hideObject();
-
         AllowSelectionFlags allow;
         allow.setFlag(AllowSelection::EDGE, allowEdges);
         allow.setFlag(AllowSelection::FACE, allowFaces);
         Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allow));
 
         DressUpView->highlightReferences(true);
+
+        // selection must come from the previous feature, we also need to remember the currently
+        // shown so we can restore it later
+        previouslyShownViewProvider = DressUpView->getBodyViewProvider()->getShownViewProvider();
+        DressUpView->showPreviousFeature(true);
     }
 
     Gui::Selection().clearSelection();

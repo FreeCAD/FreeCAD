@@ -863,7 +863,7 @@ void DlgMacroExecuteImp::onRenameButtonClicked()
     // query new name
     QString fn = QInputDialog::getText(this,
                                        tr("Renaming Macro File"),
-                                       tr("Enter new name:"),
+                                       tr("Enter new name"),
                                        QLineEdit::Normal,
                                        oldName,
                                        nullptr,
@@ -1024,7 +1024,7 @@ void DlgMacroExecuteImp::onDuplicateButtonClicked()
     // give user a chance to pick a different name from digitized name suggested
     QString fn = QInputDialog::getText(this,
                                        tr("Duplicate Macro"),
-                                       tr("Enter new name:"),
+                                       tr("Enter new name"),
                                        QLineEdit::Normal,
                                        oldNameDigitized,
                                        nullptr,

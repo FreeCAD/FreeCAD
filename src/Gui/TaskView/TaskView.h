@@ -29,6 +29,7 @@
 #include <QScrollArea>
 #include <QStackedWidget>
 
+#include <Base/Parameter.h>
 #include <Gui/QSint/include/QSint>
 #include <Gui/Selection/Selection.h>
 #include "TaskWatcher.h"
@@ -235,6 +236,8 @@ protected:
     void removeDialog(App::Document* doc);
     void removeDialog(std::vector<TaskInfo>::iterator infoIt);
 
+    void setShowTaskWatcher(bool show);
+
     std::vector<TaskWatcher*> ActiveWatcher;
     TaskPanel* TaskWatcherPanel;
 
@@ -242,6 +245,8 @@ protected:
     std::vector<TaskInfo> taskInfos;
     bool restoreWidth = false;
     int currentWidth = 0;
+    ParameterGrp::handle hGrp;
+    bool showTaskWatcher;
 
     Connection connectApplicationActiveDocument;
     Connection connectApplicationDeleteDocument;
@@ -249,6 +254,7 @@ protected:
     Connection connectApplicationUndoDocument;
     Connection connectApplicationRedoDocument;
     Connection connectApplicationInEdit;
+    Connection connectShowTaskWatcherSetting;
 };
 
 } //namespace TaskView

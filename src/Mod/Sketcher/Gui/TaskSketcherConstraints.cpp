@@ -963,7 +963,7 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
 
     //NOLINTBEGIN
     connectionConstraintsChanged = sketchView->signalConstraintsChanged.connect(
-        std::bind(&SketcherGui::TaskSketcherConstraints::updateList, this));
+        std::bind(&SketcherGui::TaskSketcherConstraints::slotConstraintsChanged, this));
     //NOLINTEND
 
     this->groupLayout()->addWidget(proxy);

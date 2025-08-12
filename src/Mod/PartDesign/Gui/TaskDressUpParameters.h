@@ -42,7 +42,7 @@ namespace Part {
 
 namespace PartDesignGui {
 
-class TaskDressUpParameters : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class TaskDressUpParameters : public TaskFeatureParameters, public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -53,12 +53,7 @@ public:
     const std::vector<std::string> getReferences() const;
     Part::Feature *getBase() const;
 
-    void hideObject();
-    void showObject();
     void setupTransaction();
-
-    /// Apply the changes made to the object to it
-    virtual void apply() {}
 
     int getTransactionID() const {
         return transactionID;
@@ -92,17 +87,6 @@ protected:
 
     ViewProviderDressUp* getDressUpView() const;
 
-    template<typename T = App::DocumentObject> T* getObject() const
-    {
-        static_assert(std::is_base_of<App::DocumentObject, T>::value, "Wrong template argument");
-
-        if (!DressUpView.expired()) {
-            return DressUpView->getObject<T>();
-        }
-
-        return nullptr;
-    }
-
 private:
     void tryAddSelection(const std::string& doc, const std::string& obj, const std::string& sub);
     void setDressUpVisibility(bool visible);
@@ -116,11 +100,13 @@ protected:
     selectionModes selectionMode;
     int transactionID;
 
-    static const QString btnPreviewStr();
-    static const QString btnSelectStr();
+    static QString stopSelectionLabel();
+    static QString startSelectionLabel();
 
 private:
     Gui::WeakPtrT<ViewProviderDressUp> DressUpView;
+
+    Gui::ViewProvider* previouslyShownViewProvider { nullptr };
 };
 
 /// simulation dialog for the TaskView

@@ -350,7 +350,7 @@ void SoFCColorBar::handleEvent (SoHandleEventAction *action)
                 }
 
                 menu.addSeparator();
-                QAction* option = menu.addAction(QObject::tr("Options…"));
+                QAction* option = menu.addAction(QObject::tr("Options"));
                 QAction* select = menu.exec(QCursor::pos());
 
                 if (select == option) {

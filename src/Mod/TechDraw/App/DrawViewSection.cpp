@@ -299,8 +299,7 @@ void DrawViewSection::onChanged(const App::Property* prop)
         return;
     }
 
-    if (prop == &SectionNormal ||
-        prop == &XDirection) {
+    if (prop == &SectionNormal) {
         Direction.setValue(SectionNormal.getValue());
         return;
     }
@@ -568,7 +567,7 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
 
 //! position, scale and rotate shape for buildGeometryObject
 //! save the cut shape for further processing
-TopoDS_Shape DrawViewSection::prepareShape(const TopoDS_Shape& rawShape, double shapeSize)
+TopoDS_Shape DrawViewSection::prepareShape(const TopoDS_Shape& uncenteredCutShape, double shapeSize)
 {
     (void)shapeSize;// shapeSize is not used in this base class, but is
                     // interesting for derived classes
@@ -578,11 +577,11 @@ TopoDS_Shape DrawViewSection::prepareShape(const TopoDS_Shape& rawShape, double 
         Base::Vector3d origin(0.0, 0.0, 0.0);
         m_projectionCS = getProjectionCS(origin);
         gp_Pnt inputCenter;
-        inputCenter = ShapeUtils::findCentroid(rawShape, m_projectionCS);
+        inputCenter = ShapeUtils::findCentroid(uncenteredCutShape, m_projectionCS);
         Base::Vector3d centroid(inputCenter.X(), inputCenter.Y(), inputCenter.Z());
 
-        m_cutShapeRaw = rawShape;
-        preparedShape = ShapeUtils::moveShape(rawShape, centroid * -1.0);
+        m_cutShapeRaw = uncenteredCutShape;
+        preparedShape = ShapeUtils::moveShape(uncenteredCutShape, centroid * -1.0);
         m_cutShape = preparedShape;
         m_saveCentroid = centroid;
 
@@ -652,7 +651,6 @@ void DrawViewSection::postHlrTasks()
     if (ScaleType.isValue("Automatic") && !checkFit()) {
         double newScale = autoScale();
         Scale.setValue(newScale);
-        Scale.purgeTouched();
         sectionExec(m_saveShape);
     }
     overrideKeepUpdated(false);
@@ -1067,7 +1065,7 @@ void DrawViewSection::setCSFromBase(const Base::Vector3d& localUnit)
     Base::Vector3d vXDir(newSectionCS.XDirection().X(),
                          newSectionCS.XDirection().Y(),
                          newSectionCS.XDirection().Z());
-    XDirection.setValue(vXDir);// XDir is for projection
+    XDirection.setValue(vXDir);
 }
 
 // reset the section CS based on an XY vector in current section CS
@@ -1230,6 +1228,8 @@ void DrawViewSection::setupObject()
 
 void DrawViewSection::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
 {
+    DrawViewPart::handleChangedPropertyType(reader, TypeName, prop);
+
     if (prop == &SectionOrigin) {
         // SectionOrigin was PropertyVector then briefly PropertyPosition, now back to PropertyVector
         App::PropertyPosition tmp;
@@ -1250,6 +1250,7 @@ void DrawViewSection::handleChangedPropertyType(Base::XMLReader &reader, const c
             tmp.Restore(reader);
             auto tmpValue = tmp.getValue();
             SectionNormal.setValue(tmpValue);
+            Direction.setValue(tmpValue);
         }
         return;
     }

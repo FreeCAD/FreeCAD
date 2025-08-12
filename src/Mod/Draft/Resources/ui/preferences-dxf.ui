@@ -78,7 +78,7 @@ a DXF file.</string>
    <item>
     <widget class="QGroupBox" name="groupBox_AutoUpdate">
      <property name="title">
-      <string>Automatic update (legacy importer/exporter only)</string>
+      <string>Automatic Update (Legacy Only)</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_AutoUpdate">
       <item>
@@ -501,7 +501,7 @@ instead of Draft or Part objects. This overrides the 'Import As' setting</string
    <item>
     <widget class="QGroupBox" name="groupBox_ExportOptions">
      <property name="title">
-      <string>Export options</string>
+      <string>Export Options</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_Export">
       <item>
@@ -541,7 +541,7 @@ instead of Draft or Part objects. This overrides the 'Import As' setting</string
         <item>
          <widget class="QLabel" name="label_maxsegmentlength">
           <property name="text">
-           <string>Max Spline Segment:</string>
+           <string>Maximum spline segment</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -551,8 +551,7 @@ instead of Draft or Part objects. This overrides the 'Import As' setting</string
         <item>
          <widget class="Gui::PrefDoubleSpinBox" name="spinBox_maxsegmentlength">
           <property name="toolTip">
-           <string>Maximum length of each of the polyline segments.
-If it is set to '0' the whole spline is treated as a straight segment.</string>
+           <string>Maximum length of each of the polyline segments. '0' treats the whole spline as a straight segment.</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

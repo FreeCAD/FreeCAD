@@ -102,7 +102,7 @@ void ViewProviderProjGroupItem::setupContextMenu(QMenu* menu, QObject* receiver,
     Q_UNUSED(receiver);
     Q_UNUSED(member);
     //QAction* act;
-    //act = menu->addAction(QObject::tr("Show drawing"), receiver, member);
+    //act = menu->addAction(QObject::tr("Show Drawing"), receiver, member);
 }
 
 bool ViewProviderProjGroupItem::setEdit(int ModNum)

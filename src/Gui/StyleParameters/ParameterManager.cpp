@@ -297,12 +297,12 @@ Value ParameterManager::resolve(const std::string& name, ResolveContext context)
     std::optional<Parameter> maybeParameter = this->parameter(name);
 
     if (!maybeParameter) {
-        Base::Console().warning("Requested non-existent design token '%s'.", name);
+        Base::Console().warning("Requested non-existent design token '%s'.\n", name);
         return std::string {};
     }
 
     if (context.visited.contains(name)) {
-        Base::Console().warning("The design token '%s' contains circular-reference.", name);
+        Base::Console().warning("The design token '%s' contains circular-reference.\n", name);
         return expression(name).value_or(std::string {});
     }
 
