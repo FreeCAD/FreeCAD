@@ -381,10 +381,10 @@ void SectionsPanel::clearSelection()
 
 void SectionsPanel::checkOpenCommand()
 {
-    if (checkCommand && !Gui::Command::hasPendingCommand()) {
+    if (checkCommand && !editedObject->getDocument()->hasPendingTransaction()) {
         std::string Msg("Edit ");
         Msg += editedObject->Label.getValue();
-        Gui::Command::openCommand(Msg.c_str());
+        editedObject->getDocument()->openTransaction(Msg.c_str());
         checkCommand = false;
     }
 }
@@ -614,6 +614,7 @@ void SectionsPanel::exitSelectionMode()
 // ----------------------------------------------------------------------------
 
 TaskSections::TaskSections(ViewProviderSections* vp, Surface::Sections* obj)
+    : editedObj(obj)
 {
     // first task box
     widget1 = new SectionsPanel(vp, obj);
@@ -622,6 +623,10 @@ TaskSections::TaskSections(ViewProviderSections* vp, Surface::Sections* obj)
 
 void TaskSections::setEditedObject(Surface::Sections* obj)
 {
+    if (editedObj != nullptr && obj != editedObj) {
+        editedObj->getDocument()->commitTransaction();
+    }
+    editedObj = obj;
     widget1->setEditedObject(obj);
 }
 
@@ -634,7 +639,7 @@ bool TaskSections::accept()
 {
     bool ok = widget1->accept();
     if (ok) {
-        Gui::Command::commitCommand();
+        editedObj->getDocument()->commitTransaction();
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
         Gui::Command::updateActive();
     }
@@ -646,7 +651,7 @@ bool TaskSections::reject()
 {
     bool ok = widget1->reject();
     if (ok) {
-        Gui::Command::abortCommand();
+        editedObj->getDocument()->abortTransaction();
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
         Gui::Command::updateActive();
     }

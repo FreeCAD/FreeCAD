@@ -197,7 +197,7 @@ public:
             info.emplace(sub, Base::Color::fromValue<QColor>(col));
         }
         if (tid == 0) {
-            tid = Gui::Command::openCommand(vpDoc->getDocument(), "Set colors");
+            tid = vpDoc->openCommand(QT_TRANSLATE_NOOP("Command", "Set colors"));
         }
         vp->setElementColors(info);
         touched = true;
@@ -207,7 +207,7 @@ public:
     void reset()
     {
         touched = false;
-        Gui::Command::abortCommand(tid);
+        App::GetApplication().abortTransaction(tid);
         Selection().clearSelection();
 
         Application::Instance->unsetEditDocumentIf([this](Gui::Document* editdoc) {
@@ -223,8 +223,8 @@ public:
             obj->getDocument()->recompute(obj->getInListRecursive());
             touched = false;
         }
-        Gui::Command::commitCommand(tid);
 
+        App::GetApplication().commitTransaction(tid);
         Application::Instance->unsetEditDocumentIf([this](Gui::Document* editdoc) {
             return editdoc->getEditViewProvider() == vp;
         });
