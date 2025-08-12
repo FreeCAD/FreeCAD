@@ -380,37 +380,38 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
     }
     else if(strcmp("ViewBottom",pMsg) == 0 ) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Bottom));
-        _viewer->viewAll();
         return true;
     }
     else if(strcmp("ViewFront",pMsg) == 0 ) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Front));
-        _viewer->viewAll();
         return true;
     }
     else if(strcmp("ViewLeft",pMsg) == 0 ) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Left));
-        _viewer->viewAll();
         return true;
     }
     else if(strcmp("ViewRear",pMsg) == 0 ) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Rear));
-        _viewer->viewAll();
         return true;
     }
     else if(strcmp("ViewRight",pMsg) == 0 ) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Right));
-        _viewer->viewAll();
         return true;
     }
     else if(strcmp("ViewTop",pMsg) == 0 ) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Top));
-        _viewer->viewAll();
         return true;
     }
     else if(strcmp("ViewAxo",pMsg) == 0 ) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Isometric));
-        _viewer->viewAll();
+        return true;
+    }
+    else if (strcmp("ViewDimetric", pMsg) == 0) {
+        _viewer->setCameraOrientation(Camera::rotation(Camera::Dimetric));
+        return true;
+    }
+    else if (strcmp("ViewTrimetric", pMsg) == 0) {
+        _viewer->setCameraOrientation(Camera::rotation(Camera::Trimetric));
         return true;
     }
     else if(strcmp("OrthographicCamera",pMsg) == 0 ) {
@@ -537,6 +538,18 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
         return true;
     }
     else if(strcmp("ViewAxo",pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("ViewDimetric", pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("ViewTrimetric", pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("OrthographicCamera", pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("PerspectiveCamera", pMsg) == 0) {
         return true;
     }
     else if(strcmp("GetCamera",pMsg) == 0) {

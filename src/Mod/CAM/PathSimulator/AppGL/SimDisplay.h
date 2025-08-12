@@ -85,7 +85,7 @@ protected:
 
 private:
     void UpdateCameraView(const SoCamera& camera);
-    void UpdateCameraProjection(const SoPerspectiveCamera& camera);
+    void UpdateCameraProjection(const SoCamera& camera);
 
     void UpdateViewMatrix();
     void UpdateProjectionMatrix();
@@ -112,7 +112,9 @@ protected:
     std::mt19937 generator;
     std::uniform_real_distribution<float> distr01;
 
+    bool mCameraPerspective = true;
     float mCameraHeightAngle = std::numbers::pi / 4;
+    float mCameraHeight = 100.0f;
     float mCameraNearDistance = 1.0f;
     float mCameraFarDistance = 100.0f;
     float mMaxStockDimension = 100.0f;

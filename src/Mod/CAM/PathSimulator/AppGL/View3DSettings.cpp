@@ -91,11 +91,7 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::
     // apply/overwrite settings to dummy viewer
 
     const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
-    if (Reason == "Orthographic"sv) {
-        // the new cam simulator currently only supports perspective camera
-        mView.setCameraType(SoPerspectiveCamera::getClassTypeId());
-    }
-    else if (Reason == "ShowNaviCube"sv) {
+    if (Reason == "ShowNaviCube"sv) {
         // always hide the navi cube
         mView.setEnabledNaviCube(false);
     }
