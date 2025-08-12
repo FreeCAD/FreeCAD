@@ -2994,14 +2994,14 @@ void Application::logStatus()
 
 void Application::LoadParameters()
 {
-    // Compose version suffix for directory, e.g. "Version 1.1"
+    // Compose version suffix for directory, e.g. "1.1"
     std::string versionSuffix;
     auto itMajor = mConfig.find("BuildVersionMajor");
     auto itMinor = mConfig.find("BuildVersionMinor");
     if (itMajor != mConfig.end() && itMinor != mConfig.end()) {
-        versionSuffix = fmt::format("Version {}.{}", itMajor->second, itMinor->second);
+        versionSuffix = fmt::format("{}.{}", itMajor->second, itMinor->second);
     } else {
-        versionSuffix = "Version unknown";
+        versionSuffix = "unknown";
     }
 
     // Add "-dev" if this is a development version
@@ -3023,6 +3023,7 @@ void Application::LoadParameters()
         try {
             std::filesystem::create_directories(versionedDir);
             created = true;
+            Base::Console().log("Created versioned config directory: %s\n", versionedDir.string().c_str());
         } catch (const std::exception& e) {
             Base::Console().warning("Failed to create versioned config directory: %s\n", e.what());
         }
@@ -3035,7 +3036,7 @@ void Application::LoadParameters()
         int major = itMajor != mConfig.end() ? std::stoi(itMajor->second) : 0;
         int minor = itMinor != mConfig.end() ? std::stoi(itMinor->second) : 0;
         if (minor > 0) {
-            std::string prevVersion = fmt::format("Version {}.{}", major, minor - 1);
+            std::string prevVersion = fmt::format("{}.{}", major, minor - 1);
             // Add "-dev" if current is dev, check previous dev as well
             if (isDevelopmentVersion()) {
                 prevVersion += "-dev";
