@@ -24,6 +24,7 @@
 #include <gtest/gtest.h>
 
 #include <Gui/Application.h>
+#include <Gui/Utilities.h>
 #include <Gui/StyleParameters/ParameterManager.h>
 
 using namespace Gui::StyleParameters;
@@ -65,28 +66,31 @@ TEST_F(ParameterManagerTest, BasicParameterResolution)
 {
     {
         auto result = manager.resolve("BaseSize");
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(result.has_value());
+        EXPECT_TRUE(std::holds_alternative<Numeric>(*result));
+        auto length = std::get<Numeric>(*result);
         EXPECT_DOUBLE_EQ(length.value, 16.0);  // Should get value from source2 (later source)
         EXPECT_EQ(length.unit, "px");
     }
 
     {
         auto result = manager.resolve("PrimaryColor");
-        EXPECT_TRUE(std::holds_alternative<QColor>(result));
-        auto color = std::get<QColor>(result);
-        EXPECT_EQ(color.red(), 255);
-        EXPECT_EQ(color.green(), 0);
-        EXPECT_EQ(color.blue(), 0);
+        EXPECT_TRUE(result.has_value());
+        EXPECT_TRUE(std::holds_alternative<Base::Color>(*result));
+        auto color = std::get<Base::Color>(*result);
+        EXPECT_EQ(color.r, 1);
+        EXPECT_EQ(color.g, 0);
+        EXPECT_EQ(color.b, 0);
     }
 
     {
         auto result = manager.resolve("SecondaryColor");
-        EXPECT_TRUE(std::holds_alternative<QColor>(result));
-        auto color = std::get<QColor>(result);
-        EXPECT_EQ(color.red(), 0);
-        EXPECT_EQ(color.green(), 255);
-        EXPECT_EQ(color.blue(), 0);
+        EXPECT_TRUE(result.has_value());
+        EXPECT_TRUE(std::holds_alternative<Base::Color>(*result));
+        auto color = std::get<Base::Color>(*result);
+        EXPECT_EQ(color.r, 0);
+        EXPECT_EQ(color.g, 1);
+        EXPECT_EQ(color.b, 0);
     }
 }
 
@@ -95,16 +99,16 @@ TEST_F(ParameterManagerTest, ParameterReferences)
 {
     {
         auto result = manager.resolve("Margin");
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(*result));
+        auto length = std::get<Numeric>(*result);
         EXPECT_DOUBLE_EQ(length.value, 32.0);  // @BaseSize * 2 = 16 * 2 = 32
         EXPECT_EQ(length.unit, "px");
     }
 
     {
         auto result = manager.resolve("Padding");
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(*result));
+        auto length = std::get<Numeric>(*result);
         EXPECT_DOUBLE_EQ(length.value, 8.0);  // @BaseSize / 2 = 16 / 2 = 8
         EXPECT_EQ(length.unit, "px");
     }
@@ -115,15 +119,15 @@ TEST_F(ParameterManagerTest, Caching)
 {
     // First resolution should cache the result
     auto result1 = manager.resolve("BaseSize");
-    EXPECT_TRUE(std::holds_alternative<Length>(result1));
+    EXPECT_TRUE(std::holds_alternative<Numeric>(*result1));
 
     // Second resolution should use cached value
     auto result2 = manager.resolve("BaseSize");
-    EXPECT_TRUE(std::holds_alternative<Length>(result2));
+    EXPECT_TRUE(std::holds_alternative<Numeric>(*result2));
 
     // Results should be identical
-    auto length1 = std::get<Length>(result1);
-    auto length2 = std::get<Length>(result2);
+    auto length1 = std::get<Numeric>(*result1);
+    auto length2 = std::get<Numeric>(*result2);
     EXPECT_DOUBLE_EQ(length1.value, length2.value);
     EXPECT_EQ(length1.unit, length2.unit);
 }
@@ -133,8 +137,8 @@ TEST_F(ParameterManagerTest, CacheInvalidation)
 {
     // Initial resolution
     auto result1 = manager.resolve("BaseSize");
-    EXPECT_TRUE(std::holds_alternative<Length>(result1));
-    auto length1 = std::get<Length>(result1);
+    EXPECT_TRUE(std::holds_alternative<Numeric>(*result1));
+    auto length1 = std::get<Numeric>(*result1);
     EXPECT_DOUBLE_EQ(length1.value, 16.0);
 
     // Reload should clear cache
@@ -142,8 +146,8 @@ TEST_F(ParameterManagerTest, CacheInvalidation)
 
     // Resolution after reload should work the same
     auto result2 = manager.resolve("BaseSize");
-    EXPECT_TRUE(std::holds_alternative<Length>(result2));
-    auto length2 = std::get<Length>(result2);
+    EXPECT_TRUE(std::holds_alternative<Numeric>(*result2));
+    auto length2 = std::get<Numeric>(*result2);
     EXPECT_DOUBLE_EQ(length2.value, 16.0);
     EXPECT_EQ(length1.unit, length2.unit);
 }
@@ -163,8 +167,8 @@ TEST_F(ParameterManagerTest, SourcePriority)
 
     // Should get value from the latest source (highest priority)
     auto result = manager.resolve("BaseSize");
-    EXPECT_TRUE(std::holds_alternative<Length>(result));
-    auto length = std::get<Length>(result);
+    EXPECT_TRUE(std::holds_alternative<Numeric>(*result));
+    auto length = std::get<Numeric>(*result);
     EXPECT_DOUBLE_EQ(length.value, 24.0);
     EXPECT_EQ(length.unit, "px");
 }
@@ -258,7 +262,7 @@ TEST_F(ParameterManagerTest, CircularReferenceDetection)
     // Should handle circular reference gracefully
     auto result = manager.resolve("A");
     // Should return the expression string as fallback
-    EXPECT_TRUE(std::holds_alternative<std::string>(result));
+    EXPECT_TRUE(std::holds_alternative<std::string>(*result));
 }
 
 // Test complex expressions
@@ -278,26 +282,26 @@ TEST_F(ParameterManagerTest, ComplexExpressions)
 
     {
         auto result = manager.resolve("ComplexMargin");
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(*result));
+        auto length = std::get<Numeric>(*result);
         EXPECT_DOUBLE_EQ(length.value, 40.0);  // (16 + 4) * 2 = 20 * 2 = 40
         EXPECT_EQ(length.unit, "px");
     }
 
     {
         auto result = manager.resolve("ComplexPadding");
-        EXPECT_TRUE(std::holds_alternative<Length>(result));
-        auto length = std::get<Length>(result);
+        EXPECT_TRUE(std::holds_alternative<Numeric>(*result));
+        auto length = std::get<Numeric>(*result);
         EXPECT_DOUBLE_EQ(length.value, 7.0);  // (16 - 2) / 2 = 14 / 2 = 7
         EXPECT_EQ(length.unit, "px");
     }
 
     {
         auto result = manager.resolve("ColorWithFunction");
-        EXPECT_TRUE(std::holds_alternative<QColor>(result));
-        auto color = std::get<QColor>(result);
+        EXPECT_TRUE(std::holds_alternative<Base::Color>(*result));
+        auto color = std::get<Base::Color>(*result).asValue<QColor>();
         // Should be lighter than the original red
-        EXPECT_GT(color.lightness(), QColor("#ff0000").lightness());
+        EXPECT_GT(color.lightness(), QColor(0xff0000).lightness());
     }
 }
 
@@ -306,8 +310,7 @@ TEST_F(ParameterManagerTest, ErrorHandling)
 {
     // Test non-existent parameter
     auto result = manager.resolve("NonExistent");
-    EXPECT_TRUE(std::holds_alternative<std::string>(result));
-    EXPECT_EQ(std::get<std::string>(result), "");
+    EXPECT_FALSE(result.has_value());
 
     // Test invalid expression
     auto invalidSource = std::make_unique<InMemoryParameterSource>(
@@ -322,5 +325,25 @@ TEST_F(ParameterManagerTest, ErrorHandling)
     // Should handle invalid expression gracefully
     auto invalidResult = manager.resolve("Invalid");
     // Should return the expression string as fallback
-    EXPECT_TRUE(std::holds_alternative<std::string>(invalidResult));
+    EXPECT_TRUE(invalidResult.has_value());
+    EXPECT_TRUE(std::holds_alternative<std::string>(*invalidResult));
+}
+
+DEFINE_STYLE_PARAMETER(BaseSize, Numeric(8, "px"));
+
+TEST_F(ParameterManagerTest, ResolveParameterDefinition)
+{
+    auto result = manager.resolve(BaseSize);
+    EXPECT_DOUBLE_EQ(result.value, 16);
+    EXPECT_EQ(result.unit, "px");
+}
+
+
+DEFINE_STYLE_PARAMETER(MarginSize, Numeric(16, "px"));
+
+TEST_F(ParameterManagerTest, ResolveParameterDefinitionDefault)
+{
+    auto result = manager.resolve(MarginSize);
+    EXPECT_DOUBLE_EQ(result.value, 16);
+    EXPECT_EQ(result.unit, "px");
 }
