@@ -15,6 +15,7 @@ set(PathSimulator_LIBS
 
 SET(Python_SRCS
     PathSimPy.xml
+    PathSimPy.pyi
     PathSimPyImp.cpp
 )
 
