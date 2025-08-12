@@ -160,7 +160,7 @@ void finishDatumConstraint(Gui::Command* cmd,
     }
     else {
         // no dialog was shown so commit the command
-        cmd->commitSelf();
+        cmd->commitCommand();
     }
 
     tryAutoRecompute(sketch);
@@ -261,7 +261,7 @@ void SketcherGui::makeAngleBetweenTwoLines(Sketcher::SketchObject* Obj,
         return;
     }
 
-    cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Add angle constraint"));
+    cmd->openCommand(QT_TRANSLATE_NOOP("Command", "Add angle constraint"));
     Gui::cmdAppObjectArgs(Obj,
         "addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f))",
         geoId1,
@@ -3156,7 +3156,7 @@ void horVerActivated(CmdSketcherConstraint* cmd, std::string type)
     if (!edgegeoids.empty()) {
         // undo command open
         const char* cmdName = type == "Horizontal" ? "Add horizontal constraint" : type == "Vertical" ? "Add vertical constraint" : "Add horizontal/vertical constraint";
-        cmd->openSelf(QT_TRANSLATE_NOOP("Command", cmdName));
+        cmd->openCommand(QT_TRANSLATE_NOOP("Command", cmdName));
         for (auto& geoId : edgegeoids) {
             std::string typeToApply = type;
             if (type == "HorVer") {
@@ -3175,7 +3175,7 @@ void horVerActivated(CmdSketcherConstraint* cmd, std::string type)
     else if (fixedpoints <= 1) {// pointgeoids
         // undo command open
         const char* cmdName = type == "Horizontal" ? "Add horizontal alignment" : type == "Vertical" ? "Add vertical alignment" : "Add horizontal/vertical alignment";
-        cmd->openSelf(QT_TRANSLATE_NOOP("Command", cmdName));
+        cmd->openCommand(QT_TRANSLATE_NOOP("Command", cmdName));
         std::vector<int>::iterator it;
         std::vector<Sketcher::PointPos>::iterator itp;
         for (it = pointgeoids.begin(), itp = pointpos.begin();
@@ -3207,7 +3207,7 @@ void horVerActivated(CmdSketcherConstraint* cmd, std::string type)
         return;
     }
     // finish the transaction and update
-    cmd->commitSelf();
+    cmd->commitCommand();
 
     tryAutoRecompute(Obj);
 
@@ -3254,7 +3254,7 @@ void horVerApplyConstraint(CmdSketcherConstraint* cmd, std::string type, std::ve
             }
 
             const char* cmdName = typeToApply == "Horizontal" ? "Add horizontal constraint" : "Add vertical constraint";
-            cmd->openSelf(QT_TRANSLATE_NOOP("Command", cmdName));
+            cmd->openCommand(QT_TRANSLATE_NOOP("Command", cmdName));
 
             // issue the actual commands to create the constraint
             Gui::cmdAppObjectArgs(sketchgui->getObject(),
@@ -3262,7 +3262,7 @@ void horVerApplyConstraint(CmdSketcherConstraint* cmd, std::string type, std::ve
                 typeToApply,
                 CrvId);
             // finish the transaction and update
-            cmd->commitSelf();
+            cmd->commitCommand();
 
             tryAutoRecompute(Obj);
         }
@@ -3295,7 +3295,7 @@ void horVerApplyConstraint(CmdSketcherConstraint* cmd, std::string type, std::ve
 
         // undo command open
         const char* cmdName = type == "Horizontal" ? "Add horizontal alignment" : "Add vertical alignment";
-        cmd->openSelf(QT_TRANSLATE_NOOP("Command", cmdName));
+        cmd->openCommand(QT_TRANSLATE_NOOP("Command", cmdName));
 
         // issue the actual commands to create the constraint
         Gui::cmdAppObjectArgs(sketchgui->getObject(),
@@ -3306,7 +3306,7 @@ void horVerApplyConstraint(CmdSketcherConstraint* cmd, std::string type, std::ve
             GeoId2,
             static_cast<int>(PosId2));
         // finish the transaction and update
-        cmd->commitSelf();
+        cmd->commitCommand();
 
         tryAutoRecompute(Obj);
 
@@ -3559,7 +3559,7 @@ void CmdSketcherConstrainLock::activated(int iMsg)
         Base::Vector3d pnt = Obj->getPoint(GeoId[0], PosId[0]);
 
         // undo command open
-        openSelf(QT_TRANSLATE_NOOP("Command", "Add 'Lock' constraint"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Add 'Lock' constraint"));
         Gui::cmdAppObjectArgs(selection[0].getObject(),
                               "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f))",
                               GeoId[0],
@@ -3613,7 +3613,7 @@ void CmdSketcherConstrainLock::activated(int iMsg)
             Base::Vector3d pnt = Obj->getPoint(*itg, *itp);
 
             // undo command open
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add relative 'Lock' constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add relative 'Lock' constraint"));
             Gui::cmdAppObjectArgs(selection[0].getObject(),
                                   "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f))",
                                   *itg,
@@ -3648,7 +3648,7 @@ void CmdSketcherConstrainLock::activated(int iMsg)
     }
 
     // finish the transaction and update
-    commitSelf();
+    commitCommand();
 
     tryAutoRecompute(Obj);
 
@@ -3679,7 +3679,7 @@ void CmdSketcherConstrainLock::applyConstraint(std::vector<SelIdPair>& selSeq, i
             Base::Vector3d pnt = Obj->getPoint(selSeq.front().GeoId, selSeq.front().PosId);
 
             // undo command open
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add fixed constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add fixed constraint"));
             Gui::cmdAppObjectArgs(sketchgui->getObject(),
                                   "addConstraint(Sketcher.Constraint('DistanceX', %d, %d, %f))",
                                   selSeq.front().GeoId,
@@ -3707,7 +3707,7 @@ void CmdSketcherConstrainLock::applyConstraint(std::vector<SelIdPair>& selSeq, i
             }
 
             // finish the transaction and update
-            commitSelf();
+            commitCommand();
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
                 "User parameter:BaseApp/Preferences/Mod/Sketcher");
@@ -3850,17 +3850,17 @@ void CmdSketcherConstrainBlock::activated(int iMsg)
 
     for (std::vector<int>::iterator itg = GeoId.begin(); itg != GeoId.end(); ++itg) {
         // undo command open
-        openSelf(QT_TRANSLATE_NOOP("Command", "Add 'Block' constraint"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Add 'Block' constraint"));
 
         bool safe = addConstraintSafely(Obj, [&]() {
             Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Block',%d))", (*itg));
         });
 
         if (!safe) {
-            abortSelf();
+            abortCommand();
             return;
         }
-        commitSelf();
+        commitCommand();
         tryAutoRecompute(Obj);
     }
 
@@ -3898,7 +3898,7 @@ void CmdSketcherConstrainBlock::applyConstraint(std::vector<SelIdPair>& selSeq, 
             }
 
             // undo command open
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add block constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add block constraint"));
 
             bool safe = addConstraintSafely(Obj, [&]() {
                 Gui::cmdAppObjectArgs(sketchgui->getObject(),
@@ -3907,11 +3907,11 @@ void CmdSketcherConstrainBlock::applyConstraint(std::vector<SelIdPair>& selSeq, 
             });
 
             if (!safe) {
-                abortSelf();
+                abortCommand();
                 return;
             }
 
-            openSelf();
+            openCommand();
             tryAutoRecompute(Obj);
         } break;
         default:
@@ -4156,7 +4156,7 @@ void CmdSketcherConstrainCoincidentUnified::onActivated(CoincicenceType type)
 
 void CmdSketcherConstrainCoincidentUnified::activatedPointOnObject(SketchObject* obj, std::vector<SelIdPair> points, std::vector<SelIdPair> curves)
 {
-    openSelf(QT_TRANSLATE_NOOP("Command", "Add point on object constraint"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add point on object constraint"));
     int cnt = 0;
     for (std::size_t iPnt = 0; iPnt < points.size(); iPnt++) {
         for (std::size_t iCrv = 0; iCrv < curves.size(); iCrv++) {
@@ -4175,7 +4175,7 @@ void CmdSketcherConstrainCoincidentUnified::activatedPointOnObject(SketchObject*
                     obj,
                     QObject::tr("Wrong selection"),
                     QObject::tr("Select an edge that is not a B-spline weight."));
-                abortSelf();
+                abortCommand();
                 return;
             }
 
@@ -4197,11 +4197,11 @@ void CmdSketcherConstrainCoincidentUnified::activatedPointOnObject(SketchObject*
         }
     }
     if (cnt) {
-        commitSelf();
+        commitCommand();
         getSelection().clearSelection();
     }
     else {
-        abortSelf();
+        abortCommand();
         Gui::TranslatedUserWarning(obj,
             QObject::tr("Wrong selection"),
             QObject::tr("None of the selected points were constrained onto the respective curves, because they are part of the same element, they are both external geometry, or the edge is not eligible."));
@@ -4236,7 +4236,7 @@ void CmdSketcherConstrainCoincidentUnified::activatedCoincident(SketchObject* ob
 
     // undo command open
     bool constraintsAdded = false;
-    openSelf(QT_TRANSLATE_NOOP("Command", "Add coincident constraint"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add coincident constraint"));
 
     for (std::size_t i = 1; i < vecOfSelIdToUse.size(); i++) {
         int GeoId2 = vecOfSelIdToUse[i].GeoId;
@@ -4273,10 +4273,10 @@ void CmdSketcherConstrainCoincidentUnified::activatedCoincident(SketchObject* ob
 
     // finish or abort the transaction and update
     if (constraintsAdded) {
-        commitSelf();
+        commitCommand();
     }
     else {
-        abortSelf();
+        abortCommand();
     }
 
     tryAutoRecompute(obj);
@@ -4338,7 +4338,7 @@ void CmdSketcherConstrainCoincidentUnified::applyConstraintPointOnObject(std::ve
         static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
     Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
 
-    openSelf(QT_TRANSLATE_NOOP("Command", "Add point on object constraint"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add point on object constraint"));
     bool allOK = true;
 
     if (areBothPointsOrSegmentsFixed(Obj, GeoIdVt, GeoIdCrv)) {
@@ -4355,7 +4355,7 @@ void CmdSketcherConstrainCoincidentUnified::applyConstraintPointOnObject(std::ve
         Gui::TranslatedUserWarning(Obj,
             QObject::tr("Wrong selection"),
             QObject::tr("Select an edge that is not a B-spline weight."));
-        abortSelf();
+        abortCommand();
 
         return;
     }
@@ -4369,11 +4369,11 @@ void CmdSketcherConstrainCoincidentUnified::applyConstraintPointOnObject(std::ve
                 GeoIdCrv);
         }
 
-        commitSelf();
+        commitCommand();
         tryAutoRecompute(Obj);
     }
     else {
-        abortSelf();
+        abortCommand();
         Gui::TranslatedUserWarning(Obj,
             QObject::tr("Wrong selection"),
             QObject::tr("None of the selected points "
@@ -4422,7 +4422,7 @@ void CmdSketcherConstrainCoincidentUnified::applyConstraintCoincident(std::vecto
     }
 
     // undo command open
-    openSelf(QT_TRANSLATE_NOOP("Command", "Add coincident constraint"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add coincident constraint"));
 
     // check if this coincidence is already enforced (even indirectly)
     bool constraintExists = Obj->arePointsCoincident(GeoId1, PosId1, GeoId2, PosId2);
@@ -4436,10 +4436,10 @@ void CmdSketcherConstrainCoincidentUnified::applyConstraintCoincident(std::vecto
             static_cast<int>(PosId2));
     }
     else {
-        abortSelf();
+        abortCommand();
         return;
     }
-    commitSelf();
+    commitCommand();
     tryAutoRecompute(Obj);
 }
 
@@ -4648,7 +4648,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         if (GeoId1 == Sketcher::GeoEnum::HAxis && PosId1 == Sketcher::PointPos::none) {
             PosId1 = Sketcher::PointPos::start;
 
-            openSelf(
+            openCommand(
                 QT_TRANSLATE_NOOP("Command", "Add distance from horizontal axis constraint"));
             Gui::cmdAppObjectArgs(selection[0].getObject(),
                 "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%d,%d,%f))",
@@ -4661,7 +4661,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         else if (GeoId1 == Sketcher::GeoEnum::VAxis && PosId1 == Sketcher::PointPos::none) {
             PosId1 = Sketcher::PointPos::start;
 
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add distance from vertical axis constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add distance from vertical axis constraint"));
             Gui::cmdAppObjectArgs(selection[0].getObject(),
                 "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f))",
                 GeoId1,
@@ -4673,7 +4673,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         else {
             Base::Vector3d pnt1 = Obj->getPoint(GeoId1, PosId1);
 
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add point to point distance constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point distance constraint"));
             Gui::cmdAppObjectArgs(selection[0].getObject(),
                 "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f))",
                 GeoId1,
@@ -4716,7 +4716,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
                 std::abs(-pnt.x * d.y + pnt.y * d.x + pnt1.x * pnt2.y - pnt2.x * pnt1.y)
                 / d.Length();
 
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add point to line distance constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add point to line distance constraint"));
             Gui::cmdAppObjectArgs(selection[0].getObject(),
                 "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%f))",
                 GeoId1,
@@ -4746,7 +4746,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             Base::Vector3d d = center - pnt;
             double ActDist = std::abs(d.Length() - radius);
 
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add point to circle distance constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add point to circle distance constraint"));
             Gui::cmdAppObjectArgs(selection[0].getObject(),
                 "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%f))",
                 GeoId1,
@@ -4797,7 +4797,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
                 ActDist = bigradius - smallradius - intercenterdistance;
             }
 
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add circle to circle distance constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add circle to circle distance constraint"));
             Gui::cmdAppObjectArgs(selection[0].getObject(),
                                   "addConstraint(Sketcher.Constraint('Distance',%d,%d,%f))",
                                   GeoId1,
@@ -4840,7 +4840,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
                 / d.Length()
                 - radius;
 
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add circle to line distance constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add circle to line distance constraint"));
             Gui::cmdAppObjectArgs(selection[0].getObject(),
                 "addConstraint(Sketcher.Constraint('Distance',%d,%d,%f)) ",
                 GeoId1,
@@ -4888,7 +4888,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             auto lineSeg = static_cast<const Part::GeomLineSegment*>(geom);
             double ActLength = (lineSeg->getEndPoint() - lineSeg->getStartPoint()).Length();
 
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
             Gui::cmdAppObjectArgs(selection[0].getObject(),
                 "addConstraint(Sketcher.Constraint('Distance',%d,%f))",
                 GeoId1,
@@ -4915,7 +4915,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             auto arc = static_cast<const Part::GeomArcOfCircle*>(geom);
             double ActLength = arc->getAngle(false) * arc->getRadius();
 
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
             Gui::cmdAppObjectArgs(selection[0].getObject(),
                 "addConstraint(Sketcher.Constraint('Distance',%d,%f))",
                 GeoId1,
@@ -4971,7 +4971,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair>& selSe
         if (GeoId1 == Sketcher::GeoEnum::HAxis && PosId1 == Sketcher::PointPos::none) {
             PosId1 = Sketcher::PointPos::start;
 
-            openSelf(
+            openCommand(
                 QT_TRANSLATE_NOOP("Command", "Add distance from horizontal axis constraint"));
             Gui::cmdAppObjectArgs(
                 Obj,
@@ -4985,7 +4985,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair>& selSe
         else if (GeoId1 == Sketcher::GeoEnum::VAxis && PosId1 == Sketcher::PointPos::none) {
             PosId1 = Sketcher::PointPos::start;
 
-            openSelf(
+            openCommand(
                 QT_TRANSLATE_NOOP("Command", "Add distance from vertical axis constraint"));
             Gui::cmdAppObjectArgs(
                 Obj,
@@ -4999,7 +4999,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair>& selSe
         else {
             Base::Vector3d pnt1 = Obj->getPoint(GeoId1, PosId1);
 
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add point to point distance constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point distance constraint"));
             Gui::cmdAppObjectArgs(
                 Obj,
                 "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f))",
@@ -5043,7 +5043,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair>& selSe
                 ActLength = arc->getAngle(false) * arc->getRadius();
             }
 
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
             Gui::cmdAppObjectArgs(Obj,
                 "addConstraint(Sketcher.Constraint('Distance',%d,%f))",
                 GeoId1,
@@ -5093,7 +5093,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair>& selSe
                 std::abs(-pnt.x * d.y + pnt.y * d.x + pnt1.x * pnt2.y - pnt2.x * pnt1.y)
                 / d.Length();
 
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add point to line distance constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add point to line distance constraint"));
             Gui::cmdAppObjectArgs(Obj,
                 "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%f))",
                 GeoId1,
@@ -5147,7 +5147,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair>& selSe
                 ActDist = bigradius - smallradius - intercenterdistance;
             }
 
-            openSelf(
+            openCommand(
                 QT_TRANSLATE_NOOP("Command", "Add circle to circle distance constraint"));
             Gui::cmdAppObjectArgs(Obj,
                 "addConstraint(Sketcher.Constraint('Distance',%d,%d,%f))",
@@ -5333,7 +5333,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
             ActLength = -ActLength;
         }
 
-        openSelf(
+        openCommand(
             QT_TRANSLATE_NOOP("Command", "Add point to point horizontal distance constraint"));
         Gui::cmdAppObjectArgs(selection[0].getObject(),
                               "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f))",
@@ -5375,7 +5375,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
 
         arebothpointsorsegmentsfixed = isPointOrSegmentFixed(Obj, GeoId1);
 
-        openSelf(QT_TRANSLATE_NOOP("Command", "Add fixed x-coordinate constraint"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Add fixed x-coordinate constraint"));
         Gui::cmdAppObjectArgs(selection[0].getObject(),
                               "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f))",
                               GeoId1,
@@ -5460,7 +5460,7 @@ void CmdSketcherConstrainDistanceX::applyConstraint(std::vector<SelIdPair>& selS
         ActLength = -ActLength;
     }
 
-    openSelf(QT_TRANSLATE_NOOP("Command", "Add point to point horizontal distance constraint"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point horizontal distance constraint"));
     Gui::cmdAppObjectArgs(Obj,
                           "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f))",
                           GeoId1,
@@ -5633,7 +5633,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
             ActLength = -ActLength;
         }
 
-        openSelf(
+        openCommand(
             QT_TRANSLATE_NOOP("Command", "Add point to point vertical distance constraint"));
         Gui::cmdAppObjectArgs(selection[0].getObject(),
                               "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%d,%d,%f))",
@@ -5672,7 +5672,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
         Base::Vector3d pnt = Obj->getPoint(GeoId1, PosId1);
         double ActY = pnt.y;
 
-        openSelf(QT_TRANSLATE_NOOP("Command", "Add fixed y-coordinate constraint"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Add fixed y-coordinate constraint"));
         Gui::cmdAppObjectArgs(selection[0].getObject(),
                               "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f))",
                               GeoId1,
@@ -5756,7 +5756,7 @@ void CmdSketcherConstrainDistanceY::applyConstraint(std::vector<SelIdPair>& selS
         ActLength = -ActLength;
     }
 
-    openSelf(QT_TRANSLATE_NOOP("Command", "Add point to point vertical distance constraint"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point vertical distance constraint"));
     Gui::cmdAppObjectArgs(Obj,
                           "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%d,%d,%f))",
                           GeoId1,
@@ -5904,7 +5904,7 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
     }
 
     // undo command open
-    openSelf(QT_TRANSLATE_NOOP("Command", "Add parallel constraint"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add parallel constraint"));
     for (int i = 0; i < int(ids.size() - 1); i++) {
         Gui::cmdAppObjectArgs(selection[0].getObject(),
                               "addConstraint(Sketcher.Constraint('Parallel',%d,%d))",
@@ -5912,7 +5912,7 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
                               ids[i + 1]);
     }
     // finish the transaction and update
-    commitSelf();
+    commitCommand();
 
     tryAutoRecompute(Obj);
 
@@ -5948,13 +5948,13 @@ void CmdSketcherConstrainParallel::applyConstraint(std::vector<SelIdPair>& selSe
             }
 
             // undo command open
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add parallel constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add parallel constraint"));
             Gui::cmdAppObjectArgs(sketchgui->getObject(),
                                   "addConstraint(Sketcher.Constraint('Parallel',%d,%d))",
                                   GeoId1,
                                   GeoId2);
             // finish the transaction and update
-            commitSelf();
+            commitCommand();
             tryAutoRecompute(Obj);
     }
 }
@@ -6088,7 +6088,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 return;
             }
 
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
 
             bool safe = addConstraintSafely(Obj, [&]() {
                 // add missing point-on-object constraints
@@ -6145,11 +6145,11 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
             });
 
             if (!safe) {
-                abortSelf();
+                abortCommand();
                 return;
             }
 
-            commitSelf();
+            commitCommand();
             tryAutoRecompute(Obj);
 
             getSelection().clearSelection();
@@ -6187,14 +6187,14 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 // GeoId1 is the B-spline now
             }// end of code supports simple B-spline endpoint tangency
 
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
             Gui::cmdAppObjectArgs(selection[0].getObject(),
                                   "addConstraint(Sketcher.Constraint('Perpendicular',%d,%d,%d,%d))",
                                   GeoId1,
                                   static_cast<int>(PosId1),
                                   GeoId2,
                                   static_cast<int>(PosId2));
-            commitSelf();
+            commitCommand();
             tryAutoRecompute(Obj);
 
             getSelection().clearSelection();
@@ -6226,14 +6226,14 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 return;
             }
 
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add perpendicularity constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add perpendicularity constraint"));
             Gui::cmdAppObjectArgs(selection[0].getObject(),
                                   "addConstraint(Sketcher.Constraint('Perpendicular',%d,%d,%d))",
                                   GeoId1,
                                   static_cast<int>(PosId1),
                                   GeoId2);
 
-            commitSelf();
+            commitCommand();
             tryAutoRecompute(Obj);
 
             getSelection().clearSelection();
@@ -6351,7 +6351,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                                              + minord * sin(tapprox) * cos(phi),
                                          0);
                 }
-                openSelf(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
 
                 try {
                     // Add a point
@@ -6388,25 +6388,25 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                     Gui::NotifyUserError(Obj,
                                          QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
                                          e.what());
-                    abortSelf();
+                    abortCommand();
 
                     tryAutoRecompute(Obj);
                     return;
                 }
 
-                commitSelf();
+                commitCommand();
                 tryAutoRecompute(Obj);
 
                 getSelection().clearSelection();
                 return;
             }
 
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
             Gui::cmdAppObjectArgs(selection[0].getObject(),
                                   "addConstraint(Sketcher.Constraint('Perpendicular',%d,%d))",
                                   GeoId1,
                                   GeoId2);
-            commitSelf();
+            commitCommand();
             tryAutoRecompute(Obj);
 
             getSelection().clearSelection();
@@ -6550,7 +6550,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
                                              + minord * sin(tapprox) * cos(phi),
                                          0);
                 }
-                openSelf(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
 
                 try {
                     // Add a point
@@ -6584,13 +6584,13 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
                         GeoIdPoint,
                         static_cast<int>(Sketcher::PointPos::start));
 
-                    commitSelf();
+                    commitCommand();
                 }
                 catch (const Base::Exception& e) {
                     Gui::NotifyUserError(Obj,
                                          QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
                                          e.what());
-                    abortSelf();
+                    abortCommand();
                 }
 
                 tryAutoRecompute(Obj);
@@ -6599,12 +6599,12 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
                 return;
             }
 
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
             Gui::cmdAppObjectArgs(Obj,
                                   "addConstraint(Sketcher.Constraint('Perpendicular',%d,%d))",
                                   GeoId1,
                                   GeoId2);
-            commitSelf();
+            commitCommand();
 
             tryAutoRecompute(Obj);
             return;
@@ -6655,7 +6655,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
             return;
         }
 
-        openSelf(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
 
         bool safe = addConstraintSafely(Obj, [&]() {
             // add missing point-on-object constraints
@@ -6708,10 +6708,10 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
         });
 
         if (!safe) {
-            abortSelf();
+            abortCommand();
             return;
         }
-        commitSelf();
+        commitCommand();
         tryAutoRecompute(Obj);
 
         getSelection().clearSelection();
@@ -6790,14 +6790,14 @@ bool CmdSketcherConstrainTangent::substituteConstraintCombinations(SketchObject*
             int first = (*it)->First;
             int firstpos = static_cast<int>((*it)->FirstPos);
 
-            openSelf(
+            openCommand(
                 QT_TRANSLATE_NOOP("Command", "Swap coincident+tangency with ptp tangency"));
 
             doEndpointTangency(Obj, (*it)->First, (*it)->Second, (*it)->FirstPos, (*it)->SecondPos);
 
             Gui::cmdAppObjectArgs(Obj, "delConstraintOnPoint(%d,%d)", first, firstpos);
 
-            commitSelf();
+            commitCommand();
             Obj->solve();// The substitution requires a solve() so that the autoremove redundants
                          // works when Autorecompute not active.
             tryAutoRecomputeIfNotSolve(Obj);
@@ -6813,7 +6813,7 @@ bool CmdSketcherConstrainTangent::substituteConstraintCombinations(SketchObject*
                      || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))
                  && ((*it)->FirstPos == Sketcher::PointPos::start
                      || (*it)->FirstPos == Sketcher::PointPos::end)) {
-            openSelf(
+            openCommand(
                 QT_TRANSLATE_NOOP("Command",
                                   "Swap point on object and tangency with point to curve tangency"));
 
@@ -6823,7 +6823,7 @@ bool CmdSketcherConstrainTangent::substituteConstraintCombinations(SketchObject*
                                   "delConstraint(%d)",
                                   cid);// remove the preexisting point on object constraint.
 
-            commitSelf();
+            commitCommand();
 
             // A substitution requires a solve() so that the autoremove redundants works when
             // Autorecompute not active. However, delConstraint includes such solve() internally. So
@@ -6921,7 +6921,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 return;
             }
 
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
 
             bool safe = addConstraintSafely(Obj, [&]() {
                 // add missing point-on-object constraints
@@ -6974,10 +6974,10 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
             });
 
             if (!safe) {
-                abortSelf();
+                abortCommand();
                 return;
             }
-            commitSelf();
+            commitCommand();
             tryAutoRecompute(Obj);
 
             getSelection().clearSelection();
@@ -7022,9 +7022,9 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 }
             }
 
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
             doEndpointTangency(Obj, GeoId1, GeoId2, PosId1, PosId2);
-            commitSelf();
+            commitCommand();
             tryAutoRecompute(Obj);
 
             getSelection().clearSelection();
@@ -7071,13 +7071,13 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
             }
 
             if (!substituteConstraintCombinations(Obj, GeoId1, GeoId2)) {
-                openSelf(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
                 Gui::cmdAppObjectArgs(selection[0].getObject(),
                                       "addConstraint(Sketcher.Constraint('Tangent',%d,%d,%d))",
                                       GeoId1,
                                       static_cast<int>(PosId1),
                                       GeoId2);
-                commitSelf();
+                commitCommand();
                 tryAutoRecompute(Obj);
 
                 getSelection().clearSelection();
@@ -7116,7 +7116,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 geom2 = Obj->getGeometry(GeoId2);
 
                 if (isEllipse(*geom2) || isArcOfEllipse(*geom2) || isCircle(*geom2) || isArcOfCircle(*geom2)) {
-                    openSelf(
+                    openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
                     closeAndRecompute(currentTransactionID,
                                       !makeTangentToEllipseviaNewPoint(Obj,
@@ -7130,7 +7130,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     return;
                 }
                 else if (isArcOfHyperbola(*geom2)) {
-                    openSelf(
+                    openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
                     closeAndRecompute(currentTransactionID,
                                       !makeTangentToArcOfHyperbolaviaNewPoint(Obj,
@@ -7144,7 +7144,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     return;
                 }
                 else if (isArcOfParabola(*geom2)) {
-                    openSelf(
+                    openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
                     closeAndRecompute(currentTransactionID,
                                       !makeTangentToArcOfParabolaviaNewPoint(
@@ -7171,7 +7171,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 if (isArcOfHyperbola(*geom2) || isArcOfEllipse(*geom2)
                     || isCircle(*geom2) || isArcOfCircle(*geom2) || isLineSegment(*geom2)) {
 
-                    openSelf(
+                    openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
                     closeAndRecompute(currentTransactionID,
                                       !makeTangentToArcOfEllipseviaNewPoint(
@@ -7186,7 +7186,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     return;
                 }
                 else if (isArcOfParabola(*geom2)) {
-                    openSelf(
+                    openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
                     closeAndRecompute(currentTransactionID,
                                       !makeTangentToArcOfParabolaviaNewPoint(
@@ -7213,7 +7213,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 if (isArcOfHyperbola(*geom2) || isArcOfEllipse(*geom2) || isCircle(*geom2)
                     || isArcOfCircle(*geom2) || isLineSegment(*geom2)) {
 
-                    openSelf(
+                    openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
                     closeAndRecompute(currentTransactionID,
                                       !makeTangentToArcOfHyperbolaviaNewPoint(
@@ -7228,7 +7228,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     return;
                 }
                 else if (isArcOfParabola(*geom2)) {
-                    openSelf(
+                    openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
                     closeAndRecompute(currentTransactionID,
                                       !makeTangentToArcOfParabolaviaNewPoint(
@@ -7256,7 +7256,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     || isArcOfEllipse(*geom2) || isCircle(*geom2)
                     || isArcOfCircle(*geom2) || isLineSegment(*geom2)) {
 
-                    openSelf(
+                    openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
                     closeAndRecompute(currentTransactionID,
                                       !makeTangentToArcOfParabolaviaNewPoint(
@@ -7280,12 +7280,12 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 return;
             }
 
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
             Gui::cmdAppObjectArgs(selection[0].getObject(),
                                   "addConstraint(Sketcher.Constraint('Tangent',%d,%d))",
                                   GeoId1,
                                   GeoId2);
-            commitSelf();
+            commitCommand();
             tryAutoRecompute(Obj);
 
             getSelection().clearSelection();
@@ -7352,7 +7352,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
                 if (isEllipse(*geom2) || isArcOfEllipse(*geom2)
                     || isCircle(*geom2) || isArcOfCircle(*geom2)) {
 
-                    openSelf(
+                    openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
                     closeAndRecompute(currentTransactionID,
                                       !makeTangentToEllipseviaNewPoint(Obj,
@@ -7366,7 +7366,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
                     return;
                 }
                 else if (isArcOfHyperbola(*geom2)) {
-                    openSelf(
+                    openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
                     closeAndRecompute(currentTransactionID,
                                       !makeTangentToArcOfHyperbolaviaNewPoint(
@@ -7381,7 +7381,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
                     return;
                 }
                 else if (isArcOfParabola(*geom2)) {
-                    openSelf(
+                    openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
                     closeAndRecompute(currentTransactionID,
                                       !makeTangentToArcOfParabolaviaNewPoint(
@@ -7408,7 +7408,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
                 if (isArcOfHyperbola(*geom2) || isArcOfEllipse(*geom2) || isCircle(*geom2)
                    || isArcOfCircle(*geom2) || isLineSegment(*geom2)) {
 
-                    openSelf(
+                    openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
                     closeAndRecompute(currentTransactionID,
                                       !makeTangentToArcOfHyperbolaviaNewPoint(
@@ -7423,7 +7423,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
                     return;
                 }
                 else if (isArcOfParabola(*geom2)) {
-                    openSelf(
+                    openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
                     closeAndRecompute(currentTransactionID,
                                       !makeTangentToArcOfParabolaviaNewPoint(
@@ -7450,7 +7450,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
                 if (isArcOfParabola(*geom2) || isArcOfHyperbola(*geom2) || isArcOfEllipse(*geom2)
                    || isCircle(*geom2) || isArcOfCircle(*geom2) || isLineSegment(*geom2)) {
 
-                    openSelf(
+                    openCommand(
                         QT_TRANSLATE_NOOP("Command", "Add tangent constraint point"));
                     closeAndRecompute(currentTransactionID,
                                       !makeTangentToArcOfParabolaviaNewPoint(
@@ -7466,12 +7466,12 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
                 }
             }
 
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
             Gui::cmdAppObjectArgs(Obj,
                                   "addConstraint(Sketcher.Constraint('Tangent',%d,%d))",
                                   GeoId1,
                                   GeoId2);
-            commitSelf();
+            commitCommand();
             tryAutoRecompute(Obj);
 
             return;
@@ -7536,14 +7536,14 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
                 // GeoId1 is the B-spline now
             }// end of code supports simple B-spline endpoint tangency
 
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
             Gui::cmdAppObjectArgs(Obj,
                                   "addConstraint(Sketcher.Constraint('Tangent',%d,%d,%d,%d))",
                                   GeoId1,
                                   static_cast<int>(PosId1),
                                   GeoId2,
                                   static_cast<int>(PosId2));
-            commitSelf();
+            commitCommand();
             tryAutoRecompute(Obj);
 
             getSelection().clearSelection();
@@ -7569,7 +7569,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
             return;
         }
 
-        openSelf(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
 
         bool safe = addConstraintSafely(Obj, [&]() {
             // add missing point-on-object constraints
@@ -7622,10 +7622,10 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
         });
 
         if (!safe) {
-            abortSelf();
+            abortCommand();
             return;
         }
-        commitSelf();
+        commitCommand();
         tryAutoRecompute(Obj);
 
         getSelection().clearSelection();
@@ -7788,7 +7788,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
 
     if (!externalGeoIdRadiusMap.empty()) {
         // Create the non-driving radius constraints now
-        openSelf(QT_TRANSLATE_NOOP("Command", "Add radius constraint"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Add radius constraint"));
         commandopened = true;
         unsigned int constrSize = 0;
 
@@ -7832,7 +7832,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
             double radius = geoIdRadiusMap.front().second;
 
             if (!commandopened) {
-                openSelf(QT_TRANSLATE_NOOP("Command", "Add radius constraint"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add radius constraint"));
             }
 
             // Add the equality constraints
@@ -7861,7 +7861,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
         else {
             // Create the radius constraints now
             if (!commandopened) {
-                openSelf(QT_TRANSLATE_NOOP("Command", "Add radius constraint"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add radius constraint"));
             }
             for (std::vector<std::pair<int, double>>::iterator it = geoIdRadiusMap.begin();
                  it != geoIdRadiusMap.end();
@@ -7896,7 +7896,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
     }
 
     if (commitNeeded) {
-        commitSelf();
+        commitCommand();
     }
 
     if (updateNeeded) {
@@ -7938,7 +7938,7 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair>& selSeq,
             }
 
             // Create the radius constraint now
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add radius constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add radius constraint"));
 
             bool ispole = isBsplinePole(geom);
 
@@ -7970,7 +7970,7 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair>& selSeq,
             // updateActive();
             getSelection().clearSelection();
 
-            commitSelf();
+            commitCommand();
 
             if (updateNeeded) {
                 tryAutoRecomputeIfNotSolve(
@@ -8139,7 +8139,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
 
     if (!externalGeoIdDiameterMap.empty()) {
         // Create the non-driving radius constraints now
-        openSelf(QT_TRANSLATE_NOOP("Command", "Add diameter constraint"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Add diameter constraint"));
         commandopened = true;
         unsigned int constrSize = 0;
 
@@ -8171,7 +8171,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
             double diameter = geoIdDiameterMap.front().second;
 
             if (!commandopened) {
-                openSelf(QT_TRANSLATE_NOOP("Command", "Add diameter constraint"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add diameter constraint"));
             }
 
             // Add the equality constraints
@@ -8192,7 +8192,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
         else {
             // Create the diameter constraints now
             if (!commandopened) {
-                openSelf(QT_TRANSLATE_NOOP("Command", "Add diameter constraint"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add diameter constraint"));
             }
             for (std::vector<std::pair<int, double>>::iterator it = geoIdDiameterMap.begin();
                  it != geoIdDiameterMap.end();
@@ -8218,7 +8218,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
     }
 
     if (commitNeeded) {
-        commitSelf();
+        commitCommand();
     }
 
     if (updateNeeded) {
@@ -8268,7 +8268,7 @@ void CmdSketcherConstrainDiameter::applyConstraint(std::vector<SelIdPair>& selSe
             }
 
             // Create the diameter constraint now
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add diameter constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add diameter constraint"));
             Gui::cmdAppObjectArgs(Obj,
                                   "addConstraint(Sketcher.Constraint('Diameter',%d,%f))",
                                   GeoId,
@@ -8288,7 +8288,7 @@ void CmdSketcherConstrainDiameter::applyConstraint(std::vector<SelIdPair>& selSe
             // updateActive();
             getSelection().clearSelection();
 
-            commitSelf();
+            commitCommand();
 
             if (updateNeeded) {
                 tryAutoRecomputeIfNotSolve(
@@ -8464,7 +8464,7 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
 
     if (!externalGeoIdRadiamMap.empty()) {
         // Create the non-driving radiam constraints now
-        openSelf(QT_TRANSLATE_NOOP("Command", "Add radiam constraint"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Add radiam constraint"));
         commandopened = true;
         unsigned int constrSize = 0;
 
@@ -8512,7 +8512,7 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
             double radiam = geoIdRadiamMap.front().second;
 
             if (!commandopened) {
-                openSelf(QT_TRANSLATE_NOOP("Command", "Add radiam constraint"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add radiam constraint"));
             }
 
             // Add the equality constraints
@@ -8547,7 +8547,7 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
         else {
             // Create the radiam constraints now
             if (!commandopened) {
-                openSelf(QT_TRANSLATE_NOOP("Command", "Add radiam constraint"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add radiam constraint"));
             }
             for (std::vector<std::pair<int, double>>::iterator it = geoIdRadiamMap.begin();
                  it != geoIdRadiamMap.end();
@@ -8587,7 +8587,7 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
     }
 
     if (commitNeeded) {
-        commitSelf();
+        commitCommand();
     }
 
     if (updateNeeded) {
@@ -8636,7 +8636,7 @@ void CmdSketcherConstrainRadiam::applyConstraint(std::vector<SelIdPair>& selSeq,
             }
 
             // Create the radiam constraint now
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add radiam constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add radiam constraint"));
 
             if (isPole) {
                 Gui::cmdAppObjectArgs(Obj,
@@ -8671,7 +8671,7 @@ void CmdSketcherConstrainRadiam::applyConstraint(std::vector<SelIdPair>& selSeq,
             // updateActive();
             getSelection().clearSelection();
 
-            commitSelf();
+            commitCommand();
 
             if (updateNeeded) {
                 tryAutoRecomputeIfNotSolve(
@@ -8969,7 +8969,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
 
             double ActAngle = 0.0;
 
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add angle constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add angle constraint"));
 
             // add missing point-on-object constraints
             if (!IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)) {
@@ -9085,7 +9085,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                 Base::Vector3d dir = lineSeg->getEndPoint() - lineSeg->getStartPoint();
                 double ActAngle = atan2(dir.y, dir.x);
 
-                openSelf(QT_TRANSLATE_NOOP("Command", "Add angle constraint"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add angle constraint"));
                 Gui::cmdAppObjectArgs(selection[0].getObject(),
                                       "addConstraint(Sketcher.Constraint('Angle',%d,%f))",
                                       GeoId1,
@@ -9111,7 +9111,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                 auto arc = static_cast<const Part::GeomArcOfCircle*>(geom);
                 double angle = arc->getAngle(/*EmulateCCWXY=*/true);
 
-                openSelf(QT_TRANSLATE_NOOP("Command", "Add angle constraint"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add angle constraint"));
                 Gui::cmdAppObjectArgs(selection[0].getObject(),
                                       "addConstraint(Sketcher.Constraint('Angle',%d,%f))",
                                       GeoId1,
@@ -9206,7 +9206,7 @@ void CmdSketcherConstrainAngle::applyConstraint(std::vector<SelIdPair>& selSeq, 
 
         double ActAngle = 0.0;
 
-        openSelf(QT_TRANSLATE_NOOP("Command", "Add angle constraint"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Add angle constraint"));
 
         // add missing point-on-object constraints
         if (!IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)) {
@@ -9468,7 +9468,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
     }
 
     // undo command open
-    openSelf(QT_TRANSLATE_NOOP("Command", "Add equality constraint"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add equality constraint"));
     for (int i = 0; i < int(ids.size() - 1); i++) {
         Gui::cmdAppObjectArgs(selection[0].getObject(),
                               "addConstraint(Sketcher.Constraint('Equal',%d,%d))",
@@ -9476,7 +9476,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
                               ids[i + 1]);
     }
     // finish the transaction and update
-    commitSelf();
+    commitCommand();
     tryAutoRecompute(Obj);
 
     // clear the selection (convenience)
@@ -9523,13 +9523,13 @@ void CmdSketcherConstrainEqual::applyConstraint(std::vector<SelIdPair>& selSeq, 
             }
 
             // undo command open
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add equality constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add equality constraint"));
             Gui::cmdAppObjectArgs(Obj,
                                   "addConstraint(Sketcher.Constraint('Equal',%d,%d))",
                                   GeoId1,
                                   GeoId2);
             // finish the transaction and update
-            commitSelf();
+            commitCommand();
             tryAutoRecompute(Obj);
 
             return;
@@ -9649,7 +9649,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
                 }
 
                 // undo command open
-                openSelf(QT_TRANSLATE_NOOP("Command", "Add symmetric constraint"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add symmetric constraint"));
                 Gui::cmdAppObjectArgs(
                     selection[0].getObject(),
                     "addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d,%d))",
@@ -9661,7 +9661,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
                     static_cast<int>(PosId2));
 
                 // finish the transaction and update
-                commitSelf();
+                commitCommand();
                 tryAutoRecompute(Obj);
 
                 // clear the selection (convenience)
@@ -9708,7 +9708,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
                 }
 
                 // undo command open
-                openSelf(QT_TRANSLATE_NOOP("Command", "Add symmetric constraint"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add symmetric constraint"));
                 Gui::cmdAppObjectArgs(
                     selection[0].getObject(),
                     "addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d))",
@@ -9719,7 +9719,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
                     GeoId3);
 
                 // finish the transaction and update
-                commitSelf();
+                commitCommand();
                 tryAutoRecompute(Obj);
 
                 // clear the selection (convenience)
@@ -9729,7 +9729,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
         }
         else if (isVertex(GeoId3, PosId3)) {
             // undo command open
-            openSelf(QT_TRANSLATE_NOOP("Command", "Add symmetric constraint"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add symmetric constraint"));
             Gui::cmdAppObjectArgs(
                 selection[0].getObject(),
                 "addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d,%d))",
@@ -9741,7 +9741,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
                 static_cast<int>(PosId3));
 
             // finish the transaction and update
-            commitSelf();
+            commitCommand();
             tryAutoRecompute(Obj);
 
             // clear the selection (convenience)
@@ -9832,7 +9832,7 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair>& selS
                 }
 
                 // undo command open
-                openSelf(QT_TRANSLATE_NOOP("Command", "Add symmetric constraint"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add symmetric constraint"));
                 Gui::cmdAppObjectArgs(
                     Obj,
                     "addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d))",
@@ -9843,7 +9843,7 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair>& selS
                     GeoId3);
 
                 // finish the transaction and update
-                commitSelf();
+                commitCommand();
                 tryAutoRecompute(Obj);
             }
             else {
@@ -9876,7 +9876,7 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair>& selS
     }
 
     // undo command open
-    openSelf(QT_TRANSLATE_NOOP("Command", "Add symmetric constraint"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add symmetric constraint"));
     Gui::cmdAppObjectArgs(Obj,
                           "addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d,%d))",
                           GeoId1,
@@ -9887,7 +9887,7 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair>& selS
                           static_cast<int>(PosId3));
 
     // finish the transaction and update
-    commitSelf();
+    commitCommand();
 
     tryAutoRecompute(Obj);
 
@@ -10038,7 +10038,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
     n2divn1 = newQuant.getValue();
 
     // add constraint
-    openSelf(QT_TRANSLATE_NOOP("Command", "Add Snell's law constraint"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add Snell's law constraint"));
 
     bool safe = addConstraintSafely(Obj, [&]() {
         if (!IsPointAlreadyOnCurve(GeoId2, GeoId1, PosId1, Obj)) {
@@ -10078,10 +10078,10 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
     });
 
     if (!safe) {
-        abortSelf();
+        abortCommand();
         return;
     }
-    commitSelf();
+    commitCommand();
     tryAutoRecompute(Obj);
 
     // clear the selection (convenience)
@@ -10131,7 +10131,7 @@ void CmdSketcherChangeDimensionConstraint::activated(int iMsg)
 
     try {
         auto value = getDimConstraint();
-        int tid = openCommand(getDocument(), QT_TRANSLATE_NOOP("Command", "Modify sketch constraints"));
+        int tid = openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Modify sketch constraints"));
         EditDatumDialog(tid, std::get<0>(value), std::get<1>(value)).exec(false);
     }
     catch (const Base::RuntimeError&) {
@@ -10266,7 +10266,7 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
         }
 
         // undo command open
-        openSelf(QT_TRANSLATE_NOOP("Command", "Toggle constraint to driving/reference"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Toggle constraint to driving/reference"));
 
         int successful = SubNames.size();
         // go through the selected subelements
@@ -10285,10 +10285,10 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
         }
 
         if (successful > 0) {
-            commitSelf();
+            commitCommand();
         }
         else {
-            abortSelf();
+            abortCommand();
         }
 
         tryAutoRecompute(Obj);
@@ -10353,7 +10353,7 @@ void CmdSketcherToggleActiveConstraint::activated(int iMsg)
         }
 
         // undo command open
-        openSelf(QT_TRANSLATE_NOOP("Command", "Activate/Deactivate constraints"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Activate/Deactivate constraints"));
 
         int successful = SubNames.size();
 
@@ -10372,10 +10372,10 @@ void CmdSketcherToggleActiveConstraint::activated(int iMsg)
         }
 
         if (successful > 0) {
-            commitSelf();
+            commitCommand();
         }
         else {
-            abortSelf();
+            abortCommand();
         }
 
         tryAutoRecompute(Obj);

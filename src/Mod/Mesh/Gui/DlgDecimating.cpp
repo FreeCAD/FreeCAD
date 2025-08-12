@@ -153,8 +153,8 @@ bool TaskDecimating::accept()
     Gui::Selection().clearSelection();
 
     Gui::WaitCursor wc;
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Decimating"));
 
+    int tid = 0;
     float tolerance = float(widget->tolerance());
     float reduction = float(widget->reduction());
     bool absolute = widget->isAbsoluteNumber();
@@ -163,6 +163,10 @@ bool TaskDecimating::accept()
         targetSize = widget->targetNumberOfTriangles();
     }
     for (auto mesh : meshes) {
+        // TODO-theo-vt is it actualy possible to decimate meshes from multiple documents?
+        tid = mesh->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Mesh Decimating"),
+                                                   false,
+                                                   tid);
         if (absolute) {
             Gui::cmdAppObjectArgs(mesh, "decimate(%i)", targetSize);
         }
@@ -170,8 +174,7 @@ bool TaskDecimating::accept()
             Gui::cmdAppObjectArgs(mesh, "decimate(%f, %f)", tolerance, reduction);
         }
     }
-
-    Gui::Command::commitCommand();
+    App::GetApplication().commitTransaction(tid);
     return true;
 }
 

@@ -409,24 +409,18 @@ public:
     /** @name Helper methods for the Undo/Redo and Update handling */
     //@{
     /// Open a new Undo transaction on the active document
-    static void openCommand(const char* sName=nullptr);
+    int openCommand(std::string name = "", bool tmpName = false);
     static int openActiveDocumentCommand(std::string name = "", bool tmpName = false, int tid = 0);
-    static int openCommand(App::Document* doc, std::string name = "", bool tmpName = false, int tid = 0);
-    int openSelf(App::Document* doc, const std::string& name = "", bool tmpName = false, int tid = 0);
-    int openSelf(const std::string& name = "", bool tmpName = false, int tid = 0);
 
-    void renameSelf(const std::string& name);
+    void rename(const std::string& name);
+    
     /// Commit the Undo transaction on the active document
-    static void commitCommand();
-    /// Commit a command with a specified transaction id and nullifies the id
-    static void commitCommand(int& tid);
-    void commitSelf();
+    void commitCommand();
+    static void commitCommand(int tid);
 
     /// Abort the Undo transaction on the active document
-    static void abortCommand();
-    /// Abort a command with a specified transaction id and nullifies the id
-    static void abortCommand(int& tid);
-    void abortSelf();
+    void abortCommand();
+    static void abortCommand(int tid);
 
     int transactionID() const;
     void resetTransactionID();

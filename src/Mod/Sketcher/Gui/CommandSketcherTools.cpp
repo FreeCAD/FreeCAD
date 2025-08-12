@@ -271,9 +271,9 @@ void CmdSketcherCut::activated(int iMsg)
         ReleaseHandler(doc);
         auto* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
 
-        openSelf(QT_TRANSLATE_NOOP("Command", "Cut in Sketcher"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Cut in Sketcher"));
         vp->deleteSelected();
-        commitSelf();
+        commitCommand();
     }
 }
 
@@ -316,14 +316,14 @@ void CmdSketcherPaste::activated(int iMsg)
     }
     data = "objectStr = " + Gui::Command::getObjectCmd(obj) +"\n" + data;
 
-   openSelf(QT_TRANSLATE_NOOP("Command", "Paste in Sketcher"));
+   openCommand(QT_TRANSLATE_NOOP("Command", "Paste in Sketcher"));
 
     Gui::Command::doCommand(Gui::Command::Doc, data.c_str());
 
     obj->solve(true);
     vp->draw(false, false);
 
-    commitSelf();
+    commitCommand();
 }
 
 bool CmdSketcherPaste::isActive()
@@ -1063,7 +1063,7 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
         int currentgeoid = Obj->getHighestCurveIndex();
 
         try {
-            openSelf(QT_TRANSLATE_NOOP("Command", "Exposing Internal Geometry"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Exposing Internal Geometry"));
             Gui::cmdAppObjectArgs(Obj, "exposeInternalGeometry(%d)", GeoId);
 
             int aftergeoid = Obj->getHighestCurveIndex();
@@ -1075,14 +1075,14 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
         catch (const Base::Exception& e) {
             Gui::NotifyUserError(
                 Obj, QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"), e.what());
-            abortSelf();
+            abortCommand();
 
             tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject*>(Obj));
 
             return;
         }
 
-        commitSelf();
+        commitCommand();
         tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject*>(Obj));
     }
 }
@@ -1265,7 +1265,7 @@ public:
             unsetCursor();
             resetPositionText();
 
-            int tid = Gui::Command::openCommand(doc, QT_TRANSLATE_NOOP("Command", "Copy/clone/move geometry"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Copy/clone/move geometry"));
 
             try {
                 if (Op != SketcherCopy::Move) {
@@ -1283,12 +1283,12 @@ public:
                                           vector.x,
                                           vector.y);
                 }
-                Gui::Command::commitCommand(tid);
+                commitCommand();
             }
             catch (const Base::Exception& e) {
                 Gui::NotifyUserError(
                     sketchgui->getObject(), QT_TRANSLATE_NOOP("Notifications", "Error"), e.what());
-                Gui::Command::abortCommand(tid);
+                abortCommand();
             }
 
             tryAutoRecomputeIfNotSolve(
@@ -2099,14 +2099,14 @@ void CmdSketcherDeleteAllGeometry::activated(int iMsg)
         Sketcher::SketchObject* Obj = getSketchObject();
 
         try {
-            openSelf(QT_TRANSLATE_NOOP("Command", "Delete all geometry"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Delete all geometry"));
             Gui::cmdAppObjectArgs(Obj, "deleteAllGeometry()");
-            commitSelf();
+            commitCommand();
         }
         catch (const Base::Exception& e) {
             Gui::NotifyUserError(
                 Obj, QT_TRANSLATE_NOOP("Notifications", "Failed to delete all geometry"), e.what());
-            abortSelf();
+            abortCommand();
         }
 
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -2163,16 +2163,16 @@ void CmdSketcherDeleteAllConstraints::activated(int iMsg)
         Sketcher::SketchObject* Obj = getSketchObject();
 
         try {
-            openSelf(QT_TRANSLATE_NOOP("Command", "Delete all constraints"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Delete all constraints"));
             Gui::cmdAppObjectArgs(Obj, "deleteAllConstraints()");
-            commitSelf();
+            commitCommand();
         }
         catch (const Base::Exception& e) {
             Gui::NotifyUserError(
                 Obj,
                 QT_TRANSLATE_NOOP("Notifications", "Failed to delete all constraints"),
                 e.what());
-            abortSelf();
+            abortCommand();
         }
 
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -2297,15 +2297,15 @@ void CmdSketcherRemoveAxesAlignment::activated(int iMsg)
     geoIdList.insert(0, 1, '[');
     geoIdList.append(1, ']');
 
-    openSelf(QT_TRANSLATE_NOOP("Command", "Remove Axes Alignment"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Remove Axes Alignment"));
 
     try {
         Gui::cmdAppObjectArgs(Obj, "removeAxesAlignment(%s)", geoIdList.c_str());
-        commitSelf();
+        commitCommand();
     }
     catch (const Base::Exception& e) {
         Gui::NotifyUserError(Obj, QT_TRANSLATE_NOOP("Notifications", "Error"), e.what());
-        abortSelf();
+        abortCommand();
     }
 
     tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject*>(Obj));

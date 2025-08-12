@@ -1347,7 +1347,7 @@ void StdCmdDelete::activated(int iMsg)
         std::vector<App::TransactionLocker> tlocks;
         auto manage_doc_command = [&tid, &tlocks](App::Document* doc) {
             // The tid will not be updated if non-zero
-            tid = openCommand(doc, QT_TRANSLATE_NOOP("Command", "Delete"), false, tid);
+            tid = doc->openTransaction(QT_TRANSLATE_NOOP("Command", "Delete"), false, tid);
             tlocks.emplace_back(doc);
         };
 
@@ -1481,7 +1481,8 @@ void StdCmdDelete::activated(int iMsg)
         QMessageBox::critical(getMainWindow(), QObject::tr("Delete failed"),
                 QStringLiteral("Unknown error"));
     }
-    commitCommand(tid);
+    
+    App::GetApplication().commitTransaction(tid);
     Gui::getMainWindow()->setUpdatesEnabled(true);
     Gui::getMainWindow()->update();
 }
@@ -1972,11 +1973,12 @@ protected:
             return;
         }
 
-        // openCommand(QT_TRANSLATE_NOOP("Command", "Paste expressions"));
         int tid = 0;
         try {
             for(auto &v : exprs) {
-                tid = openCommand(v.first, QT_TRANSLATE_NOOP("Command", "Paste expressions"), false, tid);
+                tid = v.first->openTransaction(QT_TRANSLATE_NOOP("Command", "Paste expressions"),
+                                               false,
+                                               tid);
                 for(auto &v2 : v.second) {
                     auto &expressions = v2.second;
                     auto old = v2.first->getExpressions();
@@ -1990,9 +1992,9 @@ protected:
                         v2.first->setExpressions(std::move(expressions));
                 }
             }
-            commitCommand(tid);
+            App::GetApplication().commitTransaction(tid);
         } catch (const Base::Exception& e) {
-            abortCommand(tid);
+            App::GetApplication().abortTransaction(tid);
             QMessageBox::critical(getMainWindow(), QObject::tr("Failed to paste expressions"),
                 QString::fromLatin1(e.what()));
             e.reportException();

@@ -235,14 +235,14 @@ SheetTableView::SheetTableView(QWidget* parent)
 
 void SheetTableView::onRecompute()
 {
-    Gui::Command::openCommand("Recompute Cells");
+    sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Recompute Cells"));
     for (auto& range : selectedRanges()) {
         Gui::cmdAppObjectArgs(sheet,
                               "recomputeCells('%s', '%s')",
                               range.fromCellString(),
                               range.toCellString());
     }
-    Gui::Command::commitCommand();
+    sheet->getDocument()->commitTransaction();
 }
 
 void SheetTableView::onBind()
@@ -345,7 +345,7 @@ void SheetTableView::insertRows()
     std::sort(sortedRows.begin(), sortedRows.end());
 
     /* Insert rows */
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert Rows"));
+    sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Insert Rows"));
     std::vector<int>::const_reverse_iterator it = sortedRows.rbegin();
     while (it != sortedRows.rend()) {
         int prev = *it;
@@ -366,7 +366,7 @@ void SheetTableView::insertRows()
 
         Gui::cmdAppObjectArgs(sheet, "insertRows('%s', %d)", rowName(prev).c_str(), count);
     }
-    Gui::Command::commitCommand();
+    sheet->getDocument()->commitTransaction();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 }
 
@@ -378,9 +378,9 @@ void SheetTableView::insertRowsAfter()
     assert(max - min == rows.size() - 1);
     Q_UNUSED(min)
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert Rows"));
+    sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Insert Rows"));
     Gui::cmdAppObjectArgs(sheet, "insertRows('%s', %d)", rowName(max + 1).c_str(), rows.size());
-    Gui::Command::commitCommand();
+    sheet->getDocument()->commitTransaction();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 }
 
@@ -398,11 +398,11 @@ void SheetTableView::removeRows()
     std::sort(sortedRows.begin(), sortedRows.end(), std::greater<>());
 
     /* Remove rows */
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Remove Rows"));
+    sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Remove Rows"));
     for (const auto& it : sortedRows) {
         Gui::cmdAppObjectArgs(sheet, "removeRows('%s', %d)", rowName(it).c_str(), 1);
     }
-    Gui::Command::commitCommand();
+    sheet->getDocument()->commitTransaction();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 }
 
@@ -420,7 +420,7 @@ void SheetTableView::insertColumns()
     std::sort(sortedColumns.begin(), sortedColumns.end());
 
     /* Insert columns */
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert Columns"));
+    sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Insert Columns"));
     std::vector<int>::const_reverse_iterator it = sortedColumns.rbegin();
     while (it != sortedColumns.rend()) {
         int prev = *it;
@@ -441,7 +441,7 @@ void SheetTableView::insertColumns()
 
         Gui::cmdAppObjectArgs(sheet, "insertColumns('%s', %d)", columnName(prev).c_str(), count);
     }
-    Gui::Command::commitCommand();
+    sheet->getDocument()->commitTransaction();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 }
 
@@ -453,12 +453,12 @@ void SheetTableView::insertColumnsAfter()
     assert(max - min == columns.size() - 1);
     Q_UNUSED(min)
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert Columns"));
+    sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Insert Columns"));
     Gui::cmdAppObjectArgs(sheet,
                           "insertColumns('%s', %d)",
                           columnName(max + 1).c_str(),
                           columns.size());
-    Gui::Command::commitCommand();
+    sheet->getDocument()->commitTransaction();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 }
 
@@ -476,11 +476,11 @@ void SheetTableView::removeColumns()
     std::sort(sortedColumns.begin(), sortedColumns.end(), std::greater<>());
 
     /* Remove columns */
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Remove Rows"));
+    sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Remove Rows"));
     for (const auto& it : sortedColumns) {
         Gui::cmdAppObjectArgs(sheet, "removeColumns('%s', %d)", columnName(it).c_str(), 1);
     }
-    Gui::Command::commitCommand();
+    sheet->getDocument()->commitTransaction();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 }
 
@@ -680,7 +680,7 @@ void SheetTableView::deleteSelection()
     QModelIndexList selection = selectionModel()->selectedIndexes();
 
     if (!selection.empty()) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Clear Cells"));
+        sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Clear Cells"));
         std::vector<Range> ranges = selectedRanges();
         std::vector<Range>::const_iterator i = ranges.begin();
 
@@ -691,7 +691,7 @@ void SheetTableView::deleteSelection()
                                     i->rangeString().c_str());
         }
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-        Gui::Command::commitCommand();
+        sheet->getDocument()->commitTransaction();
     }
 }
 

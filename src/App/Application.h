@@ -239,6 +239,12 @@ public:
      * returns true if it succeeded in closing the transaction
      */
     bool closeActiveTransaction(bool abort=false, int id=0);
+
+    /// Internally call closeActiveTransaction(), but it makes the call site clearer
+    bool commitTransaction(int tid);
+    bool abortTransaction(int tid);
+
+
     //@}
 
     // NOLINTBEGIN

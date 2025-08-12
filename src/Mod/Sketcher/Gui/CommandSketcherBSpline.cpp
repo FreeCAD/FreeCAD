@@ -137,7 +137,7 @@ void CmdSketcherConvertToNURBS::activated(int iMsg)
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    openSelf(QT_TRANSLATE_NOOP("Command", "Convert to NURBS"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Convert to NURBS"));
 
     std::vector<int> GeoIdList;
 
@@ -162,14 +162,14 @@ void CmdSketcherConvertToNURBS::activated(int iMsg)
     }
 
     if (GeoIdList.empty()) {
-        abortSelf();
+        abortCommand();
 
         Gui::TranslatedUserWarning(Obj,
                                    QObject::tr("Wrong selection"),
                                    QObject::tr("None of the selected elements is an edge."));
     }
     else {
-        commitSelf();
+        commitCommand();
     }
     tryAutoRecomputeIfNotSolve(Obj);
 }
@@ -213,7 +213,7 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    openSelf(QT_TRANSLATE_NOOP("Command", "Increase B-spline degree"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Increase B-spline degree"));
 
     bool ignored = false;
 
@@ -245,7 +245,7 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
                                                "objects was not a B-spline and was ignored."));
     }
 
-    commitSelf();
+    commitCommand();
     tryAutoRecomputeIfNotSolve(Obj);
     getSelection().clearSelection();
 }
@@ -292,7 +292,7 @@ void CmdSketcherDecreaseDegree::activated(int iMsg)
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    openSelf(QT_TRANSLATE_NOOP("Command", "Decrease B-spline degree"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Decrease B-spline degree"));
 
     bool ignored = false;
 
@@ -328,7 +328,7 @@ void CmdSketcherDecreaseDegree::activated(int iMsg)
                                                "objects was not a B-spline and was ignored."));
     }
 
-    commitSelf();
+    commitCommand();
     tryAutoRecomputeIfNotSolve(Obj);
     getSelection().clearSelection();
 }
@@ -383,7 +383,7 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
 
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    openSelf(QT_TRANSLATE_NOOP("Command", "Increase knot multiplicity"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Increase knot multiplicity"));
 
     int GeoId;
     Sketcher::PointPos PosId;
@@ -471,10 +471,10 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
     }
 
     if (!applied) {
-        abortSelf();
+        abortCommand();
     }
     else {
-        commitSelf();
+        commitCommand();
     }
 
     tryAutoRecomputeIfNotSolve(Obj);
@@ -530,7 +530,7 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
 
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    openSelf(QT_TRANSLATE_NOOP("Command", "Decrease knot multiplicity"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Decrease knot multiplicity"));
 
     int GeoId;
     Sketcher::PointPos PosId;
@@ -606,10 +606,10 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
     }
 
     if (!applied) {
-        abortSelf();
+        abortCommand();
     }
     else {
-        commitSelf();
+        commitCommand();
     }
 
     tryAutoRecomputeIfNotSolve(Obj);
@@ -1063,7 +1063,7 @@ void CmdSketcherJoinCurves::activated(int iMsg)
         }
     }
 
-    openSelf(QT_TRANSLATE_NOOP("Command", "Join Curves"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Join Curves"));
     bool applied = false;
 
     try {
@@ -1087,10 +1087,10 @@ void CmdSketcherJoinCurves::activated(int iMsg)
     }
 
     if (applied) {
-        commitSelf();
+        commitCommand();
     }
     else {
-        abortSelf();
+        abortCommand();
     }
 
     tryAutoRecomputeIfNotSolve(Obj);

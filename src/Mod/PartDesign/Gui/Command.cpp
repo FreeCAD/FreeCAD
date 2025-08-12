@@ -105,15 +105,15 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
         PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
 
         if (bEditSelected) {
-            cmd.openSelf(pcActiveBody->getDocument(), std::string("Edit ") + name);
+            pcActiveBody->getDocument()->openTransaction(std::string(std::string("Edit ") + name).c_str()); // Will be closed in the edit dialog accept/reject
             PartDesignGui::setEdit(support.getValue(), pcActiveBody);
         } else if (pcActiveBody) {
 
             // TODO Check how this will work outside of a body (2015-10-20, Fat-Zer)
             std::string FeatName = cmd.getUniqueObjectName(name.c_str(), pcActiveBody);
 
-            cmd.openSelf(pcActiveBody->getDocument(), std::string("Create ") + name);
-            FCMD_OBJ_CMD(pcActiveBody,"newObject('" << fullTypeName << "','" << FeatName << "')");
+            pcActiveBody->getDocument()->openTransaction(std::string(std::string("Create ") + name).c_str()); // Will be closed in the edit dialog accept/reject
+            FCMD_OBJ_CMD(pcActiveBody, "newObject('" << fullTypeName << "','" << FeatName << "')");
 
             // remove the body from links in case it's selected as
             // otherwise a cyclic dependency will be created
@@ -294,7 +294,7 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
     }
 
     if (bEditSelected) {
-        openSelf(QT_TRANSLATE_NOOP("Command", "Edit Shape Binder"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Edit Shape Binder"));
         PartDesignGui::setEdit(support.getValue());
     } else {
         PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
@@ -303,7 +303,7 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
 
         std::string FeatName = getUniqueObjectName("ShapeBinder",pcActiveBody);
 
-        openSelf(QT_TRANSLATE_NOOP("Command", "Create Shape Binder"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create Shape Binder"));
         FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::ShapeBinder','" << FeatName << "')");
 
         // remove the body from links in case it's selected as
@@ -386,7 +386,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
 
     PartDesign::SubShapeBinder *binder = nullptr;
     try {
-        openSelf(QT_TRANSLATE_NOOP("Command", "Create Sub-Shape Binder"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create Sub-Shape Binder"));
         if (pcActiveBody) {
             FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::SubShapeBinder','" << FeatName << "')");
             binder = dynamic_cast<PartDesign::SubShapeBinder*>(pcActiveBody->getObject(FeatName.c_str()));
@@ -404,7 +404,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         e.reportException();
         QMessageBox::critical(Gui::getMainWindow(),
                 QObject::tr("Sub-shape binder"), QApplication::translate("Exception", e.what()));
-        abortSelf();
+        abortCommand();
     }
 }
 
@@ -448,8 +448,7 @@ void CmdPartDesignClone::activated(int iMsg)
     // This also fixes bug #3447 because the clone is a PD feature and thus
     // requires a body where it is part of.
 
-    App::Document* doc = obj->getDocument();
-    openSelf(QT_TRANSLATE_NOOP("Command", "Create Clone"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Clone"));
 
     auto objCmd = getObjectCmd(obj);
     std::string cloneName = getUniqueObjectName("Clone", obj);
@@ -485,7 +484,7 @@ void CmdPartDesignClone::activated(int iMsg)
     copyVisual(cloneObj, "Transparency", obj);
     copyVisual(cloneObj, "DisplayMode", obj);
 
-    commitSelf();
+    commitCommand();
 }
 
 bool CmdPartDesignClone::isActive()
@@ -779,7 +778,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
 
         std::string FeatName = cmd->getUniqueObjectName(which.c_str(), pcActiveBody);
 
-        cmd->openSelf(std::string("Make ") + which);
+        cmd->openCommand(std::string("Make ") + which);
 
         FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::" << which << "','" << FeatName << "')");
         auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
@@ -994,7 +993,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
             return;
 
         if (!dlg.radioXRef->isChecked()) {
-            cmd->openSelf(QT_TRANSLATE_NOOP("Command", "Make Copy"));
+            cmd->openCommand(QT_TRANSLATE_NOOP("Command", "Make Copy"));
             auto copy = PartDesignGui::TaskFeaturePick::makeCopy(sketches[0], "", dlg.radioIndependent->isChecked());
             auto oBody = PartDesignGui::getBodyFor(sketches[0], false);
             if (oBody)
@@ -1702,7 +1701,7 @@ void finishDressupFeature(
     auto body = PartDesignGui::getBodyFor(base, false);
     if (!body)
         return;
-    cmd->openSelf("Make " + which);
+    cmd->openCommand("Make " + which);
     FCMD_OBJ_CMD(body,"newObject('PartDesign::"<<which<<"','"<<FeatName<<"')");
     auto Feat = body->getDocument()->getObject(FeatName.c_str());
     FCMD_OBJ_CMD(Feat,"Base = " << str.str());
@@ -1938,7 +1937,7 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
     auto worker = [=](std::vector<App::DocumentObject*> features) {
         std::string msg("Make ");
         msg += which;
-        cmd->openSelf(msg.c_str());
+        cmd->openCommand(msg.c_str());
         FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::" << which << "','" << FeatName << "')");
         // FIXME: There seems to be kind of a race condition here, leading to sporadic errors like
         // Exception (Thu Sep  6 11:52:01 2012): 'App.Document' object has no attribute 'Mirrored'
@@ -2240,7 +2239,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         if (prevFeature)
             Gui::Selection().addSelection(prevFeature->getDocument()->getName(), prevFeature->getNameInDocument());
 
-        openSelf(QT_TRANSLATE_NOOP("Command", "Convert to Multi-Transform feature"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Convert to Multi-Transform feature"));
 
         Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
         rcCmdMgr.runCommandByName("PartDesign_MoveTip");
@@ -2328,7 +2327,7 @@ void CmdPartDesignBoolean::activated(int iMsg)
 
     Gui::SelectionFilter BodyFilter("SELECT Part::Feature COUNT 1..");
 
-    openSelf(QT_TRANSLATE_NOOP("Command", "Create Boolean"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Boolean"));
     std::string FeatName = getUniqueObjectName("Boolean",pcActiveBody);
     FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::Boolean','"<<FeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());

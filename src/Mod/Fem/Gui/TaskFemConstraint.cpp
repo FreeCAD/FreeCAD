@@ -211,9 +211,9 @@ void TaskFemConstraint::createDeleteAction(QListWidget* parentList)
 
 void TaskDlgFemConstraint::open()
 {
-    if (!Gui::Command::hasPendingCommand()) {
+    if (!ConstraintView->getDocument()->hasPendingCommand()) {
         const char* typeName = ConstraintView->getObject()->getTypeId().getName();
-        Gui::Command::openCommand(typeName);
+        ConstraintView->getDocument()->openCommand(typeName);
         ConstraintView->setVisible(true);
     }
 }
@@ -248,9 +248,10 @@ bool TaskDlgFemConstraint::accept()
             throw Base::RuntimeError(ConstraintView->getObject()->getStatusString());
         }
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-        Gui::Command::commitCommand();
+        ConstraintView->getDocument()->commitCommand();
     }
     catch (const Base::Exception& e) {
+        ConstraintView->getDocument()->abortCommand();
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
@@ -261,7 +262,7 @@ bool TaskDlgFemConstraint::accept()
 bool TaskDlgFemConstraint::reject()
 {
     // roll back the changes
-    Gui::Command::abortCommand();
+    ConstraintView->getDocument()->abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
     Gui::Command::updateActive();
 

@@ -335,7 +335,7 @@ std::vector<std::string> Document::getAvailableRedoNames() const
     return vList;
 }
 
-int Document::openTransaction(const char* name) // NOLINT
+int Document::openTransaction(const char* name, bool tmpName,  int tid) // NOLINT
 {
     if (isTransactionLocked()) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
@@ -349,8 +349,7 @@ int Document::openTransaction(const char* name) // NOLINT
         }
         return 0;
     }
-    return setActiveTransaction(name ? name : "<empty>");
-    // GetApplication().setActiveTransaction(name ? name : "<empty>");
+    return setActiveTransaction(name ? name : "<empty>", tmpName, tid);
 }
 
 int Document::_openTransaction(std::string name, int id)
@@ -439,13 +438,12 @@ int Document::setActiveTransaction(const std::string& name, bool tmpName, int ti
             FC_LOG("Could not set active transaction to inactive ID");
             return 0;
         }
-
         if (d->bookedTransaction != 0 && d->bookedTransaction != tid && !_commitTransaction(true)) {
             FC_LOG("Could not book transaction for document");
             return 0;
         }
         d->bookedTransaction = tid;
-        std::cerr << "Sticking to group transaction " << name << "\n";
+ 
         if (GetApplication().transactionTmpName(d->bookedTransaction)) {
             GetApplication().setTransactionName(d->bookedTransaction, name, tmpName);
         }

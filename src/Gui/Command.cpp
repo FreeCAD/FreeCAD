@@ -416,7 +416,7 @@ void Command::_invoke(int id, bool disablelog)
         //
         // Gui::Document* activeDoc = getGuiApplication()->activeDocument();
         // if (activeDoc) {
-        //     currentTransactionID = openSelf(activeDoc->getDocument(), "", true);
+        //     currentTransactionID = openCommand(activeDoc->getDocument(), "", true);
         // }
 
         // App::AutoTransaction committer(nullptr, true);
@@ -628,63 +628,46 @@ QString Command::translatedGroupName() const
  *  operation default is the Command name.
  *  @see CommitCommand(),AbortCommand()
  */
-void Command::openCommand(const char* sCmdName)
-{
-    if (!sCmdName)
-        sCmdName = "Command";
-    App::GetApplication().setActiveTransaction(sCmdName);
-}
-int Command::openCommand(App::Document* doc, std::string name, bool tmpName, int tid)
-{
-    if (name.empty()) {
-        name = "Command";
-    }
-
-    if (doc == nullptr) {
-        FC_WARN("Doc is nullptr in Command::openCommand, opening a global transaction");
-        // App::GetApplication().setGlobalTransaction();
-        return 0;
-    } else {
-        return doc->setActiveTransaction(name, tmpName, tid);
-    }
-}
-int Command::openActiveDocumentCommand(std::string name, bool tmpName, int tid)
-{
-    if (Gui::Document* guidoc = getGuiApplication()->activeDocument()) {
-        return openCommand(guidoc->getDocument(), name, tmpName, tid);
-    }
-    return 0;
-}
-int Command::openSelf(App::Document* doc, const std::string& name, bool tmpName, int tid)
-{
-    currentTransactionID = openCommand(doc, name, tmpName, tid);
-    return currentTransactionID;
-}
-int Command::openSelf(const std::string& name, bool tmpName, int tid)
+int Command::openCommand(std::string name, bool tmpName)
 {
     currentTransactionID = openActiveDocumentCommand(name, tmpName);
     return currentTransactionID;
 }
-void Command::renameSelf(const std::string& name)
+int Command::openActiveDocumentCommand(std::string name, bool tmpName, int tid)
 {
-    std::cout << "Rename transaction!: " << name << "\n";
+     if (name.empty())
+        name = "Command";
+    if (Gui::Document* guidoc = getGuiApplication()->activeDocument()) {
+        return guidoc->getDocument()->setActiveTransaction(name, tmpName, tid);
+    }
+    return 0;
+}
+void Command::rename(const std::string& name)
+{
     App::GetApplication().setTransactionName(currentTransactionID, name, false);
 }
 
 void Command::commitCommand()
 {
-    App::GetApplication().closeActiveTransaction();
+    commitCommand(currentTransactionID);
+    currentTransactionID = 0;
 }
-void Command::commitCommand(int& tid)
+void Command::commitCommand(int tid)
 {
     if (tid != 0) {
-        App::GetApplication().closeActiveTransaction(false, tid);
-        tid = 0;
+        App::GetApplication().commitTransaction(tid);
     }
 }
-void Command::commitSelf()
+void Command::abortCommand()
 {
-    commitCommand(currentTransactionID);
+    abortCommand(currentTransactionID);
+    currentTransactionID = 0;
+}
+void Command::abortCommand(int tid)
+{
+    if (tid != 0) {
+        App::GetApplication().abortTransaction(tid);
+    }
 }
 int Command::transactionID() const
 {
@@ -693,21 +676,6 @@ int Command::transactionID() const
 void Command::resetTransactionID()
 {
     currentTransactionID = 0;
-}
-void Command::abortCommand()
-{
-    App::GetApplication().closeActiveTransaction(true);
-}
-void Command::abortCommand(int& tid)
-{
-    if (tid != 0) {
-        App::GetApplication().closeActiveTransaction(true, tid);
-        tid = 0;
-    }
-}
-void Command::abortSelf()
-{
-    abortCommand(currentTransactionID);
 }
 bool Command::hasPendingCommand()
 {

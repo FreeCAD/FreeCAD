@@ -533,7 +533,7 @@ bool TaskCenterLine::accept()
         return false;
 
     Gui::Command::updateActive();
-    Gui::Command::commitCommand();
+    doc->commitCommand();
     doc->resetEdit();
 
     return true;

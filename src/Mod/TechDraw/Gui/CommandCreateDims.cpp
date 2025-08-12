@@ -2307,7 +2307,7 @@ void CmdTechDrawLandmarkDimension::activated(int iMsg)
     TechDraw::LandmarkDimension* dim = nullptr;
     std::string FeatName = getUniqueObjectName("LandmarkDim");
 
-    openSelf(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
     doCommand(Doc,
               "App.activeDocument().addObject('TechDraw::LandmarkDimension', '%s')",
               FeatName.c_str());
@@ -2341,7 +2341,7 @@ void CmdTechDrawLandmarkDimension::activated(int iMsg)
               PageName.c_str(),
               FeatName.c_str());
 
-    commitSelf();
+    commitCommand();
 
     // Touch the parent feature so the dimension in tree view appears as a child
     dvp->touch(true);

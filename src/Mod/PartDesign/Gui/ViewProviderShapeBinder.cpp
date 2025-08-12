@@ -208,7 +208,7 @@ void ViewProviderShapeBinder::setupContextMenu(QMenu* menu, QObject* receiver, c
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     func->trigger(act, [this]() {
         QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
-        Gui::Command::openCommand(text.toUtf8());
+        getDocument()->openCommand(text.toUtf8());
 
         Gui::Document* document = this->getDocument();
         if (document) {
