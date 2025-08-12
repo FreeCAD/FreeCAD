@@ -1268,11 +1268,15 @@ void Application::onLastWindowClosed(Gui::Document* pcDoc)
 }
 
 /// send Messages to the active view
-bool Application::sendMsgToActiveView(const char* pMsg, const char** ppReturn)
+bool Application::sendMsgToActiveView(const char* pMsg, const char** ppReturn, bool callUpdateActions)
 {
     MDIView* pView = getMainWindow()->activeWindow();
     bool res = pView ? pView->onMsg(pMsg, ppReturn) : false;
-    updateActions(true);
+
+    if (callUpdateActions) {
+        updateActions(true);
+    }
+
     return res;
 }
 
