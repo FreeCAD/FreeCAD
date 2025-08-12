@@ -3751,7 +3751,7 @@ void Application::getVerboseCommonInfo(QTextStream& str, const std::map<std::str
         str << "Architecture: " << QSysInfo::buildCpuArchitecture()
             << "(running on: " << QSysInfo::currentCpuArchitecture() << ")\n";
     }
-    str << "Version " << major << "." << minor << "." << point << suffix << "." << build;
+    str << "Version: " << major << "." << minor << "." << point << suffix << "." << build;
 
 #ifdef FC_CONDA
     str << " Conda";
