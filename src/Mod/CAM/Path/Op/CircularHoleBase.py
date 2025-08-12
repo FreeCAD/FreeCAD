@@ -2,6 +2,7 @@
 
 # ***************************************************************************
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2025 Billy Huddleston <billy@ivdc.com>                  *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -82,6 +83,17 @@ class ObjectOp(PathOp.ObjectOp):
             QT_TRANSLATE_NOOP("App::Property", "List of disabled features"),
         )
         self.initCircularHoleOperation(obj)
+
+        # Handle SortingMode property with migration support
+        if not hasattr(obj, "SortingMode"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "SortingMode",
+                "Base",
+                QT_TRANSLATE_NOOP("App::Property", "Manual or Automatic mode sorting of holes"),
+            )
+            obj.SortingMode = ["Automatic", "Automatic TSP", "Manual"]  # Set available options
+            obj.SortingMode = "Automatic"  # Set default value
 
     def initCircularHoleOperation(self, obj):
         """initCircularHoleOperation(obj) ... overwrite if the subclass needs initialisation.
@@ -164,6 +176,28 @@ class ObjectOp(PathOp.ObjectOp):
         Do not overwrite, implement circularHoleExecute(obj, holes) instead."""
         Path.Log.track()
 
+        # MIGRATION: Ensure SortingMode property exists and is up to date
+        if not hasattr(obj, "SortingMode"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "SortingMode",
+                "Base",
+                QT_TRANSLATE_NOOP("App::Property", "Manual or Automatic mode sorting of holes"),
+            )
+            obj.SortingMode = ["Automatic", "Automatic TSP", "Manual"]
+            obj.SortingMode = "Automatic"
+        else:
+            # Update enumeration if needed
+            current_options = list(obj.SortingMode)
+            new_options = ["Automatic", "Automatic TSP", "Manual"]
+            if current_options != new_options:
+                current_value = obj.SortingMode
+                obj.SortingMode = new_options
+                if current_value in new_options:
+                    obj.SortingMode = current_value
+                else:
+                    obj.SortingMode = "Automatic"
+
         def haveLocations(self, obj):
             if PathOp.FeatureLocations & self.opFeatures(obj):
                 return len(obj.Locations) != 0
@@ -189,7 +223,10 @@ class ObjectOp(PathOp.ObjectOp):
                 holes.append({"x": location.x, "y": location.y, "r": 0})
 
         if len(holes) > 0:
-            holes = PathUtils.sort_locations(holes, ["x", "y"])
+            if obj.SortingMode == "Automatic":
+                holes = PathUtils.sort_locations(holes, ["x", "y"])
+            elif obj.SortingMode == "Automatic TSP":
+                holes = PathUtils.sort_locations_tsp(holes, ["x", "y"])
             self.circularHoleExecute(obj, holes)
 
     def circularHoleExecute(self, obj, holes):
@@ -216,3 +253,26 @@ class ObjectOp(PathOp.ObjectOp):
             )
         obj.Base = features
         obj.Disabled = []
+
+    def onDocumentRestored(self, obj):
+        super().onDocumentRestored(obj)
+        # Migration logic for SortingMode
+        if not hasattr(obj, "SortingMode"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "SortingMode",
+                "Base",
+                QT_TRANSLATE_NOOP("App::Property", "Manual or Automatic mode sorting of holes"),
+            )
+            obj.SortingMode = ["Automatic", "Automatic TSP", "Manual"]
+            obj.SortingMode = "Automatic"
+        else:
+            current_options = list(obj.SortingMode)
+            new_options = ["Automatic", "Automatic TSP", "Manual"]
+            if current_options != new_options:
+                current_value = obj.SortingMode
+                obj.SortingMode = new_options
+                if current_value in new_options:
+                    obj.SortingMode = current_value
+                else:
+                    obj.SortingMode = "Automatic"
