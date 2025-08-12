@@ -36,6 +36,7 @@ import importlib
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 from PySide import QtCore, QtGui
+from PySide.QtWidgets import QFrame
 
 __title__ = "CAM Operation UI base classes"
 __author__ = "sliptonic (Brad Collette)"
@@ -212,9 +213,11 @@ class TaskPanelPage(object):
         self.isdirty = False
         self.parent = None
         self.panelTitle = "Operation"
+        self.tcEditor = None
 
         if self._installTCUpdate():
             PathJob.Notification.updateTC.connect(self.resetToolController)
+            self.form.toolController.currentIndexChanged.connect(self.tcComboChanged)
 
     def show_error_message(self, title, message):
         msg_box = QtGui.QMessageBox()
@@ -389,6 +392,25 @@ class TaskPanelPage(object):
         """populateCombobox(form, enumTups, comboBoxesPropertyMap) ... proxy for PathGuiUtil.populateCombobox()"""
         PathGuiUtil.populateCombobox(form, enumTups, comboBoxesPropertyMap)
 
+    def tcComboChanged(self, newIndex):
+        if self.obj is not None and self.tcEditor:
+            combo = self.form.toolController
+            oldEditor = self.tcEditor
+            oldEditor.controller.hide()
+            tc = PathUtils.findToolController(self.obj, self.obj.Proxy, combo.currentText())
+
+            self.tcEditor = Path.Tool.Gui.Controller.ToolControllerEditor(tc, False, self.setDirty)
+            parent_layout = oldEditor.controller.parent().layout()
+            parent_layout.replaceWidget(oldEditor.controller, self.tcEditor.controller)
+            self.tcEditor.updateUi()
+            self.setToolControllerEditVisibility()
+
+    def setToolControllerEditVisibility(self, unused=None):
+        if self.form.editToolController.isChecked():
+            self.tcEditor.controller.show()
+        else:
+            self.tcEditor.controller.hide()
+
     def resetToolController(self, job, tc):
         if self.obj is not None:
             self.obj.ToolController = tc
@@ -411,6 +433,18 @@ class TaskPanelPage(object):
         if obj.ToolController is not None:
             self.selectInComboBox(obj.ToolController.Label, combo)
 
+        if hasattr(self.form, "editToolController") and not self.tcEditor:
+            self.tcEditor = Path.Tool.Gui.Controller.ToolControllerEditor(
+                obj.ToolController, False, self.setDirty
+            )
+            layout = self.form.editToolController.parent().layout()
+            layout.addWidget(self.tcEditor.controller, layout.rowCount(), 0, 1, 2)
+            self.tcEditor.updateUi()
+            self.tcEditor.controller.hide()
+            self.form.editToolController.checkStateChanged.connect(
+                self.setToolControllerEditVisibility
+            )
+
     def updateToolController(self, obj, combo):
         """updateToolController(obj, combo) ...
         helper function to update obj's ToolController property if a different
@@ -418,6 +452,8 @@ class TaskPanelPage(object):
         tc = PathUtils.findToolController(obj, obj.Proxy, combo.currentText())
         if obj.ToolController != tc:
             obj.ToolController = tc
+        if self.tcEditor:
+            self.tcEditor.updateToolController()
 
     def setupCoolant(self, obj, combo):
         """setupCoolant(obj, combo) ...

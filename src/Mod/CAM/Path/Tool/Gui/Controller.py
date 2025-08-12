@@ -187,7 +187,9 @@ class CommandPathToolController(object):
 
 
 class ToolControllerEditor(object):
-    def __init__(self, obj, asDialog):
+
+    def __init__(self, obj, asDialog, notifyChanged=None):
+        self.notifyChanged = notifyChanged
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/DlgToolControllerEdit.ui")
         self.controller = FreeCADGui.PySideUic.loadUi(":/panels/ToolControllerEdit.ui")
         self.form.tc_layout.addWidget(self.controller)
@@ -205,6 +207,22 @@ class ToolControllerEditor(object):
         self.horizRapid = PathGuiUtil.QuantitySpinBox(self.controller.horizRapid, obj, "HorizRapid")
 
         self.editor = None
+
+        self.controller.tcName.textChanged.connect(self.changed1)
+        self.controller.tcNumber.editingFinished.connect(self.changed)
+        self.vertFeed.widget.textChanged.connect(self.changed1)
+        self.horizFeed.widget.textChanged.connect(self.changed1)
+        self.vertRapid.widget.textChanged.connect(self.changed1)
+        self.horizRapid.widget.textChanged.connect(self.changed1)
+        self.controller.spindleSpeed.editingFinished.connect(self.changed)
+        self.controller.spindleDirection.currentIndexChanged.connect(self.changed1)
+
+    def changed1(self, unused):
+        self.changed()
+
+    def changed(self):
+        if self.notifyChanged:
+            self.notifyChanged()
 
     def selectInComboBox(self, name, combo):
         """selectInComboBox(name, combo) ...
@@ -230,6 +248,9 @@ class ToolControllerEditor(object):
 
     def updateUi(self):
         tc = self.obj
+        for widget in [self.horizFeed, self.horizRapid, self.vertFeed, self.vertRapid]:
+            widget.attachTo(tc, widget.prop)
+
         self.controller.tcName.setText(tc.Label)
         self.controller.tcNumber.setValue(tc.ToolNumber)
         self.horizFeed.updateWidget()
