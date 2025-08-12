@@ -15,7 +15,8 @@
 #include <QStackedLayout>
 #include <QPointer>
 
-#include <Inventor/nodes/SoCamera.h>
+#include <Inventor/nodes/SoPerspectiveCamera.h>
+#include <Inventor/nodes/SoOrthographicCamera.h>
 
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -24,6 +25,8 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/SoFCDB.h>
+#include <Gui/Camera.h>
+#include <Gui/Navigation/NavigationStyle.h>
 #include "GuiDisplay.h"
 #include "DlgCAMSimulator.h"
 #include "Dummy3DViewer.h"
@@ -63,8 +66,8 @@ ViewCAMSimulator::ViewCAMSimulator(Gui::Document* pcDocument,
 
     // call apply settings only after mDummyViewer and mDlg have been initialized
 
-    initCamera();
     applySettings();
+    initCamera();
 
     auto stack = new QStackedWidget;
     static_cast<QStackedLayout*>(stack->layout())->setStackingMode(QStackedLayout::StackAll);
@@ -97,8 +100,70 @@ bool ViewCAMSimulator::onMsg(const char* pMsg, const char** ppReturn)
 {
     (void)ppReturn;
 
+    // TODO: this is a near 1-to-1 code duplication from View3DInventor.cpp
+
     if (pMsg == "ViewFit"sv) {
         mDummyViewer->viewAll();
+        return true;
+    }
+    else if (strcmp("GetCamera", pMsg) == 0) {
+        SoCamera* Cam = mDummyViewer->getSoRenderManager()->getCamera();
+        if (!Cam) {
+            return false;
+        }
+        *ppReturn = SoFCDB::writeNodesToString(Cam).c_str();
+        return true;
+    }
+    else if (pMsg == "ViewBottom"sv) {
+        mDummyViewer->setCameraOrientation(Camera::rotation(Camera::Bottom));
+        return true;
+    }
+    else if (pMsg == "ViewFront"sv) {
+        mDummyViewer->setCameraOrientation(Camera::rotation(Camera::Front));
+        return true;
+    }
+    else if (pMsg == "ViewLeft"sv) {
+        mDummyViewer->setCameraOrientation(Camera::rotation(Camera::Left));
+        return true;
+    }
+    else if (pMsg == "ViewRear"sv) {
+        mDummyViewer->setCameraOrientation(Camera::rotation(Camera::Rear));
+        return true;
+    }
+    else if (pMsg == "ViewRight"sv) {
+        mDummyViewer->setCameraOrientation(Camera::rotation(Camera::Right));
+        return true;
+    }
+    else if (pMsg == "ViewTop"sv) {
+        mDummyViewer->setCameraOrientation(Camera::rotation(Camera::Top));
+        return true;
+    }
+    else if (pMsg == "ViewAxo"sv) {
+        mDummyViewer->setCameraOrientation(Camera::rotation(Camera::Isometric));
+        return true;
+    }
+    else if (pMsg == "ViewDimetric"sv) {
+        mDummyViewer->setCameraOrientation(Camera::rotation(Camera::Dimetric));
+        return true;
+    }
+    else if (pMsg == "ViewTrimetric"sv) {
+        mDummyViewer->setCameraOrientation(Camera::rotation(Camera::Trimetric));
+        return true;
+    }
+    else if (pMsg == "OrthographicCamera"sv) {
+        mDummyViewer->setCameraType(SoOrthographicCamera::getClassTypeId());
+        return true;
+    }
+    else if (pMsg == "PerspectiveCamera"sv) {
+        mDummyViewer->setCameraType(SoPerspectiveCamera::getClassTypeId());
+        return true;
+    }
+    else if (pMsg == "ZoomIn"sv) {
+        mDummyViewer->navigationStyle()->zoomIn();
+        return true;
+    }
+    else if (pMsg == "ZoomOut"sv) {
+        mDummyViewer->navigationStyle()->zoomOut();
         return true;
     }
 
@@ -107,11 +172,26 @@ bool ViewCAMSimulator::onMsg(const char* pMsg, const char** ppReturn)
 
 bool ViewCAMSimulator::onHasMsg(const char* pMsg) const
 {
-    if (pMsg == "ViewFit"sv) {
-        return true;
-    }
+    constexpr std::string_view supported[] = {
+        "ViewFit",
+        "GetCamera",
+        "ViewBottom",
+        "ViewFront",
+        "ViewLeft",
+        "ViewRear",
+        "ViewRight",
+        "ViewTop",
+        "ViewAxo",
+        "ViewDimetric",
+        "ViewTrimetric",
+        "OrthographicCamera",
+        "PerspectiveCamera",
+        "ZoomIn",
+        "ZoomOut",
+    };
 
-    return false;
+    const auto it = std::find(std::begin(supported), std::end(supported), pMsg);
+    return it != std::end(supported);
 }
 
 void ViewCAMSimulator::onSimulationStarted()

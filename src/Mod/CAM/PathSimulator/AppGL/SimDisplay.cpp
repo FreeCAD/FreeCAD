@@ -34,6 +34,7 @@
 
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
+#include <Inventor/nodes/SoOrthographicCamera.h>
 
 #include "linmath.h"
 #include "OpenGlWrapper.h"
@@ -500,13 +501,11 @@ void SimDisplay::UpdateWindowScale(int width, int height)
     UpdateProjectionMatrix();
 }
 
-void SimDisplay::UpdateCamera(const SoCamera& socamera)
+void SimDisplay::UpdateCamera(const SoCamera& camera)
 {
     if (!displayInitiated) {
         return;
     }
-
-    const auto& camera = dynamic_cast<const SoPerspectiveCamera&>(socamera);
 
     UpdateCameraView(camera);
     UpdateCameraProjection(camera);
@@ -528,18 +527,33 @@ void SimDisplay::UpdateCameraView(const SoCamera& camera)
     UpdateViewMatrix();
 }
 
-void SimDisplay::UpdateCameraProjection(const SoPerspectiveCamera& camera)
+void SimDisplay::UpdateCameraProjection(const SoCamera& camera)
 {
-    const float heightAngle = camera.heightAngle.getValue();
+    float heightAngle = std::numbers::pi / 4;
+    float height = 100.0f;
+
+    const auto perspective = dynamic_cast<const SoPerspectiveCamera*>(&camera);
+    const auto orthographic = dynamic_cast<const SoOrthographicCamera*>(&camera);
+
+    if (perspective) {
+        heightAngle = perspective->heightAngle.getValue();
+    }
+    else if (orthographic) {
+        height = orthographic->height.getValue();
+    }
+
     const float nearDistance = camera.nearDistance.getValue();
     const float farDistance = camera.farDistance.getValue();
 
-    if (heightAngle == mCameraHeightAngle && nearDistance == mCameraNearDistance
+    if ((bool)perspective == mCameraPerspective && heightAngle == mCameraHeightAngle
+        && height == mCameraHeight && nearDistance == mCameraNearDistance
         && farDistance == mCameraFarDistance) {
         return;
     }
 
+    mCameraPerspective = (bool)perspective;
     mCameraHeightAngle = heightAngle;
+    mCameraHeight = height;
     mCameraNearDistance = nearDistance;
     mCameraFarDistance = farDistance;
 
@@ -583,7 +597,15 @@ void SimDisplay::UpdateProjectionMatrix()
 #endif
 
     mat4x4 projmat;
-    mat4x4_perspective(projmat, mCameraHeightAngle, aspect, near, far);
+
+    if (mCameraPerspective) {
+        mat4x4_perspective(projmat, mCameraHeightAngle, aspect, near, far);
+    }
+    else {
+        const float h = mCameraHeight;
+        const float w = mCameraHeight * aspect;
+        mat4x4_ortho(projmat, -w / 2, w / 2, -h / 2, h / 2, near, far);
+    }
 
     shader3D.Activate();
     shader3D.UpdateProjectionMat(projmat);
