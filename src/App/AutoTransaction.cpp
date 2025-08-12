@@ -372,18 +372,18 @@ bool Application::closeActiveTransaction(bool abort, int id)
 }
 bool Application::commitTransaction(int tid)
 {
-    closeActiveTransaction(false, tid);
+    return  closeActiveTransaction(false, tid);
 }
 bool Application::abortTransaction(int tid)
 {
-    closeActiveTransaction(true, tid);
+    return closeActiveTransaction(true, tid);
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 TransactionLocker::TransactionLocker(Document* doc, bool lock)
-    : doc(doc)
-    , active(lock)
+    : active(lock)
+    , doc(doc)
 {
     if (lock) {
         doc->lockTransaction();
