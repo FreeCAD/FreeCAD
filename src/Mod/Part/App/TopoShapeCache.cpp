@@ -78,10 +78,9 @@ TopoShape TopoShapeCache::Ancestry::_getTopoShape(const TopoShape& parent, int i
         // in the direct parent shape, while TopoShape::_subLocation is
         // used to accumulate locations in higher ancestors. We
         // separate these two to avoid invalidating cache.
-
         res._subLocation = parent._subLocation * parent._cache->subLocation;
         res._parentCache = parent._parentCache;
-    }
+    } 
     else {
         res._parentCache = owner->shared_from_this();
     }
