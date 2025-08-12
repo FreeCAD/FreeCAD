@@ -43,6 +43,7 @@
 
 #include <Gui/ViewProviderExtension.h>
 #include <Gui/ViewProviderExtensionPython.h>
+#include <Inventor/fields/SoSFMatrix.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/PartDesign/App/Feature.h>
 
@@ -60,9 +61,15 @@ public:
     SoPreviewShape();
     static void initClass();
 
+    void notify(SoNotList* nl) override;
+
     SoSFColor color;
     SoSFFloat transparency;
     SoSFFloat lineWidth;
+    SoSFMatrix transform;
+
+private:
+    SoTransform* pcTransform;
 };
 
 class PartGuiExport ViewProviderPreviewExtension : public Gui::ViewProviderExtension {
