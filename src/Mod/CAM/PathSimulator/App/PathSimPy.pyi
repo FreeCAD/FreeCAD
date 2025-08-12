@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Final
 
 from Base.BaseClass import BaseClass
 from Base.Metadata import export
