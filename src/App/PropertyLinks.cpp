@@ -1555,10 +1555,7 @@ static bool updateLinkReference(App::PropertyLinkBase* prop,
 void PropertyLinkSub::afterRestore()
 {
     _ShadowSubList.resize(_cSubList.size());
-    if (!_pcLinkSub || !_pcLinkSub->isAttachedToDocument()) {
-        return;
-    }
-    if (!testFlag(LinkRestoreLabel)) {
+    if (!testFlag(LinkRestoreLabel) || !_pcLinkSub || !_pcLinkSub->isAttachedToDocument()) {
         return;
     }
     setFlag(LinkRestoreLabel, false);
@@ -4070,10 +4067,7 @@ int PropertyXLink::checkRestore(std::string* msg) const
 void PropertyXLink::afterRestore()
 {
     assert(_SubList.size() == _ShadowSubList.size());
-    if (!_pcLink || !_pcLink->isAttachedToDocument()) {
-        return;
-    }
-    if (!testFlag(LinkRestoreLabel)) {
+    if (!testFlag(LinkRestoreLabel) || !_pcLink || !_pcLink->isAttachedToDocument()) {
         return;
     }
 
@@ -4643,7 +4637,7 @@ void PropertyXLink::getLinks(std::vector<App::DocumentObject*>& objs,
                              bool all,
                              std::vector<std::string>* subs,
                              bool newStyle) const
-{   
+{
     if ((all || _pcScope != LinkScope::Hidden) && _pcLink && _pcLink->isAttachedToDocument()) {
         updateElementReferences(_pcLink, false);
         objs.push_back(_pcLink);
