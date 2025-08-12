@@ -32,7 +32,7 @@ SET(PathSimulator_SRCS
 )
 
 generate_from_xml(PathSimPy)
-generate_from_py_(PathSimPy)
+generate_from_py_(PathSim)
 
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
