@@ -87,14 +87,13 @@ void ViewProvider::attach(App::DocumentObject* pcObject)
 
 bool ViewProvider::doubleClicked()
 {
-    int tid = 0;
     try {
         QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
-        tid = Gui::Command::openCommand(getDocument()->getDocument(), text.toStdString());
+        getDocument()->openCommand(text.toUtf8());
         Gui::cmdSetEdit(pcObject, Gui::Application::Instance->getUserEditMode());
     }
     catch (const Base::Exception&) {
-        Gui::Command::abortCommand(tid);
+        getDocument()->abortCommand();
     }
     return true;
 }

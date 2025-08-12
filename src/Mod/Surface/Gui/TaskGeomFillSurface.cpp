@@ -354,10 +354,10 @@ void GeomFillSurface::clearSelection()
 
 void GeomFillSurface::checkOpenCommand()
 {
-    if (checkCommand && !Gui::Command::hasPendingCommand()) {
+    if (checkCommand && !editedObject->getDocument()->hasPendingTransaction()) {
         std::string Msg("Edit ");
         Msg += editedObject->Label.getValue();
-        Gui::Command::openCommand(Msg.c_str());
+        editedObject->getDocument()->openTransaction(Msg.c_str());
         checkCommand = false;
     }
 }
@@ -412,8 +412,8 @@ bool GeomFillSurface::accept()
 
     this->vp->highlightReferences(false);
 
-    Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
+    editedObject->getDocument()->commitTransaction();
     Gui::Command::updateActive();
     return true;
 }
@@ -424,7 +424,7 @@ bool GeomFillSurface::reject()
     selectionMode = None;
     Gui::Selection().rmvSelectionGate();
 
-    Gui::Command::abortCommand();
+    editedObject->getDocument()->abortTransaction();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     Gui::Command::updateActive();
     return true;

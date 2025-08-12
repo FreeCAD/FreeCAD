@@ -230,8 +230,7 @@ void DlgBindSheet::accept()
                 }
             }
         }
-
-        Gui::Command::openCommand("Bind cells");
+        sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Bind cells"));
         commandActive = true;
 
         if (ui->checkBoxHREF->isChecked()) {
@@ -262,7 +261,7 @@ void DlgBindSheet::accept()
                                   toEnd);
         }
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-        Gui::Command::commitCommand();
+        sheet->getDocument()->commitTransaction();
         QDialog::accept();
     }
     catch (Base::Exception& e) {
@@ -271,7 +270,7 @@ void DlgBindSheet::accept()
                               tr("Bind Spreadsheet Cells"),
                               tr("Error:\n") + QString::fromUtf8(e.what()));
         if (commandActive) {
-            Gui::Command::abortCommand();
+            sheet->getDocument()->abortTransaction();
         }
     }
 }
@@ -281,7 +280,7 @@ void DlgBindSheet::onDiscard()
     try {
         std::string fromStart(ui->lineEditFromStart->text().trimmed().toLatin1().constData());
         std::string fromEnd(ui->lineEditFromEnd->text().trimmed().toLatin1().constData());
-        Gui::Command::openCommand("Unbind cells");
+        sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Unbind cells"));
         Gui::cmdAppObjectArgs(sheet,
                               "setExpression('.cells.Bind.%s.%s', None)",
                               fromStart,
@@ -291,13 +290,13 @@ void DlgBindSheet::onDiscard()
                               fromStart,
                               fromEnd);
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-        Gui::Command::commitCommand();
+        sheet->getDocument()->commitTransaction();
         reject();
     }
     catch (Base::Exception& e) {
         e.reportException();
         QMessageBox::critical(this, tr("Unbind Cells"), QString::fromUtf8(e.what()));
-        Gui::Command::abortCommand();
+        sheet->getDocument()->abortTransaction();
     }
 }
 

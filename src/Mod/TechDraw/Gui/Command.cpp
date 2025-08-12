@@ -120,7 +120,7 @@ void CmdTechDrawPageDefault::activated(int iMsg)
     QFileInfo tfi(templateFileName);
     if (tfi.isReadable()) {
         Gui::WaitCursor wc;
-        openSelf(QT_TRANSLATE_NOOP("Command", "Drawing create page"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Drawing create page"));
 
         auto page = getDocument()->addObject<TechDraw::DrawPage>("Page");
         if (!page) {
@@ -139,7 +139,7 @@ void CmdTechDrawPageDefault::activated(int iMsg)
         svgTemplate->Template.setValue(filespec);
 
         updateActive();
-        commitSelf();
+        commitCommand();
 
         TechDrawGui::ViewProviderPage *dvp = dynamic_cast<TechDrawGui::ViewProviderPage *>
                                                  (Gui::Application::Instance->getViewProvider(page));
@@ -189,7 +189,7 @@ void CmdTechDrawPageTemplate::activated(int iMsg)
     QFileInfo tfi(templateFileName);
     if (tfi.isReadable()) {
         Gui::WaitCursor wc;
-        openSelf(QT_TRANSLATE_NOOP("Command", "Drawing create page"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Drawing create page"));
 
         auto page = getDocument()->addObject<TechDraw::DrawPage>("Page");
         if (!page) {
@@ -208,7 +208,7 @@ void CmdTechDrawPageTemplate::activated(int iMsg)
         svgTemplate->Template.setValue(filespec);
 
         updateActive();
-        commitSelf();
+        commitCommand();
 
         TechDrawGui::ViewProviderPage *dvp = dynamic_cast<TechDrawGui::ViewProviderPage *>
                                                  (Gui::Application::Instance->getViewProvider(page));
@@ -339,7 +339,7 @@ void CmdTechDrawView::activated(int iMsg)
         if (obj->isDerivedFrom<Spreadsheet::Sheet>()) {
             std::string SpreadName = obj->getNameInDocument();
 
-            openSelf(QT_TRANSLATE_NOOP("Command", "Create spreadsheet view"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Create spreadsheet view"));
             std::string FeatName = getUniqueObjectName("Sheet");
             doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewSpreadsheet', '%s')",
                 FeatName.c_str());
@@ -350,14 +350,14 @@ void CmdTechDrawView::activated(int iMsg)
             doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
                 FeatName.c_str());
             updateActive();
-            commitSelf();
+            commitCommand();
             viewCreated = true;
             continue;
         }
         else if (DrawGuiUtil::isArchSection(obj)) {
             std::string FeatName = getUniqueObjectName("BIM view");
             std::string SourceName = obj->getNameInDocument();
-            openSelf(QT_TRANSLATE_NOOP("Command", "Create BIM view"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Create BIM view"));
             doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewArch', '%s')",
                 FeatName.c_str());
             doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewArch', 'BIM view', '%s')",
@@ -367,7 +367,7 @@ void CmdTechDrawView::activated(int iMsg)
             doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
                 FeatName.c_str());
             updateActive();
-            commitSelf();
+            commitCommand();
             viewCreated = true;
             continue;
         }
@@ -452,7 +452,7 @@ void CmdTechDrawView::activated(int iMsg)
                     std::string FeatName = getUniqueObjectName("Symbol");
                     filename = Base::Tools::escapeEncodeFilename(filename);
                     auto filespec = DU::cleanFilespecBackslash(filename.toStdString());
-                    openSelf(QT_TRANSLATE_NOOP("Command", "Create Symbol"));
+                    openCommand(QT_TRANSLATE_NOOP("Command", "Create Symbol"));
                     doCommand(Doc, "import codecs");
                     doCommand(Doc,
                               "f = codecs.open(\"%s\", 'r', encoding=\"utf-8\")",
@@ -477,25 +477,25 @@ void CmdTechDrawView::activated(int iMsg)
                     std::string FeatName = getUniqueObjectName("Image");
                     filename = Base::Tools::escapeEncodeFilename(filename);
                     auto filespec = DU::cleanFilespecBackslash(filename.toStdString());
-                    openSelf(QT_TRANSLATE_NOOP("Command", "Create image"));
+                    openCommand(QT_TRANSLATE_NOOP("Command", "Create image"));
                     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewImage', '%s')", FeatName.c_str());
                     doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewImage', 'Image', '%s')",
                         FeatName.c_str(), FeatName.c_str());
                     doCommand(Doc, "App.activeDocument().%s.ImageFile = '%s'", FeatName.c_str(), filespec.c_str());
                     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
                     updateActive();
-                    commitSelf();
+                    commitCommand();
                 }
 
                 updateActive();
-                commitSelf();
+                commitCommand();
             }
         }
         return;
     }
 
     Gui::WaitCursor wc;
-    openSelf(QT_TRANSLATE_NOOP("Command", "Create view"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create view"));
     std::string FeatName = getUniqueObjectName("View");
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawProjGroupItem', '%s')",
         FeatName.c_str());
@@ -526,7 +526,7 @@ void CmdTechDrawView::activated(int iMsg)
 
     getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
     doCommand(Doc, "App.activeDocument().%s.recompute()", FeatName.c_str());
-    commitSelf();
+    commitCommand();
 
     // create the rest of the desired views
     Gui::Control().showDialog(new TaskDlgProjGroup(dvp, true));
@@ -642,7 +642,7 @@ void CmdTechDrawBrokenView::activated(int iMsg)
     }
 
     Gui::WaitCursor wc;
-    openSelf(QT_TRANSLATE_NOOP("Command", "Create broken view"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create broken view"));
     getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
     std::string FeatName = getUniqueObjectName("BrokenView");
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawBrokenView','%s')", FeatName.c_str());
@@ -673,7 +673,7 @@ void CmdTechDrawBrokenView::activated(int iMsg)
                   FeatName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
     getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
 
-    commitSelf();
+    commitCommand();
 
     dbv->recomputeFeature();
 }
@@ -867,7 +867,7 @@ void execSimpleSection(Gui::Command* cmd)
     Gui::Control().showDialog(new TaskDlgSectionView(dvp));
 
     cmd->updateActive();//ok here since dialog doesn't call doc.recompute()
-    cmd->commitSelf();
+    cmd->commitCommand();
 }
 
 //===========================================================================
@@ -1133,7 +1133,7 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
     Base::Vector3d projDir;
     Gui::WaitCursor wc;
 
-    openSelf(QT_TRANSLATE_NOOP("Command", "Create projection group"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create projection group"));
 
     std::string multiViewName = getUniqueObjectName("ProjGroup");
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawProjGroup', '%s')",
@@ -1164,7 +1164,7 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
     getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
 
     doCommand(Doc, "App.activeDocument().%s.Anchor.recompute()", multiViewName.c_str());
-    commitSelf();
+    commitCommand();
     updateActive();
 
     // create the rest of the desired views
@@ -1353,13 +1353,13 @@ void CmdTechDrawClipGroup::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     std::string FeatName = getUniqueObjectName("Clip");
-    openSelf(QT_TRANSLATE_NOOP("Command", "Create clip"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create clip"));
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewClip', '%s')",
               FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
               FeatName.c_str());
     updateActive();
-    commitSelf();
+    commitCommand();
 }
 
 bool CmdTechDrawClipGroup::isActive() { return DrawGuiUtil::needPage(this); }
@@ -1425,13 +1425,13 @@ void CmdTechDrawClipGroupAdd::activated(int iMsg)
     std::string ClipName = clip->getNameInDocument();
     std::string ViewName = view->getNameInDocument();
 
-    openSelf(QT_TRANSLATE_NOOP("Command", "Add clip group"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add clip group"));
     doCommand(Doc, "App.activeDocument().%s.ViewObject.Visibility = False", ViewName.c_str());
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", ClipName.c_str(),
               ViewName.c_str());
     doCommand(Doc, "App.activeDocument().%s.ViewObject.Visibility = True", ViewName.c_str());
     updateActive();
-    commitSelf();
+    commitCommand();
 }
 
 bool CmdTechDrawClipGroupAdd::isActive()
@@ -1496,13 +1496,13 @@ void CmdTechDrawClipGroupRemove::activated(int iMsg)
     std::string ClipName = clip->getNameInDocument();
     std::string ViewName = view->getNameInDocument();
 
-    openSelf(QT_TRANSLATE_NOOP("Command", "Remove clip group"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Remove clip group"));
     doCommand(Doc, "App.activeDocument().%s.ViewObject.Visibility = False", ViewName.c_str());
     doCommand(Doc, "App.activeDocument().%s.removeView(App.activeDocument().%s)", ClipName.c_str(),
               ViewName.c_str());
     doCommand(Doc, "App.activeDocument().%s.ViewObject.Visibility = True", ViewName.c_str());
     updateActive();
-    commitSelf();
+    commitCommand();
 }
 
 bool CmdTechDrawClipGroupRemove::isActive()
@@ -1557,7 +1557,7 @@ void CmdTechDrawSymbol::activated(int iMsg)
         std::string FeatName = getUniqueObjectName("Symbol");
         filename = Base::Tools::escapeEncodeFilename(filename);
         auto filespec = DU::cleanFilespecBackslash(filename.toStdString());
-        openSelf(QT_TRANSLATE_NOOP("Command", "Create Symbol"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create Symbol"));
         doCommand(Doc, "import codecs");
         doCommand(Doc, "f = codecs.open(\"%s\", 'r', encoding=\"utf-8\")",  filespec.c_str());
         doCommand(Doc, "svg = f.read()");
@@ -1579,7 +1579,7 @@ void CmdTechDrawSymbol::activated(int iMsg)
                   FeatName.c_str());
 
         updateActive();
-        commitSelf();
+        commitCommand();
     }
 }
 
@@ -1631,7 +1631,7 @@ void CmdTechDrawDraftView::activated(int iMsg)
         }
         std::string FeatName = getUniqueObjectName("DraftView");
         std::string SourceName = obj->getNameInDocument();
-        openSelf(QT_TRANSLATE_NOOP("Command", "Create DraftView"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create DraftView"));
         doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewDraft', '%s')",
                   FeatName.c_str());
         doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewDraft', 'DraftView', '%s')",
@@ -1643,7 +1643,7 @@ void CmdTechDrawDraftView::activated(int iMsg)
         doCommand(Doc, "App.activeDocument().%s.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
                   FeatName.c_str(), dirs.first.x, dirs.first.y, dirs.first.z);
         updateActive();
-        commitSelf();
+        commitCommand();
     }
 }
 
@@ -1705,7 +1705,7 @@ void CmdTechDrawArchView::activated(int iMsg)
 
     std::string FeatName = getUniqueObjectName("BIM view");
     std::string SourceName = archObject->getNameInDocument();
-    openSelf(QT_TRANSLATE_NOOP("Command", "Create BIM view"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create BIM view"));
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewArch', '%s')",
               FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewArch', 'BIM view', '%s')",
@@ -1717,7 +1717,7 @@ void CmdTechDrawArchView::activated(int iMsg)
     doCommand(Doc, "if App.activeDocument().%s.Scale: App.activeDocument().%s.Scale = App.activeDocument().%s.Scale",
         PageName.c_str(), FeatName.c_str(), PageName.c_str());
     updateActive();
-    commitSelf();
+    commitCommand();
 }
 
 bool CmdTechDrawArchView::isActive() { return DrawGuiUtil::needPage(this); }
@@ -1757,7 +1757,7 @@ void CmdTechDrawSpreadsheetView::activated(int iMsg)
     }
     std::string SpreadName = spreads.front()->getNameInDocument();
 
-    openSelf(QT_TRANSLATE_NOOP("Command", "Create spreadsheet view"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create spreadsheet view"));
     std::string FeatName = getUniqueObjectName("Sheet");
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewSpreadsheet', '%s')",
               FeatName.c_str());
@@ -1777,7 +1777,7 @@ void CmdTechDrawSpreadsheetView::activated(int iMsg)
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
               FeatName.c_str());
     updateActive();
-    commitSelf();
+    commitCommand();
 }
 
 bool CmdTechDrawSpreadsheetView::isActive()
@@ -1890,13 +1890,13 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
     }
 
     std::string PageName = page->getNameInDocument();
-    openSelf(QT_TRANSLATE_NOOP("Command", "Save page to DXF"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Save page to DXF"));
     doCommand(Doc, "import TechDraw");
     fileName = Base::Tools::escapeEncodeFilename(fileName);
     auto filespec = DU::cleanFilespecBackslash(fileName.toStdString());
     doCommand(Doc, "TechDraw.writeDXFPage(App.activeDocument().%s, u\"%s\")", PageName.c_str(),
               filespec.c_str());
-    commitSelf();
+    commitCommand();
 }
 
 

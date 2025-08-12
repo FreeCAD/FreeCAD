@@ -28,6 +28,7 @@
 
 #include "Mod/Spreadsheet/App/Sheet.h"
 #include "Mod/Spreadsheet/Gui/SpreadsheetView.h"
+#include <App/Document.h>
 #include <App/Range.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
@@ -137,7 +138,8 @@ void WorkbenchHelper::setForegroundColor(const QColor& color)
             if (!ranges.empty()) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set text color"));
+                sheet->getDocument()->openTransaction(
+                    QT_TRANSLATE_NOOP("Command", "Set text color"));
                 for (; i != ranges.end(); ++i) {
                     Gui::Command::doCommand(Gui::Command::Doc,
                                             "App.ActiveDocument.%s.setForeground('%s', (%f,%f,%f))",
@@ -147,7 +149,7 @@ void WorkbenchHelper::setForegroundColor(const QColor& color)
                                             color.greenF(),
                                             color.blueF());
                 }
-                Gui::Command::commitCommand();
+                sheet->getDocument()->commitTransaction();
                 Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
         }
@@ -171,7 +173,8 @@ void WorkbenchHelper::setBackgroundColor(const QColor& color)
             if (!ranges.empty()) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set background color"));
+                sheet->getDocument()->openTransaction(
+                    QT_TRANSLATE_NOOP("Command", "Set background color"));
                 for (; i != ranges.end(); ++i) {
                     Gui::Command::doCommand(Gui::Command::Doc,
                                             "App.ActiveDocument.%s.setBackground('%s', (%f,%f,%f))",
@@ -181,7 +184,7 @@ void WorkbenchHelper::setBackgroundColor(const QColor& color)
                                             color.greenF(),
                                             color.blueF());
                 }
-                Gui::Command::commitCommand();
+                sheet->getDocument()->commitTransaction();
                 Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
         }

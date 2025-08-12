@@ -439,10 +439,10 @@ void FillingPanel::clearSelection()
 
 void FillingPanel::checkOpenCommand()
 {
-    if (checkCommand && !Gui::Command::hasPendingCommand()) {
+    if (checkCommand && !editedObject->getDocument()->hasPendingTransaction()) {
         std::string Msg("Edit ");
         Msg += editedObject->Label.getValue();
-        Gui::Command::openCommand(Msg.c_str());
+        editedObject->getDocument()->openTransaction(Msg.c_str());
         checkCommand = false;
     }
 }
@@ -940,6 +940,8 @@ TaskFilling::TaskFilling(ViewProviderFilling* vp, Surface::Filling* obj)
     buttonGroup = new Gui::ButtonGroup(this);
     buttonGroup->setExclusive(true);
 
+    editedObj = obj;
+
     // first task box
     widget1 = new FillingPanel(vp, obj);
     widget1->appendButtons(buttonGroup);
@@ -958,6 +960,10 @@ TaskFilling::TaskFilling(ViewProviderFilling* vp, Surface::Filling* obj)
 
 void TaskFilling::setEditedObject(Surface::Filling* obj)
 {
+    if (editedObj != nullptr && obj != editedObj) {
+        editedObj->getDocument()->commitTransaction();
+    }
+    editedObj = obj;
     widget1->setEditedObject(obj);
 }
 
@@ -979,7 +985,7 @@ bool TaskFilling::accept()
     if (ok) {
         widget2->reject();
         widget3->reject();
-        Gui::Command::commitCommand();
+        editedObj->getDocument()->commitTransaction();
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
         Gui::Command::updateActive();
     }
@@ -993,7 +999,7 @@ bool TaskFilling::reject()
     if (ok) {
         widget2->reject();
         widget3->reject();
-        Gui::Command::abortCommand();
+        editedObj->getDocument()->abortTransaction();
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
         Gui::Command::updateActive();
     }

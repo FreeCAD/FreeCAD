@@ -65,7 +65,7 @@ void CmdPartSimpleCylinder::activated(int iMsg)
     if (dlg.exec()== QDialog::Accepted) {
         Base::Vector3d dir = dlg.getDirection();
         Base::Vector3d pos = dlg.getPosition();
-        openSelf(QT_TRANSLATE_NOOP("Command", "Create Cylinder"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create Cylinder"));
         doCommand(Doc,"from FreeCAD import Base");
         doCommand(Doc,"import Part");
         doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Feature\",\"Cylinder\")"
@@ -76,7 +76,7 @@ void CmdPartSimpleCylinder::activated(int iMsg)
                      ,dlg.getLength()
                      ,pos.x,pos.y,pos.z
                      ,dir.x,dir.y,dir.z);
-        commitSelf();
+        commitCommand();
         updateActive();
         doCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
     }
@@ -175,7 +175,7 @@ void CmdPartPointsFromMesh::activated(int iMsg)
     }
 
     Gui::WaitCursor wc;
-    openSelf(QT_TRANSLATE_NOOP("Command", "Points from geometry"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Points from geometry"));
 
     Base::PyGILStateLocker lock;
     try {
@@ -197,7 +197,7 @@ void CmdPartPointsFromMesh::activated(int iMsg)
         e.reportException();
     }
 
-    commitSelf();
+    commitCommand();
 }
 
 bool CmdPartPointsFromMesh::isActive()
@@ -363,7 +363,7 @@ void CmdPartRefineShape::activated(int iMsg)
         Gui::WaitCursor wc;
         Base::Type partid = Base::Type::fromName("Part::Feature");
         std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(partid);
-        openSelf(QT_TRANSLATE_NOOP("Command", "Refine shape"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Refine shape"));
         std::for_each(objs.begin(), objs.end(), [](App::DocumentObject* obj) {
             try {
                 App::DocumentObjectT objT(obj);
@@ -384,7 +384,7 @@ void CmdPartRefineShape::activated(int iMsg)
                 Base::Console().warning("%s: %s\n", obj->Label.getValue(), e.what());
             }
         });
-        commitSelf();
+        commitCommand();
         updateActive();
     }
     else {
@@ -420,7 +420,7 @@ void CmdPartDefeaturing::activated(int iMsg)
     Gui::WaitCursor wc;
     Base::Type partid = Base::Type::fromName("Part::Feature");
     std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx(nullptr, partid);
-    openSelf(QT_TRANSLATE_NOOP("Command", "Defeaturing"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Defeaturing"));
     for (std::vector<Gui::SelectionObject>::iterator it = objs.begin(); it != objs.end(); ++it) {
         try {
             std::string shape;
@@ -454,7 +454,7 @@ void CmdPartDefeaturing::activated(int iMsg)
             Base::Console().warning("%s: %s\n", it->getFeatName(), e.what());
         }
     }
-    commitSelf();
+    commitCommand();
     updateActive();
 }
 
