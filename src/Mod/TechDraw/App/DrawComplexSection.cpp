@@ -1709,7 +1709,7 @@ TopoDS_Wire DrawComplexSection::closeProfileForCut(const TopoDS_Wire& profileWir
 
     TopoDS_Edge circleEdge = BRepBuilderAPI_MakeEdge(circleArc);
 
-    // replace first and last edges and add cicular arc
+    // replace first and last edges and add circular arc
     std::vector<TopoDS_Edge> oldProfileEdges = DU::shapeToVector(flatWire);
     std::vector<TopoDS_Edge> newProfileEdges;
     newProfileEdges.emplace_back(firstReplacementEdge);
