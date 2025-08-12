@@ -163,7 +163,7 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
         Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
 
         // undo command open
-        openSelf(QT_TRANSLATE_NOOP("Command", "Toggle constraints to the other virtual space"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Toggle constraints to the other virtual space"));
 
         int successful = SubNames.size();
         // go through the selected subelements
@@ -185,10 +185,10 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
         }
 
         if (successful > 0) {
-            commitSelf();
+            commitCommand();
         }
         else {
-            abortSelf();
+            abortCommand();
         }
 
         // recomputer and clear the selection (convenience)

@@ -182,8 +182,9 @@ bool TaskDlgFeatureParameters::accept()
         Gui::cmdAppObjectHide(previous);
 
         Gui::cmdGuiDocument(feature, "resetEdit()");
-        Gui::Command::commitCommand();
+        feature->getDocument()->commitTransaction();
     } catch (const Base::Exception& e) {
+        feature->getDocument()->abortTransaction();
         // Generally the only thing that should fail is feature->isValid() others should be fine
         QString errorText = QApplication::translate(feature->getTypeId().getName(), e.what());
         QMessageBox::warning(Gui::getMainWindow(), tr("Input error"), errorText);

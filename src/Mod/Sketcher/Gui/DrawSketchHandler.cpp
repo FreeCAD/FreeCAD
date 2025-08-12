@@ -725,7 +725,7 @@ void DrawSketchHandler::seekTangentAutoConstraint(std::vector<AutoConstraint>& s
 
 void DrawSketchHandler::openCommand(const std::string& name)
 {
-    currentTransactionID = Gui::Command::openCommand(sketchgui->getDocument()->getDocument(), name);
+    currentTransactionID = sketchgui->getDocument()->openCommand(name.c_str());
 }
 void DrawSketchHandler::commitCommand()
 {

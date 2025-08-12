@@ -45,7 +45,6 @@ bool ViewProviderBase::doubleClicked()
 {
     // If the Placement is mutable then open the transform panel.
     // If the Placement can't be modified then just do nothing on double-click.
-    int tid = 0;
     PartDesign::FeatureBase* base = getObject<PartDesign::FeatureBase>();
     if (!base->Placement.testStatus(App::Property::Immutable) &&
         !base->Placement.testStatus(App::Property::ReadOnly) &&
@@ -54,11 +53,11 @@ bool ViewProviderBase::doubleClicked()
         try {
             std::string Msg("Edit ");
             Msg += base->Label.getValue();
-            tid = Gui::Command::openCommand(base->getDocument(), Msg.c_str());
+            getDocument()->openCommand(Msg.c_str());
             Gui::cmdSetEdit(base);
         }
         catch (const Base::Exception&) {
-            Gui::Command::abortCommand(tid);
+            getDocument()->commitCommand();
         }
         return true;
     }

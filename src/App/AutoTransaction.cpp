@@ -370,6 +370,14 @@ bool Application::closeActiveTransaction(bool abort, int id)
 
     return true;
 }
+bool Application::commitTransaction(int tid)
+{
+    closeActiveTransaction(false, tid);
+}
+bool Application::abortTransaction(int tid)
+{
+    closeActiveTransaction(true, tid);
+}
 
 ////////////////////////////////////////////////////////////////////////
 
