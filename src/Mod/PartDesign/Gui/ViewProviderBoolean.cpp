@@ -153,7 +153,9 @@ void ViewProviderBoolean::attachPreview()
 void ViewProviderBoolean::updatePreview()
 {
     const auto* styleParameterManager = Base::provideService<Gui::StyleParameters::ParameterManager>();
-    const float toolTransparency = static_cast<float>(styleParameterManager->resolve(StyleParameters::PreviewToolTransparency).value);
+
+    const double toolOpacity = styleParameterManager->resolve(StyleParameters::PreviewToolOpacity).value;
+    const double toolTransparency = 1.0 - toolOpacity;
 
     auto boolean = getObject<PartDesign::Boolean>();
 
@@ -173,7 +175,7 @@ void ViewProviderBoolean::updatePreview()
         auto pcToolPreview = new PartGui::SoPreviewShape;
         updatePreviewShape(toolShape, pcToolPreview);
 
-        pcToolPreview->transparency.setValue(toolTransparency);
+        pcToolPreview->transparency.setValue(static_cast<float>(toolTransparency));
         pcToolPreview->color.connectFrom(&pcPreviewShape->color);
         pcToolPreview->lineWidth.connectFrom(&pcPreviewShape->lineWidth);
 
@@ -194,7 +196,7 @@ void ViewProviderBoolean::updatePreview()
         auto pcBaseShapePreview = new PartGui::SoPreviewShape;
         updatePreviewShape(baseFeature->Shape.getShape(), pcBaseShapePreview);
 
-        pcBaseShapePreview->transparency.setValue(toolTransparency);
+        pcBaseShapePreview->transparency.setValue(static_cast<float>(toolTransparency));
         pcBaseShapePreview->color.setValue(baseFeatureViewProvider->ShapeAppearance.getDiffuseColor().asValue<SbColor>());
         pcBaseShapePreview->lineWidth.connectFrom(&pcPreviewShape->lineWidth);
 
