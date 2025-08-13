@@ -31,30 +31,31 @@
 #include <QRegularExpression>
 #include <QString>
 #include <ranges>
+#include <utility>
 #include <variant>
 #endif
 
 namespace Gui::StyleParameters
 {
 
-Length Length::operator+(const Length& rhs) const
+Numeric Numeric::operator+(const Numeric& rhs) const
 {
     ensureEqualUnits(rhs);
     return {value + rhs.value, unit};
 }
 
-Length Length::operator-(const Length& rhs) const
+Numeric Numeric::operator-(const Numeric& rhs) const
 {
     ensureEqualUnits(rhs);
     return {value - rhs.value, unit};
 }
 
-Length Length::operator-() const
+Numeric Numeric::operator-() const
 {
     return {-value, unit};
 }
 
-Length Length::operator/(const Length& rhs) const
+Numeric Numeric::operator/(const Numeric& rhs) const
 {
     if (rhs.value == 0) {
         THROWM(Base::RuntimeError, "Division by zero");
@@ -68,7 +69,7 @@ Length Length::operator/(const Length& rhs) const
     return {value / rhs.value, unit};
 }
 
-Length Length::operator*(const Length& rhs) const
+Numeric Numeric::operator*(const Numeric& rhs) const
 {
     if (rhs.unit.empty() || unit.empty()) {
         return {value * rhs.value, unit};
@@ -78,7 +79,7 @@ Length Length::operator*(const Length& rhs) const
     return {value * rhs.value, unit};
 }
 
-void Length::ensureEqualUnits(const Length& rhs) const
+void Numeric::ensureEqualUnits(const Numeric& rhs) const
 {
     if (unit != rhs.unit) {
         THROWM(Base::RuntimeError,
@@ -90,14 +91,14 @@ void Length::ensureEqualUnits(const Length& rhs) const
 
 std::string Value::toString() const
 {
-    if (std::holds_alternative<Length>(*this)) {
-        auto [value, unit] = std::get<Length>(*this);
+    if (std::holds_alternative<Numeric>(*this)) {
+        auto [value, unit] = std::get<Numeric>(*this);
         return fmt::format("{}{}", value, unit);
     }
 
-    if (std::holds_alternative<QColor>(*this)) {
-        auto color = std::get<QColor>(*this);
-        return fmt::format("#{:0>6x}", 0xFFFFFF & color.rgb());  // NOLINT(*-magic-numbers)
+    if (std::holds_alternative<Base::Color>(*this)) {
+        auto color = std::get<Base::Color>(*this);
+        return fmt::format("#{:0>6x}", color.getPackedRGB() >> 8);  // NOLINT(*-magic-numbers)
     }
 
     return std::get<std::string>(*this);
@@ -259,12 +260,16 @@ std::string ParameterManager::replacePlaceholders(const std::string& expression,
         QString::fromStdString(expression),
         [&](const QRegularExpressionMatch& match) {
             auto tokenName = match.captured(1).toStdString();
-
             auto tokenValue = resolve(tokenName, context);
-            context.visited.erase(tokenName);
 
-            return QString::fromStdString(tokenValue.toString());
-        }
+            if (!tokenValue) {
+                Base::Console().warning("Requested non-existent style parameter token '%s'.\n", tokenName);
+                return QStringLiteral("");
+            }
+
+            context.visited.erase(tokenName);
+            return QString::fromStdString(tokenValue->toString());
+    }
     ).toStdString();
     // clang-format on
 }
@@ -292,18 +297,18 @@ std::optional<std::string> ParameterManager::expression(const std::string& name)
     return {};
 }
 
-Value ParameterManager::resolve(const std::string& name, ResolveContext context) const
+std::optional<Value> ParameterManager::resolve(const std::string& name,
+                                               ResolveContext context) const
 {
     std::optional<Parameter> maybeParameter = this->parameter(name);
 
     if (!maybeParameter) {
-        Base::Console().warning("Requested non-existent design token '%s'.\n", name);
-        return std::string {};
+        return std::nullopt;
     }
 
     if (context.visited.contains(name)) {
-        Base::Console().warning("The design token '%s' contains circular-reference.\n", name);
-        return expression(name).value_or(std::string {});
+        Base::Console().warning("The style parameter '%s' contains circular-reference.\n", name);
+        return expression(name);
     }
 
     const Parameter& token = *maybeParameter;

@@ -33,6 +33,7 @@
 #endif
 
 #include <Base/Exception.h>
+#include <Base/ServiceProvider.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -51,6 +52,7 @@
 #include <Mod/Part/Gui/ViewProviderPreviewExtension.h>
 
 #include "TaskFeatureParameters.h"
+#include "StyleParameters.h"
 
 #include "ViewProvider.h"
 #include "ViewProviderPy.h"
@@ -78,13 +80,14 @@ void ViewProvider::attach(App::DocumentObject* pcObject)
 {
     ViewProviderPart::attach(pcObject);
 
-    if (auto addSubFeature = getObject<PartDesign::FeatureAddSub>()) {
-        const Base::Color green(0.0F, 1.0F, 0.6F);
-        const Base::Color red(1.0F, 0.0F, 0.0F);
+    auto* styleParameterManager = Base::provideService<Gui::StyleParameters::ParameterManager>();
 
+    if (auto addSubFeature = getObject<PartDesign::FeatureAddSub>()) {
         bool isAdditive = addSubFeature->getAddSubType() == PartDesign::FeatureAddSub::Additive;
 
-        PreviewColor.setValue(isAdditive ? green : red);
+        PreviewColor.setValue(
+            isAdditive ? styleParameterManager->resolve(StyleParameters::PreviewAdditiveColor)
+                       : styleParameterManager->resolve(StyleParameters::PreviewSubtractiveColor));
     }
 }
 
@@ -217,8 +220,12 @@ void ViewProvider::attachPreview()
 {
     ViewProviderPreviewExtension::attachPreview();
 
+    auto* styleParameterManager = Base::provideService<Gui::StyleParameters::ParameterManager>();
+
+    pcPreviewShape->lineWidth = styleParameterManager->resolve(StyleParameters::PreviewLineWidth).value;
+
     pcToolPreview = new PartGui::SoPreviewShape;
-    pcToolPreview->transparency = 0.95F;
+    pcToolPreview->transparency = styleParameterManager->resolve(StyleParameters::PreviewToolTransparency).value;
     pcToolPreview->color.connectFrom(&pcPreviewShape->color);
 
     pcPreviewRoot->addChild(pcToolPreview);

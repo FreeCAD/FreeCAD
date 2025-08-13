@@ -4,7 +4,7 @@
 | Feature                | Description                                            | Assessment                                                                                                                                                          |
 | ---------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Toolpath Visualization | Display toolpath in context of model and stock         | Done.  Arrow indicators on segments are too small to be useful.                                                                                                     |
-| Toolpath Inspection    | Allow user to inspect/explore segments of the toolpath | Done. <br>Inspection shows the raw internal comands for the segments.  These commands are not in the correct unit schema and do not reflect the postprocessed code. |
+| Toolpath Inspection    | Allow user to inspect/explore segments of the toolpath | Done. <br>Inspection shows the raw internal commands for the segments.  These commands are not in the correct unit schema and do not reflect the postprocessed code. |
 |                        |                                                        |                                                                                                                                                                     |
 
 ---
