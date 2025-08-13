@@ -1539,7 +1539,8 @@ void StdCmdRefresh::activated([[maybe_unused]] int iMsg)
         return;
     }
 
-    App::AutoTransaction trans((eType & NoTransaction) ? nullptr : "Recompute");
+    App::AutoTransaction trans((eType & NoTransaction) ? 0 : openActiveDocumentCommand("Recompute"));
+    
     try {
         doCommand(Doc,"App.activeDocument().recompute(None,True,True)");
     }
