@@ -16,8 +16,8 @@ set(CAMSimulator_LIBS
 )
 
 SET(CAMSimulator_SRCS_Python
-    CAMSim.xml
-    CAMSimImp.cpp
+    CAMSimPy.xml
+    CAMSimPyImp.cpp
 )
 
 
@@ -25,7 +25,7 @@ SET(CAMSimulator_SRCS_Module
     AppCAMSimulator.cpp
     CAMSim.cpp
     CAMSim.h
-    CAMSimImp.cpp
+    CAMSimPyImp.cpp
     DlgCAMSimulator.cpp
     DlgCAMSimulator.h
     PreCompiled.cpp
@@ -67,8 +67,8 @@ SET(CAMSimulator_SRCS_Core
 )
 
 
-generate_from_xml(CAMSim)
-generate_from_py_(CAMSimPy)
+generate_from_xml(CAMSimPy)
+generate_from_py_(CAMSim)
 
 SOURCE_GROUP("Module" FILES ${CAMSimulator_SRCS_Module})
 SOURCE_GROUP("Python" FILES ${CAMSimulator_SRCS_Python})
