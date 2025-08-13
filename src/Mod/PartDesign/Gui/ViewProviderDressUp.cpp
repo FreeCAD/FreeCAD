@@ -140,12 +140,14 @@ void ViewProviderDressUp::setErrorState(bool error)
 {
     auto* styleParameterManager = Base::provideService<Gui::StyleParameters::ParameterManager>();
 
-    pcPreviewShape->transparency = styleParameterManager
-                                       ->resolve(error ? StyleParameters::PreviewErrorTransparency
-                                                       : StyleParameters::PreviewShapeTransparency)
-                                       .value;
+    const float opacity =
+        static_cast<float>(styleParameterManager
+                               ->resolve(error ? StyleParameters::PreviewErrorOpacity
+                                               : StyleParameters::PreviewShapeOpacity)
+                               .value);
+
+    pcPreviewShape->transparency = 1.0F - opacity;
     pcPreviewShape->color = error
         ? styleParameterManager->resolve(StyleParameters::PreviewErrorColor).asValue<SbColor>()
         : PreviewColor.getValue().asValue<SbColor>();
 }
-
