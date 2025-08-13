@@ -30,13 +30,13 @@ import Path.Base.Util as PathUtil
 import Path.Main.Job as PathJob
 import Path.Op.Base as PathOp
 import Path.Op.Gui.Selection as PathSelection
+import Path.Tool.Controller as PathToolController
 import PathGui
 import PathScripts.PathUtils as PathUtils
 import importlib
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 from PySide import QtCore, QtGui
-from PySide.QtWidgets import QFrame
 
 __title__ = "CAM Operation UI base classes"
 __author__ = "sliptonic (Brad Collette)"
@@ -214,6 +214,7 @@ class TaskPanelPage(object):
         self.parent = None
         self.panelTitle = "Operation"
         self.tcEditor = None
+        self.combo = None
 
         if self._installTCUpdate():
             PathJob.Notification.updateTC.connect(self.resetToolController)
@@ -394,16 +395,11 @@ class TaskPanelPage(object):
 
     def tcComboChanged(self, newIndex):
         if self.obj is not None and self.tcEditor:
-            combo = self.form.toolController
-            oldEditor = self.tcEditor
-            oldEditor.controller.hide()
-            tc = PathUtils.findToolController(self.obj, self.obj.Proxy, combo.currentText())
-
-            self.tcEditor = Path.Tool.Gui.Controller.ToolControllerEditor(tc, False, self.setDirty)
-            parent_layout = oldEditor.controller.parent().layout()
-            parent_layout.replaceWidget(oldEditor.controller, self.tcEditor.controller)
-            self.tcEditor.updateUi()
-            self.setToolControllerEditVisibility()
+            tc = PathUtils.findToolController(
+                self.obj, self.obj.Proxy, self.form.toolController.currentText()
+            )
+            self.obj.ToolController = tc
+            self.setupToolController()
 
     def setToolControllerEditVisibility(self, unused=None):
         if self.form.editToolController.isChecked():
@@ -414,14 +410,38 @@ class TaskPanelPage(object):
     def resetToolController(self, job, tc):
         if self.obj is not None:
             self.obj.ToolController = tc
-            combo = self.form.toolController
-            self.setupToolController(self.obj, combo)
+            self.setupToolController()
 
-    def setupToolController(self, obj, combo):
+    def copyToolController(self):
+        oldTc = self.tcEditor.obj
+        self.tcEditor.updateToolController()
+        tc = PathToolController.Create(
+            name=oldTc.Label, tool=oldTc.Tool, toolNumber=oldTc.ToolNumber
+        )
+        job = self.obj.Proxy.getJob(self.obj)
+        job.Proxy.addToolController(tc)
+
+        tc.HorizFeed = oldTc.HorizFeed
+        tc.VertFeed = oldTc.VertFeed
+        tc.HorizRapid = oldTc.HorizRapid
+        tc.VertRapid = oldTc.VertRapid
+        tc.SpindleSpeed = oldTc.SpindleSpeed
+        tc.SpindleDir = oldTc.SpindleDir
+        for attr, expr in oldTc.ExpressionEngine:
+            tc.setExpression(attr, expr)
+
+        self.obj.ToolController = tc
+        self.setupToolController()
+
+    def setupToolController(self, obj=None, combo=None):
         """setupToolController(obj, combo) ...
         helper function to setup obj's ToolController
         in the given combo box."""
-        controllers = PathUtils.getToolControllers(self.obj)
+        obj = obj or self.obj
+        combo = combo or self.combo
+        self.obj, self.combo = obj, combo
+
+        controllers = PathUtils.getToolControllers(obj)
         labels = [c.Label for c in controllers]
         combo.blockSignals(True)
         combo.clear()
@@ -433,14 +453,32 @@ class TaskPanelPage(object):
         if obj.ToolController is not None:
             self.selectInComboBox(obj.ToolController.Label, combo)
 
-        if hasattr(self.form, "editToolController") and not self.tcEditor:
-            self.tcEditor = Path.Tool.Gui.Controller.ToolControllerEditor(
-                obj.ToolController, False, self.setDirty
-            )
+        if hasattr(self.form, "editToolController"):
             layout = self.form.editToolController.parent().layout()
+            oldEditor = self.tcEditor
+
+            tcCount = 0
+            for job in PathUtils.GetJobs():
+                for op in job.Operations.Group:
+                    if op == self.obj:
+                        continue
+                    elif hasattr(op, "ToolController") and op.ToolController == obj.ToolController:
+                        tcCount += 1
+
+            self.tcEditor = Path.Tool.Gui.Controller.ToolControllerEditor(
+                obj.ToolController,
+                False,
+                self.setDirty,
+                self.copyToolController if tcCount > 0 else None,
+            )
+            if not self.form.editToolController.isChecked():
+                self.tcEditor.controller.hide()
             layout.addWidget(self.tcEditor.controller, layout.rowCount(), 0, 1, 2)
             self.tcEditor.updateUi()
-            self.tcEditor.controller.hide()
+            if oldEditor:
+                oldEditor.updateToolController()
+                oldEditor.controller.hide()
+                layout.removeWidget(oldEditor.controller)
             self.form.editToolController.checkStateChanged.connect(
                 self.setToolControllerEditVisibility
             )
