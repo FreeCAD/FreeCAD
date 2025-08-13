@@ -391,6 +391,25 @@ SET(PathPythonOpGui_SRCS
     Path/Op/Gui/Waterline.py
 )
 
+SET(PathPythonTurningOp_SRCS
+    Path/TurningOp/__init__.py
+    Path/TurningOp/TurnBase.py
+    Path/TurningOp/TurnFace.py
+    Path/TurningOp/TurnPartoff.py
+    Path/TurningOp/TurnProfile.py
+    Path/TurningOp/TurnRough.py
+)
+
+SET(PathPythonTurningOpGui_SRCS
+    Path/TurningOp/Gui/__init__.py
+    Path/TurningOp/Gui/TurnBaseGui.py
+    Path/TurningOp/Gui/TurnFaceGui.py
+    Path/TurningOp/Gui/TurnPartoffGui.py
+    Path/TurningOp/Gui/TurnProfileGui.py
+    Path/TurningOp/Gui/TurnRoughGui.py
+    Path/TurningOp/Gui/TurnToolHelperGui.py
+)
+
 SET(PathScripts_SRCS
     PathScripts/PathUtils.py
     PathScripts/PathUtilsGui.py
@@ -593,6 +612,8 @@ SET(all_files
     ${PathPythonMainSanity_SRCS}
     ${PathPythonOp_SRCS}
     ${PathPythonOpGui_SRCS}
+    ${PathPythonTurningOp_SRCS}
+    ${PathPythonTurningOpGui_SRCS}
     ${PathPythonPost_SRCS}
     ${PathPythonPostScripts_SRCS}
     ${PathPythonTools_SRCS}
@@ -723,6 +744,20 @@ INSTALL(
     DESTINATION
         Mod/CAM/Path/Op/Gui
 )
+
+INSTALL(
+    FILES
+        ${PathPythonTurningOp_SRCS}
+    DESTINATION
+        Mod/CAM/Path/TurningOp
+)
+INSTALL(
+    FILES
+        ${PathPythonTurningOpGui_SRCS}
+    DESTINATION
+        Mod/CAM/Path/TurningOp/Gui
+)
+
 
 INSTALL(
     FILES
