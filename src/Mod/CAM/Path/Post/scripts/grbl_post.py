@@ -55,7 +55,7 @@ OUTPUT_LINE_NUMBERS = False  # default doesn't output line numbers in output gCo
 OUTPUT_BCNC = False  # default doesn't add bCNC operation block headers in output gCode file
 SHOW_EDITOR = True  # default show the resulting file dialog output in GUI
 PRECISION = 3  # Default precision for metric (see http://linuxcnc.org/docs/2.7/html/gcode/overview.html#_g_code_best_practices)
-TRANSLATE_DRILL_CYCLES = False  # If true, G81, G82 & G83 are translated in G0/G1 moves
+TRANSLATE_DRILL_CYCLES = True  # If true, G81, G82 & G83 are translated in G0/G1 moves
 PREAMBLE = """G17 G90
 """  # default preamble text will appear at the beginning of the gCode output file.
 POSTAMBLE = """M5
@@ -610,15 +610,16 @@ def drill_translate(outstring, cmd, params):
         clear_Z = param_R
     if DRILL_RETRACT_MODE == "G98" and CURRENT_Z >= param_R:
         clear_Z = CURRENT_Z
-    else:
+    else :
         clear_Z = param_R
 
-    strG0_clear_Z = "G0 Z" + format(float(clear_Z.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
-    strG0_param_R = "G0 Z" + format(float(param_R.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
+    strG0_clear_Z = ("G0 Z" + format(float(clear_Z.getValueAs(UNIT_FORMAT)), strFormat) + "\n")
+    strG0_param_R = ("G0 Z" + format(float(param_R.getValueAs(UNIT_FORMAT)), strFormat) + "\n")
 
     # get the other parameters
     drill_feedrate = Units.Quantity(params["F"], FreeCAD.Units.Velocity)
-    strF_Feedrate = " F" + format(float(drill_feedrate.getValueAs(UNIT_SPEED_FORMAT)), ".2f") + "\n"
+    strF_Feedrate = (" F" + format(float(drill_feedrate.getValueAs(UNIT_SPEED_FORMAT)), ".2f") + "\n")
+
     if cmd == "G83":
         drill_Step = Units.Quantity(params["Q"], FreeCAD.Units.Length)
         a_bit = (
@@ -702,7 +703,7 @@ def drill_translate(outstring, cmd, params):
                             + format(float(param_Z.getValueAs(UNIT_FORMAT)), strFormat)
                             + strF_Feedrate
                         )
-                        trBuff += linenumber() + sstrG0_clear_Z
+                        trBuff += linenumber() + strG0_clear_Z
                         break
 
     except Exception as e:
