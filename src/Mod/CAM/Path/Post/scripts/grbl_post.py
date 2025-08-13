@@ -610,15 +610,15 @@ def drill_translate(outstring, cmd, params):
         clear_Z = param_R
     if DRILL_RETRACT_MODE == "G98" and CURRENT_Z >= param_R:
         clear_Z = CURRENT_Z
-    else :
+    else:
         clear_Z = param_R
 
-    strG0_clear_Z = ("G0 Z" + format(float(clear_Z.getValueAs(UNIT_FORMAT)), strFormat) + "\n")
-    strG0_param_R = ("G0 Z" + format(float(param_R.getValueAs(UNIT_FORMAT)), strFormat) + "\n")
+    strG0_clear_Z = "G0 Z" + format(float(clear_Z.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
+    strG0_param_R = "G0 Z" + format(float(param_R.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
 
     # get the other parameters
     drill_feedrate = Units.Quantity(params["F"], FreeCAD.Units.Velocity)
-    strF_Feedrate = (" F" + format(float(drill_feedrate.getValueAs(UNIT_SPEED_FORMAT)), ".2f") + "\n")
+    strF_Feedrate = " F" + format(float(drill_feedrate.getValueAs(UNIT_SPEED_FORMAT)), ".2f") + "\n"
 
     if cmd == "G83":
         drill_Step = Units.Quantity(params["Q"], FreeCAD.Units.Length)
