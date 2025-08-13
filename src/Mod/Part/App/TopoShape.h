@@ -697,15 +697,15 @@ public:
         /// Make both outer and inner wires reversed
         ReorientReversed,
     };
+
     /** Return the outer and inner wires of a face
      *
-     * @param inner: optional output of inner wires
+     * @param innerWiresOutput: optional output of inner wires
      * @param reorient: wire reorientation, see SplitWireReorient
      *
      * @return Return the outer wire
      */
-    TopoShape splitWires(
-        std::vector<TopoShape>* inner = nullptr,
+    TopoShape splitWires(std::vector<TopoShape>* innerWiresOutput = nullptr,
         SplitWireReorient reorient = Reorient
     ) const;
 
