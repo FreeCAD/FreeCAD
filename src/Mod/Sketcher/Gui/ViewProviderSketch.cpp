@@ -2121,11 +2121,11 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
 
         bool handled = false;
         if (Mode == STATUS_SKETCH_UseHandler) {
-            App::AutoTransaction committer;
             handled = sketchHandler->onSelectionChanged(msg);
         }
-        if (handled)
+        if (handled) {
             return;
+        }
 
         std::string temp;
         if (msg.Type == Gui::SelectionChanges::ClrSelection) {
@@ -3373,15 +3373,16 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     pcRoot->removeChild(gridnode);
 
     if (isInEditMode()) {
-        if (sketchHandler)
+        if (sketchHandler) {
             deactivateHandler();
+        }
 
         editCoinManager = nullptr;
         snapManager = nullptr;
         preselection.reset();
         selection.reset();
 
-        App::AutoTransaction trans("Sketch recompute");
+        App::AutoTransaction trans(getDocument()->openCommand("Sketch recompute"));
         try {
             // and update the sketch
             // getSketchObject()->getDocument()->recompute();

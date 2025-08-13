@@ -31,7 +31,6 @@
 # include <QPointer>
 #endif
 
-#include <App/AutoTransaction.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/ComboView.h>

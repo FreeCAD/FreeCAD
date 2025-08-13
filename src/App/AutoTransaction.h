@@ -41,50 +41,28 @@ public:
 
 public:
     /** Constructor
-     *
-     * @param name: optional new transaction name on construction
-     * @param tmpName: if true and a new transaction is setup, the name given is
-     * considered as temporary, and subsequent construction of this class (or
-     * calling Application::setActiveTransaction()) can override the transaction
-     * name.
-     *
-     * The constructor increments an internal counter
-     * (Application::_activeTransactionGuard). The counter prevents any new
-     * active transaction being setup. It also prevents close (i.e. commits) the
-     * current active transaction until it reaches zero. It does not have any
-     * effect on aborting transaction, though.
+     * 
+     * @param tid the ID of the transaction to manage
+     * 
+     * No action is done in the constructor
      */
-    AutoTransaction(const char* name = nullptr, bool tmpName = false);
+    AutoTransaction(int tid);
 
     /** Destructor
-     *
-     * This destructor decrease an internal counter
-     * (Application::_activeTransactionGuard), and will commit any current
-     * active transaction when the counter reaches zero.
+     * 
+     * This destructor attempts to commit the transaction it manages
      */
     ~AutoTransaction();
 
     /** Close or abort the transaction
      *
-     * This function can be used to explicitly close (i.e. commit) the
-     * transaction, if the current transaction ID matches the one created inside
-     * the constructor. For aborting, it will abort any current transaction
+     * This function can be used to explicitly close (i.e. commit / abort) the
+     * transaction,
      */
     void close(bool abort = false);
 
-    /** Enable/Disable any AutoTransaction instance in the current stack
-     *
-     * Once disabled, any empty temporary named transaction is closed. If there
-     * are non-empty or non-temporary named active transaction, it will not be
-     * auto closed.
-     *
-     * This function may be used in, for example, Gui::Document::setEdit() to
-     * allow a transaction live past any command scope.
-     */
-    static void setEnable(bool enable);
-
 private:
-    int tid = 0;
+    int tid { 0 };
 };
 
 /// Helper class to manage the lifetime of a transaction

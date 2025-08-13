@@ -2458,6 +2458,8 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     if (!ext)
         return;
 
+    Gui::Document* doc = getDocument();
+
     _setupContextMenu(ext, menu, receiver, member);
     Gui::ActionFunction* func = nullptr;
 
@@ -2488,18 +2490,28 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                     box->setToolTip(QObject::tr("Applies the setting to all links"));
                     box->setChecked(App::LinkParams::getCopyOnChangeApplyToAll());
                     dlg.addCheckBox(box);
-                    if(dlg.exec()!=QDialog::Accepted)
+                    if(dlg.exec()!=QDialog::Accepted) {
                         return;
+                    }
 
                     bool applyAll = box->isChecked();
                     App::LinkParams::setCopyOnChangeApplyToAll(applyAll);
 
                     App::Link::OnChangeCopyOptions options {App::Link::OnChangeCopyOptions::None};
-                    if (applyAll)
+                    if (applyAll) {
                         options |= App::Link::OnChangeCopyOptions::ApplyAll;
+                    }
 
-                    App::AutoTransaction guard("Setup configurable object");
+                    int tid = 0;
                     auto sels = dlg.getSelections(DlgObjectSelection::SelectionOptions::InvertSort);
+
+                    // Open transaction on all touched documents if there is more than one
+                    for (const auto& sel : sels) {
+                        tid = sel->getDocument()->openTransaction("Setup configurable object",
+                                                                  false,
+                                                                  tid);
+                    }
+
                     for (const auto & exclude : excludes) {
                         auto iter = std::lower_bound(sels.begin(), sels.end(), exclude);
                         if (iter == sels.end() || *iter != exclude) {
@@ -2508,10 +2520,12 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                             sels.erase(iter);
                     }
                     options |= App::Link::OnChangeCopyOptions::Exclude;
-                    for (auto obj : sels)
+                    for (auto obj : sels) {
                         ext->setOnChangeCopyObject(obj, options);
-                    if (!applyAll)
+                    }
+                    if (!applyAll) {
                         ext->monitorOnChangeCopyObjects(ext->getOnChangeCopyObjects());
+                    }
                     else {
                         std::set<App::LinkBaseExtension*> exts;
                         for (auto o : App::Document::getDependencyList(objs)) {
@@ -2522,7 +2536,10 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                             ext->monitorOnChangeCopyObjects(ext->getOnChangeCopyObjects());
                     }
                     Command::updateActive();
-                } catch (Base::Exception &e) {
+
+                    App::GetApplication().commitTransaction(tid);
+                }
+                catch (Base::Exception& e) {
                     e.reportException();
                 }
             });
@@ -2535,9 +2552,9 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                         "Enable auto copy of linked object when its configuration is changed"));
             act->setData(-1);
             if (!func) func = new Gui::ActionFunction(menu);
-            func->trigger(act, [ext](){
+            func->trigger(act, [ext, doc](){
                 try {
-                    App::AutoTransaction guard("Enable Link copy on change");
+                    App::AutoTransaction guard(doc->openCommand("Enable Link copy on change"));
                     ext->getLinkCopyOnChangeProperty()->setValue(1);
                     Command::updateActive();
                 } catch (Base::Exception &e) {
@@ -2549,9 +2566,9 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                         "Copies the linked object when its configuration is changed.\n"
                         "Also auto redo the copy if the original linked object is changed.\n"));
             act->setData(-1);
-            func->trigger(act, [ext](){
+            func->trigger(act, [ext, doc](){
                 try {
-                    App::AutoTransaction guard("Enable Link tracking");
+                    App::AutoTransaction guard(doc->openCommand("Enable Link tracking"));
                     ext->getLinkCopyOnChangeProperty()->setValue(3);
                     Command::updateActive();
                 } catch (Base::Exception &e) {
@@ -2567,9 +2584,9 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                 QObject::tr("Disable Copy on Change"));
         act->setData(-1);
         if (!func) func = new Gui::ActionFunction(menu);
-        func->trigger(act, [ext](){
+        func->trigger(act, [ext, doc](){
             try {
-                App::AutoTransaction guard("Disable copy on change");
+                App::AutoTransaction guard(doc->openCommand("Disable copy on change"));
                 ext->getLinkCopyOnChangeProperty()->setValue((long)0);
                 Command::updateActive();
             } catch (Base::Exception &e) {
@@ -2586,9 +2603,9 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                     "the current copy will be lost.\n"));
         act->setData(-1);
         if (!func) func = new Gui::ActionFunction(menu);
-        func->trigger(act, [ext](){
+        func->trigger(act, [ext, doc](){
             try {
-                App::AutoTransaction guard("Link refresh");
+                App::AutoTransaction guard(doc->openCommand("Link refresh"));
                 ext->syncCopyOnChange();
                 Command::updateActive();
             } catch (Base::Exception &e) {
@@ -2612,12 +2629,14 @@ void ViewProviderLink::_setupContextMenu(
             && ext->_getShowElementProperty()
             && ext->_getElementCountValue() > 1)
     {
-        auto action = menu->addAction(QObject::tr("Toggle Array Elements"), [ext] {
+        Gui::Document* doc = getDocument();
+        auto action = menu->addAction(QObject::tr("Toggle Array Elements"), [ext, doc] {
             try {
-                App::AutoTransaction guard(QT_TRANSLATE_NOOP("Command", "Toggle array elements"));
+                App::AutoTransaction guard(doc->openCommand(QT_TRANSLATE_NOOP("Command", "Toggle array elements")));
                 ext->getShowElementProperty()->setValue(!ext->getShowElementValue());
                 Command::updateActive();
-            } catch (Base::Exception &e) {
+            }
+            catch (Base::Exception& e) {
                 e.reportException();
             }
         });
