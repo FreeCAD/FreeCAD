@@ -25,7 +25,6 @@
 
 #include <QMessageBox>
 
-#include <App/AutoTransaction.h>
 #include <App/Document.h>
 #include <App/ExpressionParser.h>
 #include <App/Range.h>

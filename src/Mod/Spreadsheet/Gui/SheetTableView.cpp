@@ -750,7 +750,7 @@ void SheetTableView::cutSelection()
 
 void SheetTableView::pasteClipboard()
 {
-    App::AutoTransaction committer("Paste Cell");
+    App::AutoTransaction committer(sheet->getDocument()->openTransaction("Paste Cell"));
     try {
         bool copy = true;
         auto ranges = sheet->getCopyOrCutRange(copy);
@@ -810,6 +810,7 @@ void SheetTableView::pasteClipboard()
         GetApplication().getActiveDocument()->recompute();
     }
     catch (Base::Exception& e) {
+        committer.close(true);
         e.reportException();
         QMessageBox::critical(Gui::getMainWindow(),
                               QObject::tr("Copy & Paste Failed"),

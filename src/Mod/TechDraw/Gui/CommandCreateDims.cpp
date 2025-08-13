@@ -33,7 +33,6 @@
 #include <QPoint>
 #include <QPixmap>
 
-#include <App/AutoTransaction.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>

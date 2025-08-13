@@ -1471,7 +1471,8 @@ bool Document::save()
             for (auto doc : docs) {
                 // Changed 'mustExecute' status may be triggered by saving external document
                 if (!dmap[doc] && doc->mustExecute()) {
-                    App::AutoTransaction trans("Recompute");
+                    // TODO-theo-vt should this be a group transaction and should it check if the document is already mid-transaction?
+                    App::AutoTransaction trans(doc->openTransaction("Recompute"));
                     Command::doCommand(Command::Doc,"App.getDocument(\"%s\").recompute()",doc->getName());
                 }
 
@@ -1586,7 +1587,8 @@ void Document::saveAll()
         try {
             // Changed 'mustExecute' status may be triggered by saving external document
             if(!dmap[doc] && doc->mustExecute()) {
-                App::AutoTransaction trans("Recompute");
+                // TODO-theo-vt should this be a group transaction and should it check if the document is already mid-transaction?
+                App::AutoTransaction trans(doc->openTransaction("Recompute"));
                 Command::doCommand(Command::Doc,"App.getDocument('%s').recompute()",doc->getName());
             }
             Command::doCommand(Command::Doc,"App.getDocument('%s').save()",doc->getName());
