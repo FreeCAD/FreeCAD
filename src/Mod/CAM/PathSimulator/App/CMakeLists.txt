@@ -14,8 +14,8 @@ set(PathSimulator_LIBS
 )
 
 SET(Python_SRCS
-    PathSimPy.xml
-    PathSimPyImp.cpp
+    PathSim.xml
+    PathSimImp.cpp
 )
 
 
@@ -30,8 +30,8 @@ SET(PathSimulator_SRCS
     ${Python_SRCS}
 )
 
-generate_from_xml(PathSimPy)
-generate_from_py_(PathSim)
+generate_from_xml(PathSim)
+generate_from_py_(PathSimPy)
 
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
