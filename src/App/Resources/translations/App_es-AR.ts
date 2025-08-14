@@ -30,7 +30,7 @@ que hacen referencia al mismo objeto configurable</translation>
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../Document.cpp" line="1095"/>
+      <location filename="../../Document.cpp" line="1112"/>
       <source>
 It is recommended that the user right-click the root of the document and select Mark to recompute.
 The user should then click the Refresh button in the main toolbar.

@@ -29,14 +29,14 @@ that reference the same configurable object</source>
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../Document.cpp" line="1095"/>
+      <location filename="../../Document.cpp" line="1112"/>
       <source>
 It is recommended that the user right-click the root of the document and select Mark to recompute.
 The user should then click the Refresh button in the main toolbar.
 </source>
-      <translation type="unfinished">
-It is recommended that the user right-click the root of the document and select Mark to recompute.
-The user should then click the Refresh button in the main toolbar.
+      <translation>
+Uživateli je doporučeno kliknout pravým tlačítkem myši na kořenovou položku dokumentu a vybrat "Označit k přepočítání".
+Poté by měl uživatel kliknout na tlačítko "Refresh" na hlavním panelu nástrojů.
 </translation>
     </message>
   </context>

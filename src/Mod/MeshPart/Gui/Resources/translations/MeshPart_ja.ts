@@ -10,13 +10,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="274"/>
-      <source>Cross-sections...</source>
-      <translation>横断面...</translation>
+      <source>Cross-Sections</source>
+      <translation type="unfinished">Cross-Sections</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="275"/>
-      <source>Cross-sections</source>
-      <translation>横断面</translation>
+      <source>Applies cross-sections to the mesh</source>
+      <translation type="unfinished">Applies cross-sections to the mesh</translation>
     </message>
   </context>
   <context>
@@ -28,15 +28,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="310"/>
-      <source>Curve on mesh...</source>
-      <translation>メッシュ上の曲線...</translation>
+      <source>Curve on Mesh</source>
+      <translation type="unfinished">Curve on Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="311"/>
-      <source>Creates an approximated curve on top of a mesh.
-This command only works with a 'mesh' object.</source>
-      <translation>メッシュの上に近似曲線を作成します。
-このコマンドは「メッシュ」オブジェクトでのみ動作します。</translation>
+      <source>Creates an approximated curve on top of a mesh object</source>
+      <translation type="unfinished">Creates an approximated curve on top of a mesh object</translation>
     </message>
   </context>
   <context>
@@ -48,11 +46,11 @@ This command only works with a 'mesh' object.</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="59"/>
-      <source>Create mesh from shape...</source>
-      <translation>シェイプからメッシュを作成...</translation>
+      <source>Mesh From Shape</source>
+      <translation type="unfinished">Mesh From Shape</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="60"/>
+      <location filename="../../Command.cpp" line="61"/>
       <source>Tessellate shape</source>
       <translation>シェイプをテッセレーションします。</translation>
     </message>
@@ -60,14 +58,14 @@ This command only works with a 'mesh' object.</source>
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="188"/>
+      <location filename="../../Command.cpp" line="189"/>
       <source>Mesh</source>
       <translation>メッシュ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="189"/>
-      <source>Create section from mesh and plane</source>
-      <translation>メッシュと平面から断面を作成</translation>
+      <location filename="../../Command.cpp" line="191"/>
+      <source>Creates a section from a mesh and plane</source>
+      <translation type="unfinished">Creates a section from a mesh and plane</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="190"/>
@@ -78,17 +76,16 @@ This command only works with a 'mesh' object.</source>
   <context>
     <name>CmdMeshPartTrimByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="83"/>
+      <location filename="../../Command.cpp" line="84"/>
       <source>Mesh</source>
       <translation>メッシュ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="84"/>
-      <source>Trim mesh with a plane</source>
-      <translation>平面上のメッシュをトリム</translation>
+      <location filename="../../Command.cpp" line="85"/>
+      <source>Trim Mesh</source>
+      <translation type="unfinished">Trim Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="85"/>
       <location filename="../../Command.cpp" line="86"/>
       <source>Trims a mesh with a plane</source>
       <translation>平面上のメッシュを1つトリム</translation>
@@ -97,7 +94,7 @@ This command only works with a 'mesh' object.</source>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="134"/>
+      <location filename="../../Command.cpp" line="135"/>
       <source>Trim with plane</source>
       <translation>平面でトリム</translation>
     </message>
@@ -111,13 +108,13 @@ This command only works with a 'mesh' object.</source>
     <name>MeshPartGui::CrossSections</name>
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
-      <source>Cross sections</source>
-      <translation>横断面</translation>
+      <source>Cross Sections</source>
+      <translation type="unfinished">Cross Sections</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
-      <source>Guiding plane</source>
-      <translation>ガイド平面</translation>
+      <source>Guiding Plane</source>
+      <translation type="unfinished">Guiding Plane</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
@@ -136,8 +133,13 @@ This command only works with a 'mesh' object.</source>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="52"/>
-      <source>Position:</source>
-      <translation>位置:</translation>
+      <source>Position</source>
+      <translation type="unfinished">Position</translation>
+    </message>
+    <message>
+      <location filename="../../CrossSections.ui" line="109"/>
+      <source>Distance</source>
+      <translation>距離</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
@@ -153,11 +155,6 @@ This command only works with a 'mesh' object.</source>
       <location filename="../../CrossSections.ui" line="92"/>
       <source>Count</source>
       <translation>総数</translation>
-    </message>
-    <message>
-      <location filename="../../CrossSections.ui" line="109"/>
-      <source>Distance:</source>
-      <translation>距離：</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="128"/>
@@ -199,30 +196,30 @@ This command only works with a 'mesh' object.</source>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="623"/>
-      <source>Wrong mesh picked</source>
-      <translation>不適切なメッシュがピックされています。</translation>
+      <source>Wrong mesh selected</source>
+      <translation type="unfinished">Wrong mesh selected</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="662"/>
-      <source>No point was picked</source>
-      <translation>ピックされた点はありません</translation>
+      <source>No point was selected</source>
+      <translation type="unfinished">No point was selected</translation>
     </message>
   </context>
   <context>
     <name>MeshPartGui::TaskCurveOnMesh</name>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="14"/>
-      <source>Curve on mesh</source>
-      <translation>メッシュ上の曲線</translation>
+      <source>Curve on Mesh</source>
+      <translation type="unfinished">Curve on Mesh</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="23"/>
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
-This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
-      <translation>「Start」を押し、メッシュ上の点をピックします。点を十分に設定した後、右クリックして「作成」を選択します。 この処理を繰り返して、さらにスプラインを作成します。このタスクパネルを閉じると操作が完了します。
+This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</source>
+      <translation type="unfinished">Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
-このコマンドは、通常の面やサーフェスではなく、「メッシュ」オブジェクトでのみ動作します。 オブジェクトをメッシュに変換するには、メッシュ ワークベンチのツールを使用してください。</translation>
+This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -278,11 +275,6 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
       <translation>テッセレーション</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="20"/>
-      <source>Meshing options</source>
-      <translation>メッシュ作成オプション</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="30"/>
       <source>Standard</source>
       <translation>標準</translation>
@@ -293,31 +285,14 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
       <translation>標準メッシャーを使用</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="41"/>
-      <source>Surface deviation:</source>
-      <translation>サーフェス偏差:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="48"/>
       <source>Maximal linear deflection of a mesh section from the surface of the object</source>
       <translation>オブジェクトのサーフェスより、メッシュセクションの最大線形たわみ</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="67"/>
-      <source>Angular deviation:</source>
-      <translation>角度の偏差:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="74"/>
       <source>Maximal angular deflection of a mesh section to the next section</source>
       <translation>次のセクションに対するメッシュセクションの最大角度変位</translation>
-    </message>
-    <message>
-      <location filename="../../Tessellation.ui" line="98"/>
-      <source>The maximal linear deviation of a mesh segment will be the specified
-Surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation>メッシュセグメントの最大線形偏差は、指定された
-サーフェス偏差に現在のメッシュセグメント(エッジ)の長さを乗算したものになります</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="102"/>
@@ -358,9 +333,31 @@ this feature (e.g. the format OBJ).</source>
       <translation>Mefisto メッシャーを使用</translation>
     </message>
     <message>
+      <location filename="../../Tessellation.ui" line="20"/>
+      <source>Meshing Options</source>
+      <translation type="unfinished">Meshing Options</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="41"/>
+      <source>Surface deviation</source>
+      <translation type="unfinished">Surface deviation</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="67"/>
+      <source>Angular deviation</source>
+      <translation type="unfinished">Angular deviation</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="98"/>
+      <source>The maximal linear deviation of a mesh segment will be the specified
+surface deviation multiplied by the length of the current mesh segment (edge)</source>
+      <translation type="unfinished">The maximal linear deviation of a mesh segment will be the specified
+surface deviation multiplied by the length of the current mesh segment (edge)</translation>
+    </message>
+    <message>
       <location filename="../../Tessellation.ui" line="156"/>
-      <source>Maximum edge length:</source>
-      <translation>最大エッジ長さ:</translation>
+      <source>Maximum edge length</source>
+      <translation type="unfinished">Maximum edge length</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="162"/>
@@ -421,8 +418,18 @@ The smallest value is 0.</source>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="269"/>
-      <source>Mesh size grading:</source>
-      <translation>メッシュサイズの程度</translation>
+      <source>Mesh size grading</source>
+      <translation type="unfinished">Mesh size grading</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="302"/>
+      <source>Elements per edge</source>
+      <translation type="unfinished">Elements per edge</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="335"/>
+      <source>Elements per curvature radius</source>
+      <translation type="unfinished">Elements per curvature radius</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="279"/>
@@ -432,22 +439,12 @@ A value in the range of 0.1-1.</source>
 値の範囲は0.1-1です。</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="302"/>
-      <source>Elements per edge:</source>
-      <translation>エッジあたりの要素:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="312"/>
       <location filename="../../Tessellation.ui" line="345"/>
       <source>If this parameter is larger, the mesh becomes finer.
 A value in the range of 0.2-10.</source>
       <translation>このパラメータが大きい場合、メッシュが細かくなります。
 値の範囲は0.2-10です。</translation>
-    </message>
-    <message>
-      <location filename="../../Tessellation.ui" line="335"/>
-      <source>Elements per curvature radius:</source>
-      <translation>曲率半径あたりの要素:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="370"/>
@@ -497,17 +494,17 @@ A value in the range of 0.2-10.</source>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="279"/>
-      <source>You have selected a body without tip.
-Either set the tip of the body or select a different shape, please.</source>
-      <translation>チップのないボディを選択しました。
-ボディの先端を設定するか、別の形を選択してください。</translation>
+      <source>Error: body without a tip selected.
+Either set the tip of the body or select a different shapee.</source>
+      <translation type="unfinished">Error: body without a tip selected.
+Either set the tip of the body or select a different shapee.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="285"/>
-      <source>You have selected a shape without faces.
-Select a different shape, please.</source>
-      <translation>面のないシェイプを選択しました。
-別のシェイプを選択してください。</translation>
+      <source>Error: shape without faces selected.
+Select a different shape.</source>
+      <translation type="unfinished">Error: shape without faces selected.
+Select a different shape.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="289"/>
@@ -518,50 +515,50 @@ Select a different shape, please.</source>
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="202"/>
+      <location filename="../../Command.cpp" line="203"/>
       <source>Select plane</source>
       <translation>平面を選択</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="203"/>
-      <source>Please select a plane at which you section the mesh.</source>
-      <translation>メッシュの分割を行う平面を選択してください。</translation>
+      <location filename="../../Command.cpp" line="204"/>
+      <source>Select a plane to section the mesh with.</source>
+      <translation type="unfinished">Select a plane to section the mesh with.</translation>
     </message>
   </context>
   <context>
     <name>MeshPart_TrimByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="95"/>
+      <location filename="../../Command.cpp" line="97"/>
       <source>Select plane</source>
       <translation>平面を選択</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="96"/>
-      <source>Please select a plane at which you trim the mesh.</source>
-      <translation>メッシュのトリムを行う平面を選択してください。</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="103"/>
+      <location filename="../../Command.cpp" line="104"/>
       <source>Trim by plane</source>
       <translation>平面でトリム</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="104"/>
-      <source>Select the side you want to keep.</source>
-      <translation>維持したい側面を選択してください。</translation>
+      <location filename="../../Command.cpp" line="98"/>
+      <source>Select a plane to trim the mesh with.</source>
+      <translation type="unfinished">Select a plane to trim the mesh with.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="106"/>
+      <location filename="../../Command.cpp" line="105"/>
+      <source>Select the side to keep.</source>
+      <translation type="unfinished">Select the side to keep.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="107"/>
       <source>Below</source>
       <translation>下側</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="108"/>
+      <location filename="../../Command.cpp" line="109"/>
       <source>Above</source>
       <translation>上側</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="110"/>
+      <location filename="../../Command.cpp" line="111"/>
       <source>Split</source>
       <translation>スプリット</translation>
     </message>
@@ -578,26 +575,26 @@ Select a different shape, please.</source>
     <name>MeshPart_CreateFlatMesh</name>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
-      <source>Unwrap mesh</source>
-      <translation>メッシュを展開</translation>
+      <source>Unwrap Mesh</source>
+      <translation type="unfinished">Unwrap Mesh</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
-      <source>Find a flat representation of a mesh.</source>
-      <translation>メッシュの平面表現を作成</translation>
+      <source>Finds a flat representation of a mesh</source>
+      <translation type="unfinished">Finds a flat representation of a mesh</translation>
     </message>
   </context>
   <context>
     <name>MeshPart_CreateFlatFace</name>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
-      <source>Unwrap face</source>
-      <translation>面を展開</translation>
+      <source>Unwrap Face</source>
+      <translation type="unfinished">Unwrap Face</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>
-      <source>Find a flat representation of a face.</source>
-      <translation>面の平面表現を作成</translation>
+      <source>Finds a flat representation of a face</source>
+      <translation type="unfinished">Finds a flat representation of a face</translation>
     </message>
   </context>
 </TS>
