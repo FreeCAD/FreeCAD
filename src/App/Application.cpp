@@ -2994,8 +2994,84 @@ void Application::logStatus()
 
 void Application::LoadParameters()
 {
-    // Init parameter sets ===========================================================
-    //
+    // Compose version suffix for directory, e.g. "1.1"
+    std::string versionSuffix;
+    auto itMajor = mConfig.find("BuildVersionMajor");
+    auto itMinor = mConfig.find("BuildVersionMinor");
+    if (itMajor != mConfig.end() && itMinor != mConfig.end()) {
+        versionSuffix = fmt::format("{}.{}", itMajor->second, itMinor->second);
+    } else {
+        versionSuffix = "unknown";
+    }
+
+    // Add "-dev" if this is a development version
+    if (isDevelopmentVersion()) {
+        versionSuffix += "-dev";
+    }
+
+    // Build versioned config directory path: UserConfigPath/version +suffix/
+    std::string baseConfigPath = mConfig["UserConfigPath"];
+    if (!baseConfigPath.empty() && (baseConfigPath.back() == '/' || baseConfigPath.back() == '\\')) {
+        baseConfigPath.pop_back();
+    }
+    std::string versionedConfigPath = baseConfigPath + PATHSEP + versionSuffix + PATHSEP;
+
+    // Always try to create the versioned config directory
+    std::filesystem::path versionedDir(versionedConfigPath);
+    bool created = false;
+    if (!std::filesystem::exists(versionedDir)) {
+        try {
+            std::filesystem::create_directories(versionedDir);
+            created = true;
+            Base::Console().log("Created versioned config directory: %s\n", versionedDir.string().c_str());
+        } catch (const std::exception& e) {
+            Base::Console().warning("Failed to create versioned config directory: %s\n", e.what());
+        }
+    }
+
+    // If directory was just created, copy old config files from previous version or top-level config dir
+    if (created) {
+        std::vector<std::string> candidateDirs;
+        // 1. Previous version (if any)
+        int major = itMajor != mConfig.end() ? std::stoi(itMajor->second) : 0;
+        int minor = itMinor != mConfig.end() ? std::stoi(itMinor->second) : 0;
+        if (minor > 0) {
+            std::string prevVersion = fmt::format("{}.{}", major, minor - 1);
+            // Add "-dev" if current is dev, check previous dev as well
+            if (isDevelopmentVersion()) {
+                prevVersion += "-dev";
+            }
+            candidateDirs.push_back(baseConfigPath + PATHSEP + prevVersion + PATHSEP);
+        }
+        // 2. Top-level config dir (unversioned)
+        candidateDirs.push_back(baseConfigPath + PATHSEP);
+
+        // List of config files to copy
+        std::vector<std::string> configFiles = {"user.cfg", "system.cfg"};
+
+        for (const auto& dir : candidateDirs) {
+            bool copiedAny = false;
+            for (const auto& file : configFiles) {
+                std::filesystem::path src = std::filesystem::path(dir) / file;
+                std::filesystem::path dst = versionedDir / file;
+                if (std::filesystem::exists(src) && !std::filesystem::exists(dst)) {
+                    try {
+                        std::filesystem::copy_file(src, dst, std::filesystem::copy_options::overwrite_existing);
+                        copiedAny = true;
+                    } catch (const std::exception& e) {
+                        Base::Console().warning("Failed to copy config file from %s to %s: %s\n",
+                            src.string().c_str(), dst.string().c_str(), e.what());
+                    }
+                }
+            }
+            if (copiedAny)
+                break; // Only copy from the first found candidate
+        }
+    }
+
+    mConfig["UserConfigPath"] = versionedConfigPath;
+
+    // Now use versioned UserConfigPath for config files
     if (mConfig.find("UserParameter") == mConfig.end())
         mConfig["UserParameter"]   = mConfig["UserConfigPath"] + "user.cfg";
     if (mConfig.find("SystemParameter") == mConfig.end())
@@ -3010,7 +3086,6 @@ void Application::LoadParameters()
 
     try {
         if (_pcSysParamMngr->LoadOrCreateDocument() && mConfig["Verbose"] != "Strict") {
-            // Configuration file optional when using as Python module
             if (!Py_IsInitialized()) {
                 Base::Console().warning("   Parameter does not exist, writing initial one\n");
                 Base::Console().message("   This warning normally means that FreeCAD is running for the first time\n"
@@ -3020,7 +3095,6 @@ void Application::LoadParameters()
         }
     }
     catch (const Base::Exception& e) {
-        // try to proceed with an empty XML document
         Base::Console().error("%s in file %s.\n"
                               "Continue with an empty configuration.\n",
                               e.what(), mConfig["SystemParameter"].c_str());
@@ -3029,8 +3103,6 @@ void Application::LoadParameters()
 
     try {
         if (_pcUserParamMngr->LoadOrCreateDocument() && mConfig["Verbose"] != "Strict") {
-            // The user parameter file doesn't exist. When an alternative parameter file is offered
-            // this will be used.
             const auto it = mConfig.find("UserParameterTemplate");
             if (it != mConfig.end()) {
                 QString path = QString::fromUtf8(it->second.c_str());
@@ -3043,8 +3115,6 @@ void Application::LoadParameters()
                     _pcUserParamMngr->LoadDocument(path.toUtf8().constData());
                 }
             }
-
-            // Configuration file optional when using as Python module
             if (!Py_IsInitialized()) {
                 Base::Console().warning("   User settings do not exist, writing initial one\n");
                 Base::Console().message("   This warning normally means that FreeCAD is running for the first time\n"
@@ -3054,7 +3124,6 @@ void Application::LoadParameters()
         }
     }
     catch (const Base::Exception& e) {
-        // try to proceed with an empty XML document
         Base::Console().error("%s in file %s.\n"
                               "Continue with an empty configuration.\n",
                               e.what(), mConfig["UserParameter"].c_str());
@@ -3644,7 +3713,7 @@ void Application::getVerboseCommonInfo(QTextStream& str, const std::map<std::str
     const QString deskSess =
         QProcessEnvironment::systemEnvironment().value(QStringLiteral("DESKTOP_SESSION"),
                                                     QString());
-  
+
     const QString major = getValueOrEmpty(mConfig, "BuildVersionMajor");
     const QString minor = getValueOrEmpty(mConfig, "BuildVersionMinor");
     const QString point = getValueOrEmpty(mConfig, "BuildVersionPoint");
