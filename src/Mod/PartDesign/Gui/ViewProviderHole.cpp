@@ -63,23 +63,6 @@ void ViewProviderHole::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member); // clazy:exclude=skipped-base-method
 }
 
-bool ViewProviderHole::onDelete(const std::vector<std::string>& s)
-{
-    // get the Sketch
-    PartDesign::Hole* pcHole = getObject<PartDesign::Hole>();
-    Sketcher::SketchObject* pcSketch = nullptr;
-    if (pcHole->Profile.getValue()) {
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcHole->Profile.getValue());
-    }
-
-    // if abort command deleted the object the sketch is visible again
-    if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch)) {
-        Gui::Application::Instance->getViewProvider(pcSketch)->show();
-    }
-
-    return ViewProvider::onDelete(s);
-}
-
 TaskDlgFeatureParameters* ViewProviderHole::getEditDialog()
 {
     return new TaskDlgHoleParameters(this);
