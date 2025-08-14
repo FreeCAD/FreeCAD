@@ -50,7 +50,7 @@ Body::Body() {
         .GetUserParameter()
         .GetGroup("BaseApp/Preferences/Mod/PartDesign");
 
-    auto allowCompoundDefaultValue = hGrp->GetBool("AllowCompoundDefault", false);
+    auto allowCompoundDefaultValue = hGrp->GetBool("AllowCompoundDefault", true);
 
     ADD_PROPERTY(AllowCompound, (allowCompoundDefaultValue));
 }
