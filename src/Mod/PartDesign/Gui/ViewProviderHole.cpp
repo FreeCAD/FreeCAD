@@ -49,10 +49,14 @@ ViewProviderHole::ViewProviderHole()
 
 ViewProviderHole::~ViewProviderHole() = default;
 
-std::vector<App::DocumentObject*> ViewProviderHole::claimChildren()const
+std::vector<App::DocumentObject*> ViewProviderHole::claimChildren() const
 {
     std::vector<App::DocumentObject*> temp;
-    temp.push_back(getObject<PartDesign::Hole>()->Profile.getValue());
+
+    if (App::DocumentObject* profile = getObject<PartDesign::Hole>()->Profile.getValue();
+        profile && !profile->isDerivedFrom<PartDesign::Feature>()) {
+        temp.push_back(profile);
+    }
 
     return temp;
 }
