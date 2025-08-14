@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *                                                                          *
- *   Copyright (c) 2025 Sayantan Deb <sayantandebin[at]gmail.com>           *
+ *   Copyright (c) 2025 Kacper Donat <kacper@kadet.net>                     *
  *                                                                          *
  *   This file is part of FreeCAD.                                          *
  *                                                                          *
@@ -21,36 +21,23 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef SO_TOGGLE_SWITCH
-#define SO_TOGGLE_SWITCH
+#ifndef STYLEPARAMETERS_H
+#define STYLEPARAMETERS_H
 
-#include <Inventor/fields/SoSFBool.h>
-#include <Inventor/nodes/SoSwitch.h>
+#include <Gui/StyleParameters/ParameterManager.h>
 
+namespace PartDesignGui::StyleParameters {
+    DEFINE_STYLE_PARAMETER(PreviewAdditiveColor, Base::Color(0.0F, 1.0F, 0.6F));
+    DEFINE_STYLE_PARAMETER(PreviewSubtractiveColor, Base::Color(1.0F, 0.0F, 0.0F));
+    DEFINE_STYLE_PARAMETER(PreviewDressUpColor, Base::Color(1.0F, 0.0F, 1.0F));
 
-/**
- * A switch that can be used to show or hide all child nodes
- */
-class GuiExport SoToggleSwitch: public SoSwitch
-{
-    SO_NODE_HEADER(SoToggleSwitch);
+    DEFINE_STYLE_PARAMETER(PreviewErrorColor, Base::Color(1.0F, 0.0F, 0.0F));
+    DEFINE_STYLE_PARAMETER(PreviewErrorTransparency, Gui::StyleParameters::Numeric(0.95));
 
-public:
-    static void initClass();
-    SoToggleSwitch();
+    DEFINE_STYLE_PARAMETER(PreviewToolTransparency, Gui::StyleParameters::Numeric(0.95));
+    DEFINE_STYLE_PARAMETER(PreviewShapeTransparency, Gui::StyleParameters::Numeric(0.8));
 
-    // the switch is on be default
-    SoSFBool on;
-    // toggles the switch state
-    void toggle();
+    DEFINE_STYLE_PARAMETER(PreviewLineWidth, Gui::StyleParameters::Numeric(2));
+}
 
-protected:
-    ~SoToggleSwitch() override = default;
-
-    void notify(SoNotList* notList) override;
-
-private:
-    using inherited = SoSwitch;
-};
-
-#endif /* SO_TOGGLE_SWITCH */
+#endif //STYLEPARAMETERS_H

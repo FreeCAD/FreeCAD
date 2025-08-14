@@ -116,7 +116,7 @@ public:
     bool linesAreParallel() const;
 
 protected:
-    // Hint parameter helps sort out coumpound shapes by specifying a subelement type
+    // Hint parameter helps sort out compound shapes by specifying a subelement type
     // use hint = TopAbs_COMPOUND to give no hint
     TopoDS_Shape getShape(App::DocumentObject* obj,
                           const char* subName,

@@ -217,6 +217,7 @@ SET(PartDesignGuiModule_SRCS
     PreCompiled.h
     SketchWorkflow.cpp
     SketchWorkflow.h
+    StyleParameters.h
     Utils.cpp
     Utils.h
     Workbench.cpp
