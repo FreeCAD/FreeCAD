@@ -560,7 +560,7 @@ QGIView* QGSPage::addDrawViewClip(TechDraw::DrawViewClip* view)
     qview->setViewFeature(view);
     addItemToScene(qview);
     qview->setPosition(Rez::guiX(view->X.getValue()), Rez::guiX(view->Y.getValue()));
-
+    qview->installSceneEventFilter(qview);
     return qview;
 }
 
