@@ -4135,6 +4135,7 @@ void ViewProviderSketch::generateContextMenu()
     if (selection.size() > 0) {
         const std::vector<std::string> SubNames = selection[0].getSubNames();
         const Sketcher::SketchObject* obj;
+        bool shouldAddChangeConstraintValue = false;
         if (selection[0].getObject()->isDerivedFrom<Sketcher::SketchObject>()) {
             obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
             for (auto& name : SubNames) {
@@ -4166,6 +4167,14 @@ void ViewProviderSketch::generateContextMenu()
                     ++selectedEndPoints;
                 }
                 else if (name.substr(0, 4) == "Cons") {
+                    if (selectedConstraints == 0) {
+                        int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(name);
+                        const Constraint *constraint = obj->Constraints[ConstrId];
+                        shouldAddChangeConstraintValue = constraint->isDimensional();
+                    }
+                    else {
+                        shouldAddChangeConstraintValue = false;
+                    }
                     ++selectedConstraints;
                 }
                 else if (name.substr(2, 5) == "Axis") {
@@ -4294,7 +4303,7 @@ void ViewProviderSketch::generateContextMenu()
 
         // context menu if only constraints are selected
         else if (selectedConstraints >= 1) {
-            if (selectedConstraints == 1) {
+            if (shouldAddChangeConstraintValue) {
                 menu << "Sketcher_ChangeDimensionConstraint";
             }
             menu << "Sketcher_ToggleDrivingConstraint"
