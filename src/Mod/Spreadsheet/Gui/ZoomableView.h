@@ -74,7 +74,7 @@ private:
     QGraphicsProxyWidget* qpw {nullptr};
 
     int m_zoomLevel {0};
-    QPropertyAnimation *anim;
+    QPropertyAnimation* anim;
 
 protected:
     void focusOutEvent(QFocusEvent* event) override;
