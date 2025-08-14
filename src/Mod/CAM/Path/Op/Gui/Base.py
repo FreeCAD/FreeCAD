@@ -401,7 +401,7 @@ class TaskPanelPage(object):
             self.obj.ToolController = tc
             self.setupToolController()
 
-    def setToolControllerEditVisibility(self, unused=None):
+    def updateToolControllerEditorVisibility(self):
         if self.form.editToolController.isChecked():
             self.tcEditor.controller.show()
         else:
@@ -457,6 +457,8 @@ class TaskPanelPage(object):
             layout = self.form.editToolController.parent().layout()
             oldEditor = self.tcEditor
 
+            # Count the number of times the tool controller is used in other operations
+            # If it is used in other operations, we will offer the "copy tool controller" button
             tcCount = 0
             for job in PathUtils.GetJobs():
                 for op in job.Operations.Group:
@@ -471,17 +473,21 @@ class TaskPanelPage(object):
                 self.setDirty,
                 self.copyToolController if tcCount > 0 else None,
             )
-            if not self.form.editToolController.isChecked():
-                self.tcEditor.controller.hide()
-            layout.addWidget(self.tcEditor.controller, layout.rowCount(), 0, 1, 2)
+
+            # add to layout -- assumes a grid layout of 2 columns
+            layout.addWidget(
+                self.tcEditor.controller, layout.rowCount(), 0, 1, layout.columnCount()
+            )
+            self.updateToolControllerEditorVisibility()
             self.tcEditor.updateUi()
+            self.form.editToolController.checkStateChanged.connect(
+                self.updateToolControllerEditorVisibility
+            )
+
             if oldEditor:
                 oldEditor.updateToolController()
                 oldEditor.controller.hide()
                 layout.removeWidget(oldEditor.controller)
-            self.form.editToolController.checkStateChanged.connect(
-                self.setToolControllerEditVisibility
-            )
 
     def updateToolController(self, obj, combo):
         """updateToolController(obj, combo) ...

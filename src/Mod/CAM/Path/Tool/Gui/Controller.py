@@ -212,19 +212,6 @@ class ToolControllerEditor(object):
 
         self.editor = None
 
-        self.controller.tcName.textChanged.connect(self.changed)
-        self.controller.tcNumber.editingFinished.connect(self.changed)
-        self.vertFeed.widget.textChanged.connect(self.changed)
-        self.horizFeed.widget.textChanged.connect(self.changed)
-        self.vertRapid.widget.textChanged.connect(self.changed)
-        self.horizRapid.widget.textChanged.connect(self.changed)
-        self.controller.spindleSpeed.editingFinished.connect(self.changed)
-        self.controller.spindleDirection.currentIndexChanged.connect(self.changed)
-
-    def changed(self, unused=None):
-        if self.notifyChanged:
-            self.notifyChanged()
-
     def selectInComboBox(self, name, combo):
         """selectInComboBox(name, combo) ...
         helper function to select a specific value in a combo box."""
@@ -249,8 +236,6 @@ class ToolControllerEditor(object):
 
     def updateUi(self):
         tc = self.obj
-        for widget in [self.horizFeed, self.horizRapid, self.vertFeed, self.vertRapid]:
-            widget.attachTo(tc, widget.prop)
 
         blockers = [
             QtCore.QSignalBlocker(x)
@@ -300,9 +285,27 @@ class ToolControllerEditor(object):
         except Exception as e:
             Path.Log.error("Error updating TC: {}".format(e))
 
+    def changed(self):
+        self.form.blockSignals(True)
+        self.updateToolController()
+        self.updateUi()
+        self.form.blockSignals(False)
+
+        if self.notifyChanged:
+            self.notifyChanged()
+
     def setupUi(self):
         if self.editor:
             self.editor.setupUI()
+
+        self.controller.tcName.textChanged.connect(self.changed)
+        self.controller.tcNumber.editingFinished.connect(self.changed)
+        self.vertFeed.widget.textChanged.connect(self.changed)
+        self.horizFeed.widget.textChanged.connect(self.changed)
+        self.vertRapid.widget.textChanged.connect(self.changed)
+        self.horizRapid.widget.textChanged.connect(self.changed)
+        self.controller.spindleSpeed.editingFinished.connect(self.changed)
+        self.controller.spindleDirection.currentIndexChanged.connect(self.changed)
 
 
 class TaskPanel:
