@@ -198,7 +198,7 @@ PyObject* SketchObjectPy::addGeometry(PyObject* args)
 PyObject* SketchObjectPy::delGeometry(PyObject* args)
 {
     int Index;
-    PyObject* noSolve;
+    PyObject* noSolve = Py_False;
     if (!PyArg_ParseTuple(args, "i|O!", &Index, &PyBool_Type, &noSolve)) {
         return nullptr;
     }
@@ -218,7 +218,7 @@ PyObject* SketchObjectPy::delGeometry(PyObject* args)
 PyObject* SketchObjectPy::delGeometries(PyObject* args)
 {
     PyObject* pcObj;
-    PyObject* noSolve;
+    PyObject* noSolve = Py_False;
     if (!PyArg_ParseTuple(args, "O|O!", &pcObj, &PyBool_Type, &noSolve)) {
         return nullptr;
     }
