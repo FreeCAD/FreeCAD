@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# /**************************************************************************
+# /****************************************************************************
 #                                                                           *
-#    Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
+#    Copyright (c) 2025 Weston Schmidt <weston_schmidt@alumni.purdue.edu>   *
 #                                                                           *
 #    This file is part of FreeCAD.                                          *
 #                                                                           *
@@ -19,14 +19,12 @@
 #    License along with FreeCAD. If not, see                                *
 #    <https://www.gnu.org/licenses/>.                                       *
 #                                                                           *
-# **************************************************************************/
+# ***************************************************************************/
 
-import TestApp
+"""Mock classes for FreeCAD GUI testing."""
 
-from AssemblyTests.TestCore import TestCore
-from AssemblyTests.TestCommandInsertLink import TestCommandInsertLink
+from .MockGui import SetupGuiMocks
 
+SetupGuiMocks()
 
-# Use the modules so that code checkers don't complain (flake8)
-True if TestCore else False
-True if TestCommandInsertLink else False
+__all__ = []
