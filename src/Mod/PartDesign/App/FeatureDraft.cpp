@@ -287,7 +287,7 @@ App::DocumentObjectExecReturn *Draft::execute()
         }
 
         if (!isSingleSolidRuleSatisfied(shape.getShape())) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently allowed."));
         }
 
         this->Shape.setValue(getSolid(shape));
