@@ -36,6 +36,8 @@
 #include <BRepGProp.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
+#include <Geom_BezierCurve.hxx>
+#include <Geom_BSplineCurve.hxx>
 #include <TopExp.hxx>
 #include <GProp_GProps.hxx>
 #include <ShapeAnalysis_Edge.hxx>
@@ -127,6 +129,13 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat
 
 App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* subName)
 {
+    auto isStraightBezierCurve = [](Handle(Geom_BezierCurve) curve) {
+        return curve->NbPoles() == 2;
+    };
+    auto isStraightBSplineCurve = [](Handle(Geom_BSplineCurve) curve) {
+        return curve->NbPoles() == 2;
+    };
+
     TopoDS_Shape shape = Part::Feature::getShape(ob,
                                                     Part::ShapeOption::NeedSubElement
                                                   | Part::ShapeOption::ResolveLink
@@ -153,10 +162,18 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
                     return ob->isDerivedFrom<Part::Datum>() ? App::MeasureElementType::LINE
                                                             : App::MeasureElementType::LINESEGMENT;
                 }
-                case GeomAbs_Circle: { return App::MeasureElementType::CIRCLE; }
-                case GeomAbs_BezierCurve:
+                case GeomAbs_Circle: {
+                    return App::MeasureElementType::CIRCLE;
+                }
+                case GeomAbs_BezierCurve: {
+                    return isStraightBezierCurve(curve.Bezier())
+                               ? App::MeasureElementType::LINESEGMENT
+                               : App::MeasureElementType::CURVE;
+                }
                 case GeomAbs_BSplineCurve: {
-                    return App::MeasureElementType::CURVE;
+                    return isStraightBSplineCurve(curve.BSpline())
+                               ? App::MeasureElementType::LINESEGMENT
+                               : App::MeasureElementType::CURVE;
                 }
                 default: { return App::MeasureElementType::INVALID; }
             }
