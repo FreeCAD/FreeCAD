@@ -1787,7 +1787,7 @@ int SketchObject::delGeometry(int GeoId, DeleteOptions options)
         return -1;
     }
 
-    if (options.testFlag(DeleteOption::UpdateGeometry) && hasInternalGeometry(getGeometry(GeoId))) {
+    if (options.testFlag(DeleteOption::IncludeInternalGeometry) && hasInternalGeometry(getGeometry(GeoId))) {
         // Only for supported types
         this->deleteUnusedInternalGeometry(GeoId, true);
         return 0;
