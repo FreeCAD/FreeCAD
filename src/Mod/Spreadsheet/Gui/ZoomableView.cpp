@@ -23,6 +23,7 @@
 
 #include <QInputDialog>
 #include <QGraphicsProxyWidget>
+#include <QPropertyAnimation>
 
 #include "ZoomableView.h"
 #include "ui_Sheet.h"
@@ -121,6 +122,9 @@ ZoomableView::ZoomableView(Ui::Sheet* ui)
         }
     });
 
+    anim = new QPropertyAnimation(this, "zoomLevel", this);
+    anim->setDuration(80);
+
     resetZoom();
 
     auto connectCursorChangedSignal = [this](QHeaderView* hv) {
@@ -159,14 +163,21 @@ inline void ZoomableView::checkLimits(int& zoom_level)
     zoom_level = qBound(ZoomableView::min, zoom_level, ZoomableView::max);
 }
 
+void ZoomableView::animatedZoom(const int new_zoom_level)
+{
+    anim->setStartValue(m_zoomLevel);
+    anim->setEndValue(new_zoom_level);
+    anim->start();
+}
+
 void ZoomableView::zoomIn(void)
 {
-    setZoomLevel(m_zoomLevel + zoom_step_kb);
+    animatedZoom(m_zoomLevel + zoom_step_kb);
 }
 
 void ZoomableView::zoomOut(void)
 {
-    setZoomLevel(m_zoomLevel - zoom_step_kb);
+    animatedZoom(m_zoomLevel - zoom_step_kb);
 }
 
 void ZoomableView::resetZoom(void)
@@ -175,7 +186,7 @@ void ZoomableView::resetZoom(void)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(path);
     const int defaultZoomLevel = static_cast<int>(hGrp->GetInt("DefaultZoomLevel", 100));
 
-    setZoomLevel(defaultZoomLevel);
+    animatedZoom(defaultZoomLevel);
 }
 
 void ZoomableView::updateView(void)

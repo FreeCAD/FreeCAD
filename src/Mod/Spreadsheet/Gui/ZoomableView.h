@@ -28,6 +28,8 @@
 
 #include "SpreadsheetView.h"
 
+class QPropertyAnimation;
+
 namespace SpreadsheetGui
 {
 class SheetTableView;
@@ -62,6 +64,7 @@ public Q_SLOTS:
     void
     zoomOut(void);  /// This function is the slot for the zoomOut button and a keyboard shortcut
     void resetZoom(void);  /// This function is the slot for a keyboard shortcut
+    void animatedZoom(const int new_zoom_level);
 
 private:
     void updateView(void);
@@ -71,6 +74,7 @@ private:
     QGraphicsProxyWidget* qpw {nullptr};
 
     int m_zoomLevel {0};
+    QPropertyAnimation *anim;
 
 protected:
     void focusOutEvent(QFocusEvent* event) override;
