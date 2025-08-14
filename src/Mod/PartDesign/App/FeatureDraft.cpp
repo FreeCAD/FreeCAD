@@ -47,6 +47,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
+#include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "FeatureDraft.h"
@@ -215,7 +216,7 @@ App::DocumentObjectExecReturn *Draft::execute()
             Base::Vector3d b = plane->getBasePoint();
             Base::Vector3d n = plane->getNormal();
             neutralPlane = gp_Pln(gp_Pnt(b.x, b.y, b.z), gp_Dir(n.x, n.y, n.z));
-        } else if (refPlane->isDerivedFrom<App::Plane>()) {
+        } else if (refPlane->isDerivedFrom<App::Plane>() || refPlane->isDerivedFrom<Part::Part2DObject>()) {
             neutralPlane = Feature::makePlnFromPlane(refPlane);
         } else if (refPlane->isDerivedFrom<Part::Feature>()) {
             std::vector<std::string> subStrings = NeutralPlane.getSubValues();
