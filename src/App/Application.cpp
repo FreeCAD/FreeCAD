@@ -3760,6 +3760,16 @@ void Application::getVerboseCommonInfo(QTextStream& str, const std::map<std::str
 #endif
         << '\n';
 #endif
+
+    QStringList solvers;
+    for (const std::string &solver : {"Calculix", "ElmerSolver", "MYSTRAN"})
+        if (auto version = getValueOrEmpty(mConfig, solver); !version.isEmpty())
+            solvers << QStringLiteral("%1 %2").arg(QString::fromStdString(solver)).arg(version);
+
+    if (!solvers.isEmpty())
+        str << solvers.join(QStringLiteral(", ")) << '\n';
+
+
     QLocale loc;
     str << "Locale: " << QLocale::languageToString(loc.language()) << "/"
 #if QT_VERSION < QT_VERSION_CHECK(6, 6, 0)
