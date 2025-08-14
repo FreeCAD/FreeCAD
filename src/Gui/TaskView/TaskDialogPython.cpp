@@ -634,6 +634,7 @@ void TaskDialogPython::appendForm(QWidget* form, const QPixmap& icon)
 
 void TaskDialogPython::clearForm()
 {
+    Base::PyGILStateLocker lock;
     try {
         // The widgets stored in the 'form' attribute will be deleted.
         // Thus, set this attribute to None to make sure that when using
