@@ -49,7 +49,6 @@ public:
     std::vector<App::DocumentObject*> claimChildren()const override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
-    bool onDelete(const std::vector<std::string> &) override;
     void highlightReferences(Reference mode, bool on);
 
 protected:
