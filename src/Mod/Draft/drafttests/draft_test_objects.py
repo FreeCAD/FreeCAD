@@ -287,7 +287,8 @@ def _create_objects(doc=None,
                                             Vector(1500, 2400, 0),
                                             Vector(1000, 2200, 0))
     if App.GuiUp:
-        dimension.ViewObject.ArrowSize = 15
+        dimension.ViewObject.ArrowSizeStart = 15
+        dimension.ViewObject.ArrowSizeEnd = 15
         dimension.ViewObject.ExtLines = 0
         dimension.ViewObject.ExtOvershoot = 50
         dimension.ViewObject.DimOvershoot = 25
@@ -301,8 +302,10 @@ def _create_objects(doc=None,
     dimension = Draft.make_linear_dimension_obj(line, 1, 2,
                                               Vector(1000, 2800, 0))
     if App.GuiUp:
-        dimension.ViewObject.ArrowSize = 15
-        dimension.ViewObject.ArrowType = "Arrow"
+        dimension.ViewObject.ArrowSizeStart = 15
+        dimension.ViewObject.ArrowSizeEnd = 15
+        dimension.ViewObject.ArrowTypeStart = "Arrow"
+        dimension.ViewObject.ArrowTypeEnd = "Arrow"
         dimension.ViewObject.ExtLines = -50
         dimension.ViewObject.ExtOvershoot = 50
         dimension.ViewObject.DimOvershoot = 25
@@ -324,7 +327,8 @@ def _create_objects(doc=None,
                                                 "radius",
                                                 Vector(2300, 2300, 0))
     if App.GuiUp:
-        dimension.ViewObject.ArrowSize = 15
+        dimension.ViewObject.ArrowSizeStart = 15
+        dimension.ViewObject.ArrowSizeEnd = 15
         dimension.ViewObject.FontSize = 50
         dimension.ViewObject.Decimals = 1
         dimension.ViewObject.ShowUnit = False
@@ -338,7 +342,8 @@ def _create_objects(doc=None,
                                                 "diameter",
                                                 Vector(2300, 2900, 0))
     if App.GuiUp:
-        dimension.ViewObject.ArrowSize = 15
+        dimension.ViewObject.ArrowSizeStart = 15
+        dimension.ViewObject.ArrowSizeEnd = 15
         dimension.ViewObject.FontSize = 50
         dimension.ViewObject.Decimals = 1
         dimension.ViewObject.ShowUnit = False
@@ -354,7 +359,8 @@ def _create_objects(doc=None,
                                              [0, 45],
                                              Vector(3250, 2250, 0))
     if App.GuiUp:
-        dimension.ViewObject.ArrowSize = 15
+        dimension.ViewObject.ArrowSizeStart = 15
+        dimension.ViewObject.ArrowSizeEnd = 15
         dimension.ViewObject.FontSize = 50
         dimension.ViewObject.Decimals = 1
     _set_text(["Angle dimension"], Vector(3000, 1800, 0))
@@ -369,7 +375,7 @@ def _create_objects(doc=None,
                              distance=-100)
     label.Text = "Testing"
     if App.GuiUp:
-        label.ViewObject.ArrowSize = 15
+        label.ViewObject.ArrowSizeStart = 15
         label.ViewObject.FontSize = 50
     _set_text(["Label"], Vector(4000, 1800, 0))
 

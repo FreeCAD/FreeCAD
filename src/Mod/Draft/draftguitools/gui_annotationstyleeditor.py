@@ -144,7 +144,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         meta = self.doc.Meta
         for key, value in meta.items():
             if key.startswith("Draft_Style_"):
-                styles[key[12:]] = self.repair_style(json.loads(value))
+                styles[key[12:]] = utils.repair_annotation_style(json.loads(value))
         return styles
 
     def save_meta(self, styles):
@@ -196,7 +196,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
                                     if vobj.getTypeIdOfProperty(attr) == "App::PropertyColor":
                                         value = value | 0x000000FF
                                     setattr(vobj, attr, value)
-                                except:
+                                except TypeError:
                                     pass
                 else:
                     # the style has been removed
@@ -309,7 +309,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
             nstyles = {}
             with open(filename[0]) as f:
                 for key, val in json.load(f).items():
-                    nstyles[key] = self.repair_style(val)
+                    nstyles[key] = utils.repair_annotation_style(val)
             if nstyles:
                 self.styles.update(nstyles)
                 for style in self.styles.keys():
@@ -330,25 +330,6 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
             with open(filename[0],"w") as f:
                 json.dump(self.styles,f,indent=4)
             print("Styles saved to " + filename[0])
-
-    def repair_style(self, style):
-        """Repair a V0.19 or V0.20 style.
-
-        Some properties were missing or misspelled.
-        Some float values were wrongly stored as strings.
-        """
-        default = utils.get_default_annotation_style()
-        new = {}
-        for key, val in default.items():
-            if style.get(key) is None:
-                new[key] = val[1]
-            elif type(style[key]) == type(val[1]):
-                new[key] = style[key]
-            elif isinstance(style[key], str):
-                new[key] = float(style[key].replace(",", "."))
-            else:
-                new[key] = val[1]
-        return new
 
     def fill_editor(self, style=None):
         """Fill the editor fields with the contents of a style."""

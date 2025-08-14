@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>287</width>
-    <height>945</height>
+    <width>290</width>
+    <height>968</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -404,14 +404,14 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</string>
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QLabel" name="label_ArrowStyle">
+           <widget class="QLabel" name="label_ArrowStyleStart">
             <property name="text">
-             <string>Arrow type</string>
+             <string>Start arrow type</string>
             </property>
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QComboBox" name="ArrowStyle">
+           <widget class="QComboBox" name="ArrowStyleStart">
             <item>
              <property name="text">
               <string>Dot</string>
@@ -437,30 +437,90 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</string>
               <string>Tick-2</string>
              </property>
             </item>
+            <item>
+             <property name="text">
+              <string>None</string>
+             </property>
+            </item>
            </widget>
           </item>
           <item row="2" column="0">
-           <widget class="QLabel" name="label_ArrowSize">
+           <widget class="QLabel" name="label_ArrowSizeStart">
             <property name="text">
-             <string>Arrow size</string>
+             <string>Start arrow size</string>
             </property>
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="Gui::InputField" name="ArrowSize">
+           <widget class="Gui::InputField" name="ArrowSizeStart">
             <property name="unit" stdset="0">
              <string notr="true"/>
             </property>
            </widget>
           </item>
           <item row="3" column="0">
+           <widget class="QLabel" name="label_ArrowStyleEnd">
+            <property name="text">
+             <string>End arrow type</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QComboBox" name="ArrowStyleEnd">
+            <item>
+             <property name="text">
+              <string>Dot</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Circle</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Arrow</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Tick</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Tick-2</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>None</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_ArrowSizeEnd">
+            <property name="text">
+             <string>End arrow size</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="Gui::InputField" name="ArrowSizeEnd">
+            <property name="unit" stdset="0">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
            <widget class="QLabel" name="label_AnnoLineColor">
             <property name="text">
              <string>Line and arrow color</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
+          <item row="5" column="1">
            <widget class="Gui::ColorButton" name="AnnoLineColor">
            </widget>
           </item>
