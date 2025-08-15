@@ -269,4 +269,13 @@ bool TaskDlgFemConstraint::reject()
     return true;
 }
 
+void TaskDlgFemConstraint::activate()
+{
+    parameter->attachSelection();
+}
+void TaskDlgFemConstraint::deactivate()
+{
+    parameter->detachSelection();
+}
+
 #include "moc_TaskFemConstraint.cpp"

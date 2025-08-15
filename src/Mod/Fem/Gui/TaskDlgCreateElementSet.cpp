@@ -101,4 +101,13 @@ bool TaskDlgCreateElementSet::reject()
 void TaskDlgCreateElementSet::helpRequested()
 {}
 
+void TaskDlgCreateElementSet::activate()
+{
+    param->attachSelection();
+}
+void TaskDlgCreateElementSet::deactivate()
+{
+    param->detachSelection();
+}
+
 #include "moc_TaskDlgCreateElementSet.cpp"
