@@ -29,6 +29,7 @@
 #include <vtkAlgorithm.h>
 #include <vtkAlgorithmOutput.h>
 #include <vtkUnstructuredGrid.h>
+#include <vtkInformation.h>
 #endif
 
 #include <App/FeaturePythonPyImp.h>
@@ -218,6 +219,17 @@ DocumentObjectExecReturn* FemPostFilter::execute()
     return StdReturn;
 }
 
+bool FemPostFilter::dataIsAvailable()
+{
+    auto algo = getFilterOutput();
+    if (!algo) {
+        return false;
+    }
+
+    vtkInformation* info = algo->GetInputInformation(0, 0);
+    return bool(info->Has(vtkDataObject::DATA_OBJECT()));
+}
+
 vtkSmartPointer<vtkDataSet> FemPostFilter::getInputData()
 {
     auto active = m_pipelines[m_activePipeline];
@@ -233,12 +245,21 @@ vtkSmartPointer<vtkDataSet> FemPostFilter::getInputData()
     if (!algo) {
         return nullptr;
     }
+
+    // make sure the data processing is up to date
     if (Frame.getValue() > 0) {
         algo->UpdateTimeStep(Frame.getValue());
     }
     else {
         algo->Update();
     }
+
+    // check if the algorithm has data available
+    vtkInformation* info = algo->GetInputInformation(0, 0);
+    if (!bool(info->Has(vtkDataObject::DATA_OBJECT()))) {
+        return nullptr;
+    }
+
     return vtkDataSet::SafeDownCast(algo->GetOutputDataObject(0));
 }
 
@@ -472,6 +493,10 @@ void FemPostDataAlongLineFilter::GetAxisData()
     std::vector<double> coords;
     std::vector<double> values;
 
+    if (!dataIsAvailable()) {
+        return;
+    }
+
     vtkSmartPointer<vtkDataObject> data = m_probe->GetOutputDataObject(0);
     vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
     if (!dset) {
@@ -597,6 +622,10 @@ short int FemPostDataAtPointFilter::mustExecute() const
 
 void FemPostDataAtPointFilter::GetPointData()
 {
+    if (!dataIsAvailable()) {
+        return;
+    }
+
     std::vector<double> values;
 
     vtkSmartPointer<vtkDataObject> data = m_probe->GetOutputDataObject(0);
