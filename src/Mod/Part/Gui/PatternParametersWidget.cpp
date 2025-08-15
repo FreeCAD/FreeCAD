@@ -29,6 +29,7 @@
 #include <QHBoxLayout>
 #include <QToolButton>
 #include <QLabel>
+#include <QFormLayout>
 #endif
 
 #include "ui_PatternParametersWidget.h"
@@ -177,14 +178,17 @@ void PatternParametersWidget::updateUI()
 
 void PatternParametersWidget::adaptVisibilityToMode()
 {
-    if (!m_modeProp) return;
+    if (!m_modeProp) {
+        return;
+    }
     // Use the enum names defined in FeatureLinearPattern.h
     auto mode = static_cast<PartGui::PatternMode>(m_modeProp->getValue());
 
-    ui->extentWrapper->setVisible(mode == PartGui::PatternMode::Extent);
-    ui->spacingWrapper->setVisible(mode == PartGui::PatternMode::Spacing);
-    ui->spacingPatternWidget->setVisible(mode == PartGui::PatternMode::Spacing);
-    ui->addSpacingButton->setVisible(mode == PartGui::PatternMode::Spacing);
+    ui->formLayout->labelForField(ui->spinExtent)->setVisible(mode == PartGui::PatternMode::Extent);
+    ui->spinExtent->setVisible(mode == PartGui::PatternMode::Extent);
+    ui->formLayout->labelForField(ui->spacingControlsWidget)
+        ->setVisible(mode == PartGui::PatternMode::Spacing);
+    ui->spacingControlsWidget->setVisible(mode == PartGui::PatternMode::Spacing);
 }
 
 const App::PropertyLinkSub& PatternParametersWidget::getCurrentDirectionLink() const
@@ -281,65 +285,77 @@ void PatternParametersWidget::onOccurrencesChanged(unsigned int value)
 }
 
 
-// --- Dynamic Spacing Logic (Copied and adapted) ---
+// --- Dynamic Spacing Logic ---
 
 void PatternParametersWidget::clearDynamicSpacingRows()
 {
-    for (Gui::QuantitySpinBox* spinBox : dynamicSpacingSpinBoxes) {
-        spinBox->blockSignals(true); // Block signals during deletion
+    for (QWidget* fieldWidget : dynamicSpacingRows) {
+        ui->formLayout->removeRow(fieldWidget);
     }
-    qDeleteAll(dynamicSpacingRows);
     dynamicSpacingRows.clear();
     dynamicSpacingSpinBoxes.clear();
 }
 
 void PatternParametersWidget::addSpacingRow(double value)
 {
-    if (!m_spacingProp) return; // Need context for units
+    if (!m_spacingProp) {
+        return;  // Need context for units
+    }
 
-    QWidget* rowWidget = new QWidget(ui->spacingPatternWidget);
-    QHBoxLayout* rowLayout = new QHBoxLayout(rowWidget);
-    rowLayout->setContentsMargins(0, 0, 0, 0);
-    rowLayout->setSpacing(3);
+    // Find position to insert before "Occurrences"
+    int insertPos = -1;
+    QFormLayout::ItemRole role;
+    ui->formLayout->getWidgetPosition(ui->spinOccurrences, &insertPos, &role);
+    if (insertPos == -1) {
+        insertPos = ui->formLayout->rowCount();  // Fallback to appending
+    }
 
     int newIndex = dynamicSpacingRows.count();
-    QLabel* label = new QLabel(tr("Spacing %1").arg(newIndex + 2), rowWidget);
+    QLabel* label = new QLabel(tr("Spacing %1").arg(newIndex + 2), this);
 
-    Gui::QuantitySpinBox* spinBox = new Gui::QuantitySpinBox(rowWidget);
+    // Create the field widget (spinbox + remove button)
+    QWidget* fieldWidget = new QWidget(this);
+    QHBoxLayout* fieldLayout = new QHBoxLayout(fieldWidget);
+    fieldLayout->setContentsMargins(0, 0, 0, 0);
+    fieldLayout->setSpacing(3);
+
+    Gui::QuantitySpinBox* spinBox = new Gui::QuantitySpinBox(fieldWidget);
     Base::Unit unit = type == PatternType::Linear ? Base::Unit::Length : Base::Unit::Angle;
     spinBox->setUnit(unit);
     spinBox->setKeyboardTracking(false);
-    spinBox->setValue(value); // Set initial value
+    spinBox->setValue(value);  // Set initial value
 
-    QToolButton* removeButton = new QToolButton(rowWidget);
+    QToolButton* removeButton = new QToolButton(fieldWidget);
     removeButton->setIcon(Gui::BitmapFactory().iconFromTheme("list-remove"));
     removeButton->setToolTip(tr("Remove this spacing definition."));
     removeButton->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
 
-    rowLayout->addWidget(label);
-    rowLayout->addWidget(spinBox);
-    rowLayout->addWidget(removeButton);
-    // No need to explicitly call rowWidget->setLayout(rowLayout); QHBoxLayout constructor handles it
+    fieldLayout->addWidget(spinBox);
+    fieldLayout->addWidget(removeButton);
 
-    ui->spacingPatternLayout->addWidget(rowWidget);
-    dynamicSpacingRows.append(rowWidget);
+    ui->formLayout->insertRow(insertPos, label, fieldWidget);
+    dynamicSpacingRows.append(fieldWidget);
     dynamicSpacingSpinBoxes.append(spinBox);
 
     // Connect signals for the new row
-    connect(spinBox, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &PatternParametersWidget::onDynamicSpacingChanged);
-    connect(removeButton, &QToolButton::clicked, this, [this, rowWidget]() {
-        this->onRemoveSpacingButtonClicked(rowWidget);
+    connect(spinBox,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &PatternParametersWidget::onDynamicSpacingChanged);
+    connect(removeButton, &QToolButton::clicked, this, [this, fieldWidget]() {
+        this->onRemoveSpacingButtonClicked(fieldWidget);
     });
 }
 
 void PatternParametersWidget::rebuildDynamicSpacingUI()
 {
-    if (!m_spacingPatternProp) return;
+    if (!m_spacingPatternProp) {
+        return;
+    }
+
+    clearDynamicSpacingRows();  // Clear existing dynamic UI first
 
     std::vector<double> currentSpacings = m_spacingPatternProp->getValues();
-
-    clearDynamicSpacingRows(); // Clear existing dynamic UI first
-
     // Start from index 1, as index 0 corresponds to ui->spinSpacing
     for (size_t i = 1; i < currentSpacings.size(); ++i) {
         // Values in PropertyFloatList are unitless. Assume they match the Offset unit.
@@ -365,31 +381,33 @@ void PatternParametersWidget::onDynamicSpacingChanged()
     updateSpacingPatternProperty(); // This will emit parametersChanged
 }
 
-void PatternParametersWidget::onRemoveSpacingButtonClicked(QWidget* rowWidget)
+void PatternParametersWidget::onRemoveSpacingButtonClicked(QWidget* fieldWidget)
 {
-    if (blockUpdate || !m_spacingPatternProp) return;
+    if (blockUpdate || !m_spacingPatternProp) {
+        return;
+    }
 
-    int indexToRemove = dynamicSpacingRows.indexOf(rowWidget);
-    if (indexToRemove == -1) return;
+    int indexToRemove = dynamicSpacingRows.indexOf(fieldWidget);
+    if (indexToRemove == -1) {
+        return;
+    }
 
-    // Remove from UI lists
+    // removeRow also deletes the widgets (label and field)
+    ui->formLayout->removeRow(fieldWidget);
+
     dynamicSpacingRows.removeAt(indexToRemove);
-    dynamicSpacingSpinBoxes.removeAt(indexToRemove); // Just remove, widget deleted below
-
-    // Remove from layout and delete
-    ui->spacingPatternLayout->removeWidget(rowWidget);
-    delete rowWidget; // Deletes children too
+    dynamicSpacingSpinBoxes.removeAt(indexToRemove);
 
     // Update labels of subsequent rows
-    for (int i = indexToRemove; i < dynamicSpacingRows.count(); ++i) {
-        QWidget* row = dynamicSpacingRows.at(i);
-        if (QLabel* label = row->findChild<QLabel*>()) {
+    for (int i = indexToRemove; i < dynamicSpacingRows.size(); ++i) {
+        if (auto* label =
+                qobject_cast<QLabel*>(ui->formLayout->labelForField(dynamicSpacingRows[i]))) {
             label->setText(tr("Spacing %1").arg(i + 2));
         }
     }
 
     // Update the underlying property list
-    updateSpacingPatternProperty(); // This will emit parametersChanged
+    updateSpacingPatternProperty();  // This will emit parametersChanged
 }
 
 void PatternParametersWidget::updateSpacingPatternProperty()
