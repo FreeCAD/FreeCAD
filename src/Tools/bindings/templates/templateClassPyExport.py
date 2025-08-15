@@ -40,11 +40,22 @@ class TemplateClassPyExport(template.ModelTemplate):
         if self.is_python and not self.export.ModuleName in [
             "Base",
             "App",
+            "Assembly",
+            "CAM",
+            "Fem",
             "Gui",
+            "Import",
+            "Material",
+            "Mesh",
+            "Measure",
             "Part",
             "PartDesign",
-            "Material",
+            "Points",
+            "Robot",
             "Sketcher",
+            "Spreadsheet",
+            "Surface",
+            "TechDraw",
         ]:
             root, ext = os.path.splitext(path)
             return f"{root}_{ext}"

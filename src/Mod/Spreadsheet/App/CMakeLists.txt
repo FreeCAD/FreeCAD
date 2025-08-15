@@ -19,19 +19,19 @@ set(Spreadsheet_SRCS
     PreCompiled.h
     PropertySheet.cpp
     PropertySheet.h
-    PropertySheetPy.xml
+    PropertySheetPy.pyi
     PropertySheetPyImp.cpp
     PropertyColumnWidths.cpp
     PropertyColumnWidths.h
-    PropertyColumnWidthsPy.xml
+    PropertyColumnWidthsPy.pyi
     PropertyColumnWidthsPyImp.cpp
     PropertyRowHeights.cpp
     PropertyRowHeights.h
-    PropertyRowHeightsPy.xml
+    PropertyRowHeightsPy.pyi
     PropertyRowHeightsPyImp.cpp
     Sheet.cpp
     Sheet.h
-    SheetPy.xml
+    SheetPy.pyi
     SheetPyImp.cpp
     SheetObserver.cpp
     SheetObserver.h
@@ -40,15 +40,10 @@ set(Spreadsheet_SRCS
     AppSpreadsheet.cpp
 )
 
-generate_from_xml(SheetPy)
-generate_from_xml(PropertySheetPy)
-generate_from_xml(PropertyColumnWidthsPy)
-generate_from_xml(PropertyRowHeightsPy)
-
-generate_from_py_(SheetPy)
-generate_from_py_(PropertySheetPy)
-generate_from_py_(PropertyColumnWidthsPy)
-generate_from_py_(PropertyRowHeightsPy)
+generate_from_py(SheetPy)
+generate_from_py(PropertySheetPy)
+generate_from_py(PropertyColumnWidthsPy)
+generate_from_py(PropertyRowHeightsPy)
 
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)

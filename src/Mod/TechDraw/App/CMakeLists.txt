@@ -32,62 +32,33 @@ list(APPEND TechDrawLIBS
     ${QtWidgets_LIBRARIES}
 )
 
-generate_from_xml(DrawPagePy)
-generate_from_xml(DrawViewPy)
-generate_from_xml(DrawViewPartPy)
-generate_from_xml(DrawViewSymbolPy)
-generate_from_xml(DrawTemplatePy)
-generate_from_xml(DrawParametricTemplatePy)
-generate_from_xml(DrawSVGTemplatePy)
-generate_from_xml(DrawViewSymbolPy)
-generate_from_xml(DrawViewClipPy)
-generate_from_xml(DrawViewDimensionPy)
-generate_from_xml(DrawViewDimExtentPy)
-generate_from_xml(DrawHatchPy)
-generate_from_xml(DrawGeomHatchPy)
-generate_from_xml(DrawViewCollectionPy)
-generate_from_xml(DrawProjGroupPy)
-generate_from_xml(DrawProjGroupItemPy)
-generate_from_xml(DrawViewAnnotationPy)
-generate_from_xml(DrawLeaderLinePy)
-generate_from_xml(DrawRichAnnoPy)
-generate_from_xml(GeomFormatPy)
-generate_from_xml(CenterLinePy)
-generate_from_xml(CosmeticEdgePy)
-generate_from_xml(CosmeticVertexPy)
-generate_from_xml(DrawTilePy)
-generate_from_xml(DrawTileWeldPy)
-generate_from_xml(DrawWeldSymbolPy)
-generate_from_xml(CosmeticExtensionPy)
-generate_from_xml(DrawBrokenViewPy)
-
-generate_from_py_(DrawHatchPy)
-generate_from_py_(DrawViewPy)
-generate_from_py_(DrawPagePy)
-generate_from_py_(DrawViewPartPy)
-generate_from_py_(DrawViewSymbolPy)
-generate_from_py_(DrawTemplatePy)
-generate_from_py_(DrawParametricTemplatePy)
-generate_from_py_(DrawSVGTemplatePy)
-generate_from_py_(DrawViewClipPy)
-generate_from_py_(DrawViewDimensionPy)
-generate_from_py_(DrawViewDimExtentPy)
-generate_from_py_(DrawGeomHatchPy)
-generate_from_py_(DrawViewCollectionPy)
-generate_from_py_(DrawProjGroupPy)
-generate_from_py_(DrawProjGroupItemPy)
-generate_from_py_(DrawViewAnnotationPy)
-generate_from_py_(DrawLeaderLinePy)
-generate_from_py_(DrawRichAnnoPy)
-generate_from_py_(GeomFormatPy)
-generate_from_py_(CenterLinePy)
-generate_from_py_(CosmeticEdgePy)
-generate_from_py_(CosmeticVertexPy)
-generate_from_py_(DrawTilePy)
-generate_from_py_(DrawTileWeldPy)
-generate_from_py_(DrawWeldSymbolPy)
-generate_from_py_(CosmeticExtensionPy)
-generate_from_py_(DrawBrokenViewPy)
+generate_from_py(DrawHatchPy)
+generate_from_py(DrawViewPy)
+generate_from_py(DrawPagePy)
+generate_from_py(DrawViewPartPy)
+generate_from_py(DrawViewSymbolPy)
+generate_from_py(DrawTemplatePy)
+generate_from_py(DrawParametricTemplatePy)
+generate_from_py(DrawSVGTemplatePy)
+generate_from_py(DrawViewClipPy)
+generate_from_py(DrawViewDimensionPy)
+generate_from_py(DrawViewDimExtentPy)
+generate_from_py(DrawGeomHatchPy)
+generate_from_py(DrawViewCollectionPy)
+generate_from_py(DrawProjGroupPy)
+generate_from_py(DrawProjGroupItemPy)
+generate_from_py(DrawViewAnnotationPy)
+generate_from_py(DrawLeaderLinePy)
+generate_from_py(DrawRichAnnoPy)
+generate_from_py(GeomFormatPy)
+generate_from_py(CenterLinePy)
+generate_from_py(CosmeticEdgePy)
+generate_from_py(CosmeticVertexPy)
+generate_from_py(DrawTilePy)
+generate_from_py(DrawTileWeldPy)
+generate_from_py(DrawWeldSymbolPy)
+generate_from_py(CosmeticExtensionPy)
+generate_from_py(DrawBrokenViewPy)
 
 SET(Draw_SRCS
     DrawPage.cpp
@@ -237,59 +208,59 @@ SET(Geometry_SRCS
 )
 
 SET(Python_SRCS
-    DrawPagePy.xml
+    DrawPagePy.pyi
     DrawPagePyImp.cpp
-    DrawViewPy.xml
+    DrawViewPy.pyi
     DrawViewPyImp.cpp
-    DrawViewPartPy.xml
+    DrawViewPartPy.pyi
     DrawViewPartPyImp.cpp
-    DrawViewSymbolPy.xml
+    DrawViewSymbolPy.pyi
     DrawViewSymbolPyImp.cpp
-    DrawTemplatePy.xml
+    DrawTemplatePy.pyi
     DrawTemplatePyImp.cpp
-    DrawParametricTemplatePy.xml
+    DrawParametricTemplatePy.pyi
     DrawParametricTemplatePyImp.cpp
-    DrawSVGTemplatePy.xml
+    DrawSVGTemplatePy.pyi
     DrawSVGTemplatePyImp.cpp
-    DrawViewClipPy.xml
+    DrawViewClipPy.pyi
     DrawViewClipPyImp.cpp
-    DrawViewDimensionPy.xml
+    DrawViewDimensionPy.pyi
     DrawViewDimensionPyImp.cpp
-    DrawViewDimExtentPy.xml
+    DrawViewDimExtentPy.pyi
     DrawViewDimExtentPyImp.cpp
-    DrawHatchPy.xml
+    DrawHatchPy.pyi
     DrawHatchPyImp.cpp
-    DrawGeomHatchPy.xml
+    DrawGeomHatchPy.pyi
     DrawGeomHatchPyImp.cpp
-    DrawViewCollectionPy.xml
+    DrawViewCollectionPy.pyi
     DrawViewCollectionPyImp.cpp
-    DrawProjGroupPy.xml
+    DrawProjGroupPy.pyi
     DrawProjGroupPyImp.cpp
-    DrawProjGroupItemPy.xml
+    DrawProjGroupItemPy.pyi
     DrawProjGroupItemPyImp.cpp
-    DrawViewAnnotationPy.xml
+    DrawViewAnnotationPy.pyi
     DrawViewAnnotationPyImp.cpp
-    DrawLeaderLinePy.xml
+    DrawLeaderLinePy.pyi
     DrawLeaderLinePyImp.cpp
-    DrawRichAnnoPy.xml
+    DrawRichAnnoPy.pyi
     DrawRichAnnoPyImp.cpp
-    GeomFormatPy.xml
+    GeomFormatPy.pyi
     GeomFormatPyImp.cpp
-    CenterLinePy.xml
+    CenterLinePy.pyi
     CenterLinePyImp.cpp
-    CosmeticEdgePy.xml
+    CosmeticEdgePy.pyi
     CosmeticEdgePyImp.cpp
-    CosmeticVertexPy.xml
+    CosmeticVertexPy.pyi
     CosmeticVertexPyImp.cpp
-    DrawTilePy.xml
+    DrawTilePy.pyi
     DrawTilePyImp.cpp
-    DrawTileWeldPy.xml
+    DrawTileWeldPy.pyi
     DrawTileWeldPyImp.cpp
-    DrawWeldSymbolPy.xml
+    DrawWeldSymbolPy.pyi
     DrawWeldSymbolPyImp.cpp
-    CosmeticExtensionPy.xml
+    CosmeticExtensionPy.pyi
     CosmeticExtensionPyImp.cpp
-    DrawBrokenViewPy.xml
+    DrawBrokenViewPy.pyi
     DrawBrokenViewPyImp.cpp
 )
 

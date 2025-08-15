@@ -20,26 +20,21 @@ set(Robot_LIBS
     FreeCADApp
 )
 
-generate_from_xml(Robot6AxisPy)
-generate_from_xml(TrajectoryPy)
-generate_from_xml(WaypointPy)
-generate_from_xml(RobotObjectPy)
-
-generate_from_py_(Robot6AxisPy)
-generate_from_py_(TrajectoryPy)
-generate_from_py_(WaypointPy)
-generate_from_py_(RobotObjectPy)
+generate_from_py(Robot6AxisPy)
+generate_from_py(TrajectoryPy)
+generate_from_py(WaypointPy)
+generate_from_py(RobotObjectPy)
 
 
 
 SET(Python_SRCS
-    Robot6AxisPy.xml
+    Robot6AxisPy.pyi
     Robot6AxisPyImp.cpp
-    TrajectoryPy.xml
+    TrajectoryPy.pyi
     TrajectoryPyImp.cpp
-    RobotObjectPy.xml
+    RobotObjectPy.pyi
     RobotObjectPyImp.cpp
-    WaypointPy.xml
+    WaypointPy.pyi
     WaypointPyImp.cpp
 )
 
