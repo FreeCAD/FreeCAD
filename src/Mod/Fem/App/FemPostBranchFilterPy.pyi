@@ -2,19 +2,19 @@ from typing import Any
 
 from Base.Metadata import export
 
-from Fem.FemPostObject import FemPostObject
+from Fem.FemPostFilter import FemPostFilter
 
 @export(
-    Father="FemPostObjectPy",
+    Father="FemPostFilterPy",
     Name="FemPostBranchFilterPy",
     Twin="FemPostBranchFilter",
     TwinPointer="FemPostBranchFilter",
     Include="Mod/Fem/App/FemPostBranchFilter.h",
     Namespace="Fem",
-    FatherInclude="Mod/Fem/App/FemPostObjectPy.h",
+    FatherInclude="Mod/Fem/App/FemPostFilterPy.h",
     FatherNamespace="Fem",
 )
-class FemPostBranchFilterPy(FemPostObject):
+class FemPostBranchFilterPy(FemPostFilter):
     """
     The FemPostBranch class.
     """
