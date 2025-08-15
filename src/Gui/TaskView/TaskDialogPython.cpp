@@ -104,10 +104,7 @@ ControlPy::~ControlPy() = default;
 
 Py::Object ControlPy::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
-    s_out << "Control Task Dialog";
-    return Py::String(s_out.str());
+    return Py::String("Control Task Dialog");
 }
 
 Py::Object ControlPy::showDialog(const Py::Tuple& args)
@@ -369,10 +366,7 @@ TaskDialogPy::~TaskDialogPy() = default;
 
 Py::Object TaskDialogPy::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
-    s_out << "Task Dialog";
-    return Py::String(s_out.str());
+    return Py::String("Task Dialog");
 }
 
 Py::Object TaskDialogPy::getattr(const char * attr)

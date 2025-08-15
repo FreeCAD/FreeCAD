@@ -121,12 +121,10 @@ MainWindowPy::~MainWindowPy()
 
 Py::Object MainWindowPy::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
     if (!_mw)
         throw Py::RuntimeError("Cannot print representation of deleted object");
-    s_out << "MainWindow";
-    return Py::String(s_out.str());
+
+    return Py::String("MainWindow");
 }
 
 Py::Object MainWindowPy::getWindows(const Py::Tuple& args)
