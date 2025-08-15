@@ -1524,6 +1524,11 @@ QSint--ActionGroup QFrame[class="content"] QTableView {
   background-color: @PrimaryColor;
 }
 
+/* Fix for tables inside task pannels, see https://github.com/FreeCAD/FreeCAD/issues/22957 */
+QSint--ActionGroup QFrame[class="content"] QTableView {
+  min-height: 300px;
+}
+
 /* found inside Part Design Workbench and "make a draft on a face" Task panel options */
 QSint--ActionGroup QFrame[class="content"] QToolButton {
   text-align: center;
