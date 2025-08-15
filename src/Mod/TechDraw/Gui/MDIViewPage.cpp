@@ -1121,12 +1121,11 @@ MDIViewPagePy::~MDIViewPagePy() {}
 
 Py::Object MDIViewPagePy::repr()
 {
-    std::ostringstream s_out;
     if (!getMDIViewPagePtr()) {
         throw Py::RuntimeError("Cannot print representation of deleted object");
     }
-    s_out << "MDI view page";
-    return Py::String(s_out.str());
+
+    return Py::String("MDI view page");
 }
 
 // Since with PyCXX it is not possible to make a sub-class of MDIViewPy
