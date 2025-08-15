@@ -836,6 +836,7 @@ void TaskView::clearTaskWatcher()
 void TaskView::addTaskWatcher()
 {
     if (!showTaskWatcher) {
+        setShownTaskInfo(-1); // Switch to the empty taskwatcher panel
         return;
     }
     // add all widgets for all watcher to the task view
