@@ -1338,7 +1338,7 @@ private:
                                                           QSizeF(iconWidth, iconWidth));
         QPainter cursorPainter;
         cursorPainter.begin(&cursorPixmap);
-        cursorPainter.drawPixmap(16 * pixelRatio, 16 * pixelRatio, icon);
+        cursorPainter.drawPixmap(16, 16, icon);
         cursorPainter.end();
         int hotX = 8;
         int hotY = 8;
@@ -1626,7 +1626,7 @@ public:
         QPixmap icon = Gui::BitmapFactory().pixmapFromSvg("Constraint_Dimension", QSizeF(iconWidth, iconWidth));
         QPainter cursorPainter;
         cursorPainter.begin(&cursorPixmap);
-        cursorPainter.drawPixmap(16 * pixelRatio, 16 * pixelRatio, icon);
+        cursorPainter.drawPixmap(16, 16, icon);
         cursorPainter.end();
         int hotX = 8;
         int hotY = 8;
