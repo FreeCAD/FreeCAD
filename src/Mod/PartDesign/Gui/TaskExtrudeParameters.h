@@ -23,6 +23,8 @@
 #ifndef GUI_TASKVIEW_TaskExtrudeParameters_H
 #define GUI_TASKVIEW_TaskExtrudeParameters_H
 
+#include <Gui/Inventor/Draggers/Gizmo.h>
+
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderExtrude.h"
 
@@ -31,6 +33,10 @@ class Ui_TaskPadPocketParameters;
 
 namespace App {
 class Property;
+}
+
+namespace Gui {
+class Gizmos;
 }
 
 namespace PartDesign {
@@ -67,7 +73,7 @@ public:
         ToShape,
     };
 
-    enum SelectionMode { 
+    enum SelectionMode {
         None,
         SelectFace,
         SelectShape,
@@ -77,7 +83,7 @@ public:
 
     TaskExtrudeParameters(ViewProviderExtrude *ExtrudeView, QWidget *parent,
                           const std::string& pixmapname, const QString& parname);
-    ~TaskExtrudeParameters() override;
+    ~TaskExtrudeParameters() override = default;
 
     void saveHistory() override;
 
@@ -139,6 +145,8 @@ protected:
     void handleLineFaceNameNo();
 
 private:
+    std::unique_ptr<Gui::Gizmos> gizmos;
+
     void selectedReferenceAxis(const Gui::SelectionChanges& msg);
     void selectedFace(const Gui::SelectionChanges& msg);
     void selectedShape(const Gui::SelectionChanges& msg);
@@ -154,6 +162,9 @@ private:
     void updateShapeFaces();
 
     std::vector<std::string> getShapeFaces();
+
+    void setupGizmos();
+    void setGizmoPositions();
 
 protected:
     QWidget* proxy;

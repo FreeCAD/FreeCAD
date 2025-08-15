@@ -113,6 +113,8 @@ protected:
 
 private:
     Gui::CoinPtr<PartGui::SoPreviewShape> pcToolPreview;
+    App::DocumentObject* oldTip{nullptr};
+    Gui::Gizmos* gizmos{nullptr};
 };
 
 using ViewProviderPython = Gui::ViewProviderFeaturePythonT<ViewProvider>;

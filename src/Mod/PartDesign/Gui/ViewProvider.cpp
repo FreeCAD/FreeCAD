@@ -51,6 +51,9 @@
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
 #include <Mod/Part/Gui/ViewProviderPreviewExtension.h>
 
+#include <Gui/Inventor/Draggers/Gizmo.h>
+#include <Gui/View3DInventorViewer.h>
+
 #include "TaskFeatureParameters.h"
 #include "StyleParameters.h"
 
@@ -428,7 +431,8 @@ PyObject* ViewProvider::getPyObject()
     return pyViewObject;
 }
 
-ViewProviderBody* ViewProvider::getBodyViewProvider() {
+ViewProviderBody* ViewProvider::getBodyViewProvider()
+{
 
     auto body = PartDesign::Body::findBodyOf(getObject());
     auto doc = getDocument();
@@ -449,4 +453,3 @@ PROPERTY_SOURCE_TEMPLATE(PartDesignGui::ViewProviderPython, PartDesignGui::ViewP
 // explicit template instantiation
 template class PartDesignGuiExport ViewProviderFeaturePythonT<PartDesignGui::ViewProvider>;
 }
-

@@ -62,7 +62,7 @@
 #include "Utilities.h"
 
 #include <SoTextLabel.h>
-#include <Inventor/SoToggleSwitch.h>
+#include <Gui/Inventor/SoToggleSwitch.h>
 
 using namespace Gui;
 
@@ -92,12 +92,14 @@ void SoArrowGeometry::initClass()
 SoArrowGeometry::SoArrowGeometry()
 {
     SO_KIT_CONSTRUCTOR(SoArrowGeometry);
-    SO_KIT_ADD_CATALOG_ENTRY(lightModel, SoLightModel, false, this, "", false);
-    SO_KIT_ADD_CATALOG_ENTRY(arrowBody, SoCylinder, false, this, "", true);
-    SO_KIT_ADD_CATALOG_ENTRY(arrowTip, SoCone, false, this, "", true);
+    SO_KIT_ADD_CATALOG_ENTRY(separator, SoSeparator, false, this, "", false);
+    SO_KIT_ADD_CATALOG_ENTRY(lightModel, SoLightModel, false, separator, "", false);
+    SO_KIT_ADD_CATALOG_ENTRY(pickStyle, SoPickStyle, false, separator, "", false);
+    SO_KIT_ADD_CATALOG_ENTRY(arrowBody, SoCylinder, false, separator, "", true);
+    SO_KIT_ADD_CATALOG_ENTRY(arrowTip, SoCone, false, separator, "", true);
 
-    SO_KIT_ADD_CATALOG_ENTRY(_arrowBodyTranslation, SoTranslation, false, this, arrowBody, false);
-    SO_KIT_ADD_CATALOG_ENTRY(_arrowTipTranslation, SoTranslation, false, this, arrowTip, false);
+    SO_KIT_ADD_CATALOG_ENTRY(_arrowBodyTranslation, SoTranslation, false, separator, arrowBody, false);
+    SO_KIT_ADD_CATALOG_ENTRY(_arrowTipTranslation, SoTranslation, false, separator, arrowTip, false);
 
     SO_KIT_ADD_FIELD(coneBottomRadius, (0.8f));
     SO_KIT_ADD_FIELD(coneHeight, (2.5f));
@@ -116,6 +118,9 @@ SoArrowGeometry::SoArrowGeometry()
 
     auto lightModel = SO_GET_ANY_PART(this, "lightModel", SoLightModel);
     lightModel->model = SoLightModel::BASE_COLOR;
+
+    auto pickStyle = SO_GET_ANY_PART(this, "pickStyle", SoPickStyle);
+    pickStyle->style = SoPickStyle::SHAPE_ON_TOP;
 
     // forces the notify method to get called so that the initial translations and tipPostion are set
     cylinderHeight.touch();
@@ -139,6 +144,86 @@ void SoArrowGeometry::notify(SoNotList* notList)
     }
 }
 
+SO_KIT_SOURCE(SoLinearGeometryBaseKit)
+
+void SoLinearGeometryBaseKit::initClass()
+{
+    SO_KIT_INIT_CLASS(SoLinearGeometryBaseKit, SoBaseKit, "BaseKit");
+}
+
+SoLinearGeometryBaseKit::SoLinearGeometryBaseKit()
+{
+    SO_KIT_CONSTRUCTOR(SoLinearGeometryBaseKit);
+
+    SO_KIT_ADD_FIELD(translation, (0.0, 0.0, 0.0));
+    SO_KIT_ADD_FIELD(geometryScale, (1.0, 1.0, 1.0));
+    SO_KIT_ADD_FIELD(active, (false));
+
+    SO_KIT_INIT_INSTANCE();
+}
+
+SO_KIT_SOURCE(SoArrowBase)
+
+void SoArrowBase::initClass()
+{
+    SO_KIT_INIT_CLASS(SoArrowBase, SoLinearGeometryBaseKit, "LinearGeometryBaseKit");
+}
+
+SoArrowBase::SoArrowBase()
+{
+    SO_KIT_CONSTRUCTOR(SoArrowBase);
+    SO_KIT_ADD_CATALOG_ENTRY(separator, SoSeparator, false, this, "", false);
+    SO_KIT_ADD_CATALOG_ENTRY(lightModel, SoLightModel, false, separator, "", false);
+    SO_KIT_ADD_CATALOG_ENTRY(pickStyle, SoPickStyle, false, separator, "", false);
+    SO_KIT_ADD_CATALOG_ENTRY(baseColor, SoBaseColor, false, separator, "", true);
+    SO_KIT_ADD_CATALOG_ENTRY(cylinder, SoCylinder, false, separator, "", true);
+
+    SO_KIT_ADD_CATALOG_ENTRY(_cylinderTranslation, SoTranslation, false, separator, cylinder, false);
+
+    SO_KIT_ADD_FIELD(cylinderHeight, (1.0));
+    SO_KIT_ADD_FIELD(cylinderRadius, (0.15));
+    SO_KIT_ADD_FIELD(color, (0.214, 0.560, 0.930));
+
+    SO_KIT_INIT_INSTANCE();
+
+    auto lightModel = SO_GET_ANY_PART(this, "lightModel", SoLightModel);
+    lightModel->model = SoLightModel::BASE_COLOR;
+
+    auto pickStyle = SO_GET_ANY_PART(this, "pickStyle", SoPickStyle);
+    pickStyle->style = SoPickStyle::UNPICKABLE;
+
+    // We don't want to change the color of the base geometry when the dragger is
+    // dragged so the active field from SoLinearGeometryBaseKit is unused
+    // If that is desired then just add a toggle switch with a colour after the
+    // baseColor node in the graph and it will work as expected
+    auto baseColor = SO_GET_ANY_PART(this, "baseColor", SoBaseColor);
+    baseColor->rgb.connectFrom(&color);
+
+    // Forces the cylinder dimensions to be computed
+    cylinderHeight.touch();
+    cylinderRadius.touch();
+}
+
+void SoArrowBase::notify(SoNotList* notList)
+{
+    assert(notList);
+    SoField* lastField = notList->getLastField();
+
+    if (lastField == &cylinderHeight || lastField == &translation) {
+        auto cylinder = SO_GET_ANY_PART(this, "cylinder", SoCylinder);
+        cylinder->height = cylinderHeight.getValue() * translation.getValue()[1];
+
+        auto cylinderTranslation = SO_GET_ANY_PART(this, "_cylinderTranslation", SoTranslation);
+        cylinderTranslation->translation = {0, cylinder->height.getValue() / 2, 0 };
+    } else if (lastField == &cylinderRadius || lastField == &geometryScale) {
+        auto cylinder = SO_GET_ANY_PART(this, "cylinder", SoCylinder);
+        assert(geometryScale.getValue()[0] == geometryScale.getValue()[1]
+            && geometryScale.getValue()[1] == geometryScale.getValue()[2]
+            && "Camera scale should be equal along all three axes");
+        cylinder->radius = cylinderRadius.getValue() * geometryScale.getValue()[0];
+    }
+}
+
 SO_KIT_SOURCE(SoLinearDragger)
 
 void SoLinearDragger::initClass()
@@ -154,6 +239,10 @@ SoLinearDragger::SoLinearDragger()
     this->ref();
 #endif
 
+    SO_KIT_ADD_CATALOG_ENTRY(baseGeomSwitch, SoToggleSwitch, true, topSeparator, motionMatrix, true);
+    SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(baseGeom, SoLinearGeometryBaseKit, SoArrowBase, true, baseGeomSwitch, "", true);
+
+    FC_ADD_CATALOG_ENTRY(baseColor, SoBaseColor, geomSeparator);
     FC_ADD_CATALOG_ENTRY(activeSwitch, SoToggleSwitch, geomSeparator);
     FC_ADD_CATALOG_ENTRY(secondaryColor, SoBaseColor, activeSwitch);
     FC_ADD_CATALOG_ENTRY(labelSwitch, SoToggleSwitch, geomSeparator);
@@ -165,12 +254,16 @@ SoLinearDragger::SoLinearDragger()
     SO_KIT_ADD_FIELD(translationIncrement, (1.0));
     SO_KIT_ADD_FIELD(translationIncrementCount, (0));
     SO_KIT_ADD_FIELD(autoScaleResult, (1.0));
+    SO_KIT_ADD_FIELD(color, (1, 0, 0));
     SO_KIT_ADD_FIELD(activeColor, (1, 1, 0));
     SO_KIT_ADD_FIELD(labelVisible, (1));
     SO_KIT_ADD_FIELD(geometryScale, (1, 1, 1));
+    SO_KIT_ADD_FIELD(active, (false));
+    SO_KIT_ADD_FIELD(baseGeomVisible, (false));
 
     SO_KIT_INIT_INSTANCE();
 
+    setPart("baseColor", buildColor());
     setPart("labelSeparator", buildLabelGeometry());
     setPart("secondaryColor", buildActiveColor());
 
@@ -192,7 +285,11 @@ SoLinearDragger::SoLinearDragger()
 
     this->setUpConnections(TRUE, TRUE);
 
-    FC_SET_TOGGLE_SWITCH("activeSwitch", false);
+    sw = SO_GET_ANY_PART(this, "activeSwitch", SoToggleSwitch);
+    sw->on.connectFrom(&active);
+
+    sw = SO_GET_ANY_PART(this, "baseGeomSwitch", SoToggleSwitch);
+    sw->on.connectFrom(&baseGeomVisible);
 }
 
 SoLinearDragger::~SoLinearDragger()
@@ -232,6 +329,14 @@ SoBaseColor* SoLinearDragger::buildActiveColor()
 {
     auto color = new SoBaseColor;
     color->rgb.connectFrom(&activeColor);
+
+    return color;
+}
+
+SoBaseColor* SoLinearDragger::buildColor()
+{
+    auto color = new SoBaseColor;
+    color->rgb.connectFrom(&this->color);
 
     return color;
 }
@@ -286,7 +391,7 @@ void SoLinearDragger::valueChangedCB(void*, SoDragger* d)
 
 void SoLinearDragger::dragStart()
 {
-    FC_SET_TOGGLE_SWITCH("activeSwitch", true);
+    active = true;
 
     // do an initial projection to eliminate discrepancies
     // in arrow head pick. we define the arrow in the y+ direction
@@ -344,7 +449,7 @@ void SoLinearDragger::drag()
 
 void SoLinearDragger::dragFinish()
 {
-    FC_SET_TOGGLE_SWITCH("activeSwitch", false);
+    active = false;
 }
 
 SbBool SoLinearDragger::setUpConnections(SbBool onoff, SbBool doitalways)
@@ -398,6 +503,16 @@ SbVec3f SoLinearDragger::roundTranslation(const SbVec3f& vecIn, float incrementI
     return out;
 }
 
+void SoLinearDragger::instantiateBaseGeometry()
+{
+    baseGeomVisible = true;
+
+    auto baseGeom = SO_GET_ANY_PART(this, "baseGeom", SoLinearGeometryBaseKit);
+    baseGeom->geometryScale.connectFrom(&geometryScale);
+    baseGeom->translation.connectFrom(&translation);
+    baseGeom->active.connectFrom(&active);
+}
+
 SO_KIT_SOURCE(SoLinearDraggerContainer)
 
 void SoLinearDraggerContainer::initClass()
@@ -415,7 +530,6 @@ SoLinearDraggerContainer::SoLinearDraggerContainer()
 #endif
 
     FC_ADD_CATALOG_ENTRY(draggerSwitch, SoToggleSwitch, geomSeparator);
-    FC_ADD_CATALOG_ENTRY(baseColor, SoBaseColor, draggerSwitch);
     FC_ADD_CATALOG_ENTRY(transform, SoTransform, draggerSwitch);
     FC_ADD_CATALOG_ENTRY(dragger, SoLinearDragger, draggerSwitch);
 
@@ -426,19 +540,12 @@ SoLinearDraggerContainer::SoLinearDraggerContainer()
 
     SO_KIT_INIT_INSTANCE();
 
-    setPart("baseColor", buildColor());
     setPart("transform", buildTransform());
 
     auto sw = SO_GET_ANY_PART(this, "draggerSwitch", SoToggleSwitch);
     sw->on.connectFrom(&visible);
-}
 
-SoBaseColor* SoLinearDraggerContainer::buildColor()
-{
-    auto color = new SoBaseColor;
-    color->rgb.connectFrom(&this->color);
-
-    return color;
+    getDragger()->color.connectFrom(&color);
 }
 
 SoTransform* SoLinearDraggerContainer::buildTransform() {
@@ -454,13 +561,20 @@ SoLinearDragger* SoLinearDraggerContainer::getDragger()
     return SO_GET_PART(this, "dragger", SoLinearDragger);
 }
 
-void Gui::SoLinearDraggerContainer::setPointerDirection(const Base::Vector3d& dir)
+SbVec3f SoLinearDraggerContainer::getPointerDirection()
 {
     // This is the direction along which the SoLinearDragger points in it local space
-    Base::Vector3d draggerDir{0, 1, 0};
-    Base::Vector3d axis = draggerDir.Cross(dir).Normalize();
-    double ang = draggerDir.GetAngleOriented(dir, axis);
+    SbVec3f draggerDir = SO_GET_ANY_PART(this, "arrow", SoLinearGeometryKit)->tipPosition.getValue();
+    rotation.getValue().multVec(draggerDir, draggerDir);
 
-    SbRotation rot{Base::convertTo<SbVec3f>(axis), static_cast<float>(ang)};
+    return draggerDir;
+}
+
+void SoLinearDraggerContainer::setPointerDirection(const SbVec3f& dir)
+{
+    // This is the direction from the origin to the tip of the dragger
+    SbVec3f draggerDir = SO_GET_ANY_PART(this, "arrow", SoLinearGeometryKit)->tipPosition.getValue();
+
+    SbRotation rot{draggerDir, dir};
     rotation.setValue(rot);
 }

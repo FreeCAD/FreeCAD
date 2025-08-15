@@ -31,6 +31,10 @@
 #include <Base/UnitsApi.h>
 #include <Gui/Command.h>
 #include <Gui/Tools.h>
+#include <Gui/Inventor/Draggers/Gizmo.h>
+#include <Gui/Inventor/Draggers/GizmoHelper.h>
+#include <Gui/Inventor/Draggers/SoLinearDragger.h>
+#include <Gui/Inventor/Draggers/SoRotationDragger.h>
 #include <Mod/PartDesign/App/FeatureExtrude.h>
 
 #include "ui_TaskPadPocketParameters.h"
@@ -64,8 +68,6 @@ TaskExtrudeParameters::TaskExtrudeParameters(ViewProviderExtrude* SketchBasedVie
 
     this->groupLayout()->addWidget(proxy);
 }
-
-TaskExtrudeParameters::~TaskExtrudeParameters() = default;
 
 void TaskExtrudeParameters::setupDialog()
 {
@@ -121,6 +123,7 @@ void TaskExtrudeParameters::setupDialog()
     ui->taperEdit2->setValue(taper2);
 
     ui->checkBoxAlongDirection->setChecked(alongNormal);
+    ui->checkBoxAlongDirection->setEnabled(!alongNormal);
     ui->checkBoxDirection->setChecked(useCustom);
     onDirectionToggled(useCustom);
 
@@ -189,6 +192,8 @@ void TaskExtrudeParameters::setupDialog()
 
     // Due to signals attached after changes took took into effect we should update the UI now.
     updateUI(index);
+
+    setupGizmos();
 }
 
 void TaskExtrudeParameters::readValuesFromHistory()
@@ -378,6 +383,8 @@ void TaskExtrudeParameters::selectedReferenceAxis(const Gui::SelectionChanges& m
 
         // update direction combobox
         fillDirectionCombo();
+
+        setGizmoPositions();
     }
 }
 
@@ -793,8 +800,7 @@ void TaskExtrudeParameters::onDirectionCBChanged(int num)
         // to distinguish that this is the direction selection
         setSelectionMode(SelectReferenceAxis);
         setDirectionMode(num);
-    }
-    else if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
+    } else if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
         if (lnk.getValue()) {
             if (!extrude->getDocument()->isIn(lnk.getValue())) {
                 Base::Console().error("Object was deleted\n");
@@ -810,6 +816,8 @@ void TaskExtrudeParameters::onDirectionCBChanged(int num)
         extrude->ReferenceAxis.setValue(lnk.getValue(), lnk.getSubValues());
         tryRecomputeFeature();
         updateDirectionEdits();
+
+        setGizmoPositions();
     }
 }
 
@@ -818,6 +826,8 @@ void TaskExtrudeParameters::onAlongSketchNormalChanged(bool on)
     if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
         extrude->AlongSketchNormal.setValue(on);
         tryRecomputeFeature();
+
+        setGizmoPositions();
     }
 }
 
@@ -858,6 +868,7 @@ void TaskExtrudeParameters::onXDirectionEditChanged(double len)
         // if there was a null vector, the normal vector of the sketch is used.
         // therefore the vector component edits must be updated
         updateDirectionEdits();
+        setGizmoPositions();
     }
 }
 
@@ -869,6 +880,7 @@ void TaskExtrudeParameters::onYDirectionEditChanged(double len)
                                     extrude->Direction.getValue().z);
         tryRecomputeFeature();
         updateDirectionEdits();
+        setGizmoPositions();
     }
 }
 
@@ -880,6 +892,7 @@ void TaskExtrudeParameters::onZDirectionEditChanged(double len)
                                     len);
         tryRecomputeFeature();
         updateDirectionEdits();
+        setGizmoPositions();
     }
 }
 
@@ -1209,6 +1222,119 @@ void TaskExtrudeParameters::handleLineFaceNameClick()
 void TaskExtrudeParameters::handleLineFaceNameNo()
 {
     ui->lineFaceName->setPlaceholderText(tr("No face selected"));
+}
+
+void TaskExtrudeParameters::setupGizmos()
+{
+    if (Gizmos::isEnabled() == false) {
+        return;
+    }
+
+    gizmos = std::make_unique<Gizmos>();
+
+    auto lengthGizmo1 = new Gui::LinearGizmo(ui->lengthEdit);
+    auto lengthGizmo2 = new Gui::LinearGizmo(ui->lengthEdit2);
+    auto taperAngleGizmo1 = new Gui::RotationGizmo(ui->taperEdit);
+    auto taperAngleGizmo2 = new Gui::RotationGizmo(ui->taperEdit2);
+
+    connect(ui->checkBoxMidplane, &QCheckBox::toggled, [lengthGizmo1, this](bool checked) {lengthGizmo1->multFactor *= checked? 0.5 : 2; lengthGizmo1->setDragLength(ui->lengthEdit->value().getValue());});
+
+    connect(ui->changeMode, qOverload<int>(&QComboBox::currentIndexChanged), [taperAngleGizmo1, lengthGizmo1, taperAngleGizmo2, lengthGizmo2] (int index) {
+        switch (static_cast<Mode>(index)) {
+        case Mode::Dimension:
+            lengthGizmo1->getDraggerContainer()->visible = true;
+            lengthGizmo2->getDraggerContainer()->visible = false;
+            taperAngleGizmo1->getDraggerContainer()->visible = true;
+            taperAngleGizmo2->getDraggerContainer()->visible = false;
+            break;
+        case Mode::TwoDimensions:
+            lengthGizmo1->getDraggerContainer()->visible = true;
+            lengthGizmo2->getDraggerContainer()->visible = true;
+            taperAngleGizmo1->getDraggerContainer()->visible = true;
+            taperAngleGizmo2->getDraggerContainer()->visible = true;
+            break;
+        default:
+            lengthGizmo1->getDraggerContainer()->visible = false;
+            lengthGizmo2->getDraggerContainer()->visible = false;
+            taperAngleGizmo1->getDraggerContainer()->visible = false;
+            taperAngleGizmo2->getDraggerContainer()->visible = false;
+        }
+    });
+
+    connect(ui->checkBoxReversed, &QCheckBox::toggled, [taperAngleGizmo1, lengthGizmo1, taperAngleGizmo2, lengthGizmo2](bool) {
+        GizmoPlacement placement = lengthGizmo1->getDraggerPlacement();
+        SoLinearDraggerContainer* draggerContainer = lengthGizmo1->getDraggerContainer();
+        lengthGizmo1->setDraggerPlacement(placement.pos, -draggerContainer->getPointerDirection());
+        // This is to ensure that the rotation dragger is positioned correctly after the reverse
+        draggerContainer->getDragger()->translation.touch();
+
+        placement = lengthGizmo2->getDraggerPlacement();
+        draggerContainer = lengthGizmo2->getDraggerContainer();
+        lengthGizmo2->setDraggerPlacement(placement.pos, -draggerContainer->getPointerDirection());
+        draggerContainer->getDragger()->translation.touch();
+
+        placement = taperAngleGizmo1->getDraggerPlacement();
+        taperAngleGizmo1->setDraggerPlacement(placement.pos, -taperAngleGizmo1->getDraggerContainer()->getPointerDirection());
+
+        placement = taperAngleGizmo2->getDraggerPlacement();
+        taperAngleGizmo2->setDraggerPlacement(placement.pos, -taperAngleGizmo2->getDraggerContainer()->getPointerDirection());
+    });
+
+    gizmos->addGizmo(lengthGizmo1);
+    gizmos->addGizmo(lengthGizmo2);
+    gizmos->addGizmo(taperAngleGizmo1);
+    gizmos->addGizmo(taperAngleGizmo2);
+    gizmos->initGizmos();
+
+    setGizmoPositions();
+
+    vp->attachGizmos(gizmos.get());
+
+    // These gizmos shouldn't be visible until the user set type to two dimensions
+    taperAngleGizmo2->getDraggerContainer()->visible = false;
+    lengthGizmo2->getDraggerContainer()->visible = false;
+}
+
+void TaskExtrudeParameters::setGizmoPositions()
+{
+    if (!gizmos) {
+        return;
+    }
+
+    auto lengthGizmo1 = gizmos->getGizmo<LinearGizmo>(0);
+    auto lengthGizmo2 = gizmos->getGizmo<LinearGizmo>(1);
+    auto taperAngleGizmo1 = gizmos->getGizmo<RotationGizmo>(2);
+    auto taperAngleGizmo2 = gizmos->getGizmo<RotationGizmo>(3);
+
+    auto extrude = getObject<PartDesign::FeatureExtrude>();
+    PartDesign::TopoShape shape = extrude->getProfileShape();
+    Base::Vector3d center = getMidPointFromProfile(shape);
+
+    lengthGizmo1->Gizmo::setDraggerPlacement(center, extrude->Direction.getValue());
+    taperAngleGizmo1->placeOverLinearGizmo(lengthGizmo1);
+    lengthGizmo2->Gizmo::setDraggerPlacement(center, -extrude->Direction.getValue());
+    taperAngleGizmo2->placeOverLinearGizmo(lengthGizmo2);
+
+    Base::Vector3d padDir = extrude->Direction.getValue().getNormalized();
+    Base::Vector3d sketchDir = extrude->getProfileNormal().getNormalized();
+
+    double lengthFactor = padDir.Dot(sketchDir);
+    double multFactor = getMidplane()? 0.5 : 1;
+
+    // Important note: This code assumes that nothing other than alongSketchNormal
+    // and midPlane option influence the multFactor. If some custom gizmos changes
+    // it then that also should be handled properly here
+    if (extrude->AlongSketchNormal.getValue()) {
+        multFactor /= lengthFactor;
+    }
+
+    lengthGizmo1->multFactor = multFactor;
+    lengthGizmo1->setDragLength(ui->lengthEdit->value().getValue());
+
+    lengthGizmo2->multFactor = multFactor;
+    lengthGizmo2->setDragLength(ui->lengthEdit2->value().getValue());
+
+    gizmos->calculateScaleAndOrientation();
 }
 
 TaskDlgExtrudeParameters::TaskDlgExtrudeParameters(PartDesignGui::ViewProviderExtrude* vp)

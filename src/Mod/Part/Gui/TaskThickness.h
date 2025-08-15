@@ -27,6 +27,10 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 
+namespace Gui {
+class Gizmos;
+}
+
 namespace Part { class Thickness; }
 namespace PartGui {
 
@@ -54,6 +58,10 @@ private:
 
 private:
     void changeEvent(QEvent *e) override;
+    std::unique_ptr<Gui::Gizmos> gizmos;
+
+    void setupGizmos();
+    void setGizmoPositions();
 
 private:
     class Private;

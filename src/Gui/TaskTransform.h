@@ -33,11 +33,6 @@
 
 class SoDragger;
 
-namespace Attacher
-{
-    class AttachEngine;
-}
-
 namespace Gui
 {
 class QuantitySpinBox;
