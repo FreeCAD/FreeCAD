@@ -23,6 +23,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <Inventor/SbMatrix.h>
+#include <Inventor/SbViewVolume.h>
 #endif
 
 #include <QOpenGLWidget>
@@ -68,7 +70,11 @@ bool GLPainter::begin(QPaintDevice * device)
     glPushMatrix();
 
     glLoadIdentity();
-    glOrtho(0, this->width, 0, this->height, -1, 1);
+    SbViewVolume vv;
+    vv.ortho(0, this->width, 0, this->height, -1, 1);
+    SbMatrix affine, proj;
+    vv.getMatrices(affine, proj);
+    glLoadMatrixf((float*)proj);
 
     // Store GL state
     glPushAttrib(GL_ALL_ATTRIB_BITS);
@@ -274,7 +280,11 @@ void Rubberband::paintGL()
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0, size[0], size[1], 0, 0, 100);
+    SbViewVolume vv;
+    vv.ortho(0, size[0], size[1], 0, 0, 100);
+    SbMatrix affine, proj;
+    vv.getMatrices(affine, proj);
+    glLoadMatrixf((float*)proj);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glDisable(GL_TEXTURE_2D);
@@ -410,7 +420,11 @@ void Polyline::paintGL()
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0, size[0], size[1], 0, 0, 100);
+    SbViewVolume vv;
+    vv.ortho(0, size[0], size[1], 0, 0, 100);
+    SbMatrix affine, proj;
+    vv.getMatrices(affine, proj);
+    glLoadMatrixf((float*)proj);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glDisable(GL_TEXTURE_2D);
