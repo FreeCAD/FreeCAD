@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>642</width>
+    <width>736</width>
     <height>376</height>
    </rect>
   </property>
@@ -17,7 +17,7 @@
    <item>
     <widget class="QSplitter" name="splitter">
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
      <widget class="QWidget" name="layoutWidget">
       <layout class="QGridLayout" name="gridLayout">
@@ -59,7 +59,7 @@
         <widget class="QTreeWidget" name="commandTreeWidget">
          <property name="minimumSize">
           <size>
-           <width>220</width>
+           <width>400</width>
            <height>0</height>
           </size>
          </property>
@@ -272,10 +272,10 @@ same time. The one with the highest priority will be triggered.</string>
          <item>
           <spacer>
            <property name="orientation">
-            <enum>Qt::Vertical</enum>
+            <enum>Qt::Orientation::Vertical</enum>
            </property>
            <property name="sizeType">
-            <enum>QSizePolicy::Expanding</enum>
+            <enum>QSizePolicy::Policy::Expanding</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
