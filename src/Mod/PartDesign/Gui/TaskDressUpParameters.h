@@ -59,6 +59,8 @@ public:
         return transactionID;
     }
 
+    void setSelectionGate();
+
     bool event(QEvent* event) override;
 
 protected Q_SLOTS:
