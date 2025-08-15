@@ -39,7 +39,8 @@ using namespace Gui;
 TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, bool newObj)
     : TaskExtrudeParameters(PadView, parent, "PartDesign_Pad", tr("Pad Parameters"))
 {
-    ui->offsetEdit->setToolTip(tr("Offsets the pad from the face at which the pad will end"));
+    ui->offsetEdit->setToolTip(tr("Offset the pad from the face at which the pad will end on side 1"));
+    ui->offsetEdit2->setToolTip(tr("Offset the pad from the face at which the pad will end on side 2"));
     ui->checkBoxReversed->setToolTip(tr("Reverses pad direction"));
 
     // set the history path
@@ -49,6 +50,8 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
     ui->lengthEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadLength2"));
     ui->offsetEdit->setEntryName(QByteArray("Offset"));
     ui->offsetEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadOffset"));
+    ui->offsetEdit2->setEntryName(QByteArray("Offset2"));
+    ui->offsetEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadOffset2"));
     ui->taperEdit->setEntryName(QByteArray("TaperAngle"));
     ui->taperEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadTaperAngle"));
     ui->taperEdit2->setEntryName(QByteArray("TaperAngle2"));
@@ -64,71 +67,70 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
 
 TaskPadParameters::~TaskPadParameters() = default;
 
-void TaskPadParameters::translateModeList(int index)
+void TaskPadParameters::translateModeList(QComboBox* box, int index)
 {
-    ui->changeMode->clear();
-    ui->changeMode->addItem(tr("Dimension"));
-    ui->changeMode->addItem(tr("To last"));
-    ui->changeMode->addItem(tr("To first"));
-    ui->changeMode->addItem(tr("Up to face"));
-    ui->changeMode->addItem(tr("Two dimensions"));
-    ui->changeMode->addItem(tr("Up to shape"));
-    ui->changeMode->setCurrentIndex(index);
+    box->clear();
+    box->addItem(tr("Dimension"));
+    box->addItem(tr("To last"));
+    box->addItem(tr("To first"));
+    box->addItem(tr("Up to face"));
+    box->addItem(tr("Up to shape"));
+    box->setCurrentIndex(index);
 }
 
-void TaskPadParameters::updateUI(int index)
+void TaskPadParameters::updateUI(Side side)
 {
     // update direction combobox
     fillDirectionCombo();
     // set and enable checkboxes
-    setCheckboxes(static_cast<Mode>(index), Type::Pad);
+    updateWholeUI(Type::Pad, side);
 }
 
-void TaskPadParameters::onModeChanged(int index)
+void TaskPadParameters::onModeChanged(int index, Side side)
 {
-   auto pcPad = getObject<PartDesign::Pad>();
+    auto& sideCtrl = getSideController(side);
 
     switch (static_cast<Mode>(index)) {
-    case Mode::Dimension:
-        pcPad->Type.setValue("Length");
-        // Avoid error message
-        if (ui->lengthEdit->value() < Base::Quantity(Precision::Confusion(), Base::Unit::Length))
-            ui->lengthEdit->setValue(5.0);
-        break;
-    case Mode::ToLast:
-        pcPad->Type.setValue("UpToLast");
-        break;
-    case Mode::ToFirst:
-        pcPad->Type.setValue("UpToFirst");
-        break;
-    case Mode::ToFace:
-        // Note: ui->checkBoxReversed is purposely enabled because the selected face
-        // could be a circular one around the sketch
-        pcPad->Type.setValue("UpToFace");
-        if (ui->lineFaceName->text().isEmpty()) {
-            ui->buttonFace->setChecked(true);
-            handleLineFaceNameClick(); // sets placeholder text
-        }
-        break;
-    case Mode::TwoDimensions:
-        pcPad->Type.setValue("TwoLengths");
-        break;
-    case Mode::ToShape:
-        pcPad->Type.setValue("UpToShape");
-        break;
+        case Mode::Dimension:
+            sideCtrl.Type->setValue("Length");
+            if (side == Side::First) {
+                // Avoid error message
+                double L = sideCtrl.lengthEdit->value().getValue();
+                Side otherSide = side == Side::First ? Side::Second : Side::First;
+                auto& sideCtrl2 = getSideController(otherSide);
+                double L2 = static_cast<SidesMode>(getSidesMode()) == SidesMode::TwoSides
+                    ? sideCtrl2.lengthEdit->value().getValue()
+                    : 0;
+                if (std::abs(L + L2) < Precision::Confusion()) {
+                    sideCtrl.lengthEdit->setValue(5.0);
+                }
+            }
+            break;
+        case Mode::ToLast:
+            sideCtrl.Type->setValue("UpToLast");
+            break;
+        case Mode::ToFirst:
+            sideCtrl.Type->setValue("UpToFirst");
+            break;
+        case Mode::ToFace:
+            sideCtrl.Type->setValue("UpToFace");
+            if (sideCtrl.lineFaceName->text().isEmpty()) {
+                sideCtrl.buttonFace->setChecked(true);
+                handleLineFaceNameClick(sideCtrl.lineFaceName);  // sets placeholder text
+            }
+            break;
+        case Mode::ToShape:
+            sideCtrl.Type->setValue("UpToShape");
+            break;
     }
 
-    updateUI(index);
+    updateUI(side);
     recomputeFeature();
 }
 
 void TaskPadParameters::apply()
 {
-    QString facename = QStringLiteral("None");
-    if (static_cast<Mode>(getMode()) == Mode::ToFace) {
-        facename = getFaceName();
-    }
-    applyParameters(facename);
+    applyParameters();
 }
 
 //**************************************************************************

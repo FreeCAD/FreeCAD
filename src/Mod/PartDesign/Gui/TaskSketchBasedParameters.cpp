@@ -58,7 +58,7 @@ TaskSketchBasedParameters::TaskSketchBasedParameters(PartDesignGui::ViewProvider
     this->blockSelection(true);
 }
 
-const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChanges& msg)
+const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChanges& msg, App::PropertyLinkSub& prop)
 {
     // Note: The validity checking has already been done in ReferenceSelection.cpp
     auto sketchBased = getObject<PartDesign::ProfileBased>();
@@ -81,7 +81,7 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
     }
 
     std::vector<std::string> upToFaces(1,subname);
-    sketchBased->UpToFace.setValue(selObj, upToFaces);
+    prop.setValue(selObj, upToFaces);
     recomputeFeature();
 
     return refStr;
