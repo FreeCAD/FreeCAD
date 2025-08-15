@@ -39,8 +39,7 @@ set(PartDesignGui_UIC_SRCS
     TaskTransformedMessages.ui
     TaskTransformedParameters.ui
     TaskMirroredParameters.ui
-    TaskLinearPatternParameters.ui
-    TaskPolarPatternParameters.ui
+    TaskPatternParameters.ui
     TaskScaledParameters.ui
     TaskMultiTransformParameters.ui
     TaskShapeBinder.ui
@@ -165,12 +164,9 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskMirroredParameters.ui
     TaskMirroredParameters.cpp
     TaskMirroredParameters.h
-    TaskLinearPatternParameters.ui
-    TaskLinearPatternParameters.cpp
-    TaskLinearPatternParameters.h
-    TaskPolarPatternParameters.ui
-    TaskPolarPatternParameters.cpp
-    TaskPolarPatternParameters.h
+    TaskPatternParameters.ui
+    TaskPatternParameters.cpp
+    TaskPatternParameters.h
     TaskScaledParameters.ui
     TaskScaledParameters.cpp
     TaskScaledParameters.h

@@ -125,8 +125,8 @@ void TaskTransformedParameters::setupUI()
 
     using Mode = PartDesign::Transformed::Mode;
 
-    ui->buttonGroupMode->setId(ui->radioTransformBody, static_cast<int>(Mode::TransformBody));
-    ui->buttonGroupMode->setId(ui->radioTransformToolShapes, static_cast<int>(Mode::TransformToolShapes));
+    ui->buttonGroupMode->setId(ui->radioTransformBody, static_cast<int>(Mode::WholeShape));
+    ui->buttonGroupMode->setId(ui->radioTransformToolShapes, static_cast<int>(Mode::Features));
 
     connect(ui->buttonGroupMode,
             &QButtonGroup::idClicked,
@@ -134,12 +134,12 @@ void TaskTransformedParameters::setupUI()
             &TaskTransformedParameters::onModeChanged);
 
     auto const mode = static_cast<Mode>(pcTransformed->TransformMode.getValue());
-    ui->groupFeatureList->setEnabled(mode == Mode::TransformToolShapes);
+    ui->groupFeatureList->setEnabled(mode == Mode::Features);
     switch (mode) {
-        case Mode::TransformBody:
+        case Mode::WholeShape:
             ui->radioTransformBody->setChecked(true);
             break;
-        case Mode::TransformToolShapes:
+        case Mode::Features:
             ui->radioTransformToolShapes->setChecked(true);
             break;
     }
@@ -307,8 +307,8 @@ void TaskTransformedParameters::onModeChanged(int mode_id)
     using Mode = PartDesign::Transformed::Mode;
     Mode const mode = static_cast<Mode>(mode_id);
 
-    ui->groupFeatureList->setEnabled(mode == Mode::TransformToolShapes);
-    if (mode == Mode::TransformBody) {
+    ui->groupFeatureList->setEnabled(mode == Mode::Features);
+    if (mode == Mode::WholeShape) {
         ui->listWidgetFeatures->clear();
     }
     setupTransaction();
@@ -393,15 +393,15 @@ void TaskTransformedParameters::removeItemFromListWidget(QListWidget* widget,
     }
 }
 
-void TaskTransformedParameters::fillAxisCombo(ComboLinks& combolinks, Part::Part2DObject* sketch)
+void TaskTransformedParameters::fillAxisCombo(Gui::ComboLinks& combolinks, Part::Part2DObject* sketch)
 {
     combolinks.clear();
 
     // add sketch axes
     if (sketch) {
-        combolinks.addLink(sketch, "N_Axis", tr("Normal sketch axis"));
-        combolinks.addLink(sketch, "V_Axis", tr("Vertical sketch axis"));
         combolinks.addLink(sketch, "H_Axis", tr("Horizontal sketch axis"));
+        combolinks.addLink(sketch, "V_Axis", tr("Vertical sketch axis"));
+        combolinks.addLink(sketch, "N_Axis", tr("Normal sketch axis"));
         for (int i = 0; i < sketch->getAxisCount(); i++) {
             QString itemText = tr("Construction line %1").arg(i + 1);
             std::stringstream sub;
@@ -430,7 +430,8 @@ void TaskTransformedParameters::fillAxisCombo(ComboLinks& combolinks, Part::Part
     combolinks.addLink(nullptr, std::string(), tr("Select reference…"));
 }
 
-void TaskTransformedParameters::fillPlanesCombo(ComboLinks& combolinks, Part::Part2DObject* sketch)
+void TaskTransformedParameters::fillPlanesCombo(Gui::ComboLinks& combolinks,
+                                                Part::Part2DObject* sketch)
 {
     combolinks.clear();
 
@@ -615,8 +616,6 @@ void TaskTransformedParameters::indexesMoved()
 TaskDlgTransformedParameters::TaskDlgTransformedParameters(ViewProviderTransformed* viewProvider)
     : TaskDlgFeatureParameters(viewProvider)
 {
-    message = new TaskTransformedMessages(viewProvider);
-    Content.push_back(message);
 }
 
 //==== calls from the TaskView ===============================================================
@@ -638,84 +637,3 @@ bool TaskDlgTransformedParameters::reject()
 
 
 #include "moc_TaskTransformedParameters.cpp"
-
-
-ComboLinks::ComboLinks(QComboBox& combo)
-    : _combo(&combo)
-{
-    _combo->clear();
-}
-
-int ComboLinks::addLink(const App::PropertyLinkSub& lnk, QString const& itemText)
-{
-    if (!_combo) {
-        return 0;
-    }
-    _combo->addItem(itemText);
-    this->linksInList.push_back(new App::PropertyLinkSub());
-    App::PropertyLinkSub& newitem = *(linksInList[linksInList.size() - 1]);
-    newitem.Paste(lnk);
-    if (newitem.getValue() && !this->doc) {
-        this->doc = newitem.getValue()->getDocument();
-    }
-    return linksInList.size() - 1;
-}
-
-int ComboLinks::addLink(App::DocumentObject* linkObj,
-                        std::string const& linkSubname,
-                        QString const& itemText)
-{
-    if (!_combo) {
-        return 0;
-    }
-    _combo->addItem(itemText);
-    this->linksInList.push_back(new App::PropertyLinkSub());
-    App::PropertyLinkSub& newitem = *(linksInList[linksInList.size() - 1]);
-    newitem.setValue(linkObj, std::vector<std::string>(1, linkSubname));
-    if (newitem.getValue() && !this->doc) {
-        this->doc = newitem.getValue()->getDocument();
-    }
-    return linksInList.size() - 1;
-}
-
-void ComboLinks::clear()
-{
-    for (size_t i = 0; i < this->linksInList.size(); i++) {
-        delete linksInList[i];
-    }
-    if (this->_combo) {
-        _combo->clear();
-    }
-}
-
-App::PropertyLinkSub& ComboLinks::getLink(int index) const
-{
-    if (index < 0 || index > static_cast<int>(linksInList.size()) - 1) {
-        throw Base::IndexError("ComboLinks::getLink:Index out of range");
-    }
-    if (linksInList[index]->getValue() && doc && !(doc->isIn(linksInList[index]->getValue()))) {
-        throw Base::ValueError("Linked object is not in the document; it may have been deleted");
-    }
-    return *(linksInList[index]);
-}
-
-App::PropertyLinkSub& ComboLinks::getCurrentLink() const
-{
-    assert(_combo);
-    return getLink(_combo->currentIndex());
-}
-
-int ComboLinks::setCurrentLink(const App::PropertyLinkSub& lnk)
-{
-    for (size_t i = 0; i < linksInList.size(); i++) {
-        App::PropertyLinkSub& it = *(linksInList[i]);
-        if (lnk.getValue() == it.getValue() && lnk.getSubValues() == it.getSubValues()) {
-            bool wasBlocked = _combo->signalsBlocked();
-            _combo->blockSignals(true);
-            _combo->setCurrentIndex(i);
-            _combo->blockSignals(wasBlocked);
-            return i;
-        }
-    }
-    return -1;
-}
