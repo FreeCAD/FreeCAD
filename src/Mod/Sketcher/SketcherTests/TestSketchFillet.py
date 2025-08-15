@@ -142,11 +142,6 @@ class TestSketchFillet(unittest.TestCase):
         SketchFeature.addConstraint(Sketcher.Constraint("Distance", 0, 2, 1, 1, 0.25))
         self.Doc.recompute()
 
-        # SketchFeature.fillet(0,1, App.Vector(0.75,0.75,0), App.Vector(1.22,0.66,0), 0.25, True, True)
-        # Make sure the fillet happened
-        # self.Doc.recompute()
-        # self.assertAlmostEqual(SketchFeature.Geometry[2].Radius, 0.25)
-
     # The following tests are mostly about verifying that transferFilletConstraints
     # does the right thing with pre-existing constraints when a fillet is created.
 
