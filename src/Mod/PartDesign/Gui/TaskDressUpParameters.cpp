@@ -395,8 +395,6 @@ void TaskDressUpParameters::setSelectionMode(selectionModes mode)
     setButtons(mode);
 
     if (mode == none) {
-        Gui::Selection().rmvSelectionGate();
-
         // remove any highlights and selections
         DressUpView->highlightReferences(false);
 
@@ -407,11 +405,6 @@ void TaskDressUpParameters::setSelectionMode(selectionModes mode)
         }
     }
     else {
-        AllowSelectionFlags allow;
-        allow.setFlag(AllowSelection::EDGE, allowEdges);
-        allow.setFlag(AllowSelection::FACE, allowFaces);
-        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allow));
-
         DressUpView->highlightReferences(true);
 
         // selection must come from the previous feature, we also need to remember the currently
@@ -419,8 +412,19 @@ void TaskDressUpParameters::setSelectionMode(selectionModes mode)
         previouslyShownViewProvider = DressUpView->getBodyViewProvider()->getShownViewProvider();
         DressUpView->showPreviousFeature(true);
     }
-
+    setSelectionGate();
     Gui::Selection().clearSelection();
+}
+void TaskDressUpParameters::setSelectionGate()
+{
+    if (selectionMode == none) {
+        Gui::Selection().rmvSelectionGate();
+    } else {
+        AllowSelectionFlags allow;
+        allow.setFlag(AllowSelection::EDGE, allowEdges);
+        allow.setFlag(AllowSelection::FACE, allowFaces);
+        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allow));
+    }
 }
 
 //**************************************************************************
@@ -477,10 +481,12 @@ bool TaskDlgDressUpParameters::reject()
 void TaskDlgDressUpParameters::activate()
 {
     parameter->attachSelection();
+    parameter->setSelectionGate();
 }
 void TaskDlgDressUpParameters::deactivate()
 {
     parameter->detachSelection();
+    Gui::Selection().rmvSelectionGate();
 }
 
 #include "moc_TaskDressUpParameters.cpp"
