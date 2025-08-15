@@ -43,7 +43,6 @@
 #include "FemPostBranchFilter.h"
 
 
-
 using namespace Fem;
 using namespace App;
 
@@ -227,7 +226,7 @@ bool FemPostFilter::dataIsAvailable()
         return false;
     }
 
-    vtkInformation* info = algo->GetInputInformation(0,0);
+    vtkInformation* info = algo->GetInputInformation(0, 0);
     return bool(info->Has(vtkDataObject::DATA_OBJECT()));
 }
 
@@ -256,8 +255,8 @@ vtkSmartPointer<vtkDataSet> FemPostFilter::getInputData()
     }
 
     // check if the algorithm has data available
-    vtkInformation* info = algo->GetInputInformation(0,0);
-    if (!bool(info->Has(vtkDataObject::DATA_OBJECT()))){
+    vtkInformation* info = algo->GetInputInformation(0, 0);
+    if (!bool(info->Has(vtkDataObject::DATA_OBJECT()))) {
         return nullptr;
     }
 
@@ -623,8 +622,9 @@ short int FemPostDataAtPointFilter::mustExecute() const
 
 void FemPostDataAtPointFilter::GetPointData()
 {
-    if (!dataIsAvailable())
+    if (!dataIsAvailable()) {
         return;
+    }
 
     std::vector<double> values;
 
