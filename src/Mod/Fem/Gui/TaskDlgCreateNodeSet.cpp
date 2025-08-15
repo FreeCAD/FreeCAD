@@ -102,4 +102,15 @@ bool TaskDlgCreateNodeSet::reject()
 void TaskDlgCreateNodeSet::helpRequested()
 {}
 
+void TaskDlgCreateNodeSet::activate()
+{
+    param->attachSelection();
+    param->setSelectionGate();
+}
+void TaskDlgCreateNodeSet::deactivate()
+{
+    param->detachSelection();
+    Gui::Selection().rmvSelectionGate();
+}
+
 #include "moc_TaskDlgCreateNodeSet.cpp"
