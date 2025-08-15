@@ -356,6 +356,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *results << "Separator"
              << "FEM_PostApplyChanges"
              << "FEM_PostPipelineFromResult"
+             << "FEM_PostBranchFilter"
              << "Separator"
              << "FEM_PostFilterWarp"
              << "FEM_PostFilterClipScalar"
