@@ -162,6 +162,7 @@ public:
         const double min = this->minimum;
 
         QString copy = input;
+        copy.replace(QLatin1Char(','), QLatin1Char('.'));
         double value = min;
         bool ok = false;
 
