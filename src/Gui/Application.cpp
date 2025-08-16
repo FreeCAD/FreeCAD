@@ -381,20 +381,38 @@ struct PyMethodDef FreeCADGui_methods[] = {
 
 void Application::initStyleParameterManager()
 {
+    const auto deduceParametersFilePath = []() -> std::string {
+        const auto hMainWindowGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
+
+        if (const std::string& path = hMainWindowGrp->GetASCII("ThemeStyleParametersFile");
+            !path.empty()) {
+            return path;
+        }
+
+        return fmt::format("qss:parameters/{}.yaml", hMainWindowGrp->GetASCII("Theme", "Classic"));
+    };
+
     Base::registerServiceImplementation<StyleParameters::ParameterSource>(
         new StyleParameters::BuiltInParameterSource({.name = QT_TR_NOOP("Built-in Parameters")}));
 
+    // todo: left for compatibility with older theme versions, to be removed before release
     Base::registerServiceImplementation<StyleParameters::ParameterSource>(
         new StyleParameters::UserParameterSource(
             App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Themes/Tokens"),
+                "User parameter:BaseApp/Preferences/Themes/UserTokens"),
+            {.name = QT_TR_NOOP("Theme Parameters - Fallback"),
+             .options = StyleParameters::ParameterSourceOption::ReadOnly}));
+
+    Base::registerServiceImplementation<StyleParameters::ParameterSource>(
+        new StyleParameters::YamlParameterSource(
+            deduceParametersFilePath(),
             {.name = QT_TR_NOOP("Theme Parameters"),
              .options = StyleParameters::ParameterSourceOption::UserEditable}));
 
     Base::registerServiceImplementation<StyleParameters::ParameterSource>(
         new StyleParameters::UserParameterSource(
             App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Themes/UserTokens"),
+                "User parameter:BaseApp/Preferences/Themes/UserParameters"),
             {.name = QT_TR_NOOP("User Parameters"),
              .options = StyleParameters::ParameterSource::UserEditable}));
 

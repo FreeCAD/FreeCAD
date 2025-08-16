@@ -465,6 +465,10 @@ void StyleParametersModel::flush()
         }
     });
 
+    for (auto* source : sources) {
+        source->flush();
+    }
+
     reset();
 }
 
