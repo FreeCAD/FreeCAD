@@ -74,6 +74,7 @@ def slice(base_shape, tool_shapes, mode, tolerance = 0.0):
         raise ValueError("No slicing objects supplied!")
     pieces, map = shapes[0].generalFuse(shapes[1:], tolerance)
     gr = GeneralFuseResult(shapes, (pieces,map))
+    result = None
     if mode == "Standard":
         result = gr.piecesFromSource(shapes[0])
     elif mode == "CompSolid":
@@ -86,7 +87,10 @@ def slice(base_shape, tool_shapes, mode, tolerance = 0.0):
     elif mode == "Split":
         gr.splitAggregates(gr.piecesFromSource(shapes[0]))
         result = gr.piecesFromSource(shapes[0])
-    return result[0] if len(result) == 1 else Part.makeCompound(result)
+    if result != None:
+        return result[0] if len(result) == 1 else Part.makeCompound(result)
+    else:
+        return Part.Shape()
 
 def xor(list_of_shapes, tolerance = 0.0):
     """xor(list_of_shapes, tolerance = 0.0): boolean XOR operation."""

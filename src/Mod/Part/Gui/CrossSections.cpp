@@ -294,7 +294,7 @@ bool CrossSections::apply()
             }
 
             Gui::Command::runCommand(Gui::Command::App, QStringLiteral(
-                "comp=Part.Compound(wires)\n"
+                "comp=Part.makeCompound(wires)\n"
                 "slice=FreeCAD.getDocument(\"%1\").addObject(\"Part::Feature\",\"%2\")\n"
                 "slice.Shape=comp\n"
                 "slice.purgeTouched()\n"
@@ -302,15 +302,6 @@ bool CrossSections::apply()
                 .arg(QLatin1String(doc->getName()),
                      QLatin1String(s.c_str())).toLatin1());
         }
-        Gui::Command::runCommand(Gui::Command::App, QStringLiteral(
-            "comp=Part.makeCompound(wires)\n"
-            "slice=FreeCAD.getDocument(\"%1\").addObject(\"Part::Feature\",\"%2\")\n"
-            "slice.Shape=comp\n"
-            "slice.purgeTouched()\n"
-            "del slice,comp,wires,shape")
-            .arg(QLatin1String(doc->getName()),
-                 QLatin1String(s.c_str())).toLatin1());
-
         seq.next();
     } catch (Base::Exception& e) {
         e.reportException();
