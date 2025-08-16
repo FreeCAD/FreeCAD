@@ -214,7 +214,7 @@ A step over of 100% results in no overlap between two different cycles.</string>
          <string notr="true">mm</string>
         </property>
        </widget>
-      </item>      
+      </item>
       <item row="8" column="0">
        <widget class="QCheckBox" name="optimizeEnabled">
         <property name="toolTip">
@@ -241,7 +241,7 @@ A step over of 100% results in no overlap between two different cycles.</string>
          <string>Gap Detection Thershold</string>
         </property>
        </widget>
-      </item>      
+      </item>
       <item row="10" column="1">
        <widget class="Gui::InputField" name="gapDetectionThershold">
         <property name="toolTip">
@@ -251,7 +251,7 @@ A step over of 100% results in no overlap between two different cycles.</string>
          <string notr="true">mm</string>
         </property>
        </widget>
-      </item>            
+      </item>
      </layout>
     </widget>
    </item>
@@ -286,10 +286,10 @@ A step over of 100% results in no overlap between two different cycles.</string>
   <tabstop>cutPattern</tabstop>
   <tabstop>stepOver</tabstop>
   <tabstop>sampleInterval</tabstop>
-  <tabstop>minSampleInterval</tabstop>  
+  <tabstop>minSampleInterval</tabstop>
   <tabstop>optimizeEnabled</tabstop>
   <tabstop>optimizeInternal</tabstop>
-  <tabstop>gapDetectionThershold</tabstop>  
+  <tabstop>gapDetectionThershold</tabstop>
  </tabstops>
  <resources/>
  <connections/>

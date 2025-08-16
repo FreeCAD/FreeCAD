@@ -101,7 +101,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             ],
             "BoundBox": [
                 (translate("path_waterline", "Stock"), "Stock"),
-                (translate("path_waterline", "BaseBoundBox"), "BaseBoundBox"),          
+                (translate("path_waterline", "BaseBoundBox"), "BaseBoundBox"),
             ],
             "PatternCenterAt": [
                 (translate("path_waterline", "CenterOfMass"), "CenterOfMass"),
@@ -420,7 +420,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                     "App::Property",
                     "Minimum distance between the perimeter and any internal features. Lower values than Sample Interval will be ignored.",
                 ),
-            ),                                    
+            ),
             (
                 "App::PropertyFloat",
                 "StepOver",
@@ -549,13 +549,13 @@ class ObjectWaterline(PathOp.ObjectOp):
         obj.setEditorMode("OptimizeStepOverTransitions", hide)
         obj.setEditorMode("GapThreshold", hide)
         obj.setEditorMode("GapSizes", hide)
-        obj.setEditorMode("BoundaryAdjustment", hide)        
+        obj.setEditorMode("BoundaryAdjustment", hide)
 
         if obj.Algorithm == "OCL Dropcutter":
             pass
         elif obj.Algorithm == "OCL Adaptive":
             D = 0
-            expMode = 2  
+            expMode = 2
         elif obj.Algorithm == "Experimental":
             A = B = C = 0
             expMode = G = D = H = show = hide = 2
@@ -584,7 +584,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         obj.setEditorMode("IgnoreOuterAbove", B)
         obj.setEditorMode("CutPattern", C)
         obj.setEditorMode("SampleInterval", G)
-        
+
         obj.setEditorMode("MinSampleInterval", D)
         obj.setEditorMode("OptimizeInternalFeatures", D)
         obj.setEditorMode("GapDetectionThershold", D)
@@ -685,7 +685,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                     "Sample interval limits are 0.0001 to 25.4 millimeters.",
                 )
             )
-            
+
         # Limit min sample interval
         if obj.MinSampleInterval.Value < 0.0001:
             obj.MinSampleInterval.Value = 0.0001
@@ -703,7 +703,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                     "Min Sample interval limits are 0.0001 to 25.4 millimeters.",
                 )
             )
-            
+
         # Limit Gap Detection Threshold Adaptive
         if obj.GapDetectionThershold.Value < 1.00:
             obj.GapDetectionThershold.Value = 1.00
@@ -720,7 +720,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                     "PathWaterline",
                     "Gap Detection Thershold limits are 1.00 to 999.99 millimeters.",
                 )
-            )                       
+            )
 
         # Limit cut pattern angle
         if obj.CutPatternAngle < -360.0:
@@ -1253,7 +1253,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         pdc = ocl.PathDropCutter()  # create a pdc [PathDropCutter] object
         pdc.setSTL(stl)  # add stl model
         pdc.setCutter(cutter)  # add cutter
-        pdc.setZ(finalDep)  # set minimumZ (final / target depth value) 
+        pdc.setZ(finalDep)  # set minimumZ (final / target depth value)
         pdc.setSampling(SampleInterval)  # set sampling size
         return pdc
 
@@ -1274,17 +1274,17 @@ class ObjectWaterline(PathOp.ObjectOp):
             self.layerEndPnt = FreeCAD.Vector(0.0, 0.0, 0.0)
 
         # Set extra offset to diameter of cutter to allow cutter to move around perimeter of model
-        
-        if obj.Algorithm == "OCL Adaptive":           
+
+        if obj.Algorithm == "OCL Adaptive":
             # Get Stock boundbox for OCL Adaptive
             BS = JOB.Stock
-            bb = BS.Shape.BoundBox           
+            bb = BS.Shape.BoundBox
             xmin = round(abs(bb.XMin), 6)
             xmax = round(abs(bb.XMax), 6)
             ymin = round(abs(bb.YMin), 6)
-            ymax = round(abs(bb.YMax), 6)                    
-        
-        else:            
+            ymax = round(abs(bb.YMax), 6)
+
+        else:
             if subShp is None:
                 # Get correct boundbox
                 if obj.BoundBox == "Stock":
@@ -1302,10 +1302,10 @@ class ObjectWaterline(PathOp.ObjectOp):
                 xmin = subShp.BoundBox.XMin
                 xmax = subShp.BoundBox.XMax
                 ymin = subShp.BoundBox.YMin
-                ymax = subShp.BoundBox.YMax                      
+                ymax = subShp.BoundBox.YMax
 
         smplInt = obj.SampleInterval.Value
-        minSmplInt = obj.MinSampleInterval.Value 
+        minSmplInt = obj.MinSampleInterval.Value
         if minSmplInt > smplInt:
             minSmplInt = smplInt
 
@@ -1323,7 +1323,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         # Scan the piece to depth at smplInt
         oclScan = []
         zheights = []
-        scanLines = []        
+        scanLines = []
         if obj.Algorithm == "OCL Adaptive":
             # Check Stock's bounding box and Tool Path limits
             MinX = round(abs(stl.bb.minpt.x) + self.toolDiam, 6)
@@ -1331,24 +1331,27 @@ class ObjectWaterline(PathOp.ObjectOp):
             MaxX = round(abs(stl.bb.maxpt.x) + self.toolDiam, 6)
             MaxY = round(abs(stl.bb.maxpt.y) + self.toolDiam, 6)
             if MinX < xmin or MinY < ymin or MaxX > xmax or MaxY > ymax:
-                newPropMsg = translate("PathWaterline", "The toolpath has exceeded the stock bounding box limits. Consider using a Boundary Dressup.")
+                newPropMsg = translate(
+                    "PathWaterline",
+                    "The toolpath has exceeded the stock bounding box limits. Consider using a Boundary Dressup.",
+                )
                 FreeCAD.Console.PrintWarning(newPropMsg + "\n")
-            # Scan the piece                
-            scanLines = self._waterlineAdaptiveScan(stl, smplInt, minSmplInt, depthparams, depOfst)                     
+            # Scan the piece
+            scanLines = self._waterlineAdaptiveScan(stl, smplInt, minSmplInt, depthparams, depOfst)
             # Optimize loop. Separate the connected Path of the perimeter and internal features.
-            if obj.OptimizeInternalFeatures:               
+            if obj.OptimizeInternalFeatures:
                 GapDetec = float(obj.GapDetectionThershold)
                 if smplInt >= GapDetec:
-                    GapDetec = smplInt + 1  # We need smaller smplInt than GapDetec to identify Gaps                  
+                    GapDetec = smplInt + 1  # We need smaller smplInt than GapDetec to identify Gaps
                 optimize = self._optimizeAdaptive(scanLines, GapDetec)
-                scanLines = optimize                            
-        else: # Drop Cutter         
+                scanLines = optimize
+        else:  # Drop Cutter
             oclScan = self._waterlineDropCutScan(
                 stl, smplInt, xmin, xmax, ymin, depthparams[lenDP - 1], numScanLines
-                )
+            )
             oclScan = [FreeCAD.Vector(P.x, P.y, P.z + depOfst) for P in oclScan]
-       
-            lenOS = len(oclScan)        
+
+            lenOS = len(oclScan)
             ptPrLn = int(lenOS / numScanLines)
 
             # Convert oclScan list of points to multi-dimensional list
@@ -1373,8 +1376,8 @@ class ObjectWaterline(PathOp.ObjectOp):
             cmds = self._getWaterline(obj, scanLines, layDep, lyr, lenSL, pntsPerLine)
             commands.extend(cmds)
             if obj.Algorithm == "OCL Adaptive":
-                break # OCL_Adaptive processes all depths simultaneously (break loop)             
-            lyr += 1           
+                break  # OCL_Adaptive processes all depths simultaneously (break loop)
+            lyr += 1
         Path.Log.debug("--All layer scans combined took " + str(time.time() - layTime) + " s")
         return commands
 
@@ -1400,98 +1403,98 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         # return the list of points
         return pdc.getCLPoints()
-        
+
     def _waterlineAdaptiveScan(self, stl, smplInt, minSmplInt, zheights, depOfst):
         """Perform OCL Adaptive scan for waterline purpose."""
-        aloops = [] 
-                  
-        msg = translate("Waterline", ": Steps below the model's top Face will be the only ones processed.")                                      
-        Path.Log.info("Waterline " + msg)        
-        
+        aloops = []
+
+        msg = translate(
+            "Waterline", ": Steps below the model's top Face will be the only ones processed."
+        )
+        Path.Log.info("Waterline " + msg)
+
         awl = ocl.AdaptiveWaterline()
         awl.setSTL(stl)
         awl.setCutter(self.cutter)
         awl.setSampling(smplInt)
-        awl.setMinSampling(minSmplInt)             
-        
+        awl.setMinSampling(minSmplInt)
+
         # Create Adaptive loops
         adapt_loops = []
         acnt = 0
         skippedZ = []
         for zh in zheights:
-            #zh = round(zh, 3)
+            # zh = round(zh, 3)
             temp_loops = []
             finalZ_loops = []
-            skipZ = False                
-            awl.setZ(zh) 
+            skipZ = False
+            awl.setZ(zh)
             awl.run()
             temp_loops = awl.getLoops()
             if not temp_loops:
                 # Skip if height is above model
                 newPropMsg = translate("PathWaterline", "Step Down above model. Skipping height : ")
-                newPropMsg += '{} mm'.format(zh)
+                newPropMsg += "{} mm".format(zh)
                 FreeCAD.Console.PrintWarning(newPropMsg + "\n")
                 skipZ = True
                 acnt -= 1
             else:
                 for tmp in temp_loops:
-                    finalZ_loops += tmp               
-                        
-            if not skipZ:                                                          
-                adapt_loops.append(acnt)                
+                    finalZ_loops += tmp
+
+            if not skipZ:
+                adapt_loops.append(acnt)
                 adapt_loops[acnt] = [FreeCAD.Vector(P.x, P.y, P.z + depOfst) for P in finalZ_loops]
-            acnt += 1                
-          
+            acnt += 1
+
         # return the list of loops
         return adapt_loops
-        
+
     def _optimizeAdaptive(self, adapt_loops, GapDetec):
-        """Attempt to repair holes and internal features on model"""      
-        
+        """Attempt to repair holes and internal features on model"""
+
         # Search for the gaps that caused by Internal features.
         new_adapt = []
-        for adapt in adapt_loops:   
+        for adapt in adapt_loops:
             fz = adapt
             firstX = fz[0].x
             firstY = fz[0].y
             secLastX = fz[-1].x
             secLastY = fz[-1].y
-            
+
             # First and last points in loop should not be in greater distance than Gap Detection Threshold.
-            if not (
-                secLastX - GapDetec) <= firstX <= (secLastX + GapDetec) or not (
-                secLastY - GapDetec) <= firstY <= (secLastY + GapDetec
-                ):
-                # List with internal features found. Points in greater distance than GapDetec.            
+            if not (secLastX - GapDetec) <= firstX <= (secLastX + GapDetec) or not (
+                secLastY - GapDetec
+            ) <= firstY <= (secLastY + GapDetec):
+                # List with internal features found. Points in greater distance than GapDetec.
                 fz.reverse()
                 start_cut = 0
                 # First point is known. Search for next points to break loop.
                 for r in range(len(fz)):
                     # This is the last Step of loop. Close what has been left.
-                    if r == (len(fz)-1):
-                        r_fz = fz[(start_cut+2):len(fz)]              
+                    if r == (len(fz) - 1):
+                        r_fz = fz[(start_cut + 2) : len(fz)]
                         r_fz.reverse()
-                        if len(r_fz) != 0: # check if anything left to append after cut
+                        if len(r_fz) != 0:  # check if anything left to append after cut
                             new_adapt.append(r_fz)
-                        break                                      
-                    if not (
-                        fz[r].x - GapDetec) <= fz[r+1].x <= (fz[r].x + GapDetec) or not (
-                        fz[r].y - GapDetec) <= fz[r+1].y <= (fz[r].y + GapDetec
-                        ):
-                     # Next point found.
-                        r_fz = fz[(start_cut+2):r]                   
+                        break
+                    if not (fz[r].x - GapDetec) <= fz[r + 1].x <= (fz[r].x + GapDetec) or not (
+                        fz[r].y - GapDetec
+                    ) <= fz[r + 1].y <= (fz[r].y + GapDetec):
+                        # Next point found.
+                        r_fz = fz[(start_cut + 2) : r]
                         r_fz.reverse()
-                        if len(r_fz) != 0: # check if anything left to append after cut
-                            new_adapt.append(r_fz)                              
+                        if len(r_fz) != 0:  # check if anything left to append after cut
+                            new_adapt.append(r_fz)
                         start_cut = r
             # List without Gap, add as is.
             else:
                 new_adapt.append(adapt)
-                                      
+
         adapt_loops = new_adapt
-        
+
         return adapt_loops
-                 
+
     def _getWaterline(self, obj, scanLines, layDep, lyr, lenSL, pntsPerLine):
         """_getWaterline(obj, scanLines, layDep, lyr, lenSL, pntsPerLine) ... Get waterline."""
         commands = []
@@ -1500,16 +1503,16 @@ class ObjectWaterline(PathOp.ObjectOp):
         self.topoMap = []
         if obj.Algorithm == "OCL Adaptive":
             loopList = scanLines
-        else:                    
+        else:
             # Create topo map from scanLines (highs and lows)
-            self.topoMap = self._createTopoMap(scanLines, layDep, lenSL, pntsPerLine)  
+            self.topoMap = self._createTopoMap(scanLines, layDep, lenSL, pntsPerLine)
             # Add buffer lines and columns to topo map
             self._bufferTopoMap(lenSL, pntsPerLine)
             # Identify layer waterline from OCL scan
-            self._highlightWaterline(4, 9)           
+            self._highlightWaterline(4, 9)
             # Extract waterline and convert to gcode
             loopList = self._extractWaterlines(obj, scanLines, lyr, layDep)
-            
+
         # save commands
         for loop in loopList:
             cmds = self._loopToGcode(obj, layDep, loop)
@@ -1762,7 +1765,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             + str(loopNum)
             + " loops."
         )
-        
+
         return loopList
 
     def _trackLoop(self, oclScan, lC, pC, L, P, loopNum):
@@ -1847,16 +1850,16 @@ class ObjectWaterline(PathOp.ObjectOp):
         # Create (first and last) point
         if obj.Algorithm == "OCL Adaptive":
             if obj.CutMode == "Climb":
-            # Reverse loop for Climb Milling               
-                loop.reverse() 
+                # Reverse loop for Climb Milling
+                loop.reverse()
             pnt = pnt1 = FreeCAD.Vector(loop[0].x, loop[0].y, loop[0].z)
         else:
             pnt = FreeCAD.Vector(loop[0].x, loop[0].y, layDep)
 
         # Position cutter to begin loop
-        if self.layerEndPnt.x == 0 and self.layerEndPnt.y == 0: # First to Clearance Height
+        if self.layerEndPnt.x == 0 and self.layerEndPnt.y == 0:  # First to Clearance Height
             output.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid}))
-        else:            
+        else:
             output.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
         output.append(Path.Command("G0", {"X": pnt.x, "Y": pnt.y, "F": self.horizRapid}))
         output.append(Path.Command("G1", {"Z": pnt.z, "F": self.vertFeed}))
@@ -1875,12 +1878,12 @@ class ObjectWaterline(PathOp.ObjectOp):
             output.append(Path.Command("G1", {"X": pnt.x, "Y": pnt.y, "F": self.horizFeed}))
 
             # Rotate point data
-            pnt = nxt            
-            
-        # Connect first and last points for Adaptive 
-        if obj.Algorithm == "OCL Adaptive":        
+            pnt = nxt
+
+        # Connect first and last points for Adaptive
+        if obj.Algorithm == "OCL Adaptive":
             output.append(Path.Command("G1", {"X": pnt1.x, "Y": pnt1.y, "F": self.horizFeed}))
-                 
+
         # Save layer end point for use in transitioning to next layer
         self.layerEndPnt = pnt
 
@@ -1972,7 +1975,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             if cont:
                 # Identify solid areas in the offset data
                 if obj.CutPattern == "Offset" or obj.CutPattern == "None":
-                    if ofstArea:                        
+                    if ofstArea:
                         ofstSolidFacesList = self._getSolidAreasFromPlanarFaces(ofstArea)
                     if ofstSolidFacesList:
                         clearArea = Part.makeCompound(ofstSolidFacesList)
