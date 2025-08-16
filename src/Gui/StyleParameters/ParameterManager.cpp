@@ -26,6 +26,10 @@
 #include "ParameterManager.h"
 #include "Parser.h"
 
+#include <QFile>
+#include <fstream>
+#include <yaml-cpp/yaml.h>
+
 #ifndef _PreComp_
 #include <QColor>
 #include <QRegularExpression>
@@ -213,6 +217,79 @@ void UserParameterSource::define(const Parameter& parameter)
 void UserParameterSource::remove(const std::string& name)
 {
     hGrp->RemoveASCII(name.c_str());
+}
+
+YamlParameterSource::YamlParameterSource(const std::string& filePath, const Metadata& metadata)
+    : ParameterSource(metadata)
+    , filePath(filePath)
+{
+    QFile file(QString::fromStdString(filePath));
+
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return;
+    }
+
+    if (filePath.starts_with(":/")) {
+        this->metadata.options |= ReadOnly;
+    }
+
+    QTextStream in(&file);
+    std::string content = in.readAll().toStdString();
+
+    YAML::Node root = YAML::Load(content);
+    for (auto it = root.begin(); it != root.end(); ++it) {
+        auto key = it->first.as<std::string>();
+        auto value = it->second.as<std::string>();
+
+        parameters[key] = Parameter {
+            .name = key,
+            .value = value,
+        };
+    }
+}
+
+std::list<Parameter> YamlParameterSource::all() const
+{
+    std::list<Parameter> result;
+    for (const auto& param : parameters | std::views::values) {
+        result.push_back(param);
+    }
+    return result;
+}
+
+std::optional<Parameter> YamlParameterSource::get(const std::string& name) const
+{
+    if (auto it = parameters.find(name); it != parameters.end()) {
+        return it->second;
+    }
+
+    return std::nullopt;
+}
+
+void YamlParameterSource::define(const Parameter& param)
+{
+    parameters[param.name] = param;
+}
+
+void YamlParameterSource::remove(const std::string& name)
+{
+    parameters.erase(name);
+}
+
+void YamlParameterSource::flush()
+{
+    YAML::Node root;
+    for (const auto& [name, param] : parameters) {
+        root[name] = param.value;
+    }
+
+    QFile file(QString::fromStdString(filePath));
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+        return;
+    }
+
+    QTextStream out(&file);
+    out << QString::fromStdString(YAML::Dump(root));
 }
 
 ParameterManager::ParameterManager() = default;
