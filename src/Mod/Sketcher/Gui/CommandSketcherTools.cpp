@@ -2533,14 +2533,11 @@ void CreateSketcherCommandsConstraintAccel()
 }
 // clang-format on
 
-void SketcherGui::centerScale(Sketcher::SketchObject* Obj, double scaleFactor)
+void SketcherGui::centerScale(double scaleFactor)
 {
-    std::vector<int> allGeoIds(Obj->Geometry.getValues().size());
-    std::iota(allGeoIds.begin(), allGeoIds.end(), 0);
-
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     auto* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    auto scaler = DrawSketchHandlerScale::make_centerScale(allGeoIds, scaleFactor, false);
+    auto scaler = DrawSketchHandlerScale::make_centerScaleAll(vp, scaleFactor, false);
     scaler->setSketchGui(vp);
     scaler->executeCommands();
 

@@ -75,6 +75,7 @@ public:
         , deleteOriginal(true)
         , abortOnFail(true)
         , allowOriginConstraint(false)
+        , isAllGeoIds(false)
         , refLength(0.0)
         , length(0.0)
         , scaleFactor(0.0)
@@ -87,14 +88,20 @@ public:
 
     ~DrawSketchHandlerScale() override = default;
 
+
     static std::unique_ptr<DrawSketchHandlerScale>
-    make_centerScale(std::vector<int> listOfGeoIds, double scaleFactor, bool abortOnFail)
+    make_centerScaleAll(SketcherGui::ViewProviderSketch* vp, double scaleFactor, bool abortOnFail)
     {
-        auto out = std::make_unique<DrawSketchHandlerScale>(listOfGeoIds);
+        std::vector<int> allGeoIds(vp->getSketchObject()->Geometry.getValues().size());
+        std::iota(allGeoIds.begin(), allGeoIds.end(), 0);
+        auto out = std::make_unique<DrawSketchHandlerScale>(std::move(allGeoIds));
+
+        out->setSketchGui(vp);
         out->referencePoint = Base::Vector2d(0.0, 0.0);
         out->scaleFactor = scaleFactor;
         out->abortOnFail = abortOnFail;
         out->allowOriginConstraint = true;
+        out->isAllGeoIds = true;
         return out;
     }
 
@@ -106,10 +113,13 @@ public:
 
             createShape(false);
 
+            if (deleteOriginal) {
+                deleteOriginalGeos();
+            }
+
             commandAddShapeGeometryAndConstraints();
 
             if (deleteOriginal) {
-                deleteOriginalGeos();
                 reassignFacadeIds();
             }
 
@@ -243,31 +253,52 @@ private:
 private:
     std::vector<int> listOfGeoIds;
     std::vector<long> listOfFacadeIds;
+    std::vector<int> listOfModifiedConstrIds;  // Ids of original constraints which where modified
     Base::Vector2d referencePoint, startPoint, endPoint;
     bool deleteOriginal;
     bool abortOnFail;  // When the scale operation is part of a larger transaction, one might want
                        // to continue even if the scaling failed
     bool allowOriginConstraint;  // Conserve constraints with origin
+    bool isAllGeoIds;            // if true (default for centerScaleAll), and deleteOriginal is true
+                       // (default), use deleteAllGeometries to avoid many searches in a vector
     double refLength, length, scaleFactor;
 
     void deleteOriginalGeos()
     {
-        std::stringstream stream;
-        for (size_t j = 0; j < listOfGeoIds.size() - 1; j++) {
-            stream << listOfGeoIds[j] << ",";
+        if (listOfGeoIds.empty()) {
+            return;
         }
-        stream << listOfGeoIds[listOfGeoIds.size() - 1];
-        try {
-            Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                  "delGeometries([%s])",
-                                  stream.str().c_str());
+
+        if (isAllGeoIds) {
+            try {
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "deleteAllGeometry(True)");
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().error("%s\n", e.what());
+            }
         }
-        catch (const Base::Exception& e) {
-            Base::Console().error("%s\n", e.what());
+        else {
+            std::stringstream stream;
+            for (size_t j = 0; j < listOfGeoIds.size() - 1; j++) {
+                stream << listOfGeoIds[j] << ",";
+            }
+            stream << listOfGeoIds[listOfGeoIds.size() - 1];
+            try {
+                Gui::cmdAppObjectArgs(sketchgui->getObject(),
+                                      "delGeometries([%s], True)",
+                                      stream.str().c_str());
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().error("%s\n", e.what());
+            }
         }
     }
     void reassignFacadeIds()
     {
+        if (listOfFacadeIds.empty()) {
+            return;
+        }
+
         std::stringstream stream;
         int geoId = getHighestCurveIndex() - listOfFacadeIds.size() + 1;
         for (size_t j = 0; j < listOfFacadeIds.size() - 1; j++) {
@@ -398,14 +429,20 @@ private:
             addLineToShapeGeometry(toVector3d(referencePoint), toVector3d(endPoint), true);
         }
         else {
-            int firstCurveCreated = getHighestCurveIndex() + 1;
+            int firstCurveCreated = 0;
+            if (deleteOriginal) {
+                // Geo ids will be removed so we offset it some more
+                firstCurveCreated = getHighestCurveIndex() + 1 - listOfGeoIds.size();
+            }
+            else {
+                firstCurveCreated = getHighestCurveIndex() + 1;
+            }
 
             const std::vector<Constraint*>& vals = Obj->Constraints.getValues();
-            // avoid applying equal several times if cloning distanceX and distanceY of the
-            // same part.
-            std::vector<int> geoIdsWhoAlreadyHasEqual = {};
 
-            for (auto& cstr : vals) {
+            for (size_t i = 0; i < vals.size(); ++i) {
+                Constraint* cstr = vals[i];
+
                 if (skipConstraint(cstr)) {
                     continue;
                 }
@@ -437,6 +474,7 @@ private:
                 }
                 // (cstr->Type == Block || cstr->Type == Weight)
 
+                listOfModifiedConstrIds.push_back(i);
                 ShapeConstraints.push_back(std::move(newConstr));
             }
         }
