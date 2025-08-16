@@ -25,7 +25,9 @@
 
 #include <Base/Console.h>
 #include <Base/Tools2D.h>
+#include <Base/Unit.h>
 #include <Gui/EditableDatumLabel.h>
+#include <cmath>
 
 #include "DrawSketchDefaultHandler.h"
 #include "SketcherToolDefaultWidget.h"
@@ -304,11 +306,37 @@ public:
         }
     }
 
+    /** @brief Validates and unsets parameters that are below confusion threshold
+     * Only unsets parameters when user has finished editing to prevent
+     * degenerate geometry while allowing intermediate typing.
+     * Uses unit system to distinguish between angles (allow zero) and dimensions (validate zero) */
+    void validateAndUnsetFinishedParameters()
+    {
+        for (size_t i = 0; i < onViewParameters.size(); ++i) {
+            if (onViewParameters[i]->isSet && onViewParameters[i]->hasFinishedEditing) {
+                double value = onViewParameters[i]->getValue();
+
+                Base::Unit unit = onViewParameters[i]->getUnit();
+
+                // skip validation for angles and coordinates, they can be valid here
+                if (unit == Base::Unit::Angle || unit == Base::Unit::One) {
+                    continue;
+                }
+
+                if (fabs(value) < Precision::Confusion()) {
+                    unsetOnViewParameter(onViewParameters[i].get());
+                }
+            }
+        }
+    }
+
     /** @brief function triggered by the handler to ensure its operating position takes into
      * account widget mandated parameters */
     void enforceControlParameters(Base::Vector2d& onSketchPos)
     {
         prevCursorPosition = onSketchPos;
+
+        validateAndUnsetFinishedParameters();
 
         doEnforceControlParameters(onSketchPos);  // specialisation interface
 

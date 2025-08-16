@@ -1135,8 +1135,8 @@ void DSHOffsetControllerBase::adaptDrawingToOnViewParameterChange(int labelindex
 {
     switch (labelindex) {
         case OnViewParameter::First: {
-            if (value == 0.) {
-                // Do not accept 0.
+            if (value == 0. && onViewParameters[OnViewParameter::First]->hasFinishedEditing) {
+                // Do not accept 0, but only if user has finished editing the OVP.
                 unsetOnViewParameter(onViewParameters[OnViewParameter::First].get());
 
                 Gui::NotifyUserError(

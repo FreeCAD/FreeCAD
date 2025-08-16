@@ -383,11 +383,6 @@ void DSHPolygonControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
 
             if (thirdParam->isSet) {
                 length = thirdParam->getValue();
-                if (length < Precision::Confusion()) {
-                    unsetOnViewParameter(thirdParam.get());
-                    return;
-                }
-
                 onSketchPos = handler->centerPoint + length * dir.Normalize();
             }
 
