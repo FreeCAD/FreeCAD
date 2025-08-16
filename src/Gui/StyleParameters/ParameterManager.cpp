@@ -223,7 +223,17 @@ void UserParameterSource::remove(const std::string& name)
 
 YamlParameterSource::YamlParameterSource(const std::string& filePath, const Metadata& metadata)
     : ParameterSource(metadata)
-    , filePath(filePath)
+{
+    changeFilePath(filePath);
+}
+
+void YamlParameterSource::changeFilePath(const std::string& path)
+{
+    this->filePath = path;
+    reload();
+}
+
+void YamlParameterSource::reload()
 {
     QFile file(QString::fromStdString(filePath));
 
@@ -240,6 +250,7 @@ YamlParameterSource::YamlParameterSource(const std::string& filePath, const Meta
     std::string content = in.readAll().toStdString();
 
     YAML::Node root = YAML::Load(content);
+    parameters.clear();
     for (auto it = root.begin(); it != root.end(); ++it) {
         auto key = it->first.as<std::string>();
         auto value = it->second.as<std::string>();
@@ -288,7 +299,7 @@ void YamlParameterSource::flush()
 
     QFile file(QString::fromStdString(filePath));
     if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
-        FC_TRACE("StyleParameters: Unable to open file " << filePath);
+        FC_WARN("StyleParameters: Unable to open file " << filePath);
         return;
     }
 

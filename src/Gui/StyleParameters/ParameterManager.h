@@ -403,6 +403,9 @@ public:
      */
     explicit YamlParameterSource(const std::string& filePath, const Metadata& metadata = {});
 
+    void changeFilePath(const std::string& path);
+    void reload();
+
     std::list<Parameter> all() const override;
     std::optional<Parameter> get(const std::string& name) const override;
     void define(const Parameter& param) override;
