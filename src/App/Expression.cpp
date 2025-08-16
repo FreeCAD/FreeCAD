@@ -3264,7 +3264,7 @@ Expression *ConditionalExpression::simplify() const
     if (!v)
         return new ConditionalExpression(owner, condition->simplify(), trueExpr->simplify(), falseExpr->simplify());
     else {
-        if (fabs(v->getValue()) > 0.5)
+        if (fabs(v->getValue()) >= Base::Precision::Confusion())
             return trueExpr->simplify();
         else
             return falseExpr->simplify();
