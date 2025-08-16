@@ -37,6 +37,7 @@
 #include <App/ExpressionParser.h>
 #include <App/VarSet.h>
 #include <Base/Tools.h>
+#include <regex>
 
 #include "Dialogs/DlgExpressionInput.h"
 #include "ui_DlgExpressionInput.h"
@@ -74,22 +75,22 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     initializeVarSets();
 
     // Connect signal(s)
-    connect(ui->expression, &ExpressionLineEdit::textChanged,
+    connect(ui->expression, &ExpressionTextEdit::textChanged,
         this, &DlgExpressionInput::textChanged);
     connect(discardBtn, &QPushButton::clicked,
         this, &DlgExpressionInput::setDiscarded);
 
     if (expression) {
-        ui->expression->setText(QString::fromStdString(expression->toString()));
+        ui->expression->setPlainText(QString::fromStdString(expression->toString()));
     }
     else {
         QVariant text = parent->property("text");
         if (text.canConvert<QString>()) {
-            ui->expression->setText(text.toString());
+            ui->expression->setPlainText(text.toString());
         }
     }
 
-    // Set document object on line edit to create auto completer
+    // Set document object on text edit to create auto completer
     DocumentObject * docObj = path.getDocumentObject();
     ui->expression->setDocumentObject(docObj);
 
@@ -109,8 +110,10 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
         setAttribute(Qt::WA_TranslucentBackground, true);
     }
     else {
-        ui->expression->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-        ui->horizontalSpacer_3->changeSize(0, 2);
+        ui->expression->setMinimumHeight(50);
+        ui->msg->setWordWrap(true);
+        ui->msg->setMaximumHeight(200);
+        ui->msg->setMinimumWidth(200);
         ui->verticalLayout->setContentsMargins(9, 9, 9, 9);
         this->adjustSize();
         // It is strange that (at least on Linux) DlgExpressionInput will shrink
@@ -324,20 +327,22 @@ void DlgExpressionInput::checkExpression(const QString& text)
                 }
 
                 numberRange.throwIfOutOfRange(value);
-
-                ui->msg->setText(QString::fromStdString(msg));
+                message = msg;
             }
             else {
-                ui->msg->setText(QString::fromStdString(result->toString()));
+                message = result->toString();
             }
+            setMsgText();
 
         }
 }
 
 static const bool NO_CHECK_EXPR = false;
 
-void DlgExpressionInput::textChanged(const QString &text)
+void DlgExpressionInput::textChanged()
 {
+    const QString& text = ui->expression->toPlainText();
+
     if (text.isEmpty()) {
         okBtn->setDisabled(true);
         discardBtn->setDefault(true);
@@ -347,17 +352,6 @@ void DlgExpressionInput::textChanged(const QString &text)
     okBtn->setDefault(true);
 
     try {
-        //resize the input field according to text size
-        QFontMetrics fm(ui->expression->font());
-        int width = QtTools::horizontalAdvance(fm, text) + 15;
-        if (width < minimumWidth)
-            ui->expression->setMinimumWidth(minimumWidth);
-        else
-            ui->expression->setMinimumWidth(width);
-
-        if(this->width() < ui->expression->minimumWidth())
-            setMinimumWidth(ui->expression->minimumWidth());
-
         checkExpression(text);
         if (varSetsVisible) {
             // If varsets are visible, check whether the varset info also
@@ -367,7 +361,8 @@ void DlgExpressionInput::textChanged(const QString &text)
         }
     }
     catch (Base::Exception & e) {
-        ui->msg->setText(QString::fromUtf8(e.what()));
+        message = e.what();
+        setMsgText();
         QPalette p(ui->msg->palette());
         p.setColor(QPalette::WindowText, Qt::red);
         ui->msg->setPalette(p);
@@ -757,7 +752,7 @@ void DlgExpressionInput::updateVarSetInfo(bool checkExpr)
         if (checkExpr) {
             // We have to check the text of the expression as well
             try {
-                checkExpression(ui->expression->text());
+                checkExpression(ui->expression->toPlainText());
                 okBtn->setEnabled(true);
             }
             catch (Base::Exception&) {
@@ -768,6 +763,52 @@ void DlgExpressionInput::updateVarSetInfo(bool checkExpr)
     else {
         okBtn->setEnabled(false);
         reportVarSetInfo("Select a variable set.");
+    }
+}
+
+void DlgExpressionInput::resizeEvent(QResizeEvent *event)
+{
+    // When the dialog is resized, message text may need to be re-wrapped
+    if (!this->message.empty() && event->size() != event->oldSize()) {
+        setMsgText();
+    }
+    QDialog::resizeEvent(event);  
+}
+
+void DlgExpressionInput::setMsgText()
+{
+    if (!this->message.size()) {
+        return;
+    }
+
+    const QFontMetrics msgFontMetrics{ ui->msg->font() };
+
+    // find words longer than length of msg widget
+    // then insert newline to wrap it
+    std::string wrappedMsg{};
+    const int msgContentWidth = ui->msg->width() - 10; // 10 is the margin/padding
+    const int maxWordLength = msgContentWidth / msgFontMetrics.averageCharWidth(); 
+
+    const auto wrappableWordPattern = std::regex{ "\\S{" + std::to_string(maxWordLength) + "}" };
+    auto it = std::sregex_iterator{ this->message.cbegin(), this->message.cend(), wrappableWordPattern };
+    const auto it_end = std::sregex_iterator{};
+
+    int lastPos = 0;
+    for (; it != it_end; ++it) {
+        wrappedMsg += this->message.substr(lastPos, it->position() - lastPos);
+        wrappedMsg += it->str() + "\n";
+        lastPos = it->position() + it->length();
+    }
+    wrappedMsg += this->message.substr(lastPos);
+
+    ui->msg->setText(QString::fromStdString(wrappedMsg));
+    
+    // elide text if it is going out of widget bounds 
+    // note: this is only 'rough elide', as this text is usually not very long;
+    const int msgLinesLimit = 3;
+    if (wrappedMsg.size() > msgContentWidth / msgFontMetrics.averageCharWidth() * msgLinesLimit) {
+        const QString elidedMsg = msgFontMetrics.elidedText(QString::fromStdString(wrappedMsg), Qt::ElideRight, msgContentWidth * msgLinesLimit);
+        ui->msg->setText(elidedMsg);
     }
 }
 
