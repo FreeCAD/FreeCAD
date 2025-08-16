@@ -32,7 +32,6 @@
 #include <Gui/Command.h>
 #include <Gui/Tools.h>
 #include <Mod/PartDesign/App/FeatureExtrude.h>
-#include <Mod/Part/Gui/ReferenceHighlighter.h>
 
 #include "ui_TaskPadPocketParameters.h"
 #include "TaskExtrudeParameters.h"
@@ -264,7 +263,7 @@ void TaskExtrudeParameters::onSelectShapeFacesToggle(bool checked)
     }
     else {
         setSelectionMode(None);
-        ui->buttonShapeFace->setText(tr("Select faces"));
+        ui->buttonShapeFace->setText(tr("Select Faces"));
     }
 }
 
@@ -602,7 +601,7 @@ void TaskExtrudeParameters::fillDirectionCombo()
         }
 
         // add the other entries
-        addAxisToCombo(nullptr, std::string(), tr("Select reference..."));
+        addAxisToCombo(nullptr, std::string(), tr("Select reference…"));
 
         // we start with the sketch normal as proposal for the custom direction
         if (pcSketch) {

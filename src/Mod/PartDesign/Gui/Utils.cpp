@@ -137,11 +137,10 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
                 DlgActiveBody dia(
                     Gui::getMainWindow(),
                     doc,
-                    QObject::tr("In order to use PartDesign you need an active Body object in the document. "
-                                "Please make one active (double click) or create one."
-                                "\n\nIf you have a legacy document with PartDesign objects without Body, "
-                                "use the migrate function in PartDesign to put them into a Body."
-                        ));
+                    QObject::tr("To use Part Design, an active body object is required in the document. "
+                                "Activate a body (double-click) or create a new one."
+                                "\n\nFor legacy documents with Part Design objects lacking a body, "
+                                "use the migrate function in Part Design to place them into a body."));
                 if (dia.exec() == QDialog::DialogCode::Accepted)
                     activeBody = dia.getActiveBody();
             }
@@ -186,9 +185,8 @@ void needActiveBodyError()
 {
     QMessageBox::warning( Gui::getMainWindow(),
         QObject::tr("Active Body Required"),
-        QObject::tr("To create a new PartDesign object, there must be "
-                    "an active Body object in the document. Please make "
-                    "one active (double click) or create a new Body.") );
+        QObject::tr("To create a new Part Design object, an active body is required in the document. "
+            "Activate an existing body (double-click) or create a new one."));
 }
 
 PartDesign::Body * makeBody(App::Document *doc)
@@ -283,7 +281,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
     const App::Document* doc = sketch->getDocument();
     PartDesign::Body *body = getBodyFor(sketch, /*messageIfNot*/ false);
     if (!body) {
-        throw Base::RuntimeError ("Couldn't find body for the sketch");
+        throw Base::RuntimeError ("Could not find a body for the sketch");
     }
 
     // Get the Origin for the body
@@ -393,7 +391,7 @@ void relinkToBody (PartDesign::Feature *feature) {
     PartDesign::Body *body = PartDesign::Body::findBodyOf ( feature );
 
     if (!body) {
-        throw Base::RuntimeError ("Couldn't find body for the feature");
+        throw Base::RuntimeError ("Could not find a body for the feature");
     }
 
     for ( const auto & obj: doc->getObjects () ) {

@@ -7134,9 +7134,7 @@ int SketchObject::addExternal(App::DocumentObject* Obj,
     std::vector<long> Types = ExternalTypes.getValues();
     std::vector<DocumentObject*> Objects = ExternalGeometry.getValues();
     std::vector<std::string> SubElements = ExternalGeometry.getSubValues();
-    if (Types.size() != Objects.size()) {
-        Types.resize(Objects.size(), 0);
-    }
+    Types.resize(Objects.size(), static_cast<long>(ExtType::Projection));
 
     const std::vector<DocumentObject*> originalObjects = Objects;
     const std::vector<std::string> originalSubElements = SubElements;
@@ -8763,9 +8761,7 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
     BRepBuilderAPI_MakeFace mkFace(sketchPlane);
     TopoDS_Shape aProjFace = mkFace.Shape();
 
-    if (Types.size() != Objects.size()) {
-        Types.resize(Objects.size(), 0);
-    }
+    Types.resize(Objects.size(), static_cast<long>(ExtType::Projection));
 
     std::set<std::string> refSet;
     // We use a vector here to keep the order (roughly) the same as ExternalGeometry

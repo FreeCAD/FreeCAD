@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Select a Tool Shape</string>
+   <string>Tool Shape Selection</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0">
    <item>
@@ -31,7 +31,7 @@
          </rect>
         </property>
         <attribute name="label">
-         <string>Standard Tools</string>
+         <string>Standard tools</string>
         </attribute>
        </widget>
        <widget class="QWidget" name="customTools">
@@ -44,7 +44,7 @@
          </rect>
         </property>
         <attribute name="label">
-         <string>My Tools</string>
+         <string>My tools</string>
         </attribute>
        </widget>
       </widget>

@@ -56,10 +56,10 @@ def heal(objlist=None, delete=True, reparent=True):
 
     if not objlist:
         objlist = App.ActiveDocument.Objects
-        print("Automatic mode: Healing whole document...")
+        print("Automatic mode: Healing whole document…")
         auto = True
     else:
-        print("Manual mode: Force-healing selected objects...")
+        print("Manual mode: Force-healing selected objects…")
 
     if not isinstance(objlist,list):
         objlist = [objlist]

@@ -267,7 +267,7 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
 
     d->filletType = type;
     if (d->filletType == DlgFilletEdges::CHAMFER) {
-        ui->parameterName->setTitle(tr("Chamfer Parameters"));
+        ui->parameterName->setTitle(tr("Chamfer parameters"));
         ui->labelfillet->setText(tr("Chamfer type"));
         ui->labelRadius->setText(tr("Length:"));
         ui->filletType->setItemText(0, tr("Equal distance"));
@@ -278,7 +278,7 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
         model->setHeaderData(2, Qt::Horizontal, tr("Size2"), Qt::DisplayRole);
     }
     else {
-        ui->parameterName->setTitle(tr("Fillet Parameter"));
+        ui->parameterName->setTitle(tr("Fillet parameter"));
         ui->labelfillet->setText(tr("Fillet type"));
         model->setHeaderData(0, Qt::Horizontal, tr("Edges to fillet"), Qt::DisplayRole);
         model->setHeaderData(1, Qt::Horizontal, tr("Start radius"), Qt::DisplayRole);
@@ -961,7 +961,7 @@ bool DlgFilletEdges::accept()
     if (!d->object) {
         QMessageBox::warning(this, tr("No shape selected"),
             tr("No valid shape is selected.\n"
-               "Please select a valid shape in the drop-down box first."));
+               "Select a valid shape in the drop-down box first."));
         return false;
     }
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
@@ -1013,7 +1013,7 @@ bool DlgFilletEdges::accept()
     if (!todo) {
         QMessageBox::warning(this, tr("No edge selected"),
             tr("No edge entity is checked to fillet.\n"
-               "Please check one or more edge entities first."));
+               "Check one or more edge entities first."));
         return false;
     }
 

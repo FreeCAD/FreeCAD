@@ -96,7 +96,7 @@ class TestFCTBSerializer(_BaseToolBitSerializerTestCase):
         self.assertEqual(data.get("name"), "Test Tool")
         self.assertEqual(data.get("shape"), "endmill.fcstd")
         self.assertEqual(data.get("parameter", {}).get("Diameter"), "4.12 mm")
-        self.assertEqual(data.get("parameter", {}).get("Length"), "15.0 mm", data)
+        self.assertEqual(data.get("parameter", {}).get("Length"), "15.00 mm", data)
 
     def test_extract_dependencies(self):
         """Test dependency extraction for FCTB."""

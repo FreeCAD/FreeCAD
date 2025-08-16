@@ -219,6 +219,97 @@ class SpreadsheetAggregates(unittest.TestCase):
             )
         )
 
+    def test_and(self):
+        self.sheet.set("C20", "4")
+        self.sheet.set("C21", "5")
+        self.sheet.set("C22", "6")
+        self.sheet.set("C23", "0")
+
+        self.sheet.set("A1", "=and(1)")
+        self.sheet.set("A2", "=and(1;2)")
+        self.sheet.set("A3", "=and(1;2;3)")
+        self.sheet.set("A4", "=and(1;2;3;C20)")
+        self.sheet.set("A5", "=and(1;2;3;C20:C22)")
+        self.sheet.set("A6", "=and(1;2;3;C20:C23)")
+
+        self.sheet.set("B1", "=and(0)")
+        self.sheet.set("B2", "=and(0;1;2)")
+        self.sheet.set("B3", "=and(0;1;2;3)")
+        self.sheet.set("B4", "=and(1;2;0)")
+        self.sheet.set("B5", "=and(1;2;3;0)")
+        self.sheet.set("B6", "=and(1;0;2)")
+        self.sheet.set("B6", "=and(1;0;2;0;3)")
+
+        self.doc.recompute()
+
+        self.assertEqual(self.sheet.A1, 1)
+        self.assertEqual(self.sheet.A2, 1)
+        self.assertEqual(self.sheet.A3, 1)
+        self.assertEqual(self.sheet.A4, 1)
+        self.assertEqual(self.sheet.A5, 1)
+        self.assertEqual(self.sheet.A6, 0)
+
+        self.assertEqual(self.sheet.B1, 0)
+        self.assertEqual(self.sheet.B2, 0)
+        self.assertEqual(self.sheet.B3, 0)
+        self.assertEqual(self.sheet.B4, 0)
+        self.assertEqual(self.sheet.B5, 0)
+        self.assertEqual(self.sheet.B6, 0)
+
+    def test_or(self):
+        self.sheet.set("C20", "4")
+        self.sheet.set("C21", "5")
+        self.sheet.set("C22", "6")
+        self.sheet.set("C23", "0")
+        self.sheet.set("C24", "0")
+
+        self.sheet.set("A1", "=or(1)")
+        self.sheet.set("A2", "=or(1;2)")
+        self.sheet.set("A3", "=or(1;2;3)")
+        self.sheet.set("A4", "=or(1;2;3;C20)")
+        self.sheet.set("A5", "=or(1;2;3;C20:C22)")
+        self.sheet.set("A6", "=or(1;2;3;C20:C23)")
+
+        self.sheet.set("B1", "=or(0)")
+        self.sheet.set("B2", "=or(0;1;2)")
+        self.sheet.set("B3", "=or(0;1;2;3)")
+        self.sheet.set("B4", "=or(1;2;0)")
+        self.sheet.set("B5", "=or(1;2;3;0)")
+        self.sheet.set("B6", "=or(1;0;2)")
+        self.sheet.set("B6", "=or(1;0;2;0;3)")
+
+        self.sheet.set("C1", "=or(0)")
+        self.sheet.set("C2", "=or(0;0)")
+        self.sheet.set("C3", "=or(0mm;0;0)")
+        self.sheet.set("C4", "=or(0;0;0;C23)")
+        self.sheet.set("C5", "=or(0;0;0;C23:C24)")
+        self.sheet.set("C6", "=or(C23:C24)")
+        self.sheet.set("C7", "=or(C22:C24)")
+
+        self.doc.recompute()
+
+        self.assertEqual(self.sheet.A1, 1)
+        self.assertEqual(self.sheet.A2, 1)
+        self.assertEqual(self.sheet.A3, 1)
+        self.assertEqual(self.sheet.A4, 1)
+        self.assertEqual(self.sheet.A5, 1)
+        self.assertEqual(self.sheet.A6, 1)
+
+        self.assertEqual(self.sheet.B1, 0)
+        self.assertEqual(self.sheet.B2, 1)
+        self.assertEqual(self.sheet.B3, 1)
+        self.assertEqual(self.sheet.B4, 1)
+        self.assertEqual(self.sheet.B5, 1)
+        self.assertEqual(self.sheet.B6, 1)
+
+        self.assertEqual(self.sheet.C1, 0)
+        self.assertEqual(self.sheet.C2, 0)
+        self.assertEqual(self.sheet.C3, 0)
+        self.assertEqual(self.sheet.C4, 0)
+        self.assertEqual(self.sheet.C5, 0)
+        self.assertEqual(self.sheet.C6, 0)
+        self.assertEqual(self.sheet.C7, 1)
+
 
 #############################################################################################
 class SpreadsheetFunction(unittest.TestCase):
@@ -546,6 +637,35 @@ class SpreadsheetFunction(unittest.TestCase):
         self.assertMostlyEqual(self.sheet.B27, math.sqrt(l * l - 5 * 5 - 4 * 4))
         self.assertTrue(self.sheet.C27.startswith("ERR: Units must be equal"))
         self.assertMostlyEqual(self.sheet.D27, Units.Quantity("3 mm"))
+
+    def test_not(self):
+        self.sheet.set("A20", "=not(3)")
+        self.sheet.set("B20", "=not(-3)")
+        self.sheet.set("C20", "=not(-3.5)")
+        self.sheet.set("D20", "=not(3mm)")
+        self.sheet.set("E20", "=not(3.5mm)")
+        self.sheet.set("F20", "=not(-3.5mm)")
+        self.sheet.set("G20", "=not(0)")
+        self.sheet.set("H20", "=not(0mm)")
+        self.sheet.set("I20", "=not(1)")
+
+        self.doc.recompute()
+
+        self.assertEqual(self.sheet.A20, 0)
+        self.assertEqual(self.sheet.B20, 0)
+        self.assertEqual(self.sheet.C20, 0)
+        self.assertEqual(self.sheet.D20, 0)
+        self.assertEqual(self.sheet.E20, 0)
+        self.assertEqual(self.sheet.F20, 0)
+        self.assertEqual(self.sheet.G20, 1)
+        self.assertEqual(self.sheet.H20, 1)
+        self.assertEqual(self.sheet.I20, 0)
+
+        self.sheet.set("J21", f"=not(not({1e-7}))")
+        self.sheet.set("J22", f"=not(not({1e-8}))")
+        self.doc.recompute()
+        self.assertEqual(self.sheet.J21, 1)
+        self.assertEqual(self.sheet.J22, 0)
 
 
 #############################################################################################

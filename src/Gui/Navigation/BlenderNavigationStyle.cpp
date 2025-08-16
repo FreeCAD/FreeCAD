@@ -51,7 +51,7 @@ const char* BlenderNavigationStyle::mouseButtons(ViewerMode mode)
     case NavigationStyle::SELECTION:
         return QT_TR_NOOP("Press left mouse button");
     case NavigationStyle::PANNING:
-        return QT_TR_NOOP("Press SHIFT and middle mouse button");
+        return QT_TR_NOOP("Press Shift and middle mouse button");
     case NavigationStyle::DRAGGING:
         return QT_TR_NOOP("Press middle mouse button");
     case NavigationStyle::ZOOMING:

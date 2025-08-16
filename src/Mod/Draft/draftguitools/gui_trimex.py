@@ -75,9 +75,7 @@ class Trimex(gui_base_original.Modifier):
                 'Accel': "T, R",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Trimex", "Trimex"),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_Trimex",
-                    "Trims or extends the selected object, or extrudes single"
-                    + " faces.\nSHIFT constrains to current segment"
-                    + " or to normal, ALT inverts.")}
+                    "Trims or extends the selected object, or extrudes single faces")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -117,7 +115,7 @@ class Trimex(gui_base_original.Modifier):
         if not hasattr(self.obj, "Shape"):
             self.obj = None
             self.finish()
-            _err(translate("draft", "This object is not supported."))
+            _err(translate("draft", "This object is not supported"))
             return
         if hasattr(self.obj, "Placement"):
             self.placement = self.obj.Placement
@@ -134,7 +132,7 @@ class Trimex(gui_base_original.Modifier):
             else:
                 self.obj = None
                 self.finish()
-                _err(translate("draft", "Only a single face can be extruded."))
+                _err(translate("draft", "Only a single face can be extruded"))
                 return
             self.extrudeMode = True
             self.normal = self.obj.Shape.Faces[0].normalAt(0.5, 0.5)
@@ -153,7 +151,7 @@ class Trimex(gui_base_original.Modifier):
                 if isinstance(e.Curve,(Part.BSplineCurve, Part.BezierCurve)):
                     self.obj = None
                     self.finish()
-                    _err(translate("draft", "Trimex is not supported yet on this type of object."))
+                    _err(translate("draft", "Trimex does not support this object type"))
                     return
             self.obj.ViewObject.LineColor = (0.5, 0.5, 0.5)
             self.obj.ViewObject.LineWidth = 1
@@ -508,7 +506,7 @@ class Trimex(gui_base_original.Modifier):
             if not utils.getType(obj) in ["Wire", "Circle"]:
                 _err(translate("draft",
                                "Unable to trim these objects, "
-                               "only Draft wires and arcs are supported."))
+                               "only Draft wires and arcs are supported"))
                 return
             if len(obj.Shape.Wires) > 1:
                 _err(translate("draft",
@@ -530,10 +528,10 @@ class Trimex(gui_base_original.Modifier):
                     edge1 = i1
                     edge2 = i2
         if not ints:
-            _err(translate("draft", "These objects don't intersect."))
+            _err(translate("draft", "These objects do not intersect"))
             return
         if len(ints) != 1:
-            _err(translate("draft", "Too many intersection points."))
+            _err(translate("draft", "Too many intersection points"))
             return
 
         v11 = wires[0].Vertexes[0].Point

@@ -84,7 +84,7 @@ PyMOD_INIT_FUNC(MeasureGui)
     }
 
     PyObject* mod = MeasureGui::initModule();
-    Base::Console().log("Loading GUI of Measure module... done\n");
+    Base::Console().log("Loading GUI of Measure module… done\n");
 
     // instantiating the commands
     CreateMeasureCommands();

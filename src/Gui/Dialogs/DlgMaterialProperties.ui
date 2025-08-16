@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Material properties</string>
+   <string>Material Properties</string>
   </property>
   <property name="sizeGripEnabled">
    <bool>true</bool>
@@ -44,14 +44,14 @@
       <item row="1" column="0">
        <widget class="QLabel" name="textLabel1">
         <property name="text">
-         <string>Diffuse color:</string>
+         <string>Diffuse color</string>
         </property>
        </widget>
       </item>
       <item row="4" column="0">
        <widget class="QLabel" name="textLabel4">
         <property name="text">
-         <string>Shininess:</string>
+         <string>Shininess</string>
         </property>
        </widget>
       </item>
@@ -75,7 +75,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="textLabel2">
         <property name="text">
-         <string>Ambient color:</string>
+         <string>Ambient color</string>
         </property>
        </widget>
       </item>
@@ -111,7 +111,7 @@
       <item row="3" column="0">
        <widget class="QLabel" name="textLabel3">
         <property name="text">
-         <string>Specular color:</string>
+         <string>Specular color</string>
         </property>
        </widget>
       </item>
@@ -145,14 +145,14 @@
       <item row="2" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Emissive color:</string>
+         <string>Emissive color</string>
         </property>
        </widget>
       </item>
       <item row="5" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Transparency:</string>
+         <string>Transparency</string>
         </property>
        </widget>
       </item>

@@ -246,6 +246,7 @@ TaskDlgMirroredParameters::TaskDlgMirroredParameters(ViewProviderMirrored* Mirro
     parameter = new TaskMirroredParameters(MirroredView);
 
     Content.push_back(parameter);
+    Content.push_back(preview);
 }
 
 #include "moc_TaskMirroredParameters.cpp"

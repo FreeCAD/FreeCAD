@@ -34,7 +34,7 @@ class PartDesignGuiExport ViewProviderPolarPattern : public ViewProviderTransfor
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderPolarPattern);
 public:
     ViewProviderPolarPattern() {
-        menuName = tr("PolarPattern parameters");
+        menuName = tr("Polar Pattern Parameters");
         sPixmap = "PartDesign_PolarPattern.svg";
     }
 

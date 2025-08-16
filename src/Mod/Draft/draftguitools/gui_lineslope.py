@@ -57,14 +57,14 @@ class LineSlope(gui_base.GuiCommandNeedsSelection):
     """
 
     def __init__(self):
-        super().__init__(name=translate("draft", "Change slope"))
+        super().__init__(name=translate("draft", "Change Slope"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
         return {"Pixmap": "Draft_Slope",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_Slope", "Set slope"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Slope", "Sets the slope of the selected line by changing the value of the Z value of one of its points.\nIf a polyline is selected, it will apply the slope transformation to each of its segments.\n\nThe slope will always change the Z value, therefore this command only works well for\nstraight Draft lines that are drawn in the XY plane. Selected objects that aren't single lines will be ignored.")}
+                "MenuText": QT_TRANSLATE_NOOP("Draft_Slope", "Set Slope"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Slope", "Sets the slope of the selected line by changing the value of the Z value of one of its points.\nIf a polyline is selected, it will apply the slope transformation to each of its segments.\n\nThe slope will always change the Z value, therefore this command only works well for\nstraight Draft lines that are drawn on the XY-plane.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -84,7 +84,7 @@ class LineSlope(gui_base.GuiCommandNeedsSelection):
         w.setWindowTitle(translate("Draft", "Slope"))
         layout = QtWidgets.QHBoxLayout(w)
         label = QtWidgets.QLabel(w)
-        label.setText(translate("Draft", "Slope")+":")
+        label.setText(translate("Draft", "Slope"))
         layout.addWidget(label)
         self.spinbox = QtWidgets.QDoubleSpinBox(w)
         self.spinbox.setDecimals(params.get_param("Decimals", path="Units"))

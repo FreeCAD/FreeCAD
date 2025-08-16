@@ -52,7 +52,7 @@ class CommandSolveAssembly:
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_SolveAssembly",
-                "Solve the currently active assembly.",
+                "Solves the currently active assembly.",
             )
             + "</p>",
             "CmdType": "ForEdit",

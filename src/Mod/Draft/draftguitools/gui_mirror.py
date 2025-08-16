@@ -62,7 +62,7 @@ class Mirror(gui_base_original.Modifier):
         return {'Pixmap': 'Draft_Mirror',
                 'Accel': "M, I",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Mirror", "Mirror"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Mirror", "Mirrors the selected objects along a line defined by two points.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Mirror", "Mirrors the selected objects along a line defined by 2 points")}
 
     def Activated(self):
         """Execute when the command is called."""

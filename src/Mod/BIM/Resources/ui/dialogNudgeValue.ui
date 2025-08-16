@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>New nudge value:</string>
+      <string>New nudge value</string>
      </property>
     </widget>
    </item>

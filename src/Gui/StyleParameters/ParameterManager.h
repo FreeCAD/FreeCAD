@@ -37,6 +37,14 @@
 #include <Base/Bitmask.h>
 #include <Base/Parameter.h>
 
+// That macro uses inline const because some older compilers to not properly support constexpr
+// for std::string. It should be changed into static constepxr once we migrate to newer compiler.
+#define DEFINE_STYLE_PARAMETER(_name_, _defaultValue_) \
+    static inline const Gui::StyleParameters::ParameterDefinition _name_ { \
+        .name = #_name_, \
+        .defaultValue = (_defaultValue_), \
+    }
+
 namespace Gui::StyleParameters
 {
 
@@ -51,12 +59,12 @@ class Parser;
  * represents a dimensionless length that can be used as a scalar. This struct does not care about
  * unit conversions as its uses do not require it.
  */
-struct Length
+struct Numeric
 {
     /// Numeric value of the length.
     double value;
     /// Unit of the length, empty if the value is dimensionless.
-    std::string unit;
+    std::string unit = "";
 
     /**
      * @name Operators
@@ -66,11 +74,11 @@ struct Length
      * and hence act as a scalar.
      *
      * @code{c++}
-     * Length a { 10, "px" };
-     * Length b { 5, "px" };
+     * Numeric a { 10, "px" };
+     * Numeric b { 5, "px" };
      *
-     * Length differentUnit { 3, "rem" }
-     * Length scalar { 2, "" };
+     * Numeric differentUnit { 3, "rem" }
+     * Numeric scalar { 2, "" };
      *
      * // basic operations with the same unit are allowed
      * auto sum = a + b; // 15 px
@@ -85,16 +93,16 @@ struct Length
      * @endcode
      * @{
      */
-    Length operator+(const Length& rhs) const;
-    Length operator-(const Length& rhs) const;
-    Length operator-() const;
+    Numeric operator+(const Numeric& rhs) const;
+    Numeric operator-(const Numeric& rhs) const;
+    Numeric operator-() const;
 
-    Length operator/(const Length& rhs) const;
-    Length operator*(const Length& rhs) const;
+    Numeric operator/(const Numeric& rhs) const;
+    Numeric operator*(const Numeric& rhs) const;
     /// @}
 
 private:
-    void ensureEqualUnits(const Length& rhs) const;
+    void ensureEqualUnits(const Numeric& rhs) const;
 };
 
 /**
@@ -107,9 +115,9 @@ private:
  *
  * As a rule, operations can be only performed over values of the same type.
  */
-struct Value : std::variant<Length, QColor, std::string>
+struct Value : std::variant<Numeric, Base::Color, std::string>
 {
-    using std::variant<Length, QColor, std::string>::variant;
+    using std::variant<Numeric, Base::Color, std::string>::variant;
 
     /**
      * Converts the object into its string representation.
@@ -117,6 +125,33 @@ struct Value : std::variant<Length, QColor, std::string>
      * @return A string representation of the object that can later be used in QSS.
      */
     std::string toString() const;
+};
+
+/**
+ * @brief A structure to define parameters which can be referenced in the code.
+ *
+ * @tparam T The type of the parameter.
+ *
+ * This structure allows defining parameters which encapsulate a name and a corresponding
+ * default value. Parameters defined this way can be reused across the codebase for consistency.
+ * The supported value types include:
+ *  - Numeric types.
+ *  - Colors using `Base::Color`.
+ *  - Strings.
+ *
+ * Example Usage:
+ * @code{.cpp}
+ * DEFINE_STYLE_PARAMETER(SomeParameter, Numeric { 10 });
+ * DEFINE_STYLE_PARAMETER(TextColor, Base::Color(0.5F, 0.2F, 0.8F));
+ * @endcode
+ */
+template <typename T>
+struct ParameterDefinition
+{
+    /// The name of the parameter, must be unique.
+    const char* name;
+    /// The default value of the parameter.
+    T defaultValue;
 };
 
 /**
@@ -413,7 +448,29 @@ public:
      * @param context Resolution context for handling circular references
      * @return The resolved value
      */
-    Value resolve(const std::string& name, ResolveContext context = {}) const;
+    std::optional<Value> resolve(const std::string& name, ResolveContext context = {}) const;
+
+    /**
+     * @brief Resolves a parameter to its final value, based on definition.
+     *
+     * This method evaluates the parameter's expression and returns the computed
+     * value or default one from definition if the parameter is not available.
+     *
+     * @param definition Definition of the parameter to resolve
+     * @param context Resolution context for handling circular references
+     * @return The resolved value
+     */
+    template <typename T>
+    T resolve(const ParameterDefinition<T>& definition, ResolveContext context = {}) const
+    {
+        auto value = resolve(definition.name, std::move(context));
+
+        if (!value || !std::holds_alternative<T>(*value)) {
+            return definition.defaultValue;
+        }
+
+        return std::get<T>(*value);
+    }
 
     /**
      * @brief Evaluates an expression string and returns the result.

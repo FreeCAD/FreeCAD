@@ -26,11 +26,19 @@ import FreeCAD
 
 def _remove_from_list(prefs, pref_name):
     # Remove Start and Web from a preference that consists of a comma-separated list of workbenches
-    mods = prefs.GetString(pref_name, "").split(",")
+    # and ensure that the list was not empty
+
+    is_empty_string = "<IS_EMPTY>"
+    mods = prefs.GetString(pref_name, is_empty_string).split(",")
+
+    if is_empty_string in mods:
+        return
+
     if "StartWorkbench" in mods:
         mods.remove("StartWorkbench")
     if "WebWorkbench" in mods:
         mods.remove("WebWorkbench")
+
     prefs.SetString(pref_name, ",".join(mods))
 
 

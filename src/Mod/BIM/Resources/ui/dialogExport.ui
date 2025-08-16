@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>One or more IFC documents contained in this FreeCAD document have been modified, but were not saved.  They will automatically be saved now.</string>
+      <string>One or more IFC documents contained in this FreeCAD document have been modified, but were not saved. They will automatically be saved now.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -27,7 +27,7 @@
    <item>
     <widget class="QCheckBox" name="checkAskBeforeSaving">
      <property name="text">
-      <string>Ask me again next time</string>
+      <string>Ask again next time</string>
      </property>
      <property name="checked">
       <bool>true</bool>

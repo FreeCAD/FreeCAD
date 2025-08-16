@@ -135,12 +135,8 @@ requirements:
         - libspnav
         - xorg-xproto
 
-    - if: osx
-      then:
-        - blas * accelerate*
-
   run:
-    - blas
+    - blas * openblas*
     - blinker
     - calculix
     - debugpy

@@ -77,7 +77,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
     m_basePage = m_baseFeat->findParentPage();
     //it is possible that the basePage could be unparented and have no corresponding Page
     if (!m_basePage) {
-        Base::Console().error("TaskDetail - bad parameters - base page.  Can not proceed.\n");
+        Base::Console().error("TaskDetail - bad parameters - base page.  Cannot proceed.\n");
         return;
     }
 
@@ -141,7 +141,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
 {
     if (!m_detailFeat)  {
         //should be caught in CMD caller
-        Base::Console().error("TaskDetail - bad parameters.  Can not proceed.\n");
+        Base::Console().error("TaskDetail - bad parameters.  Cannot proceed.\n");
         return;
     }
 
@@ -156,7 +156,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
     App::DocumentObject* baseObj = m_detailFeat->BaseView.getValue();
     m_baseFeat = dynamic_cast<TechDraw::DrawViewPart*>(baseObj);
     if (!m_baseFeat) {
-        Base::Console().error("TaskDetail - no BaseView.  Can not proceed.\n");
+        Base::Console().error("TaskDetail - no base view.  Cannot proceed.\n");
         return;
     }
     m_baseName = m_baseFeat->getNameInDocument();
@@ -431,7 +431,7 @@ void TaskDetail::enableTaskButtons(bool button)
 //***** Feature create & edit stuff *******************************************
 void TaskDetail::createDetail()
 {
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Detail View"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Detail view"));
 
     const std::string objectName{"Detail"};
     m_detailName = m_doc->getUniqueObjectName(objectName.c_str());
@@ -493,7 +493,7 @@ void TaskDetail::updateDetail()
     }
     catch (...) {
         //this is probably due to appl closing while dialog is still open
-        Base::Console().error("Task Detail - detail feature update failed.\n");
+        Base::Console().error("Task detail - detail feature update failed.\n");
     }
 
     detailFeat->recomputeFeature();

@@ -211,7 +211,7 @@ class Component(ArchIFC.IfcProduct):
         if not "Tag" in pl:
             obj.addProperty("App::PropertyString","Tag","Component",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"), locked=True)
         if not "StandardCode" in pl:
-            obj.addProperty("App::PropertyString","StandardCode","Component",QT_TRANSLATE_NOOP("App::Property","An optional standard (OmniClass, etc...) code for this component"), locked=True)
+            obj.addProperty("App::PropertyString","StandardCode","Component",QT_TRANSLATE_NOOP("App::Property","An optional standard (OmniClass, etc…) code for this component"), locked=True)
         if not "Material" in pl:
             obj.addProperty("App::PropertyLink","Material","Component",QT_TRANSLATE_NOOP("App::Property","A material for this object"), locked=True)
         if "BaseMaterial" in pl:
@@ -1804,7 +1804,7 @@ class SelectionTaskPanel:
 
     def __init__(self):
         self.baseform = QtGui.QLabel()
-        self.baseform.setText(QtGui.QApplication.translate("Arch", "Please select a base object", None))
+        self.baseform.setText(QtGui.QApplication.translate("Arch", "Select a base object", None))
 
     def getStandardButtons(self):
         """Adds the cancel button."""
@@ -2157,8 +2157,8 @@ class ComponentTaskPanel:
                                                  QtGui.QApplication.translate("Arch", "Value", None)])
 
         # set combos
-        self.ifcEditor.comboProperty.addItems([QtGui.QApplication.translate("Arch", "Add property...", None)]+self.plabels)
-        self.ifcEditor.comboPset.addItems([QtGui.QApplication.translate("Arch", "Add property set...", None),
+        self.ifcEditor.comboProperty.addItems([QtGui.QApplication.translate("Arch", "Add property", None)]+self.plabels)
+        self.ifcEditor.comboPset.addItems([QtGui.QApplication.translate("Arch", "Add property set", None),
                                            QtGui.QApplication.translate("Arch", "New...", None)]+self.psetkeys)
 
         # set UUID

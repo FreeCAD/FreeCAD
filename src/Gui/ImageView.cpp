@@ -176,15 +176,15 @@ bool ImageView::isDragging() const
 void ImageView::contextMenuEvent(QContextMenuEvent* event)
 {
     QMenu menu;
-    QAction* fitToWindowAct = menu.addAction(tr("Fit to window"));
+    QAction* fitToWindowAct = menu.addAction(tr("Fit to Window"));
     fitToWindowAct->setCheckable(true);
     fitToWindowAct->setChecked(isFitToWindow());
     connect(fitToWindowAct, &QAction::toggled, this, &ImageView::fitToWindow);
 
-    QAction* zoomInAct = menu.addAction(tr("Zoom in"), this, &ImageView::zoomIn);
+    QAction* zoomInAct = menu.addAction(tr("Zoom In"), this, &ImageView::zoomIn);
     zoomInAct->setEnabled(canZoomIn());
 
-    QAction* zoomOutAct = menu.addAction(tr("Zoom out"), this, &ImageView::zoomOut);
+    QAction* zoomOutAct = menu.addAction(tr("Zoom Out"), this, &ImageView::zoomOut);
     zoomOutAct->setEnabled(canZoomOut());
 
     menu.exec(event->globalPos());

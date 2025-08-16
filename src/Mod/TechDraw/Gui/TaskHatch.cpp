@@ -227,7 +227,7 @@ void TaskHatch::createHatch()
         Base::Vector3d offset(ui->dsbOffsetX->value(), ui->dsbOffsetY->value(), 0.0);
         m_vp->HatchOffset.setValue(offset);
     } else {
-        Base::Console().error("TaskHatch - Hatch has no ViewProvider\n");
+        Base::Console().error("TaskHatch - hatch has no ViewProvider\n");
     }
     Command::commitCommand();
 }

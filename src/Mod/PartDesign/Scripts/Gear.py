@@ -42,7 +42,7 @@ def compute():
         j = float(l6.text())*m     # standard value 0,015 - 0,04*m
         width = float(l7.text())   # gear width
     except ValueError:
-        FreeCAD.Console.PrintError("Wrong input! Only numbers allowed...\n")
+        FreeCAD.Console.PrintError("Wrong input! Only numbers allowed.\n")
 
 
     # tooth height
