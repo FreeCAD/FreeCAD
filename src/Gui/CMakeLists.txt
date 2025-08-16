@@ -146,7 +146,9 @@ target_include_directories(
     ${QtNetwork_INCLUDE_DIRS}
     ${QtUiTools_INCLUDE_DIRS}
     ${QtXml_INCLUDE_DIRS}
+    ${YAML_CPP_INCLUDE_DIRS}
 )
+
 list(APPEND FreeCADGui_LIBS
     ${QtCore_LIBRARIES}
     ${QtWidgets_LIBRARIES}
@@ -157,6 +159,7 @@ list(APPEND FreeCADGui_LIBS
     ${QtSvgWidgets_LIBRARIES}
     ${QtNetwork_LIBRARIES}
     ${QtUiTools_LIBRARIES}
+    ${YAML_CPP_LIBRARIES}
 )
 
 if(${Qt5WinExtras_FOUND})
