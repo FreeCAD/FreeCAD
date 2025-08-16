@@ -2222,7 +2222,8 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
                         // If it's a combined constraint icon
 
                         // Screen dimensions of the icon
-                        SbVec3s iconSize = getDisplayedSize(static_cast<SoImage*>(tail));
+                        SbVec3s iconSize = getDisplayedSize(static_cast<SoImage*>(tail))
+                            / ViewProviderSketchCoinAttorney::getDevicePixelRatio(viewProvider);
                         // Center of the icon
                         // SbVec2f iconCoords = viewer->screenCoordsOfPath(path);
 
@@ -2279,8 +2280,8 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
                         // Coordinates of the mouse cursor on the icon, origin at top-left for Qt
                         // but bottom-left for OIV.
                         // The coordinates are needed in Qt format, i.e. from top to bottom.
-                        int iconX = cursorCoords[0] - constrCoords[0] + iconSize[0] / 3;
-                        int iconY = constrCoords[1] - cursorCoords[1] + iconSize[1] / 3;
+                        int iconX = cursorCoords[0] - constrCoords[0] + iconSize[0] / 2;
+                        int iconY = constrCoords[1] - cursorCoords[1] + iconSize[1] / 2;
 
                         for (ConstrIconBBVec::iterator b =
                                  combinedConstrBoxes[constrIdsStr].begin();
