@@ -116,7 +116,7 @@ App::DocumentObjectExecReturn *Fillet::execute()
         this->rawShape = shape;
         shape = refineShapeIfActive(shape);
         if (!isSingleSolidRuleSatisfied(shape.getShape())) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently allowed."));
         }
 
         shape = getSolid(shape);

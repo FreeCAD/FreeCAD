@@ -2182,7 +2182,7 @@ App::DocumentObjectExecReturn* Hole::execute()
 
         if (!isSingleSolidRuleSatisfied(result.getShape())) {
             return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+                    QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently allowed."));
         }
         this->Shape.setValue(result);
 
