@@ -36,7 +36,7 @@ import math
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
-# MeshPart = LazyLoader('MeshPart', globals(), 'MeshPart')
+MeshPart = LazyLoader('MeshPart', globals(), 'MeshPart') # tessellate bug Workaround
 Part = LazyLoader("Part", globals(), "Part")
 
 
@@ -1260,7 +1260,11 @@ def _makeSTL(model, obj, ocl, model_type=None):
             shape = model.Shape
         else:
             shape = model
-        vertices, facet_indices = shape.tessellate(obj.LinearDeflection.Value)
+        #vertices, facet_indices = shape.tessellate(obj.LinearDeflection.Value) # tessellate workaround
+        # Workaround for tessellate bug
+        mesh = MeshPart.meshFromShape(Shape=shape, LinearDeflection=0.001, AngularDeflection=0.25)
+        vertices = [point.Vector for point in mesh.Points]
+        facet_indices = [facet.PointIndices for facet in mesh.Facets]
         facets = ((vertices[f[0]], vertices[f[1]], vertices[f[2]]) for f in facet_indices)
     stl = ocl.STLSurf()
     for tri in facets:
