@@ -1279,10 +1279,10 @@ class ObjectWaterline(PathOp.ObjectOp):
             # Get Stock boundbox for OCL Adaptive
             BS = JOB.Stock
             bb = BS.Shape.BoundBox           
-            xmin = abs(bb.XMin)
-            xmax = abs(bb.XMax)
-            ymin = abs(bb.YMin)
-            ymax = abs(bb.YMax)                     
+            xmin = round(abs(bb.XMin), 6)
+            xmax = round(abs(bb.XMax), 6)
+            ymin = round(abs(bb.YMin), 6)
+            ymax = round(abs(bb.YMax), 6)                    
         
         else:            
             if subShp is None:
