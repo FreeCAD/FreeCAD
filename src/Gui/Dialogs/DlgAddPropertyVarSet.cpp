@@ -762,7 +762,10 @@ void DlgAddPropertyVarSet::valueChanged()
  */
 void DlgAddPropertyVarSet::openTransaction()
 {
-    transactionID = App::GetApplication().setActiveTransaction("Add property VarSet");
+    // TODO-theo-vt check again, either way setting active transaction
+    // with the old system would close the current transaction, no?
+    transactionID = varSet->getDocument()->openTransaction("Add property VarSet");
+    // transactionID = App::GetApplication().setActiveTransaction("Add property VarSet");
 }
 
 void DlgAddPropertyVarSet::critical(const QString& title, const QString& text) {

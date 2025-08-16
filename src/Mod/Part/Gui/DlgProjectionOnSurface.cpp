@@ -1176,6 +1176,14 @@ bool TaskProjectionOnSurface::reject()
     widget->reject();
     return true;
 }
+void TaskProjectionOnSurface::activate()
+{
+    widget->attachSelection();
+}
+void TaskProjectionOnSurface::deactivate()
+{
+    widget->detachSelection();
+}
 
 void TaskProjectionOnSurface::clicked(int id)
 {
@@ -1594,6 +1602,14 @@ bool TaskProjectOnSurface::reject()
     widget->reject();
     resetEdit();
     return true;
+}
+void TaskProjectOnSurface::activate()
+{
+    widget->attachSelection();
+}
+void TaskProjectOnSurface::deactivate()
+{
+    widget->detachSelection();
 }
 
 #include "moc_DlgProjectionOnSurface.cpp"

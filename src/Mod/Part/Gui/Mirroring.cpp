@@ -375,5 +375,13 @@ bool TaskMirroring::reject()
 {
     return widget->reject();
 }
+void TaskMirroring::activate()
+{
+    widget->attachSelection();
+}
+void TaskMirroring::deactivate()
+{
+    widget->detachSelection();
+}
 
 #include "moc_Mirroring.cpp"

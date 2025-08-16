@@ -845,8 +845,8 @@ bool TaskProjGroup::reject()
     }
     else {
         //set the DPG and its views back to entry state.
-        if (Gui::Command::hasPendingCommand()) {
-            Gui::Command::abortCommand();
+        if (doc->hasPendingCommand()) {
+            doc->abortCommand();
         }
         // Restore views to initial spacing
         if (multiView) {

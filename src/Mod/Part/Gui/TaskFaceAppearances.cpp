@@ -295,20 +295,22 @@ void FaceAppearances::slotUndoDocument(const Gui::Document& Doc)
 {
     if (d->doc == &Doc) {
         d->doc->resetEdit();
-        Gui::Control().closeDialog();
+        Gui::Control().closeDialog(d->doc->getDocument());
     }
 }
 
 void FaceAppearances::slotDeleteDocument(const Gui::Document& Doc)
 {
-    if (d->doc == &Doc)
-        Gui::Control().closeDialog();
+    if (d->doc == &Doc) {
+        Gui::Control().closeDialog(d->doc->getDocument());
+    }
 }
 
 void FaceAppearances::slotDeleteObject(const Gui::ViewProvider& obj)
 {
-    if (d->vp == &obj)
-        Gui::Control().closeDialog();
+    if (d->vp == &obj) {
+        Gui::Control().closeDialog(d->doc->getDocument());
+    }
 }
 
 void FaceAppearances::onBoxSelectionToggled(bool checked)
@@ -507,6 +509,14 @@ bool TaskFaceAppearances::accept()
 bool TaskFaceAppearances::reject()
 {
     return widget->reject();
+}
+void TaskFaceAppearances::activate()
+{
+    widget->attachSelection();
+}
+void TaskFaceAppearances::deactivate()
+{
+    widget->detachSelection();
 }
 
 #include "moc_TaskFaceAppearances.cpp"

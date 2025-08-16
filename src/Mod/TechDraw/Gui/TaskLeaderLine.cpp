@@ -343,7 +343,7 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> sceneDeltas
 
     std::string PageName = m_basePage->getNameInDocument();
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Leader"));
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create Leader"));
     Command::doCommand(Command::Doc, "App.activeDocument().addObject('%s', '%s')",
                        m_leaderType.c_str(), m_leaderName.c_str());
     Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawLeaderLine', 'LeaderLine', '%s')",
@@ -404,7 +404,7 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> sceneDeltas
     }
 
     Gui::Command::updateActive();
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
 
     //trigger claimChildren in tree
     if (m_baseFeat) {
@@ -430,7 +430,7 @@ void TaskLeaderLine::dumpTrackerPoints(std::vector<Base::Vector3d>& tPoints) con
 void TaskLeaderLine::updateLeaderFeature()
 {
 //    Base::Console().message("TTL::updateLeaderFeature()\n");
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Leader"));
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Edit Leader"));
     //waypoints & x, y are updated by QGILeaderLine (for edits only!)
     commonFeatureUpdate();
     Base::Color ac;
@@ -440,7 +440,7 @@ void TaskLeaderLine::updateLeaderFeature()
     m_lineVP->LineStyle.setValue(ui->cboxStyle->currentIndex());
 
     Gui::Command::updateActive();
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
 
     if (m_baseFeat) {
         m_baseFeat->requestPaint();

@@ -87,6 +87,8 @@ void StdCmdPart::activated(int iMsg)
                                  "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
             PARTKEY, PartName.c_str());
 
+    commitCommand();
+
     updateActive();
 }
 

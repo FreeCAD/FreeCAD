@@ -33,6 +33,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
 #include <Gui/Control.h>
+#include <Gui/Document.h>
 #include <Gui/Selection/SelectionObject.h>
 #include <Gui/Tools.h>
 #include <Gui/Widgets.h>
@@ -404,22 +405,22 @@ void BlendCurvePanel::clearSelection()
 
 void BlendCurvePanel::checkOpenCommand()
 {
-    if (!Gui::Command::hasPendingCommand()) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit blending curve"));
+    if (!vp->getDocument()->hasPendingCommand()) {
+        vp->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Edit blending curve"));
     }
 }
 
 bool BlendCurvePanel::accept()
 {
     Gui::cmdGuiDocument(vp->getObject(), "resetEdit()");
-    Gui::Command::commitCommand();
+    vp->getDocument()->commitCommand();
     Gui::Command::updateActive();
     return true;
 }
 
 bool BlendCurvePanel::reject()
 {
-    Gui::Command::abortCommand();
+    vp->getDocument()->abortCommand();
     Gui::cmdGuiDocument(vp->getObject(), "resetEdit()");
     Gui::Command::updateActive();
     return true;

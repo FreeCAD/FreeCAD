@@ -138,6 +138,7 @@ public:
 
 private:
     SectionsPanel* widget1;
+    Surface::Sections* editedObj;
 };
 
 }  // namespace SurfaceGui

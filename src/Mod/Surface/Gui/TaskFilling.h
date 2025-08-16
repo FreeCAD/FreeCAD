@@ -149,6 +149,7 @@ private:
     FillingPanel* widget1;
     FillingEdgePanel* widget2;
     FillingVertexPanel* widget3;
+    Surface::Filling* editedObj;
 };
 
 }  // namespace SurfaceGui

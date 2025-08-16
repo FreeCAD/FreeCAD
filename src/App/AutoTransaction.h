@@ -30,6 +30,7 @@ namespace App
 {
 
 class Application;
+class Document;
 
 /// Helper class to manager transaction (i.e. undo/redo)
 class AppExport AutoTransaction
@@ -40,50 +41,52 @@ public:
 
 public:
     /** Constructor
-     *
-     * @param name: optional new transaction name on construction
-     * @param tmpName: if true and a new transaction is setup, the name given is
-     * considered as temporary, and subsequent construction of this class (or
-     * calling Application::setActiveTransaction()) can override the transaction
-     * name.
-     *
-     * The constructor increments an internal counter
-     * (Application::_activeTransactionGuard). The counter prevents any new
-     * active transaction being setup. It also prevents close (i.e. commits) the
-     * current active transaction until it reaches zero. It does not have any
-     * effect on aborting transaction, though.
+     * 
+     * @param tid the ID of the transaction to manage
+     * 
+     * No action is done in the constructor
      */
-    AutoTransaction(const char* name = nullptr, bool tmpName = false);
+    AutoTransaction(int tid);
 
     /** Destructor
-     *
-     * This destructor decrease an internal counter
-     * (Application::_activeTransactionGuard), and will commit any current
-     * active transaction when the counter reaches zero.
+     * 
+     * This destructor attempts to commit the transaction it manages
      */
     ~AutoTransaction();
 
     /** Close or abort the transaction
      *
-     * This function can be used to explicitly close (i.e. commit) the
-     * transaction, if the current transaction ID matches the one created inside
-     * the constructor. For aborting, it will abort any current transaction
+     * This function can be used to explicitly close (i.e. commit / abort) the
+     * transaction,
      */
     void close(bool abort = false);
 
-    /** Enable/Disable any AutoTransaction instance in the current stack
-     *
-     * Once disabled, any empty temporary named transaction is closed. If there
-     * are non-empty or non-temporary named active transaction, it will not be
-     * auto closed.
-     *
-     * This function may be used in, for example, Gui::Document::setEdit() to
-     * allow a transaction live past any command scope.
-     */
-    static void setEnable(bool enable);
-
 private:
-    int tid = 0;
+    int tid { 0 };
+};
+
+/// Helper class to manage the lifetime of a transaction
+/// for as long as a TransactionToken holds a specific transaction
+/// it cannot be commited (but it can be aborted)
+/// Pass an instance of this to dialogs to avoid early commits
+/// on command activation
+class TransactionToken {
+public:
+    explicit TransactionToken(int tid_);
+    ~TransactionToken();
+    TransactionToken(TransactionToken&& token) noexcept;
+    TransactionToken& operator=(TransactionToken&& token) noexcept;
+    TransactionToken(const TransactionToken& token);
+    TransactionToken& operator=(const TransactionToken& token);
+
+    // Convenience function to abort the transaction
+    // no such function is available for commit
+    void abort();
+
+    void takeToken(int tid_);
+    void returnToken();
+private:
+    int tid { -1 };
 };
 
 
@@ -98,7 +101,7 @@ public:
     /** Constructor
      * @param lock: whether to activate the lock
      */
-    TransactionLocker(bool lock = true);
+    TransactionLocker(Document* doc, bool lock = true);
 
     /** Destructor
      * Unlock the transaction is this locker is active
@@ -120,10 +123,7 @@ public:
     {
         return active;
     }
-
-    /// Check if transaction is being locked
-    static bool isLocked();
-
+    
     friend class Application;
 
 public:
@@ -132,6 +132,7 @@ public:
 
 private:
     bool active;
+    Document* doc;
 };
 
 }  // namespace App
