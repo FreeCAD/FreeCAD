@@ -133,11 +133,11 @@ Gui--OverlayToolButton::pressed,
 Gui--OverlayToolButton:checked {
   border: 0.5px solid @GeneralBorderColor;
   border-radius: 1px;
-  background-color: @UserHighlight1Color;
+  background-color: @ThemeAccentColor1;
 }
 
 Gui--OverlayToolButton:checked:hover {
-  border: 0.5px solid @UserHighlight1Color;
+  border: 0.5px solid @ThemeAccentColor1;
   background-color:  @3DViewBackgroundRefColor
 }
 
