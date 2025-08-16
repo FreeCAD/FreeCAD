@@ -163,6 +163,7 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::SoBrepEdgeSet                          ::initClass();
     PartGui::SoBrepPointSet                         ::initClass();
     PartGui::SoFCControlPoints                      ::initClass();
+    PartGui::SoFCShape                              ::initClass();
     PartGui::SoPreviewShape                         ::initClass();
     PartGui::ViewProviderAttachExtension            ::init();
     PartGui::ViewProviderAttachExtensionPython      ::init();

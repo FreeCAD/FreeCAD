@@ -45,11 +45,6 @@ SO_NODE_SOURCE(SoPreviewShape);
 const SbColor SoPreviewShape::defaultColor = SbColor(1.F, 0.F, 1.F);
 
 SoPreviewShape::SoPreviewShape()
-    : coords(new SoCoordinate3)
-    , norm(new SoNormal)
-    , faceset(new PartGui::SoBrepFaceSet)
-    , lineset(new PartGui::SoBrepEdgeSet)
-    , nodeset(new PartGui::SoBrepPointSet)
 {
     SO_NODE_CONSTRUCTOR(SoPreviewShape);
 
@@ -216,14 +211,9 @@ void ViewProviderPreviewExtension::updatePreviewShape(Part::TopoShape shape,
 
     const auto updatePreviewShape = [vp](SoPreviewShape* preview, Part::TopoShape shape) {
         ViewProviderPartExt::setupCoinGeometry(shape.getShape(),
-                                               preview->coords,
-                                               preview->faceset,
-                                               preview->norm,
-                                               preview->lineset,
-                                               preview->nodeset,
+                                               preview,
                                                vp->Deviation.getValue(),
-                                               vp->AngularDeflection.getValue(),
-                                               false);
+                                               vp->AngularDeflection.getValue());
     };
 
     try {
