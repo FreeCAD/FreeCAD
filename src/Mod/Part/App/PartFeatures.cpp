@@ -150,7 +150,7 @@ App::DocumentObjectExecReturn* RuledSurface::execute()
                 return new App::DocumentObjectExecReturn("Invalid link.");
             }
         }
-        TopoShape res(0);
+        TopoShape res(0, getDocument()->getStringHasher());
         res.makeElementRuledSurface(shapes, Orientation.getValue());
         this->Shape.setValue(res);
         return Part::Feature::execute();
@@ -229,7 +229,7 @@ App::DocumentObjectExecReturn* Loft::execute()
         IsRuled isRuled = Ruled.getValue() ? IsRuled::ruled : IsRuled::notRuled;
         IsClosed isClosed = Closed.getValue() ? IsClosed::closed : IsClosed::notClosed;
         int degMax = MaxDegree.getValue();
-        TopoShape result(0);
+        TopoShape result(0, getDocument()->getStringHasher());
         result.makeElementLoft(shapes, isSolid, isRuled, isClosed, degMax);
         if (Linearize.getValue()) {
             result.linearize( LinearizeFace::linearizeFaces, LinearizeEdge::noEdges);
@@ -312,7 +312,7 @@ App::DocumentObjectExecReturn* Sweep::execute()
             }
             spineShapes.push_back(shape);
         }
-        spine = TopoShape().makeElementCompound(spineShapes, 0, TopoShape::SingleShapeCompoundCreationPolicy::returnShape);
+        spine = TopoShape(0).makeElementCompound(spineShapes, 0, TopoShape::SingleShapeCompoundCreationPolicy::returnShape);
     }
     std::vector<TopoShape> shapes;
     shapes.push_back(spine);
@@ -326,7 +326,7 @@ App::DocumentObjectExecReturn* Sweep::execute()
     Standard_Boolean isFrenet = Frenet.getValue() ? Standard_True : Standard_False;
     auto transMode = static_cast<TransitionMode>(Transition.getValue());
     try {
-        TopoShape result(0);
+        TopoShape result(0, getDocument()->getStringHasher());
         result.makeElementPipeShell(shapes, isSolid, isFrenet, transMode, Part::OpCodes::Sweep);
         if (Linearize.getValue()) {
             result.linearize(LinearizeFace::linearizeFaces, LinearizeEdge::noEdges);
@@ -427,7 +427,7 @@ App::DocumentObjectExecReturn* Thickness::execute()
     short mode = (short)Mode.getValue();
     short join = (short)Join.getValue();
 
-    this->Shape.setValue(TopoShape(0,getDocument()->getStringHasher())
+    this->Shape.setValue(TopoShape(0, getDocument()->getStringHasher())
                              .makeElementThickSolid(base,
                                                     shapes,
                                                     thickness,

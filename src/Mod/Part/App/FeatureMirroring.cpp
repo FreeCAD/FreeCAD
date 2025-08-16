@@ -38,6 +38,7 @@
 # include <TopExp_Explorer.hxx>
 #endif
 
+#include <App/Document.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
 #include <App/Link.h>
 #include <App/Datums.h>

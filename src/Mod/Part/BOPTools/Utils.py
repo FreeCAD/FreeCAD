@@ -105,11 +105,11 @@ def upgradeToAggregateIfNeeded(list_of_shapes, types = None):
     if "Wire" in types:
         list_of_shapes = [(Part.Wire([shape]) if shape.ShapeType == "Edge" else shape) for shape in list_of_shapes]
     if "Shell" in types:
-        list_of_shapes = [(Part.Shell([shape]) if shape.ShapeType == "Face" else shape) for shape in list_of_shapes]
+        list_of_shapes = [(Part.makeShell([shape]) if shape.ShapeType == "Face" else shape) for shape in list_of_shapes]
     if "CompSolid" in types:
         list_of_shapes = [(Part.CompSolid([shape]) if shape.ShapeType == "Solid" else shape) for shape in list_of_shapes]
     if "Compound" in types:
-        list_of_shapes = [(Part.Compound(upgradeToAggregateIfNeeded(shape.childShapes(), types)) if shape.ShapeType == "Compound" else shape) for shape in list_of_shapes]
+        list_of_shapes = [(Part.makeCompound(upgradeToAggregateIfNeeded(shape.childShapes(), types)) if shape.ShapeType == "Compound" else shape) for shape in list_of_shapes]
     return list_of_shapes
 
 # adapted from http://stackoverflow.com/a/3603824/6285007
