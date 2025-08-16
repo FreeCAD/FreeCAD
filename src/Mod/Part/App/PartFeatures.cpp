@@ -312,7 +312,7 @@ App::DocumentObjectExecReturn* Sweep::execute()
             }
             spineShapes.push_back(shape);
         }
-        spine = TopoShape(0, getDocument()->getStringHasher()).makeElementCompound(spineShapes, 0, TopoShape::SingleShapeCompoundCreationPolicy::returnShape);
+        spine = TopoShape(0).makeElementCompound(spineShapes, 0, TopoShape::SingleShapeCompoundCreationPolicy::returnShape);
     }
     std::vector<TopoShape> shapes;
     shapes.push_back(spine);
@@ -326,7 +326,7 @@ App::DocumentObjectExecReturn* Sweep::execute()
     Standard_Boolean isFrenet = Frenet.getValue() ? Standard_True : Standard_False;
     auto transMode = static_cast<TransitionMode>(Transition.getValue());
     try {
-        TopoShape result(0);
+        TopoShape result(0, getDocument()->getStringHasher());
         result.makeElementPipeShell(shapes, isSolid, isFrenet, transMode, Part::OpCodes::Sweep);
         if (Linearize.getValue()) {
             result.linearize(LinearizeFace::linearizeFaces, LinearizeEdge::noEdges);
