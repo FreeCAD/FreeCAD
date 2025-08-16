@@ -249,6 +249,15 @@ void ViewProvider::updatePreview()
     }
 }
 
+void ViewProvider::makeChildrenVisible()
+{
+    for (const auto child : claimChildren()) {
+        if (auto vp = Gui::Application::Instance->getViewProvider(child)) {
+            vp->show();
+        }
+    }
+}
+
 void ViewProvider::onChanged(const App::Property* prop) {
 
     //if the object is inside of a body we make sure it is the only visible one on activation
@@ -339,6 +348,8 @@ bool ViewProvider::onDelete(const std::vector<std::string>&)
 
         FCMD_OBJ_CMD(body, "removeObject(" << Gui::Command::getObjectCmd(feature) << ')');
     }
+
+    makeChildrenVisible();
 
     return true;
 }
