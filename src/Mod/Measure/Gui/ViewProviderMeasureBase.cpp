@@ -230,8 +230,7 @@ void ViewProviderMeasureBase::setDisplayMode(const char* ModeName)
 
 void ViewProviderMeasureBase::finishRestoring()
 {
-    if (Visibility.getValue() &&
-        isSubjectVisible()) {
+    if (Visibility.getValue() && isSubjectVisible()) {
         show();
     }
     ViewProviderDocumentObject::finishRestoring();
