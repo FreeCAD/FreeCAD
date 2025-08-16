@@ -1026,6 +1026,20 @@ void NavigationStyle::setRotationCenter(const SbVec3f& cnt)
 {
     this->rotationCenter = cnt;
     this->rotationCenterFound = true;
+
+    const auto camera = getCamera();
+    if (camera->isOfType(SoPerspectiveCamera::getClassTypeId())) {
+        SbVec3f direction;
+        camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
+
+        // Calculate distance from camera to rotation center
+        const auto rotationCenterDistance = rotationCenter - camera->position.getValue();
+        const auto rotationCenterDepth = rotationCenterDistance.dot(direction);
+
+        // Set focal distance to match rotation center depth so we can zoom at the new rotation
+        // center with a perspective camera
+        camera->focalDistance.setValue(rotationCenterDepth);
+    }
 }
 
 SbVec3f NavigationStyle::getFocalPoint() const
