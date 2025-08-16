@@ -135,7 +135,7 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def deleteAllGeometry(self) -> None:
+    def deleteAllGeometry(self, noSolve: bool) -> None:
         """
         Delete all the geometry objects from the sketch, except external geometry.
 

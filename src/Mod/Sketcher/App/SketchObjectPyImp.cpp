@@ -252,11 +252,13 @@ PyObject* SketchObjectPy::delGeometries(PyObject* args)
 
 PyObject* SketchObjectPy::deleteAllGeometry(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, "")) {
+    PyObject* noSolve = Py_False;
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &noSolve)) {
         return nullptr;
     }
 
-    if (this->getSketchObjectPtr()->deleteAllGeometry()) {
+    if (this->getSketchObjectPtr()->deleteAllGeometry(
+            Base::asBoolean(noSolve) ? DeleteOption::NoSolve : DeleteOption::UpdateGeometry)) {
         std::stringstream str;
         str << "Unable to delete Geometry";
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
