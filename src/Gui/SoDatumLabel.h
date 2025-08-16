@@ -188,7 +188,7 @@ private:
     SbVec3f getLabelTextCenterArcLength(const SbVec3f&, const SbVec3f&, const SbVec3f&) const;
     bool hasDatumText() const;
     void getDimension(float scale, int& srcw, int& srch);
-    DistanceGeometry calculateDistanceGeometry(const SbVec3f* points, float scale, int srch) const;
+    DistanceGeometry calculateDistanceGeometry(const SbVec3f* points) const;
     DiameterGeometry calculateDiameterGeometry(const SbVec3f* points) const;
     AngleGeometry calculateAngleGeometry(const SbVec3f* points) const;
     SymmetricGeometry calculateSymmetricGeometry(const SbVec3f* points) const;
@@ -196,7 +196,7 @@ private:
     void generateLineSelectionPrimitive(SoAction* action, const SbVec3f& start, const SbVec3f& end, float width);
     void generateArcSelectionPrimitive(SoAction* action, const SbVec3f& center, float radius, float startAngle, float endAngle, float width);
     void generateArrowSelectionPrimitive(SoAction* action, const SbVec3f& base, const SbVec3f& dir, float width, float length);
-    void drawDistance(const SbVec3f* points, float scale, int srch, float& angle, SbVec3f& textOffset);
+    void drawDistance(const SbVec3f* points, float& angle, SbVec3f& textOffset);
     void drawDistance(const SbVec3f* points);
     void drawRadiusOrDiameter(const SbVec3f* points, float& angle, SbVec3f& textOffset);
     void drawAngle(const SbVec3f* points, float& angle, SbVec3f& textOffset);
