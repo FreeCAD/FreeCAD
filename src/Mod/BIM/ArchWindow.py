@@ -106,10 +106,6 @@ class _Window(ArchComponent.Component):
         # Add features in the SketchArch External Add-on
         self.addSketchArchFeatures(obj)
 
-        # Initialize those two values later on during first onChanged call
-        self.baseSill = None
-        self.basePos = None
-
     def addSketchArchFeatures(self,obj,linkObj=None,mode=None):
         '''
            To add features in the SketchArch External Add-on  (https://github.com/paullee0/FreeCAD_SketchArch)
@@ -142,8 +138,6 @@ class _Window(ArchComponent.Component):
             obj.addProperty("App::PropertyLength","Width","Window",QT_TRANSLATE_NOOP("App::Property","The width of this window"), locked=True)
         if not "Height" in lp:
             obj.addProperty("App::PropertyLength","Height","Window",QT_TRANSLATE_NOOP("App::Property","The height of this window"), locked=True)
-        if not "Sill" in lp:
-            obj.addProperty("App::PropertyLength","Sill","Window",QT_TRANSLATE_NOOP("App::Property","The height of this window's sill"), locked=True)
         if not "Normal" in lp:
             obj.addProperty("App::PropertyVector","Normal","Window",QT_TRANSLATE_NOOP("App::Property","The normal direction of this window"), locked=True)
         # Automatic Normal Reverse
@@ -180,6 +174,31 @@ class _Window(ArchComponent.Component):
         obj.setEditorMode("HorizontalArea",2)
         obj.setEditorMode("PerimeterLength",2)
 
+        # Sill change related properies
+        self.setSillProperties(obj)
+
+    def setSillProperties(self, orgObj, linkObj=None):
+        '''  Set properties which support Sill change.
+             Support both Arch Window and Link of Arch Window.
+        '''
+
+        if linkObj:
+            obj = linkObj
+        else:
+            obj = orgObj
+
+        prop = obj.PropertiesList
+
+        # 'Sill' support
+        if not "Sill" in prop:
+            obj.addProperty("App::PropertyLength","Sill","Window",QT_TRANSLATE_NOOP("App::Property","The height of this window's sill"), locked=True)
+
+        # Link has no Proxy, so needs to use PropertyPythonObject
+        sillProp = ['baseSill','basePosZ','atthOffZ']
+        for i in sillProp:
+            if i not in prop:
+                obj.addProperty("App::PropertyPythonObject", i)
+
     def onDocumentRestored(self,obj):
 
         ArchComponent.Component.onDocumentRestored(self,obj)
@@ -188,12 +207,13 @@ class _Window(ArchComponent.Component):
         # Add features in the SketchArch External Add-on
         self.addSketchArchFeatures(obj, mode='ODR')
 
+        # TODO 2025.6.27 : Seems Sill already triggered onChanged() upon document restored - NO need codes below in onDocumentRestored()
         # Need to restore 'initial' settings as corresponding codes in onChanged() does upon object creation
-        self.baseSill = obj.Sill.Value
-        self.basePos = obj.Base.Placement.Base
-        self.atthOff = None
-        if hasattr(obj, 'AttachmentOffsetXyzAndRotation'):
-            self.atthOff = obj.AttachmentOffsetXyzAndRotation.Base
+        #self.baseSill = obj.Sill.Value
+        #self.basePos = obj.Base.Placement.Base
+        #self.atthOff = None
+        #if hasattr(obj, 'AttachmentOffsetXyzAndRotation'):
+        #    self.atthOff = obj.AttachmentOffsetXyzAndRotation.Base
 
     def loads(self,state):
 
@@ -210,37 +230,9 @@ class _Window(ArchComponent.Component):
 
         self.hideSubobjects(obj,prop)
         if prop == "Sill":
-            val = getattr(obj,prop).Value
-
-            if (getattr(self, 'baseSill', None) is None and
-                getattr(self, 'basePos', None) is None and
-                getattr(self, 'atthOff', None) is None):  # TODO Any cases only 1 or 2 are not None?
-                self.baseSill = val
-                self.basePos = obj.Base.Placement.Base
-                self.atthOff = None
-                if hasattr(obj, 'AttachmentOffsetXyzAndRotation'):
-                    self.atthOff = obj.AttachmentOffsetXyzAndRotation.Base
-                return
-
-            import ArchSketchObject  # Need to import per method
-            host = None
-            if obj.Hosts:
-                host = obj.Hosts[0]
-            if (hasattr(obj, 'AttachToAxisOrSketch') and
-                obj.AttachToAxisOrSketch == "Host" and
-                host and Draft.getType(host.Base) == "ArchSketch" and
-                hasattr(ArchSketchObject, 'updateAttachmentOffset')):
-                SketchArch = True
-            else:
-                SketchArch = False
-
-            if SketchArch:
-                objAttOff = obj.AttachmentOffsetXyzAndRotation
-                objAttOff.Base.z = self.atthOff.z + (obj.Sill.Value - self.baseSill)
-                obj.AttachmentOffsetXyzAndRotation = objAttOff
-            else:
-                obj.Base.Placement.Base.z = self.basePos.z + (obj.Sill.Value - self.baseSill)
-
+            self.setSillProperties(obj)  # Can't wait until onDocumentRestored
+            self.onSillChanged(obj)
+            
         elif not "Restore" in obj.State:
             if prop in ["Base","WindowParts","Placement","HoleDepth","Height","Width","Hosts","Shape"]:
                 # anti-recursive loops, bc the base sketch will touch the Placement all the time
@@ -574,11 +566,65 @@ class _Window(ArchComponent.Component):
             @realthunder added support to Links to run Linked Scripted Object's methods()
         '''
 
+        # Sill change support
+        self.setSillProperties(obj, linkObj)
+
         # Add features in the SketchArch External Add-on
         self.addSketchArchFeatures(obj, linkObj)
 
         # Execute features in the SketchArch External Add-on
         self.executeSketchArchFeatures(obj, linkObj)
+
+        # Sill change feature
+        self.onSillChanged(obj, linkObj)
+
+    def onSillChanged(self, orgObj, linkObj=None, index=None, linkElement=None):
+
+        if linkObj:
+            obj = linkObj
+        else:
+            obj = orgObj
+
+        val = getattr(obj,'Sill').Value
+        if (getattr(obj, 'baseSill', None) is None and
+            getattr(obj, 'basePosZ', None) is None and
+            getattr(obj, 'atthOffZ', None) is None):  # TODO Any cases only 1 or 2 are not None?
+            obj.baseSill = val
+            # Not to change Base's Placement, would change all Clones and
+            # Link's disposition unexpectedly to users, undesirable.
+            #
+            # self.basePos = obj.Base.Placement.Base
+            obj.basePosZ = obj.Placement.Base.z
+            obj.atthOffZ = None
+            if hasattr(obj, 'AttachmentOffsetXyzAndRotation'):
+                obj.atthOffZ = obj.AttachmentOffsetXyzAndRotation.Base.z
+            return
+
+        import ArchSketchObject  # Need to import per method
+        host = None
+        if obj.Hosts:
+            host = obj.Hosts[0]
+        if (hasattr(obj, 'AttachToAxisOrSketch') and
+            obj.AttachToAxisOrSketch == "Host" and
+            host and Draft.getType(host.Base) == "ArchSketch" and
+            hasattr(ArchSketchObject, 'updateAttachmentOffset')):
+            SketchArch = True
+        else:
+            SketchArch = False
+
+        # Keep track of change whether SketchArch is True or False (i.e.
+        # even Window object is not currently parametrically attached to
+        # a Wall or other Arch object at the moment).
+        #
+        # SketchArch or Not
+        if hasattr(obj, 'AttachmentOffsetXyzAndRotation'):
+            objAttOff = obj.AttachmentOffsetXyzAndRotation
+            objAttOff.Base.z = obj.atthOffZ + (obj.Sill.Value - obj.baseSill)
+            obj.AttachmentOffsetXyzAndRotation = objAttOff
+        if not SketchArch:
+            # Not to change Base's Placement
+            #obj.Base.Placement.Base.z = self.basePos.z + (obj.Sill.Value - self.baseSill)
+            obj.Placement.Base.z = obj.basePosZ + (obj.Sill.Value - obj.baseSill)
 
     def getSubFace(self):
         "returns a subface for creation of subvolume for cutting in a base object"
