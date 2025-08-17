@@ -3013,7 +3013,7 @@ void Application::LoadParameters()
     }
 #else
     if (isDevelopmentVersion()) {
-        versionSuffix += "-dev";
+        versionSuffix += FCVersionSuffix;
     }
 #endif
 
