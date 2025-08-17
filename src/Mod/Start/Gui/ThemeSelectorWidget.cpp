@@ -238,7 +238,8 @@ void ThemeSelectorWidget::retranslateUi()
     _titleLabel->setText(QLatin1String("<h2>") + tr("Theme") + QLatin1String("</h2>"));
     if (Gui::Application::Instance->commandManager().getCommandByName("Std_AddonMgr")) {
         _descriptionLabel->setText(tr("Looking for more themes? You can obtain them using "
-                                      "<a href=\"freecad:Std_AddonMgr\">Addon Manager</a>."));    }
+                                      "<a href=\"freecad:Std_AddonMgr\">Addon Manager</a>."));
+    }
     else {
         _descriptionLabel->hide();
     }
