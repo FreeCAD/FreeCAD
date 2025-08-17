@@ -202,7 +202,7 @@ if crashes occur when multiple cores are set.</string>
         <item>
          <widget class="QLabel" name="label_6">
           <property name="text">
-           <string>Import struct IFC objects as</string>
+           <string>Import structure IFC objects as</string>
           </property>
          </widget>
         </item>

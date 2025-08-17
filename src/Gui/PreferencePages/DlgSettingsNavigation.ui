@@ -717,7 +717,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</string>
        <widget class="Gui::PrefCheckBox" name="checkBoxDisableTilt">
         <property name="toolTip">
          <string>Prevents view tilting when pinch-zooming.
-Affects only gesture navigation style.
+Affects only Gesture navigation style.
 Mouse tilting is not disabled by this setting.</string>
         </property>
         <property name="text">
@@ -746,7 +746,7 @@ Mouse tilting is not disabled by this setting.</string>
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="legacySpaceMouseDevices">
         <property name="text">
-         <string>Enable support of legacy space mouse devices</string>
+         <string>Enable support of legacy SpaceMouse devices</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>LegacySpaceMouseDevices</cstring>

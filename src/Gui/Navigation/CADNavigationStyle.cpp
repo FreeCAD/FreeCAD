@@ -54,7 +54,7 @@ const char* CADNavigationStyle::mouseButtons(ViewerMode mode)
     case NavigationStyle::DRAGGING:
         return QT_TR_NOOP("Press middle+left or middle+right mouse button");
     case NavigationStyle::ZOOMING:
-        return QT_TR_NOOP("Scroll middle mouse button or keep middle button depressed\n"
+        return QT_TR_NOOP("Scroll mouse wheel or keep middle button depressed\n"
                           "while doing a left or right click and move the mouse up or down");
     default:
         return "No description";

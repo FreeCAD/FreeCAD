@@ -138,12 +138,11 @@ void CmdMeshUnion::activated(int)
                 qApp->translate("Mesh_Union", "Unknown error occurred while running OpenSCAD."));
         }
         else {
-            QMessageBox::warning(
-                Gui::getMainWindow(),
-                qApp->translate("Mesh_Union", "OpenSCAD"),
-                qApp->translate("Mesh_Union",
-                                "OpenSCAD cannot be found on the system.\n"
-                                "Visit http://www.openscad.org/index.html to install it."));
+            QMessageBox::warning(Gui::getMainWindow(),
+                                 qApp->translate("Mesh_Union", "OpenSCAD"),
+                                 qApp->translate("Mesh_Union",
+                                                 "OpenSCAD cannot be found on the system.\n"
+                                                 "Visit https://openscad.org/ to install it."));
         }
     }
 }
@@ -217,12 +216,11 @@ void CmdMeshDifference::activated(int)
                 qApp->translate("Mesh_Union", "Unknown error occurred while running OpenSCAD."));
         }
         else {
-            QMessageBox::warning(
-                Gui::getMainWindow(),
-                qApp->translate("Mesh_Union", "OpenSCAD"),
-                qApp->translate("Mesh_Union",
-                                "OpenSCAD cannot be found on the system.\n"
-                                "Visit http://www.openscad.org/index.html to install it."));
+            QMessageBox::warning(Gui::getMainWindow(),
+                                 qApp->translate("Mesh_Union", "OpenSCAD"),
+                                 qApp->translate("Mesh_Union",
+                                                 "OpenSCAD cannot be found on the system.\n"
+                                                 "Visit https://openscad.org/ to install it."));
         }
     }
 }
@@ -296,12 +294,11 @@ void CmdMeshIntersection::activated(int)
                 qApp->translate("Mesh_Union", "Unknown error occurred while running OpenSCAD."));
         }
         else {
-            QMessageBox::warning(
-                Gui::getMainWindow(),
-                qApp->translate("Mesh_Union", "OpenSCAD"),
-                qApp->translate("Mesh_Union",
-                                "OpenSCAD cannot be found on the system.\n"
-                                "Visit http://www.openscad.org/index.html to install it."));
+            QMessageBox::warning(Gui::getMainWindow(),
+                                 qApp->translate("Mesh_Union", "OpenSCAD"),
+                                 qApp->translate("Mesh_Union",
+                                                 "OpenSCAD cannot be found on the system.\n"
+                                                 "Visit https://openscad.org/ to install it."));
         }
     }
 }
@@ -1432,8 +1429,8 @@ CmdMeshBoundingBox::CmdMeshBoundingBox()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Boundings Info");
-    sToolTipText = QT_TR_NOOP("Shows the boundings of the selected mesh");
+    sMenuText = QT_TR_NOOP("Bounding Box Info");
+    sToolTipText = QT_TR_NOOP("Shows the bounding box coordinates of the selected mesh");
     sWhatsThis = "Mesh_BoundingBox";
     sStatusTip = sToolTipText;
     sPixmap = "Mesh_BoundingBox";
@@ -1567,8 +1564,8 @@ CmdMeshFillInteractiveHole::CmdMeshFillInteractiveHole()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Close Holes");
-    sToolTipText = QT_TR_NOOP("Closes holes interactively in the mesh");
+    sMenuText = QT_TR_NOOP("Close Hole");
+    sToolTipText = QT_TR_NOOP("Closes a hole interactively in the mesh");
     sWhatsThis = "Mesh_FillInteractiveHole";
     sStatusTip = sToolTipText;
     sPixmap = "Mesh_FillInteractiveHole";
