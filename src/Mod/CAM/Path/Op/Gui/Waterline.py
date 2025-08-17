@@ -88,11 +88,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         PathGuiUtil.updateInputField(obj, "MinSampleInterval", self.form.minSampleInterval)
         PathGuiUtil.updateInputField(obj, "SampleInterval", self.form.sampleInterval)
-        
+
         if obj.OptimizeInternalFeatures != self.form.optimizeInternal.isChecked():
             obj.OptimizeInternalFeatures = self.form.optimizeInternal.isChecked()
-            
-        PathGuiUtil.updateInputField(obj, "GapDetectionThershold", self.form.gapDetectionThershold)                   
+
+        PathGuiUtil.updateInputField(obj, "GapDetectionThershold", self.form.gapDetectionThershold)
 
         if obj.OptimizeLinearPaths != self.form.optimizeEnabled.isChecked():
             obj.OptimizeLinearPaths = self.form.optimizeEnabled.isChecked()
@@ -111,19 +111,19 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.stepOver.setValue(obj.StepOver)
         self.form.minSampleInterval.setText(
             FreeCAD.Units.Quantity(obj.MinSampleInterval.Value, FreeCAD.Units.Length).UserString
-        )         
+        )
         self.form.sampleInterval.setText(
             FreeCAD.Units.Quantity(obj.SampleInterval.Value, FreeCAD.Units.Length).UserString
-        )      
+        )
 
         if obj.OptimizeInternalFeatures:
             self.form.optimizeInternal.setCheckState(QtCore.Qt.Checked)
         else:
             self.form.optimizeInternal.setCheckState(QtCore.Qt.Unchecked)
-            
+
         self.form.gapDetectionThershold.setText(
             FreeCAD.Units.Quantity(obj.GapDetectionThershold.Value, FreeCAD.Units.Length).UserString
-        )                          
+        )
 
         if obj.OptimizeLinearPaths:
             self.form.optimizeEnabled.setCheckState(QtCore.Qt.Checked)
@@ -143,13 +143,13 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.cutPattern.currentIndexChanged)
         signals.append(self.form.boundaryAdjustment.editingFinished)
         signals.append(self.form.stepOver.editingFinished)
-        signals.append(self.form.minSampleInterval.editingFinished)        
+        signals.append(self.form.minSampleInterval.editingFinished)
         signals.append(self.form.sampleInterval.editingFinished)
-        signals.append(self.form.gapDetectionThershold.editingFinished)        
+        signals.append(self.form.gapDetectionThershold.editingFinished)
         if hasattr(self.form.optimizeInternal, "checkStateChanged"):  # Qt version >= 6.7.0
             signals.append(self.form.optimizeInternal.checkStateChanged)
         else:  # Qt version < 6.7.0
-            signals.append(self.form.optimizeInternal.stateChanged)        
+            signals.append(self.form.optimizeInternal.stateChanged)
 
         if hasattr(self.form.optimizeEnabled, "checkStateChanged"):  # Qt version >= 6.7.0
             signals.append(self.form.optimizeEnabled.checkStateChanged)
@@ -173,15 +173,15 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.stepOver.hide()
             self.form.stepOver_label.hide()
             self.form.minSampleInterval.hide()
-            self.form.minSampleInterval_label.hide()            
+            self.form.minSampleInterval_label.hide()
             self.form.sampleInterval.show()
             self.form.sampleInterval_label.show()
             self.form.optimizeInternal.hide()
             self.form.gapDetectionThershold.hide()
-            self.form.gapDetectionThershold_label.hide()                       
+            self.form.gapDetectionThershold_label.hide()
         elif Algorithm == "OCL Adaptive":
             self.form.boundBoxSelect.hide()
-            self.form.boundBoxSelect_label.hide()            
+            self.form.boundBoxSelect_label.hide()
             self.form.cutPattern.hide()
             self.form.cutPattern_label.hide()
             self.form.boundaryAdjustment.hide()
@@ -189,15 +189,15 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.stepOver.hide()
             self.form.stepOver_label.hide()
             self.form.minSampleInterval.show()
-            self.form.minSampleInterval_label.show()            
+            self.form.minSampleInterval_label.show()
             self.form.sampleInterval.show()
             self.form.sampleInterval_label.show()
-            self.form.optimizeInternal.show()            
+            self.form.optimizeInternal.show()
             self.form.gapDetectionThershold.show()
-            self.form.gapDetectionThershold_label.show()                                                                
+            self.form.gapDetectionThershold_label.show()
         elif Algorithm == "Experimental":
             self.form.boundBoxSelect.show()
-            self.form.boundBoxSelect_label.show()            
+            self.form.boundBoxSelect_label.show()
             self.form.cutPattern.show()
             self.form.boundaryAdjustment.show()
             self.form.cutPattern_label.show()
@@ -209,12 +209,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
                 self.form.stepOver.show()
                 self.form.stepOver_label.show()
             self.form.minSampleInterval.hide()
-            self.form.minSampleInterval_label.hide()                
+            self.form.minSampleInterval_label.hide()
             self.form.sampleInterval.hide()
             self.form.sampleInterval_label.hide()
             self.form.optimizeInternal.hide()
             self.form.gapDetectionThershold.hide()
-            self.form.gapDetectionThershold_label.hide()                                   
+            self.form.gapDetectionThershold_label.hide()
 
     def registerSignalHandlers(self, obj):
         self.form.algorithmSelect.currentIndexChanged.connect(self.updateVisibility)
