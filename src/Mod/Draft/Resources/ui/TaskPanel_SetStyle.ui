@@ -567,7 +567,7 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</string>
           <item row="2" column="0">
            <widget class="QLabel" name="label_DimOvershoot">
             <property name="text">
-             <string>Dimenson line overshoot</string>
+             <string>Dimension line overshoot</string>
             </property>
            </widget>
           </item>
