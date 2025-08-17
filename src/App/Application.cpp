@@ -3004,18 +3004,9 @@ void Application::LoadParameters()
         versionSuffix = "unknown";
     }
 
-    // Add "-dev" if this is a development version
+    // Add suffix for special versions (e.g., "dev", "-custom", etc.)
     // Use PACKAGE_VERSION_SUFFIX from CMake if defined, otherwise fallback to runtime check
-#ifdef PACKAGE_VERSION_SUFFIX
-    std::string packageSuffix = PACKAGE_VERSION_SUFFIX;
-    if (!packageSuffix.empty()) {
-        versionSuffix += packageSuffix;
-    }
-#else
-    if (isDevelopmentVersion()) {
-        versionSuffix += FCVersionSuffix;
-    }
-#endif
+    versionSuffix += FCVersionSuffix;
 
     // Build versioned config directory path: UserConfigPath/version +suffix/
     std::string baseConfigPath = mConfig["UserConfigPath"];
@@ -3044,16 +3035,39 @@ void Application::LoadParameters()
         int major = itMajor != mConfig.end() ? std::stoi(itMajor->second) : 0;
         int minor = itMinor != mConfig.end() ? std::stoi(itMinor->second) : 0;
         if (minor > 0) {
-            // Always check for previous version, both dev and non-dev
+            // Always check for previous version, both special (e.g., dev, custom) and non-special versions
             std::string prevVersion = fmt::format("{}.{}", major, minor - 1);
-            std::string prevDevVersion = prevVersion + "-dev";
-            // Prefer dev version if it exists, otherwise use non-dev
-            std::string prevDevPath = baseConfigPath + PATHSEP + prevDevVersion + PATHSEP;
+
+    #ifdef PACKAGE_VERSION_SUFFIX
+            constexpr auto prevSuffix = PACKAGE_VERSION_SUFFIX;
+    #else
+            constexpr auto prevSuffix = "";
+    #endif
+
+            // If PACKAGE_VERSION_SUFFIX is empty, try "dev" or "snapshot"
+            if (std::string(prevSuffix).empty()) {
+                std::vector<std::string> trySuffixes = {"dev", "snapshot"};
+                for (const auto& suffix : trySuffixes) {
+                    std::string prevDevVersion = prevVersion + suffix;
+                    std::string prevDevPath = baseConfigPath + PATHSEP + prevDevVersion + PATHSEP;
+                    if (std::filesystem::exists(prevDevPath)) {
+                        candidateDirs.push_back(prevDevPath);
+                        break;
+                    }
+                }
+            } else {
+                // Use PACKAGE_VERSION_SUFFIX
+                std::string prevDevVersion = prevVersion + prevSuffix;
+                std::string prevDevPath = baseConfigPath + PATHSEP + prevDevVersion + PATHSEP;
+                if (std::filesystem::exists(prevDevPath)) {
+                    candidateDirs.push_back(prevDevPath);
+                }
+            }
+
+            // Always check for non-special previous version
             std::string prevNonDevPath = baseConfigPath + PATHSEP + prevVersion + PATHSEP;
-            if (std::filesystem::exists(prevDevPath)) {
-                candidateDirs.push_back(prevDevPath);
-            } else if (std::filesystem::exists(prevNonDevPath)) {
-                candidateDirs.push_back(prevNonDevPath);
+            if (std::filesystem::exists(prevNonDevPath)) {
+            candidateDirs.push_back(prevNonDevPath);
             }
         }
         // 2. Top-level config dir (unversioned)
