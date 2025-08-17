@@ -612,7 +612,7 @@ def upgrade(objects, delete=False, force=None):
                 if edge_type in ("Line", "Circle"):
                     result = _draftify(objects[0])
                     if result:
-                        _msg(translate("draft", "Found 1 non-parametric object: replacing it with Draft object"))
+                        _msg(translate("draft", "Found 1 non-parametric object: replacing it with a Draft object"))
 
             # only points, no edges
             elif not edges and len(objects) > 1:
