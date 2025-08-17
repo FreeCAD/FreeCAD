@@ -45,7 +45,12 @@ DlgPreferencePackManagementImp::DlgPreferencePackManagementImp(QWidget* parent)
     , ui(new Ui_DlgPreferencePackManagement)
 {
     ui->setupUi(this);
-    connect(ui->pushButtonOpenAddonManager, &QPushButton::clicked, this, &DlgPreferencePackManagementImp::showAddonManager);
+    if (Application::Instance->commandManager().getCommandByName("Std_AddonMgr")) {
+        connect(ui->pushButtonOpenAddonManager, &QPushButton::clicked, this, &DlgPreferencePackManagementImp::showAddonManager);
+    }
+    else {
+        ui->pushButtonOpenAddonManager->hide();
+    }
     connect(this, &DlgPreferencePackManagementImp::packVisibilityChanged, this, &DlgPreferencePackManagementImp::updateTree);
     updateTree();
 }
