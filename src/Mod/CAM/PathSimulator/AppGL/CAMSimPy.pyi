@@ -5,8 +5,9 @@ from Base.Metadata import export
 from Metadata import no_args
 
 @export(
+    Twin="CAMSim",
+    TwinPointer="CAMSim",
     Include="Mod/CAM/PathSimulator/AppGL/CAMSim.h",
-    Namespace="CAMSimulator",
     Constructor=True,
     Delete=True,
 )

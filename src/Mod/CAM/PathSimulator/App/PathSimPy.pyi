@@ -1,11 +1,12 @@
-from typing import Any
+from typing import Any, Final
 
 from Base.BaseClass import BaseClass
 from Base.Metadata import export
 
 @export(
+    Twin="PathSim",
+    TwinPointer="PathSim",
     Include="Mod/CAM/PathSimulator/App/PathSim.h",
-    Namespace="PathSimulator",
     ReadOnly=["Tool"],
     Constructor=True,
     Delete=True,
