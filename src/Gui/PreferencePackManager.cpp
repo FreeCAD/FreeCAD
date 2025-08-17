@@ -639,29 +639,46 @@ static std::time_t to_time_t(TP tp)
 
 void Gui::PreferencePackManager::DeleteOldBackups() const
 {
-    constexpr auto oneWeek = 60.0 * 60.0 * 24.0 * 7.0;
+    constexpr double oneWeek = 60.0 * 60.0 * 24.0 * 7.0;
     const auto now = std::time(nullptr);
-    auto backupDirectory = getSavedPreferencePacksPath() / "Backups";
-    if (fs::exists(backupDirectory) && fs::is_directory(backupDirectory)) {
-        for (const auto& backup : fs::directory_iterator(backupDirectory)) {
-            if (std::difftime(now, to_time_t(fs::last_write_time(backup))) > oneWeek) {
-                try {
-                    fs::remove(backup);
+
+    auto deleteOldFiles = [&](const fs::path& dir, auto fileFilter) {
+        if (fs::exists(dir) && fs::is_directory(dir)) {
+            for (const auto& entry : fs::directory_iterator(dir)) {
+                if (fileFilter(entry.path())) {
+                    try {
+                        if (std::difftime(now, to_time_t(fs::last_write_time(entry))) > oneWeek) {
+                            fs::remove(entry);
+                        }
+                    } catch (...) {}
                 }
-                catch (...) {}
             }
         }
-    }
+    };
+
+    // Delete old backups in SavedPreferencePacks/Backups
+    deleteOldFiles(getSavedPreferencePacksPath() / "Backups", [](const fs::path&) { return true; });
+
+    // Delete old user.cfg backups in user.cfg directory
+    auto userCfgDir = (fs::path(Base::FileInfo::stringToPath(App::Application::getUserAppDataDir())) / "user.cfg").parent_path();
+    deleteOldFiles(userCfgDir, [](const fs::path& p) {
+        auto fname = p.filename().string();
+        return fname.find("user.") == 0 && p.extension() == ".cfg";
+    });
 }
 
 // FIXME: Replace with more accurate C++20 solution once its usable: https://stackoverflow.com/a/68593141
 std::vector<std::filesystem::path> Gui::PreferencePackManager::configBackups() const
 {
     std::vector<std::filesystem::path> results;
-    auto backupDirectory = getSavedPreferencePacksPath() / "Backups";
+    // Place the backup in the same directory as the user.cfg file
+    auto userCfgPath = fs::path(Base::FileInfo::stringToPath(App::Application::getUserAppDataDir())) / "user.cfg";
+    auto backupDirectory = userCfgPath.parent_path();
     if (fs::exists(backupDirectory) && fs::is_directory(backupDirectory)) {
-        for (const auto& backup : fs::directory_iterator(backupDirectory)) {
-            results.push_back(backup);
+        for (const auto& entry : fs::directory_iterator(backupDirectory)) {
+            if (entry.path().filename().string().find("user.") == 0 && entry.path().extension() == ".cfg") {
+                results.push_back(entry.path());
+            }
         }
     }
     return results;
