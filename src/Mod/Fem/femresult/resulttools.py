@@ -75,6 +75,12 @@ def purge_results(analysis):
             analysis.Document.removeObject(m.Name)
     analysis.Document.recompute()
 
+    # remove visulizations
+    for m in analysis.Group:
+        if is_of_type(m, "Fem::FemPostVisualization"):
+            analysis.Document.removeObject(m.Name)
+    analysis.Document.recompute()
+
 
 def reset_mesh_deformation(resultobj):
     """Resets result mesh deformation.
