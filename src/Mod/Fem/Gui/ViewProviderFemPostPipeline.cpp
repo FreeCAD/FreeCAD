@@ -58,9 +58,12 @@ void ViewProviderFemPostPipeline::updateData(const App::Property* prop)
     FemGui::ViewProviderFemPostObject::updateData(prop);
 
     Fem::FemPostPipeline* pipeline = getObject<Fem::FemPostPipeline>();
-    if ((prop == &pipeline->Data) || (prop == &pipeline->Group)) {
+    if ((prop == &pipeline->Data) ||
+        (prop == &pipeline->Group)||
+        (prop == &pipeline->Frame)) {
 
         updateFunctionSize();
+        updateColorBars();
     }
 }
 
