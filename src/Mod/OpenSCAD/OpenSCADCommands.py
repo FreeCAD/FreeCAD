@@ -264,7 +264,7 @@ class IncreaseToleranceFeature:
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_IncreaseToleranceFeature',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_IncreaseToleranceFeature', 'Increase Tolerance Feature'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_IncreaseToleranceFeature', 'Creates a feature to increasing the tolerance')}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_IncreaseToleranceFeature', 'Creates a feature to increase the tolerance')}
 
 class ExpandPlacements:
     '''This should aid interactive repair in the future
