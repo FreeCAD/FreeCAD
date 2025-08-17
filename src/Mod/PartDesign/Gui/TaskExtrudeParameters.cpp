@@ -1298,11 +1298,11 @@ void TaskExtrudeParameters::onSidesModeChanged(int index)
     auto extrude = getObject<PartDesign::FeatureExtrude>();
     switch (static_cast<SidesMode>(index)) {
         case SidesMode::OneSide:
-            extrude->SideType.setValue("1 side");
+            extrude->SideType.setValue("One side");
             updateUI(Side::First);
             break;
         case SidesMode::TwoSides:
-            extrude->SideType.setValue("2 sides");
+            extrude->SideType.setValue("Two sides");
             updateUI(Side::Second);
             break;
         case SidesMode::Symmetric:
@@ -1362,3 +1362,4 @@ bool TaskDlgExtrudeParameters::reject()
 }
 
 #include "moc_TaskExtrudeParameters.cpp"
+
