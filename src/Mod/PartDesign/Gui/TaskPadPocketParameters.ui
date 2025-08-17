@@ -19,7 +19,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="sidesLabel">
        <property name="text">
-        <string>Sides</string>
+        <string>Mode</string>
        </property>
       </widget>
      </item>
