@@ -3005,9 +3005,17 @@ void Application::LoadParameters()
     }
 
     // Add "-dev" if this is a development version
+    // Use PACKAGE_VERSION_SUFFIX from CMake if defined, otherwise fallback to runtime check
+#ifdef PACKAGE_VERSION_SUFFIX
+    std::string packageSuffix = PACKAGE_VERSION_SUFFIX;
+    if (!packageSuffix.empty()) {
+        versionSuffix += packageSuffix;
+    }
+#else
     if (isDevelopmentVersion()) {
         versionSuffix += "-dev";
     }
+#endif
 
     // Build versioned config directory path: UserConfigPath/version +suffix/
     std::string baseConfigPath = mConfig["UserConfigPath"];
