@@ -543,7 +543,7 @@ class OpenSCADMeshBoolean:
         return {'Pixmap'  : 'OpenSCAD_MeshBooleans',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MeshBoolean','Mesh Boolean'),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MeshBoolean',
-                            'Exports objects as meshes and uses the OpenSCAD binary to perform a boolean operation')}
+                            'Performs a boolean operation using the OpenSCAD binary')}
 
 class Hull:
     def IsActive(self):
