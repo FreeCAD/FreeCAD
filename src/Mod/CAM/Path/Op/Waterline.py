@@ -558,7 +558,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             expMode = 2  
         elif obj.Algorithm == "Experimental":
             A = B = C = 0
-            expMode = G = D = H = show = hide = 2
+            expMode = G = D = show = hide = 2
 
             cutPattern = obj.CutPattern
             if obj.ClearLastLayer != "Off":
@@ -1322,7 +1322,6 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         # Scan the piece to depth at smplInt
         oclScan = []
-        zheights = []
         scanLines = []        
         if obj.Algorithm == "OCL Adaptive":
             # Check Stock's bounding box and Tool Path limits
@@ -1402,8 +1401,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         return pdc.getCLPoints()
         
     def _waterlineAdaptiveScan(self, stl, smplInt, minSmplInt, zheights, depOfst):
-        """Perform OCL Adaptive scan for waterline purpose."""
-        aloops = [] 
+        """Perform OCL Adaptive scan for waterline purpose.""" 
                   
         msg = translate("Waterline", ": Steps below the model's top Face will be the only ones processed.")                                      
         Path.Log.info("Waterline " + msg)        
@@ -1417,7 +1415,6 @@ class ObjectWaterline(PathOp.ObjectOp):
         # Create Adaptive loops
         adapt_loops = []
         acnt = 0
-        skippedZ = []
         for zh in zheights:
             #zh = round(zh, 3)
             temp_loops = []
