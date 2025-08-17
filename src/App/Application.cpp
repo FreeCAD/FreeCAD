@@ -3027,7 +3027,7 @@ void Application::LoadParameters()
         } catch (const std::exception& e) {
             Base::Console().warning("Failed to create versioned config directory: %s\n", e.what());
         }
-    }
+        }
 
     // If directory was just created, copy old config files from previous version or top-level config dir
     if (created) {
@@ -3036,12 +3036,17 @@ void Application::LoadParameters()
         int major = itMajor != mConfig.end() ? std::stoi(itMajor->second) : 0;
         int minor = itMinor != mConfig.end() ? std::stoi(itMinor->second) : 0;
         if (minor > 0) {
+            // Always check for previous version, both dev and non-dev
             std::string prevVersion = fmt::format("{}.{}", major, minor - 1);
-            // Add "-dev" if current is dev, check previous dev as well
-            if (isDevelopmentVersion()) {
-                prevVersion += "-dev";
+            std::string prevDevVersion = prevVersion + "-dev";
+            // Prefer dev version if it exists, otherwise use non-dev
+            std::string prevDevPath = baseConfigPath + PATHSEP + prevDevVersion + PATHSEP;
+            std::string prevNonDevPath = baseConfigPath + PATHSEP + prevVersion + PATHSEP;
+            if (std::filesystem::exists(prevDevPath)) {
+                candidateDirs.push_back(prevDevPath);
+            } else if (std::filesystem::exists(prevNonDevPath)) {
+                candidateDirs.push_back(prevNonDevPath);
             }
-            candidateDirs.push_back(baseConfigPath + PATHSEP + prevVersion + PATHSEP);
         }
         // 2. Top-level config dir (unversioned)
         candidateDirs.push_back(baseConfigPath + PATHSEP);
