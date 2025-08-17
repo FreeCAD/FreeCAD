@@ -302,7 +302,7 @@ class ReplaceObject:
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_ReplaceObject',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ReplaceObject', 'Replace Object'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ReplaceObject', 'Replaces an object in the Tree View. Select old, new, and parent object')}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ReplaceObject', 'Replaces an object in the Tree View')}
 
 class RemoveSubtree:
     def IsActive(self):
