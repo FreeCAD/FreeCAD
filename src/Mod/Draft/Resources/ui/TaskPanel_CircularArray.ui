@@ -79,7 +79,7 @@ It cannot be zero.</string>
      <item row="2" column="0">
       <widget class="QLabel" name="label_number">
        <property name="toolTip">
-        <string>Number of concentric circles or rings to create, including a copy of the original object.
+        <string>Number of concentric circles to create, including a copy of the original object.
 It must be at least 2.</string>
        </property>
        <property name="text">
