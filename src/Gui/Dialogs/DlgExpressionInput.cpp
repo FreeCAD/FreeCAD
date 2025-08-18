@@ -227,6 +227,8 @@ void DlgExpressionInput::initializeVarSets()
     comboBoxGroup.setInsertPolicy(QComboBox::InsertAtTop);
     comboBoxGroup.setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     DlgAddPropertyVarSet::setWidgetForLabel("labelGroup", &comboBoxGroup, ui->formLayout);
+    setTabOrder(ui->comboBoxVarSet, &comboBoxGroup);
+    setTabOrder(&comboBoxGroup, ui->lineEditPropNew);
 
     std::vector<App::VarSet*> varSets = getAllVarSets();
     if (!varSets.empty() && typeOkForVarSet()) {
@@ -742,6 +744,7 @@ void DlgExpressionInput::onCheckVarSets(int state) {
     }
     else {
         okBtn->setEnabled(true); // normal expression
+        adjustSize();
     }
 }
 
