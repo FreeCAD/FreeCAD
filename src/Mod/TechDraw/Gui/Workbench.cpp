@@ -136,9 +136,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *toolcenter << "TechDraw_ExtensionVertexAtIntersection";
     *toolcenter << "TechDraw_CommandAddOffsetVertex";
     *toolcenter << "Separator";
+    *toolcenter << "TechDraw_CosmeticCircle";
     *toolcenter << "TechDraw_ExtensionDrawCosmCircle";
-    *toolcenter << "TechDraw_ExtensionDrawCosmArc";
     *toolcenter << "TechDraw_ExtensionDrawCosmCircle3Points";
+    *toolcenter << "TechDraw_ExtensionDrawCosmArc";
     *toolcenter << "TechDraw_ExtensionLineParallel";
     *toolcenter << "TechDraw_ExtensionLinePerpendicular";
 
@@ -187,7 +188,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *lines << "TechDraw_2LineCenterLine";
     *lines << "TechDraw_2PointCenterLine";
     *lines << "TechDraw_2PointCosmeticLine";
-    *lines << "TechDraw_CosmeticCircle";
     *lines << "Separator";
     *lines << "TechDraw_DecorateLine";
     *lines << "TechDraw_ShowAll";
@@ -397,7 +397,6 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *anno << "TechDraw_CosmeticVertexGroup";
     *anno << "TechDraw_CenterLineGroup";
     *anno << "TechDraw_2PointCosmeticLine";
-    *anno << "TechDraw_CosmeticCircle";
     *anno << "TechDraw_DecorateLine";
     *anno << "TechDraw_ShowAll";
     *anno << "TechDraw_WeldSymbol";
@@ -496,7 +495,6 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *anno << "TechDraw_CosmeticVertexGroup";
     *anno << "TechDraw_CenterLineGroup";
     *anno << "TechDraw_2PointCosmeticLine";
-    *anno << "TechDraw_CosmeticCircle";
     *anno << "TechDraw_DecorateLine";
     *anno << "TechDraw_ShowAll";
     *anno << "TechDraw_WeldSymbol";
