@@ -217,56 +217,43 @@ class ToolControllerEditor(object):
     def selectInComboBox(self, name, combo):
         """selectInComboBox(name, combo) ...
         helper function to select a specific value in a combo box."""
-        blocker = QtCore.QSignalBlocker(combo)
-        index = combo.currentIndex()  # Save initial index
+        with QtCore.QSignalBlocker(combo):
+            index = combo.currentIndex()  # Save initial index
 
-        # Search using currentData and return if found
-        newindex = combo.findData(name)
-        if newindex >= 0:
-            combo.setCurrentIndex(newindex)
-            return
+            # Search using currentData and return if found
+            newindex = combo.findData(name)
+            if newindex >= 0:
+                combo.setCurrentIndex(newindex)
+                return
 
-        # if not found, search using current text
-        newindex = combo.findText(name, QtCore.Qt.MatchFixedString)
-        if newindex >= 0:
-            combo.setCurrentIndex(newindex)
-            return
+            # if not found, search using current text
+            newindex = combo.findText(name, QtCore.Qt.MatchFixedString)
+            if newindex >= 0:
+                combo.setCurrentIndex(newindex)
+                return
 
-        # not found, return unchanged
-        combo.setCurrentIndex(index)
+            # not found, return unchanged
+            combo.setCurrentIndex(index)
         return
 
     def updateUi(self):
         tc = self.obj
 
-        blockers = [
-            QtCore.QSignalBlocker(x)
-            for x in [
-                self.controller.tcName,
-                self.controller.tcNumber,
-                self.controller.spindleSpeed,
-                self.controller.spindleDirection,
-            ]
-        ]
+        b = lambda x: QtCore.QSignalBlocker(x)
+        c = self.controller
+        with b(c.tcName), b(c.tcNumber), b(c.spindleSpeed), b(c.spindleDirection):
+            self.controller.tcName.setText(tc.Label)
+            self.controller.tcNumber.setValue(tc.ToolNumber)
+            self.horizFeed.updateWidget()
+            self.horizRapid.updateWidget()
+            self.vertFeed.updateWidget()
+            self.vertRapid.updateWidget()
+            self.controller.spindleSpeed.setValue(tc.SpindleSpeed)
 
-        self.controller.tcName.setText(tc.Label)
-        self.controller.tcNumber.setValue(tc.ToolNumber)
-        self.horizFeed.updateWidget()
-        self.horizRapid.updateWidget()
-        self.vertFeed.updateWidget()
-        self.vertRapid.updateWidget()
-        self.controller.spindleSpeed.setValue(tc.SpindleSpeed)
+            self.selectInComboBox(tc.SpindleDir, self.controller.spindleDirection)
 
-        self.selectInComboBox(tc.SpindleDir, self.controller.spindleDirection)
-
-        # index = self.controller.spindleDirection.findText(
-        #     tc.SpindleDir, QtCore.Qt.MatchFixedString
-        # )
-        # if index >= 0:
-        #     self.controller.spindleDirection.setCurrentIndex(index)
-
-        if self.editor:
-            self.editor.updateUI()
+            if self.editor:
+                self.editor.updateUI()
 
     def updateToolController(self):
         tc = self.obj
