@@ -455,6 +455,5 @@ void TaskBlendCurve::activate()
 }
 void TaskBlendCurve::deactivate()
 {
-    Gui::Selection().rmvSelectionGate();
     widget->detachSelection();
 }
