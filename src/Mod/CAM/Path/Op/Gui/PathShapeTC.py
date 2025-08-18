@@ -130,8 +130,8 @@ class ObjectPathShape:
         params["retraction"] = obj.Retraction
         params["resume_height"] = obj.ResumeHeight
         params["segmentation"] = obj.Segmentation
-        params["feedrate"] = obj.FeedRate
-        params["feedrate_v"] = obj.FeedRateVertical
+        params["feedrate"] = obj.FeedRate / 60
+        params["feedrate_v"] = obj.FeedRateVertical / 60
         params["verbose"] = obj.Verbose
         params["abs_center"] = obj.AbsoluteArcCenter
         params["preamble"] = obj.EmitPreamble
@@ -149,8 +149,8 @@ class ObjectPathShape:
         toolController = PathUtils.findToolController(obj, None)
         if toolController:
             obj.ToolController = toolController
-            obj.FeedRate = obj.ToolController.HorizFeed.Value
-            obj.FeedRateVertical = obj.ToolController.VertFeed.Value
+            obj.FeedRate = obj.ToolController.HorizFeed.Value * 60
+            obj.FeedRateVertical = obj.ToolController.VertFeed.Value * 60
         else:
             raise OpBase.PathNoTCException()
 
@@ -195,15 +195,18 @@ class ObjectPartShape:
             pass
 
     def execute(self, obj):
-        edges = []
+        wires = []
         for base in obj.Base:
+            edges = []
             (baseObj, subNames) = base
             if not subNames or subNames == ("",):
                 subNames = [f"Edge{i[0]+1}" for i in enumerate(baseObj.Shape.Edges)]
             edges.extend(
                 [baseObj.Shape.getElement(sub).copy() for sub in subNames if sub.startswith("Edge")]
             )
-        obj.Shape = Part.Wire(Part.__sortEdges__(edges))
+            for sortedEdges in Part.sortEdges(edges):
+                wires.append(Part.Wire(sortedEdges))
+        obj.Shape = Part.makeCompound(wires)
 
 
 class CommandPathShapeTC:
