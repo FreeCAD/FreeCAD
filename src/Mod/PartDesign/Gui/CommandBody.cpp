@@ -735,7 +735,7 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
         items.push_back(QString::fromUtf8(body->Label.getValue()));
     }
     QString text = QInputDialog::getItem(Gui::getMainWindow(),
-        qApp->translate("PartDesign_MoveFeature", "Select body"),
+        qApp->translate("PartDesign_MoveFeature", "Select Body"),
         qApp->translate("PartDesign_MoveFeature", "Select a body from the list"),
         items, 0, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (!ok)
