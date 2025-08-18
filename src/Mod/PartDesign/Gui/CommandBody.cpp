@@ -833,8 +833,8 @@ CmdPartDesignMoveFeatureInTree::CmdPartDesignMoveFeatureInTree()
 {
     sAppModule      = "PartDesign";
     sGroup          = QT_TR_NOOP("PartDesign");
-    sMenuText = QT_TR_NOOP("Move Feature After…");
-    sToolTipText    = QT_TR_NOOP("Moves the selected feature after another feature in the same body");
+    sMenuText = QT_TR_NOOP("Move Object After…");
+    sToolTipText    = QT_TR_NOOP("Moves the selected object after another object in the same body");
     sWhatsThis      = "PartDesign_MoveFeatureInTree";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_MoveFeatureInTree";
