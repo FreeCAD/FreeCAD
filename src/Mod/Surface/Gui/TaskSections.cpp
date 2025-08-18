@@ -198,15 +198,13 @@ void ViewProviderSections::highlightReferences(ShapeType type, const References&
 class SectionsPanel::ShapeSelection: public Gui::SelectionFilterGate
 {
 public:
-    ShapeSelection(SectionsPanel::SelectionMode& mode, Surface::Sections* editedObject)
+    ShapeSelection(SectionsPanel::SelectionMode mode, Surface::Sections* editedObject)
         : Gui::SelectionFilterGate(nullPointer())
         , mode(mode)
         , editedObject(editedObject)
     {}
     ~ShapeSelection() override
-    {
-        mode = SectionsPanel::None;
-    }
+    {}
     /**
      * Allow the user to pick only edges.
      */
@@ -257,7 +255,7 @@ private:
     }
 
 private:
-    SectionsPanel::SelectionMode& mode;
+    SectionsPanel::SelectionMode mode;
     Surface::Sections* editedObject;
 };
 
@@ -345,6 +343,12 @@ void SectionsPanel::setEditedObject(Surface::Sections* fea)
 
     // attach this document observer
     attachDocument(Gui::Application::Instance->getDocument(doc));
+}
+void SectionsPanel::setSelectionGate()
+{
+    if (selectionMode != None) {
+        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
+    }
 }
 
 void SectionsPanel::changeEvent(QEvent* e)
@@ -448,8 +452,7 @@ void SectionsPanel::onButtonEdgeAddToggled(bool checked)
 {
     if (checked) {
         selectionMode = AppendEdge;
-        // 'selectionMode' is passed by reference and changed when the filter is deleted
-        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
+        setSelectionGate();
     }
     else if (selectionMode == AppendEdge) {
         exitSelectionMode();
@@ -460,8 +463,7 @@ void SectionsPanel::onButtonEdgeRemoveToggled(bool checked)
 {
     if (checked) {
         selectionMode = RemoveEdge;
-        // 'selectionMode' is passed by reference and changed when the filter is deleted
-        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
+        setSelectionGate();
     }
     else if (selectionMode == RemoveEdge) {
         exitSelectionMode();
@@ -609,6 +611,7 @@ void SectionsPanel::exitSelectionMode()
     // 'selectionMode' is passed by reference to the filter and changed when the filter is deleted
     Gui::Selection().clearSelection();
     Gui::Selection().rmvSelectionGate();
+    selectionMode = None;
 }
 
 // ----------------------------------------------------------------------------
@@ -657,6 +660,16 @@ bool TaskSections::reject()
     }
 
     return ok;
+}
+void TaskSections::activate()
+{
+    widget1->setSelectionGate();
+    widget1->attachSelection();
+}
+void TaskSections::deactivate()
+{
+    Gui::Selection().rmvSelectionGate();
+    widget1->detachSelection();
 }
 
 }  // namespace SurfaceGui
