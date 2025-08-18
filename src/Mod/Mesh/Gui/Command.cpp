@@ -715,7 +715,7 @@ CmdMeshAddFacet::CmdMeshAddFacet()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Triangle");
+    sMenuText = QT_TR_NOOP("Add Triangle");
     sToolTipText = QT_TR_NOOP("Adds a triangle manually to a mesh");
     sWhatsThis = "Mesh_AddFacet";
     sStatusTip = sToolTipText;
