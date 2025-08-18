@@ -398,16 +398,74 @@ void StartupPostProcess::setBranding()
 
 void StartupPostProcess::setImportImageFormats()
 {
-    QList<QByteArray> supportedFormats = QImageReader::supportedImageFormats();
-    std::stringstream str;
-    str << "Image formats (";
-    for (const auto& ext : supportedFormats) {
-        str << "*." << ext.constData() << " *." << ext.toUpper().constData() << " ";
-    }
-    str << ")";
+    // Define common vector and raster formats
+    const QSet<QByteArray> vectorFormats = {
+        "svg", "svgz", "dxf", "emf", "wmf", "pdf", "eps"
+    };
 
-    std::string filter = str.str();
-    App::GetApplication().addImportType(filter.c_str(), "FreeCADGui");
+    // Define most common raster image formats
+    const QSet<QByteArray> commonRasterFormats = {
+        "png", "jpg", "jpeg", "bmp", "gif", "tif", "tiff", "tga"
+    };
+
+    QList<QByteArray> supportedFormats = QImageReader::supportedImageFormats();
+    QSet<QByteArray> rasterFormats;
+    for (const auto& ext : supportedFormats) {
+        if (!vectorFormats.contains(ext.toLower()))
+            rasterFormats.insert(ext.toLower());
+    }
+
+    // Split raster formats into common and uncommon
+    QSet<QByteArray> uncommonRasterFormats = rasterFormats;
+    QSet<QByteArray> actualCommonRasterFormats;
+    for (const auto& ext : commonRasterFormats) {
+        if (rasterFormats.contains(ext)) {
+            actualCommonRasterFormats.insert(ext);
+            uncommonRasterFormats.remove(ext);
+        }
+    }
+
+    // Split uncommon raster formats into two parts if too many
+    QList<QByteArray> uncommonList = uncommonRasterFormats.values();
+    std::sort(uncommonList.begin(), uncommonList.end());
+    int splitIndex = uncommonList.size() / 2;
+
+    QList<QByteArray> uncommonList1 = uncommonList.mid(0, splitIndex);
+    QList<QByteArray> uncommonList2 = uncommonList.mid(splitIndex);
+
+    // Build filter strings
+    std::stringstream commonStr, uncommonStr1, uncommonStr2, vectorStr;
+    commonStr << QObject::tr("Image formats (1)").toStdString() << " (";
+    for (const auto& ext : actualCommonRasterFormats) {
+        commonStr << "*." << ext.constData() << " *." << ext.toUpper().constData() << " ";
+    }
+    commonStr << ")";
+
+    uncommonStr1 << QObject::tr("Image formats (2)").toStdString() << " (";
+    for (const auto& ext : uncommonList1) {
+        uncommonStr1 << "*." << ext.constData() << " *." << ext.toUpper().constData() << " ";
+    }
+    uncommonStr1 << ")";
+
+    uncommonStr2 << QObject::tr("Image formats (3)").toStdString() << " (";
+    for (const auto& ext : uncommonList2) {
+        uncommonStr2 << "*." << ext.constData() << " *." << ext.toUpper().constData() << " ";
+    }
+    uncommonStr2 << ")";
+
+    vectorStr << QObject::tr("Vector images").toStdString() << " (";
+    for (const auto& ext : vectorFormats) {
+        vectorStr << "*." << ext.constData() << " *." << ext.toUpper().constData() << " ";
+    }
+    vectorStr << ")";
+
+    // Register all filters
+    App::GetApplication().addImportType(commonStr.str().c_str(), "FreeCADGui");
+    if (!uncommonList1.isEmpty())
+        App::GetApplication().addImportType(uncommonStr1.str().c_str(), "FreeCADGui");
+    if (!uncommonList2.isEmpty())
+        App::GetApplication().addImportType(uncommonStr2.str().c_str(), "FreeCADGui");
+    App::GetApplication().addImportType(vectorStr.str().c_str(), "FreeCADGui");
 }
 
 void StartupPostProcess::showMainWindow()

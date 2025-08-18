@@ -101,22 +101,20 @@ void StdCmdOpen::activated(int iMsg)
 
     // fill the list of registered endings
     QString formatList;
-    const char* supported = QT_TR_NOOP("Supported formats");
+    const char* supported = QT_TR_NOOP("All Supported formats");
     const char* allFiles = QT_TR_NOOP("All files (*.*)");
     formatList = QObject::tr(supported);
     formatList += QLatin1String(" (");
 
     std::vector<std::string> filetypes = App::GetApplication().getImportTypes();
     // Make sure FCStd is the very first fileformat
-    auto it = std::ranges::find(filetypes, "FCStd");
+    auto it = std::find(filetypes.begin(), filetypes.end(), "FCStd");
     if (it != filetypes.end()) {
         filetypes.erase(it);
         filetypes.insert(filetypes.begin(), "FCStd");
     }
-    for (it=filetypes.begin();it != filetypes.end();++it) {
-        formatList += QLatin1String(" *.");
-        formatList += QLatin1String(it->c_str());
-    }
+    // Only show FCStd in the main filter, not all filetypes
+    formatList += QLatin1String("*.*");
 
     formatList += QLatin1String(");;");
 
@@ -131,6 +129,7 @@ void StdCmdOpen::activated(int iMsg)
             break;
         }
     }
+    // Only add the rest of the filters, not all filetypes
     for (jt=FilterList.begin();jt != FilterList.end();++jt) {
         formatList += QLatin1String(jt->first.c_str());
         formatList += QLatin1String(";;");
@@ -491,7 +490,7 @@ void StdCmdExport::activated(int iMsg)
         // there is one.
         QFileInfo defaultExportFI(defaultFilename);
         QFileInfo thisExportFI(filename);
-        
+
         if (filenameWasGenerated && thisExportFI.completeBaseName() != defaultExportFI.completeBaseName()) {
             filenameWasGenerated = false;
         }
