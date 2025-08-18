@@ -25,6 +25,7 @@
 #define SKETCHERGUI_DrawSketchHandlerTranslate_H
 
 #include <QApplication>
+#include <map>
 
 #include <Base/Tools.h>
 
@@ -38,6 +39,7 @@
 
 #include "DrawSketchDefaultWidgetController.h"
 #include "DrawSketchControllableHandler.h"
+#include "SketcherTransformationExpressionHelper.h"
 
 #include "GeometryCreationMode.h"
 #include "Utils.h"
@@ -115,9 +117,17 @@ private:
         try {
             Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Translate geometries"));
 
+            expressionHelper.storeOriginalExpressions(sketchgui->getSketchObject(), listOfGeoIds);
+
             createShape(false);
 
             commandAddShapeGeometryAndConstraints();
+
+            expressionHelper.copyExpressionsToNewConstraints(sketchgui->getSketchObject(),
+                                                             listOfGeoIds,
+                                                             ShapeGeometry.size(),
+                                                             numberOfCopies,
+                                                             secondNumberOfCopies);
 
             if (deleteOriginal) {
                 deleteOriginalGeos();
@@ -226,6 +236,8 @@ private:
 
     bool deleteOriginal, cloneConstraints;
     int numberOfCopies, secondNumberOfCopies;
+
+    SketcherTransformationExpressionHelper expressionHelper;
 
     void deleteOriginalGeos()
     {
@@ -426,6 +438,7 @@ private:
             }
         }
     }
+
 
 public:
     std::list<Gui::InputHint> getToolHints() const override
