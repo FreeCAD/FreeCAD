@@ -37,9 +37,9 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskPadParameters */
 
 TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, bool newObj)
-    : TaskExtrudeParameters(PadView, parent, "PartDesign_Pad", tr("Pad parameters"))
+    : TaskExtrudeParameters(PadView, parent, "PartDesign_Pad", tr("Pad Parameters"))
 {
-    ui->offsetEdit->setToolTip(tr("Offset from face at which pad will end"));
+    ui->offsetEdit->setToolTip(tr("Offsets the pad from the face at which the pad will end"));
     ui->checkBoxReversed->setToolTip(tr("Reverses pad direction"));
 
     // set the history path
@@ -140,6 +140,7 @@ TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad *PadView, bool /*newO
     : TaskDlgExtrudeParameters(PadView), parameters(new TaskPadParameters(PadView))
 {
     Content.push_back(parameters);
+    Content.push_back(preview);
 }
 
 //==== calls from the TaskView ===============================================================

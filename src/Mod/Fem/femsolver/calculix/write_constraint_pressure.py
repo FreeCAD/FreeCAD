@@ -48,12 +48,14 @@ def write_meshdata_constraint(f, femobj, prs_obj, ccxwriter):
 
     # floats read from ccx should use {:.13G}, see comment in writer module
 
+    if prs_obj.EnableAmplitude:
+        f.write(f"*DLOAD, AMPLITUDE={prs_obj.Name}\n")
+    else:
+        f.write("*DLOAD\n")
     rev = -1 if prs_obj.Reversed else 1
     # the pressure has to be output in MPa
     pressure_quantity = FreeCAD.Units.Quantity(prs_obj.Pressure.getValueAs("MPa"))
     press_rev = rev * pressure_quantity
-
-    f.write("*DLOAD\n")
     for ref_shape in femobj["PressureFaces"]:
         # the loop is needed for compatibility reason
         # in deprecated method get_pressure_obj_faces_depreciated

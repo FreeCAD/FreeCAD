@@ -262,7 +262,7 @@ class MaterialEditor:
         if self.edited:
             reply = QtGui.QMessageBox.question(self.widget, #FreeCADGui.getMainWindow(),
                                                 translate("Material","The document has been modified."),
-                                                translate("Material","Do you want to save your changes?"),
+                                                translate("Material","Save changes?"),
                                                 QtGui.QMessageBox.Save | QtGui.QMessageBox.Discard | QtGui.QMessageBox.Cancel,
                                                 QtGui.QMessageBox.Save)
 
@@ -330,7 +330,7 @@ class MaterialEditor:
         if self.edited:
             reply = QtGui.QMessageBox.question(self.widget, #FreeCADGui.getMainWindow(),
                                                 translate("Material","The document has been modified."),
-                                                translate("Material","Do you want to save your changes?"),
+                                                translate("Material","Save changes?"),
                                                 QtGui.QMessageBox.Save | QtGui.QMessageBox.Discard | QtGui.QMessageBox.Cancel,
                                                 QtGui.QMessageBox.Save)
 
@@ -586,7 +586,7 @@ class MaterialEditor:
             self.card_path = directory
         filetuple = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
-            "Open FreeCAD Material file",
+            "Open FreeCAD material file",
             self.card_path,
             "*.FCMat"
         )
@@ -664,7 +664,7 @@ class MaterialEditor:
             name = "Material"
         filetuple = QtGui.QFileDialog.getSaveFileName(
             QtGui.QApplication.activeWindow(),
-            "Save FreeCAD Material file",
+            "Save FreeCAD material file",
             self.save_directory + "/" + name + ".FCMat",
             "*.FCMat"
         )

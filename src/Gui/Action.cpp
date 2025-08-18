@@ -722,7 +722,7 @@ void WorkbenchGroup::refreshWorkbenchList()
         action->setObjectName(wbName);
         action->setIcon(px);
         action->setToolTip(tip);
-        action->setStatusTip(tr("Select the '%1' workbench").arg(name));
+        action->setStatusTip(tr("Selects the '%1' workbench").arg(name));
         if (index < 9) {
             action->setShortcut(QKeySequence(QStringLiteral("W,%1").arg(index + 1)));
         }
@@ -858,6 +858,32 @@ RecentFilesAction::RecentFilesAction ( Command* pcCmd, QObject * parent )
 {
     _pimpl = std::make_unique<Private>(this, "User parameter:BaseApp/Preferences/RecentFiles");
     restore();
+
+    sep.setSeparator(true);
+    sep.setToolTip({});
+    this->groupAction()->addAction(&sep);
+
+    //: Empties the list of recent files
+    clearRecentFilesListAction.setText(tr("Clear Recent Files"));
+    clearRecentFilesListAction.setToolTip({});
+    this->groupAction()->addAction(&clearRecentFilesListAction);
+
+    auto clearFun = [this, hGrp = _pimpl->handle](){
+        const size_t recentFilesListSize = hGrp->GetASCIIs("MRU").size();
+        for (size_t i = 0; i < recentFilesListSize; i++)
+        {
+            const QByteArray key = QStringLiteral("MRU%1").arg(i).toLocal8Bit();
+            hGrp->SetASCII(key.data(), "");
+        }
+        restore();
+        clearRecentFilesListAction.setEnabled(false);
+    };
+
+    connect(&clearRecentFilesListAction, &QAction::triggered,
+            this, clearFun);
+
+    connect(&clearRecentFilesListAction, &QAction::triggered,
+            this, &RecentFilesAction::recentFilesListModified);
 }
 
 RecentFilesAction::~RecentFilesAction()
@@ -878,6 +904,10 @@ void RecentFilesAction::appendFile(const QString& filename)
     save();
 
     _pimpl->trySaveUserParameter();
+
+    clearRecentFilesListAction.setEnabled(true);
+
+    Q_EMIT recentFilesListModified();
 }
 
 static QString numberToLabel(int number) {
@@ -921,6 +951,9 @@ void RecentFilesAction::setFiles(const QStringList& files)
     // if less file names than actions
     numRecentFiles = std::min<int>(numRecentFiles, this->visibleItems);
     for (int index = numRecentFiles; index < recentFiles.count(); index++) {
+        if (recentFiles[index] == &sep || recentFiles[index] == &clearRecentFilesListAction) {
+            continue;
+        }
         recentFiles[index]->setVisible(false);
         recentFiles[index]->setText(QString());
         recentFiles[index]->setToolTip(QString());
@@ -1104,7 +1137,7 @@ void RecentMacrosAction::setFiles(const QStringList& files)
     }
     // Raise a single warning no matter how many conflicts
     if (!existingCommands.isEmpty()) {
-        auto msgMain = QStringLiteral("Recent macros : keyboard shortcut(s)");
+        auto msgMain = QStringLiteral("Recent macros : keyboard shortcuts");
         for (int index = 0; index < accel_col.size(); index++) {
             msgMain += QStringLiteral(" %1").arg(accel_col[index]);
         }

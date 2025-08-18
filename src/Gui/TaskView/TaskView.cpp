@@ -40,6 +40,7 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Gui/ViewProviderDocumentObject.h>
 
 #include "TaskView.h"
 #include "TaskDialog.h"
@@ -269,13 +270,24 @@ QSize TaskPanel::minimumSizeHint() const
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskView::TaskView(QWidget *parent)
-    : QWidget(parent),ActiveDialog(nullptr),ActiveCtrl(nullptr)
+    : QWidget(parent)
+    , ActiveDialog(nullptr)
+    , ActiveCtrl(nullptr)
+    , hGrp(Gui::WindowParameter::getDefaultParameter()->GetGroup("General"))
 {
     mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(0, 0, 0, 0);
-    mainLayout->setSpacing(0);
     this->setLayout(mainLayout);
     scrollArea = new QScrollArea(this);
+
+    contextualPanelsLayout = new QVBoxLayout();
+    contextualPanelsLayout->setContentsMargins(0, 0, 0, 0);
+    mainLayout->addLayout(contextualPanelsLayout);
+
+    dialogLayout = new QVBoxLayout();
+    dialogLayout->setContentsMargins(0, 0, 0, 0);
+    dialogLayout->setSpacing(0);
+    mainLayout->addLayout(dialogLayout, 1);
 
     taskPanel = new TaskPanel(scrollArea);
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
@@ -289,7 +301,7 @@ TaskView::TaskView(QWidget *parent)
     scrollArea->setWidgetResizable(true);
     scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     scrollArea->setMinimumWidth(200);
-    mainLayout->addWidget(scrollArea, 1);
+    dialogLayout->addWidget(scrollArea, 1);
 
     Gui::Selection().Attach(this);
 
@@ -309,7 +321,18 @@ TaskView::TaskView(QWidget *parent)
     connectApplicationRedoDocument =
     App::GetApplication().signalRedoDocument.connect
         (std::bind(&Gui::TaskView::TaskView::slotRedoDocument, this, sp::_1));
+    connectApplicationInEdit =
+    Gui::Application::Instance->signalInEdit.connect(
+        std::bind(&Gui::TaskView::TaskView::slotInEdit, this, sp::_1));
     //NOLINTEND
+
+    setShowTaskWatcher(hGrp->GetBool("ShowTaskWatcher", true));
+    connectShowTaskWatcherSetting = hGrp->Manager()->signalParamChanged.connect(
+        [this](ParameterGrp *Param, ParameterGrp::ParamType Type, const char *name, const char * value) {
+            if(Param == hGrp && Type == ParameterGrp::ParamType::FCBool && name && strcmp(name, "ShowTaskWatcher") == 0) {
+                setShowTaskWatcher(value && *value == '1');
+            }
+    });
 
     updateWatcher();
 }
@@ -321,7 +344,13 @@ TaskView::~TaskView()
     connectApplicationClosedView.disconnect();
     connectApplicationUndoDocument.disconnect();
     connectApplicationRedoDocument.disconnect();
+    connectApplicationInEdit.disconnect();
+    connectShowTaskWatcherSetting.disconnect();
     Gui::Selection().Detach(this);
+
+    for (QWidget* panel : contextualPanels) {
+        delete panel;
+    }
 }
 
 bool TaskView::isEmpty(bool includeWatcher) const
@@ -462,8 +491,20 @@ QSize TaskView::minimumSizeHint() const
 void TaskView::slotActiveDocument(const App::Document& doc)
 {
     Q_UNUSED(doc);
-    if (!ActiveDialog)
+    if (!ActiveDialog) {
+        // at this point, active object of the active view returns None.
+        // which is a problem if shouldShow of a watcher rely on the presence
+        // of an active object (example Assembly).
+        QTimer::singleShot(100, this, &TaskView::updateWatcher);
+    }
+}
+
+void TaskView::slotInEdit(const Gui::ViewProviderDocumentObject& vp)
+{
+    Q_UNUSED(vp);
+    if (!ActiveDialog) {
         updateWatcher();
+    }
 }
 
 void TaskView::slotDeletedDocument(const App::Document& doc)
@@ -601,7 +642,7 @@ void TaskView::showDialog(TaskDialog *dlg)
 
     if (dlg->buttonPosition() == TaskDialog::North) {
         // Add button box to the top of the main layout
-        mainLayout->insertWidget(0, ActiveCtrl);
+        dialogLayout->insertWidget(0, ActiveCtrl);
         for (const auto & it : cont){
             taskPanel->addWidget(it);
         }
@@ -611,7 +652,7 @@ void TaskView::showDialog(TaskDialog *dlg)
             taskPanel->addWidget(it);
         }
         // Add button box to the bottom of the main layout
-        mainLayout->addWidget(ActiveCtrl);
+        dialogLayout->addWidget(ActiveCtrl);
     }
 
     taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
@@ -637,7 +678,7 @@ void TaskView::removeDialog()
     getMainWindow()->updateActions();
 
     if (ActiveCtrl) {
-        mainLayout->removeWidget(ActiveCtrl);
+        dialogLayout->removeWidget(ActiveCtrl);
         delete ActiveCtrl;
         ActiveCtrl = nullptr;
     }
@@ -672,9 +713,21 @@ void TaskView::removeDialog()
     tryRestoreWidth();
     triggerMinimumSizeHint();
 }
-
+void TaskView::setShowTaskWatcher(bool show)
+{
+    showTaskWatcher = show;
+    if (show) {
+        addTaskWatcher();
+    } else {
+        clearTaskWatcher();
+    }
+}
 void TaskView::updateWatcher()
 {
+    if (!showTaskWatcher) {
+        return;
+    }
+
     if (ActiveWatcher.empty()) {
         auto panel = Gui::Control().taskPanel();
         if (panel && panel->ActiveWatcher.size())
@@ -750,6 +803,9 @@ void TaskView::clearTaskWatcher()
 
 void TaskView::addTaskWatcher()
 {
+    if (!showTaskWatcher) {
+        return;
+    }
     // add all widgets for all watcher to the task view
     for (TaskWatcher* tw : ActiveWatcher) {
         std::vector<QWidget*> &cont = tw->getWatcherContent();
@@ -889,5 +945,30 @@ void TaskView::restoreActionStyle()
     taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 }
 
+void TaskView::addContextualPanel(QWidget* panel)
+{
+    if (!panel || contextualPanels.contains(panel)) {
+        return;
+    }
+
+    contextualPanelsLayout->addWidget(panel);
+    contextualPanels.append(panel);
+    panel->show();
+    triggerMinimumSizeHint();
+    Q_EMIT taskUpdate();
+}
+
+void TaskView::removeContextualPanel(QWidget* panel)
+{
+    if (!panel || !contextualPanels.contains(panel)) {
+        return;
+    }
+
+    contextualPanelsLayout->removeWidget(panel);
+    contextualPanels.removeOne(panel);
+    panel->deleteLater();
+    triggerMinimumSizeHint();
+    Q_EMIT taskUpdate();
+}
 
 #include "moc_TaskView.cpp"

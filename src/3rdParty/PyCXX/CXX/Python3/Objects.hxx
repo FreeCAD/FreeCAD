@@ -1787,8 +1787,8 @@ namespace Py
     typedef std::basic_string<Py_UNICODE> unicodestring;
     extern Py_UNICODE unicode_null_string[1];
 #endif
-    typedef std::basic_string<Py_UCS4> ucs4string;
-    extern Py_UCS4 ucs4_null_string[1];
+    typedef std::basic_string<char32_t> ucs4string;
+    extern char32_t ucs4_null_string[1];
 
     class PYCXX_EXPORT Byte: public Object
     {
@@ -2152,13 +2152,13 @@ namespace Py
         // Need these c'tors becuase Py_UNICODE is 2 bytes
         // User may use "int" or "unsigned int" as the unicode type
         String( const unsigned int *s, int length )
-        : SeqBase<Char>( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, reinterpret_cast<const Py_UCS4 *>( s ), length ), true )
+        : SeqBase<Char>( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, reinterpret_cast<const char32_t *>( s ), length ), true )
         {
             validate();
         }
 
         String( const int *s, int length )
-        : SeqBase<Char>( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, reinterpret_cast<const Py_UCS4 *>( s ), length ), true )
+        : SeqBase<Char>( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, reinterpret_cast<const char32_t *>( s ), length ), true )
         {
             validate();
         }
@@ -2196,7 +2196,7 @@ namespace Py
 #if !defined( Py_UNICODE_WIDE ) && !defined( Py_LIMITED_API )
         String &operator=( const ucs4string &v )
         {
-            set( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, reinterpret_cast<const Py_UCS4 *>( v.data() ), v.length() ), true );
+            set( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, reinterpret_cast<const char32_t *>( v.data() ), v.length() ), true );
             return *this;
         }
 #endif
@@ -2237,7 +2237,7 @@ namespace Py
             {
                 ifPyErrorThrowCxxException();
             }
-            ucs4string ucs4( buf, size() );
+            ucs4string ucs4( reinterpret_cast<char32_t *>(buf), size() );
             delete[] buf;
 
             return ucs4;

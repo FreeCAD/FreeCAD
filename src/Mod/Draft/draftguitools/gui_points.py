@@ -60,7 +60,7 @@ class Point(gui_base_original.Creator):
 
         return {'Pixmap': 'Draft_Point',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Point", "Point"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Point", "Creates a point object. Click anywhere on the 3D view.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Point", "Creates a point")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -79,6 +79,8 @@ class Point(gui_base_original.Creator):
         It should automatically update the coordinates in the widgets
         of the task panel.
         """
+        if not self.ui.mouse:
+            return
         event = event_cb.getEvent()
         mousepos = event.getPosition().getValue()
         ctrl = event.wasCtrlDown()
@@ -102,6 +104,8 @@ class Point(gui_base_original.Creator):
         was pressed in the task panel.
         """
         if event_cb:
+            if not self.ui.mouse:
+                return
             event = event_cb.getEvent()
             if (event.getState() != coin.SoMouseButtonEvent.DOWN or
                 event.getButton() != event.BUTTON1):

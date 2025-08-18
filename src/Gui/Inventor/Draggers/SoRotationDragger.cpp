@@ -97,10 +97,10 @@ SoRotatorGeometry::SoRotatorGeometry()
 
     SO_KIT_ADD_CATALOG_ENTRY(_rotorPivotTranslation, SoTranslation, false, this, rotorPivot, false);
 
-    SO_KIT_ADD_FIELD(arcRadius, (8.0));
+    SO_KIT_ADD_FIELD(arcRadius, (8.0f));
     SO_KIT_ADD_FIELD(arcAngle, (std::numbers::pi_v<float> / 2.0f));
-    SO_KIT_ADD_FIELD(sphereRadius, (0.8));
-    SO_KIT_ADD_FIELD(arcThickness, (4.0));
+    SO_KIT_ADD_FIELD(sphereRadius, (0.8f));
+    SO_KIT_ADD_FIELD(arcThickness, (4.0f));
 
     SO_KIT_INIT_INSTANCE();
 

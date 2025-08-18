@@ -1356,15 +1356,6 @@ QComboBox:editable {
   background-color: @TextEditFieldBackgroundColor;
 }
 
-QComboBox QAbstractItemView {
-  border: 1px solid @GeneralBorderColor;
-  padding-left: -27px;
-  background-color: transparent;
-}
-
-QComboBox QAbstractItemView:hover {
-  background-color: @GeneralBackgroundHoverColor;
-}
 
 QComboBox QAbstractItemView:selected {
   background-color: @GeneralBackgroundHoverColor;
@@ -2185,7 +2176,7 @@ QListView {
 QTreeView {
   show-decoration-selected: 1;
   selection-background-color: @AccentBackgroundColor;
-  qproperty-indentation: 10;
+  qproperty-indentation: 12;
 }
 
 QTreeView:disabled,
@@ -2219,6 +2210,12 @@ QTableView::item:selected,
 QTreeView::item:selected,
 QColumnView::item:selected {
   background-color: @AccentBackgroundColor;
+}
+
+QTableView::item:hover,
+QColumnView::item:hover,
+QListView::item:hover {
+  background-color: @AccentHoverColor;
 }
 
 /* QTreeView::item:!selected:hover, */
@@ -2482,7 +2479,7 @@ PlotWidget {
 SKETCHER
 ==================================================================================================*/
 
-Gui--StatefulLabel[state="empty_sketch"] {
+Gui--StatefulLabel[state="empty"] {
   color : @SketcherEmptySketchColor}
 Gui--StatefulLabel[state="under_constrained"] {
   color : @SketcherUnderConstrainedColor;
@@ -2606,6 +2603,9 @@ QGroupBox[objectName="matOpsGrpBox"] QPushButton {
 QToolBar > Gui--WorkbenchComboBox QAbstractItemView {
   min-width: 180px;
   margin-left: 30px;
+  border: 1px solid @GeneralBorderColor;
+  padding-left: -27px;
+  background-color: transparent;
 }
 
 /* Below is a fix for indentation in properties*/

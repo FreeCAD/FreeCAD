@@ -320,5 +320,21 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
                 value=["electrostatic"],
             )
         )
-
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="ExcludeBendingStiffness",
+                group="Solver",
+                doc="Exclude bending stiffness to replace shells with membranes",
+                value=False,
+            )
+        )
         return prop
+
+    def onDocumentRestored(self, obj):
+        # update old project with new properties
+        for prop in self._get_properties():
+            try:
+                obj.getPropertyByName(prop.name)
+            except Base.PropertyError:
+                prop.add_to_object(obj)

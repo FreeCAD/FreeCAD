@@ -236,6 +236,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={0}, d={1}".format(c, d))
         wire = Draft.make_wire([a, b, c, d])
+        self.doc.recompute()
 
         index = 1
         _msg("  Split at")

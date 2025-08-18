@@ -22,7 +22,7 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Coordinate System</string>
+        <string>Coordinate system</string>
        </property>
        <property name="buddy">
         <cstring>positionModeComboBox</cstring>
@@ -33,12 +33,12 @@
       <widget class="QComboBox" name="positionModeComboBox">
        <item>
         <property name="text">
-         <string>Local Coordinate System</string>
+         <string>Local coordinate system</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Global Coordinate System</string>
+         <string>Global coordinate system</string>
         </property>
        </item>
       </widget>
@@ -53,7 +53,7 @@
      <item>
       <widget class="QCheckBox" name="alignRotationCheckBox">
        <property name="text">
-        <string>align dragger rotation with selected coordinate system</string>
+        <string>Align dragger rotation with selected coordinate system</string>
        </property>
       </widget>
      </item>
@@ -207,7 +207,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Move to other object</string>
+           <string>Move to Other Object</string>
           </property>
          </widget>
         </item>
@@ -551,7 +551,7 @@
          <item row="1" column="1">
           <widget class="QPushButton" name="pickTransformOriginButton">
            <property name="text">
-            <string>pick reference</string>
+            <string>Pick Reference</string>
            </property>
           </widget>
          </item>

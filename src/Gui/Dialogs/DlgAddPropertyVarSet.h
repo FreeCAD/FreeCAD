@@ -89,6 +89,7 @@ public:
 
 public Q_SLOTS:
     void valueChanged();
+    void valueChangedEnum();
 
 private:
     enum class TransactionOption : bool {
@@ -96,7 +97,13 @@ private:
         Abort = true
     };
 
+    enum class FieldChange : std::uint8_t {
+        Name,
+        Type
+    };
+
     int findLabelRow(const char* labelName, QFormLayout* layout);
+    void removeExistingWidget(QFormLayout* layout, int labelRow);
     void setWidgetForLabel(const char* labelName, QWidget* widget);
     void initializeGroup();
 
@@ -104,6 +111,11 @@ private:
     void initializeTypes();
 
     void removeSelectionEditor();
+    QVariant getEditorData() const;
+    void setEditorData(const QVariant& data);
+    bool isEnumPropertyItem() const;
+    void addEnumEditor(PropertyEditor::PropertyItem* propertyItem);
+    void addNormalEditor(PropertyEditor::PropertyItem* propertyItem);
     void addEditor(PropertyEditor::PropertyItem* propertyItem);
     bool isTypeWithEditor(const Base::Type& type);
     bool isTypeWithEditor(const std::string& type);
@@ -120,17 +132,26 @@ private:
     bool isTypeValid();
     bool areFieldsValid();
 
-    void onTextFieldChanged(const QString& text);
+    void setEditor(bool valueNeedsReset);
+    void buildForUnbound(bool valueNeedsReset);
+    void setPropertyItem(App::Property* prop);
+    void buildForBound(bool valueNeedsReset);
+    bool clearBoundProperty();
+    bool clear(FieldChange fieldChange);
+    void onNameChanged(const QString& text);
+    void onGroupFinished();
+    void onTypeChanged(const QString& text);
+
     void showStatusMessage();
 
     void removeEditor();
-    void onTypeChanged(const QString& text);
 
     void openTransaction();
     void critical(const QString& title, const QString& text);
-    bool createProperty();
+    App::Property* createProperty();
     void closeTransaction(TransactionOption option);
     void clearFields();
+    void addDocumentation();
 
 private:
     App::VarSet* varSet;

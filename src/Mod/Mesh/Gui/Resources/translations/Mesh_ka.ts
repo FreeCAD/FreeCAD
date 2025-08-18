@@ -10,14 +10,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="718"/>
-      <source>Add triangle</source>
-      <translation>სამკუთხედის დამატება</translation>
+      <source>Triangle</source>
+      <translation>სამკუთხედი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="719"/>
-      <location filename="../../Command.cpp" line="721"/>
-      <source>Add triangle manually to a mesh</source>
-      <translation>მრავალკუთხა დაფაზე სამკუთხედის ხელით დამატება</translation>
+      <source>Adds a triangle manually to a mesh</source>
+      <translation type="unfinished">Adds a triangle manually to a mesh</translation>
     </message>
   </context>
   <context>
@@ -29,12 +28,11 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1435"/>
-      <source>Boundings info...</source>
-      <translation>ინფორმაცია სტრუქტურის შესახებ...</translation>
+      <source>Boundings Info</source>
+      <translation type="unfinished">Boundings Info</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1436"/>
-      <location filename="../../Command.cpp" line="1438"/>
       <source>Shows the boundings of the selected mesh</source>
       <translation>მონიშნული მრავალკუთხა ბადის სტრუქტურის ჩვენება</translation>
     </message>
@@ -48,12 +46,11 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1487"/>
-      <source>Regular solid...</source>
-      <translation>სწორი გეომეტრიული სხეული...</translation>
+      <source>Regular Solid</source>
+      <translation>სწორი გეომეტრიული სხეული</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1488"/>
-      <location filename="../../Command.cpp" line="1490"/>
       <source>Builds a regular solid</source>
       <translation>სწორი გეომეტრიული სხეულის აგება</translation>
     </message>
@@ -67,14 +64,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="955"/>
-      <source>Cross-sections...</source>
-      <translation>განივი კვეთები...</translation>
+      <source>Cross-Sections</source>
+      <translation type="unfinished">Cross-Sections</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="956"/>
-      <location filename="../../Command.cpp" line="957"/>
-      <source>Cross-sections</source>
-      <translation>განივი კვეთები</translation>
+      <source>Creates cross-sections of the mesh</source>
+      <translation type="unfinished">Creates cross-sections of the mesh</translation>
     </message>
   </context>
   <context>
@@ -86,13 +82,11 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1331"/>
-      <source>Decimation...</source>
-      <translation>დეციმაცია...</translation>
+      <source>Decimate</source>
+      <translation type="unfinished">Decimate</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1332"/>
-      <location filename="../../Command.cpp" line="1333"/>
-      <location filename="../../Command.cpp" line="1334"/>
       <source>Decimates a mesh</source>
       <translation>ბადის კიდეების რაოდენობის შემცირება</translation>
     </message>
@@ -109,6 +103,11 @@
       <source>Difference</source>
       <translation>სხვაობა</translation>
     </message>
+    <message>
+      <location filename="../../Command.cpp" line="166"/>
+      <source>Creates a boolean difference of the selected meshes</source>
+      <translation type="unfinished">Creates a boolean difference of the selected meshes</translation>
+    </message>
   </context>
   <context>
     <name>CmdMeshEvaluateFacet</name>
@@ -119,14 +118,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1086"/>
-      <source>Face info</source>
-      <translation>ინფორმაცია ზედაპირზე</translation>
+      <source>Face Info</source>
+      <translation type="unfinished">Face Info</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1087"/>
-      <location filename="../../Command.cpp" line="1089"/>
-      <source>Information about face</source>
-      <translation>ინფორმაცია ზედაპირის შესახებ</translation>
+      <source>Displays information about the selected faces</source>
+      <translation type="unfinished">Displays information about the selected faces</translation>
     </message>
   </context>
   <context>
@@ -138,12 +136,11 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1261"/>
-      <source>Check solid mesh</source>
-      <translation>მრავალკუთხა ბადის სიმყარეზე შემოწმება</translation>
+      <source>Evaluate Solid</source>
+      <translation type="unfinished">Evaluate Solid</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1262"/>
-      <location filename="../../Command.cpp" line="1264"/>
       <source>Checks whether the mesh is a solid</source>
       <translation>მრავალკუთხა ბადის სიმყარეზე შემოწმება</translation>
     </message>
@@ -157,12 +154,11 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1042"/>
-      <source>Evaluate and repair mesh...</source>
-      <translation>მრავალკუთხა ბადის შეფასება და აღდგენა...</translation>
+      <source>Evaluate and Repair</source>
+      <translation type="unfinished">Evaluate and Repair</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1043"/>
-      <location filename="../../Command.cpp" line="1045"/>
       <source>Opens a dialog to analyze and repair a mesh</source>
       <translation>მრავალკუთხა ბადის ანალიზისა და შეკეთების ფანჯრის გახსნა</translation>
     </message>
@@ -176,14 +172,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="376"/>
-      <source>Export mesh...</source>
-      <translation>მრავალკუთხა ბადის გატანა...</translation>
+      <source>Export Mesh…</source>
+      <translation type="unfinished">Export Mesh…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="377"/>
-      <location filename="../../Command.cpp" line="379"/>
-      <source>Exports a mesh to file</source>
-      <translation>მრავალკუთხა ბადის ფაილში გატანა</translation>
+      <source>Exports a mesh to a file</source>
+      <translation type="unfinished">Exports a mesh to a file</translation>
     </message>
   </context>
   <context>
@@ -195,14 +190,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1570"/>
-      <source>Close hole</source>
-      <translation>ხვრელის დახურვა</translation>
+      <source>Close Holes</source>
+      <translation type="unfinished">Close Holes</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1571"/>
-      <location filename="../../Command.cpp" line="1573"/>
-      <source>Close holes interactively</source>
-      <translation>ხვრელების ინტერაქტიული დახურვა</translation>
+      <source>Closes holes interactively in the mesh</source>
+      <translation type="unfinished">Closes holes interactively in the mesh</translation>
     </message>
   </context>
   <context>
@@ -214,14 +208,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1519"/>
-      <source>Fill holes...</source>
-      <translation>ხვრელების შემვსები...</translation>
+      <source>Fill Holes</source>
+      <translation type="unfinished">Fill Holes</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1520"/>
-      <location filename="../../Command.cpp" line="1522"/>
-      <source>Fill holes of the mesh</source>
-      <translation>მრავალკუთხა ბადის ხვრელების შევსება</translation>
+      <source>Fills holes in the mesh</source>
+      <translation type="unfinished">Fills holes in the mesh</translation>
     </message>
   </context>
   <context>
@@ -233,14 +226,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1399"/>
-      <source>Flip normals</source>
-      <translation>ნორმალების მიმართუკლების შეცვლა</translation>
+      <source>Flip Normals</source>
+      <translation type="unfinished">Flip Normals</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1400"/>
-      <location filename="../../Command.cpp" line="1402"/>
-      <source>Flips the normals of the mesh</source>
-      <translation>მრავალკუთხა ბადის ნორმალების მიმართულების შებრუნება</translation>
+      <source>Flips the normals of the selected mesh</source>
+      <translation type="unfinished">Flips the normals of the selected mesh</translation>
     </message>
   </context>
   <context>
@@ -252,14 +244,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="459"/>
-      <source>Create mesh from geometry...</source>
-      <translation>მრავალკუთხა ბადის გეომეტრიის მიხედვით შექმნა...</translation>
+      <source>Mesh From Geometry</source>
+      <translation type="unfinished">Mesh From Geometry</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="460"/>
-      <location filename="../../Command.cpp" line="462"/>
-      <source>Create mesh from the selected geometry</source>
-      <translation>მოცემული გეომეტრიის მრავალკუთხა ბადის შექმნა</translation>
+      <source>Creates a mesh from the selected geometry</source>
+      <translation type="unfinished">Creates a mesh from the selected geometry</translation>
     </message>
   </context>
   <context>
@@ -271,13 +262,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="530"/>
-      <source>Create mesh from shape...</source>
-      <translation>მოხაზულობის შექმნა ბადიდან...</translation>
+      <source>Mesh From Shape</source>
+      <translation type="unfinished">Mesh From Shape</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="531"/>
-      <source>Tessellate shape</source>
-      <translation>მოხაზულობის ტესელაცია</translation>
+      <source>Tessellates the selected shape to a mesh</source>
+      <translation type="unfinished">Tessellates the selected shape to a mesh</translation>
     </message>
   </context>
   <context>
@@ -289,12 +280,11 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1363"/>
-      <source>Harmonize normals</source>
-      <translation>ნორმალების შეთანხმება</translation>
+      <source>Harmonize Normals</source>
+      <translation type="unfinished">Harmonize Normals</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1364"/>
-      <location filename="../../Command.cpp" line="1366"/>
       <source>Harmonizes the normals of the mesh</source>
       <translation>მრავალკუთხა ბადის ნორმალების შეთანხმება</translation>
     </message>
@@ -308,14 +298,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="323"/>
-      <source>Import mesh...</source>
-      <translation>მრავალკუთხა ბადის შემოტანა...</translation>
+      <source>Import Mesh…</source>
+      <translation type="unfinished">Import Mesh…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="324"/>
-      <location filename="../../Command.cpp" line="326"/>
-      <source>Imports a mesh from file</source>
-      <translation>მრავალკუთხა ბადის ფაილიდან შემოტანა</translation>
+      <source>Imports a mesh from a file</source>
+      <translation type="unfinished">Imports a mesh from a file</translation>
     </message>
   </context>
   <context>
@@ -329,6 +318,11 @@
       <location filename="../../Command.cpp" line="244"/>
       <source>Intersection</source>
       <translation>კვეთა</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="245"/>
+      <source>Creates a boolean intersection from the selected meshes</source>
+      <translation type="unfinished">Creates a boolean intersection from the selected meshes</translation>
     </message>
   </context>
   <context>
@@ -358,14 +352,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="767"/>
-      <source>Cut mesh</source>
-      <translation>მრავალკუთხა ბადის ამოჭრა</translation>
+      <source>Cut</source>
+      <translation>ამოჭრა</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="768"/>
-      <location filename="../../Command.cpp" line="770"/>
-      <source>Cuts a mesh with a picked polygon</source>
-      <translation>მრავალკუთხა ბადის არჩეული მრავალკუთხედით ამოჭრა</translation>
+      <source>Cuts the mesh with a selected polygon</source>
+      <translation type="unfinished">Cuts the mesh with a selected polygon</translation>
     </message>
   </context>
   <context>
@@ -377,12 +370,11 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="659"/>
-      <source>Make segment</source>
-      <translation>სეგმენტის შექმნა</translation>
+      <source>Segment</source>
+      <translation>სეგმენტი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="660"/>
-      <location filename="../../Command.cpp" line="662"/>
       <source>Creates a mesh segment</source>
       <translation>მრავალკუთხა ბადის სეგმენტის შექმნა</translation>
     </message>
@@ -396,14 +388,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="984"/>
-      <source>Split mesh</source>
-      <translation>მრავალკუთხა ბადის გაყოფა</translation>
+      <source>Split</source>
+      <translation>გაყოფა</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="985"/>
-      <location filename="../../Command.cpp" line="987"/>
-      <source>Splits a mesh into two meshes</source>
-      <translation>მრავალკუთხა ბადის ორად გაყოფა</translation>
+      <source>Splits a mesh into 2 meshes</source>
+      <translation type="unfinished">Splits a mesh into 2 meshes</translation>
     </message>
   </context>
   <context>
@@ -415,11 +406,15 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="832"/>
-      <source>Trim mesh</source>
-      <translation>მრავალკუთხა ბადის ჩამოჭრა</translation>
+      <source>Trim</source>
+      <translation>მოკვეცა</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="833"/>
+      <source>Trims a mesh with a selected polygon</source>
+      <translation type="unfinished">Trims a mesh with a selected polygon</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="835"/>
       <source>Trims a mesh with a picked polygon</source>
       <translation>მრავალკუთხა ბადის მონიშნული მრავალკუთხედის ფორმაზე ჩამოჭრა</translation>
@@ -434,14 +429,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1180"/>
-      <source>Refinement...</source>
-      <translation>გაუმჯობესება...</translation>
+      <source>Refinement</source>
+      <translation type="unfinished">Refinement</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1181"/>
-      <location filename="../../Command.cpp" line="1182"/>
-      <source>Refine existing mesh</source>
-      <translation>არსებული ბადის გაუმჯობესება</translation>
+      <source>Refines an existing mesh</source>
+      <translation type="unfinished">Refines an existing mesh</translation>
     </message>
   </context>
   <context>
@@ -453,14 +447,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1214"/>
-      <source>Remove components by hand...</source>
-      <translation>კომპონენტების ხელით მოცილება...</translation>
+      <source>Remove Components Manually</source>
+      <translation type="unfinished">Remove Components Manually</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1215"/>
-      <location filename="../../Command.cpp" line="1217"/>
-      <source>Mark a component to remove it from the mesh</source>
-      <translation>კომპონენტების მრავალკუთხა ბადიდან წასაშლელად მონიშვნა</translation>
+      <source>Marks a component to remove it from the mesh</source>
+      <translation type="unfinished">Marks a component to remove it from the mesh</translation>
     </message>
   </context>
   <context>
@@ -472,14 +465,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1132"/>
-      <source>Remove components...</source>
-      <translation>კომპონენტების წაშლა...</translation>
+      <source>Remove Components</source>
+      <translation type="unfinished">Remove Components</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1133"/>
-      <location filename="../../Command.cpp" line="1135"/>
-      <source>Remove topologic independent components from the mesh</source>
-      <translation>ტოპოლოგიურად დამოუკიდებელი ობიექტების მრავალკუთხა ბადიდან წაშლა</translation>
+      <source>Removes topologically independent components from the mesh</source>
+      <translation type="unfinished">Removes topologically independent components from the mesh</translation>
     </message>
   </context>
   <context>
@@ -491,13 +483,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1782"/>
-      <source>Scale...</source>
-      <translation>მასშტაბირება...</translation>
+      <source>Scale</source>
+      <translation>მასშტაბირება</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1783"/>
-      <source>Scale selected meshes</source>
-      <translation>მონიშნული მრავალკუთხა ბადეების მასშტაბირება</translation>
+      <source>Scales the selected mesh objects</source>
+      <translation type="unfinished">Scales the selected mesh objects</translation>
     </message>
   </context>
   <context>
@@ -509,14 +501,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="926"/>
-      <source>Create section from mesh and plane</source>
-      <translation>მრავალკუთხა ბადისა და სიბრტყისაგან სექციის შექმნა</translation>
+      <source>Section From Plane</source>
+      <translation type="unfinished">Section From Plane</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="927"/>
-      <location filename="../../Command.cpp" line="928"/>
-      <source>Section from mesh and plane</source>
-      <translation>სექცია მრავალკუთხა ბადისა და სიბრტყისაგან</translation>
+      <source>Sections the mesh with the selected plane</source>
+      <translation type="unfinished">Sections the mesh with the selected plane</translation>
     </message>
   </context>
   <context>
@@ -528,14 +519,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1617"/>
-      <source>Create mesh segments...</source>
-      <translation>მრავალკუთხა ბადის სეგმენტის შექმნა...</translation>
+      <source>Segmentation</source>
+      <translation>სეგმენტაცია</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1618"/>
-      <location filename="../../Command.cpp" line="1620"/>
-      <source>Create mesh segments</source>
-      <translation>მრავალკუთხა ბადის სეგმენების შექმნა</translation>
+      <source>Creates new mesh segments from the mesh</source>
+      <translation type="unfinished">Creates new mesh segments from the mesh</translation>
     </message>
   </context>
   <context>
@@ -547,14 +537,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1653"/>
-      <source>Create mesh segments from best-fit surfaces...</source>
-      <translation>მრავალკუთხა ბადის სეგმენტების შექმნა ზედაპირების საუკეთესო თანხვედრით...</translation>
+      <source>Segmentation From Best-Fit Surfaces</source>
+      <translation type="unfinished">Segmentation From Best-Fit Surfaces</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1654"/>
-      <location filename="../../Command.cpp" line="1656"/>
-      <source>Create mesh segments from best-fit surfaces</source>
-      <translation>მრავალკუთხა ბადის სეგმენტების შექმნა ზედაპირების საუკეთესო თანხვედრით</translation>
+      <source>Creates new mesh segments from the best-fit surfaces</source>
+      <translation type="unfinished">Creates new mesh segments from the best-fit surfaces</translation>
     </message>
   </context>
   <context>
@@ -566,14 +555,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1302"/>
-      <source>Smooth...</source>
-      <translation>მოგლუვება...</translation>
+      <source>Smooth</source>
+      <translation type="unfinished">Smooth</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1303"/>
-      <location filename="../../Command.cpp" line="1305"/>
-      <source>Smooth the selected meshes</source>
-      <translation>მონიშნული მრავალკუთხა ბადების მოგლუვება</translation>
+      <source>Smoothes the selected meshes</source>
+      <translation type="unfinished">Smoothes the selected meshes</translation>
     </message>
   </context>
   <context>
@@ -585,13 +573,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1734"/>
-      <source>Split by components</source>
-      <translation>კომპონენტებად დაყოფა</translation>
+      <source>Split by Components</source>
+      <translation type="unfinished">Split by Components</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1735"/>
-      <source>Split selected mesh into its components</source>
-      <translation>მონიშნული მრავალკუთხა ბადის კომპონენტებად დაყოფა</translation>
+      <source>Splits the selected mesh into its components</source>
+      <translation type="unfinished">Splits the selected mesh into its components</translation>
     </message>
   </context>
   <context>
@@ -603,14 +591,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="897"/>
-      <source>Trim mesh with a plane</source>
-      <translation>მრავალკუთხა ბადის სიბრტყით ჩამოჭრა</translation>
+      <source>Trim With Plane</source>
+      <translation type="unfinished">Trim With Plane</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="898"/>
-      <location filename="../../Command.cpp" line="899"/>
-      <source>Trims a mesh with a plane</source>
-      <translation>მრავალკუთხა ბადის სიბრტყით ჩამოჭრა</translation>
+      <source>Trims a mesh by removing faces on one side of a selected plane</source>
+      <translation type="unfinished">Trims a mesh by removing faces on one side of a selected plane</translation>
     </message>
   </context>
   <context>
@@ -625,6 +612,11 @@
       <source>Union</source>
       <translation>გაერთიანება</translation>
     </message>
+    <message>
+      <location filename="../../Command.cpp" line="87"/>
+      <source>Unites the selected meshes</source>
+      <translation type="unfinished">Unites the selected meshes</translation>
+    </message>
   </context>
   <context>
     <name>CmdMeshVertexCurvature</name>
@@ -635,12 +627,11 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="556"/>
-      <source>Curvature plot</source>
-      <translation>სიმრუდის გრაფიკი</translation>
+      <source>Curvature Plot</source>
+      <translation type="unfinished">Curvature Plot</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="557"/>
-      <location filename="../../Command.cpp" line="559"/>
       <source>Calculates the curvature of the vertices of a mesh</source>
       <translation>მრავალკუთხა ბადის პიკების მრუდის გამოთვლა</translation>
     </message>
@@ -650,18 +641,17 @@
     <message>
       <location filename="../../Command.cpp" line="610"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="611"/>
-      <source>Curvature info</source>
-      <translation>ინფორმაცია სიმრუდეზე</translation>
+      <source>Curvature Info</source>
+      <translation type="unfinished">Curvature Info</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="612"/>
-      <location filename="../../Command.cpp" line="614"/>
-      <source>Information about curvature</source>
-      <translation>ინფორმაცია სიმრუდის შესახებ</translation>
+      <source>Displays information about the curvature</source>
+      <translation type="unfinished">Displays information about the curvature</translation>
     </message>
   </context>
   <context>
@@ -773,8 +763,8 @@
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1179"/>
-      <source>Repair mesh</source>
-      <translation>ბადის აღდგენა</translation>
+      <source>Repair Mesh</source>
+      <translation type="unfinished">Repair Mesh</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="163"/>
@@ -861,16 +851,6 @@
       <translation>მრავალკუთხა ბადის შეფასება &amp; აღდგენა</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="23"/>
-      <source>Mesh information</source>
-      <translation>ინფორმაცია მრავალკუთხა ბადის შესახებ</translation>
-    </message>
-    <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="46"/>
-      <source>Number of faces:</source>
-      <translation>ზედაპირების რაოდენობა:</translation>
-    </message>
-    <message>
       <location filename="../../DlgEvaluateMesh.ui" line="69"/>
       <location filename="../../DlgEvaluateMesh.ui" line="102"/>
       <location filename="../../DlgEvaluateMesh.ui" line="135"/>
@@ -886,14 +866,24 @@
       <translation>მონაცემები არაა</translation>
     </message>
     <message>
+      <location filename="../../DlgEvaluateMesh.ui" line="23"/>
+      <source>Mesh Information</source>
+      <translation type="unfinished">Mesh Information</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMesh.ui" line="46"/>
+      <source>Number of faces</source>
+      <translation>ზედაპირების რაოდენობა</translation>
+    </message>
+    <message>
       <location filename="../../DlgEvaluateMesh.ui" line="79"/>
-      <source>Number of edges:</source>
-      <translation>წიბოების რაოდენობა:</translation>
+      <source>Number of edges</source>
+      <translation type="unfinished">Number of edges</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="112"/>
-      <source>Number of points:</source>
-      <translation>წერტილების რიცხვი:</translation>
+      <source>Number of points</source>
+      <translation>წერტილების რიცხვი</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="147"/>
@@ -980,11 +970,6 @@
   <context>
     <name>MeshGui::DlgEvaluateMeshImp</name>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="141"/>
-      <source>Settings...</source>
-      <translation>გამართვა...</translation>
-    </message>
-    <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="253"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="420"/>
       <source>No selection</source>
@@ -1014,6 +999,11 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="524"/>
       <source>No flipped normals</source>
       <translation>ამობრუნებული ნორმალები ნაპოვნი არაა</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="141"/>
+      <source>Settings</source>
+      <translation>მორგება</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="530"/>
@@ -1148,13 +1138,13 @@
     <name>MeshGui::DlgEvaluateSettings</name>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="14"/>
-      <source>Evaluation settings</source>
-      <translation>გამოთვლის გამართვა</translation>
+      <source>Evaluation Settings</source>
+      <translation type="unfinished">Evaluation Settings</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="20"/>
       <source>Settings</source>
-      <translation>მორგება</translation>
+      <translation>გამართვა</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="26"/>
@@ -1181,8 +1171,8 @@
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="29"/>
-      <source>Solid:</source>
-      <translation>მყარი სხეული:</translation>
+      <source>Solid</source>
+      <translation>მყარი სხეული</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="42"/>
@@ -1218,30 +1208,30 @@
       <location filename="../../DlgRegularSolid.ui" line="120"/>
       <location filename="../../DlgRegularSolid.ui" line="236"/>
       <location filename="../../DlgRegularSolid.ui" line="387"/>
-      <source>Length:</source>
-      <translation>სიგრძე:</translation>
+      <source>Length</source>
+      <translation>სიგრძე</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="143"/>
-      <source>Width:</source>
-      <translation>სიგანე:</translation>
+      <source>Width</source>
+      <translation>სიგანე</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="163"/>
-      <source>Height:</source>
-      <translation>სიმაღლე:</translation>
+      <source>Height</source>
+      <translation>სიმაღლე</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="219"/>
       <location filename="../../DlgRegularSolid.ui" line="501"/>
-      <source>Radius:</source>
-      <translation>რადიუსი:</translation>
+      <source>Radius</source>
+      <translation>რადიუსი</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="273"/>
       <location filename="../../DlgRegularSolid.ui" line="424"/>
-      <source>Edge length:</source>
-      <translation>წიბოს სიგრძე:</translation>
+      <source>Edge length</source>
+      <translation type="unfinished">Edge length</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="293"/>
@@ -1249,28 +1239,28 @@
       <location filename="../../DlgRegularSolid.ui" line="538"/>
       <location filename="../../DlgRegularSolid.ui" line="642"/>
       <location filename="../../DlgRegularSolid.ui" line="746"/>
-      <source>Sampling:</source>
-      <translation>დისკრეტიზაცია:</translation>
+      <source>Sampling</source>
+      <translation type="unfinished">Sampling</translation>
+    </message>
+    <message>
+      <location filename="../../DlgRegularSolid.ui" line="353"/>
+      <location filename="../../DlgRegularSolid.ui" line="588"/>
+      <location filename="../../DlgRegularSolid.ui" line="692"/>
+      <source>Radius 1</source>
+      <translation>რადიუსი 1</translation>
+    </message>
+    <message>
+      <location filename="../../DlgRegularSolid.ui" line="370"/>
+      <location filename="../../DlgRegularSolid.ui" line="605"/>
+      <location filename="../../DlgRegularSolid.ui" line="709"/>
+      <source>Radius 2</source>
+      <translation>რადიუსი 2</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="307"/>
       <location filename="../../DlgRegularSolid.ui" line="455"/>
       <source>Closed</source>
       <translation>დახურულია</translation>
-    </message>
-    <message>
-      <location filename="../../DlgRegularSolid.ui" line="353"/>
-      <location filename="../../DlgRegularSolid.ui" line="588"/>
-      <location filename="../../DlgRegularSolid.ui" line="692"/>
-      <source>Radius 1:</source>
-      <translation>რადიუსი 1:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgRegularSolid.ui" line="370"/>
-      <location filename="../../DlgRegularSolid.ui" line="605"/>
-      <location filename="../../DlgRegularSolid.ui" line="709"/>
-      <source>Radius 2:</source>
-      <translation>რადიუსი 2:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="809"/>
@@ -1357,13 +1347,13 @@
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="114"/>
-      <source>Width:</source>
-      <translation>სიგანე:</translation>
+      <source>Width</source>
+      <translation>სიგანე</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="138"/>
-      <source>Height:</source>
-      <translation>სიმაღლე:</translation>
+      <source>Height</source>
+      <translation>სიმაღლე</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExportImp.cpp" line="39"/>
@@ -1375,16 +1365,6 @@ ZIP კომპრესია AMF ფაილის ფორმატის 
   </context>
   <context>
     <name>MeshGui::DlgSettingsMeshView</name>
-    <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="14"/>
-      <source>Mesh view</source>
-      <translation>მრავალკუთხა ბადის ხედი</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="35"/>
-      <source>Default appearance for new meshes</source>
-      <translation>ახალი მრავალკუთხა ბადეების ნაგულისხმევი გარეგნობა</translation>
-    </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="73"/>
       <source>Default mesh color</source>
@@ -1461,6 +1441,16 @@ ZIP კომპრესია AMF ფაილის ფორმატის 
       <translation>ნაკეცის კუთხე</translation>
     </message>
     <message>
+      <location filename="../../DlgSettingsMeshView.ui" line="14"/>
+      <source>Mesh View</source>
+      <translation type="unfinished">Mesh View</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMeshView.ui" line="35"/>
+      <source>Default Appearance for New Meshes</source>
+      <translation type="unfinished">Default Appearance for New Meshes</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettingsMeshView.ui" line="251"/>
       <source>The bottom side of the surface will be rendered the same way as the top side.
 If not checked, it depends on the option "Enable backlight color"
@@ -1529,18 +1519,18 @@ to a smoother appearance.
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="55"/>
-      <source>Iterations:</source>
-      <translation>იტერაციები:</translation>
+      <source>Iterations</source>
+      <translation>იტერაციები</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="72"/>
-      <source>Lambda:</source>
-      <translation>ლამბდა:</translation>
+      <source>Lambda</source>
+      <translation type="unfinished">Lambda</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="95"/>
-      <source>Mu:</source>
-      <translation>მიუ:</translation>
+      <source>Mu</source>
+      <translation type="unfinished">Mu</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="118"/>
@@ -1588,8 +1578,8 @@ to a smoother appearance.
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="243"/>
-      <source>Running Gmsh...</source>
-      <translation type="unfinished">Running Gmsh...</translation>
+      <source>Running Gmsh…</source>
+      <translation type="unfinished">Running Gmsh…</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="266"/>
@@ -1606,13 +1596,13 @@ to a smoother appearance.
     <name>MeshGui::MeshFaceAddition</name>
     <message>
       <location filename="../../MeshEditor.cpp" line="396"/>
-      <source>Add triangle</source>
-      <translation>სამკუთხედის დამატება</translation>
+      <source>Add Triangle</source>
+      <translation type="unfinished">Add Triangle</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="397"/>
-      <source>Flip normal</source>
-      <translation>ნორმალის ამოყირავება</translation>
+      <source>Flip Normal</source>
+      <translation type="unfinished">Flip Normal</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="398"/>
@@ -1637,8 +1627,8 @@ to a smoother appearance.
     <name>MeshGui::ParametersDialog</name>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="173"/>
-      <source>Surface fit</source>
-      <translation>ზედაპირის თანხვედრა</translation>
+      <source>Surface Fit</source>
+      <translation type="unfinished">Surface Fit</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="180"/>
@@ -1695,23 +1685,23 @@ to a smoother appearance.
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="32"/>
-      <source>Meshing:</source>
-      <translation>ბადის აგება:</translation>
+      <source>Meshing</source>
+      <translation>ბადის აგება</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>
-      <source>Max element size (0.0 = Auto):</source>
-      <translation>ელემენტის მაქს ზომა (0.0 = ავტო):</translation>
+      <source>Max element size (0.0 = Auto)</source>
+      <translation type="unfinished">Max element size (0.0 = Auto)</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="68"/>
-      <source>Min element size (0.0 = Auto):</source>
-      <translation>ელემენტის მინ ზომა (0.0 = ავტო):</translation>
+      <source>Min element size (0.0 = Auto)</source>
+      <translation type="unfinished">Min element size (0.0 = Auto)</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
-      <source>Angle:</source>
-      <translation>კუთხე:</translation>
+      <source>Angle</source>
+      <translation>კუთხე</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="126"/>
@@ -1730,8 +1720,8 @@ to a smoother appearance.
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="181"/>
-      <source>Time:</source>
-      <translation>დრო:</translation>
+      <source>Time</source>
+      <translation>დრო</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="188"/>
@@ -1743,8 +1733,8 @@ to a smoother appearance.
     <name>MeshGui::RemoveComponents</name>
     <message>
       <location filename="../../RemoveComponents.ui" line="14"/>
-      <source>Remove components</source>
-      <translation>კომპონენტების მოცილება</translation>
+      <source>Remove Components</source>
+      <translation type="unfinished">Remove Components</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="20"/>
@@ -1777,8 +1767,18 @@ to a smoother appearance.
     <message>
       <location filename="../../RemoveComponents.ui" line="89"/>
       <location filename="../../RemoveComponents.ui" line="175"/>
-      <source>Pick triangle</source>
-      <translation>აირჩიეთ სამკუთხედი</translation>
+      <source>Pick Triangle</source>
+      <translation type="unfinished">Pick Triangle</translation>
+    </message>
+    <message>
+      <location filename="../../RemoveComponents.ui" line="192"/>
+      <source>Region Options</source>
+      <translation type="unfinished">Region Options</translation>
+    </message>
+    <message>
+      <location filename="../../RemoveComponents.ui" line="208"/>
+      <source>Respect only triangles with screen-facing normals</source>
+      <translation type="unfinished">Respect only triangles with screen-facing normals</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="96"/>
@@ -1801,27 +1801,17 @@ to a smoother appearance.
       <translation>მონიშვნის მთელი კომპონენტიდან მოხსნა</translation>
     </message>
     <message>
-      <location filename="../../RemoveComponents.ui" line="192"/>
-      <source>Region options</source>
-      <translation>რეგიონის პარამეტრები</translation>
-    </message>
-    <message>
       <location filename="../../RemoveComponents.ui" line="198"/>
       <source>Respect only visible triangles</source>
       <translation>ყურადღების მხოლოდ ხილულ სამკუთხედებზე მიქცევა</translation>
-    </message>
-    <message>
-      <location filename="../../RemoveComponents.ui" line="208"/>
-      <source>Respect only triangles with normals facing screen</source>
-      <translation>ყურადღების მხოლოდ ეკრანისკენ მოშვერილი ნორმალიანი სამკუთხედებისთვის მიქცევა</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::Segmentation</name>
     <message>
       <location filename="../../Segmentation.ui" line="14"/>
-      <source>Mesh segmentation</source>
-      <translation>მრავალკუთხა ბადის სეგმენტაცია</translation>
+      <source>Mesh Segmentation</source>
+      <translation type="unfinished">Mesh Segmentation</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="20"/>
@@ -1862,13 +1852,23 @@ to a smoother appearance.
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="109"/>
-      <source>Tolerance (Flat)</source>
-      <translation>დაშვება (სიბრტყის)</translation>
+      <source>Tolerance (flat)</source>
+      <translation type="unfinished">Tolerance (flat)</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="126"/>
-      <source>Tolerance (Curved)</source>
-      <translation>დაშვება (მრუდის)</translation>
+      <source>Tolerance (curved)</source>
+      <translation type="unfinished">Tolerance (curved)</translation>
+    </message>
+    <message>
+      <location filename="../../Segmentation.ui" line="235"/>
+      <source>Maximum curvature</source>
+      <translation type="unfinished">Maximum curvature</translation>
+    </message>
+    <message>
+      <location filename="../../Segmentation.ui" line="269"/>
+      <source>Minimum curvature</source>
+      <translation type="unfinished">Minimum curvature</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="163"/>
@@ -1880,35 +1880,25 @@ to a smoother appearance.
       <source>Freeform</source>
       <translation>შემთხვევითი ფორმები</translation>
     </message>
-    <message>
-      <location filename="../../Segmentation.ui" line="235"/>
-      <source>Max. Curvature</source>
-      <translation>მაქს. სიმრუდე</translation>
-    </message>
-    <message>
-      <location filename="../../Segmentation.ui" line="269"/>
-      <source>Min. Curvature</source>
-      <translation>მინ. სიმრუდე</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::SegmentationBestFit</name>
-    <message>
-      <location filename="../../SegmentationBestFit.ui" line="14"/>
-      <source>Mesh segmentation</source>
-      <translation>ბადის სეგმენტაცია</translation>
-    </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="20"/>
       <source>Plane</source>
       <translation>სიბრტყე</translation>
     </message>
     <message>
+      <location filename="../../SegmentationBestFit.ui" line="14"/>
+      <source>Mesh Segmentation</source>
+      <translation type="unfinished">Mesh Segmentation</translation>
+    </message>
+    <message>
       <location filename="../../SegmentationBestFit.ui" line="29"/>
       <location filename="../../SegmentationBestFit.ui" line="82"/>
       <location filename="../../SegmentationBestFit.ui" line="135"/>
-      <source>Parameters...</source>
-      <translation>გამართვა...</translation>
+      <source>Parameters</source>
+      <translation>პარამეტრები</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="36"/>
@@ -1987,8 +1977,8 @@ to a smoother appearance.
     </message>
     <message>
       <location filename="../../Selection.ui" line="63"/>
-      <source>Respect only triangles with normals facing screen</source>
-      <translation>ყურადღების მხოლოდ ეკრანისკენ მოშვერილი ნორმალიანი სამკუთხედებისთვის მიქცევა</translation>
+      <source>Respect only triangles with screen-facing normals</source>
+      <translation type="unfinished">Respect only triangles with screen-facing normals</translation>
     </message>
     <message>
       <location filename="../../Selection.cpp" line="86"/>
@@ -2056,10 +2046,10 @@ to a smoother appearance.
       <location filename="../../Command.cpp" line="144"/>
       <location filename="../../Command.cpp" line="223"/>
       <location filename="../../Command.cpp" line="302"/>
-      <source>OpenSCAD cannot be found on your system.
-Please visit http://www.openscad.org/index.html to install it.</source>
-      <translation>თქვენს სისტემაში OpenSCAD-ი არ არის დაყენებული.
-დასაყენებლად მიაკითხეთ http://www.openscad.org/index.html.</translation>
+      <source>OpenSCAD cannot be found on the system.
+Visit http://www.openscad.org/index.html to install it.</source>
+      <translation type="unfinished">OpenSCAD cannot be found on the system.
+Visit http://www.openscad.org/index.html to install it.</translation>
     </message>
   </context>
   <context>
@@ -2142,8 +2132,8 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="348"/>
-      <source>Import mesh</source>
-      <translation>მრავალკუთხა ბადის შემოტანა</translation>
+      <source>Import Mesh</source>
+      <translation>ბადის შემოტანა</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="401"/>
@@ -2202,8 +2192,8 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="423"/>
-      <source>Export mesh</source>
-      <translation>მრავალკუთხა ბადის გატანა</translation>
+      <source>Export Mesh</source>
+      <translation type="unfinished">Export Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="469"/>
@@ -2262,24 +2252,24 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="795"/>
-      <source>Display components</source>
-      <translation>კომპონენტების ჩვენება</translation>
+      <source>Display Components</source>
+      <translation type="unfinished">Display Components</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="803"/>
-      <source>Display segments</source>
-      <translation>სეგმენტების ჩვენება</translation>
+      <source>Display Segments</source>
+      <translation type="unfinished">Display Segments</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="811"/>
-      <source>Display colors</source>
-      <translation>ფერების ჩვენება</translation>
+      <source>Display Colors</source>
+      <translation type="unfinished">Display Colors</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCurvature.cpp" line="540"/>
       <location filename="../../ViewProvider.cpp" line="1681"/>
-      <source>Leave info mode</source>
-      <translation>საინფორმაციო რეჟიმიდან გასვლა</translation>
+      <location filename="../../ViewProviderCurvature.cpp" line="540"/>
+      <source>Leave Info Mode</source>
+      <translation type="unfinished">Leave Info Mode</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1748"/>
@@ -2288,23 +2278,23 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1774"/>
-      <source>Leave hole-filling mode</source>
-      <translation>ნახვრეტების შევსების რეჟიმიდან გასვლა</translation>
+      <source>Leave Hole-Filling Mode</source>
+      <translation type="unfinished">Leave Hole-Filling Mode</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1822"/>
-      <source>Leave removal mode</source>
-      <translation>წაშლის რეჟიმიდან გამოსვლა</translation>
+      <source>Leave Removal Mode</source>
+      <translation type="unfinished">Leave Removal Mode</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1823"/>
-      <source>Delete selected faces</source>
-      <translation>მონიშნული ზედაპირების წაშლა</translation>
+      <source>Delete Selected Faces</source>
+      <translation type="unfinished">Delete Selected Faces</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1824"/>
-      <source>Clear selected faces</source>
-      <translation>ზედაპირებზე მონიშვნის მოხსნა</translation>
+      <source>Clear Selected Faces</source>
+      <translation type="unfinished">Clear Selected Faces</translation>
     </message>
     <message>
       <location filename="../../ViewProviderCurvature.cpp" line="537"/>
@@ -2313,33 +2303,33 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="69"/>
-      <source>Number of points:</source>
-      <translation>წერტილების რიცხვი:</translation>
+      <source>Number of points</source>
+      <translation>წერტილების რიცხვი</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="72"/>
-      <source>Number of facets:</source>
-      <translation>წახნაგების რაოდენობა:</translation>
+      <source>Number of facets</source>
+      <translation type="unfinished">Number of facets</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="78"/>
-      <source>Minimum bound:</source>
-      <translation>მინიმალური ზღვარი:</translation>
+      <source>Minimum bound</source>
+      <translation type="unfinished">Minimum bound</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="81"/>
-      <source>Maximum bound:</source>
-      <translation>მაქსიმალურ ზღვარი:</translation>
+      <source>Maximum bound</source>
+      <translation type="unfinished">Maximum bound</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="88"/>
-      <source>Mesh info box</source>
-      <translation>ბადის ინფორმაციის ფანჯარა</translation>
+      <source>Mesh Info Box</source>
+      <translation type="unfinished">Mesh Info Box</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="89"/>
-      <source>Mesh info</source>
-      <translation>ბადის ინფორმაცია</translation>
+      <source>Mesh Info</source>
+      <translation type="unfinished">Mesh Info</translation>
     </message>
   </context>
   <context>
@@ -2366,33 +2356,33 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
-      <source>Mesh tools</source>
-      <translation>მრავალკუთხა ბადის ხელსაწყოები</translation>
+      <source>Mesh Tools</source>
+      <translation type="unfinished">Mesh Tools</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
-      <source>Mesh modify</source>
-      <translation>ბადის შეცვლა</translation>
+      <source>Mesh Modify</source>
+      <translation type="unfinished">Mesh Modify</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
-      <source>Mesh boolean</source>
-      <translation>ბადის ბულევა</translation>
+      <source>Mesh Boolean</source>
+      <translation>ბადის ბულევური ოპერაციები</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
-      <source>Mesh cutting</source>
-      <translation>ბადის ჭრა</translation>
+      <source>Mesh Cutting</source>
+      <translation type="unfinished">Mesh Cutting</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
-      <source>Mesh segmentation</source>
-      <translation>მრავალკუთხა ბადის სეგმენტაცია</translation>
+      <source>Mesh Segmentation</source>
+      <translation type="unfinished">Mesh Segmentation</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
-      <source>Mesh analyze</source>
-      <translation>ბადის ანალიზი</translation>
+      <source>Mesh Analyze</source>
+      <translation type="unfinished">Mesh Analyze</translation>
     </message>
   </context>
 </TS>

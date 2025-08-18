@@ -23,7 +23,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Default Width</string>
+         <string>Default width</string>
         </property>
        </widget>
       </item>
@@ -39,7 +39,7 @@ If the width is set to 0 the dressup will try to guess a reasonable value based 
       <item row="1" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Default Height</string>
+         <string>Default height</string>
         </property>
        </widget>
       </item>
@@ -55,14 +55,14 @@ If the specified height is 0 the dressup will use half the height of the part. S
       <item row="2" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Default Angle</string>
+         <string>Default angle</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
        <widget class="QDoubleSpinBox" name="dsbAngle">
         <property name="toolTip">
-         <string>Plunge angle for ascent and descent of holding tag.</string>
+         <string>Plunge angle for ascent and descent of holding tag</string>
         </property>
         <property name="suffix">
          <string notr="true"> °</string>
@@ -84,7 +84,7 @@ If the specified height is 0 the dressup will use half the height of the part. S
       <item row="3" column="0">
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Default Radius</string>
+         <string>Default radius</string>
         </property>
        </widget>
       </item>
@@ -109,14 +109,14 @@ If the radius is bigger than that which the tag shape itself supports, the resul
       <item row="0" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Initial # Tags</string>
+         <string>Initial # tags</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QSpinBox" name="sbCount">
         <property name="toolTip">
-         <string>Specify the number of tags generated when a new dressup is created.</string>
+         <string>Specify the number of tags generated when a new dressup is created</string>
         </property>
         <property name="minimum">
          <number>2</number>

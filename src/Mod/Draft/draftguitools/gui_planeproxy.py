@@ -43,8 +43,8 @@ class Draft_WorkingPlaneProxy:
     def GetResources(self):
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_PlaneProxy",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_WorkingPlaneProxy", "Create working plane proxy"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_WorkingPlaneProxy", "Creates a proxy object from the current working plane.\nOnce the object is created double click it in the tree view to restore the camera position and objects' visibilities.\nThen you can use it to save a different camera position and objects' states any time you need.")}
+                "MenuText": QT_TRANSLATE_NOOP("Draft_WorkingPlaneProxy", "Working Plane Proxy"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_WorkingPlaneProxy", "Creates a proxy object from the current working plane that allows to restore the camera position and visibility of objects")}
 
     def IsActive(self):
         """Return True when this command should be available."""
@@ -52,7 +52,7 @@ class Draft_WorkingPlaneProxy:
 
     def Activated(self):
         """Execute when the command is called."""
-        App.ActiveDocument.openTransaction("Create WP proxy")
+        App.ActiveDocument.openTransaction("Create Working Plane Proxy")
         Gui.addModule("Draft")
         Gui.addModule("WorkingPlane")
         Gui.doCommand("pl = WorkingPlane.get_working_plane().get_placement()")

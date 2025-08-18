@@ -52,8 +52,8 @@ class PolarArray(gui_base.GuiCommandBase):
     def GetResources(self):
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_PolarArray",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_PolarArray", "Polar array"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_PolarArray", "Creates copies of the selected object, and places the copies in a polar pattern\ndefined by a center of rotation and its angle.\n\nThe array can be turned into an orthogonal or a circular array by changing its type.")}
+                "MenuText": QT_TRANSLATE_NOOP("Draft_PolarArray", "Polar Array"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_PolarArray", "Creates copies of the selected object in a polar pattern")}
 
     def Activated(self):
         """Execute when the command is called.

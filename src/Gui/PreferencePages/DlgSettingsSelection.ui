@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Viewport selection behavior</string>
+      <string>Viewport Selection Behavior</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="4" column="1">
@@ -64,7 +64,7 @@
         <item>
          <widget class="QLabel" name="spinPickRadiusLabel">
           <property name="text">
-           <string>Radius:</string>
+           <string>Radius</string>
           </property>
          </widget>
         </item>
@@ -90,8 +90,8 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
+           <string>Area for selecting elements in the 3D view.
+A larger value makes it easier to select elements, but may prevent selection of small features.
       </string>
           </property>
           <property name="inputMethodHints">
@@ -170,7 +170,7 @@ Larger value eases to pick things, but can make small features impossible to sel
       <item row="8" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxPreselect">
         <property name="text">
-         <string>Preselect the object in 3D view when hovering the cursor over the tree item</string>
+         <string>Preselect the object in the 3D view when hovering the cursor over the tree item</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>PreSelection</cstring>
@@ -186,7 +186,7 @@ Larger value eases to pick things, but can make small features impossible to sel
    <item>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
-      <string>Tree selection behavior</string>
+      <string>Tree Selection Behavior</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -205,7 +205,7 @@ Larger value eases to pick things, but can make small features impossible to sel
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxAutoExpand">
         <property name="text">
-         <string>Auto expand tree item when the corresponding object is selected in 3D view</string>
+         <string>Auto expand tree item when the corresponding object is selected in the 3D view</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>SyncSelection</cstring>

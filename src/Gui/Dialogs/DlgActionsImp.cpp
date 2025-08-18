@@ -211,7 +211,7 @@ void DlgCustomActionsImp::onActionListWidgetItemActivated(QTreeWidgetItem* item)
         if (!bFound) {
             QMessageBox::critical(this,
                                   tr("Macro not found"),
-                                  tr("Sorry, couldn't find macro file '%1'.").arg(scriptName));
+                                  tr("Could not find macro file '%1'.").arg(scriptName));
         }
 
         // fill up labels with the command's data
@@ -235,12 +235,12 @@ void DlgCustomActionsImp::onActionListWidgetItemActivated(QTreeWidgetItem* item)
 void DlgCustomActionsImp::onButtonAddActionClicked()
 {
     if (ui->actionMacros->currentText().isEmpty()) {
-        QMessageBox::warning(this, tr("Empty macro"), tr("Please specify the macro first."));
+        QMessageBox::warning(this, tr("Empty macro"), tr("First, specify the macro."));
         return;
     }
 
     if (ui->actionMenu->text().isEmpty()) {
-        QMessageBox::warning(this, tr("Empty text"), tr("Please specify the menu text first."));
+        QMessageBox::warning(this, tr("Empty text"), tr("Fisrst, specify the menu text."));
         return;
     }
 
@@ -305,12 +305,12 @@ void DlgCustomActionsImp::onButtonReplaceActionClicked()
 {
     QTreeWidgetItem* item = ui->actionListWidget->currentItem();
     if (!item) {
-        QMessageBox::warning(this, tr("No item selected"), tr("Please select a macro item first."));
+        QMessageBox::warning(this, tr("No item selected"), tr("First, select a macro item."));
         return;
     }
 
     if (ui->actionMenu->text().isEmpty()) {
-        QMessageBox::warning(this, tr("Empty text"), tr("Please specify the menu text first."));
+        QMessageBox::warning(this, tr("Empty text"), tr("First, specify the menu text."));
         return;
     }
 
@@ -457,7 +457,7 @@ void IconDialog::onAddIconPath()
     }
 
     IconFolders dlg(pathList, this);
-    dlg.setWindowTitle(tr("Icon folders"));
+    dlg.setWindowTitle(tr("Icon Folders"));
     if (dlg.exec()) {
         QStringList paths = dlg.getPaths();
 

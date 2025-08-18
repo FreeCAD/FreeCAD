@@ -750,8 +750,7 @@ Evolumes
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
 *STEP
 *BUCKLE
-10
-
+10,0.01
 
 ***********************************************************
 ** Fixed Constraints
@@ -764,8 +763,8 @@ ConstraintFixed,3
 
 ***********************************************************
 ** constraints force node loads
-*CLOAD
 ** ConstraintForce
+*CLOAD
 ** node loads on shape: Beam:Face6
 65,3,-0.328125
 66,3,-0.65625

@@ -41,7 +41,7 @@ class BIM_Views:
     def GetResources(self):
         return {
             "Pixmap": "BIM_Views",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_Views", "Views manager"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_Views", "Views Manager"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_Views", "Shows or hides the views manager"
             ),
@@ -119,7 +119,7 @@ class BIM_Views:
 
             # set tooltips
             self.dialog.buttonAddLevel.setToolTip(translate("BIM","Creates a new level"))
-            self.dialog.buttonAddProxy.setToolTip(translate("BIM","Creates a new Working Plane Proxy"))
+            self.dialog.buttonAddProxy.setToolTip(translate("BIM","Creates a new working plane proxy"))
             self.dialog.buttonDelete.setToolTip(translate("BIM","Deletes the selected item"))
             self.dialog.buttonToggle.setToolTip(translate("BIM","Toggles selected items on/off"))
             self.dialog.buttonIsolate.setToolTip(translate("BIM","Turns all items off except the selected ones"))

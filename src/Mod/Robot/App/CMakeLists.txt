@@ -25,6 +25,12 @@ generate_from_xml(TrajectoryPy)
 generate_from_xml(WaypointPy)
 generate_from_xml(RobotObjectPy)
 
+generate_from_py_(Robot6AxisPy)
+generate_from_py_(TrajectoryPy)
+generate_from_py_(WaypointPy)
+generate_from_py_(RobotObjectPy)
+
+
 
 SET(Python_SRCS
     Robot6AxisPy.xml

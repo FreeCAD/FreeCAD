@@ -40,7 +40,7 @@ static constexpr auto idEnum {1};
 static constexpr auto idMSAA {2};
 static constexpr std::array<std::tuple<std::string_view, AntiAliasing, int>, numMSAA> textMSAA {{
     {QT_TRANSLATE_NOOP("Gui::Dialog::DlgSettings3DView", "None"), AntiAliasing::None, 0},
-    {QT_TRANSLATE_NOOP("Gui::Dialog::DlgSettings3DView", "Line Smoothing"), AntiAliasing::MSAA1x, 1},
+    {QT_TRANSLATE_NOOP("Gui::Dialog::DlgSettings3DView", "Line smoothing"), AntiAliasing::MSAA1x, 1},
     {QT_TRANSLATE_NOOP("Gui::Dialog::DlgSettings3DView", "MSAA 2x"), AntiAliasing::MSAA2x, 2},
     {QT_TRANSLATE_NOOP("Gui::Dialog::DlgSettings3DView", "MSAA 4x"), AntiAliasing::MSAA4x, 4},
     {QT_TRANSLATE_NOOP("Gui::Dialog::DlgSettings3DView", "MSAA 6x"), AntiAliasing::MSAA6x, 6},

@@ -63,8 +63,8 @@ class PathTwistedArray(gui_base_original.Modifier):
         """Set icon, menu and tooltip."""
 
         return {'Pixmap': 'Draft_PathTwistedArray',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_PathTwistedArray", "Path twisted array"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_PathTwistedArray", "Creates copies of the selected object along a selected path, and twists the copies.\nFirst select the object, and then select the path.\nThe path can be a polyline, B-spline, Bezier curve, or even edges from other objects.")}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_PathTwistedArray", "Twisted Path Array"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_PathTwistedArray", "Creates twisted copies of the selected object along a selected path")}
 
     def Activated(self, name="Path twisted array"):
         """Execute when the command is called."""
@@ -76,7 +76,7 @@ class PathTwistedArray(gui_base_original.Modifier):
         """Proceed with the command if one object was selected."""
         sel = Gui.Selection.getSelectionEx()
         if len(sel) != 2:
-            _err(translate("draft","Please select exactly two objects, the base object and the path object, before calling this command."))
+            _err(translate("draft","Select exactly 2 objects, the base object and the path object, before calling this command"))
         else:
             base_object = sel[0].Object
             path_object = sel[1].Object
@@ -98,7 +98,7 @@ class PathTwistedArray(gui_base_original.Modifier):
             _cmd_list = ["_obj_ = " + _cmd,
                          "Draft.autogroup(_obj_)",
                          "App.ActiveDocument.recompute()"]
-            self.commit(translate("draft","Path twisted array"), _cmd_list)
+            self.commit(translate("draft","Create Path Twisted Array"), _cmd_list)
 
         # Commit the transaction and execute the commands
         # through the parent class
@@ -118,8 +118,8 @@ class PathTwistedLinkArray(PathTwistedArray):
         """Set icon, menu and tooltip."""
 
         return {'Pixmap': 'Draft_PathTwistedLinkArray',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_PathTwistedLinkArray","Path twisted link array"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_PathTwistedLinkArray","Like the PathTwistedArray tool, but creates a 'Link array' instead.\nA 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.")}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_PathTwistedLinkArray","Twisted Path Link Array"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_PathTwistedLinkArray","Creates twisted linked copies of the selected object along a selected path")}
 
     def Activated(self):
         """Execute when the command is called."""

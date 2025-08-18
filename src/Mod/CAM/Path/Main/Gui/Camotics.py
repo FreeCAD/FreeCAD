@@ -312,7 +312,7 @@ class CommandCamoticsSimulate:
             "Pixmap": "CAM_Camotics",
             "MenuText": QT_TRANSLATE_NOOP("CAM_Camotics", "CAMotics"),
             "Accel": "P, C",
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_Camotics", "Simulate using CAMotics"),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_Camotics", "Simulates using CAMotics"),
             "CmdType": "ForEdit",
         }
 
@@ -334,4 +334,4 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand("CAM_Camotics", CommandCamoticsSimulate())
 
 
-FreeCAD.Console.PrintLog("Loading PathCamoticsSimulateGui ... done\n")
+FreeCAD.Console.PrintLog("Loading PathCamoticsSimulateGui… done\n")

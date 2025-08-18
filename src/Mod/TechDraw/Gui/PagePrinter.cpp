@@ -285,9 +285,8 @@ void PagePrinter::printBannerPage(QPrinter* printer, QPainter& painter, QPageLay
 void PagePrinter::renderPage(ViewProviderPage* vpp, QPainter& painter, QRectF& sourceRect,
                              QRect& targetRect)
 {
-    //turn off view frames for print
-    bool saveState = vpp->getFrameState();
-    vpp->setFrameState(false);
+    // Clear selection to avoid it being rendered to the file
+    vpp->getQGSPage()->clearSelection();
     vpp->setTemplateMarkers(false);
 
     //scene might be drawn in light text.  we need to redraw in normal text.
@@ -301,8 +300,6 @@ void PagePrinter::renderPage(ViewProviderPage* vpp, QPainter& painter, QRectF& s
     vpp->getQGSPage()->render(&painter, targetRect, sourceRect);
 
     // Reset
-    vpp->setFrameState(saveState);
-    vpp->setTemplateMarkers(saveState);
     Preferences::lightOnDark(saveLightOnDark);
 
     vpp->getQGSPage()->refreshViews();

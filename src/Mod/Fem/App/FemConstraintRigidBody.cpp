@@ -109,6 +109,17 @@ ConstraintRigidBody::ConstraintRigidBody()
                       App::Prop_Output,
                       "Z-direction rotation/moment mode");
 
+    ADD_PROPERTY_TYPE(EnableAmplitude,
+                      (false),
+                      "ConstraintRigidBody",
+                      (App::PropertyType)(App::Prop_None),
+                      "Amplitude of the rigid body boundary condition or load");
+    ADD_PROPERTY_TYPE(AmplitudeValues,
+                      (std::vector<std::string> {"0, 0", "1, 1"}),
+                      "ConstraintRigidBody",
+                      (App::PropertyType)(App::Prop_None),
+                      "Amplitude values");
+
     TranslationalModeX.setEnums(boundaryModeEnum);
     TranslationalModeY.setEnums(boundaryModeEnum);
     TranslationalModeZ.setEnums(boundaryModeEnum);

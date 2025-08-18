@@ -147,4 +147,4 @@ if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand("CAM_Copy", CommandPathCopy())
 
-FreeCAD.Console.PrintLog("Loading PathCopy... done\n")
+FreeCAD.Console.PrintLog("Loading PathCopy… done\n")

@@ -1753,14 +1753,14 @@ void ViewProviderSketch::commitDragMove(double x, double y)
     resetPositionText();
 }
 
-void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d& toPos)
+void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d& toPos, OffsetMode offset)
 {
     if (auto constr = getConstraint(constNum)) {
-        moveConstraint(constr, constNum, toPos);
+        moveConstraint(constr, constNum, toPos, offset);
     }
 }
 
-void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constNum, const Base::Vector2d& toPos)
+void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constNum, const Base::Vector2d& toPos, OffsetMode offset)
 {
     // are we in edit?
     if (!isInEditMode())
@@ -1862,15 +1862,15 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
             }
             else if (geo->is<Part::GeomArcOfCircle>()) {
                 auto* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
-                double radius = arc->getRadius();
                 Base::Vector3d center = arc->getCenter();
                 double startangle, endangle;
                 arc->getRange(startangle, endangle, /*emulateCCW=*/true);
 
                 if (Constr->Type == Distance && Constr->Second == GeoEnum::GeoUndef){
-                    //arc length
-                    Base::Vector3d dir = Base::Vector3d(toPos.x, toPos.y, 0.) - arc->getCenter();
-                    Constr->LabelDistance = dir.Length();
+                    double arcAngle = (startangle + endangle) / 2.;
+                    Base::Vector2d arcDirection(std::cos(arcAngle), std::sin(arcAngle));
+                    Base::Vector2d centerToToPos = toPos - Base::Vector2d(center.x, center.y);
+                    Constr->LabelDistance = centerToToPos * arcDirection;
 
                     cleanAndDraw();
                     return;
@@ -1886,8 +1886,10 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
                         Base::Vector3d tmpDir = Base::Vector3d(toPos.x, toPos.y, 0) - p1;
                         angle = atan2(tmpDir.y, tmpDir.x);
                     }
-                    if (Constr->Type == Sketcher::Diameter)
+                    double radius = arc->getRadius();
+                    if (Constr->Type == Sketcher::Diameter) {
                         p1 = center - radius * Base::Vector3d(cos(angle), sin(angle), 0.);
+                    }
 
                     p2 = center + radius * Base::Vector3d(cos(angle), sin(angle), 0.);
                 }
@@ -1942,13 +1944,29 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
         else if (Constr->Type == DistanceY)
             dir = Base::Vector3d(0, (p2.y - p1.y >= std::numeric_limits<float>::epsilon()) ? 1 : -1, 0);
 
+        double offsetVal = 0.0;
+        if (offset == OffsetConstraint) {
+            if (auto* view = qobject_cast<Gui::View3DInventor*>(this->getActiveView())) {
+                Gui::View3DInventorViewer* viewer = view->getViewer();
+                float fHeight = -1.0;
+                float fWidth = -1.0;
+                viewer->getDimensions(fHeight, fWidth);
+                offsetVal = (fHeight + fWidth) * 0.01;
+            }
+        }
+
         if (Constr->Type == Radius || Constr->Type == Diameter || Constr->Type == Weight) {
-            Constr->LabelDistance = vec.x * dir.x + vec.y * dir.y;
+            double distance = vec.x * dir.x + vec.y * dir.y;
+            if (distance > offsetVal) {
+                distance -= offsetVal;
+            }
+            Constr->LabelDistance = distance;
             Constr->LabelPosition = atan2(dir.y, dir.x);
         }
         else {
             Base::Vector3d normal(-dir.y, dir.x, 0);
-            Constr->LabelDistance = vec.x * normal.x + vec.y * normal.y;
+            double distance = vec.x * normal.x + vec.y * normal.y - offsetVal;
+            Constr->LabelDistance = distance;
             if (Constr->Type == Distance || Constr->Type == DistanceX
                 || Constr->Type == DistanceY) {
                 vec = Base::Vector3d(toPos.x, toPos.y, 0) - (p2 + p1) / 2;
@@ -2054,7 +2072,14 @@ void ViewProviderSketch::moveAngleConstraint(Sketcher::Constraint* constr, int c
         }
         else if (isArcOfCircle(*geo)) {
             const auto* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
-            p0 = arc->getCenter();
+            Base::Vector3d center = arc->getCenter();
+            double startangle, endangle;
+            arc->getRange(startangle, endangle, /*emulateCCW=*/true);
+            double arcAngle = (startangle + endangle) / 2.;
+            Base::Vector2d arcDirection(std::cos(arcAngle), std::sin(arcAngle));
+            Base::Vector2d centerToToPos = toPos - Base::Vector2d(center.x, center.y);
+            constr->LabelDistance = centerToToPos * arcDirection;
+            return;
         }
         else {
             return;
@@ -2854,12 +2879,12 @@ bool ViewProviderSketch::getIsShownVirtualSpace() const
 
 void ViewProviderSketch::drawEdit(const std::vector<Base::Vector2d>& EditCurve)
 {
-    editCoinManager->drawEdit(EditCurve);
+    editCoinManager->drawEdit(EditCurve, currentGeometryCreationMode());
 }
 
 void ViewProviderSketch::drawEdit(const std::list<std::vector<Base::Vector2d>>& list)
 {
-    editCoinManager->drawEdit(list);
+    editCoinManager->drawEdit(list, currentGeometryCreationMode());
 }
 
 void ViewProviderSketch::drawEditMarkers(const std::vector<Base::Vector2d>& EditMarkers,
@@ -3234,7 +3259,7 @@ void ViewProviderSketch::UpdateSolverInformation()
     bool hasMalformed = getSketchObject()->getLastHasMalformedConstraints();
 
     if (getSketchObject()->Geometry.getSize() == 0) {
-        signalSetUp(QStringLiteral("empty_sketch"), tr("Empty sketch"), QString(), QString());
+        signalSetUp(QStringLiteral("empty"), tr("Empty sketch"), QString(), QString());
     }
     else if (dofs < 0 || hasConflicts) {// over-constrained sketch
         signalSetUp(
@@ -4110,6 +4135,7 @@ void ViewProviderSketch::generateContextMenu()
     if (selection.size() > 0) {
         const std::vector<std::string> SubNames = selection[0].getSubNames();
         const Sketcher::SketchObject* obj;
+        bool shouldAddChangeConstraintValue = false;
         if (selection[0].getObject()->isDerivedFrom<Sketcher::SketchObject>()) {
             obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
             for (auto& name : SubNames) {
@@ -4141,6 +4167,14 @@ void ViewProviderSketch::generateContextMenu()
                     ++selectedEndPoints;
                 }
                 else if (name.substr(0, 4) == "Cons") {
+                    if (selectedConstraints == 0) {
+                        int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(name);
+                        const Constraint *constraint = obj->Constraints[ConstrId];
+                        shouldAddChangeConstraintValue = constraint->isDimensional();
+                    }
+                    else {
+                        shouldAddChangeConstraintValue = false;
+                    }
                     ++selectedConstraints;
                 }
                 else if (name.substr(2, 5) == "Axis") {
@@ -4269,7 +4303,7 @@ void ViewProviderSketch::generateContextMenu()
 
         // context menu if only constraints are selected
         else if (selectedConstraints >= 1) {
-            if (selectedConstraints == 1) {
+            if (shouldAddChangeConstraintValue) {
                 menu << "Sketcher_ChangeDimensionConstraint";
             }
             menu << "Sketcher_ToggleDrivingConstraint"

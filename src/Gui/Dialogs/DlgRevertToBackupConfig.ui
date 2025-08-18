@@ -23,7 +23,7 @@
       </font>
      </property>
      <property name="text">
-      <string>WARNING: this process will undo any preference changes made since the specified date, and will also reset your Recent files and Macros to their state on that date.</string>
+      <string>WARNING: this process will undo any preference changes made since the specified date, and will also reset your recent files and Macros to their state on that date.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -49,7 +49,7 @@
    <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>Available backup files:</string>
+      <string>Available backup files</string>
      </property>
     </widget>
    </item>

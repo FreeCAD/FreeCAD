@@ -104,6 +104,7 @@
 #include <xercesc/util/XMLString.hpp>
 #include <xercesc/util/PlatformUtils.hpp>
 #include <xercesc/sax/SAXParseException.hpp>
+#include <xercesc/sax/EntityResolver.hpp>
 #include <xercesc/sax/ErrorHandler.hpp>
 #include <xercesc/sax/SAXParseException.hpp>
 #include <xercesc/sax/SAXException.hpp>
@@ -132,6 +133,7 @@
 #include <QReadLocker>
 #include <QReadWriteLock>
 #include <QTime>
+#include <QTimeZone>
 #include <QUuid>
 
 

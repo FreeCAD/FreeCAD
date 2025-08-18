@@ -103,7 +103,7 @@ class TaskFillTemplateFields:
                     msgBox = QtGui.QMessageBox()
                     msgTitle = QtCore.QT_TRANSLATE_NOOP(
                         "Techdraw_FillTemplateFields",
-                        "View or Projection Group missing",
+                        "View or projection group missing",
                     )
                     msg = QtCore.QT_TRANSLATE_NOOP(
                         "Techdraw_FillTemplateFields",
@@ -131,7 +131,7 @@ class TaskFillTemplateFields:
                 self.dialog.resize(1050, 400)
                 self.dialog.setWindowTitle(
                     QtCore.QT_TRANSLATE_NOOP(
-                        "TechDraw_FillTemplateFields", "Fill Template Fields in "
+                        "TechDraw_FillTemplateFields", "Fill Template Fields In "
                     )
                     + self.page.Label
                 )
@@ -428,6 +428,8 @@ class TaskFillTemplateFields:
                     QtCore.QMetaObject.connectSlotsByName(self.dialog)
                     self.dialog.show()
                     self.dialog.exec_()
+
+                    App.setActiveTransaction("Fill template fields")
                 else:
                     msgBox = QtGui.QMessageBox()
                     msgTitle = QtCore.QT_TRANSLATE_NOOP(
@@ -526,6 +528,9 @@ class TaskFillTemplateFields:
         self.page.Template.EditableTexts = self.texts
         self.close()
 
+        App.closeActiveTransaction()
+
     def close(self):
         self.dialog.hide()
+        App.closeActiveTransaction(True)
         return True

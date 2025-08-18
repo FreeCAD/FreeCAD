@@ -39,12 +39,17 @@ class FemExport ConstraintHeatflux: public Fem::Constraint
 public:
     ConstraintHeatflux();
 
+    App::PropertyBool EnableAmplitude;
+    App::PropertyStringList AmplitudeValues;
+
     App::PropertyTemperature AmbientTemp;
     /*App::PropertyFloat FaceTemp;*/
     App::PropertyThermalTransferCoefficient FilmCoef;
     App::PropertyFloat Emissivity;
     App::PropertyHeatFlux DFlux;
     App::PropertyEnumeration ConstraintType;
+    App::PropertyBool CavityRadiation;
+    App::PropertyString CavityName;
 
     /// recalculate the object
     App::DocumentObjectExecReturn* execute() override;

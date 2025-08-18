@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <boost/signals2.hpp>
 # include <boost/core/ignore_unused.hpp>
+# include <QAction>
 # include <QApplication>
 # include <QEvent>
 # include <QCloseEvent>
@@ -129,6 +130,29 @@ void MDIView::deleteSelf()
     _pcDocument = nullptr;
 }
 
+MDIView* MDIView::clone()
+{
+    return nullptr;
+}
+
+void MDIView::cloneFrom(const MDIView& from)
+{
+    setWindowTitle(from.windowTitle());
+    setWindowIcon(from.windowIcon());
+    resize(from.size());
+
+    // wstate is updated when changing from top-level mode to something else. This hasn't happened
+    // yet if the original widget is currently in top-level mode. In this case we want to use the
+    // actual windowState of the original widget instead of it's wstate.
+
+    if (from.currentViewMode() == TopLevel) {
+        wstate = from.windowState();
+    }
+    else {
+        wstate = from.wstate;
+    }
+}
+
 PyObject* MDIView::getPyObject()
 {
     if (!pythonObject)
@@ -207,7 +231,7 @@ bool MDIView::canClose()
     return true;
 }
 
-void MDIView::closeEvent(QCloseEvent *e)
+void MDIView::closeEvent(QCloseEvent* e)
 {
     if (canClose()) {
         e->accept();
@@ -353,15 +377,15 @@ QSize MDIView::minimumSizeHint () const
     return {400, 300};
 }
 
-void MDIView::changeEvent(QEvent *e)
+
+void MDIView::changeEvent(QEvent* e)
 {
     switch (e->type()) {
         case QEvent::ActivationChange:
             {
                 // Forces this top-level window to be the active view of the main window
                 if (isActiveWindow()) {
-                    if (getMainWindow()->activeWindow() != this)
-                        getMainWindow()->setActiveWindow(this);
+                    getMainWindow()->setActiveWindow(this);
                 }
             }   break;
         case QEvent::WindowTitleChange:
@@ -377,6 +401,29 @@ void MDIView::changeEvent(QEvent *e)
     }
 }
 
+bool MDIView::eventFilter(QObject* watched, QEvent* event)
+{
+    // As long as this widget is a top-level window (either in 'TopLevel' or 'FullScreen' mode) we
+    // need to be notified when an action is added to a widget. This action must also be added to
+    // this window to allow one to make use of its shortcut (if defined).
+    // Note: We don't need to care about removing an action if its parent widget gets destroyed.
+    // This does the action itself for us.
+
+    if (watched != this && event->type() == QEvent::ActionAdded) {
+        auto actionEvent = static_cast<QActionEvent*>(event);
+        QAction* action = actionEvent->action();
+
+        if (!action->isSeparator()) {
+            QList<QAction*> acts = actions();
+            if (!acts.contains(action)) {
+                addAction(action);
+            }
+        }
+    }
+
+    return false;
+}
+
 #if defined(Q_WS_X11)
 // To fix bug #0000345 move function declaration to here
 extern void qt_x11_wait_for_window_manager( QWidget* w ); // defined in qwidget_x11.cpp
@@ -384,74 +431,86 @@ extern void qt_x11_wait_for_window_manager( QWidget* w ); // defined in qwidget_
 
 void MDIView::setCurrentViewMode(ViewMode mode)
 {
+    const ViewMode oldmode = MDIView::currentViewMode();
+    if (oldmode == mode) {
+        return;
+    }
+
+    if (oldmode == Child) {
+        // remove window from MDIArea
+        if (qobject_cast<QMdiSubWindow*>(parentWidget())) {
+            getMainWindow()->removeWindow(this, false);
+            setParent(nullptr);
+        }
+    }
+    else if (oldmode == TopLevel) {
+        // backup maximize state for top-level mode
+        wstate = windowState();
+    }
+
     switch (mode) {
         // go to normal mode
         case Child:
-            {
-                if (this->currentMode == FullScreen) {
-                    showNormal();
-                    setWindowFlags(windowFlags() & ~Qt::Window);
-                }
-                else if (this->currentMode == TopLevel) {
-                    this->wstate = windowState();
-                    setWindowFlags( windowFlags() & ~Qt::Window );
-                }
+            getMainWindow()->addWindow(this);
+            break;
 
-                if (this->currentMode != Child) {
-                    this->currentMode = Child;
-                    getMainWindow()->addWindow(this);
-                    getMainWindow()->activateWindow();
-                    update();
-                }
-            }   break;
         // go to top-level mode
         case TopLevel:
-            {
-                if (this->currentMode == Child) {
-                    if (qobject_cast<QMdiSubWindow*>(this->parentWidget()))
-                        getMainWindow()->removeWindow(this,false);
-                    setWindowFlags(windowFlags() | Qt::Window);
-                    setParent(nullptr, Qt::Window | Qt::WindowTitleHint | Qt::WindowSystemMenuHint |
-                                 Qt::WindowMinMaxButtonsHint);
-                    if (this->wstate & Qt::WindowMaximized)
-                        showMaximized();
-                    else
-                        showNormal();
+            if (wstate & Qt::WindowMaximized) {
+                // Only calling showMaximized doesn't work when the widget is currently in
+                // full-screen mode. We need to exit full-screen mode first or the widget will end
+                // up in normal mode. Same if the window is in child mode but maximized.
+                setWindowState(windowState() & ~(Qt::WindowMaximized | Qt::WindowFullScreen));
+                showMaximized();
+            }
+            else {
+                showNormal();
+            }
+            break;
+
+        // go to full-screen mode
+        case FullScreen:
+            showFullScreen();
+            break;
+    }
+
+    currentMode = mode;
 
 #if defined(Q_WS_X11)
-                    //extern void qt_x11_wait_for_window_manager( QWidget* w ); // defined in qwidget_x11.cpp
-                    qt_x11_wait_for_window_manager(this);
+    if (mode == TopLevel && oldmode == Child) {
+        // extern void qt_x11_wait_for_window_manager( QWidget* w ); // defined in
+        // qwidget_x11.cpp
+        qt_x11_wait_for_window_manager(this);
+    }
 #endif
-                    activateWindow();
-                }
-                else if (this->currentMode == FullScreen) {
-                    if (this->wstate & Qt::WindowMaximized)
-                        showMaximized();
-                    else
-                        showNormal();
-                }
 
-                this->currentMode = TopLevel;
-                update();
-            }   break;
-        // go to fullscreen mode
-        case FullScreen:
-            {
-                if (this->currentMode == Child) {
-                    if (qobject_cast<QMdiSubWindow*>(this->parentWidget()))
-                        getMainWindow()->removeWindow(this,false);
-                    setWindowFlags(windowFlags() | Qt::Window);
-                    setParent(nullptr, Qt::Window);
-                    showFullScreen();
-                }
-                else if (this->currentMode == TopLevel) {
-                    this->wstate = windowState();
-                    showFullScreen();
-                }
+    activateWindow();
 
-                this->currentMode = FullScreen;
-                update();
-            }   break;
+    if (oldmode == Child) {
+        // To make a global shortcut working from this window we need to add
+        // all existing actions from the mainwindow and its sub-widgets
+
+        QList<QAction*> acts = getMainWindow()->findChildren<QAction*>();
+        addActions(acts);
+
+        // To be notfified for new actions
+        qApp->installEventFilter(this);
+    }
+    else if (mode == Child) {
+        qApp->removeEventFilter(this);
+        QList<QAction*> acts = actions();
+        for (QAction* it : acts) {
+            removeAction(it);
+        }
+
+        // When switching from undocked to docked mode, the widget position is somehow not updated
+        // correctly. In this case mapToGlobal(Point()) returns {0, 0} even though the widget is
+        // clearly not at the top-left corner of the screen. We fix this by briefly changing the
+        // maximum size of the widget.
+
+        const auto oldsize = maximumSize();
+        setMaximumSize({1, 1});
+        setMaximumSize(oldsize);
     }
 }
 
