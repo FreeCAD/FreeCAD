@@ -195,15 +195,18 @@ class ObjectPartShape:
             pass
 
     def execute(self, obj):
-        edges = []
+        wires = []
         for base in obj.Base:
+            edges = []
             (baseObj, subNames) = base
             if not subNames or subNames == ("",):
                 subNames = [f"Edge{i[0]+1}" for i in enumerate(baseObj.Shape.Edges)]
             edges.extend(
                 [baseObj.Shape.getElement(sub).copy() for sub in subNames if sub.startswith("Edge")]
             )
-        obj.Shape = Part.Wire(Part.__sortEdges__(edges))
+            for sortedEdges in Part.sortEdges(edges):
+                wires.append(Part.Wire(sortedEdges))
+        obj.Shape = Part.makeCompound(wires)
 
 
 class CommandPathShapeTC:
