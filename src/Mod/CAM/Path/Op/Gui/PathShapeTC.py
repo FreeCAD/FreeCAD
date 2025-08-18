@@ -92,6 +92,24 @@ class ObjectPathShape:
             QT_TRANSLATE_NOOP("App::Property", "Operations cycle time estimation"),
             locked=True,
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "UseComp",
+            "Offset",
+            QT_TRANSLATE_NOOP("App::Property", "Use tool radius compensation"),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "InvertSide",
+            "Offset",
+            QT_TRANSLATE_NOOP("App::Property", "Invert offset drection"),
+        )
+        obj.addProperty(
+            "App::PropertyDistance",
+            "OffsetExtra",
+            "Offset",
+            QT_TRANSLATE_NOOP("App::Property", "Offset from shape"),
+        )
         obj.Active = True
         obj.setEditorMode("CycleTime", 1)  # Set property read-only
         self.addToolController(obj)
@@ -113,8 +131,19 @@ class ObjectPathShape:
         return None
 
     def execute(self, obj):
+        offset = obj.OffsetExtra.Value
+        if obj.UseComp:
+            offset += obj.ToolController.Tool.Diameter.Value
+        if obj.InvertSide:
+            offset = -offset
+
+        if offset:
+            shape = [so.Shape.makeOffset2D(offset, join=1, openResult=True) for so in obj.Sources]
+        else:
+            shape = [so.Shape for so in obj.Sources]
+
         params = {}
-        params["shapes"] = [so.Shape for so in obj.Sources]
+        params["shapes"] = shape
         if obj.UseStartPoint:
             params["start"] = obj.StartPoint
         params["return_end"] = False
