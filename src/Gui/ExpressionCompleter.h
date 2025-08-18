@@ -78,6 +78,9 @@ public:
 public Q_SLOTS:
     void slotUpdate(const QString &prefix, int pos);
 
+Q_SIGNALS:
+    void completerSlotUpdated();
+
 private:
     void init();
     QString pathFromIndex ( const QModelIndex & index ) const override;
@@ -139,6 +142,7 @@ Q_SIGNALS:
 public Q_SLOTS:
     void slotTextChanged();
     void slotCompleteText(const QString & completionPrefix);
+    void adjustCompleterToCursor();
 private:
     ExpressionCompleter * completer;
     bool block;

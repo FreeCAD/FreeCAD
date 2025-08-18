@@ -888,6 +888,8 @@ void ExpressionCompleter::slotUpdate(const QString& prefix, int pos)
     else if (auto itemView = popup()) {
         itemView->setVisible(false);
     }
+    
+    Q_EMIT completerSlotUpdated();
 }
 
 ExpressionValidator::ExpressionValidator(QObject* parent)
@@ -1116,6 +1118,10 @@ void ExpressionTextEdit::setDocumentObject(const App::DocumentObject* currentDoc
                 &ExpressionTextEdit::textChanged2,
                 completer,
                 &ExpressionCompleter::slotUpdate);
+        connect(completer,
+                &ExpressionCompleter::completerSlotUpdated,
+                this,
+                &ExpressionTextEdit::adjustCompleterToCursor);
     }
 }
 
@@ -1135,6 +1141,7 @@ void ExpressionTextEdit::slotTextChanged()
 {
     if (!block) {
         QTextCursor cursor = textCursor();
+        completer->popup()->setVisible(false); // hide the completer to avoid flickering
         Q_EMIT textChanged2(cursor.block().text(), cursor.positionInBlock());
     }
 }
@@ -1183,6 +1190,49 @@ void ExpressionTextEdit::contextMenuEvent(QContextMenuEvent* event)
     }
 
     delete menu;
+}
+
+void ExpressionTextEdit::adjustCompleterToCursor()
+{
+    if (!completer || !completer->popup()) {
+        return;
+    }
+
+    // get longest string width
+    int maxCompletionWidth = 0;
+    for (int i = 0; i < completer->completionModel()->rowCount(); ++i) {
+        const QModelIndex index = completer->completionModel()->index(i, 0);
+        const QString element = completer->completionModel()->data(index).toString();        
+        maxCompletionWidth = std::max(maxCompletionWidth, static_cast<int>(element.size()) * completer->popup()->fontMetrics().averageCharWidth());
+    }
+    if (maxCompletionWidth == 0) {
+        return; // no completions available
+    }
+
+    const QPoint cursorPos = cursorRect(textCursor()).topLeft();    
+    int posX = cursorPos.x();
+    int posY = cursorPos.y();
+
+    completer->popup()->setMaximumWidth(this->viewport()->width() * 0.6);
+    completer->popup()->setMaximumHeight(this->viewport()->height() * 0.6);
+    
+    const QSize completerSize { maxCompletionWidth + 40, completer->popup()->size().height() }; // 40 is margin for scrollbar
+    completer->popup()->resize(completerSize);
+
+    // vertical correction
+    if (posY + completerSize.height() > viewport()->height()) {
+        posY -= completerSize.height();
+    } else {
+        posY += fontMetrics().height();
+    }
+    
+    // horizontal correction
+    if (posX + completerSize.width() > viewport()->width()) {
+        posX = viewport()->width() - completerSize.width();
+    }
+
+    completer->popup()->move(mapToGlobal(QPoint{ posX, posY }));
+    completer->popup()->setVisible(true);
 }
 
 ///////////////////////////////////////////////////////////////////////

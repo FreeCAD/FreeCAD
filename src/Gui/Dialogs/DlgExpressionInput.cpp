@@ -115,7 +115,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     }
     else {
         ui->expression->setMinimumWidth(300);
-        ui->expression->setMinimumHeight(50);
+        ui->expression->setMinimumHeight(80);
         ui->msg->setWordWrap(true);
         ui->msg->setMaximumHeight(200);
         ui->msg->setMinimumWidth(280);
