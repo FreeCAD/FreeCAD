@@ -923,6 +923,7 @@ void TaskView::setShownTaskInfo(int index)
     }
 
     if (initIndex > 0) {
+        Gui::Selection().rmvSelectionGate();
         taskInfos[initIndex - 1].ActiveDialog->deactivate();
     }
     

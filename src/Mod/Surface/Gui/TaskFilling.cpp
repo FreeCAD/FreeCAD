@@ -1022,8 +1022,6 @@ void TaskFilling::activate()
 }
 void TaskFilling::deactivate()
 {
-    Gui::Selection().rmvSelectionGate();
-
     widget1->detachSelection();
     widget2->detachSelection();
     widget3->detachSelection();

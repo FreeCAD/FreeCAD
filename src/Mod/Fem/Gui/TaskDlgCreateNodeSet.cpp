@@ -111,7 +111,6 @@ void TaskDlgCreateNodeSet::activate()
 void TaskDlgCreateNodeSet::deactivate()
 {
     param->detachSelection();
-    Gui::Selection().rmvSelectionGate();
 }
 
 #include "moc_TaskDlgCreateNodeSet.cpp"
