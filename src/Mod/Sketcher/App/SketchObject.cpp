@@ -1344,6 +1344,69 @@ int SketchObject::toggleVirtualSpace(int ConstrId)
 }
 
 
+int SketchObject::setVisibility(std::vector<int> constrIds, bool isVisible)
+{
+    // no need to check input data validity as this is an sketchobject managed operation.
+    Base::StateLocker lock(managedoperation, true);
+
+    if (constrIds.empty())
+        return 0;
+
+    std::sort(constrIds.begin(), constrIds.end());
+
+    const std::vector<Constraint*>& vals = this->Constraints.getValues();
+
+    if (constrIds.front() < 0 || constrIds.back() >= int(vals.size()))
+        return -1;
+
+    std::vector<Constraint*> newVals(vals);
+
+    for (auto cid : constrIds) {
+        // clone the changed Constraint
+        if (vals[cid]->isVisible != isVisible) {
+            Constraint* constNew = vals[cid]->clone();
+            constNew->isVisible = isVisible;
+            newVals[cid] = constNew;
+        }
+    }
+
+    this->Constraints.setValues(std::move(newVals));
+
+    // Solver didn't actually update, but we need this to inform view provider
+    // to redraw
+    signalSolverUpdate();
+
+    return 0;
+}
+
+int SketchObject::setVisibility(int ConstrId, bool isVisible)
+{
+    // no need to check input data validity as this is an sketchobject managed operation.
+    Base::StateLocker lock(managedoperation, true);
+
+    const std::vector<Constraint*>& vals = this->Constraints.getValues();
+
+    if (ConstrId < 0 || ConstrId >= int(vals.size()))
+        return -1;
+
+    // copy the list
+    std::vector<Constraint*> newVals(vals);
+
+    // clone the changed Constraint
+    Constraint* constNew = vals[ConstrId]->clone();
+    constNew->isVisible = isVisible;
+    newVals[ConstrId] = constNew;
+
+    this->Constraints.setValues(std::move(newVals));
+
+    // Solver didn't actually update, but we need this to inform view provider
+    // to redraw
+    signalSolverUpdate();
+
+    return 0;
+}
+
+
 int SketchObject::setUpSketch()
 {
     lastDoF = solvedSketch.setUpSketch(
