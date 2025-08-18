@@ -27,6 +27,7 @@ import FreeCADGui
 import Part
 import Path
 import Path.Op.Base as OpBase
+import Path.Op.Util as PathOpUtil
 import PathScripts.PathUtils as PathUtils
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -92,6 +93,33 @@ class ObjectPathShape:
             QT_TRANSLATE_NOOP("App::Property", "Operations cycle time estimation"),
             locked=True,
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "UseMakeOffset2D",
+            "Offset",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Use Part.Wire.makeOffset2D() directly instead of Path.Op.Util.offsetWire()",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "UseComp",
+            "Offset",
+            QT_TRANSLATE_NOOP("App::Property", "Use tool radius compensation"),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "InvertSide",
+            "Offset",
+            QT_TRANSLATE_NOOP("App::Property", "Invert offset drection"),
+        )
+        obj.addProperty(
+            "App::PropertyDistance",
+            "OffsetExtra",
+            "Offset",
+            QT_TRANSLATE_NOOP("App::Property", "Offset from shape"),
+        )
         obj.Active = True
         obj.setEditorMode("CycleTime", 1)  # Set property read-only
         self.addToolController(obj)
@@ -113,8 +141,30 @@ class ObjectPathShape:
         return None
 
     def execute(self, obj):
+        offset = obj.OffsetExtra.Value
+        if obj.UseComp:
+            offset += obj.ToolController.Tool.Diameter.Value / 2
+        if obj.InvertSide:
+            offset = -offset
+
+        if offset:
+            shape = []
+            if obj.UseMakeOffset2D:
+                for source in obj.Sources:
+                    for wire in source.Shape.Wires:
+                        shape.append(wire.makeOffset2D(offset, join=1, openResult=True))
+            else:
+                job = PathUtils.findParentJob(obj)
+                base = job.Model.Group[0].Shape
+                for source in obj.Sources:
+                    for wire in source.Shape.Wires:
+                        shape.append(PathOpUtil.offsetWire(wire, base, offset, forward=True))
+
+        else:
+            shape = [so.Shape for so in obj.Sources]
+
         params = {}
-        params["shapes"] = [so.Shape for so in obj.Sources]
+        params["shapes"] = shape
         if obj.UseStartPoint:
             params["start"] = obj.StartPoint
         params["return_end"] = False
@@ -130,8 +180,8 @@ class ObjectPathShape:
         params["retraction"] = obj.Retraction
         params["resume_height"] = obj.ResumeHeight
         params["segmentation"] = obj.Segmentation
-        params["feedrate"] = obj.FeedRate
-        params["feedrate_v"] = obj.FeedRateVertical
+        params["feedrate"] = obj.FeedRate / 60
+        params["feedrate_v"] = obj.FeedRateVertical / 60
         params["verbose"] = obj.Verbose
         params["abs_center"] = obj.AbsoluteArcCenter
         params["preamble"] = obj.EmitPreamble
@@ -149,8 +199,8 @@ class ObjectPathShape:
         toolController = PathUtils.findToolController(obj, None)
         if toolController:
             obj.ToolController = toolController
-            obj.FeedRate = obj.ToolController.HorizFeed.Value
-            obj.FeedRateVertical = obj.ToolController.VertFeed.Value
+            obj.FeedRate = obj.ToolController.HorizFeed.Value * 60
+            obj.FeedRateVertical = obj.ToolController.VertFeed.Value * 60
         else:
             raise OpBase.PathNoTCException()
 
@@ -195,25 +245,27 @@ class ObjectPartShape:
             pass
 
     def execute(self, obj):
-        edges = []
+        wires = []
         for base in obj.Base:
+            edges = []
             (baseObj, subNames) = base
             if not subNames or subNames == ("",):
                 subNames = [f"Edge{i[0]+1}" for i in enumerate(baseObj.Shape.Edges)]
             edges.extend(
                 [baseObj.Shape.getElement(sub).copy() for sub in subNames if sub.startswith("Edge")]
             )
-        obj.Shape = Part.Wire(Part.__sortEdges__(edges))
+            for sortedEdges in Part.sortEdges(edges):
+                wires.append(Part.Wire(sortedEdges))
+        obj.Shape = Part.makeCompound(wires)
 
 
 class CommandPathShapeTC:
     def GetResources(self):
         return {
             "Pixmap": "CAM_ShapeTC",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_PathShapeTC", "Path From Shape TC"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_PathShapeTC", "Path from Shape TC"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_PathShapeTC",
-                "Creates a path from the selected shapes with the tool controller",
+                "CAM_PathShapeTC", "Creates path from selected shapes with tool controller"
             ),
         }
 
