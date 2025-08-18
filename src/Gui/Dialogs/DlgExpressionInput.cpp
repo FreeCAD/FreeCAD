@@ -207,6 +207,12 @@ bool DlgExpressionInput::typeOkForVarSet()
     return !determineTypeVarSet().isBad();
 }
 
+void DlgExpressionInput::initializeErrorFrame()
+{
+    ui->errorFrame->setVisible(false);
+    ui->errorIconLabel->setPixmap(style()->standardIcon(QStyle::SP_MessageBoxCritical).pixmap(QSize(20, 20)));
+}
+
 void DlgExpressionInput::initializeVarSets()
 {
 #if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
@@ -241,6 +247,7 @@ void DlgExpressionInput::initializeVarSets()
         ui->checkBoxVarSets->setVisible(false);
         ui->groupBoxVarSets->setVisible(false);
     }
+    initializeErrorFrame();
 }
 
 void NumberRange::setRange(double min, double max)
@@ -439,33 +446,45 @@ public:
     }
 };
 
-static bool isNamePropOk(const QString& nameProp, App::DocumentObject* obj,
-                         std::stringstream& message)
+constexpr std::string_view InvalidIdentifierMessage =
+    "must contain only alphanumeric characters, underscore, and must not start with a digit";
+
+static bool isPropertyNameValid(const QString& nameProp, App::DocumentObject* obj,
+                                std::stringstream& message)
 {
     if (!obj) {
         message << "Unknown object";
         return false;
     }
 
+    const char* prefixText = "Invalid property name: ";
+
     std::string name = nameProp.toStdString();
     if (name.empty()) {
+        message << prefixText << "the name cannot be empty";
         return false;
     }
 
     if (name != Base::Tools::getIdentifier(name)) {
-        message << "Invalid property name (must only contain alphanumericals, underscore, "
-                << "and must not start with digit";
+        message << prefixText << InvalidIdentifierMessage;
         return false;
     }
 
-    if (ExpressionParser::isTokenAUnit(name) || ExpressionParser::isTokenAConstant(name)) {
-        message << name << " is a reserved word";
+    if (ExpressionParser::isTokenAUnit(name)) {
+        message << prefixText << name
+                << " is a unit";
+        return false;
+    }
+
+    if (ExpressionParser::isTokenAConstant(name)) {
+        message << prefixText << name
+                << " is a constant";
         return false;
     }
 
     auto prop = obj->getPropertyByName(name.c_str());
     if (prop && prop->getContainer() == obj) {
-        message << name << " already exists";
+        message << prefixText << name << " already exists";
         return false;
     }
 
@@ -579,6 +598,9 @@ void DlgExpressionInput::acceptWithVarSet()
 
 void DlgExpressionInput::accept() {
     if (varSetsVisible) {
+        if (needReportOnVarSet()) {
+            return;
+        }
         acceptWithVarSet();
     }
     QDialog::accept();
@@ -766,7 +788,7 @@ void DlgExpressionInput::preselectGroup()
     comboBoxGroup.setCurrentIndex(index);
 }
 
-void DlgExpressionInput::onVarSetSelected([[maybe_unused]] int index)
+void DlgExpressionInput::onVarSetSelected(int /*index*/)
 {
     QString docName = getValue(ui->comboBoxVarSet, DocRole);
     QString varSetName = getValue(ui->comboBoxVarSet, VarSetNameRole);
@@ -799,13 +821,18 @@ void DlgExpressionInput::namePropChanged(const QString&)
     updateVarSetInfo();
 }
 
-static bool isNameGroupOk(const QString& nameGroup,
-                          std::stringstream& message)
+static bool isGroupNameValid(const QString& nameGroup,
+                             std::stringstream& message)
 {
+    const char* prefixText = "Invalid group name: ";
+    if(nameGroup.isEmpty()) {
+        message << prefixText << "the name cannot be empty";
+        return false;
+    }
     std::string name = nameGroup.toStdString();
-    if (name.empty() || name != Base::Tools::getIdentifier(name)) {
-        message << "Invalid group name (must only contain alphanumericals, underscore, "
-                << "and must not start with digit";
+
+    if (name != Base::Tools::getIdentifier(name)) {
+        message << prefixText << InvalidIdentifierMessage;
         return false;
     }
 
@@ -815,18 +842,28 @@ static bool isNameGroupOk(const QString& nameGroup,
 void DlgExpressionInput::reportVarSetInfo(const std::string& message)
 {
     if (!message.empty()) {
-        FC_ERR(message);
+        ui->errorFrame->setVisible(true);
+        ui->errorTextLabel->setText(QString::fromStdString(message));
+        ui->errorTextLabel->updateGeometry();
     }
 }
 
-bool DlgExpressionInput::reportGroup(QString& nameGroup)
+static QString buildErrorStyle(const char* widgetName)
 {
-    if (nameGroup.isEmpty()) {
-        return true;
-    }
+    return QStringLiteral("#%1 {"
+                          " border:1px solid #d93025;"
+                          "}"
+                          "#%1:focus {"
+                          " border:1px solid #ff3b30;"
+                          "}")
+        .arg(QLatin1String(widgetName));
+}
 
+bool DlgExpressionInput::reportGroup(const QString& nameGroup)
+{
     std::stringstream message;
-    if (!isNameGroupOk(nameGroup, message)) {
+    if (!isGroupNameValid(nameGroup, message)) {
+        comboBoxGroup.setStyleSheet(buildErrorStyle("comboBoxGroup"));
         reportVarSetInfo(message.str());
         return true;
     }
@@ -842,7 +879,8 @@ bool DlgExpressionInput::reportName()
     App::Document* doc = App::GetApplication().getDocument(nameDoc.toUtf8());
     App::DocumentObject* obj = doc->getObject(nameVarSet.toUtf8());
     std::stringstream message;
-    if (!isNamePropOk(nameProp, obj, message)) {
+    if (!isPropertyNameValid(nameProp, obj, message)) {
+        ui->lineEditPropNew->setStyleSheet(buildErrorStyle("lineEditPropNew"));
         reportVarSetInfo(message.str());
         return true;
     }
@@ -852,15 +890,12 @@ bool DlgExpressionInput::reportName()
 
 void DlgExpressionInput::updateVarSetInfo(bool checkExpr)
 {
-    if (reportName()) {
-        // needed to report something about the name, so disable the button
+    if (ui->lineEditPropNew->text().isEmpty()) {
         okBtn->setEnabled(false);
         return;
     }
 
-    QString nameGroup = comboBoxGroup.currentText();
-    if (reportGroup(nameGroup)) {
-        // needed to report something about the group, so disable the button
+    if (comboBoxGroup.currentText().isEmpty()) {
         okBtn->setEnabled(false);
         return;
     }
@@ -876,6 +911,14 @@ void DlgExpressionInput::updateVarSetInfo(bool checkExpr)
     }
 
     okBtn->setEnabled(true);
+}
+
+bool DlgExpressionInput::needReportOnVarSet()
+{
+    ui->lineEditPropNew->setStyleSheet(QString());
+    comboBoxGroup.setStyleSheet(QString());
+
+    return reportGroup(comboBoxGroup.currentText()) || reportName();
 }
 
 #include "moc_DlgExpressionInput.cpp"

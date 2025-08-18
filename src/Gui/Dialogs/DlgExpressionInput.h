@@ -91,6 +91,7 @@ private:
     Base::Type getTypePath();
     Base::Type determineTypeVarSet();
     bool typeOkForVarSet();
+    void initializeErrorFrame();
     void initializeVarSets();
     void checkExpression(const QString& text);
     int getVarSetIndex(const App::Document* doc) const;
@@ -101,7 +102,7 @@ private:
     std::string getType();
     void reportVarSetInfo(const std::string& message);
     bool reportName();
-    bool reportGroup(QString& nameGroup);
+    bool reportGroup(const QString& nameGroup);
     void updateVarSetInfo(bool checkExpr = true);
     void acceptWithVarSet();
 
@@ -112,6 +113,7 @@ private Q_SLOTS:
     void onVarSetSelected(int index);
     void onTextChangedGroup(const QString&);
     void namePropChanged(const QString&);
+    bool needReportOnVarSet();
 
 private:
     ::Ui::DlgExpressionInput *ui;
