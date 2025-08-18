@@ -38,6 +38,7 @@ Report to Draft.py for info
 
 import os
 import sys
+import time
 import math
 import PySide.QtCore as QtCore
 import PySide.QtGui as QtGui
@@ -144,6 +145,7 @@ class DraftToolBar:
         self.tray = None
         self.sourceCmd = None
         self.mouse = True
+        self.mouse_delay_input_start = time.time()
         self.cancel = None
         self.pointcallback = None
 
@@ -1037,6 +1039,8 @@ class DraftToolBar:
 
     def validatePoint(self):
         """function for checking and sending numbers entered manually"""
+        self.mouse = True
+        self.mouse_delay_input_start = time.time()
         if self.sourceCmd or self.pointcallback:
             if self.labelRadius.isVisible():
                 try:
@@ -1115,7 +1119,7 @@ class DraftToolBar:
 
         if txt[0] in "0123456789.,-":
             self.updateSnapper()
-            self.setMouseMode(False)
+            self.setMouseMode(mode=False)
             return
 
         txt = txt[0].upper()
@@ -1224,19 +1228,25 @@ class DraftToolBar:
             point = self.get_new_point(FreeCAD.Vector(self.x, self.y, self.z))
             FreeCADGui.Snapper.trackLine.p2(point)
 
-    def setMouseMode(self, mode=True):
+    def setMouseMode(self, mode=True, recorded_input_start=0.0):
         """Sets self.mouse True (default) or False and sets a timer
         to set it back to True if applicable. self.mouse is then
         used by gui_tools_utils.get_point() to know if the mouse can
         update field values and point position or not."""
-        if mode == True:
+        if recorded_input_start and recorded_input_start != self.mouse_delay_input_start:
+            # Do nothing if a new input sequence has started.
+            return
+        if mode:
             self.mouse = True
-        else:
+        elif self.mouse:
             delay = params.get_param("MouseDelay")
             if delay:
-                if self.mouse is True:
-                    self.mouse = False
-                    QtCore.QTimer.singleShot(delay*1000, self.setMouseMode)
+                self.mouse = False
+                recorded_input_start = self.mouse_delay_input_start
+                QtCore.QTimer.singleShot(
+                    delay * 1000,
+                    lambda: self.setMouseMode(True, recorded_input_start)
+                )
 
     def checkEnterText(self):
         """this function checks if the entered text ends with two blank lines"""
