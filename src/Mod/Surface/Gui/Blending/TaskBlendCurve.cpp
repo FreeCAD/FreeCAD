@@ -210,8 +210,8 @@ void BlendCurvePanel::bindProperties()
 void BlendCurvePanel::onFirstEdgeButton(bool checked)
 {
     if (checked) {
-        onStartSelection();
         selectionMode = StartEdge;
+        setSelectionGate();
         onUncheckSecondEdgeButton();
     }
     else {
@@ -222,8 +222,8 @@ void BlendCurvePanel::onFirstEdgeButton(bool checked)
 void BlendCurvePanel::onSecondEdgeButton(bool checked)
 {
     if (checked) {
-        onStartSelection();
         selectionMode = EndEdge;
+        setSelectionGate();
         onUncheckFirstEdgeButton();
     }
     else {
@@ -309,9 +309,9 @@ void BlendCurvePanel::onSecondEdgeSizeChanged(double value)
     fea->recomputeFeature();
 }
 
-void BlendCurvePanel::onStartSelection()
+void BlendCurvePanel::setSelectionGate()
 {
-    if (vp.expired()) {
+    if (vp.expired() || selectionMode == None) {
         return;
     }
 
@@ -447,4 +447,14 @@ bool TaskBlendCurve::accept()
 bool TaskBlendCurve::reject()
 {
     return widget->reject();
+}
+void TaskBlendCurve::activate()
+{
+    widget->setSelectionGate();
+    widget->attachSelection();
+}
+void TaskBlendCurve::deactivate()
+{
+    Gui::Selection().rmvSelectionGate();
+    widget->detachSelection();
 }
