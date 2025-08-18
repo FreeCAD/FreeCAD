@@ -1078,7 +1078,6 @@ class _SolverCalculiX(CommandManager):
                     has_nonlinear_material_obj = True
 
             if has_nonlinear_material_obj:
-                FreeCADGui.doCommand(f"{cm.cli_name}.GeometricalNonlinearity = 'nonlinear'")
                 FreeCADGui.doCommand(f"{cm.cli_name}.MaterialNonlinearity = 'nonlinear'")
 
 
