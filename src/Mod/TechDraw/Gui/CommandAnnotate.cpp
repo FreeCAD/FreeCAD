@@ -1330,7 +1330,7 @@ CmdTechDrawShowAll::CmdTechDrawShowAll()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Toggle Edge Visibilty");
+    sMenuText       = QT_TR_NOOP("Toggle Edge Visibility");
     sToolTipText    = QT_TR_NOOP("Toggles the visibility of the selected edges");
     sWhatsThis      = "TechDraw_ShowAll";
     sStatusTip      = sToolTipText;
