@@ -68,6 +68,22 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkAllowCompoundBody">
+        <property name="text">
+         <string>Allow multiple solids in Part Design bodies by default</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>AllowCompoundDefault</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/PartDesign</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -210,44 +226,6 @@
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/PartDesign/Preview</cstring>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBoxExperimental">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="title">
-      <string>Experimental</string>
-     </property>
-     <property name="flat">
-      <bool>false</bool>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <widget class="QLabel" name="warningLabel">
-        <property name="text">
-         <string>These settings are experimental and may result in decreased stability, problems and undefined behaviors</string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="Gui::PrefCheckBox" name="checkAllowCompoundBody">
-        <property name="text">
-         <string>Allow multiple solids in Part Design bodies by default</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>AllowCompoundDefault</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/PartDesign</cstring>
         </property>
        </widget>
       </item>

@@ -2756,6 +2756,8 @@ QImage EditModeConstraintCoinManager::renderConstrIcon(const QString& type,
                                               pxMap);  // Cache for speed, avoiding pixmapFromSvg
     }
     QImage icon = pxMap.toImage();
+    // The pixmap was already scaled so we don't need to scale the image
+    icon.setDevicePixelRatio(1.0f);
 
     QFont font = ViewProviderSketchCoinAttorney::getApplicationFont(viewProvider);
     font.setPixelSize(static_cast<int>(1.0 * drawingParameters.constraintIconSize));

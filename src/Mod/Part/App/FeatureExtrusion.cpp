@@ -37,6 +37,7 @@
 # include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
+#include <App/Document.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 
@@ -374,7 +375,8 @@ App::DocumentObjectExecReturn* Extrusion::execute()
 
     try {
         ExtrusionParameters params = computeFinalParameters();
-        TopoShape result(0);
+        TopoShape result(0, getDocument()->getStringHasher());
+        
         extrudeShape(result, Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform), params);
         this->Shape.setValue(result);
         return App::DocumentObject::StdReturn;
