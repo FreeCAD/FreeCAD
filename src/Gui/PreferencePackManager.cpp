@@ -617,11 +617,45 @@ void Gui::PreferencePackManager::BackupCurrentConfig() const
     auto backupDirectory = getSavedPreferencePacksPath() / "Backups";
     fs::create_directories(backupDirectory);
 
-    // Create a timestamped filename:
+    // Get current time for timestamp
     auto time = std::time(nullptr);
     std::ostringstream timestampStream;
-    timestampStream << "user." << time << ".cfg";
-    auto filename = backupDirectory / timestampStream.str();
+    // Format the current time as YYYY_MM_DD_HH_MM_SS for the filename
+    char buf[32];
+    if (std::strftime(buf, sizeof(buf), "%Y_%m_%d_%H%M%S", std::localtime(&time))) {
+        timestampStream << buf;
+    }
+
+    // Get FreeCAD version from App::Application::Config()
+    auto& config = App::Application::Config();
+    std::string major, minor, suffix;
+    auto itMajor = config.find("BuildVersionMajor");
+    auto itMinor = config.find("BuildVersionMinor");
+    auto itSuffix = config.find("BuildVersionSuffix");
+    if (itMajor != config.end()) major = itMajor->second;
+    if (itMinor != config.end()) minor = itMinor->second;
+    if (itSuffix != config.end()) suffix = itSuffix->second;
+
+    // Sanitize version components for filename
+    auto sanitize = [](std::string& s) {
+        std::replace(s.begin(), s.end(), ' ', '.');
+        std::replace(s.begin(), s.end(), '.', '_');
+    };
+    sanitize(major);
+    sanitize(minor);
+    sanitize(suffix);
+
+    std::string version = major + "." + minor;
+    if (!suffix.empty())
+        version += "" + suffix;
+
+    // Swap timestamp and version in the filename, and remove seconds and milliseconds
+    // Format the current time as YYYY_MM_DD_HH_MM (no seconds)
+    std::ostringstream shortTimestampStream;
+    if (std::strftime(buf, sizeof(buf), "%Y_%m_%d_%H%M", std::localtime(&time))) {
+        shortTimestampStream << buf;
+    }
+    auto filename = backupDirectory / ("User." + version + "_" + shortTimestampStream.str() + ".cfg");
 
     // Save the current config:
     App::GetApplication().GetUserParameter().SaveDocument(Base::FileInfo::pathToString(filename).c_str());
