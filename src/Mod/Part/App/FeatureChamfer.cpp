@@ -49,14 +49,14 @@ App::DocumentObjectExecReturn *Chamfer::execute()
 
     try {
         TopoShape baseTopoShape = Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
-        auto baseShape = baseTopoShape.getShape();
+        const auto & baseShape = baseTopoShape.getShape();
         BRepFilletAPI_MakeChamfer mkChamfer(baseShape);
         TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
         TopExp::MapShapesAndAncestors(baseShape, TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
         TopTools_IndexedMapOfShape mapOfEdges;
         std::vector<Part::FilletElement> edges = Edges.getValues();
         TopExp::MapShapes(baseShape, TopAbs_EDGE, mapOfEdges);
-        std::string fullErrMsg = "";
+        std::string fullErrMsg;
 
         const auto &vals = EdgeLinks.getSubValues();
         const auto &subs = EdgeLinks.getShadowSubs();
@@ -65,8 +65,8 @@ App::DocumentObjectExecReturn *Chamfer::execute()
         size_t i=0;
         for(const auto &info : edges) {
             auto &sub = subs[i];
-            auto &ref = sub.newName.size() ? sub.newName : vals[i];
-            auto &oldName = sub.oldName.size() ? sub.oldName : "";
+            auto &ref = sub.newName.empty() ? vals[i] : sub.newName;
+            auto &oldName = sub.oldName.empty() ? "" : sub.oldName;
             ++i;
 
             if (Data::hasMissingElement(ref.c_str()) || Data::hasMissingElement(oldName.c_str())) {
@@ -94,7 +94,7 @@ App::DocumentObjectExecReturn *Chamfer::execute()
             mkChamfer.Add(radius1, radius2, TopoDS::Edge(edge), face);
         }
 
-        if (fullErrMsg != "") {
+        if (!fullErrMsg.empty()) {
             return new App::DocumentObjectExecReturn(fullErrMsg);
         }
         Edges.setValues(edges);

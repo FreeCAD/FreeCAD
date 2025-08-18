@@ -62,7 +62,7 @@ App::DocumentObjectExecReturn *Fillet::execute()
         TopTools_IndexedMapOfShape mapOfEdges;
         TopExp::MapShapes(baseShape, TopAbs_EDGE, mapOfEdges);
         std::vector<Part::FilletElement> edges = Edges.getValues();
-        std::string fullErrMsg = "";
+        std::string fullErrMsg;
 
         const auto &vals = EdgeLinks.getSubValues(true);
         const auto &subs = EdgeLinks.getShadowSubs();
@@ -71,8 +71,8 @@ App::DocumentObjectExecReturn *Fillet::execute()
         size_t i=0;
         for(const auto &info : edges) {
             auto &sub = subs[i];
-            auto &ref = sub.newName.size() ? sub.newName : vals[i];
-            auto &oldName = sub.oldName.size() ? sub.oldName : "";
+            auto &ref = sub.newName.empty() ? vals[i] : sub.newName;
+            auto &oldName = sub.oldName.empty() ? "" : sub.oldName;
             ++i;
 
             if (Data::hasMissingElement(ref.c_str()) || Data::hasMissingElement(oldName.c_str())) {
@@ -102,7 +102,7 @@ App::DocumentObjectExecReturn *Fillet::execute()
             mkFillet.Add(radius1, radius2, TopoDS::Edge(edge));
         }
 
-        if (fullErrMsg != "") {
+        if (!fullErrMsg.empty()) {
             return new App::DocumentObjectExecReturn(fullErrMsg);
         }
         Edges.setValues(edges);
