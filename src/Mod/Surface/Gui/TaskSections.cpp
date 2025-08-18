@@ -668,7 +668,6 @@ void TaskSections::activate()
 }
 void TaskSections::deactivate()
 {
-    Gui::Selection().rmvSelectionGate();
     widget1->detachSelection();
 }
 
