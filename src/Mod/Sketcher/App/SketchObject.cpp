@@ -8879,7 +8879,7 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
                     "Datum feature type is not yet supported as external geometry for a sketch");
             }
 
-            if (projection) {
+            if (projection && !refSubShape.IsNull()) {
                 switch (refSubShape.ShapeType()) {
                 case TopAbs_FACE: {
                     processFace(invRot, invPlm, mov, sketchPlane, gPlane, sketchAx3, aProjFace, geos, refSubShape);
@@ -8905,7 +8905,7 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
             }
             int projSize = geos.size();
 
-            if (intersection) {
+            if (intersection && !refSubShape.IsNull()) {
                 FCBRepAlgoAPI_Section maker(refSubShape, sketchPlane);
                 maker.Approximation(Standard_True);
                 if (!maker.IsDone())
