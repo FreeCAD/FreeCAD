@@ -134,7 +134,7 @@ class ObjectProbing(PathOp.ObjectOp):
 
     def isToolSupported(self, obj, tool):
         """Probe operation requires a probe tool"""
-        support = hasattr(tool, "ShapeName") and (tool.ShapeName == "probe")
+        support = PathUtils.getToolShapeName(tool) == "probe"
         Path.Log.track(tool.Label, support)
         return support
 

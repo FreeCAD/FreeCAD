@@ -36,7 +36,7 @@ import PathScripts.PathUtils as PathUtils
 import importlib
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-from PySide import QtCore, QtGui
+from PySide import QtCore, QtGui, QtWidgets
 
 __title__ = "CAM Operation UI base classes"
 __author__ = "sliptonic (Brad Collette)"
@@ -450,6 +450,8 @@ class TaskPanelPage(object):
 
         if obj.ToolController is None:
             obj.ToolController = PathUtils.findToolController(obj, obj.Proxy)
+        if len(controllers) > 0 and not obj.Proxy.isToolSupported(obj, obj.ToolController.Tool):
+            obj.ToolController = controllers[0]
         if obj.ToolController is not None:
             self.selectInComboBox(obj.ToolController.Label, combo)
 
@@ -474,10 +476,16 @@ class TaskPanelPage(object):
                 self.copyToolController if tcCount > 0 else None,
             )
 
-            # add to layout -- assumes a grid layout of 2 columns
-            layout.addWidget(
-                self.tcEditor.controller, layout.rowCount(), 0, 1, layout.columnCount()
-            )
+            # add to layout -- requires a grid layout
+            if isinstance(layout, QtWidgets.QGridLayout):
+                layout.addWidget(
+                    self.tcEditor.controller, layout.rowCount(), 0, 1, layout.columnCount()
+                )
+            else:
+                Path.Log.error(
+                    "Panel uses a layout incompatible with editing tool controllers. Report a bug: it should be a QGridLayout"
+                )
+
             self.updateToolControllerEditorVisibility()
             self.tcEditor.updateUi()
             self.form.editToolController.checkStateChanged.connect(
