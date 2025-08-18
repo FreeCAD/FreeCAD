@@ -200,13 +200,10 @@ void StdCmdImport::activated(int iMsg)
 
     std::vector<std::string> filetypes = App::GetApplication().getImportTypes();
     std::vector<std::string>::const_iterator it;
-    for (it=filetypes.begin();it != filetypes.end();++it) {
-        if (*it != "FCStd") {
-            // ignore the project file format
-            formatList += QLatin1String(" *.");
-            formatList += QLatin1String(it->c_str());
-        }
-    }
+    // Only add *.* for the main filter, do not add all extensions here.
+    // This keeps the main filter as "Supported formats (*.ext1 *.ext2 ...)", but does not enumerate them.
+    formatList += QLatin1String("*.*");
+    
 
     formatList += QLatin1String(");;");
 
