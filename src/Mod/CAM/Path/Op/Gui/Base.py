@@ -433,6 +433,27 @@ class TaskPanelPage(object):
         self.obj.ToolController = tc
         self.setupToolController()
 
+    def tcEditorChanged(self):
+        self.setDirty()
+        self.resetTCCombo()
+
+    def resetTCCombo(self):
+        controllers = PathUtils.getToolControllers(self.obj)
+        labels = [c.Label for c in controllers]
+        self.combo.blockSignals(True)
+        self.combo.clear()
+        self.combo.addItems(labels)
+        self.combo.blockSignals(False)
+
+        if self.obj.ToolController is None:
+            self.obj.ToolController = PathUtils.findToolController(self.obj, self.obj.Proxy)
+        if len(controllers) > 0 and not self.obj.Proxy.isToolSupported(
+            self.obj, self.obj.ToolController.Tool
+        ):
+            self.obj.ToolController = controllers[0]
+        if self.obj.ToolController is not None:
+            self.selectInComboBox(self.obj.ToolController.Label, self.combo)
+
     def setupToolController(self, obj=None, combo=None):
         """setupToolController(obj, combo) ...
         helper function to setup obj's ToolController
@@ -441,19 +462,7 @@ class TaskPanelPage(object):
         combo = combo or self.combo
         self.obj, self.combo = obj, combo
 
-        controllers = PathUtils.getToolControllers(obj)
-        labels = [c.Label for c in controllers]
-        combo.blockSignals(True)
-        combo.clear()
-        combo.addItems(labels)
-        combo.blockSignals(False)
-
-        if obj.ToolController is None:
-            obj.ToolController = PathUtils.findToolController(obj, obj.Proxy)
-        if len(controllers) > 0 and not obj.Proxy.isToolSupported(obj, obj.ToolController.Tool):
-            obj.ToolController = controllers[0]
-        if obj.ToolController is not None:
-            self.selectInComboBox(obj.ToolController.Label, combo)
+        self.resetTCCombo()
 
         if hasattr(self.form, "editToolController"):
             layout = self.form.editToolController.parent().layout()
@@ -472,9 +481,10 @@ class TaskPanelPage(object):
             self.tcEditor = Path.Tool.Gui.Controller.ToolControllerEditor(
                 obj.ToolController,
                 False,
-                self.setDirty,
+                self.tcEditorChanged,
                 self.copyToolController if tcCount > 0 else None,
             )
+            self.tcEditor.setupUi()
 
             # add to layout -- requires a grid layout
             if isinstance(layout, QtWidgets.QGridLayout):
