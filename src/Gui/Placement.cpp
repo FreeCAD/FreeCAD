@@ -636,7 +636,7 @@ void Placement::onSelectedVertexClicked()
             QApplication::clipboard()->setText(loc.toString(length,'g',8));
         }
         else {
-            Base::Console().message("(Shift + click Selected points button to copy distance to clipboard)\n");
+            Base::Console().message("(Shift + click selected points button to copy distance to clipboard)\n");
         }
         axis.Normalize();
         rot.setValue(axis, angle);
@@ -691,7 +691,7 @@ void Placement::onSelectedVertexClicked()
             Base::Console().message("(Angle copied to clipboard, but you might need to use a negative (-) angle sometimes.)\n");
         }
         else {
-            Base::Console().message("(Shift + click Selected points button to copy angle to clipboard)\n");
+            Base::Console().message("(Shift + click selected points button to copy angle to clipboard)\n");
         }
         rot.setValue(norm, angle);
         plm.setRotation(rot);
@@ -709,7 +709,7 @@ void Placement::onSelectedVertexClicked()
     if (!success) {
         Base::Console().warning("Placement selection error.  Select either 1 or 2 points.\n");
         QMessageBox msgBox(this);
-        msgBox.setText(tr("Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, \
+        msgBox.setText(tr("Select 1, 2, or 3 points before clicking this button. A point may be on a vertex, \
 face, or edge.  If on a face or edge the point used will be the point at the mouse position along \
 face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are \
 selected the midpoint between them will be the center of rotation and a new custom axis will be \
@@ -801,9 +801,9 @@ void Placement::onApplyButtonClicked()
 void Placement::showErrorMessage()
 {
     QMessageBox msg(this);
-    msg.setWindowTitle(tr("Incorrect quantity"));
+    msg.setWindowTitle(tr("Incorrect Quantity"));
     msg.setIcon(QMessageBox::Critical);
-    msg.setText(tr("There are input fields with incorrect input, please ensure valid placement values!"));
+    msg.setText(tr("There are input fields with incorrect input. Ensure valid placement values!"));
     msg.exec();
 }
 

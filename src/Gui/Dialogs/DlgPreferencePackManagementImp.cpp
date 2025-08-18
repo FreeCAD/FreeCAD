@@ -132,7 +132,7 @@ void DlgPreferencePackManagementImp::addTreeNode(const std::string &name, const 
         break; case TreeWidgetType::USER:
             // The button is a "delete" button
             button->setIcon(QIcon(QLatin1String(":/icons/delete.svg")));
-            button->setToolTip(tr("Delete user-saved preference pack '%1'").arg(item->text(0)));
+            button->setToolTip(tr("Deletes the user-saved preference pack '%1'").arg(item->text(0)));
             connect(button, &QPushButton::clicked, [this, item]() {
                 this->deleteUserPack(item->text(0).toStdString());
                 });
@@ -142,7 +142,7 @@ void DlgPreferencePackManagementImp::addTreeNode(const std::string &name, const 
                 button->setIcon(iconIsVisible);
             else
                 button->setIcon(iconIsInvisible);
-            button->setToolTip(tr("Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)").arg(item->text(0)));
+            button->setToolTip(tr("Toggles the visibility of the addon preference pack '%1' (use the Addon Manager to remove permanently)").arg(item->text(0)));
             connect(button, &QPushButton::clicked, [this, name, item]() {
                 this->hideInstalledPack(name, item->text(0).toStdString());
                 });
@@ -155,7 +155,7 @@ void DlgPreferencePackManagementImp::deleteUserPack(const std::string& name)
 {
     // Do the deletion here...
     auto result = QMessageBox::warning(this, tr("Delete saved preference pack?"),
-        tr("Are you sure you want to delete the preference pack named '%1'? This cannot be undone.").arg(QString::fromStdString(name)),
+        tr("Delete the preference pack named '%1'? This cannot be undone.").arg(QString::fromStdString(name)),
         QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel);
     if (result == QMessageBox::Yes) {
         Application::Instance->prefPackManager()->deleteUserPack(name);

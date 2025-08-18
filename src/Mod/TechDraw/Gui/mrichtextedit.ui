@@ -93,7 +93,7 @@
          <enum>Qt::ClickFocus</enum>
         </property>
         <property name="toolTip">
-         <string>Undo (CTRL+Z)</string>
+         <string>Undo (Ctrl+Z)</string>
         </property>
         <property name="text">
          <string>Undo</string>
@@ -142,7 +142,7 @@
          <enum>Qt::ClickFocus</enum>
         </property>
         <property name="toolTip">
-         <string>Cut (CTRL+X)</string>
+         <string>Cut (Ctrl+X)</string>
         </property>
         <property name="text">
          <string>Cut</string>
@@ -165,7 +165,7 @@
          <enum>Qt::ClickFocus</enum>
         </property>
         <property name="toolTip">
-         <string>Copy (CTRL+C)</string>
+         <string>Copy (Ctrl+C)</string>
         </property>
         <property name="text">
          <string>Copy</string>
@@ -188,7 +188,7 @@
          <enum>Qt::ClickFocus</enum>
         </property>
         <property name="toolTip">
-         <string>Paste (CTRL+V)</string>
+         <string>Paste (Ctrl+V)</string>
         </property>
         <property name="text">
          <string>Paste</string>
@@ -218,7 +218,7 @@
          <enum>Qt::ClickFocus</enum>
         </property>
         <property name="toolTip">
-         <string>Link (CTRL+L)</string>
+         <string>Link (Ctrl+L)</string>
         </property>
         <property name="text">
          <string>Link</string>
@@ -251,7 +251,7 @@
          <enum>Qt::ClickFocus</enum>
         </property>
         <property name="toolTip">
-         <string notr="true">Bold (CTRL+B)</string>
+         <string notr="true">Bold (Ctrl+B)</string>
         </property>
         <property name="text">
          <string>Bold</string>
@@ -277,7 +277,7 @@
          <enum>Qt::ClickFocus</enum>
         </property>
         <property name="toolTip">
-         <string>Italic (CTRL+I)</string>
+         <string>Italic (Ctrl+I)</string>
         </property>
         <property name="text">
          <string>Italic</string>
@@ -303,7 +303,7 @@
          <enum>Qt::ClickFocus</enum>
         </property>
         <property name="toolTip">
-         <string>Underline (CTRL+U)</string>
+         <string>Underline (Ctrl+U)</string>
         </property>
         <property name="text">
          <string>Underline</string>
@@ -326,10 +326,10 @@
       <item>
        <widget class="QToolButton" name="f_strikeout">
         <property name="toolTip">
-         <string>Strikethrough</string>
+         <string>Strikethrough text</string>
         </property>
         <property name="text">
-         <string>Strike Out</string>
+         <string>Strikethrough</string>
         </property>
         <property name="icon">
          <iconset resource="Resources/TechDraw.qrc">
@@ -359,7 +359,7 @@
          <enum>Qt::ClickFocus</enum>
         </property>
         <property name="toolTip">
-         <string>Bullet list (CTRL+-)</string>
+         <string>Bullet list (Ctrl+-)</string>
         </property>
         <property name="text">
          <string/>
@@ -385,7 +385,7 @@
          <enum>Qt::ClickFocus</enum>
         </property>
         <property name="toolTip">
-         <string>Ordered list (CTRL+=)</string>
+         <string>Ordered list (Ctrl+=)</string>
         </property>
         <property name="text">
          <string/>
@@ -411,10 +411,10 @@
          <enum>Qt::ClickFocus</enum>
         </property>
         <property name="toolTip">
-         <string>Decrease indentation (CTRL+,)</string>
+         <string>Decrease indentation (Ctrl+,)</string>
         </property>
         <property name="text">
-         <string>Decrease indentation</string>
+         <string>Decrease Indentation</string>
         </property>
         <property name="icon">
          <iconset resource="Resources/TechDraw.qrc">
@@ -434,10 +434,10 @@
          <enum>Qt::ClickFocus</enum>
         </property>
         <property name="toolTip">
-         <string>Increase indentation (CTRL+.)</string>
+         <string>Increase indentation (Ctrl+.)</string>
         </property>
         <property name="text">
-         <string>Increase indentation</string>
+         <string>Increase Indentation</string>
         </property>
         <property name="icon">
          <iconset resource="Resources/TechDraw.qrc">

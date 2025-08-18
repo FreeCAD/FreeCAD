@@ -35,7 +35,7 @@ class BIM_MoveView:
     def GetResources(self):
         return {
             "Pixmap": "BIM_MoveView",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_MoveView", "Move view..."),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_MoveView", "Move View"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_MoveView", "Moves this view to an existing page"
             ),

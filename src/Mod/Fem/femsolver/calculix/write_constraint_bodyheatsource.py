@@ -96,6 +96,9 @@ def write_constraint(f, femobj, bodyheatsource_obj, ccxwriter):
         volume = ref_feat.getSubObject(ref_sub_obj).Volume
         heat = bodyheatsource_obj.TotalPower / FreeCAD.Units.Quantity(volume, "mm^3")
     # write to file
-    f.write("*DFLUX\n")
+    if bodyheatsource_obj.EnableAmplitude:
+        f.write(f"*DFLUX, AMPLITUDE={bodyheatsource_obj.Name}\n")
+    else:
+        f.write("*DFLUX\n")
     f.write("{},BF,{:.13G}\n".format(bodyheatsource_obj.Name, heat.getValueAs("t/(mm*s^3)").Value))
     f.write("\n")

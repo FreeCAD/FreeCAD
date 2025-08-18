@@ -282,7 +282,7 @@ bool Mirroring::accept()
 {
     if (ui->shapes->selectedItems().isEmpty()) {
         QMessageBox::critical(this, windowTitle(),
-            tr("Select a shape for mirroring, first."));
+            tr("Select a shape for mirroring."));
         return false;
     }
 

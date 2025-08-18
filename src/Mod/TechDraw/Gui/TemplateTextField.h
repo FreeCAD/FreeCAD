@@ -57,21 +57,27 @@ class TechDrawGuiExport TemplateTextField : public QGraphicsItemGroup
         /// Returns the field name that this TemplateTextField represents
         std::string fieldName() const { return fieldNameStr; }
 
-        void setAutofill(QString autofillString);
+        void setAutofill(const QString& autofillString);
         void setRectangle(QRectF rect);
         void setLine(QPointF from, QPointF to);
         void setLineColor(QColor color);
+        void hideLine() { m_line->hide(); }
+        void showLine() { m_line->show(); }
 
     protected:
-        TechDraw::DrawTemplate *tmplte;
-        std::string fieldNameStr;
-        QString m_autofillString;
-
         /// Need this to properly handle mouse release
-        void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+        void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
 
         /// Trigger the dialog for editing template text
         void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+
+        void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+        void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
+
+    private:
+        TechDraw::DrawTemplate *tmplte;
+        std::string fieldNameStr;
+        QString m_autofillString;
 
         QGraphicsRectItem* m_rect;
         QGraphicsPathItem* m_line;

@@ -46,11 +46,11 @@ class CommandFillTemplateFields:
             "Pixmap": "actions/TechDraw_FillTemplateFields.svg",
             "Accel": "",
             "MenuText": QT_TRANSLATE_NOOP(
-                "TechDraw_FillTemplateFields", "Update template fields"
+                "TechDraw_FillTemplateFields", "Update Template Fields"
             ),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "TechDraw_FillTemplateFields",
-                "Use document info to populate the template fields",
+                "Uses document info to populate the template fields",
             ),
         }
 

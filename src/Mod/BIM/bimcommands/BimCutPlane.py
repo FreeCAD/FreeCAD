@@ -41,7 +41,7 @@ class Arch_CutPlane:
 
     def GetResources(self):
        return {"Pixmap": "Arch_CutPlane",
-               "MenuText": QT_TRANSLATE_NOOP("Arch_CutPlane", "Cut with plane"),
+               "MenuText": QT_TRANSLATE_NOOP("Arch_CutPlane", "Cut With Plane"),
                "ToolTip": QT_TRANSLATE_NOOP("Arch_CutPlane", "Cut an object with a plane")}
 
     def IsActive(self):
@@ -124,7 +124,7 @@ class CutPlaneTaskPanel:
 
     def retranslateUi(self, TaskPanel):
         TaskPanel.setWindowTitle(translate("Arch", "Cut Plane"))
-        self.title.setText(translate("Arch", "Cut Plane options"))
+        self.title.setText(translate("Arch", "Cut Plane Options"))
         self.infoText.setText(translate("Arch", "Which side to cut"))
         self.combobox.addItems([translate("Arch", "Behind"), translate("Arch", "Front")])
 

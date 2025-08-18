@@ -63,8 +63,8 @@ class BezCurve(gui_lines.Line):
 
         return {"Pixmap": "Draft_BezCurve",
                 "Accel": "B, Z",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_BezCurve", "Bézier curve"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_BezCurve", "Creates an N-degree Bézier curve. The more points you pick, the higher the degree.\nSHIFT to constrain.")}
+                "MenuText": QT_TRANSLATE_NOOP("Draft_BezCurve", "Bézier Curve"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_BezCurve", "Creates an n-degree Bézier curve. The more points, the higher the degree.")}
 
     def Activated(self):
         """Execute when the command is called.
@@ -73,7 +73,7 @@ class BezCurve(gui_lines.Line):
         """
         super().Activated(name="BezCurve",
                           icon="Draft_BezCurve",
-                          task_title=translate("draft", "Bézier curve"))
+                          task_title=translate("draft", "Bézier Curve"))
         if self.doc:
             self.bezcurvetrack = trackers.bezcurveTracker()
 
@@ -213,7 +213,7 @@ class BezCurve(gui_lines.Line):
                              'bez = ' + _cmd,
                              'Draft.autogroup(bez)',
                              'FreeCAD.ActiveDocument.recompute()']
-                self.commit(translate("draft", "Create BezCurve"),
+                self.commit(translate("draft", "Create Bézier Curve"),
                             _cmd_list)
             except Exception:
                 _err("Draft: error delaying commit")
@@ -252,8 +252,8 @@ class CubicBezCurve(gui_lines.Line):
 
         return {"Pixmap": "Draft_CubicBezCurve",
                 # "Accel": "B, Z",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Cubic Bézier curve"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.\nAfter the curve is created you can go back to edit each control point and set the properties of each knot.\nSHIFT to constrain.")}
+                "MenuText": QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Cubic Bézier Curve"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Clicking and dragging allows to define segments.\nControl points and properties of each knot can be edited after creation.")}
 
     def Activated(self):
         """Execute when the command is called.
@@ -462,7 +462,7 @@ class CubicBezCurve(gui_lines.Line):
                              'bez = ' + _cmd,
                              'Draft.autogroup(bez)',
                              'FreeCAD.ActiveDocument.recompute()']
-                self.commit(translate("draft", "Create BezCurve"),
+                self.commit(translate("draft", "Create Bézier Curve"),
                             _cmd_list)
             except Exception:
                 _err("Draft: error delaying commit")
@@ -486,8 +486,8 @@ class BezierGroup:
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {"MenuText": QT_TRANSLATE_NOOP("Draft_BezierTools", "Bézier tools"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_BezierTools", "Create various types of Bézier curves.")}
+        return {"MenuText": QT_TRANSLATE_NOOP("Draft_BezierTools", "Bézier Tools"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_BezierTools", "Tools to create various types of Bézier curves")}
 
     def GetCommands(self):
         """Return a tuple of commands in the group."""

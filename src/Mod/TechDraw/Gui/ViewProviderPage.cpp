@@ -83,15 +83,12 @@ ViewProviderPage::ViewProviderPage()
     static const char* group = "Grid";
 
     // NOLINTBEGIN
-    ADD_PROPERTY_TYPE(ShowFrames, (true), group, App::Prop_None,
-                      "Show or hide View frames and Labels on this Page");
     ADD_PROPERTY_TYPE(ShowGrid, (PreferencesGui::showGrid()), group, App::Prop_None,
-                      "Show or hide a grid on this Page");
+                      "Show or hide a grid on this page");
     ADD_PROPERTY_TYPE(GridSpacing, (PreferencesGui::gridSpacing()), group,
                       (App::PropertyType::Prop_None), "Grid line spacing in mm");
     // NOLINTEND
 
-    ShowFrames.setStatus(App::Property::Hidden, true);
     // Do not show in property editor   why? wf  WF: because DisplayMode applies only to coin and we
     // don't use coin.
     DisplayMode.setStatus(App::Property::Hidden, true);
@@ -229,9 +226,10 @@ bool ViewProviderPage::onDelete(const std::vector<std::string>& parms)
 void ViewProviderPage::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     Gui::ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
-    QAction* act = menu->addAction(QObject::tr("Show drawing"), receiver, member);
+    QAction* act = menu->addAction(QObject::tr("Show Drawing"), receiver, member);
     act->setData(QVariant((int)ShowDrawing));
     QAction* act2 = menu->addAction(QObject::tr("Toggle Keep Updated"), receiver, member);
+
     act2->setData(QVariant((int)ToggleUpdate));
 }
 
@@ -435,19 +433,6 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren() const
 }
 
 bool ViewProviderPage::isShow() const { return Visibility.getValue(); }
-
-bool ViewProviderPage::getFrameState() const { return ShowFrames.getValue(); }
-
-void ViewProviderPage::setFrameState(bool state) { ShowFrames.setValue(state); }
-
-void ViewProviderPage::toggleFrameState()
-{
-    if (m_graphicsScene) {
-        setFrameState(!getFrameState());
-        m_graphicsScene->refreshViews();
-        setTemplateMarkers(getFrameState());
-    }
-}
 
 void ViewProviderPage::setTemplateMarkers(bool state) const
 {

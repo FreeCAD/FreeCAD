@@ -42,7 +42,7 @@ class Arch_Pipe:
         return {'Pixmap'  : 'Arch_Pipe',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Pipe","Pipe"),
                 'Accel': "P, I",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Pipe","Creates a pipe object from a given Wire or Line")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Pipe","Creates a pipe object from a given wire or line")}
 
     def IsActive(self):
 
@@ -93,12 +93,12 @@ class Arch_PipeConnector:
         import Draft
         s = FreeCADGui.Selection.getSelection()
         if not (len(s) in [2,3]):
-            FreeCAD.Console.PrintError(translate("Arch","Please select exactly 2 or 3 Pipe objects")+"\n")
+            FreeCAD.Console.PrintError(translate("Arch","Select exactly 2 or 3 pipe objects")+"\n")
             return
         o = "["
         for obj in s:
             if Draft.getType(obj) != "Pipe":
-                FreeCAD.Console.PrintError(translate("Arch","Please select only Pipe objects")+"\n")
+                FreeCAD.Console.PrintError(translate("Arch","Select only pipe objects")+"\n")
                 return
             o += "FreeCAD.ActiveDocument."+obj.Name+","
         o += "]"
@@ -116,7 +116,7 @@ class Arch_PipeGroupCommand:
     def GetCommands(self):
         return tuple(['Arch_Pipe','Arch_PipeConnector'])
     def GetResources(self):
-        return { 'MenuText': QT_TRANSLATE_NOOP("Arch_PipeTools",'Pipe tools'),
+        return { 'MenuText': QT_TRANSLATE_NOOP("Arch_PipeTools",'Pipe Tools'),
                  'ToolTip': QT_TRANSLATE_NOOP("Arch_PipeTools",'Pipe tools')
                }
     def IsActive(self):

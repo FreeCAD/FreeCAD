@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="groupBoxNaviCube">
      <property name="title">
-      <string>Navigation cube</string>
+      <string>Navigation Cube</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -81,7 +81,7 @@
       <item row="0" column="4">
        <widget class="Gui::PrefComboBox" name="naviCubeCorner">
         <property name="toolTip">
-         <string>Corner where navigation cube is shown</string>
+         <string>Corner where the navigation cube is displayed</string>
         </property>
         <property name="currentIndex">
          <number>1</number>
@@ -117,7 +117,7 @@
       <item row="1" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="naviCubeToNearest">
         <property name="toolTip">
-         <string>Rotates to nearest possible state when clicking a cube face</string>
+         <string>Rotates to nearest possible state when clicking a face of the cube</string>
         </property>
         <property name="text">
          <string>Rotate to nearest</string>
@@ -279,7 +279,7 @@
    <item>
     <widget class="QGroupBox" name="groupBoxRotationCenter">
      <property name="title">
-      <string>Rotation center indicator</string>
+      <string>Rotation Center Indicator</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -381,7 +381,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="navigationLabel">
         <property name="text">
-         <string>3D Navigation</string>
+         <string>3D navigation</string>
         </property>
        </widget>
       </item>
@@ -418,11 +418,11 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>List the mouse button configs for each chosen navigation setting.
+           <string>Lists the mouse button configs for each chosen navigation setting.
 Select a set and then press the button to view said configurations.</string>
           </property>
           <property name="text">
-           <string>Mouse...</string>
+           <string>Mouse Configuration</string>
           </property>
          </widget>
         </item>
@@ -740,7 +740,7 @@ Mouse tilting is not disabled by this setting.</string>
    <item>
     <widget class="QGroupBox" name="spaceMouseDevice">
      <property name="title">
-      <string>Space mouse</string>
+      <string>Space Mouse</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_5">
       <item row="0" column="0">

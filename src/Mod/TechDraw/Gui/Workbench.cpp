@@ -227,13 +227,13 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *views << "Separator";
     *views << "TechDraw_ShareView";
     *views << "Separator";
-    *views << "TechDraw_ToggleFrame";
     *views << "Separator";
     *views << "TechDraw_ProjectShape";
 
     // views from other workbenches
     Gui::MenuItem* other = new Gui::MenuItem;
     other->setCommand("Views From Other Workbenches");
+
     *other << "TechDraw_ActiveView";
     *other << "TechDraw_DraftView";
     *other << "TechDraw_ArchView";
@@ -388,7 +388,6 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     decor->setCommand("TechDraw Decoration");
     *decor << "TechDraw_Hatch";
     *decor << "TechDraw_GeometricHatch";
-    *decor << "TechDraw_ToggleFrame";
 
     Gui::ToolBarItem* anno = new Gui::ToolBarItem(root);
     anno->setCommand("TechDraw Annotation");
@@ -488,7 +487,6 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     decor->setCommand("TechDraw Decoration");
     *decor << "TechDraw_Hatch";
     *decor << "TechDraw_GeometricHatch";
-    *decor << "TechDraw_ToggleFrame";
 
     Gui::ToolBarItem* anno = new Gui::ToolBarItem(root);
     anno->setCommand("TechDraw Annotation");

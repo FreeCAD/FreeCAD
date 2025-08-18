@@ -213,7 +213,23 @@ App::DocumentObjectExecReturn *Loft::execute()
             std::vector<TopoShape> backwires;
             for(auto& sectionWires : wiresections)
                 backwires.push_back(sectionWires.back());
-            back = TopoShape(0).makeElementFace(backwires);
+            const char *faceMaker[] = {
+                "Part::FaceMakerBullseye",
+                "Part::FaceMakerCheese",
+                "Part::FaceMakerSimple",
+            };
+            for (size_t i = 0; i < std::size(faceMaker); i++) {
+                try {
+                    back = TopoShape(0).makeElementFace(backwires, nullptr, faceMaker[i]);
+                    break;
+                }
+                catch (...) {
+                   if (i == std::size(faceMaker) - 1) {
+                       throw;
+                   }
+                   continue;
+                }
+            }
         }
 
         if (!front.isNull() || !back.isNull()) {

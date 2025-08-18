@@ -84,7 +84,7 @@ Params = [
     ParamInt('ColumnSize3', 0),
     ParamBool('TreeToolTipIcon', False, title='Show icon in tool tip'),
     ParamBool('VisibilityIcon', True, on_change=True, title='Show visibility icon',
-        doc = "If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled"),
+        doc = "Displays an eye icon in front of the tree view items, showing the items visibility status. When clicked the visibility is toggled"),
 ]
 
 def declare_begin():

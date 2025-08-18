@@ -296,7 +296,7 @@ def myCustomFusionRoutine(list_of_shapes):
                         new_children.append(new_piece)
                         existing_pieces[hash] = (-1, new_piece)
         if changed:
-            return Part.Compound(new_children)
+            return Part.makeCompound(new_children)
         else:
             return None
 
@@ -431,4 +431,4 @@ class GeneralFuseReturnBuilder(FrozenClass):
         self.pieces[piece_index] = new_shape
 
     def getGFReturn(self):
-        return (Part.Compound(self.pieces), [[self.pieces[iPiece] for iPiece in ilist] for ilist in self._pieces_from_source])
+        return (Part.makeCompound(self.pieces), [[self.pieces[iPiece] for iPiece in ilist] for ilist in self._pieces_from_source])

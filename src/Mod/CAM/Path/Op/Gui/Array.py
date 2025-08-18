@@ -44,7 +44,7 @@ class ObjectArray:
             "App::PropertyLinkList",
             "Base",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "The toolpath(s) to array"),
+            QT_TRANSLATE_NOOP("App::Property", "The toolpaths to array"),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
@@ -58,7 +58,7 @@ class ObjectArray:
             "Path",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "The spacing between the array copies in Linear pattern",
+                "The spacing between the array copies in linear pattern",
             ),
         )
         obj.addProperty(
@@ -66,7 +66,7 @@ class ObjectArray:
             "CopiesX",
             "Path",
             QT_TRANSLATE_NOOP(
-                "App::Property", "The number of copies in X direction in Linear pattern"
+                "App::Property", "The number of copies in X direction in linear pattern"
             ),
         )
         obj.addProperty(
@@ -74,28 +74,28 @@ class ObjectArray:
             "CopiesY",
             "Path",
             QT_TRANSLATE_NOOP(
-                "App::Property", "The number of copies in Y direction in Linear pattern"
+                "App::Property", "The number of copies in Y direction in linear pattern"
             ),
         )
         obj.addProperty(
             "App::PropertyAngle",
             "Angle",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Total angle in Polar pattern"),
+            QT_TRANSLATE_NOOP("App::Property", "Total angle in polar pattern"),
         )
         obj.addProperty(
             "App::PropertyInteger",
             "Copies",
             "Path",
             QT_TRANSLATE_NOOP(
-                "App::Property", "The number of copies in Linear 1D and Polar pattern"
+                "App::Property", "The number of copies in linear 1D and polar pattern"
             ),
         )
         obj.addProperty(
             "App::PropertyVector",
             "Centre",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "The centre of rotation in Polar pattern"),
+            QT_TRANSLATE_NOOP("App::Property", "The centre of rotation in polar pattern"),
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -143,7 +143,7 @@ class ObjectArray:
             "App::PropertyString",
             "CycleTime",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
+            QT_TRANSLATE_NOOP("App::Property", "Operations cycle time estimation"),
         )
 
         obj.setEditorMode("CycleTime", 1)  # read-only
@@ -214,7 +214,7 @@ class ObjectArray:
                 "App::PropertyString",
                 "CycleTime",
                 "Path",
-                QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
+                QT_TRANSLATE_NOOP("App::Property", "Operations cycle time estimation"),
             )
             obj.CycleTime = self.getCycleTimeEstimate(obj)
 
@@ -480,10 +480,7 @@ class CommandPathArray:
         return {
             "Pixmap": "CAM_Array",
             "MenuText": QT_TRANSLATE_NOOP("CAM_Array", "Array"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_Array",
-                "Creates an array from selected toolpath(s)\nwith identical tool controllers and without coolant",
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_Array", "Creates an array from selected toolpaths"),
         }
 
     def IsActive(self):

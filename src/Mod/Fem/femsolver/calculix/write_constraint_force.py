@@ -35,7 +35,7 @@ def get_sets_name():
 
 
 def get_before_write_meshdata_constraint():
-    return "*CLOAD\n"
+    return ""
 
 
 def get_after_write_meshdata_constraint():
@@ -46,6 +46,10 @@ def write_meshdata_constraint(f, femobj, force_obj, ccxwriter):
 
     # floats read from ccx should use {:.13G}, see comment in writer module
 
+    if force_obj.EnableAmplitude:
+        f.write(f"*CLOAD, AMPLITUDE={force_obj.Name}\n")
+    else:
+        f.write("*CLOAD\n")
     direction_vec = femobj["Object"].DirectionVector
     dir_zero_tol = 1e-15  # TODO: should this be more generally for more values?
     # be careful with raising the tolerance, a big load would have an impact

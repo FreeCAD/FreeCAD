@@ -11,7 +11,7 @@
       </rect>
     </property>
     <property name="windowTitle">
-      <string>SH3D import</string>
+      <string>SH3D Import</string>
     </property>
     <layout class="QVBoxLayout">
       <property name="spacing">
@@ -23,7 +23,7 @@
       <item>
         <widget class="QGroupBox" name="groupBox_3">
           <property name="title">
-            <string>General options</string>
+            <string>General Options</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
             <item>
@@ -45,10 +45,10 @@
             <item>
               <widget class="Gui::PrefCheckBox" name="checkBox_debugGeometry">
                 <property name="toolTip">
-                  <string>DEBUG: keep the construction geometries in the ActiveDocument. Useful when debugging a failed import</string>
+                  <string>DEBUG: keep the construction geometries in the active document. Useful when debugging a failed import</string>
                 </property>
                 <property name="text">
-                  <string>Debug Geometry</string>
+                  <string>Debug geometry</string>
                 </property>
                 <property name="prefEntry" stdset="0">
                   <cstring>sh3dDebugGeometry</cstring>
@@ -64,13 +64,13 @@
       <item>
         <widget class="QGroupBox" name="groupBox_2">
           <property name="title">
-            <string>Import options</string>
+            <string>Import Options</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout">
             <item>
               <widget class="Gui::PrefCheckBox" name="checkBox_9">
                 <property name="toolTip">
-                  <string>Merge imported element with existing FC object</string>
+                  <string>Merge imported element with existing FreeCAD object</string>
                 </property>
                 <property name="text">
                   <string>Merge into existing document</string>
@@ -190,10 +190,10 @@
             <item>
               <widget class="Gui::PrefCheckBox" name="checkBox_10">
                 <property name="toolTip">
-                  <string>Create a default Render project with the newly created Site</string>
+                  <string>Create a default Render project with the newly created site (requires the Render workbench to be installed)</string>
                 </property>
                 <property name="text">
-                  <string>Create Render Project (requires Render)</string>
+                  <string>Create render project</string>
                 </property>
                 <property name="prefEntry" stdset="0">
                   <cstring>sh3dCreateRenderProject</cstring>
@@ -209,7 +209,7 @@
                 <item row="0" column="0">
                   <widget class="QLabel" name="label1">
                     <property name="text">
-                      <string>Default Floor Color</string>
+                      <string>Default floor color</string>
                     </property>
                     <property name="buddy">
                       <cstring>sh3dDefaultFloorColor</cstring>
@@ -225,7 +225,7 @@
                       </sizepolicy>
                     </property>
                     <property name="toolTip">
-                      <string>This color might be used when a room does not define its own color.</string>
+                      <string>This color might be used when a room does not define its own color</string>
                     </property>
                     <property name="color" stdset="0">
                       <color>
@@ -249,7 +249,7 @@
                 <item row="0" column="0">
                   <widget class="QLabel" name="label1">
                     <property name="text">
-                      <string>Default Ceiling Color</string>
+                      <string>Default ceiling color</string>
                     </property>
                     <property name="buddy">
                       <cstring>sh3dDefaultCeilingColor</cstring>
@@ -265,7 +265,7 @@
                       </sizepolicy>
                     </property>
                     <property name="toolTip">
-                      <string>This color might be used when a room does not define its own color.</string>
+                      <string>This color might be used when a room does not define its own color</string>
                     </property>
                     <property name="color" stdset="0">
                       <color>
@@ -287,10 +287,10 @@
             <item>
               <widget class="Gui::PrefCheckBox" name="checkBox_12">
                 <property name="toolTip">
-                  <string>Create a default IFC project with the newly created Site.</string>
+                  <string>Create a default IFC project with the newly created site</string>
                 </property>
                 <property name="text">
-                  <string>Create IFC Project</string>
+                  <string>Create IFC project</string>
                 </property>
                 <property name="prefEntry" stdset="0">
                   <cstring>sh3dCreateIFCProject</cstring>
@@ -303,10 +303,10 @@
             <item>
               <widget class="Gui::PrefCheckBox" name="checkBox_13">
                 <property name="toolTip">
-                  <string>Create a Mesh to represent the default ground level.</string>
+                  <string>Create a mesh to represent the default ground level</string>
                 </property>
                 <property name="text">
-                  <string>Create ground level Mesh</string>
+                  <string>Create ground level mesh</string>
                 </property>
                 <property name="prefEntry" stdset="0">
                   <cstring>sh3dCreateGroundMesh</cstring>
@@ -324,7 +324,7 @@
                 <item row="0" column="0">
                   <widget class="QLabel" name="label1">
                     <property name="text">
-                      <string>Default ground Color</string>
+                      <string>Default ground color</string>
                     </property>
                     <property name="buddy">
                       <cstring>sh3dDefaultGroundColor</cstring>
@@ -340,7 +340,7 @@
                       </sizepolicy>
                     </property>
                     <property name="toolTip">
-                      <string>This color might be used when the environment does not define a color for the ground.</string>
+                      <string>This color might be used when the environment does not define a color for the ground</string>
                     </property>
                     <property name="color" stdset="0">
                       <color>
@@ -364,7 +364,7 @@
                 <item row="0" column="0">
                   <widget class="QLabel" name="label1">
                     <property name="text">
-                      <string>Default sky Color</string>
+                      <string>Default sky color</string>
                     </property>
                     <property name="buddy">
                       <cstring>sh3dDefaultSkyColor</cstring>
@@ -380,7 +380,7 @@
                       </sizepolicy>
                     </property>
                     <property name="toolTip">
-                      <string>This color might be used when the environment does not define a color for the sky.</string>
+                      <string>This color might be used when the environment does not define a color for the sky</string>
                     </property>
                     <property name="color" stdset="0">
                       <color>
@@ -402,7 +402,7 @@
             <item>
               <widget class="Gui::PrefCheckBox" name="checkBox_decorate_surfaces">
                 <property name="toolTip">
-                  <string>Create Facebinders, Baseboards for walls, floors and ceilings for Rooms</string>
+                  <string>Create face binders and baseboards for walls, and floors and ceilings for rooms</string>
                 </property>
                 <property name="text">
                   <string>Decorate surfaces</string>
@@ -423,7 +423,7 @@
                 <item row="0" column="0">
                   <widget class="QLabel" name="label1">
                     <property name="text">
-                      <string>Default furniture Color</string>
+                      <string>Default furniture color</string>
                     </property>
                     <property name="buddy">
                       <cstring>sh3dDefaultFurnitureColor</cstring>
@@ -439,7 +439,7 @@
                       </sizepolicy>
                     </property>
                     <property name="toolTip">
-                      <string>This color is used when a furniture does not define its own color.</string>
+                      <string>This color is used when a furniture does not define its own color</string>
                     </property>
                     <property name="color" stdset="0">
                       <color>
@@ -461,7 +461,7 @@
             <item>
               <widget class="Gui::PrefCheckBox" name="checkBox_11">
                 <property name="toolTip">
-                  <string>Fit view while importing.</string>
+                  <string>Fit view while importing</string>
                 </property>
                 <property name="text">
                   <string>Fit view while importing</string>

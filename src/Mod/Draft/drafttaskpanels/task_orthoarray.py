@@ -80,7 +80,7 @@ class TaskPanelOrthoArray:
     def __init__(self):
 
         self.form = Gui.PySideUic.loadUi(":/ui/TaskPanel_OrthoArray.ui")
-        self.form.setWindowTitle(translate("draft", "Orthogonal array"))
+        self.form.setWindowTitle(translate("draft", "Orthogonal Array"))
         self.form.setWindowIcon(QtGui.QIcon(":/icons/Draft_Array.svg"))
 
         # -------------------------------------------------------------------
@@ -211,18 +211,18 @@ class TaskPanelOrthoArray:
         the interface may not allow one to input wrong data.
         """
         if not selection:
-            _err(translate("draft","At least one element must be selected."))
+            _err(translate("draft","At least 1 element must be selected"))
             return False
 
         if n_x < 1 or n_y < 1 or n_z < 1:
-            _err(translate("draft","Number of elements must be at least 1."))
+            _err(translate("draft","Number of elements must be at least 1"))
             return False
 
         # TODO: this should handle multiple objects.
         # Each of the elements of the selection should be tested.
         obj = selection[0]
         if obj.isDerivedFrom("App::FeaturePython"):
-            _err(translate("draft","Selection is not suitable for array."))
+            _err(translate("draft","Selection is not suitable for array"))
             _err(translate("draft","Object:") + " {0} ({1})".format(obj.Label, obj.TypeId))
             return False
 
@@ -231,7 +231,7 @@ class TaskPanelOrthoArray:
             if not (self.form.radiobutton_x_axis.isChecked() or
                     self.form.radiobutton_y_axis.isChecked() or
                     self.form.radiobutton_z_axis.isChecked()):
-                _err(translate("draft","In Linear mode, at least one axis must be selected."))
+                _err(translate("draft","In linear mode, at least 1 axis must be selected"))
                 return False
 
         # The other arguments are not tested but they should be present.
@@ -301,7 +301,7 @@ class TaskPanelOrthoArray:
                      "App.ActiveDocument.recompute()"]
 
         # We commit the command list through the parent command
-        self.source_command.commit(translate("draft","Orthogonal array"), _cmd_list)
+        self.source_command.commit(translate("draft","Create Orthogonal Array"), _cmd_list)
 
     def get_numbers(self):
         """Get the number of elements from the widgets."""
@@ -377,7 +377,7 @@ class TaskPanelOrthoArray:
             state = self.tr_true
         else:
             state = self.tr_false
-        _msg(translate("draft","Create Link array:") + " {}".format(state))
+        _msg(translate("draft","Create link array:") + " {}".format(state))
 
     def set_link(self):
         """Execute as a callback when the link checkbox changes."""
@@ -424,7 +424,7 @@ class TaskPanelOrthoArray:
         params.set_param("LinearModeOn" , self.linear_mode, "Mod/Draft/OrthoArrayLinearMode")
 
         if self.linear_mode:
-            self.form.button_linear_mode.setText(translate("draft", "Switch to ortho mode"))
+            self.form.button_linear_mode.setText(translate("draft", "Switch to Ortho Mode"))
 
             # check radiobutton based on current cfg
             self.update_axis_ui()
@@ -440,7 +440,7 @@ class TaskPanelOrthoArray:
             self.form.group_linearmode.show()
             self.form.group_linearmode.setTitle(f"{self.active_axis} Axis")
         else: # ortho mode
-            self.form.button_linear_mode.setText(translate("draft", "Switch to linear mode"))
+            self.form.button_linear_mode.setText(translate("draft", "Switch to Linear Mode"))
 
             # For ortho mode we're showing back default groupboxes and we reparent everything
             # back to them, as we reuse spinboxes in both modes

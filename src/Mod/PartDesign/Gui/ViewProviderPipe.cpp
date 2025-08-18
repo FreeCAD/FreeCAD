@@ -71,22 +71,9 @@ std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren()const
 
 void ViewProviderPipe::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    addDefaultAction(menu, QObject::tr("Edit pipe"));
+    addDefaultAction(menu, QObject::tr("Edit Pipe"));
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
-
-bool ViewProviderPipe::setEdit(int ModNum) {
-    if (ModNum == ViewProvider::Default )
-        setPreviewDisplayMode(true);
-
-    return PartDesignGui::ViewProvider::setEdit(ModNum);
-}
-
-void ViewProviderPipe::unsetEdit(int ModNum) {
-    setPreviewDisplayMode(false);
-    PartDesignGui::ViewProvider::unsetEdit(ModNum);
-}
-
 
 TaskDlgFeatureParameters* ViewProviderPipe::getEditDialog() {
     return new TaskDlgPipeParameters(this, false);

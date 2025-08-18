@@ -101,8 +101,8 @@ class TaskWizardShaft:
         except ImportError as e:
             msgBox = QtGui.QMessageBox()
             msgBox.setIcon(msgBox.Information)
-            msgBox.setWindowTitle(translate("TaskWizardShaft", "Missing module"))
-            msgBox.setText(translate("TaskWizardShaft", "You may have to install the Plot add-on"))
+            msgBox.setWindowTitle(translate("TaskWizardShaft", "Missing Module"))
+            msgBox.setText(translate("TaskWizardShaft", "The Plot add-on is not installed. Install it to enable this feature."))
             msgBox.setDetailedText(traceback.format_exc())
             msgBox.exec_()
     def slotAllx(self):
@@ -185,8 +185,8 @@ class WizardShaftGui:
 
     def GetResources(self):
         IconPath = FreeCAD.ConfigGet("AppHomePath") + "Mod/PartDesign/WizardShaft/WizardShaft.svg"
-        MenuText = QtCore.QT_TRANSLATE_NOOP("PartDesign_WizardShaft", "Shaft design wizard...")
-        ToolTip  = QtCore.QT_TRANSLATE_NOOP("PartDesign_WizardShaft", "Start the shaft design wizard")
+        MenuText = QtCore.QT_TRANSLATE_NOOP("PartDesign_WizardShaft", "Shaft Design Wizard")
+        ToolTip  = QtCore.QT_TRANSLATE_NOOP("PartDesign_WizardShaft", "Starts the shaft design wizard")
         return {'Pixmap': IconPath,
                 'MenuText': MenuText,
                 'ToolTip': ToolTip}

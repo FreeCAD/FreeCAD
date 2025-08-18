@@ -37,7 +37,7 @@ class BIM_Project:
             "Pixmap": "BIM_Project",
             "MenuText": QT_TRANSLATE_NOOP("BIM_Project", "Project"),
             "ToolTip": QT_TRANSLATE_NOOP("BIM_Project",
-                                         "Create an empty NativeIFC project"),
+                                         "Creates an empty NativeIFC project"),
         }
 
     def IsActive(self):

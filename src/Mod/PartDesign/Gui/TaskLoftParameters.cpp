@@ -48,7 +48,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskLoftParameters */
 
 TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj*/, QWidget* parent)
-    : TaskSketchBasedParameters(LoftView, parent, "PartDesign_AdditiveLoft", tr("Loft parameters"))
+    : TaskSketchBasedParameters(LoftView, parent, "PartDesign_AdditiveLoft", tr("Loft Parameters"))
     , ui(new Ui_TaskLoftParameters)
 {
     // we need a separate container widget to add all controls to
@@ -381,6 +381,7 @@ TaskDlgLoftParameters::TaskDlgLoftParameters(ViewProviderLoft* LoftView, bool ne
     parameter = new TaskLoftParameters(LoftView, newObj);
 
     Content.push_back(parameter);
+    Content.push_back(preview);
 }
 
 TaskDlgLoftParameters::~TaskDlgLoftParameters() = default;

@@ -23,16 +23,16 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Orthogonal array</string>
+   <string>Orthogonal Array</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
     <widget class="QPushButton" name="button_linear_mode">
      <property name="toolTip">
-      <string>Toggle between Orthogonal mode and Linear mode. In Linear mode, you can select which axis to use.</string>
+      <string>Toggles between orthogonal and linear mode</string>
      </property>
      <property name="text">
-      <string>Switch to linear mode</string>
+      <string>Switch to Linear Mode</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -80,7 +80,7 @@
 The number must be at least 1 in each direction.</string>
      </property>
      <property name="title">
-      <string>Number of elements</string>
+      <string>Number of Elements</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_5">
       <item row="0" column="0">
@@ -170,7 +170,7 @@ Normally, only the X value is necessary; the other two values can give an additi
 Negative values will result in copies produced in the negative direction.</string>
      </property>
      <property name="title">
-      <string>X intervals</string>
+      <string>X Intervals</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
@@ -243,7 +243,7 @@ Negative values will result in copies produced in the negative direction.</strin
       <item row="1" column="0">
        <widget class="QPushButton" name="button_reset_X">
         <property name="toolTip">
-         <string>Reset the distances.</string>
+         <string>Resets the distances</string>
         </property>
         <property name="text">
          <string>Reset X</string>
@@ -261,7 +261,7 @@ Normally, only the Y value is necessary; the other two values can give an additi
 Negative values will result in copies produced in the negative direction.</string>
      </property>
      <property name="title">
-      <string>Y intervals</string>
+      <string>Y Intervals</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_1">
       <item row="0" column="0">
@@ -334,7 +334,7 @@ Negative values will result in copies produced in the negative direction.</strin
       <item row="1" column="0">
        <widget class="QPushButton" name="button_reset_Y">
         <property name="toolTip">
-         <string>Reset the distances.</string>
+         <string>Resets the distances</string>
         </property>
         <property name="text">
          <string>Reset Y</string>
@@ -352,7 +352,7 @@ Normally, only the Z value is necessary; the other two values can give an additi
 Negative values will result in copies produced in the negative direction.</string>
      </property>
      <property name="title">
-      <string>Z intervals</string>
+      <string>Z Intervals</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
@@ -425,7 +425,7 @@ Negative values will result in copies produced in the negative direction.</strin
       <item row="1" column="0">
        <widget class="QPushButton" name="button_reset_Z">
         <property name="toolTip">
-         <string>Reset the distances.</string>
+         <string>Resets the distances</string>
         </property>
         <property name="text">
          <string>Reset Z</string>

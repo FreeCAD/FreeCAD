@@ -144,6 +144,7 @@ class MeshSetsGetter:
         self.get_constraints_sectionprint_faces()
         self.get_constraints_transform_nodes()
         self.get_constraints_temperature_nodes()
+        self.get_constraints_initialtemperature_nodes()
         self.get_constraints_electrostatic_nodes()
 
         # constraints sets with constraint data
@@ -241,6 +242,15 @@ class MeshSetsGetter:
             return
         # get nodes
         for femobj in self.member.cons_temperature:
+            # femobj --> dict, FreeCAD document object is femobj["Object"]
+            print_obj_info(femobj["Object"])
+            femobj["Nodes"] = meshtools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)
+
+    def get_constraints_initialtemperature_nodes(self):
+        if not self.member.cons_initialtemperature:
+            return
+        # get nodes
+        for femobj in self.member.cons_initialtemperature:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             print_obj_info(femobj["Object"])
             femobj["Nodes"] = meshtools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)

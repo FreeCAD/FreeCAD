@@ -99,7 +99,7 @@ bool TaskDialog::canClose() const
 {
     QMessageBox msgBox(Gui::getMainWindow());
     msgBox.setText(tr("A dialog is already open in the task panel"));
-    msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
+    msgBox.setInformativeText(QObject::tr("Close this dialog?"));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::Yes);
     int ret = msgBox.exec();
