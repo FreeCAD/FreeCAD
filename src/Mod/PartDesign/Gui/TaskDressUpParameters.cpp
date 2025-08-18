@@ -484,7 +484,6 @@ void TaskDlgDressUpParameters::activate()
 void TaskDlgDressUpParameters::deactivate()
 {
     parameter->detachSelection();
-    Gui::Selection().rmvSelectionGate();
 }
 
 #include "moc_TaskDressUpParameters.cpp"
