@@ -249,8 +249,7 @@ FaceAppearances::FaceAppearances(ViewProviderPartExt* vp, QWidget* parent)
     d->ui->groupBox->setTitle(QString::fromUtf8(vp->getObject()->Label.getValue()));
     d->ui->buttonCustomAppearance->setDisabled(true);
 
-    FaceSelection* gate = new FaceSelection(d->vp->getObject());
-    Gui::Selection().addSelectionGate(gate);
+    setSelectionGate();
 
     //NOLINTBEGIN
     d->connectDelDoc = Gui::Application::Instance->signalDeleteDocument.connect(std::bind
@@ -480,6 +479,11 @@ void FaceAppearances::changeEvent(QEvent* e)
         d->ui->retranslateUi(this);
     }
 }
+void FaceAppearances::setSelectionGate()
+{
+    FaceSelection* gate = new FaceSelection(d->vp->getObject());
+    Gui::Selection().addSelectionGate(gate);
+}
 
 
 /* TRANSLATOR PartGui::TaskFaceAppearances */
@@ -512,6 +516,7 @@ bool TaskFaceAppearances::reject()
 }
 void TaskFaceAppearances::activate()
 {
+    widget->setSelectionGate();
     widget->attachSelection();
 }
 void TaskFaceAppearances::deactivate()

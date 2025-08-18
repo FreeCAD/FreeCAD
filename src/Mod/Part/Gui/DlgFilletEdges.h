@@ -91,6 +91,7 @@ public:
     DlgFilletEdges(FilletType type, Part::FilletBase*, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgFilletEdges() override;
     bool accept();
+    void setSelectionGate();
 
 protected:
     void findShapes();

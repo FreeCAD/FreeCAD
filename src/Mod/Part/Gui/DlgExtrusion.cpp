@@ -107,7 +107,10 @@ public:
 };
 
 DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WindowFlags fl)
-  : QDialog(parent, fl), ui(new Ui_DlgExtrusion), filter(nullptr)
+  : QDialog(parent, fl)
+  , ui(new Ui_DlgExtrusion)
+  , filter(nullptr)
+  , filterSelection(false)
 {
     ui->setupUi(this);
     setupConnections();
@@ -143,9 +146,10 @@ DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WindowFlags fl)
  */
 DlgExtrusion::~DlgExtrusion()
 {
-    if (filter){
+    if (filterSelection) {
         Gui::Selection().rmvSelectionGate();
         filter = nullptr;
+        filterSelection = false;
     }
 
     // no need to delete child widgets, Qt does it all for us
@@ -210,9 +214,9 @@ void DlgExtrusion::onDirModeNormalToggled(bool on)
 
 void DlgExtrusion::onSelectEdgeClicked()
 {
-    if (!filter) {
-        filter = new EdgeSelection();
-        Gui::Selection().addSelectionGate(filter);
+    if (!filterSelection) {
+        filterSelection = true;
+        setSelectionGate();
         ui->btnSelectEdge->setText(tr("Selecting…"));
 
         //visibility automation
@@ -239,6 +243,7 @@ void DlgExtrusion::onSelectEdgeClicked()
     } else {
         Gui::Selection().rmvSelectionGate();
         filter = nullptr;
+        filterSelection = false;
         ui->btnSelectEdge->setText(tr("Select"));
 
         //visibility automation
@@ -762,6 +767,13 @@ void DlgExtrusion::writeParametersToFeature(App::DocumentObject &feature, App::D
     Gui::Command::doCommand(Gui::Command::Doc,"f.TaperAngle = %.15f", ui->spinTaperAngle->value().getValue());
     Gui::Command::doCommand(Gui::Command::Doc,"f.TaperAngleRev = %.15f", ui->spinTaperAngleRev->value().getValue());
 }
+void DlgExtrusion::setSelectionGate()
+{
+    if (filterSelection) {
+        filter = new EdgeSelection();
+        Gui::Selection().addSelectionGate(filter);
+    }
+}
 
 
 // ---------------------------------------
@@ -796,6 +808,7 @@ void TaskExtrusion::clicked(int id)
 }
 void TaskExtrusion::activate()
 {
+    widget->setSelectionGate();
     widget->attachSelection();
 }
 void TaskExtrusion::deactivate()

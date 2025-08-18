@@ -52,6 +52,7 @@ public:
     void open();
     bool accept();
     bool reject();
+    void setSelectionGate();
 
 private:
     void setupConnections();
