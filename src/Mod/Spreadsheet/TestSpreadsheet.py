@@ -961,6 +961,24 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.getContents("Y1"), "=X1 ? 0 : (1 ? (X2 ? 2 : 3) : (X3 ? 4 : 5))")
         self.assertEqual(sheet.Y2, 98)
 
+    def testForbiddenBooleanExpressions(self):
+        """Test forbidden boolean expressions"""
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
+
+        def must_fail(expression: str):
+            try:
+                sheet.set("Z1", expression)
+                self.doc.recompute()
+                self.fail("Expected an exception for forbidden boolean expression")
+            except Exception:
+                pass
+
+        must_fail("=1 < 2 < 3 ? 3 : 4")
+        must_fail("=1 < 2 < 3 < 4 ? 3 : 4")
+        must_fail("=A1 < B1 < 3 ? 3 : 4")
+        must_fail("=1 < C1 < D2 ? 3 : 4")
+        must_fail("=X1 < B1 < D1 < 0 ? 3 : 4")
+
     def testNumbers(self):
         """Test different numbers"""
         sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
