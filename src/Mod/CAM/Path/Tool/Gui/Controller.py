@@ -188,6 +188,14 @@ class CommandPathToolController(object):
         FreeCAD.ActiveDocument.recompute()
 
 
+class BlockScrollWheel(QtCore.QObject):
+    def eventFilter(self, obj, event):
+        if event.type() == QtCore.QEvent.Type.Wheel:
+            if not obj.hasFocus():
+                return True
+        return super().eventFilter(obj, event)
+
+
 class ToolControllerEditor(object):
 
     def __init__(self, obj, asDialog, notifyChanged=None, onCopyPressed=None):
@@ -211,6 +219,10 @@ class ToolControllerEditor(object):
         self.horizFeed = PathGuiUtil.QuantitySpinBox(self.controller.horizFeed, obj, "HorizFeed")
         self.vertRapid = PathGuiUtil.QuantitySpinBox(self.controller.vertRapid, obj, "VertRapid")
         self.horizRapid = PathGuiUtil.QuantitySpinBox(self.controller.horizRapid, obj, "HorizRapid")
+
+        self.blockScrollWheel = BlockScrollWheel()
+        self.controller.tcNumber.installEventFilter(self.blockScrollWheel)
+        self.controller.spindleDirection.installEventFilter(self.blockScrollWheel)
 
         self.editor = None
 
@@ -276,8 +288,10 @@ class ToolControllerEditor(object):
 
     def changed(self):
         self.form.blockSignals(True)
+        self.controller.blockSignals(True)
         self.updateToolController()
         self.updateUi()
+        self.controller.blockSignals(False)
         self.form.blockSignals(False)
 
         if self.notifyChanged:
