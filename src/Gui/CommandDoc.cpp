@@ -101,7 +101,7 @@ void StdCmdOpen::activated(int iMsg)
 
     // fill the list of registered endings
     QString formatList;
-    const char* supported = QT_TR_NOOP("All Supported formats");
+    const char* supported = QT_TR_NOOP("All supported formats");
     const char* allFiles = QT_TR_NOOP("All files (*.*)");
     formatList = QObject::tr(supported);
     formatList += QLatin1String(" (");
@@ -203,7 +203,7 @@ void StdCmdImport::activated(int iMsg)
     // Only add *.* for the main filter, do not add all extensions here.
     // This keeps the main filter as "Supported formats (*.ext1 *.ext2 ...)", but does not enumerate them.
     formatList += QLatin1String("*.*");
-    
+
 
     formatList += QLatin1String(");;");
 
