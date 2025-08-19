@@ -199,7 +199,7 @@ class BlockScrollWheel(QtCore.QObject):
 class ToolControllerEditor(object):
 
     def __init__(
-        self, obj, asDialog, notifyChanged=None, onCopyPressed=None, disableToolNumber=False
+        self, obj, asDialog, notifyChanged=None, showCountLabel=False, disableToolNumber=False
     ):
         self.notifyChanged = notifyChanged
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/DlgToolControllerEdit.ui")
@@ -207,10 +207,8 @@ class ToolControllerEditor(object):
         self.form.tc_layout.addWidget(self.controller)
         if not asDialog:
             self.form.buttonBox.hide()
-        if onCopyPressed is None:
-            self.controller.copyButtonContainer.hide()
-        else:
-            self.controller.copyButton.clicked.connect(onCopyPressed)
+        if not showCountLabel:
+            self.controller.tcOperationCountLabel.hide()
         self.obj = obj
 
         comboToPropertyMap = [("spindleDirection", "SpindleDir")]

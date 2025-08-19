@@ -404,6 +404,7 @@ class TaskPanelPage(object):
             elif newIndex == self.combo.count() - 2:
                 # Special entry: copy tool controller
                 self.copyToolController()  # this function also rebuilds the combo
+                self.resetTCCombo()
             else:
                 tc = PathUtils.findToolController(
                     self.obj, self.obj.Proxy, self.form.toolController.currentText()
@@ -449,14 +450,6 @@ class TaskPanelPage(object):
 
     def resetTCCombo(self):
         controllers = PathUtils.getToolControllers(self.obj)
-        labels = [c.Label for c in controllers]
-        labels.append(FreeCAD.Qt.translate("CAM_Operation", "Copy tool controller"))
-        labels.append(FreeCAD.Qt.translate("CAM_Operation", "New tool controller"))
-        self.combo.blockSignals(True)
-        self.combo.clear()
-        self.combo.addItems(labels)
-        self.combo.insertSeparator(len(controllers))
-        self.combo.blockSignals(False)
 
         if self.obj.ToolController is None:
             self.obj.ToolController = PathUtils.findToolController(self.obj, self.obj.Proxy)
@@ -464,6 +457,17 @@ class TaskPanelPage(object):
             self.obj, self.obj.ToolController.Tool
         ):
             self.obj.ToolController = controllers[0]
+
+        tcName = self.obj.ToolController.Label if self.obj.ToolController else ""
+        labels = [c.Label for c in controllers]
+        labels.append(FreeCAD.Qt.translate("CAM_Operation", "Copy {0}").format(tcName))
+        labels.append(FreeCAD.Qt.translate("CAM_Operation", "New tool controller"))
+        self.combo.blockSignals(True)
+        self.combo.clear()
+        self.combo.addItems(labels)
+        self.combo.insertSeparator(len(controllers))
+        self.combo.blockSignals(False)
+
         if self.obj.ToolController is not None:
             self.selectInComboBox(self.obj.ToolController.Label, self.combo)
 
@@ -495,7 +499,7 @@ class TaskPanelPage(object):
                 obj.ToolController,
                 False,
                 self.tcEditorChanged,
-                self.copyToolController if True or tcCount > 0 else None,
+                True,
                 True,
             )
             self.tcEditor.setupUi()
