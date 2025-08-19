@@ -1292,7 +1292,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                     bb = BS.Shape.BoundBox
                 elif obj.BoundBox == "BaseBoundBox":
                     BS = base
-                    bb = base.Shape.BoundBox
+                    bb = BS.Shape.BoundBox
 
                 xmin = bb.XMin
                 xmax = bb.XMax
