@@ -303,6 +303,7 @@ QSize TaskPanel::minimumSizeHint() const
 
 TaskView::TaskView(QWidget *parent)
     : QStackedWidget(parent)
+    , hGrp(Gui::WindowParameter::getDefaultParameter()->GetGroup("General"))
 {
     TaskWatcherPanel = new TaskPanel(this);
     addWidget(TaskWatcherPanel);
