@@ -31,6 +31,7 @@ import Path.Main.Job as PathJob
 import Path.Op.Base as PathOp
 import Path.Op.Gui.Selection as PathSelection
 import Path.Tool.Controller as PathToolController
+from Path.Tool.library.ui.dock import ToolBitLibraryDock
 import PathGui
 import PathScripts.PathUtils as PathUtils
 import importlib
@@ -395,10 +396,15 @@ class TaskPanelPage(object):
 
     def tcComboChanged(self, newIndex):
         if self.obj is not None and self.tcEditor:
-            tc = PathUtils.findToolController(
-                self.obj, self.obj.Proxy, self.form.toolController.currentText()
-            )
-            self.obj.ToolController = tc
+            if newIndex == self.combo.count() - 1:
+                dock = ToolBitLibraryDock()
+                dock.open()
+                pass
+            else:
+                tc = PathUtils.findToolController(
+                    self.obj, self.obj.Proxy, self.form.toolController.currentText()
+                )
+                self.obj.ToolController = tc
             self.setupToolController()
 
     def updateToolControllerEditorVisibility(self):
@@ -440,9 +446,11 @@ class TaskPanelPage(object):
     def resetTCCombo(self):
         controllers = PathUtils.getToolControllers(self.obj)
         labels = [c.Label for c in controllers]
+        labels.append(FreeCAD.Qt.translate("CAM_Operation", "New tool controller"))
         self.combo.blockSignals(True)
         self.combo.clear()
         self.combo.addItems(labels)
+        self.combo.insertSeparator(len(controllers))
         self.combo.blockSignals(False)
 
         if self.obj.ToolController is None:
