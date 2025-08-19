@@ -70,6 +70,7 @@ public:
         QString* selectedFilter = nullptr,
         Options options = Options()
     );
+    [[deprecated("Use getSaveFileName with a QStringList filter list instead")]]
     static QString getOpenFileName(
         QWidget* parent = nullptr,
         const QString& caption = QString(),
@@ -86,6 +87,7 @@ public:
         QString* selectedFilter = nullptr,
         Options options = Options()
     );
+    [[deprecated("Use getSaveFileName with a QStringList filter list instead")]]
     static QString getSaveFileName(
         QWidget* parent = nullptr,
         const QString& caption = QString(),
@@ -108,6 +110,7 @@ public:
         QString* selectedFilter = nullptr,
         Options options = Options()
     );
+    [[deprecated("Use getSaveFileName with a QStringList filter list instead")]]
     static QStringList getOpenFileNames(
         QWidget* parent = nullptr,
         const QString& caption = QString(),

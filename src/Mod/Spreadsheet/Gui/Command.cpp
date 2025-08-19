@@ -195,7 +195,9 @@ void CmdSpreadsheetImport::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QString selectedFilter;
-    QString formatList = QObject::tr("CSV (*.csv *.CSV);;All (*)");
+    QStringList formatList;
+    formatList << QObject::tr("CSV (*.csv *.CSV)");
+    formatList << QObject::tr("All (*)");
     QString fileName = Gui::FileDialog::getOpenFileName(
         Gui::getMainWindow(),
         QObject::tr("Import file"),
