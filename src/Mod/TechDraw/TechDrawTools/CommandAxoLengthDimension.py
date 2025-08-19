@@ -61,11 +61,11 @@ class CommandAxoLengthDimension:
         App.setActiveTransaction("Create axonometric length dimension")
         vertexes = []
         edges = []
-        if Utils.getSelEdges(2) == False:
+        if Utils.getSelEdges(2) is False:
             return
-        else:
-            edges = Utils.getSelEdges(2)
-            vertexes = Utils.getSelVertexes(0)
+
+        edges = Utils.getSelEdges(2)
+        vertexes = Utils.getSelVertexes(0)
 
         if len(vertexes)<2:
             vertexes.append(edges[0].Vertexes[0])
@@ -88,7 +88,9 @@ class CommandAxoLengthDimension:
         if dimLineVec.y < 0.0:
             lineAngle = 180-lineAngle
         if abs(extAngle-lineAngle)>0.1:
-            distanceDim=TechDraw.makeDistanceDim(view,'Distance',vertexes[0].Point*scale,vertexes[1].Point*scale)
+            distanceDim = TechDraw.makeDistanceDim(
+                view, "Distance", vertexes[0].Point * scale, vertexes[1].Point * scale
+            )
             distanceDim.AngleOverride = True
             distanceDim.LineAngle = lineAngle
             distanceDim.ExtensionAngle = extAngle
