@@ -41,18 +41,11 @@ using namespace PartDesign;
 
 PROPERTY_SOURCE(PartDesign::Body, Part::BodyBase)
 
-Body::Body() {
+Body::Body()
+{
     ADD_PROPERTY_TYPE(AllowCompound, (false), "Experimental", App::Prop_None, "Allow multiple solids in Body (experimental)");
 
     _GroupTouched.setStatus(App::Property::Output, true);
-
-    static Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-        .GetUserParameter()
-        .GetGroup("BaseApp/Preferences/Mod/PartDesign");
-
-    auto allowCompoundDefaultValue = hGrp->GetBool("AllowCompoundDefault", true);
-
-    ADD_PROPERTY(AllowCompound, (allowCompoundDefaultValue));
 }
 
 /*
