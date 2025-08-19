@@ -61,7 +61,9 @@ class CommandAxoLengthDimension:
         App.setActiveTransaction("Create axonometric length dimension")
         vertexes = []
         edges = []
-        if Utils.getSelEdges(2):
+        if Utils.getSelEdges(2) == False:
+            return
+        else:
             edges = Utils.getSelEdges(2)
             vertexes = Utils.getSelVertexes(0)
 
@@ -79,6 +81,7 @@ class CommandAxoLengthDimension:
         xAxis = App.Vector(1,0,0)
         extAngle = degrees(extLineVec.getAngle(xAxis))
         lineAngle = degrees(dimLineVec.getAngle(xAxis))
+        originalLineAngle = lineAngle
 
         if extLineVec.y < 0.0:
             extAngle = 180-extAngle
@@ -108,6 +111,30 @@ class CommandAxoLengthDimension:
                 distanceDim.Arbitrary = True
                 distanceDim.Label = distanceDim.Label.replace('Dimension','Dimension3D')
                 distanceDim.FormatSpec = fomatted3DValue
+            if (
+                abs(originalLineAngle) > 29.0
+                and abs(originalLineAngle) < 31.0
+                and abs(extAngle - lineAngle) > 115.0
+                and abs(extAngle - lineAngle) < 125.0
+            ):
+                distanceDim.X = abs(
+                    float(vertexes[0].Point.x + vertexes[0].Point.x) / 3.0
+                )
+                distanceDim.Y = -abs(
+                    float(vertexes[0].Point.x + vertexes[1].Point.y) / 4.8
+                )
+            if (
+                abs(originalLineAngle) > 149.0
+                and abs(originalLineAngle) < 151.0
+                and abs(extAngle - lineAngle) > 115.0
+                and abs(extAngle - lineAngle) < 125.0
+            ):
+                distanceDim.X = -abs(
+                    float(vertexes[0].Point.x + vertexes[0].Point.x) / 3.0
+                )
+                distanceDim.Y = abs(
+                    float(vertexes[0].Point.x + vertexes[1].Point.y) / 4.8
+                )
 
             distanceDim.recompute()
             view.requestPaint()
