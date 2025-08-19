@@ -149,7 +149,6 @@ protected:
     bool formatGeomFromCenterLine(std::string cTag, QGIEdge* item);
 
     bool showCenterMarks();
-    QList<QGraphicsItem*> m_vertexItems;
     bool showVertices();
 
 private:
