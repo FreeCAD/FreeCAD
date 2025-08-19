@@ -407,7 +407,6 @@ void StdCmdExport::activated(int iMsg)
             filterList << QString::fromStdString(filter.first);
         }
     }
-    QString formatList = filterList.join(QLatin1String(";;"));
     Base::Reference<ParameterGrp> hPath =
         App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
     QString selectedFilter;
@@ -460,7 +459,7 @@ void StdCmdExport::activated(int iMsg)
     }
         // Launch the file selection modal dialog
     QString filename = FileDialog::getSaveFileName(getMainWindow(),
-        QObject::tr("Export file"), defaultFilename, formatList, &selectedFilter);
+        QObject::tr("Export file"), defaultFilename, filterList, &selectedFilter);
     if (!filename.isEmpty()) {
         hPath->SetASCII("FileExportFilter", selectedFilter.toLatin1().constData());
 
@@ -523,7 +522,7 @@ void StdCmdMergeProjects::activated(int iMsg)
     QString exe = qApp->applicationName();
     QString project = FileDialog::getOpenFileName(Gui::getMainWindow(),
         QString::fromUtf8(QT_TR_NOOP("Merge document")), FileDialog::getWorkingDirectory(),
-        QString::fromUtf8(QT_TR_NOOP("%1 document (*.FCStd)")).arg(exe));
+        QStringList(QString::fromUtf8(QT_TR_NOOP("%1 document (*.FCStd)")).arg(exe)));
     if (!project.isEmpty()) {
         FileDialog::setWorkingDirectory(project);
         App::Document* doc = App::GetApplication().getActiveDocument();
@@ -608,7 +607,7 @@ void StdCmdExportDependencyGraph::activated(int iMsg)
     Q_UNUSED(iMsg);
     App::Document* doc = App::GetApplication().getActiveDocument();
     QString format = QStringLiteral("%1 (*.gv)").arg(Gui::GraphvizView::tr("Graphviz format"));
-    QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), Gui::GraphvizView::tr("Export graph"), QString(), format);
+    QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), Gui::GraphvizView::tr("Export graph"), QString(), QStringList(format));
     if (!fn.isEmpty()) {
         QFile file(fn);
         if (file.open(QFile::WriteOnly)) {
