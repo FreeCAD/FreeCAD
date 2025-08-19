@@ -483,6 +483,7 @@ class TaskPanelPage(object):
                 False,
                 self.tcEditorChanged,
                 self.copyToolController if tcCount > 0 else None,
+                True,
             )
             self.tcEditor.setupUi()
 

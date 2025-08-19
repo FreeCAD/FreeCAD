@@ -198,7 +198,9 @@ class BlockScrollWheel(QtCore.QObject):
 
 class ToolControllerEditor(object):
 
-    def __init__(self, obj, asDialog, notifyChanged=None, onCopyPressed=None):
+    def __init__(
+        self, obj, asDialog, notifyChanged=None, onCopyPressed=None, disableToolNumber=False
+    ):
         self.notifyChanged = notifyChanged
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/DlgToolControllerEdit.ui")
         self.controller = FreeCADGui.PySideUic.loadUi(":/panels/ToolControllerEdit.ui")
@@ -223,6 +225,7 @@ class ToolControllerEditor(object):
         self.blockScrollWheel = BlockScrollWheel()
         self.controller.tcNumber.installEventFilter(self.blockScrollWheel)
         self.controller.spindleDirection.installEventFilter(self.blockScrollWheel)
+        self.controller.tcNumber.setReadOnly(disableToolNumber)
 
         self.editor = None
 
