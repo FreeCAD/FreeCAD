@@ -30,6 +30,7 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief solver CalculiX object
 
+from FreeCAD import Base
 from . import base_fempythonobject
 
 _PropHelper = base_fempythonobject._PropHelper
