@@ -33,6 +33,7 @@
 #include <set>
 #include <map>
 #include <string>
+#include <optional>
 
 #include <Base/Observer.h>
 #include <Base/Parameter.h>
@@ -79,6 +80,14 @@ struct DocumentInitFlags {
     bool createView {true};
     bool temporary {false};
 };
+
+struct TransactionDescription {
+    Document* initiator { nullptr };
+    std::string name { "" };
+    bool tmp { false };
+    int numTokens { 0 }; // This must be 0 for the command to accept a commit 
+};
+
 
 /** The Application
  *  The root of the whole application
@@ -202,6 +211,23 @@ public:
     int setActiveTransaction(const char *name, bool persist=false);
     /// Return the current active transaction name and ID
     const char *getActiveTransaction(int *tid=nullptr) const;
+    int getGlobalTransaction() const;
+
+    bool transactionIsActive(int tid) const;
+    std::string getTransactionName(int tid) const;
+    bool transactionTmpName(int tid) const;
+    Document* transactionInitiator(int tid) const;
+    std::optional<TransactionDescription> transactionDescription(int tid) const;
+    void setTransactionDescription(int tid, const TransactionDescription& desc);
+    void setTransactionName(int tid, const std::string& name, bool tmp = false);
+    
+    // increases the token number on the transaction
+    void takeToken(int tid);
+
+    // Decreases the token number on the transaction
+    // and commits if it reaches 0
+    void returnToken(int tid);
+
     /** Commit/abort current active transactions
      *
      * @param abort: whether to abort or commit the transactions
@@ -210,8 +236,15 @@ public:
      * if 1) any new transaction is created with a different ID, or 2) any
      * transaction with the current active transaction ID is either committed or
      * aborted
+     * returns true if it succeeded in closing the transaction
      */
-    void closeActiveTransaction(bool abort=false, int id=0);
+    bool closeActiveTransaction(bool abort=false, int id=0);
+
+    /// Internally call closeActiveTransaction(), but it makes the call site clearer
+    bool commitTransaction(int tid);
+    bool abortTransaction(int tid);
+
+
     //@}
 
     // NOLINTBEGIN
@@ -662,10 +695,20 @@ private:
 
     friend class AutoTransaction;
 
-    std::string _activeTransactionName;
-    int _activeTransactionID{0};
-    int _activeTransactionGuard{0};
-    bool _activeTransactionTmpName{false};
+    std::map<int, TransactionDescription> _activeTransactionDescriptions; // Maps transaction ID to transaction name
+    // std::string _activeTransactionName;
+    // int _activeTransactionID{0};
+    // int _activeTransactionGuard{0};
+    int currentlyClosingId {0};
+
+    // This is the transaction ID for a global transaction
+    // Documents will take this ID if it is non-zero
+    // and generate their own otherwise
+    int _globalTransactionID { 0 };
+    bool _globalTransactionTmpName {false};
+    std::string _globalTransactionName;
+
+    // bool _activeTransactionTmpName{false};
 
     Base::ProgressIndicator _progressIndicator;
 

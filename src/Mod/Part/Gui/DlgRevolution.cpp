@@ -100,6 +100,7 @@ DlgRevolution::DlgRevolution(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl)
   , ui(new Ui_DlgRevolution)
   , filter(nullptr)
+  , filterSelection(false)
 {
     ui->setupUi(this);
     setupConnections();
@@ -455,16 +456,24 @@ void DlgRevolution::accept()
 
     QDialog::accept();
 }
+void DlgRevolution::setSelectionGate()
+{
+    if (filterSelection) {
+        filter = new EdgeSelection();
+        Gui::Selection().addSelectionGate(filter);
+    }
+}
 
 void DlgRevolution::onSelectLineClicked()
 {
-    if (!filter) {
-        filter = new EdgeSelection();
-        Gui::Selection().addSelectionGate(filter);
+    if (!filterSelection) {
+        filterSelection = true;
+        setSelectionGate();
         ui->selectLine->setText(tr("Selecting… (line or arc)"));
     } else {
         Gui::Selection().rmvSelectionGate();
         filter = nullptr;
+        filterSelection = false;
         ui->selectLine->setText(tr("Select reference"));
     }
 }
@@ -582,6 +591,15 @@ bool TaskRevolution::accept()
 {
     widget->accept();
     return (widget->result() == QDialog::Accepted);
+}
+void TaskRevolution::activate()
+{
+    widget->setSelectionGate();
+    widget->attachSelection();
+}
+void TaskRevolution::deactivate()
+{
+    widget->detachSelection();
 }
 
 #include "moc_DlgRevolution.cpp"

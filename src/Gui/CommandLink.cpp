@@ -391,8 +391,8 @@ static void linkConvert(bool unlink) {
     Selection().clearCompleteSelection();
 
     // now, do actual operation
-    const char *transactionName = unlink?"Unlink":"Replace with link";
-    Command::openCommand(transactionName);
+    const char *transactionName = unlink ? "Unlink" : "Replace with link";
+    int tid = 0;
     try {
         std::unordered_map<App::DocumentObject*,App::DocumentObjectT> recomputeSet;
         for(auto &v : infos) {
@@ -406,7 +406,10 @@ static void linkConvert(bool unlink) {
             if(!recomputeSet.contains(parent))
                 recomputeSet.emplace(parent,parent);
             auto doc = parent->getDocument();
-            App::DocumentObject *replaceObj;
+
+            tid = doc->openTransaction(transactionName, false, tid);
+
+            App::DocumentObject* replaceObj;
             if(unlink) {
                 replaceObj = obj->getLinkedObject(false);
                 if(!replaceObj || !replaceObj->isAttachedToDocument() || replaceObj == obj)
@@ -457,11 +460,11 @@ static void linkConvert(bool unlink) {
         if(!recomputes.empty())
             recomputes.front()->getDocument()->recompute(recomputes);
 
-        Command::commitCommand();
-
-    } catch (const Base::Exception& e) {
-        Command::abortCommand();
-        auto title = unlink?QObject::tr("Unlink failed"):QObject::tr("Replace link failed");
+        App::GetApplication().commitTransaction(tid);
+    }
+    catch (const Base::Exception& e) {
+        App::GetApplication().abortTransaction(tid);
+        auto title = unlink ? QObject::tr("Unlink failed") : QObject::tr("Replace link failed");
         QMessageBox::critical(getMainWindow(), title, QString::fromLatin1(e.what()));
         e.reportException();
         return;

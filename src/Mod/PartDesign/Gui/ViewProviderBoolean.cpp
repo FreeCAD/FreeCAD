@@ -32,6 +32,7 @@
 #include "ViewProviderBoolean.h"
 #include "TaskBooleanParameters.h"
 #include <Mod/PartDesign/App/FeatureBoolean.h>
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>

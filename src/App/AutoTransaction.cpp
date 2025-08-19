@@ -34,99 +34,75 @@ FC_LOG_LEVEL_INIT("App", true, true)
 
 using namespace App;
 
-static int _TransactionLock;
-static int _TransactionClosed;
-
-AutoTransaction::AutoTransaction(const char* name, bool tmpName)
+AutoTransaction::AutoTransaction(int tid)
+    : tid(tid)
 {
-    auto& app = GetApplication();
-    if (name && app._activeTransactionGuard >= 0) {
-        if (!app.getActiveTransaction() || (!tmpName && app._activeTransactionTmpName)) {
-            FC_LOG("auto transaction '" << name << "', " << tmpName);
-            tid = app.setActiveTransaction(name);
-            app._activeTransactionTmpName = tmpName;
-        }
-    }
-    // We use negative transaction guard to disable auto transaction from here
-    // and any stack below. This is to support user setting active transaction
-    // before having any existing AutoTransaction on stack, or 'persist'
-    // transaction that can out live AutoTransaction.
-    if (app._activeTransactionGuard < 0) {
-        --app._activeTransactionGuard;
-    }
-    else if (tid || app._activeTransactionGuard > 0) {
-        ++app._activeTransactionGuard;
-    }
-    else if (app.getActiveTransaction()) {
-        FC_LOG("auto transaction disabled because of '" << app._activeTransactionName << "'");
-        --app._activeTransactionGuard;
-    }
-    else {
-        ++app._activeTransactionGuard;
-    }
-    FC_TRACE("construct auto Transaction " << app._activeTransactionGuard);
+
 }
 
 AutoTransaction::~AutoTransaction()
 {
-    auto& app = GetApplication();
-    FC_TRACE("before destruct auto Transaction " << app._activeTransactionGuard);
-    if (app._activeTransactionGuard < 0) {
-        ++app._activeTransactionGuard;
-    }
-    else if (!app._activeTransactionGuard) {
-#ifdef FC_DEBUG
-        FC_ERR("Transaction guard error");
-#endif
-    }
-    else if (--app._activeTransactionGuard == 0) {
-        try {
-            // We don't call close() here, because close() only closes
-            // transaction that we opened during construction time. However,
-            // when _activeTransactionGuard reaches zero here, we are supposed
-            // to close any transaction opened.
-            app.closeActiveTransaction();
-        }
-        catch (Base::Exception& e) {
-            e.reportException();
-        }
-        catch (...) {
-        }
-    }
-    FC_TRACE("destruct auto Transaction " << app._activeTransactionGuard);
+    close(false);
 }
 
 void AutoTransaction::close(bool abort)
 {
-    if (tid || abort) {
-        GetApplication().closeActiveTransaction(abort, abort ? 0 : tid);
+    if (tid != 0) {
+        GetApplication().closeActiveTransaction(abort, tid);
         tid = 0;
     }
 }
 
-void AutoTransaction::setEnable(bool enable)
+TransactionToken::TransactionToken(int tid_)
 {
-    auto& app = GetApplication();
-    if (!app._activeTransactionGuard) {
-        return;
+    takeToken(tid_);
+}
+TransactionToken::~TransactionToken()
+{
+    returnToken();
+}
+
+TransactionToken::TransactionToken(TransactionToken&& token) noexcept
+{
+    tid = token.tid;
+    token.tid = -1; // Ensures that the token is not returned twice
+}
+TransactionToken& TransactionToken::operator=(TransactionToken&& token) noexcept
+{
+    tid = token.tid;
+    token.tid = 0;
+    return *this;
+}
+TransactionToken::TransactionToken(const TransactionToken& token)
+{
+    takeToken(token.tid);
+}
+TransactionToken& TransactionToken::operator=(const TransactionToken& token)
+{
+    takeToken(token.tid);
+    return *this;
+}
+void TransactionToken::abort()
+{
+    if (tid != -1) {
+        GetApplication().closeActiveTransaction(true, tid);
     }
-    if ((enable && app._activeTransactionGuard > 0)
-        || (!enable && app._activeTransactionGuard < 0)) {
-        return;
+}
+void TransactionToken::takeToken(int tid_)
+{
+    if (tid_ == tid) {
+        return; // No change
     }
-    app._activeTransactionGuard = -app._activeTransactionGuard;
-    FC_TRACE("toggle auto Transaction " << app._activeTransactionGuard);
-    if (!enable && app._activeTransactionTmpName) {
-        bool close = true;
-        for (auto& v : app.DocMap) {
-            if (v.second->hasPendingTransaction()) {
-                close = false;
-                break;
-            }
-        }
-        if (close) {
-            app.closeActiveTransaction();
-        }
+    returnToken();
+
+    // Take a new token
+    tid = tid_;
+    GetApplication().takeToken(tid);
+}
+void TransactionToken::returnToken()
+{
+    if (tid != -1) { // This is a valid token that must be dealt with
+        GetApplication().returnToken(tid);
     }
 }
 
@@ -136,100 +112,208 @@ int Application::setActiveTransaction(const char* name, bool persist)
         name = "Command";
     }
 
-    if (_activeTransactionGuard > 0 && getActiveTransaction()) {
-        if (_activeTransactionTmpName) {
-            FC_LOG("transaction rename to '" << name << "'");
-            for (auto& v : DocMap) {
-                v.second->renameTransaction(name, _activeTransactionID);
-            }
+    FC_WARN("Setting a global transaction with name='" << name << "', persist=" << persist);
+    if (_globalTransactionID != 0 && transactionTmpName(_globalTransactionID)) {
+        setTransactionName(_globalTransactionID, name);
+    } else {
+        FC_LOG("set global transaction '" << name << "'");
+
+        if (_globalTransactionID != 0 && !closeActiveTransaction(false, _globalTransactionID)) {
+            FC_WARN("could not close current global transaction");
+            return _globalTransactionID;
         }
-        else {
-            if (persist) {
-                AutoTransaction::setEnable(false);
-            }
-            return 0;
-        }
+
+        _globalTransactionID = Transaction::getNewID();
+        setTransactionDescription(
+            _globalTransactionID,
+            TransactionDescription {.initiator = nullptr, .name = name, .tmp = false});
     }
-    else if (_TransactionLock) {
-        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-            FC_WARN("Transaction locked, ignore new transaction '" << name << "'");
-        }
-        return 0;
-    }
-    else {
-        FC_LOG("set active transaction '" << name << "'");
-        _activeTransactionID = 0;
-        for (auto& v : DocMap) {
-            v.second->_commitTransaction();
-        }
-        _activeTransactionID = Transaction::getNewID();
-    }
-    _activeTransactionTmpName = false;
-    _activeTransactionName = name;
-    if (persist) {
-        AutoTransaction::setEnable(false);
-    }
-    return _activeTransactionID;
+
+    return _globalTransactionID;
 }
 
 const char* Application::getActiveTransaction(int* id) const
 {
-    int tid = 0;
-    if (Transaction::getLastID() == _activeTransactionID) {
-        tid = _activeTransactionID;
+    if (id != nullptr) {
+        *id = _globalTransactionID;
     }
-    if (id) {
-        *id = tid;
+    return _globalTransactionID ? getTransactionName(_globalTransactionID).c_str() : nullptr;
+}
+int Application::getGlobalTransaction() const
+{
+    return _globalTransactionID;
+}
+bool Application::transactionIsActive(int tid) const
+{
+    return transactionDescription(tid) != std::nullopt;
+}
+std::string Application::getTransactionName(int tid) const
+{
+    auto desc = transactionDescription(tid);
+    return desc ? desc->name : "";
+}
+bool Application::transactionTmpName(int tid) const
+{
+    auto desc = transactionDescription(tid);
+    return desc ? desc->tmp : false;
+}
+Document* Application::transactionInitiator(int tid) const
+{
+    auto desc = transactionDescription(tid);
+    return desc ? desc->initiator : nullptr;
+}
+std::optional<TransactionDescription> Application::transactionDescription(int tid) const
+{
+    if (tid == 0) {
+        return std::nullopt;
     }
-    return tid ? _activeTransactionName.c_str() : nullptr;
+    auto found = _activeTransactionDescriptions.find(tid);
+    return (found != _activeTransactionDescriptions.end()) ? std::optional<TransactionDescription>(found->second) : std::nullopt;    
+}
+void Application::setTransactionDescription(int tid, const TransactionDescription& desc)
+{
+    if (tid == 0) {
+        return;
+    }
+    if (desc.numTokens < 0) {
+        FC_ERR("setting transaction #"<<tid<<" description with numToken < 0");
+        return;
+    }
+    auto found = _activeTransactionDescriptions.find(tid);
+    bool wasPresent = (found != _activeTransactionDescriptions.end());
+
+    if (wasPresent && found->second.tmp) {
+        for (auto& v : DocMap) {
+            v.second->renameTransaction(desc.name.c_str(), tid);
+        }
+    }
+
+    if (!wasPresent || found->second.tmp) {
+        _activeTransactionDescriptions[tid] = desc;
+        FC_LOG("transaction rename to '" << desc.name << "'");
+    }
+}
+void Application::setTransactionName(int tid, const std::string& name, bool tmp)
+{
+    if (tid == 0 || !transactionIsActive(tid)) {
+        return;
+    }
+    auto found = _activeTransactionDescriptions.find(tid);
+    if (found == _activeTransactionDescriptions.end() || found->second.tmp) {
+        _activeTransactionDescriptions[tid].name = name;
+        _activeTransactionDescriptions[tid].tmp = tmp;
+        FC_LOG("transaction rename to '" << name << "'");
+        for (auto& v : DocMap) {
+            v.second->renameTransaction(name.c_str(), tid);
+        }
+    } 
+}
+void Application::takeToken(int tid)
+{
+    auto found = _activeTransactionDescriptions.find(tid);
+    if (found == _activeTransactionDescriptions.end()) {
+        FC_WARN("Taking token for transaction #" << tid << " but it is not active");
+        return;
+    }
+    found->second.numTokens++;
 }
 
-void Application::closeActiveTransaction(bool abort, int id)
+void Application::returnToken(int tid)
 {
-    if (!id) {
-        id = _activeTransactionID;
-    }
-    if (!id) {
+    auto found = _activeTransactionDescriptions.find(tid);
+    if (found == _activeTransactionDescriptions.end()) {
+        // Might happen if a transaction was aborted
         return;
     }
-
-    if (_activeTransactionGuard > 0 && !abort) {
-        FC_LOG("ignore close transaction");
+    if (found->second.numTokens == 0) {
+        FC_WARN("Returning token for transaction #" << tid << " but does not have token");
         return;
     }
+    found->second.numTokens--;
+    if (found->second.numTokens == 0) {
+        closeActiveTransaction(false, tid);
+    }
+}
 
-    if (_TransactionLock) {
-        if (_TransactionClosed >= 0) {
-            _TransactionLock = abort ? -1 : 1;
-        }
-        FC_LOG("pending " << (abort ? "abort" : "close") << " transaction");
-        return;
+
+bool Application::closeActiveTransaction(bool abort, int id)
+{
+    if (id == 0) {
+        id = _globalTransactionID;
+    }
+    if (id == 0 || id == currentlyClosingId) {
+        return false;
+    }
+    currentlyClosingId = id;
+
+    // if (!transactionIsActive(id)) {
+    //     FC_WARN("ignore close transaction, is not active");
+    //     return;        
+    // }
+
+    auto foundDesc = _activeTransactionDescriptions.find(id);
+    if (!abort && foundDesc != _activeTransactionDescriptions.end() && foundDesc->second.numTokens != 0) {
+        FC_LOG("Commit blocked by token on transaction #" << id);
+        return false;
     }
 
-    FC_LOG("close transaction '" << _activeTransactionName << "' " << abort);
-    _activeTransactionID = 0;
-
-    TransactionSignaller signaller(abort, false);
+    std::vector<Document*> docsToPoke;
     for (auto& v : DocMap) {
-        if (v.second->getTransactionID(true) != id) {
+        if (v.second->getBookedTransactionID() != id) {
             continue;
         }
+        if(v.second->isTransactionLocked() || v.second->transacting()) {
+            std::cerr<<"Transaction locked..\n";
+            FC_LOG("pending " << (abort ? "abort" : "close") << " transaction");
+            currentlyClosingId = 0;
+            return false;
+        }
+        if(v.second->transacting()) {
+            std::cerr<<"Transaction blocked..\n";
+            FC_LOG("pending " << (abort ? "abort" : "close") << " transaction");
+            currentlyClosingId = 0;
+            return false;
+        }
+        docsToPoke.push_back(v.second);
+    }
+
+    FC_LOG("close transaction '" << _activeTransactionDescriptions[id].name << "' " << abort);
+    _activeTransactionDescriptions.erase(id);
+    if (id == _globalTransactionID) {
+        _globalTransactionID = 0;
+    }
+
+    TransactionSignaller signaller(abort, false);
+
+    for (auto& doc : docsToPoke) {
         if (abort) {
-            v.second->_abortTransaction();
+            doc->_abortTransaction();
         }
         else {
-            v.second->_commitTransaction();
+            doc->_commitTransaction();
         }
     }
+    currentlyClosingId = 0;
+
+    return true;
+}
+bool Application::commitTransaction(int tid)
+{
+    return  closeActiveTransaction(false, tid);
+}
+bool Application::abortTransaction(int tid)
+{
+    return closeActiveTransaction(true, tid);
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-TransactionLocker::TransactionLocker(bool lock)
+TransactionLocker::TransactionLocker(Document* doc, bool lock)
     : active(lock)
+    , doc(doc)
 {
     if (lock) {
-        ++_TransactionLock;
+        doc->lockTransaction();
     }
 }
 
@@ -264,22 +348,18 @@ void TransactionLocker::activate(bool enable)
 
     active = enable;
     if (active) {
-        ++_TransactionLock;
+        doc->lockTransaction();
         return;
     }
 
-    if (--_TransactionLock != 0) {
-        return;
-    }
+    doc->unlockTransaction();
+    // if (doc->isTransactionLocked()) {
+    //     return;
+    // }
 
-    if (_TransactionClosed) {
-        bool abort = (_TransactionClosed < 0);
-        _TransactionClosed = 0;
-        GetApplication().closeActiveTransaction(abort);
-    }
-}
-
-bool TransactionLocker::isLocked()
-{
-    return _TransactionLock > 0;
-}
+    // if (_TransactionClosed) {
+    //     bool abort = (_TransactionClosed < 0);
+    //     _TransactionClosed = 0;
+    //     GetApplication().closeActiveTransaction(abort);
+    // }
+}      
