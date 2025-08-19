@@ -153,7 +153,7 @@ void ViewProviderFemPostPipeline::updateColorBars()
     }
 
     // if pipeline is visible, update it
-    if (this->isVisible()) {
+    if (this->Visibility.getValue()) {
         updateMaterial();
     }
 }
