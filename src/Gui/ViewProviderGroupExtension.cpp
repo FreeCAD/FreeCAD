@@ -44,7 +44,7 @@ using namespace Gui;
 
 namespace {
     // helper function to recursively delete group contents while respecting view provider onDelete methods
-    void deleteGroupContentsRecursively(App::GroupExtension* group, ViewProvider* groupViewProvider) {
+    void deleteGroupContentsRecursively(App::GroupExtension* group) {
         if (!group) {
             return;
         }
@@ -59,9 +59,7 @@ namespace {
             // if the child is a group, recursively delete its contents first
             if (child->hasExtension(App::GroupExtension::getExtensionClassTypeId())) {
                 auto* childGroup = child->getExtensionByType<App::GroupExtension>();
-                Gui::Document* guiDoc = Application::Instance->getDocument(child->getDocument());
-                ViewProvider* childVP = guiDoc ? guiDoc->getViewProvider(child) : nullptr;
-                deleteGroupContentsRecursively(childGroup, childVP);
+                deleteGroupContentsRecursively(childGroup);
             }
             
             Gui::Document* guiDoc = Application::Instance->getDocument(child->getDocument());
@@ -69,7 +67,7 @@ namespace {
                 ViewProvider* vp = guiDoc->getViewProvider(child);
                 if (vp) {
                     // give group_recursive_deletion marker to the VP to mark that the deletion
-                    // is supposed to delete all of it's children
+                    // is supposed to delete all of its children
                     std::vector<std::string> groupDeletionMarker = {"group_recursive_deletion"};
                     bool shouldDelete = vp->onDelete(groupDeletionMarker);
                     
@@ -217,7 +215,7 @@ void ViewProviderGroupExtension::extensionHide() {
     ViewProviderExtension::extensionHide();
 }
 
-bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::string >& subNames) {
+bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::string >&) {
 
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
     
@@ -228,13 +226,9 @@ bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::strin
         return true;
     }
     
-    std::vector<App::DocumentObject*> allDescendants;
-    if (getExtendedViewProvider()->getObject()->isDerivedFrom<App::DocumentObjectGroup>()) {
-        auto* docGroup = static_cast<App::DocumentObjectGroup*>(getExtendedViewProvider()->getObject());
-        allDescendants = docGroup->getAllChildren();
-    } else {
-        allDescendants = directChildren;
-    }
+    const auto* docGroup =
+        freecad_cast<App::DocumentObjectGroup*>(getExtendedViewProvider()->getObject());
+    auto allDescendants = docGroup ? docGroup->getAllChildren() : directChildren;
     
     QString message;
     if (allDescendants.size() == directChildren.size()) {
@@ -254,16 +248,17 @@ bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::strin
         QObject::tr("Delete group contents recursively?"),
         message,
         QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
-        QMessageBox::Yes
+        QMessageBox::No
     );
     
     if (choice == QMessageBox::Cancel) {
         // don't delete anything if user has cancelled
         return false;
     }
-    else if (choice == QMessageBox::Yes) {
+    
+    if (choice == QMessageBox::Yes) {
         // delete all of the children recursively and call their viewprovider method
-        deleteGroupContentsRecursively(group, getExtendedViewProvider());
+        deleteGroupContentsRecursively(group);
     }
     // if user has specified "No" then delete the group but move children to the parent or root
     
