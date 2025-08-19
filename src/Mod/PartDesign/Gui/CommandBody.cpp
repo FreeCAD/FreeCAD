@@ -666,8 +666,8 @@ CmdPartDesignMoveFeature::CmdPartDesignMoveFeature()
 {
     sAppModule      = "PartDesign";
     sGroup          = QT_TR_NOOP("PartDesign");
-    sMenuText       = QT_TR_NOOP("Move Object To…");
-    sToolTipText    = QT_TR_NOOP("Moves the selected object to another body");
+    sMenuText       = QT_TR_NOOP("Move Feature To…");
+    sToolTipText    = QT_TR_NOOP("Moves the selected feature to another body");
     sWhatsThis      = "PartDesign_MoveFeature";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_MoveFeature";
