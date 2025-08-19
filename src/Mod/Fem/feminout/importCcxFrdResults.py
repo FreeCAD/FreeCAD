@@ -68,7 +68,7 @@ def setupPipeline(doc, analysis, results_name, result_data):
 
     # create a results pipeline (dependend on user settings)
     pipeline_name = "Pipeline_" + results_name
-    pipelines =  analysis.getObjectsOfType("Fem::FemPostPipeline")
+    pipelines = analysis.getObjectsOfType("Fem::FemPostPipeline")
     fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
     keep_results_on_rerun = fem_prefs.GetBool("KeepResultsOnReRun", False)
 

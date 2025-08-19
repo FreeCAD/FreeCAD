@@ -165,7 +165,8 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             # we remove the result objects only, not the postprocessing ones.
             # Reason: "Not keep results" means for the user override the data. For postprocessing
             #         this means keeping all filters, just change the data.
-            from femresult.resulttools import  purge_result_objects as purge
+            from femresult.resulttools import purge_result_objects as purge
+
             purge(self.analysis)
 
     def reset_all(self):
