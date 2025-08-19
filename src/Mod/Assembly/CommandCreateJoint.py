@@ -60,6 +60,7 @@ def activateJoint(index):
     dialog = Gui.doCommandEval("dialog")
     if dialog is not None:
         dialog.setAutoCloseOnTransactionChange(True)
+        dialog.setAutoCloseOnDeletedDocument(True)
         dialog.setDocumentName(App.ActiveDocument.Name)
 
 

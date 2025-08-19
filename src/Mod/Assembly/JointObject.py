@@ -1004,6 +1004,7 @@ class ViewProviderJoint:
         dialog = Gui.Control.showDialog(panel)
         if dialog is not None:
             dialog.setAutoCloseOnTransactionChange(True)
+            dialog.setAutoCloseOnDeletedDocument(True)
             dialog.setDocumentName(App.ActiveDocument.Name)
 
         return True

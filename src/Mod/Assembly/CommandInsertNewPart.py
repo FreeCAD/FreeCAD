@@ -67,7 +67,10 @@ class CommandInsertNewPart:
 
     def Activated(self):
         panel = TaskAssemblyNewPart()
-        Gui.Control.showDialog(panel)
+        dialog = Gui.Control.showDialog(panel)
+        if dialog is not None:
+            dialog.setAutoCloseOnDeletedDocument(True)
+            dialog.setDocumentName(App.ActiveDocument.Name)
 
 
 class TaskAssemblyNewPart(JointObject.TaskAssemblyCreateJoint):
