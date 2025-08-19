@@ -107,6 +107,8 @@ public:
     bool onDelete(const std::vector<std::string>& subNames) override;
     bool canDelete(App::DocumentObject* obj) const override;
 
+    void updateData(const App::Property*) override;
+
     /** @name enter/exit edit mode */
     //@{
     bool setEdit(int ModNum) override;

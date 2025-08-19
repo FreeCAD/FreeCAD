@@ -246,7 +246,7 @@ public:
         App::Document* appdocument = guidocument->getDocument();
         std::string FeatName = appdocument->getUniqueObjectName("Sketch");
 
-        guidocument->openCommand(QT_TRANSLATE_NOOP("Command", "Create a Sketch on Face"));
+        guidocument->openCommand(QT_TRANSLATE_NOOP("Command", "Sketch on Face"));
         FCMD_OBJ_CMD(activeBody, "newObject('Sketcher::SketchObject','" << FeatName << "')");
         auto Feat = activeBody->getDocument()->getObject(FeatName.c_str());
         FCMD_OBJ_CMD(Feat, "AttachmentSupport = " << supportString);
@@ -492,7 +492,7 @@ public:
     {
         try {
             // Start command early, so undo will undo any Body creation
-            guidocument->openCommand(QT_TRANSLATE_NOOP("Command", "Create a new Sketch"));
+            guidocument->openCommand(QT_TRANSLATE_NOOP("Command", "New Sketch"));
             tryFindSupport();
         }
         catch (const RejectException&) {
@@ -659,7 +659,7 @@ private:
         if (dlg && !pickDlg) {
             QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
+            msgBox.setInformativeText(QObject::tr("Close this dialog?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
             msgBox.setDefaultButton(QMessageBox::Yes);
             int ret = msgBox.exec();
@@ -698,7 +698,7 @@ private:
 
         App::Document* doc = partDesignBody->getDocument();
         if (!doc->hasPendingTransaction()) {
-            doc->openTransaction(QT_TRANSLATE_NOOP("Command", "Create a new Sketch"));
+            doc->openTransaction(QT_TRANSLATE_NOOP("Command", "New Sketch"));
         }
 
         FCMD_OBJ_CMD(partDesignBody,"newObject('Sketcher::SketchObject','" << FeatName << "')");
@@ -732,19 +732,19 @@ void SketchWorkflow::createSketch()
     }
     catch (const WrongSelectionException&) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Several sub-elements selected"),
-            QObject::tr("You have to select a single face as support for a sketch!"));
+            QObject::tr("Select a single face as support for a sketch!"));
     }
     catch (const WrongSupportException&) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No support face selected"),
-            QObject::tr("You have to select a face as support for a sketch!"));
+            QObject::tr("Select a face as support for a sketch!"));
     }
     catch (const SupportNotPlanarException&) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No planar support"),
-            QObject::tr("You need a planar face as support for a sketch!"));
+            QObject::tr("Need a planar face as support for a sketch!"));
     }
     catch (const MissingPlanesException&) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid planes in this document"),
-            QObject::tr("Please create a plane first or select a face to sketch on"));
+            QObject::tr("Create a plane first or select a face to sketch on"));
     }
 }
 

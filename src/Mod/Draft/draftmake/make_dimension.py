@@ -128,12 +128,10 @@ def make_dimension(p1, p2, p3=None, p4=None):
     new_obj = App.ActiveDocument.addObject("App::FeaturePython", "Dimension")
     LinearDimension(new_obj)
 
-    if App.GuiUp:
-        ViewProviderLinearDimension(new_obj.ViewObject)
-
     wp = WorkingPlane.get_working_plane(update=False)
     normal = wp.axis
     flip_text = False
+    override = ""
 
     if App.GuiUp:
         # invert the normal if we are viewing it from the back
@@ -185,13 +183,11 @@ def make_dimension(p1, p2, p3=None, p4=None):
 
         if p3 == "radius":
             # linked.append((p1, "Center"))
-            if App.GuiUp:
-                new_obj.ViewObject.Override = "R $dim"
+            override = "R $dim"
             new_obj.Diameter = False
         elif p3 == "diameter":
             # linked.append((p1, "Diameter"))
-            if App.GuiUp:
-                new_obj.ViewObject.Override = "Ø $dim"
+            override = "Ø $dim"
             new_obj.Diameter = True
         new_obj.LinkedGeometry = linked
         new_obj.Support = p1
@@ -211,7 +207,9 @@ def make_dimension(p1, p2, p3=None, p4=None):
     new_obj.Dimline = p3
 
     if App.GuiUp:
+        ViewProviderLinearDimension(new_obj.ViewObject)
         new_obj.ViewObject.FlipText = flip_text
+        new_obj.ViewObject.Override = override
         gui_utils.format_object(new_obj)
         gui_utils.select(new_obj)
 
@@ -367,7 +365,7 @@ def make_linear_dimension_obj(edge_object, i1=1, i2=2, dim_line=None):
         return None
     if (not hasattr(edge_object.Shape, "Vertexes")
             or len(edge_object.Shape.Vertexes) < 1):
-        _err(translate("draft","Wrong input: object doesn't have at least one element in 'Vertexes' to use for measuring."))
+        _err(translate("draft","Wrong input: object does not have at least 1 element in 'Vertexes' to use for measuring."))
         return None
 
     try:

@@ -651,8 +651,8 @@ AssemblyObject::getJoints(bool updateJCS, bool delBadJoints, bool subJoints)
             continue;
         }
 
-        auto* prop = dynamic_cast<App::PropertyBool*>(joint->getPropertyByName("Activated"));
-        if (joint->isError() || !prop || !prop->getValue()) {
+        auto* prop = dynamic_cast<App::PropertyBool*>(joint->getPropertyByName("Suppressed"));
+        if (joint->isError() || !prop || prop->getValue()) {
             // Filter grounded joints and deactivated joints.
             continue;
         }
@@ -939,23 +939,17 @@ void AssemblyObject::removeUnconnectedJoints(std::vector<App::DocumentObject*>& 
     }
 
     // Filter out unconnected joints
-    joints.erase(
-        std::remove_if(
-            joints.begin(),
-            joints.end(),
-            [&](App::DocumentObject* joint) {
-                App::DocumentObject* obj1 = getMovingPartFromRef(this, joint, "Reference1");
-                App::DocumentObject* obj2 = getMovingPartFromRef(this, joint, "Reference2");
-                if (!isObjInSetOfObjRefs(obj1, connectedParts)
-                    || !isObjInSetOfObjRefs(obj2, connectedParts)) {
-                    Base::Console().warning(
-                        "%s is unconnected to a grounded part so it is ignored.\n",
-                        joint->getFullName());
-                    return true;  // Remove joint if any connected object is not in connectedParts
-                }
-                return false;
-            }),
-        joints.end());
+    joints.erase(std::remove_if(joints.begin(),
+                                joints.end(),
+                                [&](App::DocumentObject* joint) {
+                                    App::DocumentObject* obj1 =
+                                        getMovingPartFromRef(this, joint, "Reference1");
+                                    App::DocumentObject* obj2 =
+                                        getMovingPartFromRef(this, joint, "Reference2");
+                                    return (!isObjInSetOfObjRefs(obj1, connectedParts)
+                                            || !isObjInSetOfObjRefs(obj2, connectedParts));
+                                }),
+                 joints.end());
 }
 
 void AssemblyObject::traverseAndMarkConnectedParts(App::DocumentObject* currentObj,

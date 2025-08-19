@@ -1132,6 +1132,14 @@ std::string Application::getNameWithVersion()
     return fmt::format("{} {}.{}.{}{}", appname, major, minor, point, suffix);
 }
 
+bool Application::isDevelopmentVersion()
+{
+    static std::string suffix = []() constexpr {
+        return FCVersionSuffix;
+    }();
+    return suffix == "dev";
+}
+
 std::string Application::getTempPath()
 {
     return mConfig["AppTempPath"];

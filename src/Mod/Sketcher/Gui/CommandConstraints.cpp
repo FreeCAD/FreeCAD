@@ -1338,7 +1338,7 @@ private:
                                                           QSizeF(iconWidth, iconWidth));
         QPainter cursorPainter;
         cursorPainter.begin(&cursorPixmap);
-        cursorPainter.drawPixmap(16 * pixelRatio, 16 * pixelRatio, icon);
+        cursorPainter.drawPixmap(16, 16, icon);
         cursorPainter.end();
         int hotX = 8;
         int hotY = 8;
@@ -1626,7 +1626,7 @@ public:
         QPixmap icon = Gui::BitmapFactory().pixmapFromSvg("Constraint_Dimension", QSizeF(iconWidth, iconWidth));
         QPainter cursorPainter;
         cursorPainter.begin(&cursorPixmap);
-        cursorPainter.drawPixmap(16 * pixelRatio, 16 * pixelRatio, icon);
+        cursorPainter.drawPixmap(16, 16, icon);
         cursorPainter.end();
         int hotX = 8;
         int hotY = 8;
@@ -5055,9 +5055,16 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair>& selSe
 
         const Part::Geometry* geom = Obj->getGeometry(GeoId1);
 
-        if (isLineSegment(*geom)) {
-            auto lineSeg = static_cast<const Part::GeomLineSegment*>(geom);
-            double ActLength = (lineSeg->getEndPoint() - lineSeg->getStartPoint()).Length();
+        if (isLineSegment(*geom) || isArcOfCircle(*geom)) {
+            double ActLength = 0.;
+            if (isLineSegment(*geom)) {
+                auto lineSeg = static_cast<const Part::GeomLineSegment*>(geom);
+                ActLength = (lineSeg->getEndPoint() - lineSeg->getStartPoint()).Length();
+            }
+            else if (isArcOfCircle(*geom)) {
+                auto arc = static_cast<const Part::GeomArcOfCircle*>(geom);
+                ActLength = arc->getAngle(false) * arc->getRadius();
+            }
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
             Gui::cmdAppObjectArgs(Obj,

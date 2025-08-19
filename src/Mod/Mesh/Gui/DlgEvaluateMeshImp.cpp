@@ -138,7 +138,7 @@ DlgEvaluateMeshImp::DlgEvaluateMeshImp(QWidget* parent, Qt::WindowFlags fl)
     d->showFoldsFunction(d->enableFoldsCheck);
 
     QPushButton* button = d->ui.buttonBox->button(QDialogButtonBox::Open);
-    button->setText(tr("Settings…"));
+    button->setText(tr("Settings"));
 
     // try to attach to the active document
     this->onRefreshButtonClicked();
@@ -1176,7 +1176,7 @@ void DlgEvaluateMeshImp::onRepairAllTogetherClicked()
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
         const char* objName = d->meshFeature->getNameInDocument();
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
-        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Repair mesh"));
+        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Repair Mesh"));
 
         bool run = false;
         bool self = true;

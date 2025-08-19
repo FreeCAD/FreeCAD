@@ -56,7 +56,8 @@ CmdMeshPartMesher::CmdMeshPartMesher()
 {
     sAppModule = "MeshPart";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Create mesh from shape...");
+    sMenuText = QT_TR_NOOP("Mesh From Shape");
+
     sToolTipText = QT_TR_NOOP("Tessellate shape");
     sWhatsThis = "MeshPart_Mesher";
     sStatusTip = sToolTipText;
@@ -81,9 +82,9 @@ CmdMeshPartTrimByPlane::CmdMeshPartTrimByPlane()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Trim mesh with a plane");
+    sMenuText = QT_TR_NOOP("Trim Mesh");
     sToolTipText = QT_TR_NOOP("Trims a mesh with a plane");
-    sStatusTip = QT_TR_NOOP("Trims a mesh with a plane");
+    sStatusTip = sToolTipText;
 }
 
 void CmdMeshPartTrimByPlane::activated(int)
@@ -91,17 +92,17 @@ void CmdMeshPartTrimByPlane::activated(int)
     Base::Type partType = Base::Type::fromName("Part::Plane");
     std::vector<App::DocumentObject*> plane = getSelection().getObjectsOfType(partType);
     if (plane.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             qApp->translate("MeshPart_TrimByPlane", "Select plane"),
-                             qApp->translate("MeshPart_TrimByPlane",
-                                             "Please select a plane at which you trim the mesh."));
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            qApp->translate("MeshPart_TrimByPlane", "Select plane"),
+            qApp->translate("MeshPart_TrimByPlane", "Select a plane to trim the mesh with."));
         return;
     }
 
     QMessageBox msgBox(Gui::getMainWindow());
     msgBox.setIcon(QMessageBox::Question);
     msgBox.setWindowTitle(qApp->translate("MeshPart_TrimByPlane", "Trim by plane"));
-    msgBox.setText(qApp->translate("MeshPart_TrimByPlane", "Select the side you want to keep."));
+    msgBox.setText(qApp->translate("MeshPart_TrimByPlane", "Select the side to keep."));
     QPushButton* inner =
         msgBox.addButton(qApp->translate("MeshPart_TrimByPlane", "Below"), QMessageBox::ActionRole);
     QPushButton* outer =
@@ -186,8 +187,8 @@ CmdMeshPartSection::CmdMeshPartSection()
 {
     sAppModule = "MeshPart";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Create section from mesh and plane");
-    sToolTipText = QT_TR_NOOP("Section");
+    sMenuText = QT_TR_NOOP("Section");
+    sToolTipText = QT_TR_NOOP("Creates a section from a mesh and plane");
     sWhatsThis = "MeshPart_Section";
     sStatusTip = sToolTipText;
 }
@@ -200,8 +201,7 @@ void CmdMeshPartSection::activated(int)
         QMessageBox::warning(
             Gui::getMainWindow(),
             qApp->translate("MeshPart_Section", "Select plane"),
-            qApp->translate("MeshPart_Section",
-                            "Please select a plane at which you section the mesh."));
+            qApp->translate("MeshPart_Section", "Select a plane to section the mesh with."));
         return;
     }
 
@@ -271,8 +271,8 @@ CmdMeshPartCrossSections::CmdMeshPartCrossSections()
 {
     sAppModule = "MeshPart";
     sGroup = QT_TR_NOOP("MeshPart");
-    sMenuText = QT_TR_NOOP("Cross-sections...");
-    sToolTipText = QT_TR_NOOP("Cross-sections");
+    sMenuText = QT_TR_NOOP("Cross-Sections");
+    sToolTipText = QT_TR_NOOP("Applies cross-sections to the mesh");
     sWhatsThis = "MeshPart_CrossSections";
     sStatusTip = sToolTipText;
     // sPixmap       = "MeshPart_CrossSections";
@@ -307,9 +307,8 @@ CmdMeshPartCurveOnMesh::CmdMeshPartCurveOnMesh()
 {
     sAppModule = "MeshPart";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Curve on mesh...");
-    sToolTipText = QT_TR_NOOP("Creates an approximated curve on top of a mesh.\n"
-                              "This command only works with a 'mesh' object.");
+    sMenuText = QT_TR_NOOP("Curve on Mesh");
+    sToolTipText = QT_TR_NOOP("Creates an approximated curve on top of a mesh object");
     sWhatsThis = "MeshPart_CurveOnMesh";
     sStatusTip = sToolTipText;
     sPixmap = "MeshPart_CurveOnMesh";

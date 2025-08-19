@@ -51,8 +51,6 @@ pairs, or a placement, or a vector</UserDocu>
                 <UserDocu>transform(Placement): returns a copy of this command transformed by the given placement</UserDocu>
             </Documentation>
         </Methode>
-        <ClassDeclarations>
-            mutable Py::Dict parameters_copy_dict;
-        </ClassDeclarations>
+        <ClassDeclarations>mutable Py::Dict parameters_copy_dict;</ClassDeclarations>
     </PythonExport>
 </GenerateModel>

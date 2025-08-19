@@ -34,7 +34,6 @@ try:
 except ModuleNotFoundError:
     pass
 
-from draftutils import init_draft_statusbar
 from draftutils.translate import translate
 
 if App.GuiUp:
@@ -95,6 +94,8 @@ def _param_observer_callback_tray():
 
 def _param_observer_callback_scalemultiplier(value):
     # value is a string.
+    # import has to happen here to avoid circular imports
+    from draftutils import init_draft_statusbar
     if not value:
         return
     value = float(value)

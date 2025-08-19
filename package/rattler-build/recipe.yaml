@@ -90,7 +90,7 @@ requirements:
 
     - if: osx and x86_64
       then:
-        - ${{ stdlib('c') }}
+        - __osx >=10.13
 
     - if: build_platform != target_platform
       then:
@@ -135,12 +135,8 @@ requirements:
         - libspnav
         - xorg-xproto
 
-    - if: osx
-      then:
-        - blas * accelerate*
-
   run:
-    - blas
+    - blas * openblas*
     - blinker
     - calculix
     - debugpy

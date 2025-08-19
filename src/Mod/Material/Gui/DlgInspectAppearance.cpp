@@ -199,7 +199,7 @@ QWidget* DlgInspectAppearance::makeAppearanceTab(const App::Material& material)
 
     int row = 0;
     auto* labelDiffuse = new QLabel();
-    labelDiffuse->setText(tr("Diffuse Color"));
+    labelDiffuse->setText(tr("Diffuse color"));
     auto* colorDiffuse = new ColorWidget(material.diffuseColor);
     colorDiffuse->setMaximumHeight(23);
 
@@ -208,7 +208,7 @@ QWidget* DlgInspectAppearance::makeAppearanceTab(const App::Material& material)
     row += 1;
 
     auto* labelAmbient = new QLabel();
-    labelAmbient->setText(tr("Ambient Color"));
+    labelAmbient->setText(tr("Ambient color"));
     auto* colorAmbient = new ColorWidget(material.ambientColor);
     colorAmbient->setMaximumHeight(23);
 
@@ -217,7 +217,7 @@ QWidget* DlgInspectAppearance::makeAppearanceTab(const App::Material& material)
     row += 1;
 
     auto* labelEmissive = new QLabel();
-    labelEmissive->setText(tr("Emissive Color"));
+    labelEmissive->setText(tr("Emissive color"));
     auto* colorEmissive = new ColorWidget(material.emissiveColor);
     colorEmissive->setMaximumHeight(23);
 
@@ -226,7 +226,7 @@ QWidget* DlgInspectAppearance::makeAppearanceTab(const App::Material& material)
     row += 1;
 
     auto* labelSpecular = new QLabel();
-    labelSpecular->setText(tr("Specular Color"));
+    labelSpecular->setText(tr("Specular color"));
     auto* colorSpecular = new ColorWidget(material.specularColor);
     colorSpecular->setMaximumHeight(23);
 

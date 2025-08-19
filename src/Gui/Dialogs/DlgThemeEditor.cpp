@@ -30,6 +30,7 @@
 #include "ui_DlgThemeEditor.h"
 #include "BitmapFactory.h"
 
+#include <Utilities.h>
 #include <Base/ServiceProvider.h>
 #include <Base/Tools.h>
 
@@ -64,10 +65,10 @@ QString typeOfTokenValue(const Gui::StyleParameters::Value& value)
             [](const std::string&) {
                 return QWidget::tr("Generic");
             },
-            [](const Gui::StyleParameters::Length&) {
-                return QWidget::tr("Length");
+            [](const Gui::StyleParameters::Numeric&) {
+                return QWidget::tr("Numeric");
             },
-            [](const QColor&) {
+            [](const Base::Color&) {
                 return QWidget::tr("Color");
             }
         },
@@ -513,6 +514,10 @@ QVariant StyleParametersModel::data(const QModelIndex& index, int role) const
         const auto& [name, token, _] = *parameterItem;
         const auto& value = manager->resolve(name.toStdString());
 
+        if (!value) {
+            return {};
+        }
+
         if (role == Qt::DisplayRole) {
             if (index.column() == ParameterName) {
                 return name;
@@ -521,16 +526,16 @@ QVariant StyleParametersModel::data(const QModelIndex& index, int role) const
                 return QString::fromStdString(token.value);
             }
             if (index.column() == ParameterType) {
-                return typeOfTokenValue(value);
+                return typeOfTokenValue(*value);
             }
             if (index.column() == ParameterPreview) {
-                return QString::fromStdString(value.toString());
+                return QString::fromStdString(value->toString());
             }
         }
 
         if (role == Qt::DecorationRole) {
-            if (index.column() == ParameterPreview && std::holds_alternative<QColor>(value)) {
-                return colorPreview(std::get<QColor>(value));
+            if (index.column() == ParameterPreview && std::holds_alternative<Base::Color>(*value)) {
+                return colorPreview(std::get<Base::Color>(*value).asValue<QColor>());
             }
         }
     }

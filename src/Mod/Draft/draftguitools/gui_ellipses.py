@@ -57,7 +57,7 @@ class Ellipse(gui_base_original.Creator):
         return {'Pixmap': 'Draft_Ellipse',
                 'Accel': "E, L",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Ellipse", "Ellipse"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Ellipse", "Creates an ellipse.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Ellipse", "Creates an ellipse")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -163,6 +163,8 @@ class Ellipse(gui_base_original.Creator):
         if arg["Type"] == "SoKeyboardEvent":
             if arg["Key"] == "ESCAPE":
                 self.finish()
+        elif not self.ui.mouse:
+            pass
         elif arg["Type"] == "SoLocation2Event":  # mouse movement detection
             self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg, noTracker=True)
             self.rect.update(self.point)

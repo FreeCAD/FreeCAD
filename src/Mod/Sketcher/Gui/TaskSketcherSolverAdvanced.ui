@@ -619,7 +619,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</stri
        </item>
        <item>
         <property name="text">
-         <string>Iteration Level</string>
+         <string>Iteration level</string>
         </property>
        </item>
       </widget>

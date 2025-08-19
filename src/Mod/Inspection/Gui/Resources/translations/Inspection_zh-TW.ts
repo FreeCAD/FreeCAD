@@ -10,13 +10,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="75"/>
-      <source>Inspection...</source>
-      <translation>檢查...</translation>
+      <source>Inspection…</source>
+      <translation type="unfinished">Inspection…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="76"/>
-      <source>Get distance information</source>
-      <translation>取得距離資訊</translation>
+      <source>Inspects distance information</source>
+      <translation type="unfinished">Inspects distance information</translation>
     </message>
   </context>
   <context>
@@ -28,14 +28,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="49"/>
-      <source>Visual inspection...</source>
-      <translation>視覺檢查...</translation>
+      <source>Visual Inspection…</source>
+      <translation type="unfinished">Visual Inspection…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="50"/>
-      <location filename="../../Command.cpp" line="51"/>
-      <source>Visual inspection</source>
-      <translation>視覺檢查</translation>
+      <source>Inspects the objects visually</source>
+      <translation type="unfinished">Inspects the objects visually</translation>
     </message>
   </context>
   <context>
@@ -110,8 +109,8 @@
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="564"/>
-      <source>Leave info mode</source>
-      <translation>離開訊息模式</translation>
+      <source>Leave Info Mode</source>
+      <translation type="unfinished">Leave Info Mode</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="695"/>

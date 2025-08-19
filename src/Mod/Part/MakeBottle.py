@@ -61,7 +61,7 @@ def makeBottle(myWidth=50.0, myHeight=70.0, myThickness=30.0):
 	myBody = myBody.makeThickness([faceToRemove],-myThickness/50 , 1.e-3)
 	myThreading = Part.makeThread(myNeckHeight/10, myNeckRadius*0.06, myHeight/10, myNeckRadius*0.99)
 	myThreading.translate(Base.Vector(0,0,myHeight))
-	myCompound = Part.Compound([myBody, myThreading])
+	myCompound = Part.makeCompound([myBody, myThreading])
 
 	return myCompound
 
@@ -88,7 +88,7 @@ def makeBoreHole():
 	S1 = Part.Shape([C1,C2,L1,L2])
 
 	W=Part.Wire(S1.Edges)
-	F=Part.Face(W)
+	F=Part.makeFace(W)
 	P=F.extrude(Base.Vector(0,0,5))
 
 	# add objects with the shape
@@ -101,7 +101,7 @@ def makeBoreHole():
 
 	c=Part.Circle(Base.Vector(0,0,-1),Base.Vector(0,0,1),2.0)
 	w=Part.Wire(c.toShape())
-	f=Part.Face(w)
+	f=Part.makeFace(w)
 	p=f.extrude(Base.Vector(0,0,7))
 	P=P.cut(p)
 
@@ -113,7 +113,7 @@ def makeBoreHole():
 
 	c=Part.Circle(Base.Vector(0,-11,2.5),Base.Vector(0,1,0),1.0)
 	w=Part.Wire(c.toShape())
-	f=Part.Face(w)
+	f=Part.makeFace(w)
 	p=f.extrude(Base.Vector(0,22,0))
 	P=P.cut(p)
 

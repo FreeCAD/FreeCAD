@@ -383,6 +383,9 @@ struct Overloads: Ts...
     using Ts::operator()...;
 };
 
+template<class... Ts>
+Overloads(Ts...) -> Overloads<Ts...>;
+
 }  // namespace Base
 
 #endif  // SRC_BASE_TOOLS_H_

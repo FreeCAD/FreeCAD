@@ -9,6 +9,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="51"/>
+        <source>Default Property Values</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="142"/>
         <source>Text color</source>
         <translation type="unfinished"></translation>
@@ -16,11 +21,6 @@
     <message>
         <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="59"/>
         <source>Text size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="51"/>
-        <source>Default property values</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -68,58 +68,58 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMeasure.cpp" line="90"/>
+        <location filename="../../TaskMeasure.cpp" line="93"/>
         <source>Auto Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMeasure.cpp" line="93"/>
-        <source>Auto saving of the last measurement when starting a new measurement. Use SHIFT to temporarily invert the behaviour.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskMeasure.cpp" line="97"/>
+        <location filename="../../TaskMeasure.cpp" line="101"/>
         <source>Additive Selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMeasure.cpp" line="102"/>
-        <source>If checked, new selection will be added to the measurement. If unchecked, CTRL must be pressed to add a selection to the current measurement otherwise a new measurement will be started</source>
+        <location filename="../../TaskMeasure.cpp" line="97"/>
+        <source>Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMeasure.cpp" line="111"/>
+        <location filename="../../TaskMeasure.cpp" line="106"/>
+        <source>If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskMeasure.cpp" line="116"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMeasure.cpp" line="152"/>
+        <location filename="../../TaskMeasure.cpp" line="157"/>
         <source>Mode:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMeasure.cpp" line="154"/>
+        <location filename="../../TaskMeasure.cpp" line="159"/>
         <source>Result:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMeasure.cpp" line="183"/>
+        <location filename="../../TaskMeasure.cpp" line="188"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMeasure.cpp" line="184"/>
-        <source>Save the measurement in the active document.</source>
+        <location filename="../../TaskMeasure.cpp" line="189"/>
+        <source>Saves the measurement in the active document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMeasure.cpp" line="190"/>
+        <location filename="../../TaskMeasure.cpp" line="196"/>
+        <source>Closes the measurement task</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskMeasure.cpp" line="195"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskMeasure.cpp" line="191"/>
-        <source>Close the measurement task.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -180,7 +180,7 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../AppMeasureGui.cpp" line="113"/>
+        <location filename="../../AppMeasureGui.cpp" line="109"/>
         <source>Measure</source>
         <translation type="unfinished"></translation>
     </message>

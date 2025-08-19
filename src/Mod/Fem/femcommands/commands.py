@@ -509,7 +509,7 @@ class _EquationMagnetodynamic2D(CommandManager):
     def __init__(self):
         super().__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_EquationMagnetodynamic2D", "Magnetodynamic2D Equation"
+            "FEM_EquationMagnetodynamic2D", "Magnetodynamic 2D Equation"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_EquationMagnetodynamic2D",
@@ -1078,7 +1078,6 @@ class _SolverCalculiX(CommandManager):
                     has_nonlinear_material_obj = True
 
             if has_nonlinear_material_obj:
-                FreeCADGui.doCommand(f"{cm.cli_name}.GeometricalNonlinearity = 'nonlinear'")
                 FreeCADGui.doCommand(f"{cm.cli_name}.MaterialNonlinearity = 'nonlinear'")
 
 

@@ -303,7 +303,7 @@ class ViewProviderDressup(object):
 
 def Create(base, name="DressupDogbone"):
     """
-    Create(obj, name='DressupDogbone') ... dresses the given Path.Op.Profile object with dogbones.
+    Create(obj, name='DressupDogbone')… dresses the given Path.Op.Profile object with dogbones.
     """
     obj = DogboneII.Create(base, name)
     job = PathUtils.findParentJob(base)
@@ -323,7 +323,7 @@ class CommandDressupDogboneII(object):
             "MenuText": QT_TRANSLATE_NOOP("CAM_DressupDogbone", "Dogbone"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_DressupDogbone",
-                "Creates a Dogbone Dress-up object from a selected toolpath",
+                "Creates a dogbone dress-up object from a selected toolpath",
             ),
         }
 
@@ -340,7 +340,7 @@ class CommandDressupDogboneII(object):
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("CAM_DressupDogbone", "Please select one toolpath object") + "\n"
+                translate("CAM_DressupDogbone", "Select one toolpath object") + "\n"
             )
             return
         baseObject = selection[0]
@@ -367,4 +367,4 @@ if FreeCAD.GuiUp:
 
     FreeCADGui.addCommand("CAM_DressupDogbone", CommandDressupDogboneII())
 
-FreeCAD.Console.PrintLog("Loading DressupDogboneII ... done\n")
+FreeCAD.Console.PrintLog("Loading DressupDogboneII… done\n")

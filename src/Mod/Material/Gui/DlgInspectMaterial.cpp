@@ -169,7 +169,7 @@ void DlgInspectMaterial::update(std::vector<Gui::ViewProvider*>& views)
                 ui->editObjectLabel->setText(QStringLiteral(""));
             }
             ui->editObjectName->setText(QLatin1String(obj->getNameInDocument()));
-            appendClip(tr("Internal Name: ") + QString::fromUtf8(obj->getNameInDocument()));
+            appendClip(tr("Internal name: ") + QString::fromUtf8(obj->getNameInDocument()));
 
             auto subElement = Gui::Selection().getSelectionEx();
             if (subElement.size() > 0) {
@@ -270,10 +270,10 @@ void DlgInspectMaterial::addModelDetails(QTreeView* tree,
     addExpanded(tree, parent, library);
 
     auto libraryPath =
-        clipItem(tr("Library Directory: ") + model->getLibrary()->getDirectoryPath());
+        clipItem(tr("Library directory: ") + model->getLibrary()->getDirectoryPath());
     addExpanded(tree, parent, libraryPath);
 
-    auto directory = clipItem(tr("Sub Directory: ") + model->getDirectory());
+    auto directory = clipItem(tr("Subdirectory: ") + model->getDirectory());
     addExpanded(tree, parent, directory);
 
     auto inherits = clipItem(tr("Inherits:"));
@@ -343,9 +343,9 @@ void DlgInspectMaterial::addMaterialDetails(QTreeView* tree,
     auto library =
         clipItem(tr("Library: ") + material.getLibrary()->getName());
     addExpanded(tree, parent, library);
-    auto libraryPath = clipItem(tr("Library Directory: ") + material.getLibrary()->getDirectoryPath());
+    auto libraryPath = clipItem(tr("Library directory: ") + material.getLibrary()->getDirectoryPath());
     addExpanded(tree, parent, libraryPath);
-    auto directory = clipItem(tr("Sub Directory: ") + material.getDirectory());
+    auto directory = clipItem(tr("Sub directory: ") + material.getDirectory());
     addExpanded(tree, parent, directory);
     auto inherits = clipItem(tr("Inherits:"));
     addExpanded(tree, parent, inherits);
@@ -362,25 +362,25 @@ void DlgInspectMaterial::addMaterialDetails(QTreeView* tree,
     }
     unindent();
 
-    auto appearance = clipItem(tr("Appearance Models:"));
+    auto appearance = clipItem(tr("Appearance models:"));
     addExpanded(tree, parent, appearance);
     indent();
     addModels(tree, appearance, material.getAppearanceModels());
     unindent();
 
-    auto physical = clipItem(tr("Physical Models:"));
+    auto physical = clipItem(tr("Physical models:"));
     addExpanded(tree, parent, physical);
     indent();
     addModels(tree, physical, material.getPhysicalModels());
     unindent();
 
-    auto appearanceProperties = clipItem(tr("Appearance Properties:"));
+    auto appearanceProperties = clipItem(tr("Appearance properties:"));
     addExpanded(tree, parent, appearanceProperties);
     indent();
     addProperties(tree, appearanceProperties, material.getAppearanceProperties());
     unindent();
 
-    auto physicalProperties = clipItem(tr("Physical Properties:"));
+    auto physicalProperties = clipItem(tr("Physical properties:"));
     addExpanded(tree, parent, physicalProperties);
     indent();
     addProperties(tree, physicalProperties, material.getPhysicalProperties());

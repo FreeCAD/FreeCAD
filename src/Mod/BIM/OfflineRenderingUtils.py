@@ -582,7 +582,7 @@ def save(document,filename=None,guidata=None,colors=None,camera=None):
             filename = document.FileName
             document.save()
         else:
-            print("Unable to save this document. Please provide a file name")
+            print("Unable to save this document. Provide a file name")
             return
 
     if guidata:
@@ -636,7 +636,7 @@ def buildGuiDocumentFromColors(document,colors,camera=None):
 
     guidoc =  "<?xml version='1.0' encoding='utf-8'?>\n"
     guidoc += "<!--\n"
-    guidoc += " FreeCAD Document, see https://www.freecad.org for more information...\n"
+    guidoc += " FreeCAD Document, see https://www.freecad.org for more information…\n"
     guidoc += "-->\n"
     guidoc += "<Document SchemaVersion=\"1\">\n"
 
@@ -715,7 +715,7 @@ def buildGuiDocumentFromGuiData(document,guidata):
 
     guidoc =  "<?xml version='1.0' encoding='utf-8'?>\n"
     guidoc += "<!--\n"
-    guidoc += " FreeCAD Document, see https://www.freecad.org for more information...\n"
+    guidoc += " FreeCAD Document, see https://www.freecad.org for more information…\n"
     guidoc += "-->\n"
     guidoc += "<Document SchemaVersion=\"1\">\n"
 

@@ -195,7 +195,7 @@ def InitApplications():
     # (additional module paths are already cached)
     ModDirs = FreeCAD.__ModDirs__
     #print ModDirs
-    Log('Init:   Searching modules...\n')
+    Log('Init:   Searching modules\n')
 
     def RunInitGuiPy(Dir) -> bool:
         InstallFile = os.path.join(Dir,"InitGui.py")
@@ -210,7 +210,7 @@ def InitApplications():
                 Log('-'*100+'\n')
                 Err('During initialization the error "' + str(inst) + '" occurred in '\
                     + InstallFile + '\n')
-                Err('Please look into the log file for further information\n')
+                Err('Look into the log file for further information\n')
             else:
                 Log('Init:      Initializing ' + Dir + '... done\n')
                 return True

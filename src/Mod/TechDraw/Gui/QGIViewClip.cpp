@@ -83,9 +83,7 @@ void QGIViewClip::draw()
     }
 
     drawClip();
-    if (getFrameState()) {
-        drawBorder();
-    }
+    drawBorder();
 }
 
 void QGIViewClip::drawClip()

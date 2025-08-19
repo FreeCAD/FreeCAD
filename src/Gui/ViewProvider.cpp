@@ -244,7 +244,7 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
                     }
                 }
                 else if (press) {
-                    FC_WARN("Please release all mouse buttons before exiting editing");
+                    FC_WARN("Release all mouse buttons before exiting editing");
                 }
                 break;
             default:

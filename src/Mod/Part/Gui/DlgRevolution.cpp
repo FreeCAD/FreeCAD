@@ -266,7 +266,7 @@ bool DlgRevolution::validate()
     //check source shapes
     if (ui->treeWidget->selectedItems().isEmpty()) {
         QMessageBox::critical(this, windowTitle(),
-            tr("Select a shape for revolution, first."));
+            tr("Select a shape for revolution."));
         return false;
     }
 
@@ -461,7 +461,7 @@ void DlgRevolution::onSelectLineClicked()
     if (!filter) {
         filter = new EdgeSelection();
         Gui::Selection().addSelectionGate(filter);
-        ui->selectLine->setText(tr("Selecting... (line or arc)"));
+        ui->selectLine->setText(tr("Selecting… (line or arc)"));
     } else {
         Gui::Selection().rmvSelectionGate();
         filter = nullptr;

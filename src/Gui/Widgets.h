@@ -613,6 +613,15 @@ private:
     bool _exclusive;
 };
 
+/**
+ * Adjusts the position of the given dialog to ensure it remains within the bounds of the main window.
+ * This helps prevent dialogs from appearing partially or fully off-screen relative to the main application window.
+ * 
+ * This function shall be invoked after the dialog has been shown (using show()) or its position or size has changed.
+ * Exception: If the dialog is modal, this function should be called before the dialog is called with exec().
+ */
+void adjustDialogPosition(QDialog* dialog);
+
 } // namespace Gui
 
 #endif // GUI_WIDGETS_H

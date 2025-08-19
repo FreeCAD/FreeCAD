@@ -140,8 +140,10 @@ class CommandPathToolController(object):
     def GetResources(self):
         return {
             "Pixmap": "CAM_LengthOffset",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolController", "Add Tool Controller to the Job"),
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_ToolController", "Add Tool Controller"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolController", "Tool Controller"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "CAM_ToolController", "Adds a new tool controller to the active job"
+            ),
         }
 
     def selectedJob(self):
@@ -364,4 +366,4 @@ if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand("CAM_ToolController", CommandPathToolController())
 
-FreeCAD.Console.PrintLog("Loading PathToolControllerGui... done\n")
+FreeCAD.Console.PrintLog("Loading PathToolControllerGui… done\n")

@@ -55,7 +55,7 @@ class Arch_CurtainWall:
         self.doc = FreeCAD.ActiveDocument
         sel = FreeCADGui.Selection.getSelection()
         if len(sel) > 1:
-            FreeCAD.Console.PrintError(translate("Arch","Please select only one base object or none")+"\n")
+            FreeCAD.Console.PrintError(translate("Arch","Select only one base object or none")+"\n")
         elif len(sel) == 1:
             # build on selection
             FreeCADGui.Control.closeDialog()

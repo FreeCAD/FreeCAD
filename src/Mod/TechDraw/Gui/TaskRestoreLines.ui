@@ -70,7 +70,7 @@
      <item row="3" column="0">
       <widget class="QPushButton" name="pb_Center">
        <property name="text">
-        <string>CenterLine</string>
+        <string>Centerline</string>
        </property>
       </widget>
      </item>

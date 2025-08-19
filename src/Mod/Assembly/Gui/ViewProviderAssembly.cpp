@@ -212,6 +212,52 @@ bool ViewProviderAssembly::canDragObjectToTarget(App::DocumentObject* obj,
     return true;
 }
 
+void ViewProviderAssembly::updateData(const App::Property* prop)
+{
+    auto* obj = static_cast<Assembly::AssemblyObject*>(pcObject);
+    if (prop == &obj->Group) {
+        // Defer the icon update until the event loop is idle.
+        // This ensures the assembly has had a chance to recompute its
+        // connectivity state before we query it.
+
+        // We can't capture the raw 'obj' pointer because it may be deleted
+        // by the time the timer fires. Instead, we capture the names of the
+        // document and the object, and look them up again.
+        if (!obj->getDocument()) {
+            return;  // Should not happen, but a good safeguard
+        }
+        const std::string docName = obj->getDocument()->getName();
+        const std::string objName = obj->getNameInDocument();
+
+        QTimer::singleShot(0, [docName, objName]() {
+            // Re-acquire the document and the object safely.
+            App::Document* doc = App::GetApplication().getDocument(docName.c_str());
+            if (!doc) {
+                return;  // Document was closed
+            }
+
+            auto* pcObj = doc->getObject(objName.c_str());
+            auto* obj = static_cast<Assembly::AssemblyObject*>(pcObj);
+
+            // Now we can safely check if the object still exists and is attached.
+            if (!obj || !obj->isAttachedToDocument()) {
+                return;
+            }
+
+            std::vector<App::DocumentObject*> joints = obj->getJoints(false);
+            for (auto* joint : joints) {
+                Gui::ViewProvider* jointVp = Gui::Application::Instance->getViewProvider(joint);
+                if (jointVp) {
+                    jointVp->signalChangeIcon();
+                }
+            }
+        });
+    }
+    else {
+        Gui::ViewProviderPart::updateData(prop);
+    }
+}
+
 bool ViewProviderAssembly::setEdit(int mode)
 {
     if (mode == ViewProvider::Default) {
