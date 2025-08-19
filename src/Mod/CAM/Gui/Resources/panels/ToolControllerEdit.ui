@@ -40,6 +40,9 @@
         </property>
        </spacer>
       </item>
+      <item row="1" column="0" colspan="2">
+	   <widget class="QLabel" name="tcOperationCountLabel" />
+      </item>
      </layout>
     </widget>
    </item>

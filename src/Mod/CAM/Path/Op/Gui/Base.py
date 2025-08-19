@@ -397,15 +397,19 @@ class TaskPanelPage(object):
     def tcComboChanged(self, newIndex):
         if self.obj is not None and self.tcEditor:
             if newIndex == self.combo.count() - 1:
+                # Special entry: new tool controller. Show the tool dock and reset combo
                 dock = ToolBitLibraryDock()
                 dock.open()
-                pass
+                self.resetTCCombo()
+            elif newIndex == self.combo.count() - 2:
+                # Special entry: copy tool controller
+                self.copyToolController()  # this function also rebuilds the combo
             else:
                 tc = PathUtils.findToolController(
                     self.obj, self.obj.Proxy, self.form.toolController.currentText()
                 )
                 self.obj.ToolController = tc
-            self.setupToolController()
+                self.setupToolController()
 
     def updateToolControllerEditorVisibility(self):
         if self.form.editToolController.isChecked():
@@ -446,6 +450,7 @@ class TaskPanelPage(object):
     def resetTCCombo(self):
         controllers = PathUtils.getToolControllers(self.obj)
         labels = [c.Label for c in controllers]
+        labels.append(FreeCAD.Qt.translate("CAM_Operation", "Copy tool controller"))
         labels.append(FreeCAD.Qt.translate("CAM_Operation", "New tool controller"))
         self.combo.blockSignals(True)
         self.combo.clear()
@@ -490,10 +495,15 @@ class TaskPanelPage(object):
                 obj.ToolController,
                 False,
                 self.tcEditorChanged,
-                self.copyToolController if tcCount > 0 else None,
+                self.copyToolController if True or tcCount > 0 else None,
                 True,
             )
             self.tcEditor.setupUi()
+
+            labelStr = FreeCAD.Qt.translate(
+                "CAM_Operation", "This tool controller is used by {0} other operations."
+            ).format(tcCount)
+            self.tcEditor.controller.tcOperationCountLabel.setText(labelStr)
 
             # add to layout -- requires a grid layout
             if isinstance(layout, QtWidgets.QGridLayout):
