@@ -1,13 +1,13 @@
 # -*- coding: utf8 -*-
-"""
-GLTF Export Extension Module for FreeCAD
-This module provides fixes a material naming issue with FreeCAD's default glTF exporter,
-as well as exports some useful metadata by parsing VarSets
+"""GLTF Export Extension Module for FreeCAD.
+
+This module provides fixes for a material naming issue with FreeCAD's default glTF exporter,
+as well as exports some useful metadata by parsing VarSets.
 """
 
-import FreeCAD
 import ImportGui
 import json
+import struct
 
 
 def collect_all_material_names(objects):
@@ -45,9 +45,9 @@ def collect_all_material_names(objects):
                     ):
                         extract_materials(attr_value)
 
-                except:
+                except (AttributeError, TypeError, ValueError):
                     continue
-        except:
+        except (AttributeError, TypeError):
             pass
 
     for obj in objects:
@@ -91,7 +91,7 @@ def find_varsets_with_path(objects):
             if hasattr(obj, "Objects") and obj.Objects:
                 for sub_obj in obj.Objects:
                     build_path(sub_obj, current_path, visited.copy())
-        except:
+        except (AttributeError, TypeError, RecursionError):
             pass
 
         visited.remove(obj_id)
@@ -126,7 +126,7 @@ def modify_gltf_data(gltf_data):
                     and found_material_names[i]
                 ):
                     material["name"] = found_material_names[i]
-    except:
+    except (KeyError, TypeError, IndexError):
         pass
 
     # Inject VarSet data into nodes
@@ -152,7 +152,7 @@ def modify_gltf_data(gltf_data):
                         node["extras"] = {}
 
                     node["extras"].update(collected_varset_data[node["name"]])
-    except:
+    except (KeyError, TypeError, IndexError):
         pass
 
     return gltf_data
@@ -162,7 +162,6 @@ def extract_json_from_glb(filename):
     """
     Extract JSON chunk from GLB file
     """
-    import struct
 
     try:
         with open(filename, "rb") as f:
@@ -170,9 +169,6 @@ def extract_json_from_glb(filename):
             magic = f.read(4)
             if magic != b"glTF":
                 return None
-
-            version = struct.unpack("<I", f.read(4))[0]
-            total_length = struct.unpack("<I", f.read(4))[0]
 
             # Read JSON chunk header
             json_chunk_length = struct.unpack("<I", f.read(4))[0]
@@ -184,7 +180,7 @@ def extract_json_from_glb(filename):
             json_data = f.read(json_chunk_length)
             return json.loads(json_data.decode("utf-8"))
 
-    except:
+    except (IOError, OSError, struct.error, json.JSONDecodeError, UnicodeDecodeError):
         return None
 
 
@@ -192,7 +188,6 @@ def write_json_to_glb(filename, gltf_data):
     """
     Write modified JSON back to GLB file
     """
-    import struct
 
     try:
         with open(filename, "rb") as f:
@@ -228,7 +223,7 @@ def write_json_to_glb(filename, gltf_data):
             if binary_data:
                 f.write(binary_data)
 
-    except:
+    except (IOError, OSError, struct.error, json.JSONEncodeError, UnicodeEncodeError):
         pass
 
 
@@ -317,7 +312,7 @@ def preprocess_objects(objects):
                             prop_value = getattr(varset_obj, prop_name)
                             if prop_value is not None:
                                 varset_properties[prop_name] = str(prop_value)
-                        except:
+                        except (AttributeError, TypeError, ValueError):
                             continue
 
                     if varset_properties and target_node:
@@ -325,7 +320,7 @@ def preprocess_objects(objects):
                             collected_varset_data[target_node] = {}
                         collected_varset_data[target_node].update(varset_properties)
 
-        except:
+        except (AttributeError, TypeError):
             continue
 
     return [obj for obj in objects if hasattr(obj, "Shape") and obj.Shape]
@@ -336,7 +331,6 @@ def postprocess_export(filename):
     Post-process the exported GLTF/GLB file and rename materials.
     """
     import os
-    import json
 
     if not os.path.exists(filename):
         return
@@ -351,7 +345,7 @@ def postprocess_export(filename):
             with open(filename, "w", encoding="utf-8") as f:
                 json.dump(gltf_data, f, indent=2)
 
-        except:
+        except (IOError, OSError, json.JSONDecodeError, json.JSONEncodeError, UnicodeError):
             pass
 
     elif filename.lower().endswith(".glb"):
@@ -361,7 +355,7 @@ def postprocess_export(filename):
                 gltf_data = modify_gltf_data(gltf_data)
                 write_json_to_glb(filename, gltf_data)
 
-        except:
+        except (IOError, OSError, struct.error, json.JSONDecodeError, json.JSONEncodeError):
             pass
 
 
