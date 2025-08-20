@@ -162,7 +162,12 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
         keep_results_on_rerun = self.fem_prefs.GetBool("KeepResultsOnReRun", False)
         if not keep_results_on_rerun:
-            self.purge_results()
+            # we remove the result objects only, not the postprocessing ones.
+            # Reason: "Not keep results" means for the user override the data. For postprocessing
+            #         this means keeping all filters, just change the data.
+            from femresult.resulttools import purge_result_objects as purge
+
+            purge(self.analysis)
 
     def reset_all(self):
         """Reset mesh color, deformation and removes all result objects"""
