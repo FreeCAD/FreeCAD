@@ -97,6 +97,37 @@ public:
                              double activeViewWidth = 100.0,
                              double activeViewHeight = 100.0);
 
+    /**
+     * @brief Create hybrid 2D+3D PDF with complete TechDraw page and 3D content
+     * @param tessellationData Vector of tessellation data for 3D objects
+     * @param outputPath Path where the hybrid PDF should be saved
+     * @param backgroundImagePath Path to background image (rendered TechDraw page)
+     * @param pageWidthPoints Page width in points
+     * @param pageHeightPoints Page height in points
+     * @param activeViewX ActiveView X position in points
+     * @param activeViewY ActiveView Y position in points
+     * @param activeViewScale ActiveView scale factor
+     * @param activeViewWidth ActiveView width in mm
+     * @param activeViewHeight ActiveView height in mm
+     * @param backgroundR Background red component for 3D view (0.0-1.0)
+     * @param backgroundG Background green component for 3D view (0.0-1.0)
+     * @param backgroundB Background blue component for 3D view (0.0-1.0)
+     * @return true if successful, false otherwise
+     */
+    static bool createHybrid3DPDF(const std::vector<TessellationData>& tessellationData,
+                                 const std::string& outputPath,
+                                 const std::string& backgroundImagePath,
+                                 double pageWidthPoints,
+                                 double pageHeightPoints,
+                                 double activeViewX,
+                                 double activeViewY,
+                                 double activeViewScale,
+                                 double activeViewWidth,
+                                 double activeViewHeight,
+                                 double backgroundR = 0.5,
+                                 double backgroundG = 0.5,
+                                 double backgroundB = 0.5);
+
 private:
     Export3DPDFCore() = default;  // Static class, no instances
 };

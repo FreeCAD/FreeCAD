@@ -326,4 +326,183 @@ bool Export3DPDFCore::embedPRCInPDF(const std::string& prcPath, const std::strin
         Base::Console().error("Error creating 3D PDF: %s\n", e.what());
         return false;
     }
+}
+
+bool Export3DPDFCore::createHybrid3DPDF(const std::vector<TessellationData>& tessellationData,
+                                        const std::string& outputPath,
+                                        const std::string& backgroundImagePath,
+                                        double pageWidthPoints,
+                                        double pageHeightPoints,
+                                        double activeViewX,
+                                        double activeViewY,
+                                        double activeViewScale,
+                                        double activeViewWidth,
+                                        double activeViewHeight,
+                                        double backgroundR,
+                                        double backgroundG,
+                                        double backgroundB)
+{
+    try {
+        Base::Console().message("Creating hybrid 2D+3D PDF...\n");
+        
+        // Step 1: Create PRC file from 3D tessellation data
+        std::string prcPath = outputPath + ".prc";
+        std::string result = createPRCFile(tessellationData, prcPath);
+        if (result.empty()) {
+            Base::Console().error("Failed to create PRC file for hybrid PDF\n");
+            return false;
+        }
+        
+        Base::Console().message("Successfully created PRC file: %s\n", prcPath.c_str());
+        
+        // Step 2: Read PRC file into memory
+        std::ifstream prcFile(prcPath, std::ios::binary);
+        if (!prcFile.is_open()) {
+            Base::Console().error("Failed to open PRC file: %s\n", prcPath.c_str());
+            return false;
+        }
+        
+        // Get PRC file size
+        prcFile.seekg(0, std::ios::end);
+        size_t prcSize = prcFile.tellg();
+        prcFile.seekg(0, std::ios::beg);
+        
+        // Read PRC data into buffer
+        std::vector<HPDF_BYTE> prcBuffer(prcSize);
+        prcFile.read(reinterpret_cast<char*>(prcBuffer.data()), prcSize);
+        prcFile.close();
+        
+        Base::Console().message("Loaded PRC data: %zu bytes\n", prcSize);
+        
+        // Step 3: Create PDF document with libHaru
+        HPDF_Doc pdf = HPDF_New(NULL, NULL);
+        if (!pdf) {
+            Base::Console().error("Failed to create PDF document for hybrid export\n");
+            return false;
+        }
+        
+        // Set PDF metadata
+        HPDF_SetInfoAttr(pdf, HPDF_INFO_PRODUCER, "FreeCAD 3D PDF Export");
+        HPDF_SetInfoAttr(pdf, HPDF_INFO_TITLE, "FreeCAD Hybrid 2D+3D Technical Drawing");
+        
+        // Create page with specified dimensions
+        HPDF_Page page = HPDF_AddPage(pdf);
+        HPDF_Page_SetWidth(page, pageWidthPoints);
+        HPDF_Page_SetHeight(page, pageHeightPoints);
+        
+        Base::Console().message("PDF page size: %.1f x %.1f points\n", pageWidthPoints, pageHeightPoints);
+        
+        // Step 4: Load and embed background image (TechDraw page)
+        HPDF_Image backgroundImg = nullptr;
+        if (!backgroundImagePath.empty()) {
+            // Try to load as PNG first, then JPEG
+            try {
+                backgroundImg = HPDF_LoadPngImageFromFile(pdf, backgroundImagePath.c_str());
+                Base::Console().message("Loaded background PNG image: %s\n", backgroundImagePath.c_str());
+            } catch (...) {
+                try {
+                    backgroundImg = HPDF_LoadJpegImageFromFile(pdf, backgroundImagePath.c_str());
+                    Base::Console().message("Loaded background JPEG image: %s\n", backgroundImagePath.c_str());
+                } catch (...) {
+                    Base::Console().warning("Failed to load background image: %s\n", backgroundImagePath.c_str());
+                }
+            }
+            
+            // Draw background image to fill entire page
+            if (backgroundImg) {
+                HPDF_Page_DrawImage(page, backgroundImg, 0, 0, pageWidthPoints, pageHeightPoints);
+                Base::Console().message("Background image drawn to fill page\n");
+            }
+        }
+        
+        // Step 5: Load PRC/U3D data into PDF
+        HPDF_Image u3d = HPDF_LoadU3DFromMem(pdf, prcBuffer.data(), static_cast<HPDF_UINT>(prcSize));
+        if (!u3d) {
+            Base::Console().error("Failed to load PRC data into hybrid PDF\n");
+            HPDF_Free(pdf);
+            return false;
+        }
+        
+        // Step 6: Calculate 3D annotation position over ActiveView
+        // Apply scale factor to the view dimensions before converting to points
+        double scaledViewWidth = activeViewWidth * activeViewScale;
+        double scaledViewHeight = activeViewHeight * activeViewScale;
+        double viewWidthPoints = scaledViewWidth * 2.834645669;  // Convert scaled mm to points
+        double viewHeightPoints = scaledViewHeight * 2.834645669;
+        double viewXPoints = activeViewX * 2.834645669;
+        double viewYPoints = activeViewY * 2.834645669;
+        
+        // Calculate annotation bounds (ActiveView center-based positioning)
+        double halfWidthPoints = viewWidthPoints / 2.0;
+        double halfHeightPoints = viewHeightPoints / 2.0;
+        
+        double annotLeft = viewXPoints - halfWidthPoints;
+        double annotRight = viewXPoints + halfWidthPoints;
+        double annotBottom = viewYPoints - halfHeightPoints;
+        double annotTop = viewYPoints + halfHeightPoints;
+        
+        Base::Console().message("3D annotation positioning:\n");
+        Base::Console().message("  - ActiveView center: (%.2f, %.2f) mm -> (%.2f, %.2f) points\n",
+                               activeViewX, activeViewY, viewXPoints, viewYPoints);
+        Base::Console().message("  - Scaled size: %.2f x %.2f mm -> %.2f x %.2f points\n",
+                               scaledViewWidth, scaledViewHeight, viewWidthPoints, viewHeightPoints);
+        Base::Console().message("  - Annotation bounds: (%.2f, %.2f) to (%.2f, %.2f) points\n",
+                               annotLeft, annotBottom, annotRight, annotTop);
+        
+        // Step 7: Create 3D annotation at ActiveView location
+        HPDF_Rect rect = {static_cast<HPDF_REAL>(annotLeft), 
+                         static_cast<HPDF_REAL>(annotBottom), 
+                         static_cast<HPDF_REAL>(annotRight), 
+                         static_cast<HPDF_REAL>(annotTop)};
+        HPDF_Annotation annot = HPDF_Page_Create3DAnnot(page, rect, HPDF_TRUE, HPDF_FALSE, u3d, NULL);
+        if (!annot) {
+            Base::Console().error("Failed to create 3D annotation in hybrid PDF\n");
+            HPDF_Free(pdf);
+            return false;
+        }
+        
+        // Step 8: Create 3D view configuration
+        HPDF_Dict view = HPDF_Page_Create3DView(page, u3d, annot, "Default");
+        if (!view) {
+            Base::Console().error("Failed to create 3D view in hybrid PDF\n");
+            HPDF_Free(pdf);
+            return false;
+        }
+        
+        // Configure 3D view settings
+        HPDF_3DView_SetLighting(view, "CAD");
+        HPDF_3DView_SetBackgroundColor(view, backgroundR, backgroundG, backgroundB);
+        
+        // Set camera position (isometric-like view)
+        HPDF_3DView_SetCamera(view, 
+            10.0, 10.0, 10.0,  // camera position
+            0.0, 0.0, 0.0,     // target position  
+            50.0,              // distance
+            0.0);              // roll
+        
+        // Set this as the default view
+        HPDF_U3D_SetDefault3DView(u3d, "Default");
+        
+        // Step 9: Save final hybrid PDF
+        std::string pdfPath = outputPath + ".pdf";
+        HPDF_STATUS saveResult = HPDF_SaveToFile(pdf, pdfPath.c_str());
+        if (saveResult != HPDF_OK) {
+            Base::Console().error("Failed to save hybrid PDF file: error code %d\n", saveResult);
+            HPDF_Free(pdf);
+            return false;
+        }
+        
+        // Clean up
+        HPDF_Free(pdf);
+        
+        Base::Console().message("Hybrid 2D+3D PDF created successfully: %s\n", pdfPath.c_str());
+        Base::Console().message("  - Background: TechDraw page with all 2D elements\n");
+        Base::Console().message("  - 3D Content: Interactive annotation at ActiveView location\n");
+        
+        return true;
+    }
+    catch (const std::exception& e) {
+        Base::Console().error("Error creating hybrid 2D+3D PDF: %s\n", e.what());
+        return false;
+    }
 } 

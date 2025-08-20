@@ -66,6 +66,8 @@ namespace TechDrawGui {
 }
 #include <Gui/Selection/Selection.h>
 
+// No need for TechDraw forward declarations since we use App::DocumentObject* and string-based type checking
+
 #include "Command.h"
 #include "../App/Export3DPDFCore.h"
 
@@ -748,24 +750,221 @@ void StdCmdPrint3dPdf::activated(int iMsg)
         }
     }
     
-    // Now convert tessellation data to PRC format
-    Base::Console().message("Converting tessellation data to PRC format...\n");
-    Base::Console().message("PDF will use page dimensions: %.1f x %.1f points (%.1f x %.1f mm)\n",
+    // Check if we're in TechDraw context (we should be since we detected ActiveView)
+    App::DocumentObject* currentPage = nullptr;
+    std::string backgroundImagePath;
+    
+    // Find the current TechDraw page
+    if (activeDoc) {
+        std::vector<App::DocumentObject*> pages = activeDoc->getObjectsOfType(Base::Type::fromName("TechDraw::DrawPage"));
+        for (auto* pageObj : pages) {
+            if (pageObj && pageObj->isDerivedFrom(Base::Type::fromName("TechDraw::DrawPage"))) {
+                // Check if this page contains our ActiveView
+                App::Property* viewsProp = pageObj->getPropertyByName("Views");
+                if (viewsProp) {
+                    App::PropertyLinkList* viewsList = dynamic_cast<App::PropertyLinkList*>(viewsProp);
+                    if (viewsList) {
+                        const std::vector<App::DocumentObject*>& views = viewsList->getValues();
+                        for (auto* view : views) {
+                            if (view && view->isDerivedFrom(Base::Type::fromName("TechDraw::DrawViewImage"))) {
+                                std::string viewLabel = view->getNameInDocument();
+                                if (viewLabel.find("ActiveView") != std::string::npos) {
+                                    Gui::Document* guiDoc = Gui::Application::Instance->getDocument(view->getDocument());
+                                    if (guiDoc) {
+                                        Gui::ViewProvider* vp = guiDoc->getViewProvider(view);
+                                        if (vp) {
+                                            App::Property* enable3DProp = vp->getPropertyByName("Enable3DPDFExport");
+                                            if (enable3DProp) {
+                                                App::PropertyBool* enableBool = dynamic_cast<App::PropertyBool*>(enable3DProp);
+                                                if (enableBool && enableBool->getValue()) {
+                                                    currentPage = pageObj;  // Keep as App::DocumentObject*
+                                                    Base::Console().message("Found TechDraw page containing ActiveView: %s\n", 
+                                                                           currentPage->getNameInDocument());
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (currentPage) break;
+                    }
+                }
+            }
+        }
+    }
+    
+    // Render TechDraw page to background image for hybrid PDF
+    if (currentPage) {
+        Base::Console().message("Rendering complete TechDraw page as background...\n");
+        
+        // Use Python command to render TechDraw page to background image
+        // This avoids the need for heavy TechDraw includes
+        backgroundImagePath = outputPath + "_background.png";
+        
+        try {
+            Base::Console().message("Rendering TechDraw page to background using Python interface...\n");
+            
+            // Use Python to render the TechDraw page
+            std::string pythonCmd = 
+                "import FreeCAD as App\n"
+                "import FreeCADGui as Gui\n"
+                "try:\n"
+                "    import TechDrawGui\n"
+                "    App.Console.PrintMessage('TechDrawGui module imported successfully\\n')\n"
+                "except ImportError as e:\n"
+                "    App.Console.PrintError('Failed to import TechDrawGui: {}\\n'.format(str(e)))\n"
+                "    raise\n"
+                "# Import Qt bindings with fallbacks\n"
+                "try:\n"
+                "    from PySide6 import QtCore, QtGui\n"
+                "    App.Console.PrintMessage('Using PySide6 for Qt bindings\\n')\n"
+                "except ImportError:\n"
+                "    try:\n"
+                "        from PySide2 import QtCore, QtGui\n"
+                "        App.Console.PrintMessage('Using PySide2 for Qt bindings\\n')\n"
+                "    except ImportError:\n"
+                "        try:\n"
+                "            from PyQt5 import QtCore, QtGui\n"
+                "            App.Console.PrintMessage('Using PyQt5 for Qt bindings\\n')\n"
+                "        except ImportError:\n"
+                "            App.Console.PrintError('No Qt bindings found (PySide6/PySide2/PyQt5)\\n')\n"
+                "            raise ImportError('No Qt bindings available')\n"
+                "# Main rendering code\n"
+                "try:\n"
+                "    page_obj = App.getDocument('" + std::string(currentPage->getDocument()->getName()) + "').getObject('" + std::string(currentPage->getNameInDocument()) + "')\n"
+                "    if page_obj:\n"
+                "        App.Console.PrintMessage('Found page object: {}\\n'.format(page_obj.Name))\n"
+                "        \n"
+                "        # Use TechDrawGui.getSceneForPage - this is the proper way to get QGSPage\n"
+                "        qgs_page = TechDrawGui.getSceneForPage(page_obj)\n"
+                "        if qgs_page:\n"
+                "            App.Console.PrintMessage('Successfully got QGSPage: {}\\n'.format(type(qgs_page).__name__))\n"
+                "        else:\n"
+                "            App.Console.PrintWarning('Could not get QGSPage from TechDrawGui.getSceneForPage()\\n')\n"
+                "        \n"
+                "        # Proceed with rendering if we have a valid QGSPage\n"
+                "        if qgs_page:\n"
+                "            # Calculate page dimensions in mm (TechDraw's native unit)\n"
+                "            dpi = 300.0\n"
+                "            mm_to_points = 2.834645669\n"
+                "            page_width_mm = " + std::to_string(pageWidthPoints / 2.834645669) + "\n"
+                "            page_height_mm = " + std::to_string(pageHeightPoints / 2.834645669) + "\n"
+                "            \n"
+                "            # Calculate target image size\n"
+                "            dpmm = dpi / 25.4  # dots per mm\n"
+                "            image_width = int(page_width_mm * dpmm)\n"
+                "            image_height = int(page_height_mm * dpmm)\n"
+                "            \n"
+                "            # Create high-resolution image\n"
+                "            image = QtGui.QImage(image_width, image_height, QtGui.QImage.Format_RGB32)\n"
+                "            image.fill(QtCore.Qt.white)\n"
+                "            \n"
+                "            # Set up painter\n"
+                "            painter = QtGui.QPainter(image)\n"
+                "            painter.setRenderHint(QtGui.QPainter.Antialiasing, True)\n"
+                "            painter.setRenderHint(QtGui.QPainter.TextAntialiasing, True)\n"
+                "            painter.setRenderHint(QtGui.QPainter.SmoothPixmapTransform, True)\n"
+                "            \n"
+                "            # Get TechDraw's resolution factor for scene coordinates\n"
+                "            rez_factor = 10.0  # Default TechDraw resolution\n"
+                "            App.Console.PrintWarning('Could not get TechDraw Rez factor, using default: {}\\n'.format(rez_factor))\n"
+                "            \n"
+                "            # Calculate source rectangle in scene coordinates (like TechDraw does)\n"
+                "            # This matches PagePrinter.cpp line 240: QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height))\n"
+                "            source_width = page_width_mm * rez_factor\n"
+                "            source_height = page_height_mm * rez_factor\n"
+                "            source_rect = QtCore.QRectF(0.0, -source_height, source_width, source_height)\n"
+                "            \n"
+                "            # Target rectangle is the full image\n"
+                "            target_rect = QtCore.QRectF(0, 0, image_width, image_height)\n"
+                "            \n"
+                "            # Render the page\n"
+                "            qgs_page.render(painter, target_rect, source_rect)\n"
+                "            painter.end()\n"
+                "            \n"
+                "            # Save the image\n"
+                "            success = image.save('" + backgroundImagePath + "', 'PNG')\n"
+                "            if success:\n"
+                "                App.Console.PrintMessage('Background image saved: " + backgroundImagePath + "\\n')\n"
+                "                App.Console.PrintMessage('Image size: {}x{} pixels at {} DPI\\n'.format(image_width, image_height, dpi))\n"
+                "            else:\n"
+                "                App.Console.PrintWarning('Failed to save background image\\n')\n" 
+                "        else:\n"
+                "            App.Console.PrintWarning('Could not get GUI document\\n')\n"
+                "    else:\n"
+                "        App.Console.PrintWarning('Could not get page object\\n')\n"
+                "except Exception as e:\n"
+                "    App.Console.PrintError('Error rendering background: {}\\n'.format(str(e)))\n"
+                "    import traceback\n"
+                "    App.Console.PrintError('Traceback: {}\\n'.format(traceback.format_exc()))";
+            
+            // Execute the Python command
+            doCommand(Command::Doc, pythonCmd.c_str());
+            
+            // Wait for the Python command to complete
+            QCoreApplication::processEvents();
+            QThread::msleep(500); // Give more time for image rendering
+            
+            // Check if the background image was created
+            QFileInfo bgFile(QString::fromStdString(backgroundImagePath));
+            if (bgFile.exists() && bgFile.size() > 0) {
+                Base::Console().message("Successfully rendered TechDraw page to background image\n");
+            } else {
+                Base::Console().warning("Background image not created, will proceed with 3D-only export\n");
+                backgroundImagePath.clear();
+            }
+            
+        } catch (const std::exception& e) {
+            Base::Console().warning("Error in background rendering: %s\n", e.what());
+            backgroundImagePath.clear();
+        }
+    }
+    
+    // Now create hybrid 2D+3D PDF
+    Base::Console().message("Creating hybrid 2D+3D PDF...\n");
+    Base::Console().message("PDF dimensions: %.1f x %.1f points (%.1f x %.1f mm)\n",
                            pageWidthPoints, pageHeightPoints,
                            pageWidthPoints / 2.834645669, pageHeightPoints / 2.834645669);
-    Base::Console().message("PDF will use background color: (%.3f, %.3f, %.3f)\n",
+    Base::Console().message("3D background color: (%.3f, %.3f, %.3f)\n",
                            backgroundR, backgroundG, backgroundB);
-    Base::Console().message("PDF will use ActiveView positioning: (%.2f, %.2f) mm, scale: %.3f, size: %.2f x %.2f mm\n",
+    Base::Console().message("ActiveView positioning: (%.2f, %.2f) mm, scale: %.3f, size: %.2f x %.2f mm\n",
                            activeViewX, activeViewY, activeViewScale, activeViewWidth, activeViewHeight);
     
     if (!tessData.empty()) {
-        // Convert to PRC format using the user-selected path, page dimensions, background color, and ActiveView positioning
-        bool success = Export3DPDF::Export3DPDFCore::convertTessellationToPRC(tessData, outputPath, pageWidthPoints, pageHeightPoints, backgroundR, backgroundG, backgroundB, activeViewX, activeViewY, activeViewScale, activeViewWidth, activeViewHeight);
+        bool success = false;
+        
+        if (!backgroundImagePath.empty() && currentPage) {
+            // Use hybrid approach with TechDraw background
+            Base::Console().message("Creating hybrid 2D+3D PDF with TechDraw background\n");
+            success = Export3DPDF::Export3DPDFCore::createHybrid3DPDF(
+                tessData, outputPath, backgroundImagePath,
+                pageWidthPoints, pageHeightPoints,
+                activeViewX, activeViewY, activeViewScale,
+                activeViewWidth, activeViewHeight,
+                backgroundR, backgroundG, backgroundB
+            );
+        } else {
+            // Fallback to original 3D-only approach
+            Base::Console().message("Creating 3D-only PDF (TechDraw background rendering failed or unavailable)\n");
+            success = Export3DPDF::Export3DPDFCore::convertTessellationToPRC(
+                tessData, outputPath, pageWidthPoints, pageHeightPoints,
+                backgroundR, backgroundG, backgroundB, activeViewX, activeViewY,
+                activeViewScale, activeViewWidth, activeViewHeight
+            );
+        }
         
         if (success) {
-            Base::Console().message("3D PDF export completed successfully: %s.pdf\n", outputPath.c_str());
+            Base::Console().message("Hybrid 2D+3D PDF export completed successfully: %s.pdf\n", outputPath.c_str());
+            
+            // Clean up temporary background image
+            if (!backgroundImagePath.empty()) {
+                std::remove(backgroundImagePath.c_str());
+                Base::Console().message("Cleaned up temporary background image\n");
+            }
         } else {
-            Base::Console().error("3D PDF export failed\n");
+            Base::Console().error("Hybrid 2D+3D PDF export failed\n");
         }
     } else {
         Base::Console().message("No tessellation data available for 3D PDF conversion\n");
