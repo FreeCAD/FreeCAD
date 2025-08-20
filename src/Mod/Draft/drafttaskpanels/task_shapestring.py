@@ -207,8 +207,10 @@ class ShapeStringTaskPanel:
             Gui.HintManager.hide()
         else:
             Gui.HintManager.show(
-                Gui.InputHint(translate("draft", "%1 pick point"), 
-                Gui.UserInput.MouseLeft)
+                Gui.InputHint(
+                  translate("draft", "%1 pick point"), 
+                  Gui.UserInput.MouseLeft
+                )
             )
 
 
