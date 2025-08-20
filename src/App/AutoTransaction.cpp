@@ -112,7 +112,26 @@ int Application::setActiveTransaction(const char* name, bool persist)
         name = "Command";
     }
 
-    FC_WARN("Setting a global transaction with name='" << name << "', persist=" << persist);
+    if (_pActiveDoc != nullptr) {
+        return _pActiveDoc->setActiveTransaction(name);
+    }
+    return openGlobalTransaction(name);
+}
+
+const char* Application::getActiveTransaction(int* id) const
+{
+    if (id != nullptr) {
+        *id = _globalTransactionID;
+    }
+    return _globalTransactionID != 0 ? getTransactionName(_globalTransactionID).c_str() : nullptr;
+}
+int Application::openGlobalTransaction(const char* name)
+{
+    if (!name || !name[0]) {
+        name = "Command";
+    }
+
+    FC_WARN("Setting a global transaction with name='" << name);
     if (_globalTransactionID != 0 && transactionTmpName(_globalTransactionID)) {
         setTransactionName(_globalTransactionID, name);
     } else {
@@ -130,14 +149,6 @@ int Application::setActiveTransaction(const char* name, bool persist)
     }
 
     return _globalTransactionID;
-}
-
-const char* Application::getActiveTransaction(int* id) const
-{
-    if (id != nullptr) {
-        *id = _globalTransactionID;
-    }
-    return _globalTransactionID ? getTransactionName(_globalTransactionID).c_str() : nullptr;
 }
 int Application::getGlobalTransaction() const
 {
@@ -239,17 +250,16 @@ void Application::returnToken(int tid)
 bool Application::closeActiveTransaction(bool abort, int id)
 {
     if (id == 0) {
-        id = _globalTransactionID;
+        if (_pActiveDoc != nullptr && _pActiveDoc->getBookedTransactionID() != 0) {
+            id = _pActiveDoc->getBookedTransactionID();
+        } else {
+            id = _globalTransactionID;
+        }
     }
-    if (id == 0 || id == currentlyClosingId) {
+    if (id == 0 || id == currentlyClosingID) {
         return false;
     }
-    currentlyClosingId = id;
-
-    // if (!transactionIsActive(id)) {
-    //     FC_WARN("ignore close transaction, is not active");
-    //     return;        
-    // }
+    currentlyClosingID = id;
 
     auto foundDesc = _activeTransactionDescriptions.find(id);
     if (!abort && foundDesc != _activeTransactionDescriptions.end() && foundDesc->second.numTokens != 0) {
@@ -265,13 +275,13 @@ bool Application::closeActiveTransaction(bool abort, int id)
         if(v.second->isTransactionLocked() || v.second->transacting()) {
             std::cerr<<"Transaction locked..\n";
             FC_LOG("pending " << (abort ? "abort" : "close") << " transaction");
-            currentlyClosingId = 0;
+            currentlyClosingID = 0;
             return false;
         }
         if(v.second->transacting()) {
             std::cerr<<"Transaction blocked..\n";
             FC_LOG("pending " << (abort ? "abort" : "close") << " transaction");
-            currentlyClosingId = 0;
+            currentlyClosingID = 0;
             return false;
         }
         docsToPoke.push_back(v.second);
@@ -293,7 +303,7 @@ bool Application::closeActiveTransaction(bool abort, int id)
             doc->_commitTransaction();
         }
     }
-    currentlyClosingId = 0;
+    currentlyClosingID = 0;
 
     return true;
 }
