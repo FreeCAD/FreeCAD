@@ -12,9 +12,12 @@ PROPOSED
 | In                                                      | Out                                                      |
 | ------------------------------------------------------- | -------------------------------------------------------- |
 | Create a linking move generator                         | Adding new circular hole operation (Bore,  reaming, etc) |
-| Improved target selection                               |                                                          |
+| Improved target selection and management                |  Improve simulator to visualize circular hole processing |
 | refactor circular hole base to use linking generator    |                                                          |
 | Improve Base post-processors to generate canned cycles  |                                                          |
-| Improve simulator to visualize circular hole processing |                                                          |
+| Improve feedrate calculation for helix and threadmill   |                                                          |
+| Add target order column to target list                  |                                                          |
+
+
 # Related Epics
 - Helix Work
