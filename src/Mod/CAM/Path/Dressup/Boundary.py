@@ -75,15 +75,23 @@ class DressupPathBoundary(object):
         )
         obj.Inside = True
         obj.addProperty(
-            "App::PropertyBool",
-            "KeepToolDown",
+            "App::PropertyLength",
+            "RetractThreshold",
             "Boundary",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Keep tool down.",
+                "Set distance which will attempts to avoid unnecessary retractions.",
             ),
         )
-        obj.KeepToolDown = False
+        obj.addProperty(
+            "App::PropertyBool",
+            "ApplyToRestMachining",
+            "Boundary",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Apply boundary to Rest Machining.",
+            ),
+        )
 
         self.obj = obj
         self.safeHeight = None
@@ -101,14 +109,24 @@ class DressupPathBoundary(object):
 
     def onDocumentRestored(self, obj):
         self.obj = obj
-        if not hasattr(obj, "KeepToolDown"):
+        if not hasattr(obj, "RetractThreshold"):
             obj.addProperty(
-                "App::PropertyBool",
-                "KeepToolDown",
+                "App::PropertyLength",
+                "RetractThreshold",
                 "Boundary",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Keep tool down.",
+                    "Set distance which will attempts to avoid unnecessary retractions.",
+                ),
+            )
+        if not hasattr(obj, "ApplyToRestMachining"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "ApplyToRestMachining",
+                "Boundary",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Apply boundary to Rest Machining.",
                 ),
             )
 
@@ -126,7 +144,7 @@ class DressupPathBoundary(object):
         return True
 
     def execute(self, obj):
-        pb = PathBoundary(obj.Base, obj.Stock.Shape, obj.Inside, obj.KeepToolDown)
+        pb = PathBoundary(obj.Base, obj.Stock.Shape, obj.Inside, obj.RetractThreshold)
         obj.Path = pb.execute()
 
 
@@ -140,7 +158,7 @@ class PathBoundary:
     the provided boundary shape.
     """
 
-    def __init__(self, baseOp, boundaryShape, inside=True, keepToolDown=False):
+    def __init__(self, baseOp, boundaryShape, inside=True, retractThreshold=0):
         self.baseOp = baseOp
         self.boundary = boundaryShape
         self.inside = inside
@@ -148,17 +166,16 @@ class PathBoundary:
         self.clearanceHeight = None
         self.strG0ZsafeHeight = None
         self.strG0ZclearanceHeight = None
-        self.keepToolDown = keepToolDown
+        self.retractThreshold = retractThreshold
 
     def boundaryCommands(
-        self, begin, end, verticalFeed, horizFeed=None, keepToolDown=False, isStartMovements=False
+        self, begin, end, vertFeed, horizFeed=None, retractThreshold=0, isStartMovements=False
     ):
         Path.Log.track(_vstr(begin), _vstr(end))
         if end and Path.Geom.pointsCoincide(begin, end):
             return []
         cmds = []
-
-        if isStartMovements or not keepToolDown:
+        if isStartMovements or not (end and begin.distanceToPoint(end) < self.retractThreshold):
             if begin.z < self.safeHeight:
                 cmds.append(self.strG0ZsafeHeight)
             if begin.z < self.clearanceHeight:
@@ -168,13 +185,13 @@ class PathBoundary:
                 if end.z < self.clearanceHeight:
                     cmds.append(Path.Command("G0", {"Z": max(self.safeHeight, end.z)}))
                 if end.z < self.safeHeight:
-                    cmds.append(Path.Command("G1", {"Z": end.z, "F": verticalFeed}))
+                    cmds.append(Path.Command("G1", {"Z": end.z, "F": vertFeed}))
         else:
             if end:
                 if horizFeed and Path.Geom.isRoughly(begin.z, end.z, 0.001):
                     speed = horizFeed
                 else:
-                    verticalFeed
+                    speed = vertFeed
                 cmds.append(Path.Command("G1", {"X": end.x, "Y": end.y, "Z": end.z, "F": speed}))
 
         return cmds
@@ -220,7 +237,7 @@ class PathBoundary:
                     outside = edge.cut(self.boundary).Edges
                     if 1 == len(inside) and 0 == len(outside):
                         commands.append(cmd)
-                if edge and not cmd.Name in Path.Geom.CmdMoveDrill:
+                if edge and cmd.Name not in Path.Geom.CmdMoveDrill:
                     inside = edge.common(self.boundary).Edges
                     outside = edge.cut(self.boundary).Edges
                     if not self.inside:  # UI "inside boundary" param
@@ -269,7 +286,7 @@ class PathBoundary:
                                                 pos,
                                                 tc.VertFeed.Value,
                                                 tc.HorizFeed.Value,
-                                                self.keepToolDown,
+                                                self.retractThreshold,
                                                 isStartMovements,
                                             )
                                         )
@@ -282,13 +299,15 @@ class PathBoundary:
                                     commands.extend(
                                         Path.Geom.cmdsForEdge(
                                             e,
-                                            flip,
-                                            False,
-                                            50,
-                                            tc.HorizFeed.Value,
-                                            tc.VertFeed.Value,
+                                            flip=flip,
+                                            approximation=False,
+                                            segm=50,
+                                            hSpeed=tc.HorizFeed.Value,
+                                            vSpeed=tc.VertFeed.Value,
                                         )
                                     )
+                                    if cmd.Name in ("G0", "G00"):
+                                        commands[-1].Name = "G0"
                                 inside.remove(e)
                                 pos = newPos
                                 lastExit = newPos
