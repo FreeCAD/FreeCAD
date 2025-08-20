@@ -24,6 +24,8 @@
 #define DRAWINGGUI_VIEWPROVIDERIMAGE_H
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
+#include <App/PropertyStandard.h>
+#include <Base/Color.h>
 
 #include <Mod/TechDraw/App/DrawViewImage.h>
 
@@ -44,6 +46,10 @@ public:
     ~ViewProviderImage() override;
 
     App::PropertyBool  Crop;              //crop to feature width x height
+    App::PropertyBool  Enable3DPDFExport; //enable 3D PDF export for this view
+    App::PropertyBool  NoBackground;       //use no background (transparent)
+    App::PropertyBool  SolidBackground;    //use solid background color
+    App::PropertyColor BackgroundColor;    //background color when SolidBackground is true
 
     bool useNewSelectionModel() const override {return false;}
     /// returns a list of all possible modes

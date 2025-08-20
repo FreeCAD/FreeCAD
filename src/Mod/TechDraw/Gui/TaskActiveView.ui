@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Active View</string>
+   <string>ActiveView to TD View</string>
   </property>
   <property name="windowIcon">
    <iconset resource="Resources/TechDraw.qrc">
@@ -41,8 +41,7 @@
         </sizepolicy>
        </property>
        <property name="toolTip">
-        <string>Crops captured image to this width</string>
-
+        <string>If Crop Image is checked, crop captured image to this width.</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -90,17 +89,30 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Crop to height</string>
+        <string>Crop To Height</string>
        </property>
       </widget>
      </item>
      <item row="5" column="0">
       <widget class="QCheckBox" name="cbUse3d">
        <property name="text">
-        <string>Use 3D background</string>
+        <string>Use 3D Background</string>
        </property>
        <property name="autoExclusive">
         <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QCheckBox" name="cb3DPDFExport">
+       <property name="text">
+        <string>3D PDF Export</string>
+       </property>
+       <property name="toolTip">
+        <string>Enable 3D PDF export functionality</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -113,8 +125,7 @@
         </sizepolicy>
        </property>
        <property name="toolTip">
-        <string>Crops captured image to this height</string>
-
+        <string>If Crop Image is checked, crop captured image to this height.</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -136,7 +147,7 @@
         <string>Paint background yes/no</string>
        </property>
        <property name="text">
-        <string>Solid background</string>
+        <string>Solid Background</string>
        </property>
        <property name="autoExclusive">
         <bool>true</bool>
@@ -146,7 +157,7 @@
      <item row="3" column="0">
       <widget class="QCheckBox" name="cbNoBG">
        <property name="text">
-        <string>No background</string>
+        <string>No Background</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -159,14 +170,14 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Crop to width</string>
+        <string>Crop To Width</string>
        </property>
       </widget>
      </item>
      <item row="0" column="0">
       <widget class="QCheckBox" name="cbCrop">
        <property name="text">
-        <string>Crop image</string>
+        <string>Crop Image</string>
        </property>
       </widget>
      </item>
