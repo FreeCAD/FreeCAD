@@ -26,6 +26,7 @@
 
 #include <Base/Parameter.h>
 #include <QCache>
+#include <QEvent>
 #include <QFileInfo>
 #include <QImage>
 #include <QPushButton>
@@ -55,8 +56,8 @@ private:
     const int textspacing = 2;
     QPushButton styleButton;
 
-    static QCache<QString, QPixmap> _thumbnailCache; // cache key structure: "path:modtime:size"
-    static constexpr const int CACHE_SIZE_MB = 50; // 50MB cache limit
+    static QCache<QString, QPixmap> _thumbnailCache;  // cache key structure: "path:modtime:size"
+    static constexpr const int CACHE_SIZE_MB = 50;    // 50MB cache limit
 };
 
 

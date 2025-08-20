@@ -35,6 +35,7 @@
 #include <QApplication>
 #include <QPushButton>
 #include <QString>
+#include <QAbstractItemView>
 #endif
 
 #include "FileCardDelegate.h"
@@ -42,6 +43,8 @@
 #include "App/Application.h"
 #include <Base/Color.h>
 #include <Base/Console.h>
+#include <Gui/Application.h>
+#include <Gui/MainWindow.h>
 
 using namespace Start;
 
@@ -56,12 +59,14 @@ FileCardDelegate::FileCardDelegate(QObject* parent)
 
     // Initialize cache size based on thumbnail size (only once)
     if (_thumbnailCache.maxCost() == 0) {
-        int thumbnailSize = static_cast<int>(_parameterGroup->GetInt("FileThumbnailIconsSize", 128));
-        int thumbnailMemory = thumbnailSize * thumbnailSize * 4; // rgba
+        int thumbnailSize =
+            static_cast<int>(_parameterGroup->GetInt("FileThumbnailIconsSize", 128));
+        int thumbnailMemory = thumbnailSize * thumbnailSize * 4;  // rgba
         int maxCacheItems = (CACHE_SIZE_MB * 1024 * 1024) / thumbnailMemory;
         _thumbnailCache.setMaxCost(maxCacheItems);
-        Base::Console().log("FileCardDelegate: Initialized thumbnail cache for %d items (%d MB)\n", 
-                           maxCacheItems, CACHE_SIZE_MB);
+        Base::Console().log("FileCardDelegate: Initialized thumbnail cache for %d items (%d MB)\n",
+                            maxCacheItems,
+                            CACHE_SIZE_MB);
     }
 }
 
@@ -168,7 +173,7 @@ QPixmap FileCardDelegate::generateThumbnail(const QString& path) const
     QString cacheKey = getCacheKey(path, thumbnailSize);
     if (!cacheKey.isEmpty()) {
         if (QPixmap* cachedThumbnail = _thumbnailCache.object(cacheKey)) {
-            return *cachedThumbnail; // cache hit - we bail out
+            return *cachedThumbnail;  // cache hit - we bail out
         }
     }
 
@@ -215,9 +220,9 @@ QPixmap FileCardDelegate::loadAndCacheThumbnail(const QString& path, int thumbna
             thumbnail = pixmapToSizedQImage(image, thumbnailSize);
         }
         else {
-            Base::Console().log("FileCardDelegate: Failed to load scaled image %s: %s\n", 
-                              path.toStdString().c_str(), 
-                              reader.errorString().toStdString().c_str());
+            Base::Console().log("FileCardDelegate: Failed to load scaled image %s: %s\n",
+                                path.toStdString().c_str(),
+                                reader.errorString().toStdString().c_str());
         }
     }
 
