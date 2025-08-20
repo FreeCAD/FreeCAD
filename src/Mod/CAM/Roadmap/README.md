@@ -67,6 +67,7 @@ We agree these things should get collective attention because they are larger th
 | Epic                                                                            | Description                                                         | Status   |
 | ------------------------------------------------------------------------------- | ------------------------------------------------------------------- | -------- |
 | [Better Tool Library](Epics/Better%20Tool%20Library.md)                         | Implement the 'Better Tool Library' approach to tool management     | Active   |
+| [Improve Core Dressups](Epics/ImproveCoreDressups.md)                           | Improve the user experience and feature completion of core dressups | Active   |
 
 # Priorities
 *(When evaluating Pull Requests, the following priorities will be considered)*
