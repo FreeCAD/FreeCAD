@@ -1573,7 +1573,6 @@ void PropertyLinkSub::onContainerRestored()
     for (std::size_t i = 0; i < _cSubList.size(); ++i) {
         _registerElementReference(_pcLinkSub, _cSubList[i], _ShadowSubList[i]);
     }
-    updateElementReferences(_pcLinkSub);
 }
 
 void PropertyLinkSub::updateElementReference(DocumentObject* feature, bool reverse, bool notify)
