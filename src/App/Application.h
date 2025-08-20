@@ -191,27 +191,31 @@ public:
     bool isClosingAll() const;
     //@}
 
-    /** @name Application-wide trandaction setting */
+    /** @name Transaction setting */
     //@{
-    /** Setup a pending application-wide active transaction
+    /** Setup a pending active transaction
      *
      * @param name: new transaction name
-     * @param persist: by default, if the calling code is inside any invocation
-     * of a command, it will be auto closed once all command within the current
-     * stack exists. To disable auto closing, set persist=true
      *
      * @return The new transaction ID.
      *
-     * Call this function to setup an application-wide transaction. All current
-     * pending transactions of opening documents will be committed first.
-     * However, no new transaction is created by this call. Any subsequent
+     * Call this function to setup a transaction in the currently active document
+     * if no document is active, a global transaction is created. If the current 
+     * active document already has a transaction setup it will either commit the
+     * current transaction or rename it, depending on the tmpName flag of the 
+     * currently setup transaction. No new transaction is created by this call. Any subsequent
      * changes in any current opening document will auto create a transaction
      * with the given name and ID. If more than one document is changed, the
      * transactions will share the same ID, and will be undo/redo together.
      */
-    int setActiveTransaction(const char *name, bool persist=false);
-    /// Return the current active transaction name and ID
+
+     int setActiveTransaction(const char *name, bool persist=false);
+
+    /// Return the current global transaction name and ID if such a global transaction is
+    /// setup (uncommon)
     const char *getActiveTransaction(int *tid=nullptr) const;
+
+    int openGlobalTransaction(const char *name);
     int getGlobalTransaction() const;
 
     bool transactionIsActive(int tid) const;
@@ -708,7 +712,7 @@ private:
     // std::string _activeTransactionName;
     // int _activeTransactionID{0};
     // int _activeTransactionGuard{0};
-    int currentlyClosingId {0};
+    int currentlyClosingID {0};
 
     // This is the transaction ID for a global transaction
     // Documents will take this ID if it is non-zero
