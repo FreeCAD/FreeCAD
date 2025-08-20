@@ -386,8 +386,9 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
 
     Client.drawingParameters.coinFontSize =
         std::lround(sketcherfontSize * devicePixelRatio);  // in pixels
-    Client.drawingParameters.labelFontSize = std::lround(
-        sketcherfontSize * devicePixelRatio  * 72.0f / dpi);  // in points, as SoDatumLabel uses points
+    Client.drawingParameters.labelFontSize =
+        std::lround(sketcherfontSize * devicePixelRatio * 72.0f
+                    / dpi);  // in points, as SoDatumLabel uses points
     Client.drawingParameters.constraintIconSize =
         std::lround(0.8 * sketcherfontSize * devicePixelRatio);
 
@@ -1235,4 +1236,3 @@ SoSeparator* EditModeCoinManager::getRootEditNode()
 {
     return editModeScenegraphNodes.EditRoot;
 }
-
