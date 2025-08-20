@@ -69,7 +69,6 @@ We agree these things should get collective attention because they are larger th
 | Fixing user pain points                                                         | Address the problems listed above in the Pain Points section        | Active   |
 | [Better Tool Library](Epics/Better%20Tool%20Library.md)                         | Implement the 'Better Tool Library' approach to tool management     | Active   |
 
-
 # Priorities
 *(When evaluating Pull Requests, the following priorities will be considered)*
 
