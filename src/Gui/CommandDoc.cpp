@@ -1299,16 +1299,31 @@ StdCmdSelectAll::StdCmdSelectAll()
     sWhatsThis    = "Std_SelectAll";
     sStatusTip    = sToolTipText;
     sPixmap       = "edit-select-all";
-    //sAccel        = "Ctrl+A"; // supersedes shortcuts for text edits
+    sAccel        = "Ctrl+A"; // supersedes shortcuts for text edits
+    
+    // this cmd only alters selection, not doc or 3d view
+    eType         = AlterSelection;
 }
 
 void StdCmdSelectAll::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    
+    auto* activeDoc = Application::Instance->activeDocument();
+    if (activeDoc) {
+        auto* editingVP = activeDoc->getInEdit();
+        if (editingVP && editingVP->selectAll()) {
+            return;
+        }
+    }
+    
+    // fallback to doc level select
     SelectionSingleton& rSel = Selection();
     App::Document* doc = App::GetApplication().getActiveDocument();
-    std::vector<App::DocumentObject*> objs = doc->getObjectsOfType(App::DocumentObject::getClassTypeId());
-    rSel.setSelection(doc->getName(), objs);
+    if (doc) {
+        std::vector<App::DocumentObject*> objs = doc->getObjectsOfType(App::DocumentObject::getClassTypeId());
+        rSel.setSelection(doc->getName(), objs);
+    }
 }
 
 bool StdCmdSelectAll::isActive()

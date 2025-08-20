@@ -2636,7 +2636,120 @@ void ViewProviderSketch::updateColor()
 
 bool ViewProviderSketch::selectAll()
 {
-    // TODO: eventually implement "select all" logic
+    // logic of this func has been stolen from partly from doBoxSelection()
+    if (!isInEditMode()) {
+        return false;
+    }
+
+    Sketcher::SketchObject* sketchObject = getSketchObject();
+    if (!sketchObject) {
+        return false;
+    }
+
+    Gui::Selection().clearSelection();
+
+    int intGeoCount = sketchObject->getHighestCurveIndex() + 1;
+    int extGeoCount = sketchObject->getExternalGeometryCount();
+
+    const std::vector<Part::Geometry*> geomlist = sketchObject->getCompleteGeometry();
+
+    int VertexId = -1;
+    int GeoId = 0;
+
+    for (std::vector<Part::Geometry*>::const_iterator it = geomlist.begin();
+         it != geomlist.end() - 2; // -2 to exclude H_Axis and V_Axis
+         ++it, ++GeoId) {
+
+        if (GeoId >= intGeoCount) {
+            GeoId = -extGeoCount;
+        }
+
+        if ((*it)->is<Part::GeomPoint>()) {
+            VertexId++;
+            std::stringstream ss;
+            ss << "Vertex" << VertexId + 1;
+            addSelection2(ss.str());
+        }
+        else if ((*it)->is<Part::GeomLineSegment>()) {
+            VertexId++; // start
+            std::stringstream ss1;
+            ss1 << "Vertex" << VertexId + 1;
+            addSelection2(ss1.str());
+
+            VertexId++; // end
+            std::stringstream ss2;
+            ss2 << "Vertex" << VertexId + 1;
+            addSelection2(ss2.str());
+
+            std::stringstream ss_edge;
+            if (GeoId >= 0) {
+                ss_edge << "Edge" << GeoId + 1;
+            } else {
+                ss_edge << "ExternalEdge" << -GeoId - 1;
+            }
+            addSelection2(ss_edge.str());
+        }
+        else if ((*it)->isDerivedFrom<Part::GeomConic>()) {
+            VertexId++;
+            std::stringstream ss;
+            ss << "Vertex" << VertexId + 1;
+            addSelection2(ss.str());
+
+            std::stringstream ss_edge;
+            if (GeoId >= 0) {
+                ss_edge << "Edge" << GeoId + 1;
+            } else {
+                ss_edge << "ExternalEdge" << -GeoId - 1;
+            }
+            addSelection2(ss_edge.str());
+        }
+        else if ((*it)->isDerivedFrom<Part::GeomCurve>()) {
+            if (auto arc = dynamic_cast<const Part::GeomArcOfCircle*>(*it)) {
+                VertexId++; // start
+                std::stringstream ss1;
+                ss1 << "Vertex" << VertexId + 1;
+                addSelection2(ss1.str());
+
+                VertexId++; // end
+                std::stringstream ss2;
+                ss2 << "Vertex" << VertexId + 1;
+                addSelection2(ss2.str());
+
+                VertexId++; // center
+                std::stringstream ss3;
+                ss3 << "Vertex" << VertexId + 1;
+                addSelection2(ss3.str());
+            } else {
+                // for other curves, select available vertices
+                VertexId++;
+                std::stringstream ss;
+                ss << "Vertex" << VertexId + 1;
+                addSelection2(ss.str());
+            }
+
+            std::stringstream ss_edge;
+            if (GeoId >= 0) {
+                ss_edge << "Edge" << GeoId + 1;
+            } else {
+                ss_edge << "ExternalEdge" << -GeoId - 1;
+            }
+            addSelection2(ss_edge.str());
+        }
+    }
+
+    // select constraints too
+    const std::vector<Sketcher::Constraint*>& constraints = sketchObject->Constraints.getValues();
+    for (size_t i = 0; i < constraints.size(); ++i) {
+        std::stringstream ss;
+        ss << "Constraint" << i + 1;
+        addSelection2(ss.str());
+    }
+
+    // get root point if they exist
+    std::stringstream ss_root;
+    ss_root << "RootPoint";
+    addSelection2(ss_root.str());
+
     return true;
 }
 
