@@ -106,7 +106,7 @@ void TaskActiveView::setUiPrimary()
 
 void TaskActiveView::blockButtons(bool b) { Q_UNUSED(b); }
 
-/// Helper function to get all visible 3D objects that have Shape property
+
 std::vector<App::DocumentObject*> getVisible3DObjects(App::Document* doc, Gui::Document* guiDoc)
 {
     std::vector<App::DocumentObject*> visibleObjects;
@@ -241,11 +241,10 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
         imageHeight = Rez::guiX(ui->qsbHeight->rawValue());
     }
 
-    // Get the 3D PDF Export option state
     bool enable3DPDFExport = ui->cb3DPDFExport->isChecked();
-    if (enable3DPDFExport) {
-        Base::Console().message("3D PDF Export is enabled for this ActiveView\n");
-    }
+    // if (enable3DPDFExport) {
+    //     Base::Console().message("3D PDF Export is enabled for this ActiveView\n");
+    // }
 
     QImage image(imageWidth, imageHeight,
                  QImage::Format_RGB32);    //arbitrary initial image size.
@@ -272,7 +271,6 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
     
     // Set the Source property to reference the captured 3D objects
     newImg->Source.setValues(visible3DObjects);
-    Base::Console().message("ActiveView created with %d 3D object references\n", visible3DObjects.size());
     
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(newImg->getDocument());
     if (guiDoc) {
@@ -292,10 +290,6 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
                 Base::Color freecadColor(bgColor.redF(), bgColor.greenF(), bgColor.blueF(), bgColor.alphaF());
                 vpImage->BackgroundColor.setValue(freecadColor);
                 
-                Base::Console().message("ActiveView background settings: NoBackground=%s, SolidBackground=%s, Color=(%.2f,%.2f,%.2f)\n",
-                                       ui->cbNoBG->isChecked() ? "true" : "false",
-                                       ui->cbbg->isChecked() ? "true" : "false",
-                                       bgColor.redF(), bgColor.greenF(), bgColor.blueF());
             }
         }
     }

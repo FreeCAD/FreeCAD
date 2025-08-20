@@ -1950,11 +1950,9 @@ void CmdTechDrawExportPagePDF::activated(int iMsg)
                             
                             // Get 3D objects from the ActiveView's Source property
                             std::vector<App::DocumentObject*> objects3D = imageView->get3DObjects();
-                            Base::Console().message("ActiveView contains %d 3D objects:\n", objects3D.size());
                             
                             // Backward compatibility: if no objects in Source property, fall back to document-wide search
                             if (objects3D.empty()) {
-                                Base::Console().message("ActiveView has no Source objects (legacy ActiveView), falling back to document search\n");
                                 Gui::Document* guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
                                 if (guiDoc) {
                                     auto allObjects = page->getDocument()->getObjects();
@@ -1968,24 +1966,8 @@ void CmdTechDrawExportPagePDF::activated(int iMsg)
                                             }
                                         }
                                     }
-                                    Base::Console().message("Found %d visible 3D objects via fallback search\n", objects3D.size());
                                 }
                             }
-                            
-                            // Validate objects have Shape property as requested
-                            for (auto* obj : objects3D) {
-                                App::Property* shapeProp = obj->getPropertyByName("Shape");
-                                if (shapeProp) {
-                                    Base::Console().message("  - %s (%s) has Shape property\n", 
-                                                           obj->Label.getValue(), 
-                                                           obj->getTypeId().getName());
-                                } else {
-                                    Base::Console().warning("  - %s (%s) missing Shape property\n", 
-                                                           obj->Label.getValue(), 
-                                                           obj->getTypeId().getName());
-                                }
-                            }
-                            break;
                         }
                     }
                 }
@@ -2004,7 +1986,6 @@ void CmdTechDrawExportPagePDF::activated(int iMsg)
         } else {
             Base::Console().error("Std_Print3dPdf command not found even after loading Export3DPDFGui\n");
         }
-        Base::Console().message("Ready for 3d pdf export\n");
     } else {
         Gui::Command* cmd = Gui::Application::Instance->commandManager().getCommandByName("Std_PrintPdf");
         

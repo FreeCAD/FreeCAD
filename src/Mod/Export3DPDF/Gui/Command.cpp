@@ -55,7 +55,6 @@
 #include <Gui/Document.h>
 #include <Gui/ViewProvider.h>
 
-// Forward declarations to avoid heavy TechDraw dependencies
 namespace TechDraw {
     class DrawPage;
     class DrawViewImage;
@@ -66,8 +65,6 @@ namespace TechDrawGui {
 }
 #include <Gui/Selection/Selection.h>
 
-// No need for TechDraw forward declarations since we use App::DocumentObject* and string-based type checking
-
 #include "Command.h"
 #include "../App/Export3DPDFCore.h"
 
@@ -75,18 +72,14 @@ FC_LOG_LEVEL_INIT("Command", false)
 
 using namespace Gui;
 
-// Helper function to parse FreeCAD color format "(r, g, b, a)" into double array
 static void parseFreeCADColor(const std::string& colorStr, double* rgba) {
-    // Default values if parsing fails
     rgba[0] = 0.5; rgba[1] = 0.5; rgba[2] = 0.5; rgba[3] = 1.0;
     
-    // Remove parentheses and spaces
     std::string cleanStr = colorStr;
     cleanStr.erase(std::remove(cleanStr.begin(), cleanStr.end(), '('), cleanStr.end());
     cleanStr.erase(std::remove(cleanStr.begin(), cleanStr.end(), ')'), cleanStr.end());
     cleanStr.erase(std::remove(cleanStr.begin(), cleanStr.end(), ' '), cleanStr.end());
     
-    // Split by comma and parse values
     std::istringstream iss(cleanStr);
     std::string token;
     int index = 0;
@@ -94,15 +87,12 @@ static void parseFreeCADColor(const std::string& colorStr, double* rgba) {
         try {
             rgba[index] = std::stod(token);
         } catch (const std::exception&) {
-            // Keep default value if parsing fails
         }
         index++;
     }
 }
 
-//===========================================================================
-// Std_Print3dPdf
-//===========================================================================
+
 
 StdCmdPrint3dPdf::StdCmdPrint3dPdf()
   :Command("Std_Print3dPdf")
@@ -112,7 +102,7 @@ StdCmdPrint3dPdf::StdCmdPrint3dPdf()
     sToolTipText  = QT_TR_NOOP("Export the document as 3D PDF");
     sWhatsThis    = "Std_Print3dPdf";
     sStatusTip    = QT_TR_NOOP("Export the document as 3D PDF");
-    sPixmap       = "Std_PrintPdf"; // Using same icon as regular PDF for now
+    sPixmap       = "Std_PrintPdf";
     eType         = 0;
 }
 
@@ -120,38 +110,28 @@ void StdCmdPrint3dPdf::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     
-    // Check if we're in a TechDraw page context
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     std::vector<App::DocumentObject*> selection;
-    double pageWidthPoints = 595.276;   // A4 width default
-    double pageHeightPoints = 841.89;   // A4 height default
-    double backgroundR = 0.5, backgroundG = 0.5, backgroundB = 0.5;  // Default gray background
+    double pageWidthPoints = 595.276;
+    double pageHeightPoints = 841.89;
+    double backgroundR = 0.5, backgroundG = 0.5, backgroundB = 0.5;
     
-    // Variables for ActiveView positioning and scaling
     double activeViewX = 0.0, activeViewY = 0.0, activeViewScale = 1.0;
     double activeViewWidth = 100.0, activeViewHeight = 100.0;
     if (activeDoc) {
-        // Check if the document contains TechDraw pages (indicating TechDraw context)
         std::vector<App::DocumentObject*> pages = activeDoc->getObjectsOfType(Base::Type::fromName("TechDraw::DrawPage"));
         if (!pages.empty()) {
-            Base::Console().message("Found %d TechDraw page(s)\n", pages.size());
             
-            // Iterate through pages to find ActiveViews with Enable3DPDFExport
             for (auto* pageObj : pages) {
-                // Use dynamic_cast with base class to avoid heavy includes
                 if (!pageObj || !pageObj->isDerivedFrom(Base::Type::fromName("TechDraw::DrawPage"))) {
                     continue;
                 }
                 
-                Base::Console().message("Checking page: %s\n", pageObj->getNameInDocument());
-                
-                // Use property access instead of direct method calls to avoid includes
                 App::Property* viewsProp = pageObj->getPropertyByName("Views");
                 if (!viewsProp) {
                     continue;
                 }
                 
-                // Get views using property system to avoid header dependencies
                 App::PropertyLinkList* viewsList = dynamic_cast<App::PropertyLinkList*>(viewsProp);
                 if (!viewsList) {
                     continue;
@@ -160,31 +140,24 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                 const std::vector<App::DocumentObject*>& views = viewsList->getValues();
                 
                 for (auto* view : views) {
-                    // Check if this is a DrawViewImage (ActiveView is a type of DrawViewImage)
                     if (!view || !view->isDerivedFrom(Base::Type::fromName("TechDraw::DrawViewImage"))) {
                         continue;
                     }
                     
-                    // Check if this is an ActiveView
                     std::string viewLabel = view->getNameInDocument();
                     if (viewLabel.find("ActiveView") != std::string::npos) {
-                        Base::Console().message("Found ActiveView: %s\n", viewLabel.c_str());
                         
-                        // Get the ViewProvider to check Enable3DPDFExport
                         Gui::Document* guiDoc = Gui::Application::Instance->getDocument(view->getDocument());
                         if (guiDoc) {
                             Gui::ViewProvider* vp = guiDoc->getViewProvider(view);
                             if (vp) {
-                                // Check Enable3DPDFExport property using property system
                                 App::Property* enable3DProp = vp->getPropertyByName("Enable3DPDFExport");
                                 if (enable3DProp) {
                                     App::PropertyBool* enableBool = dynamic_cast<App::PropertyBool*>(enable3DProp);
                                     if (enableBool && enableBool->getValue()) {
-                                        Base::Console().message("ActiveView has Enable3DPDFExport=true\n");
                                         
-                                        // Extract page dimensions from the TechDraw page
                                         try {
-                                            // Access PageWidth and PageHeight properties
+
                                             doCommand(Command::Doc,
                                                 "import FreeCAD as App\n"
                                                 "page_obj = App.getDocument('%s').getObject('%s')\n"
@@ -192,24 +165,15 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                                                 "    try:\n"
                                                 "        width_mm = page_obj.PageWidth\n"
                                                 "        height_mm = page_obj.PageHeight\n"
-                                                "        print('PAGE_DIMENSIONS')\n"
-                                                "        print('WIDTH_MM:', width_mm)\n"
-                                                "        print('HEIGHT_MM:', height_mm)\n"
-                                                "        print('PAGE_DIMENSIONS_END')\n"
-                                                "        App.Console.PrintMessage('Page dimensions: {:.1f} x {:.1f} mm\\n'.format(width_mm, height_mm))\n"
                                                 "    except Exception as e:\n"
                                                 "        App.Console.PrintWarning('Failed to get page dimensions: {}\\n'.format(str(e)))\n"
-                                                "        print('PAGE_DIMENSIONS_ERROR')\n"
                                                 "else:\n"
-                                                "    App.Console.PrintWarning('Page object not found\\n')\n"
-                                                "    print('PAGE_DIMENSIONS_ERROR')",
+                                                "    App.Console.PrintWarning('Page object not found\\n')\n",
                                                 pageObj->getDocument()->getName(), pageObj->getNameInDocument());
                                             
-                                            // Wait for the Python command to complete
                                             QCoreApplication::processEvents();
                                             QThread::msleep(50);
                                             
-                                            // Extract dimensions using a temporary file approach (similar to tessellation)
                                             std::string tempDimFile = "page_dimensions_" + std::string(pageObj->getNameInDocument()) + ".tmp";
                                             doCommand(Command::Doc,
                                                 "import FreeCAD as App\n"
@@ -224,18 +188,15 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                                                 "            f.write('HEIGHT_MM\\n')\n"
                                                 "            f.write(str(height_mm) + '\\n')\n"
                                                 "            f.write('END\\n')\n"
-                                                "        App.Console.PrintMessage('Successfully extracted page dimensions: {:.1f} x {:.1f} mm\\n'.format(width_mm, height_mm))\n"
                                                 "    except Exception as e:\n"
                                                 "        App.Console.PrintWarning('Failed to get page dimensions: {}\\n'.format(str(e)))\n",
                                                 pageObj->getDocument()->getName(), pageObj->getNameInDocument(), tempDimFile.c_str());
                                             
-                                            // Wait for the Python command to complete
                                             QCoreApplication::processEvents();
                                             QThread::msleep(100);
                                             
-                                            // Read the page dimensions from the temporary file
-                                            double pageWidthMM = 297.0;   // A4 landscape width default
-                                            double pageHeightMM = 210.0;  // A4 landscape height default
+                                            double pageWidthMM = 297.0;
+                                            double pageHeightMM = 210.0;
                                             
                                             std::ifstream dimFile(tempDimFile);
                                             if (dimFile.is_open()) {
@@ -255,44 +216,28 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                                                     } else if (readingWidth) {
                                                         try {
                                                             pageWidthMM = std::stod(line);
-                                                            Base::Console().message("Extracted page width: %.1f mm\n", pageWidthMM);
                                                         } catch (const std::exception& e) {
-                                                            Base::Console().warning("Failed to parse page width: %s\n", e.what());
                                                         }
                                                         readingWidth = false;
                                                     } else if (readingHeight) {
                                                         try {
                                                             pageHeightMM = std::stod(line);
-                                                            Base::Console().message("Extracted page height: %.1f mm\n", pageHeightMM);
                                                         } catch (const std::exception& e) {
-                                                            Base::Console().warning("Failed to parse page height: %s\n", e.what());
                                                         }
                                                         readingHeight = false;
                                                     }
                                                 }
                                                 dimFile.close();
                                                 
-                                                // Clean up temporary file
                                                 std::remove(tempDimFile.c_str());
-                                                
-                                                Base::Console().message("Successfully extracted page dimensions: %.1f x %.1f mm\n",
-                                                                       pageWidthMM, pageHeightMM);
-                                            } else {
-                                                Base::Console().warning("Failed to read page dimensions from temp file, using A4 defaults\n");
                                             }
                                             
-                                            // Convert mm to points (1 mm = 2.834645669 points)
                                             pageWidthPoints = pageWidthMM * 2.834645669;
                                             pageHeightPoints = pageHeightMM * 2.834645669;
                                             
-                                            Base::Console().message("Using page dimensions: %.1f x %.1f mm (%.1f x %.1f points)\n",
-                                                                   pageWidthMM, pageHeightMM, pageWidthPoints, pageHeightPoints);
-                                            
                                         } catch (const std::exception& e) {
-                                            Base::Console().warning("Failed to extract page dimensions, using A4 defaults: %s\n", e.what());
                                         }
                                         
-                                        // Extract background settings from the ActiveView ViewProvider
                                         try {
                                             App::Property* noBackgroundProp = vp->getPropertyByName("NoBackground");
                                             App::Property* solidBackgroundProp = vp->getPropertyByName("SolidBackground");
@@ -316,30 +261,20 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                                             }
                                             
                                             if (noBackground) {
-                                                // No background = white color
                                                 backgroundR = 1.0; backgroundG = 1.0; backgroundB = 1.0;
-                                                Base::Console().message("Using white background (No Background = true)\n");
                                             } else if (solidBackground && backgroundColorProp) {
-                                                // Use the specified background color
                                                 App::PropertyColor* colorProp = dynamic_cast<App::PropertyColor*>(backgroundColorProp);
                                                 if (colorProp) {
                                                     Base::Color bgColor = colorProp->getValue();
                                                     backgroundR = bgColor.r;
                                                     backgroundG = bgColor.g;
                                                     backgroundB = bgColor.b;
-                                                    Base::Console().message("Using solid background color: (%.3f, %.3f, %.3f)\n", 
-                                                                           backgroundR, backgroundG, backgroundB);
                                                 }
-                                            } else {
-                                                // Keep default gray background
-                                                Base::Console().message("Using default gray background\n");
                                             }
                                             
                                         } catch (const std::exception& e) {
-                                            Base::Console().warning("Failed to extract background settings, using default: %s\n", e.what());
                                         }
                                         
-                                        // Get source objects using property system
                                         App::Property* sourceProp = view->getPropertyByName("Source");
                                         App::Property* xsourceProp = view->getPropertyByName("XSource");
                                         
@@ -360,30 +295,14 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                                             }
                                         }
                                         
-                                        Base::Console().message("ActiveView contains %d source objects:\n", selection.size());
+
                                         
-                                        for (auto* obj : selection) {
-                                            if (obj) {
-                                                Base::Console().message("  - %s (%s)\n", 
-                                                                       obj->Label.getValue(), 
-                                                                       obj->getTypeId().getName());
-                                            }
-                                        }
-                                        
-                                        if (selection.empty()) {
-                                            Base::Console().message("  (No source objects stored in this ActiveView)\n");
-                                        }
-                                        
-                                        // Extract position and scale information from ActiveView using property system
                                         try {
-                                            // Extract position properties  
                                             App::Property* xProp = view->getPropertyByName("X");
                                             App::Property* yProp = view->getPropertyByName("Y");
                                             App::Property* scaleProp = view->getPropertyByName("Scale");
                                             App::Property* widthProp = view->getPropertyByName("Width");
                                             App::Property* heightProp = view->getPropertyByName("Height");
-                                            
-                                            // Use the existing global variables declared at function scope
                                             
                                             if (xProp) {
                                                 App::PropertyDistance* xDist = dynamic_cast<App::PropertyDistance*>(xProp);
@@ -420,40 +339,18 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                                                 }
                                             }
                                             
-                                            Base::Console().message("ActiveView position and scale:\n");
-                                            Base::Console().message("  - Position: (%.2f, %.2f) mm\n", activeViewX, activeViewY);
-                                            Base::Console().message("  - Scale: %.3f\n", activeViewScale);
-                                            Base::Console().message("  - Size: %.2f x %.2f mm\n", activeViewWidth, activeViewHeight);
-                                            
-                                            // Store these values for later use in PDF generation
-                                            // These will be used to position the 3D annotation precisely
-                                            // We'll modify the convertTessellationToPRC call to pass these values
+
                                             
                                         } catch (const std::exception& e) {
-                                            Base::Console().warning("Failed to extract ActiveView position/scale: %s\n", e.what());
                                         }
                                     }
-                                    else {
-                                        Base::Console().message("ActiveView has Enable3DPDFExport=false\n");
-                                    }
-                                }
-                                else {
-                                    Base::Console().message("Could not find Enable3DPDFExport property\n");
                                 }
                             }
-                            else {
-                                Base::Console().message("Could not get ViewProvider for ActiveView\n");
-                            }
-                        }
-                        else {
-                            Base::Console().message("Could not get GUI document\n");
                         }
                     }
                 }
             }
-        }
-        else {
-            Base::Console().message("No TechDraw pages found\n");
+        } else {
             selection = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
         }
     }
@@ -466,14 +363,12 @@ void StdCmdPrint3dPdf::activated(int iMsg)
         return;
     }
     
-    // Set up file dialog filter for 3D PDF
     QStringList filterList;
     filterList << QObject::tr("3D PDF (*.pdf)");
     filterList << QObject::tr("All Files (*.*)");
     QString formatList = filterList.join(QLatin1String(";;"));
     QString selectedFilter;
     
-    // Create default filename based on document/object names
     QString defaultFilename;
     QString docFilename = QString::fromUtf8(App::GetApplication().getActiveDocument()->getFileName());
     QString defaultPath;
@@ -489,7 +384,6 @@ void StdCmdPrint3dPdf::activated(int iMsg)
         baseFilename = docName + QString::fromLatin1("_3D");
     }
     
-    // Add object names to filename if only a few objects selected
     if (selection.size() <= 3) {
         QStringList objectNames;
         for (const auto& obj : selection) {
@@ -500,54 +394,38 @@ void StdCmdPrint3dPdf::activated(int iMsg)
         }
     }
     
-    // Clean only the filename for cross-platform compatibility (not the path!)
-    QString invalidCharacters = QLatin1String("\\?%*:|\"<>");  // Removed forward slash
+    QString invalidCharacters = QLatin1String("\\?%*:|\"<>");
     for (const auto &c : invalidCharacters)
         baseFilename.replace(c, QLatin1String("_"));
     
-    // Combine path and cleaned filename
     defaultFilename = QDir(defaultPath).filePath(baseFilename + QString::fromLatin1(".pdf"));
     
-    // Launch the file selection dialog
     QString fileName = FileDialog::getSaveFileName(getMainWindow(),
         QObject::tr("Export 3D PDF"), defaultFilename, formatList, &selectedFilter);
     
     if (fileName.isEmpty()) {
-        return; // User cancelled
+        return;
     }
     
-    // Remove extension from fileName as Export3DPDF will add it
     QFileInfo fileInfo(fileName);
     std::string outputPath = fileInfo.path().toStdString() + "/" + fileInfo.completeBaseName().toStdString();
     
-    Base::Console().message("Extracting tessellation and material data for %zu selected object(s):\n", selection.size());
-    
-    // Collect tessellation data from all selected objects
     std::vector<Export3DPDF::TessellationData> tessData;
-    
-    // Process each selected object
     for (const auto& obj : selection) {
         if (!obj) continue;
         
         try {
-            // Check if object has a Shape property
             App::Property* shapeProp = obj->getPropertyByName("Shape");
             if (shapeProp) {
                 std::string docName = obj->getDocument()->getName();
                 std::string objName = obj->getNameInDocument();
                 
-                Base::Console().message("Processing object '%s'...\n", objName.c_str());
-                
-                // Get tessellation data directly using C++ API
                 Export3DPDF::TessellationData tessObj;
                 tessObj.name = objName;
                 
-                // Try to access the Shape property directly through C++
                 try {
                     App::Property* shapeProp = obj->getPropertyByName("Shape");
                     if (shapeProp) {
-                        // Cast to appropriate property type and extract shape
-                        // For now, execute Python but in a simpler way to get the data
                         doCommand(Command::Doc, 
                             "import FreeCAD as App\n"
                             "obj = App.getDocument('%s').getObject('%s')\n"
@@ -555,23 +433,10 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                             "    mesh_data = obj.Shape.tessellate(0.1)\n"
                             "    vertices = mesh_data[0]\n"
                             "    triangles = mesh_data[1]\n"
-                            "    print('TESSELLATION_START')\n"
-                            "    print('NAME:', obj.Name)\n"
-                            "    print('VERTICES:', len(vertices))\n"
-                            "    for v in vertices:\n"
-                            "        print('V:', v[0], v[1], v[2])\n"
-                            "    print('TRIANGLES:', len(triangles))\n"
-                            "    for t in triangles:\n"
-                            "        print('T:', t[0], t[1], t[2])\n"
-                            "    print('TESSELLATION_END')\n"
-                            "    App.Console.PrintMessage('Object \\'{}\\': {} vertices, {} triangles\\n'.format(obj.Name, len(vertices), len(triangles)))\n"
                             "else:\n"
-                            "    print('TESSELLATION_START')\n"
-                            "    print('ERROR: No valid Shape')\n"
-                            "    print('TESSELLATION_END')",
+                            "    App.Console.PrintWarning('Object \\'{}\\': No valid Shape\\n'.format(obj.Name))",
                             docName.c_str(), objName.c_str());
                         
-                        // Execute a separate Python command to write tessellation and material data to a temporary file
                         std::string tempFileName = "tessellation_" + objName + ".tmp";
                         doCommand(Command::Doc,
                             "import FreeCAD as App\n"
@@ -600,8 +465,6 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                             "                material_props['SpecularColor'] = str(getattr(mat, 'SpecularColor', (0.533333, 0.533333, 0.533333, 1)))\n"
                             "                material_props['Shininess'] = str(getattr(mat, 'Shininess', 0.9))\n"
                             "                material_props['Transparency'] = str(getattr(mat, 'Transparency', 0))\n"
-                            "                App.Console.PrintMessage('Extracted material from ShapeAppearance: {} (Shininess: {}, Transparency: {})\\n'.format(\n"
-                            "                    material_props['Name'], material_props['Shininess'], material_props['Transparency']))\n"
                             "            except Exception as e:\n"
                             "                App.Console.PrintWarning('Failed to extract ShapeAppearance properties: {}\\n'.format(str(e)))\n"
                             "                material_props = {'Name': 'Default'}\n"
@@ -624,7 +487,6 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                             "            for t in triangles:\n"
                             "                f.write(f'{t[0]} {t[1]} {t[2]}\\n')\n"
                             "            f.write('END\\n')\n"
-                            "        App.Console.PrintMessage('Successfully wrote tessellation data to temp file\\n')\n"
                             "    else:\n"
                             "        App.Console.PrintWarning('Object has no Shape property\\n')\n"
                             "except Exception as e:\n"
@@ -633,11 +495,10 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                             "    App.Console.PrintError('Traceback: {}\\n'.format(traceback.format_exc()))",
                             docName.c_str(), objName.c_str(), docName.c_str(), objName.c_str(), tempFileName.c_str());
                         
-                        // Wait for the Python command to complete
                         QCoreApplication::processEvents();
                         QThread::msleep(100);
                         
-                        // Read the tessellation and material data from the temporary file
+
                         std::ifstream tessFile(tempFileName);
                         if (tessFile.is_open()) {
                             std::string line;
@@ -661,11 +522,10 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                                 } else if (line == "END") {
                                     break;
                                 } else if (readingMaterial) {
-                                    // Parse material properties
                                     size_t colonPos = line.find(':');
                                     if (colonPos != std::string::npos) {
                                         std::string key = line.substr(0, colonPos);
-                                        std::string value = line.substr(colonPos + 2); // Skip ': '
+                                        std::string value = line.substr(colonPos + 2);
                                         
                                         if (key == "Name") {
                                             tessObj.material.name = value;
@@ -703,16 +563,8 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                             }
                             tessFile.close();
                             
-                            // Clean up temporary file
                             std::remove(tempFileName.c_str());
-                            
-                            Base::Console().message("Successfully extracted tessellation: %zu vertices, %zu triangles\n",
-                                tessObj.vertices.size() / 3, tessObj.triangles.size() / 3);
-                            Base::Console().message("Material: %s (Shininess: %.2f, Transparency: %.2f)\n",
-                                tessObj.material.name.c_str(), tessObj.material.shininess, tessObj.material.transparency);
                         } else {
-                            Base::Console().warning("Failed to read tessellation data from temp file, using fallback\n");
-                            // Fallback to placeholder data
                             tessObj.vertices = {
                                 0.0, 0.0, 0.0,  1.0, 0.0, 0.0,  1.0, 1.0, 0.0,  0.0, 1.0, 0.0,
                                 0.0, 0.0, 1.0,  1.0, 0.0, 1.0,  1.0, 1.0, 1.0,  0.0, 1.0, 1.0
@@ -722,12 +574,9 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                                 0, 4, 5,  0, 5, 1,  2, 6, 7,  2, 7, 3,
                                 0, 3, 7,  0, 7, 4,  1, 5, 6,  1, 6, 2
                             };
-                            // Material data remains default
                         }
                     }
                 } catch (const std::exception& e) {
-                    Base::Console().error("Error extracting tessellation data: %s\n", e.what());
-                    // Use fallback data
                     tessObj.vertices = {
                         0.0, 0.0, 0.0,  1.0, 0.0, 0.0,  1.0, 1.0, 0.0,  0.0, 1.0, 0.0,
                         0.0, 0.0, 1.0,  1.0, 0.0, 1.0,  1.0, 1.0, 1.0,  0.0, 1.0, 1.0
@@ -737,24 +586,17 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                         0, 4, 5,  0, 5, 1,  2, 6, 7,  2, 7, 3,
                         0, 3, 7,  0, 7, 4,  1, 5, 6,  1, 6, 2
                     };
-                    // Material data remains default
                 }
                 
                 tessData.push_back(tessObj);
                 
-            } else {
-                Base::Console().message("Object '%s' has no Shape property.\n", obj->getNameInDocument());
             }
         } catch (const Base::Exception& e) {
-            Base::Console().error("Error processing object '%s': %s\n", obj->getNameInDocument(), e.what());
         }
     }
     
-    // Check if we're in TechDraw context (we should be since we detected ActiveView)
     App::DocumentObject* currentPage = nullptr;
     std::string backgroundImagePath;
-    
-    // Find the current TechDraw page
     if (activeDoc) {
         std::vector<App::DocumentObject*> pages = activeDoc->getObjectsOfType(Base::Type::fromName("TechDraw::DrawPage"));
         for (auto* pageObj : pages) {
@@ -777,9 +619,7 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                                             if (enable3DProp) {
                                                 App::PropertyBool* enableBool = dynamic_cast<App::PropertyBool*>(enable3DProp);
                                                 if (enableBool && enableBool->getValue()) {
-                                                    currentPage = pageObj;  // Keep as App::DocumentObject*
-                                                    Base::Console().message("Found TechDraw page containing ActiveView: %s\n", 
-                                                                           currentPage->getNameInDocument());
+                                                    currentPage = pageObj;
                                                     break;
                                                 }
                                             }
@@ -795,39 +635,27 @@ void StdCmdPrint3dPdf::activated(int iMsg)
         }
     }
     
-    // Render TechDraw page to background image for hybrid PDF
     if (currentPage) {
-        Base::Console().message("Rendering complete TechDraw page as background...\n");
-        
-        // Use Python command to render TechDraw page to background image
-        // This avoids the need for heavy TechDraw includes
         backgroundImagePath = outputPath + "_background.png";
         
         try {
-            Base::Console().message("Rendering TechDraw page to background using Python interface...\n");
-            
-            // Use Python to render the TechDraw page
             std::string pythonCmd = 
                 "import FreeCAD as App\n"
                 "import FreeCADGui as Gui\n"
                 "try:\n"
                 "    import TechDrawGui\n"
-                "    App.Console.PrintMessage('TechDrawGui module imported successfully\\n')\n"
                 "except ImportError as e:\n"
                 "    App.Console.PrintError('Failed to import TechDrawGui: {}\\n'.format(str(e)))\n"
                 "    raise\n"
                 "# Import Qt bindings with fallbacks\n"
                 "try:\n"
                 "    from PySide6 import QtCore, QtGui\n"
-                "    App.Console.PrintMessage('Using PySide6 for Qt bindings\\n')\n"
                 "except ImportError:\n"
                 "    try:\n"
                 "        from PySide2 import QtCore, QtGui\n"
-                "        App.Console.PrintMessage('Using PySide2 for Qt bindings\\n')\n"
                 "    except ImportError:\n"
                 "        try:\n"
                 "            from PyQt5 import QtCore, QtGui\n"
-                "            App.Console.PrintMessage('Using PyQt5 for Qt bindings\\n')\n"
                 "        except ImportError:\n"
                 "            App.Console.PrintError('No Qt bindings found (PySide6/PySide2/PyQt5)\\n')\n"
                 "            raise ImportError('No Qt bindings available')\n"
@@ -835,15 +663,9 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                 "try:\n"
                 "    page_obj = App.getDocument('" + std::string(currentPage->getDocument()->getName()) + "').getObject('" + std::string(currentPage->getNameInDocument()) + "')\n"
                 "    if page_obj:\n"
-                "        App.Console.PrintMessage('Found page object: {}\\n'.format(page_obj.Name))\n"
                 "        \n"
                 "        # Use TechDrawGui.getSceneForPage - this is the proper way to get QGSPage\n"
                 "        qgs_page = TechDrawGui.getSceneForPage(page_obj)\n"
-                "        if qgs_page:\n"
-                "            App.Console.PrintMessage('Successfully got QGSPage: {}\\n'.format(type(qgs_page).__name__))\n"
-                "        else:\n"
-                "            App.Console.PrintWarning('Could not get QGSPage from TechDrawGui.getSceneForPage()\\n')\n"
-                "        \n"
                 "        # Proceed with rendering if we have a valid QGSPage\n"
                 "        if qgs_page:\n"
                 "            # Calculate page dimensions in mm (TechDraw's native unit)\n"
@@ -869,7 +691,6 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                 "            \n"
                 "            # Get TechDraw's resolution factor for scene coordinates\n"
                 "            rez_factor = 10.0  # Default TechDraw resolution\n"
-                "            App.Console.PrintWarning('Could not get TechDraw Rez factor, using default: {}\\n'.format(rez_factor))\n"
                 "            \n"
                 "            # Calculate source rectangle in scene coordinates (like TechDraw does)\n"
                 "            # This matches PagePrinter.cpp line 240: QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height))\n"
@@ -886,11 +707,6 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                 "            \n"
                 "            # Save the image\n"
                 "            success = image.save('" + backgroundImagePath + "', 'PNG')\n"
-                "            if success:\n"
-                "                App.Console.PrintMessage('Background image saved: " + backgroundImagePath + "\\n')\n"
-                "                App.Console.PrintMessage('Image size: {}x{} pixels at {} DPI\\n'.format(image_width, image_height, dpi))\n"
-                "            else:\n"
-                "                App.Console.PrintWarning('Failed to save background image\\n')\n" 
                 "        else:\n"
                 "            App.Console.PrintWarning('Could not get GUI document\\n')\n"
                 "    else:\n"
@@ -900,44 +716,27 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                 "    import traceback\n"
                 "    App.Console.PrintError('Traceback: {}\\n'.format(traceback.format_exc()))";
             
-            // Execute the Python command
             doCommand(Command::Doc, pythonCmd.c_str());
             
-            // Wait for the Python command to complete
             QCoreApplication::processEvents();
-            QThread::msleep(500); // Give more time for image rendering
+            QThread::msleep(500);
             
-            // Check if the background image was created
             QFileInfo bgFile(QString::fromStdString(backgroundImagePath));
-            if (bgFile.exists() && bgFile.size() > 0) {
-                Base::Console().message("Successfully rendered TechDraw page to background image\n");
-            } else {
-                Base::Console().warning("Background image not created, will proceed with 3D-only export\n");
+            if (!bgFile.exists() || bgFile.size() == 0) {
                 backgroundImagePath.clear();
             }
             
         } catch (const std::exception& e) {
-            Base::Console().warning("Error in background rendering: %s\n", e.what());
             backgroundImagePath.clear();
         }
     }
     
-    // Now create hybrid 2D+3D PDF
-    Base::Console().message("Creating hybrid 2D+3D PDF...\n");
-    Base::Console().message("PDF dimensions: %.1f x %.1f points (%.1f x %.1f mm)\n",
-                           pageWidthPoints, pageHeightPoints,
-                           pageWidthPoints / 2.834645669, pageHeightPoints / 2.834645669);
-    Base::Console().message("3D background color: (%.3f, %.3f, %.3f)\n",
-                           backgroundR, backgroundG, backgroundB);
-    Base::Console().message("ActiveView positioning: (%.2f, %.2f) mm, scale: %.3f, size: %.2f x %.2f mm\n",
-                           activeViewX, activeViewY, activeViewScale, activeViewWidth, activeViewHeight);
+
     
     if (!tessData.empty()) {
         bool success = false;
         
         if (!backgroundImagePath.empty() && currentPage) {
-            // Use hybrid approach with TechDraw background
-            Base::Console().message("Creating hybrid 2D+3D PDF with TechDraw background\n");
             success = Export3DPDF::Export3DPDFCore::createHybrid3DPDF(
                 tessData, outputPath, backgroundImagePath,
                 pageWidthPoints, pageHeightPoints,
@@ -946,8 +745,6 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                 backgroundR, backgroundG, backgroundB
             );
         } else {
-            // Fallback to original 3D-only approach
-            Base::Console().message("Creating 3D-only PDF (TechDraw background rendering failed or unavailable)\n");
             success = Export3DPDF::Export3DPDFCore::convertTessellationToPRC(
                 tessData, outputPath, pageWidthPoints, pageHeightPoints,
                 backgroundR, backgroundG, backgroundB, activeViewX, activeViewY,
@@ -955,19 +752,9 @@ void StdCmdPrint3dPdf::activated(int iMsg)
             );
         }
         
-        if (success) {
-            Base::Console().message("Hybrid 2D+3D PDF export completed successfully: %s.pdf\n", outputPath.c_str());
-            
-            // Clean up temporary background image
-            if (!backgroundImagePath.empty()) {
-                std::remove(backgroundImagePath.c_str());
-                Base::Console().message("Cleaned up temporary background image\n");
-            }
-        } else {
-            Base::Console().error("Hybrid 2D+3D PDF export failed\n");
+        if (success && !backgroundImagePath.empty()) {
+            std::remove(backgroundImagePath.c_str());
         }
-    } else {
-        Base::Console().message("No tessellation data available for 3D PDF conversion\n");
     }
 }
 

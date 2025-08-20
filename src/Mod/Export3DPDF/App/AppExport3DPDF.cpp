@@ -51,7 +51,6 @@ extern PyObject* initModule();
 PyMOD_INIT_FUNC(Export3DPDF)
 {
     PyObject* mod = Export3DPDF::initModule();
-    Base::Console().log("Loading Export3DPDF module... done\n");
 
     PyMOD_Return(mod);
 } 
