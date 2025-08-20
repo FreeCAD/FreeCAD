@@ -28,9 +28,6 @@ import Path
 import Path.Base.Language as PathLanguage
 import Path.Dressup.Utils as PathDressup
 import PathScripts.PathUtils as PathUtils
-from Path.Geom import wireForPath
-
-import copy
 import math
 
 __doc__ = """LeadInOut Dressup USE ROLL-ON ROLL-OFF to profile"""
@@ -149,8 +146,6 @@ class ObjectDressup:
             QT_TRANSLATE_NOOP("App::Property", "Move end point"),
         )
         obj.Proxy = self
-        self.wire = None
-        self.rapids = None
 
     def dumps(self):
         return None
@@ -207,7 +202,6 @@ class ObjectDressup:
             obj.setEditorMode(k + "In", 2 if obj.StyleIn in v else 0)
             obj.setEditorMode(k + "Out", 2 if obj.StyleOut in v else 0)
 
-        self.wire, self.rapids = wireForPath(PathUtils.getPathWithPlacement(obj.Base))
         obj.Path = self.generateLeadInOutCurve(obj)
 
     def onDocumentRestored(self, obj):
