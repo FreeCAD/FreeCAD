@@ -65,7 +65,7 @@ def get_mod_alt_key():
 _HINT_MOD_KEYS = [Gui.UserInput.KeyShift, Gui.UserInput.KeyControl, Gui.UserInput.KeyAlt]
 
 
-# To allows for easy concatination the _get_hint_* functions
+# To allows for easy concatenation the _get_hint_* functions
 # always return a list (with a single item or an empty list).
 
 def _get_hint_mod_constrain():
