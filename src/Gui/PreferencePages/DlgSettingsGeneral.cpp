@@ -33,7 +33,6 @@
 # include <QMessageBox>
 # include <QString>
 # include <algorithm>
-# include <boost/filesystem.hpp>
 #endif
 
 #include <App/Document.h>
@@ -92,7 +91,7 @@ DlgSettingsGeneral::DlgSettingsGeneral( QWidget* parent )
     ui->themesCombobox->setEnabled(true);
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (doc) {
-        Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
+        Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(doc->getActiveView());
         if (view) {
             Gui::View3DInventorViewer* viewer = view->getViewer();
             if (viewer->isEditing()) {
@@ -640,7 +639,7 @@ void DlgSettingsGeneral::recreatePreferencePackMenu()
         button->setEnabled(true);
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc) {
-            Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
+            Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(doc->getActiveView());
             if (view) {
                 Gui::View3DInventorViewer* viewer = view->getViewer();
                 if (viewer->isEditing()) {
@@ -649,7 +648,7 @@ void DlgSettingsGeneral::recreatePreferencePackMenu()
             }
         }
         if (button->isEnabled()) {
-            button->setToolTip(tr("Apply the %1 preference pack").arg(QString::fromStdString(pack.first)));
+            button->setToolTip(tr("Applies the %1 preference pack").arg(QString::fromStdString(pack.first)));
             connect(button, &QPushButton::clicked, this, [this, pack]() { onLoadPreferencePackClicked(pack.first); });
         }
         ui->PreferencePacks->setCellWidget(row, 2, button);

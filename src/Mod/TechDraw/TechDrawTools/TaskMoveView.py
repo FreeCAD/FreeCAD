@@ -45,7 +45,7 @@ class TaskMoveView:
         self._uiPath = os.path.join(self._uiPath, "Mod/TechDraw/TechDrawTools/Gui/TaskMoveView.ui")
         self.form = Gui.PySideUic.loadUi(self._uiPath)
 
-        self.form.setWindowTitle(translate("TechDraw_MoveView", "Move View to a different Page"))
+        self.form.setWindowTitle(translate("TechDraw_MoveView", "Move View to Different Page"))
 
         self.form.pbView.clicked.connect(self.pickView)
         self.form.pbFromPage.clicked.connect(self.pickFromPage)
@@ -57,8 +57,11 @@ class TaskMoveView:
 
         self.dialogOpen = False
 
+        App.setActiveTransaction("Move view")
+
     def accept(self):
 #        print ("Accept")
+        App.closeActiveTransaction()
         view = App.ActiveDocument.getObject(self.viewName)
         fromPage = App.ActiveDocument.getObject(self.fromPageName)
         toPage = App.ActiveDocument.getObject(self.toPageName)
@@ -67,6 +70,7 @@ class TaskMoveView:
 
     def reject(self):
 #        print ("Reject")
+        App.closeActiveTransaction(True)
         return True
 
     def pickView(self):
@@ -77,7 +81,7 @@ class TaskMoveView:
         _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
         self.dialogOpen = True
-        dlg.lPrompt.setText(translate("TechDraw_MoveView", "Select View to move from list."))
+        dlg.lPrompt.setText(translate("TechDraw_MoveView", "Select view to move from list."))
         dlg.setWindowTitle(translate("TechDraw_MoveView", "Select View"))
 
         views = [x for x in App.ActiveDocument.Objects if x.isDerivedFrom("TechDraw::DrawView")]
@@ -100,7 +104,7 @@ class TaskMoveView:
         _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
         self.dialogOpen = True
-        dlg.lPrompt.setText(translate("TechDraw_MoveView", "Select From Page."))
+        dlg.lPrompt.setText(translate("TechDraw_MoveView", "Select from page."))
         dlg.setWindowTitle(translate("TechDraw_MoveView", "Select Page"))
 
         pages = [x for x in App.ActiveDocument.Objects if x.isDerivedFrom("TechDraw::DrawPage")]
@@ -123,7 +127,7 @@ class TaskMoveView:
         _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
         self.dialogOpen = True
-        dlg.lPrompt.setText(translate("TechDraw_MoveView", "Select To Page."))
+        dlg.lPrompt.setText(translate("TechDraw_MoveView", "Select to page."))
         dlg.setWindowTitle(translate("TechDraw_MoveView", "Select Page"))
 
         pages = [x for x in App.ActiveDocument.Objects if x.isDerivedFrom("TechDraw::DrawPage")]

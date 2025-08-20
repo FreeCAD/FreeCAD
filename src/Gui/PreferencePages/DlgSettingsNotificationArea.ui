@@ -20,7 +20,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, show the notification area in the status bar: a button with the current notification count, which can expand the detailed notification list. Optionally, with additional pop-up notifications.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="title">
-      <string>Enable notification area</string>
+      <string>Enable Notification Area</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -29,12 +29,12 @@
       <item row="2" column="0">
        <widget class="QGroupBox" name="NonIntrusiveNotificationsEnabled">
         <property name="toolTip">
-         <string>If checked, non-intrusive pop-up notifications will appear above the status bar, around the notification area. Pop-up notifications can be manually dismissed by clicking on them, and also automatically dismissed by specifying a maximum and minimum duration for them to be displayed.
+         <string>Enables non-intrusive pop-up notifications above the status bar notification area. Pop-up notifications can be manually dismissed by clicking on them, and also automatically dismissed by specifying a maximum and minimum duration for them to be displayed.
 
 Additionally, pop-up notifications can be disabled. In this case the user can still use the notification area as a quick-access location to view notifications, without the distracton of an additional pop-up.</string>
         </property>
         <property name="title">
-         <string>Enable pop-up notifications</string>
+         <string>Enable Pop-Up Notifications</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -46,7 +46,7 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
          <item row="1" column="0">
           <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>Minimum duration:</string>
+            <string>Minimum duration</string>
            </property>
           </widget>
          </item>
@@ -56,7 +56,7 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
             <string/>
            </property>
            <property name="text">
-            <string>Maximum duration:</string>
+            <string>Maximum duration</string>
            </property>
           </widget>
          </item>
@@ -107,7 +107,7 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
          <item row="2" column="0">
           <widget class="QLabel" name="label_3">
            <property name="text">
-            <string>Maximum concurrent notification count:</string>
+            <string>Maximum concurrent notification count</string>
            </property>
           </widget>
          </item>
@@ -130,7 +130,7 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
          <item row="3" column="0">
           <widget class="QLabel" name="label_width">
            <property name="text">
-            <string>Notification bubble width:</string>
+            <string>Notification bubble width</string>
            </property>
           </widget>
          </item>
@@ -209,7 +209,7 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
          <string>Additional notification sources to show in the notification area.</string>
         </property>
         <property name="title">
-         <string>Additional data sources</string>
+         <string>Additional Data Sources</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_1">
          <item row="0" column="0">
@@ -259,7 +259,7 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
          <string>Controls the amount of notifications to show in the list.</string>
         </property>
         <property name="title">
-         <string>Notifications list</string>
+         <string>Notifications List</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_4">
          <item row="0" column="1">
@@ -284,7 +284,7 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
          <item row="0" column="0">
           <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>Maximum notification count:</string>
+            <string>Maximum notification count</string>
            </property>
           </widget>
          </item>

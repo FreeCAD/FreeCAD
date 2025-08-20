@@ -57,14 +57,14 @@
         <item row="1" column="0">
          <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>Radius/Length (% tool radius)</string>
+           <string>Radius/length (% tool radius)</string>
           </property>
          </widget>
         </item>
         <item row="1" column="1">
          <widget class="QDoubleSpinBox" name="dspPercentageRadiusIn">
           <property name="toolTip">
-           <string>length of the Lead-in, as a percentage of tool radius</string>
+           <string>Length of the Lead-in, as a percentage of tool radius</string>
           </property>
           <property name="decimals">
            <number>0</number>
@@ -175,14 +175,14 @@
         <item row="1" column="0">
          <widget class="QLabel" name="label_15">
           <property name="text">
-           <string>Radius/Length (% tool radius)</string>
+           <string>Radius/length (% tool radius)</string>
           </property>
          </widget>
         </item>
         <item row="1" column="1">
          <widget class="QDoubleSpinBox" name="dspPercentageRadiusOut">
           <property name="toolTip">
-           <string>length of the Lead-out, as a percentage of tool radius</string>
+           <string>Length of the Lead-out, as a percentage of tool radius</string>
           </property>
           <property name="decimals">
            <number>0</number>
@@ -270,17 +270,17 @@
         <string>Plunge at rapid speed</string>
        </property>
        <property name="text">
-        <string>Rapid Plunge</string>
+        <string>Rapid plunge</string>
        </property>
       </widget>
      </item>
      <item row="1" column="0">
       <widget class="QCheckBox" name="chkLayers">
        <property name="toolTip">
-        <string>Apply Lead In/Out on all layers</string>
+        <string>Apply lead-in/out on all layers</string>
        </property>
        <property name="text">
-        <string>Include Layers</string>
+        <string>Include layers</string>
        </property>
       </widget>
      </item>

@@ -42,11 +42,11 @@ class BIM_IfcProperties:
         return {
             "Pixmap": "BIM_IfcProperties",
             "MenuText": QT_TRANSLATE_NOOP(
-                "BIM_IfcProperties", "Manage IFC properties..."
+                "BIM_IfcProperties", "Manage IFC Properties"
             ),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_IfcProperties",
-                "Manage the different IFC properties of your BIM objects",
+                "Manages the different IFC properties of the BIM objects",
             ),
         }
 
@@ -122,17 +122,17 @@ class BIM_IfcProperties:
         self.form.labelinfo.setText(
             self.form.labelinfo.text()
             + " "
-            + translate("BIM", "Custom properties sets can be defined in")
+            + translate("BIM", "Custom property sets can be defined in")
             + " "
             + custompath
         )
 
         # set combos
         self.form.comboProperty.addItems(
-            [translate("BIM", "Add property...")] + self.plabels
+            [translate("BIM", "Add property")] + self.plabels
         )
         self.form.comboPset.addItems(
-            [translate("BIM", "Add property set..."), translate("BIM", "New...")]
+            [translate("BIM", "Add property set"), translate("BIM", "New")]
             + self.psetkeys
         )
 

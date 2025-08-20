@@ -1191,7 +1191,10 @@ def _getWorkingEdges(op, obj):
         user_depths=None,
     )
 
-    depths = [d for d in depthParams.data if d < op.stock.Shape.BoundBox.ZMax]
+    # d < op.stock.Shape.BoundBox.ZMax may be true even if slicing at that
+    # height causes no projection, which results in a NULL shape. Use the
+    # operation tolerance to prevent that.
+    depths = [d for d in depthParams.data if d - op.stock.Shape.BoundBox.ZMax < -obj.Tolerance]
 
     # Get the stock outline at each stepdown. Used to calculate toolpaths and
     # for calculating cut regions in some instances

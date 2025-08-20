@@ -889,6 +889,8 @@ public:
     bool tangentU(double u, double v, gp_Dir& dirU) const;
     bool tangentV(double u, double v, gp_Dir& dirV) const;
     bool normal(double u, double v, gp_Dir& dir) const;
+    std::optional<Base::Vector3d> point(double u, double v) const;
+
     /*!
       Computes the derivative of order Nu in the direction U and Nv
       in the direction V at the point P(U, V).

@@ -38,7 +38,7 @@ class BIM_Trash:
             "Pixmap": "BIM_Trash",
             "MenuText": QT_TRANSLATE_NOOP("BIM_Trash", "Move to Trash"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_Trash", "Moves the selected objects to the Trash folder"
+                "BIM_Trash", "Moves the selected objects to the trash folder"
             ),
             "Accel": "Shift+Del",
         }
@@ -76,7 +76,7 @@ class BIM_EmptyTrash:
     def GetResources(self):
         return {
             "Pixmap": "BIM_Trash",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_EmptyTrash", "Clean Trash"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_EmptyTrash", "Empty Trash"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_EmptyTrash",
                 "Deletes from the trash bin all objects that are not used by any other",

@@ -39,6 +39,7 @@ list(APPEND Points_LIBS
 )
 
 generate_from_xml(PointsPy)
+generate_from_py_(PointsPy)
 
 SET(Points_SRCS
     AppPoints.cpp

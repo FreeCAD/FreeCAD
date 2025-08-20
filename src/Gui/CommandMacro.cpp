@@ -50,10 +50,11 @@ StdCmdDlgMacroRecord::StdCmdDlgMacroRecord()
   : Command("Std_DlgMacroRecord")
 {
     sGroup        = "Macro";
-    sMenuText     = QT_TR_NOOP("&Macro recording...");
+    sMenuText     = QT_TR_NOOP("Record &Macro");
+
     sToolTipText  = QT_TR_NOOP("Opens a dialog to record a macro");
     sWhatsThis    = "Std_DlgMacroRecord";
-    sStatusTip    = QT_TR_NOOP("Opens a dialog to record a macro");
+    sStatusTip    = sToolTipText;
     sPixmap       = "media-record";
     eType         = 0;
 }
@@ -93,10 +94,11 @@ StdCmdDlgMacroExecute::StdCmdDlgMacroExecute()
   : Command("Std_DlgMacroExecute")
 {
     sGroup        = "Macro";
-    sMenuText     = QT_TR_NOOP("Ma&cros...");
-    sToolTipText  = QT_TR_NOOP("Opens a dialog to let you execute a recorded macro");
+    sMenuText     = QT_TR_NOOP("Ma&cros");
+
+    sToolTipText  = QT_TR_NOOP("Opens a dialog to execute a recorded macro");
     sWhatsThis    = "Std_DlgMacroExecute";
-    sStatusTip    = QT_TR_NOOP("Opens a dialog to let you execute a recorded macro");
+    sStatusTip    = sToolTipText;
     sPixmap       = "accessories-text-editor";
     eType         = 0;
 }
@@ -122,10 +124,10 @@ StdCmdDlgMacroExecuteDirect::StdCmdDlgMacroExecuteDirect()
   : Command("Std_DlgMacroExecuteDirect")
 {
     sGroup        = "Macro";
-    sMenuText     = QT_TR_NOOP("&Execute macro");
-    sToolTipText  = QT_TR_NOOP("Execute the macro in the editor");
+    sMenuText     = QT_TR_NOOP("&Execute Macro");
+    sToolTipText  = QT_TR_NOOP("Executes the macro in the editor");
     sWhatsThis    = "Std_DlgMacroExecuteDirect";
-    sStatusTip    = QT_TR_NOOP("Execute the macro in the editor");
+    sStatusTip    = sToolTipText;
     sPixmap       = "media-playback-start";
     sAccel        = "Ctrl+F6";
     eType         = 0;
@@ -148,10 +150,11 @@ StdCmdMacroAttachDebugger::StdCmdMacroAttachDebugger()
   : Command("Std_MacroAttachDebugger")
 {
     sGroup        = "Macro";
-    sMenuText     = QT_TR_NOOP("&Attach to remote debugger...");
-    sToolTipText  = QT_TR_NOOP("Attach to a remotely running debugger");
+    sMenuText     = QT_TR_NOOP("&Attach to Remote Debugger");
+
+    sToolTipText  = QT_TR_NOOP("Attaches to a remotely running debugger");
     sWhatsThis    = "Std_MacroAttachDebugger";
-    sStatusTip    = QT_TR_NOOP("Attach to a remotely running debugger");
+    sStatusTip    = sToolTipText;
     eType         = 0;
 }
 
@@ -173,10 +176,10 @@ StdCmdMacroStartDebug::StdCmdMacroStartDebug()
   : Command("Std_MacroStartDebug")
 {
     sGroup        = "Macro";
-    sMenuText     = QT_TR_NOOP("&Debug macro");
-    sToolTipText  = QT_TR_NOOP("Start debugging of macro");
+    sMenuText     = QT_TR_NOOP("&Debug Macro");
+    sToolTipText  = QT_TR_NOOP("Starts the debugging of macros");
     sWhatsThis    = "Std_MacroStartDebug";
-    sStatusTip    = QT_TR_NOOP("Start debugging of macro");
+    sStatusTip    = sToolTipText;
     sPixmap       = "debug-start";
     sAccel        = "F6";
     eType         = 0;
@@ -203,10 +206,10 @@ StdCmdMacroStopDebug::StdCmdMacroStopDebug()
   : Command("Std_MacroStopDebug")
 {
     sGroup        = "Macro";
-    sMenuText     = QT_TR_NOOP("&Stop debugging");
-    sToolTipText  = QT_TR_NOOP("Stop debugging of macro");
+    sMenuText     = QT_TR_NOOP("&Stop Debugging");
+    sToolTipText  = QT_TR_NOOP("Stops the debugging of macros");
     sWhatsThis    = "Std_MacroStopDebug";
-    sStatusTip    = QT_TR_NOOP("Stop debugging of macro");
+    sStatusTip    = sToolTipText;
     sPixmap       = "debug-stop";
     sAccel        = "Shift+F6";
     eType         = 0;
@@ -230,10 +233,10 @@ StdCmdMacroStepOver::StdCmdMacroStepOver()
   : Command("Std_MacroStepOver")
 {
     sGroup        = "Macro";
-    sMenuText     = QT_TR_NOOP("Step &over");
-    sToolTipText  = QT_TR_NOOP("Step to the next line in this file");
+    sMenuText     = QT_TR_NOOP("Step &Over");
+    sToolTipText  = QT_TR_NOOP("Steps to the next line in this file");
     sWhatsThis    = "Std_MacroStepOver";
-    sStatusTip    = QT_TR_NOOP("Step to the next line in this file");
+    sStatusTip    = sToolTipText;
     sPixmap       = nullptr;
     sAccel        = "F10";
     eType         = 0;
@@ -257,10 +260,10 @@ StdCmdMacroStepInto::StdCmdMacroStepInto()
   : Command("Std_MacroStepInto")
 {
     sGroup        = "Macro";
-    sMenuText     = QT_TR_NOOP("Step &into");
-    sToolTipText  = QT_TR_NOOP("Step to the next line executed");
+    sMenuText     = QT_TR_NOOP("Step &Into");
+    sToolTipText  = QT_TR_NOOP("Steps to the next line executed");
     sWhatsThis    = "Std_MacroStepInto";
-    sStatusTip    = QT_TR_NOOP("Step to the next line executed");
+    sStatusTip    = sToolTipText;
     sPixmap       = nullptr;
     sAccel        = "F11";
     eType         = 0;
@@ -284,10 +287,10 @@ StdCmdToggleBreakpoint::StdCmdToggleBreakpoint()
   : Command("Std_ToggleBreakpoint")
 {
     sGroup        = "Macro";
-    sMenuText     = QT_TR_NOOP("Toggle &breakpoint");
-    sToolTipText  = QT_TR_NOOP("Add or remove a breakpoint at this position");
+    sMenuText     = QT_TR_NOOP("Toggle &Breakpoint");
+    sToolTipText  = QT_TR_NOOP("Adds or removes a breakpoint at this position");
     sWhatsThis    = "Std_ToggleBreakpoint";
-    sStatusTip    = QT_TR_NOOP("Add or remove a breakpoint at this position");
+    sStatusTip    = sToolTipText;
     sPixmap       = nullptr;
     sAccel        = "F9";
     eType         = 0;
@@ -310,10 +313,10 @@ StdCmdMacrosFolder::StdCmdMacrosFolder()
 : Command("Std_OpenMacrosFolder")
 {
     sGroup        = "Macro";
-    sMenuText     = QT_TR_NOOP("Open macros containing folder");
-    sToolTipText  = QT_TR_NOOP("Open macros containing folder by default system file manager");
+    sMenuText     = QT_TR_NOOP("Open Macro Folder");
+    sToolTipText  = QT_TR_NOOP("Opens the macros folder in the system file manager");
     sWhatsThis    = "Std_OpenMacrosFolder";
-    sStatusTip    = QT_TR_NOOP("Open macros containing folder by default system file manager");
+    sStatusTip    = sToolTipText;
     sPixmap       = "MacroFolder";
     sAccel        = "";
     eType         = 0;

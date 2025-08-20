@@ -74,11 +74,11 @@ Array3D::Array3D(const QString& propertyName,
     ui->table2D->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->table2D, &QWidget::customContextMenuRequested, this, &Array3D::on2DContextMenu);
 
-    _deleteDepthAction.setText(tr("Delete row"));
+    _deleteDepthAction.setText(tr("Delete Row"));
     connect(&_deleteDepthAction, &QAction::triggered, this, &Array3D::onDepthDelete);
     ui->table3D->addAction(&_deleteDepthAction);
 
-    _delete2DAction.setText(tr("Delete row"));
+    _delete2DAction.setText(tr("Delete Row"));
     connect(&_delete2DAction, &QAction::triggered, this, &Array3D::on2DDelete);
     ui->table2D->addAction(&_delete2DAction);
 
@@ -228,7 +228,7 @@ void Array3D::update2DArray()
 
 void Array3D::onDepthContextMenu(const QPoint& pos)
 {
-    QMenu contextMenu(tr("Context menu"), this);
+    QMenu contextMenu(tr("Context Menu"), this);
 
     contextMenu.addAction(&_deleteDepthAction);
 
@@ -262,7 +262,7 @@ int Array3D::confirmDepthDelete()
     box.setIcon(QMessageBox::Question);
     box.setWindowTitle(tr("Confirm Delete"));
 
-    QString prompt = tr("Are you sure you want to delete the row?");
+    QString prompt = tr("Delete the row?");
     box.setText(prompt);
     box.setInformativeText(tr("Removing this will also remove all 2D contents."));
 
@@ -299,7 +299,7 @@ void Array3D::deleteDepthSelected()
 
 void Array3D::on2DContextMenu(const QPoint& pos)
 {
-    QMenu contextMenu(tr("Context menu"), this);
+    QMenu contextMenu(tr("Context Menu"), this);
 
     contextMenu.addAction(&_delete2DAction);
 
@@ -334,7 +334,7 @@ int Array3D::confirm2dDelete()
     box.setIcon(QMessageBox::Question);
     box.setWindowTitle(tr("Confirm Delete"));
 
-    QString prompt = tr("Are you sure you want to delete the row?");
+    QString prompt = tr("Delete the row?");
     box.setText(prompt);
 
     box.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);

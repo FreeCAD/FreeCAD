@@ -84,14 +84,14 @@ class ObjectDressup:
             "App::PropertyEnumeration",
             "StyleIn",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "The Style of Lead-In"),
+            QT_TRANSLATE_NOOP("App::Property", "The style of motion into the toolpath"),
         )
         obj.StyleIn = lead_styles
         obj.addProperty(
             "App::PropertyEnumeration",
             "StyleOut",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "The Style of Lead-Out"),
+            QT_TRANSLATE_NOOP("App::Property", "The style of motion out of the toolpath"),
         )
         obj.StyleOut = lead_styles
         obj.addProperty(
@@ -228,7 +228,7 @@ class ObjectDressup:
                 "App::PropertyEnumeration",
                 "StyleIn",
                 "Path",
-                QT_TRANSLATE_NOOP("App::Property", "The Style of Lead-In"),
+                QT_TRANSLATE_NOOP("App::Property", "The style of motion into the toolpath"),
             )
             obj.StyleIn = lead_styles
             obj.removeProperty("StyleOn")
@@ -240,7 +240,7 @@ class ObjectDressup:
                 "App::PropertyEnumeration",
                 "StyleOut",
                 "Path",
-                QT_TRANSLATE_NOOP("App::Property", "The Style of Lead-Out"),
+                QT_TRANSLATE_NOOP("App::Property", "The style of motion out of the toolpath"),
             )
             obj.StyleOut = lead_styles
             obj.removeProperty("StyleOff")
@@ -1197,10 +1197,10 @@ class CommandPathDressupLeadInOut:
     def GetResources(self):
         return {
             "Pixmap": "CAM_Dressup",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "LeadInOut"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Lead In/Out"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_DressupLeadInOut",
-                "Creates a Cutter Radius Compensation G41/G42 Entry Dressup object from a selected path",
+                "Creates a cutter radius compensation G41/G42 entry dressup object from a selected path",
             ),
         }
 
@@ -1214,9 +1214,7 @@ class CommandPathDressupLeadInOut:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            Path.Log.error(
-                translate("CAM_DressupLeadInOut", "Please select one toolpath object") + "\n"
-            )
+            Path.Log.error(translate("CAM_DressupLeadInOut", "Select one toolpath object") + "\n")
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
@@ -1225,7 +1223,7 @@ class CommandPathDressupLeadInOut:
             )
             return
         if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
-            Path.Log.error(translate("CAM_DressupLeadInOut", "Please select a Profile object"))
+            Path.Log.error(translate("CAM_DressupLeadInOut", "Select a Profile object"))
             return
 
         # everything ok!
@@ -1253,4 +1251,4 @@ if App.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand("CAM_DressupLeadInOut", CommandPathDressupLeadInOut())
 
-Path.Log.notice("Loading CAM_DressupLeadInOut... done\n")
+Path.Log.notice("Loading CAM_DressupLeadInOut… done\n")

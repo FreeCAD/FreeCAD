@@ -75,6 +75,15 @@ namespace SketcherGui
 class DrawSketchHandler;
 class ViewProviderSketch;
 
+enum OffsetMode : bool
+{
+    NoOffset = false,
+    OffsetConstraint = true
+};
+
+// to improve readability, expose the enum cases directly in the namespace
+using enum OffsetMode;
+
 /// This function tries to auto-recompute the active document if the option
 /// is set in the user parameter. If the option is not set nothing will be done
 /// @return true if a recompute was undertaken, false if not.
@@ -154,6 +163,11 @@ inline bool isEdge(int GeoId, Sketcher::PointPos PosId)
 
 extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
+inline GeometryCreationMode currentGeometryCreationMode()
+{
+    return geometryCreationMode;
+}
+
 inline bool isConstructionMode()
 {
     return geometryCreationMode == GeometryCreationMode::Construction;
@@ -198,6 +212,9 @@ void ConstraintToAttachment(Sketcher::GeoElementId element,
                             Sketcher::GeoElementId attachment,
                             double distance,
                             App::DocumentObject* obj);
+
+void ConstraintLineByAngle(int geoId, double angle, App::DocumentObject* obj);
+void Constraint2LinesByAngle(int geoId1, int geoId2, double angle, App::DocumentObject* obj);
 
 // convenience functions for cursor coordinates
 bool hideUnits();

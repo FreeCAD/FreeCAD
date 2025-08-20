@@ -39,8 +39,8 @@
     <Methode Name="deleteLast">
       <Documentation>
         <UserDocu>
-          deleteLast(n) - delete n waypoints at the end
-          deleteLast()  - delete the last waypoint
+deleteLast(n) - delete n waypoints at the end
+deleteLast()  - delete the last waypoint
         </UserDocu>
       </Documentation>
     </Methode>

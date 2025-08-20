@@ -58,6 +58,21 @@ ConstraintContact::ConstraintContact()
                       "ConstraintContact",
                       App::PropertyType(App::Prop_None),
                       "Stick slope");
+    ADD_PROPERTY_TYPE(EnableThermalContact,
+                      (false),
+                      "ConstraintContact",
+                      App::PropertyType(App::Prop_None),
+                      "Enable thermal contact");
+    ADD_PROPERTY_TYPE(ThermalContactConductance,
+                      (std::vector<std::string> {}),
+                      "ConstraintContact",
+                      App::PropertyType(App::Prop_None),
+                      "Thermal contact conductance");
+    ADD_PROPERTY_TYPE(HardContact,
+                      (false),
+                      "ConstraintContact",
+                      App::PropertyType(App::Prop_None),
+                      "Enable hard contact");
 }
 
 App::DocumentObjectExecReturn* ConstraintContact::execute()

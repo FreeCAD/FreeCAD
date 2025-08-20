@@ -4162,8 +4162,6 @@ int Sketch::addInternalAlignmentParabolaFocalDistance(int geoId1, int geoId2)
 
         int tag = ++ConstraintsCounter;
         GCSsys.addConstraintP2PCoincident(p1, vertexpoint, tag);
-
-        tag = ++ConstraintsCounter;
         GCSsys.addConstraintP2PCoincident(p2, focuspoint, tag);
 
         return ConstraintsCounter;

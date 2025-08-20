@@ -212,7 +212,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
 
     QString windowTitle = caption;
     if (windowTitle.isEmpty())
-        windowTitle = FileDialog::tr("Save as");
+        windowTitle = FileDialog::tr("Save As");
 
     // NOTE: We must not change the specified file name afterwards as we may return the name of an already
     // existing file. Hence we must extract the first matching suffix from the filter list and append it
@@ -668,18 +668,18 @@ FileChooser::FileChooser ( QWidget * parent )
     completer->setModel( fs_model );
     lineEdit->setCompleter( completer );
 
-    layout->addWidget( lineEdit );
 
     connect(lineEdit, &QLineEdit::textChanged, this, &FileChooser::fileNameChanged);
     connect(lineEdit, &QLineEdit::editingFinished, this, &FileChooser::editingFinished);
 
-    button = new QPushButton(QLatin1String("..."), this);
+    button = new QPushButton(QStringLiteral("…"), this);
 
 #if defined (Q_OS_MACOS)
     button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
 #endif
 
-    layout->addWidget(button);
+    layout->addWidget(lineEdit, 1);
+    layout->addWidget(button, -1);
 
     connect(button, &QPushButton::clicked, this, &FileChooser::chooseFile);
 
@@ -690,7 +690,6 @@ FileChooser::~FileChooser() = default;
 
 void FileChooser::resizeEvent(QResizeEvent* e)
 {
-    button->setFixedWidth(e->size().height());
     button->setFixedHeight(e->size().height());
 }
 
@@ -742,12 +741,12 @@ void FileChooser::chooseFile()
     QString fn;
     if ( mode() == File ) {
         if (acceptMode() == AcceptOpen)
-            fn = QFileDialog::getOpenFileName(this, tr( "Select a file" ), prechosenDirectory, _filter, nullptr, dlgOpt);
+            fn = QFileDialog::getOpenFileName(this, tr( "Select a File" ), prechosenDirectory, _filter, nullptr, dlgOpt);
         else
-            fn = QFileDialog::getSaveFileName(this, tr( "Select a file" ), prechosenDirectory, _filter, nullptr, dlgOpt);
+            fn = QFileDialog::getSaveFileName(this, tr( "Select a File" ), prechosenDirectory, _filter, nullptr, dlgOpt);
     } else {
         QFileDialog::Options option = QFileDialog::ShowDirsOnly | dlgOpt;
-        fn = QFileDialog::getExistingDirectory( this, tr( "Select a directory" ), prechosenDirectory,option );
+        fn = QFileDialog::getExistingDirectory( this, tr( "Select a Directory" ), prechosenDirectory,option );
     }
 
     if (!fn.isEmpty()) {
@@ -815,12 +814,12 @@ void FileChooser::setFilter ( const QString& filter )
 /**
  * Sets the browse button's text to \a txt.
  */
-void FileChooser::setButtonText( const QString& txt )
+void FileChooser::setButtonText(const QString& txt)
 {
-    button->setText( txt );
+    button->setText(txt);
     int w1 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), txt);
-    int w2 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), QLatin1String(" ... "));
-    button->setFixedWidth( (w1 > w2 ? w1 : w2) );
+    int w2 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), QStringLiteral(" … "));
+    button->setMinimumWidth(std::max(w1, w2));
     Q_EMIT buttonTextChanged(txt);
 }
 
@@ -840,7 +839,7 @@ QString FileChooser::buttonText() const
 SelectModule::SelectModule (const QString& type, const SelectModule::Dict& types, QWidget * parent)
   : QDialog(parent, Qt::WindowTitleHint)
 {
-    setWindowTitle(tr("Select module"));
+    setWindowTitle(tr("Select Module"));
     groupBox = new QGroupBox(this);
     groupBox->setTitle(tr("Open %1 as").arg(type));
 

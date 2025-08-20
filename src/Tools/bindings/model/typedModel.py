@@ -24,6 +24,7 @@ class ParameterType(str, Enum):
     MODULE = "Module"
     CALLABLE = "Callable"
     SEQUENCE = "Sequence"
+    VECTOR = "Vector"
 
     def __str__(self):
         return self.value

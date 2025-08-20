@@ -59,90 +59,125 @@ class ViewProviderWire(ViewProviderDraft):
         """Set the properties of objects if they don't exist."""
         super(ViewProviderWire, self)._set_properties(vobj)
 
-        if not hasattr(vobj, "EndArrow"):
-            _tip = QT_TRANSLATE_NOOP("App::Property", "Displays a Dimension symbol at the end of the wire.")
-            vobj.addProperty("App::PropertyBool",
-                             "EndArrow",
-                             "Draft",
-                             _tip,
-                             locked=True)
-            vobj.EndArrow = False
-
-        if not hasattr(vobj, "ArrowSize"):
+        if not hasattr(vobj, "ArrowSizeStart"):
             _tip = QT_TRANSLATE_NOOP("App::Property", "Arrow size")
             vobj.addProperty("App::PropertyLength",
-                             "ArrowSize",
+                             "ArrowSizeStart",
                              "Draft",
                              _tip,
                              locked=True)
-            vobj.ArrowSize = params.get_param("arrowsize")
+            vobj.ArrowSizeStart = params.get_param("arrowsizestart")
 
-        if not hasattr(vobj, "ArrowType"):
+        if not hasattr(vobj, "ArrowTypeStart"):
             _tip = QT_TRANSLATE_NOOP("App::Property", "Arrow type")
             vobj.addProperty("App::PropertyEnumeration",
-                             "ArrowType",
+                             "ArrowTypeStart",
                              "Draft",
                              _tip,
                              locked=True)
-            vobj.ArrowType = utils.ARROW_TYPES
-            vobj.ArrowType = utils.ARROW_TYPES[params.get_param("dimsymbol")]
+            vobj.ArrowTypeStart = utils.ARROW_TYPES
+            vobj.ArrowTypeStart = "None"
+
+        if not hasattr(vobj, "ArrowSizeEnd"):
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Arrow size")
+            vobj.addProperty("App::PropertyLength",
+                             "ArrowSizeEnd",
+                             "Draft",
+                             _tip,
+                             locked=True)
+            vobj.ArrowSizeEnd = params.get_param("arrowsizeend")
+
+        if not hasattr(vobj, "ArrowTypeEnd"):
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Arrow type")
+            vobj.addProperty("App::PropertyEnumeration",
+                             "ArrowTypeEnd",
+                             "Draft",
+                             _tip,
+                             locked=True)
+            vobj.ArrowTypeEnd = utils.ARROW_TYPES
+            vobj.ArrowTypeEnd = "None"
 
     def attach(self, vobj):
         self.Object = vobj.Object
-        col = coin.SoBaseColor()
-        col.rgb.setValue(vobj.LineColor[0],vobj.LineColor[1],vobj.LineColor[2])
-        self.coords = coin.SoTransform()
-        self.pt = coin.SoSeparator()
-        self.pt.addChild(col)
-        self.pt.addChild(self.coords)
-        self.symbol = gui_utils.dim_symbol()
-        self.pt.addChild(self.symbol)
+
+        self.color = coin.SoBaseColor()
+        self.color.rgb.setValue(*vobj.LineColor[:3])
+
+        self.startSymbol = gui_utils.dim_symbol()
+        self.coords1 = coin.SoTransform()
+        self.pt1 = coin.SoSeparator()
+        self.pt1.addChild(self.color)
+        self.pt1.addChild(self.coords1)
+        self.pt1.addChild(self.startSymbol)
+
+        self.endSymbol = gui_utils.dim_symbol()
+        self.coords2 = coin.SoTransform()
+        self.pt2 = coin.SoSeparator()
+        self.pt2.addChild(self.color)
+        self.pt2.addChild(self.coords2)
+        self.pt2.addChild(self.endSymbol)
+
         super(ViewProviderWire, self).attach(vobj)
-        self.onChanged(vobj,"EndArrow")
+        self.onChanged(vobj, "ArrowSizeStart")
 
     def updateData(self, obj, prop):
-        if prop == "Points":
-            if obj.Points:
-                p = obj.Points[-1]
-                if hasattr(self,"coords"):
-                    self.coords.translation.setValue((p.x,p.y,p.z))
-                    if len(obj.Points) >= 2:
-                        v1 = obj.Points[-2].sub(obj.Points[-1])
-                        if not DraftVecUtils.isNull(v1):
-                            v1.normalize()
-                            _rot = coin.SbRotation()
-                            _rot.setValue(coin.SbVec3f(1, 0, 0), coin.SbVec3f(v1[0], v1[1], v1[2]))
-                            self.coords.rotation.setValue(_rot)
-        return
+        if prop == "Points" \
+                and len(obj.Points) >= 2 \
+                and hasattr(self, "coords1") \
+                and hasattr(self, "coords2"):
+            self.coords1.translation.setValue(*obj.Points[0])
+            v1 = obj.Points[1].sub(obj.Points[0])
+            if not DraftVecUtils.isNull(v1):
+                v1.normalize()
+                rot1 = coin.SbRotation()
+                rot1.setValue(coin.SbVec3f(1, 0, 0), coin.SbVec3f(*v1))
+                self.coords1.rotation.setValue(rot1)
+            self.coords2.translation.setValue(*obj.Points[-1])
+            v2 = obj.Points[-2].sub(obj.Points[-1])
+            if not DraftVecUtils.isNull(v2):
+                v2.normalize()
+                rot2 = coin.SbRotation()
+                rot2.setValue(coin.SbVec3f(1, 0, 0), coin.SbVec3f(*v2))
+                self.coords2.rotation.setValue(rot2)
 
     def onChanged(self, vobj, prop):
-        if prop in ["EndArrow","ArrowSize","ArrowType","Visibility"]:
+        if prop in ["ArrowSizeStart",
+                    "ArrowSizeEnd",
+                    "ArrowTypeStart",
+                    "ArrowTypeEnd",
+                    "Visibility"] \
+                and hasattr(vobj, "ArrowSizeStart") \
+                and hasattr(vobj, "ArrowSizeEnd") \
+                and hasattr(vobj, "ArrowTypeStart") \
+                and hasattr(vobj, "ArrowTypeEnd") \
+                and hasattr(vobj, "Visibility") \
+                and hasattr(self, "pt1") \
+                and hasattr(self, "pt2"):
             rn = vobj.RootNode
-            if hasattr(self,"pt") and hasattr(vobj,"EndArrow"):
-                if vobj.EndArrow and vobj.Visibility:
-                    self.pt.removeChild(self.symbol)
-                    s = utils.ARROW_TYPES.index(vobj.ArrowType)
-                    self.symbol = gui_utils.dim_symbol(s)
-                    self.pt.addChild(self.symbol)
-                    self.updateData(vobj.Object,"Points")
-                    if hasattr(vobj,"ArrowSize"):
-                        s = vobj.ArrowSize
-                    else:
-                        s = params.get_param("arrowsize")
-                    self.coords.scaleFactor.setValue((s,s,s))
-                    rn.addChild(self.pt)
-                else:
-                    if self.symbol:
-                        if self.pt.findChild(self.symbol) != -1:
-                            self.pt.removeChild(self.symbol)
-                        if rn.findChild(self.pt) != -1:
-                            rn.removeChild(self.pt)
+            rn.removeChild(self.pt1)
+            rn.removeChild(self.pt2)
+            if vobj.Visibility:
+                self.pt1.removeChild(self.startSymbol)
+                self.startSymbol = gui_utils.dim_symbol(utils.ARROW_TYPES.index(vobj.ArrowTypeStart))
+                self.pt1.addChild(self.startSymbol)
+                self.coords1.scaleFactor.setValue([vobj.ArrowSizeStart] * 3)
 
-        if prop in ["LineColor"]:
-            if hasattr(self, "pt"):
-                self.pt[0].rgb.setValue(vobj.LineColor[0],vobj.LineColor[1],vobj.LineColor[2])
+                self.pt2.removeChild(self.endSymbol)
+                self.endSymbol = gui_utils.dim_symbol(utils.ARROW_TYPES.index(vobj.ArrowTypeEnd))
+                self.pt2.addChild(self.endSymbol)
+                self.coords2.scaleFactor.setValue([vobj.ArrowSizeEnd] * 3)
 
-        super(ViewProviderWire, self).onChanged(vobj, prop)
+                self.updateData(vobj.Object, "Points")
+                rn.addChild(self.pt1)
+                rn.addChild(self.pt2)
+
+        if prop == "LineColor" \
+                and hasattr(vobj, "LineColor") \
+                and hasattr(self, "pt1") \
+                and hasattr(self, "pt2"):
+            self.color.rgb.setValue(*vobj.LineColor[:3])
+
+        super().onChanged(vobj, prop)
         return
 
     def claimChildren(self):

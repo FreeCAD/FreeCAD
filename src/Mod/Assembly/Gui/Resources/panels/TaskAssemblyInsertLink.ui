@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Insert Component</string>
+   <string>Insert</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <widget class="QLineEdit" name="filterPartList">
      <property name="placeholderText">
-      <string>Search parts...</string>
+      <string>Search parts…</string>
      </property>
     </widget>
    </item>
@@ -36,14 +36,14 @@
      <item>
       <widget class="QLabel" name="label1">
        <property name="text">
-        <string>Don't find your part? </string>
+        <string>Cannot find the part? </string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="openFileButton">
        <property name="text">
-        <string>Open file</string>
+        <string>Open File</string>
        </property>
       </widget>
      </item>
@@ -52,7 +52,7 @@
    <item row="3" column="0">
     <widget class="Gui::PrefCheckBox" name="CheckBox_ShowOnlyParts">
      <property name="toolTip">
-      <string>If checked, the list will show only Parts.</string>
+      <string>Shows only parts in the list</string>
      </property>
      <property name="text">
       <string>Show only parts</string>
@@ -75,7 +75,7 @@
 Rigid means that the added sub-assembly will be considered as a solid unit within the parent assembly.
 Flexible means that the added sub-assembly will allow movement of its individual components' joints within the parent assembly.
 You can change this behavior at any time by either right-clicking the sub-assembly on the document tree and toggling the
-Turn rigid/Turn flexible command there, or by editing its Rigid property in the Property Editor.</string>
+'Turn rigid'/'Turn flexible' command there, or by editing its Rigid property in the property editor.</string>
      </property>
      <property name="text">
       <string>Rigid sub-assemblies</string>

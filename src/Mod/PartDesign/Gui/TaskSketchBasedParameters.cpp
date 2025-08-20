@@ -90,22 +90,37 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
 void TaskSketchBasedParameters::startReferenceSelection(App::DocumentObject* profile,
                                                         App::DocumentObject* base)
 {
-    if (Gui::Document* doc = getGuiDocument()) {
-        doc->setHide(profile->getNameInDocument());
-        if (base) {
-            doc->setShow(base->getNameInDocument());
+    const auto* bodyViewProvider = getViewObject<ViewProvider>()->getBodyViewProvider();
+
+    previouslyVisibleViewProvider = bodyViewProvider->getShownViewProvider();
+
+    if (!base) {
+        return;
+    }
+
+    if (Document* doc = getGuiDocument()) {
+        if (previouslyVisibleViewProvider) {
+            previouslyVisibleViewProvider->hide();
         }
+
+        doc->setShow(base->getNameInDocument());
     }
 }
 
 void TaskSketchBasedParameters::finishReferenceSelection(App::DocumentObject* profile,
                                                          App::DocumentObject* base)
 {
-    if (Gui::Document* doc = getGuiDocument()) {
-        doc->setShow(profile->getNameInDocument());
+    if (!previouslyVisibleViewProvider) {
+        return;
+    }
+
+    if (Document* doc = getGuiDocument()) {
         if (base) {
             doc->setHide(base->getNameInDocument());
         }
+
+        previouslyVisibleViewProvider->show();
+        previouslyVisibleViewProvider = nullptr;
     }
 }
 

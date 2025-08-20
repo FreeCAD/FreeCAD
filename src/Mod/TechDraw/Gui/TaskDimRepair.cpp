@@ -79,7 +79,7 @@ void TaskDimRepair::setUiPrimary()
     fillList(ui->lwGeometry2d, labelsInOut, subElements2d);
 
     QStringList headers;
-    headers << tr("Object Name") << tr("Object Label") << tr("SubElement");
+    headers << tr("Object name") << tr("Object label") << tr("Sub-element");
     ui->twReferences3d->setHorizontalHeaderLabels(headers);
 
     ReferenceVector references3d = m_dim->getReferences3d();
@@ -137,8 +137,8 @@ void TaskDimRepair::slotUseSelection()
         references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
     if (geometryRefs2d == DimensionGeometry::isInvalid) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not make dimension from selection"));
+                             QObject::tr("Incorrect selection"),
+                             QObject::tr("Cannot make dimension from selection"));
         return;
     }
     //what 3d geometry configuration did we receive?
@@ -148,8 +148,8 @@ void TaskDimRepair::slotUseSelection()
             dvp, references3d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
         if (geometryRefs3d == DimensionGeometry::isInvalid) {
             QMessageBox::warning(Gui::getMainWindow(),
-                                 QObject::tr("Incorrect Selection"),
-                                 QObject::tr("Can not make dimension from selection"));
+                                 QObject::tr("Incorrect selection"),
+                                 QObject::tr("Cannot make dimension from selection"));
             return;
         }
     }
@@ -245,7 +245,7 @@ bool TaskDimRepair::accept()
 {
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
-    Gui::Command::openCommand(tr("Repair Dimension").toStdString().c_str());
+    Gui::Command::openCommand(tr("Repair dimension").toStdString().c_str());
     replaceReferences();
     Gui::Command::commitCommand();
 

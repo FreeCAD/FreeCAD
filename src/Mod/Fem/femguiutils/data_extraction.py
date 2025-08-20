@@ -37,7 +37,7 @@ from vtkmodules.vtkCommonCore import vtkVersion
 from vtkmodules.vtkCommonDataModel import vtkTable
 from vtkmodules.vtkFiltersGeneral import vtkSplitColumnComponents
 
-if vtkVersion.GetVTKMajorVersion() > 9 and vtkVersion.GetVTKMinorVersion() > 3:
+if vtkVersion.GetVTKMajorVersion() >= 9 and vtkVersion.GetVTKMinorVersion() >= 3:
     from vtkmodules.vtkFiltersCore import vtkAttributeDataToTableFilter
 else:
     from vtkmodules.vtkInfovisCore import vtkDataObjectToTable
@@ -125,7 +125,7 @@ class DataExtraction(_BasePostTaskPanel):
         if not algo:
             self.data_model.setTable(vtkTable())
 
-        if vtkVersion.GetVTKMajorVersion() > 9 and vtkVersion.GetVTKMinorVersion() > 3:
+        if vtkVersion.GetVTKMajorVersion() >= 9 and vtkVersion.GetVTKMinorVersion() >= 3:
             filter = vtkAttributeDataToTableFilter()
         else:
             filter = vtkDataObjectToTable()

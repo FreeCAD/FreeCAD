@@ -54,7 +54,7 @@ class Arch_Equipment:
 
         s = FreeCADGui.Selection.getSelection()
         if not s:
-            FreeCAD.Console.PrintError(translate("Arch","You must select a base shape object and optionally a mesh object"))
+            FreeCAD.Console.PrintError(translate("Arch","Select a base shape object and optionally a mesh object"))
         else:
             base = ""
             mesh = ""

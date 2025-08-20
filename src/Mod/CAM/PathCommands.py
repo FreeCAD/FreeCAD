@@ -59,7 +59,7 @@ class _CommandSelectLoop:
             "MenuText": QT_TRANSLATE_NOOP("CAM_SelectLoop", "Finish Selecting Loop"),
             "Accel": "P, L",
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_SelectLoop", "Complete the selection of edges that form a loop"
+                "CAM_SelectLoop", "Completes the selection of edges that form a loop"
             ),
             "CmdType": "ForEdit",
         }
@@ -85,32 +85,47 @@ class _CommandSelectLoop:
             return False
 
     def Activated(self):
-        from PathScripts.PathUtils import horizontalEdgeLoop
-        from PathScripts.PathUtils import horizontalFaceLoop
+        from PathScripts.PathUtils import horizontalEdgeLoop, horizontalFaceLoop
+
+        if not FreeCADGui.Selection.getSelectionEx():
+            return
 
         sel = FreeCADGui.Selection.getSelectionEx()[0]
+        if not sel.SubObjects:
+            return
+
         obj = sel.Object
-        edge1 = sel.SubObjects[0]
-        if "Face" in sel.SubElementNames[0]:
-            loop = horizontalFaceLoop(sel.Object, sel.SubObjects[0], sel.SubElementNames)
+        sub = sel.SubObjects
+        names = sel.SubElementNames
+        loopwire = None
+
+        # Face selection
+        if "Face" in names[0]:
+            loop = horizontalFaceLoop(obj, sub[0], names)
             if loop:
                 FreeCADGui.Selection.clearSelection()
-                FreeCADGui.Selection.addSelection(sel.Object, loop)
-            loopwire = []
-        elif len(sel.SubObjects) == 1:
-            loopwire = horizontalEdgeLoop(obj, edge1)
-        else:
-            edge2 = sel.SubObjects[1]
-            loopwire = loopdetect(obj, edge1, edge2)
+                FreeCADGui.Selection.addSelection(obj, loop)
+                return
 
-        if loopwire:
-            FreeCADGui.Selection.clearSelection()
+        # One edge selected
+        elif len(sub) == 1:
+            loopwire = horizontalEdgeLoop(obj, sub[0])
+
+        # Two edges selected
+        elif len(sub) >= 2:
+            loopwire = loopdetect(obj, sub[0], sub[1])
+
+        if hasattr(loopwire, "Edges") and loopwire.Edges:
             elist = obj.Shape.Edges
+            FreeCADGui.Selection.clearSelection()
             for i in loopwire.Edges:
                 for e in elist:
                     if e.hashCode() == i.hashCode():
-                        FreeCADGui.Selection.addSelection(obj, "Edge" + str(elist.index(e) + 1))
-        elif FreeCAD.GuiUp:
+                        FreeCADGui.Selection.addSelection(obj, f"Edge{elist.index(e) + 1}")
+            return
+
+        # Final fallback
+        if FreeCAD.GuiUp:
             QtGui.QMessageBox.information(
                 None,
                 QT_TRANSLATE_NOOP("CAM_SelectLoop", "Feature Completion"),
@@ -142,12 +157,10 @@ class _ToggleOperation:
     def GetResources(self):
         return {
             "Pixmap": "CAM_OpActive",
-            "MenuText": QT_TRANSLATE_NOOP(
-                "CAM_OpActiveToggle", "Toggle the Active State of the Operation"
-            ),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_OpActiveToggle", "Toggle Operation"),
             "Accel": "P, X",
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_OpActiveToggle", "Toggle the Active State of the Operation"
+                "CAM_OpActiveToggle", "Toggles the active state of the operation"
             ),
             "CmdType": "ForEdit",
         }
@@ -185,8 +198,8 @@ class _CopyOperation:
     def GetResources(self):
         return {
             "Pixmap": "CAM_OpCopy",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_OperationCopy", "Copy the operation in the job"),
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_OperationCopy", "Copy the operation in the job"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_OperationCopy", "Copy Operation"),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_OperationCopy", "Copies the operation in the job"),
             "CmdType": "ForEdit",
         }
 

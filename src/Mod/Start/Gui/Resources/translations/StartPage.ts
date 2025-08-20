@@ -15,12 +15,12 @@
     </message>
     <message>
         <location filename="../../FirstStartWidget.cpp" line="99"/>
-        <source>To get started, set your basic configuration options below.</source>
+        <source>Set your basic configuration options below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../FirstStartWidget.cpp" line="100"/>
-        <source>These options (and many more) can be changed later in Preferences.</source>
+        <source>These options (and many more) can be changed later in the preferences.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -56,107 +56,102 @@
     </message>
     <message>
         <location filename="../../Manipulator.cpp" line="49"/>
-        <source>Displays the Start Page</source>
+        <source>Displays the start page</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>StartGui::StartView</name>
     <message>
-        <location filename="../../StartView.cpp" line="193"/>
-        <source>Empty file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../StartView.cpp" line="194"/>
-        <source>Create a new empty FreeCAD file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../StartView.cpp" line="197"/>
+        <location filename="../../StartView.cpp" line="211"/>
         <source>Open File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../StartView.cpp" line="198"/>
-        <source>Open an existing CAD file or 3D model</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../StartView.cpp" line="201"/>
-        <source>Parametric Part</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../StartView.cpp" line="202"/>
-        <source>Create a part with the Part Design workbench</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../StartView.cpp" line="205"/>
+        <location filename="../../StartView.cpp" line="219"/>
         <source>Assembly</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../StartView.cpp" line="206"/>
-        <source>Create an assembly project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../StartView.cpp" line="209"/>
+        <location filename="../../StartView.cpp" line="223"/>
         <source>2D Draft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../StartView.cpp" line="210"/>
-        <source>Create a 2D Draft with the Draft workbench</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../StartView.cpp" line="213"/>
+        <location filename="../../StartView.cpp" line="227"/>
         <source>BIM/Architecture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../StartView.cpp" line="214"/>
-        <source>Create an architectural project</source>
+        <location filename="../../StartView.cpp" line="207"/>
+        <source>Empty File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../StartView.cpp" line="442"/>
+        <location filename="../../StartView.cpp" line="208"/>
+        <source>Creates a new empty FreeCAD file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../StartView.cpp" line="212"/>
+        <source>Opens an existing CAD file or 3D model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../StartView.cpp" line="215"/>
+        <source>Parametric Body</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../StartView.cpp" line="216"/>
+        <source>Creates a body with the Part Design workbench</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../StartView.cpp" line="220"/>
+        <source>Creates an assembly project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../StartView.cpp" line="224"/>
+        <source>Creates a 2D draft document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../StartView.cpp" line="228"/>
+        <source>Creates an architectural project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../StartView.cpp" line="459"/>
         <source>New File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../StartView.cpp" line="443"/>
+        <location filename="../../StartView.cpp" line="460"/>
         <source>Examples</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../StartView.cpp" line="444"/>
+        <location filename="../../StartView.cpp" line="461"/>
         <source>Recent Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../StartView.cpp" line="445"/>
-        <source>Custom Folder</source>
+        <location filename="../../StartView.cpp" line="476"/>
+        <source>Open First Start Setup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../StartView.cpp" line="448"/>
-        <source>Open first start setup</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../StartView.cpp" line="450"/>
-        <source>Don&apos;t show this Start page again (start with blank screen)</source>
+        <location filename="../../StartView.cpp" line="478"/>
+        <source>Do not show this Start page again (start with blank screen)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Workbench</name>
     <message>
-        <location filename="../../StartView.cpp" line="436"/>
+        <location filename="../../StartView.cpp" line="453"/>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
@@ -221,6 +216,7 @@
     </message>
     <message>
         <location filename="../../DlgStartPreferences.ui" line="26"/>
+        <location filename="../../DlgStartPreferences.ui" line="86"/>
         <source>Show only FreeCAD files in additional folder</source>
         <translation type="unfinished"></translation>
     </message>
@@ -237,27 +233,22 @@
     <message>
         <location filename="../../DlgStartPreferences.ui" line="47"/>
         <source>An optional custom folder to be displayed on the Start page.
-By using &quot;;;&quot; to separate paths, you can add several folders here.</source>
+Multiple folders can be added using &quot;;;&quot; to separate paths.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgStartPreferences.ui" line="64"/>
-        <source>If you want the examples to show on the first page</source>
+        <source>Shows example files on the start page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgStartPreferences.ui" line="86"/>
-        <source>If the additional folder contents should include only .FCStd files</source>
+        <location filename="../../DlgStartPreferences.ui" line="114"/>
+        <source>The start page is closed automatically when FreeCAD launches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgStartPreferences.ui" line="108"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DlgStartPreferences.ui" line="114"/>
-        <source>If checked, will automatically close the Start page when FreeCAD launches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

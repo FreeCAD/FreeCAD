@@ -51,7 +51,7 @@ using namespace Gui;
 
 TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean* BooleanView, QWidget* parent)
     : TaskBox(Gui::BitmapFactory().pixmap("PartDesign_Boolean"),
-              tr("Boolean parameters"),
+              tr("Boolean Parameters"),
               true,
               parent)
     , ui(new Ui_TaskBooleanParameters)

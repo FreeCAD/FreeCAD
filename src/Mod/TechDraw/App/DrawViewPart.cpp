@@ -118,7 +118,7 @@ DrawViewPart::DrawViewPart()
     ADD_PROPERTY_TYPE(XSource, (nullptr), group, App::Prop_None, "External 3D Shape to view");
 
     ADD_PROPERTY_TYPE(Direction, (0.0, -1.0, 0.0), group, App::Prop_None,
-                      "Projection Plane normal. The direction you are looking from.");
+                      "Projection Plane normal. View direction for the projection plane");
     ADD_PROPERTY_TYPE(XDirection, (1.0, 0.0, 0.0), group, App::Prop_None,
                       "Projection Plane X Axis in R3. Rotates/Mirrors View");
     ADD_PROPERTY_TYPE(Perspective, (false), group, App::Prop_None,
@@ -471,7 +471,6 @@ void DrawViewPart::postHlrTasks()
     if (ScaleType.isValue("Automatic") && !checkFit()) {
         double newScale = autoScale();
         Scale.setValue(newScale);
-        Scale.purgeTouched();
         partExec(m_saveShape);
     }
 
@@ -562,7 +561,7 @@ void DrawViewPart::findFacesNew(const std::vector<BaseGeomPtr> &goEdges)
 
     if (sortedWires.empty()) {
         Base::Console().warning(
-            "DVP::findFacesNew - %s - Can't make faces from projected edges\n",
+            "DVP::findFacesNew - %s - Cannot make faces from projected edges\n",
             getNameInDocument());
     }
     else {
@@ -685,7 +684,7 @@ void DrawViewPart::findFacesOld(const std::vector<BaseGeomPtr> &goEdges)
     sortedWires = eWalker.execute(newEdges);
     if (sortedWires.empty()) {
         Base::Console().warning(
-            "DVP::findFacesOld - %s -Can't make faces from projected edges\n",
+            "DVP::findFacesOld - %s -Cannott make faces from projected edges\n",
             getNameInDocument());
         return;
     }
@@ -1516,8 +1515,8 @@ void DrawViewPart::resetReferenceVerts()
 void DrawViewPart::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
 {
     if (prop == &Direction) {
-        // Direction was PropertyVector but is now PropertyDirection
-        App::PropertyVector tmp;
+        // Direction was PropertyVector, then briefly PropertyDirection, now back to PropertyVector
+        App::PropertyDirection tmp;
         if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
             tmp.setContainer(this);
             tmp.Restore(reader);
@@ -1528,8 +1527,8 @@ void DrawViewPart::handleChangedPropertyType(Base::XMLReader &reader, const char
     }
 
     if (prop == &XDirection) {
-        // XDirection was PropertyFloat but is now PropertyLength
-        App::PropertyVector tmp;
+        // XDirection was PropertyVector, then briefly PropertyDirection, now back to PropertyVector
+        App::PropertyDirection tmp;
         if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
             tmp.setContainer(this);
             tmp.Restore(reader);

@@ -81,11 +81,19 @@ def write_constraint(f, femobj, contact_obj, ccxwriter):
     dep_surf = "DEP" + contact_obj.Name
     f.write(f"{dep_surf}, {ind_surf}\n")
     f.write(f"*SURFACE INTERACTION, NAME=INT{contact_obj.Name}\n")
-    f.write("*SURFACE BEHAVIOR, PRESSURE-OVERCLOSURE=LINEAR\n")
-    slope = contact_obj.Slope.getValueAs("MPa/mm").Value
-    f.write(f"{slope:.13G}\n")
+    if contact_obj.HardContact:
+        f.write("*SURFACE BEHAVIOR, PRESSURE-OVERCLOSURE=HARD\n")
+    else:
+        f.write("*SURFACE BEHAVIOR, PRESSURE-OVERCLOSURE=LINEAR\n")
+        slope = contact_obj.Slope.getValueAs("MPa/mm").Value
+        f.write(f"{slope:.13G}\n")
     if contact_obj.Friction:
         f.write("*FRICTION\n")
         friction = contact_obj.FrictionCoefficient
         stick = contact_obj.StickSlope.getValueAs("MPa/mm").Value
         f.write(f"{friction:.13G}, {stick:.13G}\n")
+    if contact_obj.EnableThermalContact:
+        f.write("*GAP CONDUCTANCE\n")
+        for value in contact_obj.ThermalContactConductance:
+            f.write(f"{value}\n")
+        f.write("\n")

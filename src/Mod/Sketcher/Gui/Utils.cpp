@@ -668,6 +668,59 @@ void SketcherGui::ConstraintToAttachment(Sketcher::GeoElementId element,
     }
 }
 
+void SketcherGui::ConstraintLineByAngle(int geoId, double angle, App::DocumentObject* obj)
+{
+    using std::numbers::pi;
+    double angleModPi = std::fmod(angle, pi);
+    double angleModHalfPi = std::fmod(angle, pi / 2);
+
+    if (fabs(angleModPi - pi) < Precision::Confusion()
+        || fabs(angleModPi + pi) < Precision::Confusion()
+        || fabs(angleModPi) < Precision::Confusion()) {
+        Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('Horizontal',%d)) ", geoId);
+    }
+    else if (fabs(angleModHalfPi - pi / 2) < Precision::Confusion()
+             || fabs(angleModHalfPi + pi / 2) < Precision::Confusion()) {
+        Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('Vertical',%d)) ", geoId);
+    }
+    else {
+        Gui::cmdAppObjectArgs(obj,
+                              "addConstraint(Sketcher.Constraint('Angle',%d,%d,%f)) ",
+                              Sketcher::GeoEnum::HAxis,
+                              geoId,
+                              angle);
+    }
+}
+
+void SketcherGui::Constraint2LinesByAngle(int geoId1,
+                                          int geoId2,
+                                          double angle,
+                                          App::DocumentObject* obj)
+{
+    using std::numbers::pi;
+    double angleModPi = std::fmod(angle, pi);
+    double angleModHalfPi = std::fmod(angle, pi / 2);
+
+    if (fabs(angleModPi) < Precision::Confusion()) {
+        Gui::cmdAppObjectArgs(obj,
+                              "addConstraint(Sketcher.Constraint('Parallel',%d,%d)) ",
+                              geoId1,
+                              geoId2);
+    }
+    else if (fabs(angleModHalfPi) < Precision::Confusion()) {
+        Gui::cmdAppObjectArgs(obj,
+                              "addConstraint(Sketcher.Constraint('Perpendicular',%d,%d)) ",
+                              geoId1,
+                              geoId2);
+    }
+    else {
+        Gui::cmdAppObjectArgs(obj,
+                              "addConstraint(Sketcher.Constraint('Angle',%d,%d,%f)) ",
+                              geoId1,
+                              geoId2,
+                              angle);
+    }
+}
 
 // convenience functions for cursor display
 bool SketcherGui::hideUnits()

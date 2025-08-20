@@ -33,7 +33,7 @@ namespace GCS
 {
 
 //----------------Point
-int Point::PushOwnParams(VEC_pD& pvec)
+int Point::PushOwnParams(VEC_pD& pvec) const
 {
     int cnt = 0;
     pvec.push_back(x);
@@ -53,11 +53,11 @@ void Point::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
 
 //----------------DeriVector2
 DeriVector2::DeriVector2(const Point& p, const double* derivparam)
+    : x(*p.x)
+    , dx(0.0)
+    , y(*p.y)
+    , dy(0.0)
 {
-    x = *p.x;
-    y = *p.y;
-    dx = 0.0;
-    dy = 0.0;
     if (derivparam == p.x) {
         dx = 1.0;
     }
@@ -73,10 +73,8 @@ double DeriVector2::length(double& dlength) const
         dlength = 1.0;
         return l;
     }
-    else {
-        dlength = (x * dx + y * dy) / l;
-        return l;
-    }
+    dlength = (x * dx + y * dy) / l;
+    return l;
 }
 
 DeriVector2 DeriVector2::getNormalized() const
@@ -85,35 +83,30 @@ DeriVector2 DeriVector2::getNormalized() const
     if (l == 0.0) {
         return DeriVector2(0, 0, dx, dy);
     }
-    else {
-        DeriVector2 rtn;
-        rtn.x = x / l;
-        rtn.y = y / l;
-        // first, simply scale the derivative accordingly.
-        rtn.dx = dx / l;
-        rtn.dy = dy / l;
-        // next, remove the collinear part of dx,dy (make a projection onto a normal)
-        double dsc = rtn.dx * rtn.x + rtn.dy * rtn.y;  // scalar product d*v
-        rtn.dx -= dsc * rtn.x;                         // subtract the projection
-        rtn.dy -= dsc * rtn.y;
-        return rtn;
-    }
+    DeriVector2 rtn;
+    rtn.x = x / l;
+    rtn.y = y / l;
+    // first, simply scale the derivative accordingly.
+    rtn.dx = dx / l;
+    rtn.dy = dy / l;
+    // next, remove the collinear part of dx,dy (make a projection onto a normal)
+    double dsc = rtn.dx * rtn.x + rtn.dy * rtn.y;  // scalar product d*v
+    rtn.dx -= dsc * rtn.x;                         // subtract the projection
+    rtn.dy -= dsc * rtn.y;
+    return rtn;
 }
 
 double DeriVector2::scalarProd(const DeriVector2& v2, double* dprd) const
 {
     if (dprd) {
         *dprd = dx * v2.x + x * v2.dx + dy * v2.y + y * v2.dy;
-    };
+    }
     return x * v2.x + y * v2.y;
 }
 
 DeriVector2 DeriVector2::divD(double val, double dval) const
 {
-    return DeriVector2(x / val,
-                       y / val,
-                       dx / val - x * dval / (val * val),
-                       dy / val - y * dval / (val * val));
+    return {x / val, y / val, dx / val - x * dval / (val * val), dy / val - y * dval / (val * val)};
 }
 
 double DeriVector2::crossProdNorm(const DeriVector2& v2, double& dprd) const
@@ -125,7 +118,7 @@ double DeriVector2::crossProdNorm(const DeriVector2& v2, double& dprd) const
 DeriVector2 Curve::Value(double /*u*/, double /*du*/, const double* /*derivparam*/) const
 {
     assert(false /*Value() is not implemented*/);
-    return DeriVector2();
+    return {};
 }
 
 //----------------Line
@@ -174,8 +167,7 @@ void Line::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
 }
 Line* Line::Copy()
 {
-    Line* crv = new Line(*this);
-    return crv;
+    return new Line(*this);
 }
 
 
@@ -227,8 +219,7 @@ void Circle::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
 }
 Circle* Circle::Copy()
 {
-    Circle* crv = new Circle(*this);
-    return crv;
+    return new Circle(*this);
 }
 
 //------------arc
@@ -268,8 +259,7 @@ void Arc::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
 }
 Arc* Arc::Copy()
 {
-    Arc* crv = new Arc(*this);
-    return crv;
+    return new Arc(*this);
 }
 
 
@@ -322,10 +312,9 @@ DeriVector2 Ellipse::CalculateNormal(const Point& p, const double* derivparam) c
     // pf1, pf2 = vectors from p to focus1,focus2
     DeriVector2 pf1 = f1v.subtr(pv);
     DeriVector2 pf2 = f2v.subtr(pv);
-    // return sum of normalized pf2, pf2
-    DeriVector2 ret = pf1.getNormalized().sum(pf2.getNormalized());
 
-    return ret;
+    // return sum of normalized pf2, pf2
+    return pf1.getNormalized().sum(pf2.getNormalized());
 }
 
 DeriVector2 Ellipse::Value(double u, double du, const double* derivparam) const
@@ -358,9 +347,8 @@ DeriVector2 Ellipse::Value(double u, double du, const double* derivparam) const
     si = std::sin(u);
     dsi = std::cos(u) * du;
 
-    DeriVector2 ret;  // point of ellipse at parameter value of u, in global coordinates
-    ret = a_vec.multD(co, dco).sum(b_vec.multD(si, dsi)).sum(c);
-    return ret;
+    // point of ellipse at parameter value of u, in global coordinates
+    return a_vec.multD(co, dco).sum(b_vec.multD(si, dsi)).sum(c);
 }
 
 int Ellipse::PushOwnParams(VEC_pD& pvec)
@@ -393,8 +381,7 @@ void Ellipse::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
 }
 Ellipse* Ellipse::Copy()
 {
-    Ellipse* crv = new Ellipse(*this);
-    return crv;
+    return new Ellipse(*this);
 }
 
 
@@ -435,8 +422,7 @@ void ArcOfEllipse::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
 }
 ArcOfEllipse* ArcOfEllipse::Copy()
 {
-    ArcOfEllipse* crv = new ArcOfEllipse(*this);
-    return crv;
+    return new ArcOfEllipse(*this);
 }
 
 //---------------hyperbola
@@ -487,10 +473,9 @@ DeriVector2 Hyperbola::CalculateNormal(const Point& p, const double* derivparam)
     DeriVector2 pf1 = f1v.subtr(pv).mult(
         -1.0);  // <--- differs from ellipse normal calculation code by inverting this vector
     DeriVector2 pf2 = f2v.subtr(pv);
-    // return sum of normalized pf2, pf2
-    DeriVector2 ret = pf1.getNormalized().sum(pf2.getNormalized());
 
-    return ret;
+    // return sum of normalized pf2, pf2
+    return pf1.getNormalized().sum(pf2.getNormalized());
 }
 
 DeriVector2 Hyperbola::Value(double u, double du, const double* derivparam) const
@@ -524,9 +509,8 @@ DeriVector2 Hyperbola::Value(double u, double du, const double* derivparam) cons
     si = std::sinh(u);
     dsi = std::cosh(u) * du;
 
-    DeriVector2 ret;  // point of hyperbola at parameter value of u, in global coordinates
-    ret = a_vec.multD(co, dco).sum(b_vec.multD(si, dsi)).sum(c);
-    return ret;
+    // point of hyperbola at parameter value of u, in global coordinates
+    return a_vec.multD(co, dco).sum(b_vec.multD(si, dsi)).sum(c);
 }
 
 int Hyperbola::PushOwnParams(VEC_pD& pvec)
@@ -559,8 +543,7 @@ void Hyperbola::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
 }
 Hyperbola* Hyperbola::Copy()
 {
-    Hyperbola* crv = new Hyperbola(*this);
-    return crv;
+    return new Hyperbola(*this);
 }
 
 //--------------- arc of hyperbola
@@ -600,8 +583,7 @@ void ArcOfHyperbola::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
 }
 ArcOfHyperbola* ArcOfHyperbola::Copy()
 {
-    ArcOfHyperbola* crv = new ArcOfHyperbola(*this);
-    return crv;
+    return new ArcOfHyperbola(*this);
 }
 
 //---------------parabola
@@ -618,9 +600,7 @@ DeriVector2 Parabola::CalculateNormal(const Point& p, const double* derivparam) 
     // and point to focus are of equal magnitude, we can work with unitary vectors to calculate the
     // normal, substraction of those vectors.
 
-    DeriVector2 ret = cv.subtr(f1v).getNormalized().subtr(f1v.subtr(pv).getNormalized());
-
-    return ret;
+    return cv.subtr(f1v).getNormalized().subtr(f1v.subtr(pv).getNormalized());
 }
 
 DeriVector2 Parabola::Value(double u, double du, const double* derivparam) const
@@ -681,8 +661,7 @@ void Parabola::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
 
 Parabola* Parabola::Copy()
 {
-    Parabola* crv = new Parabola(*this);
-    return crv;
+    return new Parabola(*this);
 }
 
 //--------------- arc of hyperbola
@@ -722,16 +701,12 @@ void ArcOfParabola::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
 }
 ArcOfParabola* ArcOfParabola::Copy()
 {
-    ArcOfParabola* crv = new ArcOfParabola(*this);
-    return crv;
+    return new ArcOfParabola(*this);
 }
 
 // bspline
 DeriVector2 BSpline::CalculateNormal(const Point& p, const double* derivparam) const
 {
-    // place holder
-    DeriVector2 ret;
-
     // even if this method is call CalculateNormal, the returned vector is not the normal strictu
     // sensus but a normal vector, where the vector should point to the left when one walks along
     // the curve from start to end.
@@ -747,30 +722,23 @@ DeriVector2 BSpline::CalculateNormal(const Point& p, const double* derivparam) c
             DeriVector2 spt(this->poles[0], derivparam);
 
             DeriVector2 tg = endpt.subtr(spt);
-            ret = tg.rotate90ccw();
+            return tg.rotate90ccw();
         }
-        else if (*p.x == *end.x && *p.y == *end.y) {
+        if (*p.x == *end.x && *p.y == *end.y) {
             // and you are asking about the normal at end point
             // then tangency is defined by last to last but one poles
             DeriVector2 endpt(this->poles[poles.size() - 1], derivparam);
             DeriVector2 spt(this->poles[poles.size() - 2], derivparam);
 
             DeriVector2 tg = endpt.subtr(spt);
-            ret = tg.rotate90ccw();
+            return tg.rotate90ccw();
         }
-        else {
-            // another point and we have no clue until we implement De Boor
-            ret = DeriVector2();
-        }
+        // another point and we have no clue until we implement De Boor
+        return {};
     }
-    else {
-        // either periodic or abnormal endpoint multiplicity, we have no clue so currently
-        // unsupported
-        ret = DeriVector2();
-    }
-
-
-    return ret;
+    // either periodic or abnormal endpoint multiplicity, we have no clue so currently
+    // unsupported
+    return {};
 }
 
 DeriVector2 BSpline::CalculateNormal(const double* param, const double* derivparam) const
@@ -807,11 +775,15 @@ DeriVector2 BSpline::CalculateNormal(const double* param, const double* derivpar
 
     size_t numpoints = degree + 1;
 
-    // FIXME: Find an appropriate name for this method
-    auto doSomething = [&](size_t i, double& factor, double& slopefactor) {
+    // get dx, dy of the normal as well
+    for (size_t i = 0; i < numpoints; ++i) {
+        if (derivparam != polexat(i) && derivparam != poleyat(i) && derivparam != weightat(i)) {
+            continue;
+        }
+
         VEC_D d(numpoints);
         d[i] = 1;
-        factor = BSpline::splineValue(*param, startpole + degree, degree, d, flattenedknots);
+        double factor = splineValue(*param, startpole + degree, degree, d, flattenedknots);
         VEC_D sd(numpoints - 1);
         if (i > 0) {
             sd[i - 1] =
@@ -821,35 +793,24 @@ DeriVector2 BSpline::CalculateNormal(const double* param, const double* derivpar
             sd[i] = -1.0
                 / (flattenedknots[startpole + i + 1 + degree] - flattenedknots[startpole + i + 1]);
         }
-        slopefactor =
-            BSpline::splineValue(*param, startpole + degree, degree - 1, sd, flattenedknots);
-    };
+        double slopefactor =
+            splineValue(*param, startpole + degree, degree - 1, sd, flattenedknots);
 
-    // get dx, dy of the normal as well
-    for (size_t i = 0; i < numpoints; ++i) {
         if (derivparam == polexat(i)) {
-            double factor, slopefactor;
-            doSomething(i, factor, slopefactor);
             result.dx = *weightat(i) * (wsum * slopefactor - wslopesum * factor);
-            break;
         }
-        if (derivparam == poleyat(i)) {
-            double factor, slopefactor;
-            doSomething(i, factor, slopefactor);
+        else if (derivparam == poleyat(i)) {
             result.dy = *weightat(i) * (wsum * slopefactor - wslopesum * factor);
-            break;
         }
-        if (derivparam == weightat(i)) {
-            double factor, slopefactor;
-            doSomething(i, factor, slopefactor);
+        else if (derivparam == weightat(i)) {
             result.dx = degree
                 * (factor * (xslopesum - wslopesum * (*polexat(i)))
                    - slopefactor * (xsum - wsum * (*polexat(i))));
             result.dy = degree
                 * (factor * (yslopesum - wslopesum * (*poleyat(i)))
                    - slopefactor * (ysum - wsum * (*poleyat(i))));
-            break;
         }
+        break;
     }
 
     // the curve parameter being used by the constraint is not known to the geometry (there can be
@@ -933,43 +894,37 @@ DeriVector2 BSpline::Value(double u, double /*du*/, const double* /*derivparam*/
     for (size_t i = 0; i < numpoints; ++i) {
         d[i] = *polexat(i) * *weightat(i);
     }
-    double xsum = BSpline::splineValue(u, startpole + degree, degree, d, flattenedknots);
+    double xsum = splineValue(u, startpole + degree, degree, d, flattenedknots);
     for (size_t i = 0; i < numpoints; ++i) {
         d[i] = *poleyat(i) * *weightat(i);
     }
-    double ysum = BSpline::splineValue(u, startpole + degree, degree, d, flattenedknots);
+    double ysum = splineValue(u, startpole + degree, degree, d, flattenedknots);
     for (size_t i = 0; i < numpoints; ++i) {
         d[i] = *weightat(i);
     }
-    double wsum = BSpline::splineValue(u, startpole + degree, degree, d, flattenedknots);
+    double wsum = splineValue(u, startpole + degree, degree, d, flattenedknots);
 
     d.resize(numpoints - 1);
     for (size_t i = 1; i < numpoints; ++i) {
         d[i - 1] = (*polexat(i) * *weightat(i) - *polexat(i - 1) * *weightat(i - 1))
             / (flattenedknots[startpole + i + degree] - flattenedknots[startpole + i]);
     }
-    double xslopesum =
-        degree * BSpline::splineValue(u, startpole + degree, degree - 1, d, flattenedknots);
+    double xslopesum = degree * splineValue(u, startpole + degree, degree - 1, d, flattenedknots);
     for (size_t i = 1; i < numpoints; ++i) {
         d[i - 1] = (*poleyat(i) * *weightat(i) - *poleyat(i - 1) * *weightat(i - 1))
             / (flattenedknots[startpole + i + degree] - flattenedknots[startpole + i]);
     }
-    double yslopesum =
-        degree * BSpline::splineValue(u, startpole + degree, degree - 1, d, flattenedknots);
+    double yslopesum = degree * splineValue(u, startpole + degree, degree - 1, d, flattenedknots);
     for (size_t i = 1; i < numpoints; ++i) {
         d[i - 1] = (*weightat(i) - *weightat(i - 1))
             / (flattenedknots[startpole + i + degree] - flattenedknots[startpole + i]);
     }
-    double wslopesum =
-        degree * BSpline::splineValue(u, startpole + degree, degree - 1, d, flattenedknots);
+    double wslopesum = degree * splineValue(u, startpole + degree, degree - 1, d, flattenedknots);
 
-    // place holder
-    DeriVector2 ret = DeriVector2(xsum / wsum,
-                                  ysum / wsum,
-                                  (wsum * xslopesum - wslopesum * xsum) / wsum / wsum,
-                                  (wsum * yslopesum - wslopesum * ysum) / wsum / wsum);
-
-    return ret;
+    return {xsum / wsum,
+            ysum / wsum,
+            (wsum * xslopesum - wslopesum * xsum) / wsum / wsum,
+            (wsum * yslopesum - wslopesum * ysum) / wsum / wsum};
 }
 
 void BSpline::valueHomogenous(const double u,
@@ -1036,9 +991,9 @@ int BSpline::PushOwnParams(VEC_pD& pvec)
 {
     std::size_t cnt = 0;
 
-    for (VEC_P::const_iterator it = poles.begin(); it != poles.end(); ++it) {
-        pvec.push_back((*it).x);
-        pvec.push_back((*it).y);
+    for (const auto& pole : poles) {
+        pvec.push_back(pole.x);
+        pvec.push_back(pole.y);
     }
 
     cnt = cnt + poles.size() * 2;
@@ -1063,20 +1018,20 @@ int BSpline::PushOwnParams(VEC_pD& pvec)
 
 void BSpline::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
 {
-    for (VEC_P::iterator it = poles.begin(); it != poles.end(); ++it) {
-        (*it).x = pvec[cnt];
+    for (auto& pole : poles) {
+        pole.x = pvec[cnt];
         cnt++;
-        (*it).y = pvec[cnt];
-        cnt++;
-    }
-
-    for (VEC_pD::iterator it = weights.begin(); it != weights.end(); ++it) {
-        (*it) = pvec[cnt];
+        pole.y = pvec[cnt];
         cnt++;
     }
 
-    for (VEC_pD::iterator it = knots.begin(); it != knots.end(); ++it) {
-        (*it) = pvec[cnt];
+    for (auto& weight : weights) {
+        weight = pvec[cnt];
+        cnt++;
+    }
+
+    for (auto& knot : knots) {
+        knot = pvec[cnt];
         cnt++;
     }
 
@@ -1092,8 +1047,7 @@ void BSpline::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
 
 BSpline* BSpline::Copy()
 {
-    BSpline* crv = new BSpline(*this);
-    return crv;
+    return new BSpline(*this);
 }
 
 double BSpline::getLinCombFactor(double x, size_t k, size_t i, unsigned int p)
