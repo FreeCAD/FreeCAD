@@ -54,6 +54,8 @@ std::unique_ptr<Part::GeomBSplineCurve> createTypicalNonPeriodicBSpline();
 
 std::unique_ptr<Part::GeomBSplineCurve> createTypicalPeriodicBSpline();
 
+void prepareExternal(Sketcher::SketchObject* obj);
+
 int countConstraintsOfType(const Sketcher::SketchObject* obj, const Sketcher::ConstraintType cType);
 
 // Get point at the parameter after scaling the range to [0, 1].

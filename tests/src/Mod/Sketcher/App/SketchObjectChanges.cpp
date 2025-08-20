@@ -14,6 +14,48 @@
 
 using namespace SketcherTestHelpers;
 
+TEST_F(SketchObjectTest, testDelExternalUndef)
+{
+    // Act
+    int res = getObject()->delExternal(Sketcher::GeoEnum::GeoUndef);
+
+    // Assert
+    EXPECT_EQ(res, -1);
+}
+
+TEST_F(SketchObjectTest, testDelExternalWhenEmpty)
+{
+    // Act
+    int res = getObject()->delExternal(Sketcher::GeoEnum::RefExt);
+
+    // Assert
+    EXPECT_EQ(res, -1);
+}
+
+TEST_F(SketchObjectTest, testDelExternalWhenEmptyWithPositiveId)
+{
+    // Arrange
+    prepareExternal(getObject());
+    int numExt = getObject()->ExternalGeo.getSize();
+
+    // Act
+    int res = getObject()->delExternal(Sketcher::GeoEnum::RefExt);
+
+    // Assert
+    EXPECT_EQ(getObject()->ExternalGeo.getSize(), numExt - 1);
+}
+
+TEST_F(SketchObjectTest, testDelExternalReducesCount)
+{
+    // Arrange
+    int res = getObject()->delExternal(0);
+
+    // Assert
+}
+
+// TODO: `delExternal` situation of constraints
+// TODO: `delExternal` situation of constraint containing more than 3 entities
+
 // TODO: `addCopy` tests
 // TODO: ensure new item(s) is/are added and of same type
 // TODO: behaviour of `addCopy` when external
