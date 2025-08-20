@@ -2546,7 +2546,7 @@ public:
     TopoShape &makeElementShape(BRepFeat_MakePrism &mkShape,
                          const std::vector<TopoShape> &sources, const TopoShape &uptoface, const char *op);
 
-    /* Toponaming migration, February 2014:
+    /* Toponaming migration, February 2024:
      * Note that the specialized versions of makeElementShape for operations that do not
      * inherit from BRepBuilderAPI_MakeShape  ( like BRepBuilderAPI_Sewing ) have been removed.
      * Rather than restore them, code that calls them should be changed to call
