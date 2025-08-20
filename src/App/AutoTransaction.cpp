@@ -53,59 +53,6 @@ void AutoTransaction::close(bool abort)
     }
 }
 
-TransactionToken::TransactionToken(int tid_)
-{
-    takeToken(tid_);
-}
-TransactionToken::~TransactionToken()
-{
-    returnToken();
-}
-
-TransactionToken::TransactionToken(TransactionToken&& token) noexcept
-{
-    tid = token.tid;
-    token.tid = -1; // Ensures that the token is not returned twice
-}
-TransactionToken& TransactionToken::operator=(TransactionToken&& token) noexcept
-{
-    tid = token.tid;
-    token.tid = 0;
-    return *this;
-}
-TransactionToken::TransactionToken(const TransactionToken& token)
-{
-    takeToken(token.tid);
-}
-TransactionToken& TransactionToken::operator=(const TransactionToken& token)
-{
-    takeToken(token.tid);
-    return *this;
-}
-void TransactionToken::abort()
-{
-    if (tid != -1) {
-        GetApplication().closeActiveTransaction(true, tid);
-    }
-}
-void TransactionToken::takeToken(int tid_)
-{
-    if (tid_ == tid) {
-        return; // No change
-    }
-    returnToken();
-
-    // Take a new token
-    tid = tid_;
-    GetApplication().takeToken(tid);
-}
-void TransactionToken::returnToken()
-{
-    if (tid != -1) { // This is a valid token that must be dealt with
-        GetApplication().returnToken(tid);
-    }
-}
-
 int Application::setActiveTransaction(const char* name, bool persist)
 {
     if (!name || !name[0]) {
@@ -186,10 +133,6 @@ void Application::setTransactionDescription(int tid, const TransactionDescriptio
     if (tid == 0) {
         return;
     }
-    if (desc.numTokens < 0) {
-        FC_ERR("setting transaction #"<<tid<<" description with numToken < 0");
-        return;
-    }
     auto found = _activeTransactionDescriptions.find(tid);
     bool wasPresent = (found != _activeTransactionDescriptions.end());
 
@@ -219,33 +162,6 @@ void Application::setTransactionName(int tid, const std::string& name, bool tmp)
         }
     } 
 }
-void Application::takeToken(int tid)
-{
-    auto found = _activeTransactionDescriptions.find(tid);
-    if (found == _activeTransactionDescriptions.end()) {
-        FC_WARN("Taking token for transaction #" << tid << " but it is not active");
-        return;
-    }
-    found->second.numTokens++;
-}
-
-void Application::returnToken(int tid)
-{
-    auto found = _activeTransactionDescriptions.find(tid);
-    if (found == _activeTransactionDescriptions.end()) {
-        // Might happen if a transaction was aborted
-        return;
-    }
-    if (found->second.numTokens == 0) {
-        FC_WARN("Returning token for transaction #" << tid << " but does not have token");
-        return;
-    }
-    found->second.numTokens--;
-    if (found->second.numTokens == 0) {
-        closeActiveTransaction(false, tid);
-    }
-}
-
 
 bool Application::closeActiveTransaction(bool abort, int id)
 {
@@ -260,12 +176,6 @@ bool Application::closeActiveTransaction(bool abort, int id)
         return false;
     }
     currentlyClosingID = id;
-
-    auto foundDesc = _activeTransactionDescriptions.find(id);
-    if (!abort && foundDesc != _activeTransactionDescriptions.end() && foundDesc->second.numTokens != 0) {
-        FC_LOG("Commit blocked by token on transaction #" << id);
-        return false;
-    }
 
     std::vector<Document*> docsToPoke;
     for (auto& v : DocMap) {
