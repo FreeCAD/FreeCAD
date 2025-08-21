@@ -180,7 +180,8 @@ class ElementGeometry1D(base_femelement.BaseFemElement):
                 type="App::PropertyArea",
                 name="TrussArea",
                 group="TrussSection",
-                doc="Set cross-sectional area of truss elements (used if bending stiffness is excluded in the solver)",
+                doc="Set cross-sectional area of truss elements\n"
+                + "(used if bending stiffness is excluded in the solver)",
                 value=10.0,
             )
         )
