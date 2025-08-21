@@ -8,6 +8,9 @@ SET(Examples_Files
     FEMExample.FCStd
     AssemblyExample.FCStd
     ArchDetail.FCStd
+    osifont_used_by_draft_test_objects.FCStd.txt
+    osifont.license
+    osifont-lgpl3fe.ttf
 )
 
 ADD_CUSTOM_TARGET(Example_data ALL
