@@ -174,7 +174,7 @@ QString FileCardDelegate::getCacheKey(const QString& path, int thumbnailSize) co
 {
     QFileInfo fileInfo(path);
     if (!fileInfo.exists()) {
-        return QString();
+        return {};
     }
 
     // create cache key: path:modtime:size
