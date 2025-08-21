@@ -456,8 +456,11 @@ void StartView::showEvent(QShowEvent* event)
 {
     if (auto mainWindow = Gui::getMainWindow()) {
         if (auto mdiArea = mainWindow->findChild<QMdiArea*>()) {
-            connect(mdiArea, &QMdiArea::subWindowActivated,
-                    this, &StartView::onMdiSubWindowActivated, Qt::UniqueConnection);
+            connect(mdiArea,
+                    &QMdiArea::subWindowActivated,
+                    this,
+                    &StartView::onMdiSubWindowActivated,
+                    Qt::UniqueConnection);
         }
     }
     Gui::MDIView::showEvent(event);
