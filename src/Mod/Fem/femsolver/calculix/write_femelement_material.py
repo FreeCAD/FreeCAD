@@ -99,6 +99,8 @@ def write_femelement_material(f, ccxwriter):
                 if "ThermalExpansionCoefficient" in mat_obj.Material:
                     TEC = FreeCAD.Units.Quantity(mat_obj.Material["ThermalExpansionCoefficient"])
                     TEC_in_mmK = TEC.getValueAs("mm/mm/K").Value
+                else:
+                    TEC_in_mmK = 0.0
                 if "ThermalExpansionReferenceTemperature" in mat_obj.Material:
                     RT = FreeCAD.Units.Quantity(
                         mat_obj.Material["ThermalExpansionReferenceTemperature"]
