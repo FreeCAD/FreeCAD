@@ -926,7 +926,9 @@ class _ResultsPurge(CommandManager):
     def Activated(self):
         import femresult.resulttools as resulttools
 
+        FreeCAD.ActiveDocument.openTransaction("Purge FEM results")
         resulttools.purge_results(self.active_analysis)
+        FreeCAD.ActiveDocument.commitTransaction()
 
 
 class _SolverCalculixContextManager:
