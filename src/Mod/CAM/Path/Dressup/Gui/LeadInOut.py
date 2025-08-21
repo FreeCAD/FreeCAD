@@ -162,6 +162,15 @@ class ObjectDressup:
             "Path Lead-out",
             QT_TRANSLATE_NOOP("App::Property", "Move end point"),
         )
+        obj.addProperty(
+            "App::PropertyInteger",
+            "FeedRatePercent",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Percentage modifier to apply to feed rate while entering and exiting",
+            ),
+        )
         obj.Proxy = self
 
     def dumps(self):
@@ -179,6 +188,7 @@ class ObjectDressup:
         obj.LeadOut = True
         obj.AngleIn = 90
         obj.AngleOut = 90
+        obj.FeedRatePercent = 100
         obj.InvertIn = False
         obj.InvertOut = False
         obj.RapidPlunge = False
@@ -251,7 +261,7 @@ class ObjectDressup:
             )
             return
 
-        self.horizFeed = self.toolController.HorizFeed.Value
+        self.horizFeed = self.toolController.HorizFeed.Value * obj.FeedRatePercent / 100
         self.vertFeed = self.toolController.VertFeed.Value
 
         obj.Path = self.generateLeadInOutCurve(obj)
@@ -418,6 +428,18 @@ class ObjectDressup:
         for k, v in TaskDressupLeadInOut.hideModes.items():
             obj.setEditorMode(k + "In", 2 if obj.StyleIn in v else 0)
             obj.setEditorMode(k + "Out", 2 if obj.StyleOut in v else 0)
+
+        if not hasattr(obj, "FeedRatePercent"):
+            obj.addProperty(
+                "App::PropertyInteger",
+                "FeedRatePercent",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Percentage modifier to apply to feed rate while entering and exiting",
+                ),
+            )
+            obj.FeedRatePercent = 100
 
     # Get direction for lead-in/lead-out in XY plane
     def getLeadDir(self, obj, invert=False):
@@ -1188,6 +1210,9 @@ class TaskDressupLeadInOut(SimpleEditPanel):
     def setupSpinBoxes(self):
         self.connectWidget("InvertIn", self.form.chkInvertDirectionIn)
         self.connectWidget("InvertOut", self.form.chkInvertDirectionOut)
+        self.connectWidget("FeedRatePercent", self.form.dspFeedRatePercent)
+        self.connectWidget("PercentageRadiusIn", self.form.dspPercentageRadiusIn)
+        self.connectWidget("PercentageRadiusOut", self.form.dspPercentageRadiusOut)
         self.connectWidget("StyleIn", self.form.cboStyleIn)
         self.connectWidget("StyleOut", self.form.cboStyleOut)
         self.radiusIn = PathGuiUtil.QuantitySpinBox(self.form.dspRadiusIn, self.obj, "RadiusIn")

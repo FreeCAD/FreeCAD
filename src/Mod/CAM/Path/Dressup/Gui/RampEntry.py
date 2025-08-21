@@ -188,7 +188,7 @@ class ObjectDressup:
             QT_TRANSLATE_NOOP("App::Property", "Which feed rate to use for ramping"),
         )
         obj.addProperty(
-            "App::PropertyPercent",
+            "App::PropertyInteger",
             "FeedRatePercent",
             "FeedRate",
             QT_TRANSLATE_NOOP(
@@ -316,7 +316,7 @@ class ObjectDressup:
     def onDocumentRestored(self, obj):
         if not hasattr(obj, "FeedRatePercent"):
             obj.addProperty(
-                "App::PropertyPercent",
+                "App::PropertyInteger",
                 "FeedRatePercent",
                 "FeedRate",
                 QT_TRANSLATE_NOOP(
