@@ -153,17 +153,6 @@ QSize FileCardDelegate::sizeHint(const QStyleOptionViewItem& option, const QMode
     return {cardWidth, cardHeight};
 }
 
-namespace
-{
-QPixmap pixmapToSizedQImage(const QImage& pixmap, int size)
-{
-    return QPixmap::fromImage(pixmap).scaled(size,
-                                             size,
-                                             Qt::AspectRatioMode::KeepAspectRatio,
-                                             Qt::TransformationMode::SmoothTransformation);
-}
-}  // namespace
-
 QPixmap FileCardDelegate::generateThumbnail(const QString& path) const
 {
     auto thumbnailSize =
@@ -201,26 +190,32 @@ QPixmap FileCardDelegate::loadAndCacheThumbnail(const QString& path, int thumbna
         // This is a fallback, the model will have pulled the thumbnail out of the FCStd file if it
         // existed.
         QImageReader reader(QLatin1String(":/icons/freecad-doc.svg"));
-        reader.setScaledSize({thumbnailSize, thumbnailSize});
+        reader.setScaledSize(QSize(thumbnailSize, thumbnailSize));
         thumbnail = QPixmap::fromImage(reader.read());
     }
     else if (path.endsWith(QLatin1String(".fcmacro"), Qt::CaseSensitivity::CaseInsensitive)) {
         QImageReader reader(QLatin1String(":/icons/MacroEditor.svg"));
-        reader.setScaledSize({thumbnailSize, thumbnailSize});
+        reader.setScaledSize(QSize(thumbnailSize, thumbnailSize));
         thumbnail = QPixmap::fromImage(reader.read());
     }
     else if (!QImageReader::imageFormat(path).isEmpty()) {
         // It is an image: it can be its own thumbnail
         QImageReader reader(path);
 
-        reader.setScaledSize(QSize(thumbnailSize, thumbnailSize));
+        // get original size to calculate proper aspect-preserving scaled size
+        QSize originalSize = reader.size();
+        if (originalSize.isValid()) {
+            QSize scaledSize =
+                originalSize.scaled(thumbnailSize, thumbnailSize, Qt::KeepAspectRatio);
+            reader.setScaledSize(scaledSize);
+        }
 
         auto image = reader.read();
         if (!image.isNull()) {
-            thumbnail = pixmapToSizedQImage(image, thumbnailSize);
+            thumbnail = QPixmap::fromImage(image);
         }
         else {
-            Base::Console().log("FileCardDelegate: Failed to load scaled image %s: %s\n",
+            Base::Console().log("FileCardDelegate: Failed to load image %s: %s\n",
                                 path.toStdString().c_str(),
                                 reader.errorString().toStdString().c_str());
         }
