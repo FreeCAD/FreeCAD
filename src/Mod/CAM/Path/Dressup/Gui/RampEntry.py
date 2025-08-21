@@ -188,6 +188,14 @@ class ObjectDressup:
             QT_TRANSLATE_NOOP("App::Property", "Which feed rate to use for ramping"),
         )
         obj.addProperty(
+            "App::PropertyPercent",
+            "FeedRatePercent",
+            "FeedRate",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Percentage modifier to apply to feed rate while ramping"
+            ),
+        )
+        obj.addProperty(
             "App::PropertySpeed",
             "CustomFeedRate",
             "FeedRate",
@@ -298,15 +306,31 @@ class ObjectDressup:
 
         if obj.RampFeedRate == "Custom":
             obj.setEditorMode("CustomFeedRate", 0)
+            if hasattr(obj, "FeedRatePercent"):
+                obj.setEditorMode("FeedRatePercent", 2)
         else:
             obj.setEditorMode("CustomFeedRate", 2)
+            if hasattr(obj, "FeedRatePercent"):
+                obj.setEditorMode("FeedRatePercent", 0)
 
     def onDocumentRestored(self, obj):
+        if not hasattr(obj, "FeedRatePercent"):
+            obj.addProperty(
+                "App::PropertyPercent",
+                "FeedRatePercent",
+                "FeedRate",
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Percentage modifier to apply to feed rate while ramping"
+                ),
+            )
+            obj.FeedRatePercent = 100
+
         self.setEditorProperties(obj)
 
     def setup(self, obj):
         obj.Angle = 60
         obj.Method = 2
+        obj.FeedRatePercent = 100
         if PathDressup.baseOp(obj.Base).StartDepth is not None:
             obj.DressupStartDepth = PathDressup.baseOp(obj.Base).StartDepth
 
@@ -685,11 +709,11 @@ class ObjectDressup:
         vertRapid = tc.VertRapid.Value
 
         if obj.RampFeedRate == "Horizontal Feed Rate":
-            rampFeed = horizFeed
+            rampFeed = horizFeed * obj.FeedRatePercent / 100
         elif obj.RampFeedRate == "Vertical Feed Rate":
-            rampFeed = vertFeed
+            rampFeed = vertFeed * obj.FeedRatePercent / 100
         elif obj.RampFeedRate == "Ramp Feed Rate":
-            rampFeed = math.sqrt(pow(vertFeed, 2) + pow(horizFeed, 2))
+            rampFeed = (math.sqrt(pow(vertFeed, 2) + pow(horizFeed, 2))) * obj.FeedRatePercent / 100
         else:
             rampFeed = obj.CustomFeedRate.Value
 
