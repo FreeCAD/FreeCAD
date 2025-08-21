@@ -119,9 +119,9 @@ def export(objects, filename):
     """GLTF/GLB export with proper material names and metadata"""
 
     _, materials, varsets = traverse_objects_once(objects)
-    
-    export_objects = [obj for obj in objects if hasattr(obj, 'Shape') and obj.Shape]
-    
+
+    export_objects = [obj for obj in objects if hasattr(obj, "Shape") and obj.Shape]
+
     ImportGui.export(export_objects, filename)
     
     if not os.path.exists(filename):
@@ -142,10 +142,10 @@ def export(objects, filename):
             magic = f.read(4)
             if magic != b'glTF':
                 return
-            
-            struct.unpack('<I', f.read(4))[0]
-            struct.unpack('<I', f.read(4))[0]
-            json_length = struct.unpack('<I', f.read(4))[0]
+
+            struct.unpack("<I", f.read(4))[0]
+            struct.unpack("<I", f.read(4))[0]
+            json_length = struct.unpack("<I", f.read(4))[0]
             json_type = f.read(4)
             
             if json_type != b'JSON':
