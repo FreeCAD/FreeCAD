@@ -2182,7 +2182,7 @@ App::DocumentObjectExecReturn* Hole::execute()
 
         if (!isSingleSolidRuleSatisfied(result.getShape())) {
             return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+                    QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable compounds in a Body."));
         }
         this->Shape.setValue(result);
 
@@ -2768,3 +2768,4 @@ int Hole::baseProfileOption_bitmaskToIdx(int bitmask)
 
 
 } // namespace PartDesign
+
