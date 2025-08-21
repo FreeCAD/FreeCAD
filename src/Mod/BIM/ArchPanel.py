@@ -403,8 +403,12 @@ class _Panel(ArchComponent.Component):
 
                 baseface = Part.Face(basewire)
                 base = baseface.extrude(Vector(0,bb.YLength,0))
+                if normal.cross(FreeCAD.Vector(0,0,1)).Length > 1e-6:
+                    rot = FreeCAD.Rotation(FreeCAD.Vector(0,-1,0),FreeCAD.Vector(*normal[:2],0))
+                    base.rotate(bb.Center,rot.Axis,math.degrees(rot.Angle))
                 rot = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),normal)
                 base.rotate(bb.Center,rot.Axis,math.degrees(rot.Angle))
+
                 if obj.WaveDirection.Value:
                     base.rotate(bb.Center,normal,obj.WaveDirection.Value)
                 n1 = normal.negative().normalize().multiply(obj.WaveHeight.Value*2)
