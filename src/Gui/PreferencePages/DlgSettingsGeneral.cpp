@@ -747,7 +747,7 @@ void DlgSettingsGeneral::onUnitSystemIndexChanged(const int index)
     if (index < 0) {
         return;  // happens when clearing the combo box in retranslateUi()
     }
-
+    Base::UnitsApi::setSchema(index);
     // Enable/disable the fractional inch option depending on system
     const auto visible = UnitsApi::isMultiUnitLength();
     ui->comboBox_FracInch->setVisible(visible);
