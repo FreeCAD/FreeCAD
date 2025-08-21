@@ -205,6 +205,11 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
         value = spinBox->rawValue();
 
         isSet = true;
+
+        if (this->hasFinishedEditing) {
+            this->setLockedAppearance(true);
+        }
+
         Q_EMIT this->valueChanged(value);
     };
 
@@ -237,12 +242,6 @@ bool EditableDatumLabel::eventFilter(QObject* watched, QEvent* event)
                     // regular enter
                     this->hasFinishedEditing = true;
                     Q_EMIT this->spinBox->valueChanged(this->value);
-
-                    // only set lock state if it passed validation
-                    // (validation can unset isSet if value didn't pass
-                    // confusion point for example)
-                    if (this->isSet)
-                        this->setLockedAppearance(true);
                     return true;
                 }
             }
