@@ -40,6 +40,7 @@
 # include <TopoDS.hxx>
 # include <TopoDS_Wire.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
+# include <gp_Pln.hxx>
 #endif
 
 #include <App/Document.h>
