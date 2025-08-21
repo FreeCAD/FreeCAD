@@ -28,6 +28,7 @@ import Path
 import Path.Base.Language as PathLanguage
 import Path.Dressup.Utils as PathDressup
 import PathScripts.PathUtils as PathUtils
+import copy
 import math
 
 __doc__ = """LeadInOut Dressup USE ROLL-ON ROLL-OFF to profile"""
@@ -145,6 +146,15 @@ class ObjectDressup:
             "Path Lead-out",
             QT_TRANSLATE_NOOP("App::Property", "Move end point"),
         )
+        obj.addProperty(
+            "App::PropertyInteger",
+            "FeedRatePercent",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Percentage modifier to apply to feed rate while entering and exiting",
+            ),
+        )
         obj.Proxy = self
 
     def dumps(self):
@@ -156,6 +166,7 @@ class ObjectDressup:
     def setup(self, obj):
         obj.AngleIn = 45
         obj.AngleOut = 45
+        obj.FeedRatePercent = 100
         obj.InvertIn = False
         obj.InvertOut = False
         obj.PercentageRadiusIn = 150
@@ -351,6 +362,18 @@ class ObjectDressup:
                 obj.RetractThreshold = 999999
             obj.removeProperty("KeepToolDown")
 
+        if not hasattr(obj, "FeedRatePercent"):
+            obj.addProperty(
+                "App::PropertyInteger",
+                "FeedRatePercent",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Percentage modifier to apply to feed rate while entering and exiting",
+                ),
+            )
+            obj.FeedRatePercent = 100
+
     # Get direction for lead-in/lead-out in XY plane
     def getLeadDir(self, obj, invert=False):
         output = math.pi / 2
@@ -464,7 +487,7 @@ class ObjectDressup:
 
     # Create arc in XY plane with automatic detection G2|G3
     def createArcMove(self, obj, begin, end, offset, invert=False):
-        horizfeed = PathDressup.toolController(obj.Base).HorizFeed.Value
+        horizfeed = PathDressup.toolController(obj.Base).HorizFeed.Value * obj.FeedRatePercent / 100
         param = {"X": end.x, "Y": end.y, "Z": end.z, "I": offset.x, "J": offset.y, "F": horizfeed}
         if self.getLeadDir(obj, invert) > 0:
             command = PathLanguage.MoveArcCCW(begin, "G3", param)
@@ -475,7 +498,7 @@ class ObjectDressup:
 
     # Create arc in XY plane with manually set G2|G3
     def createArcMoveN(self, obj, begin, end, offset, cmdName):
-        horizfeed = PathDressup.toolController(obj.Base).HorizFeed.Value
+        horizfeed = PathDressup.toolController(obj.Base).HorizFeed.Value * obj.FeedRatePercent / 100
         param = {"X": end.x, "Y": end.y, "I": offset.x, "J": offset.y, "F": horizfeed}
         if cmdName == "G2":
             command = PathLanguage.MoveArcCW(begin, cmdName, param)
@@ -486,7 +509,7 @@ class ObjectDressup:
 
     # Create line movement G1
     def createStraightMove(self, obj, begin, end):
-        horizfeed = PathDressup.toolController(obj.Base).HorizFeed.Value
+        horizfeed = PathDressup.toolController(obj.Base).HorizFeed.Value * obj.FeedRatePercent / 100
         param = {"X": end.x, "Y": end.y, "Z": end.z, "F": horizfeed}
         command = PathLanguage.MoveStraight(begin, "G1", param)
 
@@ -495,7 +518,7 @@ class ObjectDressup:
     # Create vertical arc with move Down by line segments
     def createArcZMoveDown(self, obj, begin, end, radius):
         commands = []
-        horizfeed = PathDressup.toolController(obj.Base).HorizFeed.Value
+        horizfeed = PathDressup.toolController(obj.Base).HorizFeed.Value * obj.FeedRatePercent / 100
         angle = math.acos((radius - begin.z + end.z) / radius)  # start angle
         stepAngle = math.radians(3)  # less angle give more iterations
         iters = math.ceil(angle / stepAngle)
@@ -523,7 +546,7 @@ class ObjectDressup:
     # Create vertical arc with move Up by line segments
     def createArcZMoveUp(self, obj, begin, end, radius):
         commands = []
-        horizfeed = PathDressup.toolController(obj.Base).HorizFeed.Value
+        horizfeed = PathDressup.toolController(obj.Base).HorizFeed.Value * obj.FeedRatePercent / 100
         angleMax = math.acos((radius - end.z + begin.z) / radius)  # finish angle
         stepAngle = math.radians(10)  # less angle give more iterations
         iters = math.ceil(angleMax / stepAngle)
@@ -657,7 +680,9 @@ class ObjectDressup:
             travelToStart = self.getTravelStart(obj, begin, first, inInstrPrev, outInstrPrev)
         else:
             # exclude any lead-in commands
-            horizfeed = PathDressup.toolController(obj.Base).HorizFeed.Value
+            horizfeed = (
+                PathDressup.toolController(obj.Base).HorizFeed.Value * obj.FeedRatePercent / 100
+            )
             param = {"X": begin.x, "Y": begin.y, "Z": begin.z, "F": horizfeed}
             travelToStart = [PathLanguage.MoveStraight(None, "G01", param)]
 
@@ -1091,6 +1116,7 @@ class TaskDressupLeadInOut(SimpleEditPanel):
     def setupUi(self):
         self.connectWidget("InvertIn", self.form.chkInvertDirectionIn)
         self.connectWidget("InvertOut", self.form.chkInvertDirectionOut)
+        self.connectWidget("FeedRatePercent", self.form.dspFeedRatePercent)
         self.connectWidget("PercentageRadiusIn", self.form.dspPercentageRadiusIn)
         self.connectWidget("PercentageRadiusOut", self.form.dspPercentageRadiusOut)
         self.connectWidget("StyleIn", self.form.cboStyleIn)
