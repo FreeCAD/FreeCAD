@@ -408,7 +408,6 @@ class _Panel(ArchComponent.Component):
                     base.rotate(bb.Center,rot.Axis,math.degrees(rot.Angle))
                 rot = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),normal)
                 base.rotate(bb.Center,rot.Axis,math.degrees(rot.Angle))
-
                 if obj.WaveDirection.Value:
                     base.rotate(bb.Center,normal,obj.WaveDirection.Value)
                 n1 = normal.negative().normalize().multiply(obj.WaveHeight.Value*2)
