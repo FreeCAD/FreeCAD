@@ -1086,8 +1086,10 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     doBoxSelection(DoubleClick::prvCursorPos, cursorPos, viewer);
                     rubberband->setWorking(false);
 
+                    // use draw(false, false) to avoid solver geometry with outdated construction flags
+                    draw(false, false);
+
                     // a redraw is required in order to clear the rubberband
-                    draw(true, false);
                     const_cast<Gui::View3DInventorViewer*>(viewer)->redraw();
                     setSketchMode(STATUS_NONE);
                     return true;
