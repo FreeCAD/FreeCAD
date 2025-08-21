@@ -1009,11 +1009,11 @@ void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
     pDoc->signalInEdit.connect(std::bind(&Gui::Application::slotInEdit, this, sp::_1));
     pDoc->signalResetEdit.connect(std::bind(&Gui::Application::slotResetEdit, this, sp::_1));
     // NOLINTEND
-
-    Workbench* currWb = WorkbenchManager::instance()->active();
-    if (currWb) {
-        pDoc->setWorkbench(currWb->name());
-    }
+    
+    const std::map<std::string, std::string>& config = App::Application::Config();
+    auto st = config.find("StartWorkbench");
+    const char* start = (st != config.end() ? st->second.c_str() : "<none>");
+    pDoc->setWorkbench(start);
 
     signalNewDocument(*pDoc, isMainDoc);
     if (isMainDoc) {
