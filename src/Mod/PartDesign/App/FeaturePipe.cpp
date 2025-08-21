@@ -438,6 +438,12 @@ App::DocumentObjectExecReturn *Pipe::execute()
         }
 
         if (!maker.empty()) {
+            result.Tag = -getID(); // invert tag to differentiate the pre-boolean pipe 
+            //                        from the post-boolean pipe
+            //                        setting result to the negative tag is a bit confusing,
+            //                        because you would expect this to be set to the feature's shape,
+            //                        but boolOp is the topoShape that is actually being copied
+
             boolOp.makeElementBoolean(maker.c_str(), {base, result});
             Shape.setValue(getSolid(boolOp));
         } else {
