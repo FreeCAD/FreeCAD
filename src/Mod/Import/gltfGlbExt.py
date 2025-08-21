@@ -119,10 +119,6 @@ def export(objects, filename):
     
     export_objects = [obj for obj in objects if hasattr(obj, 'Shape') and obj.Shape]
     
-    global _export_materials, _export_varsets
-    _export_materials = materials
-    _export_varsets = varsets
-    
     ImportGui.export(export_objects, filename)
     
     if not os.path.exists(filename):
@@ -144,8 +140,8 @@ def export(objects, filename):
             if magic != b'glTF':
                 return
             
-            version = struct.unpack('<I', f.read(4))[0]
-            total_length = struct.unpack('<I', f.read(4))[0]
+            struct.unpack('<I', f.read(4))[0]
+            struct.unpack('<I', f.read(4))[0]
             json_length = struct.unpack('<I', f.read(4))[0]
             json_type = f.read(4)
             
@@ -157,8 +153,3 @@ def export(objects, filename):
         
         gltf_data = modify_gltf_data(gltf_data, materials, varsets)
         process_glb_file(filename, gltf_data)
-
-_export_materials = []
-_export_varsets = {}
-found_material_names = []
-collected_varset_data = {}
