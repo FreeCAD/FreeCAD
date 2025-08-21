@@ -278,6 +278,22 @@ PyObject* GroupExtensionPy::getObject(PyObject* args)
     }
 }
 
+PyObject* GroupExtensionPy::getObjectsOfType(PyObject* args)
+{
+    char* pcName;
+    if (!PyArg_ParseTuple(args, "s", &pcName)) {
+        return nullptr;
+    }
+
+    std::vector<DocumentObject*> objs = getGroupExtensionPtr()->getObjectsOfType(Base::Type::fromName(pcName));
+    Py::List result;
+    for (App::DocumentObject* obj : objs) {
+        result.append(Py::asObject(obj->getPyObject()));
+    }
+
+    return Py::new_reference_to(result);
+}
+
 PyObject* GroupExtensionPy::hasObject(PyObject* args)
 {
     PyObject* object;
