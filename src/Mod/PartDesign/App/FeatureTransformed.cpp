@@ -410,7 +410,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
 
     supportShape = refineShapeIfActive((supportShape));
     if (!isSingleSolidRuleSatisfied(supportShape.getShape())) {
-        Base::Console().warning("Transformed: Result has multiple solids. Only keeping the first.\n");
+        Base::Console().warning("Transformed: Result has multiple solids. Only keeping the first. Or enable compounds in a Body.\n");
     }
 
     this->Shape.setValue(getSolid(supportShape));  // picking the first solid
@@ -440,3 +440,4 @@ TopoDS_Shape Transformed::getRemainingSolids(const TopoDS_Shape& shape)
 }
 
 }  // namespace PartDesign
+
