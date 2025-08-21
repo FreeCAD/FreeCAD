@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 """
-Fast and robust GLTF/GLB exporter patch with material name preservation and VarSet metadata injection for FreeCAD
+GLTF/GLB exporter patch with material name preservation and VarSet metadata injection for FreeCAD
 """
 
 import ImportGui
