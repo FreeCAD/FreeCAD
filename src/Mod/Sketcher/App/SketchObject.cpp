@@ -2500,69 +2500,31 @@ int SketchObject::delConstraintOnPoint(int geoId, PointPos posId, bool onlyCoinc
 // clang-format off
 
 void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int geoId2,
-                                             PointPos posId2)
+                                             PointPos posId2, int cornerId, PointPos cornerPos)
 {
-    // If the lines don't intersect, there's no original corner to work with so
-    // don't try to transfer the constraints. But we should delete line length and equal
-    // constraints and constraints on the affected endpoints because they're about
-    // to move unpredictably.
-    if (!arePointsCoincident(geoId1, posId1, geoId2, posId2)) {
-        // Delete constraints on the endpoints
-        delConstraintOnPoint(geoId1, posId1, false);
-        delConstraintOnPoint(geoId2, posId2, false);
-
-        // Delete line length and equal constraints
-        const std::vector<Constraint*>& constraints = this->Constraints.getValues();
-        std::vector<int> deleteme;
-        for (int i = 0; i < int(constraints.size()); i++) {
-            const Constraint* c = constraints[i];
-            if (c->Type == Sketcher::Distance || c->Type == Sketcher::Equal) {
-                bool line1 = c->First == geoId1 && c->FirstPos == PointPos::none;
-                bool line2 = c->First == geoId2 && c->FirstPos == PointPos::none;
-                if (line1 || line2) {
-                    deleteme.push_back(i);
-                }
-            }
-        }
-        delConstraints(std::move(deleteme), false);
-        return;
-    }
-
-    // If the lines aren't straight, don't try to transfer the constraints.
-    // TODO: Add support for curved lines.
-    const Part::Geometry* geo1 = getGeometry(geoId1);
-    const Part::Geometry* geo2 = getGeometry(geoId2);
-    if (!geo1->is<Part::GeomLineSegment>()
-        || !geo2->is<Part::GeomLineSegment>()) {
-        delConstraintOnPoint(geoId1, posId1, false);
-        delConstraintOnPoint(geoId2, posId2, false);
-        return;
-    }
-
-    // Add a vertex to preserve the original intersection of the filleted lines
-    Part::GeomPoint* originalCorner = new Part::GeomPoint(getPoint(geoId1, posId1));
-    int originalCornerId = addGeometry(originalCorner, true);
-    delete originalCorner;
 
     // Constrain the vertex to the two lines
     Sketcher::Constraint* cornerToLine1 = new Sketcher::Constraint();
     cornerToLine1->Type = Sketcher::PointOnObject;
-    cornerToLine1->First = originalCornerId;
-    cornerToLine1->FirstPos = PointPos::start;
+    cornerToLine1->First = cornerId;
+    cornerToLine1->FirstPos = cornerPos;
     cornerToLine1->Second = geoId1;
     cornerToLine1->SecondPos = PointPos::none;
     addConstraint(cornerToLine1);
     delete cornerToLine1;
     Sketcher::Constraint* cornerToLine2 = new Sketcher::Constraint();
     cornerToLine2->Type = Sketcher::PointOnObject;
-    cornerToLine2->First = originalCornerId;
-    cornerToLine2->FirstPos = PointPos::start;
+    cornerToLine2->First = cornerId;
+    cornerToLine2->FirstPos = cornerPos;
     cornerToLine2->Second = geoId2;
     cornerToLine2->SecondPos = PointPos::none;
     addConstraint(cornerToLine2);
     delete cornerToLine2;
 
     Base::StateLocker lock(managedoperation, true);
+
+    bool preserveLine1EqualConstraints = !getGeometry(geoId1)->is<Part::GeomLineSegment>();
+    bool preserveLine2EqualConstraints = !getGeometry(geoId2)->is<Part::GeomLineSegment>();
 
     // Loop through all the constraints and try to do reasonable things with the affected ones
     std::vector<Constraint*> newConstraints;
@@ -2588,78 +2550,80 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
             }
             if (point1First || point2First) {
                 // Move the coincident constraint to the new corner point
-                c->First = originalCornerId;
-                c->FirstPos = PointPos::start;
+                c->First = cornerId;
+                c->FirstPos = cornerPos;
             }
             if (point1Second || point2Second) {
                 // Move the coincident constraint to the new corner point
-                c->Second = originalCornerId;
-                c->SecondPos = PointPos::start;
+                c->Second = cornerId;
+                c->SecondPos = cornerPos;
             }
         }
         else if (c->Type == Sketcher::Horizontal || c->Type == Sketcher::Vertical) {
             // Point-to-point horizontal or vertical constraint, move to new corner point
             if (point1First || point2First) {
-                c->First = originalCornerId;
-                c->FirstPos = PointPos::start;
+                c->First = cornerId;
+                c->FirstPos = cornerPos;
             }
             if (point1Second || point2Second) {
-                c->Second = originalCornerId;
-                c->SecondPos = PointPos::start;
+                c->Second = cornerId;
+                c->SecondPos = cornerPos;
             }
         }
         else if (c->Type == Sketcher::Distance || c->Type == Sketcher::DistanceX
                  || c->Type == Sketcher::DistanceY) {
             // Point-to-point distance constraint.  Move it to the new corner point
             if (point1First || point2First) {
-                c->First = originalCornerId;
-                c->FirstPos = PointPos::start;
+                c->First = cornerId;
+                c->FirstPos = cornerPos;
             }
             if (point1Second || point2Second) {
-                c->Second = originalCornerId;
-                c->SecondPos = PointPos::start;
+                c->Second = cornerId;
+                c->SecondPos = cornerPos;
             }
 
             // Distance constraint on the line itself. Change it to point-point between the far end
             // of the line and the new corner
             if (line1First) {
                 c->FirstPos = (posId1 == PointPos::start) ? PointPos::end : PointPos::start;
-                c->Second = originalCornerId;
-                c->SecondPos = PointPos::start;
+                c->Second = cornerId;
+                c->SecondPos = cornerPos;
             }
             if (line2First) {
                 c->FirstPos = (posId2 == PointPos::start) ? PointPos::end : PointPos::start;
-                c->Second = originalCornerId;
-                c->SecondPos = PointPos::start;
+                c->Second = cornerId;
+                c->SecondPos = cornerPos;
             }
         }
         else if (c->Type == Sketcher::PointOnObject) {
             // The corner to be filleted was touching some other object.
             if (point1First || point2First) {
-                c->First = originalCornerId;
-                c->FirstPos = PointPos::start;
+                c->First = cornerId;
+                c->FirstPos = cornerPos;
             }
         }
         else if (c->Type == Sketcher::Equal) {
-            // Equal length constraints are dicey because the lines are getting shorter.  Safer to
+            // Equal length constraints are dicey for lines because the lines are getting shorter. Safer to
             // delete them and let the user notice the underconstraint.
-            if (line1First || line2First || line1Second || line2Second) {
+            // For other geometry like arcs it's safe to keep
+            if ((!preserveLine1EqualConstraints && (line1First || line1Second))
+                || (!preserveLine2EqualConstraints && (line2First || line2Second))) {
                 continue;
             }
         }
         else if (c->Type == Sketcher::Symmetric) {
             // Symmetries should probably be preserved relative to the original corner
             if (point1First || point2First) {
-                c->First = originalCornerId;
-                c->FirstPos = PointPos::start;
+                c->First = cornerId;
+                c->FirstPos = cornerPos;
             }
             else if (point1Second || point2Second) {
-                c->Second = originalCornerId;
-                c->SecondPos = PointPos::start;
+                c->Second = cornerId;
+                c->SecondPos = cornerPos;
             }
             else if (point1Third || point2Third) {
-                c->Third = originalCornerId;
-                c->ThirdPos = PointPos::start;
+                c->Third = cornerId;
+                c->ThirdPos = cornerPos;
             }
         }
         else if (c->Type == Sketcher::SnellsLaw) {
@@ -2811,9 +2775,54 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
     Base::Vector3d p1 = arc->getStartPoint(true);
     Base::Vector3d p2 = arc->getEndPoint(true);
 
+    int constLine1Id = 0;
+    int constLine2Id = 0;
+    PointPos constLine1ToLine1MeetingPos = PosId1 == PointPos::start ? PointPos::end : PointPos::start;
+    PointPos constLine2ToLine2MeetingPos = PosId2 == PointPos::start ? PointPos::end : PointPos::start;
+    bool addEqualConstrToConstLine1 = false;
+    bool addEqualConstrToConstLine2 = false;
+    bool addTangentConstrToConstLine1 = false;
+    bool addTangentConstrToConstLine2 = false;
     if (trim) {
-        if (createCorner && geo1->is<Part::GeomLineSegment>() && geo2->is<Part::GeomLineSegment>()) {
-            transferFilletConstraints(GeoId1, PosId1, GeoId2, PosId2);
+        if (createCorner) {
+            // If the lines don't intersect, there's no original corner to work with so
+            // don't try to transfer the constraints. But we should delete line length and equal
+            // constraints and constraints on the affected endpoints because they're about
+            // to move unpredictably.
+            if (!arePointsCoincident(GeoId1, PosId1, GeoId2, PosId2)) {
+                // Delete constraints on the endpoints
+                delConstraintOnPoint(GeoId1, PosId1, false);
+                delConstraintOnPoint(GeoId2, PosId2, false);
+
+                // Delete line length and equal constraints
+                const std::vector<Constraint*>& constraints = this->Constraints.getValues();
+                std::vector<int> deleteme;
+                for (int i = 0; i < int(constraints.size()); i++) {
+                    const Constraint* c = constraints[i];
+                    if (c->Type == Sketcher::Distance || c->Type == Sketcher::Equal) {
+                        bool line1 = c->First == GeoId1 && c->FirstPos == PointPos::none;
+                        bool line2 = c->First == GeoId2 && c->FirstPos == PointPos::none;
+                        if (line1 || line2) {
+                            deleteme.push_back(i);
+                        }
+                    }
+                }
+                delConstraints(std::move(deleteme), false);
+            }
+            else {
+                // Add construction geometry
+                const Part::Geometry* constLine1 = getGeometry(GeoId1)->copy();
+                constLine1Id = addGeometry(constLine1, true);
+                addEqualConstrToConstLine1 = !constLine1->is<Part::GeomLineSegment>();
+                addTangentConstrToConstLine1 = addEqualConstrToConstLine1 && !constLine1->is<Part::GeomArcOfCircle>();
+                delete constLine1;
+                const Part::Geometry* constLine2 = getGeometry(GeoId2)->copy();
+                constLine2Id = addGeometry(constLine2, true);
+                addEqualConstrToConstLine2 = !constLine2->is<Part::GeomLineSegment>();
+                addTangentConstrToConstLine2 = addEqualConstrToConstLine2 && !constLine2->is<Part::GeomArcOfCircle>();
+                delete constLine2;
+                transferFilletConstraints(GeoId1, PosId1, GeoId2, PosId2, constLine1Id, PosId1);
+            }
         }
         else {
             delConstraintOnPoint(GeoId1, PosId1, false);
@@ -2851,7 +2860,6 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         addConstraint(std::move(tangent1));
         addConstraint(std::move(tangent2));
     }
-
     if (chamfer) {
         auto line = std::make_unique<Part::GeomLineSegment>();
         line->setPoints(p1, p2);
@@ -2886,6 +2894,82 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         addConstraint(std::move(coinc2));
 
         setConstruction(filletId, true);
+    }
+
+    if (createCorner && trim) {
+        if (reverse) {
+            moveGeometry(constLine1Id, constLine1ToLine1MeetingPos, p1, false, true);
+            moveGeometry(constLine2Id, constLine2ToLine2MeetingPos, p2, false, true);
+        }
+        else {
+            moveGeometry(constLine1Id, constLine1ToLine1MeetingPos, p2, false, true);
+            moveGeometry(constLine2Id, constLine2ToLine2MeetingPos, p1, false, true);
+        }
+
+        auto line1ToConstLine1MeetingConstraint = std::make_unique<Sketcher::Constraint>();
+        line1ToConstLine1MeetingConstraint->Type = ConstraintType::Coincident;
+        line1ToConstLine1MeetingConstraint->First = filletId;
+        line1ToConstLine1MeetingConstraint->FirstPos = filletPosId1;
+        line1ToConstLine1MeetingConstraint->Second = constLine1Id;
+        line1ToConstLine1MeetingConstraint->SecondPos = constLine1ToLine1MeetingPos;
+        addConstraint(std::move(line1ToConstLine1MeetingConstraint));
+
+        auto line2ToConstLine2MeetingConstraint = std::make_unique<Sketcher::Constraint>();
+        line2ToConstLine2MeetingConstraint->Type = ConstraintType::Coincident;
+        line2ToConstLine2MeetingConstraint->First = filletId;
+        line2ToConstLine2MeetingConstraint->FirstPos = filletPosId2;
+        line2ToConstLine2MeetingConstraint->Second = constLine2Id;
+        line2ToConstLine2MeetingConstraint->SecondPos = constLine2ToLine2MeetingPos;
+        addConstraint(std::move(line2ToConstLine2MeetingConstraint));
+
+        auto line2ToCornerConstraint = std::make_unique<Sketcher::Constraint>();
+        line2ToCornerConstraint->Type = Sketcher::Coincident;
+        line2ToCornerConstraint->First = constLine1Id;
+        line2ToCornerConstraint->FirstPos = PosId1;
+        line2ToCornerConstraint->Second = constLine2Id;
+        line2ToCornerConstraint->SecondPos = PosId2;
+        addConstraint(std::move(line2ToCornerConstraint));
+
+        if (addEqualConstrToConstLine1) {
+            auto line1ToConstLine1ShapeConstraint = std::make_unique<Sketcher::Constraint>();
+            line1ToConstLine1ShapeConstraint->Type = ConstraintType::Equal;
+            line1ToConstLine1ShapeConstraint->First = GeoId1;
+            line1ToConstLine1ShapeConstraint->FirstPos = PointPos::none;
+            line1ToConstLine1ShapeConstraint->Second = constLine1Id;
+            line1ToConstLine1ShapeConstraint->SecondPos = PointPos::none;
+            addConstraint(std::move(line1ToConstLine1ShapeConstraint));
+        }
+
+        if (addEqualConstrToConstLine2) {
+            auto line2ToConstLine2ShapeConstraint = std::make_unique<Sketcher::Constraint>();
+            line2ToConstLine2ShapeConstraint->Type = ConstraintType::Equal;
+            line2ToConstLine2ShapeConstraint->First = GeoId2;
+            line2ToConstLine2ShapeConstraint->FirstPos = PointPos::none;
+            line2ToConstLine2ShapeConstraint->Second = constLine2Id;
+            line2ToConstLine2ShapeConstraint->SecondPos = PointPos::none;
+            addConstraint(std::move(line2ToConstLine2ShapeConstraint));
+        }
+
+        if (addTangentConstrToConstLine1) {
+            auto line1ToConstLine1ShapeConstraint = std::make_unique<Sketcher::Constraint>();
+            line1ToConstLine1ShapeConstraint->Type = ConstraintType::Tangent;
+            line1ToConstLine1ShapeConstraint->First = GeoId1;
+            line1ToConstLine1ShapeConstraint->FirstPos = PosId1;
+            line1ToConstLine1ShapeConstraint->Second = constLine1Id;
+            line1ToConstLine1ShapeConstraint->SecondPos = constLine1ToLine1MeetingPos;
+            addConstraint(std::move(line1ToConstLine1ShapeConstraint));
+        }
+
+        if (addTangentConstrToConstLine2) {
+            auto line2ToConstLine2ShapeConstraint = std::make_unique<Sketcher::Constraint>();
+            line2ToConstLine2ShapeConstraint->Type = ConstraintType::Tangent;
+            line2ToConstLine2ShapeConstraint->First = GeoId2;
+            line2ToConstLine2ShapeConstraint->FirstPos = PosId2;
+            line2ToConstLine2ShapeConstraint->Second = constLine2Id;
+            line2ToConstLine2ShapeConstraint->SecondPos = constLine2ToLine2MeetingPos;
+            addConstraint(std::move(line2ToConstLine2ShapeConstraint));
+        }
+
     }
 
     // if we do not have a recompute after the geometry creation, the sketch must be solved to
