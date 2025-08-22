@@ -398,7 +398,7 @@ class TaskPanelPage(object):
         if self.obj is not None and self.tcEditor:
             if newIndex == self.combo.count() - 1:
                 # Special entry: new tool controller. Show the tool dock and reset combo
-                dock = ToolBitLibraryDock(asDialog=True, defaultJob=self.job)
+                dock = ToolBitLibraryDock(self.job, True)
                 dock.open()
                 self.resetTCCombo()
             elif newIndex == self.combo.count() - 2:
