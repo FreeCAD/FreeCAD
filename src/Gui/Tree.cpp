@@ -683,8 +683,8 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     connect(this->recomputeObjectAction, &QAction::triggered,
             this, &TreeWidget::onRecomputeObject);
     this->searchObjectsAction = new QAction(this);
-    this->searchObjectsAction->setText(tr("Search..."));
-    this->searchObjectsAction->setStatusTip(tr("Search for objects"));
+    this->searchObjectsAction->setText(tr("Search Objects"));
+    this->searchObjectsAction->setStatusTip(tr("Searches for objects in the tree"));
     connect(this->searchObjectsAction, &QAction::triggered,
             this, &TreeWidget::onSearchObjects);
 

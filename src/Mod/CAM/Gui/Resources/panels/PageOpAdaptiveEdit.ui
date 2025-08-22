@@ -126,7 +126,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="20" column="1">
        <widget class="Gui::QuantitySpinBox" name="StockToLeave" native="true">
         <property name="toolTip">
-         <string>How much material to leave in the XY plane (i.e. for finishing operation)</string>
+         <string>How much material to leave in the XY-plane (i.e. for finishing operation)</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true"/>

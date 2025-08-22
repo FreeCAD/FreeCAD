@@ -232,9 +232,9 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
         if (PartDesign::Body * body = PartDesign::Body::findBodyOf(pcFeat)) {
             try {
                 App::Origin* orig = body->getOrigin();
-                addAxisToCombo(orig->getX(), std::string(), tr("Base x-axis"));
-                addAxisToCombo(orig->getY(), std::string(), tr("Base y-axis"));
-                addAxisToCombo(orig->getZ(), std::string(), tr("Base z-axis"));
+                addAxisToCombo(orig->getX(), std::string(), tr("Base X-axis"));
+                addAxisToCombo(orig->getY(), std::string(), tr("Base Y-axis"));
+                addAxisToCombo(orig->getZ(), std::string(), tr("Base Z-axis"));
             } catch (const Base::Exception &ex) {
                 ex.reportException();
             }

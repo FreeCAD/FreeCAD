@@ -57,7 +57,7 @@
      <item>
       <widget class="QPushButton" name="buttonToggle">
        <property name="text">
-        <string>Toggle On/Off</string>
+        <string>Toggle Visibility</string>
        </property>
       </widget>
      </item>

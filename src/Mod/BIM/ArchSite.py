@@ -877,7 +877,7 @@ class _ViewProviderSite:
         menu.addAction(actionEdit)
 
         actionToggleSubcomponents = QtGui.QAction(QtGui.QIcon(":/icons/Arch_ToggleSubs.svg"),
-                                                  translate("Arch", "Toggle subcomponents"),
+                                                  translate("Arch", "Toggle Subcomponents"),
                                                   menu)
         QtCore.QObject.connect(actionToggleSubcomponents,
                                QtCore.SIGNAL("triggered()"),
