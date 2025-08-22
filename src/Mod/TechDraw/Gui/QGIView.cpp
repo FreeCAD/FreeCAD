@@ -759,6 +759,7 @@ QRectF QGIView::customChildrenBoundingRect() const
             child->type() != UserType::QGCustomBorder &&
             child->type() != UserType::QGCustomLabel &&
             child->type() != UserType::QGICaption &&
+            child->type() != UserType::QGIVertex &&
             child->type() != UserType::QGICMark) {
             QRectF childRect = mapFromItem(child, child->boundingRect()).boundingRect();
             result = result.united(childRect);
