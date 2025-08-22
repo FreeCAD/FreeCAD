@@ -1,0 +1,17 @@
+# https://packit.dev/docs/configuration/
+
+specfile_path: package/fedora/freecad.spec
+
+notifications:
+  pull_request:
+    successful_build: true
+
+jobs:
+- job: copr_build
+  trigger: pull_request
+  targets:
+  - fedora-rawhide-aarch64
+  - fedora-rawhide-i386
+  - fedora-rawhide-ppc64le
+  - fedora-rawhide-s390x
+  - fedora-rawhide-x86_64
