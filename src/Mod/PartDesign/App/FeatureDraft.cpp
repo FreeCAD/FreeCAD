@@ -288,7 +288,7 @@ App::DocumentObjectExecReturn *Draft::execute()
         }
 
         if (!isSingleSolidRuleSatisfied(shape.getShape())) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable compounds in a Body."));
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compounds' in the active body."));
         }
 
         this->Shape.setValue(getSolid(shape));
@@ -299,4 +299,5 @@ App::DocumentObjectExecReturn *Draft::execute()
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 }
+
 
