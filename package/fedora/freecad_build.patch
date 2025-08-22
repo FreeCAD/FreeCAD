@@ -1,0 +1,36 @@
+diff -rupN --no-dereference FreeCAD-1.0.2/cMake/FindOCC.cmake FreeCAD-1.0.2-new/cMake/FindOCC.cmake
+--- FreeCAD-1.0.2/cMake/FindOCC.cmake	2025-08-05 22:19:07.000000000 +0200
++++ FreeCAD-1.0.2-new/cMake/FindOCC.cmake	2025-08-10 17:02:57.862064982 +0200
+@@ -139,6 +139,7 @@ if(OCC_FOUND)
+     TKPrim
+     TKHLR
+     TKFeat
++    TKExpress
+   )
+   if (OCC_VERSION_STRING VERSION_GREATER_EQUAL 7.9.0)
+       list(APPEND OCC_LIBRARIES TKExpress)
+diff -rupN --no-dereference FreeCAD-1.0.2/cMake/FreeCAD_Helpers/SetupQt.cmake FreeCAD-1.0.2-new/cMake/FreeCAD_Helpers/SetupQt.cmake
+--- FreeCAD-1.0.2/cMake/FreeCAD_Helpers/SetupQt.cmake	2025-08-05 22:19:07.000000000 +0200
++++ FreeCAD-1.0.2-new/cMake/FreeCAD_Helpers/SetupQt.cmake	2025-08-10 17:02:57.862324943 +0200
+@@ -27,6 +27,7 @@ if (ENABLE_DEVELOPER_TESTS)
+ endif ()
+ 
+ foreach(COMPONENT IN LISTS FREECAD_QT_COMPONENTS)
++    set(QT_DEFAULT_MAJOR_VERSION ${FREECAD_QT_MAJOR_VERSION})
+     find_package(Qt${FREECAD_QT_MAJOR_VERSION} REQUIRED COMPONENTS ${COMPONENT})
+     set(Qt${COMPONENT}_LIBRARIES ${Qt${FREECAD_QT_MAJOR_VERSION}${COMPONENT}_LIBRARIES})
+     set(Qt${COMPONENT}_INCLUDE_DIRS ${Qt${FREECAD_QT_MAJOR_VERSION}${COMPONENT}_INCLUDE_DIRS})
+diff -rupN --no-dereference FreeCAD-1.0.2/tests/CMakeLists.txt FreeCAD-1.0.2-new/tests/CMakeLists.txt
+--- FreeCAD-1.0.2/tests/CMakeLists.txt	2025-08-05 22:19:07.000000000 +0200
++++ FreeCAD-1.0.2-new/tests/CMakeLists.txt	2025-08-10 17:02:57.862562113 +0200
+@@ -38,6 +38,10 @@ if(MSVC)
+             optimized concrt.lib
+         )
+     endif()
++else()
++set(Google_Tests_LIBS
++        gtest
++)
+ endif()
+ 
+ if(WIN32)
