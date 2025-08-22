@@ -177,14 +177,14 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_feed_rate_percent">
        <property name="text">
-        <string>Feed Rate Percent</string>
+        <string>Entrance Feed Rate Percent</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QDoubleSpinBox" name="dspFeedRatePercent">
+      <widget class="QDoubleSpinBox" name="dspFeedRatePercentIn">
        <property name="toolTip">
-        <string>Horizontal feed rate during entrances and exits, as a percentage of the normal feed rate.</string>
+        <string>Feed rate to use when entering a cut, as a percentage of the normal feed rate.</string>
        </property>
        <property name="decimals">
         <number>0</number>
@@ -196,7 +196,7 @@
         <double>999999.000000000000000</double>
        </property>
        <property name="singleStep">
-        <double>10.000000000000000</double>
+        <double>5.000000000000000</double>
        </property>
        <property name="unit" stdset="0">
         <string notr="true"/>
@@ -204,6 +204,35 @@
       </widget>
      </item>
      <item row="1" column="0">
+      <widget class="QLabel" name="label_feed_rate_percent">
+       <property name="text">
+        <string>Exit Feed Rate Percent</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QDoubleSpinBox" name="dspFeedRatePercentOut">
+       <property name="toolTip">
+        <string>Feed rate to use when exiting a cut, as a percentage of the normal feed rate.</string>
+       </property>
+       <property name="decimals">
+        <number>0</number>
+       </property>
+       <property name="minimum">
+        <double>1.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>999999.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>5.000000000000000</double>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
       <widget class="QCheckBox" name="chkRapidPlunge">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
