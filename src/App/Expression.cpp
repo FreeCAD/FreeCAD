@@ -1507,13 +1507,28 @@ Expression *OperatorExpression::simplify() const
 
 void OperatorExpression::_toString(std::ostream &s, bool persistent,int) const
 {
+
+    // As we are restricting implicit relop chains but allowing
+    // explicit parenthesized chains, then parens should not be
+    // removed on left side. This checks for that situation.
+    auto isRelOperator = [](auto* expr) {
+        const auto opExpr = freecad_cast<OperatorExpression*>(expr);
+        if (opExpr == nullptr)
+            return false;
+
+        const auto op = opExpr->op;
+        return op == OperatorExpression::EQ || op == OperatorExpression::NEQ
+            || op == OperatorExpression::LT || op == OperatorExpression::LTE
+            || op == OperatorExpression::GT || op == OperatorExpression::GTE;
+    };
+
     bool needsParens;
     Operator leftOperator(NONE), rightOperator(NONE);
 
     needsParens = false;
     if (freecad_cast<OperatorExpression*>(left))
         leftOperator = static_cast<OperatorExpression*>(left)->op;
-    if (left->priority() < priority()) // Check on operator priority first
+    if ((isRelOperator(this) && isRelOperator(left)) || left->priority() < priority()) // Check on operator priority first
         needsParens = true;
     else if (leftOperator == op) { // Same operator ?
         if (!isLeftAssociative())

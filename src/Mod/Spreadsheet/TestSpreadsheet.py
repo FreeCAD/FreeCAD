@@ -20,7 +20,6 @@
 # ***************************************************************************/
 
 import os
-import sys
 import math
 from math import sqrt
 import unittest
@@ -961,23 +960,20 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.getContents("Y1"), "=X1 ? 0 : (1 ? (X2 ? 2 : 3) : (X3 ? 4 : 5))")
         self.assertEqual(sheet.Y2, 98)
 
-    def testForbiddenBooleanExpressions(self):
-        """Test forbidden boolean expressions"""
+    def testRejectImplicitRelOpChains(self):
+        """Test forbidden implicit chains of relational operators"""
         sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
 
-        def must_fail(expression: str):
-            try:
-                sheet.set("Z1", expression)
-                self.doc.recompute()
-                self.fail("Expected an exception for forbidden boolean expression")
-            except Exception:
-                pass
+        def assert_rejected(expression: str):
+            sheet.set("Z1", expression)
+            self.doc.recompute()
+            self.assertEqual(f"'{expression}", sheet.getContents("Z1"))
 
-        must_fail("=1 < 2 < 3 ? 3 : 4")
-        must_fail("=1 < 2 < 3 < 4 ? 3 : 4")
-        must_fail("=A1 < B1 < 3 ? 3 : 4")
-        must_fail("=1 < C1 < D2 ? 3 : 4")
-        must_fail("=X1 < B1 < D1 < 0 ? 3 : 4")
+        assert_rejected("=1 < 2 < 3 ? 3 : 4")
+        assert_rejected("=1 < 2 < 3 < 4 ? 3 : 4")
+        assert_rejected("=A1 < B1 < 3 ? 3 : 4")
+        assert_rejected("=1 < C1 < D2 ? 3 : 4")
+        assert_rejected("=X1 < B1 < D1 < 0 ? 3 : 4")
 
     def testNumbers(self):
         """Test different numbers"""
@@ -2005,3 +2001,17 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.get("G8"), 10)
         self.assertEqual(sheet.get("G9"), 20)
         self.assertEqual(sheet.get("G10"), 10)
+
+    def testAcceptExplicitRelOpChaining(self):
+        """Testing explicit relational operators chaining."""
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
+
+        sheet.set("X1", "= (1 < 2) == (2 < 3)")
+        sheet.set("X2", "= (1 < 2) == (2 > 3)")
+        sheet.set("X3", "= (1 < 2) == 1")
+        sheet.set("X4", "= 0 == (1 > 2)")
+        self.doc.recompute()
+        self.assertTrue(sheet.get("X1"))
+        self.assertFalse(sheet.get("X2"))
+        self.assertTrue(sheet.get("X3"))
+        self.assertTrue(sheet.get("X4"))

@@ -45,7 +45,8 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
      %token DOCUMENT OBJECT
      %token EXPONENT
      %type <arguments> args
-     %type <expr> input unit_num us_building_unit other_unit exp unit_exp indexable exp_gen exp_bool
+     %type <expr> input unit_num us_building_unit other_unit exp unit_exp indexable
+     %type <expr> exp_unary exp_term exp_factor exp_bool exp_arith exp_prim exp_cond
      %type <quantity> UNIT USUNIT
      %type <string> id_or_cell STRING IDENTIFIER CELLADDRESS
      %type <ivalue> INTEGER
@@ -62,14 +63,14 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
      %type <string_or_identifier> object
      %type <ivalue> integer
      %right '?' ':'
-     %left MINUSSIGN '+'
+     %precedence MINUSSIGN '+'
      %left '*' '/' '%'
      %precedence NUM_AND_UNIT
      %left '^'
      %precedence NEG
      %precedence POS
 
-%destructor { delete $$; } num range exp unit_exp indexable
+%destructor { delete $$; } num range exp unit_exp indexable exp_unary exp_term exp_factor exp_bool exp_arith exp_prim exp_cond
 %destructor { delete $$; } <component>
 %destructor { std::vector<Expression*>::const_iterator i = $$.begin(); while (i != $$.end()) { delete *i; ++i; } } args
 
@@ -85,35 +86,50 @@ unit_num: num unit_exp %prec NUM_AND_UNIT       { $$ = new OperatorExpression(Do
         | num us_building_unit num us_building_unit %prec NUM_AND_UNIT   { $$ = new OperatorExpression(DocumentObject, new OperatorExpression(DocumentObject, $1, OperatorExpression::UNIT, $2), OperatorExpression::ADD, new OperatorExpression(DocumentObject, $3, OperatorExpression::UNIT, $4));}
         ;
 
-exp:      exp_gen                               { $$ = $1;                                                                        }
-        | exp_bool                              { $$ = $1;                                                                        }
-        | exp '?' exp ':' exp                   { $$ = new ConditionalExpression(DocumentObject, $1, $3, $5);                     }
+exp     : exp_cond                              { $$ = $1;                                                                        }
         ;
 
-exp_gen:  num                                   { $$ = $1;                                                                        }
+exp_cond: exp_bool                              { $$ = $1; }
+        | exp_bool '?' exp ':' exp %prec '?'    { $$ = new ConditionalExpression(DocumentObject, $1, $3, $5);                     }
+        ;
+
+exp_bool: exp_arith                             { $$ = $1; }
+        | exp_arith EQ exp_arith                { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::EQ, $3);    }
+        | exp_arith NEQ exp_arith               { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::NEQ, $3);   }
+        | exp_arith LT exp_arith                { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::LT, $3);    }
+        | exp_arith GT exp_arith                { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::GT, $3);    }
+        | exp_arith GTE exp_arith               { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::GTE, $3);   }
+        | exp_arith LTE exp_arith               { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::LTE, $3);   }
+        ;
+
+exp_arith: exp_term                             { $$ = $1; }
+         | exp_arith '+' exp_term                { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::ADD, $3);   }
+         | exp_arith MINUSSIGN exp_term          { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::SUB, $3);   }
+         ;
+
+exp_term : exp_factor                            { $$ = $1; }
+         | exp_term '*' exp_factor             { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::MUL, $3);   }
+         | exp_term '/' exp_factor             { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
+         | exp_term '%' exp_factor             { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::MOD, $3);   }
+         | exp_term '/' unit_exp               { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
+         ;
+
+exp_factor: exp_unary                            { $$ = $1; }
+          | exp_factor '^' exp_factor            { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, $3);   }
+          ;
+
+exp_unary : exp_prim                             { $$ = $1; }
+          | MINUSSIGN exp_prim %prec NEG         { $$ = new OperatorExpression(DocumentObject, $2, OperatorExpression::NEG, new NumberExpression(DocumentObject, Quantity(-1))); }
+          | '+' exp_prim %prec POS               { $$ = new OperatorExpression(DocumentObject, $2, OperatorExpression::POS, new NumberExpression(DocumentObject, Quantity(1))); }
+          ;
+
+exp_prim: num                                   { $$ = $1;                                                                        }
         | unit_num                              { $$ = $1;                                                                        }
         | STRING                                { $$ = new StringExpression(DocumentObject, $1);                                  }
         | identifier                            { $$ = new VariableExpression(DocumentObject, $1);                                }
-        | MINUSSIGN exp_gen %prec NEG           { $$ = new OperatorExpression(DocumentObject, $2, OperatorExpression::NEG, new NumberExpression(DocumentObject, Quantity(-1))); }
-        | '+' exp_gen %prec POS                 { $$ = new OperatorExpression(DocumentObject, $2, OperatorExpression::POS, new NumberExpression(DocumentObject, Quantity(1))); }
-        | exp_gen '+' exp_gen                   { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::ADD, $3);   }
-        | exp_gen MINUSSIGN exp_gen             { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::SUB, $3);   }
-        | exp_gen '*' exp_gen                   { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::MUL, $3);   }
-        | exp_gen '/' exp_gen                   { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
-        | exp_gen '%' exp_gen                   { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::MOD, $3);   }
-        | exp_gen '/' unit_exp                  { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
-        | exp_gen '^' exp_gen                   { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, $3);   }
         | indexable                             { $$ = $1;                                                                        }
         | FUNC  args ')'                        { $$ = new FunctionExpression(DocumentObject, $1.first, std::move($1.second), $2);}
         | '(' exp ')'                           { $$ = $2; }
-        ;
-
-exp_bool: exp_gen EQ exp_gen                    { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::EQ, $3);    }
-        | exp_gen NEQ exp_gen                   { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::NEQ, $3);   }
-        | exp_gen LT exp_gen                    { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::LT, $3);    }
-        | exp_gen GT exp_gen                    { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::GT, $3);    }
-        | exp_gen GTE exp_gen                   { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::GTE, $3);   }
-        | exp_gen LTE exp_gen                   { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::LTE, $3);   }
         ;
 
 num:       ONE                                  { $$ = new NumberExpression(DocumentObject, Quantity($1));                        }
