@@ -812,7 +812,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             solRes = refineShapeIfActive(result);
 
             if (!isSingleSolidRuleSatisfied(solRes.getShape())) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable compounds in a Body."));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compounds' in the active body."));
             }
             this->Shape.setValue(getSolid(solRes));
         }
