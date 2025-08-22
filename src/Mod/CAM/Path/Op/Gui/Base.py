@@ -398,7 +398,7 @@ class TaskPanelPage(object):
         if self.obj is not None and self.tcEditor:
             if newIndex == self.combo.count() - 1:
                 # Special entry: new tool controller. Show the tool dock and reset combo
-                dock = ToolBitLibraryDock()
+                dock = ToolBitLibraryDock(asDialog=True, defaultJob=self.job)
                 dock.open()
                 self.resetTCCombo()
             elif newIndex == self.combo.count() - 2:
@@ -460,8 +460,8 @@ class TaskPanelPage(object):
 
         tcName = self.obj.ToolController.Label if self.obj.ToolController else ""
         labels = [c.Label for c in controllers]
-        labels.append(FreeCAD.Qt.translate("CAM_Operation", "Copy {0}").format(tcName))
-        labels.append(FreeCAD.Qt.translate("CAM_Operation", "New tool controller"))
+        labels.append(FreeCAD.Qt.translate("CAM_Operation", "Copy {0}…").format(tcName))
+        labels.append(FreeCAD.Qt.translate("CAM_Operation", "New tool controller…"))
         self.combo.blockSignals(True)
         self.combo.clear()
         self.combo.addItems(labels)
