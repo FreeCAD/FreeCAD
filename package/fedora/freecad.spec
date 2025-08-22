@@ -207,10 +207,8 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/org.freecad.Fr
 %{_datadir}/icons/hicolor/*/apps/org.freecad.FreeCAD.png
 %{_datadir}/icons/hicolor/scalable/apps/org.freecad.FreeCAD.svg
 %{_datadir}/icons/hicolor/scalable/mimetypes/application-x-extension-fcstd.svg
-%{_datadir}/pixmaps/freecad.xpm
 %{_datadir}/mime/packages/org.freecad.FreeCAD.xml
 %{_datadir}/thumbnailers/FreeCAD.thumbnailer
-%{_mandir}/man1/*.1.gz
 %{_metainfodir}/org.freecad.FreeCAD.metainfo.xml
 
 %files data
