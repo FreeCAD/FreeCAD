@@ -22,14 +22,16 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Inventor/nodes/SoGroup.h>
-# include <Inventor/details/SoDetail.h>
-# include <Inventor/SoFullPath.h>
+#include <Inventor/nodes/SoGroup.h>
+#include <Inventor/details/SoDetail.h>
+#include <Inventor/SoFullPath.h>
 #endif
 
+#include <Base/Interpreter.h>
+
+// generated out of AxisOrigin.pyi
 #include "AxisOriginPy.h"
 #include "AxisOriginPy.cpp"
-#include <Base/Interpreter.h>
 
 using namespace Gui;
 
