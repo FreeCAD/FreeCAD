@@ -21,10 +21,7 @@ Source1:        https://github.com/Ondsel-Development/OndselSolver/archive/%{ond
 %if %{without external_gsl}
 Source2:        https://github.com/microsoft/GSL/archive/%{gsl_commit}/GSL-%{gsl_commit}.tar.gz
 %endif
-Source102:      freecad.1
 
-# Assorted build fixes
-Patch0:         freecad_build.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
@@ -172,8 +169,6 @@ mv %{buildroot}%{_libdir}/%{name}/share/* %{buildroot}%{_datadir}/
 rmdir %{buildroot}%{_libdir}/%{name}/share
 
 # Install man page
-install -pD -m 0644 %{SOURCE102} %{buildroot}%{_mandir}/man1/%{name}.1
-ln -sf %{name}.1.gz %{buildroot}%{_mandir}/man1/FreeCAD.1.gz
 ln -sf %{name}.1.gz %{buildroot}%{_mandir}/man1/FreeCADCmd.1.gz
 
 # Remove files from external libraries which don't need to be installed
