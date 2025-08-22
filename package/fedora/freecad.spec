@@ -6,6 +6,7 @@
 
 %global ondselsolver_commit 09d6175
 %global gsl_commit b39e7e4
+%global addon_commit cd83eea
 
 Name:           freecad
 Epoch:          1
@@ -21,7 +22,7 @@ Source1:        https://github.com/Ondsel-Development/OndselSolver/archive/%{ond
 %if %{without external_gsl}
 Source2:        https://github.com/microsoft/GSL/archive/%{gsl_commit}/GSL-%{gsl_commit}.tar.gz
 %endif
-
+Source3:        https://github.com/FreeCAD/AddonManager/archive/%{addon_commit}/AddonManager-%{addon_commit}.tar.gz
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
@@ -112,6 +113,8 @@ tar xf %{SOURCE1} -C src/3rdParty/OndselSolver --strip-components=1
 %if %{without external_gsl}
 tar xf %{SOURCE2} -C src/3rdParty/GSL --strip-components=1
 %endif
+tar xf %{SOURCE3} -C src/Mod/AddonManager --strip-components=1
+
 # Remove bundled libraries which we don't use
 %if %{with external_libkdtree}
 rm -rf src/3rdParty/libkdtree
