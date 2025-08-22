@@ -142,6 +142,7 @@ rm -rf src/zipios++
   -DCOIN3D_DOC_PATH=%{_datadir}/Coin4/Coin \
   -DFREECAD_USE_PYBIND11=ON \
   -DFREECAD_USE_EXTERNAL_FMT=TRUE \
+  -DFREECAD_USE_EXTERNAL_GTEST=TRUE \
 %if %{with external_pycxx}
   -DPYCXX_INCLUDE_DIR=$(pkg-config --variable=includedir PyCXX) \
   -DPYCXX_SOURCE_DIR=$(pkg-config --variable=srcdir PyCXX) \
