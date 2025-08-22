@@ -240,11 +240,11 @@ private:
         // NOLINTEND
 
         // 3-vertex face
-        int i1 = std::atoi(tokens[index1].c_str());
+        int i1 = std::stoi(tokens[index1]);
         i1 = i1 > 0 ? i1 - 1 : i1 + static_cast<int>(meshPoints.size());
-        int i2 = std::atoi(tokens[index2].c_str());
+        int i2 = std::stoi(tokens[index2]);
         i2 = i2 > 0 ? i2 - 1 : i2 + static_cast<int>(meshPoints.size());
-        int i3 = std::atoi(tokens[index3].c_str());
+        int i3 = std::stoi(tokens[index3]);
         i3 = i3 > 0 ? i3 - 1 : i3 + static_cast<int>(meshPoints.size());
 
         AddFace(i1, i2, i3);
@@ -280,13 +280,13 @@ private:
         // NOLINTEND
 
         // 4-vertex face
-        int i1 = std::atoi(tokens[index1].c_str());
+        int i1 = std::stoi(tokens[index1]);
         i1 = i1 > 0 ? i1 - 1 : i1 + static_cast<int>(meshPoints.size());
-        int i2 = std::atoi(tokens[index2].c_str());
+        int i2 = std::stoi(tokens[index2]);
         i2 = i2 > 0 ? i2 - 1 : i2 + static_cast<int>(meshPoints.size());
-        int i3 = std::atoi(tokens[index3].c_str());
+        int i3 = std::stoi(tokens[index3]);
         i3 = i3 > 0 ? i3 - 1 : i3 + static_cast<int>(meshPoints.size());
-        int i4 = std::atoi(tokens[index4].c_str());
+        int i4 = std::stoi(tokens[index4]);
         i4 = i4 > 0 ? i4 - 1 : i4 + static_cast<int>(meshPoints.size());
 
         AddFace(i1, i2, i3);
