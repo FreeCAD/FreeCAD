@@ -260,7 +260,3 @@ static App::DocumentObjectExecReturn *validateParameters(int chamferType, double
     return App::DocumentObject::StdReturn;
 }
 
-
-
-
-
