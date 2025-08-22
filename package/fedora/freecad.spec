@@ -3,6 +3,7 @@
 %bcond_with external_pycxx
 %bcond_with external_smesh
 %bcond_without external_gsl
+%bcond_without tests
 
 %global ondselsolver_commit 09d6175
 %global gsl_commit b39e7e4
@@ -70,10 +71,13 @@ BuildRequires:  smesh-devel
 BuildRequires:  zipios++-devel
 %endif
 
-
 # For appdata
 BuildRequires:  desktop-file-utils
 BuildRequires:  libappstream-glib
+
+%if %{with tests}
+BuildRequires:  xorg-x11-server-Xvfb
+%endif
 
 Requires:       hicolor-icon-theme
 Requires:       python3-pivy
@@ -154,6 +158,9 @@ rm -rf src/zipios++
 %if %{with external_zipios}
   -DFREECAD_USE_EXTERNAL_ZIPIOS=TRUE \
 %endif
+%if %{with tests}
+  -DENABLE_DEVELOPER_TESTS=ON \
+%endif
   -DBUILD_DRAWING=ON
 
 %cmake_build
@@ -189,6 +196,10 @@ rmdir %{buildroot}%{_datadir}/pkgconfig/
 desktop-file-validate %{buildroot}%{_datadir}/applications/org.freecad.FreeCAD.desktop
 appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/org.freecad.FreeCAD.metainfo.xml
 
+%if %{with tests}
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ %{buildroot}%{_bindir}/FreeCADCmd -t 0
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t 0
+%endif
 
 %files
 %license %{_vpath_builddir}%{_defaultdocdir}/freecad/ThirdPartyLibraries.html  LICENSE
@@ -199,6 +210,7 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/org.freecad.Fr
 %dir %{_libdir}/%{name}/bin/
 %{_libdir}/%{name}/bin/FreeCAD
 %{_libdir}/%{name}/bin/FreeCADCmd
+%{_libdir}/%{name}/bin/freecad-thumbnailer
 %{_libdir}/%{name}/Ext/
 %{_libdir}/%{name}/%{_lib}/
 %{_libdir}/%{name}/Mod/
@@ -207,6 +219,7 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/org.freecad.Fr
 %{_datadir}/icons/hicolor/*/apps/org.freecad.FreeCAD.png
 %{_datadir}/icons/hicolor/scalable/apps/org.freecad.FreeCAD.svg
 %{_datadir}/icons/hicolor/scalable/mimetypes/application-x-extension-fcstd.svg
+%{_datadir}/pixmaps/freecad.svg
 %{_datadir}/mime/packages/org.freecad.FreeCAD.xml
 %{_datadir}/thumbnailers/FreeCAD.thumbnailer
 %{_metainfodir}/org.freecad.FreeCAD.metainfo.xml
