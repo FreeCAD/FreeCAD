@@ -172,9 +172,6 @@ rm -rf %{buildroot}%{_defaultdocdir}/%{name}/
 mv %{buildroot}%{_libdir}/%{name}/share/* %{buildroot}%{_datadir}/
 rmdir %{buildroot}%{_libdir}/%{name}/share
 
-# Install man page
-ln -sf %{name}.1.gz %{buildroot}%{_mandir}/man1/FreeCADCmd.1.gz
-
 # Remove files from external libraries which don't need to be installed
 rm -f %{buildroot}%{_libdir}/%{name}/include/E57Format/E57Export.h
 rmdir %{buildroot}%{_libdir}/%{name}/include/E57Format/
