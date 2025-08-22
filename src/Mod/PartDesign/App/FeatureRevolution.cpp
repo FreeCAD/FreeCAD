@@ -229,7 +229,7 @@ App::DocumentObjectExecReturn* Revolution::execute()
                 result = refineShapeIfActive(result);
             }
             if (!isSingleSolidRuleSatisfied(result.getShape())) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable compounds in a Body."));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compounds' in the active body."));
             }
             result = getSolid(result);
             this->Shape.setValue(result);
@@ -415,4 +415,5 @@ void Revolution::updateProperties(RevolMethod method)
 }
 
 }
+
 
