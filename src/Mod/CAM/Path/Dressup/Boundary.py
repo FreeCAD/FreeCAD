@@ -215,7 +215,7 @@ class PathBoundary:
                     outside = edge.cut(self.boundary).Edges
                     if 1 == len(inside) and 0 == len(outside):
                         commands.append(cmd)
-                if edge and not cmd.Name in Path.Geom.CmdMoveDrill:
+                if edge and cmd.Name not in Path.Geom.CmdMoveDrill:
                     inside = edge.common(self.boundary).Edges
                     outside = edge.cut(self.boundary).Edges
                     if not self.inside:  # UI "inside boundary" param
@@ -277,11 +277,11 @@ class PathBoundary:
                                     commands.extend(
                                         Path.Geom.cmdsForEdge(
                                             e,
-                                            flip,
-                                            False,
-                                            50,
-                                            tc.HorizFeed.Value,
-                                            tc.VertFeed.Value,
+                                            flip=flip,
+                                            approximation=False,
+                                            segm=50,
+                                            hSpeed=tc.HorizFeed.Value,
+                                            vSpeed=tc.VertFeed.Value,
                                         )
                                     )
                                 inside.remove(e)
