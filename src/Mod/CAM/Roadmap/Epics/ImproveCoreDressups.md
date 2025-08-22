@@ -23,7 +23,7 @@ This epic is about improving priority features that are provided by dressups.
 | In                                                                                     | Out |
 | ---                                                                                    | --- |
 | Computational performance improvements to the ramp dressup, so users never have to wait a long time for the dressup to run | Add features to the dogbone dressup, which provides niche functionality, not core functionality |
-| Implement a task panel UI for the ramp dressup                                         |     |
+| Implement a task panel UI for the ramp dressup                                         | Improvements to the array dressup. Handling of array-like operations needs a new direction, and incremental improvements to the array dressup will not get us there.   |
 | Make it possible to add and configure core dressups from within the operation UI panel |     |
 | Add new entrance/exit strategies to the lead in/out dressup                            |     |
 
