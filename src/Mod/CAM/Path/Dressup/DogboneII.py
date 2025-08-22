@@ -154,7 +154,7 @@ class Incision(object):
 def insertBone(obj, kink):
     """insertBone(kink, side) - return True if a bone should be inserted into the kink"""
     if not kink.isKink():
-        Path.Log.debug(f"not a kink")
+        Path.Log.debug("not a kink")
         return False
 
     if obj.Side == Side.Right and kink.goesRight():
@@ -255,6 +255,15 @@ class Proxy(object):
         )
         obj.BoneBlacklist = []
 
+        obj.addProperty(
+            "App::PropertyBool",
+            "OnlyClosedProfiles",
+            "Dressup",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Create bones only for outer closed profiles\nCan be useful for multi profile operations, e.g. Pocket with ZigZagOffset pattern",
+            ),
+        )
         self.onDocumentRestored(obj)
 
     def onDocumentRestored(self, obj):
@@ -283,6 +292,124 @@ class Proxy(object):
             return dogboneII.generate(kink, generator, calc_length, nominal, custom)
         return None
 
+    # Get start index of closed loop in Area
+    def findStartIndexClosedProfile(self, source, startAreaIndex, endAreaIndex):
+        points = []
+        points.append(source[endAreaIndex].positionEnd())
+        points.append(source[endAreaIndex - 1].positionEnd())
+        for i in range(endAreaIndex - 2, startAreaIndex - 1, -1):
+            point = source[i].positionBegin()
+            for j, p in enumerate(points):
+                # compare this point with all points before
+                if Path.Geom.pointsCoincide(point, p):
+                    return i, endAreaIndex - j
+            points.append(point)
+        return None, None
+
+    # Compare two boundboxes
+    def isEquelBoundboxes(self, bb1, bb2):
+        if not Path.Geom.isRoughly(bb1.XMin, bb2.XMin):
+            return False
+        if not Path.Geom.isRoughly(bb1.XMax, bb2.XMax):
+            return False
+        if not Path.Geom.isRoughly(bb1.YMin, bb2.YMin):
+            return False
+        if not Path.Geom.isRoughly(bb1.YMax, bb2.YMax):
+            return False
+        if not Path.Geom.isRoughly(bb1.ZMin, bb2.ZMin):
+            return False
+        if not Path.Geom.isRoughly(bb1.ZMax, bb2.ZMax):
+            return False
+        return True
+
+    # Search inner profiles which should be excluded
+    def getIndexInnerProfiles(self, source, indexList):
+        boundboxList = []
+        for i, areaIndexList in enumerate(indexList):
+            minX, minY, maxX, maxY = None, None, None, None
+            for index in areaIndexList:
+                point = source[index].positionEnd()
+                minX = point.x if minX is None or point.x < minX else minX
+                maxX = point.x if maxX is None or point.x > maxX else maxX
+                minY = point.y if minY is None or point.y < minY else minY
+                maxY = point.y if maxY is None or point.y > maxY else maxY
+            boundbox = FreeCAD.BoundBox(minX, minY, 0, maxX, maxY, 0)
+            boundboxList.append(boundbox)
+
+        # print("boundboxList", boundboxList)
+        excludeList = []
+        for i, boundbox in enumerate(boundboxList):
+            # print(" ", i, boundbox)
+            for bb in boundboxList:
+                # print("    ", bb)
+                if not self.isEquelBoundboxes(boundbox, bb) and bb.isInside(boundbox):
+                    # print("  exclude", i)
+                    excludeList.append(i)
+                    break
+        return excludeList
+
+    # Check command
+    def isCuttingMove(self, instr):
+        result = instr.isMove() and not instr.isRapid() and not instr.isPlunge()
+        return result
+
+    def getIndexOuterClosedProfiles(self, source):
+        closedProfilesIndex = []
+        startArea = None
+        endArea = None
+        for i, instr in enumerate(source):
+            if (
+                startArea is None
+                and endArea is None
+                and self.isCuttingMove(source[i])
+                and (i == 0 or not self.isCuttingMove(source[i - 1]))
+            ):
+                # start mill index of the area
+                startArea = i
+
+            if (
+                startArea is not None
+                and endArea is None
+                and (i == len(source) - 1 or not self.isCuttingMove(source[i + 1]))
+            ):
+                # end mill index of the area
+                endArea = i
+
+            if startArea and endArea:
+                print("startArea", startArea, source[startArea])
+                print("endArea", endArea, source[endArea])
+                p1 = source[startArea].positionBegin()
+                p2 = source[endArea].positionEnd()
+                if Path.Geom.pointsCoincide(p1, p2):
+                    # simple case
+                    # one closed profile in the area
+                    closedProfilesIndex.append(list(range(startArea, endArea + 1)))
+                else:
+                    # points is not coincide
+                    # try to find last closed profile in the area
+                    startIndex, endIndex = self.findStartIndexClosedProfile(
+                        source, startArea, endArea
+                    )
+                    if startIndex is not None and endIndex is not None:
+                        print("startIndex", startIndex, source[startIndex])
+                        print("endIndex", endIndex, source[endIndex])
+                        closedProfilesIndex.append(list(range(startIndex, endIndex + 1)))
+
+                startArea = None
+                endArea = None
+
+        print(closedProfilesIndex)
+        excludeList = self.getIndexInnerProfiles(source, closedProfilesIndex)
+        print(excludeList)
+
+        outerClosedProfilesIndex = []
+        for i, area in enumerate(closedProfilesIndex):
+            if i not in excludeList:
+                for j in area:
+                    outerClosedProfilesIndex.append(j)
+
+        return outerClosedProfilesIndex
+
     def execute(self, obj):
         Path.Log.track(obj.Label)
         maneuver = PathLanguage.Maneuver()
@@ -290,27 +417,43 @@ class Proxy(object):
         lastMove = None
         moveAfterPlunge = None
         dressingUpDogbone = hasattr(obj.Base, "BoneBlacklist")
+
         if obj.Base and obj.Base.Path and obj.Base.Path.Commands:
-            for i, instr in enumerate(
-                PathLanguage.Maneuver.FromPath(PathUtils.getPathWithPlacement(obj.Base)).instr
-            ):
+            source = PathLanguage.Maneuver.FromPath(PathUtils.getPathWithPlacement(obj.Base)).instr
+
+            # get indexes of outer closed profile in each multi work area
+            if hasattr(obj, "OnlyClosedProfiles") and obj.OnlyClosedProfiles:
+                closedProfilesIndex = self.getIndexOuterClosedProfiles(source)
+            else:
+                closedProfilesIndex = None
+            print("closedProfilesIndex", closedProfilesIndex)
+
+            for index, instr in enumerate(source):
+                print(index, instr)
                 # Path.Log.debug(f"instr: {instr}")
                 if instr.isMove():
                     thisMove = instr
                     bone = None
-                    if thisMove.isPlunge():
+                    if thisMove.isPlunge() or (
+                        closedProfilesIndex is not None and index not in closedProfilesIndex
+                    ):
+                        print("  is Plunge")
                         if lastMove and moveAfterPlunge and lastMove.leadsInto(moveAfterPlunge):
+                            print("   create last Bone")
                             bone = self.createBone(obj, lastMove, moveAfterPlunge)
                         lastMove = None
                         moveAfterPlunge = None
                     else:
+                        print("  is not Plunge")
                         if moveAfterPlunge is None:
                             moveAfterPlunge = thisMove
                         if lastMove:
+                            print("    create Bone")
                             bone = self.createBone(obj, lastMove, thisMove)
                         lastMove = thisMove
                     if bone:
-                        enabled = not len(bones) in obj.BoneBlacklist
+                        print("    3 bone was created")
+                        enabled = len(bones) not in obj.BoneBlacklist
                         if enabled and not (
                             dressingUpDogbone and obj.Base.Proxy.includesBoneAt(bone.position())
                         ):
@@ -348,7 +491,7 @@ class Proxy(object):
         if hasattr(self, "bones"):
             for nr, bone in enumerate(self.bones):
                 if Path.Geom.pointsCoincide(bone.position(), pos):
-                    return not (nr in self.obj.BoneBlacklist)
+                    return nr not in self.obj.BoneBlacklist
         return False
 
 
