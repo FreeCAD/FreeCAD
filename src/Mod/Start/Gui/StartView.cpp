@@ -37,6 +37,7 @@
 #include <QTimer>
 #include <QWidget>
 #include <QStackedWidget>
+#include <QShowEvent>
 #endif
 
 #include "StartView.h"
@@ -248,6 +249,7 @@ void StartView::configureFileCardWidget(QListView* fileCardWidget)
 {
     auto delegate = gsl::owner<FileCardDelegate*>(new FileCardDelegate(fileCardWidget));
     fileCardWidget->setItemDelegate(delegate);
+
     fileCardWidget->setMinimumWidth(fileCardWidget->parentWidget()->width());
     //    fileCardWidget->setGridSize(
     //        fileCardWidget->itemDelegate()->sizeHint(QStyleOptionViewItem(),
@@ -442,10 +444,46 @@ void StartView::changeEvent(QEvent* event)
             }
         }
     }
+
     if (event->type() == QEvent::LanguageChange) {
         this->retranslateUi();
     }
+
     Gui::MDIView::changeEvent(event);
+}
+
+void StartView::showEvent(QShowEvent* event)
+{
+    if (auto mainWindow = Gui::getMainWindow()) {
+        if (auto mdiArea = mainWindow->findChild<QMdiArea*>()) {
+            connect(mdiArea,
+                    &QMdiArea::subWindowActivated,
+                    this,
+                    &StartView::onMdiSubWindowActivated,
+                    Qt::UniqueConnection);
+        }
+    }
+    Gui::MDIView::showEvent(event);
+}
+
+void StartView::onMdiSubWindowActivated(QMdiSubWindow* subWindow)
+{
+    // check if start view is activated subwindow if yes, then enable updates
+    // so we can once again receive paint events
+    bool isOurWindow = subWindow && subWindow->isAncestorOf(this);
+    setListViewUpdatesEnabled(isOurWindow);
+}
+
+void StartView::setListViewUpdatesEnabled(bool enabled)
+{
+    // disable updates on all QListView widgets when inactive to prevent unnecessary paint events
+    QList<QListView*> listViews = findChildren<QListView*>();
+    for (QListView* listView : listViews) {
+        listView->setUpdatesEnabled(enabled);
+        if (listView->viewport()) {
+            listView->viewport()->setUpdatesEnabled(enabled);
+        }
+    }
 }
 
 void StartView::retranslateUi()
