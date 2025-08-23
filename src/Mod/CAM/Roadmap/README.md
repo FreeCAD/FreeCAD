@@ -64,11 +64,13 @@ We agree these things should get collective attention because they are larger th
 
 *(You may, of course, work on anything that you like and submit pull requests. However, be warned that pull requests will be judged on the priorities noted below and new features that are outside of the discussed projects will receive additional scrutiny)*
 
+
 | Epic                                                                            | Description                                                             | Status   |
 | ------------------------------------------------------------------------------- | -------------------------------------------------------------------     | -------- |
 | Fixing user pain points                                                         | Address the problems listed above in the Pain Points section            | Active   |
 | [Better Tool Library](Epics/Better%20Tool%20Library.md)                         | Implement the 'Better Tool Library' approach to tool management         | Active   |
 | [Improve Circular Holes](Epics/Circular%20Holes%20Improvement.md)               | Improve the user experience and efficiency of Circular holes operations | Active   |
+| [Improve Core Dressups](Epics/ImproveCoreDressups.md)                           | Improve the user experience and feature completion of core dressups     | Active   |
 
 # Priorities
 *(When evaluating Pull Requests, the following priorities will be considered)*
