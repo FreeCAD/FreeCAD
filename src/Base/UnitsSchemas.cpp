@@ -39,7 +39,7 @@ using Base::UnitsSchema;
 using Base::UnitsSchemas;
 using Base::UnitsSchemaSpec;
 
-UnitsSchemas::UnitsSchemas(const std::vector<UnitsSchemaSpec> &schemas)
+UnitsSchemas::UnitsSchemas(const std::vector<UnitsSchemaSpec>& schemas)
     : schemas {schemas}
 {}
 

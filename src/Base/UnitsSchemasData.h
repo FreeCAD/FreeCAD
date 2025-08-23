@@ -653,7 +653,7 @@ inline std::string toFractional(const double value)
     constexpr auto inchPerFoot {12};
     constexpr auto mmPerInch {25.4};
 
-    
+
     int denom = QuantityFormat::getDefaultDenominator();
 
     auto numFractUnits = static_cast<std::size_t>(std::round(std::abs(value) / mmPerInch * denom));
