@@ -37,13 +37,20 @@ BuildRequires:  freetype-devel
 BuildRequires:  gmock-devel
 BuildRequires:  gtest-devel
 BuildRequires:  hdf5-devel
+# Not yet packaged
+#BuildRequires:  IfcOpenShell-devel
 BuildRequires:  libspnav-devel
 BuildRequires:  lz4-devel
 BuildRequires:  med-devel
+BuildRequires:  netgen-mesher-devel
+BuildRequires:  netgen-mesher-devel-private
 BuildRequires:  opencascade-devel
 BuildRequires:  pyside6-tools
 BuildRequires:  python3-devel
+# Not yet packaged
+#BuildRequires:  python3-IfcOpenShell
 BuildRequires:  python3-matplotlib
+BuildRequires:  python3-netgen-mesher
 BuildRequires:  python3-pivy
 BuildRequires:  python3-pybind11
 BuildRequires:  python3-pyside6-devel
