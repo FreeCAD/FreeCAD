@@ -25,6 +25,38 @@
 #define PARTGUI_ViewProviderHole_H
 
 #include "ViewProvider.h"
+#include <Gui/ViewProviderTextureExtension.h>
+#include <App/Material.h>
+
+#include <vector>
+#include <memory>
+
+// Forward declarations for classes to reduce include dependencies
+class SoTextureCoordinate2;
+class SoTexture2;
+class SoMaterial;
+class SoIndexedFaceSet;
+class SoCoordinate3;
+class SoSeparator;
+class SoNormal;
+class SoNormalBinding;
+class SoClipPlane;
+class QMenu;
+
+namespace App {
+    class DocumentObject;
+    class Property;
+}
+
+namespace PartDesign {
+    class Hole;
+}
+
+// Forward declarations for OpenCascade classes
+class TopoDS_Face;
+class TopoDS_Shape;
+class gp_Dir;
+class gp_Pnt;
 
 
 namespace PartDesignGui {
@@ -43,14 +75,32 @@ public:
     std::vector<App::DocumentObject*> claimChildren()const override;
     void setupContextMenu(QMenu *menu, QObject *receiver, const char *member) override;
     bool onDelete(const std::vector<std::string> &s) override;
+    SoSeparator* createThreadTextureSeparator(const TopoDS_Shape& bodyShape) const;
 
 protected:
     TaskDlgFeatureParameters* getEditDialog() override;
+    void updateData(const App::Property* prop) override;
+    void attach(App::DocumentObject* obj) override;
+
+private:
+    std::vector<TopoDS_Face> collectBoreFaces(
+        const PartDesign::Hole* pcHole,
+        const TopoDS_Shape& holeShape,
+        gp_Dir& holeFeatureAxis,
+        gp_Pnt& axisLocationPnt
+    ) const;
+    App::Material getGlobalMaterial(const PartDesign::Hole* pcHole) const;
+    bool generateBoreMeshData(
+        const PartDesign::Hole* pcHole, const std::vector<TopoDS_Face>& boreFaces,
+        const gp_Dir& holeFeatureAxis, const gp_Pnt& axisLocationPnt,
+        double& outMinProj, double& outMaxProj,
+        std::vector<SbVec3f>& vertices, std::vector<SbVec3f>& normals,
+        std::vector<int>& indices, std::vector<SbVec2f>& uvs
+    ) const;
+
+    std::unique_ptr<Gui::ViewProviderTextureExtension> textureExtension;
 };
 
-
-
 } // namespace PartDesignGui
-
 
 #endif // PARTGUI_ViewProviderHole_H
