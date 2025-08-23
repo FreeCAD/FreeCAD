@@ -119,7 +119,8 @@ const fs::path& ApplicationDirectories::getLibraryDir() const {
 /*!
  * \brief findPath
  * Returns the path where to store application files to.
- * If \a customHome is not empty, it will be used, otherwise a path starting from \a stdHome will be used.
+ * If \a customHome is not empty, it will be used, otherwise a path starting from \a stdHome will be
+ * used.
  */
 fs::path ApplicationDirectories::findPath(const fs::path& stdHome, const fs::path& customHome,
                                           const std::vector<std::string>& subdirs, bool create) {
@@ -147,6 +148,26 @@ fs::path ApplicationDirectories::findPath(const fs::path& stdHome, const fs::pat
     return appData;
 }
 
+void ApplicationDirectories::appendVersionIfPossible(const fs::path& basePath, std::vector<std::string> &subdirs) const
+{
+    fs::path pathToCheck = basePath;
+    for (const auto& it : subdirs) {
+        pathToCheck = pathToCheck / it;
+    }
+    if (isVersionedPath(pathToCheck)) {
+        return; // Bail out if it's already versioned
+    }
+    if (fs::exists(pathToCheck)) {
+        std::string version = mostRecentAvailableConfigVersion(pathToCheck);
+        if (!version.empty()) {
+            subdirs.emplace_back(std::move(version));
+        }
+    } else {
+        auto [major, minor] = _currentVersion;
+        subdirs.emplace_back(versionStringForPath(major, minor));
+    }
+}
+
 void ApplicationDirectories::configurePaths(std::map<std::string,std::string>& mConfig)
 {
     bool keepDeprecatedPaths = mConfig.contains("KeepDeprecatedPaths");
@@ -158,6 +179,7 @@ void ApplicationDirectories::configurePaths(std::map<std::string,std::string>& m
 
     // this is to support a portable version of FreeCAD
     auto [customHome, customData, customTemp] = getCustomPaths();
+    _usingCustomDirectories = !customHome.empty() || !customData.empty();
 
     // get the system standard paths
     auto [configHome, dataHome, cacheHome, tempPath] = getStandardPaths();
@@ -179,18 +201,23 @@ void ApplicationDirectories::configurePaths(std::map<std::string,std::string>& m
         getSubDirectories(mConfig, subdirs);
     }
 
+
     // User data path
     //
-    fs::path data = findPath(dataHome, customData, subdirs, true);
+    auto dataSubdirs = subdirs;
+    appendVersionIfPossible(dataHome, dataSubdirs);
+    fs::path data = findPath(dataHome, customData, dataSubdirs, true);
     _userAppData = data;
-    mConfig["UserAppData"] = Base::FileInfo::pathToString(_userAppData) + PATHSEP;
+    mConfig["UserAppData"] = Base::FileInfo::pathToString(data) + PATHSEP;
 
 
     // User config path
     //
-    fs::path config = findPath(configHome, customHome, subdirs, true);
+    auto configSubdirs = subdirs;
+    appendVersionIfPossible(configHome, configSubdirs);
+    fs::path config = findPath(configHome, customHome, configSubdirs, true);
     _userConfig = config;
-    mConfig["UserConfigPath"] = Base::FileInfo::pathToString(_userConfig) + PATHSEP;
+    mConfig["UserConfigPath"] = Base::FileInfo::pathToString(config) + PATHSEP;
 
 
     // User cache path
@@ -212,9 +239,8 @@ void ApplicationDirectories::configurePaths(std::map<std::string,std::string>& m
 
     // Set the default macro directory
     //
-    std::vector<std::string> macrodirs = std::move(subdirs);  // Last use in this method, just move
-    macrodirs.emplace_back("Macro");
-    fs::path macro = findPath(dataHome, customData, macrodirs, true);
+    std::vector<std::string> macrodirs{"Macro"};
+    fs::path macro = findPath(_userAppData, customData, macrodirs, true);
     _userMacro = macro;
     mConfig["UserMacroPath"] = Base::FileInfo::pathToString(macro) + PATHSEP;
 }
@@ -282,6 +308,11 @@ fs::path ApplicationDirectories::getUserHome()
     path = Base::FileInfo::stringToPath(QStandardPaths::writableLocation(QStandardPaths::HomeLocation).toStdString());
 #endif
     return path;
+}
+
+bool ApplicationDirectories::usingCustomDirectories() const
+{
+    return _usingCustomDirectories;
 }
 
 #if defined(FC_OS_WIN32)  // This is ONLY used on Windows now, so don't even compile it elsewhere
@@ -401,6 +432,118 @@ std::tuple<fs::path, fs::path, fs::path, fs::path> ApplicationDirectories::getSt
             qstringToPath(dataHome),
             qstringToPath(cacheHome),
             qstringToPath(tempPath)};
+}
+
+
+
+std::string ApplicationDirectories::versionStringForPath(int major, int minor)
+{
+    // NOTE: This is intended to be stable over time, so if the format changes, a condition should be added to check for
+    // older versions and return this format for them, even if the new format differs.
+    return std::format("v{}-{}", major, minor);
+}
+
+bool ApplicationDirectories::isVersionedPath(const fs::path &startingPath) const {
+    for (int major = std::get<0>(_currentVersion); major >= 1; --major) {
+        constexpr int largestPossibleMinor = 99;  // We have to start someplace
+        int startingMinor = largestPossibleMinor;
+        if (major == std::get<0>(_currentVersion)) {
+            startingMinor = std::get<1>(_currentVersion);
+        }
+        for (int minor = startingMinor; minor >= 0; --minor) {
+            if (startingPath.filename() == versionStringForPath(major, minor)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+std::string ApplicationDirectories::mostRecentAvailableConfigVersion(const fs::path &startingPath) const {
+    for (int major = std::get<0>(_currentVersion); major >= 1; --major) {
+        constexpr int largestPossibleMinor = 99;  // We have to start someplace
+        int startingMinor = largestPossibleMinor;
+        if (major == std::get<0>(_currentVersion)) {
+            startingMinor = std::get<1>(_currentVersion);
+        }
+        for (int minor = startingMinor; minor >= 0; --minor) {
+            auto version = startingPath / versionStringForPath(major, minor);
+            if (fs::is_directory(version)) {
+                return versionStringForPath(major, minor);
+            }
+        }
+    }
+    return "";
+}
+
+fs::path ApplicationDirectories::mostRecentConfigFromBase(const fs::path &startingPath) const {
+    // Starting in FreeCAD v1.1, we switched to using a versioned config path for the three configuration
+    // directories:
+    // UserAppData
+    // UserConfigPath
+    // UserMacroPath
+    //
+    // Migration to the versioned structured is NOT automatic: at the App level, we just find the most
+    // recent directory and use it, regardless of which version of the program is currently running.
+    // It is up to user-facing code in Gui to determine whether to ask a user if they want to migrate
+    // and to call the App-level functions that do that work.
+
+    // The simplest and most common case is if the current version subfolder already exists
+    auto current = startingPath / versionStringForPath(std::get<0>(_currentVersion), std::get<1>(_currentVersion));
+    if (fs::is_directory(current)) {
+        return current;
+    }
+
+    // If the current version doesn't exist, see if a previous version does
+    std::string bestVersion = mostRecentAvailableConfigVersion(startingPath);
+    if (!bestVersion.empty()) {
+        return startingPath / bestVersion;
+    }
+    return startingPath;  // No versioned config found
+}
+
+bool ApplicationDirectories::usingCurrentVersionConfig(fs::path config) const {
+    if (config.filename().empty()) {
+        config = config.parent_path();
+    }
+    auto version = config.filename().string();
+    return version == versionStringForPath(std::get<0>(_currentVersion), std::get<1>(_currentVersion));
+}
+
+void ApplicationDirectories::migrateConfig(const fs::path &oldPath, const fs::path &newPath)
+{
+    fs::create_directories(newPath);
+    for (auto& file : fs::directory_iterator(oldPath)) {
+        if (file == newPath) {
+            // Handle the case where newPath is a subdirectory of oldPath
+            continue;
+        }
+        fs::copy(file.path(),
+                 newPath / file.path().filename(),
+                 fs::copy_options::recursive | fs::copy_options::copy_symlinks);
+    }
+}
+
+void ApplicationDirectories::migrateAllPaths(const std::vector<fs::path> &paths) const {
+    auto [major, minor] = _currentVersion;
+    std::set<fs::path> uniquePaths (paths.begin(), paths.end());
+    for (auto path : uniquePaths) {
+        if (path.filename().empty()) {
+            // Handle the case where the path was constructed from a std::string with a trailing /
+            path = path.parent_path();
+        }
+        fs::path newPath;
+        if (isVersionedPath(path)) {
+            newPath = path.parent_path() / versionStringForPath(major, minor);
+        } else {
+            newPath = path / versionStringForPath(major, minor);
+        }
+        if (fs::exists(newPath)) {
+            throw Base::RuntimeError("Cannot migrate config - path already exists: " + newPath.string());
+        }
+        fs::create_directories(newPath);
+        migrateConfig(path, newPath);
+    }
 }
 
 // TODO: Consider using this for all UNIX-like OSes

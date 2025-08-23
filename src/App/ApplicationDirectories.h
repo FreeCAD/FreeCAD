@@ -32,17 +32,22 @@
 namespace App {
 
     /// A helper class to handle application-wide directory management on behalf of the main
-    /// App::Application class
+    /// App::Application class. Most of this class's methods were originally in Application, and
+    /// were extracted here to be more easily testable (and to better follow the single-
+    /// responsibility principle, though further work is required in that area).
     class AppExport ApplicationDirectories {
 
     public:
 
         /// Constructor
-        /// \param currentVersion A tuple {major, minor} used to create/manage the versioned
-        /// directories, if any
+        /// \param config The base configuration dictionary. Used to create the appropriate
+        /// directories, and updated to reflect their locations. New code should not directly access
+        /// elements of this dictionary to determine directory locations, but should instead use
+        /// the public methods of this class to determine the locations needed.
         explicit ApplicationDirectories(std::map<std::string,std::string> &config);
 
-        /// Given argv[0], figure out the home path
+        /// Given argv[0], figure out the home path. Used to initialize the AppHomePath element of
+        /// the configuration map prior to instantiating this class.
         static std::filesystem::path findHomePath(const char* sCall);
 
         /// "Home" here is the parent directory of the actual executable file being run. It is
@@ -103,6 +108,55 @@ namespace App {
         /// Get the user's home directory
         static std::filesystem::path getUserHome();
 
+        /// Returns true if the current active directory set is custom, and false if it's the
+        /// standard system default.
+        bool usingCustomDirectories() const;
+
+
+        // Versioned-Path Management Methods:
+
+        /// Determine if a given config path is for the current version of the program
+        /// \param config The path to check
+        bool usingCurrentVersionConfig(std::filesystem::path config) const;
+
+        /// Migrate a set of versionable configuration directories from the given path to a new
+        /// version. The new version's directories cannot exist yet, and the old ones *must* exist.
+        /// If the old paths are themselves versioned, then the new paths will be placed at the same
+        /// level in the directory structure (e.g., they will be siblings of each entry in paths).
+        /// If paths are NOT versioned, the new (versioned) copies will be placed *inside* the
+        /// original paths.
+        void migrateAllPaths(const std::vector<std::filesystem::path> &paths) const;
+
+        /// A utility method to generate the versioned directory name for a given version. This only
+        /// returns the version string, not an entire path. As of FreeCAD 1.1, the string is of the
+        /// form "vX-Y" where X is the major version and Y is the minor, but external code should
+        /// not assume that is always the form, and should instead use this method, which is
+        /// guaranteed stable (that is, given "1" and "1" as the major and minor, it will always
+        /// return the string "v1-1", even if in later versions the format changes.
+        static std::string versionStringForPath(int major, int minor);
+
+        /// Given an arbitrary path, determine if it has the correct form to be a versioned path
+        /// (e.g. is the last component a recognized version of the code). DOES NOT recognize
+        /// versions *newer* than the current version, even if the directory name matches the path
+        /// naming convention used by the previous version.
+        bool isVersionedPath(const std::filesystem::path &startingPath) const;
+
+        /// Given a base path that is expected to contained versioned subdirectories, locate the
+        /// directory name (*not* the path, only the final component, the version string itself)
+        /// corresponding to the most recent version of the software, up to and including the
+        /// current version, but NOT exceeding it.
+        std::string mostRecentAvailableConfigVersion(const std::filesystem::path &startingPath) const;
+
+        /// Given a base path that is expected to contained versioned subdirectories, locate the
+        /// directory corresponding to the most recent version of the software, up to and including
+        /// the current version, but NOT exceeding it.
+        std::filesystem::path mostRecentConfigFromBase(const std::filesystem::path &startingPath) const;
+
+        /// A utility method to copy all files and directories from oldPath to newPath, handling the
+        /// case where newPath might itself be a subdirectory of oldPath (and *not* attempting that
+        /// otherwise-recursive copy).
+        static void migrateConfig(const std::filesystem::path &oldPath, const std::filesystem::path &newPath);
+
 #ifdef FC_OS_WIN32
         /// On Windows, gets the location of the user's "AppData" directory. Invalid on other OSes.
         QString getOldGenericDataLocation();
@@ -118,14 +172,15 @@ namespace App {
         /// be returned.
         static std::filesystem::path findUserHomePath(const std::filesystem::path& userHome);
 
-        bool isVersionedPath(const std::filesystem::path &startingPath) const;
-        std::string mostRecentAvailableConfigVersion(const std::filesystem::path &startingPath) const;
-        std::filesystem::path mostRecentConfigFromBase(const std::filesystem::path &startingPath) const;
-
-        static void migrateConfig(const std::filesystem::path &oldPath, const std::filesystem::path &newPath);
-
-
     protected:
+
+        /// Take a path and add a version to it, if it's possible to do so. A version can be
+        /// appended only if a) the versioned subdirectory already exists, or b) pathToCheck/subdirs
+        /// does NOT yet exist. This does not actually create any directories, just determines
+        /// if we can append the versioned directory name to subdirs.
+        void appendVersionIfPossible(const std::filesystem::path& basePath,
+                                     std::vector<std::string> &subdirs) const;
+
         static std::filesystem::path findPath(
             const std::filesystem::path& stdHome,
             const std::filesystem::path& customHome,
@@ -172,6 +227,8 @@ namespace App {
         std::filesystem::path _resource;
         std::filesystem::path _library;
         std::filesystem::path _help;
+
+        bool _usingCustomDirectories {false};
     };
 
 } // App
