@@ -1,9 +1,9 @@
-%bcond_without external_libkdtree
-%bcond_with external_zipios
-%bcond_with external_pycxx
-%bcond_with external_smesh
-%bcond_without external_gsl
-%bcond_without tests
+%bcond external_libkdtree 1
+%bcond external_zipios 0
+%bcond external_pycxx 0
+%bcond external_smesh 0
+%bcond external_gsl 1
+%bcond tests 0
 
 %global ondselsolver_commit 09d6175
 %global gsl_commit b39e7e4
