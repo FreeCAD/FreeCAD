@@ -422,6 +422,9 @@ class ObjectJob:
         if getattr(obj, "Tools", None):
             Path.Log.debug("taking down tool controller")
             for tc in obj.Tools.Group:
+                if hasattr(tc.Tool, "BitBody") and tc.Tool.BitBody:
+                    tc.Tool.BitBody.removeObjectsFromDocument()
+                    doc.removeObject(tc.Tool.BitBody.Name)
                 if hasattr(tc.Tool, "Proxy"):
                     PathUtil.clearExpressionEngine(tc.Tool)
                     doc.removeObject(tc.Tool.Name)
