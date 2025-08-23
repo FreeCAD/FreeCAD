@@ -39,7 +39,7 @@ namespace Base
 class UnitsSchemas
 {
 public:
-    explicit UnitsSchemas(const std::vector<UnitsSchemaSpec> &schemas);
+    explicit UnitsSchemas(const std::vector<UnitsSchemaSpec>& schemas);
 
     /** Make a schema and set as current*/
     void select();  // default

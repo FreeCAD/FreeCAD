@@ -96,8 +96,7 @@ public:
     static PyMethodDef Methods[];
 
 protected:
-    static inline auto schemas =
-        std::make_unique<UnitsSchemas>(UnitsSchemasData::specs);
+    static inline auto schemas = std::make_unique<UnitsSchemas>(UnitsSchemasData::specs);
     static inline std::size_t decimals {2};
     static inline std::size_t denominator {2};
 
