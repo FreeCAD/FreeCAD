@@ -66,7 +66,7 @@ def setupPipeline(doc, analysis, results_name, result_data):
     if not "BUILD_FEM_VTK" in FreeCAD.__cmake__:
         return
 
-    # create a results pipeline (dependend on user settings)
+    # create a results pipeline (dependent on user settings)
     pipeline_name = "Pipeline_" + results_name
     pipelines = analysis.getObjectsOfType("Fem::FemPostPipeline")
     fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
