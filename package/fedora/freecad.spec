@@ -3,7 +3,7 @@
 %bcond external_pycxx 0
 %bcond external_smesh 0
 %bcond external_gsl 1
-%bcond tests 0
+%bcond tests 1
 
 %global ondselsolver_commit 09d6175
 %global gsl_commit b39e7e4
@@ -204,8 +204,65 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.freecad.FreeCAD.d
 appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/org.freecad.FreeCAD.metainfo.xml
 
 %if %{with tests}
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ %{buildroot}%{_bindir}/FreeCADCmd -t 0
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t 0
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ %{buildroot}%{_bindir}/FreeCADCmd -t  TestAddonManagerApp
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ %{buildroot}%{_bindir}/FreeCADCmd -t  TestAssemblyWorkbench
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ %{buildroot}%{_bindir}/FreeCADCmd -t  TestArch
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ %{buildroot}%{_bindir}/FreeCADCmd -t  TestCAMApp
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ %{buildroot}%{_bindir}/FreeCADCmd -t  TestDraft
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ %{buildroot}%{_bindir}/FreeCADCmd -t  TestFemApp
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ %{buildroot}%{_bindir}/FreeCADCmd -t  TestMaterialsApp
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ %{buildroot}%{_bindir}/FreeCADCmd -t  MeshTestsApp
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ %{buildroot}%{_bindir}/FreeCADCmd -t  TestPartApp
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ %{buildroot}%{_bindir}/FreeCADCmd -t  TestPartDesignApp
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ %{buildroot}%{_bindir}/FreeCADCmd -t  TestSketcherApp
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ %{buildroot}%{_bindir}/FreeCADCmd -t  TestSpreadsheet
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ %{buildroot}%{_bindir}/FreeCADCmd -t  TestSurfaceApp
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ %{buildroot}%{_bindir}/FreeCADCmd -t  TestTechDrawApp
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ %{buildroot}%{_bindir}/FreeCADCmd -t  BaseTests
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ %{buildroot}%{_bindir}/FreeCADCmd -t  UnitTests
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ %{buildroot}%{_bindir}/FreeCADCmd -t  Document
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ %{buildroot}%{_bindir}/FreeCADCmd -t  Metadata
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ %{buildroot}%{_bindir}/FreeCADCmd -t  StringHasher
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ %{buildroot}%{_bindir}/FreeCADCmd -t  UnicodeTests
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ %{buildroot}%{_bindir}/FreeCADCmd -t  TestPythonSyntax
+
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestAddonManagerApp
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestAssemblyWorkbench
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestArch
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestCAMApp
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestDraft
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestFemApp
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestMaterialsApp
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  MeshTestsApp
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestPartApp
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestPartDesignApp
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestSketcherApp
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestSpreadsheet
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestSurfaceApp
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestTechDrawApp
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  BaseTests
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  UnitTests
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  Document
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  Metadata
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  StringHasher
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  UnicodeTests
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestPythonSyntax
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestAddonManagerGui
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestArchGui
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestDraftGui
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestFemGui
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestImportGui
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestMaterialsGui
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestOpenSCADGui
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestPartGui
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestPartDesignGui
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestSketcherGui
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestTechDrawGui
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  Workbench
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  Menu
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  Menu.MenuDeleteCases
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  Menu.MenuCreateCases
+LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  GuiDocument
 %endif
 
 %files
