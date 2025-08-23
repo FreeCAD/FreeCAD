@@ -39,7 +39,7 @@ namespace Base
 class UnitsSchemas
 {
 public:
-    explicit UnitsSchemas(const UnitsSchemasDataPack& pack);
+    explicit UnitsSchemas(const std::vector<UnitsSchemaSpec> &schemas);
 
     /** Make a schema and set as current*/
     void select();  // default
@@ -56,7 +56,6 @@ public:
     std::vector<std::string> descriptions();
     std::size_t getDecimals() const;
     std::size_t defFractDenominator() const;
-    void setdefFractDenominator(std::size_t size);
 
     UnitsSchema* currentSchema() const;
 
@@ -66,10 +65,9 @@ private:
     UnitsSchemaSpec findSpec(const std::function<bool(UnitsSchemaSpec)>& fn);
     void makeCurr(const UnitsSchemaSpec& spec);
 
-    UnitsSchemasDataPack pack;
+    std::vector<UnitsSchemaSpec> schemas;
     std::unique_ptr<UnitsSchema> current {std::make_unique<UnitsSchema>(spec())};
     std::size_t denominator;
-    std::size_t decimals;
 };
 
 

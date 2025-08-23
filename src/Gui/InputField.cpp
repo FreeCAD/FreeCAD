@@ -563,7 +563,7 @@ QString InputField::getUnitText()
 
 int InputField::getPrecision() const
 {
-    return this->actQuantity.getFormat().precision;
+    return this->actQuantity.getFormat().getPrecision();
 }
 
 void InputField::setPrecision(const int precision)

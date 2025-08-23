@@ -39,9 +39,6 @@
 namespace Base::UnitsSchemasData
 {
 
-constexpr std::size_t defDecimals {2};
-constexpr std::size_t defDenominator {8};
-
 // NOLINTBEGIN
 // clang-format off
 inline const UnitsSchemaSpec s0
@@ -656,22 +653,23 @@ inline std::string toFractional(const double value)
     constexpr auto inchPerFoot {12};
     constexpr auto mmPerInch {25.4};
 
-    auto numFractUnits =
-        static_cast<std::size_t>(std::round(std::abs(value) / mmPerInch * defDenominator));
+    
+    int denom = QuantityFormat::getDefaultDenominator();
+
+    auto numFractUnits = static_cast<std::size_t>(std::round(std::abs(value) / mmPerInch * denom));
     if (numFractUnits == 0) {
         return "0";
     }
 
-    const auto feet =
-        static_cast<std::size_t>(std::floor(numFractUnits / (inchPerFoot * defDenominator)));
-    numFractUnits -= inchPerFoot * defDenominator * feet;
+    const auto feet = static_cast<std::size_t>(std::floor(numFractUnits / (inchPerFoot * denom)));
+    numFractUnits -= inchPerFoot * denom * feet;
 
-    const auto inches = static_cast<std::size_t>(std::floor(numFractUnits / defDenominator));
-    const std::size_t fractNumerator = numFractUnits - (defDenominator * inches);
+    const auto inches = static_cast<std::size_t>(std::floor(numFractUnits / denom));
+    const std::size_t fractNumerator = numFractUnits - (denom * inches);
 
-    const std::size_t common_denom = greatestCommonDenominator(fractNumerator, defDenominator);
+    const std::size_t common_denom = greatestCommonDenominator(fractNumerator, denom);
     const std::size_t numerator = fractNumerator / common_denom;
-    const std::size_t denominator = defDenominator / common_denom;
+    const std::size_t denominator = denom / common_denom;
 
     bool addSpace {false};
     std::string result;
@@ -760,8 +758,7 @@ runSpecial(const std::string& name, const double value, double& factor, std::str
 /**
  * Build data pack
  */
-
-inline const UnitsSchemasDataPack unitSchemasDataPack {schemaSpecs, defDecimals, defDenominator};
+inline const std::vector<UnitsSchemaSpec> specs = schemaSpecs;
 
 
 }  // namespace Base::UnitsSchemasData

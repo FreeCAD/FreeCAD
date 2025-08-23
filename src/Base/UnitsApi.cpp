@@ -41,7 +41,7 @@ using Base::UnitsSchemas;
 
 void UnitsApi::init()
 {
-    schemas = std::make_unique<UnitsSchemas>(UnitsSchemasData::unitSchemasDataPack);
+    schemas = std::make_unique<UnitsSchemas>(UnitsSchemasData::specs);
 }
 
 std::vector<std::string> UnitsApi::getDescriptions()
@@ -118,7 +118,7 @@ std::string UnitsApi::toNumber(const double value, const QuantityFormat& format)
         default:
             break;
     }
-    ss << std::setprecision(format.precision) << value;
+    ss << std::setprecision(format.getPrecision()) << value;
 
     return ss.str();
 }
