@@ -32,6 +32,7 @@ import math
 import FreeCAD as App
 import Part
 import DraftGeomUtils
+import DraftVecUtils
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 
@@ -41,37 +42,61 @@ if App.GuiUp:
     from draftviewproviders.view_base import ViewProviderDraft
 
 
+def _get_normal(axis, ref_rot):
+    local_axis = ref_rot.inverted().multVec(axis)
+    x, y, z = [abs(coord) for coord in list(local_axis)]
+    # Use local X, Y or Z axis for comparison:
+    if z >= x and z >= y:
+        local_comp_vec = App.Vector(0, 0, 1)
+    elif y >= x and y >= z:
+        local_comp_vec = App.Vector(0, -1, 0)  # -Y to match the Front view
+    else:
+        local_comp_vec = App.Vector(1, 0, 0)
+    comp_vec = ref_rot.multVec(local_comp_vec)
+    axis = App.Vector(axis)  # create independent copy
+    if axis.getAngle(comp_vec) > math.pi/2:
+        axis = axis.negative()
+    return axis
+
+
 def make_circle(radius, placement=None, face=None, startangle=None, endangle=None, support=None):
-    """make_circle(radius, [placement, face, startangle, endangle])
-    or make_circle(edge,[face]):
+    """make_circle(radius, [placement], [face], [startangle], [endangle])
+    or make_circle(edge, [placement], [face]):
 
     Creates a circle object with given parameters.
 
-    If startangle and endangle are provided and not equal, the object will show
+    If startangle and endangle are provided and not equal, the object will be
     an arc instead of a full circle.
 
     Parameters
     ----------
-    radius : the radius of the circle.
+    radius: the radius of the circle or the shape of a circular edge
+        If it is an edge, startangle and endangle are ignored.
+        edge.Curve must be a Part.Circle.
 
-    placement :
-        If placement is given, it is used.
+    placement: optional
+        If radius is an edge, placement is adjusted to match the geometry
+        of the edge. The Z axis of the adjusted placement will be parallel
+        to the (negative) edge axis. Its Base will match the edge center.
 
-    face : Bool
+    face: Bool
         If face is False, the circle is shown as a wireframe,
         otherwise as a face.
 
-    startangle : start angle of the circle (in degrees)
+    startangle: start angle of the circle (in degrees)
         Recalculated if not in the -360 to 360 range.
 
-    endangle : end angle of the circle (in degrees)
+    endangle: end angle of the circle (in degrees)
         Recalculated if not in the -360 to 360 range.
 
-    edge : edge.Curve must be a 'Part.Circle'
-        The circle is created from the given edge.
+    support: App::PropertyLinkSubList, optional
+        It defaults to `None`.
+        It is a list containing tuples to define the attachment
+        of the new object.
 
-    support :
-        TODO: Describe
+        This parameter sets the `Support` property but it only really
+        affects the position of the new object if its `MapMode` is
+        set to other than `'Deactivated'`.
     """
 
     if not App.ActiveDocument:
@@ -81,38 +106,36 @@ def make_circle(radius, placement=None, face=None, startangle=None, endangle=Non
     if placement:
         utils.type_check([(placement,App.Placement)], "make_circle")
 
-    if startangle != endangle:
-        _name = "Arc"
+    if (isinstance(radius, Part.Edge) and len(radius.Vertexes) > 1) \
+            or startangle != endangle:
+        name = "Arc"
     else:
-        _name = "Circle"
+        name = "Circle"
 
-    obj = App.ActiveDocument.addObject("Part::Part2DObjectPython", _name)
+    obj = App.ActiveDocument.addObject("Part::Part2DObjectPython", name)
 
     Circle(obj)
 
     if face is not None:
         obj.MakeFace = face
 
-    if isinstance(radius,Part.Edge):
+    if isinstance(radius, Part.Edge) and DraftGeomUtils.geomType(radius) == "Circle":
         edge = radius
-        if DraftGeomUtils.geomType(edge) == "Circle":
-            obj.Radius = edge.Curve.Radius
-            placement = App.Placement(edge.Placement)
-            delta = edge.Curve.Center.sub(placement.Base)
-            placement.move(delta)
-            # Rotation of the edge
-            rotOk = App.Rotation(edge.Curve.XAxis, edge.Curve.YAxis, edge.Curve.Axis, "ZXY")
-            placement.Rotation = rotOk
-            if len(edge.Vertexes) > 1:
-                v0 = edge.Curve.XAxis
-                v1 = (edge.Vertexes[0].Point).sub(edge.Curve.Center)
-                v2 = (edge.Vertexes[-1].Point).sub(edge.Curve.Center)
-                # Angle between edge.Curve.XAxis and the vector from center to start of arc
-                a0 = math.degrees(App.Vector.getAngle(v0, v1))
-                # Angle between edge.Curve.XAxis and the vector from center to end of arc
-                a1 = math.degrees(App.Vector.getAngle(v0, v2))
-                obj.FirstAngle = a0
-                obj.LastAngle = a1
+        obj.Radius = edge.Curve.Radius
+        axis = edge.Curve.Axis
+        ref_rot = App.Rotation() if placement is None else placement.Rotation
+        normal = _get_normal(axis, ref_rot)
+        x_axis = ref_rot.multVec(App.Vector(1, 0, 0))
+        y_axis = ref_rot.multVec(App.Vector(0, 1, 0))
+        rot = App.Rotation(x_axis, y_axis, normal, "ZXY")
+        placement = App.Placement(edge.Curve.Center, rot)
+        if len(edge.Vertexes) > 1:
+            v1 = (edge.Vertexes[0].Point).sub(edge.Curve.Center)
+            v2 = (edge.Vertexes[-1].Point).sub(edge.Curve.Center)
+            if not axis.isEqual(normal, 1e-4):
+                v1, v2 = v2, v1
+            obj.FirstAngle = math.degrees(DraftVecUtils.angle(x_axis, v1, normal))
+            obj.LastAngle = math.degrees(DraftVecUtils.angle(x_axis, v2, normal))
     else:
         obj.Radius = radius
         if (startangle is not None) and (endangle is not None):
