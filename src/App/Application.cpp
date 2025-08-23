@@ -2804,7 +2804,9 @@ void Application::initApplication()
     const ParameterGrp::handle hGrp = GetApplication().GetParameterGroupByPath
        ("User parameter:BaseApp/Preferences/Units");
     Base::UnitsApi::setSchema(hGrp->GetInt("UserSchema", Base::UnitsApi::getDefSchemaNum()));
-    Base::UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
+    int decimals = hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals());
+    Base::UnitsApi::setDecimals(decimals);
+    Base::QuantityFormat::setDefaultPrecision(decimals);
     Base::QuantityFormat::setDefaultDenominator(
         hGrp->GetInt("FracInch", Base::QuantityFormat::getDefaultDenominator()));
 

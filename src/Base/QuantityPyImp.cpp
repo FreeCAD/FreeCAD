@@ -57,7 +57,7 @@ std::string QuantityPy::representation() const
 
 PyObject* QuantityPy::toStr(PyObject* args) const
 {
-    int prec = getQuantityPtr()->getFormat().precision;
+    int prec = getQuantityPtr()->getFormat().getPrecision();
     if (!PyArg_ParseTuple(args, "|i", &prec)) {
         return nullptr;
     }
@@ -669,7 +669,7 @@ Py::Dict QuantityPy::getFormat() const
     QuantityFormat fmt = getQuantityPtr()->getFormat();
 
     Py::Dict dict;
-    dict.setItem("Precision", Py::Long(fmt.precision));
+    dict.setItem("Precision", Py::Long(fmt.getPrecision()));
     dict.setItem("NumberFormat", Py::Char(fmt.toFormat()));
     dict.setItem("Denominator", Py::Long(fmt.denominator));
     return dict;

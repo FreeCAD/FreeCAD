@@ -182,7 +182,9 @@ void DlgSettingsGeneral::saveUnitSystemSettings()
     ParameterGrp::handle hGrpu = App::GetApplication().GetParameterGroupByPath
     ("User parameter:BaseApp/Preferences/Units");
     hGrpu->SetInt("UserSchema", ui->comboBox_UnitSystem->currentIndex());
-    hGrpu->SetInt("Decimals", ui->spinBoxDecimals->value());
+    int decimals = ui->spinBoxDecimals->value();
+    hGrpu->SetInt("Decimals", decimals);
+    QuantityFormat::setDefaultPrecision(decimals);
     hGrpu->SetBool("IgnoreProjectSchema", ui->checkBox_projectUnitSystemIgnore->isChecked());
 
     // Set actual value

@@ -822,7 +822,8 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject* obj)
 
         std::string cmd;
         std::string name(Gui::Command::getObjectCmd(obj));
-        Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
+        Base::QuantityFormat format(Base::QuantityFormat::Fixed,
+                                    Base::QuantityFormat::getDefaultPrecision());
         switch (ui->widgetStack->currentIndex()) {
             case 1:  // box
                 cmd = fmt::format("{0}.Length='{1}'\n"

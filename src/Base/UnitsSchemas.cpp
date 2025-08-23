@@ -39,21 +39,19 @@ using Base::UnitsSchema;
 using Base::UnitsSchemas;
 using Base::UnitsSchemaSpec;
 
-UnitsSchemas::UnitsSchemas(const UnitsSchemasDataPack& pack)
-    : pack {pack}
-    , denominator {pack.defDenominator}
-    , decimals {pack.defDecimals}
+UnitsSchemas::UnitsSchemas(const std::vector<UnitsSchemaSpec> &schemas)
+    : schemas {schemas}
 {}
 
 size_t UnitsSchemas::count() const
 {
-    return pack.specs.size();
+    return schemas.size();
 }
 
 std::vector<std::string> UnitsSchemas::getVec(const std::function<std::string(UnitsSchemaSpec)>& fn)
 {
     std::vector<std::string> vec;
-    auto specs = pack.specs;
+    auto specs = schemas;
     std::sort(specs.begin(), specs.end(), [](const UnitsSchemaSpec& a, const UnitsSchemaSpec& b) {
         return a.num < b.num;
     });
@@ -78,17 +76,12 @@ std::vector<std::string> UnitsSchemas::descriptions()
 
 std::size_t UnitsSchemas::getDecimals() const
 {
-    return pack.defDecimals;
+    return Base::QuantityFormat::getDefaultPrecision();
 }
 
 std::size_t UnitsSchemas::defFractDenominator() const
 {
-    return pack.defDenominator;
-}
-
-void UnitsSchemas::setdefFractDenominator(const std::size_t size)
-{
-    denominator = size;
+    return Base::QuantityFormat::getDefaultDenominator();
 }
 
 void UnitsSchemas::select()
@@ -118,9 +111,9 @@ void UnitsSchemas::makeCurr(const UnitsSchemaSpec& spec)
 
 UnitsSchemaSpec UnitsSchemas::findSpec(const std::function<bool(UnitsSchemaSpec)>& fn)
 {
-    const auto found = std::find_if(pack.specs.begin(), pack.specs.end(), fn);
+    const auto found = std::find_if(schemas.begin(), schemas.end(), fn);
 
-    if (found == pack.specs.end()) {
+    if (found == schemas.end()) {
         throw RuntimeError {"UnitSchemaSpec not found"};
     }
 
