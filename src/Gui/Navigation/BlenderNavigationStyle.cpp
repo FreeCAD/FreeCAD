@@ -295,7 +295,9 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Prevent interrupting rubber-band selection in sketcher
     if (viewer->isEditing() && curmode == NavigationStyle::SELECTION && newmode != NavigationStyle::IDLE) {
-        newmode = NavigationStyle::SELECTION;
+        if (!button1down || !button2down) { // Allow canceling rubber-band in sketcher if both button 1 and button 2 are pressed
+            newmode = NavigationStyle::SELECTION;
+        }
         processed = false;
     }
 
