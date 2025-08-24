@@ -499,17 +499,6 @@ void Model::updateSlot()
         (*theGraph)[currentVertex].dagVisible = false;
     }
   }
-  //inclusion takes precedence. Separate loop because filters might probe
-  //children and parents. So we want to ensure all exclusions are done
-  //before inclusions start.
-  BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
-  {
-    for (const auto &currentFilter : filters)
-    {
-      if (true)
-        continue;
-    }
-  }
 
   //sync scene items to graph vertex dagVisible.
   BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
