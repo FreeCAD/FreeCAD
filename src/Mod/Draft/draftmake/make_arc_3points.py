@@ -31,12 +31,11 @@ import math
 
 import FreeCAD as App
 import Part
-import Draft
-import draftutils.utils as utils
+from draftmake import make_circle
+from draftutils import gui_utils
+from draftutils import utils
 from draftutils.messages import _err
 from draftutils.translate import translate
-
-import draftutils.gui_utils as gui_utils
 
 
 def make_arc_3points(points, placement=None, face=False, support=None, primitive=False):
@@ -116,6 +115,6 @@ def make_arc_3points(points, placement=None, face=False, support=None, primitive
         obj.Shape = edge
         return obj
 
-    return Draft.make_circle(edge, placement=placement, face=face, support=support)
+    return make_circle.make_circle(edge, placement=placement, face=face, support=support)
 
 ## @}
