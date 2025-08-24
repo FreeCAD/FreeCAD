@@ -88,7 +88,7 @@ def write_constraint(f, femobj, contact_obj, ccxwriter):
     elif contact_obj.SurfaceBehavior == "Hard":
         f.write("*SURFACE BEHAVIOR, PRESSURE-OVERCLOSURE=HARD\n")
     elif contact_obj.SurfaceBehavior == "Tied":
-        f.write("*SURFACE BEHAVIOR, PRESSURE-OVERCLOSURE=TIED\n") 
+        f.write("*SURFACE BEHAVIOR, PRESSURE-OVERCLOSURE=TIED\n")
         slope = contact_obj.Slope.getValueAs("MPa/mm").Value
         f.write(f"{slope:.13G}\n")
     else:
