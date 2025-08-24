@@ -81,5 +81,3 @@ bool FilterTyped::goFilter(const Gui::DAG::Vertex& vertexIn, const Graph& graphI
 
   return false;
 }
-
-

@@ -170,9 +170,6 @@ Model::~Model()
 
 void Model::setupFilters()
 {
-//   filters.push_back(std::shared_ptr<FilterOrigin>(new FilterOrigin()));
-//   filters.push_back(std::shared_ptr<FilterTyped>(new FilterTyped("PartDesign::Body")));
-//   filters.push_back(std::shared_ptr<FilterTyped>(new FilterTyped("App::Part")));
 }
 
 void Model::setupViewConstants()
