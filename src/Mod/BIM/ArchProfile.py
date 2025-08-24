@@ -447,7 +447,7 @@ class ProfileTaskPanel:
             self.type = "L"
         elif isinstance(self.obj.Proxy,_ProfileT):
             self.type = "T"
-        elif isinstance(self.obj.Proxy,_ProfileT):
+        elif isinstance(self.obj.Proxy,_ProfileT_s):
             self.type = "T-s"
         else:
             self.type = "Building Element Proxy"
@@ -527,7 +527,7 @@ class ProfileTaskPanel:
                 _ProfileL(self.obj, self.Profile)
             elif self.Profile[3]=="T":
                 _ProfileT(self.obj, self.Profile)
-            elif self.Profile[3]=="T":
+            elif self.Profile[3]=="T-s":
                 _ProfileT_s(self.obj, self.Profile)
             else:
                 print("Profile not supported")
