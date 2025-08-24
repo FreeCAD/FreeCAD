@@ -66,24 +66,20 @@ class TwoLineTableCell(QtGui.QWidget):
         self.vbox.addWidget(self.label_upper)
         self.vbox.addWidget(self.label_lower)
 
-        style = "color: {}".format(fg_color.name())
         self.label_left = QtGui.QLabel()
         self.label_left.setMinimumWidth(40)
         self.label_left.setTextFormat(QtCore.Qt.RichText)
         self.label_left.setAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
-        self.label_left.setStyleSheet(style)
         self.label_left.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents)
 
         ratio = self.devicePixelRatioF()
         self.icon_size = QtCore.QSize(50 * ratio, 60 * ratio)
         self.icon_widget = QtGui.QLabel()
 
-        style = "color: {}".format(fg_color.name())
         self.label_right = QtGui.QLabel()
         self.label_right.setMinimumWidth(40)
         self.label_right.setTextFormat(QtCore.Qt.RichText)
         self.label_right.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_right.setStyleSheet(style)
         self.label_right.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents)
 
         self.hbox = QtGui.QHBoxLayout()
