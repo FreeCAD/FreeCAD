@@ -102,6 +102,14 @@ public:
 public:
     void executeCommands() override
     {
+        // validate scale factor to prevent geometric collapse and crashes
+        if (scaleFactor <= Precision::Confusion() || !std::isfinite(scaleFactor)) {
+            THROWM(
+                Base::ValueError,
+                QT_TRANSLATE_NOOP("Notifications",
+                                  "Invalid scale factor. Scale factor must be a positive number."));
+        }
+
         try {
             Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Scale geometries"));
 
