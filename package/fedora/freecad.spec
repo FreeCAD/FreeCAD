@@ -96,7 +96,9 @@ Requires:       %{name}-data = %{epoch}:%{version}-%{release}
 
 Provides:       bundled(smesh) = 5.1.2.2
 
-%global __provides_exclude_from ^%{_libdir}/%{name}/%{_lib}/.*$
+# These are needed when intsalling, but should be linked as
+# private libraries or if public, should have sonames
+#global __provides_exclude_from ^%{_libdir}/%{name}/%{_lib}/.*$
 
 
 %description
@@ -111,7 +113,6 @@ modifying the core system.
 %package data
 Summary:        Data files for FreeCAD
 BuildArch:      noarch
-Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 %description data
 Data files for FreeCAD
@@ -204,213 +205,10 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/org.freecad.FreeCAD.d
 appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/org.freecad.FreeCAD.metainfo.xml
 
 %if %{with tests}
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/AddonManager/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Assembly/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/BIM/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/CAM/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Draft/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Drawing/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Fem/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Help/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Idf/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Import/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Inspection/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Material/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Measure/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Mesh/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/MeshPart/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/OpenSCAD/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Part/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/PartDesign/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Plot/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Points/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/ReverseEngineering/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Robot/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Show/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Sketcher/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Spreadsheet/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Start/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Surface/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/TechDraw/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Test/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Tux/"
-pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Web/"
-
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/ \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  %{buildroot}%{_bindir}/FreeCADCmd -t  TestAddonManagerApp
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  %{buildroot}%{_bindir}/FreeCADCmd -t  TestAssemblyWorkbench
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  %{buildroot}%{_bindir}/FreeCADCmd -t  TestArch
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  %{buildroot}%{_bindir}/FreeCADCmd -t  TestCAMApp
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  %{buildroot}%{_bindir}/FreeCADCmd -t  TestDraft
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  %{buildroot}%{_bindir}/FreeCADCmd -t  TestFemApp
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  %{buildroot}%{_bindir}/FreeCADCmd -t  TestMaterialsApp
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  %{buildroot}%{_bindir}/FreeCADCmd -t  MeshTestsApp
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  %{buildroot}%{_bindir}/FreeCADCmd -t  TestPartApp
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  %{buildroot}%{_bindir}/FreeCADCmd -t  TestPartDesignApp
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  %{buildroot}%{_bindir}/FreeCADCmd -t  TestSketcherApp
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  %{buildroot}%{_bindir}/FreeCADCmd -t  TestSpreadsheet
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  %{buildroot}%{_bindir}/FreeCADCmd -t  TestSurfaceApp
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  %{buildroot}%{_bindir}/FreeCADCmd -t  TestTechDrawApp
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  %{buildroot}%{_bindir}/FreeCADCmd -t  BaseTests
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  %{buildroot}%{_bindir}/FreeCADCmd -t  UnitTests
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  %{buildroot}%{_bindir}/FreeCADCmd -t  Document
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  %{buildroot}%{_bindir}/FreeCADCmd -t  Metadata
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  %{buildroot}%{_bindir}/FreeCADCmd -t  StringHasher
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  %{buildroot}%{_bindir}/FreeCADCmd -t  UnicodeTests
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  %{buildroot}%{_bindir}/FreeCADCmd -t  TestPythonSyntax
-
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestAddonManagerApp
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestAssemblyWorkbench
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestArch
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestCAMApp
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestDraft
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestFemApp
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestMaterialsApp
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  MeshTestsApp
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestPartApp
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestPartDesignApp
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestSketcherApp
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestSpreadsheet
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestSurfaceApp
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestTechDrawApp
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  BaseTests
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  UnitTests
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  Document
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  Metadata
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  StringHasher
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  UnicodeTests
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestPythonSyntax
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestAddonManagerGui
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestArchGui
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestDraftGui
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestFemGui
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestImportGui
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestMaterialsGui
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestOpenSCADGui
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestPartGui
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestPartDesignGui
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestSketcherGui
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  TestTechDrawGui
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  Workbench
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  Menu
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  Menu.MenuDeleteCases
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  Menu.MenuCreateCases
-LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
-  PYTHONPATH=$PYTHONPATH:"${pp-}" \
-  xvfb-run %{buildroot}%{_bindir}/FreeCAD -t  GuiDocument
+pushd %_vpath_builddir
+ls
+popd
+%ctest
 %endif
 
 %files
@@ -437,6 +235,7 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir}/freecad/lib64/  \
 %{_metainfodir}/org.freecad.FreeCAD.metainfo.xml
 
 %files data
+%license LICENSE
 %{_datadir}/%{name}/
 
 
