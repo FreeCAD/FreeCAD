@@ -22,18 +22,21 @@
         <layout class="QGridLayout" name="gridLayout_1">
          <!-- Constraint symbol size -->
          <item row="1" column="0">
-          <widget class="QLabel" name="label_constraintSymbolSize">
-           <property name="minimumSize">
-            <size>
-                <width>182</width>
-                <height>0</height>
-            </size>
+          <widget class="Gui::PrefCheckBox" name="checkBoxUseConstraintSymbolSize">
+           <property name="toolTip">
+            <string>If checked, uses the constraint symbol size for symbols. If unchecked, uses the font size.</string>
            </property>
            <property name="text">
             <string>Constraint symbol size</string>
            </property>
-           <property name="buddy">
-            <cstring>ConstraintSymbolSize</cstring>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>UseConstraintSymbolSize</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>View</cstring>
            </property>
           </widget>
          </item>
@@ -53,6 +56,9 @@
            </property>
            <property name="value">
             <number>15</number>
+           </property>
+           <property name="enabled">
+            <bool>false</bool>
            </property>
            <property name="prefEntry" stdset="0">
             <cstring>ConstraintSymbolSize</cstring>
@@ -593,6 +599,22 @@ Works only when &quot;Restore camera position after editing&quot; is enabled.</s
     <hint type="destinationlabel">
      <x>20</x>
      <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBoxUseConstraintSymbolSize</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>ConstraintSymbolSize</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>0</x>
+     <y>0</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>0</x>
+     <y>0</y>
     </hint>
    </hints>
   </connection>
