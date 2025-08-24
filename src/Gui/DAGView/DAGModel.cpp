@@ -102,7 +102,6 @@ Model::Model(QObject *parentIn, const Gui::Document &documentIn) : QGraphicsScen
   theGraph = std::make_shared<Graph>();
   graphLink = std::make_shared<GraphLinkContainer>();
   setupViewConstants();
-  setupFilters();
 
   graphDirty = false;
   currentPrehighlight = nullptr;
@@ -166,10 +165,6 @@ Model::~Model()
     connectResObject.disconnect();
 
   removeAllItems();
-}
-
-void Model::setupFilters()
-{
 }
 
 void Model::setupViewConstants()

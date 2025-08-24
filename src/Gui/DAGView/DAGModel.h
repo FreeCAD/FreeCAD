@@ -158,9 +158,6 @@ namespace Gui
       QAction *editingFinishedAction;
       QGraphicsProxyWidget *proxy = nullptr;
       void finishRename();
-
-      //filters
-      void setupFilters();
     };
   }
 }
