@@ -299,6 +299,27 @@ void PropertyLinkBase::updateElementReferences(DocumentObject* feature, bool rev
     }
 }
 
+void PropertyLinkBase::updateAllElementReferences(bool reverse)
+{
+    for (auto reference : _ElementRefMap) {
+        for (auto prop : reference.second) {
+            if (prop->getContainer()) {
+                try {
+                    prop->updateElementReference(reference.first, reverse, true);
+                }
+                catch (Base::Exception& e) {
+                    e.reportException();
+                    FC_ERR("Failed to update element reference of " << propertyName(prop));
+                }
+                catch (std::exception& e) {
+                    FC_ERR("Failed to update element reference of " << propertyName(prop) << ": "
+                                                                    << e.what());
+                }
+            }
+        }
+    }
+}
+
 void PropertyLinkBase::_registerElementReference(App::DocumentObject* obj,
                                                  std::string& sub,
                                                  ShadowSub& shadow)
@@ -4085,7 +4106,7 @@ void PropertyXLink::onContainerRestored()
         _registerElementReference(_pcLink, _SubList[i], _ShadowSubList[i]);
     }
 
-    updateElementReferences(_pcLink);
+    // updateElementReferences(_pcLink);
 }
 
 void PropertyXLink::updateElementReference(DocumentObject* feature, bool reverse, bool notify)
