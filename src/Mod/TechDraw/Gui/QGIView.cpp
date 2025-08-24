@@ -32,10 +32,12 @@
 #endif
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
+#include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection/Selection.h>
@@ -91,6 +93,7 @@ QGIView::QGIView()
     setCacheMode(QGraphicsItem::NoCache);
     setHandlesChildEvents(false);
     setAcceptHoverEvents(true);
+
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
@@ -168,8 +171,7 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
     //    Base::Console().message("QGIV::itemChange(%d)\n", change);
     if(change == ItemPositionChange && scene()) {
         QPointF newPos = value.toPointF();            //position within parent!
-
-        TechDraw::DrawView *viewObj = getViewObject();
+        TechDraw::DrawView* viewObj = getViewObject();
         auto* dpgi = dynamic_cast<TechDraw::DrawProjGroupItem*>(viewObj);
         if (dpgi && dpgi->getPGroup()) {
             // restrict movements of secondary views.
@@ -191,14 +193,6 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
             }
         }
 
-                // tell the feature that we have moved
-        Gui::ViewProvider *vp = getViewProvider(viewObj);
-        if (vp && !vp->isRestoring()) {
-            snapping = true; // avoid triggering updateView by the VP updateData
-            viewObj->setPosition(Rez::appX(newPos.x()), Rez::appX(-newPos.y()));
-            snapping = false;
-        }
-
         return newPos;
     }
 
@@ -217,6 +211,8 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
             m_label->show();
             m_lock->setVisible(getViewObject()->isLocked() && getViewObject()->showLock());
         } else {
+            dragFinished();
+
             if (!m_isHovered) {
                 m_colCurrent = PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor());
                 m_border->hide();
@@ -231,6 +227,55 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
     }
 
     return QGraphicsItemGroup::itemChange(change, value);
+}
+void QGIView::dragFinished()
+{
+    if (!viewObj) {
+        return;
+    }
+
+    double currX = viewObj->X.getValue();
+    double currY = viewObj->Y.getValue();
+    double candidateX = Rez::appX(pos().x());
+    double candidateY = Rez::appX(-pos().y());
+    bool setX = false;
+    bool setY = false;
+
+    const double tolerance = 0.001;  // mm
+    if (!DrawUtil::fpCompare(currX, candidateX, tolerance)) {
+        setX = true;
+    }
+    if (!DrawUtil::fpCompare(currY, candidateY, tolerance)) {
+        setY = true;
+    }
+
+    if (!setX && !setY) {
+        return;
+    }
+
+    bool ownTransaction = (viewObj->getDocument()->getTransactionID(true) == 0);
+
+    if (ownTransaction) {
+        Gui::Command::openCommand("Drag view");
+    }
+    // tell the feature that we have moved
+    Gui::ViewProvider *vp = getViewProvider(viewObj);
+    if (vp && !vp->isRestoring()) {
+        snapping = true; // avoid triggering updateView by the VP updateData
+        if (setX) {
+            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.X = %f",
+                                viewObj->getNameInDocument(), candidateX);
+        }
+        if (setY) {
+            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Y = %f",
+                                viewObj->getNameInDocument(), candidateY);
+        }
+
+        snapping = false;
+    }
+    if (ownTransaction) {
+        Gui::Command::commitCommand();
+    }
 }
 
 //! align this view with others.  newPosition is in this view's parent's coord
@@ -463,6 +508,7 @@ void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
         m_multiselectActivated = false;
     }
 
+    dragFinished();
     QGraphicsItemGroup::mouseReleaseEvent(event);
 
     event->setModifiers(originalModifiers);

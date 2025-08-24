@@ -33,6 +33,7 @@
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 
+#include "QGIView.h"
 #include "ViewProviderProjGroupItem.h"
 
 using namespace TechDrawGui;
