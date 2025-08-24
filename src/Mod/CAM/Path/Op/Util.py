@@ -56,12 +56,12 @@ def debugEdge(label, e):
         return
     p0 = e.valueAt(e.FirstParameter)
     p1 = e.valueAt(e.LastParameter)
-    if Part.Line == type(e.Curve):
+    if isinstance(e.Curve, Part.Line):
         print(
             "%s Part.makeLine((%.2f, %.2f, %.2f), (%.2f, %.2f, %.2f))"
             % (label, p0.x, p0.y, p0.z, p1.x, p1.y, p1.z)
         )
-    elif Part.Circle == type(e.Curve):
+    elif isinstance(e.Curve, Part.Circle):
         r = e.Curve.Radius
         c = e.Curve.Center
         a = e.Curve.Axis
@@ -110,7 +110,7 @@ def _orientEdges(inEdges):
     # orient all edges of the wire so each edge's last value connects to the next edge's first value
     e0 = inEdges[0]
     # well, even the very first edge could be misoriented, so let's try and connect it to the second
-    if 1 < len(inEdges):
+    if len(inEdges) > 1:
         last = e0.valueAt(e0.LastParameter)
         e1 = inEdges[1]
         if not Path.Geom.pointsCoincide(
@@ -139,9 +139,9 @@ def _isWireClockwise(w):
     # handle wires consisting of a single circle or 2 edges where one is an arc.
     # in both cases, because the edges are expected to be oriented correctly, the orientation can be
     # determined by looking at (one of) the circle curves.
-    if 2 >= len(w.Edges) and Part.Circle == type(w.Edges[0].Curve):
+    if len(w.Edges) <= 2 and isinstance(w.Edges[0].Curve, Part.Circle):
         return 0 > w.Edges[0].Curve.Axis.z
-    if 2 == len(w.Edges) and Part.Circle == type(w.Edges[1].Curve):
+    if len(w.Edges) == 2 and isinstance(w.Edges[1].Curve, Part.Circle):
         return 0 > w.Edges[1].Curve.Axis.z
 
     # for all other wires we presume they are polygonial and refer to Gauss
@@ -183,81 +183,65 @@ def offsetWire(wire, base, offset, forward, Side=None):
     """
     Path.Log.track("offsetWire")
 
-    if 1 == len(wire.Edges):
+    if len(wire.Edges) == 1:
         edge = wire.Edges[0]
         curve = edge.Curve
-        if Part.Circle == type(curve) and wire.isClosed():
+
+        if isinstance(curve, Part.Circle) and wire.isClosed():
             # it's a full circle and there are some problems with that, see
             # https://www.freecad.org/wiki/Part%20Offset2D
             # it's easy to construct them manually though
+            center = curve.Center
             z = -1 if forward else 1
-            new_edge = Part.makeCircle(curve.Radius + offset, curve.Center, FreeCAD.Vector(0, 0, z))
+            new_edge = Part.makeCircle(curve.Radius + offset, center, FreeCAD.Vector(0, 0, z))
             if base.isInside(new_edge.Vertexes[0].Point, offset / 2, True):
                 if offset > curve.Radius or Path.Geom.isRoughly(offset, curve.Radius):
                     # offsetting a hole by its own radius (or more) makes the hole vanish
                     return None
                 if Side:
                     Side[0] = "Inside"
-                    print("inside")
-                new_edge = Part.makeCircle(
-                    curve.Radius - offset, curve.Center, FreeCAD.Vector(0, 0, -z)
-                )
+                new_edge = Part.makeCircle(curve.Radius - offset, center, FreeCAD.Vector(0, 0, -z))
 
             return Part.Wire([new_edge])
 
-        if Part.Circle == type(curve) and not wire.isClosed():
-            # Process arc segment
-            z = -1 if forward else 1
-            l1 = math.sqrt(
-                (edge.Vertexes[0].Point.x - curve.Center.x) ** 2
-                + (edge.Vertexes[0].Point.y - curve.Center.y) ** 2
-            )
-            l2 = math.sqrt(
-                (edge.Vertexes[1].Point.x - curve.Center.x) ** 2
-                + (edge.Vertexes[1].Point.y - curve.Center.y) ** 2
-            )
+        if isinstance(curve, Part.Circle) and not wire.isClosed():
+            center = curve.Center
+            radius = curve.Radius
+            point1 = edge.Vertexes[0].Point
+            point2 = edge.Vertexes[-1].Point
 
-            # Calculate angles based on x-axis (0 - PI/2)
-            start_angle = math.acos((edge.Vertexes[0].Point.x - curve.Center.x) / l1)
-            end_angle = math.acos((edge.Vertexes[1].Point.x - curve.Center.x) / l2)
+            # Get angles based on x-axis (0 - pi)
+            angle1 = (point1 - center).getAngle(FreeCAD.Vector(1, 0, 0))
+            angle2 = (point2 - center).getAngle(FreeCAD.Vector(1, 0, 0))
 
-            # Angles are based on x-axis (Mirrored on x-axis) -> negative y value means negative angle
-            if edge.Vertexes[0].Point.y < curve.Center.y:
-                start_angle *= -1
-            if edge.Vertexes[1].Point.y < curve.Center.y:
-                end_angle *= -1
+            # Angles are based on x-axis (Mirrored on x-axis)
+            # Negative y value means negative angle
+            if point1.y < center.y:
+                angle1 *= -1
+            if point2.y < center.y:
+                angle2 *= -1
 
-            if (
-                edge.Vertexes[0].Point.x > curve.Center.x
-                or edge.Vertexes[1].Point.x > curve.Center.x
-            ) and curve.AngleXU < 0:
-                tmp = start_angle
-                start_angle = end_angle
-                end_angle = tmp
+            # Create arcs for check direction
+            circle = Part.Circle(center, FreeCAD.Vector(0, 0, 1), radius)
+            testArc1 = Part.ArcOfCircle(circle, angle1, angle2)
+            testArc2 = Part.ArcOfCircle(circle, angle2, angle1)
+            if abs(edge.Length - testArc1.length()) <= abs(edge.Length - testArc2.length()):
+                start_angle, end_angle = angle1, angle2
+            else:
+                start_angle, end_angle = angle2, angle1
 
             # Inside / Outside
-            if base.isInside(edge.Vertexes[0].Point, offset / 2, True):
+            if base.isInside(point1, offset / 2, True):
                 offset *= -1
                 if Side:
                     Side[0] = "Inside"
 
-            # Create new arc
-            if curve.AngleXU > 0:
-                edge = Part.ArcOfCircle(
-                    Part.Circle(curve.Center, FreeCAD.Vector(0, 0, 1), curve.Radius + offset),
-                    start_angle,
-                    end_angle,
-                ).toShape()
-            else:
-                edge = Part.ArcOfCircle(
-                    Part.Circle(curve.Center, FreeCAD.Vector(0, 0, 1), curve.Radius - offset),
-                    start_angle,
-                    end_angle,
-                ).toShape()
+            circle = Part.Circle(center, FreeCAD.Vector(0, 0, 1), radius - offset)
+            edge = Part.ArcOfCircle(circle, start_angle, end_angle).toShape()
 
             return Part.Wire([edge])
 
-        if Part.Line == type(curve) or Part.LineSegment == type(curve):
+        if isinstance(curve, Part.Line) or isinstance(curve, Part.LineSegment):
             # offsetting a single edge doesn't work because there is an infinite
             # possible planes into which the edge could be offset
             # luckily, the plane here must be the XY-plane ...
@@ -285,7 +269,10 @@ def offsetWire(wire, base, offset, forward, Side=None):
 
         # if we get to this point the assumption is that makeOffset2D can deal with the edge
 
-    owire = orientWire(wire.makeOffset2D(offset), True)
+    # create wire-offset with closed result
+    # owire = orientWire(wire.makeOffset2D(offset), True)
+    # !!! orientWire() can not not process all type of edges !!!
+    owire = wire.makeOffset2D(offset)
     debugWire("makeOffset2D_%d" % len(wire.Edges), owire)
 
     if wire.isClosed():
@@ -317,14 +304,10 @@ def offsetWire(wire, base, offset, forward, Side=None):
     #  if they need to be discarded, split, that should happen in a post process
     # Depending on the Axis of the circle, and which side remains we know if the wire needs to be flipped
 
-    # first, let's make sure all edges are oriented the proper way
-    edges = _orientEdges(wire.Edges)
-
-    # determine the start and end point
-    start = edges[0].firstVertex().Point
-    end = edges[-1].lastVertex().Point
+    # get start and end point
+    start = wire.OrderedVertexes[0].Point
+    end = wire.OrderedVertexes[-1].Point
     debugWire("wire", wire)
-    debugWire("wedges", Part.Wire(edges))
 
     # find edges that are not inside the shape
     common = base.common(owire)
@@ -340,6 +323,21 @@ def offsetWire(wire, base, offset, forward, Side=None):
         return False
 
     outside = [e for e in owire.Edges if not isInside(e)]
+    if not outside or len(outside) < len(wire.Edges):
+        # all offset edges intersects base shape
+        # try to get offset wire cutting owire
+        offsetWire = Part.Wire(owire.cut(base).Edges)
+        if len(offsetWire.Edges) == len(wire.Edges):
+            p1 = wire.OrderedVertexes[0].Point
+            p2 = offsetWire.OrderedVertexes[0].Point
+            p3 = offsetWire.OrderedVertexes[-1].Point
+            if p1.distanceToPoint(p2) > p1.distanceToPoint(p3):
+                forward = not forward
+            if forward:
+                return offsetWire
+            else:
+                return offsetWire.reversed()
+
     # discard all edges that are not part of the longest wire
     longestWire = None
     for w in [Part.Wire(el) for el in Part.sortEdges(outside)]:
@@ -351,7 +349,7 @@ def offsetWire(wire, base, offset, forward, Side=None):
 
     def isCircleAt(edge, center):
         """isCircleAt(edge, center) ... helper function returns True if edge is a circle at the given center."""
-        if Part.Circle == type(edge.Curve) or Part.ArcOfCircle == type(edge.Curve):
+        if isinstance(edge.Curve, Part.Circle) or isinstance(edge.Curve, Part.ArcOfCircle):
             return Path.Geom.pointsCoincide(edge.Curve.Center, center)
         return False
 
@@ -367,7 +365,7 @@ def offsetWire(wire, base, offset, forward, Side=None):
     # next side, we're done
     for e in owire.Edges + owire.Edges:
         if isCircleAt(e, start):
-            if Path.Geom.pointsCoincide(e.Curve.Axis, FreeCAD.Vector(0, 0, 1)):
+            if False and Path.Geom.pointsCoincide(e.Curve.Axis, FreeCAD.Vector(0, 0, 1), 0.001):
                 if not collectLeft and leftSideEdges:
                     break
                 collectLeft = True
@@ -378,7 +376,7 @@ def offsetWire(wire, base, offset, forward, Side=None):
                 collectLeft = False
                 collectRight = True
         elif isCircleAt(e, end):
-            if Path.Geom.pointsCoincide(e.Curve.Axis, FreeCAD.Vector(0, 0, 1)):
+            if False and Path.Geom.pointsCoincide(e.Curve.Axis, FreeCAD.Vector(0, 0, 1), 0.001):
                 if not collectRight and rightSideEdges:
                     break
                 collectLeft = False
