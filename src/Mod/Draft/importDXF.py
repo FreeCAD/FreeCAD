@@ -4980,23 +4980,29 @@ class DxfDraftPostProcessor:
 
 def _write_text_entities(obj, writer_proxy):
     """Writes DXF TEXT entities for an Annotation object."""
-    if not hasattr(obj, "ViewObject"):
-        return None
+    height = 3.5  # Default height in mm
+    scale_multiplier = 1.0
+    justification = 0  # 0 = Left
 
-    height = float(obj.ViewObject.FontSize)
-    justify_map = {"Left": 0, "Center": 1, "Right": 2}
-    justification = justify_map.get(obj.ViewObject.Justification, 0)
+    if hasattr(obj, "ViewObject"):
+        vobj = obj.ViewObject
+        height = float(getattr(vobj, 'FontSize', height))
+        scale_multiplier = float(getattr(vobj, 'ScaleMultiplier', scale_multiplier))
+
+        justify_map = {"Left": 0, "Center": 1, "Right": 2}
+        justification = justify_map.get(getattr(vobj, 'Justification', "Left"), justification)
 
     # Base position and rotation
     placement = obj.Placement
     rotation = placement.Rotation.Angle * 180 / math.pi
+    final_height = height * scale_multiplier
 
     # Handle multi-line text by adjusting position for each line
     for i, text_line in enumerate(obj.Text):
         # Y-offset for subsequent lines. DXF text origin is bottom-left.
         # FreeCAD's text position is top-left, so we adjust.
         # A line height of 1.2 * font size is a reasonable approximation.
-        y_offset = -height * 1.2 * i
+        y_offset = -final_height * 1.2 * i
 
         # Create a vector for the offset and rotate it
         offset_vec = FreeCAD.Vector(0, y_offset, 0)
@@ -5009,7 +5015,9 @@ def _write_text_entities(obj, writer_proxy):
         p1 = (pos.x, pos.y, pos.z)
         p2 = p1 # Simplification for now
 
-        writer_proxy.addText(text_line, p1_tuple, p2_tuple, dxf_height, justification, rotation)
+        # The legacy exporter used the 0.8 scaling factor for height, most probably
+        # to approximate the visual height of the text. This is retained here for consistency.
+        writer_proxy.addText(text_line, p1, p2, final_height * 0.8, justification, rotation)
 
 
 def _write_dimension_entity(obj, writer_proxy):
@@ -5318,7 +5326,7 @@ def _export_object(obj, writer_proxy):
 
     # 3. Dispatch to the correct handler
     try:
-        if obj_type == 'Annotation':
+        if obj_type in ('Text', 'DraftText', 'Annotation'):
             _write_text_entities(obj, writer_proxy)
         elif obj_type == 'Dimension':
             _write_dimension_entity(obj, writer_proxy)
