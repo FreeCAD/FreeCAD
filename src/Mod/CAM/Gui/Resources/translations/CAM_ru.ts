@@ -7777,7 +7777,7 @@ Aborting op creation</source>
       <translation type="unfinished">{diameter} {flutes}-flute endmill, {cutting_edge_height} cutting edge</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/models/fillet.py" line="46"/>
+      <location filename="../../../Path/Tool/toolbit/models/radius.py" line="46"/>
       <source>R{radius} fillet bit, {diameter} shank, {flutes}-flute</source>
       <translation type="unfinished">R{radius} fillet bit, {diameter} shank, {flutes}-flute</translation>
     </message>
@@ -9131,7 +9131,7 @@ Aborting op creation</source>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="44"/>
       <location filename="../../../Path/Tool/shape/models/drill.py" line="36"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="40"/>
-      <location filename="../../../Path/Tool/shape/models/fillet.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="40"/>
       <location filename="../../../Path/Tool/shape/models/reamer.py" line="40"/>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="48"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="44"/>
@@ -9145,7 +9145,7 @@ Aborting op creation</source>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="52"/>
       <location filename="../../../Path/Tool/shape/models/drill.py" line="40"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/fillet.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="48"/>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="52"/>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="44"/>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="44"/>
@@ -9160,7 +9160,7 @@ Aborting op creation</source>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="56"/>
       <location filename="../../../Path/Tool/shape/models/drill.py" line="44"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/fillet.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="52"/>
       <location filename="../../../Path/Tool/shape/models/reamer.py" line="44"/>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="56"/>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="48"/>
@@ -9173,7 +9173,7 @@ Aborting op creation</source>
       <location filename="../../../Path/Tool/shape/models/bullnose.py" line="52"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="56"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="68"/>
-      <location filename="../../../Path/Tool/shape/models/fillet.py" line="56"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="56"/>
       <location filename="../../../Path/Tool/shape/models/reamer.py" line="48"/>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="60"/>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="52"/>
@@ -9271,17 +9271,17 @@ Aborting op creation</source>
       <translation type="unfinished">Endmill</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/fillet.py" line="36"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="36"/>
       <source>Crown height</source>
       <translation type="unfinished">Crown height</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/fillet.py" line="44"/>
-      <source>Fillet radius</source>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="44"/>
+      <source>Cutting radius</source>
       <translation>Радиус скругления</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/fillet.py" line="64"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="64"/>
       <source>Filleted Chamfer</source>
       <translation type="unfinished">Filleted Chamfer</translation>
     </message>
