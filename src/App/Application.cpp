@@ -1153,7 +1153,10 @@ std::string Application::getTempPath()
 
 std::string Application::getTempFileName(const char* FileName)
 {
-    return Base::FileInfo::pathToString(_appDirs->getTempFileName(FileName)) + PATHSEP;
+    if (FileName) {
+        return Base::FileInfo::pathToString(_appDirs->getTempFileName(FileName));
+    }
+    return Base::FileInfo::pathToString(_appDirs->getTempFileName(std::string()));
 }
 
 std::string Application::getUserCachePath()

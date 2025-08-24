@@ -21,7 +21,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <format>
+#include <fmt/format.h>
 #include <utility>
 #include <QDir>
 #include <QProcessEnvironment>
@@ -79,7 +79,11 @@ const fs::path& ApplicationDirectories::getTempPath() const {
 }
 
 fs::path ApplicationDirectories::getTempFileName(const std::string & filename) const {
-    return Base::FileInfo::getTempFileName(filename.c_str(), getTempPath().string().c_str());
+    auto tempPath = Base::FileInfo::pathToString(getTempPath());
+    if (filename.empty()) {
+        return Base::FileInfo::getTempFileName(nullptr, tempPath.c_str());
+    }
+    return Base::FileInfo::getTempFileName(filename.c_str(), tempPath.c_str());
 }
 
 const fs::path& ApplicationDirectories::getUserCachePath() const
@@ -440,7 +444,7 @@ std::string ApplicationDirectories::versionStringForPath(int major, int minor)
 {
     // NOTE: This is intended to be stable over time, so if the format changes, a condition should be added to check for
     // older versions and return this format for them, even if the new format differs.
-    return std::format("v{}-{}", major, minor);
+    return fmt::format("v{}-{}", major, minor);
 }
 
 bool ApplicationDirectories::isVersionedPath(const fs::path &startingPath) const {
@@ -506,7 +510,7 @@ bool ApplicationDirectories::usingCurrentVersionConfig(fs::path config) const {
     if (config.filename().empty()) {
         config = config.parent_path();
     }
-    auto version = config.filename().string();
+    auto version = Base::FileInfo::pathToString(config.filename());
     return version == versionStringForPath(std::get<0>(_currentVersion), std::get<1>(_currentVersion));
 }
 
@@ -539,7 +543,7 @@ void ApplicationDirectories::migrateAllPaths(const std::vector<fs::path> &paths)
             newPath = path / versionStringForPath(major, minor);
         }
         if (fs::exists(newPath)) {
-            throw Base::RuntimeError("Cannot migrate config - path already exists: " + newPath.string());
+            throw Base::RuntimeError("Cannot migrate config - path already exists: " + Base::FileInfo::pathToString(newPath));
         }
         fs::create_directories(newPath);
         migrateConfig(path, newPath);
