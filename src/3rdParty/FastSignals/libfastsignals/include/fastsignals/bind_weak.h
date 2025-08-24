@@ -1,5 +1,9 @@
 #pragma once
 
+#include <functional>
+#include <memory>
+#include <type_traits>
+
 namespace fastsignals
 {
 namespace detail
@@ -14,7 +18,7 @@ struct weak_binder
 
 	weak_binder(MethodType pMethod, WeakPtrType&& pObject)
 		: m_pMethod(pMethod)
-		, m_pObject(pObject)
+		, m_pObject(std::move(pObject))
 	{
 	}
 
