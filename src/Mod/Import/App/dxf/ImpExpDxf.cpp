@@ -2164,7 +2164,8 @@ void ImpExpDxfWrite::exportLinearDim(Base::Vector3d textLocn,
                                      Base::Vector3d extLine1Start,
                                      Base::Vector3d extLine2Start,
                                      char* dimText,
-                                     int type)
+                                     int type,
+                                     double fontSize)
 {
     double text[3] = {0, 0, 0};
     text[0] = textLocn.x;
@@ -2182,7 +2183,7 @@ void ImpExpDxfWrite::exportLinearDim(Base::Vector3d textLocn,
     ext2[0] = extLine2Start.x;
     ext2[1] = extLine2Start.y;
     ext2[2] = extLine2Start.z;
-    writeLinearDim(text, line, ext1, ext2, dimText, type);
+    writeLinearDim(text, line, ext1, ext2, dimText, type, fontSize);
 }
 
 void ImpExpDxfWrite::exportAngularDim(Base::Vector3d textLocn,

@@ -400,13 +400,15 @@ public:
                         const double* extLine1,
                         const double* extLine2,
                         const char* dimText,
-                        int type);
+                        int type,
+                        double fontSize);
     void writeLinearDimBlock(const double* textMidPoint,
                              const double* lineDefPoint,
                              const double* extLine1,
                              const double* extLine2,
                              const char* dimText,
-                             int type);
+                             int type,
+                             double fontSize);
     void writeAngularDim(const double* textMidPoint,
                          const double* lineDefPoint,
                          const double* startExt1,
