@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2024 FreeCAD Developers                                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,47 +20,53 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_VIEWPROVIDERIMAGE_H
-#define DRAWINGGUI_VIEWPROVIDERIMAGE_H
+#include "PreCompiled.h"
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-#include <App/PropertyStandard.h>
-#include <Base/Color.h>
+#include <CXX/Extensions.hxx>
+#include <Base/Console.h>
+#include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
+#include <Gui/Application.h>
 
-#include <Mod/TechDraw/App/DrawViewImage.h>
+#include "../Export3DPDFGlobal.h"
+#include "Command.h"
 
-#include "ViewProviderDrawingView.h"
+// Commands for 3D PDF Export
+void CreateExport3DPDFCommands();
 
-
-namespace TechDrawGui {
-
-
-class TechDrawGuiExport ViewProviderImage : public ViewProviderDrawingView
+namespace Export3DPDFGui 
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderImage);
+extern PyObject* initModule();
+}
 
-public:
-    /// constructor
-    ViewProviderImage();
-    /// destructor
-    ~ViewProviderImage() override;
+/* Python entry */
+PyMOD_INIT_FUNC(Export3DPDFGui)
+{
+    if (!Gui::Application::Instance) {
+        PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
+        PyMOD_Return(nullptr);
+    }
 
-    App::PropertyBool  Crop;              //crop to feature width x height
-    App::PropertyBool  Enable3DPDFExport; //enable 3D PDF export for this view
-    App::PropertyBool  NoBackground;       //use no background (transparent)
-    App::PropertyBool  SolidBackground;    //use solid background color
-    App::PropertyColor BackgroundColor;    //background color when SolidBackground is true
+    // load dependent module
+    try {
+        Base::Interpreter().loadModule("Export3DPDF");
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_ImportError, e.what());
+        PyMOD_Return(nullptr);
+    }
+    
+    PyObject* mod = Export3DPDFGui::initModule();
+    Base::Console().log("Loading GUI of Export3DPDF module... done\n");
 
-    bool useNewSelectionModel() const override {return false;}
-    /// returns a list of all possible modes
-    void updateData(const App::Property*) override;
-    void onChanged(const App::Property *prop) override;
+    // instantiating the commands
+    CreateExport3DPDFCommands();
 
-    TechDraw::DrawViewImage* getViewObject() const override;
-};
+    PyMOD_Return(mod);
+}
 
-
-} // namespace TechDrawGui
-
-
-#endif // DRAWINGGUI_VIEWPROVIDERIMAGE_H
+void CreateExport3DPDFCommands()
+{
+    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+    rcCmdMgr.addCommand(new StdCmdPrint3dPdf());
+} 

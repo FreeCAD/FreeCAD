@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2024 FreeCAD Developers                                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,47 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_VIEWPROVIDERIMAGE_H
-#define DRAWINGGUI_VIEWPROVIDERIMAGE_H
+#ifndef EXPORT3DPDF_COMMAND_H
+#define EXPORT3DPDF_COMMAND_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-#include <App/PropertyStandard.h>
-#include <Base/Color.h>
+#include <Gui/Command.h>
 
-#include <Mod/TechDraw/App/DrawViewImage.h>
-
-#include "ViewProviderDrawingView.h"
-
-
-namespace TechDrawGui {
-
-
-class TechDrawGuiExport ViewProviderImage : public ViewProviderDrawingView
+class StdCmdPrint3dPdf : public Gui::Command
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderImage);
-
 public:
-    /// constructor
-    ViewProviderImage();
-    /// destructor
-    ~ViewProviderImage() override;
-
-    App::PropertyBool  Crop;              //crop to feature width x height
-    App::PropertyBool  Enable3DPDFExport; //enable 3D PDF export for this view
-    App::PropertyBool  NoBackground;       //use no background (transparent)
-    App::PropertyBool  SolidBackground;    //use solid background color
-    App::PropertyColor BackgroundColor;    //background color when SolidBackground is true
-
-    bool useNewSelectionModel() const override {return false;}
-    /// returns a list of all possible modes
-    void updateData(const App::Property*) override;
-    void onChanged(const App::Property *prop) override;
-
-    TechDraw::DrawViewImage* getViewObject() const override;
+    StdCmdPrint3dPdf();
+    virtual ~StdCmdPrint3dPdf() = default;
+    
+    virtual const char* className() const override { return "StdCmdPrint3dPdf"; }
+    
+protected:
+    virtual void activated(int iMsg) override;
+    virtual bool isActive() override;
 };
 
-
-} // namespace TechDrawGui
-
-
-#endif // DRAWINGGUI_VIEWPROVIDERIMAGE_H
+#endif // EXPORT3DPDF_COMMAND_H 

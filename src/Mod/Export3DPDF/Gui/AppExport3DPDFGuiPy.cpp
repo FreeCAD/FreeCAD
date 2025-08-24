@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2024 FreeCAD Developers                                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,47 +20,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_VIEWPROVIDERIMAGE_H
-#define DRAWINGGUI_VIEWPROVIDERIMAGE_H
+#include "PreCompiled.h"
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-#include <App/PropertyStandard.h>
-#include <Base/Color.h>
+#include <CXX/Extensions.hxx>
+#include <Base/Console.h>
+#include <Base/Interpreter.h>
 
-#include <Mod/TechDraw/App/DrawViewImage.h>
-
-#include "ViewProviderDrawingView.h"
-
-
-namespace TechDrawGui {
-
-
-class TechDrawGuiExport ViewProviderImage : public ViewProviderDrawingView
+namespace Export3DPDFGui 
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderImage);
 
+class Module : public Py::ExtensionModule<Module>
+{
 public:
-    /// constructor
-    ViewProviderImage();
-    /// destructor
-    ~ViewProviderImage() override;
+    Module() : Py::ExtensionModule<Module>("Export3DPDFGui")
+    {
+        initialize("This module is the Export3DPDFGui module for 3D PDF export GUI functionality."); 
+    }
 
-    App::PropertyBool  Crop;              //crop to feature width x height
-    App::PropertyBool  Enable3DPDFExport; //enable 3D PDF export for this view
-    App::PropertyBool  NoBackground;       //use no background (transparent)
-    App::PropertyBool  SolidBackground;    //use solid background color
-    App::PropertyColor BackgroundColor;    //background color when SolidBackground is true
-
-    bool useNewSelectionModel() const override {return false;}
-    /// returns a list of all possible modes
-    void updateData(const App::Property*) override;
-    void onChanged(const App::Property *prop) override;
-
-    TechDraw::DrawViewImage* getViewObject() const override;
+private:
 };
 
+PyObject* initModule()
+{
+    return Base::Interpreter().addModule(new Module);
+}
 
-} // namespace TechDrawGui
-
-
-#endif // DRAWINGGUI_VIEWPROVIDERIMAGE_H
+} // namespace Export3DPDFGui 

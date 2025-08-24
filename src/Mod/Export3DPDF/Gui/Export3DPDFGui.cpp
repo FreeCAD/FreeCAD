@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2024 FreeCAD Developers                                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,47 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_VIEWPROVIDERIMAGE_H
-#define DRAWINGGUI_VIEWPROVIDERIMAGE_H
+#include "PreCompiled.h"
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-#include <App/PropertyStandard.h>
-#include <Base/Color.h>
+#include <Base/Console.h>
+#include "Export3DPDFGui.h"
 
-#include <Mod/TechDraw/App/DrawViewImage.h>
+using namespace Export3DPDFGui;
 
-#include "ViewProviderDrawingView.h"
-
-
-namespace TechDrawGui {
-
-
-class TechDrawGuiExport ViewProviderImage : public ViewProviderDrawingView
+void Export3DPDFGuiUtils::initialize()
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderImage);
-
-public:
-    /// constructor
-    ViewProviderImage();
-    /// destructor
-    ~ViewProviderImage() override;
-
-    App::PropertyBool  Crop;              //crop to feature width x height
-    App::PropertyBool  Enable3DPDFExport; //enable 3D PDF export for this view
-    App::PropertyBool  NoBackground;       //use no background (transparent)
-    App::PropertyBool  SolidBackground;    //use solid background color
-    App::PropertyColor BackgroundColor;    //background color when SolidBackground is true
-
-    bool useNewSelectionModel() const override {return false;}
-    /// returns a list of all possible modes
-    void updateData(const App::Property*) override;
-    void onChanged(const App::Property *prop) override;
-
-    TechDraw::DrawViewImage* getViewObject() const override;
-};
-
-
-} // namespace TechDrawGui
-
-
-#endif // DRAWINGGUI_VIEWPROVIDERIMAGE_H
+    Base::Console().log("Initializing Export3DPDF GUI utilities...\n");
+    
+    // Future GUI initialization code can go here
+    // For example: setting up icons, preferences, etc.
+    
+    Base::Console().log("Export3DPDF GUI utilities initialized.\n");
+} 

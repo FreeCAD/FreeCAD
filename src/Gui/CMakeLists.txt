@@ -124,6 +124,16 @@ else()
     list(APPEND FreeCADGui_LIBS ${COIN3D_LIBRARIES})
 endif()
 
+# Add libPRC asymptote library for 3D PRC export functionality
+list(APPEND FreeCADGui_LIBS
+    asymptote
+)
+
+# Add libharu library for 3D PDF generation functionality
+list(APPEND FreeCADGui_LIBS
+    hpdf
+)
+
 if (WIN32)
     if(FREECAD_QT_MAJOR_VERSION EQUAL 6)
         list(APPEND FreeCADGui_LIBS
