@@ -39,7 +39,7 @@ public:
 		bool is_blocked() const noexcept;
 
 	private:
-		std::atomic<int> m_blockCounter = ATOMIC_VAR_INIT(0);
+		std::atomic<int> m_blockCounter {0};
 	};
 	using impl_ptr = std::shared_ptr<advanced_connection_impl>;
 
@@ -73,7 +73,7 @@ private:
 	void increment_if_blocked() const noexcept;
 
 	std::weak_ptr<advanced_connection::advanced_connection_impl> m_connection;
-	std::atomic<bool> m_blocked = ATOMIC_VAR_INIT(false);
+	std::atomic<bool> m_blocked {false};
 };
 
 // Scoped connection keeps link between signal and slot and disconnects them in destructor.
