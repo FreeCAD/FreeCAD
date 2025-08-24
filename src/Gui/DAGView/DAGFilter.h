@@ -48,15 +48,6 @@ namespace Gui
       bool enabled = true;
       Type type = Type::Exclusion;
     };
-
-    /*! Hide nodes of type*/
-    class FilterTyped : public FilterBase
-    {
-    public:
-      explicit FilterTyped(const std::string &typeIn);
-      std::string type;
-      bool goFilter(const Vertex &vertexIn, const Graph &graphIn, const GraphLinkContainer &linkIn) const override;
-    };
   }
 }
 
