@@ -112,11 +112,13 @@ void StdCmdPrint3dPdf::activated(int iMsg)
     
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     std::vector<App::DocumentObject*> selection;
-    double pageWidthPoints = 595.276;
-    double pageHeightPoints = 841.89;
-    double backgroundR = 0.5, backgroundG = 0.5, backgroundB = 0.5;
+    double pageWidthPoints = 800.0;
+    double pageHeightPoints = 800.0;
+    double backgroundR = 1.0, backgroundG = 1.0, backgroundB = 1.0;
     
-    double activeViewX = 0.0, activeViewY = 0.0, activeViewScale = 1.0;
+    double activeViewX = pageWidthPoints / 5.0;
+    double activeViewY = pageHeightPoints / 5.0;
+    double activeViewScale = 2.0;
     double activeViewWidth = 100.0, activeViewHeight = 100.0;
     if (activeDoc) {
         std::vector<App::DocumentObject*> pages = activeDoc->getObjectsOfType(Base::Type::fromName("TechDraw::DrawPage"));
