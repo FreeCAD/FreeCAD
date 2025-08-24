@@ -508,8 +508,6 @@ void Model::updateSlot()
     {
       if (true)
         continue;
-      if (currentFilter->goFilter(currentVertex, *theGraph, *graphLink))
-        (*theGraph)[currentVertex].dagVisible = true;
     }
   }
 
