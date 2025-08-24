@@ -19,6 +19,7 @@ public:
 	connection& operator=(const connection& other) noexcept;
 	connection(connection&& other) noexcept;
 	connection& operator=(connection&& other) noexcept;
+	~connection() = default;
 
 	bool connected() const noexcept;
 	void disconnect() noexcept;
@@ -49,6 +50,7 @@ public:
 	advanced_connection& operator=(const advanced_connection&) noexcept;
 	advanced_connection(advanced_connection&& other) noexcept;
 	advanced_connection& operator=(advanced_connection&& other) noexcept;
+	~advanced_connection() = default;
 
 protected:
 	impl_ptr m_impl;
