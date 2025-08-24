@@ -51,8 +51,8 @@ struct BaseExport QuantityFormat
     NumberFormat format;
     int denominator;
 
-    inline int getPrecision() const;
-    inline void setPrecision(int prec);
+    int getPrecision() const;
+    void setPrecision(int prec);
 
     // Default denominator of minimum fractional inch. Only used in certain
     // schemas.

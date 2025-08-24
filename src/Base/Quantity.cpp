@@ -75,12 +75,12 @@ QuantityFormat::QuantityFormat(QuantityFormat::NumberFormat format, int decimals
     , denominator(defaultDenominator)
 {}
 
-inline int QuantityFormat::getPrecision() const
+int QuantityFormat::getPrecision() const
 {
     return precision < 0 ? Base::UnitsApi::getDecimals() : precision;
 }
 
-inline void Base::QuantityFormat::setPrecision(int prec)
+void Base::QuantityFormat::setPrecision(int prec)
 {
     precision = prec;
 }
