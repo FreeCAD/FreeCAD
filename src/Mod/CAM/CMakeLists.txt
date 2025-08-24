@@ -183,7 +183,7 @@ SET(PathPythonToolsToolBitModels_SRCS
     Path/Tool/toolbit/models/dovetail.py
     Path/Tool/toolbit/models/drill.py
     Path/Tool/toolbit/models/endmill.py
-    Path/Tool/toolbit/models/fillet.py
+    Path/Tool/toolbit/models/radius.py
     Path/Tool/toolbit/models/probe.py
     Path/Tool/toolbit/models/reamer.py
     Path/Tool/toolbit/models/slittingsaw.py
@@ -264,7 +264,7 @@ SET(PathPythonToolsShapeModels_SRCS
     Path/Tool/shape/models/dovetail.py
     Path/Tool/shape/models/drill.py
     Path/Tool/shape/models/endmill.py
-    Path/Tool/shape/models/fillet.py
+    Path/Tool/shape/models/radius.py
     Path/Tool/shape/models/icon.py
     Path/Tool/shape/models/probe.py
     Path/Tool/shape/models/reamer.py
@@ -455,8 +455,8 @@ SET(Tools_Shape_SRCS
     Tools/Shape/drill.svg
     Tools/Shape/endmill.fcstd
     Tools/Shape/endmill.svg
-    Tools/Shape/fillet.fcstd
-    Tools/Shape/fillet.svg
+    Tools/Shape/radius.fcstd
+    Tools/Shape/radius.svg
     Tools/Shape/probe.fcstd
     Tools/Shape/probe.svg
     Tools/Shape/reamer.fcstd

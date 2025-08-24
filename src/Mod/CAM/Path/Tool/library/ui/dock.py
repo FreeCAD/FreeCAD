@@ -36,7 +36,6 @@ from ...toolbit import ToolBit
 from .editor import LibraryEditor
 from .browser import LibraryBrowserWithCombo
 
-
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
@@ -66,7 +65,7 @@ class ToolBitLibraryDock(object):
         self.form_layout.setSpacing(4)
 
         # Create the browser widget
-        self.browser_widget = LibraryBrowserWidget(asset_manager=cam_assets)
+        self.browser_widget = LibraryBrowserWithCombo(asset_manager=cam_assets)
 
         self._setup_ui()
 
@@ -80,8 +79,6 @@ class ToolBitLibraryDock(object):
         main_layout.setContentsMargins(4, 4, 4, 4)
         main_layout.setSpacing(4)
 
-        # Create the browser widget
-        self.browser_widget = LibraryBrowserWithCombo(asset_manager=cam_assets)
         main_layout.addWidget(self.browser_widget)
 
         # Create buttons
@@ -89,11 +86,19 @@ class ToolBitLibraryDock(object):
             translate("CAM_ToolBit", "Open Library Editor")
         )
         self.addToolControllerButton = QtGui.QPushButton(translate("CAM_ToolBit", "Add to Job"))
+        self.closeButton = QtGui.QPushButton(translate("CAM_ToolBit", "Close"))
 
-        # Add buttons to a horizontal layout
+        button_width = 120
+        self.libraryEditorOpenButton.setMinimumWidth(button_width)
+        self.addToolControllerButton.setMinimumWidth(button_width)
+        self.closeButton.setMinimumWidth(button_width)
+
+        # Add buttons to a horizontal layout, right-align Close
         button_layout = QtGui.QHBoxLayout()
         button_layout.addWidget(self.libraryEditorOpenButton)
         button_layout.addWidget(self.addToolControllerButton)
+        button_layout.addStretch(1)
+        button_layout.addWidget(self.closeButton)
 
         # Add the button layout to the main layout
         main_layout.addLayout(button_layout)
@@ -106,6 +111,7 @@ class ToolBitLibraryDock(object):
         self.browser_widget.itemDoubleClicked.connect(self._on_doubleclick)
         self.libraryEditorOpenButton.clicked.connect(self._open_editor)
         self.addToolControllerButton.clicked.connect(self._add_tool_controller_to_doc)
+        self.closeButton.clicked.connect(self.form.reject)
 
         # Update the initial state of the UI
         self._update_state()

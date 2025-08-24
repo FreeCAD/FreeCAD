@@ -150,7 +150,6 @@ class PropertyCreate(object):
         self.form.propertyEnum.textChanged.connect(self.updateUI)
 
     def updateUI(self):
-
         typeSet = True
         if self.propertyIsEnumeration():
             self.form.labelEnum.setEnabled(True)
@@ -239,7 +238,17 @@ class TaskPanel(object):
         pass
 
     def _setupProperty(self, i, name):
-        typ = PathPropertyBag.getPropertyTypeName(self.obj.getTypeIdOfProperty(name))
+        if name not in self.obj.PropertiesList:
+            Path.Log.warning(f"Property '{name}' not found in object {self.obj.Name}")
+            return
+        prop_type_id = self.obj.getTypeIdOfProperty(name)
+        try:
+            typ = PathPropertyBag.getPropertyTypeName(prop_type_id)
+        except IndexError:
+            Path.Log.error(
+                f"Unknown property type id '{prop_type_id}' for property '{name}' in object {self.obj.Name}"
+            )
+            return
         val = PathUtil.getPropertyValueString(self.obj, name)
         info = self.obj.getDocumentationOfProperty(name)
 

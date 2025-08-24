@@ -55,7 +55,7 @@ class TestToolBitListWidget(PathTestWithAssets):
         self.assertEqual(cell_widget.tool_no, str(tool_no))
         self.assertEqual(cell_widget.upper_text, toolbit.label)
         # Assuming the 5mm_Endmill asset has a shape named 'Endmill'
-        self.assertEqual(cell_widget.lower_text, "5 mm 4-flute endmill, 30 mm cutting edge")
+        self.assertEqual(cell_widget.lower_text, "5.00 mm 4-flute endmill, 30.00 mm cutting edge")
 
         # Verify URI is stored in item data
         stored_uri = item.data(ToolBitUriRole)

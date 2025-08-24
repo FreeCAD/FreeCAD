@@ -513,6 +513,7 @@ class ToolBit(Asset, ABC):
         self._create_base_properties()
 
         # Transfer property values from the detached object to the real object
+        self._suppress_visual_update = True
         temp_obj.copy_to(self.obj)
 
         # Ensure label is set
@@ -520,12 +521,16 @@ class ToolBit(Asset, ABC):
 
         # Update the visual representation now that it's attached
         self._update_tool_properties()
+        self._suppress_visual_update = False
         self._update_visual_representation()
 
     def onChanged(self, obj, prop):
         Path.Log.track(obj.Label, prop)
         # Avoid acting during document restore or internal updates
         if "Restore" in obj.State:
+            return
+
+        if getattr(self, "_suppress_visual_update", False):
             return
 
         if hasattr(self, "_in_update") and self._in_update:
