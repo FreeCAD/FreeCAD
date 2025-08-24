@@ -487,15 +487,10 @@ void Model::updateSlot()
     }
   }
 
-  //apply filters.
+  //apply filters (bogus).
   BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
   {
     (*theGraph)[currentVertex].dagVisible = true; //default to shown.
-    for (const auto &currentFilter : filters)
-    {
-      if (currentFilter->goFilter(currentVertex, *theGraph, *graphLink))
-        (*theGraph)[currentVertex].dagVisible = false;
-    }
   }
 
   //sync scene items to graph vertex dagVisible.

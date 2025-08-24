@@ -162,8 +162,6 @@ namespace Gui
 
       //filters
       void setupFilters();
-      using FilterContainer = std::vector<std::shared_ptr<FilterBase> >;
-      FilterContainer filters;
     };
   }
 }
