@@ -293,6 +293,14 @@ double EditableDatumLabel::getValue() const
     return value;
 }
 
+Base::Unit EditableDatumLabel::getUnit() const
+{
+    if (!spinBox) {
+        return Base::Unit::Length; // Default fallback unit
+    }
+    return spinBox->unit();
+}
+
 void EditableDatumLabel::setSpinboxValue(double val, const Base::Unit& unit)
 {
     if (!spinBox) {

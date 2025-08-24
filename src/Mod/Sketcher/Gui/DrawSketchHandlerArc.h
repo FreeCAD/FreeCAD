@@ -588,11 +588,6 @@ void DSHArcControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchPo
 
                 if (thirdParam->isSet) {
                     radius = thirdParam->getValue();
-                    if (radius < Precision::Confusion()) {
-                        unsetOnViewParameter(thirdParam.get());
-                        return;
-                    }
-
                     onSketchPos = handler->centerPoint + radius * dir.Normalize();
                 }
 
@@ -610,11 +605,6 @@ void DSHArcControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchPo
                 if (fourthParam->isSet) {
                     onSketchPos.y = fourthParam->getValue();
                 }
-                if (thirdParam->isSet && fourthParam->isSet
-                    && (onSketchPos - handler->firstPoint).Length() < Precision::Confusion()) {
-                    unsetOnViewParameter(thirdParam.get());
-                    unsetOnViewParameter(fourthParam.get());
-                }
             }
         } break;
         case SelectMode::SeekThird: {
@@ -623,10 +613,6 @@ void DSHArcControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchPo
             if (handler->constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::Center) {
                 if (fifthParam->isSet) {
                     double arcAngle = Base::toRadians(fifthParam->getValue());
-                    if (fmod(fabs(arcAngle), 2 * std::numbers::pi) < Precision::Confusion()) {
-                        unsetOnViewParameter(fifthParam.get());
-                        return;
-                    }
                     double angle = handler->startAngle + arcAngle;
                     onSketchPos.x = handler->centerPoint.x + cos(angle) * handler->radius;
                     onSketchPos.y = handler->centerPoint.y + sin(angle) * handler->radius;

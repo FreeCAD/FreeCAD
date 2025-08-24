@@ -66,6 +66,7 @@ public:
     bool isActive() const;
     bool isInEdit() const;
     double getValue() const;
+    Base::Unit getUnit() const;
     void setSpinboxValue(double val, const Base::Unit& unit = Base::Unit::Length);
     void setPlacement(const Base::Placement& plc);
     void setColor(SbColor color);

@@ -600,11 +600,6 @@ void DSHTranslateControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
 
             if (thirdParam->isSet) {
                 length = thirdParam->getValue();
-                if (length < Precision::Confusion()) {
-                    unsetOnViewParameter(thirdParam.get());
-                    return;
-                }
-
                 onSketchPos = handler->referencePoint + length * dir.Normalize();
             }
 
@@ -626,11 +621,6 @@ void DSHTranslateControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
 
             if (fifthParam->isSet) {
                 length = fifthParam->getValue();
-                if (length < Precision::Confusion()) {
-                    unsetOnViewParameter(fifthParam.get());
-                    return;
-                }
-
                 onSketchPos = handler->referencePoint + length * dir.Normalize();
             }
 

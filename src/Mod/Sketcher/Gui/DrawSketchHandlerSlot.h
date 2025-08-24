@@ -435,11 +435,6 @@ void DSHSlotControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
 
             if (thirdParam->isSet) {
                 length = thirdParam->getValue();
-                if (length < Precision::Confusion()) {
-                    unsetOnViewParameter(thirdParam.get());
-                    return;
-                }
-
                 onSketchPos = handler->startPoint + length * dir.Normalize();
             }
 
@@ -455,12 +450,6 @@ void DSHSlotControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
 
             if (fifthParam->isSet) {
                 double radius = fifthParam->getValue();
-
-                if (radius < Precision::Confusion()) {
-                    unsetOnViewParameter(fifthParam.get());
-                    return;
-                }
-
                 onSketchPos.x = handler->secondPoint.x + cos(handler->angle) * radius;
                 onSketchPos.y = handler->secondPoint.y + sin(handler->angle) * radius;
             }

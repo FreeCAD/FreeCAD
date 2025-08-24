@@ -596,10 +596,6 @@ void DSHRotateControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
 
             if (thirdParam->isSet) {
                 double arcAngle = Base::toRadians(thirdParam->getValue());
-                if (fmod(fabs(arcAngle), 2 * std::numbers::pi) < Precision::Confusion()) {
-                    unsetOnViewParameter(thirdParam.get());
-                    return;
-                }
                 onSketchPos.x = handler->centerPoint.x + 1;
                 onSketchPos.y = handler->centerPoint.y;
             }
@@ -609,11 +605,6 @@ void DSHRotateControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
 
             if (fourthParam->isSet) {
                 double arcAngle = Base::toRadians(fourthParam->getValue());
-                if (fmod(fabs(arcAngle), 2 * std::numbers::pi) < Precision::Confusion()) {
-                    unsetOnViewParameter(fourthParam.get());
-                    return;
-                }
-
                 onSketchPos.x = handler->centerPoint.x + cos((handler->startAngle + arcAngle));
                 onSketchPos.y = handler->centerPoint.y + sin((handler->startAngle + arcAngle));
             }

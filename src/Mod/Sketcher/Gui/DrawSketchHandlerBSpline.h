@@ -1014,11 +1014,6 @@ void DSHBSplineControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
 
             if (thirdParam->isSet) {
                 length = thirdParam->getValue();
-                if (length < Precision::Confusion()) {
-                    unsetOnViewParameter(thirdParam.get());
-                    return;
-                }
-
                 onSketchPos = prevPoint + length * dir.Normalize();
                 if (handler->geoIds.size() == handler->distances.size()) {
                     handler->distances.push_back(length);
@@ -1035,11 +1030,6 @@ void DSHBSplineControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
                 onSketchPos.y = prevPoint.y + sin(angle) * length;
             }
 
-            if (thirdParam->isSet && fourthParam->isSet
-                && (onSketchPos - prevPoint).Length() < Precision::Confusion()) {
-                unsetOnViewParameter(thirdParam.get());
-                unsetOnViewParameter(fourthParam.get());
-            }
         } break;
         default:
             break;
@@ -1121,9 +1111,6 @@ void DSHBSplineController::doChangeDrawSketchHandlerMode()
 
             if (thirdParam->hasFinishedEditing && fourthParam->hasFinishedEditing) {
                 handler->canGoToNextMode();  // its not going to next mode
-
-                unsetOnViewParameter(thirdParam.get());
-                unsetOnViewParameter(fourthParam.get());
             }
         } break;
         default:
