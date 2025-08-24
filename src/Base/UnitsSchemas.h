@@ -54,8 +54,6 @@ public:
     size_t count() const;
     std::vector<std::string> names();
     std::vector<std::string> descriptions();
-    std::size_t getDecimals() const;
-    std::size_t getDenominator() const;
 
     UnitsSchema* currentSchema() const;
 

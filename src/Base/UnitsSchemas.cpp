@@ -74,16 +74,6 @@ std::vector<std::string> UnitsSchemas::descriptions()
     });
 }
 
-std::size_t UnitsSchemas::getDecimals() const
-{
-    return Base::UnitsApi::getDecimals();
-}
-
-std::size_t UnitsSchemas::getDenominator() const
-{
-    return Base::UnitsApi::getDenominator();
-}
-
 void UnitsSchemas::select()
 {
     makeCurr(spec());
