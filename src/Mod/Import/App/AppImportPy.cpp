@@ -176,6 +176,66 @@ static PyObject* DxfWriterProxy_setColor(DxfWriterProxy* self, PyObject* args)
     Py_RETURN_NONE;
 }
 
+static PyObject* DxfWriterProxy_addText(DxfWriterProxy* self, PyObject* args)
+{
+    char* text_str;
+    double p1[3], p2[3], height, rotation;
+    int justification;
+
+    if (!PyArg_ParseTuple(args,
+                          "s(ddd)(ddd)did",
+                          &text_str,
+                          &p1[0],
+                          &p1[1],
+                          &p1[2],
+                          &p2[0],
+                          &p2[1],
+                          &p2[2],
+                          &height,
+                          &justification,
+                          &rotation)) {
+        return nullptr;  // PyArg_ParseTuple will set an exception
+    }
+    if (self->writer_inst) {
+        // Call the C++ method named writeText
+        self->writer_inst->writeText(text_str, p1, p2, height, justification);
+    }
+    Py_RETURN_NONE;
+}
+
+static PyObject* DxfWriterProxy_writeLinearDim(DxfWriterProxy* self, PyObject* args)
+{
+    const char* dim_text;
+    double text_mid[3], line_def[3], p1[3], p2[3];
+    int dim_type;
+    double font_size;
+
+    if (!PyArg_ParseTuple(args,
+                          "(ddd)(ddd)(ddd)(ddd)sid",
+                          &text_mid[0],
+                          &text_mid[1],
+                          &text_mid[2],
+                          &line_def[0],
+                          &line_def[1],
+                          &line_def[2],
+                          &p1[0],
+                          &p1[1],
+                          &p1[2],
+                          &p2[0],
+                          &p2[1],
+                          &p2[2],
+                          &dim_text,
+                          &dim_type,
+                          &font_size)) {
+        return nullptr;
+    }
+    if (self->writer_inst) {
+        self->writer_inst
+            ->writeLinearDim(text_mid, line_def, p1, p2, dim_text, dim_type, font_size);
+    }
+    Py_RETURN_NONE;
+}
+
 // Method table
 static PyMethodDef DxfWriterProxy_methods[] = {
     {"writeBlock",
@@ -196,6 +256,11 @@ static PyMethodDef DxfWriterProxy_methods[] = {
      "exportShape(shape_object)"},
     {"setLayerName", (PyCFunction)DxfWriterProxy_setLayerName, METH_VARARGS, "setLayerName(name)"},
     {"setColor", (PyCFunction)DxfWriterProxy_setColor, METH_VARARGS, "setColor(aci_index)"},
+    {"addText", (PyCFunction)DxfWriterProxy_addText, METH_VARARGS, "Writes a TEXT entity."},
+    {"writeLinearDim",
+     (PyCFunction)DxfWriterProxy_writeLinearDim,
+     METH_VARARGS,
+     "Writes a DIMENSION entity."},
     {nullptr, nullptr, 0, nullptr} /* Sentinel */
 };
 

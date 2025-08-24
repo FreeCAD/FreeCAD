@@ -401,71 +401,55 @@ public:
     // NOLINTNEXTLINE(readability/nolint)
     // NOLINTNEXTLINE(readability-identifier-length)
     void writeVertex(double x, double y, double z);
-    void writeText(
-        const char* text,
-        const double* location1,
-        const double* location2,
-        double height,
-        int horizJust
-    );
-    void writeLinearDim(
-        const double* textMidPoint,
-        const double* lineDefPoint,
-        const double* extLine1,
-        const double* extLine2,
-        const char* dimText,
-        int type
-    );
-    void writeLinearDimBlock(
-        const double* textMidPoint,
-        const double* lineDefPoint,
-        const double* extLine1,
-        const double* extLine2,
-        const char* dimText,
-        int type
-    );
-    void writeAngularDim(
-        const double* textMidPoint,
-        const double* lineDefPoint,
-        const double* startExt1,
-        const double* endExt1,
-        const double* startExt2,
-        const double* endExt2,
-        const char* dimText
-    );
-    void writeAngularDimBlock(
-        const double* textMidPoint,
-        const double* lineDefPoint,
-        const double* startExt1,
-        const double* endExt1,
-        const double* startExt2,
-        const double* endExt2,
-        const char* dimText
-    );
-    void writeRadialDim(
-        const double* centerPoint,
-        const double* textMidPoint,
-        const double* arcPoint,
-        const char* dimText
-    );
-    void writeRadialDimBlock(
-        const double* centerPoint,
-        const double* textMidPoint,
-        const double* arcPoint,
-        const char* dimText
-    );
-    void writeDiametricDim(
-        const double* textMidPoint,
-        const double* arcPoint1,
-        const double* arcPoint2,
-        const char* dimText
-    );
-    void writeDiametricDimBlock(
-        const double* textMidPoint,
-        const double* arcPoint1,
-        const double* arcPoint2,
-        const char* dimText
-    );
+    void writeText(const char* text,
+                   const double* location1,
+                   const double* location2,
+                   double height,
+                   int horizJust);
+    void writeLinearDim(const double* textMidPoint,
+                        const double* lineDefPoint,
+                        const double* extLine1,
+                        const double* extLine2,
+                        const char* dimText,
+                        int type,
+                        double fontSize);
+    void writeLinearDimBlock(const double* textMidPoint,
+                             const double* lineDefPoint,
+                             const double* extLine1,
+                             const double* extLine2,
+                             const char* dimText,
+                             int type,
+                             double fontSize);
+    void writeAngularDim(const double* textMidPoint,
+                         const double* lineDefPoint,
+                         const double* startExt1,
+                         const double* endExt1,
+                         const double* startExt2,
+                         const double* endExt2,
+                         const char* dimText);
+    void writeAngularDimBlock(const double* textMidPoint,
+                              const double* lineDefPoint,
+                              const double* startExt1,
+                              const double* endExt1,
+                              const double* startExt2,
+                              const double* endExt2,
+                              const char* dimText);
+    void writeRadialDim(const double* centerPoint,
+                        const double* textMidPoint,
+                        const double* arcPoint,
+                        const char* dimText);
+    void writeRadialDimBlock(const double* centerPoint,
+                             const double* textMidPoint,
+                             const double* arcPoint,
+                             const char* dimText);
+    void writeDiametricDim(const double* textMidPoint,
+                           const double* arcPoint1,
+                           const double* arcPoint2,
+                           const char* dimText);
+    void writeDiametricDimBlock(const double* textMidPoint,
+                                const double* arcPoint1,
+                                const double* arcPoint2,
+                                const char* dimText);
 
     void writeDimBlockPreamble();
     void writeBlockTrailer();
