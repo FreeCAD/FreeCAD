@@ -33,5 +33,4 @@ using namespace DAG;
 
 FilterBase::FilterBase() : name(QStringLiteral("empty name"))
 {
-
 }

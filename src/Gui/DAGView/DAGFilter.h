@@ -38,7 +38,6 @@ namespace Gui
       enum class Type
       {
         None = 0, //!< no type designation. shouldn't be used.
-        Inclusion,
         Exclusion
       };
       FilterBase();

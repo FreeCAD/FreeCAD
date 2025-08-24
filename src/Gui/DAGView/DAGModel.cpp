@@ -506,7 +506,7 @@ void Model::updateSlot()
   {
     for (const auto &currentFilter : filters)
     {
-      if (!currentFilter->enabled || currentFilter->type != FilterBase::Type::Inclusion)
+      if (!currentFilter->enabled || true)
         continue;
       if (currentFilter->goFilter(currentVertex, *theGraph, *graphLink))
         (*theGraph)[currentVertex].dagVisible = true;
