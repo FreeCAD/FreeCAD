@@ -49,29 +49,15 @@ struct BaseExport QuantityFormat
     using NumberOptions = int;
     NumberOptions option;
     NumberFormat format;
-    int precision;
     int denominator;
 
-    inline int getPrecision() const
-    {
-        return precision < 0 ? Base::QuantityFormat::getDefaultPrecision() : precision;
-    }
+    inline int getPrecision() const;
+    inline void setPrecision(int prec);
 
     // Default denominator of minimum fractional inch. Only used in certain
     // schemas.
     // NOLINTNEXTLINE
-    static int defaultPrecision;
     static int defaultDenominator;  // i.e 8 for 1/8"
-
-    static inline int getDefaultPrecision()
-    {
-        return defaultPrecision;
-    }
-
-    static inline void setDefaultPrecision(int precision)
-    {
-        defaultPrecision = precision;
-    }
 
     static inline int getDefaultDenominator()
     {
@@ -124,6 +110,9 @@ struct BaseExport QuantityFormat
                 return Default;
         }
     }
+
+private:
+    int precision;
 };
 
 /**

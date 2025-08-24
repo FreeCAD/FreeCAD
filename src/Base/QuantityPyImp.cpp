@@ -681,7 +681,7 @@ void QuantityPy::setFormat(Py::Dict arg)
 
     if (arg.hasKey("Precision")) {
         Py::Long prec(arg.getItem("Precision"));
-        fmt.precision = static_cast<int>(prec);
+        fmt.setPrecision(static_cast<int>(prec));
     }
 
     if (arg.hasKey("NumberFormat")) {

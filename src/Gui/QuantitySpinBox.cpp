@@ -750,7 +750,7 @@ void QuantitySpinBox::setDecimals(int v)
 {
     Q_D(QuantitySpinBox);
     Base::QuantityFormat f = d->quantity.getFormat();
-    f.precision = v;
+    f.setPrecision(v);
     d->quantity.setFormat(f);
     updateText(d->quantity);
 }

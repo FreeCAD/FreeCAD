@@ -58,7 +58,6 @@ using Base::UnitsSchema;
 
 // ====== Static attributes =========================
 // NOLINTNEXTLINE
-int QuantityFormat::defaultPrecision = 2;
 int QuantityFormat::defaultDenominator = 8;  // for 1/8"
 
 
@@ -75,6 +74,16 @@ QuantityFormat::QuantityFormat(QuantityFormat::NumberFormat format, int decimals
     , precision(decimals)
     , denominator(defaultDenominator)
 {}
+
+inline int QuantityFormat::getPrecision() const
+{
+    return precision < 0 ? Base::UnitsApi::getDecimals() : precision;
+}
+
+inline void Base::QuantityFormat::setPrecision(int prec)
+{
+    precision = prec;
+}
 
 // ----------------------------------------------------------------------------
 

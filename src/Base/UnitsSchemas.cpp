@@ -76,7 +76,7 @@ std::vector<std::string> UnitsSchemas::descriptions()
 
 std::size_t UnitsSchemas::getDecimals() const
 {
-    return Base::QuantityFormat::getDefaultPrecision();
+    return Base::UnitsApi::getDecimals();
 }
 
 std::size_t UnitsSchemas::defFractDenominator() const

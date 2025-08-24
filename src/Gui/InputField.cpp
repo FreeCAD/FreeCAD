@@ -569,7 +569,7 @@ int InputField::getPrecision() const
 void InputField::setPrecision(const int precision)
 {
     Base::QuantityFormat format = actQuantity.getFormat();
-    format.precision = precision;
+    format.setPrecision(precision);
     actQuantity.setFormat(format);
     updateText(actQuantity);
 }

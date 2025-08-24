@@ -184,11 +184,10 @@ void DlgSettingsGeneral::saveUnitSystemSettings()
     hGrpu->SetInt("UserSchema", ui->comboBox_UnitSystem->currentIndex());
     int decimals = ui->spinBoxDecimals->value();
     hGrpu->SetInt("Decimals", decimals);
-    QuantityFormat::setDefaultPrecision(decimals);
-    hGrpu->SetBool("IgnoreProjectSchema", ui->checkBox_projectUnitSystemIgnore->isChecked());
-
     // Set actual value
-    UnitsApi::setDecimals(ui->spinBoxDecimals->value());
+    UnitsApi::setDecimals(decimals);
+
+    hGrpu->SetBool("IgnoreProjectSchema", ui->checkBox_projectUnitSystemIgnore->isChecked());    
 
     // Convert the combobox index to the its integer denominator. Currently
     // with 1/2, 1/4, through 1/128, this little equation directly computes the

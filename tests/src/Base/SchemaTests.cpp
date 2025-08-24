@@ -69,7 +69,7 @@ protected:
         UnitsApi::setSchema(name);
         Quantity quantity {value, unit};
         QuantityFormat format = quantity.getFormat();
-        format.precision = precision;
+        format.setPrecision(precision);
         quantity.setFormat(format);
         return quantity.getSafeUserString();
     }
