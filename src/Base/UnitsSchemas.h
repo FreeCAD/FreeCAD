@@ -55,7 +55,7 @@ public:
     std::vector<std::string> names();
     std::vector<std::string> descriptions();
     std::size_t getDecimals() const;
-    std::size_t defFractDenominator() const;
+    std::size_t getDenominator() const;
 
     UnitsSchema* currentSchema() const;
 
@@ -67,7 +67,6 @@ private:
 
     std::vector<UnitsSchemaSpec> schemas;
     std::unique_ptr<UnitsSchema> current {std::make_unique<UnitsSchema>(spec())};
-    std::size_t denominator;
 };
 
 

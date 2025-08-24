@@ -201,7 +201,7 @@ void DlgSettingsGeneral::saveUnitSystemSettings()
     hGrpu->SetInt("FracInch", FracInch);
 
     // Set the actual format value
-    QuantityFormat::setDefaultDenominator(FracInch);
+    UnitsApi::setDenominator(FracInch);
 
     // Set and save the Unit System
     if (ui->checkBox_projectUnitSystemIgnore->isChecked()) {
@@ -273,7 +273,7 @@ void DlgSettingsGeneral::loadSettings()
     ui->checkBox_projectUnitSystemIgnore->setChecked(hGrpu->GetBool("IgnoreProjectSchema", false));
 
     // Get the current user setting for the minimum fractional inch
-    FracInch = hGrpu->GetInt("FracInch", QuantityFormat::getDefaultDenominator());
+    FracInch = hGrpu->GetInt("FracInch", UnitsApi::getDenominator());
 
     // Convert fractional inch to the corresponding combobox index using this
     // handy little equation.

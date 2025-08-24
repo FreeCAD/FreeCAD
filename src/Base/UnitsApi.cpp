@@ -41,7 +41,6 @@ using Base::UnitsSchemas;
 
 void UnitsApi::init()
 {
-    schemas = std::make_unique<UnitsSchemas>(UnitsSchemasData::specs);
 }
 
 std::vector<std::string> UnitsApi::getDescriptions()
@@ -72,11 +71,6 @@ bool UnitsApi::isMultiUnitLength()
 std::string UnitsApi::getBasicLengthUnit()
 {
     return schemas->currentSchema()->getBasicLengthUnit();
-}
-
-std::size_t UnitsApi::getFractDenominator()
-{
-    return schemas->defFractDenominator();
 }
 
 std::unique_ptr<UnitsSchema> UnitsApi::createSchema(const std::size_t num)
@@ -168,7 +162,12 @@ size_t UnitsApi::getDecimals()
     return decimals;
 }
 
-size_t UnitsApi::getDefDecimals()
+void UnitsApi::setDenominator(const std::size_t denom)
 {
-    return schemas->getDecimals();
+    denominator = denom;
+}
+
+size_t UnitsApi::getDenominator()
+{
+    return denominator;
 }

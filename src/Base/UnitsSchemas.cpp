@@ -79,9 +79,9 @@ std::size_t UnitsSchemas::getDecimals() const
     return Base::UnitsApi::getDecimals();
 }
 
-std::size_t UnitsSchemas::defFractDenominator() const
+std::size_t UnitsSchemas::getDenominator() const
 {
-    return Base::QuantityFormat::getDefaultDenominator();
+    return Base::UnitsApi::getDenominator();
 }
 
 void UnitsSchemas::select()
