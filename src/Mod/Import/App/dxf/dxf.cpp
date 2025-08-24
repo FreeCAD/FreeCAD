@@ -295,6 +295,84 @@ void CDxfWrite::makeLayerTable()
 }
 
 //***************************
+// makeDimstyleTable
+// added to define the "STANDARD" dimstyle used by DIMENSION entities
+void CDxfWrite::makeDimstyleTable()
+{
+    std::string tablehash = getHandle();  // Handle for the table itself
+    (*m_ssDimstyle) << "  0" << endl;
+    (*m_ssDimstyle) << "TABLE" << endl;
+    (*m_ssDimstyle) << "  2" << endl;
+    (*m_ssDimstyle) << "DIMSTYLE" << endl;
+    (*m_ssDimstyle) << "  5" << endl;
+    (*m_ssDimstyle) << tablehash << endl;
+    if (m_version > 12) {
+        (*m_ssDimstyle) << "330" << endl;
+        (*m_ssDimstyle) << 0 << endl;
+        (*m_ssDimstyle) << "100" << endl;
+        (*m_ssDimstyle) << "AcDbSymbolTable" << endl;
+    }
+    (*m_ssDimstyle) << " 70" << endl;
+    (*m_ssDimstyle) << "    1" << endl;  // Number of styles in table
+
+    // --- Define the "STANDARD" style ---
+    (*m_ssDimstyle) << "  0" << endl;
+    (*m_ssDimstyle) << "DIMSTYLE" << endl;
+    (*m_ssDimstyle) << "  5" << endl;
+    (*m_ssDimstyle) << getHandle() << endl;  // Handle for this style entry
+    if (m_version > 12) {
+        (*m_ssDimstyle) << "330" << endl;
+        (*m_ssDimstyle) << tablehash << endl;
+        (*m_ssDimstyle) << "100" << endl;
+        (*m_ssDimstyle) << "AcDbSymbolTableRecord" << endl;
+        (*m_ssDimstyle) << "100" << endl;
+        (*m_ssDimstyle) << "AcDbDimStyleTableRecord" << endl;
+    }
+    (*m_ssDimstyle) << "  2" << endl;
+    (*m_ssDimstyle) << "STANDARD" << endl;  // The style name referenced by DIMENSION entities
+    (*m_ssDimstyle) << " 70" << endl;
+    (*m_ssDimstyle) << "     0" << endl;  // Flags
+
+    // --- Key style variables ---
+
+    // $DIMSCALE (Overall scale factor)
+    // Set to 1.0 because the exporter generates pre-scaled geometry.
+    // This prevents viewers from applying their own scaling.
+    (*m_ssDimstyle) << " 40" << endl;
+    (*m_ssDimstyle) << "1.0" << endl;
+
+    // $DIMASZ (Arrow size)
+    // Set to a non-zero placeholder. The actual arrows are drawn as SOLIDs.
+    (*m_ssDimstyle) << " 41" << endl;
+    (*m_ssDimstyle) << "1.0" << endl;
+
+    // $DIMTAD (Text Above Dimension line)
+    // Set to 1 to place text above the line, matching geometry generation.
+    (*m_ssDimstyle) << " 77" << endl;
+    (*m_ssDimstyle) << "     1" << endl;
+
+    // $DIMTXT (Text height)
+    // Set to a sensible default. This will be overridden by XDATA on a
+    // per-dimension basis, but serves as a valid fallback.
+    (*m_ssDimstyle) << "140" << endl;  // Use group code 140 for DIMTXT in a DIMSTYLE table
+    (*m_ssDimstyle) << "3.5" << endl;
+
+    // $DIMSAH (Separate Arrowheads)
+    // Set to 1 (On) to allow for user-defined arrowhead blocks (or none).
+    // This is required to suppress the viewer's default arrows.
+    if (m_version > 12) {
+        (*m_ssDimstyle) << "171" << endl;
+        (*m_ssDimstyle) << "     1" << endl;
+    }
+    // By enabling separate arrowheads but NOT defining $DIMBLK1 and $DIMBLK2,
+    // we effectively tell the viewer to draw no arrows, which is correct
+    // because we have already drawn them as SOLID entities in the dimension block.
+
+    (*m_ssDimstyle) << "  0" << endl;
+    (*m_ssDimstyle) << "ENDTAB" << endl;
+}
+
+//***************************
 // makeBlockRecordTableHead
 // added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
 void CDxfWrite::makeBlockRecordTableHead()
@@ -1377,14 +1455,13 @@ void CDxfWrite::putArrow(
 #define ALIGNED 0
 #define HORIZONTAL 1
 #define VERTICAL 2
-void CDxfWrite::writeLinearDim(
-    const double* textMidPoint,
-    const double* lineDefPoint,
-    const double* extLine1,
-    const double* extLine2,
-    const char* dimText,
-    int type
-)
+void CDxfWrite::writeLinearDim(const double* textMidPoint,
+                               const double* lineDefPoint,
+                               const double* extLine1,
+                               const double* extLine2,
+                               const char* dimText,
+                               int type,
+                               double fontSize)
 {
     (*m_ssEntity) << "  0" << endl;
     (*m_ssEntity) << "DIMENSION" << endl;
@@ -1461,7 +1538,7 @@ void CDxfWrite::writeLinearDim(
     }
 
     writeDimBlockPreamble();
-    writeLinearDimBlock(textMidPoint, lineDefPoint, extLine1, extLine2, dimText, type);
+    writeLinearDimBlock(textMidPoint, lineDefPoint, extLine1, extLine2, dimText, type, fontSize);
     writeBlockTrailer();
 }
 
@@ -1764,14 +1841,13 @@ void CDxfWrite::writeBlockTrailer()
 //***************************
 // writeLinearDimBlock
 // added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeLinearDimBlock(
-    const double* textMidPoint,
-    const double* lineDefPoint,
-    const double* extLine1,
-    const double* extLine2,
-    const char* dimText,
-    int type
-)
+void CDxfWrite::writeLinearDimBlock(const double* textMidPoint,
+                                    const double* lineDefPoint,
+                                    const double* extLine1,
+                                    const double* extLine2,
+                                    const char* dimText,
+                                    int type,
+                                    double fontSize)
 {
     Base::Vector3d e1S(MakeVector3d(extLine1));
     Base::Vector3d e2S(MakeVector3d(extLine2));
@@ -1824,16 +1900,14 @@ void CDxfWrite::writeLinearDimBlock(
 
     putLine(e1E, e2E, m_ssBlock, getBlockHandle(), m_saveBlkRecordHandle);
 
-    putText(
-        dimText,
-        toVector3d(textMidPoint),
-        toVector3d(lineDefPoint),
-        3.5,
-        1,
-        m_ssBlock,
-        getBlockHandle(),
-        m_saveBlkRecordHandle
-    );
+    putText(dimText,
+            toVector3d(textMidPoint),
+            toVector3d(lineDefPoint),
+            fontSize,
+            1,
+            m_ssBlock,
+            getBlockHandle(),
+            m_saveBlkRecordHandle);
 
     perp.Normalize();
     para.Normalize();
