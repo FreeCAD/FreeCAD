@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>359</width>
-    <height>534</height>
+    <height>555</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -21,152 +21,240 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
-    <layout class="QFormLayout" name="formLayout_2">
-     <item row="0" column="0">
-      <widget class="QCheckBox" name="chkLeadIn">
-       <property name="toolTip">
-        <string>Enable lead-in move</string>
-       </property>
-       <property name="text">
-        <string>Enable lead-in</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Style</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QComboBox" name="cboStyleIn">
-       <property name="minimumSize">
-        <size>
-         <width>80</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>16777215</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Length/radius</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="Gui::InputField" name="dspLenIn">
-       <property name="toolTip">
-        <string>Length or radius of the lead-in</string>
-       </property>
-       <property name="minimum">
-        <double>0.100000000000000</double>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true"/>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Extend</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="Gui::InputField" name="dspExtendIn">
-       <property name="toolTip">
-        <string>Extends the lead-in distance</string>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true"/>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QGroupBox" name="groupBoxIn">
+     <property name="title">
+      <string>Lead In</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QFormLayout" name="formLayout_1">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Style</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="cboStyleIn">
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Radius/length (% tool radius)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QDoubleSpinBox" name="dspPercentageRadiusIn">
+          <property name="toolTip">
+           <string>Length of the Lead-in, as a percentage of tool radius</string>
+          </property>
+          <property name="decimals">
+           <number>0</number>
+          </property>
+          <property name="minimum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>999999.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>10.000000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true"/>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_1">
+          <property name="text">
+           <string>Angle</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QDoubleSpinBox" name="dspAngleIn">
+          <property name="toolTip">
+           <string>Angular extent of the lead in arc (degrees)</string>
+          </property>
+          <property name="maximum">
+           <double>180.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>10.000000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true"/>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Offset Entrance Location</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QDoubleSpinBox" name="dspOffsetIn">
+          <property name="minimum">
+           <double>-999999.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>999999.000000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true"/>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QCheckBox" name="chkInvertDirectionIn">
+          <property name="text">
+           <string>Invert Direction</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
-    <layout class="QFormLayout" name="formLayout">
-     <item row="0" column="0">
-      <widget class="QCheckBox" name="chkLeadOut">
-       <property name="toolTip">
-        <string>Enable lead-out move</string>
-       </property>
-       <property name="text">
-        <string>Enable lead out</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>Style</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QComboBox" name="cboStyleOut">
-       <property name="minimumSize">
-        <size>
-         <width>80</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>16777215</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_6">
-       <property name="text">
-        <string>Length/radius</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="Gui::InputField" name="dspLenOut">
-       <property name="toolTip">
-        <string>Length or radius of the lead-out</string>
-       </property>
-       <property name="minimum">
-        <double>0.100000000000000</double>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true"/>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Extend</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="Gui::InputField" name="dspExtendOut">
-       <property name="toolTip">
-        <string>Extends the lead-out distance</string>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true"/>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QGroupBox" name="groupBoxOut">
+     <property name="title">
+      <string>Lead Out</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QFormLayout" name="formLayout_2">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_13">
+          <property name="text">
+           <string>Style</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="cboStyleOut">
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_15">
+          <property name="text">
+           <string>Radius/length (% tool radius)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QDoubleSpinBox" name="dspPercentageRadiusOut">
+          <property name="toolTip">
+           <string>Length of the Lead-out, as a percentage of tool radius</string>
+          </property>
+          <property name="decimals">
+           <number>0</number>
+          </property>
+          <property name="minimum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>999999.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>10.000000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true"/>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_11">
+          <property name="text">
+           <string>Angle</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QDoubleSpinBox" name="dspAngleOut">
+          <property name="toolTip">
+           <string>Angular extent of the lead out arc (degrees)</string>
+          </property>
+          <property name="maximum">
+           <double>180.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>10.000000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true"/>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_17">
+          <property name="text">
+           <string>Offset Exit Location</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QDoubleSpinBox" name="dspOffsetOut">
+          <property name="minimum">
+           <double>-999999.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>999999.000000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true"/>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QCheckBox" name="chkInvertDirectionOut">
+          <property name="text">
+           <string>Invert Direction</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
     <layout class="QFormLayout" name="formLayout_3">
@@ -197,12 +285,19 @@
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QCheckBox" name="chkKeepToolDown">
-       <property name="toolTip">
-        <string>Keep the tool down in the path</string>
-       </property>
+      <widget class="QLabel" name="label_8">
        <property name="text">
-        <string>Keep tool down</string>
+        <string>Retract Threshold</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QDoubleSpinBox" name="dspRetractThreshold">
+       <property name="maximum">
+        <double>999999.000000000000000</double>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
        </property>
       </widget>
      </item>
@@ -223,13 +318,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>Gui::InputField</class>
-   <extends>QLineEdit</extends>
-   <header>Gui/InputField.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>
