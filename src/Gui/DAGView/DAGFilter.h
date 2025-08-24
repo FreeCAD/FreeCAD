@@ -49,16 +49,6 @@ namespace Gui
       Type type = Type::Exclusion;
     };
 
-    /*! Hide all children of app::origin that are not
-     * used by subsequent features
-     */
-    class FilterOrigin : public FilterBase
-    {
-    public:
-      FilterOrigin();
-      bool goFilter(const Vertex &vertexIn, const Graph &graphIn, const GraphLinkContainer &linkIn) const override;
-    };
-
     /*! Hide nodes of type*/
     class FilterTyped : public FilterBase
     {

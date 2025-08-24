@@ -36,31 +36,6 @@ FilterBase::FilterBase() : name(QStringLiteral("empty name"))
 
 }
 
-FilterOrigin::FilterOrigin() : FilterBase()
-{
-  name = QObject::tr("Origin");
-}
-
-bool FilterOrigin::goFilter(const Vertex &vertexIn, const Graph &graphIn, const GraphLinkContainer &linkIn) const
-{
-  Base::Type originType = Base::Type::fromName("App::Origin");
-  assert (!originType.isBad());
-  //if child of origin hide.
-  InEdgeIterator it, itEnd;
-  for (boost::tie(it, itEnd) = boost::in_edges(vertexIn, graphIn); it != itEnd; ++it)
-  {
-    Vertex source = boost::source(*it, graphIn);
-    const GraphLinkRecord &sourceRecord = findRecord(source, linkIn);
-    if
-    (
-      (sourceRecord.DObject->getTypeId() == originType) &&
-      (boost::in_degree(vertexIn, graphIn) == 1)
-    )
-      return true;
-  }
-  return false;
-}
-
 FilterTyped::FilterTyped(const std::string &typeIn) : FilterBase(), type(typeIn)
 {
   name = QString::fromStdString(typeIn);
