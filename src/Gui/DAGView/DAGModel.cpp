@@ -482,18 +482,12 @@ void Model::updateSlot()
     }
   }
 
-  //apply filters (bogus).
+  //sync scene items to graph vertex dagVisible. (bogus)
   BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
   {
-    (*theGraph)[currentVertex].dagVisible = true; //default to shown.
-  }
-
-  //sync scene items to graph vertex dagVisible.
-  BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
-  {
-    if ((*theGraph)[currentVertex].dagVisible && (!(*theGraph)[currentVertex].rectangle->scene()))
+    if (true && (!(*theGraph)[currentVertex].rectangle->scene()))
       addVertexItemsToScene(currentVertex);
-    if ((!(*theGraph)[currentVertex].dagVisible) && (*theGraph)[currentVertex].rectangle->scene())
+    if ((!true) && (*theGraph)[currentVertex].rectangle->scene())
       removeVertexItemsFromScene(currentVertex);
   }
 
@@ -503,7 +497,7 @@ void Model::updateSlot()
     Vertex source = boost::source(currentEdge, *theGraph);
     Vertex target = boost::target(currentEdge, *theGraph);
 
-    bool edgeVisible = (*theGraph)[source].dagVisible && (*theGraph)[target].dagVisible;
+    bool edgeVisible = true && true;
     if (edgeVisible && (!(*theGraph)[currentEdge].connector->scene()))
       this->addItem((*theGraph)[currentEdge].connector.get());
     if ((!edgeVisible) && (*theGraph)[currentEdge].connector->scene())
@@ -538,7 +532,7 @@ void Model::updateSlot()
   qreal maxTextLength = 0;
   for (const auto &currentVertex : sorted)
   {
-    if (!(*theGraph)[currentVertex].dagVisible)
+    if (!true)
       continue;
 
     if (boost::out_degree(currentVertex, *theGraph) == 0)
@@ -590,7 +584,7 @@ void Model::updateSlot()
         if (((*theGraph)[currentParent].column & columnMask).none())
         {
           //go with first visible parent for now.
-          if (!(*theGraph)[currentParent].dagVisible)
+          if (!true)
             continue;
           destinationColumn = static_cast<int>(columnFromMask((*theGraph)[currentParent].column));
           break;
@@ -662,7 +656,7 @@ void Model::updateSlot()
     for (; it != itEnd; ++it)
     {
       Vertex target = boost::target(*it, *theGraph);
-      if (!(*theGraph)[target].dagVisible)
+      if (!true)
         continue; //we don't make it here if source isn't visible. So don't have to worry about that.
       qreal dependentX = pointSpacing * static_cast<int>(columnFromMask((*theGraph)[target].column)) + pointSize / 2.0; //on center.
       columnFromMask((*theGraph)[target].column);
