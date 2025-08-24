@@ -485,10 +485,8 @@ void Model::updateSlot()
   //sync scene items to graph vertex dagVisible. (bogus)
   BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
   {
-    if (true && (!(*theGraph)[currentVertex].rectangle->scene()))
+    if (!(*theGraph)[currentVertex].rectangle->scene())
       addVertexItemsToScene(currentVertex);
-    if ((!true) && (*theGraph)[currentVertex].rectangle->scene())
-      removeVertexItemsFromScene(currentVertex);
   }
 
   //sync scene items for graph edge.
@@ -497,11 +495,8 @@ void Model::updateSlot()
     Vertex source = boost::source(currentEdge, *theGraph);
     Vertex target = boost::target(currentEdge, *theGraph);
 
-    bool edgeVisible = true && true;
-    if (edgeVisible && (!(*theGraph)[currentEdge].connector->scene()))
+    if (!(*theGraph)[currentEdge].connector->scene())
       this->addItem((*theGraph)[currentEdge].connector.get());
-    if ((!edgeVisible) && (*theGraph)[currentEdge].connector->scene())
-      this->removeItem((*theGraph)[currentEdge].connector.get());
   }
 
   indexVerticesEdges();
@@ -532,9 +527,6 @@ void Model::updateSlot()
   qreal maxTextLength = 0;
   for (const auto &currentVertex : sorted)
   {
-    if (!true)
-      continue;
-
     if (boost::out_degree(currentVertex, *theGraph) == 0)
       currentColumn = 0;
     else
@@ -584,8 +576,6 @@ void Model::updateSlot()
         if (((*theGraph)[currentParent].column & columnMask).none())
         {
           //go with first visible parent for now.
-          if (!true)
-            continue;
           destinationColumn = static_cast<int>(columnFromMask((*theGraph)[currentParent].column));
           break;
         }
@@ -656,8 +646,6 @@ void Model::updateSlot()
     for (; it != itEnd; ++it)
     {
       Vertex target = boost::target(*it, *theGraph);
-      if (!true)
-        continue; //we don't make it here if source isn't visible. So don't have to worry about that.
       qreal dependentX = pointSpacing * static_cast<int>(columnFromMask((*theGraph)[target].column)) + pointSize / 2.0; //on center.
       columnFromMask((*theGraph)[target].column);
       qreal dependentY = rowHeight * (*theGraph)[target].row + rowHeight / 2.0;
