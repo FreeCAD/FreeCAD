@@ -54,7 +54,7 @@ protected:
 
 private:
     ParameterGrp::handle _handle;
-    boost::signals2::connection connParamChanged;
+    fastsignals::connection connParamChanged;
 };
 
 

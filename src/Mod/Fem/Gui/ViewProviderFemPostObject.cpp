@@ -142,7 +142,7 @@ public:
 
 private:
     std::set<ViewProviderFemPostObject*> views;
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
     Connection connectSelection;
 };
 

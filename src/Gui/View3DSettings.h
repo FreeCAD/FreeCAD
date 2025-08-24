@@ -72,7 +72,7 @@ private:
     void parameterChanged(ParameterGrp::MessageType pName);
     ParameterGrp::handle hGrp;
     View3DInventorViewer* _viewer;
-    boost::signals2::connection connectParameterChanged;
+    fastsignals::connection connectParameterChanged;
 };
 
 }  // namespace Gui

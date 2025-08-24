@@ -133,9 +133,9 @@ protected:
     Spreadsheet::Sheet* sheet;
     SpreadsheetDelegate* delegate;
     SheetModel* model;
-    boost::signals2::scoped_connection columnWidthChangedConnection;
-    boost::signals2::scoped_connection rowHeightChangedConnection;
-    boost::signals2::scoped_connection positionChangedConnection;
+    fastsignals::scoped_connection columnWidthChangedConnection;
+    fastsignals::scoped_connection rowHeightChangedConnection;
+    fastsignals::scoped_connection positionChangedConnection;
 
     std::map<int, int> newColumnSizes;
     std::map<int, int> newRowSizes;

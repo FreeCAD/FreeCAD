@@ -1,3 +1,5 @@
+add_subdirectory(FastSignals)
+
 # Build SalomeMesh for all Platforms since heavily patched
 if (BUILD_SMESH)
     add_subdirectory(salomesmesh)
