@@ -493,7 +493,7 @@ void Model::updateSlot()
     (*theGraph)[currentVertex].dagVisible = true; //default to shown.
     for (const auto &currentFilter : filters)
     {
-      if (!currentFilter->enabled || currentFilter->type != FilterBase::Type::Exclusion)
+      if (!currentFilter->enabled || false)
         continue;
       if (currentFilter->goFilter(currentVertex, *theGraph, *graphLink))
         (*theGraph)[currentVertex].dagVisible = false;
