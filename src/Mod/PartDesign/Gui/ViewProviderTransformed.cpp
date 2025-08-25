@@ -101,6 +101,10 @@ void ViewProviderTransformed::attachPreview()
 
 void ViewProviderTransformed::updatePreview()
 {
+    if (pcObject->getDocument()->testStatus(App::Document::Restoring)) {
+        return;
+    }
+
     try {
         if (auto feature = getObject<PartDesign::Transformed>()) {
             auto originals = feature->getOriginals();

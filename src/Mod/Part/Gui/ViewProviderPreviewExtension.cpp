@@ -34,6 +34,7 @@
 #include "ViewProviderPreviewExtension.h"
 #include "ViewProviderExt.h"
 
+#include <App/Document.h>
 #include <Gui/Utilities.h>
 #include <Gui/Inventor/So3DAnnotation.h>
 #include <Mod/Part/App/Tools.h>
@@ -141,7 +142,11 @@ void ViewProviderPreviewExtension::extensionAttach(App::DocumentObject* document
     pcPreviewShape = new SoPreviewShape;
 
     attachPreview();
-    updatePreview();
+
+    auto document = documentObject->getDocument();
+    if (!document->testStatus(App::Document::Restoring)) {
+        updatePreview();
+    }
 }
 
 void ViewProviderPreviewExtension::extensionBeforeDelete()
