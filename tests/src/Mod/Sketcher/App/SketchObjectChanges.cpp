@@ -83,6 +83,12 @@ TEST_F(SketchObjectTest, testDelExternalReducesCount)
 // TODO: `delExternal` situation of constraints
 // TODO: `delExternal` situation of constraint containing more than 3 entities
 
+// TODO: `addCopy` tests
+// TODO: ensure new item(s) is/are added and of same type
+// TODO: behaviour of `addCopy` when external
+// TODO: constraints on new copies?
+// TODO: when empty list is passed
+
 TEST_F(SketchObjectTest, testReplaceGeometriesOneToOne)
 {
     // Arrange
