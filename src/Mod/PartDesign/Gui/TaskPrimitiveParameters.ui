@@ -1020,7 +1020,7 @@ If zero, it is equal to Radius2</string>
          <item row="0" column="2">
           <widget class="Gui::QuantitySpinBox" name="torusRadius1">
            <property name="toolTip">
-            <string>Radius in local xy-plane</string>
+            <string>Radius in local XY-plane</string>
            </property>
            <property name="keyboardTracking">
             <bool>false</bool>
@@ -1043,7 +1043,7 @@ If zero, it is equal to Radius2</string>
          <item row="1" column="2">
           <widget class="Gui::QuantitySpinBox" name="torusRadius2">
            <property name="toolTip">
-            <string>Radius in local xz-plane</string>
+            <string>Radius in local XZ-plane</string>
            </property>
            <property name="keyboardTracking">
             <bool>false</bool>

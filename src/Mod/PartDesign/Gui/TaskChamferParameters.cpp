@@ -324,7 +324,7 @@ void TaskChamferParameters::apply()
 
     // Alert user if he created an empty feature
     if (ui->listWidgetReferences->count() == 0) {
-        Base::Console().warning(tr("Empty chamfer created !\n").toStdString().c_str());
+        Base::Console().warning(tr("Empty chamfer created!\n").toStdString().c_str());
     }
 }
 

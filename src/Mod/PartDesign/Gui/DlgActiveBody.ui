@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-       <string>To create a new Part Design object, there must be an active body object in the document.
+       <string>To create a new Part Design object, there must be an active body in the document.
 Select a body from below, or create a new body.</string>
      </property>
      <property name="scaledContents">

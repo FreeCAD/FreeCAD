@@ -417,9 +417,9 @@ void TaskTransformedParameters::fillAxisCombo(ComboLinks& combolinks, Part::Part
     if (body) {
         try {
             App::Origin* orig = body->getOrigin();
-            combolinks.addLink(orig->getX(), "", tr("Base x-axis"));
-            combolinks.addLink(orig->getY(), "", tr("Base y-axis"));
-            combolinks.addLink(orig->getZ(), "", tr("Base z-axis"));
+            combolinks.addLink(orig->getX(), "", tr("Base X-axis"));
+            combolinks.addLink(orig->getY(), "", tr("Base Y-axis"));
+            combolinks.addLink(orig->getZ(), "", tr("Base Z-axis"));
         }
         catch (const Base::Exception& ex) {
             Base::Console().error("%s\n", ex.what());
@@ -453,9 +453,9 @@ void TaskTransformedParameters::fillPlanesCombo(ComboLinks& combolinks, Part::Pa
     if (body) {
         try {
             App::Origin* orig = body->getOrigin();
-            combolinks.addLink(orig->getXY(), "", tr("Base XY plane"));
-            combolinks.addLink(orig->getYZ(), "", tr("Base YZ plane"));
-            combolinks.addLink(orig->getXZ(), "", tr("Base XZ plane"));
+            combolinks.addLink(orig->getXY(), "", tr("Base XY-plane"));
+            combolinks.addLink(orig->getYZ(), "", tr("Base YZ-plane"));
+            combolinks.addLink(orig->getXZ(), "", tr("Base XZ-plane"));
         }
         catch (const Base::Exception& ex) {
             Base::Console().error("%s\n", ex.what());
