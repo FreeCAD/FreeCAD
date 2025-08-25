@@ -14,6 +14,12 @@
 
 using namespace SketcherTestHelpers;
 
+// TODO: `addCopy` tests
+// TODO: ensure new item(s) is/are added and of same type
+// TODO: behaviour of `addCopy` when external
+// TODO: constraints on new copies?
+// TODO: when empty list is passed
+
 TEST_F(SketchObjectTest, testReplaceGeometriesOneToOne)
 {
     // Arrange
