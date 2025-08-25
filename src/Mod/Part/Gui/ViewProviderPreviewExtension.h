@@ -27,6 +27,7 @@
 #include "SoBrepEdgeSet.h"
 #include "SoBrepFaceSet.h"
 #include "SoBrepPointSet.h"
+#include "SoFCShapeObject.h"
 
 #include <QtCore>
 
@@ -47,8 +48,8 @@
 
 namespace PartGui {
 
-class PartGuiExport SoPreviewShape : public SoSeparator {
-    using inherited = SoSeparator;
+class PartGuiExport SoPreviewShape : public SoFCShape {
+    using inherited = SoFCShape;
     SO_NODE_HEADER(SoPreviewShape);
 
 public:
@@ -62,13 +63,6 @@ public:
     SoSFColor color;
     SoSFFloat transparency;
     SoSFFloat lineWidth;
-
-    SoCoordinate3* coords;
-    SoNormal* norm;
-
-    SoBrepFaceSet* faceset;
-    SoBrepEdgeSet* lineset;
-    SoBrepPointSet* nodeset;
 };
 
 class PartGuiExport ViewProviderPreviewExtension : public Gui::ViewProviderExtension {

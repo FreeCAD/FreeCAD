@@ -590,12 +590,6 @@ class Joint:
         if newType != oldType:
             joint.JointType = newType
 
-            # try to replace the joint type in the label.
-            tr_old_type = TranslatedJointTypes[JointTypes.index(oldType)]
-            tr_new_type = TranslatedJointTypes[JointTypes.index(newType)]
-            if tr_old_type in joint.Label:
-                joint.Label = joint.Label.replace(tr_old_type, tr_new_type)
-
     def onChanged(self, joint, prop):
         """Do something when a property has changed"""
         # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
@@ -603,6 +597,19 @@ class Joint:
         # during loading the onchanged may be triggered before full init.
         if App.isRestoring():
             return
+
+        if prop == "JointType":
+            newType = joint.JointType
+            tr_new_type = TranslatedJointTypes[JointTypes.index(newType)]
+
+            # Find the old joint type in the label and replace it
+            for i, old_type_name in enumerate(JointTypes):
+                if old_type_name == newType:
+                    continue
+                tr_old_type = TranslatedJointTypes[i]
+                if tr_old_type in joint.Label:
+                    joint.Label = joint.Label.replace(tr_old_type, tr_new_type)
+                    break
 
         if prop == "Reference1" or prop == "Reference2":
             joint.recompute()
