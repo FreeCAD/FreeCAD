@@ -69,6 +69,11 @@ bool UnitsApi::isMultiUnitLength()
     return schemas->currentSchema()->isMultiUnitLength();
 }
 
+bool UnitsApi::isMultiUnitLength(int index)
+{
+    return schemas->spec(index).isMultUnitLen;
+}
+
 std::string UnitsApi::getBasicLengthUnit()
 {
     return schemas->currentSchema()->getBasicLengthUnit();
