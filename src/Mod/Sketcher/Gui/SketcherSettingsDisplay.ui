@@ -24,10 +24,10 @@
          <item row="1" column="0">
           <widget class="Gui::PrefCheckBox" name="checkBoxUseConstraintSymbolSize">
            <property name="toolTip">
-            <string>If checked, uses the constraint symbol size for symbols. If unchecked, uses the font size.</string>
+            <string>Enable a custom pixel size for constraint symbols (otherwise the font size is used).</string>
            </property>
            <property name="text">
-            <string>Constraint symbol size</string>
+            <string>Use custom constraint symbol size</string>
            </property>
            <property name="checked">
             <bool>false</bool>
