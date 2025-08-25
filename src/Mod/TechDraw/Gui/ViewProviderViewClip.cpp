@@ -35,6 +35,7 @@
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 
 #include "ViewProviderViewClip.h"
+#include "QGIViewClip.h"
 
 using namespace TechDrawGui;
 
@@ -43,6 +44,9 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderViewClip, TechDrawGui::ViewProviderDraw
 ViewProviderViewClip::ViewProviderViewClip()
 {
     sPixmap = "actions/TechDraw_ClipGroup";
+
+    ADD_PROPERTY_TYPE(ClipChildren,(true), "Clip", App::Prop_None, "True clips children. False shows entire child views");
+
 
     // Do not show in property editor   why? wf  WF: because DisplayMode applies only to coin and we
     // don't use coin.
@@ -147,3 +151,14 @@ void ViewProviderViewClip::dropObject(App::DocumentObject* docObj)
 
     getObject()->addView(dv);
 }
+
+void ViewProviderViewClip::onChanged(const App::Property* prop)
+{
+    if (prop == &ClipChildren) {
+        QGIView* qgiv = getQView();
+        if (qgiv) {
+            qgiv->updateView(true);
+        }
+    }
+}
+
