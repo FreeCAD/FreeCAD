@@ -347,4 +347,3 @@ void CreateMeshPartCommands()
     rcCmdMgr.addCommand(new CmdMeshPartCrossSections());
     rcCmdMgr.addCommand(new CmdMeshPartCurveOnMesh());
 }
-
