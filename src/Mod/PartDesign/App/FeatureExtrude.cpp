@@ -520,7 +520,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         }
         else {
             try {
-                prism.makeElementXor(prisms, Part::OpCodes::Prism);
+                prism.makeElementXor(prisms, Part::OpCodes::Extrude);
             }
             catch (const Standard_Failure& e) {
                 return new App::DocumentObjectExecReturn(
