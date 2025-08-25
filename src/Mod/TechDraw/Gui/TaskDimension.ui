@@ -76,7 +76,7 @@ the negated value for 'Undertolerance'.</string>
         <item row="3" column="0">
          <widget class="QLabel" name="label_8">
           <property name="text">
-           <string>Undertolerance:</string>
+           <string>Undertolerance</string>
           </property>
          </widget>
         </item>
@@ -205,7 +205,7 @@ by negative value of 'Overtolerance'.</string>
         <item row="1" column="0">
          <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>Color:</string>
+           <string>Color</string>
           </property>
          </widget>
         </item>

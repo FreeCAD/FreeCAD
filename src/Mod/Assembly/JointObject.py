@@ -217,7 +217,7 @@ class Joint:
                 "Joint Connector 1",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This is the local coordinate system within Reference1's object that will be used for the joint.",
+                    "This is the local coordinate system within Reference1's object that will be used for the joint",
                 ),
                 locked=True,
             )
@@ -229,7 +229,7 @@ class Joint:
                 "Joint Connector 1",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This prevents Placement1 from recomputing, enabling custom positioning of the placement.",
+                    "This prevents Placement1 from recomputing, enabling custom positioning of the placement",
                 ),
                 locked=True,
             )
@@ -241,7 +241,7 @@ class Joint:
                 "Joint Connector 1",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This is the attachment offset of the first connector of the joint.",
+                    "This is the attachment offset of the first connector of the joint",
                 ),
                 locked=True,
             )
@@ -263,7 +263,7 @@ class Joint:
                 "Joint Connector 2",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This is the local coordinate system within Reference2's object that will be used for the joint.",
+                    "This is the local coordinate system within Reference2's object that will be used for the joint",
                 ),
                 locked=True,
             )
@@ -275,7 +275,7 @@ class Joint:
                 "Joint Connector 2",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This prevents Placement2 from recomputing, enabling custom positioning of the placement.",
+                    "This prevents Placement2 from recomputing, enabling custom positioning of the placement",
                 ),
                 locked=True,
             )
@@ -287,7 +287,7 @@ class Joint:
                 "Joint Connector 2",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This is the attachment offset of the second connector of the joint.",
+                    "This is the attachment offset of the second connector of the joint",
                 ),
                 locked=True,
             )
@@ -324,7 +324,7 @@ class Joint:
                 "Limits",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Enable the minimum length limit of the joint.",
+                    "Enable the minimum length limit of the joint",
                 ),
                 locked=True,
             )
@@ -337,7 +337,7 @@ class Joint:
                 "Limits",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Enable the maximum length limit of the joint.",
+                    "Enable the maximum length limit of the joint",
                 ),
                 locked=True,
             )
@@ -350,7 +350,7 @@ class Joint:
                 "Limits",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Enable the minimum angle limit of the joint.",
+                    "Enable the minimum angle limit of the joint",
                 ),
                 locked=True,
             )
@@ -363,7 +363,7 @@ class Joint:
                 "Limits",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Enable the minimum length of the joint.",
+                    "Enable the maximum angle limit of the joint",
                 ),
                 locked=True,
             )
@@ -376,7 +376,7 @@ class Joint:
                 "Limits",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This is the minimum limit for the length between both coordinate systems (along their Z axis).",
+                    "This is the minimum limit for the length between both coordinate systems (along their z-axis)",
                 ),
                 locked=True,
             )
@@ -388,7 +388,7 @@ class Joint:
                 "Limits",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This is the maximum limit for the length between both coordinate systems (along their Z axis).",
+                    "This is the maximum limit for the length between both coordinate systems (along their z-axis)",
                 ),
                 locked=True,
             )
@@ -400,7 +400,7 @@ class Joint:
                 "Limits",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This is the minimum limit for the angle between both coordinate systems (between their X axis).",
+                    "This is the minimum limit for the angle between both coordinate systems (between their x-axis)",
                 ),
                 locked=True,
             )
@@ -412,7 +412,7 @@ class Joint:
                 "Limits",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This is the maximum limit for the angle between both coordinate systems (between their X axis).",
+                    "This is the maximum limit for the angle between both coordinate systems (between their x-axis)",
                 ),
                 locked=True,
             )
@@ -512,7 +512,7 @@ class Joint:
                 "Joint Connector 1",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This is the attachment offset of the first connector of the joint.",
+                    "This is the attachment offset of the first connector of the joint",
                 ),
                 locked=True,
             )
@@ -523,7 +523,7 @@ class Joint:
                 "Joint Connector 2",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This is the attachment offset of the second connector of the joint.",
+                    "This is the attachment offset of the second connector of the joint",
                 ),
                 locked=True,
             )
@@ -565,7 +565,7 @@ class Joint:
             activated = joint.Activated
             if not activated:
                 print(
-                    "The 'Activated' property has been replaced by the 'Suppressed' property. Your file has a deactivated joint that is being migrated. If you open back this file in an older version, it will not be deactivated anymore."
+                    "The 'Activated' property has been replaced by the 'Suppressed' property. The file has a deactivated joint that is being migrated. If you open this file in an older version, it will not be deactivated anymore."
                 )
             joint.removeProperty("Activated")
             joint.Suppressed = not activated
@@ -1004,6 +1004,7 @@ class ViewProviderJoint:
         dialog = Gui.Control.showDialog(panel)
         if dialog is not None:
             dialog.setAutoCloseOnTransactionChange(True)
+            dialog.setAutoCloseOnDeletedDocument(True)
             dialog.setDocumentName(App.ActiveDocument.Name)
 
         return True
@@ -1390,7 +1391,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     def accept(self):
         if len(self.refs) != 2:
             App.Console.PrintWarning(
-                translate("Assembly", "You need to select 2 elements from 2 separate parts.")
+                translate("Assembly", "Select 2 elements from 2 separate parts")
             )
             return False
 

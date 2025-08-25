@@ -334,7 +334,7 @@ class TaskPanelCircularArray:
         _msg(translate("draft","Object:") + " {}".format(sel_obj.Label))
         _msg(translate("draft","Radial distance:") + " {}".format(self.r_distance))
         _msg(translate("draft","Tangential distance:") + " {}".format(self.tan_distance))
-        _msg(translate("draft","Number of circular layers:") + " {}".format(self.number))
+        _msg(translate("draft","Number of concentric circles:") + " {}".format(self.number))
         _msg(translate("draft","Symmetry parameter:") + " {}".format(self.symmetry))
         _msg(translate("draft","Center of rotation:")
              + " ({0}, {1}, {2})".format(self.center.x,

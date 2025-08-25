@@ -67,7 +67,10 @@ class CommandInsertNewPart:
 
     def Activated(self):
         panel = TaskAssemblyNewPart()
-        Gui.Control.showDialog(panel)
+        dialog = Gui.Control.showDialog(panel)
+        if dialog is not None:
+            dialog.setAutoCloseOnDeletedDocument(True)
+            dialog.setDocumentName(App.ActiveDocument.Name)
 
 
 class TaskAssemblyNewPart(JointObject.TaskAssemblyCreateJoint):
@@ -137,7 +140,7 @@ class TaskAssemblyNewPart(JointObject.TaskAssemblyCreateJoint):
                     translate("Assembly", "Save"), QtWidgets.QMessageBox.AcceptRole
                 )
                 cancelButton = msgBox.addButton(
-                    translate("Assembly", "Do not link"), QtWidgets.QMessageBox.RejectRole
+                    translate("Assembly", "Do not Link"), QtWidgets.QMessageBox.RejectRole
                 )
 
                 msgBox.exec_()

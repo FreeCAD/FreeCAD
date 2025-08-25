@@ -899,7 +899,7 @@ void CmdFemConstraintSpring::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintSpring");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Make spring on face"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make Spring Constraint"));
     doCommand(Doc,
               "App.activeDocument().addObject(\"Fem::ConstraintSpring\",\"%s\")",
               FeatName.c_str());
@@ -1128,10 +1128,10 @@ CmdFemDefineNodesSet::CmdFemDefineNodesSet()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Node Set by Poly");
-    sToolTipText = QT_TR_NOOP("Creates a node set by poly");
+    sMenuText = QT_TR_NOOP("Node Set by Polygon");
+    sToolTipText = QT_TR_NOOP("Creates a node set by polygon selection");
     sWhatsThis = "FEM_DefineNodesSet";
-    sStatusTip = QT_TR_NOOP("Create node set by Poly");
+    sStatusTip = sToolTipText;
     sPixmap = "FEM_CreateNodesSet";
 }
 
@@ -1280,10 +1280,10 @@ CmdFemDefineElementsSet::CmdFemDefineElementsSet()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Element Set by Poly");
-    sToolTipText = QT_TR_NOOP("Create element set by poly");
+    sMenuText = QT_TR_NOOP("Element Set From Polygon");
+    sToolTipText = QT_TR_NOOP("Creates a collection of elements selected by a polygon");
     sWhatsThis = "FEM_DefineElementsSet";
-    sStatusTip = QT_TR_NOOP("Create Element set by Poly");
+    sStatusTip = sToolTipText;
     sPixmap = "FEM_CreateElementsSet";
 }
 

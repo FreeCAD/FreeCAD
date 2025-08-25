@@ -172,10 +172,14 @@ public:
     template <typename T>
     std::vector<T> getObjects(std::vector<int> indexes);
 
+    bool pseudoEventFilter(QGraphicsItem *watched, QEvent *event) { return sceneEventFilter(watched, event); }
+
 protected:
-    QGIView* getQGIVByName(std::string name);
+    QGIView* getQGIVByName(std::string name) const;
 
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    void dragFinished();
+
     // Preselection events:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;

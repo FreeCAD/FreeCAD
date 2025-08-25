@@ -92,7 +92,10 @@ class CommandCreateBom:
 
     def Activated(self):
         self.panel = TaskAssemblyCreateBom()
-        Gui.Control.showDialog(self.panel)
+        dialog = Gui.Control.showDialog(self.panel)
+        if dialog is not None:
+            dialog.setAutoCloseOnDeletedDocument(True)
+            dialog.setDocumentName(App.ActiveDocument.Name)
 
 
 ######### Create Exploded View Task ###########
