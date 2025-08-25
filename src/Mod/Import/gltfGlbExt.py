@@ -43,7 +43,11 @@ def traverse_objects_once(objects):
             if mat_name not in materials:
                 materials.append(mat_name)
 
-        if  hasattr(obj, "TypeId") and obj.TypeId == "App::VarSet" and hasattr(obj, "PropertiesList"):
+        if (
+            hasattr(obj, "TypeId")
+            and obj.TypeId == "App::VarSet"
+            and hasattr(obj, "PropertiesList")
+        ):
             parent_name = path.split(".")[-1] if "." in path else path
             if parent_name not in varsets:
                 varsets[parent_name] = {}
