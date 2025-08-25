@@ -926,7 +926,9 @@ class _ResultsPurge(CommandManager):
     def Activated(self):
         import femresult.resulttools as resulttools
 
+        FreeCAD.ActiveDocument.openTransaction("Purge FEM results")
         resulttools.purge_results(self.active_analysis)
+        FreeCAD.ActiveDocument.commitTransaction()
 
 
 class _SolverCalculixContextManager:
@@ -1078,7 +1080,6 @@ class _SolverCalculiX(CommandManager):
                     has_nonlinear_material_obj = True
 
             if has_nonlinear_material_obj:
-                FreeCADGui.doCommand(f"{cm.cli_name}.GeometricalNonlinearity = 'nonlinear'")
                 FreeCADGui.doCommand(f"{cm.cli_name}.MaterialNonlinearity = 'nonlinear'")
 
 

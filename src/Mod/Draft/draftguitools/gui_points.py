@@ -103,9 +103,9 @@ class Point(gui_base_original.Creator):
         It should act as if the Enter key was pressed, or the OK button
         was pressed in the task panel.
         """
-        if not self.ui.mouse:
-            return
         if event_cb:
+            if not self.ui.mouse:
+                return
             event = event_cb.getEvent()
             if (event.getState() != coin.SoMouseButtonEvent.DOWN or
                 event.getButton() != event.BUTTON1):

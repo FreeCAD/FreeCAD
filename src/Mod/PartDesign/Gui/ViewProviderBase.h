@@ -43,7 +43,6 @@ public:
 
 protected:
     bool setEdit(int ModNum) override;
-    void unsetEdit(int ModNum) override;
 };
 
 } // namespace PartDesignGui

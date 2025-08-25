@@ -2747,8 +2747,9 @@ TopoShape& TopoShape::makeElementOffset2D(const TopoShape& shape,
                     haveWires = true;
                     break;
                 case TopAbs_FACE: {
-                    auto outerWire = s.splitWires(&sourceWires);
-                    sourceWires.push_back(outerWire);
+                    std::ranges::copy(s.getSubTopoShapes(TopAbs_WIRE),
+                                      std::back_inserter(sourceWires));
+
                     haveFaces = true;
                 } break;
                 default:

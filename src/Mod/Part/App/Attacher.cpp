@@ -1596,7 +1596,7 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
                 else {
                     Base::Console().warning(
                         "AttachEngine3D::calculateAttachedPlacement: path curve second derivative "
-                        "is below 1e-14, can't align x axis.\n");
+                        "is below 1e-14, cannot align X-axis.\n");
                     N = gp_Vec(0., 0., 0.);
                     B = gp_Vec(0., 0., 0.);  // redundant, just for consistency
                 }

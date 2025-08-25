@@ -42,7 +42,7 @@ namespace PartDesign
  */
 // TODO Add better documentation (2015-09-11, Fat-Zer)
 
-class PartDesignExport ShapeBinder : public PartDesign::FeatureRefine
+class PartDesignExport ShapeBinder : public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::ShapeBinder);
 

@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>This screen assists in creating and configuring a new BIM project in FreeCAD</string>
+      <string>This dialog assists in creating and configuring a new BIM project in FreeCAD</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

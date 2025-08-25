@@ -31,7 +31,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_styles">
        <property name="text">
-        <string>Line style:</string>
+        <string>Line style</string>
        </property>
       </widget>
      </item>
@@ -45,7 +45,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_width">
        <property name="text">
-        <string>Line width:</string>
+        <string>Line width</string>
        </property>
       </widget>
      </item>

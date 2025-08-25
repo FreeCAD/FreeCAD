@@ -222,7 +222,7 @@ public:
 
     /** @name handle preselection and selection of points */
     //@{
-    PreselectionResult detectPreselection(SoPickedPoint* Point, const SbVec2s& cursorPos);
+    PreselectionResult detectPreselection(SoPickedPoint* Point);
     /// The client is responsible for unref-ing the SoGroup to release the memory.
     SoGroup* getSelectedConstraints();
     //@}

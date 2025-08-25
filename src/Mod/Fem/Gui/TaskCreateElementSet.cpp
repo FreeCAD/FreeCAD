@@ -222,14 +222,14 @@ void myCopyResultsMesh(std::string oldName, std::string newName)
     Base::Console().warning("copy: %s and %s\n", oldName.c_str(), newName.c_str());
     if (oldName.compare(newName) == 0 && error == 0) {
         error = 1;
-        Base::Console().warning("Can't copy ResultMesh to ResultMesh: %s and %s\n",
+        Base::Console().warning("Cannot copy ResultMesh to ResultMesh: %s and %s\n",
                                 oldName.c_str(),
                                 newName.c_str());
         QMessageBox::warning(
             Gui::getMainWindow(),
             //        QMessageBox::warning(Gui::MainWindow(),
             qApp->translate("CmdFemCreateElementsSet", "Wrong selection"),
-            qApp->translate("CmdFemCreateElementsSet", "Can't copy ResultMesh to ResultMesh"));
+            qApp->translate("CmdFemCreateElementsSet", "Cannot copy ResultMesh to ResultMesh"));
     }
     if ((oldName.find("Result") == std::string::npos || newName.find("Result") == std::string::npos)
         && error == 0) {
@@ -239,7 +239,7 @@ void myCopyResultsMesh(std::string oldName, std::string newName)
             Gui::getMainWindow(),
             //        QMessageBox::warning(Gui::MainWindow(),
             qApp->translate("CmdFemCreateElementsSet", "Wrong selection"),
-            qApp->translate("CmdFemCreateElementsSet", "Mesh must be a Results mesh"));
+            qApp->translate("CmdFemCreateElementsSet", "Mesh must be a ResultMesh"));
     }
     if (error == 0) {
         Gui::Command::doCommand(Gui::Command::Doc,

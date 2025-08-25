@@ -137,7 +137,7 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
                 DlgActiveBody dia(
                     Gui::getMainWindow(),
                     doc,
-                    QObject::tr("To use Part Design, an active body object is required in the document. "
+                    QObject::tr("To use Part Design, an active body is required in the document. "
                                 "Activate a body (double-click) or create a new one."
                                 "\n\nFor legacy documents with Part Design objects lacking a body, "
                                 "use the migrate function in Part Design to place them into a body."));

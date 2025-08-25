@@ -2642,3 +2642,6 @@ QMainWindow QHeaderView::section::horizontal::first, QHeaderView::section::horiz
   border-left: 0px solid transparent;
 }
 
+Gui--Dialog--DocumentRecovery QTreeView {
+  border: 1px solid @GeneralBorderColor;
+}

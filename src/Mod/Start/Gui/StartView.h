@@ -38,6 +38,7 @@ class QEvent;
 class QGridLayout;
 class QLabel;
 class QListView;
+class QMdiSubWindow;
 class QScrollArea;
 class QStackedWidget;
 class QPushButton;
@@ -82,6 +83,7 @@ public:
 
 protected:
     void changeEvent(QEvent* e) override;
+    void showEvent(QShowEvent* event) override;
 
     void configureNewFileButtons(QLayout* layout) const;
     static void configureFileCardWidget(QListView* fileCardWidget);
@@ -98,8 +100,13 @@ protected:
 
     QString fileCardStyle() const;
 
+private Q_SLOTS:
+    void onMdiSubWindowActivated(QMdiSubWindow* subWindow);
+
 private:
     void retranslateUi();
+    void setListViewUpdatesEnabled(bool enabled);
+
     QStackedWidget* _contents = nullptr;
     Start::RecentFilesModel _recentFilesModel;
     Start::ExamplesModel _examplesModel;

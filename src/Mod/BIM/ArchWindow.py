@@ -921,7 +921,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
 
         if len(hingeIdxs) > 0:
             actionInvertOpening = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Window_Tree.svg"),
-                                                translate("Arch", "Invert opening direction"),
+                                                translate("Arch", "Invert Opening Direction"),
                                                 menu)
             QtCore.QObject.connect(actionInvertOpening,
                                    QtCore.SIGNAL("triggered()"),
@@ -930,7 +930,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
 
         if len(hingeIdxs) == 1:
             actionInvertHinge = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Window_Tree.svg"),
-                                              translate("Arch", "Invert hinge position"),
+                                              translate("Arch", "Invert Hinge Position"),
                                               menu)
             QtCore.QObject.connect(actionInvertHinge,
                                    QtCore.SIGNAL("triggered()"),
@@ -1458,15 +1458,15 @@ class _ArchWindowTaskPanel:
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Window elements", None))
         self.holeLabel.setText(QtGui.QApplication.translate("Arch", "Hole wire", None))
         self.holeNumber.setToolTip(QtGui.QApplication.translate("Arch", "The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire", None))
-        self.holeButton.setText(QtGui.QApplication.translate("Arch", "Pick selected", None))
+        self.holeButton.setText(QtGui.QApplication.translate("Arch", "Pick Selected", None))
         self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None))
         self.addButton.setText(QtGui.QApplication.translate("Arch", "Add", None))
         self.editButton.setText(QtGui.QApplication.translate("Arch", "Edit", None))
-        self.createButton.setText(QtGui.QApplication.translate("Arch", "Create/update component", None))
+        self.createButton.setText(QtGui.QApplication.translate("Arch", "Create/Update Component", None))
         self.title.setText(QtGui.QApplication.translate("Arch", "Base 2D object", None))
         self.wiretree.setHeaderLabels([QtGui.QApplication.translate("Arch", "Wires", None)])
         self.comptree.setHeaderLabels([QtGui.QApplication.translate("Arch", "Components", None)])
-        self.newtitle.setText(QtGui.QApplication.translate("Arch", "Create new component", None))
+        self.newtitle.setText(QtGui.QApplication.translate("Arch", "Create new Component", None))
         self.new1.setText(QtGui.QApplication.translate("Arch", "Name", None))
         self.new2.setText(QtGui.QApplication.translate("Arch", "Type", None))
         self.new3.setText(QtGui.QApplication.translate("Arch", "Wires", None))
@@ -1474,14 +1474,14 @@ class _ArchWindowTaskPanel:
         self.new5.setText(QtGui.QApplication.translate("Arch", "Offset", None))
         self.new6.setText(QtGui.QApplication.translate("Arch", "Hinge", None))
         self.new7.setText(QtGui.QApplication.translate("Arch", "Opening mode", None))
-        self.addp4.setText(QtGui.QApplication.translate("Arch", "+ Frame prop.", None))
+        self.addp4.setText(QtGui.QApplication.translate("Arch", "+ Frame property", None))
         self.addp4.setToolTip(QtGui.QApplication.translate("Arch", "If this is checked, the window's Frame property value will be added to the value entered here", None))
-        self.addp5.setText(QtGui.QApplication.translate("Arch", "+ Offset prop.", None))
+        self.addp5.setText(QtGui.QApplication.translate("Arch", "+ Offset property", None))
         self.addp5.setToolTip(QtGui.QApplication.translate("Arch", "If this is checked, the window's Offset property value will be added to the value entered here", None))
-        self.field6.setText(QtGui.QApplication.translate("Arch", "Get selected edge", None))
+        self.field6.setText(QtGui.QApplication.translate("Arch", "Get Selected Edge", None))
         self.field6.setToolTip(QtGui.QApplication.translate("Arch", "Press to retrieve the selected edge", None))
-        self.invertOpeningButton.setText(QtGui.QApplication.translate("Arch", "Invert opening direction", None))
-        self.invertHingeButton.setText(QtGui.QApplication.translate("Arch", "Invert hinge position", None))
+        self.invertOpeningButton.setText(QtGui.QApplication.translate("Arch", "Invert Opening Direction", None))
+        self.invertHingeButton.setText(QtGui.QApplication.translate("Arch", "Invert Hinge Position", None))
         for i in range(len(WindowPartTypes)):
             self.field2.setItemText(i, QtGui.QApplication.translate("Arch", WindowPartTypes[i], None))
         for i in range(len(WindowOpeningModes)):

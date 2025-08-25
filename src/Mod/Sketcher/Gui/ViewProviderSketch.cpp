@@ -744,7 +744,7 @@ void ViewProviderSketch::preselectAtPoint(Base::Vector2d point)
 
         std::unique_ptr<SoPickedPoint> Point(this->getPointOnRay(screencoords, viewer));
 
-        if (detectAndShowPreselection(Point.get(), screencoords) && sketchHandler) {
+        if (detectAndShowPreselection(Point.get()) && sketchHandler) {
             sketchHandler->applyCursor();
         }
     }
@@ -1086,8 +1086,10 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     doBoxSelection(DoubleClick::prvCursorPos, cursorPos, viewer);
                     rubberband->setWorking(false);
 
+                    // use draw(false, false) to avoid solver geometry with outdated construction flags
+                    draw(false, false);
+
                     // a redraw is required in order to clear the rubberband
-                    draw(true, false);
                     const_cast<Gui::View3DInventorViewer*>(viewer)->redraw();
                     setSketchMode(STATUS_NONE);
                     return true;
@@ -1380,7 +1382,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
 
         std::unique_ptr<SoPickedPoint> Point(this->getPointOnRay(cursorPos, viewer));
 
-        preselectChanged = detectAndShowPreselection(Point.get(), cursorPos);
+        preselectChanged = detectAndShowPreselection(Point.get());
     }
 
     switch (Mode) {
@@ -2260,14 +2262,13 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 }
 
-bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point, const SbVec2s& cursorPos)
+bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
 {
     assert(isInEditMode());
 
     if (Point) {
 
-        EditModeCoinManager::PreselectionResult result =
-            editCoinManager->detectPreselection(Point, cursorPos);
+        EditModeCoinManager::PreselectionResult result = editCoinManager->detectPreselection(Point);
 
         if (result.PointIndex != -1
             && result.PointIndex != preselection.PreselectPoint) {// if a new point is hit

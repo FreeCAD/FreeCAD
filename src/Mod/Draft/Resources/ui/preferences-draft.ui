@@ -113,7 +113,7 @@ faces are picked during commands.</string>
 plane orientation appears when picking points</string>
         </property>
         <property name="text">
-         <string>Show working plane tracker</string>
+         <string>Show working plane orientation</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>showPlaneTracker</cstring>

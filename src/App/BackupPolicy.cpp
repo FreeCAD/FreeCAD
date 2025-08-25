@@ -216,11 +216,27 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                     std::stringstream str;
                     Base::TimeInfo ti = fi.lastModified();
                     time_t s = ti.getTime_t();
-                    struct tm* timeinfo = localtime(&s);
-                    char buffer[100];
-
-                    strftime(buffer, sizeof(buffer), saveBackupDateFormat.c_str(), timeinfo);
-                    str << bn << buffer;
+                    std::tm local_tm {};
+#if defined(_WIN32)
+                    localtime_s(&local_tm, &s);  // Windows
+#else
+                    localtime_r(&s, &local_tm);  // POSIX
+#endif
+                    constexpr size_t bufferLength = 128;
+                    std::array<char, bufferLength> buffer {};
+                    if (size_t bytes = std::strftime(buffer.data(),
+                                                     bufferLength,
+                                                     saveBackupDateFormat.c_str(),
+                                                     &local_tm);
+                        bytes == 0) {
+                        // An error here is typically that we over-ran the maximum buffer length (
+                        // which should be a *very* unusual condition).
+                        Base::Console().error("Failed to create valid backup file name from format string:\n");
+                        Base::Console().error(saveBackupDateFormat.c_str());
+                        const auto knownGoodFormat {"%Y-%m-%d_%H-%M-%S"};
+                        std::strftime(buffer.data(), bufferLength, knownGoodFormat, &local_tm);
+                    }
+                    str << bn << buffer.data();
 
                     fn = str.str();
                     bool done = false;

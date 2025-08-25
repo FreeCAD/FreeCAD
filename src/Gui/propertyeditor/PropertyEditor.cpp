@@ -773,7 +773,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
         auto prop = *props.begin();
         if (prop->testStatus(App::Property::PropDynamic)
             && !prop->testStatus(App::Property::LockDynamic)) {
-            menu.addAction(tr("Rename property"))->setData(QVariant(MA_RenameProp));
+            menu.addAction(tr("Rename Property"))->setData(QVariant(MA_RenameProp));
         }
     }
 
@@ -790,7 +790,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
         }
     }
     if (canRemove) {
-        menu.addAction(tr("Remove Property"))->setData(QVariant(MA_RemoveProp));
+        menu.addAction(tr("Delete Property"))->setData(QVariant(MA_RemoveProp));
     }
 
     // add a separator between adding/removing properties and the rest

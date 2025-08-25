@@ -3869,7 +3869,7 @@ void CmdSketcherConstrainBlock::activated(int iMsg)
 
     for (std::vector<int>::iterator itg = GeoId.begin(); itg != GeoId.end(); ++itg) {
         // undo command open
-        openCommand(QT_TRANSLATE_NOOP("Command", "Add 'Block' constraint"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Add Block constraint"));
 
         bool safe = addConstraintSafely(Obj, [&]() {
             Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Block',%d))", (*itg));

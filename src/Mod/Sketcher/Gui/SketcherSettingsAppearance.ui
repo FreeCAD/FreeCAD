@@ -168,7 +168,7 @@
       <item row="1" column="3">
        <widget class="QLabel" name="label_pattern">
         <property name="text">
-         <string>Pattern</string>
+         <string>Line Type</string>
         </property>
        </widget>
       </item>
@@ -519,7 +519,7 @@
       <item row="9" column="3">
        <widget class="QComboBox" name="ExternalPattern">
         <property name="toolTip">
-         <string>Line pattern of external edges</string>
+         <string>Line pattern of external reference edges</string>
         </property>
         <property name="currentIndex">
          <number>-1</number>

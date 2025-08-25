@@ -2086,11 +2086,20 @@ bool CmdTechDrawHorizontalExtentDimension::isActive()
 
 void execExtent(Gui::Command* cmd, const std::string& dimType)
 {
+    const char* commandString = nullptr;
+    if (dimType == "DistanceX") {
+        commandString = QT_TRANSLATE_NOOP("Command", "Create Dimension DistanceX");
+    } else if (dimType == "DistanceY") {
+        commandString = QT_TRANSLATE_NOOP("Command", "Create Dimension DistanceY");
+    }
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", commandString));
+
     bool result = _checkDrawViewPart(cmd);
     if (!result) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect selection"),
                              QObject::tr("No view of a part in selection."));
+        Gui::Command::abortCommand();
         return;
     }
     ReferenceVector references2d;
@@ -2106,6 +2115,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
                 QMessageBox::warning(Gui::getMainWindow(),
                     QObject::tr("Incorrect selection"),
                     QObject::tr("Selection contains both 2D and 3D geometry"));
+                Gui::Command::abortCommand();
                 return;
             }
         }
@@ -2129,8 +2139,9 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
         references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
     if (geometryRefs2d == DimensionGeometry::isInvalid) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
+                             QObject::tr("Incorrect Selection"),
                              QObject::tr("Cannot make 2D extent dimension from selection"));
+        Gui::Command::abortCommand();
         return;
     }
 
@@ -2146,6 +2157,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
             QMessageBox::warning(Gui::getMainWindow(),
                                  QObject::tr("Incorrect Selection"),
                                  QObject::tr("Cannot make 3D extent dimension from selection"));
+            Gui::Command::abortCommand();
             return;
         }
     }
@@ -2156,6 +2168,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
     else {
         DrawDimHelper::makeExtentDim3d(partFeat, dimType, references3d);
     }
+    Gui::Command::commitCommand();
 }
 
 //===========================================================================

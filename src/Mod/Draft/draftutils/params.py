@@ -136,12 +136,16 @@ def _param_observer_callback_snapbar(value):
 
 
 def _param_observer_callback_snapwidget():
+    # import has to happen here to avoid circular imports
+    from draftutils import init_draft_statusbar
     if Gui.activeWorkbench().name() == "DraftWorkbench":
         init_draft_statusbar.hide_draft_statusbar()
         init_draft_statusbar.show_draft_statusbar()
 
 
 def _param_observer_callback_scalewidget():
+    # import has to happen here to avoid circular imports
+    from draftutils import init_draft_statusbar
     if Gui.activeWorkbench().name() == "DraftWorkbench":
         init_draft_statusbar.hide_draft_statusbar()
         init_draft_statusbar.show_draft_statusbar()

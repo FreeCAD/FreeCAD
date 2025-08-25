@@ -50,6 +50,7 @@ endif()
 
 
 generate_from_xml(FemMeshPy)
+generate_from_py_(FemMeshPy)
 
 
 SET(Python_SRCS

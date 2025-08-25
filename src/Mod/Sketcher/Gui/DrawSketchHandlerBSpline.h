@@ -91,7 +91,7 @@ public:
     void activated() override
     {
         DrawSketchHandlerBSplineBase::activated();
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch bSpline"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Sketch B-Spline"));
     }
 
 private:
@@ -595,7 +595,7 @@ private:
     {
         Gui::Command::abortCommand();
         tryAutoRecomputeIfNotSolve(sketchgui->getSketchObject());
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch B-spline"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Sketch B-Spline"));
 
         SplineDegree = 3;
         geoIds.clear();
@@ -733,7 +733,7 @@ private:
         // Restart the command
         Gui::Command::abortCommand();
         tryAutoRecomputeIfNotSolve(sketchgui->getSketchObject());
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch B-spline"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Sketch B-Spline"));
 
         // Add the necessary alignment geometries and constraints
         for (size_t i = 0; i < geoIds.size(); ++i) {

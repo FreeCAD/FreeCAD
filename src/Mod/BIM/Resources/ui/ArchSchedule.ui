@@ -174,7 +174,7 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
         <string>Deletes the selected line</string>
        </property>
        <property name="text">
-        <string>Del Row</string>
+        <string>Delete Row</string>
        </property>
        <property name="icon">
         <iconset theme="remove">

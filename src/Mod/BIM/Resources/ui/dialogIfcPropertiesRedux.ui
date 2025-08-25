@@ -60,7 +60,7 @@
      <item>
       <widget class="QPushButton" name="buttonDelete">
        <property name="text">
-        <string>Delete selected property/set</string>
+        <string>Delete Selected Property/Property Set</string>
        </property>
        <property name="icon">
         <iconset theme="gtk-delete">
