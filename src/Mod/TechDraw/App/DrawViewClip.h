@@ -31,6 +31,7 @@
 
 #include "DrawView.h"
 
+// ?? this (and DrawViewCollection) could use App::GroupExtension instead??
 
 namespace TechDraw
 {
