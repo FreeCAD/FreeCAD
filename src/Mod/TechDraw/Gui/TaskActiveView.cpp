@@ -146,7 +146,7 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
     //make sure there is an 3D MDI to grab!!
     if (!Gui::getMainWindow()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No Main Window"),
-                             QObject::tr("Can not find the main window"));
+                             QObject::tr("Cannot find the main window"));
         return nullptr;
     }
 
@@ -181,7 +181,7 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
     }
     if (!view3d) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No 3D Viewer"),
-                             QObject::tr("Can not find a 3D viewer"));
+                             QObject::tr("Cannot find a 3D viewer"));
         return nullptr;
     }
 
