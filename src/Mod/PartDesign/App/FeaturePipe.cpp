@@ -437,11 +437,6 @@ App::DocumentObjectExecReturn *Pipe::execute()
         } else if (getAddSubType() == FeatureAddSub::Subtractive) {
             maker = Part::OpCodes::Cut;
         }
-      
-        if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                                                                       "Result has multiple solids: enable 'Allow Compounds' in the active body."));
-        }
 
         if (!maker.empty()) {
             result.Tag = -getID(); // invert tag to differentiate the pre-boolean pipe 
@@ -451,6 +446,11 @@ App::DocumentObjectExecReturn *Pipe::execute()
             //                        but boolOp is the topoShape that is actually being copied
 
             boolOp.makeElementBoolean(maker.c_str(), {base, result});
+
+            if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
+                                                                        "Result has multiple solids: enable 'Allow Compounds' in the active body."));
+            }
             
             // store shape before refinement
             this->rawShape = boolOp;
