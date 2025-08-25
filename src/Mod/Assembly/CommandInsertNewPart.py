@@ -133,7 +133,10 @@ class TaskAssemblyNewPart(JointObject.TaskAssemblyCreateJoint):
                 msgBox = QtWidgets.QMessageBox()
                 msgBox.setIcon(QtWidgets.QMessageBox.Warning)
                 msgBox.setText(
-                    "If the new document is not saved the new part cannot be linked in the assembly."
+                    translate(
+                        "Assembly",
+                        "If the new document is not saved the new part cannot be linked in the assembly.",
+                    )
                 )
                 msgBox.setWindowTitle(translate("Assembly", "Save Document"))
                 saveButton = msgBox.addButton(
