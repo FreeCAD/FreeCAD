@@ -566,13 +566,23 @@ void StartupPostProcess::runWelcomeScreen()
 
     // Split our comma-separated list of already-migrated-to version directories into a set for easy
     // searching
+    auto splitCommas = [](const std::string &input) {
+        std::set<std::string> result;
+        std::stringstream ss(input);
+        std::string token;
+
+        while (std::getline(ss, token, ',')) {
+            result.insert(token);
+        }
+
+        return result;
+    };
+
     std::string offeredToMigrateToVersionedConfig =
         prefGroup->GetASCII("OfferedToMigrateToVersionedConfig", "");
     std::set<std::string> knownVersions;
     if (!offeredToMigrateToVersionedConfig.empty()) {
-        for (auto&& part : offeredToMigrateToVersionedConfig | std::views::split(',')) {
-            knownVersions.emplace(part.begin(), part.end());
-        }
+        knownVersions = splitCommas(offeredToMigrateToVersionedConfig);
     }
 
     auto joinCommas = [](const std::set<std::string>& s) {
