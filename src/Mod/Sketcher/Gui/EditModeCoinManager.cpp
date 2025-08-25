@@ -725,7 +725,7 @@ void EditModeCoinManager::setAxisPickStyle(bool on)
 }
 
 EditModeCoinManager::PreselectionResult
-EditModeCoinManager::detectPreselection(SoPickedPoint* Point, const SbVec2s& cursorPos)
+EditModeCoinManager::detectPreselection(SoPickedPoint* Point)
 {
     EditModeCoinManager::PreselectionResult result;
 
@@ -799,8 +799,7 @@ EditModeCoinManager::detectPreselection(SoPickedPoint* Point, const SbVec2s& cur
         }
     }
     // checking if a constraint is hit
-    result.ConstrIndices =
-        pEditModeConstraintCoinManager->detectPreselectionConstr(Point, cursorPos);
+    result.ConstrIndices = pEditModeConstraintCoinManager->detectPreselectionConstr(Point);
 
     return result;
 }
