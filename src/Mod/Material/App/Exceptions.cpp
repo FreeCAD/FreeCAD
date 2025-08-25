@@ -18,7 +18,7 @@
  *   <https://www.gnu.org/licenses/>.                                      *
  *                                                                         *
  **************************************************************************/
-
+#include "PreCompiled.h"
 #include "Exceptions.h"
 
 namespace Materials
