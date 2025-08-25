@@ -960,20 +960,35 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.getContents("Y1"), "=X1 ? 0 : (1 ? (X2 ? 2 : 3) : (X3 ? 4 : 5))")
         self.assertEqual(sheet.Y2, 98)
 
-    def testRejectImplicitRelOpChains(self):
-        """Test forbidden implicit chains of relational operators"""
+    def testImplicitRelOpChains(self):
+        """Test implicit chains of relational operators"""
         sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
 
-        def assert_rejected(expression: str):
-            sheet.set("Z1", expression)
+        def check(implicit: str, explicit: str):
+            sheet.set("Z1", implicit)
+            sheet.set("Z2", explicit)
             self.doc.recompute()
-            self.assertEqual(f"'{expression}", sheet.getContents("Z1"))
+            self.assertEqual(sheet.getContents("Z2"), sheet.getContents("Z1"))
 
-        assert_rejected("=1 < 2 < 3 ? 3 : 4")
-        assert_rejected("=1 < 2 < 3 < 4 ? 3 : 4")
-        assert_rejected("=A1 < B1 < 3 ? 3 : 4")
-        assert_rejected("=1 < C1 < D2 ? 3 : 4")
-        assert_rejected("=X1 < B1 < D1 < 0 ? 3 : 4")
+        check("=1 < 2 < 3 ? 3 : 4", "=(1 < 2) < 3 ? 3 : 4")
+        check("=1 < 2 < 3 < 4 ? 3 : 4", "=((1 < 2) < 3) < 4 ? 3 : 4")
+        check("=A1 < B1 < 3 ? 3 : 4", "=(A1 < B1) < 3 ? 3 : 4")
+        check("=1 < C1 < D2 ? 3 : 4", "=(1 < C1) < D2 ? 3 : 4")
+        check("=X1 < B1 < D1 < 0 ? 3 : 4", "=((X1 < B1) < D1) < 0 ? 3 : 4")
+
+    def testExplicitRelOpChaining(self):
+        """Testing explicit relational operators chaining."""
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
+
+        sheet.set("X1", "= (1 < 2) == (2 < 3)")
+        sheet.set("X2", "= (1 < 2) == (2 > 3)")
+        sheet.set("X3", "= (1 < 2) == 1")
+        sheet.set("X4", "= 0 == (1 > 2)")
+        self.doc.recompute()
+        self.assertTrue(sheet.get("X1"))
+        self.assertFalse(sheet.get("X2"))
+        self.assertTrue(sheet.get("X3"))
+        self.assertTrue(sheet.get("X4"))
 
     def testNumbers(self):
         """Test different numbers"""
@@ -2001,17 +2016,3 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.get("G8"), 10)
         self.assertEqual(sheet.get("G9"), 20)
         self.assertEqual(sheet.get("G10"), 10)
-
-    def testAcceptExplicitRelOpChaining(self):
-        """Testing explicit relational operators chaining."""
-        sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
-
-        sheet.set("X1", "= (1 < 2) == (2 < 3)")
-        sheet.set("X2", "= (1 < 2) == (2 > 3)")
-        sheet.set("X3", "= (1 < 2) == 1")
-        sheet.set("X4", "= 0 == (1 > 2)")
-        self.doc.recompute()
-        self.assertTrue(sheet.get("X1"))
-        self.assertFalse(sheet.get("X2"))
-        self.assertTrue(sheet.get("X3"))
-        self.assertTrue(sheet.get("X4"))
