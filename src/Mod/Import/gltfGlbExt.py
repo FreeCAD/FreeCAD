@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 """
-Fast and robust GLTF/GLB exporter patch with material name preservation and VarSet metadata injection for FreeCAD
+GLTF/GLB exporter patch with material name preservation and VarSet metadata injection for FreeCAD
 """
 
 import FreeCAD
@@ -43,7 +43,7 @@ def traverse_objects_once(objects):
             if mat_name not in materials:
                 materials.append(mat_name)
 
-        if hasattr(obj, "Name") and "VarSet" in obj.Name and hasattr(obj, "PropertiesList"):
+        if  hasattr(obj, "TypeId") and obj.TypeId == "App::VarSet" and hasattr(obj, "PropertiesList"):
             parent_name = path.split(".")[-1] if "." in path else path
             if parent_name not in varsets:
                 varsets[parent_name] = {}
@@ -79,8 +79,6 @@ def modify_gltf_data(gltf_data, materials, varsets):
         for i, material in enumerate(gltf_data["materials"]):
             if i < len(materials) and isinstance(material, dict) and "name" in material:
                 material["name"] = materials[i]
-
-    FreeCAD.Console.PrintMessage(f"{varsets}\n")
 
     # Inject VarSet data
     if "nodes" in gltf_data and varsets:
