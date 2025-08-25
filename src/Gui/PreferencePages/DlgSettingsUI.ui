@@ -477,7 +477,7 @@
       <item row="5" column="0">
        <widget class="Gui::PrefCheckBox" name="mouseWheelPassThroughCheckBox">
         <property name="toolTip">
-         <string>Auto pass through mouse wheel event on transparent dock overlay.</string>
+         <string>Automatically passes mouse wheel events through the transparent areas of an overlay panel</string>
         </property>
         <property name="text">
          <string>Automatically pass through of the mouse wheel</string>

@@ -249,7 +249,7 @@ std::string FaceMakerCheese::getUserFriendlyName() const
 
 std::string FaceMakerCheese::getBriefExplanation() const
 {
-    return {tr("Supports making planar faces with holes, but no islands inside holes.").toStdString()};
+    return {tr("Supports making planar faces with holes, but no islands inside holes").toStdString()};
 }
 
 void FaceMakerCheese::Build_Essence()
