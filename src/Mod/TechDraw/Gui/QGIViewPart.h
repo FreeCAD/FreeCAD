@@ -69,7 +69,6 @@ public:
     void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = nullptr ) override;
-    bool sceneEventFilter(QGraphicsItem *watched, QEvent *event) override;
 
     void toggleCache(bool state) override;
     void toggleCosmeticLines(bool state);
@@ -128,6 +127,7 @@ public:
     virtual double getVertexSize();
 
 protected:
+    bool sceneEventFilter(QGraphicsItem *watched, QEvent *event) override;
     QPainterPath drawPainterPath(TechDraw::BaseGeomPtr baseGeom) const;
     void drawViewPart();
     QGIFace* drawFace(TechDraw::FacePtr f, int idx);
@@ -149,7 +149,6 @@ protected:
     bool formatGeomFromCenterLine(std::string cTag, QGIEdge* item);
 
     bool showCenterMarks();
-    QList<QGraphicsItem*> m_vertexItems;
     bool showVertices();
 
 private:

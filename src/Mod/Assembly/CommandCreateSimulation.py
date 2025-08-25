@@ -90,7 +90,10 @@ class CommandCreateSimulation:
             return
 
         self.panel = TaskAssemblyCreateSimulation()
-        Gui.Control.showDialog(self.panel)
+        dialog = Gui.Control.showDialog(self.panel)
+        if dialog is not None:
+            dialog.setAutoCloseOnDeletedDocument(True)
+            dialog.setDocumentName(App.ActiveDocument.Name)
 
 
 ######### Simulation Object ###########
@@ -267,7 +270,10 @@ class ViewProviderSimulation:
             Gui.ActiveDocument.setEdit(assembly)
 
         panel = TaskAssemblyCreateSimulation(vpDoc.Object)
-        Gui.Control.showDialog(panel)
+        dialog = Gui.Control.showDialog(panel)
+        if dialog is not None:
+            dialog.setAutoCloseOnDeletedDocument(True)
+            dialog.setDocumentName(App.ActiveDocument.Name)
 
         return True
 
@@ -526,7 +532,7 @@ class MotionEditDialog:
         self.help_label0 = QLabel(
             translate(
                 "Assembly",
-                "In capital are variables that you need to replace with actual values. More details about each example in it's tooltip.",
+                "In capital are variables that you need to replace with actual values. More details about each example in its tooltip.",
             ),
             self.dialog,
         )

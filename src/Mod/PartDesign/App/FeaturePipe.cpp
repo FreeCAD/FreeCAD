@@ -238,7 +238,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
             for (auto& subSet : multisections) {
                 if (!subSet.first->isDerivedFrom<Part::Feature>())
                     return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                                                                               "Pipe: All sections need to be part features"));
+                                                                               "Pipe: All sections need to be Part features"));
 
                 // if the section is an object's face then take just the face
                 Part::TopoShape shape = getSectionShape(subSet.first, subSet.second);
@@ -437,6 +437,11 @@ App::DocumentObjectExecReturn *Pipe::execute()
         } else if (getAddSubType() == FeatureAddSub::Subtractive) {
             maker = Part::OpCodes::Cut;
         }
+      
+        if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
+                                                                       "Result has multiple solids: enable 'Allow Compounds' in the active body."));
+        }
 
         if (!maker.empty()) {
             result.Tag = -getID(); // invert tag to differentiate the pre-boolean pipe 
@@ -446,6 +451,10 @@ App::DocumentObjectExecReturn *Pipe::execute()
             //                        but boolOp is the topoShape that is actually being copied
 
             boolOp.makeElementBoolean(maker.c_str(), {base, result});
+            
+            // store shape before refinement
+            this->rawShape = boolOp;
+            boolOp = refineShapeIfActive(boolOp);
             Shape.setValue(getSolid(boolOp));
         } else {
             return new App::DocumentObjectExecReturn(
@@ -647,3 +656,5 @@ void Pipe::handleChangedPropertyName(Base::XMLReader& reader,
         ProfileBased::handleChangedPropertyName(reader, TypeName, PropName);
     }
 }
+
+

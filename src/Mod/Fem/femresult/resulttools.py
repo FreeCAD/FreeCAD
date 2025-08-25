@@ -80,7 +80,7 @@ def purge_postprocessing_objects(analysis):
             analysis.Document.removeObject(m.Name)
     analysis.Document.recompute()
 
-    # remove visulizations
+    # remove visualizations
     for m in analysis.Group:
         if is_of_type(m, "Fem::FemPostVisualization"):
             analysis.Document.removeObject(m.Name)

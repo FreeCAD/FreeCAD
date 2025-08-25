@@ -42,6 +42,7 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
 from draftguitools import gui_base_original
+from draftguitools import gui_tool_utils
 from draftutils import gui_utils
 from draftutils import params
 from draftutils import todo
@@ -163,6 +164,12 @@ class Point(gui_base_original.Creator):
         super().finish()
         if cont or (cont is None and self.ui and self.ui.continueMode):
             self.Activated()
+
+    def get_hints(self):
+        return [Gui.InputHint(translate("draft", "%1 pick point"), Gui.UserInput.MouseLeft)] \
+            + gui_tool_utils._get_hint_xyz_constrain() \
+            + gui_tool_utils._get_hint_mod_constrain() \
+            + gui_tool_utils._get_hint_mod_snap()
 
 
 Gui.addCommand('Draft_Point', Point())

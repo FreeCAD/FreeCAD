@@ -27,7 +27,7 @@
    <item>
     <widget class="QPushButton" name="buttonTop">
      <property name="toolTip">
-      <string>Sets the working plane to the XY plane (ground plane)</string>
+      <string>Sets the working plane to the XY-plane (ground plane)</string>
      </property>
      <property name="text">
       <string>Top (XY)</string>
@@ -37,7 +37,7 @@
    <item>
     <widget class="QPushButton" name="buttonFront">
      <property name="toolTip">
-      <string>Sets the working plane to the XZ plane (front plane)</string>
+      <string>Sets the working plane to the XZ-plane (front plane)</string>
      </property>
      <property name="text">
       <string>Front (XZ)</string>
@@ -47,7 +47,7 @@
    <item>
     <widget class="QPushButton" name="buttonSide">
      <property name="toolTip">
-      <string>Sets the working plane to the YZ plane (side plane)</string>
+      <string>Sets the working plane to the YZ-plane (side plane)</string>
      </property>
      <property name="text">
       <string>Side (YZ)</string>

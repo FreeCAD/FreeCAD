@@ -2178,159 +2178,116 @@ QString EditModeConstraintCoinManager::getPresentationString(const Constraint* c
     return sDimFmt;
 }
 
-std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPickedPoint* Point,
-                                                                      const SbVec2s& cursorPos)
+std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPickedPoint* Point)
 {
     std::set<int> constrIndices;
     SoPath* path = Point->getPath();
 
-    // Get the constraints' tail
+    // The picked node must be a child of the main constraint group.
     SoNode* tailFather2 = path->getNode(path->getLength() - 3);
-
     if (tailFather2 != editModeScenegraphNodes.constrGroup) {
         return constrIndices;
     }
 
+    SoNode* tail = path->getTail();  // This is the SoImage or SoDatumLabel node that was picked.
+    SoSeparator* sep = static_cast<SoSeparator*>(path->getNode(path->getLength() - 2));
 
-    SoNode* tail = path->getTail();
-    SoNode* tailFather = path->getNode(path->getLength() - 2);
+    for (int childIdx = 0; childIdx < sep->getNumChildren(); ++childIdx) {
+        if (tail == sep->getChild(childIdx) && dynamic_cast<SoImage*>(tail)) {
+            // The SoInfo node with the ID always follows the SoImage node.
+            if (childIdx + 1 < sep->getNumChildren()) {
+                SoInfo* constrIdsNode = dynamic_cast<SoInfo*>(sep->getChild(childIdx + 1));
+                if (!constrIdsNode) {
+                    continue;
+                }
 
-    for (int i = 0; i < editModeScenegraphNodes.constrGroup->getNumChildren(); ++i) {
-        if (editModeScenegraphNodes.constrGroup->getChild(i) == tailFather) {
-            SoSeparator* sep = static_cast<SoSeparator*>(tailFather);
-            if (sep->getNumChildren()
-                > static_cast<int>(ConstraintNodePosition::FirstConstraintIdIndex)) {
-                SoInfo* constrIds = nullptr;
-                if (tail
-                    == sep->getChild(static_cast<int>(ConstraintNodePosition::FirstIconIndex))) {
-                    // First icon was hit
-                    constrIds = static_cast<SoInfo*>(sep->getChild(
-                        static_cast<int>(ConstraintNodePosition::FirstConstraintIdIndex)));
+                QString constrIdsStr =
+                    QString::fromLatin1(constrIdsNode->string.getValue().getString());
+
+                if (combinedConstrBoxes.count(constrIdsStr)) {
+
+                    // 1. Get the icon group size in device independent pixels.
+                    SbVec3s iconGroupSize = getDisplayedSize(static_cast<SoImage*>(tail));
+
+                    // 2. Get the icon group's absolute world position from its
+                    // SoZoomTranslation node.
+                    SoZoomTranslation* translation = nullptr;
+                    SoNode* firstTransNode = sep->getChild(
+                        static_cast<int>(ConstraintNodePosition::FirstTranslationIndex));
+                    if (dynamic_cast<SoZoomTranslation*>(firstTransNode)) {
+                        translation = static_cast<SoZoomTranslation*>(firstTransNode);
+                    }
+                    if (!translation) {
+                        continue;
+                    }
+
+                    SbVec3f absPos = translation->abPos.getValue();
+                    SbVec3f trans = translation->translation.getValue();
+                    float scaleFactor = translation->getScaleFactor();
+
+                    // If this is the second icon in a pair, add its relative translation.
+                    SoNode* secondIconNode =
+                        sep->getChild(static_cast<int>(ConstraintNodePosition::SecondIconIndex));
+                    if (tail == secondIconNode) {
+                        auto translation2 = static_cast<SoZoomTranslation*>(sep->getChild(
+                            static_cast<int>(ConstraintNodePosition::SecondTranslationIndex)));
+                        absPos += translation2->abPos.getValue();
+                        trans += translation2->translation.getValue();
+                        scaleFactor = translation2->getScaleFactor();
+                    }
+
+                    // 3. Calculate the icon's center in world coordinates.
+                    SbVec3f iconGroupWorldPos = absPos + scaleFactor * trans;
+
+                    // 4. Project both the icon's center and the picked point to screen coordinates
+                    // (device independent pixels). This is the key: both points are now in the same
+                    // coordinate system.
+                    SbVec2f iconGroupScreenCenter =
+                        ViewProviderSketchCoinAttorney::getScreenCoordinates(
+                            viewProvider,
+                            SbVec2f(iconGroupWorldPos[0], iconGroupWorldPos[1]));
+
+                    SbVec2f cursorScreenPos = ViewProviderSketchCoinAttorney::getScreenCoordinates(
+                        viewProvider,
+                        SbVec2f(Point->getPoint()[0], Point->getPoint()[1]));
+
+                    // 5. Calculate cursor position relative to the icon group's top-left corner.
+                    //    - QRect/QImage assumes a top-left origin (Y increases downwards).
+                    //    - Coin3D screen coordinates have a bottom-left origin (Y increases
+                    //    upwards).
+                    //    - We must flip the Y-axis for the check.
+                    int relativeX = static_cast<int>(cursorScreenPos[0] - iconGroupScreenCenter[0]
+                                                     + iconGroupSize[0] / 2.0f);
+                    int relativeY = static_cast<int>(iconGroupScreenCenter[1] - cursorScreenPos[1]
+                                                     + iconGroupSize[1] / 2.0f);
+
+                    // 6. Perform the hit test on each icon in the group.
+                    for (const auto& boxInfo : combinedConstrBoxes[constrIdsStr]) {
+                        if (boxInfo.first.contains(relativeX, relativeY)) {
+                            constrIndices.insert(boxInfo.second.begin(), boxInfo.second.end());
+                        }
+                    }
                 }
                 else {
-                    // Assume second icon was hit
-                    if (static_cast<int>(ConstraintNodePosition::SecondConstraintIdIndex)
-                        < sep->getNumChildren()) {
-                        constrIds = static_cast<SoInfo*>(sep->getChild(
-                            static_cast<int>(ConstraintNodePosition::SecondConstraintIdIndex)));
+                    // Simple, non-merged icon.
+                    QStringList constrIdStrings = constrIdsStr.split(QStringLiteral(","));
+                    for (const QString& id : constrIdStrings) {
+                        constrIndices.insert(id.toInt());
                     }
                 }
 
-                if (constrIds) {
-                    QString constrIdsStr =
-                        QString::fromLatin1(constrIds->string.getValue().getString());
-                    if (combinedConstrBoxes.count(constrIdsStr) && dynamic_cast<SoImage*>(tail)) {
-                        // If it's a combined constraint icon
-
-                        // Screen dimensions of the icon
-                        SbVec3s iconSize = getDisplayedSize(static_cast<SoImage*>(tail));
-                        // Center of the icon
-                        // SbVec2f iconCoords = viewer->screenCoordsOfPath(path);
-
-                        // The use of the Path to get the screen coordinates to get the icon center
-                        // coordinates does not work.
-                        //
-                        // This implementation relies on the use of ZoomTranslation to get the
-                        // absolute and relative positions of the icons.
-                        //
-                        // In the case of second icons (the same constraint has two icons at two
-                        // different positions), the translation vectors have to be added, as the
-                        // second ZoomTranslation operates on top of the first.
-                        //
-                        // Coordinates are projected on the sketch plane and then to the screen in
-                        // the interval [0 1] Then this result is converted to pixels using the
-                        // scale factor.
-
-                        SbVec3f absPos;
-                        SbVec3f trans;
-                        float scaleFactor;
-
-                        auto translation = static_cast<SoZoomTranslation*>(
-                            static_cast<SoSeparator*>(tailFather)
-                                ->getChild(static_cast<int>(
-                                    ConstraintNodePosition::FirstTranslationIndex)));
-
-                        absPos = translation->abPos.getValue();
-
-                        trans = translation->translation.getValue();
-
-                        scaleFactor = translation->getScaleFactor();
-
-                        if (tail
-                            != sep->getChild(
-                                static_cast<int>(ConstraintNodePosition::FirstIconIndex))) {
-                            auto translation2 = static_cast<SoZoomTranslation*>(
-                                static_cast<SoSeparator*>(tailFather)
-                                    ->getChild(static_cast<int>(
-                                        ConstraintNodePosition::SecondTranslationIndex)));
-
-                            absPos += translation2->abPos.getValue();
-
-                            trans += translation2->translation.getValue();
-
-                            scaleFactor = translation2->getScaleFactor();
-                        }
-
-                        // Only the translation is scaled because this is how SoZoomTranslation
-                        // works
-                        SbVec3f constrPos = absPos + scaleFactor * trans;
-
-                        SbVec2f iconCoords = ViewProviderSketchCoinAttorney::getScreenCoordinates(
-                            viewProvider,
-                            SbVec2f(constrPos[0], constrPos[1]));
-
-                        // cursorPos is SbVec2s in screen coordinates coming from SoEvent in
-                        // mousemove
-                        //
-                        // Coordinates of the mouse cursor on the icon, origin at top-left for Qt
-                        // but bottom-left for OIV.
-                        // The coordinates are needed in Qt format, i.e. from top to bottom.
-                        int iconX = cursorPos[0] - iconCoords[0] + iconSize[0] / 2,
-                            iconY = cursorPos[1] - iconCoords[1] + iconSize[1] / 2;
-                        iconY = iconSize[1] - iconY;
-
-                        for (ConstrIconBBVec::iterator b =
-                                 combinedConstrBoxes[constrIdsStr].begin();
-                             b != combinedConstrBoxes[constrIdsStr].end();
-                             ++b) {
-
-#ifdef FC_DEBUG
-                            // Useful code to debug coordinates and bounding boxes that does
-                            // not need to be compiled in for any debug operations.
-
-                            /*Base::Console().log("Abs(%f,%f),Trans(%f,%f),Coords(%d,%d),iCoords(%f,%f),icon(%d,%d),isize(%d,%d),boundingbox([%d,%d],[%d,%d])\n",
-                             * absPos[0],absPos[1],trans[0], trans[1], cursorPos[0],
-                             * cursorPos[1], iconCoords[0], iconCoords[1], iconX, iconY,
-                             * iconSize[0], iconSize[1],
-                             * b->first.topLeft().x(),b->first.topLeft().y(),b->first.bottomRight().x(),b->first.bottomRight().y());*/
-#endif
-
-                            if (b->first.contains(iconX, iconY)) {
-                                // We've found a bounding box that contains the mouse pointer!
-                                for (std::set<int>::iterator k = b->second.begin();
-                                     k != b->second.end();
-                                     ++k) {
-                                    constrIndices.insert(*k);
-                                }
-                            }
-                        }
-                    }
-                    else {
-                        // It's a constraint icon, not a combined one
-                        QStringList constrIdStrings = constrIdsStr.split(QStringLiteral(","));
-                        while (!constrIdStrings.empty()) {
-                            auto constraintid = constrIdStrings.takeAt(0).toInt();
-                            constrIndices.insert(constraintid);
-                        }
-                    }
-                }
+                return constrIndices;
             }
-            else {
-                // other constraint icons - eg radius...
-                constrIndices.clear();
+        }
+    }
+
+    // Handle selection of datum labels (e.g., radius, distance dimensions).
+    if (dynamic_cast<SoDatumLabel*>(tail)) {
+        for (int i = 0; i < editModeScenegraphNodes.constrGroup->getNumChildren(); ++i) {
+            if (editModeScenegraphNodes.constrGroup->getChild(i) == sep) {
                 constrIndices.insert(i);
+                break;
             }
-            break;
         }
     }
 

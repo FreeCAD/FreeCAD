@@ -181,7 +181,7 @@ def getHTMLTemplate():
             "BIM",
             "The default WebGL export template is not available at path:"
             " {}\n\nPlease check your FreeCAD installation or provide a "
-            "custom template under menu Preferences -> Import-Export -> WebGL.",
+            "custom template under menu Preferences → Import-Export → WebGL.",
         ).format(default_template_path)
 
         # Use getMainWindow() as parent following FreeCAD patterns

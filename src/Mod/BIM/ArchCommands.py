@@ -1183,10 +1183,10 @@ class SurveyTaskPanel:
 
     def retranslateUi(self,dlg):
         self.form.setWindowTitle(QtGui.QApplication.translate("Arch", "Survey", None))
-        self.addButton.setText(QtGui.QApplication.translate("Arch", "Set description", None))
+        self.addButton.setText(QtGui.QApplication.translate("Arch", "Set Description", None))
         self.clearButton.setText(QtGui.QApplication.translate("Arch", "Clear", None))
-        self.copyLength.setText(QtGui.QApplication.translate("Arch", "Copy Length", None))
-        self.copyArea.setText(QtGui.QApplication.translate("Arch", "Copy Area", None))
+        self.copyLength.setText(QtGui.QApplication.translate("Arch", "Copy Total Length", None))
+        self.copyArea.setText(QtGui.QApplication.translate("Arch", "Copy Total Area", None))
         self.export.setText(QtGui.QApplication.translate("Arch", "Export CSV", None))
         self.tree.setHeaderLabels([QtGui.QApplication.translate("Arch", "Description", None),
                                    QtGui.QApplication.translate("Arch", "Length", None),

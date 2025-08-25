@@ -47,7 +47,7 @@ from draftutils import gui_utils
 from draftutils import params
 from draftutils import todo
 from draftutils import utils
-from draftutils.messages import _err, _msg, _toolmsg
+from draftutils.messages import _err, _toolmsg
 from draftutils.translate import translate
 
 
@@ -134,8 +134,6 @@ class BezCurve(gui_lines.Line):
                     if (self.point-self.node[0]).Length < utils.tolerance():
                         self.undolast()
                         self.finish(cont=None, closed=True)
-                        _msg(translate("draft",
-                                       "Bézier curve has been closed"))
 
     def undolast(self):
         """Undo last line segment."""
@@ -143,7 +141,7 @@ class BezCurve(gui_lines.Line):
             self.node.pop()
             self.bezcurvetrack.update(self.node, degree=self.degree)
             self.obj.Shape = self.updateShape(self.node)
-            _msg(translate("draft", "Last point has been removed"))
+            self.update_hints()
 
     def drawUpdate(self, point):
         """Draw and update to the curve."""
@@ -155,6 +153,7 @@ class BezCurve(gui_lines.Line):
         else:
             self.obj.Shape = self.updateShape(self.node)
             _toolmsg(translate("draft", "Pick next point"))
+        self.update_hints()
 
     def updateShape(self, pts):
         """Create shape for display during creation process."""
@@ -343,7 +342,6 @@ class CubicBezCurve(gui_lines.Line):
                             _sym = 2 * self.node[0] - self.node[1]
                             self.node.append(_sym)
                             self.finish(cont=None, closed=True)
-                            _msg(translate("draft", "Bézier curve has been closed"))
         # Release the held button
         if arg["State"] == "UP" and arg["Button"] == "BUTTON1":
             if arg["Position"] == self.pos:
@@ -378,7 +376,7 @@ class CubicBezCurve(gui_lines.Line):
             self.node.pop()
             self.bezcurvetrack.update(self.node, degree=self.degree)
             self.obj.Shape = self.updateShape(self.node)
-            _msg(translate("draft", "Last point has been removed"))
+            self.update_hints()
 
     def drawUpdate(self, point):
         """Create shape for display during creation process."""
@@ -391,6 +389,7 @@ class CubicBezCurve(gui_lines.Line):
             # is a knot
             self.obj.Shape = self.updateShape(self.node[:-1])
             _toolmsg(translate("draft", "Click and drag to define next knot"))
+        self.update_hints()
 
     def updateShape(self, pts):
         """Create shape for display during creation process."""
@@ -476,6 +475,17 @@ class CubicBezCurve(gui_lines.Line):
         gui_base_original.Creator.finish(self)
         if cont or (cont is None and self.ui and self.ui.continueMode):
             self.Activated()
+
+    def get_hints(self):
+        if len(self.node) < 2:
+            return [Gui.InputHint(
+                translate("draft", "%1 click and drag to define first point and knot"),
+                Gui.UserInput.MouseLeft
+            )]
+        return [Gui.InputHint(
+            translate("draft", "%1 click and drag to define next point and knot"),
+            Gui.UserInput.MouseLeft
+        )]
 
 
 Gui.addCommand('Draft_CubicBezCurve', CubicBezCurve())

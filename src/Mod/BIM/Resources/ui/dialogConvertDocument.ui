@@ -37,7 +37,7 @@
    <item>
     <widget class="QCheckBox" name="checkAskAgain">
      <property name="toolTip">
-      <string>Prevents further prompts when creating new FreeCAD documents. New documents will not be converted to IFC automatically, but conversion remains possible later via Utils → Make IFC Project.</string>
+      <string>Prevents further prompts when creating new FreeCAD documents. New documents will not be converted to IFC automatically, but conversion remains possible later via Utils → Create IFC Project.</string>
      </property>
      <property name="text">
       <string>Do not ask again</string>

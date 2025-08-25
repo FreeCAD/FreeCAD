@@ -307,11 +307,10 @@ Py::Object AbstractSplitViewPy::cast_to_base(const Py::Tuple&)
 
 Py::Object AbstractSplitViewPy::repr()
 {
-    std::ostringstream s_out;
     if (!getSplitViewPtr())
         throw Py::RuntimeError("Cannot print representation of deleted object");
-    s_out << "AbstractSplitView";
-    return Py::String(s_out.str());
+
+    return Py::String("AbstractSplitView");
 }
 
 // Since with PyCXX it's not possible to make a sub-class of MDIViewPy

@@ -206,6 +206,21 @@ class Ellipse(gui_base_original.Creator):
             self.rect.on()
             if self.planetrack:
                 self.planetrack.set(point)
+            self.update_hints()
+
+    def get_hints(self):
+        if len(self.node) == 0:
+            hints = [
+                Gui.InputHint(translate("draft", "%1 pick first point"), Gui.UserInput.MouseLeft)
+            ]
+        else:
+            hints = [
+                Gui.InputHint(translate("draft", "%1 pick opposite point"), Gui.UserInput.MouseLeft)
+            ]
+        return hints \
+            + gui_tool_utils._get_hint_xyz_constrain() \
+            + gui_tool_utils._get_hint_mod_constrain() \
+            + gui_tool_utils._get_hint_mod_snap()
 
 
 Gui.addCommand('Draft_Ellipse', Ellipse())

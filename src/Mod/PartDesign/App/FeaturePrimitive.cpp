@@ -491,9 +491,9 @@ PROPERTY_SOURCE(PartDesign::Torus, PartDesign::FeaturePrimitive)
 
 Torus::Torus()
 {
-    ADD_PROPERTY_TYPE(Radius1,(10.0),"Torus",App::Prop_None,"Radius in local xy-plane");
+    ADD_PROPERTY_TYPE(Radius1,(10.0),"Torus",App::Prop_None,"Radius in local XY-plane");
     Radius1.setConstraints(&quantityRange);
-    ADD_PROPERTY_TYPE(Radius2,(2.0),"Torus",App::Prop_None,"Radius in local xz-plane");
+    ADD_PROPERTY_TYPE(Radius2,(2.0),"Torus",App::Prop_None,"Radius in local XZ-plane");
     Radius2.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Angle1,(-180.0),"Torus",App::Prop_None,"The angle of the torus");
     Angle1.setConstraints(&torusRangeV);

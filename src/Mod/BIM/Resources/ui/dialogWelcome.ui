@@ -97,7 +97,7 @@
        <item>
         <widget class="QLabel" name="label_4">
          <property name="text">
-          <string>FreeCAD is a complex application. For those new to FreeCAD, or without prior experience in 3D modelling or BIM, it is recommended to begin with the &lt;a href=&quot;https://wiki.freecad.org/BIM_ingame_tutorial&quot;&gt;BIM tutorial&lt;/a&gt;. This can also be accessed under menu &lt;span style=&quot; font-weight:600;&quot;&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;).</string>
+          <string>FreeCAD is a complex application. For those new to FreeCAD, or without prior experience in 3D modelling or BIM, it is recommended to begin with the &lt;a href=&quot;https://wiki.freecad.org/BIM_ingame_tutorial&quot;&gt;BIM tutorial&lt;/a&gt;. This can also be accessed under menu &lt;span style=&quot; font-weight:600;&quot;&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;.</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>

@@ -60,6 +60,7 @@ def activateJoint(index):
     dialog = Gui.doCommandEval("dialog")
     if dialog is not None:
         dialog.setAutoCloseOnTransactionChange(True)
+        dialog.setAutoCloseOnDeletedDocument(True)
         dialog.setDocumentName(App.ActiveDocument.Name)
 
 
@@ -515,6 +516,19 @@ class CommandToggleGrounded:
             # If you select 2 solids (bodies for example) within an assembly.
             # There'll be a single sel but 2 SubElementNames.
             for sub in sel.SubElementNames:
+                # First check if selection is a grounded object
+                resolved = sel.Object.resolveSubElement(sub)
+                if resolved:
+                    obj = resolved[0]
+                    if hasattr(obj, "ObjectToGround"):
+                        commands = (
+                            "doc = App.ActiveDocument\n"
+                            f'doc.removeObject("{obj.Name}")\n'
+                            "doc.recompute()\n"
+                        )
+                        Gui.doCommand(commands)
+                        continue
+
                 ref = [sel.Object, [sub, sub]]
                 moving_part = UtilsAssembly.getMovingPart(assembly, ref)
 

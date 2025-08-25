@@ -583,7 +583,7 @@ instead of Draft or Part objects. This overrides the 'Import As' setting</string
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>All objects containing faces will be exported as 3D polyfaces</string>
+           <string>All objects containing faces will be exported as 3D polyface meshes</string>
           </property>
           <property name="text">
            <string>Export 3D objects as polyface meshes</string>

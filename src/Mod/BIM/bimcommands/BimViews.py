@@ -86,13 +86,13 @@ class BIM_Views:
 
             # set button
             self.dialog.menu = QtGui.QMenu()
-            for button in [("Active", translate("BIM","Active (default)")),
-                            ("AddLevel", translate("BIM","Add level")),
-                            ("AddProxy", translate("BIM","Add proxy")),
+            for button in [("Active", translate("BIM","Active")),
+                            ("AddLevel", translate("BIM","Add Level")),
+                            ("AddProxy", translate("BIM","Add Proxy WP")),
                             ("Delete", translate("BIM","Delete")),
-                            ("Toggle", translate("BIM","Toggle on/off")),
+                            ("Toggle", translate("BIM","Toggle Visibility")),
                             ("Isolate", translate("BIM","Isolate")),
-                            ("SaveView", translate("BIM","Save view position")),
+                            ("SaveView", translate("BIM","Save View Position")),
                             ("Rename", translate("BIM","Rename"))]:
                 action = QtGui.QAction(button[1])
 
@@ -121,7 +121,7 @@ class BIM_Views:
             self.dialog.buttonAddLevel.setToolTip(translate("BIM","Creates a new level"))
             self.dialog.buttonAddProxy.setToolTip(translate("BIM","Creates a new working plane proxy"))
             self.dialog.buttonDelete.setToolTip(translate("BIM","Deletes the selected item"))
-            self.dialog.buttonToggle.setToolTip(translate("BIM","Toggles selected items on/off"))
+            self.dialog.buttonToggle.setToolTip(translate("BIM","Toggles the visibility of selected items"))
             self.dialog.buttonIsolate.setToolTip(translate("BIM","Turns all items off except the selected ones"))
             self.dialog.buttonSaveView.setToolTip(translate("BIM","Saves the current camera position to the selected items"))
             self.dialog.buttonRename.setToolTip(translate("BIM","Renames the selected item"))

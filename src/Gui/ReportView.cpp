@@ -590,7 +590,7 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
     menu->addSeparator();
 
     auto displayMenu = new QMenu(optionMenu);
-    displayMenu->setTitle(tr("Display message types"));
+    displayMenu->setTitle(tr("Display Message Types"));
     optionMenu->addMenu(displayMenu);
 
     QAction* logMsg = displayMenu->addAction(tr("Normal Messages"), this, &ReportOutput::onToggleNormalMessage);
@@ -614,7 +614,7 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
     logCritical->setChecked(bCritical);
 
     auto showOnMenu = new QMenu (optionMenu);
-    showOnMenu->setTitle(tr("Show report view on"));
+    showOnMenu->setTitle(tr("Show Report View On"));
     optionMenu->addMenu(showOnMenu);
 
     QAction* showNormAct = showOnMenu->addAction(tr("Normal Messages"), this, &ReportOutput::onToggleShowReportViewOnNormalMessage);
@@ -877,3 +877,4 @@ void ReportOutput::OnChange(Base::Subject<const char*> &rCaller, const char * sR
 }
 
 #include "moc_ReportView.cpp"
+
