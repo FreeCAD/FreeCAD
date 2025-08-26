@@ -724,21 +724,11 @@ void IconFolders::accept()
         prefList << QString::fromUtf8(path.c_str());
     }
     if (currentPaths != prefList) {
-        QMessageBox msgBox(this);
-        msgBox.setWindowTitle(tr("Restart required"));
-        msgBox.setText(tr("Changing icon folders only takes effect after an application restart."));
-        QPushButton* restartNowBtn = msgBox.addButton(tr("Restart now"), QMessageBox::AcceptRole);
-        QPushButton* restartLaterBtn = msgBox.addButton(tr("Restart later"), QMessageBox::RejectRole);
-        msgBox.setDefaultButton(restartLaterBtn);
+        QMessageBox msgBox(QMessageBox::Warning,
+            tr("Restart required"),
+            tr("Changing icon folders only takes effect after an application restart."),
+            QMessageBox::Ok, this);
         msgBox.exec();
-        if (msgBox.clickedButton() == restartNowBtn) {
-            // Attempt to restart FreeCAD
-            QString appPath = QCoreApplication::applicationFilePath();
-            QStringList args = QCoreApplication::arguments();
-            QProcess::startDetached(appPath, args);
-            QCoreApplication::quit();
-        }
-        // If 'Restart later', just continue and close dialog
     }
     QDialog::accept();
 }
