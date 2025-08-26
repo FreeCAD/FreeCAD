@@ -253,7 +253,6 @@ private:
 private:
     std::vector<int> listOfGeoIds;
     std::vector<long> listOfFacadeIds;
-    std::vector<int> listOfModifiedConstrIds;  // Ids of original constraints which where modified
     Base::Vector2d referencePoint, startPoint, endPoint;
     bool deleteOriginal;
     bool abortOnFail;  // When the scale operation is part of a larger transaction, one might want
@@ -431,7 +430,7 @@ private:
         else {
             int firstCurveCreated = 0;
             if (deleteOriginal) {
-                // Geo ids will be removed so we offset it some more
+                // Initial geometries will be removed before adding new geometries
                 firstCurveCreated = getHighestCurveIndex() + 1 - listOfGeoIds.size();
             }
             else {
@@ -440,41 +439,60 @@ private:
 
             const std::vector<Constraint*>& vals = Obj->Constraints.getValues();
 
-            for (size_t i = 0; i < vals.size(); ++i) {
-                Constraint* cstr = vals[i];
-
+            for (auto& cstr : vals) {
                 if (skipConstraint(cstr)) {
                     continue;
                 }
 
+                int firstIndex = offsetGeoID(cstr->First, firstCurveCreated);
+                int secondIndex = offsetGeoID(cstr->Second, firstCurveCreated);
+                int thirdIndex = offsetGeoID(cstr->Third, firstCurveCreated);
+
                 auto newConstr = std::unique_ptr<Constraint>(cstr->copy());
-                newConstr->First = offsetGeoID(newConstr->First, firstCurveCreated);
 
                 if ((cstr->Type == Symmetric || cstr->Type == Tangent || cstr->Type == Perpendicular
                      || cstr->Type == Angle)
-                    && cstr->Second != GeoEnum::GeoUndef && cstr->Third != GeoEnum::GeoUndef) {
-                    newConstr->Second = offsetGeoID(cstr->Second, firstCurveCreated);
-                    newConstr->Third = offsetGeoID(cstr->Third, firstCurveCreated);
+                    && firstIndex != GeoEnum::GeoUndef && secondIndex != GeoEnum::GeoUndef
+                    && thirdIndex != GeoEnum::GeoUndef) {
+                    newConstr->First = firstIndex;
+                    newConstr->Second = secondIndex;
+                    newConstr->Third = thirdIndex;
                 }
                 else if ((cstr->Type == Coincident || cstr->Type == Tangent
                           || cstr->Type == Symmetric || cstr->Type == Perpendicular
                           || cstr->Type == Parallel || cstr->Type == Equal || cstr->Type == Angle
                           || cstr->Type == PointOnObject || cstr->Type == InternalAlignment)
-                         && cstr->Second != GeoEnum::GeoUndef && cstr->Third == GeoEnum::GeoUndef) {
-                    newConstr->Second = offsetGeoID(cstr->Second, firstCurveCreated);
+                         && firstIndex != GeoEnum::GeoUndef && secondIndex != GeoEnum::GeoUndef
+                         && thirdIndex == GeoEnum::GeoUndef) {
+                    newConstr->First = firstIndex;
+                    newConstr->Second = secondIndex;
                 }
-                else if (cstr->Type == Radius || cstr->Type == Diameter) {
+                else if ((cstr->Type == Radius || cstr->Type == Diameter)
+                         && firstIndex != GeoEnum::GeoUndef) {
+                    newConstr->First = firstIndex;
                     newConstr->setValue(newConstr->getValue() * scaleFactor);
                 }
                 else if ((cstr->Type == Distance || cstr->Type == DistanceX
                           || cstr->Type == DistanceY)
-                         && cstr->Second != GeoEnum::GeoUndef) {
-                    newConstr->Second = offsetGeoID(cstr->Second, firstCurveCreated);
+                         && firstIndex != GeoEnum::GeoUndef && secondIndex != GeoEnum::GeoUndef) {
+                    newConstr->First = firstIndex;
+                    newConstr->Second = secondIndex;
                     newConstr->setValue(newConstr->getValue() * scaleFactor);
                 }
-                // (cstr->Type == Block || cstr->Type == Weight)
+                else if ((cstr->Type == Block || cstr->Type == Weight)
+                         && firstIndex != GeoEnum::GeoUndef) {
+                    newConstr->First = firstIndex;
+                }
+                else if ((cstr->Type == Vertical || cstr->Type == Horizontal)
+                         && (firstIndex != GeoEnum::GeoUndef
+                             && (cstr->Second == GeoEnum::GeoUndef || secondIndex != GeoUndef))) {
+                    newConstr->First = firstIndex;
+                    newConstr->Second = secondIndex;
+                }
+                else {
+                    continue;
+                }
 
-                listOfModifiedConstrIds.push_back(i);
                 ShapeConstraints.push_back(std::move(newConstr));
             }
         }
@@ -508,9 +526,17 @@ private:
     int offsetGeoID(int id, int firstCurveCreated)
     {
         if (id < 0) {  // Covers external geometry, origin and undef
-            return id;
+            if (allowOriginConstraint && (id == GeoEnum::HAxis || id == GeoEnum::VAxis)) {
+                return id;
+            }
+            return GeoEnum::GeoUndef;
         }
-        return indexOfGeoId(listOfGeoIds, id) + firstCurveCreated;
+        int index = indexOfGeoId(listOfGeoIds, id);
+
+        if (index < 0) {
+            return GeoEnum::GeoUndef;
+        }
+        return index + firstCurveCreated;
     }
     Base::Vector3d getScaledPoint(Base::Vector3d&& pointToScale,
                                   const Base::Vector2d& referencePoint,
