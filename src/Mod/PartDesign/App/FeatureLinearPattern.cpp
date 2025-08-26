@@ -60,26 +60,114 @@ LinearPattern::LinearPattern()
 {
     auto initialMode = LinearPatternMode::Extent;
 
-    ADD_PROPERTY_TYPE(Direction,(nullptr),"Direction 1",(App::PropertyType)(App::Prop_None),"Direction");
-    ADD_PROPERTY_TYPE(Reversed,(0), "Direction 1", (App::PropertyType)(App::Prop_None), "Direction");
-    ADD_PROPERTY_TYPE(Mode, (long(initialMode)), "Direction 1", (App::PropertyType)(App::Prop_None), "Direction");
-    ADD_PROPERTY_TYPE(Length,(100.0), "Direction 1", (App::PropertyType)(App::Prop_None), "Direction");
-    ADD_PROPERTY_TYPE(Offset,(10.0), "Direction 1", (App::PropertyType)(App::Prop_None), "Direction");
-    ADD_PROPERTY_TYPE(Spacings, ({ -1.0 }), "Direction 1", (App::PropertyType)(App::Prop_None), "Direction");
-    ADD_PROPERTY_TYPE(SpacingPattern, ({}), "Direction 1", (App::PropertyType)(App::Prop_None), "Direction");
-    ADD_PROPERTY_TYPE(Occurrences,(2), "Direction 1", (App::PropertyType)(App::Prop_None), "Direction");
+    ADD_PROPERTY_TYPE(Direction,
+                      (nullptr),
+                      "Direction 1",
+                      App::Prop_None,
+                      "The first direction of the pattern. This can be a straight edge, a datum "
+                      "line, a sketch axis, or the normal of a planar face.");
+    ADD_PROPERTY_TYPE(Reversed,
+                      (0),
+                      "Direction 1",
+                      App::Prop_None,
+                      "Reverse the first direction of the pattern");
+    ADD_PROPERTY_TYPE(
+        Mode,
+        (long(initialMode)),
+        "Direction 1",
+        App::Prop_None,
+        "Selects how the pattern is dimensioned.\n'Extent': Uses the total length from the first "
+        "to the last instance.\n'Spacing': Uses the distance between consecutive instances.");
+    ADD_PROPERTY_TYPE(Length,
+                      (100.0),
+                      "Direction 1",
+                      App::Prop_None,
+                      "The total length of the pattern, measured from the first to the last "
+                      "instance. This is only used when the Mode is set to 'Extent'.");
+    ADD_PROPERTY_TYPE(Offset,
+                      (10.0),
+                      "Direction 1",
+                      App::Prop_None,
+                      "The distance between each instance of the pattern. This is only used when "
+                      "the Mode is set to 'Spacing'.");
+    ADD_PROPERTY_TYPE(Spacings,
+                      ({-1.0}),
+                      "Direction 1",
+                      App::Prop_None,
+                      "A list of custom spacings between instances. If a value is -1, the global "
+                      "'Offset' is used for that spacing. The list should have one less item than "
+                      "the number of occurrences.");
+    ADD_PROPERTY_TYPE(
+        SpacingPattern,
+        ({}),
+        "Direction 1",
+        App::Prop_None,
+        "(Experimental and subject to change. To enable "
+        "this in the UI you can add a boolean parameter 'ExperiementalFeature' in "
+        "Preferences/Mod/Part)\nDefines a repeating pattern of spacings for the second direction. "
+        "For example, a list of [10, 20] will create alternating spacings of 10mm and 20mm.");
+    ADD_PROPERTY_TYPE(
+        Occurrences,
+        (2),
+        "Direction 1",
+        App::Prop_None,
+        "The total number of instances in the first direction, including the original feature.");
     Occurrences.setConstraints(&intOccurrences);
     Mode.setEnums(ModeEnums);
     setReadWriteStatusForMode(LinearPatternDirection::First);
 
-    ADD_PROPERTY_TYPE(Direction2,(nullptr),"Direction 2",(App::PropertyType)(App::Prop_None),"Direction");
-    ADD_PROPERTY_TYPE(Reversed2,(0), "Direction 2", (App::PropertyType)(App::Prop_None), "Direction");
-    ADD_PROPERTY_TYPE(Mode2, (long(initialMode)), "Direction 2", (App::PropertyType)(App::Prop_None), "Direction");
-    ADD_PROPERTY_TYPE(Length2,(100.0), "Direction 2", (App::PropertyType)(App::Prop_None), "Direction");
-    ADD_PROPERTY_TYPE(Offset2,(10.0), "Direction 2", (App::PropertyType)(App::Prop_None), "Direction");
-    ADD_PROPERTY_TYPE(Spacings2, ({}), "Direction 2", (App::PropertyType)(App::Prop_None), "Direction");
-    ADD_PROPERTY_TYPE(SpacingPattern2, ({}), "Direction 2", (App::PropertyType)(App::Prop_None), "Direction");
-    ADD_PROPERTY_TYPE(Occurrences2,(1), "Direction 2", (App::PropertyType)(App::Prop_None), "Direction");
+    ADD_PROPERTY_TYPE(Direction2,
+                      (nullptr),
+                      "Direction 2",
+                      App::Prop_None,
+                      "The second direction of the pattern. This can be a straight edge, a datum "
+                      "line, a sketch axis, or the normal of a planar face.");
+    ADD_PROPERTY_TYPE(Reversed2,
+                      (0),
+                      "Direction 2",
+                      App::Prop_None,
+                      "Reverse the second direction of the pattern");
+    ADD_PROPERTY_TYPE(Mode2,
+                      (long(initialMode)),
+                      "Direction 2",
+                      App::Prop_None,
+                      "Selects how the pattern is dimensioned in the second direction.\n'Extent': "
+                      "Uses the total length.\n'Spacing': Uses the distance between instances.");
+    ADD_PROPERTY_TYPE(
+        Length2,
+        (100.0),
+        "Direction 2",
+        App::Prop_None,
+        "The total length of the pattern in the second direction, measured from the first to the "
+        "last instance. This is only used when the Mode is set to 'Extent'.");
+    ADD_PROPERTY_TYPE(Offset2,
+                      (10.0),
+                      "Direction 2",
+                      App::Prop_None,
+                      "The distance between each instance of the pattern in the second direction. "
+                      "This is only used when the Mode is set to 'Spacing'.");
+    ADD_PROPERTY_TYPE(
+        Spacings2,
+        ({}),
+        "Direction 2",
+        App::Prop_None,
+        "A list of custom spacings for the second direction. If a value is -1, the global 'Offset' "
+        "is used. The list should have one less item than the number of occurrences.");
+    ADD_PROPERTY_TYPE(
+        SpacingPattern2,
+        ({}),
+        "Direction 2",
+        App::Prop_None,
+        "(Experimental and subject to change. To enable "
+        "this in the UI you can add a boolean parameter 'ExperiementalFeature' in "
+        "Preferences/Mod/Part)\nDefines a repeating pattern of spacings for the second direction. "
+        "For example, a list of [10, 20] will create alternating spacings of 10mm and 20mm.");
+    ADD_PROPERTY_TYPE(
+        Occurrences2,
+        (1),
+        "Direction 2",
+        App::Prop_None,
+        "The total number of instances in the second direction, including the original feature.");
     Occurrences2.setConstraints(&intOccurrences);
     Mode2.setEnums(ModeEnums);
     setReadWriteStatusForMode(LinearPatternDirection::Second);

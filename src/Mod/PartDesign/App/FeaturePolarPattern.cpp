@@ -59,17 +59,62 @@ PolarPattern::PolarPattern()
 {
     auto initialMode = PolarPatternMode::Extent;
 
-    ADD_PROPERTY_TYPE(Axis, (nullptr), "PolarPattern", (App::PropertyType)(App::Prop_None), "Direction");
-    ADD_PROPERTY(Reversed, (0));
-    ADD_PROPERTY(Mode, (long(initialMode)));
+    ADD_PROPERTY_TYPE(Axis,
+                      (nullptr),
+                      "PolarPattern",
+                      App::Prop_None,
+                      "The axis of rotation for the pattern. This can be a datum axis, a sketch "
+                      "axis, a circular edge, or the normal of a planar face.");
+    ADD_PROPERTY_TYPE(
+        Reversed,
+        (0),
+        "PolarPattern",
+        App::Prop_None,
+        "Reverses the pattern direction from counter-clockwise (default) to clockwise.");
+    ADD_PROPERTY_TYPE(
+        Mode,
+        (long(initialMode)),
+        "PolarPattern",
+        App::Prop_None,
+        "Selects how the pattern is dimensioned.\n'Extent': Uses the total angle to contain all "
+        "instances.\n'Spacing': Uses the angle between consecutive instances.");
     Mode.setEnums(PolarPattern::ModeEnums);
-    ADD_PROPERTY(Angle, (360.0));
-    ADD_PROPERTY(Offset, (120.0));
+    ADD_PROPERTY_TYPE(Angle,
+                      (360.0),
+                      "PolarPattern",
+                      App::Prop_None,
+                      "The total angle of the pattern, measured from the first to the last "
+                      "instance. This is only used when the Mode is set to 'Extent'.");
     Angle.setConstraints(&floatAngle);
+    ADD_PROPERTY_TYPE(Offset,
+                      (120.0),
+                      "PolarPattern",
+                      App::Prop_None,
+                      "The angular distance between each instance of the pattern. This is only "
+                      "used when the Mode is set to 'Spacing'.");
     Offset.setConstraints(&floatAngle);
-    ADD_PROPERTY(Spacings, ({ -1.0, -1.0, -1.0 }));
-    ADD_PROPERTY(SpacingPattern, ({}));
-    ADD_PROPERTY(Occurrences, (3));
+    ADD_PROPERTY_TYPE(Spacings,
+                      ({-1.0, -1.0, -1.0}),
+                      "PolarPattern",
+                      App::Prop_None,
+                      "A list of custom angular spacings between instances. If a value is -1, the "
+                      "global 'Offset' is used for that spacing. The list should have one less "
+                      "item than the number of occurrences.");
+    ADD_PROPERTY_TYPE(
+        SpacingPattern,
+        ({}),
+        "PolarPattern",
+        App::Prop_None,
+        "(Experimental and subject to change. To enable "
+        "this in the UI you can add a boolean parameter 'ExperiementalFeature' in "
+        "Preferences/Mod/Part)\nDefines a repeating pattern of spacings for the second direction. "
+        "For example, a list of [10, 20] will create alternating spacings of 10mm and 20mm.");
+    ADD_PROPERTY_TYPE(
+        Occurrences,
+        (3),
+        "PolarPattern",
+        App::Prop_None,
+        "The total number of instances in the pattern, including the original feature.");
     Occurrences.setConstraints(&intOccurrences);
 
     setReadWriteStatusForMode(initialMode);
