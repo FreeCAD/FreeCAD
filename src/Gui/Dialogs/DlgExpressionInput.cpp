@@ -210,7 +210,12 @@ bool DlgExpressionInput::typeOkForVarSet()
 void DlgExpressionInput::initializeErrorFrame()
 {
     ui->errorFrame->setVisible(false);
-    ui->errorIconLabel->setPixmap(style()->standardIcon(QStyle::SP_MessageBoxCritical).pixmap(QSize(20, 20)));
+    const int size = style()->pixelMetric(QStyle::PM_LargeIconSize);
+    QIcon icon = Gui::BitmapFactory().iconFromTheme("overlay_error");
+    if (icon.isNull()) {
+        icon = style()->standardIcon(QStyle::SP_MessageBoxCritical);
+    }
+    ui->errorIconLabel->setPixmap(icon.pixmap(QSize(size, size)));
 }
 
 void DlgExpressionInput::initializeVarSets()
@@ -780,12 +785,9 @@ void DlgExpressionInput::preselectGroup()
         return;
     }
 
-    int index = comboBoxGroup.findText(QString::fromStdString(lastGroup));
-    if (index == -1) {
-        return;
+    if (int index = comboBoxGroup.findText(QString::fromStdString(lastGroup)); index != -1) {
+        comboBoxGroup.setCurrentIndex(index);
     }
-
-    comboBoxGroup.setCurrentIndex(index);
 }
 
 void DlgExpressionInput::onVarSetSelected(int /*index*/)
@@ -797,9 +799,13 @@ void DlgExpressionInput::onVarSetSelected(int /*index*/)
         return;
     }
 
-    App::DocumentObject* varSet = App::GetApplication().getDocument(
-        docName.toUtf8())->getObject(
-        varSetName.toUtf8());
+    App::Document* doc = App::GetApplication().getDocument(docName.toUtf8());
+    if (doc == nullptr) {
+        FC_ERR("Document not found: " << docName.toStdString());
+        return;
+    }
+
+    App::DocumentObject* varSet = doc->getObject(varSetName.toUtf8());
     if (varSet == nullptr) {
         FC_ERR("Variable set not found: " << varSetName.toStdString());
         return;
