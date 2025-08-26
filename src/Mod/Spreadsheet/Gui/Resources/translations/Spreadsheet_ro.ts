@@ -342,7 +342,7 @@
       <translation>Creare foaie de calcul</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="260"/>
+      <location filename="../../PropertiesDialog.cpp" line="267"/>
       <source>Set cell properties</source>
       <translation>Setați proprietățile celulei</translation>
     </message>

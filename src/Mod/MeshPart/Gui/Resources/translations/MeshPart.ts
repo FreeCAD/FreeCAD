@@ -216,7 +216,7 @@
         <location filename="../../TaskCurveOnMesh.ui" line="23"/>
         <source>Press &apos;Start&apos;, then pick points on the mesh; when enough points have been set, right-click and choose &apos;Create&apos;. Repeat this process to create more splines. Close this task panel to complete the operation.
 
-This command only works with a &apos;mesh&apos; object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</source>
+This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -524,18 +524,18 @@ Select a different shape.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="104"/>
-        <source>Trim by plane</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../Command.cpp" line="98"/>
         <source>Select a plane to trim the mesh with.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../Command.cpp" line="104"/>
+        <source>Trim With Plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Command.cpp" line="105"/>
-        <source>Select the side to keep.</source>
+        <source>Select the side to keep</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

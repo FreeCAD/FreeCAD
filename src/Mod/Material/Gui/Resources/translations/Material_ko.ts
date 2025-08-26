@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Inspect the appearance properties of the selected object</source>
-      <translation>선택된 객체의 외관을 검토</translation>
+      <translation>선택된 대상체의 외관 속성을 검토</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="176"/>
       <source>Inspect the material properties of the selected object</source>
-      <translation>선택된 객체의 재료 속성을 검토</translation>
+      <translation>선택된 대상체의 재료 속성을 검토</translation>
     </message>
   </context>
   <context>
@@ -757,13 +757,13 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="313"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="537"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="534"/>
       <source>Favorites</source>
       <translation>즐겨찾기</translation>
     </message>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="313"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="544"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="541"/>
       <source>Recent</source>
       <translation>최근 항목</translation>
     </message>
@@ -1159,7 +1159,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1349"/>
       <source>Otherwise, all changes will be lost.</source>
-      <translation type="unfinished">Otherwise, all changes will be lost.</translation>
+      <translation>그렇지 않으면, 모든 변경사항을 잃게 됩니다.</translation>
     </message>
     <message>
       <location filename="../../Array2D.cpp" line="170"/>
@@ -1186,7 +1186,7 @@ If unchecked, they will be sorted by their name.</source>
       <location filename="../../Command.cpp" line="89"/>
       <location filename="../../Command.cpp" line="91"/>
       <source>Sets the display properties of the selected object</source>
-      <translation>선택한 객체의 표시 속성 설정</translation>
+      <translation>선택한 대상체의 표시 속성 설정</translation>
     </message>
   </context>
   <context>
@@ -1200,7 +1200,7 @@ If unchecked, they will be sorted by their name.</source>
       <location filename="../../Command.cpp" line="118"/>
       <location filename="../../Command.cpp" line="120"/>
       <source>Sets the material of the selected object</source>
-      <translation>선택한 객체의 재료 설정</translation>
+      <translation>선택한 대상체의 재료 설정</translation>
     </message>
   </context>
   <context>

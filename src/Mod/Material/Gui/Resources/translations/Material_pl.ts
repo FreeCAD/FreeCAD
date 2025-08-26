@@ -665,7 +665,7 @@ Jeśli opcja ta nie jest zaznaczona, karty będą sortowane według nazwy.</tran
     <message>
       <location filename="../../MaterialSave.ui" line="22"/>
       <source>Library</source>
-      <translation type="unfinished">Library</translation>
+      <translation>Biblioteka</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="70"/>
@@ -675,7 +675,7 @@ Jeśli opcja ta nie jest zaznaczona, karty będą sortowane według nazwy.</tran
     <message>
       <location filename="../../MaterialSave.ui" line="104"/>
       <source>Save as inherited</source>
-      <translation type="unfinished">Save as inherited</translation>
+      <translation>Zapisz jako przejęte</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="59"/>
@@ -706,27 +706,29 @@ Nie jest to zalecane.</translation>
     <message>
       <location filename="../../MaterialSave.cpp" line="218"/>
       <source>Confirm Save as New Material</source>
-      <translation type="unfinished">Confirm Save as New Material</translation>
+      <translation>Potwierdź zapisanie jako nowy materiał</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="223"/>
       <source>This material already exists in this library. Save as a new material?</source>
-      <translation type="unfinished">This material already exists in this library. Save as a new material?</translation>
+      <translation>Ten materiał już istnieje w tej bibliotece. 
+Czy chcesz zapisać go jako nowy materiał?</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="245"/>
       <source>Confirm Save as Copy</source>
-      <translation type="unfinished">Confirm Save as Copy</translation>
+      <translation>Potwierdź zapis jako kopię</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="247"/>
       <source>Save as copy</source>
-      <translation type="unfinished">Save as copy</translation>
+      <translation>Zapisz jako kopię</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="250"/>
       <source>Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</source>
-      <translation type="unfinished">Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</translation>
+      <translation>Nie zaleca się zapisywania kopii, ponieważ może to spowodować uszkodzenie innych dokumentów. 
+Najlepiej dokonać zapisu jako nowy materiał.</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="253"/>
@@ -742,12 +744,12 @@ Nie jest to zalecane.</translation>
       <location filename="../../MaterialSave.cpp" line="486"/>
       <location filename="../../MaterialSave.cpp" line="496"/>
       <source>New folder</source>
-      <translation type="unfinished">New folder</translation>
+      <translation>Nowy folder</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="536"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
+      <translation>Menu podręczne</translation>
     </message>
   </context>
   <context>
@@ -755,17 +757,17 @@ Nie jest to zalecane.</translation>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="140"/>
       <source>Launch Editor</source>
-      <translation type="unfinished">Launch Editor</translation>
+      <translation>Uruchom edytor</translation>
     </message>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="313"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="537"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="534"/>
       <source>Favorites</source>
       <translation>Ulubione</translation>
     </message>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="313"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="544"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="541"/>
       <source>Recent</source>
       <translation>Ostatnie</translation>
     </message>
@@ -815,12 +817,12 @@ Nie jest to zalecane.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="151"/>
       <source>Source reference</source>
-      <translation type="unfinished">Source reference</translation>
+      <translation>Źródło odniesienia</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="202"/>
       <source>Adds or removes to/from favorites</source>
-      <translation type="unfinished">Adds or removes to/from favorites</translation>
+      <translation>Dodaje lub usuwa do / z ulubionych</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="205"/>
@@ -934,17 +936,17 @@ Nie jest to zalecane.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1320"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
+      <translation>Menu podręczne</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1322"/>
       <source>Inherit From</source>
-      <translation type="unfinished">Inherit From</translation>
+      <translation>Powiel od</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1326"/>
       <source>Inherit New Material</source>
-      <translation type="unfinished">Inherit New Material</translation>
+      <translation>Powiel nowy materiał</translation>
     </message>
   </context>
   <context>
@@ -984,7 +986,7 @@ Nie jest to zalecane.</translation>
     <message>
       <location filename="../../ModelSelect.ui" line="159"/>
       <source>Adds or removes to/from favorites</source>
-      <translation type="unfinished">Adds or removes to/from favorites</translation>
+      <translation>Dodaje lub usuwa do / z ulubionych</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="162"/>
@@ -1047,7 +1049,7 @@ Nie jest to zalecane.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="22"/>
       <source>Material Card</source>
-      <translation type="unfinished">Material Card</translation>
+      <translation>Karta materiału</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="40"/>
@@ -1067,32 +1069,32 @@ Nie jest to zalecane.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="70"/>
       <source>Open…</source>
-      <translation type="unfinished">Open…</translation>
+      <translation>Otwórz …</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="80"/>
       <source>Save As…</source>
-      <translation type="unfinished">Save As…</translation>
+      <translation>Zapisz jako …</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="96"/>
       <source>Material Parameter</source>
-      <translation type="unfinished">Material Parameter</translation>
+      <translation>Parametr materiału</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="115"/>
       <source>Add/Remove Parameter</source>
-      <translation type="unfinished">Add/Remove Parameter</translation>
+      <translation>Dodaj / usuń parametr</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="126"/>
       <source>Add Property</source>
-      <translation type="unfinished">Add Property</translation>
+      <translation>Dodaj właściwość</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="133"/>
       <source>Delete Property</source>
-      <translation type="unfinished">Delete Property</translation>
+      <translation>Usuń właściwość</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="77"/>
@@ -1113,7 +1115,7 @@ Nie jest to zalecane.</translation>
     <message>
       <location filename="../../AppMatGui.cpp" line="110"/>
       <source>Material Workbench</source>
-      <translation type="unfinished">Material Workbench</translation>
+      <translation>Środowisko pracy do zarządzania materiałami</translation>
     </message>
     <message>
       <location filename="../../AppMatGui.cpp" line="112"/>
@@ -1136,7 +1138,7 @@ Nie jest to zalecane.</translation>
     <message>
       <location filename="../../MaterialSave.cpp" line="568"/>
       <source>Delete &apos;%1&apos;?</source>
-      <translation type="unfinished">Delete &apos;%1&apos;?</translation>
+      <translation>Usunąć "%1"?</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="572"/>
@@ -1146,7 +1148,7 @@ Nie jest to zalecane.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="609"/>
       <source>Save the material before using it.</source>
-      <translation type="unfinished">Save the material before using it.</translation>
+      <translation>Musisz zapisać materiał przed jego zastosowaniem.</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1347"/>
@@ -1156,12 +1158,12 @@ Nie jest to zalecane.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1348"/>
       <source>Save changes to the material before closing?</source>
-      <translation type="unfinished">Save changes to the material before closing?</translation>
+      <translation>Zapisać zmiany w materiale przed zamknięciem?</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1349"/>
       <source>Otherwise, all changes will be lost.</source>
-      <translation type="unfinished">Otherwise, all changes will be lost.</translation>
+      <translation>W przeciwnym razie wszystkie zmiany zostaną utracone.</translation>
     </message>
     <message>
       <location filename="../../Array2D.cpp" line="170"/>
@@ -1174,7 +1176,7 @@ Nie jest to zalecane.</translation>
       <location filename="../../Array2D.cpp" line="172"/>
       <location filename="../../ListEdit.cpp" line="144"/>
       <source>Delete the row?</source>
-      <translation type="unfinished">Delete the row?</translation>
+      <translation>Usunąć wiersz?</translation>
     </message>
   </context>
   <context>
@@ -1182,7 +1184,7 @@ Nie jest to zalecane.</translation>
     <message>
       <location filename="../../Command.cpp" line="88"/>
       <source>&amp;Appearance</source>
-      <translation type="unfinished">&amp;Appearance</translation>
+      <translation>&amp;Wygląd</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="89"/>
@@ -1196,7 +1198,7 @@ Nie jest to zalecane.</translation>
     <message>
       <location filename="../../Command.cpp" line="117"/>
       <source>&amp;Material</source>
-      <translation type="unfinished">&amp;Material</translation>
+      <translation>&amp;Materiał</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="118"/>
@@ -1233,12 +1235,12 @@ Nie jest to zalecane.</translation>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="20"/>
       <source>Select material libraries</source>
-      <translation type="unfinished">Select material libraries</translation>
+      <translation>Wybierz biblioteki materiałów</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="34"/>
       <source>Select model libraries</source>
-      <translation type="unfinished">Select model libraries</translation>
+      <translation>Wybierz biblioteki modeli</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="41"/>
@@ -1271,7 +1273,7 @@ Nie jest to zalecane.</translation>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="29"/>
       <source>External interface</source>
-      <translation type="unfinished">External interface</translation>
+      <translation>Interfejs zewnętrzny</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="65"/>
@@ -1281,18 +1283,18 @@ Nie jest to zalecane.</translation>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="91"/>
       <source>Model cache size</source>
-      <translation type="unfinished">Model cache size</translation>
+      <translation>Rozmiar pamięci podręcznej modelu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="98"/>
       <location filename="../../DlgSettingsExternal.ui" line="124"/>
       <source>Hit rate</source>
-      <translation type="unfinished">Hit rate</translation>
+      <translation>Wskaźnik trafień</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="134"/>
       <source>Material cache size</source>
-      <translation type="unfinished">Material cache size</translation>
+      <translation>Rozmiar pamięci podręcznej materiałów</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.cpp" line="97"/>
@@ -1305,7 +1307,7 @@ Nie jest to zalecane.</translation>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="77"/>
       <source>Migrating models…</source>
-      <translation type="unfinished">Migrating models…</translation>
+      <translation>Migracja modeli …</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="83"/>
@@ -1326,23 +1328,23 @@ Nie jest to zalecane.</translation>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="89"/>
       <source>Validating models…</source>
-      <translation type="unfinished">Validating models…</translation>
+      <translation>Weryfikowanie modeli …</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="101"/>
       <source>Migrating materials…</source>
-      <translation type="unfinished">Migrating materials…</translation>
+      <translation>Migracja materiałów …</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="113"/>
       <source>Validating materials…</source>
-      <translation type="unfinished">Validating materials…</translation>
+      <translation>Weryfikacja materiałów …</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="147"/>
       <location filename="../../TaskMigrateExternal.cpp" line="150"/>
       <source>Unknown exception - aborted</source>
-      <translation type="unfinished">Unknown exception - aborted</translation>
+      <translation>Nieznany wyjątek - przerwano</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="127"/>
@@ -1369,7 +1371,7 @@ Nie jest to zalecane.</translation>
     <message>
       <location filename="../../Command.cpp" line="55"/>
       <source>Edits material properties</source>
-      <translation type="unfinished">Edits material properties</translation>
+      <translation>Edytuj właściwości materiału</translation>
     </message>
   </context>
   <context>
@@ -1382,7 +1384,7 @@ Nie jest to zalecane.</translation>
     <message>
       <location filename="../../Command.cpp" line="203"/>
       <source>Migrates the materials to the external materials manager</source>
-      <translation type="unfinished">Migrates the materials to the external materials manager</translation>
+      <translation>Przenieś istniejące materiały do zewnętrznego menedżera materiałów</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="205"/>
@@ -1395,17 +1397,17 @@ Nie jest to zalecane.</translation>
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="181"/>
       <source>Basic appearance</source>
-      <translation type="unfinished">Basic appearance</translation>
+      <translation>Wygląd podstawowy</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="186"/>
       <source>Texture appearance</source>
-      <translation type="unfinished">Texture appearance</translation>
+      <translation>Wygląd tekstur</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="191"/>
       <source>All materials</source>
-      <translation type="unfinished">All materials</translation>
+      <translation>Wszystkie materiały</translation>
     </message>
   </context>
 </TS>

@@ -11,12 +11,12 @@
     <message>
       <location filename="../../UnitTest.ui" line="17"/>
       <source>FreeCAD Unit Test</source>
-      <translation type="unfinished">FreeCAD Unit Test</translation>
+      <translation>FreeCAD 单位测试</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="44"/>
       <source>Select test name</source>
-      <translation type="unfinished">Select test name</translation>
+      <translation>选择测试名称</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="96"/>
@@ -71,7 +71,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="205"/>
       <source>Failures</source>
-      <translation type="unfinished">Failures</translation>
+      <translation>失败</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="222"/>
@@ -81,17 +81,17 @@
     <message>
       <location filename="../../UnitTest.ui" line="239"/>
       <source>Remaining</source>
-      <translation type="unfinished">Remaining</translation>
+      <translation>剩余</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="259"/>
       <source>Failures and Errors</source>
-      <translation type="unfinished">Failures and Errors</translation>
+      <translation>失败和错误</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="275"/>
       <source>Description</source>
-      <translation>描述</translation>
+      <translation>说明</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="292"/>
@@ -117,7 +117,7 @@ Double click on an error in the tree view to see more information about it, incl
     <message>
       <location filename="../../UnitTestImp.cpp" line="179"/>
       <source>About FreeCAD UnitTest</source>
-      <translation>关于FreeCAD单元测试</translation>
+      <translation>关于 FreeCAD 单位测试</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="180"/>
@@ -125,7 +125,8 @@ Double click on an error in the tree view to see more information about it, incl
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
       <translation>版权所有 (c) Werner Mayer
-FreeCAD 单元测试是 FreeCAD 的一部分, 支持为自己的模块编写单元测试。</translation>
+
+FreeCAD 单位测试是 FreeCAD 的一部分，支持为自己的模块编写单位测试。</translation>
     </message>
   </context>
 </TS>

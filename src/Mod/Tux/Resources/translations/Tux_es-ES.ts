@@ -106,13 +106,13 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="660"/>
       <source>Undefined</source>
-      <translation>Indefinido</translation>
+      <translation>Sin definir</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="672"/>
       <source>Navigation indicator</source>
       <comment>A context menu action used to show or hide the &apos;Navigation indicator&apos; toolbar widget</comment>
-      <translation type="unfinished">Navigation indicator</translation>
+      <translation>Indicador de navegación</translation>
     </message>
   </context>
 </TS>
