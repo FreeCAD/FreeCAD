@@ -106,7 +106,7 @@
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="14"/>
       <source>New Job</source>
-      <translation type="unfinished">New Job</translation>
+      <translation>ახალი დავალება</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="23"/>
@@ -502,17 +502,17 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="90"/>
       <source>Notes</source>
-      <translation type="unfinished">Notes</translation>
+      <translation>შენიშვნები</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="107"/>
       <source>Coating</source>
-      <translation type="unfinished">Coating</translation>
+      <translation>დაფარვა</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="117"/>
       <source>Hardness</source>
-      <translation type="unfinished">Hardness</translation>
+      <translation>სიმაგრე</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="127"/>
@@ -522,7 +522,7 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="140"/>
       <source>Supplier</source>
-      <translation type="unfinished">Supplier</translation>
+      <translation>მომწოდებელი</translation>
     </message>
   </context>
   <context>
@@ -586,7 +586,7 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="45"/>
       <source>Create box</source>
-      <translation type="unfinished">Create box</translation>
+      <translation>ყუთის შექმნა</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="50"/>
@@ -859,7 +859,7 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageDepthsEdit.ui" line="39"/>
       <location filename="../panels/SetupGlobal.ui" line="36"/>
       <source>Start depth</source>
-      <translation type="unfinished">Start depth</translation>
+      <translation>საწყისი სიღრმე</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="46"/>
@@ -877,7 +877,7 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageDepthsEdit.ui" line="85"/>
       <location filename="../panels/SetupGlobal.ui" line="52"/>
       <source>Final depth</source>
-      <translation type="unfinished">Final depth</translation>
+      <translation>საბოლოო სიღრმე</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="92"/>
@@ -894,7 +894,7 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageDepthsEdit.ui" line="131"/>
       <location filename="../panels/SetupGlobal.ui" line="68"/>
       <source>Step down</source>
-      <translation type="unfinished">Step down</translation>
+      <translation>ნაბიჯით დაბლა</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="138"/>
@@ -919,7 +919,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="57"/>
       <source>Max diameter</source>
-      <translation type="unfinished">Max diameter</translation>
+      <translation>მაქს. დიამეტრი</translation>
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="80"/>
@@ -929,7 +929,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="24"/>
       <source>Safe height</source>
-      <translation type="unfinished">Safe height</translation>
+      <translation>უსაფრთხო სიმაღლე</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="31"/>
@@ -983,11 +983,6 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation type="unfinished">Influences calculation performance vs stability and accuracy.
 
 Larger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="129"/>
-      <source>How much material to leave in the XY plane (i.e. for finishing operation)</source>
-      <translation type="unfinished">How much material to leave in the XY plane (i.e. for finishing operation)</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="108"/>
@@ -1053,6 +1048,11 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation type="unfinished">Finishing profile</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="129"/>
+      <source>How much material to leave in the XY-plane (i.e. for finishing operation)</source>
+      <translation type="unfinished">How much material to leave in the XY-plane (i.e. for finishing operation)</translation>
+    </message>
+    <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="139"/>
       <source>XY stock to leave</source>
       <translation type="unfinished">XY stock to leave</translation>
@@ -1066,7 +1066,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="189"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="237"/>
       <source>Use outline</source>
-      <translation type="unfinished">Use outline</translation>
+      <translation>კიდის გამოყენება</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="196"/>
@@ -1091,7 +1091,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="254"/>
       <source>Cut region</source>
-      <translation type="unfinished">Cut region</translation>
+      <translation>რეგიონის ამოჭრა</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="271"/>
@@ -1210,17 +1210,17 @@ This option changes that behavior to cut each discrete area to its full depth be
       <location filename="../panels/PageOpDrillingEdit.ui" line="95"/>
       <location filename="../panels/PageOpTappingEdit.ui" line="65"/>
       <source>Extend depth</source>
-      <translation type="unfinished">Extend depth</translation>
+      <translation>სიღრმის მომატება</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="115"/>
       <source>Drill tip</source>
-      <translation type="unfinished">Drill tip</translation>
+      <translation>ბურღის წვერი</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="120"/>
       <source>2x drill tip</source>
-      <translation type="unfinished">2x drill tip</translation>
+      <translation>2x ბურღის წვერი</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="145"/>
@@ -1235,7 +1235,7 @@ This option changes that behavior to cut each discrete area to its full depth be
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="169"/>
       <source>Chip break</source>
-      <translation type="unfinished">Chip break</translation>
+      <translation>ნაფხვენის მოცილება</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="135"/>
@@ -1320,7 +1320,7 @@ This option changes that behavior to cut each discrete area to its full depth be
       <location filename="../panels/PageOpHelixEdit.ui" line="137"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="101"/>
       <source>Extra offset</source>
-      <translation type="unfinished">Extra offset</translation>
+      <translation>დამატებითი წანაცვლება</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="118"/>
@@ -1470,7 +1470,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpWaterlineEdit.ui" line="46"/>
       <location filename="../panels/SetupGlobal.ui" line="261"/>
       <source>Coolant mode</source>
-      <translation type="unfinished">Coolant mode</translation>
+      <translation>გამაგრილებლის რეჟიმი</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="95"/>
@@ -1556,12 +1556,12 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="244"/>
       <source>Clear edges</source>
-      <translation type="unfinished">Clear edges</translation>
+      <translation>წიბოების გასუფთავება</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="251"/>
       <source>Min travel</source>
-      <translation type="unfinished">Min travel</translation>
+      <translation>მინიმალური გზა</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="258"/>
@@ -1601,17 +1601,17 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="101"/>
       <source>X offset</source>
-      <translation type="unfinished">X offset</translation>
+      <translation>X-წანაცვლება</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="115"/>
       <source>Y offset</source>
-      <translation type="unfinished">Y offset</translation>
+      <translation>Y-წანაცვლება</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="138"/>
       <source>File name</source>
-      <translation type="unfinished">File name</translation>
+      <translation>ფაილის სახელი</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="132"/>
@@ -1648,7 +1648,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="63"/>
       <source>Cut side</source>
-      <translation type="unfinished">Cut side</translation>
+      <translation>გვერდის ჭრა</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="70"/>
@@ -1762,7 +1762,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpSlotEdit.ui" line="107"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="179"/>
       <source>Lowest point</source>
-      <translation type="unfinished">Lowest point</translation>
+      <translation>ყველაზე დაბალი წერტილი</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="112"/>
@@ -1773,12 +1773,12 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="117"/>
       <source>Long edge</source>
-      <translation type="unfinished">Long edge</translation>
+      <translation>გრძელი წიბო</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="122"/>
       <source>Short edge</source>
-      <translation type="unfinished">Short edge</translation>
+      <translation>მოკლე წიბო</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="162"/>
@@ -1815,7 +1815,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpSurfaceEdit.ui" line="91"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="98"/>
       <source>Layer mode</source>
-      <translation type="unfinished">Layer mode</translation>
+      <translation>ფენის რეჟიმი</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="374"/>
@@ -1830,7 +1830,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="385"/>
       <source>Start to end</source>
-      <translation type="unfinished">Start to end</translation>
+      <translation>დასაწყისიდან დასასრულამდე</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="291"/>
@@ -1883,7 +1883,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpSurfaceEdit.ui" line="63"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="79"/>
       <source>Bounding box</source>
-      <translation type="unfinished">Bounding box</translation>
+      <translation>შემომსაზღვრელი ჩარჩო</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="70"/>
@@ -1894,7 +1894,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="77"/>
       <source>Scan type</source>
-      <translation type="unfinished">Scan type</translation>
+      <translation>სკანირების ტიპი</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="84"/>
@@ -1905,7 +1905,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpSurfaceEdit.ui" line="105"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="117"/>
       <source>Cut pattern</source>
-      <translation type="unfinished">Cut pattern</translation>
+      <translation>ნიმუშის ამოჭრა</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="112"/>
@@ -1967,7 +1967,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="215"/>
       <source>Stepover</source>
-      <translation type="unfinished">Stepover</translation>
+      <translation>გადაბიჯება</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="254"/>
@@ -2205,7 +2205,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="177"/>
       <source>Lead in/out</source>
-      <translation type="unfinished">Lead in/out</translation>
+      <translation>შეყვანა/გამოყვანა</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="113"/>
@@ -2341,7 +2341,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../panels/ToolEditor.ui" line="103"/>
       <source>Flat radius</source>
-      <translation type="unfinished">Flat radius</translation>
+      <translation>ბრტყელი რადიუსი</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="110"/>
@@ -2626,7 +2626,7 @@ See the file save policy below on how to deal with name conflicts.</source>
     <message>
       <location filename="../preferences/PathJob.ui" line="177"/>
       <source>Default path</source>
-      <translation type="unfinished">Default path</translation>
+      <translation>ნაგულისხმევი ტრაექტორია</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="230"/>
@@ -2671,7 +2671,7 @@ See the file save policy below on how to deal with name conflicts.</source>
     <message>
       <location filename="../preferences/PathJob.ui" line="395"/>
       <source>Create box</source>
-      <translation type="unfinished">Create box</translation>
+      <translation>ყუთის შექმნა</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="400"/>
@@ -2818,7 +2818,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="354"/>
       <source>Bounding box</source>
-      <translation type="unfinished">Bounding box</translation>
+      <translation>შემომსაზღვრელი ჩარჩო</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="367"/>
@@ -2980,7 +2980,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../TaskDlgPathCompound.ui" line="14"/>
       <source>Paths List</source>
-      <translation type="unfinished">Paths List</translation>
+      <translation>ბილიკების სია</translation>
     </message>
     <message>
       <location filename="../../TaskDlgPathCompound.ui" line="20"/>
@@ -3180,7 +3180,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="63"/>
       <source>Pivot height</source>
-      <translation type="unfinished">Pivot height</translation>
+      <translation>ტრიალის წერტილის სიმაღლე</translation>
     </message>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="70"/>
@@ -3317,17 +3317,17 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="136"/>
       <source>Start depth</source>
-      <translation type="unfinished">Start depth</translation>
+      <translation>საწყისი სიღრმე</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="150"/>
       <source>Final depth</source>
-      <translation type="unfinished">Final depth</translation>
+      <translation>საბოლოო სიღრმე</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="164"/>
       <source>Step down</source>
-      <translation type="unfinished">Step down</translation>
+      <translation>ნაბიჯით დაბლა</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="178"/>
@@ -3337,7 +3337,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="214"/>
       <source>Safe height</source>
-      <translation type="unfinished">Safe height</translation>
+      <translation>უსაფრთხო სიმაღლე</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="228"/>
@@ -3352,7 +3352,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="273"/>
       <source>Coolant mode</source>
-      <translation type="unfinished">Coolant mode</translation>
+      <translation>გამაგრილებლის რეჟიმი</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="307"/>
@@ -3418,7 +3418,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
       <location filename="../panels/TaskCAMSimulator.ui" line="31"/>
       <location filename="../panels/TaskPathSimulator.ui" line="229"/>
       <source>Accuracy</source>
-      <translation type="unfinished">Accuracy</translation>
+      <translation>სიზუსტე</translation>
     </message>
     <message>
       <location filename="../panels/TaskCAMSimulator.ui" line="86"/>
@@ -3682,7 +3682,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="134"/>
       <source>Output file</source>
-      <translation type="unfinished">Output file</translation>
+      <translation>გამოტანის ფაილი</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="196"/>
@@ -3692,7 +3692,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="235"/>
       <source>Order by</source>
-      <translation type="unfinished">Order by</translation>
+      <translation>მიმდევრობის პირობა</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="397"/>
@@ -3702,7 +3702,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="478"/>
       <source>Create box</source>
-      <translation type="unfinished">Create box</translation>
+      <translation>ყუთის შექმნა</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="483"/>
@@ -3843,22 +3843,22 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="1053"/>
       <source>Start depth</source>
-      <translation type="unfinished">Start depth</translation>
+      <translation>საწყისი სიღრმე</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1069"/>
       <source>Final depth</source>
-      <translation type="unfinished">Final depth</translation>
+      <translation>საბოლოო სიღრმე</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1085"/>
       <source>Step down</source>
-      <translation type="unfinished">Step down</translation>
+      <translation>ნაბიჯით დაბლა</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1189"/>
       <source>Coolant mode</source>
-      <translation type="unfinished">Coolant mode</translation>
+      <translation>გამაგრილებლის რეჟიმი</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1342"/>
@@ -4162,34 +4162,34 @@ Default: 3 mm</source>
       <translation>CAMotics-ის პროექტი (*.camotics)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="726"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="746"/>
       <source>H</source>
       <comment>H is horizontal feed rate. Must be as short as possible</comment>
       <translation>სთ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="729"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="749"/>
       <source>V</source>
       <comment>V is vertical feed rate. Must be as short as possible</comment>
       <translation>V</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="732"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="752"/>
       <source>Tool number</source>
       <translation>ხელსაწყოს ნომერი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="735"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="755"/>
       <source>Horizontal feedrate</source>
       <translation>ჰორიზონტალური მიწოდების სიჩქარე</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="738"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="758"/>
       <source>Vertical feedrate</source>
       <translation>ვერტიკალური მიწოდების სიჩქარე</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="741"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="761"/>
       <source>Spindle RPM</source>
       <translation>შპინდელის ბრ/წთ</translation>
     </message>
@@ -4610,19 +4610,19 @@ Default: 3 mm</source>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="198"/>
-      <location filename="../../../Path/Main/Job.py" line="506"/>
+      <location filename="../../../Path/Main/Job.py" line="509"/>
       <source>Split output into multiple G-code files</source>
       <translation>გამომავლის მრავალ G-code ფაილად დაშლა</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="204"/>
-      <location filename="../../../Path/Main/Job.py" line="497"/>
+      <location filename="../../../Path/Main/Job.py" line="500"/>
       <source>If multiple WCS, order the output this way</source>
       <translation>თუ სამუშაო კოორდინატთა სისტემა ერთზე მეტია, გამოტანა ამნაირად დალაგდება</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="210"/>
-      <location filename="../../../Path/Main/Job.py" line="488"/>
+      <location filename="../../../Path/Main/Job.py" line="491"/>
       <source>The Work Coordinate Systems for the Job</source>
       <translation>დავალების სამუშაო კოორდინატთა სისტემები</translation>
     </message>
@@ -4642,14 +4642,14 @@ Default: 3 mm</source>
       <translation>დავალების ყველა ხელსაწყოს კონტროლერის კოლექცია</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="479"/>
+      <location filename="../../../Path/Main/Job.py" line="482"/>
       <location filename="../../../Path/Op/Base.py" line="186"/>
       <location filename="../../../Path/Op/Base.py" line="440"/>
       <source>Operations Cycle Time Estimation</source>
       <translation>ოპერაციის ციკლის დროს შეფასება</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="515"/>
+      <location filename="../../../Path/Main/Job.py" line="518"/>
       <source>Select the type of Job</source>
       <translation>აირჩიეთ დავალების ტიპი</translation>
     </message>
@@ -6547,12 +6547,12 @@ Aborting op creation</source>
       <translation type="unfinished">Completes the selection of edges that form a loop</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="116"/>
+      <location filename="../../../PathCommands.py" line="131"/>
       <source>Feature Completion</source>
       <translation>თვისების დასრულება</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="117"/>
+      <location filename="../../../PathCommands.py" line="132"/>
       <source>Closed loop detection failed.</source>
       <translation>დახურული მარყუჟების ძებნის შეცდომა.</translation>
     </message>
@@ -6614,7 +6614,7 @@ Aborting op creation</source>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="185"/>
       <source>Rapid plunge</source>
-      <translation type="unfinished">Rapid plunge</translation>
+      <translation>სწრაფი ჩაძირვა</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="192"/>
@@ -6903,7 +6903,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="864"/>
       <source>Ramp Entry</source>
-      <translation type="unfinished">Ramp Entry</translation>
+      <translation>რამპის შესასვლელი</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="868"/>
@@ -7017,58 +7017,58 @@ Aborting op creation</source>
       <translation>ნედლეული ცილინდი არაა!</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1032"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1052"/>
       <source>Select Output File</source>
       <translation>აირჩიეთ გამოსატანი ფაილი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1034"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1054"/>
       <source>All Files (*.*)</source>
       <translation>ყველა ფაილი (*.*)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1375"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1395"/>
       <source>Unsupported stock object %s</source>
       <translation>ნედლეულის მხაარდაუჭერელი ობექტი %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1391"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1411"/>
       <source>Unsupported stock type %s (%d)</source>
       <translation>მხარდაუჭერელი ნედლეულის ტიპი %s (%d)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1482"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1502"/>
       <source>Model Selection</source>
       <translation>მოდელის არჩევანი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1637"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1657"/>
       <source>Warning</source>
       <translation>გაფრთხილება</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1638"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1658"/>
       <source>Please add one.</source>
       <translation>დაამატეთ ერთი.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1639"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1659"/>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="116"/>
       <source>Ok</source>
       <translation>დიახ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1641"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1661"/>
       <source>Add</source>
       <translation>დამატება</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1652"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1672"/>
       <source>This job has no base model.</source>
       <translation>დავალებას საბაზისო მოდელი არ გააჩნია.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1659"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1679"/>
       <source>This job has no tool.</source>
       <translation>დავალებას ხელსაწყო არ გააჩნია.</translation>
     </message>
@@ -7093,39 +7093,39 @@ Aborting op creation</source>
       <translation type="unfinished">Don&apos;t show this warning again</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="214"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="216"/>
       <source>Model</source>
       <translation>მოდელი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="215"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="217"/>
       <source>Count</source>
       <translation>რაოდენობა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="297"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="299"/>
       <source>&lt;none&gt;</source>
       <translation>&lt;none&gt;</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="379"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="381"/>
       <source>Base -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f</source>
       <translation>ბაზისი -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="389"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="391"/>
       <source>Box: %.2f x %.2f x %.2f</source>
       <translation>შემ. ჩარჩო %.2f x %.2f x %.2f</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="404"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="406"/>
       <source>Unsupported stock type</source>
       <translation>მხარდაუჭერელი ნედლეულის ტიპი</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobCmd.py" line="57"/>
       <source>New Job</source>
-      <translation type="unfinished">New Job</translation>
+      <translation>ახალი დავალება</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobCmd.py" line="59"/>
@@ -7188,7 +7188,7 @@ Aborting op creation</source>
   <context>
     <name>CAM_Job:</name>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="395"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="397"/>
       <source>Cylinder: %.2f x %.2f</source>
       <translation>ცილინდრი: %.2f %.2f-ზე</translation>
     </message>
@@ -7601,62 +7601,62 @@ Aborting op creation</source>
   <context>
     <name>CAM</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="611"/>
+      <location filename="../../../Path/Op/Base.py" line="613"/>
       <source>No parent job found for operation.</source>
       <translation>ოპერაციისთვის მშობელი დავალება ვერ ვიპოვე.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="616"/>
+      <location filename="../../../Path/Op/Base.py" line="618"/>
       <source>Parent job %s doesn&apos;t have a base object</source>
       <translation>მშობელ დავალებას %s ძირითადი ობიექტი არ გააჩნია</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="758"/>
+      <location filename="../../../Path/Op/Base.py" line="760"/>
       <source>No Tool Controller is selected. We need a tool to build a Path.</source>
       <translation type="unfinished">No Tool Controller is selected. We need a tool to build a Path.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="772"/>
+      <location filename="../../../Path/Op/Base.py" line="774"/>
       <source>No Tool found or diameter is zero. We need a tool to build a Path.</source>
       <translation>ხელსაწყო ვერ ვიპოვე ან დიამეტრი ნულის ტოლია. ტრაექტორიის ასაგებად აუცილებელია ხელსაწყოს ქონა.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="842"/>
+      <location filename="../../../Path/Op/Base.py" line="844"/>
       <source>No Tool Controller selected.</source>
       <translation>ხელსაწყოს კონტროლერი არჩეული არაა.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="845"/>
+      <location filename="../../../Path/Op/Base.py" line="847"/>
       <source>Tool Error</source>
       <translation>ხელსაწყოს შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="857"/>
+      <location filename="../../../Path/Op/Base.py" line="859"/>
       <source>Tool Controller feedrates required to calculate the cycle time.</source>
       <translation type="unfinished">Tool Controller feedrates required to calculate the cycle time.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="860"/>
+      <location filename="../../../Path/Op/Base.py" line="862"/>
       <source>Tool Feedrate Error</source>
       <translation>ხელსაწყოს მიწოდების სიჩქარის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="866"/>
+      <location filename="../../../Path/Op/Base.py" line="868"/>
       <source>Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</source>
       <translation type="unfinished">Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="875"/>
+      <location filename="../../../Path/Op/Base.py" line="877"/>
       <source>Cycletime Error</source>
       <translation>ციკლის დროის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="817"/>
+      <location filename="../../../Path/Op/Base.py" line="819"/>
       <source>Base object %s.%s already in the list</source>
       <translation>საბაზისო ობიექტი %s.%s უკვე სიაშია</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="827"/>
+      <location filename="../../../Path/Op/Base.py" line="829"/>
       <source>Base object %s.%s rejected by operation</source>
       <translation>ძირითადი ობიექტი %s.%s უარყოფილია ოპერაციის მიერ</translation>
     </message>
@@ -7762,7 +7762,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Tool/shape/models/drill.py" line="56"/>
       <source>Drill</source>
-      <translation type="unfinished">Drill</translation>
+      <translation>ბურღი</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/ballend.py" line="46"/>
@@ -7842,12 +7842,12 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Tool/toolbit/serializers/fctb.py" line="47"/>
       <source>FreeCAD Tool</source>
-      <translation type="unfinished">FreeCAD Tool</translation>
+      <translation>FreeCAD-ის ხელსაწყო</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/editor.py" line="61"/>
       <source>Tool Bit</source>
-      <translation type="unfinished">Tool Bit</translation>
+      <translation>ხელსაწყოს მჭრელი პირი</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/editor.py" line="69"/>
@@ -7857,7 +7857,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/selector.py" line="39"/>
       <source>Add Tool</source>
-      <translation type="unfinished">Add Tool</translation>
+      <translation>ხელსაწყოს დამატება</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/selector.py" line="44"/>
@@ -8787,12 +8787,12 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Tool/library/ui/dock.py" line="80"/>
       <source>Add to Job</source>
-      <translation type="unfinished">Add to Job</translation>
+      <translation>დავალებაში ჩამატება</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/dock.py" line="151"/>
       <source>No Job Found</source>
-      <translation type="unfinished">No Job Found</translation>
+      <translation>დავალებები აღმოჩენილი არაა</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/dock.py" line="152"/>
@@ -8963,8 +8963,8 @@ Aborting op creation</source>
     </message>
     <message>
       <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="289"/>
-      <source>Toggle ambient oclusion</source>
-      <translation type="unfinished">Toggle ambient oclusion</translation>
+      <source>Toggle ambient occlusion</source>
+      <translation type="unfinished">Toggle ambient occlusion</translation>
     </message>
     <message>
       <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="290"/>
@@ -8988,12 +8988,12 @@ Aborting op creation</source>
   <context>
     <name>CAM_OpActiveToggle</name>
     <message>
-      <location filename="../../../PathCommands.py" line="145"/>
+      <location filename="../../../PathCommands.py" line="160"/>
       <source>Toggle Operation</source>
       <translation type="unfinished">Toggle Operation</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="149"/>
+      <location filename="../../../PathCommands.py" line="164"/>
       <source>Toggles the active state of the operation</source>
       <translation type="unfinished">Toggles the active state of the operation</translation>
     </message>
@@ -9001,12 +9001,12 @@ Aborting op creation</source>
   <context>
     <name>CAM_OperationCopy</name>
     <message>
-      <location filename="../../../PathCommands.py" line="186"/>
+      <location filename="../../../PathCommands.py" line="201"/>
       <source>Copy Operation</source>
       <translation type="unfinished">Copy Operation</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="187"/>
+      <location filename="../../../PathCommands.py" line="202"/>
       <source>Copies the operation in the job</source>
       <translation type="unfinished">Copies the operation in the job</translation>
     </message>
@@ -9042,7 +9042,7 @@ Aborting op creation</source>
     <message>
       <location filename="../panels/ShapeSelector.ui" line="47"/>
       <source>My tools</source>
-      <translation type="unfinished">My tools</translation>
+      <translation>ჩემი ხელსაწყოები</translation>
     </message>
   </context>
   <context>
@@ -9077,7 +9077,7 @@ Aborting op creation</source>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="49"/>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="93"/>
       <source>Assets</source>
-      <translation type="unfinished">Assets</translation>
+      <translation>აქტივები</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="55"/>
@@ -9115,7 +9115,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Tool/library/ui/cmd.py" line="51"/>
       <source>Toolbit Dock</source>
-      <translation type="unfinished">Toolbit Dock</translation>
+      <translation>ხელსაწყოების ზოლი</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/cmd.py" line="52"/>
@@ -9174,7 +9174,7 @@ Aborting op creation</source>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="44"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="48"/>
       <source>Flutes</source>
-      <translation type="unfinished">Flutes</translation>
+      <translation>ჭრილები</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="48"/>
@@ -9213,7 +9213,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Tool/shape/models/bullnose.py" line="56"/>
       <source>Torus radius</source>
-      <translation type="unfinished">Torus radius</translation>
+      <translation>ტორუსის რადიუსი</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/bullnose.py" line="64"/>
@@ -9275,12 +9275,12 @@ Aborting op creation</source>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="64"/>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="56"/>
       <source>Neck length</source>
-      <translation type="unfinished">Neck length</translation>
+      <translation>კისრის სიგრძე</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="76"/>
       <source>Dovetail</source>
-      <translation type="unfinished">Dovetail</translation>
+      <translation>მაკრატელასებრი კოტა</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/drill.py" line="48"/>
@@ -9296,7 +9296,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Tool/shape/models/fillet.py" line="36"/>
       <source>Crown height</source>
-      <translation type="unfinished">Crown height</translation>
+      <translation>გვირგვინის სიმაღლე</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/fillet.py" line="44"/>
@@ -9331,7 +9331,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Tool/shape/models/reamer.py" line="56"/>
       <source>Reamer</source>
-      <translation type="unfinished">Reamer</translation>
+      <translation>საფართი</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="36"/>
@@ -9341,7 +9341,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="40"/>
       <source>Cap diameter</source>
-      <translation type="unfinished">Cap diameter</translation>
+      <translation>დაფარვის დიამეტრი</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="44"/>
@@ -9376,12 +9376,12 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="72"/>
       <source>Thread Mill</source>
-      <translation type="unfinished">Thread Mill</translation>
+      <translation>კუთხვილის ფრეზი</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="68"/>
       <source>V-Bit</source>
-      <translation type="unfinished">V-Bit</translation>
+      <translation>V-ბიტი</translation>
     </message>
   </context>
   <context>
@@ -9397,7 +9397,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="52"/>
       <source>New Tool</source>
-      <translation type="unfinished">New Tool</translation>
+      <translation>ახალი ხელსაწყო</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="53"/>

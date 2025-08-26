@@ -4,17 +4,17 @@
   <context>
     <name>CmdTechDraw2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="795"/>
+      <location filename="../../CommandAnnotate.cpp" line="793"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="796"/>
+      <location filename="../../CommandAnnotate.cpp" line="794"/>
       <source>Centerline Between 2 Lines</source>
       <translation type="unfinished">Centerline Between 2 Lines</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="797"/>
+      <location filename="../../CommandAnnotate.cpp" line="795"/>
       <source>Adds a centerline between 2 selected lines</source>
       <translation type="unfinished">Adds a centerline between 2 selected lines</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdTechDraw2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="870"/>
+      <location filename="../../CommandAnnotate.cpp" line="868"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="871"/>
+      <location filename="../../CommandAnnotate.cpp" line="869"/>
       <source>Centerline Between 2 Points</source>
       <translation type="unfinished">Centerline Between 2 Points</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="872"/>
+      <location filename="../../CommandAnnotate.cpp" line="870"/>
       <source>Adds a centerline between 2 selected points</source>
       <translation type="unfinished">Adds a centerline between 2 selected points</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdTechDraw2PointCosmeticLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="983"/>
+      <location filename="../../CommandAnnotate.cpp" line="981"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="984"/>
+      <location filename="../../CommandAnnotate.cpp" line="982"/>
       <source>Cosmetic Line Through 2 Points</source>
       <translation type="unfinished">Cosmetic Line Through 2 Points</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="985"/>
+      <location filename="../../CommandAnnotate.cpp" line="983"/>
       <source>Add a cosmetic line that passes through 2 selected points</source>
       <translation type="unfinished">Add a cosmetic line that passes through 2 selected points</translation>
     </message>
@@ -83,7 +83,7 @@
     <message>
       <location filename="../../Command.cpp" line="699"/>
       <source>Active View</source>
-      <translation type="unfinished">Active View</translation>
+      <translation>აქტიური ხედი</translation>
     </message>
   </context>
   <context>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1740"/>
       <source>Angle Dimension</source>
-      <translation type="unfinished">Angle Dimension</translation>
+      <translation>კუთხის განზომილება</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1741"/>
@@ -107,17 +107,17 @@
   <context>
     <name>CmdTechDrawAnnotation</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="531"/>
+      <location filename="../../CommandAnnotate.cpp" line="529"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="532"/>
+      <location filename="../../CommandAnnotate.cpp" line="530"/>
       <source>Text Annotation</source>
       <translation type="unfinished">Text Annotation</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="533"/>
+      <location filename="../../CommandAnnotate.cpp" line="531"/>
       <source>Inserts an editable text block annotation to the current page</source>
       <translation type="unfinished">Inserts an editable text block annotation to the current page</translation>
     </message>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="1664"/>
       <source>BIM View</source>
-      <translation type="unfinished">BIM View</translation>
+      <translation>BIM ხედი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1665"/>
@@ -161,22 +161,22 @@
   <context>
     <name>CmdTechDrawCenterLineGroup</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="581"/>
+      <location filename="../../CommandAnnotate.cpp" line="579"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="582"/>
+      <location filename="../../CommandAnnotate.cpp" line="580"/>
       <source>Centerline</source>
       <translation>ღერძის ხაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="583"/>
+      <location filename="../../CommandAnnotate.cpp" line="581"/>
       <source>Inserts a centerline to a face, or between 2 lines or edges</source>
       <translation type="unfinished">Inserts a centerline to a face, or between 2 lines or edges</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="655"/>
+      <location filename="../../CommandAnnotate.cpp" line="653"/>
       <source>Centerline faces</source>
       <translation type="unfinished">Centerline faces</translation>
     </message>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdTechDrawCosmeticEraser</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1284"/>
+      <location filename="../../CommandAnnotate.cpp" line="1132"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1285"/>
+      <location filename="../../CommandAnnotate.cpp" line="1133"/>
       <source>Remove Cosmetic Object</source>
       <translation>დამხმარე ობიექტის წაშლა</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1286"/>
+      <location filename="../../CommandAnnotate.cpp" line="1134"/>
       <source>Removes the selected cosmetic object from the page</source>
       <translation type="unfinished">Removes the selected cosmetic object from the page</translation>
     </message>
@@ -274,17 +274,17 @@
   <context>
     <name>CmdTechDrawCosmeticVertex</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="392"/>
+      <location filename="../../CommandAnnotate.cpp" line="390"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="393"/>
+      <location filename="../../CommandAnnotate.cpp" line="391"/>
       <source>Cosmetic Vertex</source>
       <translation>დამხმარე წვერო</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="394"/>
+      <location filename="../../CommandAnnotate.cpp" line="392"/>
       <source>Adds a cosmetic vertex</source>
       <translation type="unfinished">Adds a cosmetic vertex</translation>
     </message>
@@ -292,22 +292,22 @@
   <context>
     <name>CmdTechDrawCosmeticVertexGroup</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="205"/>
+      <location filename="../../CommandAnnotate.cpp" line="203"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="206"/>
+      <location filename="../../CommandAnnotate.cpp" line="204"/>
       <source>Cosmetic Vertex</source>
       <translation>დამხმარე წვერო</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="207"/>
+      <location filename="../../CommandAnnotate.cpp" line="205"/>
       <source>Inserts a cosmetic vertex</source>
       <translation type="unfinished">Inserts a cosmetic vertex</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="281"/>
+      <location filename="../../CommandAnnotate.cpp" line="279"/>
       <source>Cosmetic vertex</source>
       <translation type="unfinished">Cosmetic vertex</translation>
     </message>
@@ -315,17 +315,17 @@
   <context>
     <name>CmdTechDrawDecorateLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1402"/>
+      <location filename="../../CommandAnnotate.cpp" line="1250"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1403"/>
+      <location filename="../../CommandAnnotate.cpp" line="1251"/>
       <source>Edit Line Appearance</source>
       <translation type="unfinished">Edit Line Appearance</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1404"/>
+      <location filename="../../CommandAnnotate.cpp" line="1252"/>
       <source>Opens the &apos;Line decoration&apos; dialog to edit the selected lines</source>
       <translation type="unfinished">Opens the &apos;Line decoration&apos; dialog to edit the selected lines</translation>
     </message>
@@ -340,7 +340,7 @@
     <message>
       <location filename="../../Command.cpp" line="1011"/>
       <source>Detail View</source>
-      <translation type="unfinished">Detail View</translation>
+      <translation>დეტალური ხედი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1012"/>
@@ -358,7 +358,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1549"/>
       <source>Diameter Dimension</source>
-      <translation type="unfinished">Diameter Dimension</translation>
+      <translation>დიამეტრის განზომილება</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1550"/>
@@ -398,7 +398,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1600"/>
       <source>Draft View</source>
-      <translation type="unfinished">Draft View</translation>
+      <translation>ესკიზის ხედი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1602"/>
@@ -451,17 +451,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtendShortenLineGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1571"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1737"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1572"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1738"/>
       <source>Extend Line</source>
       <translation>ხაზის გაგრძელება</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1573"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1739"/>
       <source>Extends a selected cosmetic line or centerline at both ends by the specified delta distance</source>
       <translation type="unfinished">Extends a selected cosmetic line or centerline at both ends by the specified delta distance</translation>
     </message>
@@ -469,17 +469,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionAreaAnnotation</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1666"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1832"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1667"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1833"/>
       <source>Area Annotation</source>
       <translation type="unfinished">Area Annotation</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1668"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1834"/>
       <source>Calculates the area of multiple selected faces</source>
       <translation type="unfinished">Calculates the area of multiple selected faces</translation>
     </message>
@@ -583,17 +583,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionChangeLineAttributes</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="737"/>
+      <location filename="../../CommandExtensionPack.cpp" line="738"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="738"/>
+      <location filename="../../CommandExtensionPack.cpp" line="739"/>
       <source>Change Line Attributes</source>
       <translation>ხაზის ატრიბუტების შეცვლა</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="739"/>
+      <location filename="../../CommandExtensionPack.cpp" line="740"/>
       <source>Changes the selected cosmetic lines and centerlines to the specified attributes</source>
       <translation type="unfinished">Changes the selected cosmetic lines and centerlines to the specified attributes</translation>
     </message>
@@ -601,23 +601,23 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionCircleCenterLines</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="244"/>
+      <location filename="../../CommandExtensionPack.cpp" line="245"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="245"/>
-      <location filename="../../CommandExtensionPack.cpp" line="342"/>
+      <location filename="../../CommandExtensionPack.cpp" line="246"/>
+      <location filename="../../CommandExtensionPack.cpp" line="343"/>
       <source>Circle Centerlines</source>
       <translation>წრეწირის ცენრის ხაზები</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="246"/>
+      <location filename="../../CommandExtensionPack.cpp" line="247"/>
       <source>Adds centerlines to the selected circles and arcs</source>
       <translation type="unfinished">Adds centerlines to the selected circles and arcs</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="343"/>
+      <location filename="../../CommandExtensionPack.cpp" line="344"/>
       <source>Adds centerlines to selected circles and arcs:</source>
       <translation type="unfinished">Adds centerlines to selected circles and arcs:</translation>
     </message>
@@ -625,17 +625,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionCircleCenterLinesGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="275"/>
+      <location filename="../../CommandExtensionPack.cpp" line="276"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="276"/>
+      <location filename="../../CommandExtensionPack.cpp" line="277"/>
       <source>Circle Centerlines</source>
       <translation>წრეწირის ცენრის ხაზები</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="277"/>
+      <location filename="../../CommandExtensionPack.cpp" line="278"/>
       <source>Adds centerlines to selected circles and arcs</source>
       <translation type="unfinished">Adds centerlines to selected circles and arcs</translation>
     </message>
@@ -903,17 +903,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionDrawCirclesGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1048"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1199"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1049"/>
-      <source>Cosmetic Circle</source>
-      <translation>კოსმეტიკური წრეწირი</translation>
+      <location filename="../../CommandExtensionPack.cpp" line="1200"/>
+      <source>Cosmetic 1 Point Circle</source>
+      <translation type="unfinished">Cosmetic 1 Point Circle</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1050"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1201"/>
       <source>Adds a cosmetic circle based on two vertices, where the first selection is the centerpoint and the second is the radius</source>
       <translation type="unfinished">Adds a cosmetic circle based on two vertices, where the first selection is the centerpoint and the second is the radius</translation>
     </message>
@@ -921,23 +921,23 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionDrawCosmArc</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="893"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1045"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="894"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1129"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1046"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1302"/>
       <source>Cosmetic Arc</source>
-      <translation type="unfinished">Cosmetic Arc</translation>
+      <translation>კოსმეტიკური რკალი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="895"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1047"/>
       <source>Adds a cosmetic counter clockwise arc based on three vertices, where the first selection is the center point and the second is the radius and start point</source>
       <translation type="unfinished">Adds a cosmetic counter clockwise arc based on three vertices, where the first selection is the center point and the second is the radius and start point</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1131"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1303"/>
       <source>Adds a cosmetic counter clockwise arc based on three vertices, where the first selection is the center point and the second is the radius and start point.</source>
       <translation type="unfinished">Adds a cosmetic counter clockwise arc based on three vertices, where the first selection is the center point and the second is the radius and start point.</translation>
     </message>
@@ -945,23 +945,23 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionDrawCosmCircle</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="953"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1105"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="954"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1123"/>
-      <source>Cosmetic Circle</source>
-      <translation>კოსმეტიკური წრეწირი</translation>
+      <location filename="../../CommandExtensionPack.cpp" line="1106"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1287"/>
+      <source>Cosmetic 2 Point Circle</source>
+      <translation type="unfinished">Cosmetic 2 Point Circle</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="955"/>
-      <source>Adds a cosmetic circle based on two selected vertices, where the first is the ceneter point and the second is the radius</source>
-      <translation type="unfinished">Adds a cosmetic circle based on two selected vertices, where the first is the ceneter point and the second is the radius</translation>
+      <location filename="../../CommandExtensionPack.cpp" line="1107"/>
+      <source>Adds a cosmetic circle based on two selected vertices, where the first is the center point and the second is the radius</source>
+      <translation type="unfinished">Adds a cosmetic circle based on two selected vertices, where the first is the center point and the second is the radius</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1124"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1289"/>
       <source>Adds a cosmetic circle based on two vertices, where the first selection is the centerpoint and the second is the radius</source>
       <translation type="unfinished">Adds a cosmetic circle based on two vertices, where the first selection is the centerpoint and the second is the radius</translation>
     </message>
@@ -969,47 +969,39 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionDrawCosmCircle3Points</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1016"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1167"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1017"/>
-      <source>Cosmetic Circle 3 Points</source>
-      <translation>კოსმეტიკური წრე 3 წერტილი</translation>
+      <location filename="../../CommandExtensionPack.cpp" line="1169"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1297"/>
+      <source>Adds a cosmetic circle that passes through 3 selected perimeter points</source>
+      <translation type="unfinished">Adds a cosmetic circle that passes through 3 selected perimeter points</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1018"/>
-      <source>Adds a cosmetic circle to three selected vertices</source>
-      <translation type="unfinished">Adds a cosmetic circle to three selected vertices</translation>
-    </message>
-    <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1136"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1168"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1295"/>
       <source>Cosmetic 3 Point Circle</source>
       <translation type="unfinished">Cosmetic 3 Point Circle</translation>
-    </message>
-    <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1138"/>
-      <source>Adds a cosmetic circle to 3 selected vertices</source>
-      <translation type="unfinished">Adds a cosmetic circle to 3 selected vertices</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawExtensionExtendLine</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1507"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1673"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1508"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1638"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1674"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1804"/>
       <source>Extend Line</source>
       <translation>ხაზის გაგრძელება</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1509"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1639"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1675"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1805"/>
       <source>Extends a selected cosmetic line or centerline at both ends by the specified delta distance</source>
       <translation type="unfinished">Extends a selected cosmetic line or centerline at both ends by the specified delta distance</translation>
     </message>
@@ -1017,23 +1009,23 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionHoleCircle</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="171"/>
+      <location filename="../../CommandExtensionPack.cpp" line="172"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="172"/>
-      <location filename="../../CommandExtensionPack.cpp" line="348"/>
+      <location filename="../../CommandExtensionPack.cpp" line="173"/>
+      <location filename="../../CommandExtensionPack.cpp" line="349"/>
       <source>Bolt Circle Centerlines</source>
       <translation type="unfinished">Bolt Circle Centerlines</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="173"/>
+      <location filename="../../CommandExtensionPack.cpp" line="174"/>
       <source>Adds centerlines to a circular pattern of three or more selected circles</source>
       <translation type="unfinished">Adds centerlines to a circular pattern of three or more selected circles</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="349"/>
+      <location filename="../../CommandExtensionPack.cpp" line="350"/>
       <source>Adds centerlines to a circular pattern of selected circles</source>
       <translation type="unfinished">Adds centerlines to a circular pattern of selected circles</translation>
     </message>
@@ -1137,17 +1129,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionLinePPGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1278"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1444"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1279"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1445"/>
       <source>Cosmetic Parallel Line</source>
       <translation type="unfinished">Cosmetic Parallel Line</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1280"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1446"/>
       <source>Adds a cosmetic line parallel to the selected line through the selected vertex</source>
       <translation type="unfinished">Adds a cosmetic line parallel to the selected line through the selected vertex</translation>
     </message>
@@ -1155,23 +1147,23 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionLineParallel</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1215"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1381"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1216"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1346"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1382"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1512"/>
       <source>Cosmetic Parallel Line</source>
       <translation type="unfinished">Cosmetic Parallel Line</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1217"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1383"/>
       <source>Adds a cosmetic circle to 3 selected vertices</source>
       <translation type="unfinished">Adds a cosmetic circle to 3 selected vertices</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1348"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1514"/>
       <source>Adds a cosmetic line parallel to the selected line through the selected vertex</source>
       <translation type="unfinished">Adds a cosmetic line parallel to the selected line through the selected vertex</translation>
     </message>
@@ -1179,19 +1171,19 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionLinePerpendicular</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1246"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1412"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1247"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1352"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1413"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1518"/>
       <source>Cosmetic Perpendicular Line</source>
       <translation type="unfinished">Cosmetic Perpendicular Line</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1249"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1354"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1415"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1520"/>
       <source>Adds a cosmetic line perpendicular to the selected line through the selected vertex</source>
       <translation type="unfinished">Adds a cosmetic line perpendicular to the selected line through the selected vertex</translation>
     </message>
@@ -1199,17 +1191,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionLockUnlockView</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1377"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1543"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1378"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1544"/>
       <source>Toggle View Lock</source>
       <translation type="unfinished">Toggle View Lock</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1379"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1545"/>
       <source>Locks or unlocks the position of the selected views</source>
       <translation type="unfinished">Locks or unlocks the position of the selected views</translation>
     </message>
@@ -1325,17 +1317,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionSelectLineAttributes</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="705"/>
+      <location filename="../../CommandExtensionPack.cpp" line="706"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="706"/>
+      <location filename="../../CommandExtensionPack.cpp" line="707"/>
       <source>Select Line Attributes, Cascade Spacing and Delta Distance</source>
       <translation>აირჩიეთ ხაზის ატრიბუტები, კასკადის დაშორება და მანძილის დელტა</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="707"/>
+      <location filename="../../CommandExtensionPack.cpp" line="708"/>
       <source>Configures the default attributes for cosmetic lines and centerlines, including cascade spacing and delta distance</source>
       <translation type="unfinished">Configures the default attributes for cosmetic lines and centerlines, including cascade spacing and delta distance</translation>
     </message>
@@ -1343,19 +1335,19 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionShortenLine</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1539"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1705"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1540"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1643"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1706"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1809"/>
       <source>Shorten Line</source>
       <translation>ხაზის დაპატარავება</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1541"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1644"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1707"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1810"/>
       <source>Shortens a selected cosmetic line or centerline at both ends by the specified delta distance</source>
       <translation type="unfinished">Shortens a selected cosmetic line or centerline at both ends by the specified delta distance</translation>
     </message>
@@ -1363,19 +1355,19 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionThreadBoltBottom</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="545"/>
+      <location filename="../../CommandExtensionPack.cpp" line="546"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="546"/>
-      <location filename="../../CommandExtensionPack.cpp" line="680"/>
+      <location filename="../../CommandExtensionPack.cpp" line="547"/>
+      <location filename="../../CommandExtensionPack.cpp" line="681"/>
       <source>Cosmetic Thread Bolt Bottom View</source>
       <translation type="unfinished">Cosmetic Thread Bolt Bottom View</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="548"/>
-      <location filename="../../CommandExtensionPack.cpp" line="682"/>
+      <location filename="../../CommandExtensionPack.cpp" line="549"/>
+      <location filename="../../CommandExtensionPack.cpp" line="683"/>
       <source>Adds a cosmetic thread to the top or bottom view of the selected bolts/screws/rods</source>
       <translation type="unfinished">Adds a cosmetic thread to the top or bottom view of the selected bolts/screws/rods</translation>
     </message>
@@ -1383,19 +1375,19 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionThreadBoltSide</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="442"/>
+      <location filename="../../CommandExtensionPack.cpp" line="443"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="443"/>
-      <location filename="../../CommandExtensionPack.cpp" line="672"/>
+      <location filename="../../CommandExtensionPack.cpp" line="444"/>
+      <location filename="../../CommandExtensionPack.cpp" line="673"/>
       <source>Cosmetic Thread Bolt Side View</source>
       <translation type="unfinished">Cosmetic Thread Bolt Side View</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="444"/>
-      <location filename="../../CommandExtensionPack.cpp" line="675"/>
+      <location filename="../../CommandExtensionPack.cpp" line="445"/>
+      <location filename="../../CommandExtensionPack.cpp" line="676"/>
       <source>Adds a cosmetic thread to the side view of a bolt/screw/rod between two selected parallel lines</source>
       <translation type="unfinished">Adds a cosmetic thread to the side view of a bolt/screw/rod between two selected parallel lines</translation>
     </message>
@@ -1403,23 +1395,23 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionThreadHoleBottom</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="494"/>
+      <location filename="../../CommandExtensionPack.cpp" line="495"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="495"/>
-      <location filename="../../CommandExtensionPack.cpp" line="665"/>
+      <location filename="../../CommandExtensionPack.cpp" line="496"/>
+      <location filename="../../CommandExtensionPack.cpp" line="666"/>
       <source>Cosmetic Thread Hole Bottom View</source>
       <translation type="unfinished">Cosmetic Thread Hole Bottom View</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="496"/>
+      <location filename="../../CommandExtensionPack.cpp" line="497"/>
       <source>Adds a cosmetic thread to the top or bottom view of selected holes or circles</source>
       <translation type="unfinished">Adds a cosmetic thread to the top or bottom view of selected holes or circles</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="668"/>
+      <location filename="../../CommandExtensionPack.cpp" line="669"/>
       <source>Adds a cosmetic thread to the top or bottom view of holes or circles</source>
       <translation type="unfinished">Adds a cosmetic thread to the top or bottom view of holes or circles</translation>
     </message>
@@ -1427,23 +1419,23 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionThreadHoleSide</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="391"/>
+      <location filename="../../CommandExtensionPack.cpp" line="392"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="392"/>
-      <location filename="../../CommandExtensionPack.cpp" line="658"/>
+      <location filename="../../CommandExtensionPack.cpp" line="393"/>
+      <location filename="../../CommandExtensionPack.cpp" line="659"/>
       <source>Cosmetic Thread Hole Side View</source>
       <translation type="unfinished">Cosmetic Thread Hole Side View</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="393"/>
+      <location filename="../../CommandExtensionPack.cpp" line="394"/>
       <source>Adds a cosmetic thread to the side view of a hole or circle</source>
       <translation type="unfinished">Adds a cosmetic thread to the side view of a hole or circle</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="660"/>
+      <location filename="../../CommandExtensionPack.cpp" line="661"/>
       <source>Adds a cosmetic thread to the side view of a selected hole between two selected parallel lines</source>
       <translation type="unfinished">Adds a cosmetic thread to the side view of a selected hole between two selected parallel lines</translation>
     </message>
@@ -1451,17 +1443,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionThreadsGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="577"/>
+      <location filename="../../CommandExtensionPack.cpp" line="578"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="578"/>
+      <location filename="../../CommandExtensionPack.cpp" line="579"/>
       <source>Cosmetic Thread Hole Side View</source>
       <translation type="unfinished">Cosmetic Thread Hole Side View</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="579"/>
+      <location filename="../../CommandExtensionPack.cpp" line="580"/>
       <source>Add a cosmetic thread to the side view of a selected hole between two selected parallel lines</source>
       <translation type="unfinished">Add a cosmetic thread to the side view of a selected hole between two selected parallel lines</translation>
     </message>
@@ -1469,17 +1461,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtensionVertexAtIntersection</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="795"/>
+      <location filename="../../CommandExtensionPack.cpp" line="796"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="796"/>
+      <location filename="../../CommandExtensionPack.cpp" line="797"/>
       <source>Cosmetic Intersection Vertices</source>
       <translation type="unfinished">Cosmetic Intersection Vertices</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="798"/>
+      <location filename="../../CommandExtensionPack.cpp" line="799"/>
       <source>Adds cosmetic vertices at the intersections of selected edges</source>
       <translation type="unfinished">Adds cosmetic vertices at the intersections of selected edges</translation>
     </message>
@@ -1515,17 +1507,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawFaceCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="684"/>
+      <location filename="../../CommandAnnotate.cpp" line="682"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="685"/>
+      <location filename="../../CommandAnnotate.cpp" line="683"/>
       <source>Centerline Between 2 Faces</source>
       <translation type="unfinished">Centerline Between 2 Faces</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="686"/>
+      <location filename="../../CommandAnnotate.cpp" line="684"/>
       <source>Adds a centerline to selected faces</source>
       <translation type="unfinished">Adds a centerline to selected faces</translation>
     </message>
@@ -1558,7 +1550,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandDecorate.cpp" line="77"/>
       <source>Image Hatch</source>
-      <translation type="unfinished">Image Hatch</translation>
+      <translation>გამოსახულების დაშტრიხვა</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="78"/>
@@ -1612,7 +1604,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandDecorate.cpp" line="243"/>
       <source>Bitmap Image</source>
-      <translation type="unfinished">Bitmap Image</translation>
+      <translation>რასტრული გამოსახულება</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="244"/>
@@ -1638,17 +1630,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawLandmarkDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2258"/>
+      <location filename="../../CommandCreateDims.cpp" line="2271"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2259"/>
+      <location filename="../../CommandCreateDims.cpp" line="2272"/>
       <source>Landmark Dimension</source>
       <translation type="unfinished">Landmark Dimension</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2260"/>
+      <location filename="../../CommandCreateDims.cpp" line="2273"/>
       <source>Inserts a landmark dimension (experimental feature). Use with caution.</source>
       <translation type="unfinished">Inserts a landmark dimension (experimental feature). Use with caution.</translation>
     </message>
@@ -1656,17 +1648,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawLeaderLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="91"/>
+      <location filename="../../CommandAnnotate.cpp" line="89"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="92"/>
+      <location filename="../../CommandAnnotate.cpp" line="90"/>
       <source>Leader Line</source>
       <translation>გატანადი ხაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="93"/>
+      <location filename="../../CommandAnnotate.cpp" line="91"/>
       <source>Adds a leader line</source>
       <translation type="unfinished">Adds a leader line</translation>
     </message>
@@ -1681,7 +1673,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1597"/>
       <source>Length Dimension</source>
-      <translation type="unfinished">Length Dimension</translation>
+      <translation>სიგრძის განზომილება</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1598"/>
@@ -1710,17 +1702,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawMidpoints</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="453"/>
+      <location filename="../../CommandAnnotate.cpp" line="451"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="454"/>
+      <location filename="../../CommandAnnotate.cpp" line="452"/>
       <source>Midpoint Vertices</source>
       <translation type="unfinished">Midpoint Vertices</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="455"/>
+      <location filename="../../CommandAnnotate.cpp" line="453"/>
       <source>Adds cosmetic vertices at the midpoint of the selected edges</source>
       <translation type="unfinished">Adds cosmetic vertices at the midpoint of the selected edges</translation>
     </message>
@@ -1735,7 +1727,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="110"/>
       <source>New Page</source>
-      <translation type="unfinished">New Page</translation>
+      <translation>ახალი გვერდი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="111"/>
@@ -1828,17 +1820,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawQuadrants</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="492"/>
+      <location filename="../../CommandAnnotate.cpp" line="490"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="493"/>
+      <location filename="../../CommandAnnotate.cpp" line="491"/>
       <source>Quadrant Vertices</source>
       <translation type="unfinished">Quadrant Vertices</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="494"/>
+      <location filename="../../CommandAnnotate.cpp" line="492"/>
       <source>Adds cosmetic vertices at the quadrant points of the selected circles</source>
       <translation type="unfinished">Adds cosmetic vertices at the quadrant points of the selected circles</translation>
     </message>
@@ -1853,7 +1845,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1501"/>
       <source>Radius Dimension</source>
-      <translation type="unfinished">Radius Dimension</translation>
+      <translation>რადიუსის განზომილება</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1502"/>
@@ -1882,17 +1874,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawRichTextAnnotation</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="153"/>
+      <location filename="../../CommandAnnotate.cpp" line="151"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="154"/>
+      <location filename="../../CommandAnnotate.cpp" line="152"/>
       <source>Rich Text Annotation</source>
       <translation type="unfinished">Rich Text Annotation</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="155"/>
+      <location filename="../../CommandAnnotate.cpp" line="153"/>
       <source>Inserts a rich text annotation in the current page</source>
       <translation type="unfinished">Inserts a rich text annotation in the current page</translation>
     </message>
@@ -1921,8 +1913,8 @@ Left clicking on empty space will validate the current dimension. Right clicking
     </message>
     <message>
       <location filename="../../Command.cpp" line="799"/>
-      <source>Complex Section</source>
-      <translation>კომპლექსური კვეთა</translation>
+      <source>Complex Section View</source>
+      <translation type="unfinished">Complex Section View</translation>
     </message>
   </context>
   <context>
@@ -1946,17 +1938,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawShowAll</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1484"/>
+      <location filename="../../CommandAnnotate.cpp" line="1332"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1485"/>
-      <source>Toggle Edge Visibilty</source>
-      <translation type="unfinished">Toggle Edge Visibilty</translation>
+      <location filename="../../CommandAnnotate.cpp" line="1333"/>
+      <source>Toggle Edge Visibility</source>
+      <translation type="unfinished">Toggle Edge Visibility</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1486"/>
+      <location filename="../../CommandAnnotate.cpp" line="1334"/>
       <source>Toggles the visibility of the selected edges</source>
       <translation type="unfinished">Toggles the visibility of the selected edges</translation>
     </message>
@@ -2092,17 +2084,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawSurfaceFinishSymbols</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1613"/>
+      <location filename="../../CommandAnnotate.cpp" line="1461"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1614"/>
+      <location filename="../../CommandAnnotate.cpp" line="1462"/>
       <source>Surface Finish Symbol</source>
       <translation type="unfinished">Surface Finish Symbol</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1615"/>
+      <location filename="../../CommandAnnotate.cpp" line="1463"/>
       <source>Adds a surface finish symbol in the selected view</source>
       <translation type="unfinished">Adds a surface finish symbol in the selected view</translation>
     </message>
@@ -2117,30 +2109,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1535"/>
       <source>Insert SVG</source>
-      <translation type="unfinished">Insert SVG</translation>
+      <translation>SVG-ის ჩასმა</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1536"/>
       <source>Inserts a symbol from an SVG file</source>
       <translation type="unfinished">Inserts a symbol from an SVG file</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdTechDrawToggleFrame</name>
-    <message>
-      <location filename="../../CommandDecorate.cpp" line="305"/>
-      <source>TechDraw</source>
-      <translation>ტექნიკური ნახაზი</translation>
-    </message>
-    <message>
-      <location filename="../../CommandDecorate.cpp" line="306"/>
-      <source>Toggle View Frames</source>
-      <translation type="unfinished">Toggle View Frames</translation>
-    </message>
-    <message>
-      <location filename="../../CommandDecorate.cpp" line="307"/>
-      <source>Toggles the visibility of the view frames</source>
-      <translation type="unfinished">Toggles the visibility of the view frames</translation>
     </message>
   </context>
   <context>
@@ -2164,17 +2138,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawVerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2171"/>
+      <location filename="../../CommandCreateDims.cpp" line="2184"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2172"/>
+      <location filename="../../CommandCreateDims.cpp" line="2185"/>
       <source>Vertical Extent Dimension</source>
       <translation type="unfinished">Vertical Extent Dimension</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2173"/>
+      <location filename="../../CommandCreateDims.cpp" line="2186"/>
       <source>Inserts a dimension showing the vertical extent (overall length) of an object or feature.</source>
       <translation type="unfinished">Inserts a dimension showing the vertical extent (overall length) of an object or feature.</translation>
     </message>
@@ -2189,7 +2163,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="300"/>
       <source>New View</source>
-      <translation type="unfinished">New View</translation>
+      <translation>ახალი ხედი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="301"/>
@@ -2202,17 +2176,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
   <context>
     <name>CmdTechDrawWeldSymbol</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1549"/>
+      <location filename="../../CommandAnnotate.cpp" line="1397"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1550"/>
+      <location filename="../../CommandAnnotate.cpp" line="1398"/>
       <source>Weld Symbol</source>
-      <translation type="unfinished">Weld Symbol</translation>
+      <translation>შედუღების სიმბოლო</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1551"/>
+      <location filename="../../CommandAnnotate.cpp" line="1399"/>
       <source>Adds welding information to the selected leader line</source>
       <translation type="unfinished">Adds welding information to the selected leader line</translation>
     </message>
@@ -2234,7 +2208,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="482"/>
       <source>Create image</source>
-      <translation type="unfinished">Create image</translation>
+      <translation>გამოსახულების შექმნა</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="500"/>
@@ -2248,7 +2222,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     </message>
     <message>
       <location filename="../../Command.cpp" line="1895"/>
-      <location filename="../../PagePrinter.cpp" line="429"/>
+      <location filename="../../PagePrinter.cpp" line="426"/>
       <source>Save page to DXF</source>
       <translation>გვერდის DXF-ში შენახვა</translation>
     </message>
@@ -2266,7 +2240,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="1358"/>
       <source>Create clip</source>
-      <translation type="unfinished">Create clip</translation>
+      <translation>კვეთის შექმნა</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1430"/>
@@ -2290,17 +2264,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ელცხრილის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="339"/>
+      <location filename="../../CommandAnnotate.cpp" line="337"/>
       <source>Add midpoint vertices</source>
       <translation type="unfinished">Add midpoint vertices</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="366"/>
+      <location filename="../../CommandAnnotate.cpp" line="364"/>
       <source>Quadrant vertices</source>
       <translation type="unfinished">Quadrant vertices</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="549"/>
+      <location filename="../../CommandAnnotate.cpp" line="547"/>
       <source>Create Annotation</source>
       <translation>ანოტაციის შექმნა</translation>
     </message>
@@ -2483,12 +2457,22 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ზომა</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2306"/>
+      <location filename="../../CommandCreateDims.cpp" line="2091"/>
+      <source>Create Dimension DistanceX</source>
+      <translation type="unfinished">Create Dimension DistanceX</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="2093"/>
+      <source>Create Dimension DistanceY</source>
+      <translation type="unfinished">Create Dimension DistanceY</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="2319"/>
       <source>Create Dimension</source>
       <translation>ზომის მითითება</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2471"/>
+      <location filename="../../CommandCreateDims.cpp" line="2484"/>
       <source>Create dimension</source>
       <translation type="unfinished">Create dimension</translation>
     </message>
@@ -2528,7 +2512,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ზომის გადათრევა</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="616"/>
+      <location filename="../../QGSPage.cpp" line="611"/>
       <source>Create Balloon</source>
       <translation>სქოლიოს შექმნა</translation>
     </message>
@@ -2694,157 +2678,157 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">Create Arc Length Dimension</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="205"/>
+      <location filename="../../CommandExtensionPack.cpp" line="206"/>
       <source>Circle Centerlines</source>
       <translation>წრეწირის ცენრის ხაზები</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="371"/>
+      <location filename="../../CommandExtensionPack.cpp" line="372"/>
       <source>TechDraw Thread Hole Side</source>
       <translation>ტექნიკური ნახაზის კუთხვილის ხვრელის გვერდი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="374"/>
+      <location filename="../../CommandExtensionPack.cpp" line="375"/>
       <source>Cosmetic Thread Hole Side</source>
       <translation>კოსმეტიკური კუთხვილის ხრახნის ნახვრეტის კედელი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="422"/>
+      <location filename="../../CommandExtensionPack.cpp" line="423"/>
       <source>TechDraw Thread Bolt Side</source>
       <translation>ტექნიკური ნახაზი კუთხვილის ხრახნის გვერდი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="425"/>
+      <location filename="../../CommandExtensionPack.cpp" line="426"/>
       <source>Cosmetic Thread Bolt Side</source>
       <translation>ჰოსმეტიკური კუთხვილის ხრახნის გვერდი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="474"/>
+      <location filename="../../CommandExtensionPack.cpp" line="475"/>
       <source>TechDraw Thread Hole Bottom</source>
       <translation>ტექნიკური ნახაზი კუთხვილის ხვრელის ფსკერი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="525"/>
+      <location filename="../../CommandExtensionPack.cpp" line="526"/>
       <source>TechDraw Thread Bolt Bottom</source>
       <translation>ტექნიკური ნახაზი კუთხვილის ჭანჭიკის ფსკერი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="528"/>
+      <location filename="../../CommandExtensionPack.cpp" line="529"/>
       <source>Cosmetic Thread Bolt Bottom</source>
       <translation>ჰოსმეტიკური კუთხვილის ხრახნის ძირი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="106"/>
+      <location filename="../../CommandExtensionPack.cpp" line="107"/>
       <source>TechDraw hole circle</source>
       <translation type="unfinished">TechDraw hole circle</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="127"/>
+      <location filename="../../CommandExtensionPack.cpp" line="128"/>
       <source>Bolt circle centerlines</source>
       <translation type="unfinished">Bolt circle centerlines</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="202"/>
+      <location filename="../../CommandExtensionPack.cpp" line="203"/>
       <source>TechDraw circle centerlines</source>
       <translation type="unfinished">TechDraw circle centerlines</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="477"/>
+      <location filename="../../CommandExtensionPack.cpp" line="478"/>
       <source>Cosmetic thread hole bottom</source>
       <translation type="unfinished">Cosmetic thread hole bottom</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="751"/>
+      <location filename="../../CommandExtensionPack.cpp" line="752"/>
       <source>TechDraw change line attributes</source>
       <translation type="unfinished">TechDraw change line attributes</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="754"/>
+      <location filename="../../CommandExtensionPack.cpp" line="755"/>
       <source>Change line attributes</source>
       <translation type="unfinished">Change line attributes</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="810"/>
+      <location filename="../../CommandExtensionPack.cpp" line="811"/>
       <source>TechDraw cosmetic intersection vertices</source>
       <translation type="unfinished">TechDraw cosmetic intersection vertices</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="813"/>
+      <location filename="../../CommandExtensionPack.cpp" line="814"/>
       <source>Cosmetic intersection vertices</source>
       <translation type="unfinished">Cosmetic intersection vertices</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="856"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1008"/>
       <source>TechDraw cosmetic arc</source>
       <translation type="unfinished">TechDraw cosmetic arc</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="859"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1011"/>
       <source>Cosmetic arc</source>
-      <translation type="unfinished">Cosmetic arc</translation>
+      <translation>კოსმეტიკური რკალი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="925"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1077"/>
       <source>TechDraw cosmetic circle</source>
       <translation type="unfinished">TechDraw cosmetic circle</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="928"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1080"/>
       <source>Cosmetic Circle</source>
       <translation>კოსმეტიკური წრეწირი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="985"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1136"/>
       <source>TechDraw Cosmetic Circle 3 Points</source>
       <translation>ტექნიკური ნახაზი კოსმეტიკური წრე 3 წერტილით</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="988"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1139"/>
       <source>Cosmetic Circle 3 Points</source>
       <translation>კოსმეტიკური წრე 3 წერტილი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1159"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1325"/>
       <source>TechDraw Cosmetic Line Parallel/Perpendicular</source>
       <translation>ტექნიკური ნახაზი კოსმეტიკური ხაზი პარალელურია თუ მართობული</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1162"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1328"/>
       <source>Cosmetic Line Parallel/Perpendicular</source>
       <translation>კოსმეტიკური ხაზი პარალელურია თუ მართობული</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1394"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1560"/>
       <source>Lock/Unlock View</source>
       <translation>ხედის დაბლოკვა/განბლოკვა</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1423"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1589"/>
       <source>TechDraw Extend/Shorten Line</source>
       <translation>ტექნიკური ნახაზი ხაზის გაგრძელება/შემოკლება</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1426"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1592"/>
       <source>Extend/shorten line</source>
       <translation type="unfinished">Extend/shorten line</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1680"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1846"/>
       <source>TechDraw Calculate Selected Area</source>
       <translation type="unfinished">TechDraw Calculate Selected Area</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1811"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1977"/>
       <source>TechDraw Calculate Selected Arc Length</source>
       <translation type="unfinished">TechDraw Calculate Selected Arc Length</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1722"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1888"/>
       <source>Calculate Face Area</source>
       <translation>ზედაპირის ფართობის გამოთვლა</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1848"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2014"/>
       <source>Calculate Edge Length</source>
       <translation>წიბოს სიგრძის გამოთვლა</translation>
     </message>
@@ -2978,7 +2962,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../mrichtextedit.ui" line="145"/>
       <source>Cut (Ctrl+X)</source>
-      <translation type="unfinished">Cut (Ctrl+X)</translation>
+      <translation>ამოჭრა (Ctrl+X)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="168"/>
@@ -3158,39 +3142,35 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../Command.cpp" line="1691"/>
       <location filename="../../Command.cpp" line="1697"/>
       <location filename="../../Command.cpp" line="1756"/>
-      <location filename="../../CommandAnnotate.cpp" line="120"/>
-      <location filename="../../CommandAnnotate.cpp" line="125"/>
-      <location filename="../../CommandAnnotate.cpp" line="317"/>
-      <location filename="../../CommandAnnotate.cpp" line="418"/>
-      <location filename="../../CommandAnnotate.cpp" line="725"/>
-      <location filename="../../CommandAnnotate.cpp" line="731"/>
-      <location filename="../../CommandAnnotate.cpp" line="758"/>
-      <location filename="../../CommandAnnotate.cpp" line="768"/>
-      <location filename="../../CommandAnnotate.cpp" line="845"/>
-      <location filename="../../CommandAnnotate.cpp" line="854"/>
-      <location filename="../../CommandAnnotate.cpp" line="911"/>
-      <location filename="../../CommandAnnotate.cpp" line="918"/>
-      <location filename="../../CommandAnnotate.cpp" line="945"/>
-      <location filename="../../CommandAnnotate.cpp" line="957"/>
-      <location filename="../../CommandAnnotate.cpp" line="967"/>
-      <location filename="../../CommandAnnotate.cpp" line="1050"/>
-      <location filename="../../CommandAnnotate.cpp" line="1058"/>
-      <location filename="../../CommandAnnotate.cpp" line="1078"/>
-      <location filename="../../CommandAnnotate.cpp" line="1114"/>
-      <location filename="../../CommandAnnotate.cpp" line="1178"/>
-      <location filename="../../CommandAnnotate.cpp" line="1201"/>
-      <location filename="../../CommandAnnotate.cpp" line="1223"/>
-      <location filename="../../CommandAnnotate.cpp" line="1259"/>
-      <location filename="../../CommandAnnotate.cpp" line="1310"/>
-      <location filename="../../CommandAnnotate.cpp" line="1318"/>
+      <location filename="../../CommandAnnotate.cpp" line="118"/>
+      <location filename="../../CommandAnnotate.cpp" line="123"/>
+      <location filename="../../CommandAnnotate.cpp" line="315"/>
+      <location filename="../../CommandAnnotate.cpp" line="416"/>
+      <location filename="../../CommandAnnotate.cpp" line="723"/>
+      <location filename="../../CommandAnnotate.cpp" line="729"/>
+      <location filename="../../CommandAnnotate.cpp" line="756"/>
+      <location filename="../../CommandAnnotate.cpp" line="766"/>
+      <location filename="../../CommandAnnotate.cpp" line="843"/>
+      <location filename="../../CommandAnnotate.cpp" line="852"/>
+      <location filename="../../CommandAnnotate.cpp" line="909"/>
+      <location filename="../../CommandAnnotate.cpp" line="916"/>
+      <location filename="../../CommandAnnotate.cpp" line="943"/>
+      <location filename="../../CommandAnnotate.cpp" line="955"/>
+      <location filename="../../CommandAnnotate.cpp" line="965"/>
+      <location filename="../../CommandAnnotate.cpp" line="1048"/>
+      <location filename="../../CommandAnnotate.cpp" line="1056"/>
+      <location filename="../../CommandAnnotate.cpp" line="1076"/>
+      <location filename="../../CommandAnnotate.cpp" line="1112"/>
+      <location filename="../../CommandAnnotate.cpp" line="1158"/>
+      <location filename="../../CommandAnnotate.cpp" line="1166"/>
+      <location filename="../../CommandAnnotate.cpp" line="1213"/>
+      <location filename="../../CommandAnnotate.cpp" line="1276"/>
+      <location filename="../../CommandAnnotate.cpp" line="1296"/>
+      <location filename="../../CommandAnnotate.cpp" line="1358"/>
       <location filename="../../CommandAnnotate.cpp" line="1365"/>
-      <location filename="../../CommandAnnotate.cpp" line="1428"/>
-      <location filename="../../CommandAnnotate.cpp" line="1448"/>
-      <location filename="../../CommandAnnotate.cpp" line="1510"/>
-      <location filename="../../CommandAnnotate.cpp" line="1517"/>
-      <location filename="../../CommandAnnotate.cpp" line="1581"/>
-      <location filename="../../CommandCreateDims.cpp" line="2278"/>
-      <location filename="../../CommandCreateDims.cpp" line="2287"/>
+      <location filename="../../CommandAnnotate.cpp" line="1429"/>
+      <location filename="../../CommandCreateDims.cpp" line="2291"/>
+      <location filename="../../CommandCreateDims.cpp" line="2300"/>
       <location filename="../../CommandHelpers.cpp" line="90"/>
       <location filename="../../CommandHelpers.cpp" line="103"/>
       <source>Wrong selection</source>
@@ -3233,20 +3213,19 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../Command.cpp" line="1219"/>
       <location filename="../../CommandCreateDims.cpp" line="1924"/>
       <location filename="../../CommandCreateDims.cpp" line="1931"/>
-      <location filename="../../CommandCreateDims.cpp" line="2092"/>
-      <location filename="../../CommandCreateDims.cpp" line="2107"/>
-      <location filename="../../CommandCreateDims.cpp" line="2132"/>
-      <location filename="../../CommandCreateDims.cpp" line="2225"/>
-      <location filename="../../CommandCreateDims.cpp" line="2386"/>
-      <location filename="../../CommandCreateDims.cpp" line="2401"/>
-      <location filename="../../CommandCreateDims.cpp" line="2549"/>
-      <location filename="../../CommandCreateDims.cpp" line="2557"/>
-      <location filename="../../CommandCreateDims.cpp" line="2566"/>
-      <location filename="../../CommandDecorate.cpp" line="386"/>
-      <location filename="../../CommandDecorate.cpp" line="393"/>
-      <location filename="../../CommandDecorate.cpp" line="400"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1696"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1825"/>
+      <location filename="../../CommandCreateDims.cpp" line="2100"/>
+      <location filename="../../CommandCreateDims.cpp" line="2116"/>
+      <location filename="../../CommandCreateDims.cpp" line="2238"/>
+      <location filename="../../CommandCreateDims.cpp" line="2399"/>
+      <location filename="../../CommandCreateDims.cpp" line="2414"/>
+      <location filename="../../CommandCreateDims.cpp" line="2562"/>
+      <location filename="../../CommandCreateDims.cpp" line="2570"/>
+      <location filename="../../CommandCreateDims.cpp" line="2579"/>
+      <location filename="../../CommandDecorate.cpp" line="313"/>
+      <location filename="../../CommandDecorate.cpp" line="320"/>
+      <location filename="../../CommandDecorate.cpp" line="327"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1862"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1991"/>
       <location filename="../../TaskDimRepair.cpp" line="140"/>
       <location filename="../../TaskDimRepair.cpp" line="151"/>
       <source>Incorrect selection</source>
@@ -3277,22 +3256,21 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../Command.cpp" line="741"/>
       <location filename="../../Command.cpp" line="834"/>
       <location filename="../../Command.cpp" line="897"/>
-      <location filename="../../CommandAnnotate.cpp" line="105"/>
-      <location filename="../../CommandAnnotate.cpp" line="166"/>
-      <location filename="../../CommandAnnotate.cpp" line="218"/>
-      <location filename="../../CommandAnnotate.cpp" line="405"/>
-      <location filename="../../CommandAnnotate.cpp" line="466"/>
-      <location filename="../../CommandAnnotate.cpp" line="505"/>
-      <location filename="../../CommandAnnotate.cpp" line="594"/>
-      <location filename="../../CommandAnnotate.cpp" line="698"/>
-      <location filename="../../CommandAnnotate.cpp" line="809"/>
-      <location filename="../../CommandAnnotate.cpp" line="884"/>
-      <location filename="../../CommandAnnotate.cpp" line="997"/>
-      <location filename="../../CommandAnnotate.cpp" line="1148"/>
-      <location filename="../../CommandAnnotate.cpp" line="1297"/>
-      <location filename="../../CommandAnnotate.cpp" line="1416"/>
-      <location filename="../../CommandAnnotate.cpp" line="1497"/>
-      <location filename="../../CommandAnnotate.cpp" line="1563"/>
+      <location filename="../../CommandAnnotate.cpp" line="103"/>
+      <location filename="../../CommandAnnotate.cpp" line="164"/>
+      <location filename="../../CommandAnnotate.cpp" line="216"/>
+      <location filename="../../CommandAnnotate.cpp" line="403"/>
+      <location filename="../../CommandAnnotate.cpp" line="464"/>
+      <location filename="../../CommandAnnotate.cpp" line="503"/>
+      <location filename="../../CommandAnnotate.cpp" line="592"/>
+      <location filename="../../CommandAnnotate.cpp" line="696"/>
+      <location filename="../../CommandAnnotate.cpp" line="807"/>
+      <location filename="../../CommandAnnotate.cpp" line="882"/>
+      <location filename="../../CommandAnnotate.cpp" line="995"/>
+      <location filename="../../CommandAnnotate.cpp" line="1145"/>
+      <location filename="../../CommandAnnotate.cpp" line="1264"/>
+      <location filename="../../CommandAnnotate.cpp" line="1345"/>
+      <location filename="../../CommandAnnotate.cpp" line="1411"/>
       <location filename="../../CommandCreateDims.cpp" line="1514"/>
       <location filename="../../CommandCreateDims.cpp" line="1562"/>
       <location filename="../../CommandCreateDims.cpp" line="1610"/>
@@ -3303,7 +3281,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandCreateDims.cpp" line="1847"/>
       <location filename="../../CommandCreateDims.cpp" line="1978"/>
       <location filename="../../CommandCreateDims.cpp" line="2074"/>
-      <location filename="../../CommandCreateDims.cpp" line="2186"/>
+      <location filename="../../CommandCreateDims.cpp" line="2199"/>
       <location filename="../../CommandExtensionDims.cpp" line="312"/>
       <location filename="../../CommandExtensionDims.cpp" line="521"/>
       <location filename="../../CommandExtensionDims.cpp" line="809"/>
@@ -3311,11 +3289,11 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionDims.cpp" line="1508"/>
       <location filename="../../CommandExtensionDims.cpp" line="1877"/>
       <location filename="../../CommandExtensionDims.cpp" line="2115"/>
-      <location filename="../../CommandExtensionPack.cpp" line="286"/>
-      <location filename="../../CommandExtensionPack.cpp" line="589"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1060"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1290"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1583"/>
+      <location filename="../../CommandExtensionPack.cpp" line="287"/>
+      <location filename="../../CommandExtensionPack.cpp" line="590"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1211"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1456"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1749"/>
       <location filename="../../CommandStack.cpp" line="75"/>
       <location filename="../../CommandStack.cpp" line="191"/>
       <location filename="../../CommandStack.cpp" line="251"/>
@@ -3327,22 +3305,21 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../Command.cpp" line="742"/>
       <location filename="../../Command.cpp" line="835"/>
       <location filename="../../Command.cpp" line="898"/>
-      <location filename="../../CommandAnnotate.cpp" line="106"/>
-      <location filename="../../CommandAnnotate.cpp" line="167"/>
-      <location filename="../../CommandAnnotate.cpp" line="219"/>
-      <location filename="../../CommandAnnotate.cpp" line="406"/>
-      <location filename="../../CommandAnnotate.cpp" line="467"/>
-      <location filename="../../CommandAnnotate.cpp" line="506"/>
-      <location filename="../../CommandAnnotate.cpp" line="595"/>
-      <location filename="../../CommandAnnotate.cpp" line="699"/>
-      <location filename="../../CommandAnnotate.cpp" line="810"/>
-      <location filename="../../CommandAnnotate.cpp" line="885"/>
-      <location filename="../../CommandAnnotate.cpp" line="998"/>
-      <location filename="../../CommandAnnotate.cpp" line="1149"/>
-      <location filename="../../CommandAnnotate.cpp" line="1298"/>
-      <location filename="../../CommandAnnotate.cpp" line="1417"/>
-      <location filename="../../CommandAnnotate.cpp" line="1498"/>
-      <location filename="../../CommandAnnotate.cpp" line="1564"/>
+      <location filename="../../CommandAnnotate.cpp" line="104"/>
+      <location filename="../../CommandAnnotate.cpp" line="165"/>
+      <location filename="../../CommandAnnotate.cpp" line="217"/>
+      <location filename="../../CommandAnnotate.cpp" line="404"/>
+      <location filename="../../CommandAnnotate.cpp" line="465"/>
+      <location filename="../../CommandAnnotate.cpp" line="504"/>
+      <location filename="../../CommandAnnotate.cpp" line="593"/>
+      <location filename="../../CommandAnnotate.cpp" line="697"/>
+      <location filename="../../CommandAnnotate.cpp" line="808"/>
+      <location filename="../../CommandAnnotate.cpp" line="883"/>
+      <location filename="../../CommandAnnotate.cpp" line="996"/>
+      <location filename="../../CommandAnnotate.cpp" line="1146"/>
+      <location filename="../../CommandAnnotate.cpp" line="1265"/>
+      <location filename="../../CommandAnnotate.cpp" line="1346"/>
+      <location filename="../../CommandAnnotate.cpp" line="1412"/>
       <location filename="../../CommandExtensionDims.cpp" line="313"/>
       <location filename="../../CommandExtensionDims.cpp" line="522"/>
       <location filename="../../CommandExtensionDims.cpp" line="810"/>
@@ -3371,13 +3348,13 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     </message>
     <message>
       <location filename="../../Command.cpp" line="1193"/>
-      <location filename="../../CommandCreateDims.cpp" line="2550"/>
+      <location filename="../../CommandCreateDims.cpp" line="2563"/>
       <source>Select an object first</source>
       <translation>ჯერ აირჩიეთ ობიექტი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1200"/>
-      <location filename="../../CommandCreateDims.cpp" line="2558"/>
+      <location filename="../../CommandCreateDims.cpp" line="2571"/>
       <source>Too many objects selected</source>
       <translation>მონიშნულია მეტისმეტად ბევრი ობიექტი</translation>
     </message>
@@ -3462,6 +3439,11 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">Cannot export selection</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1873"/>
+      <source>Page contains DrawViewBIM which will not be exported. Continue?</source>
+      <translation type="unfinished">Page contains DrawViewBIM which will not be exported. Continue?</translation>
+    </message>
+    <message>
       <location filename="../../CommandCreateDims.cpp" line="1515"/>
       <location filename="../../CommandCreateDims.cpp" line="1563"/>
       <location filename="../../CommandCreateDims.cpp" line="1611"/>
@@ -3472,7 +3454,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandCreateDims.cpp" line="1848"/>
       <location filename="../../CommandCreateDims.cpp" line="1979"/>
       <location filename="../../CommandCreateDims.cpp" line="2075"/>
-      <location filename="../../CommandCreateDims.cpp" line="2187"/>
+      <location filename="../../CommandCreateDims.cpp" line="2200"/>
       <source>Close the active task dialog and try again</source>
       <translation type="unfinished">Close the active task dialog and try again</translation>
     </message>
@@ -3482,68 +3464,68 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">There are no 3D edges or vertices in your selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2093"/>
-      <location filename="../../CommandCreateDims.cpp" line="2387"/>
+      <location filename="../../CommandCreateDims.cpp" line="2101"/>
+      <location filename="../../CommandCreateDims.cpp" line="2400"/>
       <source>No view of a part in selection.</source>
       <translation type="unfinished">No view of a part in selection.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2133"/>
+      <location filename="../../CommandCreateDims.cpp" line="2143"/>
       <source>Cannot make 2D extent dimension from selection</source>
       <translation type="unfinished">Cannot make 2D extent dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2148"/>
+      <location filename="../../CommandCreateDims.cpp" line="2159"/>
       <source>Cannot make 3D extent dimension from selection</source>
       <translation type="unfinished">Cannot make 3D extent dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2226"/>
+      <location filename="../../CommandCreateDims.cpp" line="2239"/>
       <source>There is no dimension in your selection</source>
       <translation type="unfinished">There is no dimension in your selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2279"/>
+      <location filename="../../CommandCreateDims.cpp" line="2292"/>
       <source>Select 2 point objects and 1 view. (1)</source>
       <translation type="unfinished">Select 2 point objects and 1 view. (1)</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2288"/>
+      <location filename="../../CommandCreateDims.cpp" line="2301"/>
       <source>Select 2 point objects and 1 view. (2)</source>
       <translation type="unfinished">Select 2 point objects and 1 view. (2)</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2402"/>
+      <location filename="../../CommandCreateDims.cpp" line="2415"/>
       <source>Cannot make 2D dimension from selection</source>
       <translation type="unfinished">Cannot make 2D dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2418"/>
+      <location filename="../../CommandCreateDims.cpp" line="2431"/>
       <source>Cannot make 3D dimension from selection</source>
       <translation type="unfinished">Cannot make 3D dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2431"/>
+      <location filename="../../CommandCreateDims.cpp" line="2444"/>
       <source>Ellipse curve warning</source>
       <translation type="unfinished">Ellipse curve warning</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2442"/>
+      <location filename="../../CommandCreateDims.cpp" line="2455"/>
       <source>B-spline curve warning</source>
       <translation type="unfinished">B-spline curve warning</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2453"/>
+      <location filename="../../CommandCreateDims.cpp" line="2466"/>
       <source>B-spline curve error</source>
       <translation type="unfinished">B-spline curve error</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2454"/>
+      <location filename="../../CommandCreateDims.cpp" line="2467"/>
       <source>Selected edge is a B-spline and a radius/diameter cannot be calculated.</source>
       <translation type="unfinished">Selected edge is a B-spline and a radius/diameter cannot be calculated.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2567"/>
+      <location filename="../../CommandCreateDims.cpp" line="2580"/>
       <source>Create a page first.</source>
       <translation>ჯერ შექმენით გვერდი.</translation>
     </message>
@@ -3558,16 +3540,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ყველა ფაილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1873"/>
-      <source>Page contains DrawViewArch which will not be exported. Continue?</source>
-      <translation>გვერდი შეიცავს DrawViewArch-ს, რომელიც არ იქნება გატანილი. გავაგრძელო?</translation>
-    </message>
-    <message>
       <location filename="../../CommandAlign.cpp" line="56"/>
-      <location filename="../../CommandCreateDims.cpp" line="2147"/>
-      <location filename="../../CommandCreateDims.cpp" line="2417"/>
-      <location filename="../../CommandDecorate.cpp" line="407"/>
-      <location filename="../../CommandDecorate.cpp" line="413"/>
+      <location filename="../../CommandCreateDims.cpp" line="2142"/>
+      <location filename="../../CommandCreateDims.cpp" line="2158"/>
+      <location filename="../../CommandCreateDims.cpp" line="2430"/>
+      <location filename="../../CommandDecorate.cpp" line="334"/>
+      <location filename="../../CommandDecorate.cpp" line="340"/>
       <location filename="../../TaskDimension.cpp" line="464"/>
       <source>Incorrect Selection</source>
       <translation>არასწორი არჩევანი</translation>
@@ -3580,12 +3558,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
 </translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2432"/>
+      <location filename="../../CommandCreateDims.cpp" line="2445"/>
       <source>Selected edge is an Ellipse. Value will be approximate. Continue?</source>
       <translation>მონიშნული წიბო ოვალს წარმოადგენს. მნიშვნელობა, მხოლოდ, დაახლოებითი იქნება. გავაგრძელო?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2443"/>
+      <location filename="../../CommandCreateDims.cpp" line="2456"/>
       <source>Selected edge is a B-spline. Value will be approximate. Continue?</source>
       <translation>მონიშნული წიბო B-სპლაინს წარმოადგენს. მნიშვნელობა, მხოლოდ, დაახლოებითი იქნება. გავაგრძელო?</translation>
     </message>
@@ -3595,7 +3573,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>თქვენს მონიშნულში 3D ობიექტი არ არსებობს</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2108"/>
+      <location filename="../../CommandCreateDims.cpp" line="2117"/>
       <source>Selection contains both 2D and 3D geometry</source>
       <translation>მონიშნული, ორივე, 2D და 3D გეომეტრიებს შეიცავს</translation>
     </message>
@@ -3608,185 +3586,196 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">Close the active task dialog and try again.</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="986"/>
       <location filename="../../CommandStack.cpp" line="371"/>
       <source>Task In Progress</source>
       <translation>მიმდინარეობს ამოცანის შესრულება</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="123"/>
+      <location filename="../../CommandExtensionPack.cpp" line="124"/>
       <source>TechDraw hole circle</source>
       <translation type="unfinished">TechDraw hole circle</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="287"/>
-      <location filename="../../CommandExtensionPack.cpp" line="590"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1061"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1291"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1584"/>
+      <location filename="../../CommandExtensionPack.cpp" line="288"/>
+      <location filename="../../CommandExtensionPack.cpp" line="591"/>
+      <location filename="../../CommandExtensionPack.cpp" line="987"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1212"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1457"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1750"/>
       <location filename="../../CommandStack.cpp" line="372"/>
       <source>Close active task dialog and try again.</source>
       <translation>დახურეთ აქტიური ამოცანის ფანჯარა და თავიდან სცადეთ.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1697"/>
+      <location filename="../../CommandExtensionPack.cpp" line="886"/>
+      <source>Selection is empty.</source>
+      <translation type="unfinished">Selection is empty.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="909"/>
+      <source>You must select a base View for the circle.</source>
+      <translation type="unfinished">You must select a base View for the circle.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="931"/>
+      <source>Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</source>
+      <translation type="unfinished">Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="967"/>
+      <source>Please select a center for the circle.</source>
+      <translation type="unfinished">Please select a center for the circle.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="1863"/>
       <source>No faces in selection</source>
       <translation type="unfinished">No faces in selection</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1826"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1992"/>
       <source>No edges in selection</source>
       <translation type="unfinished">No edges in selection</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2051"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2217"/>
       <source>TechDraw thread hole side</source>
       <translation type="unfinished">TechDraw thread hole side</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2052"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2218"/>
       <source>Select 2 straight lines</source>
       <translation type="unfinished">Select 2 straight lines</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="774"/>
-      <location filename="../../CommandAnnotate.cpp" line="1027"/>
+      <location filename="../../CommandAnnotate.cpp" line="772"/>
+      <location filename="../../CommandAnnotate.cpp" line="1025"/>
+      <location filename="../../CommandExtensionPack.cpp" line="885"/>
+      <location filename="../../CommandExtensionPack.cpp" line="908"/>
+      <location filename="../../CommandExtensionPack.cpp" line="930"/>
+      <location filename="../../CommandExtensionPack.cpp" line="966"/>
       <source>Wrong Selection</source>
       <translation>არასწორი არჩევანი</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="318"/>
-      <location filename="../../CommandAnnotate.cpp" line="419"/>
+      <location filename="../../CommandAnnotate.cpp" line="316"/>
+      <location filename="../../CommandAnnotate.cpp" line="417"/>
       <source>No DrawViewPart objects in this selection</source>
       <translation>ამ მონიშნულში DrawViewPart ტიპის ობიექტები არაა</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="121"/>
+      <location filename="../../CommandAnnotate.cpp" line="119"/>
       <source>Cannot attach leader. No base view selected.</source>
       <translation type="unfinished">Cannot attach leader. No base view selected.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="126"/>
-      <location filename="../../CommandAnnotate.cpp" line="732"/>
-      <location filename="../../CommandAnnotate.cpp" line="912"/>
-      <location filename="../../CommandAnnotate.cpp" line="1051"/>
+      <location filename="../../CommandAnnotate.cpp" line="124"/>
+      <location filename="../../CommandAnnotate.cpp" line="730"/>
+      <location filename="../../CommandAnnotate.cpp" line="910"/>
+      <location filename="../../CommandAnnotate.cpp" line="1049"/>
       <source>You must select a base view for the line</source>
       <translation type="unfinished">You must select a base view for the line</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="726"/>
-      <location filename="../../CommandAnnotate.cpp" line="919"/>
+      <location filename="../../CommandAnnotate.cpp" line="724"/>
+      <location filename="../../CommandAnnotate.cpp" line="917"/>
       <source>No base view in selection</source>
       <translation type="unfinished">No base view in selection</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="759"/>
+      <location filename="../../CommandAnnotate.cpp" line="757"/>
       <source>You must select faces or an existing centerline</source>
       <translation type="unfinished">You must select faces or an existing centerline</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="769"/>
+      <location filename="../../CommandAnnotate.cpp" line="767"/>
       <source>No CenterLine in selection</source>
       <translation type="unfinished">No CenterLine in selection</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="775"/>
-      <location filename="../../CommandAnnotate.cpp" line="958"/>
+      <location filename="../../CommandAnnotate.cpp" line="773"/>
+      <location filename="../../CommandAnnotate.cpp" line="956"/>
       <source>Selection is not a centerline</source>
       <translation type="unfinished">Selection is not a centerline</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="846"/>
+      <location filename="../../CommandAnnotate.cpp" line="844"/>
       <source>Selection is not a Centerline</source>
       <translation type="unfinished">Selection is not a Centerline</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="855"/>
+      <location filename="../../CommandAnnotate.cpp" line="853"/>
       <source>Selection not understood</source>
       <translation type="unfinished">Selection not understood</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="946"/>
+      <location filename="../../CommandAnnotate.cpp" line="944"/>
       <source>You must select 2 vertices or an existing centerline</source>
       <translation type="unfinished">You must select 2 vertices or an existing centerline</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="968"/>
+      <location filename="../../CommandAnnotate.cpp" line="966"/>
       <source>Select 2 vertices or 1 centerline</source>
       <translation type="unfinished">Select 2 vertices or 1 centerline</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1059"/>
+      <location filename="../../CommandAnnotate.cpp" line="1057"/>
       <source>Not enough points in the selection</source>
       <translation type="unfinished">Not enough points in the selection</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1079"/>
+      <location filename="../../CommandAnnotate.cpp" line="1077"/>
       <source>Selection is not a cosmetic line</source>
       <translation type="unfinished">Selection is not a cosmetic line</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1115"/>
+      <location filename="../../CommandAnnotate.cpp" line="1113"/>
       <source>You must select 2 vertices</source>
       <translation type="unfinished">You must select 2 vertices</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1202"/>
-      <source>You must select a base view for the circle</source>
-      <translation type="unfinished">You must select a base view for the circle</translation>
-    </message>
-    <message>
-      <location filename="../../CommandAnnotate.cpp" line="1224"/>
-      <source>Selection is not a cosmetic circle or a cosmetic arc of a circle</source>
-      <translation type="unfinished">Selection is not a cosmetic circle or a cosmetic arc of a circle</translation>
-    </message>
-    <message>
-      <location filename="../../CommandAnnotate.cpp" line="1260"/>
-      <source>Please select a center for the circle</source>
-      <translation type="unfinished">Please select a center for the circle</translation>
-    </message>
-    <message>
-      <location filename="../../CommandAnnotate.cpp" line="1311"/>
-      <location filename="../../CommandAnnotate.cpp" line="1511"/>
+      <location filename="../../CommandAnnotate.cpp" line="1159"/>
+      <location filename="../../CommandAnnotate.cpp" line="1359"/>
       <source>Nothing selected</source>
       <translation>არაფერია არჩეული</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1319"/>
+      <location filename="../../CommandAnnotate.cpp" line="1167"/>
       <source>At least 1 object in selection is not a part view</source>
       <translation>მონიშნულში მინიმუმ 1 ობიექტი ნაწილის ხედს არ წარმოადგენს</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1366"/>
+      <location filename="../../CommandAnnotate.cpp" line="1214"/>
       <source>Unknown object type in selection</source>
       <translation>მონიშნულში ობიექტის უცნობი ტიპია</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1429"/>
+      <location filename="../../CommandAnnotate.cpp" line="1277"/>
       <source>You must select a view and/or lines</source>
       <translation type="unfinished">You must select a view and/or lines</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1449"/>
+      <location filename="../../CommandAnnotate.cpp" line="1297"/>
       <source>No view in selection</source>
       <translation type="unfinished">No view in selection</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1518"/>
+      <location filename="../../CommandAnnotate.cpp" line="1366"/>
       <source>No part views in this selection</source>
       <translation type="unfinished">No part views in this selection</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1582"/>
+      <location filename="../../CommandAnnotate.cpp" line="1430"/>
       <source>Select exactly one leader line or one weld symbol</source>
       <translation type="unfinished">Select exactly one leader line or one weld symbol</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1641"/>
+      <location filename="../../CommandAnnotate.cpp" line="1489"/>
       <source>SurfaceFinishSymbols</source>
       <translation>ზედაპირისდასრულებისსიმბოლოები</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1642"/>
+      <location filename="../../CommandAnnotate.cpp" line="1490"/>
       <source>Selected object is not a part view, nor a leader line</source>
       <translation>მონიშნული ობიექტი ნაწილის ხედი ან გატანადი ხაზი არაა</translation>
     </message>
@@ -3801,33 +3790,23 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">Some faces in the selection are already hatched. Replace?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="334"/>
-      <source>No TechDraw page</source>
-      <translation type="unfinished">No TechDraw page</translation>
-    </message>
-    <message>
-      <location filename="../../CommandDecorate.cpp" line="335"/>
-      <source>A TechDraw page is required for this command</source>
-      <translation type="unfinished">A TechDraw page is required for this command</translation>
-    </message>
-    <message>
-      <location filename="../../CommandDecorate.cpp" line="387"/>
+      <location filename="../../CommandDecorate.cpp" line="314"/>
       <source>Select a face first</source>
       <translation type="unfinished">Select a face first</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="394"/>
+      <location filename="../../CommandDecorate.cpp" line="321"/>
       <source>No TechDraw object in selection</source>
       <translation>მონიშნულში ტექნიკური ნახაზი-ის ობიექტი არ არსებობს</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="401"/>
+      <location filename="../../CommandDecorate.cpp" line="328"/>
       <source>Create a page to insert</source>
       <translation type="unfinished">Create a page to insert</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="408"/>
-      <location filename="../../CommandDecorate.cpp" line="414"/>
+      <location filename="../../CommandDecorate.cpp" line="335"/>
+      <location filename="../../CommandDecorate.cpp" line="341"/>
       <source>No faces to hatch in this selection</source>
       <translation type="unfinished">No faces to hatch in this selection</translation>
     </message>
@@ -3852,56 +3831,56 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">This function needs a page.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="316"/>
+      <location filename="../../MDIViewPage.cpp" line="313"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="317"/>
-      <location filename="../../MDIViewPage.cpp" line="543"/>
+      <location filename="../../MDIViewPage.cpp" line="314"/>
+      <location filename="../../MDIViewPage.cpp" line="537"/>
       <source>All Files (*.*)</source>
       <translation>ყველა ფაილი (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="319"/>
+      <location filename="../../MDIViewPage.cpp" line="316"/>
       <source>Export Page as PDF</source>
       <translation type="unfinished">Export Page as PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="496"/>
-      <location filename="../../MDIViewPage.cpp" line="518"/>
+      <location filename="../../MDIViewPage.cpp" line="490"/>
+      <location filename="../../MDIViewPage.cpp" line="512"/>
       <source>All files (*.*)</source>
       <translation>ყველა ფაილი (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="498"/>
+      <location filename="../../MDIViewPage.cpp" line="492"/>
       <source>Export page as SVG</source>
       <translation>გვერდის SVG ფაილად გატანა</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="520"/>
+      <location filename="../../MDIViewPage.cpp" line="514"/>
       <source>Export page as DXF</source>
       <translation type="unfinished">Export page as DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="545"/>
+      <location filename="../../MDIViewPage.cpp" line="539"/>
       <source>Export page as PDF</source>
       <translation type="unfinished">Export page as PDF</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="212"/>
+      <location filename="../../ViewProviderPage.cpp" line="209"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="160"/>
       <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <source>Are you sure you want to continue?</source>
       <translation>დარწმუნებული ბრძანდებით, რომ გნებავთ გააგრძელოთ?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="232"/>
+      <location filename="../../ViewProviderPage.cpp" line="229"/>
       <source>Show Drawing</source>
-      <translation type="unfinished">Show Drawing</translation>
+      <translation>ნახაზის ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="234"/>
+      <location filename="../../ViewProviderPage.cpp" line="231"/>
       <source>Toggle Keep Updated</source>
       <translation>განახლებადობის ჩართ/გამორთ</translation>
     </message>
@@ -4030,8 +4009,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ნაწილის ხედის შეცვლა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="87"/>
-      <location filename="../../ViewProviderDimension.cpp" line="137"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="88"/>
+      <location filename="../../ViewProviderDimension.cpp" line="138"/>
       <source>Edit %1</source>
       <translation>%1-ის ჩასწორება</translation>
     </message>
@@ -4043,7 +4022,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="118"/>
       <source>Repeat count</source>
-      <translation type="unfinished">Repeat count</translation>
+      <translation>გამეორებების რაოდენობა</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="130"/>
@@ -4165,21 +4144,20 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ტექნიკური ნახაზი ფორმატის მორგება</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1028"/>
-      <location filename="../../CommandAnnotate.cpp" line="1179"/>
+      <location filename="../../CommandAnnotate.cpp" line="1026"/>
       <location filename="../../CommandExtensionDims.cpp" line="2331"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1966"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2132"/>
       <source>Selection is empty</source>
       <translation>მონიშნული ცარიელია</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2347"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1973"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2139"/>
       <source>No object selected</source>
       <translation>ობიექტი მონიშნული არაა</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="124"/>
+      <location filename="../../CommandExtensionPack.cpp" line="125"/>
       <source>Fewer than three circles selected</source>
       <translation>მონიშნულია სამზე ნაკლები წრეწირი</translation>
     </message>
@@ -4321,7 +4299,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskProjGroup.cpp" line="189"/>
       <source>New View</source>
-      <translation type="unfinished">New View</translation>
+      <translation>ახალი ხედი</translation>
     </message>
     <message>
       <location filename="../../CommandHelpers.cpp" line="91"/>
@@ -4354,9 +4332,9 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">Rich Text Creator</translation>
     </message>
     <message>
-      <location filename="../../TemplateTextField.cpp" line="51"/>
-      <source>Updates text</source>
-      <translation type="unfinished">Updates text</translation>
+      <location filename="../../TemplateTextField.cpp" line="57"/>
+      <source>Click to update text</source>
+      <translation type="unfinished">Click to update text</translation>
     </message>
   </context>
   <context>
@@ -4380,13 +4358,13 @@ it has a weld symbol that would become broken.</source>
     </message>
     <message>
       <location filename="../../ViewProviderLeader.cpp" line="214"/>
-      <location filename="../../ViewProviderPage.cpp" line="215"/>
+      <location filename="../../ViewProviderPage.cpp" line="212"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="146"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="163"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="155"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="164"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="172"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="180"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="156"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="181"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <location filename="../../ViewProviderViewPart.cpp" line="384"/>
       <location filename="../../ViewProviderViewPart.cpp" line="399"/>
@@ -4395,27 +4373,27 @@ it has a weld symbol that would become broken.</source>
       <translation>ობიექტის დამოკიდებულებები</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="152"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="153"/>
       <source>You cannot delete the anchor view of a projection group.</source>
       <translation>პროექციის ჯგუფის ღუზის ხედის წაშლა არ შეგიძლიათ.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="161"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="162"/>
       <source>You cannot delete this view because it has a section view that would become broken.</source>
       <translation>თქვენ არ შეგიძლიათ ამ ხედის წაშლა იმიტომ, რომ მას გააჩნია კვეთის ხედი, რომელიც გაფუჭდებოდა.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="169"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="170"/>
       <source>You cannot delete this view because it has a detail view that would become broken.</source>
       <translation>თქვენ არ შეგიძლიათ ამ ხედის წაშლა იმიტომ, რომ მას გააჩნია დეტალის ხედი, რომელიც გაფუჭდებოდა.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="177"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="178"/>
       <source>You cannot delete this view because it has a leader line that would become broken.</source>
       <translation>თქვენ არ შეგიძლიათ ამ ხედის წაშლა იმიტომ, რომ მას გააჩნია გატანადი ხაზი, რომელიც გაფუჭდებოდა.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="204"/>
+      <location filename="../../ViewProviderPage.cpp" line="201"/>
       <source>The page is not empty, therefore the
 following referencing objects might be lost:</source>
       <translation>გვერდი ცარიელი არ არის, ამიტომ
@@ -4452,7 +4430,7 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskActiveView.ui" line="26"/>
       <source>Active View</source>
-      <translation type="unfinished">Active View</translation>
+      <translation>აქტიური ხედი</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="44"/>
@@ -4497,7 +4475,7 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskActiveView.ui" line="169"/>
       <source>Crop image</source>
-      <translation type="unfinished">Crop image</translation>
+      <translation>გამოსახულების ამოჭრა</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="136"/>
@@ -4520,12 +4498,12 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskMoveView.ui" line="43"/>
       <source>From page</source>
-      <translation type="unfinished">From page</translation>
+      <translation>გვერდიდან</translation>
     </message>
     <message>
       <location filename="../../TaskMoveView.ui" line="64"/>
       <source>To page</source>
-      <translation type="unfinished">To page</translation>
+      <translation>გვერდამდე</translation>
     </message>
   </context>
   <context>
@@ -4623,7 +4601,7 @@ at the kink in the leader line</translation>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="242"/>
       <source>Field weld</source>
-      <translation type="unfinished">Field weld</translation>
+      <translation>შედუღების ველი</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="249"/>
@@ -4635,12 +4613,12 @@ at the kink in the leader line</translation>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="253"/>
       <source>All around</source>
-      <translation type="unfinished">All around</translation>
+      <translation>ყველა გარშემო</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="274"/>
       <source>Tail text</source>
-      <translation type="unfinished">Tail text</translation>
+      <translation>ბოლო ტექსტი</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="294"/>
@@ -4734,7 +4712,7 @@ This directory will be used for the symbol selection.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="110"/>
       <source>Debug detail</source>
-      <translation type="unfinished">Debug detail</translation>
+      <translation>გამართვის დეტალები</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="129"/>
@@ -4750,7 +4728,7 @@ can be a performance penalty in complex models.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="135"/>
       <source>Detect faces</source>
-      <translation type="unfinished">Detect faces</translation>
+      <translation>ზედაპირების აღმოჩენა</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="177"/>
@@ -4841,12 +4819,12 @@ Increase the limit if necessary.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="515"/>
       <source>Use default</source>
-      <translation type="unfinished">Use default</translation>
+      <translation>ნაგულისხმევის გამოყენება</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="532"/>
       <source>Balloon drag</source>
-      <translation type="unfinished">Balloon drag</translation>
+      <translation>ბუშტის გადათრევა</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="440"/>
@@ -5036,12 +5014,12 @@ PAT შაბლონით წიბოს დაშტრიხვისა�
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="247"/>
       <source>SVG hatch</source>
-      <translation type="unfinished">SVG hatch</translation>
+      <translation>SVG დაშტრიხვა</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="252"/>
       <source>PAT hatch</source>
-      <translation type="unfinished">PAT hatch</translation>
+      <translation>PAT დაშტრიხვა</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="260"/>
@@ -5086,12 +5064,12 @@ PAT შაბლონით წიბოს დაშტრიხვისა�
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="380"/>
       <source>Zigzag lines</source>
-      <translation type="unfinished">Zigzag lines</translation>
+      <translation>ზიგზაგი ხაზები</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="385"/>
       <source>Simple lines</source>
-      <translation type="unfinished">Simple lines</translation>
+      <translation>მარტივი ხაზები</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="398"/>
@@ -5341,7 +5319,7 @@ for using drawings a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="170"/>
       <source>Section face</source>
-      <translation type="unfinished">Section face</translation>
+      <translation>ზედაპრების ჭრილები</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="260"/>
@@ -5401,7 +5379,7 @@ for using drawings a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="411"/>
       <source>Page color</source>
-      <translation type="unfinished">Page color</translation>
+      <translation>გვერდის ფერი</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="418"/>
@@ -5493,11 +5471,6 @@ for using drawings a 1:1 cutting guide.
       <translation>ხელსაწყოები</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="566"/>
-      <source>Dimension tool diameter/radius mode:</source>
-      <translation>განზომილების ხელსაწყოს დიამეტრის/რადიუსის რეჟიმი:</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="165"/>
       <source>Append unit to dimension values</source>
       <translation>ზომის მნიშვნელობებისთვის საზომი ერთეულების მიწერა</translation>
@@ -5545,7 +5518,7 @@ for using drawings a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="129"/>
       <source>ASME inlined</source>
-      <translation type="unfinished">ASME inlined</translation>
+      <translation>ASME ხაზშივე</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="134"/>
@@ -5560,7 +5533,7 @@ for using drawings a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="168"/>
       <source>Show units</source>
-      <translation type="unfinished">Show units</translation>
+      <translation>ერთეულის ჩვენება</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="186"/>
@@ -5674,6 +5647,11 @@ This affects only the toolbar; all tools remain available via the menu and short
 ‘Separated tools’ displays individual tools for each dimension type.
 ‘Both’ enables both the unified tool and the individual tools.
 This affects only the toolbar; all tools remain available via the menu and shortcuts.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="566"/>
+      <source>Dimension tool diameter/radius mode</source>
+      <translation>განზომილების ხელსაწყოს დიამეტრის/რადიუსის რეჟიმი</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="573"/>
@@ -5931,7 +5909,7 @@ can override the global &apos;Update with 3D&apos; parameter</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="717"/>
       <source>Show grid</source>
-      <translation type="unfinished">Show grid</translation>
+      <translation>ბადის ჩვენება</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="738"/>
@@ -5996,7 +5974,7 @@ can override the global &apos;Update with 3D&apos; parameter</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="676"/>
       <source>Pattern name</source>
-      <translation type="unfinished">Pattern name</translation>
+      <translation>შაბლონის სახელი</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="688"/>
@@ -6184,7 +6162,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="73"/>
       <source>Page scale</source>
-      <translation type="unfinished">Page scale</translation>
+      <translation>გვერდის მასშტაბი</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="85"/>
@@ -6239,7 +6217,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="267"/>
       <source>Vertex scale</source>
-      <translation type="unfinished">Vertex scale</translation>
+      <translation>წვეროს მასშტაბი</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="313"/>
@@ -6291,55 +6269,50 @@ Fast, but result is a collection of short straight lines.</source>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="93"/>
-      <source>Toggle &amp;Frames</source>
-      <translation>ჩარჩოების ჩართ/გამორთ</translation>
-    </message>
-    <message>
-      <location filename="../../MDIViewPage.cpp" line="96"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;SVG-ში გატანა</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="100"/>
+      <location filename="../../MDIViewPage.cpp" line="97"/>
       <source>Export DXF</source>
       <translation>DXF-ის გატანა</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="104"/>
+      <location filename="../../MDIViewPage.cpp" line="101"/>
       <source>Export PDF</source>
       <translation>PDF-ად გატანა</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="108"/>
+      <location filename="../../MDIViewPage.cpp" line="105"/>
       <source>Print All Pages</source>
       <translation>ყველა გვერდის დაბეჭდვა</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="399"/>
+      <location filename="../../MDIViewPage.cpp" line="396"/>
       <source>Different orientation</source>
       <translation>განსხვავებული ორიენტაცია</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="400"/>
+      <location filename="../../MDIViewPage.cpp" line="397"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>პრინტერი იყენებს განსხვავებულ ორიენტაციას, ვიდრე ნახაზი.
 Გინდა გააგრძელო?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="409"/>
+      <location filename="../../MDIViewPage.cpp" line="406"/>
       <source>Different paper size</source>
       <translation>ფურცლის განსხვავებული ზომა</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="410"/>
+      <location filename="../../MDIViewPage.cpp" line="407"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>პრინტერი იყენებს ქაღალდის განსხვავებულ ზომას, ვიდრე ნახაზი.
 გნებავთ, გააგრძელოთ?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1088"/>
+      <location filename="../../MDIViewPage.cpp" line="1082"/>
       <source>Selected:</source>
       <translation>არჩეულია:</translation>
     </message>
@@ -6375,19 +6348,9 @@ Do you want to continue?</source>
       <translation>პოზიციური გამოტანა</translation>
     </message>
     <message>
-      <location filename="../../TaskBalloon.ui" line="22"/>
-      <source>Text:</source>
-      <translation>ტექსტი:</translation>
-    </message>
-    <message>
       <location filename="../../TaskBalloon.ui" line="29"/>
       <source>Text to be displayed</source>
       <translation>საჩვენებელი ტექსტი</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="36"/>
-      <source>Text color:</source>
-      <translation type="unfinished">Text color:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="43"/>
@@ -6403,11 +6366,6 @@ Do you want to continue?</source>
       <location filename="../../TaskBalloon.ui" line="76"/>
       <source>Font size for text</source>
       <translation type="unfinished">Font size for text</translation>
-    </message>
-    <message>
-      <location filename="../../TaskBalloon.ui" line="95"/>
-      <source>Bubble shape:</source>
-      <translation type="unfinished">Bubble shape:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="102"/>
@@ -6495,6 +6453,21 @@ Do you want to continue?</source>
       <translation>სქოლიოს მასშტაბი</translation>
     </message>
     <message>
+      <location filename="../../TaskBalloon.ui" line="22"/>
+      <source>Text</source>
+      <translation>ტექსტი</translation>
+    </message>
+    <message>
+      <location filename="../../TaskBalloon.ui" line="36"/>
+      <source>Text color</source>
+      <translation>ტექსტის ფერი</translation>
+    </message>
+    <message>
+      <location filename="../../TaskBalloon.ui" line="95"/>
+      <source>Bubble shape</source>
+      <translation type="unfinished">Bubble shape</translation>
+    </message>
+    <message>
       <location filename="../../TaskBalloon.ui" line="220"/>
       <source>End symbol for the balloon line</source>
       <translation>ბუშტის ხაზის ბოლო სიმბოლო</translation>
@@ -6580,7 +6553,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="29"/>
       <source>Base view</source>
-      <translation type="unfinished">Base view</translation>
+      <translation>ძირითადი ხედი</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="89"/>
@@ -6638,7 +6611,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="290"/>
       <source>Extend by</source>
-      <translation type="unfinished">Extend by</translation>
+      <translation>გაფართოება</translation>
     </message>
   </context>
   <context>
@@ -6702,7 +6675,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskComplexSection.ui" line="136"/>
       <source>Scale type</source>
-      <translation type="unfinished">Scale type</translation>
+      <translation>მასშტაბის ტიპი</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="162"/>
@@ -6717,7 +6690,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskComplexSection.ui" line="232"/>
       <source>Base view</source>
-      <translation type="unfinished">Base view</translation>
+      <translation>ძირითადი ხედი</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="274"/>
@@ -6817,7 +6790,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCosVertex.ui" line="26"/>
       <source>Base view</source>
-      <translation type="unfinished">Base view</translation>
+      <translation>ძირითადი ხედი</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.ui" line="66"/>
@@ -6878,13 +6851,13 @@ Do you want to continue?</source>
       <location filename="../../TaskCosmeticLine.ui" line="61"/>
       <location filename="../../TaskCosmeticLine.ui" line="140"/>
       <source>2D point</source>
-      <translation type="unfinished">2D point</translation>
+      <translation>2D წერტილი</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="77"/>
       <location filename="../../TaskCosmeticLine.ui" line="156"/>
       <source>3D point</source>
-      <translation type="unfinished">3D point</translation>
+      <translation>3D წერტილი</translation>
     </message>
   </context>
   <context>
@@ -6945,16 +6918,6 @@ Do you want to continue?</source>
       <translation>ზედაპირის პროფილი</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="136"/>
-      <source>Circular runout</source>
-      <translation>წრიული გამოსვლა</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="146"/>
-      <source>Total runout</source>
-      <translation>ჯამური გადაცილება</translation>
-    </message>
-    <message>
       <location filename="../../TaskCustomizeFormat.ui" line="156"/>
       <source>Position</source>
       <translation>მდებარეობა</translation>
@@ -6997,22 +6960,22 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="489"/>
       <source>(Arc) minute</source>
-      <translation type="unfinished">(Arc) minute</translation>
+      <translation>(რკალი) მინუტი</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="499"/>
       <source>(Arc) second</source>
-      <translation type="unfinished">(Arc) second</translation>
+      <translation>(რკალი) სეკუნდი</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="509"/>
       <source>(Arc) tertie</source>
-      <translation type="unfinished">(Arc) tertie</translation>
+      <translation>(რკალი) მესამეული</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="573"/>
       <source>Plus - minus</source>
-      <translation type="unfinished">Plus - minus</translation>
+      <translation>პლუს - მინუს</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="625"/>
@@ -7022,7 +6985,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="708"/>
       <source>Format</source>
-      <translation type="unfinished">Format</translation>
+      <translation>ფორმატი</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="718"/>
@@ -7030,9 +6993,19 @@ Do you want to continue?</source>
       <translation>გადახედვა</translation>
     </message>
     <message>
+      <location filename="../../TaskCustomizeFormat.ui" line="136"/>
+      <source>Circular run-out</source>
+      <translation type="unfinished">Circular run-out</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCustomizeFormat.ui" line="146"/>
+      <source>Total run-out</source>
+      <translation type="unfinished">Total run-out</translation>
+    </message>
+    <message>
       <location filename="../../TaskCustomizeFormat.ui" line="217"/>
-      <source>Minimax (Tschebyschew)</source>
-      <translation>მინიმაქსი (ჩებიშევი)</translation>
+      <source>Minimax (Chebychev)</source>
+      <translation type="unfinished">Minimax (Chebychev)</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="232"/>
@@ -7241,7 +7214,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDetail.ui" line="120"/>
       <source>Scale type</source>
-      <translation type="unfinished">Scale type</translation>
+      <translation>მასშტაბის ტიპი</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="127"/>
@@ -7261,7 +7234,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDetail.ui" line="184"/>
       <source>Scale factor</source>
-      <translation type="unfinished">Scale factor</translation>
+      <translation>მასშტაბის კოეფიციენტი</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="197"/>
@@ -7328,11 +7301,6 @@ Custom: custom scale factor is used</source>
       <translation>ზე- და ქვე- ამტანობას ერთი და იგივე მნიშვნელობა მიანიჭეთ</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="79"/>
-      <source>Undertolerance:</source>
-      <translation>აცდენის ქვედა ზღვარი:</translation>
-    </message>
-    <message>
       <location filename="../../TaskDimension.ui" line="115"/>
       <source>Formatting</source>
       <translation>ფორმატირება</translation>
@@ -7356,11 +7324,6 @@ Custom: custom scale factor is used</source>
       <location filename="../../TaskDimension.ui" line="190"/>
       <source>Display Style</source>
       <translation>ჩვენების სტილი</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.ui" line="208"/>
-      <source>Color:</source>
-      <translation>ფერი:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="215"/>
@@ -7400,6 +7363,11 @@ the negated value for &apos;Undertolerance&apos;.</source>
       <translation type="unfinished">Overtolerance value
 If &apos;Equal tolerance&apos; is checked this is also
 the negated value for &apos;Undertolerance&apos;.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.ui" line="79"/>
+      <source>Undertolerance</source>
+      <translation type="unfinished">Undertolerance</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="92"/>
@@ -7451,6 +7419,11 @@ by negative value of &apos;Overtolerance&apos;.</translation>
       <translation type="unfinished">Flip arrowheads</translation>
     </message>
     <message>
+      <location filename="../../TaskDimension.ui" line="208"/>
+      <source>Color</source>
+      <translation>ფერი</translation>
+    </message>
+    <message>
       <location filename="../../TaskDimension.ui" line="229"/>
       <source>Font size</source>
       <translation>ფონტის ზომა</translation>
@@ -7478,7 +7451,7 @@ by negative value of &apos;Overtolerance&apos;.</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="291"/>
       <source>ASME inlined</source>
-      <translation type="unfinished">ASME inlined</translation>
+      <translation>ASME ხაზშივე</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="296"/>
@@ -7519,7 +7492,7 @@ by negative value of &apos;Overtolerance&apos;.</translation>
       <location filename="../../TaskDimension.ui" line="353"/>
       <location filename="../../TaskDimension.ui" line="396"/>
       <source>Use Default</source>
-      <translation type="unfinished">Use Default</translation>
+      <translation>ნაგულისხმევის გამოყენება</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="360"/>
@@ -7573,7 +7546,7 @@ by negative value of &apos;Overtolerance&apos;.</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="46"/>
       <source>Pattern file</source>
-      <translation type="unfinished">Pattern file</translation>
+      <translation>შაბლონის ფაილი</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="59"/>
@@ -7588,7 +7561,7 @@ by negative value of &apos;Overtolerance&apos;.</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="97"/>
       <source>Pattern name</source>
-      <translation type="unfinished">Pattern name</translation>
+      <translation>შაბლონის სახელი</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="104"/>
@@ -7656,7 +7629,7 @@ by negative value of &apos;Overtolerance&apos;.</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="62"/>
       <source>Pattern file</source>
-      <translation type="unfinished">Pattern file</translation>
+      <translation>შაბლონის ფაილი</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="85"/>
@@ -7719,7 +7692,7 @@ by negative value of &apos;Overtolerance&apos;.</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="38"/>
       <source>Base view</source>
-      <translation type="unfinished">Base view</translation>
+      <translation>ძირითადი ხედი</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="113"/>
@@ -7773,7 +7746,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="278"/>
       <source>No line</source>
-      <translation type="unfinished">No line</translation>
+      <translation>ხაზის გარეშე</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="287"/>
@@ -7824,7 +7797,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="535"/>
       <source>Save points</source>
-      <translation type="unfinished">Save points</translation>
+      <translation>წერტილების შენახვა</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="567"/>
@@ -7925,23 +7898,23 @@ You can pick further points to get line segments.</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="67"/>
-      <source>Feature1:</source>
-      <translation>თვისება1:</translation>
+      <source>Feature1</source>
+      <translation type="unfinished">Feature1</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="87"/>
-      <source>Geometry1:</source>
-      <translation>გეომეტრია1:</translation>
+      <source>Geometry1</source>
+      <translation type="unfinished">Geometry1</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="107"/>
-      <source>Feature2:</source>
-      <translation>თვისება2:</translation>
+      <source>Feature2</source>
+      <translation type="unfinished">Feature2</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="127"/>
-      <source>Geometry2:</source>
-      <translation>გეომეტრია2:</translation>
+      <source>Geometry2</source>
+      <translation type="unfinished">Geometry2</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="153"/>
@@ -8129,12 +8102,12 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="563"/>
       <source>First angle</source>
-      <translation type="unfinished">First angle</translation>
+      <translation>პირველი კუთხე</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="568"/>
       <source>Third angle</source>
-      <translation type="unfinished">Third angle</translation>
+      <translation>მესამე კუთხე</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="583"/>
@@ -8151,7 +8124,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="608"/>
       <source>X spacing</source>
-      <translation type="unfinished">X spacing</translation>
+      <translation>X დაშორება</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="640"/>
@@ -8161,7 +8134,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="668"/>
       <source>Y spacing</source>
-      <translation type="unfinished">Y spacing</translation>
+      <translation>Y დაშორება</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="687"/>
@@ -8329,12 +8302,12 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskRichAnno.ui" line="67"/>
       <source>Max width</source>
-      <translation type="unfinished">Max width</translation>
+      <translation>მაქს. სიგანე</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="121"/>
       <source>Show frame</source>
-      <translation type="unfinished">Show frame</translation>
+      <translation>ჩარჩოს ჩვენება</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="138"/>
@@ -8427,12 +8400,12 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="28"/>
       <source>Base view</source>
-      <translation type="unfinished">Base view</translation>
+      <translation>ძირითადი ხედი</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="81"/>
       <source>Scale type</source>
-      <translation type="unfinished">Scale type</translation>
+      <translation>მასშტაბის ტიპი</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="94"/>
@@ -8507,7 +8480,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="468"/>
       <source>Live update</source>
-      <translation type="unfinished">Live update</translation>
+      <translation>ცოცხალი განახლება</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="447"/>
@@ -8552,13 +8525,13 @@ using the given X/Y spacings</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="34"/>
-      <source>Line style:</source>
-      <translation>ხაზის სტილი:</translation>
+      <source>Line style</source>
+      <translation>ხაზის სტილი</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="48"/>
-      <source>Line width:</source>
-      <translation>ხაზის სიგანე:</translation>
+      <source>Line width</source>
+      <translation>ხაზის სიგანე</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="55"/>
@@ -8637,7 +8610,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="248"/>
       <source>Symbol angle</source>
-      <translation type="unfinished">Symbol angle</translation>
+      <translation>სიმბოლოს კუთხე</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="255"/>
@@ -8672,7 +8645,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskHoleShaftFit.ui" line="145"/>
       <source>Loose fit</source>
-      <translation type="unfinished">Loose fit</translation>
+      <translation>თავისუფლად ჩატევა</translation>
     </message>
   </context>
   <context>
@@ -8706,7 +8679,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../DlgTemplateField.ui" line="28"/>
       <source>Text name</source>
-      <translation type="unfinished">Text name</translation>
+      <translation>ტექსტის სახელი</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="42"/>
@@ -8753,21 +8726,6 @@ using the given X/Y spacings</translation>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>Dimensions</source>
       <translation>ზომები</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="40"/>
-      <source>Extensions: Attributes/Modifications</source>
-      <translation>გაფართოებები: ატრიბუტები/მოდიფიკაციები</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="41"/>
-      <source>Extensions: Centerlines/Threading</source>
-      <translation>გაფართოებები: ცენტრის ხაზები/კუთხვილები</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="42"/>
-      <source>Extensions: Dimensions</source>
-      <translation>გაფართოებები: ზომები</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
@@ -8855,6 +8813,21 @@ using the given X/Y spacings</translation>
       <translation>ტექნიკური ნახაზი-ის ანოტაცია</translation>
     </message>
     <message>
+      <location filename="../../Workbench.cpp" line="40"/>
+      <source>Attributes/Modifications</source>
+      <translation type="unfinished">Attributes/Modifications</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="41"/>
+      <source>Centerlines/Threading</source>
+      <translation type="unfinished">Centerlines/Threading</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="42"/>
+      <source>Format/Organize Dimensions</source>
+      <translation type="unfinished">Format/Organize Dimensions</translation>
+    </message>
+    <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>Views From Other Workbenches</source>
       <translation>ხედები სხვა სამუშაო მაგიდებიდან</translation>
@@ -8898,28 +8871,28 @@ using the given X/Y spacings</translation>
       <translation type="unfinished">Move View to Different Page</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskMoveView.py" line="80"/>
+      <location filename="../../../TechDrawTools/TaskMoveView.py" line="84"/>
       <source>Select view to move from list.</source>
       <translation type="unfinished">Select view to move from list.</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskMoveView.py" line="81"/>
+      <location filename="../../../TechDrawTools/TaskMoveView.py" line="85"/>
       <source>Select View</source>
       <translation>აირჩიეთ ხედი</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskMoveView.py" line="103"/>
+      <location filename="../../../TechDrawTools/TaskMoveView.py" line="107"/>
       <source>Select from page.</source>
       <translation type="unfinished">Select from page.</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskMoveView.py" line="126"/>
+      <location filename="../../../TechDrawTools/TaskMoveView.py" line="130"/>
       <source>Select to page.</source>
       <translation type="unfinished">Select to page.</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskMoveView.py" line="104"/>
-      <location filename="../../../TechDrawTools/TaskMoveView.py" line="127"/>
+      <location filename="../../../TechDrawTools/TaskMoveView.py" line="108"/>
+      <location filename="../../../TechDrawTools/TaskMoveView.py" line="131"/>
       <source>Select Page</source>
       <translation>აირჩიეთ გვერდი</translation>
     </message>
@@ -8947,28 +8920,28 @@ using the given X/Y spacings</translation>
       <translation>გასაზიარებელი ხედი</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskShareView.py" line="80"/>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="85"/>
       <source>Select view to share from list.</source>
       <translation type="unfinished">Select view to share from list.</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskShareView.py" line="103"/>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="108"/>
       <source>Select from page.</source>
       <translation type="unfinished">Select from page.</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskShareView.py" line="127"/>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="132"/>
       <source>Select to page.</source>
       <translation type="unfinished">Select to page.</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskShareView.py" line="81"/>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="86"/>
       <source>Select View</source>
       <translation>აირჩიეთ ხედი</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskShareView.py" line="104"/>
-      <location filename="../../../TechDrawTools/TaskShareView.py" line="128"/>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="109"/>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="133"/>
       <source>Select Page</source>
       <translation>გვერდის ამორჩევა</translation>
     </message>
@@ -9034,17 +9007,17 @@ using the given X/Y spacings</translation>
   <context>
     <name>CmdTechDrawDimensionRepair</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2209"/>
+      <location filename="../../CommandCreateDims.cpp" line="2222"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2210"/>
+      <location filename="../../CommandCreateDims.cpp" line="2223"/>
       <source>Repair Dimension References</source>
       <translation>ზომის ორიენტირების გასწორება</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2211"/>
+      <location filename="../../CommandCreateDims.cpp" line="2224"/>
       <source>Repairs broken or incorrect dimension references</source>
       <translation type="unfinished">Repairs broken or incorrect dimension references</translation>
     </message>
@@ -9074,17 +9047,17 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="43"/>
       <source>Loose fit</source>
-      <translation type="unfinished">Loose fit</translation>
+      <translation>თავისუფლად ჩატევა</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="44"/>
       <source>Snug fit</source>
-      <translation type="unfinished">Snug fit</translation>
+      <translation>მჭიდროდ ჩატევა</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="45"/>
       <source>Press fit</source>
-      <translation type="unfinished">Press fit</translation>
+      <translation>დაწოლით ჩატევა</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="92"/>
@@ -9097,12 +9070,12 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="32"/>
       <source>Filled arrow</source>
-      <translation type="unfinished">Filled arrow</translation>
+      <translation>შევსებული ისარი</translation>
     </message>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="33"/>
       <source>Open arrow</source>
-      <translation type="unfinished">Open arrow</translation>
+      <translation>ღია ისარი</translation>
     </message>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="34"/>
@@ -9117,7 +9090,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="36"/>
       <source>Open circle</source>
-      <translation type="unfinished">Open circle</translation>
+      <translation>ღია წრეწირი</translation>
     </message>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="38"/>
@@ -9191,14 +9164,14 @@ using the given X/Y spacings</translation>
   <context>
     <name>TaskBalloon</name>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="182"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="189"/>
       <source>You cannot delete this balloon now because
 there is an open task dialog.</source>
       <translation>ამ ბუშტის ახლა წაშლა არ შეგიძლიათ,
 რადგან არსებობს ღია ამოცანის ფანჯარა.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="185"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="192"/>
       <source>Can Not Delete</source>
       <translation>წაშლა შეუძლებელია</translation>
     </message>
@@ -9367,7 +9340,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="64"/>
       <source>2D point</source>
-      <translation type="unfinished">2D point</translation>
+      <translation>2D წერტილი</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="77"/>
@@ -9377,7 +9350,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="80"/>
       <source>3D point</source>
-      <translation type="unfinished">3D point</translation>
+      <translation>3D წერტილი</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="90"/>
@@ -9385,9 +9358,14 @@ there is an open task dialog.</source>
       <translation type="unfinished">Circle center</translation>
     </message>
     <message>
+      <location filename="../../TaskCosmeticCircle.ui" line="147"/>
+      <source>Radius</source>
+      <translation>რადიუსი</translation>
+    </message>
+    <message>
       <location filename="../../TaskCosmeticCircle.ui" line="181"/>
-      <source>End angle:</source>
-      <translation type="unfinished">End angle:</translation>
+      <source>End angle</source>
+      <translation type="unfinished">End angle</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="188"/>
@@ -9415,11 +9393,6 @@ there is an open task dialog.</source>
       <translation>წრეწირის რკალი</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.ui" line="147"/>
-      <source>Radius:</source>
-      <translation>რადიუსი:</translation>
-    </message>
-    <message>
       <location filename="../../TaskCosmeticCircle.ui" line="191"/>
       <source>Clockwise Angle</source>
       <translation>კუთხე საათის ისრის მიმართულებით</translation>
@@ -9438,35 +9411,37 @@ there is an open task dialog.</source>
   <context>
     <name>CmdTechDrawCosmeticCircle</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1134"/>
+      <location filename="../../CommandExtensionPack.cpp" line="856"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1135"/>
-      <source>Cosmetic Circle</source>
-      <translation>კოსმეტიკური წრეწირი</translation>
+      <location filename="../../CommandExtensionPack.cpp" line="857"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1280"/>
+      <source>Cosmetic 1 Point Circle</source>
+      <translation type="unfinished">Cosmetic 1 Point Circle</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1136"/>
-      <source>Adds a cosmetic circle to the current page</source>
-      <translation type="unfinished">Adds a cosmetic circle to the current page</translation>
+      <location filename="../../CommandExtensionPack.cpp" line="858"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1282"/>
+      <source>Adds a cosmetic circle based on a selected centerpoint</source>
+      <translation type="unfinished">Adds a cosmetic circle based on a selected centerpoint</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawExtensionArcLengthAnnotation</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1796"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1962"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1797"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1963"/>
       <source>Arc Length Annotation</source>
       <translation type="unfinished">Arc Length Annotation</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1798"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1964"/>
       <source>Inserts an annotation with the calculated arc length of the selected edges</source>
       <translation type="unfinished">Inserts an annotation with the calculated arc length of the selected edges</translation>
     </message>
@@ -9491,12 +9466,12 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="48"/>
       <source>X-offset</source>
-      <translation type="unfinished">X-offset</translation>
+      <translation>X-წანაცვლება</translation>
     </message>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="55"/>
       <source>Y-offset</source>
-      <translation type="unfinished">Y-offset</translation>
+      <translation>Y-წანაცვლება</translation>
     </message>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="72"/>
@@ -9568,7 +9543,7 @@ there is an open task dialog.</source>
       <translation type="unfinished">View or projection group missing</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="437"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="439"/>
       <source>Corresponding template fields missing</source>
       <translation>შესაბამისი შაბლონის ველები ვერ ვიპოვე</translation>
     </message>
@@ -9850,14 +9825,14 @@ there is an open task dialog.</source>
   <context>
     <name>TaskDimension</name>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="313"/>
+      <location filename="../../ViewProviderDimension.cpp" line="323"/>
       <source>You cannot delete this dimension now because
 there is an open task dialog.</source>
       <translation>ამ განზომილების ახლა წაშლა არ შეგიძლიათ,
 რადგან არსებობს ღია ამოცანის ფანჯარა.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="316"/>
+      <location filename="../../ViewProviderDimension.cpp" line="326"/>
       <source>Can Not Delete</source>
       <translation>წაშლა შეუძლებელია</translation>
     </message>
@@ -9913,7 +9888,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1448"/>
       <source>Dimension tools</source>
-      <translation type="unfinished">Dimension tools</translation>
+      <translation>განზომილების ხელსაწყოები</translation>
     </message>
   </context>
   <context>
@@ -10105,7 +10080,7 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_CosmeticVertex</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="282"/>
+      <location filename="../../CommandAnnotate.cpp" line="280"/>
       <source>Inserts a cosmetic vertex into a view</source>
       <translation type="unfinished">Inserts a cosmetic vertex into a view</translation>
     </message>
@@ -10113,7 +10088,7 @@ there is an open task dialog.</source>
   <context>
     <name>CmdMidpoints</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="285"/>
+      <location filename="../../CommandAnnotate.cpp" line="283"/>
       <source>Midpoint vertices</source>
       <translation type="unfinished">Midpoint vertices</translation>
     </message>
@@ -10121,7 +10096,7 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_Midpoints</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="286"/>
+      <location filename="../../CommandAnnotate.cpp" line="284"/>
       <source>Inserts cosmetic vertices at the midpoint of the selected edges</source>
       <translation type="unfinished">Inserts cosmetic vertices at the midpoint of the selected edges</translation>
     </message>
@@ -10129,7 +10104,7 @@ there is an open task dialog.</source>
   <context>
     <name>CmdQuadrants</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="289"/>
+      <location filename="../../CommandAnnotate.cpp" line="287"/>
       <source>Quadrant vertices</source>
       <translation type="unfinished">Quadrant vertices</translation>
     </message>
@@ -10137,7 +10112,7 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_Quadrants</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="290"/>
+      <location filename="../../CommandAnnotate.cpp" line="288"/>
       <source>Inserts cosmetic vertices at the quadrant points of the selected circles</source>
       <translation type="unfinished">Inserts cosmetic vertices at the quadrant points of the selected circles</translation>
     </message>
@@ -10145,7 +10120,7 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_FaceCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="656"/>
+      <location filename="../../CommandAnnotate.cpp" line="654"/>
       <source>Adds a centerline to selected faces</source>
       <translation type="unfinished">Adds a centerline to selected faces</translation>
     </message>
@@ -10153,7 +10128,7 @@ there is an open task dialog.</source>
   <context>
     <name>Cmd2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="659"/>
+      <location filename="../../CommandAnnotate.cpp" line="657"/>
       <source>Centerline 2 lines</source>
       <translation type="unfinished">Centerline 2 lines</translation>
     </message>
@@ -10161,7 +10136,7 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="660"/>
+      <location filename="../../CommandAnnotate.cpp" line="658"/>
       <source>Adds a centerline between 2 selected lines</source>
       <translation type="unfinished">Adds a centerline between 2 selected lines</translation>
     </message>
@@ -10169,7 +10144,7 @@ there is an open task dialog.</source>
   <context>
     <name>Cmd2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="663"/>
+      <location filename="../../CommandAnnotate.cpp" line="661"/>
       <source>Centerline 2 points</source>
       <translation type="unfinished">Centerline 2 points</translation>
     </message>
@@ -10177,7 +10152,7 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="664"/>
+      <location filename="../../CommandAnnotate.cpp" line="662"/>
       <source>Adds a centerline between 2 selected points</source>
       <translation type="unfinished">Adds a centerline between 2 selected points</translation>
     </message>
@@ -10235,17 +10210,17 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="82"/>
       <source>Object name</source>
-      <translation type="unfinished">Object name</translation>
+      <translation>ობიექტის სახელი</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="82"/>
       <source>Object label</source>
-      <translation type="unfinished">Object label</translation>
+      <translation>ობიექტის ჭდე</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="82"/>
       <source>Sub-element</source>
-      <translation type="unfinished">Sub-element</translation>
+      <translation>ქვეელემენტი</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="248"/>

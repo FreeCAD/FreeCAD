@@ -304,7 +304,7 @@
     <message>
       <location filename="../../Command.cpp" line="118"/>
       <source>The bounding box of the imported points does not contain the origin. Translate it to the origin?</source>
-      <translation type="unfinished">The bounding box of the imported points does not contain the origin. Translate it to the origin?</translation>
+      <translation>Der Begrenzungsrahmen der importierten Punkte enthält den Ursprung nicht. Zum Ursprung verschieben?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="260"/>

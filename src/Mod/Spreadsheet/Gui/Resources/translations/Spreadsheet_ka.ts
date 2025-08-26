@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="947"/>
       <source>&amp;New Spreadsheet</source>
-      <translation type="unfinished">&amp;New Spreadsheet</translation>
+      <translation>ა&amp;ხალი ელცხრილი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="948"/>
       <source>Creates a new spreadsheet</source>
-      <translation type="unfinished">Creates a new spreadsheet</translation>
+      <translation>შექმნის ახალ ელცხრილს</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="510"/>
       <source>Align &amp;Bottom</source>
-      <translation type="unfinished">Align &amp;Bottom</translation>
+      <translation>ძირზე სწორე&amp;ბა</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="511"/>
       <source>Aligns cell contents to the bottom</source>
-      <translation type="unfinished">Aligns cell contents to the bottom</translation>
+      <translation>გაასწორებს უჯრედის შემცველობას ქვედა მხარეზე</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../Command.cpp" line="339"/>
       <source>Align Horizontal &amp;Center</source>
-      <translation type="unfinished">Align Horizontal &amp;Center</translation>
+      <translation>სწორება ჰორიზონტალურ &amp;ცენტრზე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="340"/>
       <source>Aligns cell contents to the horizontal center</source>
-      <translation type="unfinished">Aligns cell contents to the horizontal center</translation>
+      <translation>გაასწორებს უჯრედის შემცველობას ჰორიზონტალურ ცენტრზე</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../Command.cpp" line="282"/>
       <source>Align &amp;Left</source>
-      <translation type="unfinished">Align &amp;Left</translation>
+      <translation>მარ&amp;ცხნივ სწორება</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="283"/>
       <source>Aligns cell contents to the left</source>
-      <translation type="unfinished">Aligns cell contents to the left</translation>
+      <translation>გაასწორებს უჯრედის შემცველობას მარცხენა მხარეზე</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="396"/>
       <source>Align &amp;Right</source>
-      <translation type="unfinished">Align &amp;Right</translation>
+      <translation>მა&amp;რჯვნივ სწორება</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="397"/>
       <source>Aligns cell contents to the right</source>
-      <translation type="unfinished">Aligns cell contents to the right</translation>
+      <translation>გაასწორებს უჯრედის შემცველობას მარჯვენა მხარეზე</translation>
     </message>
   </context>
   <context>
@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="453"/>
       <source>Align &amp;Top</source>
-      <translation type="unfinished">Align &amp;Top</translation>
+      <translation>ზემოთ ს&amp;წორება</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="454"/>
       <source>Aligns cell contents to the top</source>
-      <translation type="unfinished">Aligns cell contents to the top</translation>
+      <translation>გაასწორებს უჯრედის შემცველობას ზედა მხარეზე</translation>
     </message>
   </context>
   <context>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="567"/>
       <source>Align &amp;Vertical Center</source>
-      <translation type="unfinished">Align &amp;Vertical Center</translation>
+      <translation>სწორება &amp;ვერტიკალურ ცენტრზე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="568"/>
       <source>Aligns cell contents to the vertical center</source>
-      <translation type="unfinished">Aligns cell contents to the vertical center</translation>
+      <translation>გაასწორებს უჯრედის შემცველობას ვერტიკალურ ცენტრზე</translation>
     </message>
   </context>
   <context>
@@ -137,12 +137,12 @@
     <message>
       <location filename="../../Command.cpp" line="236"/>
       <source>&amp;Export Spreadsheet</source>
-      <translation type="unfinished">&amp;Export Spreadsheet</translation>
+      <translation>&amp;ელცხრილის გატანა</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="237"/>
       <source>Exports the spreadsheet to a CSV file</source>
-      <translation type="unfinished">Exports the spreadsheet to a CSV file</translation>
+      <translation>გაიტანს ელცხრილს CSV ფაილში</translation>
     </message>
   </context>
   <context>
@@ -155,12 +155,12 @@
     <message>
       <location filename="../../Command.cpp" line="184"/>
       <source>&amp;Import Spreadsheet</source>
-      <translation type="unfinished">&amp;Import Spreadsheet</translation>
+      <translation>ელცხრ&amp;ილის შემოტანა</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="185"/>
       <source>Imports a CSV file into a new spreadsheet</source>
-      <translation type="unfinished">Imports a CSV file into a new spreadsheet</translation>
+      <translation>შემოიტანს CSV ფაილს ახალ ელცხრილში</translation>
     </message>
   </context>
   <context>
@@ -173,12 +173,12 @@
     <message>
       <location filename="../../Command.cpp" line="61"/>
       <source>&amp;Merge Cells</source>
-      <translation type="unfinished">&amp;Merge Cells</translation>
+      <translation>&amp;უჯრედების შერწყმა</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="62"/>
       <source>Merges the selected cells</source>
-      <translation type="unfinished">Merges the selected cells</translation>
+      <translation>შეაერთებს მონიშნულ უჯრედებს</translation>
     </message>
   </context>
   <context>
@@ -191,12 +191,12 @@
     <message>
       <location filename="../../Command.cpp" line="876"/>
       <source>Set Alias</source>
-      <translation type="unfinished">Set Alias</translation>
+      <translation>ფსევდონიმის დაყენება</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="877"/>
       <source>Sets an alias for the selected cell</source>
-      <translation type="unfinished">Sets an alias for the selected cell</translation>
+      <translation>აყენებს მონიშნული უჯრედის ფსევდონიმს</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="122"/>
       <source>Sp&amp;lit Cell</source>
-      <translation type="unfinished">Sp&amp;lit Cell</translation>
+      <translation>უ&amp;ჯრედის გაყოფა</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="123"/>
       <source>Splits a previously merged cell</source>
-      <translation type="unfinished">Splits a previously merged cell</translation>
+      <translation>გაყოფს ადრე შერწყმულ უჯრედს</translation>
     </message>
   </context>
   <context>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="624"/>
       <source>&amp;Bold Text</source>
-      <translation type="unfinished">&amp;Bold Text</translation>
+      <translation>&amp;მსხვილი ტექსტი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="625"/>
       <source>Sets the text in the selected cells bold</source>
-      <translation type="unfinished">Sets the text in the selected cells bold</translation>
+      <translation>დააყენებს ტექსტს მონიშნულ უჯრედებში როგორც სქელს</translation>
     </message>
   </context>
   <context>
@@ -245,12 +245,12 @@
     <message>
       <location filename="../../Command.cpp" line="708"/>
       <source>&amp;Italic Text</source>
-      <translation type="unfinished">&amp;Italic Text</translation>
+      <translation>&amp;კურსივი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="709"/>
       <source>Sets the text in the selected cells italic</source>
-      <translation type="unfinished">Sets the text in the selected cells italic</translation>
+      <translation>დააყენებს ტექსტს მონიშნულ უჯრედებში როგორც კურსივს</translation>
     </message>
   </context>
   <context>
@@ -263,12 +263,12 @@
     <message>
       <location filename="../../Command.cpp" line="792"/>
       <source>&amp;Underline Text</source>
-      <translation type="unfinished">&amp;Underline Text</translation>
+      <translation>&amp;ტექსტის ხაზგასმა</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="793"/>
       <source>Underlines the text in the selected cells</source>
-      <translation type="unfinished">Underlines the text in the selected cells</translation>
+      <translation>მონიშნულ უჯრედებში არსებული ტექსტის ხაზგასმა</translation>
     </message>
   </context>
   <context>
@@ -342,7 +342,7 @@
       <translation>ცხრილის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="260"/>
+      <location filename="../../PropertiesDialog.cpp" line="267"/>
       <source>Set cell properties</source>
       <translation>უჯრედის თვისებების დაყენება</translation>
     </message>
@@ -365,25 +365,25 @@
       <location filename="../../SheetTableView.cpp" line="348"/>
       <location filename="../../SheetTableView.cpp" line="381"/>
       <source>Insert Rows</source>
-      <translation type="unfinished">Insert Rows</translation>
+      <translation>სვეტების ჩასმა</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="401"/>
       <location filename="../../SheetTableView.cpp" line="479"/>
       <source>Remove Rows</source>
-      <translation type="unfinished">Remove Rows</translation>
+      <translation>სვეტების წაშლა</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="423"/>
       <location filename="../../SheetTableView.cpp" line="456"/>
       <source>Insert Columns</source>
-      <translation type="unfinished">Insert Columns</translation>
+      <translation>სვეტების ჩასმა</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="683"/>
       <location filename="../../SpreadsheetView.cpp" line="192"/>
       <source>Clear Cells</source>
-      <translation type="unfinished">Clear Cells</translation>
+      <translation>უჯრედების გასუფთავება</translation>
     </message>
   </context>
   <context>
@@ -429,16 +429,16 @@ The expression must evaluate to a string of some cell address.</source>
     <message>
       <location filename="../../DlgBindSheet.ui" line="69"/>
       <source>To cells</source>
-      <translation type="unfinished">To cells</translation>
+      <translation>უჯრედებამდე</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="97"/>
       <source>End cell address to bind to.
 Type '=' to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">End cell address to bind to.
-Type '=' to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>საბოლოო მისამაგრებელი წერტილის მისამართი.
+აკრიფეთ '=' გამოსახულების გამოსაყენებლად.
+გამოსახულება რომელიმე უჯრედის მისამართის სტრიქონს უნდა აბრუნებდეს.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
@@ -448,7 +448,7 @@ The expression must evaluate to a string of some cell address.</translation>
     <message>
       <location filename="../../DlgBindSheet.ui" line="117"/>
       <source>Sheet</source>
-      <translation type="unfinished">Sheet</translation>
+      <translation>ფურცელი</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="126"/>
@@ -532,7 +532,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
       <source>Cell range</source>
-      <translation type="unfinished">Cell range</translation>
+      <translation>უჯრედების დიაპაზონი</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="57"/>
@@ -547,7 +547,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
       <source>Optional property group name</source>
-      <translation type="unfinished">Optional property group name</translation>
+      <translation>თვისებების ჯგუფის სახელი. არასავალდებულოა</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
@@ -570,7 +570,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="14"/>
       <source>Cell Properties</source>
-      <translation type="unfinished">Cell Properties</translation>
+      <translation>უჯრედის თვისებები</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="27"/>
@@ -707,34 +707,34 @@ Spreadsheet.my_alias_name ნაცვლად Spreadsheet.B1</translation>
     <message>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="109"/>
       <source>Export File</source>
-      <translation type="unfinished">Export File</translation>
+      <translation>ფაილის გატანა</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="134"/>
       <source>Show Spreadsheet</source>
-      <translation type="unfinished">Show Spreadsheet</translation>
+      <translation>ელცხრილის ჩვენება</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="94"/>
       <source>Sets the text color of cells</source>
-      <translation type="unfinished">Sets the text color of cells</translation>
+      <translation>აყენებს უჯრედების ტექსტის ფერს</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="95"/>
       <location filename="../../Workbench.cpp" line="96"/>
       <source>Sets the text color of spreadsheet cells</source>
-      <translation type="unfinished">Sets the text color of spreadsheet cells</translation>
+      <translation>აყენებს ელცხრილის უჯრედების ტექსტის ფერს</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="114"/>
       <location filename="../../Workbench.cpp" line="117"/>
       <source>Sets the background color of cells</source>
-      <translation type="unfinished">Sets the background color of cells</translation>
+      <translation>აყენებს უჯრედების ფონის ფერს</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="116"/>
       <source>Sets the spreadsheet cells background color</source>
-      <translation type="unfinished">Sets the spreadsheet cells background color</translation>
+      <translation>დააყენებს ელცხრილის უჯრედების ფონის ფერს</translation>
     </message>
   </context>
   <context>
@@ -853,12 +853,12 @@ Spreadsheet.my_alias_name ნაცვლად Spreadsheet.B1</translation>
     <message>
       <location filename="../../Sheet.ui" line="22"/>
       <source>&amp;Content</source>
-      <translation type="unfinished">&amp;Content</translation>
+      <translation>&amp;შემცველობა</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="39"/>
       <source>&amp;Alias</source>
-      <translation type="unfinished">&amp;Alias</translation>
+      <translation>&amp;ფსევდონიმი</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="52"/>
@@ -895,9 +895,9 @@ Spreadsheet.my_alias_name ნაცვლად Spreadsheet.B1</translation>
       <source>Source and target cell count mismatch. Partial binding may still work.
 
 Continue?</source>
-      <translation type="unfinished">Source and target cell count mismatch. Partial binding may still work.
+      <translation>საწყისი და საბოლოო უჯრედების რაოდენობა არ ემთხვევა, თუმცა ნაწილობრივი გარდაბმა ჯერ კიდევ შესაძლებელია.
 
-Continue?</translation>
+გნებავთ, გააგრძელოთ?</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="272"/>
@@ -961,22 +961,22 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="32"/>
       <source>Uses the custom presentation to display cell string</source>
-      <translation type="unfinished">Uses the custom presentation to display cell string</translation>
+      <translation>გამოყენებული იქნება უჯრედის სტრიქონის ხელით მითითებული პრეზენტაცია</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="48"/>
       <source>Defines a default zoom level for table view from 60% to 160%</source>
-      <translation type="unfinished">Defines a default zoom level for table view from 60% to 160%</translation>
+      <translation>დააყენებს ნაგულისხმევ გადიდების დონეს ცხრილის ხედისთვის 60%-დან 160%ზე</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="76"/>
       <source>Default zoom level</source>
-      <translation type="unfinished">Default zoom level</translation>
+      <translation>ნაგულისხმევი გადიდების დონე</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="131"/>
       <source>Delimiter character</source>
-      <translation type="unfinished">Delimiter character</translation>
+      <translation>გამყოფი სიმბოლო</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="151"/>
@@ -991,7 +991,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="191"/>
       <source>Quote character</source>
-      <translation type="unfinished">Quote character</translation>
+      <translation>ციტატის სიბოლო</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="198"/>
@@ -1001,7 +1001,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="223"/>
       <source>Escape character</source>
-      <translation type="unfinished">Escape character</translation>
+      <translation>სპეციალური სიმბოლო</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="230"/>
@@ -1033,96 +1033,96 @@ Defaults to: %V = %A
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="142"/>
       <source>Insert %n Row(s) Above</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Row(s) Above</numerusform>
-        <numerusform>Insert %n Row(s) Above</numerusform>
+      <translation>
+        <numerusform>%n სვეტის დამატება ზემოთ</numerusform>
+        <numerusform>%n სვეტის დამატება ზემოთ</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="147"/>
       <source>Insert %n Row(s) Below</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Row(s) Below</numerusform>
-        <numerusform>Insert %n Row(s) Below</numerusform>
+      <translation>
+        <numerusform>%n მწკრივის დამატება ქვემოთ</numerusform>
+        <numerusform>%n მწკრივის დამატება ქვემოთ</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="152"/>
       <source>Insert %n Non-Contiguous Rows</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Non-Contiguous Rows</numerusform>
-        <numerusform>Insert %n Non-Contiguous Rows</numerusform>
+      <translation>
+        <numerusform>%n არა-უწყვეტი მწკრივის ჩასმა</numerusform>
+        <numerusform>%n არა-უწყვეტი მწკრივის ჩასმა</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="155"/>
       <source>Remove Rows</source>
-      <translation type="unfinished">
-        <numerusform>Remove Rows</numerusform>
-        <numerusform>Remove Rows</numerusform>
+      <translation>
+        <numerusform>სვეტის წაშლა</numerusform>
+        <numerusform>სვეტების წაშლა</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="169"/>
       <source>Insert %n Column(s) Left</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Column(s) Left</numerusform>
-        <numerusform>Insert %n Column(s) Left</numerusform>
+      <translation>
+        <numerusform>%n სვეტის ჩასმა მარცხნივ</numerusform>
+        <numerusform>%n სვეტის ჩასმა მარცხნივ</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="174"/>
       <source>Insert %n Column(s) Right</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Column(s) Right</numerusform>
-        <numerusform>Insert %n Column(s) Right</numerusform>
+      <translation>
+        <numerusform>%n სვეტის ჩასმა მარჯვნივ</numerusform>
+        <numerusform>%n სვეტის ჩასმა მარჯვნივ</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="183"/>
       <source>Insert %n Non-Contiguous Columns</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Non-Contiguous Columns</numerusform>
-        <numerusform>Insert %n Non-Contiguous Columns</numerusform>
+      <translation>
+        <numerusform>%n არა-უწყვეტი სვეტის ჩასმა</numerusform>
+        <numerusform>%n არა-უწყვეტი სვეტის ჩასმა</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="186"/>
       <source>Remove Column(s)</source>
-      <translation type="unfinished">
-        <numerusform>Remove Column(s)</numerusform>
-        <numerusform>Remove Column(s)</numerusform>
+      <translation>
+        <numerusform>სვეტის წაშლა</numerusform>
+        <numerusform>სვეტ(ებ)-ის წაშლა</numerusform>
       </translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="199"/>
       <location filename="../../SheetTableView.cpp" line="664"/>
       <source>Properties…</source>
-      <translation type="unfinished">Properties…</translation>
+      <translation>თვისებები…</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="203"/>
       <location filename="../../SheetTableView.cpp" line="673"/>
       <source>Bind…</source>
-      <translation type="unfinished">Bind…</translation>
+      <translation>მიმაგრება…</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="204"/>
       <location filename="../../SheetTableView.cpp" line="666"/>
       <source>Configuration Table…</source>
-      <translation type="unfinished">Configuration Table…</translation>
+      <translation>კონფიგურაციის ცხრილი…</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="207"/>
       <location filename="../../SheetTableView.cpp" line="667"/>
       <source>Merge Cells</source>
-      <translation type="unfinished">Merge Cells</translation>
+      <translation>უჯრედების შერწყმა</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="210"/>
       <location filename="../../SheetTableView.cpp" line="668"/>
       <source>Split Cells</source>
-      <translation type="unfinished">Split Cells</translation>
+      <translation>უჯრედის გაყოფა</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="213"/>
@@ -1204,7 +1204,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../ZoomableView.cpp" line="112"/>
       <source>Zoom Level</source>
-      <translation type="unfinished">Zoom Level</translation>
+      <translation>გადიდების დონე</translation>
     </message>
   </context>
 </TS>

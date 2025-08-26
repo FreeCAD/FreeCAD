@@ -313,18 +313,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1131"/>
-      <source>Node Set by Poly</source>
-      <translation type="unfinished">Node Set by Poly</translation>
+      <source>Node Set by Polygon</source>
+      <translation type="unfinished">Node Set by Polygon</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1132"/>
-      <source>Creates a node set by poly</source>
-      <translation type="unfinished">Creates a node set by poly</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1134"/>
-      <source>Create node set by Poly</source>
-      <translation>藉由多边形建立节点集</translation>
+      <source>Creates a node set by polygon selection</source>
+      <translation type="unfinished">Creates a node set by polygon selection</translation>
     </message>
   </context>
   <context>
@@ -520,13 +515,9 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="2219"/>
-      <source>Select a Clip filter which clips a STRESS field along a line.</source>
-      <translation type="unfinished">Select a Clip filter which clips a STRESS field along a line.</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="2227"/>
-      <source>Select a clip filter which clips a stress field along a line.</source>
-      <translation type="unfinished">Select a clip filter which clips a stress field along a line.</translation>
+      <source>Select a clip filter which clips a stress field along a line</source>
+      <translation type="unfinished">Select a clip filter which clips a stress field along a line</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2218"/>
@@ -663,8 +654,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="902"/>
-      <source>Make spring on face</source>
-      <translation>在面上创建弹簧</translation>
+      <source>Make Spring Constraint</source>
+      <translation type="unfinished">Make Spring Constraint</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="957"/>
@@ -700,7 +691,7 @@
     <message>
       <location filename="../../Command.cpp" line="1353"/>
       <source>Edit Elements set</source>
-      <translation>编辑元素设定</translation>
+      <translation>编辑元素集</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1364"/>
@@ -792,7 +783,7 @@
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="94"/>
       <source>Remove</source>
-      <translation>删除</translation>
+      <translation>移除</translation>
     </message>
     <message>
       <location filename="../../TaskPanelInitialTemperature.ui" line="26"/>
@@ -840,11 +831,6 @@
       <location filename="../../DlgSettingsFemCcx.ui" line="47"/>
       <source>Search in known binary directories</source>
       <translation>在已知二进制文件目录中搜索</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="72"/>
-      <source>ccx binary path</source>
-      <translation>ccx 二进制文件路径</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="106"/>
@@ -930,6 +916,11 @@
       <location filename="../../DlgSettingsFemCcx.ui" line="392"/>
       <source>Default</source>
       <translation>默认</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="72"/>
+      <source>CCX binary path</source>
+      <translation type="unfinished">CCX binary path</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="119"/>
@@ -1195,7 +1186,7 @@ will be merged to make the volume boundaries invisible.</source>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="72"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leave blank to use default Elmer elmer binary file&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; To use multithreading you must specify here&lt;br&gt; the executable variant with the suffix &amp;quot;_mpi&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leave blank to use default Elmer elmer binary file&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; To use multithreading you must specify here&lt;br&gt; the executable variant with the suffix &amp;quot;_mpi&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;留空则使用默认的 Elmer elmer 二进制文件&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;注意：&lt;/span&gt;要使用多线程，您必须在此处指定&lt;br&gt;带有后缀“_mpi”的可执行变体。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="29"/>
@@ -1280,46 +1271,44 @@ Therefore an executable with the suffix '_mpi' is required.</translation>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="35"/>
       <source>All: All elements will be exported.
 
-Highest: Only the highest elements will be exported. This means
-for means volumes for a volume mesh and faces for a shell mesh.
+Highest: Only the highest elements will be exported. This means volumes for a volume mesh and faces for a shell mesh.
 
 FEM: Only FEM elements will be exported. This means only edges
 not belonging to faces and faces not belonging to volumes.</source>
       <translation type="unfinished">All: All elements will be exported.
 
-Highest: Only the highest elements will be exported. This means
-for means volumes for a volume mesh and faces for a shell mesh.
+Highest: Only the highest elements will be exported. This means volumes for a volume mesh and faces for a shell mesh.
 
 FEM: Only FEM elements will be exported. This means only edges
 not belonging to faces and faces not belonging to volumes.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="47"/>
+      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="46"/>
       <source>element parameter: All: all elements, highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</source>
       <translation type="unfinished">element parameter: All: all elements, highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="57"/>
+      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="56"/>
       <source>All</source>
       <translation>全部</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="62"/>
+      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="61"/>
       <source>Highest</source>
       <translation>最高</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="67"/>
+      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="66"/>
       <source>FEM</source>
       <translation>有限元</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="75"/>
+      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="74"/>
       <source>Export group data</source>
       <translation>导出组数据</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="82"/>
+      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="81"/>
       <source>Mesh groups are exported too.
 Every analysis feature and, if there are different materials,
 material consists of two mesh groups, faces and nodes where
@@ -1501,7 +1490,7 @@ adding an analysis container</translation>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="138"/>
       <source>Level of verbosity printed on the task panel</source>
-      <translation>任务面板上打印的详细级别</translation>
+      <translation>任务面板上打印的详细程度</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="157"/>
@@ -1511,7 +1500,7 @@ adding an analysis container</translation>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="167"/>
       <source>Number of threads used for meshing</source>
-      <translation>mesh过程中使用的线程数</translation>
+      <translation>用于网格的线程数</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="91"/>
@@ -1955,8 +1944,8 @@ Specify another file.</translation>
     <name>FemGui::TaskFemConstraint</name>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="57"/>
-      <source>Analysis feature parameters</source>
-      <translation>分析特征参数</translation>
+      <source>Analysis Feature Properties</source>
+      <translation type="unfinished">Analysis Feature Properties</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="184"/>
@@ -2577,14 +2566,6 @@ Specify another file.</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskObjectName</name>
-    <message>
-      <location filename="../../TaskObjectName.cpp" line="41"/>
-      <source>TaskObjectName</source>
-      <translation>任务物件名称</translation>
-    </message>
-  </context>
-  <context>
     <name>FemGui::TaskPostDataAlongLine</name>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="666"/>
@@ -2948,7 +2929,7 @@ Specify another file.</translation>
     <message>
       <location filename="../ui/ConstraintSectionPrint.ui" line="14"/>
       <source>Section Print Parameter</source>
-      <translation type="unfinished">Section Print Parameter</translation>
+      <translation>剖面打印参数</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintSectionPrint.ui" line="34"/>
@@ -3653,7 +3634,7 @@ with harmonic/oscillating driving current</translation>
       <location filename="../../AppFemGui.cpp" line="194"/>
       <location filename="../../AppFemGui.cpp" line="195"/>
       <source>Import-Export</source>
-      <translation>Import-Export</translation>
+      <translation>导入/导出</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="110"/>
@@ -3911,38 +3892,43 @@ For possible variables, see the description box below.</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="178"/>
-      <source>max shear stress: MS</source>
-      <translation>最大剪应力: MS</translation>
+      <source>maximum shear stress: MS</source>
+      <translation type="unfinished">maximum shear stress: MS</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="188"/>
-      <source>max princ. stress vector: s3x, s3y, s3z</source>
-      <translation>第一主应力矢量: s3x, s3y, s3z</translation>
+      <source>maximum princ. stress vector: s3x, s3y, s3z</source>
+      <translation type="unfinished">maximum princ. stress vector: s3x, s3y, s3z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="198"/>
-      <source>max principal stress: P1</source>
-      <translation>第一主应力: P1</translation>
+      <source>maximum principal stress: P1</source>
+      <translation type="unfinished">maximum principal stress: P1</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="208"/>
-      <source>med princ. stress vector: s2x, s2y, s2z</source>
-      <translation>第二主应力矢量: s2x, s2y, s2z</translation>
+      <source>medium princ. stress vector: s2x, s2y, s2z</source>
+      <translation type="unfinished">medium princ. stress vector: s2x, s2y, s2z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="218"/>
-      <source>med principal stress: P2</source>
-      <translation>第二主应力: P2</translation>
+      <source>medium principal stress: P2</source>
+      <translation type="unfinished">medium principal stress: P2</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="228"/>
-      <source>min princ. stress vector: s1x, s1y, s1z</source>
-      <translation>第三主应力矢量: s1x, s1y, s1z</translation>
+      <source>minimum princ. stress vector: s1x, s1y, s1z</source>
+      <translation type="unfinished">minimum princ. stress vector: s1x, s1y, s1z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="238"/>
-      <source>min principal stress: P3</source>
-      <translation>第三主应力: P3</translation>
+      <source>minimum principal stress: P3</source>
+      <translation type="unfinished">minimum principal stress: P3</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultHints.ui" line="248"/>
+      <source>Mohr-Coulomb: mc</source>
+      <translation type="unfinished">Mohr-Coulomb: mc</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="148"/>
@@ -3958,11 +3944,6 @@ For possible variables, see the description box below.</translation>
       <location filename="../ui/ResultHints.ui" line="20"/>
       <source>Available Result Types</source>
       <translation type="unfinished">Available Result Types</translation>
-    </message>
-    <message>
-      <location filename="../ui/ResultHints.ui" line="248"/>
-      <source>Mohr Coulomb: mc</source>
-      <translation>莫尔-库仑: mc</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="168"/>
@@ -4268,7 +4249,7 @@ For possible variables, see the description box below.</translation>
       <location filename="../../TaskFemConstraintContact.ui" line="51"/>
       <location filename="../../TaskFemConstraintContact.ui" line="110"/>
       <source>Remove</source>
-      <translation>删除</translation>
+      <translation>移除</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
@@ -4321,7 +4302,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="74"/>
       <source>Remove</source>
-      <translation>删除</translation>
+      <translation>移除</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="119"/>
@@ -4416,7 +4397,7 @@ generated by the flow
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="51"/>
       <source>Remove</source>
-      <translation>删除</translation>
+      <translation>移除</translation>
     </message>
   </context>
   <context>
@@ -4439,7 +4420,7 @@ generated by the flow
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="101"/>
       <source>Remove</source>
-      <translation>删除</translation>
+      <translation>移除</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="141"/>
@@ -4549,7 +4530,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="63"/>
       <source>Remove</source>
-      <translation>删除</translation>
+      <translation>移除</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="93"/>
@@ -4604,7 +4585,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="51"/>
       <source>Remove</source>
-      <translation>删除</translation>
+      <translation>移除</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="70"/>
@@ -4661,7 +4642,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="51"/>
       <source>Remove</source>
-      <translation>删除</translation>
+      <translation>移除</translation>
     </message>
   </context>
   <context>
@@ -4679,7 +4660,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="51"/>
       <source>Remove</source>
-      <translation>删除</translation>
+      <translation>移除</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="68"/>
@@ -4707,7 +4688,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="51"/>
       <source>Remove</source>
-      <translation>删除</translation>
+      <translation>移除</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="75"/>
@@ -4751,7 +4732,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="63"/>
       <source>Remove</source>
-      <translation>删除</translation>
+      <translation>移除</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="80"/>
@@ -4794,7 +4775,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="75"/>
       <source>Remove</source>
-      <translation>删除</translation>
+      <translation>移除</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="110"/>
@@ -5196,17 +5177,17 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>M&amp;odel</source>
-      <translation type="unfinished">M&amp;odel</translation>
+      <translation>模型(&amp;O)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Materials</source>
-      <translation>材料</translation>
+      <translation>材质</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>&amp;Materials</source>
-      <translation type="unfinished">&amp;Materials</translation>
+      <translation>材质(&amp;M)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
@@ -5216,7 +5197,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>&amp;Element Geometry</source>
-      <translation>&amp;元素几何图形</translation>
+      <translation>元素几何形状(&amp;E)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
@@ -5226,7 +5207,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>&amp;Electrostatic Boundary Conditions</source>
-      <translation type="unfinished">&amp;Electrostatic Boundary Conditions</translation>
+      <translation>静电边界条件(&amp;E)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
@@ -5236,7 +5217,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>&amp;Fluid Boundary Conditions</source>
-      <translation type="unfinished">&amp;Fluid Boundary Conditions</translation>
+      <translation>流体边界条件(&amp;F)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
@@ -5246,7 +5227,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>&amp;Electromagnetic Boundary Conditions</source>
-      <translation type="unfinished">&amp;Electromagnetic Boundary Conditions</translation>
+      <translation>电磁边界条件(&amp;E)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
@@ -5256,7 +5237,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
       <source>&amp;Geometrical Analysis Features</source>
-      <translation type="unfinished">&amp;Geometrical Analysis Features</translation>
+      <translation>几何分析特征(&amp;G)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
@@ -5266,7 +5247,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
       <source>&amp;Mechanical Boundary Conditions and Loads</source>
-      <translation type="unfinished">&amp;Mechanical Boundary Conditions and Loads</translation>
+      <translation>机械边界条件和载荷(&amp;M)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
@@ -5276,7 +5257,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>&amp;Thermal Boundary Conditions and Loads</source>
-      <translation type="unfinished">&amp;Thermal Boundary Conditions and Loads</translation>
+      <translation>热边界条件和载荷(&amp;T)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
@@ -5286,7 +5267,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="63"/>
       <source>&amp;Analysis Features Without Solver</source>
-      <translation type="unfinished">&amp;Analysis Features Without Solver</translation>
+      <translation>无需求解器的分析特征(&amp;A)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="75"/>
@@ -5296,7 +5277,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="76"/>
       <source>&amp;Filter Functions</source>
-      <translation type="unfinished">&amp;Filter Functions</translation>
+      <translation>过滤函数(&amp;F)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="64"/>
@@ -5306,7 +5287,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="65"/>
       <source>&amp;Overwrite Constants</source>
-      <translation>&amp;覆写常数</translation>
+      <translation>覆盖常量(&amp;O)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="67"/>
@@ -5493,12 +5474,12 @@ normal vector of the face is used as direction</translation>
   <context>
     <name>FEM_SolverCalculiXCcxTools</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1034"/>
+      <location filename="../../../femcommands/commands.py" line="1036"/>
       <source>Solver CalculiX Standard</source>
       <translation>标准 CalculiX 求解器</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1039"/>
+      <location filename="../../../femcommands/commands.py" line="1041"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
       <translation>使用 ccx 工具创建标准的有限元 CalculiX 求解器</translation>
     </message>
@@ -5506,12 +5487,12 @@ normal vector of the face is used as direction</translation>
   <context>
     <name>FEM_SolverControl</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1091"/>
+      <location filename="../../../femcommands/commands.py" line="1092"/>
       <source>Solver Job Control</source>
       <translation type="unfinished">Solver Job Control</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1096"/>
+      <location filename="../../../femcommands/commands.py" line="1097"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
     </message>
@@ -5519,12 +5500,12 @@ normal vector of the face is used as direction</translation>
   <context>
     <name>FEM_SolverElmer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1108"/>
+      <location filename="../../../femcommands/commands.py" line="1109"/>
       <source>Solver Elmer</source>
       <translation>Elmer求解器</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1110"/>
+      <location filename="../../../femcommands/commands.py" line="1111"/>
       <source>Creates a FEM solver Elmer</source>
       <translation type="unfinished">Creates a FEM solver Elmer</translation>
     </message>
@@ -5532,12 +5513,12 @@ normal vector of the face is used as direction</translation>
   <context>
     <name>FEM_SolverMystran</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1147"/>
+      <location filename="../../../femcommands/commands.py" line="1148"/>
       <source>Solver Mystran</source>
       <translation>Mystran求解器</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1149"/>
+      <location filename="../../../femcommands/commands.py" line="1150"/>
       <source>Creates a FEM solver Mystran</source>
       <translation>创建Mystran有限元求解器</translation>
     </message>
@@ -5545,12 +5526,12 @@ normal vector of the face is used as direction</translation>
   <context>
     <name>FEM_SolverRun</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1159"/>
+      <location filename="../../../femcommands/commands.py" line="1160"/>
       <source>Run Solver</source>
       <translation type="unfinished">Run Solver</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1163"/>
+      <location filename="../../../femcommands/commands.py" line="1164"/>
       <source>Runs the calculations for the selected solver</source>
       <translation>以所选求解器执行运算</translation>
     </message>
@@ -5558,12 +5539,12 @@ normal vector of the face is used as direction</translation>
   <context>
     <name>FEM_SolverZ88</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1210"/>
+      <location filename="../../../femcommands/commands.py" line="1211"/>
       <source>Solver Z88</source>
       <translation>Z88求解器</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1212"/>
+      <location filename="../../../femcommands/commands.py" line="1213"/>
       <source>Creates a FEM solver Z88</source>
       <translation>建立Z88有限元求解器</translation>
     </message>
@@ -5632,7 +5613,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="82"/>
       <source>Remove</source>
-      <translation>删除</translation>
+      <translation>移除</translation>
     </message>
   </context>
   <context>
@@ -5671,7 +5652,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="298"/>
       <source>Remove</source>
-      <translation>删除</translation>
+      <translation>移除</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="323"/>
@@ -5784,13 +5765,13 @@ Please select a result type first.</source>
       <translation>节点</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="739"/>
-      <source>Empty result mesh</source>
-      <translation>空结果网格</translation>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="740"/>
+      <source>Result mesh is empty</source>
+      <translation type="unfinished">Result mesh is empty</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="752"/>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="761"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="754"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="763"/>
       <source>No result object</source>
       <translation>没有结果对象</translation>
     </message>
@@ -5818,21 +5799,25 @@ Should this module be loaded instead?</translation>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="223"/>
       <source>
 
-No matching module was found in the current python path.</source>
+No matching module was found in the current Python path.</source>
       <translation type="unfinished">
 
-No matching module was found in the current python path.</translation>
+No matching module was found in the current Python path.</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
+      <source>VTK Python module conflict</source>
+      <translation type="unfinished">VTK Python module conflict</translation>
+    </message>
+    <message>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="253"/>
-      <source>VTK module conflict</source>
-      <translation type="unfinished">VTK module conflict</translation>
+      <source>VTK Python Module Conflict</source>
+      <translation type="unfinished">VTK Python Module Conflict</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="256"/>
-      <source>This functionality is not available due to VTK python module conflict</source>
-      <translation type="unfinished">This functionality is not available due to VTK python module conflict</translation>
+      <source>This functionality is not available due to VTK Python module conflict</source>
+      <translation type="unfinished">This functionality is not available due to VTK Python module conflict</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="56"/>
@@ -6408,12 +6393,12 @@ No matching module was found in the current python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="327"/>
       <source>Section Print Feature</source>
-      <translation type="unfinished">Section Print Feature</translation>
+      <translation>剖面打印功能</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="330"/>
       <source>Creates a section print feature</source>
-      <translation type="unfinished">Creates a section print feature</translation>
+      <translation>创建剖面打印功能</translation>
     </message>
   </context>
   <context>
@@ -6470,7 +6455,7 @@ No matching module was found in the current python path.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="51"/>
       <source>Remove</source>
-      <translation>删除</translation>
+      <translation>移除</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="77"/>
@@ -6662,13 +6647,13 @@ No matching module was found in the current python path.</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="232"/>
-      <source>Can't copy ResultMesh to ResultMesh</source>
-      <translation type="unfinished">Can't copy ResultMesh to ResultMesh</translation>
+      <source>Cannot copy ResultMesh to ResultMesh</source>
+      <translation type="unfinished">Cannot copy ResultMesh to ResultMesh</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="242"/>
-      <source>Mesh must be a Results mesh</source>
-      <translation type="unfinished">Mesh must be a Results mesh</translation>
+      <source>Mesh must be a ResultMesh</source>
+      <translation type="unfinished">Mesh must be a ResultMesh</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="564"/>
@@ -6715,18 +6700,13 @@ No matching module was found in the current python path.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1283"/>
-      <source>Element Set by Poly</source>
-      <translation type="unfinished">Element Set by Poly</translation>
+      <source>Element Set From Polygon</source>
+      <translation type="unfinished">Element Set From Polygon</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1284"/>
-      <source>Create element set by poly</source>
-      <translation type="unfinished">Create element set by poly</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1286"/>
-      <source>Create Element set by Poly</source>
-      <translation type="unfinished">Create Element set by Poly</translation>
+      <source>Creates a collection of elements selected by a polygon</source>
+      <translation type="unfinished">Creates a collection of elements selected by a polygon</translation>
     </message>
   </context>
   <context>
@@ -6823,7 +6803,7 @@ No matching module was found in the current python path.</translation>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="66"/>
       <source>Level of verbosity printed on the task panel</source>
-      <translation>任务面板上打印的详细级别</translation>
+      <translation>任务面板上打印的详细程度</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="85"/>
@@ -6833,18 +6813,18 @@ No matching module was found in the current python path.</translation>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="95"/>
       <source>Number of threads used for meshing</source>
-      <translation>mesh过程中使用的线程数</translation>
+      <translation>用于网格的线程数</translation>
     </message>
   </context>
   <context>
     <name>FEM_SolverCalculiX</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1060"/>
+      <location filename="../../../femcommands/commands.py" line="1062"/>
       <source>Solver CalculiX</source>
       <translation type="unfinished">Solver CalculiX</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1065"/>
+      <location filename="../../../femcommands/commands.py" line="1067"/>
       <source>Creates a FEM solver CalculiX</source>
       <translation type="unfinished">Creates a FEM solver CalculiX</translation>
     </message>
@@ -6999,7 +6979,7 @@ No matching module was found in the current python path.</translation>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="66"/>
       <source>…</source>
-      <translation type="unfinished">…</translation>
+      <translation>…</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="86"/>
@@ -7111,7 +7091,7 @@ No matching module was found in the current python path.</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="111"/>
       <source>Sca&amp;le</source>
-      <translation type="unfinished">Sca&amp;le</translation>
+      <translation>缩放(%L)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="126"/>
@@ -7167,7 +7147,7 @@ No matching module was found in the current python path.</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="251"/>
       <source>Vertex Mas&amp;king</source>
-      <translation type="unfinished">Vertex Mas&amp;king</translation>
+      <translation>顶点遮罩(&amp;K)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="263"/>
@@ -7696,12 +7676,12 @@ No matching module was found in the current python path.</translation>
   <context>
     <name>FEM_PostFilterGlyph</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1222"/>
+      <location filename="../../../femcommands/commands.py" line="1223"/>
       <source>Glyph Filter</source>
       <translation type="unfinished">Glyph Filter</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1227"/>
+      <location filename="../../../femcommands/commands.py" line="1228"/>
       <source>Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</source>
       <translation type="unfinished">Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</translation>
     </message>
@@ -7895,6 +7875,14 @@ No matching module was found in the current python path.</translation>
       <location filename="../../ViewProviderAnalysis.cpp" line="164"/>
       <source>Activate Analysis</source>
       <translation type="unfinished">Activate Analysis</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskObjectName</name>
+    <message>
+      <location filename="../../TaskObjectName.cpp" line="42"/>
+      <source>Name of the object</source>
+      <translation type="unfinished">Name of the object</translation>
     </message>
   </context>
 </TS>

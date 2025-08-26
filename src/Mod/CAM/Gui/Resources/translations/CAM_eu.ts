@@ -985,11 +985,6 @@ Larger values (further to the right) will calculate faster; smaller values (furt
 Larger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="129"/>
-      <source>How much material to leave in the XY plane (i.e. for finishing operation)</source>
-      <translation type="unfinished">How much material to leave in the XY plane (i.e. for finishing operation)</translation>
-    </message>
-    <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="108"/>
       <source>Cut inside or outside of the selected shapes</source>
       <translation>Moztu hautatutako formen barrutik edo kanpotik</translation>
@@ -1051,6 +1046,11 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="122"/>
       <source>Finishing profile</source>
       <translation type="unfinished">Finishing profile</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="129"/>
+      <source>How much material to leave in the XY-plane (i.e. for finishing operation)</source>
+      <translation type="unfinished">How much material to leave in the XY-plane (i.e. for finishing operation)</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="139"/>
@@ -4164,34 +4164,34 @@ Balio lehenetsia: 3 mm</translation>
       <translation type="unfinished">CAMotics Project (*.camotics)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="726"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="746"/>
       <source>H</source>
       <comment>H is horizontal feed rate. Must be as short as possible</comment>
       <translation>H</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="729"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="749"/>
       <source>V</source>
       <comment>V is vertical feed rate. Must be as short as possible</comment>
       <translation>V</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="732"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="752"/>
       <source>Tool number</source>
       <translation>Tresna-zenbakia</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="735"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="755"/>
       <source>Horizontal feedrate</source>
       <translation>Elikatze-tasa horizontala</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="738"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="758"/>
       <source>Vertical feedrate</source>
       <translation>Elikatze-tasa bertikala</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="741"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="761"/>
       <source>Spindle RPM</source>
       <translation>Haxaren RPMa</translation>
     </message>
@@ -4612,19 +4612,19 @@ Balio lehenetsia: 3 mm</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="198"/>
-      <location filename="../../../Path/Main/Job.py" line="506"/>
+      <location filename="../../../Path/Main/Job.py" line="509"/>
       <source>Split output into multiple G-code files</source>
       <translation>Zatitu irteera G-code fitxategi anitzetan</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="204"/>
-      <location filename="../../../Path/Main/Job.py" line="497"/>
+      <location filename="../../../Path/Main/Job.py" line="500"/>
       <source>If multiple WCS, order the output this way</source>
       <translation>WCS anitz badaude, ordenatu irteera modu honetan</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="210"/>
-      <location filename="../../../Path/Main/Job.py" line="488"/>
+      <location filename="../../../Path/Main/Job.py" line="491"/>
       <source>The Work Coordinate Systems for the Job</source>
       <translation>Laneko koordenatu-sistema (WCS) lanerako</translation>
     </message>
@@ -4644,14 +4644,14 @@ Balio lehenetsia: 3 mm</translation>
       <translation>Lanerako tresna-kontrolagailu guztien bilduma</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="479"/>
+      <location filename="../../../Path/Main/Job.py" line="482"/>
       <location filename="../../../Path/Op/Base.py" line="186"/>
       <location filename="../../../Path/Op/Base.py" line="440"/>
       <source>Operations Cycle Time Estimation</source>
       <translation>Eragiketen ziklo-denboraren kalkulua</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="515"/>
+      <location filename="../../../Path/Main/Job.py" line="518"/>
       <source>Select the type of Job</source>
       <translation>Hautatu lan mota</translation>
     </message>
@@ -6548,12 +6548,12 @@ Aukeren sorrera abortatzen</translation>
       <translation type="unfinished">Completes the selection of edges that form a loop</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="116"/>
+      <location filename="../../../PathCommands.py" line="131"/>
       <source>Feature Completion</source>
       <translation>Elementuen osatzea</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="117"/>
+      <location filename="../../../PathCommands.py" line="132"/>
       <source>Closed loop detection failed.</source>
       <translation>Begizta itxien detekzioak huts egin du.</translation>
     </message>
@@ -7019,58 +7019,58 @@ Aukeren sorrera abortatzen</translation>
       <translation>Pieza gordina ez da zilindroa!</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1032"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1052"/>
       <source>Select Output File</source>
       <translation>Hautatu irteerako fitxategia</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1034"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1054"/>
       <source>All Files (*.*)</source>
       <translation>Fitxategi guztiak (*.*)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1375"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1395"/>
       <source>Unsupported stock object %s</source>
       <translation>Onartzen ez den %s objektu gordina</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1391"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1411"/>
       <source>Unsupported stock type %s (%d)</source>
       <translation>Onartzen ez den %s objektu gordina (%d)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1482"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1502"/>
       <source>Model Selection</source>
       <translation>Ereduaren hautapena</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1637"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1657"/>
       <source>Warning</source>
       <translation>Abisua</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1638"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1658"/>
       <source>Please add one.</source>
       <translation>Gehitu bat.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1639"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1659"/>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="116"/>
       <source>Ok</source>
       <translation>Ados</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1641"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1661"/>
       <source>Add</source>
       <translation>Gehitu</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1652"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1672"/>
       <source>This job has no base model.</source>
       <translation>Lan honek ez du oinarri-eredurik.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1659"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1679"/>
       <source>This job has no tool.</source>
       <translation>Lan honek ez du tresnarik.</translation>
     </message>
@@ -7095,32 +7095,32 @@ Aukeren sorrera abortatzen</translation>
       <translation type="unfinished">Don&apos;t show this warning again</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="214"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="216"/>
       <source>Model</source>
       <translation>Eredua</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="215"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="217"/>
       <source>Count</source>
       <translation>Zenbaketa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="297"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="299"/>
       <source>&lt;none&gt;</source>
       <translation type="unfinished">&lt;none&gt;</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="379"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="381"/>
       <source>Base -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f</source>
       <translation>Oinarria -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="389"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="391"/>
       <source>Box: %.2f x %.2f x %.2f</source>
       <translation>Kutxa: %.2f x %.2f x %.2f</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="404"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="406"/>
       <source>Unsupported stock type</source>
       <translation>Onartzen ez den pieza gordina</translation>
     </message>
@@ -7190,7 +7190,7 @@ Aukeren sorrera abortatzen</translation>
   <context>
     <name>CAM_Job:</name>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="395"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="397"/>
       <source>Cylinder: %.2f x %.2f</source>
       <translation>Zilindroa: %.2f x %.2f</translation>
     </message>
@@ -7603,62 +7603,62 @@ Aukeren sorrera abortatzen</translation>
   <context>
     <name>CAM</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="611"/>
+      <location filename="../../../Path/Op/Base.py" line="613"/>
       <source>No parent job found for operation.</source>
       <translation>Ez da lan gurasorik aurkitu eragiketarako.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="616"/>
+      <location filename="../../../Path/Op/Base.py" line="618"/>
       <source>Parent job %s doesn&apos;t have a base object</source>
       <translation type="unfinished">Parent job %s doesn&apos;t have a base object</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="758"/>
+      <location filename="../../../Path/Op/Base.py" line="760"/>
       <source>No Tool Controller is selected. We need a tool to build a Path.</source>
       <translation>Ez da tresna-kontrolagailurik hautatu. Tresna bat behar da bide bat eraikitzeko.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="772"/>
+      <location filename="../../../Path/Op/Base.py" line="774"/>
       <source>No Tool found or diameter is zero. We need a tool to build a Path.</source>
       <translation>Ez da tresnarik aurkitu edo diametroa zero da. Tresna bat behar da bide bat eraikitzeko.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="842"/>
+      <location filename="../../../Path/Op/Base.py" line="844"/>
       <source>No Tool Controller selected.</source>
       <translation>Ez da tresna-kontrolagailurik hautatu.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="845"/>
+      <location filename="../../../Path/Op/Base.py" line="847"/>
       <source>Tool Error</source>
       <translation>Tresnaren errorea</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="857"/>
+      <location filename="../../../Path/Op/Base.py" line="859"/>
       <source>Tool Controller feedrates required to calculate the cycle time.</source>
       <translation>Tresna-kontrolagailuaren elikatze-abiadura behar da ziklo-denbora kalkulatzeko.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="860"/>
+      <location filename="../../../Path/Op/Base.py" line="862"/>
       <source>Tool Feedrate Error</source>
       <translation type="unfinished">Tool Feedrate Error</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="866"/>
+      <location filename="../../../Path/Op/Base.py" line="868"/>
       <source>Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</source>
       <translation>Gehitu tresna-kontrolagailuaren abiadura azkarrak konfigurazio-orrian, ziklo-denbora zehatzagoak izateko.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="875"/>
+      <location filename="../../../Path/Op/Base.py" line="877"/>
       <source>Cycletime Error</source>
       <translation>Ziklo-denboraren errorea</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="817"/>
+      <location filename="../../../Path/Op/Base.py" line="819"/>
       <source>Base object %s.%s already in the list</source>
       <translation>%s.%s oinarri-forma dagoeneko zerrendan dago</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="827"/>
+      <location filename="../../../Path/Op/Base.py" line="829"/>
       <source>Base object %s.%s rejected by operation</source>
       <translation>%s.%s oinarri-forma baztertu egin da eragiketarako</translation>
     </message>
@@ -8965,8 +8965,8 @@ Aukeren sorrera abortatzen</translation>
     </message>
     <message>
       <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="289"/>
-      <source>Toggle ambient oclusion</source>
-      <translation type="unfinished">Toggle ambient oclusion</translation>
+      <source>Toggle ambient occlusion</source>
+      <translation type="unfinished">Toggle ambient occlusion</translation>
     </message>
     <message>
       <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="290"/>
@@ -8990,12 +8990,12 @@ Aukeren sorrera abortatzen</translation>
   <context>
     <name>CAM_OpActiveToggle</name>
     <message>
-      <location filename="../../../PathCommands.py" line="145"/>
+      <location filename="../../../PathCommands.py" line="160"/>
       <source>Toggle Operation</source>
       <translation type="unfinished">Toggle Operation</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="149"/>
+      <location filename="../../../PathCommands.py" line="164"/>
       <source>Toggles the active state of the operation</source>
       <translation type="unfinished">Toggles the active state of the operation</translation>
     </message>
@@ -9003,12 +9003,12 @@ Aukeren sorrera abortatzen</translation>
   <context>
     <name>CAM_OperationCopy</name>
     <message>
-      <location filename="../../../PathCommands.py" line="186"/>
+      <location filename="../../../PathCommands.py" line="201"/>
       <source>Copy Operation</source>
       <translation type="unfinished">Copy Operation</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="187"/>
+      <location filename="../../../PathCommands.py" line="202"/>
       <source>Copies the operation in the job</source>
       <translation type="unfinished">Copies the operation in the job</translation>
     </message>

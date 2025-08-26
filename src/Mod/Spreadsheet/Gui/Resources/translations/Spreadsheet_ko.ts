@@ -342,7 +342,7 @@
       <translation>스프레드시트 만들기</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="260"/>
+      <location filename="../../PropertiesDialog.cpp" line="267"/>
       <source>Set cell properties</source>
       <translation>셀 속성 설정하기</translation>
     </message>

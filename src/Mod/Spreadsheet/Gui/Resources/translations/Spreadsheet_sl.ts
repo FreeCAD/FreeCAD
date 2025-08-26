@@ -342,7 +342,7 @@
       <translation>Ustvari preglednico</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="260"/>
+      <location filename="../../PropertiesDialog.cpp" line="267"/>
       <source>Set cell properties</source>
       <translation>Nastavi lastnosti polja</translation>
     </message>

@@ -13,7 +13,7 @@ that reference the same configurable object</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="457"/>
+      <location filename="../../Application.cpp" line="456"/>
       <source>Unnamed</source>
       <translation>Nepojmenovaný</translation>
     </message>

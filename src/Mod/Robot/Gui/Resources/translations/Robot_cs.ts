@@ -190,8 +190,8 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="90"/>
-      <source>Insert in trajectory</source>
-      <translation>Vložit do trajektorie</translation>
+      <source>Insert in Trajectory</source>
+      <translation type="unfinished">Insert in Trajectory</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="91"/>

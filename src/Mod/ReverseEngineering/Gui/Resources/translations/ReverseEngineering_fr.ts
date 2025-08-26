@@ -496,7 +496,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="98"/>
       <source>Pick Triangle</source>
-      <translation type="unfinished">Pick Triangle</translation>
+      <translation>Choisir un triangle</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="105"/>
@@ -552,12 +552,12 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="297"/>
       <source>Respect only triangles with screen-facing normals</source>
-      <translation type="unfinished">Respect only triangles with screen-facing normals</translation>
+      <translation>Prendre en compte uniquement les triangles avec des normales orientées vers l'écran</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="287"/>
       <source>Respect only visible triangles</source>
-      <translation>Respecter uniquement les triangles visibles</translation>
+      <translation>Prendre en compte uniquement les triangles visibles</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="310"/>
