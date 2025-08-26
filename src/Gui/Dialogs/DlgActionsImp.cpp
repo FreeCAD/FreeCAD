@@ -550,49 +550,93 @@ IconFolders::IconFolders(const QStringList& paths, QWidget* parent)
     connect(buttonBox, &QDialogButtonBox::accepted, this, &IconFolders::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &IconFolders::reject);
 
-    // Group box for path list and add/remove buttons
+
+    // Group box for path list
     QGroupBox* pathGroup = new QGroupBox(tr("Custom Icon Folders"), this);
     gridLayout = new QGridLayout(pathGroup);
+    gridLayout->setColumnStretch(0, 0); // thumbnail
+    gridLayout->setColumnMinimumWidth(0, 28);
+    gridLayout->setColumnStretch(1, 1); // path
+    gridLayout->setColumnMinimumWidth(1, 120);
+    gridLayout->setColumnStretch(2, 0); // remove button
+    gridLayout->setColumnMinimumWidth(2, 28);
+    gridLayout->setHorizontalSpacing(8);
+    gridLayout->setVerticalSpacing(4);
+    gridLayout->setContentsMargins(8, 8, 8, 8);
 
-    auto mainLayout = new QGridLayout(this);
-    mainLayout->addWidget(infoGroup, 0, 0, 1, 1);
-    mainLayout->addWidget(pathGroup, 1, 0, 1, 1);
+    // Main layout
+    auto mainLayout = new QVBoxLayout(this);
+    mainLayout->setContentsMargins(12, 12, 12, 12);
+    mainLayout->setSpacing(10);
+    mainLayout->addWidget(infoGroup);
+    mainLayout->addWidget(pathGroup);
 
-    auto verticalSpacer = new QSpacerItem(20, 108, QSizePolicy::Minimum, QSizePolicy::Expanding);
-    mainLayout->addItem(verticalSpacer, 2, 0, 1, 1);
-    mainLayout->addWidget(buttonBox, 3, 0, 1, 1);
+    // Add controls (label + add button) in a horizontal layout
+    auto addRowLayout = new QHBoxLayout();
+    addRowLayout->setContentsMargins(0, 8, 0, 0);
+    addRowLayout->setSpacing(8);
+
+    textLabel = new QLabel(this);
+    textLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
+    textLabel->setText(tr("Add folders"));
+    addRowLayout->addWidget(textLabel, 1, Qt::AlignRight | Qt::AlignVCenter);
+
+    addButton = new QPushButton(this);
+    addButton->setIcon(BitmapFactory().iconFromTheme("list-add"));
+    addButton->setFixedHeight(24);
+    addButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    addRowLayout->addWidget(addButton, 0, Qt::AlignRight | Qt::AlignVCenter);
+
+    mainLayout->addLayout(addRowLayout);
+    mainLayout->addSpacing(4);
+    mainLayout->addWidget(buttonBox);
 
     // Add the user defined paths
     int numPaths = static_cast<int>(paths.size());
     int maxRow = this->maxLines;
     for (int row = 0; row < maxRow; row++) {
+        // Thumbnail label
+        QLabel* thumbLabel = new QLabel(this);
+        thumbLabel->setFixedSize(48, 48);
+        thumbLabel->setScaledContents(true);
+
         auto edit = new QLineEdit(this);
         edit->setReadOnly(true);
-        gridLayout->addWidget(edit, row, 0, 1, 1);
+        edit->setMinimumHeight(24);
+        edit->setMaximumHeight(24);
+        edit->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        edit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
         auto removeButton = new QPushButton(this);
         removeButton->setIcon(BitmapFactory().iconFromTheme("list-remove"));
-        gridLayout->addWidget(removeButton, row, 1, 1, 1);
+        removeButton->setFixedSize(24, 24);
+        removeButton->setIconSize(QSize(16, 16));
+        removeButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+        gridLayout->addWidget(thumbLabel, row, 0, 1, 1, Qt::AlignVCenter);
+    gridLayout->addWidget(edit, row, 1, 1, 1, Qt::AlignVCenter);
+        gridLayout->addWidget(removeButton, row, 2, 1, 1, Qt::AlignVCenter);
+        gridLayout->setRowMinimumHeight(row, 24);
 
         if (row < numPaths) {
             edit->setText(paths[row]);
-        }
-        else {
+            // Try to load Thumbnail.png from the folder
+            QString thumbPath = QDir(paths[row]).filePath(QStringLiteral("Thumbnail.png"));
+            QPixmap pix(thumbPath);
+            if (!pix.isNull()) {
+                thumbLabel->setPixmap(pix);
+            } else {
+                thumbLabel->clear();
+            }
+        } else {
             edit->hide();
             removeButton->hide();
+            thumbLabel->hide();
         }
 
         buttonMap.append(qMakePair(edit, removeButton));
         connect(removeButton, &QPushButton::clicked, this, &IconFolders::removeFolder);
     }
-
-    textLabel = new QLabel(this);
-    textLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
-    textLabel->setText(tr("Add or remove custom icon folders"));
-    addButton = new QPushButton(this);
-    addButton->setIcon(BitmapFactory().iconFromTheme("list-add"));
-    gridLayout->addWidget(textLabel, maxRow, 0, 1, 1);
-    gridLayout->addWidget(addButton, maxRow, 1, 1, 1);
-
     connect(addButton, &QPushButton::clicked, this, &IconFolders::addFolder);
     if (numPaths >= this->maxLines) {
         addButton->setDisabled(true);
