@@ -533,6 +533,9 @@ IconFolders::IconFolders(const QStringList& paths, QWidget* parent)
     , maxLines(10)
 {
     resize(600, 400);
+    // Ensure QDialog background and stylesheet adoption
+    setAttribute(Qt::WA_StyledBackground, true);
+    ensurePolished();
     auto buttonBox = new QDialogButtonBox(this);
     buttonBox->setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &IconFolders::accept);
