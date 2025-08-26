@@ -615,7 +615,7 @@ IconFolders::IconFolders(const QStringList& paths, QWidget* parent)
         removeButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
         gridLayout->addWidget(thumbLabel, row, 0, 1, 1, Qt::AlignVCenter);
-    gridLayout->addWidget(edit, row, 1, 1, 1, Qt::AlignVCenter);
+        gridLayout->addWidget(edit, row, 1, 1, 1, Qt::AlignVCenter);
         gridLayout->addWidget(removeButton, row, 2, 1, 1, Qt::AlignVCenter);
         gridLayout->setRowMinimumHeight(row, 24);
 
