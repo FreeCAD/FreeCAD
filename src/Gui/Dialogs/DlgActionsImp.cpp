@@ -531,6 +531,7 @@ IconFolders::IconFolders(const QStringList& paths, QWidget* parent)
     : QDialog(parent)
     , restart(false)
     , maxLines(10)
+    , pathsChanged(false)
 {
     resize(600, 400);
     // Ensure QDialog background and stylesheet adoption
@@ -671,6 +672,7 @@ void IconFolders::addFolder()
                     edit->setText(dir);
                     QPushButton* removeButton = it.second;
                     removeButton->setVisible(true);
+                    pathsChanged = true;
                 }
             }
         }
@@ -686,14 +688,6 @@ void IconFolders::addFolder()
 
 void IconFolders::removeFolder()
 {
-    if (!restart) {
-        restart = true;
-        QMessageBox::information(
-            this,
-            tr("Remove folder"),
-            tr("Removing a folder only takes effect after an application restart"));
-    }
-
     addButton->setEnabled(true);
     auto remove = static_cast<QPushButton*>(sender());
     QLineEdit* edit = nullptr;
@@ -716,6 +710,37 @@ void IconFolders::removeFolder()
             }
         }
     }
+    pathsChanged = true;
+}
+void IconFolders::accept()
+{
+    // Compare current paths to preferences
+    QStringList currentPaths = getPaths();
+    Base::Reference<ParameterGrp> group =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Bitmaps");
+    std::vector<std::string> prefPaths = group->GetASCIIs("CustomPath");
+    QStringList prefList;
+    for (const auto& path : prefPaths) {
+        prefList << QString::fromUtf8(path.c_str());
+    }
+    if (currentPaths != prefList) {
+        QMessageBox msgBox(this);
+        msgBox.setWindowTitle(tr("Restart required"));
+        msgBox.setText(tr("Changing icon folders only takes effect after an application restart."));
+        QPushButton* restartNowBtn = msgBox.addButton(tr("Restart now"), QMessageBox::AcceptRole);
+        QPushButton* restartLaterBtn = msgBox.addButton(tr("Restart later"), QMessageBox::RejectRole);
+        msgBox.setDefaultButton(restartLaterBtn);
+        msgBox.exec();
+        if (msgBox.clickedButton() == restartNowBtn) {
+            // Attempt to restart FreeCAD
+            QString appPath = QCoreApplication::applicationFilePath();
+            QStringList args = QCoreApplication::arguments();
+            QProcess::startDetached(appPath, args);
+            QCoreApplication::quit();
+        }
+        // If 'Restart later', just continue and close dialog
+    }
+    QDialog::accept();
 }
 
 QStringList IconFolders::getPaths() const

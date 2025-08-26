@@ -120,6 +120,7 @@ public:
     IconFolders(const QStringList&, QWidget* parent);
     ~IconFolders() override;
     QStringList getPaths() const;
+    void accept() override;
 
 private:
     void addFolder();
@@ -132,6 +133,7 @@ private:
     QLabel* textLabel;
     QPushButton* addButton;
     QList< QPair<QLineEdit*, QPushButton*> > buttonMap;
+    bool pathsChanged; // Declare pathsChanged as a private member variable
 };
 
 } // namespace Dialog
