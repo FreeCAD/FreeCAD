@@ -42,6 +42,7 @@ SET(DXF_Plate
 
 set(Import_Scripts
     Init.py
+    gltfGlbExt.py
     stepZ.py
 )
 
