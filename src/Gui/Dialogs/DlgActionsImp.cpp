@@ -557,8 +557,7 @@ IconFolders::IconFolders(const QStringList& paths, QWidget* parent)
 
 
     // Table for icon folders inside a scroll area
-    QGroupBox* pathGroup = new QGroupBox(tr("Custom Icon Folders"), this);
-    QVBoxLayout* pathGroupLayout = new QVBoxLayout(pathGroup);
+    QVBoxLayout* tableLayout = new QVBoxLayout();
     tableWidget = new QTableWidget(this);
     tableWidget->setColumnCount(3);
     tableWidget->setHorizontalHeaderLabels({tr(""), tr("Path"), tr("")});
@@ -573,12 +572,13 @@ IconFolders::IconFolders(const QStringList& paths, QWidget* parent)
     tableWidget->setFocusPolicy(Qt::NoFocus);
     tableWidget->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
     tableWidget->setMinimumHeight(200);
-    pathGroupLayout->addWidget(tableWidget);
-    pathGroup->setLayout(pathGroupLayout);
+    tableLayout->addWidget(tableWidget);
 
     QScrollArea* scrollArea = new QScrollArea(this);
     scrollArea->setWidgetResizable(true);
-    scrollArea->setWidget(pathGroup);
+    QWidget* tableContainer = new QWidget(this);
+    tableContainer->setLayout(tableLayout);
+    scrollArea->setWidget(tableContainer);
 
     auto mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(12, 0, 12, 12); // Remove top margin
