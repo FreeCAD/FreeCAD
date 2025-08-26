@@ -25,11 +25,6 @@
 
 #include <FCConfig.h>
 
-#ifdef _MSC_VER
-#pragma warning(disable : 4005)
-#pragma warning(disable : 4290)
-#endif
-
 #ifdef _PreComp_
 
 // standard
@@ -56,10 +51,6 @@
 #include <boost/lexical_cast.hpp>
 
 #ifdef FC_OS_WIN32
-#define WIN32_LEAN_AND_MEAN
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
 #include <windows.h>
 #endif
 

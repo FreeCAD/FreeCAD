@@ -279,6 +279,11 @@ target_include_directories(
     ${QtConcurrent_INCLUDE_DIRS}
 )
 target_link_libraries(PartGui ${PartGui_LIBS})
+
+if (MSVC)
+    target_compile_options(PartGui PRIVATE /wd4251 /wd4273)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(PartGui)
 endif()

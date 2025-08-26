@@ -76,6 +76,11 @@ target_include_directories(
 
 target_link_directories(MeshPartGui PUBLIC ${SMESH_LIB_PATH})
 target_link_libraries(MeshPartGui ${MeshPartGui_LIBS})
+
+if (MSVC)
+    target_compile_options(MeshPartGui PRIVATE /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(MeshPartGui)
 endif()

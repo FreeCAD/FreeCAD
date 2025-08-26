@@ -613,6 +613,12 @@ endif()
 
 target_sources(Part PRIVATE ${Part_SRCS} ${FCBRepAlgoAPI_SRCS})
 target_link_libraries(Part ${Part_LIBS})
+
+if (MSVC)
+    target_compile_definitions(Part PRIVATE WIN32_LEAN_AND_MEAN)
+    target_compile_options(Part PRIVATE /wd4251 /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Part)
 endif()

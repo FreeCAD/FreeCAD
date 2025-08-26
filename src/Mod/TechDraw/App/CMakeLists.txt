@@ -289,6 +289,11 @@ target_include_directories(
 )
 
 target_link_libraries(TechDraw ${TechDrawLIBS} ${TechDraw})
+
+if (MSVC)
+    target_compile_options(TechDraw PRIVATE /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(TechDraw)
 endif()

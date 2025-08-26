@@ -26,15 +26,6 @@
 
 #include <FCConfig.h>
 
-// point at which warnings of overly long specifiers disabled (needed for VC6)
-#ifdef _MSC_VER
-#pragma warning(disable : 4251)
-#pragma warning(disable : 4503)
-#pragma warning(disable : 4275)
-#pragma warning(disable : 4786)  // specifier longer then 255 chars
-#pragma warning(disable : 4661)  // no suitable definition provided for explicit
-#endif                           // template instantiation request
-
 #ifdef _PreComp_
 
 // standard

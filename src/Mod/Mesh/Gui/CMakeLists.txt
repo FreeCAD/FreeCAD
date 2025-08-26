@@ -165,6 +165,11 @@ target_include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 target_link_libraries(MeshGui ${MeshGui_LIBS})
+
+if (MSVC)
+    target_compile_options(MeshGui PRIVATE /wd4251 /wd4273 /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(MeshGui)
 endif()
