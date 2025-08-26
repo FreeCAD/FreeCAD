@@ -223,6 +223,11 @@ void QuickMeasure::printResult()
         print(tr("Area: %1, Radius: %2")
                   .arg(areaStr(measurement->area()), lengthStr(measurement->radius())));
     }
+    else if (mtype == MeasureType::TwoCylinders) {
+        print(
+            tr("Total area: %1, Axis distance: %2")
+                .arg(areaStr(measurement->area()), lengthStr(measurement->cylinderAxisDistance())));
+    }
     else if (mtype == MeasureType::Edges) {
         print(tr("Total length: %1").arg(lengthStr(measurement->length())));
     }
@@ -245,6 +250,11 @@ void QuickMeasure::printResult()
     else if (mtype == MeasureType::PointToEdge || mtype == MeasureType::PointToSurface) {
         print(tr("Minimum distance: %1").arg(lengthStr(measurement->length())));
     }
+    else if (mtype == MeasureType::PointToCylinder) {
+        print(tr("Minimum distance: %1, Axis distance: %2")
+                  .arg(lengthStr(measurement->length()),
+                       lengthStr(measurement->cylinderAxisDistance())));
+    }
     else if (mtype == MeasureType::PointToCircle) {
         print(tr("Minimum distance: %1, Center distance: %2")
                   .arg(lengthStr(measurement->length()),
@@ -257,7 +267,12 @@ void QuickMeasure::printResult()
     }
     else if (mtype == MeasureType::CircleToSurface) {
         print(
-            tr("Minimum center distance: %1").arg(lengthStr(measurement->circleCenterDistance())));
+            tr("Center surface distance: %1").arg(lengthStr(measurement->circleCenterDistance())));
+    }
+    else if (mtype == MeasureType::CircleToCylinder) {
+        print(tr("Minimum center distance: %1, Center axis distance: %2")
+                  .arg(lengthStr(measurement->circleCenterDistance()),
+                       lengthStr(measurement->cylinderAxisDistance())));
     }
     else {
         print(QStringLiteral(""));
