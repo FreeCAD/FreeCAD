@@ -32,7 +32,6 @@ import math
 import FreeCAD as App
 import Part
 from draftmake import make_circle
-from draftutils import gui_utils
 from draftutils import utils
 from draftutils.messages import _err
 from draftutils.translate import translate
