@@ -572,25 +572,19 @@ IconFolders::IconFolders(const QStringList& paths, QWidget* parent)
     mainLayout->addWidget(infoGroup);
     mainLayout->addWidget(pathGroup);
 
-    // Add controls (label + add button) in a horizontal layout
-    auto addRowLayout = new QHBoxLayout();
-    addRowLayout->setContentsMargins(0, 8, 0, 0);
-    addRowLayout->setSpacing(8);
+    // Add controls (add button bottom left, Ok/Cancel bottom right)
+    mainLayout->addSpacing(4);
+    auto bottomRowLayout = new QHBoxLayout();
+    bottomRowLayout->setContentsMargins(0, 0, 0, 0);
+    bottomRowLayout->setSpacing(8);
 
-    textLabel = new QLabel(this);
-    textLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
-    textLabel->setText(tr("Add folders"));
-    addRowLayout->addWidget(textLabel, 1, Qt::AlignRight | Qt::AlignVCenter);
-
-    addButton = new QPushButton(this);
-    addButton->setIcon(BitmapFactory().iconFromTheme("list-add"));
+    addButton = new QPushButton(tr("Add new"), this);
     addButton->setFixedHeight(24);
     addButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    addRowLayout->addWidget(addButton, 0, Qt::AlignRight | Qt::AlignVCenter);
-
-    mainLayout->addLayout(addRowLayout);
-    mainLayout->addSpacing(4);
-    mainLayout->addWidget(buttonBox);
+    bottomRowLayout->addWidget(addButton, 0, Qt::AlignLeft | Qt::AlignVCenter);
+    bottomRowLayout->addStretch(1);
+    bottomRowLayout->addWidget(buttonBox, 0, Qt::AlignRight | Qt::AlignVCenter);
+    mainLayout->addLayout(bottomRowLayout);
 
     // Add the user defined paths
     int numPaths = static_cast<int>(paths.size());
@@ -608,11 +602,9 @@ IconFolders::IconFolders(const QStringList& paths, QWidget* parent)
         edit->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
         edit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-        auto removeButton = new QPushButton(this);
-        removeButton->setIcon(BitmapFactory().iconFromTheme("list-remove"));
-        removeButton->setFixedSize(24, 24);
-        removeButton->setIconSize(QSize(16, 16));
-        removeButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    auto removeButton = new QPushButton(tr("Remove"), this);
+    removeButton->setFixedHeight(24);
+    removeButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
         gridLayout->addWidget(thumbLabel, row, 0, 1, 1, Qt::AlignVCenter);
         gridLayout->addWidget(edit, row, 1, 1, 1, Qt::AlignVCenter);
