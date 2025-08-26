@@ -2240,9 +2240,14 @@ void FemMesh::writeZ88(const std::string& FileName) const
     if (!module) {
         return;
     }
+
+    // Make sure the reference counter won't become 0 when passing this mesh to its wrapper
+    FemMesh* self = const_cast<FemMesh*>(this);
+    self->ref();
+
     try {
         Py::Module z88mod(module, true);
-        Py::Object mesh = Py::asObject(new FemMeshPy(const_cast<FemMesh*>(this)));
+        Py::Object mesh = Py::asObject(new FemMeshPy(self));
         Py::Callable method(z88mod.getAttr("write"));
         Py::Tuple args(2);
         args.setItem(0, mesh);
@@ -2252,6 +2257,9 @@ void FemMesh::writeZ88(const std::string& FileName) const
     catch (Py::Exception& e) {
         e.clear();
     }
+
+    // Safely decrease the reference counter without destroying this mesh
+    self->unrefNoDelete();
 }
 
 
