@@ -536,6 +536,15 @@ IconFolders::IconFolders(const QStringList& paths, QWidget* parent)
     // Ensure QDialog background and stylesheet adoption
     setAttribute(Qt::WA_StyledBackground, true);
     ensurePolished();
+
+    // Explanatory group box at the top
+    QGroupBox* infoGroup = new QGroupBox(this);
+    QLabel* infoLabel = new QLabel(tr("Add or remove custom icon folders. These folders will be searched for icons used in the FreeCAD interface. Use the + button to add a folder (for example, from your Mod directory), or the - button to remove one. Changes take effect after restart."), infoGroup);
+    infoLabel->setWordWrap(true);
+    QVBoxLayout* infoLayout = new QVBoxLayout(infoGroup);
+    infoLayout->addWidget(infoLabel);
+    infoGroup->setLayout(infoLayout);
+
     auto buttonBox = new QDialogButtonBox(this);
     buttonBox->setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &IconFolders::accept);
@@ -543,11 +552,12 @@ IconFolders::IconFolders(const QStringList& paths, QWidget* parent)
 
     gridLayout = new QGridLayout();
     auto mainLayout = new QGridLayout(this);
-    mainLayout->addLayout(gridLayout, 0, 0, 1, 1);
+    mainLayout->addWidget(infoGroup, 0, 0, 1, 1);
+    mainLayout->addLayout(gridLayout, 1, 0, 1, 1);
 
     auto verticalSpacer = new QSpacerItem(20, 108, QSizePolicy::Minimum, QSizePolicy::Expanding);
-    mainLayout->addItem(verticalSpacer, 1, 0, 1, 1);
-    mainLayout->addWidget(buttonBox, 2, 0, 1, 1);
+    mainLayout->addItem(verticalSpacer, 2, 0, 1, 1);
+    mainLayout->addWidget(buttonBox, 3, 0, 1, 1);
 
     // Add the user defined paths
     int numPaths = static_cast<int>(paths.size());
