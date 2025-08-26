@@ -749,7 +749,8 @@ void DlgSettingsGeneral::onUnitSystemIndexChanged(const int index)
     }
 
     // Enable/disable the fractional inch option depending on system
-    const auto visible = UnitsApi::isMultiUnitLength();
+    const auto schema = UnitsApi::createSchema(index);
+    const auto visible = schema->isMultiUnitLength();
     ui->comboBox_FracInch->setVisible(visible);
     ui->fractionalInchLabel->setVisible(visible);
 }
