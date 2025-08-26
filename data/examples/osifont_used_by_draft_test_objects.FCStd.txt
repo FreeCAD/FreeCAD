@@ -1,1 +1,0 @@
-osifont-lgpl3fe.ttf is used by draft_test_objects.FCStd
