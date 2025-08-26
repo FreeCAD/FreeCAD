@@ -272,13 +272,19 @@ void NumberRange::throwIfOutOfRange(const Base::Quantity& value) const
     if (!defined)
         return;
 
+    auto toQString = [](const Base::Quantity& v) {
+        return QString::fromStdString(v.getUserString());
+    };
+
     if (value.getValue() < minimum || value.getValue() > maximum) {
         Base::Quantity minVal(minimum, value.getUnit());
         Base::Quantity maxVal(maximum, value.getUnit());
-        auto valStr = value.getUserString();
-        auto minStr = minVal.getUserString();
-        auto maxStr = maxVal.getUserString();
-        throw Base::ValueError(fmt::format("Value out of range ({} out of [{}, {}])", valStr, minStr, maxStr));
+
+        const QString fmt = QCoreApplication::translate(
+            "Exceptions",
+            "Value out of range (%1 out of [%2, %3])");
+        const QString msg = fmt.arg(toQString(value), toQString(minVal), toQString(maxVal));
+        THROWM(Base::ValueError, msg.toStdString());
     }
 }
 
@@ -321,19 +327,20 @@ void DlgExpressionInput::checkExpression(const QString& text)
         if (n) {
             Base::Quantity value = n->getQuantity();
             if (!value.isValid()) {
-                throw Base::ValueError("Not a number");
+                THROWMT(Base::ValueError, QT_TRANSLATE_NOOP("Exceptions", "Not a number"));
             }
 
-            auto msg = value.getUserString();
+            QString msg = QString::fromStdString(value.getUserString());
             if (impliedUnit != Base::Unit::One) {
                 if (!value.isDimensionless() && value.getUnit() != impliedUnit)
-                    throw Base::UnitsMismatchError("Unit mismatch between result and required unit");
+                    THROWMT(Base::UnitsMismatchError,
+                            QT_TRANSLATE_NOOP("Exceptions", "Unit mismatch between result and required unit"));
 
                 value.setUnit(impliedUnit);
 
             }
             else if (!value.isDimensionless()) {
-                msg += " (Warning: unit discarded)";
+                msg += tr(" (Warning: unit discarded)");
 
                 QPalette p(ui->msg->palette());
                 p.setColor(QPalette::WindowText, Qt::red);
@@ -342,7 +349,7 @@ void DlgExpressionInput::checkExpression(const QString& text)
 
             numberRange.throwIfOutOfRange(value);
 
-            ui->msg->setText(QString::fromStdString(msg));
+            ui->msg->setText(msg);
         }
         else {
             ui->msg->setText(QString::fromStdString(result->toString()));
@@ -479,18 +486,18 @@ bool DlgExpressionInput::isPropertyNameValid(const QString& nameProp,
     }
 
     if (ExpressionParser::isTokenAUnit(name)) {
-        message = withPrefix(tr("%1 is a unit").arg(name));
+        message = withPrefix(tr("%1 is a unit").arg(nameProp));
         return false;
     }
 
     if (ExpressionParser::isTokenAConstant(name)) {
-        message = withPrefix(tr("%1 is a constant").arg(name));
+        message = withPrefix(tr("%1 is a constant").arg(nameProp));
         return false;
     }
 
     auto prop = obj->getPropertyByName(name.c_str());
     if (prop && prop->getContainer() == obj) {
-        message = withPrefix(tr("%1 already exists").arg(name));
+        message = withPrefix(tr("%1 already exists").arg(nameProp));
         return false;
     }
 
