@@ -373,7 +373,7 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
         Client.defaultApplicationFontSizePixels();  // returns height in pixels, not points
 
     int sketcherfontSize = hGrp->GetInt("EditSketcherFontSize", defaultFontSizePixels);
-    int constraintSymbolSizePref = hGrp->GetInt("ConstraintSymbolSize", 15);
+    int constraintSymbolSizePref = hGrp->GetInt("ConstraintSymbolSize", defaultFontSizePixels);
     bool useConstraintSymbolSize = hGrp->GetBool("UseConstraintSymbolSize", false);
 
     double dpi = Client.getApplicationLogicalDPIX();
@@ -391,7 +391,8 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
     Client.drawingParameters.labelFontSize = std::lround(
         sketcherfontSize * devicePixelRatio * 72.0f / dpi);  // in points (SoDatumLabel uses points)
 
-    // Constraint icon size: legacy derives 0.8 * font; optionally overridden when enabled.
+    // Constraint icon size: legacy derives 0.8 * font (when override disabled); if override
+    // enabled we use the stored absolute pixel size (defaulting to full font size initially).
     int symbolSizeToUse =
         useConstraintSymbolSize ? constraintSymbolSizePref : std::lround(0.8 * sketcherfontSize);
     Client.drawingParameters.constraintIconSize = std::lround(symbolSizeToUse * devicePixelRatio);
