@@ -404,6 +404,11 @@ target_include_directories(
 
 target_link_directories(FemGui PUBLIC ${SMESH_LIB_PATH})
 target_link_libraries(FemGui ${FemGui_LIBS} ${VTK_LIBRARIES})
+
+if (MSVC)
+    target_compile_definitions(FemGui PRIVATE WIN32_LEAN_AND_MEAN)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(FemGui)
 endif()

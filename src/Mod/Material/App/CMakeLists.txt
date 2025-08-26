@@ -166,6 +166,10 @@ endif(BUILD_MATERIAL_EXTERNAL)
 target_link_directories(Materials PUBLIC ${YAML_CPP_LIBRARY_DIR})
 target_link_libraries(Materials ${Materials_LIBS})
 
+if (MSVC)
+    target_compile_options(Materials PRIVATE /wd4251 /wd4273)
+endif()
+
 if(FREECAD_WARN_ERROR)
     target_compile_warn_error(Materials)
 endif()

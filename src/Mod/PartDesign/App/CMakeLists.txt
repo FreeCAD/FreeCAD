@@ -144,6 +144,11 @@ target_include_directories(
 
 target_link_directories(PartDesign PUBLIC ${OCC_LIBRARY_DIR})
 target_link_libraries(PartDesign ${PartDesign_LIBS})
+
+if (MSVC)
+    target_compile_options(PartDesign PRIVATE /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(PartDesign)
 endif()

@@ -25,6 +25,11 @@ target_include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 target_link_libraries(DraftUtils ${DraftUtils_LIBS})
+
+if (MSVC)
+    target_compile_options(DraftUtils PRIVATE /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(DraftUtils)
 endif()

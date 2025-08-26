@@ -74,6 +74,11 @@ target_include_directories(
     ${FLANN_INCLUDE_DIRS}
 )
 target_link_libraries(ReverseEngineering ${Reen_LIBS})
+
+if (MSVC)
+    target_compile_options(ReverseEngineering PRIVATE /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(ReverseEngineering)
 endif()

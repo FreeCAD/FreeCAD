@@ -485,6 +485,11 @@ target_include_directories(
 )
 
 target_link_libraries(TechDrawGui ${TechDrawGui_LIBS})
+
+if (MSVC)
+    target_compile_definitions(TechDrawGui PRIVATE WIN32_LEAN_AND_MEAN)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(TechDrawGui)
 endif()

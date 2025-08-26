@@ -184,6 +184,11 @@ target_include_directories(
     ${QtConcurrent_INCLUDE_DIRS}
 )
 target_link_libraries(MatGui ${MatGui_LIBS})
+
+if (MSVC)
+    target_compile_options(MatGui PRIVATE /wd4251 /wd4273)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(MatGui)
 endif()

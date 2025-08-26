@@ -122,6 +122,11 @@ target_include_directories(
 )
 
 target_link_libraries(RobotGui ${RobotGui_LIBS})
+
+if (MSVC)
+    target_compile_options(RobotGui PRIVATE /wd4273)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(RobotGui)
 endif()

@@ -25,9 +25,6 @@
 
 #include <FCConfig.h>
 
-#ifdef _MSC_VER
-#pragma warning(disable : 4251)
-#endif
 
 #ifdef _PreComp_
 
@@ -111,9 +108,6 @@
 #include <gp_Pnt.hxx>
 
 #elif defined(FC_OS_WIN32)
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
 #include <windows.h>
 #endif  // _PreComp_
 
