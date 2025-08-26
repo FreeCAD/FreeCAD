@@ -85,6 +85,11 @@ endif()
 
 target_sources(MeshPart PRIVATE ${MeshPart_SRCS} ${MeshPart_Scripts})
 target_link_libraries(MeshPart ${MeshPart_LIBS})
+
+if (MSVC)
+    target_compile_options(MeshPart PRIVATE /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(MeshPart)
 endif()

@@ -81,6 +81,11 @@ target_include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 target_link_libraries(Import ${Import_LIBS})
+
+if (MSVC)
+    target_compile_options(Import PRIVATE /wd4251 /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Import)
 endif()

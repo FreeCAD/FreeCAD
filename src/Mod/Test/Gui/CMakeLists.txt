@@ -60,6 +60,11 @@ target_include_directories(
 
 target_link_libraries(QtUnitGui ${TestGui_LIBS})
 add_dependencies(QtUnitGui Test)
+
+if (MSVC)
+    target_compile_options(QtUnitGui PRIVATE /wd4251)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(QtUnitGui)
 endif()

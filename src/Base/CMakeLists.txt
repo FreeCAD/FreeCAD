@@ -340,6 +340,11 @@ endif(FREECAD_USE_PCH)
 
 target_sources(FreeCADBase PRIVATE ${FreeCADBase_SRCS})
 target_link_libraries(FreeCADBase ${FreeCADBase_LIBS})
+
+if (MSVC)
+    target_compile_definitions(FreeCADBase PRIVATE WIN32_LEAN_AND_MEAN)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(FreeCADBase)
 endif()
