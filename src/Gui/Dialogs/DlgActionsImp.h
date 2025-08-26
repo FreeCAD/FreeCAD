@@ -129,11 +129,10 @@ private:
 private:
     bool restart;
     int maxLines;
-    QGridLayout* gridLayout;
-    QLabel* textLabel;
+    QTableWidget* tableWidget;
     QPushButton* addButton;
-    QList< QPair<QLineEdit*, QPushButton*> > buttonMap;
-    bool pathsChanged; // Declare pathsChanged as a private member variable
+    bool pathsChanged;
+    void addTableRow(const QString& path);
 };
 
 } // namespace Dialog

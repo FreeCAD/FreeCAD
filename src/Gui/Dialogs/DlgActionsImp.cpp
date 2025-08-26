@@ -533,14 +533,18 @@ IconFolders::IconFolders(const QStringList& paths, QWidget* parent)
     , maxLines(10)
     , pathsChanged(false)
 {
-    resize(600, 400);
+    resize(600, 600);
     // Ensure QDialog background and stylesheet adoption
     setAttribute(Qt::WA_StyledBackground, true);
     ensurePolished();
 
     // Explanatory group box at the top
     QGroupBox* infoGroup = new QGroupBox(this);
-    QLabel* infoLabel = new QLabel(tr("These folders will be searched for icons used in the FreeCAD interface. Use the + button to add a folder (for example, from your Mod directory), or the - button to remove one. Changes take effect after restart."), infoGroup);
+    QLabel* infoLabel = new QLabel(tr(
+        "These folders will be searched for icons used in the FreeCAD interface, including custom icons for macros. "
+        "Use the 'Add new' button to add a folder (for example, from your Mod directory). "
+        "If the same icon file exists in multiple folders, the last folder in the list takes precedence. "
+        "Changes take effect after restart."), infoGroup);
     infoLabel->setWordWrap(true);
     QVBoxLayout* infoLayout = new QVBoxLayout(infoGroup);
     infoLayout->addWidget(infoLabel);
@@ -552,25 +556,35 @@ IconFolders::IconFolders(const QStringList& paths, QWidget* parent)
     connect(buttonBox, &QDialogButtonBox::rejected, this, &IconFolders::reject);
 
 
-    // Group box for path list
+    // Table for icon folders inside a scroll area
     QGroupBox* pathGroup = new QGroupBox(tr("Custom Icon Folders"), this);
-    gridLayout = new QGridLayout(pathGroup);
-    gridLayout->setColumnStretch(0, 0); // thumbnail
-    gridLayout->setColumnMinimumWidth(0, 28);
-    gridLayout->setColumnStretch(1, 1); // path
-    gridLayout->setColumnMinimumWidth(1, 120);
-    gridLayout->setColumnStretch(2, 0); // remove button
-    gridLayout->setColumnMinimumWidth(2, 28);
-    gridLayout->setHorizontalSpacing(8);
-    gridLayout->setVerticalSpacing(4);
-    gridLayout->setContentsMargins(8, 8, 8, 8);
+    QVBoxLayout* pathGroupLayout = new QVBoxLayout(pathGroup);
+    tableWidget = new QTableWidget(this);
+    tableWidget->setColumnCount(3);
+    tableWidget->setHorizontalHeaderLabels({tr(""), tr("Path"), tr("")});
+    tableWidget->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed);
+    tableWidget->setColumnWidth(0, 48);
+    tableWidget->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+    tableWidget->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+    tableWidget->verticalHeader()->setVisible(false);
+    tableWidget->setShowGrid(false);
+    tableWidget->setSelectionMode(QAbstractItemView::NoSelection);
+    tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    tableWidget->setFocusPolicy(Qt::NoFocus);
+    tableWidget->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
+    tableWidget->setMinimumHeight(200);
+    pathGroupLayout->addWidget(tableWidget);
+    pathGroup->setLayout(pathGroupLayout);
 
-    // Main layout
+    QScrollArea* scrollArea = new QScrollArea(this);
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setWidget(pathGroup);
+
     auto mainLayout = new QVBoxLayout(this);
-    mainLayout->setContentsMargins(12, 12, 12, 12);
+    mainLayout->setContentsMargins(12, 0, 12, 12); // Remove top margin
     mainLayout->setSpacing(10);
     mainLayout->addWidget(infoGroup);
-    mainLayout->addWidget(pathGroup);
+    mainLayout->addWidget(scrollArea);
 
     // Add controls (add button bottom left, Ok/Cancel bottom right)
     mainLayout->addSpacing(4);
@@ -586,52 +600,13 @@ IconFolders::IconFolders(const QStringList& paths, QWidget* parent)
     bottomRowLayout->addWidget(buttonBox, 0, Qt::AlignRight | Qt::AlignVCenter);
     mainLayout->addLayout(bottomRowLayout);
 
-    // Add the user defined paths
-    int numPaths = static_cast<int>(paths.size());
-    int maxRow = this->maxLines;
-    for (int row = 0; row < maxRow; row++) {
-        // Thumbnail label
-        QLabel* thumbLabel = new QLabel(this);
-        thumbLabel->setFixedSize(48, 48);
-        thumbLabel->setScaledContents(true);
-
-        auto edit = new QLineEdit(this);
-        edit->setReadOnly(true);
-        edit->setMinimumHeight(24);
-        edit->setMaximumHeight(24);
-        edit->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-        edit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-
-    auto removeButton = new QPushButton(tr("Remove"), this);
-    removeButton->setFixedHeight(24);
-    removeButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
-        gridLayout->addWidget(thumbLabel, row, 0, 1, 1, Qt::AlignVCenter);
-        gridLayout->addWidget(edit, row, 1, 1, 1, Qt::AlignVCenter);
-        gridLayout->addWidget(removeButton, row, 2, 1, 1, Qt::AlignVCenter);
-        gridLayout->setRowMinimumHeight(row, 24);
-
-        if (row < numPaths) {
-            edit->setText(paths[row]);
-            // Try to load Thumbnail.png from the folder
-            QString thumbPath = QDir(paths[row]).filePath(QStringLiteral("Thumbnail.png"));
-            QPixmap pix(thumbPath);
-            if (!pix.isNull()) {
-                thumbLabel->setPixmap(pix);
-            } else {
-                thumbLabel->clear();
-            }
-        } else {
-            edit->hide();
-            removeButton->hide();
-            thumbLabel->hide();
-        }
-
-        buttonMap.append(qMakePair(edit, removeButton));
-        connect(removeButton, &QPushButton::clicked, this, &IconFolders::removeFolder);
+    // Add the user defined paths to the table
+    tableWidget->setRowCount(0);
+    for (const QString& path : paths) {
+        addTableRow(path);
     }
     connect(addButton, &QPushButton::clicked, this, &IconFolders::addFolder);
-    if (numPaths >= this->maxLines) {
+    if (tableWidget->rowCount() >= this->maxLines) {
         addButton->setDisabled(true);
     }
 }
@@ -640,8 +615,6 @@ IconFolders::~IconFolders() = default;
 
 void IconFolders::addFolder()
 {
-    int countHidden = -1;
-    QStringList paths;
     QString baseDir = QString::fromStdString(App::Application::getUserAppDataDir());
     QString modDir = baseDir + QDir::separator() + QStringLiteral("Mod");
     QString userDir;
@@ -651,58 +624,80 @@ void IconFolders::addFolder()
     } else {
         userDir = baseDir;
     }
-    for (const auto& it : buttonMap) {
-        if (it.first->isHidden()) {
-            countHidden++;
-            if (countHidden == 0) {
-                QString dir = QFileDialog::getExistingDirectory(this,
-                                                                IconDialog::tr("Add icon folder"),
-                                                                userDir);
-                if (!dir.isEmpty() && paths.indexOf(dir) < 0) {
-                    QLineEdit* edit = it.first;
-                    edit->setVisible(true);
-                    edit->setText(dir);
-                    QPushButton* removeButton = it.second;
-                    removeButton->setVisible(true);
-                    pathsChanged = true;
-                }
+    QString dir = QFileDialog::getExistingDirectory(this, IconDialog::tr("Add icon folder"), userDir);
+    if (!dir.isEmpty()) {
+        // Check for duplicates
+        for (int row = 0; row < tableWidget->rowCount(); ++row) {
+            QLineEdit* edit = qobject_cast<QLineEdit*>(tableWidget->cellWidget(row, 1));
+            if (edit && QDir::toNativeSeparators(edit->text()) == QDir::toNativeSeparators(dir)) {
+                return; // Already exists
             }
         }
-        else {
-            paths << QDir::toNativeSeparators(it.first->text());
+        addTableRow(dir);
+        pathsChanged = true;
+        if (tableWidget->rowCount() >= this->maxLines) {
+            addButton->setDisabled(true);
         }
-    }
-
-    if (countHidden <= 0) {
-        addButton->setDisabled(true);
     }
 }
 
 void IconFolders::removeFolder()
 {
-    addButton->setEnabled(true);
-    auto remove = static_cast<QPushButton*>(sender());
-    QLineEdit* edit = nullptr;
-    for (const auto& it : buttonMap) {
-        if (it.second == remove) {
-            edit = it.first;
-        }
-        else if (edit) {
-            // move up the text of the line edits
-            edit->setText(it.first->text());
-
-            if (it.first->isVisible()) {
-                edit = it.first;
-                remove = it.second;
-            }
-            else {
-                edit->hide();
-                remove->hide();
-                break;
-            }
+    QPushButton* removeBtn = qobject_cast<QPushButton*>(sender());
+    if (!removeBtn) return;
+    int rowToRemove = -1;
+    for (int row = 0; row < tableWidget->rowCount(); ++row) {
+        if (tableWidget->cellWidget(row, 2) == removeBtn) {
+            rowToRemove = row;
+            break;
         }
     }
-    pathsChanged = true;
+    if (rowToRemove >= 0) {
+        tableWidget->removeRow(rowToRemove);
+        pathsChanged = true;
+        addButton->setEnabled(true);
+    }
+}
+// Helper to add a row to the table for a given path
+void IconFolders::addTableRow(const QString& path)
+{
+    int row = tableWidget->rowCount();
+    tableWidget->insertRow(row);
+    int thumbSize = 36;
+    int rowHeight = 44;
+    tableWidget->setRowHeight(row, rowHeight);
+    // Thumbnail cell
+    QWidget* thumbWidget = new QWidget(this);
+    QHBoxLayout* thumbLayout = new QHBoxLayout(thumbWidget);
+    thumbLayout->setContentsMargins(0,0,0,0);
+    thumbLayout->setAlignment(Qt::AlignCenter);
+    QLabel* thumbLabel = new QLabel(thumbWidget);
+    thumbLabel->setFixedSize(thumbSize, thumbSize);
+    thumbLabel->setAlignment(Qt::AlignCenter);
+    QString thumbPath = QDir(path).filePath(QStringLiteral("Thumbnail.png"));
+    QPixmap pix(thumbPath);
+    if (!pix.isNull()) {
+        thumbLabel->setPixmap(pix.scaled(thumbSize, thumbSize, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    } else {
+        thumbLabel->setPixmap(QPixmap());
+    }
+    thumbLayout->addWidget(thumbLabel);
+    thumbWidget->setLayout(thumbLayout);
+    tableWidget->setCellWidget(row, 0, thumbWidget);
+
+    // Path cell
+    QLineEdit* edit = new QLineEdit(this);
+    edit->setReadOnly(false);
+    edit->setText(path);
+    tableWidget->setCellWidget(row, 1, edit);
+
+    // Remove button
+    QPushButton* removeButton = new QPushButton(tr("Remove"), this);
+    removeButton->setFixedHeight(rowHeight);
+    removeButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    removeButton->setContentsMargins(0, 0, 0, 0);
+    tableWidget->setCellWidget(row, 2, removeButton);
+    connect(removeButton, &QPushButton::clicked, this, &IconFolders::removeFolder);
 }
 void IconFolders::accept()
 {
@@ -728,15 +723,17 @@ void IconFolders::accept()
 QStringList IconFolders::getPaths() const
 {
     QStringList paths;
-    for (const auto& it : buttonMap) {
-        if (!it.first->isHidden()) {
-            paths << QDir::toNativeSeparators(it.first->text());
-        }
-        else {
-            break;
-        }
+    for (int row = 0; row < tableWidget->rowCount(); ++row) {
+        QLineEdit* edit = qobject_cast<QLineEdit*>(tableWidget->cellWidget(row, 1));
+        if (edit)
+            paths << QDir::toNativeSeparators(edit->text());
     }
     return paths;
 }
+
+
+// Add this to the class definition in the header:
+// QTableWidget* tableWidget;
+// void addTableRow(const QString& path);
 
 #include "moc_DlgActionsImp.cpp"
