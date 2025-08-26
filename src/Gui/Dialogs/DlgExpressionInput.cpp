@@ -858,22 +858,19 @@ void DlgExpressionInput::reportVarSetInfo(const QString& message)
     }
 }
 
-static QString buildErrorStyle(const char* widgetName)
+static void setErrorState(QWidget* widget, bool on)
 {
-    return QStringLiteral("#%1 {"
-                          " border:1px solid #d93025;"
-                          "}"
-                          "#%1:focus {"
-                          " border:1px solid #ff3b30;"
-                          "}")
-        .arg(QLatin1String(widgetName));
+    widget->setProperty("validationState", on ? QStringLiteral("error") : QVariant());
+
+    widget->style()->unpolish(widget);
+    widget->style()->polish(widget);
 }
 
 bool DlgExpressionInput::reportGroup(const QString& nameGroup)
 {
     QString message;
     if (!isGroupNameValid(nameGroup, message)) {
-        comboBoxGroup.setStyleSheet(buildErrorStyle("comboBoxGroup"));
+        setErrorState(&comboBoxGroup, true);
         reportVarSetInfo(message);
         return true;
     }
@@ -890,7 +887,7 @@ bool DlgExpressionInput::reportName()
     App::DocumentObject* obj = doc->getObject(nameVarSet.toUtf8());
     QString message;
     if (!isPropertyNameValid(nameProp, obj, message)) {
-        ui->lineEditPropNew->setStyleSheet(buildErrorStyle("lineEditPropNew"));
+        setErrorState(ui->lineEditPropNew, true);
         reportVarSetInfo(message);
         return true;
     }
@@ -925,8 +922,8 @@ void DlgExpressionInput::updateVarSetInfo(bool checkExpr)
 
 bool DlgExpressionInput::needReportOnVarSet()
 {
-    ui->lineEditPropNew->setStyleSheet(QString());
-    comboBoxGroup.setStyleSheet(QString());
+    setErrorState(ui->lineEditPropNew, false);
+    setErrorState(&comboBoxGroup, false);
 
     return reportGroup(comboBoxGroup.currentText()) || reportName();
 }
