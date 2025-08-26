@@ -335,7 +335,8 @@ double Measurement::length() const
 
         if (measureType == MeasureType::Points || measureType == MeasureType::PointToPoint
             || measureType == MeasureType::PointToEdge || measureType == MeasureType::PointToSurface
-            || measureType == MeasureType::PointToCircle) {
+            || measureType == MeasureType::PointToCircle
+            || measureType == MeasureType::PointToCylinder) {
 
             Base::Vector3d diff = this->delta();
             result = diff.Length();
@@ -759,7 +760,8 @@ Base::Vector3d Measurement::delta() const
         }
         else if (measureType == MeasureType::PointToEdge
                  || measureType == MeasureType::PointToSurface
-                 || measureType == MeasureType::PointToCircle) {
+                 || measureType == MeasureType::PointToCircle
+                 || measureType == MeasureType::PointToCylinder) {
             // BrepExtema can calculate minimum distance between any set of topology sets.
             if (numRefs == 2) {
                 TopoDS_Shape shape1 = getShape(objects.at(0), subElements.at(0).c_str());
