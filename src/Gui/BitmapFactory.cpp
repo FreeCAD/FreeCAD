@@ -145,21 +145,16 @@ QStringList BitmapFactoryInst::getPaths() const
 
 QStringList BitmapFactoryInst::findIconFiles() const
 {
-    QStringList files, filters;
-    QList<QByteArray> formats = QImageReader::supportedImageFormats();
-    for (QList<QByteArray>::iterator it = formats.begin(); it != formats.end(); ++it)
-        filters << QStringLiteral("*.%1").arg(QString::fromLatin1(*it).toLower());
-
+    QStringList files;
     QStringList paths = QDir::searchPaths(QStringLiteral("icons"));
     paths.removeDuplicates();
-    for (QStringList::Iterator pt = paths.begin(); pt != paths.end(); ++pt) {
-        QDir d(*pt);
-        d.setNameFilters(filters);
-        QFileInfoList fi = d.entryInfoList();
-        for (QFileInfoList::iterator it = fi.begin(); it != fi.end(); ++it)
-            files << it->absoluteFilePath();
+    for (const QString& path : paths) {
+        QDir d(path);
+        QFileInfoList fi = d.entryInfoList(QDir::Files | QDir::NoSymLinks);
+        for (const QFileInfo& info : fi) {
+            files << info.absoluteFilePath();
+        }
     }
-
     files.removeDuplicates();
     return files;
 }
@@ -248,21 +243,23 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
     QString fn = QString::fromUtf8(name);
     loadPixmap(fn, icon);
 
-    // try to find it in the 'icons' search paths
+    // Extension-agnostic search in icon paths
     if (icon.isNull()) {
-        QList<QByteArray> formats = QImageReader::supportedImageFormats();
-        formats.prepend("SVG"); // check first for SVG to use special import mechanism
-
-        QString fileName = QStringLiteral("icons:") + fn;
-        if (!loadPixmap(fileName, icon)) {
-            // Go through supported file formats
-            for (QList<QByteArray>::iterator fm = formats.begin(); fm != formats.end(); ++fm) {
-                QString path = QStringLiteral("%1.%2").arg(fileName,
-                    QString::fromLatin1((*fm).toLower().constData()));
-                if (loadPixmap(path, icon)) {
-                    break;
+        QStringList paths = QDir::searchPaths(QStringLiteral("icons"));
+        paths.removeDuplicates();
+        bool found = false;
+        for (const QString& path : paths) {
+            QDir d(path);
+            QFileInfoList fi = d.entryInfoList(QDir::Files | QDir::NoSymLinks);
+            for (const QFileInfo& info : fi) {
+                if (info.completeBaseName() == fn) {
+                    if (loadPixmap(info.absoluteFilePath(), icon)) {
+                        found = true;
+                        break;
+                    }
                 }
             }
+            if (found) break;
         }
     }
 
