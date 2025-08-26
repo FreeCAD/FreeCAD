@@ -27,6 +27,7 @@
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepGProp.hxx>
+#include <BRepBuilderAPI_MakeVertex.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Circ.hxx>
@@ -204,6 +205,9 @@ MeasureType Measurement::findType()
             if (faces == 1 && verts == 1) {
                 mode = MeasureType::PointToSurface;
             }
+            else if (faces == 1 && circles == 1) {
+                mode = MeasureType::CircleToSurface;
+            }
             else {
                 mode = MeasureType::Invalid;
             }
@@ -242,6 +246,9 @@ MeasureType Measurement::findType()
             if (verts > 1) {
                 mode = MeasureType::Invalid;
             }
+            else if (circles == 1) {
+                mode = MeasureType::PointToCircle;
+            }
             else {
                 mode = MeasureType::PointToEdge;
             }
@@ -259,6 +266,12 @@ MeasureType Measurement::findType()
         }
         else if (circles == 1 && edges == 1) {
             mode = MeasureType::Circle;
+        }
+        else if (circles == 2 && edges == 2) {
+            mode = MeasureType::TwoCircles;
+        }
+        else if (circles == 1 && edges == 2) {
+            mode = MeasureType::CircleToEdge;
         }
         else {
             mode = MeasureType::Edges;
@@ -312,14 +325,16 @@ double Measurement::length() const
         const std::vector<std::string>& subElements = References3D.getSubValues();
 
         if (measureType == MeasureType::Points || measureType == MeasureType::PointToPoint
-            || measureType == MeasureType::PointToEdge
-            || measureType == MeasureType::PointToSurface) {
+            || measureType == MeasureType::PointToEdge || measureType == MeasureType::PointToSurface
+            || measureType == MeasureType::PointToCircle) {
 
             Base::Vector3d diff = this->delta();
             result = diff.Length();
         }
         else if (measureType == MeasureType::Edges || measureType == MeasureType::Line
-                 || measureType == MeasureType::TwoLines || measureType == MeasureType::Circle) {
+                 || measureType == MeasureType::TwoLines || measureType == MeasureType::Circle
+                 || measureType == MeasureType::TwoCircles
+                 || measureType == MeasureType::CircleToEdge) {
 
             // Iterate through edges and calculate each length
             std::vector<App::DocumentObject*>::const_iterator obj = objects.begin();
@@ -423,7 +438,83 @@ double Measurement::lineLineDistance() const
     }
     return distance;
 }
+double Measurement::circleCenterDistance() const
+{
+    double distance = 0.0;
 
+    if (References3D.getSize() != 2) {
+        return distance;
+    }
+
+    const std::vector<App::DocumentObject*>& objects = References3D.getValues();
+    const std::vector<std::string>& subElements = References3D.getSubValues();
+
+    // Get the first circle
+    TopoDS_Shape shape1 = getShape(objects[0], subElements[0].c_str());
+    TopoDS_Shape shape2 = getShape(objects[1], subElements[1].c_str());
+
+    if (shape1.ShapeType() != TopAbs_EDGE) {
+        std::swap(shape1, shape2);
+    }
+
+    if (measureType == MeasureType::TwoCircles) {
+        const TopoDS_Edge& edge1 = TopoDS::Edge(shape1);
+        BRepAdaptor_Curve curve1(edge1);
+
+        const TopoDS_Edge& edge2 = TopoDS::Edge(shape2);
+        BRepAdaptor_Curve curve2(edge2);
+
+        if (curve1.GetType() == GeomAbs_Circle && curve2.GetType() == GeomAbs_Circle) {
+            gp_Circ circle1 = curve1.Circle();
+            gp_Circ circle2 = curve2.Circle();
+
+            distance = circle1.Location().Distance(circle2.Location());
+        }
+    }
+    else if (measureType == MeasureType::CircleToEdge) {
+        const TopoDS_Edge& edge1 = TopoDS::Edge(shape1);
+        BRepAdaptor_Curve curve1(edge1);
+
+        TopoDS_Vertex circleCenter;
+        const TopoDS_Shape* otherShape;
+        if (curve1.GetType() == GeomAbs_Circle) {
+            circleCenter = BRepBuilderAPI_MakeVertex(curve1.Circle().Location());
+            otherShape = &shape2;
+        }
+        else {
+            const TopoDS_Edge& edge2 = TopoDS::Edge(shape2);
+            BRepAdaptor_Curve curve2(edge2);
+
+            circleCenter = BRepBuilderAPI_MakeVertex(curve2.Circle().Location());
+            otherShape = &shape1;
+        }
+
+        BRepExtrema_DistShapeShape extrema(circleCenter, *otherShape);
+
+        if (extrema.IsDone()) {
+            // Found the nearest point between point and curve
+            // NOTE we will assume there is only 1 solution (cyclic topology will create
+            // multiple solutions.
+            gp_Pnt P1 = extrema.PointOnShape1(1);
+            gp_Pnt P2 = extrema.PointOnShape2(1);
+            gp_XYZ diff = P2.XYZ() - P1.XYZ();
+            distance = Base::Vector3d(diff.X(), diff.Y(), diff.Z()).Length();
+        }
+    }
+    else if (measureType == MeasureType::PointToCircle) {
+        const TopoDS_Edge& edge1 = TopoDS::Edge(shape1);
+        BRepAdaptor_Curve curve1(edge1);
+
+        TopoDS_Vertex& vert1 = TopoDS::Vertex(shape2);
+
+        gp_Circ circle1 = curve1.Circle();
+        gp_Pnt pt = BRep_Tool::Pnt(vert1);
+
+        distance = circle1.Location().Distance(pt);
+    }
+
+    return distance;
+}
 double Measurement::planePlaneDistance() const
 {
     if (measureType != MeasureType::TwoPlanes || References3D.getSize() != 2) {
@@ -602,7 +693,8 @@ Base::Vector3d Measurement::delta() const
             }
         }
         else if (measureType == MeasureType::PointToEdge
-                 || measureType == MeasureType::PointToSurface) {
+                 || measureType == MeasureType::PointToSurface
+                 || measureType == MeasureType::PointToCircle) {
             // BrepExtema can calculate minimum distance between any set of topology sets.
             if (numRefs == 2) {
                 TopoDS_Shape shape1 = getShape(objects.at(0), subElements.at(0).c_str());

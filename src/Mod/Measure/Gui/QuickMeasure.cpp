@@ -245,6 +245,20 @@ void QuickMeasure::printResult()
     else if (mtype == MeasureType::PointToEdge || mtype == MeasureType::PointToSurface) {
         print(tr("Minimum distance: %1").arg(lengthStr(measurement->length())));
     }
+    else if (mtype == MeasureType::PointToCircle) {
+        print(tr("Minimum distance: %1, Center distance: %2")
+                  .arg(lengthStr(measurement->length()),
+                       lengthStr(measurement->circleCenterDistance())));
+    }
+    else if (mtype == MeasureType::TwoCircles || mtype == MeasureType::CircleToEdge) {
+        print(tr("Total length: %1, Center distance: %2")
+                  .arg(lengthStr(measurement->length()),
+                       lengthStr(measurement->circleCenterDistance())));
+    }
+    else if (mtype == MeasureType::CircleToSurface) {
+        print(
+            tr("Minimum center distance: %1").arg(lengthStr(measurement->circleCenterDistance())));
+    }
     else {
         print(QStringLiteral(""));
     }
