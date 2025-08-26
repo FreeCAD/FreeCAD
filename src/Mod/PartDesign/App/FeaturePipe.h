@@ -70,7 +70,7 @@ public:
 protected:
     /// get the given edges and all their tangent ones
     void getContinuousEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames);
-    void buildPipePath(const Part::TopoShape& input, const  std::vector<std::string>& edges, TopoDS_Shape& result);
+    void buildPipePath(const Part::TopoShape& input, const  std::vector<std::string>& edges, Part::TopoShape& result);
     void setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, const TopoDS_Shape& auxshape);
     /// handle changed property
     void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop) override;
