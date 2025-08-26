@@ -423,6 +423,12 @@ void EditDatumDialog::performAutoScale(double newDatum)
             float initLabelDistance = sketch->Constraints[ConstrNbr]->LabelDistance;
             float initLabelPosition = sketch->Constraints[ConstrNbr]->LabelPosition;
             centerScale(scaleFactor);
+
+            // Some constraints cannot be scaled so the actual datum constraint
+            // might change index
+            ConstrNbr = sketch->getSingleScaleDefiningConstraint();
+
+
             sketch->setLabelDistance(ConstrNbr, initLabelDistance * scaleFactor);
 
             // Label position or radii and diameters represent an angle, so
