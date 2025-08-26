@@ -323,7 +323,7 @@ class _ProfileT(_Profile):
         obj.Placement = pl
 
 
-class _ProfileT_s(_Profile):
+class _ProfileTSLOT(_Profile):
 
     '''T slot profile common made of aluminum'''
 
@@ -386,7 +386,7 @@ class _ProfileT_s(_Profile):
         templist.append(templist[0])
         poly = Part.makePolygon(templist)
         pf = Part.Face(poly)
-        orificio = Part.makeCircle(2.095, FreeCAD.Vector(0, 0, 0))
+        orificio = Part.makeCircle(obj.hole_diameter, FreeCAD.Vector(0, 0, 0))
         cf=Part.Face(Part.Wire(orificio))
         p=pf.cut(cf)
         #p.reverse()
@@ -447,8 +447,8 @@ class ProfileTaskPanel:
             self.type = "L"
         elif isinstance(self.obj.Proxy,_ProfileT):
             self.type = "T"
-        elif isinstance(self.obj.Proxy,_ProfileT_s):
-            self.type = "T-s"
+        elif isinstance(self.obj.Proxy,_ProfileTSLOT):
+            self.type = "TSLOT"
         else:
             self.type = "Building Element Proxy"
         self.form = QtGui.QWidget()
@@ -527,8 +527,8 @@ class ProfileTaskPanel:
                 _ProfileL(self.obj, self.Profile)
             elif self.Profile[3]=="T":
                 _ProfileT(self.obj, self.Profile)
-            elif self.Profile[3]=="T-s":
-                _ProfileT_s(self.obj, self.Profile)
+            elif self.Profile[3]=="TSLOT":
+                _ProfileTSLOT(self.obj, self.Profile)
             else:
                 print("Profile not supported")
 
