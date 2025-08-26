@@ -100,11 +100,15 @@ private:
     QStandardItemModel* createVarSetModel();
     void setupVarSets();
     std::string getType();
-    void reportVarSetInfo(const std::string& message);
+    void reportVarSetInfo(const QString& message);
     bool reportName();
     bool reportGroup(const QString& nameGroup);
     void updateVarSetInfo(bool checkExpr = true);
     void acceptWithVarSet();
+    bool isPropertyNameValid(const QString& nameProp,
+                             const App::DocumentObject* obj, QString& message) const;
+    bool isGroupNameValid(const QString& nameGroup,
+                          QString& message) const;
 
 private Q_SLOTS:
     void textChanged(const QString & text);

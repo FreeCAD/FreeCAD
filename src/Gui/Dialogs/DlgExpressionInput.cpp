@@ -451,45 +451,46 @@ public:
     }
 };
 
-constexpr std::string_view InvalidIdentifierMessage =
-    "must contain only alphanumeric characters, underscore, and must not start with a digit";
+static constexpr const char* InvalidIdentifierMessage =
+    QT_TR_NOOP("must contain only alphanumeric characters, underscore, and must not start with a digit");
 
-static bool isPropertyNameValid(const QString& nameProp, App::DocumentObject* obj,
-                                std::stringstream& message)
+bool DlgExpressionInput::isPropertyNameValid(const QString& nameProp,
+                                             const App::DocumentObject* obj,
+                                             QString& message) const
 {
+    auto withPrefix = [&](const QString& detail) {
+        return tr("Invalid property name: %1").arg(detail);
+    };
+
     if (!obj) {
-        message << "Unknown object";
+        message = tr("Unknown object");
         return false;
     }
 
-    const char* prefixText = "Invalid property name: ";
-
     std::string name = nameProp.toStdString();
     if (name.empty()) {
-        message << prefixText << "the name cannot be empty";
+        message = withPrefix(tr("the name cannot be empty"));
         return false;
     }
 
     if (name != Base::Tools::getIdentifier(name)) {
-        message << prefixText << InvalidIdentifierMessage;
+        message = withPrefix(tr(InvalidIdentifierMessage));
         return false;
     }
 
     if (ExpressionParser::isTokenAUnit(name)) {
-        message << prefixText << name
-                << " is a unit";
+        message = withPrefix(tr("%1 is a unit").arg(name));
         return false;
     }
 
     if (ExpressionParser::isTokenAConstant(name)) {
-        message << prefixText << name
-                << " is a constant";
+        message = withPrefix(tr("%1 is a constant").arg(name));
         return false;
     }
 
     auto prop = obj->getPropertyByName(name.c_str());
     if (prop && prop->getContainer() == obj) {
-        message << prefixText << name << " already exists";
+        message = withPrefix(tr("%1 already exists").arg(name));
         return false;
     }
 
@@ -827,29 +828,32 @@ void DlgExpressionInput::namePropChanged(const QString&)
     updateVarSetInfo();
 }
 
-static bool isGroupNameValid(const QString& nameGroup,
-                             std::stringstream& message)
+bool DlgExpressionInput::isGroupNameValid(const QString& nameGroup,
+                                          QString& message) const
 {
-    const char* prefixText = "Invalid group name: ";
+    auto withPrefix = [&](const QString& detail) {
+        return tr("Invalid group name: %1").arg(detail);
+    };
+
     if(nameGroup.isEmpty()) {
-        message << prefixText << "the name cannot be empty";
+        message = withPrefix(tr("the name cannot be empty"));
         return false;
     }
     std::string name = nameGroup.toStdString();
 
     if (name != Base::Tools::getIdentifier(name)) {
-        message << prefixText << InvalidIdentifierMessage;
+        message = withPrefix(tr(InvalidIdentifierMessage));
         return false;
     }
 
     return true;
 }
 
-void DlgExpressionInput::reportVarSetInfo(const std::string& message)
+void DlgExpressionInput::reportVarSetInfo(const QString& message)
 {
-    if (!message.empty()) {
+    if (!message.isEmpty()) {
         ui->errorFrame->setVisible(true);
-        ui->errorTextLabel->setText(QString::fromStdString(message));
+        ui->errorTextLabel->setText(message);
         ui->errorTextLabel->updateGeometry();
     }
 }
@@ -867,10 +871,10 @@ static QString buildErrorStyle(const char* widgetName)
 
 bool DlgExpressionInput::reportGroup(const QString& nameGroup)
 {
-    std::stringstream message;
+    QString message;
     if (!isGroupNameValid(nameGroup, message)) {
         comboBoxGroup.setStyleSheet(buildErrorStyle("comboBoxGroup"));
-        reportVarSetInfo(message.str());
+        reportVarSetInfo(message);
         return true;
     }
 
@@ -884,10 +888,10 @@ bool DlgExpressionInput::reportName()
     QString nameDoc = getValue(ui->comboBoxVarSet, DocRole);
     App::Document* doc = App::GetApplication().getDocument(nameDoc.toUtf8());
     App::DocumentObject* obj = doc->getObject(nameVarSet.toUtf8());
-    std::stringstream message;
+    QString message;
     if (!isPropertyNameValid(nameProp, obj, message)) {
         ui->lineEditPropNew->setStyleSheet(buildErrorStyle("lineEditPropNew"));
-        reportVarSetInfo(message.str());
+        reportVarSetInfo(message);
         return true;
     }
 
