@@ -146,8 +146,8 @@ private:
             case SelectMode::SeekSecond: {
                 if (constructionMethod() == ConstructionMethod::ThreeRim) {
                     centerPoint = (onSketchPos - firstPoint) / 2 + firstPoint;
-                    secondPoint = onSketchPos;
                 }
+                secondPoint = onSketchPos;
 
                 radius = (onSketchPos - centerPoint).Length();
 
@@ -716,6 +716,13 @@ void DSHCircleController::addConstraints()
                                       firstCurve,
                                       handler->radius);
             }
+
+            const std::vector<Sketcher::Constraint*>& ConStr =
+                handler->sketchgui->getSketchObject()->Constraints.getValues();
+            int index = static_cast<int>(ConStr.size()) - 1;
+            Base::Vector2d dir = handler->secondPoint - handler->centerPoint;
+            Base::Vector2d toPnt = handler->secondPoint + dir * 0.3;
+            handler->moveConstraint(index, toPnt);
         };
 
         // NOTE: if AutoConstraints is empty, we can add constraints directly without any diagnose.
