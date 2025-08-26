@@ -37,9 +37,9 @@ using namespace TechDrawGui;
 
 #if 0// needed for Qt's lupdate utility
     qApp->translate("Workbench", "Dimensions");
-    qApp->translate("Workbench", "Extensions: Attributes/Modifications");
-    qApp->translate("Workbench", "Extensions: Centerlines/Threading");
-    qApp->translate("Workbench", "Extensions: Dimensions");
+    qApp->translate("Workbench", "Attributes/Modifications");
+    qApp->translate("Workbench", "Centerlines/Threading");
+    qApp->translate("Workbench", "Format/Organize Dimensions");
     qApp->translate("Workbench", "Annotations");
     qApp->translate("Workbench", "Stacking");
     qApp->translate("Workbench", "Add Lines");
@@ -101,7 +101,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // extension: attributes and modifications
     Gui::MenuItem* toolattrib = new Gui::MenuItem;
-    toolattrib->setCommand("Extensions: Attributes/Modifications");
+    toolattrib->setCommand("Attributes/Modifications");
     *toolattrib << "TechDraw_ExtensionSelectLineAttributes";
     *toolattrib << "TechDraw_ExtensionChangeLineAttributes";
     *toolattrib << "Separator";
@@ -124,7 +124,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // extension: centerlines and threading
     Gui::MenuItem* toolcenter = new Gui::MenuItem;
-    toolcenter->setCommand("Extensions: Centerlines/Threading");
+    toolcenter->setCommand("Centerlines/Threading");
     *toolcenter << "TechDraw_ExtensionCircleCenterLines";
     *toolcenter << "TechDraw_ExtensionHoleCircle";
     *toolcenter << "Separator";
@@ -145,7 +145,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // extension: dimensions
     Gui::MenuItem* tooldimensions = new Gui::MenuItem;
-    tooldimensions->setCommand("Extensions: Dimensions");
+    tooldimensions->setCommand("Format/Organize Dimensions");
     *tooldimensions << "TechDraw_ExtensionCreateHorizChainDimension";
     *tooldimensions << "TechDraw_ExtensionCreateVertChainDimension";
     *tooldimensions << "TechDraw_ExtensionCreateObliqueChainDimension";

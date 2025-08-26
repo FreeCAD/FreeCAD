@@ -42,7 +42,7 @@ import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_lines as gui_lines
 import draftguitools.gui_trackers as trackers
 
-from draftutils.messages import _msg, _err, _toolmsg
+from draftutils.messages import _err, _toolmsg
 from draftutils.translate import translate
 
 
@@ -121,7 +121,6 @@ class BSpline(gui_lines.Line):
                     if (self.point - self.node[0]).Length < utils.tolerance():
                         self.undolast()
                         self.finish(cont=None, closed=True)
-                        _msg(translate("draft", "Spline has been closed"))
 
     def undolast(self):
         """Undo last line segment."""
@@ -132,7 +131,7 @@ class BSpline(gui_lines.Line):
             spline = Part.BSplineCurve()
             spline.interpolate(self.node, False)
             self.obj.Shape = spline.toShape()
-            _msg(translate("draft", "Last point has been removed"))
+            self.update_hints()
 
     def drawUpdate(self, point):
         """Draw and update to the spline."""
@@ -147,6 +146,7 @@ class BSpline(gui_lines.Line):
             spline.interpolate(self.node, False)
             self.obj.Shape = spline.toShape()
             _toolmsg(translate("draft", "Pick next point"))
+        self.update_hints()
 
     def finish(self, cont=False, closed=False):
         """Terminate the operation and close the spline if asked.

@@ -830,7 +830,7 @@ QRectF QGIView::boundingRect() const
     return totalRect;
 }
 
-QGIView* QGIView::getQGIVByName(std::string name)
+QGIView* QGIView::getQGIVByName(std::string name) const
 {
     QList<QGraphicsItem*> qgItems = scene()->items();
     QList<QGraphicsItem*>::iterator it = qgItems.begin();

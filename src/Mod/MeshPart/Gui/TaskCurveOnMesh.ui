@@ -22,7 +22,7 @@
         <property name="text">
          <string>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
-This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</string>
+This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>

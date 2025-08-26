@@ -627,6 +627,9 @@ void DSHArcControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchPo
                         unsetOnViewParameter(fifthParam.get());
                         return;
                     }
+
+                    handler->arcAngle = arcAngle;
+
                     double angle = handler->startAngle + arcAngle;
                     onSketchPos.x = handler->centerPoint.x + cos(angle) * handler->radius;
                     onSketchPos.y = handler->centerPoint.y + sin(angle) * handler->radius;

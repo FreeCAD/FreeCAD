@@ -144,8 +144,7 @@ class DimensionBase(DraftAnnotation):
         # but it is not used.
         if "Support" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "The object measured by this dimension "
-                                     "object")
+                                     "The object measured by this dimension")
             obj.addProperty("App::PropertyLink",
                             "Support",
                             "Dimension",
@@ -157,7 +156,7 @@ class DimensionBase(DraftAnnotation):
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "The object, and specific subelements "
                                      "of it,\n"
-                                     "that this dimension object "
+                                     "that this dimension "
                                      "is measuring.\n"
                                      "\n"
                                      "There are various possibilities:\n"

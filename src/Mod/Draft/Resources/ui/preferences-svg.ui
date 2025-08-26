@@ -242,7 +242,7 @@ a raw wire from the original shape is added</string>
            <string>All white lines will appear in black in the SVG for better readability against white backgrounds</string>
           </property>
           <property name="text">
-           <string>Translate white line color to black</string>
+           <string>Convert white line color to black</string>
           </property>
           <property name="checked">
            <bool>true</bool>

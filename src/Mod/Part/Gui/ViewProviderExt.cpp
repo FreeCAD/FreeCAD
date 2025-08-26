@@ -1311,6 +1311,23 @@ void ViewProviderPartExt::setupCoinGeometry(TopoDS_Shape shape,
 #   endif
 }
 
+void ViewProviderPartExt::setupCoinGeometry(TopoDS_Shape shape,
+                                            SoFCShape* node,
+                                            double deviation,
+                                            double angularDeflection,
+                                            bool normalsFromUV)
+{
+    setupCoinGeometry(shape,
+                      node->coords,
+                      node->faceset,
+                      node->norm,
+                      node->lineset,
+                      node->nodeset,
+                      deviation,
+                      angularDeflection,
+                      normalsFromUV);
+}
+
 void ViewProviderPartExt::updateVisual()
 {
     Gui::SoUpdateVBOAction action;

@@ -210,6 +210,7 @@ class Polygon(gui_base_original.Creator):
                         _toolmsg(translate("draft", "Pick radius"))
                         if self.planetrack:
                             self.planetrack.set(self.point)
+                    self.update_hints()
                 elif self.step == 1:  # choose radius
                     self.drawPolygon()
 
@@ -268,6 +269,7 @@ class Polygon(gui_base_original.Creator):
         self.step = 1
         self.ui.radiusValue.setFocus()
         _toolmsg(translate("draft", "Pick radius"))
+        self.update_hints()
 
     def numericRadius(self, rad):
         """Validate the entry radius in the user interface.
@@ -297,6 +299,20 @@ class Polygon(gui_base_original.Creator):
             else:
                 self.center = cir[-1].Center
         self.drawPolygon()
+
+    def get_hints(self):
+        if self.step == 0:
+            hints = [
+                Gui.InputHint(translate("draft", "%1 pick center"), Gui.UserInput.MouseLeft)
+            ]
+        else:
+            hints = [
+                Gui.InputHint(translate("draft", "%1 pick radius"), Gui.UserInput.MouseLeft)
+            ]
+        return hints \
+            + gui_tool_utils._get_hint_xyz_constrain() \
+            + gui_tool_utils._get_hint_mod_constrain() \
+            + gui_tool_utils._get_hint_mod_snap()
 
 
 Gui.addCommand('Draft_Polygon', Polygon())

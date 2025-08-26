@@ -334,9 +334,9 @@ class _CommandStructure:
         self.dents = ArchPrecast._DentsTaskPanel()
         self.precast.Dents = self.dents
         if self.beammode:
-            title=translate("Arch","First point of the beam")+":"
+            title=translate("Arch","First point of the beam")
         else:
-            title=translate("Arch","Base point of column")+":"
+            title=translate("Arch","Base point of column")
         FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form],title=title)
         FreeCADGui.draftToolBar.continueCmd.show()
 

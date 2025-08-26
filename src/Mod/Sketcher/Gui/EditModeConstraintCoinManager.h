@@ -131,7 +131,7 @@ public:
     void setConstraintSelectability(bool enabled = true);
     //@}
 
-    std::set<int> detectPreselectionConstr(const SoPickedPoint* Point, const SbVec2s& cursorPos);
+    std::set<int> detectPreselectionConstr(const SoPickedPoint* Point);
 
     SoSeparator* getConstraintIdSeparator(int i);
 

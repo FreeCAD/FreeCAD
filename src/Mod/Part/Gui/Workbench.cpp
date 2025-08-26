@@ -35,8 +35,8 @@ using namespace PartGui;
     qApp->translate("Workbench", "&Simple");
     qApp->translate("Workbench", "&Parametric");
     qApp->translate("Workbench", "Solids");
-    qApp->translate("Workbench", "Part tools");
-    qApp->translate("Workbench", "Boolean");
+    qApp->translate("Workbench", "Part Tools");
+    qApp->translate("Workbench", "Boolean Tools");
     qApp->translate("Workbench", "Primitives");
     qApp->translate("Workbench", "Join");
     qApp->translate("Workbench", "Split");
@@ -190,7 +190,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
             << "Part_Builder";
 
     Gui::ToolBarItem* tool = new Gui::ToolBarItem(root);
-    tool->setCommand("Part tools");
+    tool->setCommand("Part Tools");
     if (hasSketcher) {
         *tool << "Sketcher_NewSketch";
     }
@@ -212,7 +212,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "Part_ColorPerFace";  // See issues #0477 and #1954 in the tracker
 
     Gui::ToolBarItem* boolop = new Gui::ToolBarItem(root);
-    boolop->setCommand("Boolean");
+    boolop->setCommand("Boolean Tools");
     *boolop << "Part_CompCompoundTools"
             << "Part_Boolean"
             << "Part_Cut"
