@@ -113,21 +113,10 @@ class CommandAxoLengthDimension:
                 distanceDim.Arbitrary = True
                 distanceDim.Label = distanceDim.Label.replace('Dimension','Dimension3D')
                 distanceDim.FormatSpec = fomatted3DValue
+            """Text location for 45 degree angled dimensions above the selection"""
             if (
                 abs(originalLineAngle) > 29.0
                 and abs(originalLineAngle) < 31.0
-                and abs(extAngle - lineAngle) > 115.0
-                and abs(extAngle - lineAngle) < 125.0
-            ):
-                distanceDim.X = abs(
-                    float(vertexes[0].Point.x + vertexes[0].Point.x) / 3.0
-                )
-                distanceDim.Y = -abs(
-                    float(vertexes[0].Point.x + vertexes[1].Point.y) / 4.8
-                )
-            if (
-                abs(originalLineAngle) > 149.0
-                and abs(originalLineAngle) < 151.0
                 and abs(extAngle - lineAngle) > 115.0
                 and abs(extAngle - lineAngle) < 125.0
             ):
@@ -135,6 +124,19 @@ class CommandAxoLengthDimension:
                     float(vertexes[0].Point.x + vertexes[0].Point.x) / 3.0
                 )
                 distanceDim.Y = abs(
+                    float(vertexes[0].Point.x + vertexes[1].Point.y) / 4.8
+                )
+            """Text location for 45 degree angled dimensions below the selection"""
+            if (
+                abs(originalLineAngle) > 149.0
+                and abs(originalLineAngle) < 151.0
+                and abs(extAngle - lineAngle) > 115.0
+                and abs(extAngle - lineAngle) < 125.0
+            ):
+                distanceDim.X = abs(
+                    float(vertexes[0].Point.x + vertexes[0].Point.x) / 3.0
+                )
+                distanceDim.Y = -abs(
                     float(vertexes[0].Point.x + vertexes[1].Point.y) / 4.8
                 )
 
