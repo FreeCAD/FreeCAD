@@ -673,7 +673,7 @@ void DlgSettingsGeneral::onCustomIconFolderClicked()
 
     // Open the IconFolders dialog
     Gui::Dialog::IconFolders dlg(pathList, this);
-    dlg.setWindowTitle(tr("Icon Folders"));
+    dlg.setWindowTitle(tr("Custom icon folders"));
     if (dlg.exec()) {
         QStringList newPaths = dlg.getPaths();
         group->Clear();

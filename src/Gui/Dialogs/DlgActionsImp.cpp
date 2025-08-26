@@ -589,13 +589,22 @@ void IconFolders::addFolder()
 {
     int countHidden = -1;
     QStringList paths;
+    QString baseDir = QString::fromStdString(App::Application::getUserAppDataDir());
+    QString modDir = baseDir + QDir::separator() + QStringLiteral("Mod");
+    QString userDir;
+    QDir dirCheck(modDir);
+    if (dirCheck.exists()) {
+        userDir = modDir;
+    } else {
+        userDir = baseDir;
+    }
     for (const auto& it : buttonMap) {
         if (it.first->isHidden()) {
             countHidden++;
             if (countHidden == 0) {
                 QString dir = QFileDialog::getExistingDirectory(this,
                                                                 IconDialog::tr("Add icon folder"),
-                                                                QString());
+                                                                userDir);
                 if (!dir.isEmpty() && paths.indexOf(dir) < 0) {
                     QLineEdit* edit = it.first;
                     edit->setVisible(true);
