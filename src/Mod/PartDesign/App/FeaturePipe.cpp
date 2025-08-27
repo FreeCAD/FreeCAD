@@ -639,4 +639,3 @@ void Pipe::handleChangedPropertyName(Base::XMLReader& reader,
 }
 
 
-
