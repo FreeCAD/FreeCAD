@@ -62,8 +62,8 @@ extern bool getPDRefineModelParameter();
 
 PROPERTY_SOURCE(PartDesign::Transformed, PartDesign::FeatureRefine)
 
-std::array<char const*, 3> transformModeEnums = {"Transform tool shapes",
-                                                 "Transform body",
+std::array<char const*, 3> transformModeEnums = {"Features",
+                                                 "Whole shape",
                                                  nullptr};
 
 Transformed::Transformed()
@@ -72,7 +72,7 @@ Transformed::Transformed()
     Originals.setSize(0);
     Placement.setStatus(App::Property::ReadOnly, true);
 
-    ADD_PROPERTY(TransformMode, (static_cast<long>(Mode::TransformToolShapes)));
+    ADD_PROPERTY(TransformMode, (static_cast<long>(Mode::Features)));
     TransformMode.setEnums(transformModeEnums.data());
 }
 
@@ -119,7 +119,7 @@ std::vector<App::DocumentObject*> Transformed::getOriginals() const
 {
     auto const mode = static_cast<Mode>(TransformMode.getValue());
 
-    if (mode == Mode::TransformBody) {
+    if (mode == Mode::WholeShape) {
         return {};
     }
 
@@ -248,11 +248,11 @@ App::DocumentObjectExecReturn* Transformed::recomputePreview()
     };
 
     switch (mode) {
-        case Mode::TransformToolShapes:
+        case Mode::Features:
             PreviewShape.setValue(makeCompoundOfToolShapes());
             return StdReturn;
 
-        case Mode::TransformBody:
+        case Mode::WholeShape:
             PreviewShape.setValue(getBaseShape());
             return StdReturn;
 
@@ -265,7 +265,7 @@ void Transformed::onChanged(const App::Property* prop)
 {
     if (prop == &TransformMode) {
         auto const mode = static_cast<Mode>(TransformMode.getValue());
-        Originals.setStatus(App::Property::Status::Hidden, mode == Mode::TransformBody);
+        Originals.setStatus(App::Property::Status::Hidden, mode == Mode::WholeShape);
     }
 
     FeatureRefine::onChanged(prop);
@@ -281,7 +281,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
 
     std::vector<DocumentObject*> originals = getOriginals();
 
-    if (mode == Mode::TransformToolShapes && originals.empty()) {
+    if (mode == Mode::Features && originals.empty()) {
         return App::DocumentObject::StdReturn;
     }
 
@@ -350,7 +350,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
     };
 
     switch (mode) {
-        case Mode::TransformToolShapes:
+        case Mode::Features:
             // NOTE: It would be possible to build a compound from all original addShapes/subShapes
             // and then transform the compounds as a whole. But we choose to apply the
             // transformations to each Original separately. This way it is easier to discover what
@@ -398,7 +398,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
                 }
             }
             break;
-        case Mode::TransformBody: {
+        case Mode::WholeShape: {
             auto shapes = getTransformedCompShape(supportShape, supportShape);
             if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
                 return new App::DocumentObjectExecReturn("User aborted");
@@ -409,9 +409,6 @@ App::DocumentObjectExecReturn* Transformed::execute()
     }
 
     supportShape = refineShapeIfActive((supportShape));
-    if (!isSingleSolidRuleSatisfied(supportShape.getShape())) {
-        Base::Console().warning("Transformed: Result has multiple solids. Only keeping the first. Or enable 'Allow Compounds' in the active body.\n");
-    }
 
     this->Shape.setValue(getSolid(supportShape));  // picking the first solid
     rejected = getRemainingSolids(supportShape.getShape());

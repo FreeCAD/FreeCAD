@@ -32,8 +32,8 @@
 namespace PartDesign
 {
 enum class PolarPatternMode {
-    angle,
-    offset
+    Extent,
+    Spacing
 };
 
 class PartDesignExport PolarPattern : public PartDesign::Transformed
@@ -49,6 +49,9 @@ public:
     App::PropertyAngle       Angle;
     App::PropertyAngle       Offset;
     App::PropertyIntegerConstraint Occurrences;
+    App::PropertyFloatList   Spacings;
+    App::PropertyFloatList   SpacingPattern;
+
 
    /** @name methods override feature */
     //@{
@@ -92,6 +95,8 @@ private:
     static const char* ModeEnums[];
 
     void setReadWriteStatusForMode(PolarPatternMode mode);
+
+    void updateSpacings();
 };
 
 } //namespace PartDesign
