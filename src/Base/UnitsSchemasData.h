@@ -654,27 +654,27 @@ inline std::size_t greatestCommonDenominator(const std::size_t a, const std::siz
 /**
  * double -> [feet'] [inches" [+ fraction]"], e.g.: 3' 4" + 3/8"
  */
-inline std::string toFractional(const double value)
+inline std::string toFractional(const double value, std::size_t denominator)
 {
     constexpr auto inchPerFoot {12};
     constexpr auto mmPerInch {25.4};
 
     auto numFractUnits =
-        static_cast<std::size_t>(std::round(std::abs(value) / mmPerInch * defDenominator));
+        static_cast<std::size_t>(std::round(std::abs(value) / mmPerInch * denominator));
     if (numFractUnits == 0) {
         return "0";
     }
 
     const auto feet =
-        static_cast<std::size_t>(std::floor(numFractUnits / (inchPerFoot * defDenominator)));
-    numFractUnits -= inchPerFoot * defDenominator * feet;
+        static_cast<std::size_t>(std::floor(numFractUnits / (inchPerFoot * denominator)));
+    numFractUnits -= inchPerFoot * denominator * feet;
 
-    const auto inches = static_cast<std::size_t>(std::floor(numFractUnits / defDenominator));
-    const std::size_t fractNumerator = numFractUnits - (defDenominator * inches);
+    const auto inches = static_cast<std::size_t>(std::floor(numFractUnits / denominator));
+    std::size_t numerator = numFractUnits - (denominator * inches);
 
-    const std::size_t common_denom = greatestCommonDenominator(fractNumerator, defDenominator);
-    const std::size_t numerator = fractNumerator / common_denom;
-    const std::size_t denominator = defDenominator / common_denom;
+    const std::size_t common_denom = greatestCommonDenominator(numerator, denominator);
+    numerator /= common_denom;
+    denominator /= common_denom;
 
     bool addSpace {false};
     std::string result;
@@ -737,33 +737,40 @@ inline std::string toDms(const double value)
  */
 
 // clang-format off
-inline const std::map<std::string, std::function<std::string(double, double&, std::string&)>> specials
+inline const std::map<std::string, std::function<std::string(double, std::size_t, std::size_t, double&, std::string&)>> specials
 {
     {
-        { "toDMS"        , [](const double val, double& factor, std::string& unitString) {
+        { "toDMS"        , [](const double val, [[maybe_unused]] const std::size_t precision, [[maybe_unused]] const std::size_t denominator,
+                              double& factor, std::string& unitString) {
             factor = 1.0;
             unitString = "deg";
             return toDms(val);
         }},
-        { "toFractional" , [](const double val, double& factor, std::string& unitString) {
+        { "toFractional" , [](const double val, [[maybe_unused]] const std::size_t precision, const std::size_t denominator,
+                              double& factor, std::string& unitString) {
             factor = 25.4;
             unitString = "in";
-            return toFractional(val);
+            return toFractional(val, denominator);
         }}
     }
 };  // clang-format on
 
-inline std::string
-runSpecial(const std::string& name, const double value, double& factor, std::string& unitString)
+inline std::string runSpecial(const std::string& name,
+                              const double value,
+                              const std::size_t precision,
+                              const std::size_t denominator,
+                              double& factor,
+                              std::string& unitString)
 {
-    return specials.contains(name) ? specials.at(name)(value, factor, unitString) : "";
+    return specials.contains(name)
+        ? specials.at(name)(value, precision, denominator, factor, unitString)
+        : "";
 }
 
 
 /**
  * Build data pack
  */
-
 inline const UnitsSchemasDataPack unitSchemasDataPack {schemaSpecs, defDecimals, defDenominator};
 
 
