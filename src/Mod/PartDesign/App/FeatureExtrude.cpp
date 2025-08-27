@@ -588,7 +588,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             this->rawShape = prism;
             prism = refineShapeIfActive(prism);
             if (!isSingleSolidRuleSatisfied(prism.getShape())) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compounds' in the active body."));
             }
             prism = getSolid(prism);
             this->Shape.setValue(prism);
@@ -598,7 +598,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             this->rawShape = prism;
             prism = refineShapeIfActive(prism);
             if (!isSingleSolidRuleSatisfied(prism.getShape())) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compounds' in the active body."));
             }
             this->Shape.setValue(prism);
         }
