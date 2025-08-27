@@ -186,7 +186,7 @@ Base::ConsoleObserverStd  *Application::_pConsoleObserverStd = nullptr;
 Base::ConsoleObserverFile *Application::_pConsoleObserverFile = nullptr;
 
 AppExport std::map<std::string, std::string> Application::mConfig;
-std::shared_ptr<ApplicationDirectories> Application::_appDirs;
+std::unique_ptr<ApplicationDirectories> Application::_appDirs;
 
 
 //**************************************************************************
@@ -1142,7 +1142,7 @@ bool Application::isDevelopmentVersion()
     return suffix == "dev";
 }
 
-std::shared_ptr<ApplicationDirectories> Application::directories() {
+const std::unique_ptr<ApplicationDirectories>& Application::directories() {
     return _appDirs;
 }
 
@@ -1153,10 +1153,7 @@ std::string Application::getTempPath()
 
 std::string Application::getTempFileName(const char* FileName)
 {
-    if (FileName) {
-        return Base::FileInfo::pathToString(_appDirs->getTempFileName(FileName));
-    }
-    return Base::FileInfo::pathToString(_appDirs->getTempFileName(std::string()));
+    return Base::FileInfo::pathToString(_appDirs->getTempFileName(FileName ? FileName : std::string()));
 }
 
 std::string Application::getUserCachePath()
@@ -2573,7 +2570,7 @@ void Application::initConfig(int argc, char ** argv)
     }
 
     // extract home paths
-    _appDirs = std::make_shared<ApplicationDirectories>(mConfig);
+    _appDirs = std::make_unique<ApplicationDirectories>(mConfig);
 
     if (vm.contains("safe-mode")) {
         SafeMode::StartSafeMode();

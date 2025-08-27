@@ -56,13 +56,7 @@ fs::path qstringToPath(const QString& path)
 
 ApplicationDirectories::ApplicationDirectories(std::map<std::string,std::string> &config)
 {
-    try {
-        int major = std::stoi(config.at("BuildVersionMajor"));
-        int minor = std::stoi(config.at("BuildVersionMinor"));
-        _currentVersion = std::make_tuple(major, minor);
-    } catch (const std::exception& e) {
-        throw Base::RuntimeError("Failed to parse version from config: " + std::string(e.what()));
-    }
+    _currentVersion = extractVersionFromConfigMap(config);
     configurePaths(config);
     configureResourceDirectory(config);
     configureLibraryDirectory(config);
@@ -724,5 +718,16 @@ fs::path ApplicationDirectories::findHomePath(const char* sCall)
 }
 
 #else
-# error "std::string ApplicationDirectories::FindHomePath(const char*) not implemented"
+# error "std::string ApplicationDirectories::findHomePath(const char*) not implemented"
 #endif
+
+std::tuple<int, int> ApplicationDirectories::extractVersionFromConfigMap(const std::map<std::string,std::string> &config)
+{
+    try {
+        int major = std::stoi(config.at("BuildVersionMajor"));
+        int minor = std::stoi(config.at("BuildVersionMinor"));
+        return std::make_tuple(major, minor);
+    } catch (const std::exception& e) {
+        throw Base::RuntimeError("Failed to parse version from config: " + std::string(e.what()));
+    }
+}

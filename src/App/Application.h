@@ -426,7 +426,7 @@ public:
     static bool isDevelopmentVersion();
 
     /// Access to the various directories for the program a replacement for the get*Path methods below
-    static std::shared_ptr<ApplicationDirectories> directories();
+    static const std::unique_ptr<ApplicationDirectories>& directories();
 
     /*!
      Returns the temporary directory. By default, this is set to the
@@ -632,7 +632,7 @@ private:
     /// startup configuration container
     static std::map<std::string,std::string> mConfig;
     /// Management of and access to applications directories
-    static std::shared_ptr<ApplicationDirectories> _appDirs;
+    static std::unique_ptr<ApplicationDirectories> _appDirs;
     static int _argc;
     static char ** _argv;
     //@}

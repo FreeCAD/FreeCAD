@@ -46,6 +46,12 @@ public:
     {
         appendVersionIfPossible(basePath, subdirs);
     }
+
+    std::tuple<int, int>
+    wrapExtractVersionFromConfigMap(const std::map<std::string, std::string>& config)
+    {
+        return extractVersionFromConfigMap(config);
+    }
 };
 
 class ApplicationDirectoriesTest: public ::testing::Test
@@ -70,11 +76,11 @@ protected:
         return config;
     }
 
-    std::shared_ptr<ApplicationDirectoriesTestClass> makeAppDirsForVersion(int major, int minor)
+    std::unique_ptr<ApplicationDirectoriesTestClass> makeAppDirsForVersion(int major, int minor)
     {
         auto configuration = generateConfig({{"BuildVersionMajor", std::to_string(major)},
                                              {"BuildVersionMinor", std::to_string(minor)}});
-        return std::make_shared<ApplicationDirectoriesTestClass>(configuration);
+        return std::make_unique<ApplicationDirectoriesTestClass>(configuration);
     }
 
     fs::path makePathForVersion(const fs::path& base, int major, int minor)
@@ -125,7 +131,7 @@ TEST_F(ApplicationDirectoriesTest, usingCurrentVersionConfigFalseWhenDirDoesntMa
     // Act: generate a directory structure with the same version
     auto configuration = generateConfig({{"BuildVersionMajor", std::to_string(major + 1)},
                                          {"BuildVersionMinor", std::to_string(minor)}});
-    auto appDirs = std::make_shared<App::ApplicationDirectories>(configuration);
+    auto appDirs = std::make_unique<App::ApplicationDirectories>(configuration);
 
     // Assert
     EXPECT_FALSE(appDirs->usingCurrentVersionConfig(testPath));
@@ -582,7 +588,7 @@ TEST_F(ApplicationDirectoriesTest, migrateAllPathsProcessesMultipleInputs)
 }
 
 // Already versioned (final component is a version) -> no change
-TEST_F(ApplicationDirectoriesTest, AppendVec_AlreadyVersioned_Bails)
+TEST_F(ApplicationDirectoriesTest, appendVecAlreadyVersionedBails)
 {
     auto appDirs = makeAppDirsForVersion(5, 4);
 
@@ -598,7 +604,7 @@ TEST_F(ApplicationDirectoriesTest, AppendVec_AlreadyVersioned_Bails)
 }
 
 // Base exists & current version dir present -> append current
-TEST_F(ApplicationDirectoriesTest, AppendVec_BaseExists_AppendsCurrentWhenPresent)
+TEST_F(ApplicationDirectoriesTest, appendVecBaseExistsAppendsCurrentWhenPresent)
 {
     auto appDirs = makeAppDirsForVersion(5, 4);
 
@@ -614,7 +620,7 @@ TEST_F(ApplicationDirectoriesTest, AppendVec_BaseExists_AppendsCurrentWhenPresen
 }
 
 // Base exists, no current; lower minors exist -> append highest ≤ current in same major
-TEST_F(ApplicationDirectoriesTest, AppendVec_PicksHighestLowerMinorInSameMajor)
+TEST_F(ApplicationDirectoriesTest, appendVecPicksHighestLowerMinorInSameMajor)
 {
     auto appDirs = makeAppDirsForVersion(5, 4);
 
@@ -632,7 +638,7 @@ TEST_F(ApplicationDirectoriesTest, AppendVec_PicksHighestLowerMinorInSameMajor)
 }
 
 // Base exists, nothing in current major; lower major exists -> append highest available lower major
-TEST_F(ApplicationDirectoriesTest, AppendVec_FallsBackToLowerMajor)
+TEST_F(ApplicationDirectoriesTest, appendVecFallsBackToLowerMajor)
 {
     auto appDirs = makeAppDirsForVersion(5, 4);
 
@@ -648,7 +654,7 @@ TEST_F(ApplicationDirectoriesTest, AppendVec_FallsBackToLowerMajor)
 }
 
 // Base exists but contains no versioned subdirs -> append nothing (vector unchanged)
-TEST_F(ApplicationDirectoriesTest, AppendVec_NoVersionedChildren_LeavesVectorUnchanged)
+TEST_F(ApplicationDirectoriesTest, appendVecNoVersionedChildrenLeavesVectorUnchanged)
 {
     auto appDirs = makeAppDirsForVersion(5, 4);
 
@@ -662,7 +668,7 @@ TEST_F(ApplicationDirectoriesTest, AppendVec_NoVersionedChildren_LeavesVectorUnc
 }
 
 // Base does not exist -> append current version string
-TEST_F(ApplicationDirectoriesTest, AppendVec_BaseMissing_AppendsCurrentSuffix)
+TEST_F(ApplicationDirectoriesTest, appendVecBaseMissingAppendsCurrentSuffix)
 {
     auto appDirs = makeAppDirsForVersion(5, 4);
 
@@ -673,6 +679,70 @@ TEST_F(ApplicationDirectoriesTest, AppendVec_BaseMissing_AppendsCurrentSuffix)
 
     ASSERT_EQ(sub.size(), 2u);
     EXPECT_EQ(sub.back(), App::ApplicationDirectories::versionStringForPath(5, 4));
+}
+
+// Happy path: exact integers
+TEST_F(ApplicationDirectoriesTest, extractVersionSucceedsWithPlainIntegers)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+    std::map<std::string, std::string> m {{"BuildVersionMajor", "7"}, {"BuildVersionMinor", "2"}};
+    auto [maj, min] = appDirs->wrapExtractVersionFromConfigMap(m);
+    EXPECT_EQ(maj, 7);
+    EXPECT_EQ(min, 2);
+}
+
+// Whitespace tolerated by std::stoi
+TEST_F(ApplicationDirectoriesTest, extractVersionSucceedsWithWhitespace)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+    std::map<std::string, std::string> m {{"BuildVersionMajor", "  10  "},
+                                          {"BuildVersionMinor", "\t3\n"}};
+    auto [maj, min] = appDirs->wrapExtractVersionFromConfigMap(m);
+    EXPECT_EQ(maj, 10);
+    EXPECT_EQ(min, 3);
+}
+
+// Missing major key -> rethrows as Base::RuntimeError
+TEST_F(ApplicationDirectoriesTest, extractVersionMissingMajorThrowsRuntimeError)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+    std::map<std::string, std::string> m {{"BuildVersionMinor", "1"}};
+    EXPECT_THROW(appDirs->wrapExtractVersionFromConfigMap(m), Base::RuntimeError);
+}
+
+// Missing minor key -> rethrows as Base::RuntimeError
+TEST_F(ApplicationDirectoriesTest, extractVersionMissingMinorThrowsRuntimeError)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+    std::map<std::string, std::string> m {{"BuildVersionMajor", "1"}};
+    EXPECT_THROW(appDirs->wrapExtractVersionFromConfigMap(m), Base::RuntimeError);
+}
+
+// Non-numeric -> std::stoi throws invalid_argument, rethrown as Base::RuntimeError
+TEST_F(ApplicationDirectoriesTest, extractVersionNonNumericThrowsRuntimeError)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+    std::map<std::string, std::string> m {{"BuildVersionMajor", "abc"}, {"BuildVersionMinor", "2"}};
+    EXPECT_THROW(appDirs->wrapExtractVersionFromConfigMap(m), Base::RuntimeError);
+}
+
+// Overflow -> std::stoi throws out_of_range, rethrown as Base::RuntimeError
+TEST_F(ApplicationDirectoriesTest, extractVersionOverflowThrowsRuntimeError)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+    std::map<std::string, std::string> m {{"BuildVersionMajor", "9999999999999999999999999"},
+                                          {"BuildVersionMinor", "1"}};
+    EXPECT_THROW(appDirs->wrapExtractVersionFromConfigMap(m), Base::RuntimeError);
+}
+
+// Document current behavior: negative numbers are accepted and returned as-is
+TEST_F(ApplicationDirectoriesTest, extractVersionNegativeNumbersPassThrough)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+    std::map<std::string, std::string> m {{"BuildVersionMajor", "-2"}, {"BuildVersionMinor", "-7"}};
+    auto [maj, min] = appDirs->wrapExtractVersionFromConfigMap(m);
+    EXPECT_EQ(maj, -2);
+    EXPECT_EQ(min, -7);
 }
 
 /* NOLINTEND(

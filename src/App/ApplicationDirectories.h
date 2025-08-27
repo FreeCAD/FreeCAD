@@ -193,7 +193,6 @@ namespace App {
         void configureHelpDirectory(const std::map<std::string,std::string>& mConfig);
 
         /*!
-         * \brief getCustomPaths
          * Returns a tuple of path names where to store config, data, and temp. files.
          * The method therefore reads the environment variables:
          * \list
@@ -205,7 +204,6 @@ namespace App {
         static std::tuple<std::filesystem::path, std::filesystem::path, std::filesystem::path> getCustomPaths();
 
         /*!
-         * \brief getStandardPaths
          * Returns a tuple of XDG-compliant standard paths names where to store config, data and cached files.
          * The method therefore reads the environment variables:
          * \list
@@ -215,6 +213,12 @@ namespace App {
          * \endlist
          */
         std::tuple<std::filesystem::path, std::filesystem::path, std::filesystem::path, std::filesystem::path> getStandardPaths();
+
+        /// Find the BuildVersionMajor, BuildVersionMinor pair in the config map, convert them to an int tuple, and
+        /// return it. If the pair is not found, or cannot be converted to integers, a RuntimeError is raised.
+        /// \param config The config map to search.
+        /// \return The version tuple.
+        static std::tuple<int, int> extractVersionFromConfigMap(const std::map<std::string,std::string> &config);
 
     private:
         std::tuple<int, int> _currentVersion;
