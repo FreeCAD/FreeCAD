@@ -628,9 +628,16 @@ inline const UnitsSchemaSpec s8
 };
 
 inline const UnitsSchemaSpec s9
-{ 7, "ImperialCivil", "ft", false, true, QT_TRANSLATE_NOOP("UnitsApi", "Imperial for Civil Eng (ft, ft/s)"), false,
+{ 7, "ImperialCivil", "ft", false, true, QT_TRANSLATE_NOOP("UnitsApi", "Imperial for Civil Eng (ft, lb, mph)"), false,
     {
-        { "Angle"    , {{ 0   , "toDMS"           , 0              }}}  // <== !
+        { "Length"   , {{ 0   , "ft"    , 12 * 25.4                }}},
+        { "Area"     , {{ 0   , "ft^2"  , 92'903.04                }}},
+        { "Volume"   , {{ 0   , "ft^3"  , 28'316'846.592           }}},
+        { "Mass"     , {{ 0   , "lb"    , 0.45359237               }}},
+        { "Pressure" , {{ 0   , "psi"   , 6.894744825494           }}},
+        { "Stiffness", {{ 0   , "lbf/in", 4.448222 / 0.0254        }}},
+        { "Velocity" , {{ 0   , "mph"   , 447.04                   }}},
+        { "Angle"    , {{ 0   , "toDMS" , 0                        }}}  // <== !
     }
 };
 
