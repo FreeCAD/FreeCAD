@@ -5,6 +5,8 @@ from Base.Persistence import Persistence
 
 @export(
     Include="Mod/CAM/App/Path.h",
+    Twin="Toolpath",
+    TwinPointer="Toolpath",
     Namespace="Path",
     ReadOnly=["Length", "Size", "BoundBox"],
     Delete=True,

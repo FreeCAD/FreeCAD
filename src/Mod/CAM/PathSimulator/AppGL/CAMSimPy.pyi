@@ -5,9 +5,14 @@ from Base.Metadata import export
 from Metadata import no_args
 
 @export(
+    Father="BaseClassPy",
+    Name="CAMSimPy",
     Twin="CAMSim",
     TwinPointer="CAMSim",
     Include="Mod/CAM/PathSimulator/AppGL/CAMSim.h",
+    FatherInclude="Base/BaseClassPy.h",
+    FatherNamespace="Base",
+    Namespace="CAMSimulator",
     Constructor=True,
     Delete=True,
 )

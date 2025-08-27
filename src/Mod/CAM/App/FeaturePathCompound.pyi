@@ -6,6 +6,7 @@ from App.DocumentObject import DocumentObject
 
 @export(
     Include="Mod/CAM/App/FeaturePathCompound.h",
+    TwinPointer="FeatureCompound",
     Namespace="Path",
 )
 class FeaturePathCompound(DocumentObject):

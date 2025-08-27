@@ -9,7 +9,7 @@ from Base.Placement import Placement
     Constructor=True,
 )
 @class_declarations("mutable Py::Dict parameters_copy_dict;")
-class CommandPy(Persistence):
+class Command(Persistence):
     """
     Command([name],[parameters]): Represents a basic Gcode command
     name (optional) is the name of the command, ex. G1
