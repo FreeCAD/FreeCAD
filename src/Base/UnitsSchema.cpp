@@ -79,7 +79,13 @@ UnitsSchema::translate(const Quantity& quant, double& factor, std::string& unitS
     }
 
     if (unitSpec->factor == 0) {
-        return UnitsSchemasData::runSpecial(unitSpec->unitString, value, factor, unitString);
+        const QuantityFormat& format = quant.getFormat();
+        return UnitsSchemasData::runSpecial(unitSpec->unitString,
+                                            value,
+                                            format.getPrecision(),
+                                            format.getDenominator(),
+                                            factor,
+                                            unitString);
     }
 
     factor = unitSpec->factor;
