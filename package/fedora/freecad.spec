@@ -6,8 +6,8 @@
 %bcond tests 1
 
 %global ondselsolver_commit c1f052e
-%global gsl_commit b39e7e4
-%global addon_commit cd83eea
+%global gsl_commit 2828399
+%global addon_commit 84f08ee
 
 Name:           freecad
 Epoch:          1
@@ -19,11 +19,11 @@ ExclusiveArch:  %{qt6_qtwebengine_arches}
 License:        GPL-2.0-or-later AND LGPL-2.0-or-later AND LGPL-2.1 AND LGPL-2.1-or-later AND GPL-3.0-or-later AND BSD 3-Clause AND BSL-1.0 AND Artistic-2.0 AND MIT AND CC-BY-3.0 AND ASL-2.0 AND zlib
 URL:            http://freecadweb.org/
 Source0:        https://github.com/FreeCAD/FreeCAD/archive/%{version}%{?pre:_pre}/FreeCAD-%{version}%{?pre:_pre}.tar.gz
-Source1:        {{{ git_pack path=$GIT_ROOT/src/3rdParty/OndselSolver/  dir_name="OndselSolver" }}}
+Source1:        https://github.com/FreeCAD/OndselSolver/archive/%{ondselsolver_commit}/OndselSolver-%{ondselsolver_commit}.tar.gz
 %if %{without external_gsl}
-Source2:        {{{ git_pack path=$GIT_ROOT/src/3rdParty/GSL/ dir_name="GSL" }}}
+Source2:        https://github.com/microsoft/GSL/archive/%{gsl_commit}/GSL-%{gsl_commit}.tar.gz
 %endif
-Source3:        {{{ git_pack path=$GIT_ROOT/src/Mod/AddonManager/ dir_name="AddonManager" }}}
+Source3:        https://github.com/FreeCAD/AddonManager/archive/%{addon_commit}/AddonManager-%{addon_commit}.tar.gz
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
