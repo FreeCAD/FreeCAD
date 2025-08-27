@@ -2638,7 +2638,7 @@ void ViewProviderSketch::updateColor()
 
 bool ViewProviderSketch::selectAll()
 {
-    // logic of this func has been stolen from partly from doBoxSelection()
+    // logic of this func has been stolen partly from doBoxSelection()
     if (!isInEditMode()) {
         return false;
     }
