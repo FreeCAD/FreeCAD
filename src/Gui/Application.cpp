@@ -45,6 +45,8 @@
 
 #include <QLoggingCategory>
 #include <fmt/format.h>
+#include <list>
+#include <ranges>
 
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
@@ -403,8 +405,9 @@ void Application::initStyleParameterManager()
     handlers.addDelayedHandler(
         "BaseApp/Preferences/MainWindow",
         {"ThemeStyleParametersFiles", "Theme"},
-        [themeParametersSource, deduceParametersFilePath](ParameterGrp::handle) {
+        [themeParametersSource, deduceParametersFilePath, this](ParameterGrp::handle) {
             themeParametersSource->changeFilePath(deduceParametersFilePath());
+            reloadStyleSheet();
         });
 
     Base::registerServiceImplementation<StyleParameters::ParameterSource>(
@@ -427,7 +430,8 @@ void Application::initStyleParameterManager()
             {.name = QT_TR_NOOP("User Parameters"),
              .options = StyleParameters::ParameterSource::UserEditable}));
 
-    for (auto* source : Base::provideServiceImplementations<StyleParameters::ParameterSource>()) {
+    const auto sources = Base::provideServiceImplementations<StyleParameters::ParameterSource>();
+    for (auto* source : std::views::all(sources) | std::views::reverse) {
         d->styleParameterManager->addSource(source);
     }
 
