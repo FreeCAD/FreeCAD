@@ -206,7 +206,6 @@ void ExpressionSpinBox::openFormulaDialog()
 
     QPoint pos = spinbox->mapToGlobal(QPoint(0,0));
     box->move(pos-box->expressionPosition());
-    box->setExpressionInputSize(spinbox->width(), spinbox->height());
     Gui::adjustDialogPosition(box);
 }
 

@@ -85,6 +85,7 @@ public Q_SLOTS:
 protected:
     void mouseReleaseEvent(QMouseEvent*) override;
     void mousePressEvent(QMouseEvent*) override;
+    void resizeEvent(QResizeEvent*) override;
 
 private:
     Base::Type getTypePath();
@@ -99,9 +100,10 @@ private:
     bool reportGroup(QString& nameGroup);
     void updateVarSetInfo(bool checkExpr = true);
     void acceptWithVarSet();
+    void setMsgText();
 
 private Q_SLOTS:
-    void textChanged(const QString & text);
+    void textChanged();
     void setDiscarded();
     void onCheckVarSets(int state);
     void onVarSetSelected(int);
@@ -115,8 +117,7 @@ private:
     bool discarded;
     const Base::Unit impliedUnit;
     NumberRange numberRange;
-
-    int minimumWidth;
+    std::string message;
 
     static bool varSetsVisible;
     std::unique_ptr<QTreeWidget> treeWidget;
