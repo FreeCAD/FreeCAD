@@ -248,11 +248,13 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
         QStringList paths = QDir::searchPaths(QStringLiteral("icons"));
         paths.removeDuplicates();
         bool found = false;
+        QString fnBase = QFileInfo(fn).completeBaseName();
         for (const QString& path : paths) {
             QDir d(path);
             QFileInfoList fi = d.entryInfoList(QDir::Files | QDir::NoSymLinks);
             for (const QFileInfo& info : fi) {
-                if (info.completeBaseName() == fn) {
+                // Match if either the requested name or its base name matches the file's base name
+                if (info.completeBaseName() == fn || info.completeBaseName() == fnBase) {
                     if (loadPixmap(info.absoluteFilePath(), icon)) {
                         found = true;
                         break;
@@ -276,7 +278,7 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSizeF& size,
                                          const ColorMap& colorMapping) const
 {
     static qreal dpr = getMaximumDPR();
-    
+
     // If an absolute path is given
     QPixmap icon;
     QString iconPath;
