@@ -37,11 +37,6 @@ using Base::UnitsApi;
 using Base::UnitsSchema;
 using Base::UnitsSchemas;
 
-void UnitsApi::init()
-{
-    schemas = std::make_unique<UnitsSchemas>(UnitsSchemasData::unitSchemasDataPack);
-}
-
 std::vector<std::string> UnitsApi::getDescriptions()
 {
     return schemas->descriptions();
