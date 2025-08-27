@@ -41,7 +41,6 @@ namespace Base
 class BaseExport UnitsApi
 {
 public:
-    static void init();
     static std::unique_ptr<UnitsSchema> createSchema(std::size_t num);
     static void setSchema(const std::string& name);
     static void setSchema(std::size_t num);
