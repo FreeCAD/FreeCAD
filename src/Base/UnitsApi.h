@@ -52,9 +52,11 @@ public:
 
     static double toDouble(PyObject* args, const Base::Unit& u = Base::Unit());
 
-    static void setDecimals(std::size_t);
-    static std::size_t getDecimals();
-    static std::size_t getDefDecimals();
+    static void setDecimals(int);
+    static int getDecimals();
+
+    static void setDenominator(int);
+    static int getDenominator();
 
     static std::vector<std::string> getDescriptions();
     static std::vector<std::string> getNames();
@@ -64,7 +66,6 @@ public:
     static bool isMultiUnitAngle();
     static bool isMultiUnitLength();
     static std::string getBasicLengthUnit();
-    static std::size_t getFractDenominator();
 
     static std::size_t getDefSchemaNum()
     {
@@ -76,8 +77,8 @@ public:
 protected:
     static inline auto schemas =
         std::make_unique<UnitsSchemas>(UnitsSchemasData::unitSchemasDataPack);
-    static inline std::size_t decimals {2};
-    static inline std::size_t denominator {2};
+    static inline int decimals {-1};
+    static inline int denominator {-1};
 
     // the python API wrapper methods
     static PyObject* sParseQuantity(PyObject* self, PyObject* args);
