@@ -1533,6 +1533,7 @@ void FemMesh::readAbaqus(const std::string& FileName)
     'Mod/Fem/femtest/data/mesh/tetra10_mesh.inp')
     */
 
+    Base::PyGILStateLocker lock;
     PyObject* module = PyImport_ImportModule("feminout.importInpMesh");
     if (!module) {
         return;
@@ -1573,6 +1574,7 @@ void FemMesh::readZ88(const std::string& FileName)
     'Mod/Fem/femtest/data/mesh/tetra10_mesh.z88')
     */
 
+    Base::PyGILStateLocker lock;
     PyObject* module = PyImport_ImportModule("feminout.importZ88Mesh");
     if (!module) {
         return;
@@ -2236,6 +2238,7 @@ void FemMesh::writeZ88(const std::string& FileName) const
     feminout.importZ88Mesh.write(App.ActiveDocument.Box_Mesh.FemMesh, '/tmp/mesh.z88')
     */
 
+    Base::PyGILStateLocker lock;
     PyObject* module = PyImport_ImportModule("feminout.importZ88Mesh");
     if (!module) {
         return;
