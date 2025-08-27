@@ -447,7 +447,7 @@ void DlgAddPropertyVarSet::initializeValue()
 
 void DlgAddPropertyVarSet::setTitle()
 {
-    setWindowTitle(tr("Add a Property to %1").arg(QString::fromStdString(varSet->getFullName())));
+    setWindowTitle(tr("Add Property"));
 }
 
 void DlgAddPropertyVarSet::setOkEnabled(bool enabled)
