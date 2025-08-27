@@ -328,7 +328,7 @@ ViewProvider2DObject::ViewProvider2DObject()
 {
     ADD_PROPERTY_TYPE(ShowPlane,
                       (false),
-                      "Display options",
+                      "Display Options",
                       (App::PropertyType)(App::Prop_None),
                       "If true, plane related with object is additionally rendered");
 }

@@ -1655,7 +1655,7 @@ class ViewProviderComponent:
 
     def contextMenuAddToggleSubcomponents(self, menu):
         actionToggleSubcomponents = QtGui.QAction(QtGui.QIcon(":/icons/Arch_ToggleSubs.svg"),
-                                                  translate("Arch", "Toggle subcomponents"),
+                                                  translate("Arch", "Toggle Subcomponents"),
                                                   menu)
         QtCore.QObject.connect(actionToggleSubcomponents,
                                QtCore.SIGNAL("triggered()"),
@@ -2092,7 +2092,7 @@ class ComponentTaskPanel:
         self.baseform.setWindowTitle(QtGui.QApplication.translate("Arch", "Component", None))
         self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None))
         self.addButton.setText(QtGui.QApplication.translate("Arch", "Add", None))
-        self.title.setText(QtGui.QApplication.translate("Arch", "Components of this object", None))
+        self.title.setText(QtGui.QApplication.translate("Arch", "Components of This Object", None))
         self.treeBase.setText(0,QtGui.QApplication.translate("Arch", "Base component", None))
         self.treeAdditions.setText(0,QtGui.QApplication.translate("Arch", "Additions", None))
         self.treeSubtractions.setText(0,QtGui.QApplication.translate("Arch", "Subtractions", None))
@@ -2102,8 +2102,8 @@ class ComponentTaskPanel:
         self.treeFixtures.setText(0,QtGui.QApplication.translate("Arch", "Fixtures", None))
         self.treeGroup.setText(0,QtGui.QApplication.translate("Arch", "Group", None))
         self.treeHosts.setText(0,QtGui.QApplication.translate("Arch", "Hosts", None))
-        self.ifcButton.setText(QtGui.QApplication.translate("Arch", "Edit IFC properties", None))
-        self.classButton.setText(QtGui.QApplication.translate("Arch", "Edit standard code", None))
+        self.ifcButton.setText(QtGui.QApplication.translate("Arch", "Edit IFC Properties", None))
+        self.classButton.setText(QtGui.QApplication.translate("Arch", "Edit Standard Code", None))
 
     def editIfcProperties(self):
         """Open the IFC editor dialog box.

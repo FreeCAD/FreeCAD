@@ -48,7 +48,7 @@
      <item row="3" column="1">
       <widget class="QComboBox" name="comboSingleDoc">
        <property name="toolTip">
-        <string>Defines how IFC data is stored in the FreeCAD document. Single IFC document" treats the FreeCAD document itself as the IFC document, with all created content belonging to it. Use IFC document object" creates a separate object representing the IFC document, allowing both IFC and non-IFC content to coexist.</string>
+        <string>Defines how IFC data is stored in the FreeCAD document. 'Single IFC document' treats the FreeCAD document itself as the IFC document, with all created content belonging to it. 'Use IFC document object' creates a separate object representing the IFC document, allowing both IFC and non-IFC content to coexist.</string>
        </property>
        <item>
         <property name="text">
@@ -116,7 +116,7 @@
    <item>
     <widget class="QCheckBox" name="checkLoadTypes">
      <property name="toolTip">
-      <string>Preload IFC types that are connected to the objects. It is also possible to leave this setting disabled and double click later on the object to load the types</string>
+      <string>Preloads IFC types that are connected to the objects. It is also possible to leave this setting disabled and double click later on the object to load the types.</string>
      </property>
      <property name="text">
       <string>Preload types</string>

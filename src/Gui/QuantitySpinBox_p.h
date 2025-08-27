@@ -61,7 +61,7 @@ Q_SIGNALS:
 
 private:
     const QString genericExpressionEditorTooltip = tr("Enter expression… (=)");
-    const QString expressionEditorTooltipPrefix = tr("Expression:") + QLatin1String(" ");
+    const QString expressionEditorTooltipPrefix = tr("Expression:") + QStringLiteral(" ");
 };
 
 #endif // QUANTITYSPINBOX_P_H

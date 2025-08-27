@@ -552,8 +552,10 @@ class ObjectOp(object):
         features = self.opFeatures(obj)
 
         if FeatureTool & features:
-            if 1 < len(job.Operations.Group):
-                obj.ToolController = PathUtil.toolControllerForOp(job.Operations.Group[-2])
+            for op in job.Operations.Group[-2::-1]:
+                obj.ToolController = PathUtil.toolControllerForOp(op)
+                if obj.ToolController:
+                    break
             else:
                 obj.ToolController = PathUtils.findToolController(obj, self)
             if not obj.ToolController:

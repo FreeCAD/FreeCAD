@@ -234,9 +234,9 @@ void TaskHelixParameters::addPartAxes()
     if (PartDesign::Body* body = PartDesign::Body::findBodyOf(profile)) {
         try {
             App::Origin* orig = body->getOrigin();
-            addAxisToCombo(orig->getX(), "", tr("Base x-axis"));
-            addAxisToCombo(orig->getY(), "", tr("Base y-axis"));
-            addAxisToCombo(orig->getZ(), "", tr("Base z-axis"));
+            addAxisToCombo(orig->getX(), "", tr("Base X-axis"));
+            addAxisToCombo(orig->getY(), "", tr("Base Y-axis"));
+            addAxisToCombo(orig->getZ(), "", tr("Base Z-axis"));
         }
         catch (const Base::Exception& ex) {
             ex.reportException();
@@ -713,6 +713,7 @@ TaskDlgHelixParameters::TaskDlgHelixParameters(ViewProviderHelix* HelixView)
 {
     assert(HelixView);
     Content.push_back(new TaskHelixParameters(HelixView));
+    Content.push_back(preview);
 }
 
 

@@ -70,7 +70,7 @@ class BaseMode(gui_base.GuiCommandSimplest):
         if hasattr(Gui, "draftToolBar"):
             _ui = Gui.draftToolBar
         else:
-            _msg(translate("draft","No active Draft Toolbar."))
+            _msg(translate("draft","No active Draft toolbar"))
             return
 
         if _ui is not None:
@@ -90,15 +90,15 @@ class ToggleConstructionMode(BaseMode):
 
     def __init__(self):
         super(ToggleConstructionMode,
-              self).__init__(name=translate("draft","Construction mode"))
+              self).__init__(name=translate("draft","Construction Mode"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
         d = {'Pixmap': 'Draft_Construction',
-             'MenuText': QT_TRANSLATE_NOOP("Draft_ToggleConstructionMode","Toggle construction mode"),
+             'MenuText': QT_TRANSLATE_NOOP("Draft_ToggleConstructionMode","Toggle Construction Mode"),
              'Accel': "C, M",
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_ToggleConstructionMode","Toggles the Construction mode.\nWhen this is active, the following objects created will be included in the construction group, and will be drawn with the specified color and properties.")}
+             'ToolTip': QT_TRANSLATE_NOOP("Draft_ToggleConstructionMode","Toggles the construction mode")}
         return d
 
     def Activated(self):
@@ -126,15 +126,15 @@ class ToggleDisplayMode(gui_base.GuiCommandNeedsSelection):
 
     def __init__(self):
         super(ToggleDisplayMode,
-              self).__init__(name=translate("draft","Toggle display mode"))
+              self).__init__(name=translate("draft","Toggle Display Mode"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
         d = {'Pixmap': 'Draft_SwitchMode',
              'Accel': "Shift+Space",
-             'MenuText': QT_TRANSLATE_NOOP("Draft_ToggleDisplayMode","Toggle normal/wireframe display"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_ToggleDisplayMode","Switches the display mode of selected objects from flatlines to wireframe and back.\nThis is helpful to quickly visualize objects that are hidden by other objects.\nThis is intended to be used with closed shapes and solids, and doesn't affect open wires.")}
+             'MenuText': QT_TRANSLATE_NOOP("Draft_ToggleDisplayMode","Toggle Wireframe"),
+             'ToolTip': QT_TRANSLATE_NOOP("Draft_ToggleDisplayMode","Switches the view style of the selected objects from Flat Lines to Wireframe and back")}
         return d
 
     def Activated(self):

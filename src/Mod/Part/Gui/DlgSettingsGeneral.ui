@@ -21,11 +21,11 @@
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkBooleanCheck" native="true">
-        <property name="text" stdset="0">
+       <widget class="Gui::PrefCheckBox" name="checkBooleanCheck">
+        <property name="text">
          <string>Automatically check model after boolean operation</string>
         </property>
-        <property name="checked" stdset="0">
+        <property name="checked">
          <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -37,11 +37,11 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkBooleanRefine" native="true">
-        <property name="text" stdset="0">
+       <widget class="Gui::PrefCheckBox" name="checkBooleanRefine">
+        <property name="text">
          <string>Automatically refine model after boolean operation</string>
         </property>
-        <property name="checked" stdset="0">
+        <property name="checked">
          <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -53,15 +53,31 @@
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkSketchBaseRefine" native="true">
-        <property name="text" stdset="0">
+       <widget class="Gui::PrefCheckBox" name="checkSketchBaseRefine">
+        <property name="text">
          <string>Automatically refine model after applying operations</string>
         </property>
-        <property name="checked" stdset="0">
+        <property name="checked">
          <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>RefineModel</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/PartDesign</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkAllowCompoundBody">
+        <property name="text">
+         <string>Allow multiple solids in Part Design bodies by default</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>AllowCompoundDefault</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/PartDesign</cstring>
@@ -84,8 +100,8 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkObjectNaming" native="true">
-        <property name="text" stdset="0">
+       <widget class="Gui::PrefCheckBox" name="checkObjectNaming">
+        <property name="text">
          <string>Add name of base object</string>
         </property>
         <property name="prefEntry" stdset="0">
@@ -110,7 +126,7 @@
      <property name="title">
       <string>Features Settings</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
+     <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
@@ -173,37 +189,43 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBoxExperimental">
+    <widget class="QGroupBox" name="groupBoxPreview">
      <property name="enabled">
       <bool>true</bool>
      </property>
      <property name="title">
-      <string>Experimental</string>
+      <string>Preview</string>
      </property>
      <property name="flat">
       <bool>false</bool>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
+     <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <widget class="QLabel" name="warningLabel">
+       <widget class="Gui::PrefCheckBox" name="checkShowFinalPreview">
         <property name="text">
-         <string>These settings are experimental and may result in decreased stability, problems and undefined behaviors</string>
+         <string>Show final result by default when editing feature</string>
         </property>
-        <property name="wordWrap">
-         <bool>true</bool>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowFinal</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/PartDesign/Preview</cstring>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="Gui::PrefCheckBox" name="checkAllowCompoundBody">
+       <widget class="Gui::PrefCheckBox" name="checkShowTransparentPreview">
         <property name="text">
-         <string>Allow multiple solids in Part Design bodies by default</string>
+         <string>Show transparent preview overlay by default when editing feature</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>AllowCompoundDefault</cstring>
+         <cstring>ShowTransparentPreview</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/PartDesign</cstring>
+         <cstring>Mod/PartDesign/Preview</cstring>
         </property>
        </widget>
       </item>
@@ -213,7 +235,7 @@
    <item>
     <spacer>
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
@@ -227,13 +249,13 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::PrefComboBox</class>
-   <extends>QComboBox</extends>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QWidget</extends>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

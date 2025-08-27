@@ -1499,7 +1499,7 @@ class Snapper:
         """Get the snap toolbar."""
         if not (hasattr(self, "toolbar") and self.toolbar):
             mw = Gui.getMainWindow()
-            self.toolbar = mw.findChild(QtWidgets.QToolBar, "Draft snap")
+            self.toolbar = mw.findChild(QtWidgets.QToolBar, "Draft Snap")
         if self.toolbar:
             return self.toolbar
 

@@ -251,7 +251,7 @@ dot/period will always be printed</string>
        <item row="3" column="0">
         <widget class="QLabel" name="treeModeLabel">
          <property name="text">
-          <string>Tree view and property view mode</string>
+          <string>Tree View and Property View mode</string>
          </property>
         </widget>
        </item>
@@ -474,7 +474,7 @@ display the splash screen.</string>
            <item>
             <widget class="QPushButton" name="ImportConfig">
              <property name="text">
-              <string>Import Configuration…</string>
+              <string>Import Configuration</string>
              </property>
             </widget>
            </item>

@@ -2182,7 +2182,7 @@ App::DocumentObjectExecReturn* Hole::execute()
 
         if (!isSingleSolidRuleSatisfied(result.getShape())) {
             return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+                    QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compounds' in the active body."));
         }
         this->Shape.setValue(result);
 
@@ -2266,12 +2266,10 @@ Base::Vector3d Hole::guessNormalDirection(const TopoShape& profileshape) const
     // the middle of the face
     if (profileshape.hasSubShape(TopAbs_FACE)) {
         BRepAdaptor_Surface sf(TopoDS::Face(profileshape.getSubShape(TopAbs_FACE, 1)));
-
-        if (sf.GetType() != GeomAbs_Cylinder) {
-            throw Base::Exception("Cannot create hole from non cylindrical face");
+        
+        if (sf.GetType() == GeomAbs_Cylinder) {
+            return Base::convertTo<Base::Vector3d>(sf.Cylinder().Axis().Direction());
         }
-
-        return Base::convertTo<Base::Vector3d>(sf.Cylinder().Axis().Direction());
     }
 
     return getProfileNormal();
@@ -2770,3 +2768,5 @@ int Hole::baseProfileOption_bitmaskToIdx(int bitmask)
 
 
 } // namespace PartDesign
+
+

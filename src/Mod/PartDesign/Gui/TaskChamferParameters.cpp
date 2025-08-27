@@ -182,7 +182,7 @@ void TaskChamferParameters::onCheckBoxUseAllEdgesToggled(bool checked)
 void TaskChamferParameters::setButtons(const selectionModes mode)
 {
     ui->buttonRefSel->setChecked(mode == refSel);
-    ui->buttonRefSel->setText(mode == refSel ? btnPreviewStr() : btnSelectStr());
+    ui->buttonRefSel->setText(mode == refSel ? stopSelectionLabel() : startSelectionLabel());
 }
 
 void TaskChamferParameters::onRefDeleted()
@@ -324,7 +324,7 @@ void TaskChamferParameters::apply()
 
     // Alert user if he created an empty feature
     if (ui->listWidgetReferences->count() == 0) {
-        Base::Console().warning(tr("Empty chamfer created !\n").toStdString().c_str());
+        Base::Console().warning(tr("Empty chamfer created!\n").toStdString().c_str());
     }
 }
 
@@ -339,6 +339,7 @@ TaskDlgChamferParameters::TaskDlgChamferParameters(ViewProviderChamfer* DressUpV
     parameter = new TaskChamferParameters(DressUpView);
 
     Content.push_back(parameter);
+    Content.push_back(preview);
 }
 
 TaskDlgChamferParameters::~TaskDlgChamferParameters() = default;
@@ -349,7 +350,7 @@ bool TaskDlgChamferParameters::accept()
 {
     auto obj = getObject();
     if (!obj->isError()) {
-        parameter->showObject();
+        getViewObject()->showPreviousFeature(false);
     }
 
     parameter->apply();

@@ -130,13 +130,13 @@ def errorDXFLib(gui):
             p = ArchCommands.download(baseurl + f, force=True)
             if not p:
                 if gui:
-                    message = translate("Draft", """Download of dxf libraries failed.
-Please install the dxf Library addon manually
-from menu Tools -> Addon Manager""")
+                    message = translate("Draft", """Download of DXF libraries failed.
+Please install the DXF Library addon manually
+from menu Tools → Addon Manager""")
                     QtWidgets.QMessageBox.information(None, "", message)
                 else:
                     FCC.PrintWarning("The DXF import/export libraries needed by FreeCAD to handle the DXF format are not installed.\n")
-                    FCC.PrintWarning("Please install the dxf Library addon from Tools -> Addon Manager\n")
+                    FCC.PrintWarning("Please install the DXF Library addon from Tools → Addon Manager\n")
                 break
         progressbar.stop()
         sys.path.append(FreeCAD.ConfigGet("UserAppData"))
@@ -146,7 +146,7 @@ from menu Tools -> Addon Manager""")
 the DXF format were not found on this system.
 Please either allow FreeCAD to download these libraries:
   1 - Load Draft workbench
-  2 - Menu Edit > Preferences > Import-Export > DXF > Enable downloads
+  2 - Menu Edit → Preferences → Import-Export → DXF → Enable downloads
 Or download these libraries manually, as explained on
 https://github.com/yorikvanhavre/Draft-dxf-importer
 To enabled FreeCAD to download these libraries, answer Yes.""")
@@ -164,7 +164,7 @@ To enabled FreeCAD to download these libraries, answer Yes.""")
             _maj = _ver[0]
             _min = _ver[1]
             if float(_maj + "." + _min) >= 0.17:
-                FCC.PrintWarning("Please install the dxf Library addon from Tools -> Addon Manager\n")
+                FCC.PrintWarning("Please install the DXF Library addon from Tools → Addon Manager\n")
             else:
                 FCC.PrintWarning("Please check https://github.com/yorikvanhavre/Draft-dxf-importer\n")
 
@@ -192,13 +192,13 @@ def getDXFlibs():
             libsok = False
     except ImportError:
         libsok = False
-        FCC.PrintWarning("DXF libraries not found. Trying to download...\n")
+        FCC.PrintWarning("DXF libraries not found. Trying to download…\n")
     else:
         if float(dxfLibrary.__version__[1:5]) >= CURRENTDXFLIB:
             libsok = True
         else:
             FCC.PrintWarning("DXF libraries need to be updated. "
-                             "Trying to download...\n")
+                             "Trying to download…\n")
             libsok = False
     if not libsok:
         errorDXFLib(gui)

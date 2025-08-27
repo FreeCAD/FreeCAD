@@ -1524,6 +1524,11 @@ QSint--ActionGroup QFrame[class="content"] QTableView {
   background-color: @PrimaryColor;
 }
 
+/* Fix for tables inside task pannels, see https://github.com/FreeCAD/FreeCAD/issues/22957 */
+QSint--ActionGroup QFrame[class="content"] QTableView {
+  min-height: 300px;
+}
+
 /* found inside Part Design Workbench and "make a draft on a face" Task panel options */
 QSint--ActionGroup QFrame[class="content"] QToolButton {
   text-align: center;
@@ -2479,7 +2484,7 @@ PlotWidget {
 SKETCHER
 ==================================================================================================*/
 
-Gui--StatefulLabel[state="empty_sketch"] {
+Gui--StatefulLabel[state="empty"] {
   color : @SketcherEmptySketchColor}
 Gui--StatefulLabel[state="under_constrained"] {
   color : @SketcherUnderConstrainedColor;
@@ -2642,3 +2647,6 @@ QMainWindow QHeaderView::section::horizontal::first, QHeaderView::section::horiz
   border-left: 0px solid transparent;
 }
 
+Gui--Dialog--DocumentRecovery QTreeView {
+  border: 1px solid @GeneralBorderColor;
+}

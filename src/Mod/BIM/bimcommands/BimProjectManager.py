@@ -40,7 +40,7 @@ class BIM_ProjectManager:
 
         return {
             "Pixmap": "BIM_ProjectManager",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_ProjectManager", "Setup Project…"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_ProjectManager", "Setup Project"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_ProjectManager", "Creates or manages a BIM project"
             ),
@@ -420,8 +420,8 @@ class BIM_ProjectManager:
 
         res = QtGui.QInputDialog.getText(
             None,
-            translate("BIM", "Save preset"),
-            translate("BIM", "Preset name:"),
+            translate("BIM", "Save Preset"),
+            translate("BIM", "Preset name"),
             QtGui.QLineEdit.Normal,
             "DefaultProject",
         )

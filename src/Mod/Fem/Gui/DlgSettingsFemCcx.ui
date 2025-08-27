@@ -69,7 +69,7 @@
            </size>
           </property>
           <property name="text">
-           <string>ccx binary path</string>
+           <string>CCX binary path</string>
           </property>
          </widget>
         </item>

@@ -274,7 +274,7 @@ App::DocumentObjectExecReturn *Loft::execute()
 
         if(base.isNull()) {
             if (!isSingleSolidRuleSatisfied(result.getShape())) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compounds' in the active body."));
             }
             Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
@@ -346,3 +346,5 @@ void Loft::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeNa
         ProfileBased::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
+
+

@@ -154,8 +154,8 @@ void DlgObjectSelection::init(const std::vector<App::DocumentObject*> &objs,
      * tried adding to .ui file, but could never get the
      * formatting exactly the way I wanted it. -- <TheMarkster>
      */
-    useOriginalsBtn = new QPushButton(tr("&Use Original Selections"));
-    useOriginalsBtn->setToolTip(tr("Ignore dependencies and proceed with objects\noriginally selected prior to opening this dialog"));
+    useOriginalsBtn = new QPushButton(tr("&Use Original Selection"));
+    useOriginalsBtn->setToolTip(tr("Ignore dependencies and proceed with the objects\noriginally selected prior to opening this dialog"));
     ui->buttonBox->addButton(useOriginalsBtn, QDialogButtonBox::ResetRole);
 
     connect(ui->treeWidget, &QTreeWidget::itemChanged, this, &DlgObjectSelection::onObjItemChanged);

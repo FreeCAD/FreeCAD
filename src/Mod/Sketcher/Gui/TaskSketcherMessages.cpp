@@ -23,6 +23,8 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QAction>
+#include <QMenu>
+#include <QCheckBox>
 #endif
 
 #include <Gui/Application.h>
@@ -30,9 +32,9 @@
 #include <Gui/Command.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
+#include "Command.h"
 #include "TaskSketcherMessages.h"
 #include "ViewProviderSketch.h"
-#include "ui_TaskSketcherMessages.h"
 
 
 // clang-format off
@@ -41,53 +43,67 @@ using namespace Gui::TaskView;
 namespace sp = std::placeholders;
 
 TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch* sketchView)
-    : TaskBox(Gui::BitmapFactory().pixmap("Sketcher_Sketch"), tr("Solver Messages"), true, nullptr)
+    : TaskSolverMessages(Gui::BitmapFactory().pixmap("Sketcher_Sketch"), tr("Sketch Edit"))
     , sketchView(sketchView)
-    , ui(new Ui_TaskSketcherMessages)
 {
-    // we need a separate container widget to add all controls to
-    proxy = new QWidget(this);
-    ui->setupUi(proxy);
-    setupConnections();
-
-    this->groupLayout()->addWidget(proxy);
+    createSettingsButtonActions();
 
     //NOLINTBEGIN
     connectionSetUp = sketchView->signalSetUp.connect(std::bind(
         &SketcherGui::TaskSketcherMessages::slotSetUp, this, sp::_1, sp::_2, sp::_3, sp::_4));
     //NOLINTEND
+}
 
-    ui->labelConstrainStatus->setOpenExternalLinks(false);
+TaskSketcherMessages::~TaskSketcherMessages()
+{
+    connectionSetUp.disconnect();
+}
 
-    // Set up the possible state values for the status label
-    ui->labelConstrainStatus->setParameterGroup(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    ui->labelConstrainStatus->registerState(QStringLiteral("empty_sketch"),
-                                            palette().windowText().color(),
-                                            std::string("EmptySketchMessageColor"));
-    ui->labelConstrainStatus->registerState(QStringLiteral("under_constrained"),
-                                            palette().windowText().color(),
-                                            std::string("UnderconstrainedMessageColor"));
-    ui->labelConstrainStatus->registerState(QStringLiteral("malformed_constraints"),
-                                            QColor("red"),
-                                            std::string("MalformedConstraintMessageColor"));
-    ui->labelConstrainStatus->registerState(QStringLiteral("conflicting_constraints"),
-                                            QColor("orangered"),
-                                            std::string("ConflictingConstraintMessageColor"));
-    ui->labelConstrainStatus->registerState(QStringLiteral("redundant_constraints"),
-                                            QColor("red"),
-                                            std::string("RedundantConstraintMessageColor"));
-    ui->labelConstrainStatus->registerState(
-        QStringLiteral("partially_redundant_constraints"),
-        QColor("royalblue"),
-        std::string("PartiallyRedundantConstraintMessageColor"));
-    ui->labelConstrainStatus->registerState(
-        QStringLiteral("solver_failed"), QColor("red"), std::string("SolverFailedMessageColor"));
-    ui->labelConstrainStatus->registerState(QStringLiteral("fully_constrained"),
-                                            QColor("green"),
-                                            std::string("FullyConstrainedMessageColor"));
+void TaskSketcherMessages::updateToolTip(const QString& link)
+{
+    if (link == QStringLiteral("#conflicting")) {
+        setLinkTooltip(tr("Click to select these conflicting constraints."));
+    }
+    else if (link == QStringLiteral("#redundant")) {
+        setLinkTooltip(tr("Click to select these redundant constraints."));
+    }
+    else if (link == QStringLiteral("#dofs")) {
+        setLinkTooltip(tr("The sketch has unconstrained elements giving rise to those "
+            "Degrees Of Freedom. Click to select these unconstrained elements."));
+    }
+    else if (link == QStringLiteral("#malformed")) {
+        setLinkTooltip(tr("Click to select these malformed constraints."));
+    }
+    else if (link == QStringLiteral("#partiallyredundant")) {
+        setLinkTooltip(
+            tr("Some constraints in combination are partially redundant. Click to select these "
+               "partially redundant constraints."));
+    }
+}
 
-    ui->labelConstrainStatusLink->setLaunchExternal(false);
+void TaskSketcherMessages::onLabelStatusLinkClicked(const QString& str)
+{
+    if (str == QStringLiteral("#conflicting")) {
+        Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectConflictingConstraints");
+    }
+    else if (str == QStringLiteral("#redundant")) {
+        Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectRedundantConstraints");
+    }
+    else if (str == QStringLiteral("#dofs")) {
+        Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectElementsWithDoFs");
+    }
+    else if (str == QStringLiteral("#malformed")) {
+        Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectMalformedConstraints");
+    }
+    else if (str == QStringLiteral("#partiallyredundant")) {
+        Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectPartiallyRedundantConstraints");
+    }
+}
+
+void TaskSketcherMessages::createSettingsButtonActions()
+{
+    QToolButton* btn = getSettingsButton();
+    btn->show();
 
     // Set Auto Update in the 'Manual Update' button menu.
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -96,97 +112,44 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch* sketchView)
 
     sketchView->getSketchObject()->noRecomputes = !state;
 
-    QAction* action = new QAction(tr("Auto-update"), this);
-    action->setToolTip(tr("Executes a recomputation of active document after every sketch action"));
-    action->setCheckable(true);
-    action->setChecked(state);
-    ui->manualUpdate->addAction(action);
+    auto* autoUpdateAction = new QWidgetAction(this);
+    auto* containerWidget = new QWidget();
+    auto* layout = new QGridLayout(containerWidget);
+    auto* checkbox = new QCheckBox(tr("Auto-update"));
+    checkbox->setToolTip(tr("Executes a recomputation of active document after every sketch action"));
+    checkbox->setChecked(state);
+    layout->addWidget(checkbox, 0, 0, 1, 2);
+    containerWidget->setLayout(layout);
+    autoUpdateAction->setDefaultWidget(containerWidget);
 
-    QObject::connect(std::as_const(ui->manualUpdate)->actions()[0],
-                     &QAction::changed,
-                     this,
-                     &TaskSketcherMessages::onAutoUpdateStateChanged);
-}
+    connect(checkbox, &QCheckBox::toggled, this, [this](bool checked) {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Sketcher");
+        hGrp->SetBool("AutoRecompute", checked);
+        sketchView->getSketchObject()->noRecomputes = !checked;
+    });
 
-TaskSketcherMessages::~TaskSketcherMessages()
-{
-    connectionSetUp.disconnect();
-}
+    auto* gridAction = new GridSpaceAction(this);
+    auto* snapAction = new SnapSpaceAction(this);
+    auto* renderingAction = new RenderingOrderAction(this);
 
-void TaskSketcherMessages::setupConnections()
-{
-    connect(ui->labelConstrainStatusLink,
-            &Gui::UrlLabel::linkClicked,
-            this,
-            &TaskSketcherMessages::onLabelConstrainStatusLinkClicked);
-    connect(ui->manualUpdate,
-            &QToolButton::clicked,
-            this,
-            &TaskSketcherMessages::onManualUpdateClicked);
-}
+    QMenu* myMenu = new QMenu(this);
+    myMenu->addAction(autoUpdateAction);
+    myMenu->addSeparator();
+    myMenu->addAction(gridAction);
+    myMenu->addSeparator();
+    myMenu->addAction(snapAction);
+    myMenu->addSeparator();
+    myMenu->addAction(renderingAction);
+    btn->setMenu(myMenu);
 
-void TaskSketcherMessages::slotSetUp(const QString& state, const QString& msg, const QString& link,
-                                     const QString& linkText)
-{
-    ui->labelConstrainStatus->setState(state);
-    ui->labelConstrainStatus->setText(msg);
-    ui->labelConstrainStatusLink->setUrl(link);
-    ui->labelConstrainStatusLink->setText(linkText);
-    updateToolTip(link);
-}
+    QObject::connect(myMenu, &QMenu::aboutToShow, [gridAction, snapAction, renderingAction]() {
+        gridAction->updateWidget();
+        snapAction->updateWidget(true);
+        renderingAction->updateWidget();
+    });
 
-void TaskSketcherMessages::updateToolTip(const QString& link)
-{
-    if (link == QStringLiteral("#conflicting"))
-        ui->labelConstrainStatusLink->setToolTip(
-            tr("Click to select these conflicting constraints."));
-    else if (link == QStringLiteral("#redundant"))
-        ui->labelConstrainStatusLink->setToolTip(tr("Click to select these redundant constraints."));
-    else if (link == QStringLiteral("#dofs"))
-        ui->labelConstrainStatusLink->setToolTip(
-            tr("The sketch has unconstrained elements giving rise to those Degrees Of Freedom. "
-               "Click to select these unconstrained elements."));
-    else if (link == QStringLiteral("#malformed"))
-        ui->labelConstrainStatusLink->setToolTip(tr("Click to select these malformed constraints."));
-    else if (link == QStringLiteral("#partiallyredundant"))
-        ui->labelConstrainStatusLink->setToolTip(
-            tr("Some constraints in combination are partially redundant. Click to select these "
-               "partially redundant constraints."));
-}
-
-void TaskSketcherMessages::onLabelConstrainStatusLinkClicked(const QString& str)
-{
-    if (str == QStringLiteral("#conflicting"))
-        Gui::Application::Instance->commandManager().runCommandByName(
-            "Sketcher_SelectConflictingConstraints");
-    else if (str == QStringLiteral("#redundant"))
-        Gui::Application::Instance->commandManager().runCommandByName(
-            "Sketcher_SelectRedundantConstraints");
-    else if (str == QStringLiteral("#dofs"))
-        Gui::Application::Instance->commandManager().runCommandByName(
-            "Sketcher_SelectElementsWithDoFs");
-    else if (str == QStringLiteral("#malformed"))
-        Gui::Application::Instance->commandManager().runCommandByName(
-            "Sketcher_SelectMalformedConstraints");
-    else if (str == QStringLiteral("#partiallyredundant"))
-        Gui::Application::Instance->commandManager().runCommandByName(
-            "Sketcher_SelectPartiallyRedundantConstraints");
-}
-
-void TaskSketcherMessages::onAutoUpdateStateChanged()
-{
-    bool state = std::as_const(ui->manualUpdate)->actions()[0]->isChecked();
-
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher");
-    hGrp->SetBool("AutoRecompute", state);
-    sketchView->getSketchObject()->noRecomputes = !state;
-}
-
-void TaskSketcherMessages::onManualUpdateClicked(bool checked)
-{
-    Q_UNUSED(checked);
-    Gui::Command::updateActive();
+    QObject::connect(btn, &QToolButton::clicked, btn, &QToolButton::showMenu);
 }
 
 #include "moc_TaskSketcherMessages.cpp"

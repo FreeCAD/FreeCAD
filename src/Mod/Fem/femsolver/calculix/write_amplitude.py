@@ -44,6 +44,7 @@ def write_amplitude(f, ccxwriter):
         ccxwriter.member.cons_heatflux,
         ccxwriter.member.cons_temperature,
         ccxwriter.member.cons_bodyheatsource,
+        ccxwriter.member.cons_rigidbody,
     ]
 
     for constraint_list in constraint_lists:

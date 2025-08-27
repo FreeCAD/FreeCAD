@@ -914,7 +914,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         if (!onlyAllowed) {
             QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("Cannot use selected object. Selected object must belong to the active body"));
-            msgBox.setInformativeText(QObject::tr("Consider using a sape binder or a base feature to reference external geometry in a body"));
+            msgBox.setInformativeText(QObject::tr("Consider using a shape binder or a base feature to reference external geometry in a body"));
             msgBox.setStandardButtons(QMessageBox::Ok);
             msgBox.setDefaultButton(QMessageBox::Ok);
             msgBox.exec();
@@ -2023,7 +2023,7 @@ void CmdPartDesignMirrored::activated(int iMsg)
         finishTransformed(cmd, Feat);
     };
 
-    prepareTransformed(pcActiveBody, this, "Mirror", worker);
+    prepareTransformed(pcActiveBody, this, "Mirrored", worker);
 }
 
 bool CmdPartDesignMirrored::isActive()

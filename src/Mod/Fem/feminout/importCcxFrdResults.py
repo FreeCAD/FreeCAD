@@ -66,21 +66,33 @@ def setupPipeline(doc, analysis, results_name, result_data):
     if not "BUILD_FEM_VTK" in FreeCAD.__cmake__:
         return
 
-    # create a results pipeline if not already existing
+    # create a results pipeline (dependent on user settings)
     pipeline_name = "Pipeline_" + results_name
-    pipeline_obj = doc.getObject(pipeline_name)
-    if pipeline_obj is None:
+    pipelines = analysis.getObjectsOfType("Fem::FemPostPipeline")
+    fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
+    keep_results_on_rerun = fem_prefs.GetBool("KeepResultsOnReRun", False)
 
+    if not pipelines or keep_results_on_rerun:
+        # needs to create a new pipeline!
         pipeline_obj = ObjectsFem.makePostVtkResult(doc, result_data, results_name)
         pipeline_visibility = True
         if analysis:
             analysis.addObject(pipeline_obj)
     else:
+        # by default get the last one
+        pipeline_obj = pipelines[-1]
+        # maybe there is one with the correct name
+        named_pipeline = analysis.getObject(pipeline_name)
+        if named_pipeline:
+            pipeline_obj = named_pipeline
+
         if FreeCAD.GuiUp:
             # store pipeline visibility because pipeline_obj.load makes the
             # pipeline always visible
             pipeline_visibility = pipeline_obj.ViewObject.Visibility
 
+        # relabel the pipeline and load the data into it
+        pipeline_obj.Label = pipeline_name
         pipeline_obj.load(*result_data)
 
     # update the pipeline

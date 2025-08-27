@@ -141,7 +141,7 @@ public:
             throw WrongSupportException();
         }
 
-        if (!subshape.isPlanar()) {
+        if (!subshape.isPlanar(Attacher::AttachEnginePlane::planarPrecision())) {
             throw SupportNotPlanarException();
         }
     }

@@ -32,7 +32,7 @@ from collections.abc import Sequence
 
 if App.GuiUp:
     import FreeCADGui as Gui
-    from PySide import QtWidgets
+    from PySide import QtGui, QtWidgets
 
 __title__ = "Assembly Joint object"
 __author__ = "Ondsel"
@@ -217,7 +217,7 @@ class Joint:
                 "Joint Connector 1",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This is the local coordinate system within Reference1's object that will be used for the joint.",
+                    "This is the local coordinate system within Reference1's object that will be used for the joint",
                 ),
                 locked=True,
             )
@@ -229,7 +229,7 @@ class Joint:
                 "Joint Connector 1",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This prevents Placement1 from recomputing, enabling custom positioning of the placement.",
+                    "This prevents Placement1 from recomputing, enabling custom positioning of the placement",
                 ),
                 locked=True,
             )
@@ -241,7 +241,7 @@ class Joint:
                 "Joint Connector 1",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This is the attachment offset of the first connector of the joint.",
+                    "This is the attachment offset of the first connector of the joint",
                 ),
                 locked=True,
             )
@@ -263,7 +263,7 @@ class Joint:
                 "Joint Connector 2",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This is the local coordinate system within Reference2's object that will be used for the joint.",
+                    "This is the local coordinate system within Reference2's object that will be used for the joint",
                 ),
                 locked=True,
             )
@@ -275,7 +275,7 @@ class Joint:
                 "Joint Connector 2",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This prevents Placement2 from recomputing, enabling custom positioning of the placement.",
+                    "This prevents Placement2 from recomputing, enabling custom positioning of the placement",
                 ),
                 locked=True,
             )
@@ -287,7 +287,7 @@ class Joint:
                 "Joint Connector 2",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This is the attachment offset of the second connector of the joint.",
+                    "This is the attachment offset of the second connector of the joint",
                 ),
                 locked=True,
             )
@@ -324,7 +324,7 @@ class Joint:
                 "Limits",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Enable the minimum length limit of the joint.",
+                    "Enable the minimum length limit of the joint",
                 ),
                 locked=True,
             )
@@ -337,7 +337,7 @@ class Joint:
                 "Limits",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Enable the maximum length limit of the joint.",
+                    "Enable the maximum length limit of the joint",
                 ),
                 locked=True,
             )
@@ -350,7 +350,7 @@ class Joint:
                 "Limits",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Enable the minimum angle limit of the joint.",
+                    "Enable the minimum angle limit of the joint",
                 ),
                 locked=True,
             )
@@ -363,7 +363,7 @@ class Joint:
                 "Limits",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Enable the minimum length of the joint.",
+                    "Enable the maximum angle limit of the joint",
                 ),
                 locked=True,
             )
@@ -376,7 +376,7 @@ class Joint:
                 "Limits",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This is the minimum limit for the length between both coordinate systems (along their Z axis).",
+                    "This is the minimum limit for the length between both coordinate systems (along their z-axis)",
                 ),
                 locked=True,
             )
@@ -388,7 +388,7 @@ class Joint:
                 "Limits",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This is the maximum limit for the length between both coordinate systems (along their Z axis).",
+                    "This is the maximum limit for the length between both coordinate systems (along their z-axis)",
                 ),
                 locked=True,
             )
@@ -400,7 +400,7 @@ class Joint:
                 "Limits",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This is the minimum limit for the angle between both coordinate systems (between their X axis).",
+                    "This is the minimum limit for the angle between both coordinate systems (between their x-axis)",
                 ),
                 locked=True,
             )
@@ -412,7 +412,7 @@ class Joint:
                 "Limits",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This is the maximum limit for the angle between both coordinate systems (between their X axis).",
+                    "This is the maximum limit for the angle between both coordinate systems (between their x-axis)",
                 ),
                 locked=True,
             )
@@ -512,7 +512,7 @@ class Joint:
                 "Joint Connector 1",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This is the attachment offset of the first connector of the joint.",
+                    "This is the attachment offset of the first connector of the joint",
                 ),
                 locked=True,
             )
@@ -523,7 +523,7 @@ class Joint:
                 "Joint Connector 2",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This is the attachment offset of the second connector of the joint.",
+                    "This is the attachment offset of the second connector of the joint",
                 ),
                 locked=True,
             )
@@ -565,7 +565,7 @@ class Joint:
             activated = joint.Activated
             if not activated:
                 print(
-                    "The 'Activated' property has been replaced by the 'Suppressed' property. Your file has a deactivated joint that is being migrated. If you open back this file in an older version, it will not be deactivated anymore."
+                    "The 'Activated' property has been replaced by the 'Suppressed' property. The file has a deactivated joint that is being migrated. If you open this file in an older version, it will not be deactivated anymore."
                 )
             joint.removeProperty("Activated")
             joint.Suppressed = not activated
@@ -590,12 +590,6 @@ class Joint:
         if newType != oldType:
             joint.JointType = newType
 
-            # try to replace the joint type in the label.
-            tr_old_type = TranslatedJointTypes[JointTypes.index(oldType)]
-            tr_new_type = TranslatedJointTypes[JointTypes.index(newType)]
-            if tr_old_type in joint.Label:
-                joint.Label = joint.Label.replace(tr_old_type, tr_new_type)
-
     def onChanged(self, joint, prop):
         """Do something when a property has changed"""
         # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
@@ -603,6 +597,19 @@ class Joint:
         # during loading the onchanged may be triggered before full init.
         if App.isRestoring():
             return
+
+        if prop == "JointType":
+            newType = joint.JointType
+            tr_new_type = TranslatedJointTypes[JointTypes.index(newType)]
+
+            # Find the old joint type in the label and replace it
+            for i, old_type_name in enumerate(JointTypes):
+                if old_type_name == newType:
+                    continue
+                tr_old_type = TranslatedJointTypes[i]
+                if tr_old_type in joint.Label:
+                    joint.Label = joint.Label.replace(tr_old_type, tr_new_type)
+                    break
 
         if prop == "Reference1" or prop == "Reference2":
             joint.recompute()
@@ -1004,6 +1011,7 @@ class ViewProviderJoint:
         dialog = Gui.Control.showDialog(panel)
         if dialog is not None:
             dialog.setAutoCloseOnTransactionChange(True)
+            dialog.setAutoCloseOnDeletedDocument(True)
             dialog.setDocumentName(App.ActiveDocument.Name)
 
         return True
@@ -1385,12 +1393,14 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         self.jForm.featureList.installEventFilter(self)
 
+        self.createDeleteAction()
+
         self.addition_rejected = False
 
     def accept(self):
         if len(self.refs) != 2:
             App.Console.PrintWarning(
-                translate("Assembly", "You need to select 2 elements from 2 separate parts.")
+                translate("Assembly", "Select 2 elements from 2 separate parts")
             )
             return False
 
@@ -1552,6 +1562,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
                 self.jForm.distanceLabel.setText(translate("Assembly", "Angle"))
             elif jType == "Gears" or jType == "Belt":
                 self.jForm.distanceLabel.setText(translate("Assembly", "Radius 1"))
+            elif jType == "Screw":
+                self.jForm.distanceLabel.setText(translate("Assembly", "Thread pitch"))
             else:
                 self.jForm.distanceLabel.setText(translate("Assembly", "Pitch radius"))
 
@@ -1783,34 +1795,80 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         if info["State"] == "UP" and info["Key"] == "RETURN":
             self.accept()
 
+    def _removeSelectedItems(self, selected_indexes):
+        for index in selected_indexes:
+            row = index.row()
+            if row < len(self.refs):
+                ref = self.refs[row]
+
+                ref_id = id(ref)
+                if hasattr(self, "_original_tnp_map") and ref_id in self._original_tnp_map:
+                    # use original TNP string for newly added references
+                    removal_string = self._original_tnp_map[ref_id]
+                else:
+                    # use processed element name for reloaded references
+                    removal_string = ref[1][0]
+
+                Gui.Selection.removeSelection(ref[0], removal_string)
+            else:
+                print(f"Row {row} is out of bounds for refs (length: {len(self.refs)})")
+
     def eventFilter(self, watched, event):
         if self.jForm is not None and watched == self.jForm.featureList:
             if event.type() == QtCore.QEvent.ShortcutOverride:
-                if event.key() == QtCore.Qt.Key_Delete:
-                    event.accept()  # Accept the event only if the key is Delete
-                    return True  # Indicate that the event has been handled
+                if (
+                    hasattr(self, "deleteAction")
+                    and self.deleteAction.shortcut().matches(event.key())
+                    != QtGui.QKeySequence.NoMatch
+                ):
+                    event.accept()
+                    return True
                 return False
 
             elif event.type() == QtCore.QEvent.KeyPress:
-                if event.key() == QtCore.Qt.Key_Delete:
-                    selected_indexes = self.jForm.featureList.selectedIndexes()
-
-                    for index in selected_indexes:
-                        row = index.row()
-                        if row < len(self.refs):
-                            ref = self.refs[row]
-
-                            Gui.Selection.removeSelection(ref[0], ref[1][0])
-
+                if (
+                    hasattr(self, "deleteAction")
+                    and self.deleteAction.shortcut().matches(event.key())
+                    != QtGui.QKeySequence.NoMatch
+                ):
+                    self.deleteAction.trigger()
                     return True  # Consume the event
 
         return super().eventFilter(watched, event)
+
+    def createDeleteAction(self):
+        """Create delete action with shortcut"""
+        try:
+            delete_sequence = Gui.QtTools.deleteKeySequence()
+        except AttributeError:
+            # fallback to standard key if there is no sequence defined
+            delete_sequence = QtCore.Qt.Key_Delete
+
+        self.deleteAction = QtGui.QAction("Remove", self.jForm)
+        self.deleteAction.setShortcut(delete_sequence)
+
+        self.deleteAction.setIcon(
+            QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.SP_DialogCancelButton)
+        )
+
+        self.deleteAction.setShortcutVisibleInContextMenu(True)
+
+        self.jForm.featureList.addAction(self.deleteAction)
+        self.jForm.featureList.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+
+        self.deleteAction.triggered.connect(self.deleteSelectedItems)
+
+    def deleteSelectedItems(self):
+        """Delete selected items from the feature list - same logic as Delete key in ev filter"""
+        selected_indexes = self.jForm.featureList.selectedIndexes()
+        self._removeSelectedItems(selected_indexes)
 
     def getMovingPart(self, ref):
         return UtilsAssembly.getMovingPart(self.assembly, ref)
 
     # selectionObserver stuff
     def addSelection(self, doc_name, obj_name, sub_name, mousePos):
+        original_sub_name = sub_name
         rootObj = App.getDocument(doc_name).getObject(obj_name)
 
         # We do not need the full TNP string like :"Part.Body.Pad.;#a:1;:G0;XTR;:Hc94:8,F.Face6"
@@ -1848,6 +1906,12 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         # add the vertex name to the reference
         ref = UtilsAssembly.addVertexToReference(ref, vertex_name)
 
+        # store the original TNP string for deletion purposes
+        if hasattr(self, "_original_tnp_map"):
+            self._original_tnp_map[id(ref)] = original_sub_name
+        else:
+            self._original_tnp_map = {id(ref): original_sub_name}
+
         self.refs.append(ref)
         self.updateJoint()
 
@@ -1859,15 +1923,24 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.addition_rejected = False
             return
 
-        ref = [App.getDocument(doc_name).getObject(obj_name), [sub_name]]
-        moving_part = self.getMovingPart(ref)
+        rootObj = App.getDocument(doc_name).getObject(obj_name)
 
-        # Find and remove the corresponding dictionary from the combined list
-        for reference in self.refs:
-            sel_moving_part = self.getMovingPart(reference)
-            if sel_moving_part == moving_part:
+        # Apply the same processing as in addSelection to ensure consistent comparison
+        resolved = rootObj.resolveSubElement(sub_name, True)
+        sub_name = resolved[2]
+
+        sub_name = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub_name)
+
+        for reference in self.refs[:]:
+            ref_obj = reference[0]
+            ref_element_name = reference[1][0] if len(reference[1]) > 0 else ""
+
+            # match both object and processed element name for precise identification
+            if ref_obj == rootObj and ref_element_name == sub_name:
                 self.refs.remove(reference)
                 break
+        else:
+            print("No matching ref found for removal!")
 
         self.updateJoint()
 

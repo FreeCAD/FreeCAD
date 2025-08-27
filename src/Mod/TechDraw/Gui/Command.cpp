@@ -796,7 +796,7 @@ void CmdTechDrawSectionGroup::languageChange()
     arc1->setToolTip(QApplication::translate("TechDraw_SectionView", "Inserts a simple section view"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("CmdTechDrawSectionGroup", "Complex Section"));
+    arc2->setText(QApplication::translate("CmdTechDrawSectionGroup", "Complex Section View"));
     arc2->setToolTip(
         QApplication::translate("TechDraw_ComplexSection", "Inserts a complex section view"));
     arc2->setStatusTip(arc2->toolTip());
@@ -1870,7 +1870,7 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
         if (v->isDerivedFrom<TechDraw::DrawViewArch>()) {
             QMessageBox::StandardButton rc = QMessageBox::question(
                 Gui::getMainWindow(), QObject::tr("Cannot export selection"),
-                QObject::tr("Page contains DrawViewArch which will not be exported. Continue?"),
+                QObject::tr("Page contains DrawViewBIM which will not be exported. Continue?"),
                 QMessageBox::StandardButtons(QMessageBox::Yes | QMessageBox::No));
             if (rc == QMessageBox::No) {
                 return;

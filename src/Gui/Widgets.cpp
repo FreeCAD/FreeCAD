@@ -55,6 +55,7 @@
 #include "QuantitySpinBox_p.h"
 #include "Tools.h"
 #include "Dialogs/ui_DlgTreeWidget.h"
+#include "MainWindow.h"
 
 using namespace Gui;
 using namespace App;
@@ -995,7 +996,7 @@ LabelButton::LabelButton (QWidget * parent)
     label->setAutoFillBackground(true);
     layout->addWidget(label);
 
-    button = new QPushButton(QLatin1String("…"), this);
+    button = new QPushButton(QStringLiteral("…"), this);
 #if defined (Q_OS_MACOS)
     button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
 #endif
@@ -1383,7 +1384,7 @@ LabelEditor::LabelEditor (QWidget * parent)
     connect(lineEdit, &QLineEdit::textChanged,
             this, &LabelEditor::validateText);
 
-    button = new QPushButton(QLatin1String("…"), this);
+    button = new QPushButton(QStringLiteral("…"), this);
 #if defined (Q_OS_MACOS)
     button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
 #endif
@@ -1459,7 +1460,7 @@ void LabelEditor::setButtonText(const QString& txt)
 {
     button->setText(txt);
     int w1 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), txt);
-    int w2 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), QLatin1String(" … "));
+    int w2 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), QStringLiteral(" … "));
     button->setFixedWidth((w1 > w2 ? w1 : w2));
 }
 
@@ -1606,6 +1607,7 @@ void ExpLineEdit::openFormulaDialog()
     QPoint pos = mapToGlobal(QPoint(0,0));
     box->move(pos-box->expressionPosition());
     box->setExpressionInputSize(width(), height());
+    Gui::adjustDialogPosition(box);
 }
 
 void ExpLineEdit::finishFormulaDialog()
@@ -1663,5 +1665,54 @@ bool ButtonGroup::exclusive() const
     return _exclusive;
 }
 
+namespace Gui {
+
+void adjustDialogPosition(QDialog* dialog) {
+    if (!dialog) {
+        return;
+    }
+    const MainWindow* mw = getMainWindow();
+    if (!mw) {
+        return;
+    }
+    
+    dialog->adjustSize(); // ensure correct size
+
+    const QRect mainWindowRect{ mw->mapToGlobal(QPoint(0, 0)), mw->size() };
+    const QRect dialogRect{ dialog->frameGeometry() };
+
+    const bool isFullyInside = mainWindowRect.contains(dialogRect);
+    if (isFullyInside) {
+        return;
+    }
+
+    const bool isCompletelyOutside = !mainWindowRect.intersects(dialogRect);
+    if (isCompletelyOutside) {
+        return;
+    }
+
+    const int margin = 5;
+    const QRect availableArea = mainWindowRect.adjusted(
+        margin, margin, -margin, -margin
+    );
+
+    QPoint adjustedTopLeft = dialogRect.topLeft();
+
+    adjustedTopLeft.setX(std::clamp(
+        adjustedTopLeft.x(),
+        availableArea.left(),
+        availableArea.right() - dialogRect.width()
+    ));
+
+    adjustedTopLeft.setY(std::clamp(
+        adjustedTopLeft.y(),
+        availableArea.top(),
+        availableArea.bottom() - dialogRect.height()
+    ));
+
+    dialog->move(adjustedTopLeft);
+}
+
+}
 
 #include "moc_Widgets.cpp"

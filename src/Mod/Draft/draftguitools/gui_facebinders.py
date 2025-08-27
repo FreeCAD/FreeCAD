@@ -58,7 +58,7 @@ class Facebinder(gui_base_original.Creator):
         return {"Pixmap": "Draft_Facebinder",
                 "Accel": "F,F",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_Facebinder", "Facebinder"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Facebinder", "Creates a facebinder object from selected faces.")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Facebinder", "Creates a facebinder from the selected faces")}
 
     def Activated(self):
         """Execute when the command is called."""

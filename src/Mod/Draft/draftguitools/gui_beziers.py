@@ -47,7 +47,7 @@ from draftutils import gui_utils
 from draftutils import params
 from draftutils import todo
 from draftutils import utils
-from draftutils.messages import _err, _msg, _toolmsg
+from draftutils.messages import _err, _toolmsg
 from draftutils.translate import translate
 
 
@@ -63,8 +63,8 @@ class BezCurve(gui_lines.Line):
 
         return {"Pixmap": "Draft_BezCurve",
                 "Accel": "B, Z",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_BezCurve", "Bézier curve"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_BezCurve", "Creates an N-degree Bézier curve. The more points you pick, the higher the degree.\nSHIFT to constrain.")}
+                "MenuText": QT_TRANSLATE_NOOP("Draft_BezCurve", "Bézier Curve"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_BezCurve", "Creates an n-degree Bézier curve. The more points, the higher the degree.")}
 
     def Activated(self):
         """Execute when the command is called.
@@ -73,7 +73,7 @@ class BezCurve(gui_lines.Line):
         """
         super().Activated(name="BezCurve",
                           icon="Draft_BezCurve",
-                          task_title=translate("draft", "Bézier curve"))
+                          task_title=translate("draft", "Bézier Curve"))
         if self.doc:
             self.bezcurvetrack = trackers.bezcurveTracker()
 
@@ -134,8 +134,6 @@ class BezCurve(gui_lines.Line):
                     if (self.point-self.node[0]).Length < utils.tolerance():
                         self.undolast()
                         self.finish(cont=None, closed=True)
-                        _msg(translate("draft",
-                                       "Bézier curve has been closed"))
 
     def undolast(self):
         """Undo last line segment."""
@@ -143,7 +141,7 @@ class BezCurve(gui_lines.Line):
             self.node.pop()
             self.bezcurvetrack.update(self.node, degree=self.degree)
             self.obj.Shape = self.updateShape(self.node)
-            _msg(translate("draft", "Last point has been removed"))
+            self.update_hints()
 
     def drawUpdate(self, point):
         """Draw and update to the curve."""
@@ -155,6 +153,7 @@ class BezCurve(gui_lines.Line):
         else:
             self.obj.Shape = self.updateShape(self.node)
             _toolmsg(translate("draft", "Pick next point"))
+        self.update_hints()
 
     def updateShape(self, pts):
         """Create shape for display during creation process."""
@@ -213,7 +212,7 @@ class BezCurve(gui_lines.Line):
                              'bez = ' + _cmd,
                              'Draft.autogroup(bez)',
                              'FreeCAD.ActiveDocument.recompute()']
-                self.commit(translate("draft", "Create BezCurve"),
+                self.commit(translate("draft", "Create Bézier Curve"),
                             _cmd_list)
             except Exception:
                 _err("Draft: error delaying commit")
@@ -252,8 +251,8 @@ class CubicBezCurve(gui_lines.Line):
 
         return {"Pixmap": "Draft_CubicBezCurve",
                 # "Accel": "B, Z",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Cubic Bézier curve"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.\nAfter the curve is created you can go back to edit each control point and set the properties of each knot.\nSHIFT to constrain.")}
+                "MenuText": QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Cubic Bézier Curve"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Clicking and dragging allows to define segments.\nControl points and properties of each knot can be edited after creation.")}
 
     def Activated(self):
         """Execute when the command is called.
@@ -343,7 +342,6 @@ class CubicBezCurve(gui_lines.Line):
                             _sym = 2 * self.node[0] - self.node[1]
                             self.node.append(_sym)
                             self.finish(cont=None, closed=True)
-                            _msg(translate("draft", "Bézier curve has been closed"))
         # Release the held button
         if arg["State"] == "UP" and arg["Button"] == "BUTTON1":
             if arg["Position"] == self.pos:
@@ -378,7 +376,7 @@ class CubicBezCurve(gui_lines.Line):
             self.node.pop()
             self.bezcurvetrack.update(self.node, degree=self.degree)
             self.obj.Shape = self.updateShape(self.node)
-            _msg(translate("draft", "Last point has been removed"))
+            self.update_hints()
 
     def drawUpdate(self, point):
         """Create shape for display during creation process."""
@@ -391,6 +389,7 @@ class CubicBezCurve(gui_lines.Line):
             # is a knot
             self.obj.Shape = self.updateShape(self.node[:-1])
             _toolmsg(translate("draft", "Click and drag to define next knot"))
+        self.update_hints()
 
     def updateShape(self, pts):
         """Create shape for display during creation process."""
@@ -462,7 +461,7 @@ class CubicBezCurve(gui_lines.Line):
                              'bez = ' + _cmd,
                              'Draft.autogroup(bez)',
                              'FreeCAD.ActiveDocument.recompute()']
-                self.commit(translate("draft", "Create BezCurve"),
+                self.commit(translate("draft", "Create Bézier Curve"),
                             _cmd_list)
             except Exception:
                 _err("Draft: error delaying commit")
@@ -477,6 +476,17 @@ class CubicBezCurve(gui_lines.Line):
         if cont or (cont is None and self.ui and self.ui.continueMode):
             self.Activated()
 
+    def get_hints(self):
+        if len(self.node) < 2:
+            return [Gui.InputHint(
+                translate("draft", "%1 click and drag to define first point and knot"),
+                Gui.UserInput.MouseLeft
+            )]
+        return [Gui.InputHint(
+            translate("draft", "%1 click and drag to define next point and knot"),
+            Gui.UserInput.MouseLeft
+        )]
+
 
 Gui.addCommand('Draft_CubicBezCurve', CubicBezCurve())
 
@@ -486,8 +496,8 @@ class BezierGroup:
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {"MenuText": QT_TRANSLATE_NOOP("Draft_BezierTools", "Bézier tools"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_BezierTools", "Create various types of Bézier curves.")}
+        return {"MenuText": QT_TRANSLATE_NOOP("Draft_BezierTools", "Bézier Tools"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_BezierTools", "Tools to create various types of Bézier curves")}
 
     def GetCommands(self):
         """Return a tuple of commands in the group."""

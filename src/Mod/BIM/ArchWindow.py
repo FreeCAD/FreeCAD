@@ -106,10 +106,6 @@ class _Window(ArchComponent.Component):
         # Add features in the SketchArch External Add-on
         self.addSketchArchFeatures(obj)
 
-        # Initialize those two values later on during first onChanged call
-        self.baseSill = None
-        self.basePos = None
-
     def addSketchArchFeatures(self,obj,linkObj=None,mode=None):
         '''
            To add features in the SketchArch External Add-on  (https://github.com/paullee0/FreeCAD_SketchArch)
@@ -142,8 +138,6 @@ class _Window(ArchComponent.Component):
             obj.addProperty("App::PropertyLength","Width","Window",QT_TRANSLATE_NOOP("App::Property","The width of this window"), locked=True)
         if not "Height" in lp:
             obj.addProperty("App::PropertyLength","Height","Window",QT_TRANSLATE_NOOP("App::Property","The height of this window"), locked=True)
-        if not "Sill" in lp:
-            obj.addProperty("App::PropertyLength","Sill","Window",QT_TRANSLATE_NOOP("App::Property","The height of this window's sill"), locked=True)
         if not "Normal" in lp:
             obj.addProperty("App::PropertyVector","Normal","Window",QT_TRANSLATE_NOOP("App::Property","The normal direction of this window"), locked=True)
         # Automatic Normal Reverse
@@ -180,6 +174,31 @@ class _Window(ArchComponent.Component):
         obj.setEditorMode("HorizontalArea",2)
         obj.setEditorMode("PerimeterLength",2)
 
+        # Sill change related properies
+        self.setSillProperties(obj)
+
+    def setSillProperties(self, orgObj, linkObj=None):
+        '''  Set properties which support Sill change.
+             Support both Arch Window and Link of Arch Window.
+        '''
+
+        if linkObj:
+            obj = linkObj
+        else:
+            obj = orgObj
+
+        prop = obj.PropertiesList
+
+        # 'Sill' support
+        if not "Sill" in prop:
+            obj.addProperty("App::PropertyLength","Sill","Window",QT_TRANSLATE_NOOP("App::Property","The height of this window's sill"), locked=True)
+
+        # Link has no Proxy, so needs to use PropertyPythonObject
+        sillProp = ['baseSill','basePosZ','atthOffZ']
+        for i in sillProp:
+            if i not in prop:
+                obj.addProperty("App::PropertyPythonObject", i)
+
     def onDocumentRestored(self,obj):
 
         ArchComponent.Component.onDocumentRestored(self,obj)
@@ -188,12 +207,13 @@ class _Window(ArchComponent.Component):
         # Add features in the SketchArch External Add-on
         self.addSketchArchFeatures(obj, mode='ODR')
 
+        # TODO 2025.6.27 : Seems Sill already triggered onChanged() upon document restored - NO need codes below in onDocumentRestored()
         # Need to restore 'initial' settings as corresponding codes in onChanged() does upon object creation
-        self.baseSill = obj.Sill.Value
-        self.basePos = obj.Base.Placement.Base
-        self.atthOff = None
-        if hasattr(obj, 'AttachmentOffsetXyzAndRotation'):
-            self.atthOff = obj.AttachmentOffsetXyzAndRotation.Base
+        #self.baseSill = obj.Sill.Value
+        #self.basePos = obj.Base.Placement.Base
+        #self.atthOff = None
+        #if hasattr(obj, 'AttachmentOffsetXyzAndRotation'):
+        #    self.atthOff = obj.AttachmentOffsetXyzAndRotation.Base
 
     def loads(self,state):
 
@@ -210,37 +230,9 @@ class _Window(ArchComponent.Component):
 
         self.hideSubobjects(obj,prop)
         if prop == "Sill":
-            val = getattr(obj,prop).Value
-
-            if (getattr(self, 'baseSill', None) is None and
-                getattr(self, 'basePos', None) is None and
-                getattr(self, 'atthOff', None) is None):  # TODO Any cases only 1 or 2 are not None?
-                self.baseSill = val
-                self.basePos = obj.Base.Placement.Base
-                self.atthOff = None
-                if hasattr(obj, 'AttachmentOffsetXyzAndRotation'):
-                    self.atthOff = obj.AttachmentOffsetXyzAndRotation.Base
-                return
-
-            import ArchSketchObject  # Need to import per method
-            host = None
-            if obj.Hosts:
-                host = obj.Hosts[0]
-            if (hasattr(obj, 'AttachToAxisOrSketch') and
-                obj.AttachToAxisOrSketch == "Host" and
-                host and Draft.getType(host.Base) == "ArchSketch" and
-                hasattr(ArchSketchObject, 'updateAttachmentOffset')):
-                SketchArch = True
-            else:
-                SketchArch = False
-
-            if SketchArch:
-                objAttOff = obj.AttachmentOffsetXyzAndRotation
-                objAttOff.Base.z = self.atthOff.z + (obj.Sill.Value - self.baseSill)
-                obj.AttachmentOffsetXyzAndRotation = objAttOff
-            else:
-                obj.Base.Placement.Base.z = self.basePos.z + (obj.Sill.Value - self.baseSill)
-
+            self.setSillProperties(obj)  # Can't wait until onDocumentRestored
+            self.onSillChanged(obj)
+            
         elif not "Restore" in obj.State:
             if prop in ["Base","WindowParts","Placement","HoleDepth","Height","Width","Hosts","Shape"]:
                 # anti-recursive loops, bc the base sketch will touch the Placement all the time
@@ -574,11 +566,65 @@ class _Window(ArchComponent.Component):
             @realthunder added support to Links to run Linked Scripted Object's methods()
         '''
 
+        # Sill change support
+        self.setSillProperties(obj, linkObj)
+
         # Add features in the SketchArch External Add-on
         self.addSketchArchFeatures(obj, linkObj)
 
         # Execute features in the SketchArch External Add-on
         self.executeSketchArchFeatures(obj, linkObj)
+
+        # Sill change feature
+        self.onSillChanged(obj, linkObj)
+
+    def onSillChanged(self, orgObj, linkObj=None, index=None, linkElement=None):
+
+        if linkObj:
+            obj = linkObj
+        else:
+            obj = orgObj
+
+        val = getattr(obj,'Sill').Value
+        if (getattr(obj, 'baseSill', None) is None and
+            getattr(obj, 'basePosZ', None) is None and
+            getattr(obj, 'atthOffZ', None) is None):  # TODO Any cases only 1 or 2 are not None?
+            obj.baseSill = val
+            # Not to change Base's Placement, would change all Clones and
+            # Link's disposition unexpectedly to users, undesirable.
+            #
+            # self.basePos = obj.Base.Placement.Base
+            obj.basePosZ = obj.Placement.Base.z
+            obj.atthOffZ = None
+            if hasattr(obj, 'AttachmentOffsetXyzAndRotation'):
+                obj.atthOffZ = obj.AttachmentOffsetXyzAndRotation.Base.z
+            return
+
+        import ArchSketchObject  # Need to import per method
+        host = None
+        if obj.Hosts:
+            host = obj.Hosts[0]
+        if (hasattr(obj, 'AttachToAxisOrSketch') and
+            obj.AttachToAxisOrSketch == "Host" and
+            host and Draft.getType(host.Base) == "ArchSketch" and
+            hasattr(ArchSketchObject, 'updateAttachmentOffset')):
+            SketchArch = True
+        else:
+            SketchArch = False
+
+        # Keep track of change whether SketchArch is True or False (i.e.
+        # even Window object is not currently parametrically attached to
+        # a Wall or other Arch object at the moment).
+        #
+        # SketchArch or Not
+        if hasattr(obj, 'AttachmentOffsetXyzAndRotation'):
+            objAttOff = obj.AttachmentOffsetXyzAndRotation
+            objAttOff.Base.z = obj.atthOffZ + (obj.Sill.Value - obj.baseSill)
+            obj.AttachmentOffsetXyzAndRotation = objAttOff
+        if not SketchArch:
+            # Not to change Base's Placement
+            #obj.Base.Placement.Base.z = self.basePos.z + (obj.Sill.Value - self.baseSill)
+            obj.Placement.Base.z = obj.basePosZ + (obj.Sill.Value - obj.baseSill)
 
     def getSubFace(self):
         "returns a subface for creation of subvolume for cutting in a base object"
@@ -921,7 +967,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
 
         if len(hingeIdxs) > 0:
             actionInvertOpening = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Window_Tree.svg"),
-                                                translate("Arch", "Invert opening direction"),
+                                                translate("Arch", "Invert Opening Direction"),
                                                 menu)
             QtCore.QObject.connect(actionInvertOpening,
                                    QtCore.SIGNAL("triggered()"),
@@ -930,7 +976,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
 
         if len(hingeIdxs) == 1:
             actionInvertHinge = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Window_Tree.svg"),
-                                              translate("Arch", "Invert hinge position"),
+                                              translate("Arch", "Invert Hinge Position"),
                                               menu)
             QtCore.QObject.connect(actionInvertHinge,
                                    QtCore.SIGNAL("triggered()"),
@@ -1458,15 +1504,15 @@ class _ArchWindowTaskPanel:
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Window elements", None))
         self.holeLabel.setText(QtGui.QApplication.translate("Arch", "Hole wire", None))
         self.holeNumber.setToolTip(QtGui.QApplication.translate("Arch", "The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire", None))
-        self.holeButton.setText(QtGui.QApplication.translate("Arch", "Pick selected", None))
+        self.holeButton.setText(QtGui.QApplication.translate("Arch", "Pick Selected", None))
         self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None))
         self.addButton.setText(QtGui.QApplication.translate("Arch", "Add", None))
         self.editButton.setText(QtGui.QApplication.translate("Arch", "Edit", None))
-        self.createButton.setText(QtGui.QApplication.translate("Arch", "Create/update component", None))
+        self.createButton.setText(QtGui.QApplication.translate("Arch", "Create/Update Component", None))
         self.title.setText(QtGui.QApplication.translate("Arch", "Base 2D object", None))
         self.wiretree.setHeaderLabels([QtGui.QApplication.translate("Arch", "Wires", None)])
         self.comptree.setHeaderLabels([QtGui.QApplication.translate("Arch", "Components", None)])
-        self.newtitle.setText(QtGui.QApplication.translate("Arch", "Create new component", None))
+        self.newtitle.setText(QtGui.QApplication.translate("Arch", "Create new Component", None))
         self.new1.setText(QtGui.QApplication.translate("Arch", "Name", None))
         self.new2.setText(QtGui.QApplication.translate("Arch", "Type", None))
         self.new3.setText(QtGui.QApplication.translate("Arch", "Wires", None))
@@ -1474,14 +1520,14 @@ class _ArchWindowTaskPanel:
         self.new5.setText(QtGui.QApplication.translate("Arch", "Offset", None))
         self.new6.setText(QtGui.QApplication.translate("Arch", "Hinge", None))
         self.new7.setText(QtGui.QApplication.translate("Arch", "Opening mode", None))
-        self.addp4.setText(QtGui.QApplication.translate("Arch", "+ Frame prop.", None))
+        self.addp4.setText(QtGui.QApplication.translate("Arch", "+ Frame property", None))
         self.addp4.setToolTip(QtGui.QApplication.translate("Arch", "If this is checked, the window's Frame property value will be added to the value entered here", None))
-        self.addp5.setText(QtGui.QApplication.translate("Arch", "+ Offset prop.", None))
+        self.addp5.setText(QtGui.QApplication.translate("Arch", "+ Offset property", None))
         self.addp5.setToolTip(QtGui.QApplication.translate("Arch", "If this is checked, the window's Offset property value will be added to the value entered here", None))
-        self.field6.setText(QtGui.QApplication.translate("Arch", "Get selected edge", None))
+        self.field6.setText(QtGui.QApplication.translate("Arch", "Get Selected Edge", None))
         self.field6.setToolTip(QtGui.QApplication.translate("Arch", "Press to retrieve the selected edge", None))
-        self.invertOpeningButton.setText(QtGui.QApplication.translate("Arch", "Invert opening direction", None))
-        self.invertHingeButton.setText(QtGui.QApplication.translate("Arch", "Invert hinge position", None))
+        self.invertOpeningButton.setText(QtGui.QApplication.translate("Arch", "Invert Opening Direction", None))
+        self.invertHingeButton.setText(QtGui.QApplication.translate("Arch", "Invert Hinge Position", None))
         for i in range(len(WindowPartTypes)):
             self.field2.setItemText(i, QtGui.QApplication.translate("Arch", WindowPartTypes[i], None))
         for i in range(len(WindowOpeningModes)):

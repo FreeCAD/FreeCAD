@@ -92,12 +92,12 @@ class _ViewProviderArchMaterialContainer:
         if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
             return
         actionMergeByName = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Material_Group.svg"),
-                                          translate("Arch", "Merge duplicates"),
+                                          translate("Arch", "Merge Duplicates"),
                                           menu)
         actionMergeByName.triggered.connect(self.mergeByName)
         menu.addAction(actionMergeByName)
 
-        actionReorder = QtGui.QAction(translate("Arch", "Reorder children alphabetically"),
+        actionReorder = QtGui.QAction(translate("Arch", "Reorder Children Alphabetically"),
                                       menu)
         actionReorder.triggered.connect(self.reorder)
         menu.addAction(actionReorder)

@@ -232,9 +232,9 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
         if (PartDesign::Body * body = PartDesign::Body::findBodyOf(pcFeat)) {
             try {
                 App::Origin* orig = body->getOrigin();
-                addAxisToCombo(orig->getX(), std::string(), tr("Base x-axis"));
-                addAxisToCombo(orig->getY(), std::string(), tr("Base y-axis"));
-                addAxisToCombo(orig->getZ(), std::string(), tr("Base z-axis"));
+                addAxisToCombo(orig->getX(), std::string(), tr("Base X-axis"));
+                addAxisToCombo(orig->getY(), std::string(), tr("Base Y-axis"));
+                addAxisToCombo(orig->getZ(), std::string(), tr("Base Z-axis"));
             } catch (const Base::Exception &ex) {
                 ex.reportException();
             }
@@ -385,7 +385,8 @@ void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& m
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         int mode = ui->changeMode->currentIndex();
         if (selectionFace) {
-            QString refText = onAddSelection(msg);
+            auto rev = getObject<PartDesign::Revolution>();
+            QString refText = onAddSelection(msg, rev->UpToFace);
             if (refText.length() > 0) {
                 QSignalBlocker block(ui->lineFaceName);
                 ui->lineFaceName->setText(refText);
@@ -713,6 +714,7 @@ TaskDlgRevolutionParameters::TaskDlgRevolutionParameters(ViewProviderRevolution 
 {
     assert(RevolutionView);
     Content.push_back(new TaskRevolutionParameters(RevolutionView, "PartDesign_Revolution", tr("Revolution Parameters")));
+    Content.push_back(preview);
 }
 
 TaskDlgGrooveParameters::TaskDlgGrooveParameters(ViewProviderGroove *GrooveView)
@@ -720,6 +722,7 @@ TaskDlgGrooveParameters::TaskDlgGrooveParameters(ViewProviderGroove *GrooveView)
 {
     assert(GrooveView);
     Content.push_back(new TaskRevolutionParameters(GrooveView, "PartDesign_Groove", tr("Groove Parameters")));
+    Content.push_back(preview);
 }
 
 

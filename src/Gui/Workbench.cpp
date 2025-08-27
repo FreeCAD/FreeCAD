@@ -570,7 +570,7 @@ std::list<std::string> Workbench::listCommandbars() const
     qApp->translate("MAC_APPLICATION_MENU", "Hide %1");
     qApp->translate("MAC_APPLICATION_MENU", "Hide Others");
     qApp->translate("MAC_APPLICATION_MENU", "Show All");
-    qApp->translate("MAC_APPLICATION_MENU", "Preferences…");
+    qApp->translate("MAC_APPLICATION_MENU", "Preferences");
     qApp->translate("MAC_APPLICATION_MENU", "Quit %1");
     qApp->translate("MAC_APPLICATION_MENU", "About %1");
 #endif
@@ -723,6 +723,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Separator";
 #endif
     *tool << "Std_Measure"
+          << "Std_QuickMeasure"
           << "Std_UnitsCalculator"
           << "Separator"
           << "Std_ViewLoadImage"
@@ -812,7 +813,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     auto view = new ToolBarItem( root );
     view->setCommand("View");
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewGroup" << "Std_AlignToSelection"
-          << "Separator" << "Std_DrawStyle" << "Std_TreeViewActions" << "Std_Measure";
+          << "Separator" << "Std_DrawStyle" << "Std_TreeViewActions" << "Std_Measure" << "Std_QuickMeasure";
 
     // Individual views
     auto individualViews = new ToolBarItem(root, ToolBarItem::DefaultVisibility::Hidden);

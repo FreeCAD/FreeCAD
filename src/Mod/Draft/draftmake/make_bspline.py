@@ -80,7 +80,7 @@ def make_bspline(pointslist, closed=False, placement=None, face=None, support=No
         if len(pointslist) > 2:
             closed = True
             pointslist.pop()
-            _err = "Draft.make_bspline: Equal endpoints forced Closed"
+            _err = "Draft.make_bspline: Equal endpoints forced closed"
             App.Console.PrintWarning(translate("Draft", _err) + _err + "\n")
         else:
             # len == 2 and first == last   GIGO

@@ -38,13 +38,12 @@ public:
         sPixmap = "PartDesign_Mirrored.svg";
     }
 
-    const std::string & featureName() const override;
+    const std::string& featureName() const override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
 protected:
-    /// Returns a newly create dialog for the part to be placed in the task view
+    /// Returns a newly created dialog for the part to be placed in the task view
     TaskDlgFeatureParameters *getEditDialog() override;
-
 };
 
 

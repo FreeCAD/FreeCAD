@@ -1145,10 +1145,11 @@ void RecentMacrosAction::setFiles(const QStringList& files)
         for (int index = 0; index < existingCommands.count(); index++) {
             msgMain += QStringLiteral(" %1").arg(existingCommands[index]);
         }
-        msgMain += QStringLiteral(" respectively.\nHint: In Preferences -> Python -> Macro ->"
-                             " Recent Macros menu -> Keyboard Modifiers this should be Ctrl+Shift+"
-                             " by default, if this is now blank then you should revert it back to"
-                             " Ctrl+Shift+ by pressing both keys at the same time.");
+        msgMain +=
+            QStringLiteral(" respectively.\nHint: In Preferences → Python → Macro →"
+                           " Recent Macros menu → Keyboard Modifiers this should be Ctrl+Shift+"
+                           " by default, if this is now blank then you should revert it back to"
+                           " Ctrl+Shift+ by pressing both keys at the same time.");
         Base::Console().warning("%s\n", qPrintable(msgMain));
     }
 }

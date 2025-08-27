@@ -64,7 +64,7 @@ std::string FaceMakerBullseye::getUserFriendlyName() const
 
 std::string FaceMakerBullseye::getBriefExplanation() const
 {
-    return {tr("Supports making planar faces with holes with islands.").toStdString()};
+    return {tr("Supports making planar faces with holes with islands in them").toStdString()};
 }
 
 bool FaceMakerBullseye::WireInfo::operator<(const WireInfo& other) const
@@ -100,7 +100,7 @@ void FaceMakerBullseye::Build_Essence()
         }
         BRepLib_FindSurface planeFinder(comp, -1, /*OnlyPlane=*/Standard_True);
         if (!planeFinder.Found()) {
-            throw Base::ValueError("Wires are not coplanar.");
+            throw Base::ValueError("Wires are not coplanar");
         }
         plane = GeomAdaptor_Surface(planeFinder.Surface()).Plane();
     }
@@ -221,7 +221,7 @@ FaceMakerBullseye::FaceDriller::hitTest(const TopoShape& shape) const
     auto point = BRep_Tool::Pnt(vertex);
     double u, v;
     GeomAPI_ProjectPointOnSurf(point, myHPlane).LowerDistanceParameters(u, v);
-    const char* err = "FaceMakerBullseye::FaceDriller::hitTest: result unknown.";
+    const char* err = "FaceMakerBullseye::FaceDriller::hitTest: result unknown";
     auto hit = HitTest::HitNone;
     if (!myFaceBound.IsNull()) {
         BRepClass_FaceClassifier cl(myFaceBound, gp_Pnt2d(u, v), tol);
@@ -371,5 +371,5 @@ std::string FaceMakerRing::getUserFriendlyName() const
 
 std::string FaceMakerRing::getBriefExplanation() const
 {
-    return {tr("Supports making planar faces with holes and holes as faces.").toStdString()};
+    return {tr("Supports making planar faces with holes and holes as faces").toStdString()};
 }

@@ -37,12 +37,27 @@
 #include <Mod/PartDesign/App/FeatureDressUp.h>
 
 #include "ViewProviderDressUp.h"
+
+#include "StyleParameters.h"
 #include "TaskDressUpParameters.h"
+
+#include <Base/ServiceProvider.h>
+#include <Gui/Utilities.h>
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderDressUp,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderDressUp, PartDesignGui::ViewProvider)
 
+
+void ViewProviderDressUp::attach(App::DocumentObject* pcObject)
+{
+    ViewProvider::attach(pcObject);
+
+    auto* styleParameterManager = Base::provideService<Gui::StyleParameters::ParameterManager>();
+    PreviewColor.setValue(styleParameterManager->resolve(StyleParameters::PreviewDressUpColor));
+
+    setErrorState(false);
+}
 
 void ViewProviderDressUp::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
@@ -119,5 +134,18 @@ void ViewProviderDressUp::highlightReferences(const bool on)
         vp->unsetHighlightedFaces();
         vp->unsetHighlightedEdges();
     }
+}
+
+void ViewProviderDressUp::setErrorState(bool error)
+{
+    auto* styleParameterManager = Base::provideService<Gui::StyleParameters::ParameterManager>();
+
+    pcPreviewShape->transparency = styleParameterManager
+                                       ->resolve(error ? StyleParameters::PreviewErrorTransparency
+                                                       : StyleParameters::PreviewShapeTransparency)
+                                       .value;
+    pcPreviewShape->color = error
+        ? styleParameterManager->resolve(StyleParameters::PreviewErrorColor).asValue<SbColor>()
+        : PreviewColor.getValue().asValue<SbColor>();
 }
 

@@ -80,6 +80,7 @@ class PostVisualization(base_fempythonobject.BaseFemPythonObject):
 
     def __init__(self, obj):
         super().__init__(obj)
+        self.Type = "Fem::FemPostVisualization"
         obj.addExtension("App::GroupExtensionPython")
         self._setup_properties(obj)
 

@@ -45,7 +45,7 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
      %token DOCUMENT OBJECT
      %token EXPONENT
      %type <arguments> args
-     %type <expr> input unit_num us_building_unit other_unit exp unit_exp cond indexable
+     %type <expr> input unit_num us_building_unit other_unit exp unit_exp indexable
      %type <quantity> UNIT USUNIT
      %type <string> id_or_cell STRING IDENTIFIER CELLADDRESS
      %type <ivalue> INTEGER
@@ -61,8 +61,8 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
      %type <string_or_identifier> document
      %type <string_or_identifier> object
      %type <ivalue> integer
-     %precedence EQ NEQ LT GT GTE LTE
-     %precedence ':'
+     %right '?' ':'
+     %left EQ NEQ LT GT GTE LTE
      %left MINUSSIGN '+'
      %left '*' '/' '%'
      %precedence NUM_AND_UNIT
@@ -70,7 +70,7 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
      %precedence NEG
      %precedence POS
 
-%destructor { delete $$; } num range exp cond unit_exp indexable
+%destructor { delete $$; } num range exp unit_exp indexable
 %destructor { delete $$; } <component>
 %destructor { std::vector<Expression*>::const_iterator i = $$.begin(); while (i != $$.end()) { delete *i; ++i; } } args
 
@@ -82,7 +82,7 @@ input:     exp                                  { ScanResult = $1; valueExpressi
      |     unit_exp                             { ScanResult = $1; unitExpression = true;                                         }
      ;
 
-unit_num: num unit_exp %prec NUM_AND_UNIT       { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::UNIT, $2);  } 
+unit_num: num unit_exp %prec NUM_AND_UNIT       { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::UNIT, $2);  }
         | num us_building_unit num us_building_unit %prec NUM_AND_UNIT   { $$ = new OperatorExpression(DocumentObject, new OperatorExpression(DocumentObject, $1, OperatorExpression::UNIT, $2), OperatorExpression::ADD, new OperatorExpression(DocumentObject, $3, OperatorExpression::UNIT, $4));}
         ;
 
@@ -99,9 +99,15 @@ exp:      num                                   { $$ = $1;                      
         | exp '%' exp                           { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::MOD, $3);   }
         | exp '/' unit_exp                      { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
         | exp '^' exp                           { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, $3);   }
+        | exp EQ exp                            { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::EQ, $3);    }
+        | exp NEQ exp                           { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::NEQ, $3);   }
+        | exp LT exp                            { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::LT, $3);    }
+        | exp GT exp                            { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::GT, $3);    }
+        | exp GTE exp                           { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::GTE, $3);   }
+        | exp LTE exp                           { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::LTE, $3);   }
         | indexable                             { $$ = $1;                                                                        }
         | FUNC  args ')'                        { $$ = new FunctionExpression(DocumentObject, $1.first, std::move($1.second), $2);}
-        | cond '?' exp ':' exp                  { $$ = new ConditionalExpression(DocumentObject, $1, $3, $5);                     }
+        | exp '?' exp ':' exp                   { $$ = new ConditionalExpression(DocumentObject, $1, $3, $5);                     }
         | '(' exp ')'                           { $$ = $2; }
         ;
 
@@ -121,14 +127,6 @@ args: exp                                       { $$.push_back($1);             
 range: id_or_cell ':' id_or_cell                { $$ = new RangeExpression(DocumentObject, $1, $3);                               }
      ;
 
-cond: exp EQ exp                                { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::EQ, $3);    }
-    | exp NEQ exp                               { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::NEQ, $3);   }
-    | exp LT exp                                { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::LT, $3);    }
-    | exp GT exp                                { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::GT, $3);    }
-    | exp GTE exp                               { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::GTE, $3);   }
-    | exp LTE exp                               { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::LTE, $3);   }
-    | '(' cond ')'                              { $$ = $2; }
-    ;
 
 us_building_unit: USUNIT                        { $$ = new UnitExpression(DocumentObject, $1.scaler, $1.unitStr );                }
 other_unit: UNIT                                { $$ = new UnitExpression(DocumentObject, $1.scaler, $1.unitStr );                }

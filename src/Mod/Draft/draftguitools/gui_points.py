@@ -42,6 +42,7 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
 from draftguitools import gui_base_original
+from draftguitools import gui_tool_utils
 from draftutils import gui_utils
 from draftutils import params
 from draftutils import todo
@@ -60,7 +61,7 @@ class Point(gui_base_original.Creator):
 
         return {'Pixmap': 'Draft_Point',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Point", "Point"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Point", "Creates a point object. Click anywhere on the 3D view.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Point", "Creates a point")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -103,9 +104,9 @@ class Point(gui_base_original.Creator):
         It should act as if the Enter key was pressed, or the OK button
         was pressed in the task panel.
         """
-        if not self.ui.mouse:
-            return
         if event_cb:
+            if not self.ui.mouse:
+                return
             event = event_cb.getEvent()
             if (event.getState() != coin.SoMouseButtonEvent.DOWN or
                 event.getButton() != event.BUTTON1):
@@ -163,6 +164,12 @@ class Point(gui_base_original.Creator):
         super().finish()
         if cont or (cont is None and self.ui and self.ui.continueMode):
             self.Activated()
+
+    def get_hints(self):
+        return [Gui.InputHint(translate("draft", "%1 pick point"), Gui.UserInput.MouseLeft)] \
+            + gui_tool_utils._get_hint_xyz_constrain() \
+            + gui_tool_utils._get_hint_mod_constrain() \
+            + gui_tool_utils._get_hint_mod_snap()
 
 
 Gui.addCommand('Draft_Point', Point())
