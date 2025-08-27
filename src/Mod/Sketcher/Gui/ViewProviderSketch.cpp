@@ -42,6 +42,8 @@
 #include <limits>
 #endif
 
+#include <fmt/format.h>
+
 #include <Base/Console.h>
 #include <Base/Vector3D.h>
 #include <Gui/Application.h>
@@ -2666,89 +2668,63 @@ bool ViewProviderSketch::selectAll()
 
         if ((*it)->is<Part::GeomPoint>()) {
             VertexId++;
-            std::stringstream ss;
-            ss << "Vertex" << VertexId + 1;
-            addSelection2(ss.str());
+            addSelection2(fmt::format("Vertex{}", VertexId + 1));
         }
         else if ((*it)->is<Part::GeomLineSegment>()) {
             VertexId++; // start
-            std::stringstream ss1;
-            ss1 << "Vertex" << VertexId + 1;
-            addSelection2(ss1.str());
+            addSelection2(fmt::format("Vertex{}", VertexId + 1));
 
             VertexId++; // end
-            std::stringstream ss2;
-            ss2 << "Vertex" << VertexId + 1;
-            addSelection2(ss2.str());
+            addSelection2(fmt::format("Vertex{}", VertexId + 1));
 
-            std::stringstream ss_edge;
             if (GeoId >= 0) {
-                ss_edge << "Edge" << GeoId + 1;
+                addSelection2(fmt::format("Edge{}", GeoId + 1));
             } else {
-                ss_edge << "ExternalEdge" << -GeoId - 1;
+                addSelection2(fmt::format("ExternalEdge{}", -GeoId - 1));
             }
-            addSelection2(ss_edge.str());
         }
         else if ((*it)->isDerivedFrom<Part::GeomConic>()) {
             VertexId++;
-            std::stringstream ss;
-            ss << "Vertex" << VertexId + 1;
-            addSelection2(ss.str());
+            addSelection2(fmt::format("Vertex{}", VertexId + 1));
 
-            std::stringstream ss_edge;
             if (GeoId >= 0) {
-                ss_edge << "Edge" << GeoId + 1;
+                addSelection2(fmt::format("Edge{}", GeoId + 1));
             } else {
-                ss_edge << "ExternalEdge" << -GeoId - 1;
+                addSelection2(fmt::format("ExternalEdge{}", -GeoId - 1));
             }
-            addSelection2(ss_edge.str());
         }
         else if ((*it)->isDerivedFrom<Part::GeomCurve>()) {
             if (auto arc = dynamic_cast<const Part::GeomArcOfCircle*>(*it)) {
                 VertexId++; // start
-                std::stringstream ss1;
-                ss1 << "Vertex" << VertexId + 1;
-                addSelection2(ss1.str());
+                addSelection2(fmt::format("Vertex{}", VertexId + 1));
 
                 VertexId++; // end
-                std::stringstream ss2;
-                ss2 << "Vertex" << VertexId + 1;
-                addSelection2(ss2.str());
+                addSelection2(fmt::format("Vertex{}", VertexId + 1));
 
                 VertexId++; // center
-                std::stringstream ss3;
-                ss3 << "Vertex" << VertexId + 1;
-                addSelection2(ss3.str());
+                addSelection2(fmt::format("Vertex{}", VertexId + 1));
             } else {
                 // for other curves, select available vertices
                 VertexId++;
-                std::stringstream ss;
-                ss << "Vertex" << VertexId + 1;
-                addSelection2(ss.str());
+                addSelection2(fmt::format("Vertex{}", VertexId + 1));
             }
 
-            std::stringstream ss_edge;
             if (GeoId >= 0) {
-                ss_edge << "Edge" << GeoId + 1;
+                addSelection2(fmt::format("Edge{}", GeoId + 1));
             } else {
-                ss_edge << "ExternalEdge" << -GeoId - 1;
+                addSelection2(fmt::format("ExternalEdge{}", -GeoId - 1));
             }
-            addSelection2(ss_edge.str());
         }
     }
 
     // select constraints too
     const std::vector<Sketcher::Constraint*>& constraints = sketchObject->Constraints.getValues();
     for (size_t i = 0; i < constraints.size(); ++i) {
-        std::stringstream ss;
-        ss << "Constraint" << i + 1;
-        addSelection2(ss.str());
+        addSelection2(fmt::format("Constraint{}", i + 1));
     }
 
     // get root point if they exist
-    std::stringstream ss_root;
-    ss_root << "RootPoint";
-    addSelection2(ss_root.str());
+    addSelection2("RootPoint");
 
     return true;
 }
