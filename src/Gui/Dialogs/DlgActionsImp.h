@@ -29,6 +29,7 @@
 #include <QDialog>
 #include <QList>
 #include <QPair>
+#include "ui_DlgIconFolder.h"
 
 class QListWidgetItem;
 class QTreeWidgetItem;
@@ -125,14 +126,11 @@ public:
 private:
     void addFolder();
     void removeFolder();
-
-private:
+    void addTableRow(const QString& path);
     bool restart;
     int maxLines;
-    QTableWidget* tableWidget;
-    QPushButton* addButton;
     bool pathsChanged;
-    void addTableRow(const QString& path);
+    Ui_IconFolders* ui;
 };
 
 } // namespace Dialog
