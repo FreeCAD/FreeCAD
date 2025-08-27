@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>IFC properties editor</string>
+   <string>IFC Properties Editor</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -19,7 +19,7 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>IFC UUID:</string>
+        <string>IFC UUID</string>
        </property>
       </widget>
      </item>
@@ -35,7 +35,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>List of IFC properties for this object. Double-click to edit, drag and drop to reorganize</string>
+      <string>List of IFC properties for this object. Double-click to edit. Drag and drop to reorganize.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -60,7 +60,7 @@
      <item>
       <widget class="QPushButton" name="buttonDelete">
        <property name="text">
-        <string>Delete selected property/set</string>
+        <string>Delete Selected Property/Property Set</string>
        </property>
        <property name="icon">
         <iconset theme="gtk-delete">
@@ -80,7 +80,7 @@
    <item>
     <widget class="QCheckBox" name="checkParametric">
      <property name="text">
-      <string>Force export full FreeCAD parametric data</string>
+      <string>Force export of full FreeCAD parametric data</string>
      </property>
     </widget>
    </item>

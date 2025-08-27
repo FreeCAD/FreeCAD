@@ -705,7 +705,7 @@ CmdSpreadsheetStyleItalic::CmdSpreadsheetStyleItalic()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("&Italic Iext");
+    sMenuText = QT_TR_NOOP("&Italic Text");
     sToolTipText = QT_TR_NOOP("Sets the text in the selected cells italic");
     sWhatsThis = "Spreadsheet_StyleItalic";
     sStatusTip = sToolTipText;

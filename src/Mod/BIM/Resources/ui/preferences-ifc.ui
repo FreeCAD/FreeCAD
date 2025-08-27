@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>IFC import</string>
+   <string>IFC Import</string>
   </property>
   <layout class="QVBoxLayout">
    <property name="spacing">
@@ -23,7 +23,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
-      <string>General options</string>
+      <string>General Options</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
@@ -90,11 +90,11 @@ One object is the base object, the others are clones.</string>
            <string>EXPERIMENTAL
 The number of cores to use in multicore mode.
 Keep 0 to disable multicore mode.
-The maximum value should be your number of cores minus 1,
-for example, 3 if you have a 4-core CPU.
+The maximum value should be the number of cores in the CPU minus 1,
+for example, 3 cores for a 4-core CPU.
 
 Set it to 1 to use multicore mode in single-core mode; this is safer
-if you start getting crashes when you set multiple cores.</string>
+if crashes occur when multiple cores are set.</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ifcMulticore</cstring>
@@ -110,11 +110,11 @@ if you start getting crashes when you set multiple cores.</string>
            <string>EXPERIMENTAL
 The number of cores to use in multicore mode.
 Keep 0 to disable multicore mode.
-The maximum value should be your number of cores minus 1,
-for example, 3 if you have a 4-core CPU.
+The maximum value should be the number of cores in the CPU minus 1,
+for example, 3 cores for a 4-core CPU.
 
 Set it to 1 to use multicore mode in single-core mode; this is safer
-if you start getting crashes when you set multiple cores.</string>
+if crashes occur when multiple cores are set.</string>
           </property>
           <property name="text">
            <string>Number of cores to use (experimental)</string>
@@ -145,7 +145,7 @@ if you start getting crashes when you set multiple cores.</string>
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>Import options</string>
+      <string>Import Options</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -190,7 +190,7 @@ if you start getting crashes when you set multiple cores.</string>
           </item>
           <item>
            <property name="text">
-            <string>Do not import Arch objects</string>
+            <string>Do not import BIM objects</string>
            </property>
           </item>
          </widget>
@@ -202,7 +202,7 @@ if you start getting crashes when you set multiple cores.</string>
         <item>
          <widget class="QLabel" name="label_6">
           <property name="text">
-           <string>Import struct IFC objects as</string>
+           <string>Import structure IFC objects as</string>
           </property>
          </widget>
         </item>
@@ -389,7 +389,7 @@ they will be treated as one.</string>
         <item>
          <widget class="QLabel" name="label_4">
           <property name="text">
-           <string>Exclude list:</string>
+           <string>Exclude list</string>
           </property>
          </widget>
         </item>

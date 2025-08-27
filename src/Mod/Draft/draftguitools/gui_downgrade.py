@@ -56,7 +56,7 @@ class Downgrade(gui_base_original.Modifier):
         return {'Pixmap': 'Draft_Downgrade',
                 'Accel': "D, N",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Downgrade", "Downgrade"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Downgrade", "Downgrades the selected objects into simpler shapes.\nThe result of the operation depends on the types of objects, which may be able to be downgraded several times in a row.\nFor example, it explodes the selected polylines into simpler faces, wires, and then edges. It can also subtract faces.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Downgrade", "Downgrades the selected objects into simpler shapes.\nThe result of the operation depends on the types of objects, which may be downgraded several times in a row.\nFor example, a 3D solid is deconstructed into separate faces, wires, and then edges. Faces can also be subtracted.")}
 
     def Activated(self):
         """Execute when the command is called."""

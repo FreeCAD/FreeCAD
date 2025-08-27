@@ -55,7 +55,7 @@ def booleanFragments(list_of_shapes, mode, tolerance = 0.0):
     elif mode == "Split":
         gr = GeneralFuseResult(list_of_shapes, (pieces,map))
         gr.splitAggregates()
-        return Part.Compound(gr.pieces)
+        return Part.makeCompound(gr.pieces)
     else:
         raise ValueError("Unknown mode: {mode}".format(mode= mode))
 
@@ -69,15 +69,16 @@ def slice(base_shape, tool_shapes, mode, tolerance = 0.0):
     "Split" - wires and shells will be split at intersections, too.
     "CompSolid" - slice a solid and glue it back together to make a compsolid"""
 
-    shapes = [base_shape] + [Part.Compound([tool_shape]) for tool_shape in tool_shapes] # hack: putting tools into compounds will prevent contamination of result with pieces of tools
+    shapes = [base_shape] + [Part.makeCompound([tool_shape]) for tool_shape in tool_shapes] # hack: putting tools into compounds will prevent contamination of result with pieces of tools
     if len(shapes) < 2:
         raise ValueError("No slicing objects supplied!")
     pieces, map = shapes[0].generalFuse(shapes[1:], tolerance)
     gr = GeneralFuseResult(shapes, (pieces,map))
+    result = None
     if mode == "Standard":
         result = gr.piecesFromSource(shapes[0])
     elif mode == "CompSolid":
-        solids = Part.Compound(gr.piecesFromSource(shapes[0])).Solids
+        solids = Part.makeCompound(gr.piecesFromSource(shapes[0])).Solids
         if len(solids) < 1:
             raise ValueError("No solids in the result. Can't make compsolid.")
         elif len(solids) == 1:
@@ -86,7 +87,10 @@ def slice(base_shape, tool_shapes, mode, tolerance = 0.0):
     elif mode == "Split":
         gr.splitAggregates(gr.piecesFromSource(shapes[0]))
         result = gr.piecesFromSource(shapes[0])
-    return result[0] if len(result) == 1 else Part.Compound(result)
+    if result != None:
+        return result[0] if len(result) == 1 else Part.makeCompound(result)
+    else:
+        return Part.Shape()
 
 def xor(list_of_shapes, tolerance = 0.0):
     """xor(list_of_shapes, tolerance = 0.0): boolean XOR operation."""
@@ -99,4 +103,4 @@ def xor(list_of_shapes, tolerance = 0.0):
     for piece in gr.pieces:
         if len(gr.sourcesOfPiece(piece)) % 2 == 1:
             pieces_to_keep.append(piece)
-    return Part.Compound(pieces_to_keep)
+    return Part.makeCompound(pieces_to_keep)

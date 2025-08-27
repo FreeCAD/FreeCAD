@@ -47,11 +47,11 @@ const char* TouchpadNavigationStyle::mouseButtons(ViewerMode mode)
     case NavigationStyle::SELECTION:
         return QT_TR_NOOP("Press left mouse button");
     case NavigationStyle::PANNING:
-        return QT_TR_NOOP("Press SHIFT button");
+        return QT_TR_NOOP("Press Shift button");
     case NavigationStyle::DRAGGING:
-        return QT_TR_NOOP("Press ALT button");
+        return QT_TR_NOOP("Press Alt button");
     case NavigationStyle::ZOOMING:
-        return QT_TR_NOOP("Press CTRL and SHIFT buttons");
+        return QT_TR_NOOP("Press Ctrl and Shift buttons");
     default:
         return "No description";
     }

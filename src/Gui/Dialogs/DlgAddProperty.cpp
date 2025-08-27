@@ -104,7 +104,7 @@ void DlgAddProperty::accept()
     {
         QMessageBox::critical(getMainWindow(),
             QObject::tr("Invalid name"),
-            QObject::tr("The property name or group name must only contain alpha numericals,\n"
+            QObject::tr("The property or group name must only contain alphanumericals,\n"
                         "underscore, and must not start with a digit."));
         return;
     }

@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Display properties</string>
+   <string>Display Properties</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_4">
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox1">
      <property name="title">
-      <string>Viewing mode</string>
+      <string>Viewing Mode</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <property name="leftMargin">
@@ -52,7 +52,7 @@
         <item>
          <widget class="QLabel" name="textLabel1">
           <property name="text">
-           <string>Document window:</string>
+           <string>Document window</string>
           </property>
          </widget>
         </item>
@@ -84,7 +84,7 @@
            <bool>false</bool>
           </property>
           <property name="text">
-           <string>Plot mode:</string>
+           <string>Plot mode</string>
           </property>
          </widget>
         </item>
@@ -141,7 +141,7 @@
         <item>
          <widget class="QLabel" name="textLabel2">
           <property name="text">
-           <string>Point size:</string>
+           <string>Point size</string>
           </property>
          </widget>
         </item>
@@ -196,7 +196,7 @@
         <item>
          <widget class="QLabel" name="textLabel3">
           <property name="text">
-           <string>Line width:</string>
+           <string>Line width</string>
           </property>
          </widget>
         </item>
@@ -234,7 +234,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="textLabel1_2">
         <property name="text">
-         <string>Transparency:</string>
+         <string>Transparency</string>
         </property>
        </widget>
       </item>
@@ -286,7 +286,7 @@
       <item row="4" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Line transparency:</string>
+         <string>Line transparency</string>
         </property>
        </widget>
       </item>
@@ -362,14 +362,14 @@
         <item row="1" column="0">
          <widget class="QLabel" name="label_4">
           <property name="text">
-           <string>Color plot:</string>
+           <string>Color plot</string>
           </property>
          </widget>
         </item>
         <item row="0" column="0">
          <widget class="QLabel" name="label_6">
           <property name="text">
-           <string>Custom appearance:</string>
+           <string>Custom appearance</string>
           </property>
          </widget>
         </item>
@@ -379,21 +379,21 @@
         <item row="3" column="0">
          <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>Point color:</string>
+           <string>Point color</string>
           </property>
          </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>Line color:</string>
+           <string>Line color</string>
           </property>
          </widget>
         </item>
         <item row="1" column="1">
          <widget class="QPushButton" name="buttonColorPlot">
           <property name="text">
-           <string notr="true">...</string>
+           <string notr="true">Color Plot</string>
           </property>
          </widget>
         </item>
@@ -403,7 +403,7 @@
         <item row="0" column="1">
          <widget class="QPushButton" name="buttonCustomAppearance">
           <property name="text">
-           <string notr="true">...</string>
+           <string notr="true">Appearance</string>
           </property>
          </widget>
         </item>

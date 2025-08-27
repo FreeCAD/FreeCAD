@@ -188,7 +188,35 @@ SheetTableView::SheetTableView(QWidget* parent)
         menu.exec(QCursor::pos());
     });
 
-    actionProperties = new QAction(tr("Properties…"), this);
+    auto createAction = [this](const char* iconPath, const QString& text, auto fun) {
+        const QIcon icon {QString::fromLatin1(iconPath)};
+        auto act = new QAction(icon, text, this);
+        connect(act, &QAction::triggered, this, fun);
+        contextMenu.addAction(act);
+        return act;
+    };
+
+    actionProperties = createAction("", tr("Properties…"), &SheetTableView::cellProperties);
+    contextMenu.addSeparator();
+    actionRecompute =
+        createAction(":/icons/view-refresh.svg", tr("Recompute"), &SheetTableView::onRecompute);
+    actionBind = createAction("", tr("Bind…"), &SheetTableView::onBind);
+    actionConf = createAction("", tr("Configuration Table…"), &SheetTableView::onConfSetup);
+    contextMenu.addSeparator();
+    actionMerge = createAction(":/icons/SpreadsheetMergeCells.svg",
+                               tr("Merge Cells"),
+                               &SheetTableView::mergeCells);
+    actionSplit = createAction(":/icons/SpreadsheetSplitCell.svg",
+                               tr("Split Cells"),
+                               &SheetTableView::splitCell);
+    contextMenu.addSeparator();
+    actionCut = createAction(":/icons/edit-cut.svg", tr("Cut"), &SheetTableView::cutSelection);
+    actionCopy = createAction(":/icons/edit-copy.svg", tr("Copy"), &SheetTableView::copySelection);
+    actionPaste =
+        createAction(":/icons/edit-paste.svg", tr("Paste"), &SheetTableView::pasteClipboard);
+    actionDel =
+        createAction(":/icons/edit-delete.svg", tr("Delete"), &SheetTableView::deleteSelection);
+
     addAction(actionProperties);
 
     horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -196,47 +224,13 @@ SheetTableView::SheetTableView(QWidget* parent)
 
     verticalHeader()->setDefaultAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
-    contextMenu.addAction(actionProperties);
-    connect(actionProperties, &QAction::triggered, this, &SheetTableView::cellProperties);
-
-    contextMenu.addSeparator();
-    actionRecompute = new QAction(tr("Recompute"), this);
-    connect(actionRecompute, &QAction::triggered, this, &SheetTableView::onRecompute);
-    contextMenu.addAction(actionRecompute);
-
-    actionBind = new QAction(tr("Bind…"), this);
-    connect(actionBind, &QAction::triggered, this, &SheetTableView::onBind);
-    contextMenu.addAction(actionBind);
-
-    actionConf = new QAction(tr("Configuration Table…"), this);
-    connect(actionConf, &QAction::triggered, this, &SheetTableView::onConfSetup);
-    contextMenu.addAction(actionConf);
-
     horizontalHeader()->addAction(actionBind);
     verticalHeader()->addAction(actionBind);
-
-    contextMenu.addSeparator();
-    actionMerge = contextMenu.addAction(tr("Merge Cells"));
-    connect(actionMerge, &QAction::triggered, this, &SheetTableView::mergeCells);
-    actionSplit = contextMenu.addAction(tr("Split Cells"));
-    connect(actionSplit, &QAction::triggered, this, &SheetTableView::splitCell);
-
-    contextMenu.addSeparator();
-    actionCut = contextMenu.addAction(tr("Cut"));
-    connect(actionCut, &QAction::triggered, this, &SheetTableView::cutSelection);
-    actionCopy = contextMenu.addAction(tr("Copy"));
-    connect(actionCopy, &QAction::triggered, this, &SheetTableView::copySelection);
-    actionPaste = contextMenu.addAction(tr("Paste"));
-    connect(actionPaste, &QAction::triggered, this, &SheetTableView::pasteClipboard);
-    actionDel = contextMenu.addAction(tr("Delete"));
-    connect(actionDel, &QAction::triggered, this, &SheetTableView::deleteSelection);
 
     setTabKeyNavigation(false);
 
     timer.setSingleShot(true);
-    QObject::connect(&timer, &QTimer::timeout, [this]() {
-        updateCellSpan();
-    });
+    QObject::connect(&timer, &QTimer::timeout, this, &SheetTableView::updateCellSpan);
 }
 
 void SheetTableView::onRecompute()

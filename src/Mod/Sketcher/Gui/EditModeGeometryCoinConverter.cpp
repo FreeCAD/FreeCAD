@@ -81,20 +81,6 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
 
     pointCounter.resize(geometryLayerParameters.getCoinLayerCount(), 0);
 
-    // RootPoint
-    // TODO: RootPoint is here added in layer0. However, this layer may be hidden. The point should,
-    // when that functionality is provided, be added to the first visible layer, or may even a new
-    // empty layer.
-    Points[0].emplace_back(0., 0., 0.);
-    coinMapping.PointIdToGeoId[0].push_back(-1);  // root point
-    coinMapping.PointIdToPosId[0].push_back(Sketcher::PointPos::start);
-    coinMapping.PointIdToVertexId[0].push_back(-1);
-    // VertexId is the reference used for point selection/preselection
-
-    coinMapping.GeoElementId2SetId.emplace(std::piecewise_construct,
-                                           std::forward_as_tuple(Sketcher::GeoElementId::RtPnt),
-                                           std::forward_as_tuple(pointCounter[0]++, 0));
-
     auto setTracking = [this](int geoId,
                               int coinLayer,
                               EditModeGeometryCoinConverter::PointsMode pointmode,
@@ -271,8 +257,8 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
 
     // Coin Nodes Editing
     int vOrFactor = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider);
-    double linez = vOrFactor * drawingParameters.zLowLines;  // NOLINT
-    double pointz = vOrFactor * drawingParameters.zLowPoints;
+    double linez = vOrFactor * static_cast<double>(drawingParameters.zLowLines);  // NOLINT
+    double pointz = vOrFactor * static_cast<double>(drawingParameters.zLowPoints);
 
     for (auto l = 0; l < geometryLayerParameters.getCoinLayerCount(); l++) {
         geometryLayerNodes.PointsCoordinate[l]->point.setNum(Points[l].size());

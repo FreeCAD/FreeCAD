@@ -41,7 +41,7 @@ import sys
 class CommandTube:
     """Command for creating Tube."""
     def GetResources(self):
-        return {'MenuText': Qt.QT_TRANSLATE_NOOP("Part_Tube","Create tube"),
+        return {'MenuText': Qt.QT_TRANSLATE_NOOP("Part_Tube","Tube"),
                 'Accel': "",
                 'CmdType': "AlterDoc:Alter3DView:AlterSelection",
                 'Pixmap': "Part_Tube_Parametric",

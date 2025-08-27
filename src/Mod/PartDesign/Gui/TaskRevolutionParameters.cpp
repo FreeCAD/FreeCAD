@@ -86,7 +86,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
         ui->revolveAngle2->bind(rev->Angle2);
     }
     else {
-        throw Base::TypeError("The object is neither a Groove nor a Revolution.");
+        throw Base::TypeError("The object is neither a groove nor a revolution.");
     }
 
     setupDialog();
@@ -213,7 +213,7 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
 
         auto *pcFeat = getObject<PartDesign::ProfileBased>();
         if (!pcFeat) {
-            throw Base::TypeError("The object is not ProfileBased.");
+            throw Base::TypeError("The object is not profile-based.");
         }
 
         //add sketch axes
@@ -232,16 +232,16 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
         if (PartDesign::Body * body = PartDesign::Body::findBodyOf(pcFeat)) {
             try {
                 App::Origin* orig = body->getOrigin();
-                addAxisToCombo(orig->getX(), std::string(), tr("Base X axis"));
-                addAxisToCombo(orig->getY(), std::string(), tr("Base Y axis"));
-                addAxisToCombo(orig->getZ(), std::string(), tr("Base Z axis"));
+                addAxisToCombo(orig->getX(), std::string(), tr("Base X-axis"));
+                addAxisToCombo(orig->getY(), std::string(), tr("Base Y-axis"));
+                addAxisToCombo(orig->getZ(), std::string(), tr("Base Z-axis"));
             } catch (const Base::Exception &ex) {
                 ex.reportException();
             }
         }
 
         //add "Select reference"
-        addAxisToCombo(nullptr, std::string(), tr("Select reference..."));
+        addAxisToCombo(nullptr, std::string(), tr("Select reference…"));
     }//endif forceRefill
 
     //add current link, if not in list
@@ -385,7 +385,8 @@ void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& m
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         int mode = ui->changeMode->currentIndex();
         if (selectionFace) {
-            QString refText = onAddSelection(msg);
+            auto rev = getObject<PartDesign::Revolution>();
+            QString refText = onAddSelection(msg, rev->UpToFace);
             if (refText.length() > 0) {
                 QSignalBlocker block(ui->lineFaceName);
                 ui->lineFaceName->setText(refText);
@@ -712,14 +713,16 @@ TaskDlgRevolutionParameters::TaskDlgRevolutionParameters(ViewProviderRevolution 
     : TaskDlgSketchBasedParameters(RevolutionView)
 {
     assert(RevolutionView);
-    Content.push_back(new TaskRevolutionParameters(RevolutionView, "PartDesign_Revolution", tr("Revolution parameters")));
+    Content.push_back(new TaskRevolutionParameters(RevolutionView, "PartDesign_Revolution", tr("Revolution Parameters")));
+    Content.push_back(preview);
 }
 
 TaskDlgGrooveParameters::TaskDlgGrooveParameters(ViewProviderGroove *GrooveView)
     : TaskDlgSketchBasedParameters(GrooveView)
 {
     assert(GrooveView);
-    Content.push_back(new TaskRevolutionParameters(GrooveView, "PartDesign_Groove", tr("Groove parameters")));
+    Content.push_back(new TaskRevolutionParameters(GrooveView, "PartDesign_Groove", tr("Groove Parameters")));
+    Content.push_back(preview);
 }
 
 

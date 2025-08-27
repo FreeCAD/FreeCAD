@@ -57,7 +57,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Geometric Hatch</string>
+           <string>Geometric hatch</string>
           </property>
          </widget>
         </item>
@@ -81,7 +81,7 @@
         <item row="11" column="0">
          <widget class="Gui::PrefCheckBox" name="pcbMonochrome">
           <property name="toolTip">
-           <string>If checked, FreeCAD will use a single color for all text and lines.</string>
+           <string>Use a single colour for all text and lines</string>
           </property>
           <property name="text">
            <string>Monochrome</string>
@@ -167,7 +167,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Section Face</string>
+           <string>Section face</string>
           </property>
          </widget>
         </item>
@@ -257,7 +257,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Leaderline</string>
+           <string>Leader line</string>
           </property>
          </widget>
         </item>
@@ -277,7 +277,7 @@
         <item row="4" column="1">
          <widget class="Gui::PrefColorButton" name="pcbDimColor">
           <property name="toolTip">
-           <string>Color of dimension lines and text.</string>
+           <string>Color of dimension lines and text</string>
           </property>
           <property name="color">
            <color>
@@ -297,7 +297,7 @@
         <item row="11" column="4">
          <widget class="Gui::PrefColorButton" name="pcbPageColor">
           <property name="toolTip">
-           <string>Use a light color for dark text and dark color for light text.</string>
+           <string>Use a light color for dark text and dark color for light text</string>
           </property>
           <property name="color">
            <color>
@@ -389,7 +389,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Detail Highlight</string>
+           <string>Detail highlight</string>
           </property>
          </widget>
         </item>
@@ -408,21 +408,21 @@
         <item row="11" column="3">
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Page Color</string>
+           <string>Page color</string>
           </property>
          </widget>
         </item>
         <item row="2" column="3">
          <widget class="QLabel" name="label_14">
           <property name="text">
-           <string>Section Line</string>
+           <string>Section line</string>
           </property>
          </widget>
         </item>
         <item row="10" column="0">
          <widget class="Gui::PrefCheckBox" name="pcbLightOnDark">
           <property name="toolTip">
-           <string>Check this to use light text and lines on dark backgrounds. Set Page Color to a dark color. Transparent or light color faces are recommended with this option.</string>
+           <string>Uses light text and lines on dark backgrounds and sets page color to a dark color. Transparent or light color faces are recommended with this option.</string>
           </property>
           <property name="text">
            <string>Light on dark</string>
@@ -492,7 +492,7 @@
            <string>Object faces will be transparent</string>
           </property>
           <property name="text">
-           <string>Transparent Faces</string>
+           <string>Transparent faces</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ClearFace</cstring>
@@ -589,7 +589,7 @@
         <item row="7" column="0">
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Grid Color</string>
+           <string>Grid color</string>
           </property>
          </widget>
         </item>
@@ -601,7 +601,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Hidden Line</string>
+           <string>Hidden line</string>
           </property>
          </widget>
         </item>
@@ -640,7 +640,7 @@
         <item row="8" column="0">
          <widget class="QLabel" name="label_8">
           <property name="text">
-           <string>Template Underline</string>
+           <string>Template underline</string>
           </property>
          </widget>
         </item>

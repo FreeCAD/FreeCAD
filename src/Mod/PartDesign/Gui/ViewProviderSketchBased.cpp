@@ -36,7 +36,6 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderSketchBased, PartDesignGui::ViewProvi
 
 
 ViewProviderSketchBased::ViewProviderSketchBased() = default;
-
 ViewProviderSketchBased::~ViewProviderSketchBased() = default;
 
 
@@ -48,20 +47,3 @@ std::vector<App::DocumentObject*> ViewProviderSketchBased::claimChildren() const
 
     return temp;
 }
-
-
-bool ViewProviderSketchBased::onDelete(const std::vector<std::string> &s) {
-    PartDesign::ProfileBased* feature = getObject<PartDesign::ProfileBased>();
-
-    // get the Sketch
-    Sketcher::SketchObject *pcSketch = nullptr;
-    if (feature->Profile.getValue())
-        pcSketch = static_cast<Sketcher::SketchObject*>(feature->Profile.getValue());
-
-    // if abort command deleted the object the sketch is visible again
-    if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
-        Gui::Application::Instance->getViewProvider(pcSketch)->show();
-
-    return ViewProvider::onDelete(s);
-}
-

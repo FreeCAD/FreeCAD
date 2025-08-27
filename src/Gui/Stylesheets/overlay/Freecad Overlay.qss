@@ -90,7 +90,7 @@ QSint--ActionGroup QFrame[class="content"] {
   border-top-right-radius: 0px;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
-  }
+}
 
 QSint--ActionGroup QFrame[class="header"] {
   border: 1px solid @GeneralBorderColor;
@@ -99,7 +99,7 @@ QSint--ActionGroup QFrame[class="header"] {
   border-top-right-radius: 3px;
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
-  }
+}
 
 Gui--OverlayTabWidget::tab-bar:top,
 Gui--OverlayTabWidget::tab-bar:bottom {
@@ -172,47 +172,3 @@ Gui--OverlayToolButton[objectName="OBTN AutoMode"] {
 Gui--OverlayToolButton[objectName="OBTN AutoMode"]:hover {
   image: url(qss:@IconsLocationFolderName/mode-@StylesheetIconsColor.svg);
 }
-
-
-QTreeView::branch:open:has-children:has-siblings  {
-  border-image: none;
-  image: url(qss:@IconsLocationFolderName/Arrow-down-@StylesheetIconsColor.svg);
-}
-
-QTreeView::branch:open:has-children:!has-siblings  {
-  border-image: none;
-  image: url(qss:@IconsLocationFolderName/Arrow-down-@StylesheetIconsColor.svg);
-}
-
-QTreeView::branch:closed:has-children:has-siblings  {
-  border-image: none;
-  image: url(qss:@IconsLocationFolderName/Arrow-right-@StylesheetIconsColor.svg);
-}
-
-QTreeView::branch:has-children:!has-siblings:closed  {
-  border-image: none;
-  image: url(qss:@IconsLocationFolderName/Arrow-right-@StylesheetIconsColor.svg);
-}
-
-
- Gui--TreePanel QTreeView::branch:open:has-children:has-siblings  {
-  border-image: none;
-  image: url(qss:@IconsLocationFolderName/Arrow-down-@StylesheetIconsColor.svg);
-}
-
- Gui--TreePanel QTreeView::branch:open:has-children:!has-siblings  {
-  border-image: none;
-  image: url(qss:@IconsLocationFolderName/Arrow-down-@StylesheetIconsColor.svg);
-}
-
- Gui--TreePanel QTreeView::branch:closed:has-children:has-siblings  {
-  border-image: none;
-  image: url(qss:@IconsLocationFolderName/Arrow-right-@StylesheetIconsColor.svg);
-}
-
- Gui--TreePanel QTreeView::branch:has-children:!has-siblings:closed  {
-  border-image: none;
-  image: url(qss:@IconsLocationFolderName/Arrow-right-@StylesheetIconsColor.svg);
-}
-
-

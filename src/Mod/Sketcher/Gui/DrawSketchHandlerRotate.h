@@ -614,8 +614,10 @@ void DSHRotateControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
                     return;
                 }
 
-                onSketchPos.x = handler->centerPoint.x + cos((handler->startAngle + arcAngle));
-                onSketchPos.y = handler->centerPoint.y + sin((handler->startAngle + arcAngle));
+                handler->totalAngle = arcAngle;
+
+                onSketchPos.x = handler->centerPoint.x + cos(handler->startAngle + arcAngle);
+                onSketchPos.y = handler->centerPoint.y + sin(handler->startAngle + arcAngle);
             }
         } break;
         default:

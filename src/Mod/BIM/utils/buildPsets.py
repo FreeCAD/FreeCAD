@@ -104,14 +104,14 @@ class PropertyDefHandler(xml.sax.ContentHandler):
 # MAIN
 
 
-print("Getting psets xml definitions...")
+print("Getting psets xml definitions…")
 
 with open("psd.zip","wb") as f:
     u = urlopen(URL)
     p = u.read()
     f.write(p)
 
-print("Reading xml definitions...")
+print("Reading xml definitions…")
 
 psets = []
 qtos = []
@@ -127,7 +127,7 @@ with ZipFile("psd.zip", 'r') as z:
         else:
             qtos.append(handler.line)
 
-print("Saving files...")
+print("Saving files…")
 
 with open("../Presets/pset_definitions.csv", "w") as f:
     for l in psets:

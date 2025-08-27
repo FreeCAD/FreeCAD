@@ -17,7 +17,7 @@
    <item row="0" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>PAT file:</string>
+      <string>PAT file</string>
      </property>
     </widget>
    </item>
@@ -31,7 +31,7 @@
    <item row="1" column="0">
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>Pattern:</string>
+      <string>Pattern</string>
      </property>
     </widget>
    </item>
@@ -41,7 +41,7 @@
    <item row="2" column="0">
     <widget class="QLabel" name="label_3">
      <property name="text">
-      <string>Scale:</string>
+      <string>Scale</string>
      </property>
     </widget>
    </item>
@@ -61,7 +61,7 @@
    <item row="3" column="0">
     <widget class="QLabel" name="label_4">
      <property name="text">
-      <string>Rotation:</string>
+      <string>Rotation</string>
      </property>
     </widget>
    </item>
@@ -78,21 +78,28 @@
    <item row="4" column="0">
     <widget class="QLabel" name="label_5">
      <property name="text">
-      <string>Align to face:</string>
+      <string>Align to face</string>
      </property>
     </widget>
    </item>
    <item row="4" column="1">
     <widget class="QCheckBox" name="Translate">
      <property name="toolTip">
-      <string>If checked, the pattern aligns with the base object.
-If unchecked, the pattern aligns with the global coordinate system.
+      <string>Aligns the pattern with the base object.
+Otherwise, the pattern aligns with the global coordinate system.
 This setting modifies the Translate property.</string>
      </property>
      <property name="text">
       <string/>
      </property>
     </widget>
+   </item>
+   <item row="5" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

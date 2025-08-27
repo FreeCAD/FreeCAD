@@ -238,7 +238,7 @@ class Arch_Window:
                 hasattr(FreeCAD, 'ArchSketchLock') and 
                 FreeCAD.ArchSketchLock):
                 if self.Include:
-                    # Window base sketch's placement stay at orgin is good if addon exists and self.Include
+                    # Window base sketch's placement stay at origin is good if addon exists and self.Include
                     # Window object triggers onChanged() upon setting/changing Window.Sill to move Window's z position
                     # For Window with SketchArch add-on, attachToHost() is to be run below below to set the 'initial' Window's placement first before triggering onChanged() below,
                     # so window_sill parameter is not used here at the moment, see 'if self.Include' below.

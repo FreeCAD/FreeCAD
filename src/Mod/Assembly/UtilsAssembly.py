@@ -109,9 +109,7 @@ def number_of_components_in(assembly):
         if not obj.isDerivedFrom("App::GeoFeature"):
             continue
 
-        if obj.isDerivedFrom("App::Origin"):
-            # after https://github.com/FreeCAD/FreeCAD/pull/16675 merges,
-            # replace the App::Origin test by the one above
+        if obj.isDerivedFrom("App::LocalCoordinateSystem"):
             continue
 
         i = i + 1

@@ -170,7 +170,7 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 void TaskDraftParameters::setButtons(const selectionModes mode)
 {
-    ui->buttonRefSel->setText(mode == refSel ? btnPreviewStr() : btnSelectStr());
+    ui->buttonRefSel->setText(mode == refSel ? stopSelectionLabel() : startSelectionLabel());
     ui->buttonRefSel->setChecked(mode == refSel);
     ui->buttonLine->setChecked(mode == line);
     ui->buttonPlane->setChecked(mode == plane);
@@ -180,7 +180,7 @@ void TaskDraftParameters::onButtonPlane(bool checked)
 {
     if (checked) {
         setButtons(plane);
-        hideObject();
+        getViewObject()->showPreviousFeature(true);
         selectionMode = plane;
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate(new ReferenceSelection(
@@ -193,7 +193,7 @@ void TaskDraftParameters::onButtonLine(bool checked)
 {
     if (checked) {
         setButtons(line);
-        hideObject();
+        getViewObject()->showPreviousFeature(true);
         selectionMode = line;
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate(
@@ -284,7 +284,7 @@ void TaskDraftParameters::apply()
 {
     // Alert user if he created an empty feature
     if (ui->listWidgetReferences->count() == 0) {
-        Base::Console().warning(tr("Empty draft created !\n").toStdString().c_str());
+        Base::Console().warning(tr("Empty draft created!\n").toStdString().c_str());
     }
 
     TaskDressUpParameters::apply();
@@ -301,6 +301,7 @@ TaskDlgDraftParameters::TaskDlgDraftParameters(ViewProviderDraft* DressUpView)
     parameter = new TaskDraftParameters(DressUpView);
 
     Content.push_back(parameter);
+    Content.push_back(preview);
 }
 
 TaskDlgDraftParameters::~TaskDlgDraftParameters() = default;
@@ -311,7 +312,7 @@ bool TaskDlgDraftParameters::accept()
 {
     auto tobj = getObject();
     if (!tobj->isError()) {
-        parameter->showObject();
+        getViewObject()->showPreviousFeature(false);
     }
 
     parameter->apply();

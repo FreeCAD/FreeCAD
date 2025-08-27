@@ -27652,8 +27652,8 @@ ConstraintFixed,3
 
 ***********************************************************
 ** constraints force node loads
-*CLOAD
 ** ConstraintForce
+*CLOAD
 ** node loads on shape: Box1:Face6
 17,3,-0
 19,3,-0

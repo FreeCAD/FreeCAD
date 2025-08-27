@@ -50,7 +50,7 @@ namespace sp = std::placeholders;
 #endif
 
 TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* parent)
-    : TaskSketchBasedParameters(HoleView, parent, "PartDesign_Hole", tr("Hole parameters"))
+    : TaskSketchBasedParameters(HoleView, parent, "PartDesign_Hole", tr("Hole Parameters"))
     , observer(new Observer(this, getObject<PartDesign::Hole>()))
     , isApplying(false)
     , ui(new Ui_TaskHoleParameters)
@@ -240,8 +240,6 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     connect(ui->BaseProfileType, qOverload<int>(&QComboBox::currentIndexChanged),
             this, &TaskHoleParameters::baseProfileTypeChanged);
     // clang-format on
-
-    getViewObject()->show();
 
     ui->Diameter->bind(pcHole->Diameter);
     ui->HoleCutDiameter->bind(pcHole->HoleCutDiameter);
@@ -1161,6 +1159,7 @@ TaskDlgHoleParameters::TaskDlgHoleParameters(ViewProviderHole* HoleView)
     parameter = new TaskHoleParameters(HoleView);
 
     Content.push_back(parameter);
+    Content.push_back(preview);
 }
 
 TaskDlgHoleParameters::~TaskDlgHoleParameters() = default;

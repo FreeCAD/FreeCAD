@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Select Base Models</string>
+   <string>Base Model Selection</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

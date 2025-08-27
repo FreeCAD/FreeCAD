@@ -52,7 +52,7 @@ class Rectangle(gui_base_original.Creator):
         return {'Pixmap': 'Draft_Rectangle',
                 'Accel': "R, E",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Rectangle", "Rectangle"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Rectangle", "Creates a 2-point rectangle.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Rectangle", "Creates a 2-point rectangle")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -158,6 +158,8 @@ class Rectangle(gui_base_original.Creator):
         if arg["Type"] == "SoKeyboardEvent":
             if arg["Key"] == "ESCAPE":
                 self.finish()
+        elif not self.ui.mouse:
+            pass
         elif arg["Type"] == "SoLocation2Event":  # mouse movement detection
             self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg, noTracker=True)
             self.rect.update(self.point)
@@ -200,6 +202,21 @@ class Rectangle(gui_base_original.Creator):
             self.rect.on()
             if self.planetrack:
                 self.planetrack.set(point)
+            self.update_hints()
+
+    def get_hints(self):
+        if len(self.node) == 0:
+            hints = [
+                Gui.InputHint(translate("draft", "%1 pick first point"), Gui.UserInput.MouseLeft)
+            ]
+        else:
+            hints = [
+                Gui.InputHint(translate("draft", "%1 pick opposite point"), Gui.UserInput.MouseLeft)
+            ]
+        return hints \
+            + gui_tool_utils._get_hint_xyz_constrain() \
+            + gui_tool_utils._get_hint_mod_constrain() \
+            + gui_tool_utils._get_hint_mod_snap()
 
 
 Gui.addCommand('Draft_Rectangle', Rectangle())

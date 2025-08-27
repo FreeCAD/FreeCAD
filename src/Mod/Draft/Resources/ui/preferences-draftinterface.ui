@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_1">
      <property name="title">
-      <string>In-command shortcuts</string>
+      <string>In-Command Shortcuts</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_1">
       <item row="0" column="0">
@@ -778,7 +778,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>UI options</string>
+      <string>UI Options</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
@@ -822,10 +822,10 @@
       <item row="2" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBox_DisplayStatusbarScaleWidget">
         <property name="toolTip">
-         <string>If checked, the Annotation scale widget is displayed in the Draft status bar</string>
+         <string>If checked, the annotation scale widget is displayed in the Draft status bar</string>
         </property>
         <property name="text">
-         <string>Show the Annotation scale widget in the Draft Workbench</string>
+         <string>Show the Annotation Scale Widget in the Draft Workbench</string>
         </property>
         <property name="checked">
          <bool>true</bool>

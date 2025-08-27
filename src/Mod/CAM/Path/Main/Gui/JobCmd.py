@@ -54,9 +54,9 @@ class CommandJobCreate:
     def GetResources(self):
         return {
             "Pixmap": "CAM_Job",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_Job", "Job"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_Job", "New Job"),
             "Accel": "P, J",
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_Job", "Creates a CAM Job"),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_Job", "Creates a CAM job"),
         }
 
     def IsActive(self):
@@ -101,7 +101,7 @@ class CommandJobTemplateExport:
             "MenuText": QT_TRANSLATE_NOOP("CAM_ExportTemplate", "Export Template"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_ExportTemplate",
-                "Exports CAM Job as a template to be used for other jobs",
+                "Exports the CAM job as a template to be used for other jobs",
             ),
         }
 
@@ -200,4 +200,4 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand("CAM_Job", CommandJobCreate())
     FreeCADGui.addCommand("CAM_ExportTemplate", CommandJobTemplateExport())
 
-FreeCAD.Console.PrintLog("Loading PathJobCmd... done\n")
+FreeCAD.Console.PrintLog("Loading PathJobCmd… done\n")

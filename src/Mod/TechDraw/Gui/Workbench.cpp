@@ -37,9 +37,9 @@ using namespace TechDrawGui;
 
 #if 0// needed for Qt's lupdate utility
     qApp->translate("Workbench", "Dimensions");
-    qApp->translate("Workbench", "Extensions: Attributes/Modifications");
-    qApp->translate("Workbench", "Extensions: Centerlines/Threading");
-    qApp->translate("Workbench", "Extensions: Dimensions");
+    qApp->translate("Workbench", "Attributes/Modifications");
+    qApp->translate("Workbench", "Centerlines/Threading");
+    qApp->translate("Workbench", "Format/Organize Dimensions");
     qApp->translate("Workbench", "Annotations");
     qApp->translate("Workbench", "Stacking");
     qApp->translate("Workbench", "Add Lines");
@@ -101,7 +101,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // extension: attributes and modifications
     Gui::MenuItem* toolattrib = new Gui::MenuItem;
-    toolattrib->setCommand("Extensions: Attributes/Modifications");
+    toolattrib->setCommand("Attributes/Modifications");
     *toolattrib << "TechDraw_ExtensionSelectLineAttributes";
     *toolattrib << "TechDraw_ExtensionChangeLineAttributes";
     *toolattrib << "Separator";
@@ -124,7 +124,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // extension: centerlines and threading
     Gui::MenuItem* toolcenter = new Gui::MenuItem;
-    toolcenter->setCommand("Extensions: Centerlines/Threading");
+    toolcenter->setCommand("Centerlines/Threading");
     *toolcenter << "TechDraw_ExtensionCircleCenterLines";
     *toolcenter << "TechDraw_ExtensionHoleCircle";
     *toolcenter << "Separator";
@@ -136,15 +136,16 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *toolcenter << "TechDraw_ExtensionVertexAtIntersection";
     *toolcenter << "TechDraw_CommandAddOffsetVertex";
     *toolcenter << "Separator";
+    *toolcenter << "TechDraw_CosmeticCircle";
     *toolcenter << "TechDraw_ExtensionDrawCosmCircle";
-    *toolcenter << "TechDraw_ExtensionDrawCosmArc";
     *toolcenter << "TechDraw_ExtensionDrawCosmCircle3Points";
+    *toolcenter << "TechDraw_ExtensionDrawCosmArc";
     *toolcenter << "TechDraw_ExtensionLineParallel";
     *toolcenter << "TechDraw_ExtensionLinePerpendicular";
 
     // extension: dimensions
     Gui::MenuItem* tooldimensions = new Gui::MenuItem;
-    tooldimensions->setCommand("Extensions: Dimensions");
+    tooldimensions->setCommand("Format/Organize Dimensions");
     *tooldimensions << "TechDraw_ExtensionCreateHorizChainDimension";
     *tooldimensions << "TechDraw_ExtensionCreateVertChainDimension";
     *tooldimensions << "TechDraw_ExtensionCreateObliqueChainDimension";
@@ -187,7 +188,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *lines << "TechDraw_2LineCenterLine";
     *lines << "TechDraw_2PointCenterLine";
     *lines << "TechDraw_2PointCosmeticLine";
-    *lines << "TechDraw_CosmeticCircle";
     *lines << "Separator";
     *lines << "TechDraw_DecorateLine";
     *lines << "TechDraw_ShowAll";
@@ -227,13 +227,13 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *views << "Separator";
     *views << "TechDraw_ShareView";
     *views << "Separator";
-    *views << "TechDraw_ToggleFrame";
     *views << "Separator";
     *views << "TechDraw_ProjectShape";
 
     // views from other workbenches
     Gui::MenuItem* other = new Gui::MenuItem;
     other->setCommand("Views From Other Workbenches");
+
     *other << "TechDraw_ActiveView";
     *other << "TechDraw_DraftView";
     *other << "TechDraw_ArchView";
@@ -388,7 +388,6 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     decor->setCommand("TechDraw Decoration");
     *decor << "TechDraw_Hatch";
     *decor << "TechDraw_GeometricHatch";
-    *decor << "TechDraw_ToggleFrame";
 
     Gui::ToolBarItem* anno = new Gui::ToolBarItem(root);
     anno->setCommand("TechDraw Annotation");
@@ -398,7 +397,6 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *anno << "TechDraw_CosmeticVertexGroup";
     *anno << "TechDraw_CenterLineGroup";
     *anno << "TechDraw_2PointCosmeticLine";
-    *anno << "TechDraw_CosmeticCircle";
     *anno << "TechDraw_DecorateLine";
     *anno << "TechDraw_ShowAll";
     *anno << "TechDraw_WeldSymbol";
@@ -488,7 +486,6 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     decor->setCommand("TechDraw Decoration");
     *decor << "TechDraw_Hatch";
     *decor << "TechDraw_GeometricHatch";
-    *decor << "TechDraw_ToggleFrame";
 
     Gui::ToolBarItem* anno = new Gui::ToolBarItem(root);
     anno->setCommand("TechDraw Annotation");
@@ -498,7 +495,6 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *anno << "TechDraw_CosmeticVertexGroup";
     *anno << "TechDraw_CenterLineGroup";
     *anno << "TechDraw_2PointCosmeticLine";
-    *anno << "TechDraw_CosmeticCircle";
     *anno << "TechDraw_DecorateLine";
     *anno << "TechDraw_ShowAll";
     *anno << "TechDraw_WeldSymbol";

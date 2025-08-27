@@ -35,10 +35,10 @@ class BIM_Reorder:
     def GetResources(self):
         return {
             "Pixmap": "BIM_Reorder",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_Reorder", "Reorder children"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_Reorder", "Reorder Children"),
             # 'Accel': "R, D",
             "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_Reorder", "Reorder children of selected object"
+                "BIM_Reorder", "Reorders children of the selected object"
             ),
         }
 

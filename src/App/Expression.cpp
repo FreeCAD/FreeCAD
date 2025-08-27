@@ -52,6 +52,7 @@
 #include <Base/RotationPy.h>
 #include <Base/Tools.h>
 #include <Base/VectorPy.h>
+#include <Base/Precision.h>
 
 #include "ExpressionParser.h"
 
@@ -166,6 +167,15 @@ static inline T &&cast(App::any &&value) {
 #else
     return App::any_cast<T&&>(std::move(value));
 #endif
+}
+
+namespace
+{
+
+inline bool asBool(double value) {
+    return std::fabs(value) >= Base::Precision::Confusion();
+}
+
 }
 
 std::string unquote(const std::string & input)
@@ -1745,6 +1755,7 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case TANH:
     case TRUNC:
     case VNORMALIZE:
+    case NOT:
         if (args.size() != 1)
             ARGUMENT_THROW("exactly one required.");
         break;
@@ -1810,6 +1821,8 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case MIN:
     case STDDEV:
     case SUM:
+    case AND:
+    case OR:
         if (args.empty())
             ARGUMENT_THROW("at least one required.");
         break;
@@ -1973,6 +1986,36 @@ public:
     }
 };
 
+class AndCollector : public Collector {
+public:
+    void collect(Quantity value) override
+    {
+        if (first) {
+            q = Quantity(asBool(value.getValue()) ? 1 : 0);
+            first = false;
+            return;
+        }
+        if (!asBool(value.getValue())) {
+            q = Quantity(0);
+        }
+    }
+};
+
+class OrCollector : public Collector {
+public:
+    void collect(Quantity value) override
+    {
+        if (first) {
+            q = Quantity(asBool(value.getValue()) ? 1 : 0);
+            first = false;
+            return;
+        }
+        if (asBool(value.getValue())) {
+            q = Quantity(1);
+        }
+    }
+};
+
 Py::Object FunctionExpression::evalAggregate(
         const Expression *owner, int f, const std::vector<Expression*> &args)
 {
@@ -1996,6 +2039,12 @@ Py::Object FunctionExpression::evalAggregate(
         break;
     case MAX:
         c = std::make_unique<MaxCollector>();
+        break;
+    case AND:
+        c = std::make_unique<AndCollector>();
+        break;
+    case OR:
+        c = std::make_unique<OrCollector>();
         break;
     default:
         assert(false);
@@ -2499,6 +2548,9 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         if (v1.isDimensionlessOrUnit(Unit::Length) && v2.isDimensionlessOrUnit(Unit::Length) && v3.isDimensionlessOrUnit(Unit::Length))
             break;
         _EXPR_THROW("Translation units must be a length or dimensionless.", expr);
+    case NOT:
+        unit = Unit();
+        break;
     default:
         _EXPR_THROW("Unknown function: " << f,0);
     }
@@ -2590,6 +2642,9 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
             value)));
     case TRANSLATIONM:
         return translationMatrix(v1.getValue(), v2.getValue(), v3.getValue());
+    case NOT:
+        output = asBool(value) ? 0 : 1;
+        break;
     default:
         _EXPR_THROW("Unknown function: " << f,0);
     }
@@ -2610,7 +2665,7 @@ Py::Object FunctionExpression::_getPyValue() const {
 Expression *FunctionExpression::simplify() const
 {
     size_t numerics = 0;
-    std::vector<Expression*> a;
+    std::vector<Expression*> simplifiedArgs;
 
     // Try to simplify each argument to function
     for (auto it : args) {
@@ -2618,20 +2673,21 @@ Expression *FunctionExpression::simplify() const
 
         if (freecad_cast<NumberExpression*>(v))
             ++numerics;
-        a.push_back(v);
+        simplifiedArgs.push_back(v);
     }
 
     if (numerics == args.size()) {
         // All constants, then evaluation must also be constant
 
-        // Clean-up
-        for (auto it : args)
+        // Clean-up the simplified arguments
+        for (auto it : simplifiedArgs)
             delete it;
 
         return eval();
     }
     else
-        return new FunctionExpression(owner, f, std::string(fname), std::move(a));
+        return new FunctionExpression(owner, f, std::string(fname),
+                                      std::move(simplifiedArgs));
 }
 
 /**
@@ -2773,6 +2829,12 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
         ss << "stddev("; break;;
     case SUM:
         ss << "sum("; break;;
+    case AND:
+        ss << "and("; break;;
+    case OR:
+        ss << "or("; break;;
+    case NOT:
+        ss << "not("; break;;
     default:
         ss << fname << "("; break;;
     }
@@ -3202,7 +3264,7 @@ Expression *ConditionalExpression::simplify() const
     if (!v)
         return new ConditionalExpression(owner, condition->simplify(), trueExpr->simplify(), falseExpr->simplify());
     else {
-        if (fabs(v->getValue()) > 0.5)
+        if (fabs(v->getValue()) >= Base::Precision::Confusion())
             return trueExpr->simplify();
         else
             return falseExpr->simplify();
@@ -3662,6 +3724,8 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["hiddenref"] = FunctionExpression::HIDDENREF;
         registered_functions["href"] = FunctionExpression::HREF;
 
+        registered_functions["not"] = FunctionExpression::NOT;
+
         // Aggregates
         registered_functions["average"] = FunctionExpression::AVERAGE;
         registered_functions["count"] = FunctionExpression::COUNT;
@@ -3669,6 +3733,8 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["min"] = FunctionExpression::MIN;
         registered_functions["stddev"] = FunctionExpression::STDDEV;
         registered_functions["sum"] = FunctionExpression::SUM;
+        registered_functions["and"] = FunctionExpression::AND;
+        registered_functions["or"] = FunctionExpression::OR;
 
         has_registered_functions = true;
     }

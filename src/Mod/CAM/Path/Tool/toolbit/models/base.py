@@ -56,7 +56,7 @@ class ToolBit(Asset, ABC):
     asset_type: str = "toolbit"
     SHAPE_CLASS: Type[ToolBitShape]  # Abstract class attribute
 
-    def __init__(self, tool_bit_shape: ToolBitShape, id: str | None = None):
+    def __init__(self, tool_bit_shape: ToolBitShape, id: Optional[str] = None):
         Path.Log.track("ToolBit __init__ called")
         self.id = id if id is not None else str(uuid.uuid4())
         self.obj = DetachedDocumentObject()
@@ -136,7 +136,12 @@ class ToolBit(Asset, ABC):
         return cls.from_shape(tool_bit_shape, attrs, id=attrs.get("id"))
 
     @classmethod
-    def from_shape(cls, tool_bit_shape: ToolBitShape, attrs: Mapping, id: str | None) -> "ToolBit":
+    def from_shape(
+        cls,
+        tool_bit_shape: ToolBitShape,
+        attrs: Mapping,
+        id: Optional[str] = None,
+    ) -> "ToolBit":
         selected_toolbit_subclass = cls._find_subclass_for_shape(tool_bit_shape)
         toolbit = selected_toolbit_subclass(tool_bit_shape, id=id)
         toolbit.label = attrs.get("name") or tool_bit_shape.label
@@ -145,19 +150,16 @@ class ToolBit(Asset, ABC):
         params = attrs.get("parameter", {})
         attr = attrs.get("attribute", {})
 
-        # Update parameters; these are stored in the document model object.
+        # Update parameters.
         for param_name, param_value in params.items():
-            if hasattr(toolbit.obj, param_name):
-                PathUtil.setProperty(toolbit.obj, param_name, param_value)
-            else:
-                Path.Log.debug(
-                    f" ToolBit {id} Parameter '{param_name}' not found on"
-                    f" {selected_toolbit_subclass.__name__} ({tool_bit_shape})"
-                    f" '{toolbit.obj.Label}'. Skipping."
-                )
+            tool_bit_shape.set_parameter(param_name, param_value)
 
-        # Update parameters; these are stored in the document model object.
+        # Update attributes; the separation between parameters and attributes
+        # is currently not well defined, so for now we add them to the
+        # ToolBitShape and the DocumentObject.
+        # Discussion: https://github.com/FreeCAD/FreeCAD/issues/21722
         for attr_name, attr_value in attr.items():
+            tool_bit_shape.set_parameter(attr_name, attr_value)
             if hasattr(toolbit.obj, attr_name):
                 PathUtil.setProperty(toolbit.obj, attr_name, attr_value)
             else:
@@ -167,6 +169,7 @@ class ToolBit(Asset, ABC):
                     f" '{toolbit.obj.Label}'. Skipping."
                 )
 
+        toolbit._update_tool_properties()
         return toolbit
 
     @classmethod
@@ -586,7 +589,7 @@ class ToolBit(Asset, ABC):
     def get_property(self, name: str):
         return self.obj.getPropertyByName(name)
 
-    def get_property_str(self, name: str, default: str | None = None) -> str | None:
+    def get_property_str(self, name: str, default: Optional[str] = None) -> Optional[str]:
         value = self.get_property(name)
         return format_value(value) if value else default
 
@@ -654,8 +657,6 @@ class ToolBit(Asset, ABC):
                 )
                 continue
 
-            docstring = self._tool_bit_shape.get_parameter_label(name)
-
             # Add new property
             if not hasattr(self.obj, name):
                 self.obj.addProperty(prop_type, name, "Shape", docstring)
@@ -674,16 +675,31 @@ class ToolBit(Asset, ABC):
             if value is not None and getattr(self.obj, name) != value:
                 setattr(self.obj, name, value)
 
-        # 2. Remove obsolete shape properties
-        # These are properties currently listed AND in the Shape group,
-        # but not required by the new shape.
-        current_shape_prop_names = set(self._get_props("Shape"))
-        new_shape_param_names = self._tool_bit_shape.schema().keys()
-        obsolete = current_shape_prop_names - new_shape_param_names
-        Path.Log.debug(f"Removing obsolete shape properties: {obsolete} from {self.obj.Label}")
-        # Gracefully skipping the deletion for now;
-        # in future releases we may handle schema violations more strictly
-        # self._remove_properties("Shape", obsolete)
+        # 2. Add additional properties that are part of the shape,
+        # but not part of the schema.
+        schema_prop_names = set(self._tool_bit_shape.schema().keys())
+        for name, value in self._tool_bit_shape.get_parameters().items():
+            if name in schema_prop_names:
+                continue
+            prop_type = self._tool_bit_shape.get_parameter_type(name)
+            docstring = QT_TRANSLATE_NOOP("App::Property", f"Custom property from shape: {name}")
+
+            # Skip existing properties if they have a different type
+            if hasattr(self.obj, name) and self.obj.getTypeIdOfProperty(name) != prop_type:
+                Path.Log.debug(
+                    f"Skipping existing property '{name}' due to type mismatch."
+                    f" has type {self.obj.getTypeIdOfProperty(name)}, expected {prop_type}"
+                )
+                continue
+
+            # Add the property if it does not exist
+            if not hasattr(self.obj, name):
+                self.obj.addProperty(prop_type, name, PropertyGroupShape, docstring)
+                Path.Log.debug(f"Added custom shape property: {name} ({prop_type})")
+
+            # Set the property value
+            PathUtil.setProperty(self.obj, name, value)
+            self.obj.setEditorMode(name, 0)
 
     def _update_visual_representation(self):
         """

@@ -40,6 +40,9 @@ public:
     /// Constructor
     ConstraintTemperature();
 
+    App::PropertyBool EnableAmplitude;
+    App::PropertyStringList AmplitudeValues;
+
     // Temperature parameters
     App::PropertyTemperature Temperature;
     App::PropertyPower CFlux;

@@ -74,7 +74,7 @@ void TaskMirroredParameters::setupParameterUI(QWidget* widget)
             this,
             &TaskMirroredParameters::onPlaneChanged);
 
-    this->planeLinks.setCombo(*(ui->comboPlane));
+    this->planeLinks.setCombo(ui->comboPlane);
     ui->comboPlane->setEnabled(true);
 
     App::DocumentObject* sketch = getSketchObject();
@@ -131,27 +131,22 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
 {
     if (selectionMode != SelectionMode::None && msg.Type == Gui::SelectionChanges::AddSelection) {
 
-        if (originalSelected(msg)) {
-            exitSelectionMode();
-        }
-        else {
-            auto pcMirrored = getObject<PartDesign::Mirrored>();
+        auto pcMirrored = getObject<PartDesign::Mirrored>();
 
-            std::vector<std::string> mirrorPlanes;
-            App::DocumentObject* selObj = nullptr;
-            getReferencedSelection(pcMirrored, msg, selObj, mirrorPlanes);
-            if (!selObj) {
-                return;
-            }
-
-            if (selectionMode == SelectionMode::Reference || selObj->isDerivedFrom<App::Plane>()) {
-                setupTransaction();
-                pcMirrored->MirrorPlane.setValue(selObj, mirrorPlanes);
-                recomputeFeature();
-                updateUI();
-            }
-            exitSelectionMode();
+        std::vector<std::string> mirrorPlanes;
+        App::DocumentObject* selObj = nullptr;
+        getReferencedSelection(pcMirrored, msg, selObj, mirrorPlanes);
+        if (!selObj) {
+            return;
         }
+
+        if (selectionMode == SelectionMode::Reference || selObj->isDerivedFrom<App::Plane>()) {
+            setupTransaction();
+            pcMirrored->MirrorPlane.setValue(selObj, mirrorPlanes);
+            recomputeFeature();
+            updateUI();
+        }
+        exitSelectionMode();
     }
 }
 
@@ -246,6 +241,7 @@ TaskDlgMirroredParameters::TaskDlgMirroredParameters(ViewProviderMirrored* Mirro
     parameter = new TaskMirroredParameters(MirroredView);
 
     Content.push_back(parameter);
+    Content.push_back(preview);
 }
 
 #include "moc_TaskMirroredParameters.cpp"

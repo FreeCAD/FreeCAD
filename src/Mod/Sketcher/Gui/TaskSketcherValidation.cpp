@@ -351,7 +351,7 @@ void SketcherValidation::onOrientLockEnableClicked()
         *sketch,
         tr("Constraint orientation locking"),
         tr("Orientation locking was enabled and recomputed for %1 constraints. The"
-           " constraints have been listed in the report view (menu View -> Panels ->"
+           " constraints have been listed in the report view (menu View → Panels →"
            " Report view).")
             .arg(n));
 
@@ -372,7 +372,7 @@ void SketcherValidation::onOrientLockDisableClicked()
         *sketch,
         tr("Constraint orientation locking"),
         tr("Orientation locking was disabled for %1 constraints. The"
-           " constraints have been listed in the report view (menu View -> Panels ->"
+           " constraints have been listed in the report view (menu View → Panels →"
            " Report view). Note that for all future constraints, the locking still"
            " defaults to ON.")
             .arg(n));

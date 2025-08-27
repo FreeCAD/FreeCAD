@@ -352,7 +352,7 @@ void AssemblyLink::synchronizeJoints()
         }
 
         // Then we have to check the properties one by one.
-        copyPropertyIfDifferent<App::PropertyBool>(joint, lJoint, "Activated");
+        copyPropertyIfDifferent<App::PropertyBool>(joint, lJoint, "Suppressed");
         copyPropertyIfDifferent<App::PropertyFloat>(joint, lJoint, "Distance");
         copyPropertyIfDifferent<App::PropertyFloat>(joint, lJoint, "Distance2");
         copyPropertyIfDifferent<App::PropertyEnumeration>(joint, lJoint, "JointType");

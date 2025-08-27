@@ -75,9 +75,7 @@ class Trimex(gui_base_original.Modifier):
                 'Accel': "T, R",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Trimex", "Trimex"),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_Trimex",
-                    "Trims or extends the selected object, or extrudes single"
-                    + " faces.\nSHIFT constrains to current segment"
-                    + " or to normal, ALT inverts.")}
+                    "Trims or extends the selected object, or extrudes single faces")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -117,7 +115,7 @@ class Trimex(gui_base_original.Modifier):
         if not hasattr(self.obj, "Shape"):
             self.obj = None
             self.finish()
-            _err(translate("draft", "This object is not supported."))
+            _err(translate("draft", "This object is not supported"))
             return
         if hasattr(self.obj, "Placement"):
             self.placement = self.obj.Placement
@@ -126,23 +124,20 @@ class Trimex(gui_base_original.Modifier):
             self.obj = sel.Object
             if len(self.obj.Shape.Faces) == 1:
                 # simple extrude mode, the object itself is extruded
-                self.extrudeMode = True
-                self.ghost = [trackers.ghostTracker([self.obj])]
-                self.normal = self.obj.Shape.Faces[0].normalAt(0.5, 0.5)
-                self.ghost += [trackers.lineTracker() for _ in self.obj.Shape.Vertexes]
+                pass
             elif len(sel.SubObjects) == 1 and sel.SubObjects[0].ShapeType == "Face":
                 # face extrude mode, a new object is created
                 self.obj = self.doc.addObject("Part::Feature", "Face")
                 self.obj.Shape = sel.SubObjects[0]
-                self.extrudeMode = True
-                self.ghost = [trackers.ghostTracker([self.obj])]
-                self.normal = self.obj.Shape.Faces[0].normalAt(0.5, 0.5)
-                self.ghost += [trackers.lineTracker() for _ in self.obj.Shape.Vertexes]
             else:
                 self.obj = None
                 self.finish()
-                _err(translate("draft", "Only a single face can be extruded."))
+                _err(translate("draft", "Only a single face can be extruded"))
                 return
+            self.extrudeMode = True
+            self.normal = self.obj.Shape.Faces[0].normalAt(0.5, 0.5)
+            self.ghost = [trackers.ghostTracker([self.obj]), trackers.lineTracker(dotted=True)]
+            self.ghost += [trackers.lineTracker() for _ in self.obj.Shape.Vertexes]
         else:
             # normal wire trimex mode
             self.color = self.obj.ViewObject.LineColor
@@ -156,7 +151,7 @@ class Trimex(gui_base_original.Modifier):
                 if isinstance(e.Curve,(Part.BSplineCurve, Part.BezierCurve)):
                     self.obj = None
                     self.finish()
-                    _err(translate("draft", "Trimex is not supported yet on this type of object."))
+                    _err(translate("draft", "Trimex does not support this object type"))
                     return
             self.obj.ViewObject.LineColor = (0.5, 0.5, 0.5)
             self.obj.ViewObject.LineWidth = 1
@@ -201,6 +196,8 @@ class Trimex(gui_base_original.Modifier):
         if arg["Type"] == "SoKeyboardEvent":
             if arg["Key"] == "ESCAPE":
                 self.finish()
+        elif not self.ui.mouse:
+            pass
         elif arg["Type"] == "SoLocation2Event":  # mouse movement detection
             self.shift = gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_constrain_key())
             self.alt = gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key())
@@ -271,10 +268,14 @@ class Trimex(gui_base_original.Modifier):
         if real:
             return delta
         self.ghost[0].trans.translation.setValue([delta.x, delta.y, delta.z])
-        for i in range(1, len(self.ghost)):
-            base = self.obj.Shape.Vertexes[i-1].Point
+        # Update the dotted lineTracker:
+        self.ghost[1].p1(self.newpoint)
+        self.ghost[1].p2(self.newpoint + dvec)
+        # Update the vertex lineTrackers:
+        for i in range(2, len(self.ghost)):
+            base = self.obj.Shape.Vertexes[i-2].Point
             self.ghost[i].p1(base)
-            self.ghost[i].p2(base.add(delta))
+            self.ghost[i].p2(base + delta)
         return delta.Length
 
     def redraw(self, point, snapped=None, shift=False, alt=False, real=None):
@@ -505,7 +506,7 @@ class Trimex(gui_base_original.Modifier):
             if not utils.getType(obj) in ["Wire", "Circle"]:
                 _err(translate("draft",
                                "Unable to trim these objects, "
-                               "only Draft wires and arcs are supported."))
+                               "only Draft wires and arcs are supported"))
                 return
             if len(obj.Shape.Wires) > 1:
                 _err(translate("draft",
@@ -527,10 +528,10 @@ class Trimex(gui_base_original.Modifier):
                     edge1 = i1
                     edge2 = i2
         if not ints:
-            _err(translate("draft", "These objects don't intersect."))
+            _err(translate("draft", "These objects do not intersect"))
             return
         if len(ints) != 1:
-            _err(translate("draft", "Too many intersection points."))
+            _err(translate("draft", "Too many intersection points"))
             return
 
         v11 = wires[0].Vertexes[0].Point

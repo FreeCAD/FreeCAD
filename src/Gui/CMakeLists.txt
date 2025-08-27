@@ -1,5 +1,16 @@
 add_library(FreeCADGui SHARED)
 
+if ( EXISTS "${CMAKE_SOURCE_DIR}/src/3rdParty/GSL/include" )
+    include_directories( ${CMAKE_SOURCE_DIR}/src/3rdParty/GSL/include )
+else()
+    find_package(Microsoft.GSL)
+    if( Microsoft.GSL_FOUND )
+        message( STATUS "Found Microsoft.GSL: version ${Microsoft.GSL_VERSION}" )
+    else()
+        message( SEND_ERROR "The C++ Guidelines Support Library (GSL) submodule is not available. Please run git submodule update --init" )
+    endif()
+endif()
+
 add_subdirectory(Stylesheets)
 add_subdirectory(PreferencePacks)
 add_subdirectory(PreferencePackTemplates)
@@ -135,7 +146,9 @@ target_include_directories(
     ${QtNetwork_INCLUDE_DIRS}
     ${QtUiTools_INCLUDE_DIRS}
     ${QtXml_INCLUDE_DIRS}
+    ${YAML_CPP_INCLUDE_DIRS}
 )
+
 list(APPEND FreeCADGui_LIBS
     ${QtCore_LIBRARIES}
     ${QtWidgets_LIBRARIES}
@@ -147,6 +160,18 @@ list(APPEND FreeCADGui_LIBS
     ${QtNetwork_LIBRARIES}
     ${QtUiTools_LIBRARIES}
 )
+
+link_directories(${YAML_CPP_LIBRARY_DIR})
+
+if(yaml-cpp_VERSION VERSION_LESS 0.8.0)
+    list(APPEND FreeCADGui_LIBS
+            ${YAML_CPP_LIBRARIES}
+    )
+else()
+    list(APPEND FreeCADGui_LIBS
+            yaml-cpp::yaml-cpp
+    )
+endif()
 
 if(${Qt5WinExtras_FOUND})
     target_include_directories(
@@ -441,6 +466,7 @@ SET(Gui_UIC_SRCS
     TaskView/TaskAppearance.ui
     TaskView/TaskOrientation.ui
     TaskView/TaskImage.ui
+    TaskView/TaskSolverMessages.ui
     TaskView/TaskSelectLinkProperty.ui
     TaskElementColors.ui
     Dialogs/DlgObjectSelection.ui
@@ -853,6 +879,9 @@ SET(Task_View_SRCS
     TaskView/TaskSelectLinkProperty.cpp
     TaskView/TaskSelectLinkProperty.h
     TaskView/TaskSelectLinkProperty.ui
+    TaskView/TaskSolverMessages.cpp
+    TaskView/TaskSolverMessages.h
+    TaskView/TaskSolverMessages.ui
     TaskView/TaskEditControl.cpp
     TaskView/TaskEditControl.h
     TaskView/TaskEditControl.ui
@@ -1151,6 +1180,7 @@ SOURCE_GROUP("View3D\\Inventor" FILES ${Inventor_SRCS})
 
 # The widget sources
 SET(Widget_CPP_SRCS
+    ComboLinks.cpp
     FileDialog.cpp
     MainWindow.cpp
     MainWindowPy.cpp
@@ -1174,6 +1204,7 @@ SET(Widget_CPP_SRCS
     FontScaledSVG.cpp
 )
 SET(Widget_HPP_SRCS
+    ComboLinks.h
     FileDialog.h
     MainWindow.h
     MainWindowPy.h
@@ -1426,6 +1457,7 @@ if(MSVC)
         TaskView/TaskOrientation.cpp
         TaskView/TaskImage.cpp
         TaskView/TaskSelectLinkProperty.cpp
+        TaskView/TaskSolverMessages.ui
         TaskView/TaskEditControl.cpp
         TaskView/TaskView.cpp
         ${Command_CPP_SRCS}

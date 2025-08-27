@@ -30,6 +30,7 @@
 # include <TopoDS.hxx>
 #endif
 
+#include <App/Document.h>
 #include <Base/Tools.h>
 #include "FeatureRevolution.h"
 #include "FaceMaker.h"
@@ -161,7 +162,7 @@ App::DocumentObjectExecReturn *Revolution::execute()
             TopLoc_Location loc(mov);
             sourceShape.setShape(sourceShape.getShape().Moved(loc));
         }
-        TopoShape revolve(0);
+        TopoShape revolve(0, getDocument()->getStringHasher());
         revolve.makeElementRevolve(sourceShape,
                                    revAx,
                                    angle,

@@ -138,28 +138,28 @@ class Nester:
 
         # general conformity tests
 
-        print("Executing conformity tests ... ",end="")
+        print("Executing conformity tests… ",end="")
         if not self.container:
-            print("Empty container. Aborting")
+            print("Empty container. Aborting.")
             return
         if not self.shapes:
-            print("Empty shapes. Aborting")
+            print("Empty shapes. Aborting.")
             return
         if not isinstance(self.container,Part.Face):
-            print("Container is not a face. Aborting")
+            print("Container is not a face. Aborting.")
             return
         normal = self.container.normalAt(0,0)
         for s in self.shapes:
             if not self.update():
                 return
             if len(s.Faces) != 1:
-                print("One of the shapes does not contain exactly one face. Aborting")
+                print("One of the shapes does not contain exactly one face. Aborting.")
                 return
             # check if all faces correctly oriented (same normal)
             if s.Faces[0].normalAt(0,0).getAngle(normal) > TOLERANCE:
                 # let pass faces with inverted normal
                 if s.Faces[0].normalAt(0,0).getAngle(normal)-math.pi > TOLERANCE:
-                    print("One of the face doesn't have the same orientation as the container. Aborting")
+                    print("One of the face does not have the same orientation as the container. Aborting.")
                     return
 
         # TODO
@@ -208,9 +208,9 @@ class Nester:
             f = Part.Face(Part.Wire(nedges))
             if not f.isValid():
                 if allLines:
-                    print("Invalid face found in set. Aborting")
+                    print("Invalid face found in set. Aborting.")
                 else:
-                    print("Face distretizing failed. Aborting")
+                    print("Face distretizing failed. Aborting.")
                 return
             nfaces.append([face[0],f])
         faces = nfaces
@@ -374,7 +374,7 @@ class Nester:
                         # create the polygon
 
                         if len(pts) < 3:
-                            print("Error calculating a no-fit polygon. Aborting")
+                            print("Error calculating a no-fit polygon. Aborting.")
                             return
                         pts = [p[0] for p in pts]
                         pol = Part.Face(Part.makePolygon(pts+[pts[0]]))
@@ -418,7 +418,7 @@ class Nester:
                                     if ff:
                                         pol = ff
                                 else:
-                                    print("Unable to fix invalid no-fit polygon. Aborting")
+                                    print("Unable to fix invalid no-fit polygon. Aborting.")
                                     Part.show(pol)
                                     return
 
@@ -426,7 +426,7 @@ class Nester:
 
                             # none of the fixes worked. Epic fail.
 
-                            print("Invalid no-fit polygon. Aborting")
+                            print("Invalid no-fit polygon. Aborting.")
                             Part.show(pol.OuterWire)
                             for p in sheet:
                                 Part.show(p[1])
@@ -472,7 +472,7 @@ class Nester:
                                     try:
                                         pol = Part.Face(w[0])
                                     except Exception:
-                                        print("Error merging polygons. Aborting")
+                                        print("Error merging polygons. Aborting.")
                                         try:
                                             Part.show(Part.Wire(edges))
                                         except Exception:
@@ -529,7 +529,7 @@ class Nester:
                                 rotface = trface
                                 break
                         else:
-                            print("Couldn't determine location on sheet. Aborting")
+                            print("Could not determine location on sheet. Aborting.")
                             return
 
                         # check the X space occupied by this solution
@@ -540,7 +540,7 @@ class Nester:
                         available.append([sheetnumber,[hashcode,rotface],bb.XMax,fitpol])
 
             if unfit:
-                print("One face doesn't fit in the container. Aborting")
+                print("One face does not fit in the container. Aborting.")
                 return
 
             if available:
@@ -646,7 +646,7 @@ class Nester:
         to be given to the final object."""
 
         if not self.indexedfaces:
-            print("error: shapes were not indexed. Please run() first")
+            print("error: shapes were not indexed. Use run() first")
             return
         if not result:
             result = []

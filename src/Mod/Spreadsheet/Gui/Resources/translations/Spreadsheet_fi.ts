@@ -10,13 +10,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="947"/>
-      <source>&amp;Create spreadsheet</source>
-      <translation type="unfinished">&amp;Create spreadsheet</translation>
+      <source>&amp;New Spreadsheet</source>
+      <translation type="unfinished">&amp;New Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="948"/>
-      <source>Create a new spreadsheet</source>
-      <translation>Luo uusi laskentataulukko</translation>
+      <source>Creates a new spreadsheet</source>
+      <translation type="unfinished">Creates a new spreadsheet</translation>
     </message>
   </context>
   <context>
@@ -28,13 +28,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="510"/>
-      <source>Align &amp;bottom</source>
-      <translation type="unfinished">Align &amp;bottom</translation>
+      <source>Align &amp;Bottom</source>
+      <translation type="unfinished">Align &amp;Bottom</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="511"/>
-      <source>Bottom-align contents of selected cells</source>
-      <translation>Tasaa alareunaan valittujen solujen sisältö</translation>
+      <source>Aligns cell contents to the bottom</source>
+      <translation type="unfinished">Aligns cell contents to the bottom</translation>
     </message>
   </context>
   <context>
@@ -46,13 +46,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="339"/>
-      <source>Align &amp;center</source>
-      <translation type="unfinished">Align &amp;center</translation>
+      <source>Align Horizontal &amp;Center</source>
+      <translation type="unfinished">Align Horizontal &amp;Center</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="340"/>
-      <source>Center-align contents of selected cells</source>
-      <translation>Tasaa keskelle valittujen solujen sisältö</translation>
+      <source>Aligns cell contents to the horizontal center</source>
+      <translation type="unfinished">Aligns cell contents to the horizontal center</translation>
     </message>
   </context>
   <context>
@@ -64,13 +64,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="282"/>
-      <source>Align &amp;left</source>
-      <translation type="unfinished">Align &amp;left</translation>
+      <source>Align &amp;Left</source>
+      <translation type="unfinished">Align &amp;Left</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="283"/>
-      <source>Left-align contents of selected cells</source>
-      <translation>Tasaa vasemmalle valittujen solujen sisältö</translation>
+      <source>Aligns cell contents to the left</source>
+      <translation type="unfinished">Aligns cell contents to the left</translation>
     </message>
   </context>
   <context>
@@ -82,13 +82,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="396"/>
-      <source>Align &amp;right</source>
-      <translation type="unfinished">Align &amp;right</translation>
+      <source>Align &amp;Right</source>
+      <translation type="unfinished">Align &amp;Right</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="397"/>
-      <source>Right-align contents of selected cells</source>
-      <translation>Tasaa oikealle valittujen solujen sisältö</translation>
+      <source>Aligns cell contents to the right</source>
+      <translation type="unfinished">Aligns cell contents to the right</translation>
     </message>
   </context>
   <context>
@@ -100,13 +100,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="453"/>
-      <source>Align &amp;top</source>
-      <translation type="unfinished">Align &amp;top</translation>
+      <source>Align &amp;Top</source>
+      <translation type="unfinished">Align &amp;Top</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="454"/>
-      <source>Top-align contents of selected cells</source>
-      <translation>Tasaa yläreunaan valittujen solujen sisältö</translation>
+      <source>Aligns cell contents to the top</source>
+      <translation type="unfinished">Aligns cell contents to the top</translation>
     </message>
   </context>
   <context>
@@ -118,13 +118,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="567"/>
-      <source>&amp;Vertically center-align</source>
-      <translation type="unfinished">&amp;Vertically center-align</translation>
+      <source>Align &amp;Vertical Center</source>
+      <translation type="unfinished">Align &amp;Vertical Center</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="568"/>
-      <source>Vertically center-align contents of selected cells</source>
-      <translation>Tasaa keskelle valittujen solujen sisältö</translation>
+      <source>Aligns cell contents to the vertical center</source>
+      <translation type="unfinished">Aligns cell contents to the vertical center</translation>
     </message>
   </context>
   <context>
@@ -136,13 +136,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="236"/>
-      <source>&amp;Export spreadsheet</source>
-      <translation type="unfinished">&amp;Export spreadsheet</translation>
+      <source>&amp;Export Spreadsheet</source>
+      <translation type="unfinished">&amp;Export Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="237"/>
-      <source>Export spreadsheet to CSV file</source>
-      <translation>Vie laskentataulukko CSV-tiedostoon</translation>
+      <source>Exports the spreadsheet to a CSV file</source>
+      <translation type="unfinished">Exports the spreadsheet to a CSV file</translation>
     </message>
   </context>
   <context>
@@ -154,13 +154,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="184"/>
-      <source>&amp;Import spreadsheet</source>
-      <translation type="unfinished">&amp;Import spreadsheet</translation>
+      <source>&amp;Import Spreadsheet</source>
+      <translation type="unfinished">&amp;Import Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="185"/>
-      <source>Import CSV file into spreadsheet</source>
-      <translation>Tuo CSV tiedosto laskentataulukkoon</translation>
+      <source>Imports a CSV file into a new spreadsheet</source>
+      <translation type="unfinished">Imports a CSV file into a new spreadsheet</translation>
     </message>
   </context>
   <context>
@@ -172,13 +172,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="61"/>
-      <source>&amp;Merge cells</source>
-      <translation type="unfinished">&amp;Merge cells</translation>
+      <source>&amp;Merge Cells</source>
+      <translation type="unfinished">&amp;Merge Cells</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="62"/>
-      <source>Merge selected cells</source>
-      <translation>Yhdistä valitut solut</translation>
+      <source>Merges the selected cells</source>
+      <translation type="unfinished">Merges the selected cells</translation>
     </message>
   </context>
   <context>
@@ -190,13 +190,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="876"/>
-      <source>Set alias</source>
-      <translation>Aseta vaihtoehtoinen nimi /alias</translation>
+      <source>Set Alias</source>
+      <translation type="unfinished">Set Alias</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="877"/>
-      <source>Set alias for selected cell</source>
-      <translation>Aseta vaihtoehtoinen nimi (alias) valitulle solulle</translation>
+      <source>Sets an alias for the selected cell</source>
+      <translation type="unfinished">Sets an alias for the selected cell</translation>
     </message>
   </context>
   <context>
@@ -208,13 +208,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="122"/>
-      <source>Sp&amp;lit cell</source>
-      <translation type="unfinished">Sp&amp;lit cell</translation>
+      <source>Sp&amp;lit Cell</source>
+      <translation type="unfinished">Sp&amp;lit Cell</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="123"/>
-      <source>Split previously merged cells</source>
-      <translation>Jaa aiemmin yhdistetyt solut</translation>
+      <source>Splits a previously merged cell</source>
+      <translation type="unfinished">Splits a previously merged cell</translation>
     </message>
   </context>
   <context>
@@ -226,13 +226,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="624"/>
-      <source>&amp;Bold text</source>
-      <translation type="unfinished">&amp;Bold text</translation>
+      <source>&amp;Bold Text</source>
+      <translation type="unfinished">&amp;Bold Text</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="625"/>
-      <source>Set text in selected cells bold</source>
-      <translation>Lihavoi valittujen solujen teksti</translation>
+      <source>Sets the text in the selected cells bold</source>
+      <translation type="unfinished">Sets the text in the selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -244,13 +244,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="708"/>
-      <source>&amp;Italic text</source>
-      <translation type="unfinished">&amp;Italic text</translation>
+      <source>&amp;Italic Text</source>
+      <translation type="unfinished">&amp;Italic Text</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="709"/>
-      <source>Set text in selected cells italic</source>
-      <translation>Muuta valittujen solujen teksti kursiiviksi</translation>
+      <source>Sets the text in the selected cells italic</source>
+      <translation type="unfinished">Sets the text in the selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -262,13 +262,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="792"/>
-      <source>&amp;Underline text</source>
-      <translation type="unfinished">&amp;Underline text</translation>
+      <source>&amp;Underline Text</source>
+      <translation type="unfinished">&amp;Underline Text</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="793"/>
-      <source>Underline text in selected cells</source>
-      <translation>Alleviivaa teksti valituissa soluissa</translation>
+      <source>Underlines the text in the selected cells</source>
+      <translation type="unfinished">Underlines the text in the selected cells</translation>
     </message>
   </context>
   <context>
@@ -352,30 +352,6 @@
       <translation>Muokkaa solua</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="354"/>
-      <location filename="../../SheetTableView.cpp" line="387"/>
-      <source>Insert rows</source>
-      <translation>Lisää rivejä</translation>
-    </message>
-    <message>
-      <location filename="../../SheetTableView.cpp" line="407"/>
-      <location filename="../../SheetTableView.cpp" line="485"/>
-      <source>Remove rows</source>
-      <translation>Poista rivejä</translation>
-    </message>
-    <message>
-      <location filename="../../SheetTableView.cpp" line="429"/>
-      <location filename="../../SheetTableView.cpp" line="462"/>
-      <source>Insert columns</source>
-      <translation>Lisää sarakkeita</translation>
-    </message>
-    <message>
-      <location filename="../../SheetTableView.cpp" line="689"/>
-      <location filename="../../SpreadsheetView.cpp" line="190"/>
-      <source>Clear cell(s)</source>
-      <translation>Tyhjennä solu(t)</translation>
-    </message>
-    <message>
       <location filename="../../Workbench.cpp" line="142"/>
       <source>Set text color</source>
       <translation type="unfinished">Set text color</translation>
@@ -384,6 +360,30 @@
       <location filename="../../Workbench.cpp" line="176"/>
       <source>Set background color</source>
       <translation>Aseta taustaväri</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="348"/>
+      <location filename="../../SheetTableView.cpp" line="381"/>
+      <source>Insert Rows</source>
+      <translation type="unfinished">Insert Rows</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="401"/>
+      <location filename="../../SheetTableView.cpp" line="479"/>
+      <source>Remove Rows</source>
+      <translation type="unfinished">Remove Rows</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="423"/>
+      <location filename="../../SheetTableView.cpp" line="456"/>
+      <source>Insert Columns</source>
+      <translation type="unfinished">Insert Columns</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="683"/>
+      <location filename="../../SpreadsheetView.cpp" line="192"/>
+      <source>Clear Cells</source>
+      <translation type="unfinished">Clear Cells</translation>
     </message>
   </context>
   <context>
@@ -394,16 +394,6 @@
       <translation type="unfinished">Bind Spreadsheet Cells</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="69"/>
-      <source>To cells:</source>
-      <translation>Soluihin:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="117"/>
-      <source>Sheet:</source>
-      <translation type="unfinished">Sheet:</translation>
-    </message>
-    <message>
       <location filename="../../DlgBindSheet.ui" line="22"/>
       <source>First cell in range</source>
       <translation type="unfinished">First cell in range</translation>
@@ -412,11 +402,6 @@
       <location filename="../../DlgBindSheet.ui" line="29"/>
       <source>Last cell in range</source>
       <translation type="unfinished">Last cell in range</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="36"/>
-      <source>Bind cells:</source>
-      <translation type="unfinished">Bind cells:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="49"/>
@@ -438,18 +423,33 @@ Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</translation>
     </message>
     <message>
+      <location filename="../../DlgBindSheet.ui" line="36"/>
+      <source>Bind cells</source>
+      <translation type="unfinished">Bind cells</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="69"/>
+      <source>To cells</source>
+      <translation type="unfinished">To cells</translation>
+    </message>
+    <message>
       <location filename="../../DlgBindSheet.ui" line="97"/>
       <source>End cell address to bind to.
-Type '=' if you want to use an expression.
+Type '=' to use an expression.
 The expression must evaluate to a string of some cell address.</source>
       <translation type="unfinished">End cell address to bind to.
-Type '=' if you want to use an expression.
+Type '=' to use an expression.
 The expression must evaluate to a string of some cell address.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
       <source>Which spread sheet to bind to</source>
       <translation type="unfinished">Which spread sheet to bind to</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="117"/>
+      <source>Sheet</source>
+      <translation type="unfinished">Sheet</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="126"/>
@@ -487,11 +487,6 @@ Useful to avoid cyclic dependencies, but use with caution!</translation>
       <location filename="../../DlgSheetConf.ui" line="14"/>
       <source>Setup Configuration Table</source>
       <translation type="unfinished">Setup Configuration Table</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.ui" line="20"/>
-      <source>Cell range:</source>
-      <translation type="unfinished">Cell range:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="27"/>
@@ -536,11 +531,6 @@ by that property.
 </translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.ui" line="57"/>
-      <source>Property:</source>
-      <translation>Ominaisuus:</translation>
-    </message>
-    <message>
       <location filename="../../DlgSheetConf.ui" line="64"/>
       <source>Type in an expression to specify the object and property name to dynamically
 switch the design configuration. The property will be created if not exist.</source>
@@ -548,14 +538,24 @@ switch the design configuration. The property will be created if not exist.</sou
 switch the design configuration. The property will be created if not exist.</translation>
     </message>
     <message>
+      <location filename="../../DlgSheetConf.ui" line="20"/>
+      <source>Cell range</source>
+      <translation type="unfinished">Cell range</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.ui" line="57"/>
+      <source>Property</source>
+      <translation>Ominaisuus</translation>
+    </message>
+    <message>
       <location filename="../../DlgSheetConf.ui" line="72"/>
-      <source>Group:</source>
-      <translation>Ryhmä:</translation>
+      <source>Group</source>
+      <translation>Ryhmä</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
-      <source>Optional property group name.</source>
-      <translation type="unfinished">Optional property group name.</translation>
+      <source>Optional property group name</source>
+      <translation type="unfinished">Optional property group name</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
@@ -577,8 +577,8 @@ switch the design configuration. The property will be created if not exist.</tra
     <name>PropertiesDialog</name>
     <message>
       <location filename="../../PropertiesDialog.ui" line="14"/>
-      <source>Cell properties</source>
-      <translation>Solun ominaisuudet</translation>
+      <source>Cell Properties</source>
+      <translation type="unfinished">Cell Properties</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="27"/>
@@ -680,8 +680,8 @@ switch the design configuration. The property will be created if not exist.</tra
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="107"/>
       <location filename="../../Command.cpp" line="195"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="107"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;Kaikki (*)</translation>
     </message>
@@ -691,49 +691,17 @@ switch the design configuration. The property will be created if not exist.</tra
       <translation>Tuo tiedosto</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="109"/>
-      <source>Export file</source>
-      <translation>Vie tiedosto</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="134"/>
-      <source>Show spreadsheet</source>
-      <translation>Näytä laskentataulukko</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="94"/>
-      <location filename="../../Workbench.cpp" line="96"/>
-      <source>Set cell(s) text color</source>
-      <translation type="unfinished">Set cell(s) text color</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="95"/>
-      <source>Sets the Spreadsheet cell(s) text color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) text color</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="114"/>
-      <location filename="../../Workbench.cpp" line="117"/>
-      <source>Set cell(s) background color</source>
-      <translation>Aseta solun(solujen) taustan väri</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="116"/>
-      <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation>Asettaa laskentataulun(-taulujen) taustavärin</translation>
-    </message>
-    <message>
-      <location filename="../../SheetTableView.cpp" line="822"/>
+      <location filename="../../SheetTableView.cpp" line="816"/>
       <source>Copy &amp; Paste failed</source>
       <translation>Kopioi ja liitä epäonnistui</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="493"/>
+      <location filename="../../SpreadsheetView.cpp" line="495"/>
       <source>Alias contains invalid characters!</source>
       <translation>Vaihtoehtoinen nimi (alias) sisältää virheellisiä merkkejä!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="499"/>
+      <location filename="../../SpreadsheetView.cpp" line="501"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Viittaa soluihin vaihtoehtoisella nimellä (alias), esimerkiksi
@@ -743,6 +711,38 @@ Spreadsheet.my_alias_name sijasta Spreadsheet.B1</translation>
       <location filename="../../AppSpreadsheetGui.cpp" line="149"/>
       <source>Spreadsheet</source>
       <translation>Laskentataulukko</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="109"/>
+      <source>Export File</source>
+      <translation type="unfinished">Export File</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="134"/>
+      <source>Show Spreadsheet</source>
+      <translation type="unfinished">Show Spreadsheet</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="94"/>
+      <source>Sets the text color of cells</source>
+      <translation type="unfinished">Sets the text color of cells</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="95"/>
+      <location filename="../../Workbench.cpp" line="96"/>
+      <source>Sets the text color of spreadsheet cells</source>
+      <translation type="unfinished">Sets the text color of spreadsheet cells</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="114"/>
+      <location filename="../../Workbench.cpp" line="117"/>
+      <source>Sets the background color of cells</source>
+      <translation type="unfinished">Sets the background color of cells</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="116"/>
+      <source>Sets the spreadsheet cells background color</source>
+      <translation type="unfinished">Sets the spreadsheet cells background color</translation>
     </message>
   </context>
   <context>
@@ -860,13 +860,13 @@ Spreadsheet.my_alias_name sijasta Spreadsheet.B1</translation>
     <name>Sheet</name>
     <message>
       <location filename="../../Sheet.ui" line="22"/>
-      <source>&amp;Content:</source>
-      <translation>&amp;Sisältö:</translation>
+      <source>&amp;Content</source>
+      <translation type="unfinished">&amp;Content</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="39"/>
-      <source>&amp;Alias:</source>
-      <translation>&amp;Alias (vaihtoehtoinen nimi):</translation>
+      <source>&amp;Alias</source>
+      <translation type="unfinished">&amp;Alias</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="52"/>
@@ -902,10 +902,10 @@ Spreadsheet.my_alias_name sijasta Spreadsheet.B1</translation>
       <location filename="../../DlgBindSheet.cpp" line="224"/>
       <source>Source and target cell count mismatch. Partial binding may still work.
 
-Do you want to continue?</source>
+Continue?</source>
       <translation type="unfinished">Source and target cell count mismatch. Partial binding may still work.
 
-Do you want to continue?</translation>
+Continue?</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="272"/>
@@ -938,29 +938,14 @@ Do you want to continue?</translation>
       <translation type="unfinished">Display Settings</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="32"/>
-      <source>If checked, use the custom presentation to display cell string.</source>
-      <translation type="unfinished">If checked, use the custom presentation to display cell string.</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings.ui" line="35"/>
       <source>Show alias in cell with format</source>
       <translation type="unfinished">Show alias in cell with format</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="48"/>
-      <source>Set a zoom level for table view from 60% to 160%.</source>
-      <translation type="unfinished">Set a zoom level for table view from 60% to 160%.</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings.ui" line="51"/>
       <source>%</source>
       <translation>%</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="76"/>
-      <source>Default zoom level:</source>
-      <translation type="unfinished">Default zoom level:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="83"/>
@@ -981,19 +966,24 @@ Defaults to: %V = %A
       <translation>Tuonnin ja viennin asetukset</translation>
     </message>
     <message>
+      <location filename="../../DlgSettings.ui" line="32"/>
+      <source>Uses the custom presentation to display cell string</source>
+      <translation type="unfinished">Uses the custom presentation to display cell string</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="48"/>
+      <source>Defines a default zoom level for table view from 60% to 160%</source>
+      <translation type="unfinished">Defines a default zoom level for table view from 60% to 160%</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="76"/>
+      <source>Default zoom level</source>
+      <translation type="unfinished">Default zoom level</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettings.ui" line="131"/>
-      <source>Delimiter Character:</source>
-      <translation type="unfinished">Delimiter Character:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="191"/>
-      <source>Quote Character:</source>
-      <translation type="unfinished">Quote Character:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="223"/>
-      <source>Escape Character:</source>
-      <translation type="unfinished">Escape Character:</translation>
+      <source>Delimiter character</source>
+      <translation type="unfinished">Delimiter character</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="151"/>
@@ -1006,9 +996,19 @@ Defaults to: %V = %A
       <translation type="unfinished">tab</translation>
     </message>
     <message>
+      <location filename="../../DlgSettings.ui" line="191"/>
+      <source>Quote character</source>
+      <translation type="unfinished">Quote character</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettings.ui" line="198"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="223"/>
+      <source>Escape character</source>
+      <translation type="unfinished">Escape character</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="230"/>
@@ -1031,127 +1031,127 @@ Defaults to: %V = %A
   </context>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="202"/>
+      <location filename="../../SheetTableView.cpp" line="665"/>
+      <source>Recompute</source>
+      <translation type="unfinished">Recompute</translation>
+    </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="142"/>
-      <source>Insert %n row(s) above</source>
+      <source>Insert %n Row(s) Above</source>
       <translation type="unfinished">
-        <numerusform>Insert %n row(s) above</numerusform>
-        <numerusform>Insert %n row(s) above</numerusform>
+        <numerusform>Insert %n Row(s) Above</numerusform>
+        <numerusform>Insert %n Row(s) Above</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="147"/>
-      <source>Insert %n row(s) below</source>
+      <source>Insert %n Row(s) Below</source>
       <translation type="unfinished">
-        <numerusform>Insert %n row(s) below</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
+        <numerusform>Insert %n Row(s) Below</numerusform>
+        <numerusform>Insert %n Row(s) Below</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="152"/>
-      <source>Insert %n non-contiguous rows</source>
+      <source>Insert %n Non-Contiguous Rows</source>
       <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous rows</numerusform>
-        <numerusform>Insert %n non-contiguous rows</numerusform>
+        <numerusform>Insert %n Non-Contiguous Rows</numerusform>
+        <numerusform>Insert %n Non-Contiguous Rows</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="155"/>
-      <source>Remove row(s)</source>
+      <source>Remove Rows</source>
       <translation type="unfinished">
-        <numerusform>Remove row(s)</numerusform>
-        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Remove Rows</numerusform>
+        <numerusform>Remove Rows</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="169"/>
-      <source>Insert %n column(s) left</source>
+      <source>Insert %n Column(s) Left</source>
       <translation type="unfinished">
-        <numerusform>Insert %n column(s) left</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
+        <numerusform>Insert %n Column(s) Left</numerusform>
+        <numerusform>Insert %n Column(s) Left</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="174"/>
-      <source>Insert %n column(s) right</source>
+      <source>Insert %n Column(s) Right</source>
       <translation type="unfinished">
-        <numerusform>Insert %n column(s) right</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
+        <numerusform>Insert %n Column(s) Right</numerusform>
+        <numerusform>Insert %n Column(s) Right</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="183"/>
-      <source>Insert %n non-contiguous columns</source>
+      <source>Insert %n Non-Contiguous Columns</source>
       <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous columns</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Insert %n Non-Contiguous Columns</numerusform>
+        <numerusform>Insert %n Non-Contiguous Columns</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="186"/>
-      <source>Remove column(s)</source>
+      <source>Remove Column(s)</source>
       <translation type="unfinished">
-        <numerusform>Remove column(s)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
+        <numerusform>Remove Column(s)</numerusform>
+        <numerusform>Remove Column(s)</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="191"/>
-      <location filename="../../SheetTableView.cpp" line="670"/>
-      <source>Properties...</source>
-      <translation>Ominaisuudet...</translation>
+      <location filename="../../SheetTableView.cpp" line="199"/>
+      <location filename="../../SheetTableView.cpp" line="664"/>
+      <source>Properties…</source>
+      <translation type="unfinished">Properties…</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="203"/>
-      <location filename="../../SheetTableView.cpp" line="671"/>
-      <source>Recompute</source>
-      <translation type="unfinished">Recompute</translation>
+      <location filename="../../SheetTableView.cpp" line="673"/>
+      <source>Bind…</source>
+      <translation type="unfinished">Bind…</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="204"/>
+      <location filename="../../SheetTableView.cpp" line="666"/>
+      <source>Configuration Table…</source>
+      <translation type="unfinished">Configuration Table…</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="207"/>
-      <location filename="../../SheetTableView.cpp" line="679"/>
-      <source>Bind...</source>
-      <translation type="unfinished">Bind...</translation>
+      <location filename="../../SheetTableView.cpp" line="667"/>
+      <source>Merge Cells</source>
+      <translation type="unfinished">Merge Cells</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="211"/>
-      <location filename="../../SheetTableView.cpp" line="672"/>
-      <source>Configuration table...</source>
-      <translation type="unfinished">Configuration table...</translation>
+      <location filename="../../SheetTableView.cpp" line="210"/>
+      <location filename="../../SheetTableView.cpp" line="668"/>
+      <source>Split Cells</source>
+      <translation type="unfinished">Split Cells</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="219"/>
-      <location filename="../../SheetTableView.cpp" line="673"/>
-      <source>Merge cells</source>
-      <translation>Yhdistä solut</translation>
-    </message>
-    <message>
-      <location filename="../../SheetTableView.cpp" line="221"/>
-      <location filename="../../SheetTableView.cpp" line="674"/>
-      <source>Split cells</source>
-      <translation type="unfinished">Split cells</translation>
-    </message>
-    <message>
-      <location filename="../../SheetTableView.cpp" line="225"/>
-      <location filename="../../SheetTableView.cpp" line="677"/>
+      <location filename="../../SheetTableView.cpp" line="213"/>
+      <location filename="../../SheetTableView.cpp" line="671"/>
       <source>Cut</source>
       <translation>Leikkaa</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="227"/>
-      <location filename="../../SheetTableView.cpp" line="675"/>
+      <location filename="../../SheetTableView.cpp" line="214"/>
+      <location filename="../../SheetTableView.cpp" line="669"/>
       <source>Copy</source>
       <translation>Kopio</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="229"/>
-      <location filename="../../SheetTableView.cpp" line="676"/>
+      <location filename="../../SheetTableView.cpp" line="216"/>
+      <location filename="../../SheetTableView.cpp" line="670"/>
       <source>Paste</source>
       <translation>Liitä</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="231"/>
-      <location filename="../../SheetTableView.cpp" line="678"/>
+      <location filename="../../SheetTableView.cpp" line="218"/>
+      <location filename="../../SheetTableView.cpp" line="672"/>
       <source>Delete</source>
       <translation>Poista</translation>
     </message>
@@ -1159,12 +1159,12 @@ Defaults to: %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="301"/>
+      <location filename="../../SpreadsheetView.cpp" line="303"/>
       <source>Export PDF</source>
       <translation>Vie PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="303"/>
+      <location filename="../../SpreadsheetView.cpp" line="305"/>
       <source>PDF file</source>
       <translation>PDF-tiedosto</translation>
     </message>
@@ -1205,13 +1205,13 @@ Defaults to: %V = %A
     <name>ZoomableView</name>
     <message>
       <location filename="../../ZoomableView.cpp" line="112"/>
-      <source>Zoom level</source>
-      <translation type="unfinished">Zoom level</translation>
+      <source>New zoom level:</source>
+      <translation type="unfinished">New zoom level:</translation>
     </message>
     <message>
       <location filename="../../ZoomableView.cpp" line="112"/>
-      <source>New zoom level:</source>
-      <translation type="unfinished">New zoom level:</translation>
+      <source>Zoom Level</source>
+      <translation type="unfinished">Zoom Level</translation>
     </message>
   </context>
 </TS>

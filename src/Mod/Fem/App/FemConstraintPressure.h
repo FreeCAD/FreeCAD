@@ -37,6 +37,8 @@ class FemExport ConstraintPressure: public Fem::Constraint
 public:
     ConstraintPressure();
 
+    App::PropertyBool EnableAmplitude;
+    App::PropertyStringList AmplitudeValues;
     App::PropertyPressure Pressure;
     App::PropertyBool Reversed;
 

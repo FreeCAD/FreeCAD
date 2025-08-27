@@ -89,7 +89,7 @@ class DraftWireGuiTools(GuiTools):
         elif v in pts:
             # DNC: checks if point enter is equal to other, this could cause a OCC problem
             _err = translate("draft", "This object does not support possible "
-                                    "coincident points, please try again.")
+                                    "coincident points")
             App.Console.PrintMessage(_err + "\n")
             return
 
@@ -107,12 +107,12 @@ class DraftWireGuiTools(GuiTools):
 
     def get_edit_point_context_menu(self, edit_command, obj, node_idx):
         return [
-            (translate("draft", "Delete point"), lambda: self.delete_point(obj, node_idx)),
+            (translate("draft", "Delete Point"), lambda: self.delete_point(obj, node_idx)),
         ]
 
     def get_edit_obj_context_menu(self, edit_command, obj, position):
         return [
-            (translate("draft", "Add point"), lambda: self.add_point(edit_command, obj, position)),
+            (translate("draft", "Add Point"), lambda: self.add_point(edit_command, obj, position)),
             (self.get_open_close_menu_text(obj), lambda: self.open_close_wire(obj)),
             (self.get_reverse_menu_text(obj), lambda: self.reverse_wire(obj)),
         ]
@@ -121,14 +121,14 @@ class DraftWireGuiTools(GuiTools):
         """This function is overridden in the DraftBSplineGuiTools class.
         """
         if obj.Closed:
-            return translate("draft", "Open wire")
+            return translate("draft", "Open Wire")
         else:
-            return translate("draft", "Close wire")
+            return translate("draft", "Close Wire")
 
     def get_reverse_menu_text(self, obj):
         """This function is overridden in the DraftBSplineGuiTools class.
         """
-        return translate("draft", "Reverse wire")
+        return translate("draft", "Reverse Wire")
 
     def init_preview_object(self, obj):
         return trackers.wireTracker(obj.Shape)
@@ -174,7 +174,7 @@ class DraftWireGuiTools(GuiTools):
 
     def delete_point(self, obj, node_idx):
         if len(obj.Points) <= 2:
-            _err(translate("draft", "Active object must have more than two points/nodes"))
+            _err(translate("draft", "Active object must have more than 2 points or nodes"))
             return
 
         pts = obj.Points
@@ -196,12 +196,12 @@ class DraftBSplineGuiTools(DraftWireGuiTools):
 
     def get_open_close_menu_text(self, obj):
         if obj.Closed:
-            return translate("draft", "Open spline")
+            return translate("draft", "Open Spline")
         else:
-            return translate("draft", "Close spline")
+            return translate("draft", "Close Spline")
 
     def get_reverse_menu_text(self, obj):
-        return translate("draft", "Reverse spline")
+        return translate("draft", "Reverse Spline")
 
     def init_preview_object(self, obj):
         return trackers.bsplineTracker()
@@ -368,19 +368,19 @@ class DraftCircleGuiTools(GuiTools):
         if obj.FirstAngle != obj.LastAngle:
             if node_idx == 0:  # user is over arc start point
                 return [
-                    (translate("draft", "Move arc"), lambda: self.handle_move_arc(edit_command, obj, node_idx)),
+                    (translate("draft", "Move Arc"), lambda: self.handle_move_arc(edit_command, obj, node_idx)),
                 ]
             elif node_idx == 1:  # user is over arc start point
                 return [
-                    (translate("draft", "Set first angle"), lambda: self.handle_set_first_angle(edit_command, obj, node_idx)),
+                    (translate("draft", "Set First Angle"), lambda: self.handle_set_first_angle(edit_command, obj, node_idx)),
                 ]
             elif node_idx == 2:  # user is over arc end point
                 return [
-                    (translate("draft", "Set last angle"), lambda: self.handle_set_last_angle(edit_command, obj, node_idx)),
+                    (translate("draft", "Set Last Angle"), lambda: self.handle_set_last_angle(edit_command, obj, node_idx)),
                 ]
             elif node_idx == 3:  # user is over arc mid point
                 return [
-                    (translate("draft", "Set radius"), lambda: self.handle_set_radius(edit_command, obj, node_idx)),
+                    (translate("draft", "Set Radius"), lambda: self.handle_set_radius(edit_command, obj, node_idx)),
                 ]
 
     def handle_move_arc(self, edit_command, obj, node_idx):
@@ -405,7 +405,7 @@ class DraftCircleGuiTools(GuiTools):
             return
 
         return [
-            (translate("draft", "Invert arc"), lambda: self.arcInvert(obj)),
+            (translate("draft", "Invert Arc"), lambda: self.arcInvert(obj)),
         ]
 
     def init_preview_object(self, obj):
@@ -574,6 +574,53 @@ class DraftDimensionGuiTools(GuiTools):
             obj.ViewObject.TextPosition = v
 
 
+class DraftLabelGuiTools(GuiTools):
+
+    def __init__(self):
+        pass
+
+    def get_edit_points(self, obj):
+        editpoints = []
+        if obj.StraightDirection != "Custom":
+            editpoints.append(obj.Points[0])
+            editpoints.append(obj.Points[1])
+            editpoints.append(obj.Points[2])
+            if editpoints[0].isEqual(editpoints[1], 0.001):
+                # If StraightDistance == 0.0, editpoint 1 is exactly on editpoint 0 => Move slightly editpoint 1 to allow selection of editpoint 0
+                editpoints[1] = 0.9 * editpoints[1] + 0.1 * editpoints[2]
+        else:
+            pass # TODO : support custom direction with any number of points
+        return editpoints
+
+    def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
+        if obj.StraightDirection != "Custom":
+            if node_idx == 0:
+                vector_p1_p2 = obj.Placement.inverse().multVec(obj.Points[1]) - obj.Placement.inverse().multVec(v)
+                if obj.StraightDirection == "Horizontal":
+                    if round(vector_p1_p2.y, utils.precision()) == 0.0:
+                        obj.StraightDistance = vector_p1_p2.x
+                elif obj.StraightDirection == "Vertical":
+                    if round(vector_p1_p2.x, utils.precision()) == 0.0:
+                        obj.StraightDistance = vector_p1_p2.y
+                obj.Placement.Base = v
+            elif node_idx == 1:
+                vector_p1_p2 = obj.Placement.inverse().multVec(v) - obj.Placement.inverse().multVec(obj.Placement.Base)
+                if obj.StraightDirection == "Horizontal":
+                    if round(vector_p1_p2.y, utils.precision()) == 0.0:
+                        obj.StraightDistance = vector_p1_p2.x
+                    else:
+                        obj.Placement.Base = obj.Placement.Base + (v - obj.Points[1])
+                elif obj.StraightDirection == "Vertical":
+                    if round(vector_p1_p2.x, utils.precision()) == 0.0:
+                        obj.StraightDistance = vector_p1_p2.y
+                    else:
+                        obj.Placement.Base = obj.Placement.Base + (v - obj.Points[1])
+            elif node_idx == 2:
+                obj.TargetPoint = v
+        else:
+            pass # TODO : support custom direction with any number of points
+
+
 class DraftBezCurveGuiTools(GuiTools):
 
     def __init__(self):
@@ -597,7 +644,7 @@ class DraftBezCurveGuiTools(GuiTools):
         # DNC: checks if point enter is equal to other, this could cause a OCC problem
         if v in pts:
             _err = translate("draft", "This object does not support possible "
-                                    "coincident points, please try again.")
+                                    "coincident points")
             App.Console.PrintMessage(_err + "\n")
             return
 
@@ -615,24 +662,24 @@ class DraftBezCurveGuiTools(GuiTools):
 
     def get_edit_point_context_menu(self, edit_command, obj, node_idx):
         return [
-            (translate("draft", "Delete point"), lambda: self.delete_point(obj, node_idx)),
-            (translate("draft", "Make sharp"), lambda: self.smoothBezPoint(obj, node_idx, "Sharp")),
-            (translate("draft", "Make tangent"), lambda: self.smoothBezPoint(obj, node_idx, "Tangent")),
-            (translate("draft", "Make symmetric"), lambda: self.smoothBezPoint(obj, node_idx, "Symmetric")),
+            (translate("draft", "Delete Point"), lambda: self.delete_point(obj, node_idx)),
+            (translate("draft", "Make Sharp"), lambda: self.smoothBezPoint(obj, node_idx, "Sharp")),
+            (translate("draft", "Make Tangent"), lambda: self.smoothBezPoint(obj, node_idx, "Tangent")),
+            (translate("draft", "Make Symmetric"), lambda: self.smoothBezPoint(obj, node_idx, "Symmetric")),
         ]
 
     def get_edit_obj_context_menu(self, edit_command, obj, position):
         return [
-            (translate("draft", "Add point"), lambda: self.add_point(edit_command, obj, position)),
+            (translate("draft", "Add Point"), lambda: self.add_point(edit_command, obj, position)),
             (self.get_open_close_menu_text(obj), lambda: self.open_close_wire(obj)),
-            (translate("draft", "Reverse curve"), lambda: self.reverse_wire(obj)),
+            (translate("draft", "Reverse Curve"), lambda: self.reverse_wire(obj)),
         ]
 
     def get_open_close_menu_text(self, obj):
         if obj.Closed:
-            return translate("draft", "Open curve")
+            return translate("draft", "Open Curve")
         else:
-            return translate("draft", "Close curve")
+            return translate("draft", "Close Curve")
 
     def init_preview_object(self, obj):
         return trackers.bezcurveTracker()
@@ -733,7 +780,7 @@ class DraftBezCurveGuiTools(GuiTools):
                     changep = 1
                 else:
                     App.Console.PrintWarning(translate("draft",
-                                                        "Can't change Knot belonging to pole %d"%point)
+                                                        "Cannot change knot belonging to pole %d"%point)
                                                         + "\n")
                     return
                 if knot:
@@ -747,7 +794,7 @@ class DraftBezCurveGuiTools(GuiTools):
                         pass #
             else:
                 App.Console.PrintWarning(translate("draft",
-                                                    "Selection is not a Knot")
+                                                    "Selection is not a knot")
                                                     + "\n")
                 return
         else: #point is a knot
@@ -774,7 +821,7 @@ class DraftBezCurveGuiTools(GuiTools):
                 knot = 0
             else:
                 App.Console.PrintWarning(translate("draft",
-                                                        "Endpoint of Bézier curve can't be smoothed")
+                                                        "Endpoint of Bézier curve cannot be smoothed")
                                                         + "\n")
                 return
         segment = knot // deg  # segment index

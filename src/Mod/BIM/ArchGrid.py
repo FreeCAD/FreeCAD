@@ -391,12 +391,12 @@ class ArchGridTaskPanel:
         self.form.setWindowTitle(QtGui.QApplication.translate("Arch", "Grid", None))
         self.wLabel.setText(QtGui.QApplication.translate("Arch", "Total width", None))
         self.hLabel.setText(QtGui.QApplication.translate("Arch", "Total height", None))
-        self.addRowButton.setText(QtGui.QApplication.translate("Arch", "Add row", None))
-        self.delRowButton.setText(QtGui.QApplication.translate("Arch", "Del row", None))
-        self.addColumnButton.setText(QtGui.QApplication.translate("Arch", "Add column", None))
-        self.delColumnButton.setText(QtGui.QApplication.translate("Arch", "Del column", None))
-        self.spanButton.setText(QtGui.QApplication.translate("Arch", "Create span", None))
-        self.delSpanButton.setText(QtGui.QApplication.translate("Arch", "Remove span", None))
+        self.addRowButton.setText(QtGui.QApplication.translate("Arch", "Add Row", None))
+        self.delRowButton.setText(QtGui.QApplication.translate("Arch", "Delete Row", None))
+        self.addColumnButton.setText(QtGui.QApplication.translate("Arch", "Add Column", None))
+        self.delColumnButton.setText(QtGui.QApplication.translate("Arch", "Delete Column", None))
+        self.spanButton.setText(QtGui.QApplication.translate("Arch", "Create Span", None))
+        self.delSpanButton.setText(QtGui.QApplication.translate("Arch", "Remove Span", None))
         self.title.setText(QtGui.QApplication.translate("Arch", "Rows", None)+": "+str(self.table.rowCount())+" / "+QtGui.QApplication.translate("Arch", "Columns", None)+": "+str(self.table.columnCount()))
 
     def update(self):

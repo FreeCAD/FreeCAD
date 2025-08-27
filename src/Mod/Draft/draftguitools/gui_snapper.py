@@ -94,6 +94,7 @@ class Snapper:
         self.affinity = None
         self.mask = None
         self.cursorMode = None
+        self.cursorQt = None
         self.maxEdges = params.get_param("maxSnapEdges")
 
         # we still have no 3D view when the draft module initializes
@@ -1174,25 +1175,24 @@ class Snapper:
         return QtGui.QCursor(new_icon, 8, 8)
 
     def setCursor(self, mode=None):
-        """Set or reset the cursor to the given mode or resets."""
-        if self.selectMode:
-            for w in self.get_quarter_widget(Gui.getMainWindow()):
-                w.unsetCursor()
+        """Set the cursor to the given mode or unset it."""
+        views = self.get_quarter_widget(Gui.getMainWindow())
+        if self.selectMode or mode is None:
             self.cursorMode = None
-        elif not mode:
-            for w in self.get_quarter_widget(Gui.getMainWindow()):
-                w.unsetCursor()
-            self.cursorMode = None
+            self.cursorQt = None
+            for view in views:
+                view.unsetCursor()
+        elif self.cursorMode == mode and self.cursorQt is not None:
+            for view in views:
+                view.setCursor(self.cursorQt)
         else:
-            if mode != self.cursorMode:
-                base_icon_name = ":/icons/Draft_Cursor.svg"
-                tail_icon_name = None
-                if not (mode == 'passive'):
-                    tail_icon_name = self.cursors[mode]
-                cur = self.get_cursor_with_tail(base_icon_name, tail_icon_name)
-                for w in self.get_quarter_widget(Gui.getMainWindow()):
-                    w.setCursor(cur)
-                self.cursorMode = mode
+            self.cursorMode = mode
+            self.cursorQt = self.get_cursor_with_tail(
+                ":/icons/Draft_Cursor.svg",
+                None if mode == "passive" else self.cursors[mode]
+            )
+            for view in views:
+                view.setCursor(self.cursorQt)
 
     def restack(self):
         """Lower the grid tracker so it doesn't obscure other objects."""
@@ -1395,6 +1395,8 @@ class Snapper:
         self.callbackMove = None
 
         def move(event_cb):
+            if not self.ui.mouse:
+                return
             event = event_cb.getEvent()
             mousepos = event.getPosition()
             ctrl = event.wasCtrlDown()
@@ -1421,6 +1423,8 @@ class Snapper:
             accept()
 
         def click(event_cb):
+            if not self.ui.mouse:
+                return
             event = event_cb.getEvent()
             if event.getButton() == 1:
                 if event.getState() == coin.SoMouseButtonEvent.DOWN:
@@ -1495,7 +1499,7 @@ class Snapper:
         """Get the snap toolbar."""
         if not (hasattr(self, "toolbar") and self.toolbar):
             mw = Gui.getMainWindow()
-            self.toolbar = mw.findChild(QtWidgets.QToolBar, "Draft snap")
+            self.toolbar = mw.findChild(QtWidgets.QToolBar, "Draft Snap")
         if self.toolbar:
             return self.toolbar
 

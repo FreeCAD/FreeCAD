@@ -63,6 +63,9 @@ void DlgSettingsGeneral::saveSettings()
     ui->checkObjectNaming->onSave();
     ui->checkAllowCompoundBody->onSave();
     ui->comboDefaultProfileTypeForHole->onSave();
+    ui->checkShowFinalPreview->onSave();
+    ui->checkShowTransparentPreview->onSave();
+    ui->checkSwitchToTask->onSave();
 }
 
 void DlgSettingsGeneral::loadSettings()
@@ -73,6 +76,9 @@ void DlgSettingsGeneral::loadSettings()
     ui->checkObjectNaming->onRestore();
     ui->checkAllowCompoundBody->onRestore();
     ui->comboDefaultProfileTypeForHole->onRestore();
+    ui->checkShowFinalPreview->onRestore();
+    ui->checkShowTransparentPreview->onRestore();
+    ui->checkSwitchToTask->onRestore();
 }
 
 /**

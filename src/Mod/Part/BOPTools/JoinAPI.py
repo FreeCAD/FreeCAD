@@ -91,7 +91,7 @@ def connect(list_of_shapes, tolerance = 0.0):
         if largest is not None:
             keepers.append(largest)
 
-    touch_test_list = Part.Compound(keepers)
+    touch_test_list = Part.makeCompound(keepers)
     #add all intersection pieces that touch danglers, triple intersection pieces that touch duals, and so on
     for ii in range(2, ao.largestOverlapCount()+1):
         list_ii_pieces = [piece for piece in ao.pieces if len(ao.sourcesOfPiece(piece)) == ii]
@@ -102,7 +102,7 @@ def connect(list_of_shapes, tolerance = 0.0):
         if len(keepers_2_add) == 0:
             break
         keepers.extend(keepers_2_add)
-        touch_test_list = Part.Compound(keepers_2_add)
+        touch_test_list = Part.makeCompound(keepers_2_add)
 
 
     #merge, and we are done!
@@ -160,7 +160,7 @@ def cutout_legacy(shape_base, shape_tool, tolerance = 0.0):
         result = []
         for sh in shapes_base:
             result.append(cutout(sh, shape_tool))
-        return Part.Compound(result)
+        return Part.makeCompound(result)
 
     shape_base = shapes_base[0]
     pieces = compoundLeaves(shape_base.cut(shape_tool))

@@ -65,12 +65,17 @@ def write_constraint(f, femobj, rb_obj, ccxwriter):
     ref_node_idx = node_count + 2 * rb_obj_idx + 1
     rot_node_idx = node_count + 2 * rb_obj_idx + 2
 
+    if rb_obj.EnableAmplitude:
+        rb_amplitude = f", AMPLITUDE={rb_obj.Name}"
+    else:
+        rb_amplitude = ""
+
     def write_mode(mode, node, dof, constraint, load):
         if mode == "Constraint":
-            f.write("*BOUNDARY\n")
+            f.write(f"*BOUNDARY{rb_amplitude}\n")
             f.write(f"{node},{dof},{dof},{constraint:.13G}\n")
         elif mode == "Load":
-            f.write("*CLOAD\n")
+            f.write(f"*CLOAD{rb_amplitude}\n")
             f.write(f"{node},{dof},{load:.13G}\n")
 
     mode = [rb_obj.TranslationalModeX, rb_obj.TranslationalModeY, rb_obj.TranslationalModeZ]

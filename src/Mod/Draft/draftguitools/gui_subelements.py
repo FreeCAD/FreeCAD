@@ -59,8 +59,8 @@ class SubelementHighlight(gui_base_original.Modifier):
 
         return {'Pixmap': 'Draft_SubelementHighlight',
                 'Accel': "H, S",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_SubelementHighlight","Subelement highlight"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_SubelementHighlight","Highlight the subelements of the selected objects, so that they can then be edited with the move, rotate, and scale tools.")}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_SubelementHighlight","Highlight Subelements"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_SubelementHighlight","Highlights the subelements of the selected objects, to be able to move, rotate, and scale them")}
 
     def Activated(self):
         """Execute when the command is called."""

@@ -54,7 +54,7 @@ TaskFemConstraint::TaskFemConstraint(ViewProviderFemConstraint* ConstraintView,
                                      QWidget* parent,
                                      const char* pixmapname)
     : TaskBox(Gui::BitmapFactory().pixmap(pixmapname),
-              tr("Analysis feature parameters"),
+              tr("Analysis Feature Properties"),
               true,
               parent)
     , proxy(nullptr)

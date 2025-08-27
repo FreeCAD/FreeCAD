@@ -53,7 +53,7 @@ class IFC_Diff:
         )
         return {
             "Pixmap": "IFC",
-            "MenuText": QT_TRANSLATE_NOOP("IFC_Diff", "IFC Diff..."),
+            "MenuText": QT_TRANSLATE_NOOP("IFC_Diff", "IFC Diff"),
             "ToolTip": tt,
             "Accel": "I, D",
         }
@@ -116,7 +116,7 @@ class IFC_ConvertDocument:
         )
         return {
             "Pixmap": "IFC",
-            "MenuText": QT_TRANSLATE_NOOP("IFC_ConvertDocument", "Convert document"),
+            "MenuText": QT_TRANSLATE_NOOP("IFC_ConvertDocument", "Convert Document"),
             "ToolTip": tt,
             # "Accel": "I, C",
         }
@@ -146,7 +146,7 @@ class IFC_MakeProject:
         )
         return {
             "Pixmap": "IFC",
-            "MenuText": QT_TRANSLATE_NOOP("IFC_MakeProject", "Make IFC project"),
+            "MenuText": QT_TRANSLATE_NOOP("IFC_MakeProject", "Create IFC Project"),
             "ToolTip": tt,
             "Accel": "I, P",
         }
@@ -186,7 +186,7 @@ class IFC_Save:
         )
         return {
             "Pixmap": "IFC_document",
-            "MenuText": QT_TRANSLATE_NOOP("IFC_Save", "Save IFC file"),
+            "MenuText": QT_TRANSLATE_NOOP("IFC_Save", "Save IFC File"),
             "ToolTip": tt,
             "Accel": "Ctrl+S",
         }
@@ -221,7 +221,7 @@ class IFC_SaveAs:
         )
         return {
             "Pixmap": "IFC_document",
-            "MenuText": QT_TRANSLATE_NOOP("IFC_SaveAs", "Save IFC file as..."),
+            "MenuText": QT_TRANSLATE_NOOP("IFC_SaveAs", "Save IFC File As…"),
             "ToolTip": tt,
             "Accel": "Ctrl+Shift+S",
         }

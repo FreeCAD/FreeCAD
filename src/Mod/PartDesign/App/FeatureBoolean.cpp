@@ -160,7 +160,7 @@ App::DocumentObjectExecReturn *Boolean::execute()
     result = refineShapeIfActive(result);
 
     if (!isSingleSolidRuleSatisfied(result.getShape())) {
-        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compounds' in the active body."));
     }
 
     this->Shape.setValue(getSolid(result));
@@ -185,3 +185,6 @@ void Boolean::handleChangedPropertyName(Base::XMLReader &reader, const char * Ty
 }
 
 }
+
+
+

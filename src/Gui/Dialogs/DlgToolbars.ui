@@ -54,7 +54,7 @@
           </sizepolicy>
          </property>
          <property name="text">
-          <string>Category:</string>
+          <string>Category</string>
          </property>
         </widget>
        </item>
@@ -104,10 +104,10 @@
             </size>
            </property>
            <property name="toolTip">
-            <string>Move right</string>
+            <string>Move Right</string>
            </property>
            <property name="whatsThis">
-            <string>&lt;b&gt;Move the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</string>
+            <string>&lt;b&gt;Moves the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</string>
            </property>
            <property name="text">
             <string/>
@@ -130,10 +130,10 @@
             </size>
            </property>
            <property name="toolTip">
-            <string>Move left</string>
+            <string>Move Left</string>
            </property>
            <property name="whatsThis">
-            <string>&lt;b&gt;Move the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</string>
+            <string>&lt;b&gt;Moves the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</string>
            </property>
            <property name="text">
             <string/>
@@ -162,10 +162,10 @@
             </size>
            </property>
            <property name="toolTip">
-            <string>Move up</string>
+            <string>Move Up</string>
            </property>
            <property name="whatsThis">
-            <string>&lt;b&gt;Move the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</string>
+            <string>&lt;b&gt;Moves the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</string>
            </property>
            <property name="text">
             <string/>
@@ -188,10 +188,10 @@
             </size>
            </property>
            <property name="toolTip">
-            <string>Move down</string>
+            <string>Move Down</string>
            </property>
            <property name="whatsThis">
-            <string>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</string>
+            <string>&lt;b&gt;Moves the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</string>
            </property>
            <property name="text">
             <string/>
@@ -285,14 +285,14 @@
          <item>
           <widget class="QPushButton" name="newButton">
            <property name="text">
-            <string>New...</string>
+            <string>New</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="renameButton">
            <property name="text">
-            <string>Rename...</string>
+            <string>Rename</string>
            </property>
           </widget>
          </item>

@@ -29,6 +29,7 @@
 #include <App/GroupExtension.h>
 #include <App/Part.h>
 #include "Application.h"
+#include "Action.h"
 #include "cet_lut.hpp"
 #include "CommandT.h"
 #include "DockWindowManager.h"
@@ -56,9 +57,9 @@ StdCmdFeatRecompute::StdCmdFeatRecompute()
     // setting the
     sGroup        = "File";
     sMenuText     = QT_TR_NOOP("&Recompute");
-    sToolTipText  = QT_TR_NOOP("Recompute feature or document");
+    sToolTipText  = QT_TR_NOOP("Recomputes a feature or document");
     sWhatsThis    = "Std_Recompute";
-    sStatusTip    = QT_TR_NOOP("Recompute feature or document");
+    sStatusTip    = sToolTipText;
     sPixmap       = "view-refresh";
     sAccel        = "Ctrl+R";
 }
@@ -78,10 +79,10 @@ StdCmdRandomColor::StdCmdRandomColor()
   :Command("Std_RandomColor")
 {
     sGroup        = "File";
-    sMenuText     = QT_TR_NOOP("Random &color");
-    sToolTipText  = QT_TR_NOOP("Set each selected object to a randomly-selected color");
+    sMenuText     = QT_TR_NOOP("Random &Color");
+    sToolTipText  = QT_TR_NOOP("Assigns random diffuse colors for the selected objects");
     sWhatsThis    = "Std_RandomColor";
-    sStatusTip    = QT_TR_NOOP("Set each selected object to a randomly-selected color");
+    sStatusTip    = sToolTipText;
     sPixmap       = "Std_RandomColor";
 }
 
@@ -158,7 +159,7 @@ StdCmdToggleFreeze::StdCmdToggleFreeze()
     : Command("Std_ToggleFreeze")
 {
     sGroup = "File";
-    sMenuText = QT_TR_NOOP("Toggle freeze");
+    sMenuText = QT_TR_NOOP("Toggle Freeze");
     static std::string toolTip = std::string("<p>")
         + QT_TR_NOOP("Toggles freeze state of the selected objects. A frozen object is not recomputed when its parents change.")
         + "</p>";
@@ -220,7 +221,7 @@ StdCmdSendToPythonConsole::StdCmdSendToPythonConsole()
     sMenuText     = QT_TR_NOOP("&Send to Python Console");
     sToolTipText  = QT_TR_NOOP("Sends the selected object to the Python console");
     sWhatsThis    = "Std_SendToPythonConsole";
-    sStatusTip    = QT_TR_NOOP("Sends the selected object to the Python console");
+    sStatusTip    = sToolTipText;
     sPixmap       = "applications-python";
     sAccel        = "Ctrl+Shift+P";
 }
@@ -298,6 +299,64 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
 
 }
 
+//===========================================================================
+// Std_ToggleSkipRecompute
+//===========================================================================
+
+DEF_STD_CMD_AC(StdCmdToggleSkipRecompute)
+
+StdCmdToggleSkipRecompute::StdCmdToggleSkipRecompute()
+    : Command("Std_ToggleSkipRecompute")
+{
+    sGroup = "File";
+    sMenuText = QT_TR_NOOP("Skip Recomputes");
+    
+    static std::string toolTip = QT_TR_NOOP("Enables or disables the recomputations of the document");
+
+    sToolTipText = toolTip.c_str();
+    sStatusTip = sToolTipText;
+    sWhatsThis = "Std_ToggleSkipRecompute";
+    eType = AlterDoc;
+}
+
+Gui::Action* StdCmdToggleSkipRecompute::createAction()
+{
+    Action* pcAction = Command::createAction();
+    pcAction->setCheckable(true);
+    pcAction->setIcon(QIcon());
+    _pcAction = pcAction;
+    isActive();
+    return pcAction;
+}
+
+void StdCmdToggleSkipRecompute::activated(int iMsg)
+{
+    const auto doc = this->getDocument();
+    if (doc == nullptr) {
+        return;
+    }
+
+    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Skip recomputes"));
+    doc->setStatus(App::Document::SkipRecompute, (bool) iMsg);
+    if (_pcAction) {
+        _pcAction->setChecked((bool) iMsg);
+    }
+    Command::commitCommand();    
+}
+
+bool StdCmdToggleSkipRecompute::isActive()
+{
+    const auto doc = this->getDocument();
+    if (doc == nullptr) {
+        return false;
+    }
+
+    const bool skipRecomputeStatus = doc->testStatus(App::Document::SkipRecompute);
+    if (_pcAction && _pcAction->isChecked() != skipRecomputeStatus) {
+        _pcAction->setChecked(skipRecomputeStatus);
+    }
+    return true;
+}
 
 namespace Gui {
 
@@ -309,6 +368,7 @@ void CreateFeatCommands()
     rcCmdMgr.addCommand(new StdCmdToggleFreeze());
     rcCmdMgr.addCommand(new StdCmdRandomColor());
     rcCmdMgr.addCommand(new StdCmdSendToPythonConsole());
+    rcCmdMgr.addCommand(new StdCmdToggleSkipRecompute());
 }
 
 } // namespace Gui

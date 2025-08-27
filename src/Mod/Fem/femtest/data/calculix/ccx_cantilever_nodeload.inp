@@ -377,8 +377,8 @@ ConstraintFixed,3
 
 ***********************************************************
 ** constraints force node loads
-*CLOAD
 ** ConstraintForce
+*CLOAD
 ** node load on shape: Box:Vertex5
 4,3,-2250000
 

@@ -15,7 +15,16 @@
 
 // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
-TEST(ShapeRelationKey, HistoryTraceTypeComparison)
+class ShapeRelationKey: public ::testing::Test
+{
+protected:
+    static void SetUpTestSuite()
+    {
+        tests::initApplication();
+    }
+};
+
+TEST_F(ShapeRelationKey, HistoryTraceTypeComparison)
 {
     // Arrange
     Data::MappedName mappedName {"mappedName"};

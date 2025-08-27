@@ -439,7 +439,7 @@ class PathArray(DraftLink):
         w = self.get_wires(obj.PathObject, obj.PathSubelements)
         if not w:
             _err(obj.PathObject.Label
-                 + translate("draft",", path object doesn't have 'Edges'."))
+                 + translate("draft",", path object does not have 'Edges'."))
             return
 
         base_rotation = obj.Base.Shape.Placement.Rotation
@@ -652,7 +652,7 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
             _wrn(
                 translate(
                     "draft",
-                    "Start Offset too large for path length. Using zero instead."
+                    "Start Offset too large for path length. Using 0 instead."
                 )
             )
         startOffset = 0
@@ -662,7 +662,7 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
             _wrn(
                 translate(
                     "draft",
-                    "End Offset too large for path length minus Start Offset. Using zero instead."
+                    "End Offset too large for path length minus Start Offset. Using 0 instead."
                 )
             )
         endOffset = 0
@@ -789,7 +789,7 @@ def calculate_placement(globalRotation,
     t = edge.tangentAt(get_parameter_from_v0(edge, offset))
 
     if t.isEqual(nullv, tol):
-        _wrn(translate("draft", "Length of tangent vector is zero. Copy not aligned."))
+        _wrn(translate("draft", "Length of tangent vector is 0. Copy not aligned."))
         return placement
 
     if reversePath:
@@ -806,7 +806,7 @@ def calculate_placement(globalRotation,
     if mode in ("Original", "Tangent"):
         n = normal
         if n.isEqual(nullv, tol):
-            _wrn(translate("draft", "Length of normal vector is zero. Using a default axis instead."))
+            _wrn(translate("draft", "Length of normal vector is 0. Using a default axis instead."))
             n = t
         else:
             n_nor = n.normalize()
@@ -828,7 +828,7 @@ def calculate_placement(globalRotation,
             n = normal
 
         if n.isEqual(nullv, tol):
-            _wrn(translate("draft", "Length of normal vector is zero. Using a default axis instead."))
+            _wrn(translate("draft", "Length of normal vector is 0. Using a default axis instead."))
             n = t
         else:
             n_nor = n.normalize()

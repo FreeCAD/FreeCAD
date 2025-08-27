@@ -152,9 +152,11 @@ class JobCreate:
 
         for base in self.candidates:
             if (
-                not base in jobResources
+                base not in jobResources
                 and not PathJob.isResourceClone(job, base, None)
                 and not hasattr(base, "StockType")
+                and base.ViewObject.ShowInTree
+                and base.TypeId != "App::DocumentObjectGroup"
             ):
                 item0 = QtGui.QStandardItem()
                 item1 = QtGui.QStandardItem()

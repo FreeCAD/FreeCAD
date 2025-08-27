@@ -38,6 +38,7 @@ class QEvent;
 class QGridLayout;
 class QLabel;
 class QListView;
+class QMdiSubWindow;
 class QScrollArea;
 class QStackedWidget;
 class QPushButton;
@@ -64,12 +65,12 @@ public:
         return "StartView";
     }
 
-    void newEmptyFile() const;
-    void newPartDesignFile() const;
-    void openExistingFile() const;
-    void newAssemblyFile() const;
-    void newDraftFile() const;
-    void newArchFile() const;
+    void newEmptyFile();
+    void newPartDesignFile();
+    void openExistingFile();
+    void newAssemblyFile();
+    void newDraftFile();
+    void newArchFile();
 
     bool onHasMsg(const char* pMsg) const override;
 
@@ -82,6 +83,7 @@ public:
 
 protected:
     void changeEvent(QEvent* e) override;
+    void showEvent(QShowEvent* event) override;
 
     void configureNewFileButtons(QLayout* layout) const;
     static void configureFileCardWidget(QListView* fileCardWidget);
@@ -89,7 +91,7 @@ protected:
     void configureExamplesListWidget(QListView* examplesListWidget);
     void configureCustomFolderListWidget(QListView* customFolderListWidget);
 
-    void postStart(PostStartBehavior behavior) const;
+    void postStart(PostStartBehavior behavior);
 
     void fileCardSelected(const QModelIndex& index);
     void showOnStartupChanged(bool checked);
@@ -98,8 +100,13 @@ protected:
 
     QString fileCardStyle() const;
 
+private Q_SLOTS:
+    void onMdiSubWindowActivated(QMdiSubWindow* subWindow);
+
 private:
     void retranslateUi();
+    void setListViewUpdatesEnabled(bool enabled);
+
     QStackedWidget* _contents = nullptr;
     Start::RecentFilesModel _recentFilesModel;
     Start::ExamplesModel _examplesModel;

@@ -28,7 +28,7 @@ HINT: Make sure that the symlink /usr/bin/python exists and points to the Python
 
 NOTE: To make sure FreeCAD saves thumbnail information:
 
-    Edit -> Preferences... -> Document -> Save thumbnail into project when saving document
+    Edit → Preferences → Document → Save thumbnail into project when saving document
 """
 import sys
 import zipfile

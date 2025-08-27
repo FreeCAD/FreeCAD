@@ -4,6 +4,7 @@ include_directories(
 )
 
 generate_from_xml(ViewProviderSpreadsheetPy)
+generate_from_py_(ViewProviderSpreadsheetPy)
 
 # The XML files
 set(SpreadsheetGui_XML_SRCS

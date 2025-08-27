@@ -1430,7 +1430,7 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         super().contextMenuAddEdit(menu)
 
         actionFlipDirection = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Wall_Tree.svg"),
-                                            translate("Arch", "Flip direction"),
+                                            translate("Arch", "Flip Direction"),
                                             menu)
         QtCore.QObject.connect(actionFlipDirection,
                                QtCore.SIGNAL("triggered()"),

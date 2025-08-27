@@ -38394,8 +38394,8 @@ ConstraintFixed,6
 
 ***********************************************************
 ** constraints force node loads
-*CLOAD
 ** ConstraintForce
+*CLOAD
 ** node load on shape: Load_place_point:Vertex1
 5,2,-5000
 

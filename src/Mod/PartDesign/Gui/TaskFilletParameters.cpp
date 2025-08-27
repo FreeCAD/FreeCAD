@@ -134,7 +134,7 @@ void TaskFilletParameters::onCheckBoxUseAllEdgesToggled(bool checked)
 void TaskFilletParameters::setButtons(const selectionModes mode)
 {
     ui->buttonRefSel->setChecked(mode == refSel);
-    ui->buttonRefSel->setText(mode == refSel ? btnPreviewStr() : btnSelectStr());
+    ui->buttonRefSel->setText(mode == refSel ? stopSelectionLabel() : startSelectionLabel());
 }
 
 void TaskFilletParameters::onRefDeleted()
@@ -206,6 +206,7 @@ TaskDlgFilletParameters::TaskDlgFilletParameters(ViewProviderFillet* DressUpView
     parameter = new TaskFilletParameters(DressUpView);
 
     Content.push_back(parameter);
+    Content.push_back(preview);
 }
 
 TaskDlgFilletParameters::~TaskDlgFilletParameters() = default;
@@ -216,7 +217,7 @@ bool TaskDlgFilletParameters::accept()
 {
     auto obj = getObject();
     if (!obj->isError()) {
-        parameter->showObject();
+        getViewObject()->showPreviousFeature(false);
     }
 
     parameter->apply();

@@ -64,7 +64,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(AnnotationStyleEditor, self).__init__(name=translate("draft","Annotation style editor"))
+        super(AnnotationStyleEditor, self).__init__(name=translate("draft","Annotation Style Editor"))
         self.doc = None
         self.styles = {}
         self.renamed = {}
@@ -75,9 +75,9 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         """Set icon, menu and tooltip."""
         return {'Pixmap': ":icons/Draft_Annotation_Style.svg",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_AnnotationStyleEditor",
-                                              "Annotation styles..."),
+                                              "Annotation Styles"),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_AnnotationStyleEditor",
-                                             "Manage or create annotation styles")}
+                                             "Opens an editor to manage or create annotation styles")}
 
     def Activated(self):
         """Execute when the command is called.
@@ -144,7 +144,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         meta = self.doc.Meta
         for key, value in meta.items():
             if key.startswith("Draft_Style_"):
-                styles[key[12:]] = self.repair_style(json.loads(value))
+                styles[key[12:]] = utils.repair_annotation_style(json.loads(value))
         return styles
 
     def save_meta(self, styles):
@@ -196,7 +196,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
                                     if vobj.getTypeIdOfProperty(attr) == "App::PropertyColor":
                                         value = value | 0x000000FF
                                     setattr(vobj, attr, value)
-                                except:
+                                except TypeError:
                                     pass
                 else:
                     # the style has been removed
@@ -212,8 +212,8 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         elif index == 1:
             # Add new... entry
             reply = QtWidgets.QInputDialog.getText(None,
-                                                   translate("draft", "Create new style"),
-                                                   translate("draft", "Style name:"))
+                                                   translate("draft", "New Style"),
+                                                   translate("draft", "Style name"))
             if reply[1]:
                 # OK or Enter pressed
                 name = reply[0].strip()
@@ -254,7 +254,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         if self.get_style_users(style):
             reply = QtWidgets.QMessageBox.question(None,
                                                    translate("draft", "Style in use"),
-                                                   translate("draft", "This style is used by some objects in this document. Are you sure?"),
+                                                   translate("draft", "This style is used by some objects in this document. Proceed?"),
                                                    QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
                                                    QtWidgets.QMessageBox.No)
             if reply == QtWidgets.QMessageBox.No:
@@ -279,8 +279,8 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         style = self.form.comboBoxStyles.itemText(index)
 
         reply = QtWidgets.QInputDialog.getText(None,
-                                               translate("draft", "Rename style"),
-                                               translate("draft", "New name:"),
+                                               translate("draft", "Rename Style"),
+                                               translate("draft", "New name"),
                                            QtWidgets.QLineEdit.Normal,
                                            style)
         if reply[1]:
@@ -302,14 +302,14 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         """Import styles from a json file."""
         filename = QtWidgets.QFileDialog.getOpenFileName(
             QtWidgets.QApplication.activeWindow(),
-            translate("draft","Open styles file"),
+            translate("draft","Open Styles File"),
             None,
             translate("draft","JSON files (*.json *.JSON)"))
         if filename and filename[0]:
             nstyles = {}
             with open(filename[0]) as f:
                 for key, val in json.load(f).items():
-                    nstyles[key] = self.repair_style(val)
+                    nstyles[key] = utils.repair_annotation_style(val)
             if nstyles:
                 self.styles.update(nstyles)
                 for style in self.styles.keys():
@@ -322,7 +322,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         """Export styles to a json file."""
         filename = QtWidgets.QFileDialog.getSaveFileName(
             QtWidgets.QApplication.activeWindow(),
-            translate("draft","Save styles file"),
+            translate("draft","Save Styles File"),
             None,
             translate("draft","JSON file (*.json)"))
         if filename and filename[0]:
@@ -330,25 +330,6 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
             with open(filename[0],"w") as f:
                 json.dump(self.styles,f,indent=4)
             print("Styles saved to " + filename[0])
-
-    def repair_style(self, style):
-        """Repair a V0.19 or V0.20 style.
-
-        Some properties were missing or misspelled.
-        Some float values were wrongly stored as strings.
-        """
-        default = utils.get_default_annotation_style()
-        new = {}
-        for key, val in default.items():
-            if style.get(key) is None:
-                new[key] = val[1]
-            elif type(style[key]) == type(val[1]):
-                new[key] = style[key]
-            elif isinstance(style[key], str):
-                new[key] = float(style[key].replace(",", "."))
-            else:
-                new[key] = val[1]
-        return new
 
     def fill_editor(self, style=None):
         """Fill the editor fields with the contents of a style."""

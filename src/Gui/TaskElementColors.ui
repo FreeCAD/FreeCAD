@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Set element color</string>
+   <string>Set Element Color</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
@@ -58,14 +58,14 @@
      <item row="0" column="3">
       <widget class="QPushButton" name="removeAll">
        <property name="text">
-        <string>Remove all</string>
+        <string>Remove All</string>
        </property>
       </widget>
      </item>
      <item row="1" column="0">
       <widget class="QPushButton" name="boxSelect">
        <property name="text">
-        <string>Box select</string>
+        <string>Box Select</string>
        </property>
       </widget>
      </item>
@@ -81,7 +81,7 @@
    <item row="5" column="0">
     <widget class="QCheckBox" name="onTop">
      <property name="text">
-      <string>On-top when selected</string>
+      <string>On top when selected</string>
      </property>
     </widget>
    </item>

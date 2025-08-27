@@ -2569,8 +2569,8 @@ ConstraintFixed,6
 
 ***********************************************************
 ** constraints force node loads
-*CLOAD
 ** ConstraintForce
+*CLOAD
 ** node loads on shape: Face1:Edge4
 9,2,-33.33333333333
 11,2,-33.33333333333

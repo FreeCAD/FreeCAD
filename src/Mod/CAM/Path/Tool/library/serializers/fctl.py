@@ -81,7 +81,11 @@ class FCTLSerializer(AssetSerializer):
 
         tools_list = data_dict.get("tools", [])
         for tool_data in tools_list:
-            tool_no = tool_data["nr"]
+            try:
+                tool_no = int(tool_data["nr"])
+            except ValueError:
+                Path.Log.warning(f"Invalid tool ID in tool data: {tool_data}. Skipping.")
+                continue
             tool_id = pathlib.Path(tool_data["path"]).stem  # Extract tool ID
             tool_uri = AssetUri(f"toolbit://{tool_id}")
             tool = dependencies.get(tool_uri)

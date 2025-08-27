@@ -31,7 +31,7 @@
 /**
  * A switch that can be used to show or hide all child nodes
  */
-class SoToggleSwitch: public SoSwitch
+class GuiExport SoToggleSwitch: public SoSwitch
 {
     SO_NODE_HEADER(SoToggleSwitch);
 

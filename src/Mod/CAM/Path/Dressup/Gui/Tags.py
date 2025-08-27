@@ -549,7 +549,7 @@ class CommandPathDressupTag:
             "Pixmap": "CAM_Dressup",
             "MenuText": QT_TRANSLATE_NOOP("CAM_DressupTag", "Tag"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_DressupTag", "Creates a Tag Dress-up object from a selected toolpath"
+                "CAM_DressupTag", "Creates a tag dress-up object from a selected toolpath"
             ),
         }
 

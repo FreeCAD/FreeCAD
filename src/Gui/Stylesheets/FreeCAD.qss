@@ -1356,15 +1356,6 @@ QComboBox:editable {
   background-color: @TextEditFieldBackgroundColor;
 }
 
-QComboBox QAbstractItemView {
-  border: 1px solid @GeneralBorderColor;
-  padding-left: -27px;
-  background-color: transparent;
-}
-
-QComboBox QAbstractItemView:hover {
-  background-color: @GeneralBackgroundHoverColor;
-}
 
 QComboBox QAbstractItemView:selected {
   background-color: @GeneralBackgroundHoverColor;
@@ -1531,6 +1522,11 @@ QSint--ActionGroup QFrame[class="content"] QTreeView,
 QSint--ActionGroup QFrame[class="content"] QListView,
 QSint--ActionGroup QFrame[class="content"] QTableView {
   background-color: @PrimaryColor;
+}
+
+/* Fix for tables inside task pannels, see https://github.com/FreeCAD/FreeCAD/issues/22957 */
+QSint--ActionGroup QFrame[class="content"] QTableView {
+  min-height: 300px;
 }
 
 /* found inside Part Design Workbench and "make a draft on a face" Task panel options */
@@ -2185,7 +2181,7 @@ QListView {
 QTreeView {
   show-decoration-selected: 1;
   selection-background-color: @AccentBackgroundColor;
-  qproperty-indentation: 10;
+  qproperty-indentation: 12;
 }
 
 QTreeView:disabled,
@@ -2219,6 +2215,12 @@ QTableView::item:selected,
 QTreeView::item:selected,
 QColumnView::item:selected {
   background-color: @AccentBackgroundColor;
+}
+
+QTableView::item:hover,
+QColumnView::item:hover,
+QListView::item:hover {
+  background-color: @AccentHoverColor;
 }
 
 /* QTreeView::item:!selected:hover, */
@@ -2482,7 +2484,7 @@ PlotWidget {
 SKETCHER
 ==================================================================================================*/
 
-Gui--StatefulLabel[state="empty_sketch"] {
+Gui--StatefulLabel[state="empty"] {
   color : @SketcherEmptySketchColor}
 Gui--StatefulLabel[state="under_constrained"] {
   color : @SketcherUnderConstrainedColor;
@@ -2606,6 +2608,9 @@ QGroupBox[objectName="matOpsGrpBox"] QPushButton {
 QToolBar > Gui--WorkbenchComboBox QAbstractItemView {
   min-width: 180px;
   margin-left: 30px;
+  border: 1px solid @GeneralBorderColor;
+  padding-left: -27px;
+  background-color: transparent;
 }
 
 /* Below is a fix for indentation in properties*/
@@ -2642,3 +2647,21 @@ QMainWindow QHeaderView::section::horizontal::first, QHeaderView::section::horiz
   border-left: 0px solid transparent;
 }
 
+Gui--Dialog--DocumentRecovery QTreeView {
+  border: 1px solid @GeneralBorderColor;
+}
+
+/*==================================================================================================
+Input validation
+==================================================================================================*/
+QLineEdit[validationState="error"],
+QComboBox[validationState="error"] {
+    border: 1px solid #d93025;
+    border-image: none;
+}
+
+QLineEdit[validationState="error"]:focus,
+QComboBox[validationState="error"]:focus {
+    border: 1px solid #ff3b30;
+    border-image: none;
+}

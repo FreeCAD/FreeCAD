@@ -38,6 +38,8 @@ public:
     /// Constructor
     ConstraintForce();
 
+    App::PropertyBool EnableAmplitude;
+    App::PropertyStringList AmplitudeValues;
     App::PropertyForce Force;
     App::PropertyLinkSub Direction;
     App::PropertyBool Reversed;

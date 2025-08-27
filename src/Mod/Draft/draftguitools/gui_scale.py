@@ -65,7 +65,7 @@ class Scale(gui_base_original.Modifier):
         return {"Pixmap": "Draft_Scale",
                 "Accel": "S, C",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_Scale", "Scale"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Scale", "Scales the selected objects from a base point.\nSHIFT to constrain.")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Scale", "Scales the selected objects from a base point")}
 
     def Activated(self):
         """Execute when the command is called."""
