@@ -2650,3 +2650,18 @@ QMainWindow QHeaderView::section::horizontal::first, QHeaderView::section::horiz
 Gui--Dialog--DocumentRecovery QTreeView {
   border: 1px solid @GeneralBorderColor;
 }
+
+/*==================================================================================================
+Input validation
+==================================================================================================*/
+QLineEdit[validationState="error"],
+QComboBox[validationState="error"] {
+    border: 1px solid #d93025;
+    border-image: none;
+}
+
+QLineEdit[validationState="error"]:focus,
+QComboBox[validationState="error"]:focus {
+    border: 1px solid #ff3b30;
+    border-image: none;
+}
