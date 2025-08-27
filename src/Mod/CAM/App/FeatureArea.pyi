@@ -8,7 +8,7 @@ from App.DocumentObject import DocumentObject
     Include="Mod/CAM/App/FeatureArea.h",
     Namespace="Path",
 )
-class FeatureAreaPy(DocumentObject):
+class FeatureArea(DocumentObject):
     """
     This class handles Path Area features
     """

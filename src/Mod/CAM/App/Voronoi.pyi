@@ -9,7 +9,7 @@ from Base.Metadata import constmethod, export
     Constructor=True,
     Delete=True,
 )
-class VoronoiPy(BaseClass):
+class Voronoi(BaseClass):
     """
     Voronoi([segments]): Create voronoi for given collection of line segments
     """

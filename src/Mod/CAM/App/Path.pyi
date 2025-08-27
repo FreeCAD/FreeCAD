@@ -10,7 +10,7 @@ from Base.Persistence import Persistence
     Delete=True,
     Constructor=True,
 )
-class PathPy(Persistence):
+class Path(Persistence):
     """
     Path([commands]): Represents a basic Gcode path
     commands (optional) is a list of Path commands

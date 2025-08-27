@@ -8,7 +8,7 @@ from App.DocumentObject import DocumentObject
     Include="Mod/CAM/App/FeaturePathCompound.h",
     Namespace="Path",
 )
-class FeaturePathCompoundPy(DocumentObject):
+class FeaturePathCompound(DocumentObject):
     """
     This class handles Path Compound features
     """

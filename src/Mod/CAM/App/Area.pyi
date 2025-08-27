@@ -10,7 +10,7 @@ from Base.Metadata import export
     Constructor=True,
     Delete=True,
 )
-class AreaPy(BaseClass):
+class Area(BaseClass):
     """
     FreeCAD python wrapper of libarea
 

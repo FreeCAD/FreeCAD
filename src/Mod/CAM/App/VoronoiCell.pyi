@@ -10,7 +10,7 @@ from Base.Metadata import constmethod, export
     RichCompare=True,
     Delete=True,
 )
-class VoronoiCellPy(BaseClass):
+class VoronoiCell(BaseClass):
     """
     Cell of a Voronoi diagram
     """

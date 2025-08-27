@@ -10,7 +10,7 @@ from Base.Metadata import constmethod, export
     Constructor=True,
     Delete=True,
 )
-class VoronoiEdgePy(BaseClass):
+class VoronoiEdge(BaseClass):
     """
     Edge of a Voronoi diagram
     """

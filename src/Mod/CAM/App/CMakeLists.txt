@@ -21,34 +21,34 @@ set(Path_LIBS
     FreeCADApp
 )
 
-generate_from_py(CommandPy)
-generate_from_py(PathPy)
-generate_from_py(FeaturePathCompoundPy)
-generate_from_py(AreaPy)
-generate_from_py(FeatureAreaPy)
-generate_from_py(VoronoiPy)
-generate_from_py(VoronoiCellPy)
-generate_from_py(VoronoiEdgePy)
-generate_from_py(VoronoiVertexPy)
+generate_from_py(Command)
+generate_from_py(Path)
+generate_from_py(FeaturePathCompound)
+generate_from_py(Area)
+generate_from_py(FeatureArea)
+generate_from_py(Voronoi)
+generate_from_py(VoronoiCell)
+generate_from_py(VoronoiEdge)
+generate_from_py(VoronoiVertex)
 
 SET(Python_SRCS
-    CommandPy.pyi
+    Command.pyi
     CommandPyImp.cpp
-    PathPy.pyi
+    Path.pyi
     PathPyImp.cpp
-    FeaturePathCompoundPy.pyi
+    FeaturePathCompound.pyi
     FeaturePathCompoundPyImp.cpp
-    AreaPy.pyi
+    Area.pyi
     AreaPyImp.cpp
-    FeatureAreaPy.pyi
+    FeatureArea.pyi
     FeatureAreaPyImp.cpp
-    VoronoiPy.pyi
+    Voronoi.pyi
     VoronoiPyImp.cpp
-    VoronoiCellPy.pyi
+    VoronoiCell.pyi
     VoronoiCellPyImp.cpp
-    VoronoiEdgePy.pyi
+    VoronoiEdge.pyi
     VoronoiEdgePyImp.cpp
-    VoronoiVertexPy.pyi
+    VoronoiVertex.pyi
     VoronoiVertexPyImp.cpp
 )
 

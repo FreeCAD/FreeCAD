@@ -10,7 +10,7 @@ from Base.Metadata import constmethod, export
     RichCompare=True,
     Delete=True,
 )
-class VoronoiVertexPy(BaseClass):
+class VoronoiVertex(BaseClass):
     """
     Vertex of a Voronoi diagram
     """
