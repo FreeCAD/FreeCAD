@@ -21,17 +21,35 @@
 # *                                                                         *
 # ***************************************************************************/
 
-# FreeCAD test module
+# FreeCAD init module - Tests
 #
+# Gathering all the information to start FreeCAD.
+# This is the last of four init scripts:
+# +------+------------------+-----------------------------+
+# | This | Script           | Runs                        |
+# +------+------------------+-----------------------------+
+# |      | CMakeVariables   | always                      |
+# |      | FreeCADInit      | always                      |
+# | >>>> | FreeCADTest      | only if test and not Gui    |
+# |      | FreeCADGuiInit   | only if Gui is up           |
+# +------+------------------+-----------------------------+
+
 # Testing the function of the base system and run
 # (if existing) the test function of the modules
 
+import FreeCAD
+import typing
+
+if typing.TYPE_CHECKING:
+    from __main__ import Log
 
 Log("FreeCAD test running...\n\n")
+Log("Init: starting App::FreeCADTest.py\n")
+Log("░░░▀█▀░█▀█░▀█▀░▀█▀░░░▀█▀░█▀▀░█▀▀░▀█▀░█▀▀░░░\n")
+Log("░░░░█░░█░█░░█░░░█░░░░░█░░█▀░░▀▀█░░█░░▀▀█░░░\n")
+Log("░░░▀▀▀░▀░▀░▀▀▀░░▀░░░░░▀░░▀▀▀░▀▀▀░░▀░░▀▀▀░░░\n")
 
 import sys
-
-import FreeCAD
 import TestApp
 
 testCase = FreeCAD.ConfigGet("TestCase")
