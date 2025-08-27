@@ -358,8 +358,7 @@ void ViewProviderAssembly::unsetupActiveAndInEdit()
 }
 void ViewProviderAssembly::setActive(bool active)
 {
-    bool inEdit = isInEditMode();
-    if (active && inEdit) {
+    if (active) {
         setupActiveAndInEdit();
     }
     else {
