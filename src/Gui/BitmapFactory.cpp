@@ -250,10 +250,10 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
         bool found = false;
         QString fnBase = QFileInfo(fn).completeBaseName();
         for (const QString& path : paths) {
-            QDir d(path);
-            QFileInfoList fi = d.entryInfoList(QDir::Files | QDir::NoSymLinks);
-            for (const QFileInfo& info : fi) {
-                // Match if either the requested name or its base name matches the file's base name
+            QDirIterator it(path, QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
+            while (it.hasNext()) {
+                it.next();
+                const QFileInfo& info = it.fileInfo();
                 if (info.completeBaseName() == fn || info.completeBaseName() == fnBase) {
                     if (loadPixmap(info.absoluteFilePath(), icon)) {
                         found = true;
