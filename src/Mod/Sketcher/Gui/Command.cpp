@@ -32,8 +32,10 @@
 #include <QWidgetAction>
 
 
+#include <App/GeoFeature.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/Datums.h>
+#include <Gui/ActiveObjectList.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -46,6 +48,7 @@
 #include <Gui/QuantitySpinBox.h>
 #include <Gui/Selection/SelectionFilter.h>
 #include <Gui/Selection/SelectionObject.h>
+#include <Gui/MDIView.h>
 #include <Mod/Part/App/Attacher.h>
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/Gui/AttacherTexts.h>
@@ -989,6 +992,24 @@ bool CmdSketcherMirrorSketch::isActive()
     return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0;
 }
 
+namespace {
+    QString getAutoGroupCommandStr()
+        // Helper function to get the python code to add the newly created object to the active Part/Body object if present
+    {
+        App::GeoFeature* activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PDBODYKEY);
+        if (!activeObj) {
+            activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PARTKEY);
+        }
+
+        if (activeObj) {
+            QString activeName = QString::fromLatin1(activeObj->getNameInDocument());
+            return QStringLiteral("App.ActiveDocument.getObject('%1\').addObject(obj)\n").arg(activeName);
+        }
+
+        return QStringLiteral("# Object created at document root.");
+    }
+}
+
 DEF_STD_CMD_A(CmdSketcherMergeSketches)
 
 CmdSketcherMergeSketches::CmdSketcherMergeSketches()
@@ -1023,8 +1044,8 @@ void CmdSketcherMergeSketches::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("Sketch");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Merge sketches"));
-    doCommand(
-        Doc, "App.activeDocument().addObject('Sketcher::SketchObject', '%s')", FeatName.c_str());
+    doCommand(Doc, "obj = App.activeDocument().addObject('Sketcher::SketchObject', '%s')", FeatName.c_str());
+    doCommand(Doc, getAutoGroupCommandStr().toUtf8());
 
     Sketcher::SketchObject* mergesketch =
         static_cast<Sketcher::SketchObject*>(doc->getObject(FeatName.c_str()));
