@@ -298,7 +298,7 @@ TEST_F(SchemaTest, imperial_decimal_0_mm_precision_1)
 TEST_F(SchemaTest, imperial_civil_0_mm_precision_0)
 {
     const std::string result = setWithPrecision("ImperialCivil", 0.0, Unit::Length, 0);
-    const auto expect {"0 mm"};
+    const auto expect {"0 ft"};
 
     EXPECT_EQ(result, expect);
 }
@@ -306,7 +306,7 @@ TEST_F(SchemaTest, imperial_civil_0_mm_precision_0)
 TEST_F(SchemaTest, imperial_civil_0_mm_precision_1)
 {
     const std::string result = setWithPrecision("ImperialCivil", 0.0, Unit::Length, 1);
-    const auto expect {"0.0 mm"};
+    const auto expect {"0.0 ft"};
 
     EXPECT_EQ(result, expect);
 }
