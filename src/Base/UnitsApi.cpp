@@ -67,9 +67,24 @@ std::string UnitsApi::getBasicLengthUnit()
     return schemas->currentSchema()->getBasicLengthUnit();
 }
 
-std::size_t UnitsApi::getFractDenominator()
+void UnitsApi::setDecimals(const int prec)
 {
-    return schemas->defFractDenominator();
+    decimals = prec;
+}
+
+int UnitsApi::getDecimals()
+{
+    return decimals < 0 ? schemas->getDecimals() : decimals;
+}
+
+void UnitsApi::setDenominator(int frac)
+{
+    denominator = frac;
+}
+
+int UnitsApi::getDenominator()
+{
+    return denominator < 0 ? schemas->defFractDenominator() : denominator;
 }
 
 std::unique_ptr<UnitsSchema> UnitsApi::createSchema(const std::size_t num)
@@ -120,19 +135,4 @@ std::string UnitsApi::schemaTranslate(const Quantity& quant)
     double dummy1 {};  // to satisfy GCC
     std::string dummy2;
     return schemas->currentSchema()->translate(quant, dummy1, dummy2);
-}
-
-void UnitsApi::setDecimals(const std::size_t prec)
-{
-    decimals = prec;
-}
-
-size_t UnitsApi::getDecimals()
-{
-    return decimals;
-}
-
-size_t UnitsApi::getDefDecimals()
-{
-    return schemas->getDecimals();
 }

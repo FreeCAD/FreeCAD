@@ -2782,8 +2782,7 @@ void Application::initApplication()
        ("User parameter:BaseApp/Preferences/Units");
     Base::UnitsApi::setSchema(hGrp->GetInt("UserSchema", Base::UnitsApi::getDefSchemaNum()));
     Base::UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
-    Base::QuantityFormat::setDefaultDenominator(
-        hGrp->GetInt("FracInch", Base::QuantityFormat::getDefaultDenominator()));
+    Base::UnitsApi::setDenominator(hGrp->GetInt("FracInch", Base::UnitsApi::getDenominator()));
 
 #if defined (_DEBUG)
     Base::Console().log("Application is built with debug information\n");

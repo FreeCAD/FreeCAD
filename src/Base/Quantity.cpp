@@ -57,23 +57,18 @@ using Base::Quantity;
 using Base::QuantityFormat;
 using Base::UnitsSchema;
 
-// ====== Static attributes =========================
-// NOLINTNEXTLINE
-int QuantityFormat::defaultDenominator = 8;  // for 1/8"
-
-
 QuantityFormat::QuantityFormat()
     : option(OmitGroupSeparator | RejectGroupSeparator)
     , format(Fixed)
-    , precision(static_cast<int>(UnitsApi::getDecimals()))
-    , denominator(defaultDenominator)
+    , precision(UnitsApi::getDecimals())
+    , denominator(UnitsApi::getDenominator())
 {}
 
 QuantityFormat::QuantityFormat(QuantityFormat::NumberFormat format, int decimals)
     : option(OmitGroupSeparator | RejectGroupSeparator)
     , format(format)
     , precision(decimals < 0 ? UnitsApi::getDecimals() : decimals)
-    , denominator(defaultDenominator)
+    , denominator(UnitsApi::getDenominator())
 {}
 
 // ----------------------------------------------------------------------------
