@@ -1682,7 +1682,7 @@ color: black;
 background-color: #f0f0f0;
 }
 
-/* Fix for tables inside task pannels, see https://github.com/FreeCAD/FreeCAD/issues/22957 */
+/* Fix for tables inside task panels, see https://github.com/FreeCAD/FreeCAD/issues/22957 */
 QSint--ActionGroup QFrame[class="content"] QTableView {
   min-height: 300px;
 }

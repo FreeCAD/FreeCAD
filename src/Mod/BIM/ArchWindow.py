@@ -174,7 +174,7 @@ class _Window(ArchComponent.Component):
         obj.setEditorMode("HorizontalArea",2)
         obj.setEditorMode("PerimeterLength",2)
 
-        # Sill change related properies
+        # Sill change related properties
         self.setSillProperties(obj)
 
     def setSillProperties(self, orgObj, linkObj=None):
