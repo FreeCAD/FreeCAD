@@ -239,7 +239,8 @@ class ModGui:
     Mod Gui Loader.
     """
 
-    def run_init_gui(self, sub_workbench: Path | None = None) -> bool: ...
+    def run_init_gui(self, sub_workbench: Path | None = None) -> bool:
+        return False
 
     def process_metadata(self) -> bool:
         return False

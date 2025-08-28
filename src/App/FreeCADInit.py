@@ -53,10 +53,10 @@ try:
     from pathlib import Path  # Removed manually
     import dataclasses
     import collections
-    from collections import abc as coll_abc
+    import collections.abc as coll_abc
     import platform
     import types
-    from importlib import resources
+    import importlib.resources as resources
     import importlib
     import functools
     import re
@@ -236,7 +236,14 @@ class FCADLogger:
         log_fn.__name__ = name
         return log_fn
 
-    def _log(self, level: int, msg: str, frame: int = 0, args: tuple = (), kwargs: dict | None = None) -> None:
+    def _log(
+            self,
+            level: int,
+            msg: str,
+            frame: int = 0,
+            args: tuple = (),
+            kwargs: dict | None = None,
+        ) -> None:
         """
         Internal log printing function.
 
@@ -307,14 +314,21 @@ class FCADLogger:
             * kwargs: dictionary of keyword arguments to be passed to func.
             """
 
-        def catch_fn(self, msg: str, func: callable, *args, **kwargs) -> object:
+        def catch_fn(self, msg: str, func: callable, *args, **kwargs) -> object | None:
             return self._catch(level, msg, func, args, kwargs)
 
         catch_fn.__doc__ = docstring
         catch_fn.__name__ = name
         return catch_fn
 
-    def _catch(self, level: int, msg: str, func: callable, args: tuple = (), kwargs: dict | None = None):
+    def _catch(
+            self,
+            level: int,
+            msg: str,
+            func: callable,
+            args: tuple = (),
+            kwargs: dict | None = None,
+        ) -> object | None:
         """
         Internal function to log exception of any callable.
 
@@ -336,8 +350,9 @@ class FCADLogger:
         except Exception:
             if self._isEnabledFor(level):
                 self._log(level, f"{msg}\n{traceback.format_exc()}", frame=2)
+        return None
 
-    def report(self, msg: str, func: callable, *args, **kwargs) -> None:
+    def report(self, msg: str, func: callable, *args, **kwargs) -> object | None:
         """
         Catch any exception report it with a message box.
 
@@ -361,6 +376,7 @@ class FCADLogger:
                     self.title,
                     str(e),
                 )
+        return None
 
     error = _logger_method("error", 0, "Error")
     warn = _logger_method("warn", 1, "Warning")
@@ -723,10 +739,11 @@ class utils:
         """
         try:
             import readline
-            import rlcompleter
+            import rlcompleter  # noqa: F401, import required
             readline.parse_and_bind("tab: complete")
-        except ImportError as exc:
-            # Note: As there is no readline on Windows, we just ignore import errors here
+        except ImportError:
+            # Note: As there is no readline on Windows,
+            #       we just ignore import errors here.
             pass
 
 
