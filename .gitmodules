@@ -13,6 +13,3 @@
 [submodule "src/3rdParty/libharu"]
 	path = src/3rdParty/libharu
 	url = https://github.com/libharu/libharu
-[submodule "src/3rdParty/libPRC"]
-	path = src/3rdParty/libPRC
-	url = https://github.com/XenonofArcticus/libPRC
