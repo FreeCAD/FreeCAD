@@ -282,8 +282,8 @@ bool ViewProviderAssembly::setEdit(int mode)
         Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
         if (taskView) {
             // Waiting for the solver to support reporting information.
-            //taskSolver = new TaskAssemblyMessages(this);
-            //taskView->addContextualPanel(taskSolver);
+            // taskSolver = new TaskAssemblyMessages(this);
+            // taskView->addContextualPanel(taskSolver);
         }
 
         auto* assembly = getObject<AssemblyObject>();
@@ -320,7 +320,7 @@ void ViewProviderAssembly::unsetEdit(int mode)
 
         Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
         if (taskView) {
-            //taskView->removeContextualPanel(taskSolver);
+            // taskView->removeContextualPanel(taskSolver);
         }
 
         connectSolverUpdate.disconnect();
@@ -1333,32 +1333,30 @@ void ViewProviderAssembly::UpdateSolverInformation()
         signalSetUp(QStringLiteral("empty"), tr("Empty Assembly"), QString(), QString());
     }
     else if (dofs < 0 || hasConflicts) {  // over-constrained
-        signalSetUp(
-            QStringLiteral("conflicting_constraints"),
-            tr("Over-constrained:") + QLatin1String(" "),
-            QStringLiteral("#conflicting"),
-            QStringLiteral("(%1)").arg(intListHelper(assembly->getLastConflicting())));
+        signalSetUp(QStringLiteral("conflicting_constraints"),
+                    tr("Over-constrained:") + QLatin1String(" "),
+                    QStringLiteral("#conflicting"),
+                    QStringLiteral("(%1)").arg(intListHelper(assembly->getLastConflicting())));
     }
     else if (hasMalformed) {  // malformed joints
-        signalSetUp(QStringLiteral("malformed_constraints"),
-                    tr("Malformed joints:") + QLatin1String(" "),
-                    QStringLiteral("#malformed"),
-                    QStringLiteral("(%1)").arg(
-                        intListHelper(assembly->getLastMalformedConstraints())));
+        signalSetUp(
+            QStringLiteral("malformed_constraints"),
+            tr("Malformed joints:") + QLatin1String(" "),
+            QStringLiteral("#malformed"),
+            QStringLiteral("(%1)").arg(intListHelper(assembly->getLastMalformedConstraints())));
     }
     else if (hasRedundancies) {
-        signalSetUp(
-            QStringLiteral("redundant_constraints"),
-            tr("Redundant joints:") + QLatin1String(" "),
-            QStringLiteral("#redundant"),
-            QStringLiteral("(%1)").arg(intListHelper(assembly->getLastRedundant())));
+        signalSetUp(QStringLiteral("redundant_constraints"),
+                    tr("Redundant joints:") + QLatin1String(" "),
+                    QStringLiteral("#redundant"),
+                    QStringLiteral("(%1)").arg(intListHelper(assembly->getLastRedundant())));
     }
     else if (hasPartiallyRedundant) {
-        signalSetUp(QStringLiteral("partially_redundant_constraints"),
-                    tr("Partially redundant:") + QLatin1String(" "),
-                    QStringLiteral("#partiallyredundant"),
-                    QStringLiteral("(%1)").arg(
-                        intListHelper(assembly->getLastPartiallyRedundant())));
+        signalSetUp(
+            QStringLiteral("partially_redundant_constraints"),
+            tr("Partially redundant:") + QLatin1String(" "),
+            QStringLiteral("#partiallyredundant"),
+            QStringLiteral("(%1)").arg(intListHelper(assembly->getLastPartiallyRedundant())));
     }
     else if (assembly->getLastSolverStatus() != 0) {
         signalSetUp(QStringLiteral("solver_failed"),

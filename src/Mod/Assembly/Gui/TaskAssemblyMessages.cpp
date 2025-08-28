@@ -28,7 +28,7 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
-//#include <Mod/Assembly/App/AssemblyObject.h>
+// #include <Mod/Assembly/App/AssemblyObject.h>
 
 #include "TaskAssemblyMessages.h"
 #include "ViewProviderAssembly.h"
@@ -41,10 +41,10 @@ TaskAssemblyMessages::TaskAssemblyMessages(ViewProviderAssembly* vp)
     : TaskSolverMessages(Gui::BitmapFactory().pixmap("Geoassembly"), tr("Solver messages"))
     , vp(vp)
 {
-    //NOLINTBEGIN
-    connectionSetUp = vp->signalSetUp.connect(std::bind(
-        &TaskAssemblyMessages::slotSetUp, this, sp::_1, sp::_2, sp::_3, sp::_4));
-    //NOLINTEND
+    // NOLINTBEGIN
+    connectionSetUp = vp->signalSetUp.connect(
+        std::bind(&TaskAssemblyMessages::slotSetUp, this, sp::_1, sp::_2, sp::_3, sp::_4));
+    // NOLINTEND
 }
 
 TaskAssemblyMessages::~TaskAssemblyMessages()
@@ -62,7 +62,7 @@ void TaskAssemblyMessages::updateToolTip(const QString& link)
     }
     else if (link == QStringLiteral("#dofs")) {
         setLinkTooltip(tr("The assembly has unconstrained components giving rise to those "
-                "Degrees Of Freedom. Click to select these unconstrained components."));
+                          "Degrees Of Freedom. Click to select these unconstrained components."));
     }
     else if (link == QStringLiteral("#malformed")) {
         setLinkTooltip(tr("Click to select these malformed joints."));
@@ -90,4 +90,3 @@ void TaskAssemblyMessages::onLabelStatusLinkClicked(const QString& str)
 }
 
 #include "moc_TaskAssemblyMessages.cpp"
-
