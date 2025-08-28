@@ -32,7 +32,7 @@
 
 #include <FCGlobal.h>
 
-#include <App/VarSet.h>
+#include <App/PropertyContainer.h>
 
 #include "propertyeditor/PropertyItem.h"
 
@@ -75,6 +75,7 @@ public:
 
 public:
     DlgAddPropertyVarSet(QWidget* parent, ViewProviderVarSet* viewProvider);
+    DlgAddPropertyVarSet(QWidget* parent, App::PropertyContainer* container);
 
     DlgAddPropertyVarSet(const DlgAddPropertyVarSet&) = delete;
     DlgAddPropertyVarSet(DlgAddPropertyVarSet&&) = delete;
@@ -86,7 +87,8 @@ public:
     void changeEvent(QEvent* e) override;
     void accept() override;
     void reject() override;
-    static void populateGroup(EditFinishedComboBox& comboBox, const App::DocumentObject* varSet);
+    static void populateGroup(EditFinishedComboBox& comboBox,
+                              const App::PropertyContainer* container);
     static void setWidgetForLabel(const char* labelName, QWidget* widget, QLayout* layout);
 
 public Q_SLOTS:
@@ -103,6 +105,9 @@ private:
         Name,
         Type
     };
+
+    DlgAddPropertyVarSet(QWidget* parent, App::PropertyContainer* container,
+                         ViewProviderVarSet* viewProvider);
 
     void initializeGroup();
 
@@ -156,7 +161,7 @@ private:
     static int findLabelRow(const char* labelName, QFormLayout* layout);
 
 private:
-    App::VarSet* varSet;
+    App::PropertyContainer* container;
     std::unique_ptr<Ui_DlgAddPropertyVarSet> ui;
 
     EditFinishedComboBox comboBoxGroup;

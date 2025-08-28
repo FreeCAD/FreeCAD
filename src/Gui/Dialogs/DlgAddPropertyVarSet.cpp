@@ -129,11 +129,26 @@ const std::string DlgAddPropertyVarSet::GroupBase = "Base";
  * situation.
  */
 
+DlgAddPropertyVarSet::DlgAddPropertyVarSet(QWidget* parent,
+                                           App::PropertyContainer* container)
+    : DlgAddPropertyVarSet(parent, container, nullptr)
+{
+}
+
 
 DlgAddPropertyVarSet::DlgAddPropertyVarSet(QWidget* parent,
                                            ViewProviderVarSet* viewProvider)
+    : DlgAddPropertyVarSet(parent,
+                           viewProvider ? viewProvider->getObject<App::PropertyContainer>() : nullptr,
+                           viewProvider)
+{
+}
+
+DlgAddPropertyVarSet::DlgAddPropertyVarSet(QWidget* parent,
+                                           App::PropertyContainer* container,
+                                           ViewProviderVarSet* viewProvider)
     : QDialog(parent),
-      varSet(viewProvider->getObject<App::VarSet>()),
+      container(container),
       ui(new Ui_DlgAddPropertyVarSet),
       comboBoxGroup(this),
       completerType(this),
@@ -194,14 +209,14 @@ void DlgAddPropertyVarSet::setWidgetForLabel(const char* labelName, QWidget* wid
 }
 
 void DlgAddPropertyVarSet::populateGroup(EditFinishedComboBox& comboBox,
-                                         const App::DocumentObject* varSet)
+                                         const App::PropertyContainer* container)
 {
     std::vector<App::Property*> properties;
-    varSet->getPropertyList(properties);
+    container->getPropertyList(properties);
 
     std::unordered_set<std::string> groupNames;
     for (const auto* prop : properties) {
-        const char* groupName = varSet->getPropertyGroup(prop);
+        const char* groupName = container->getPropertyGroup(prop);
         groupNames.insert(groupName ? groupName : GroupBase);
     }
 
@@ -231,7 +246,7 @@ void DlgAddPropertyVarSet::initializeGroup()
     comboBoxGroup.setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 
     setWidgetForLabel("labelGroup", &comboBoxGroup, layout());
-    populateGroup(comboBoxGroup, varSet);
+    populateGroup(comboBoxGroup, container);
 
     connComboBoxGroup = connect(&comboBoxGroup, &EditFinishedComboBox::editFinished,
                                 this, &DlgAddPropertyVarSet::onGroupFinished);
@@ -416,7 +431,7 @@ void DlgAddPropertyVarSet::createEditorForType(const Base::Type& type)
     std::unique_ptr<App::Property, void(*)(App::Property*)> prop(
             static_cast<App::Property*>(propInstance),
             [](App::Property* p) { delete p; });
-    prop->setContainer(varSet);
+    prop->setContainer(container);
 
     propertyItem.reset(createPropertyItem(prop.get()));
 
@@ -462,8 +477,10 @@ void DlgAddPropertyVarSet::initializeWidgets(ViewProviderVarSet* viewProvider)
     initializeTypes();
     initializeValue();
 
-    connect(this, &QDialog::finished,
-            this, [viewProvider](int result) { viewProvider->onFinished(result); });
+    if (viewProvider) {
+        connect(this, &QDialog::finished,
+                this, [viewProvider](int result) { viewProvider->onFinished(result); });
+    }
     connLineEditNameTextChanged = connect(ui->lineEditName, &QLineEdit::textChanged,
             this, &DlgAddPropertyVarSet::onNameChanged);
 
@@ -478,9 +495,9 @@ void DlgAddPropertyVarSet::initializeWidgets(ViewProviderVarSet* viewProvider)
 
 bool DlgAddPropertyVarSet::propertyExists(const std::string& name)
 {
-    App::Property* prop = varSet->getPropertyByName(name.c_str());
-    return prop && prop->getContainer() == varSet &&
-        !(propertyItem && propertyItem->getFirstProperty() == prop);
+    App::Property* prop = container->getPropertyByName(name.c_str());
+    return prop && prop->getContainer() == container &&
+            !(propertyItem && propertyItem->getFirstProperty() == prop);
 }
 
 bool DlgAddPropertyVarSet::isNameValid()
@@ -658,7 +675,7 @@ bool DlgAddPropertyVarSet::clearBoundProperty()
     if (App::Property* prop = propertyItem->getFirstProperty()) {
         propertyItem->unbind();
         propertyItem->removeProperty(prop);
-        varSet->removeDynamicProperty(prop->getName());
+        container->removeDynamicProperty(prop->getName());
         closeTransaction(TransactionOption::Abort);
     }
     return valueNeedsReset;
@@ -705,7 +722,7 @@ void DlgAddPropertyVarSet::onGroupFinished()
         std::string doc = ui->lineEditToolTip->text().toStdString();
         if (App::Property* prop = propertyItem->getFirstProperty();
             prop && prop->getGroup() != group) {
-            varSet->changeDynamicProperty(prop, group.c_str(), doc.c_str());
+            container->changeDynamicProperty(prop, group.c_str(), doc.c_str());
         }
     }
 
@@ -790,14 +807,14 @@ App::Property* DlgAddPropertyVarSet::createProperty()
     std::string doc = ui->lineEditToolTip->text().toStdString();
 
     try {
-        return varSet->addDynamicProperty(type.c_str(), name.c_str(),
+        return container->addDynamicProperty(type.c_str(), name.c_str(),
                                           group.c_str(), doc.c_str());
     }
     catch (Base::Exception& e) {
         e.reportException();
         critical(QObject::tr("Add property"),
                  QObject::tr("Failed to add property to '%1': %2").arg(
-                         QString::fromLatin1(varSet->getFullName().c_str()),
+                         QString::fromLatin1(container->getFullName().c_str()),
                          QString::fromUtf8(e.what())));
         return nullptr;
     }
@@ -844,13 +861,16 @@ void DlgAddPropertyVarSet::addDocumentation() {
         return;
     }
 
-    varSet->changeDynamicProperty(prop, group.c_str(), doc.c_str());
+    container->changeDynamicProperty(prop, group.c_str(), doc.c_str());
 }
 
 void DlgAddPropertyVarSet::accept()
 {
     addDocumentation();
-    varSet->ExpressionEngine.execute();
+    auto* object = freecad_cast<App::DocumentObject*>(container);
+    if (object) {
+        object->ExpressionEngine.execute();
+    }
     closeTransaction(TransactionOption::Commit);
     std::string group = comboBoxGroup.currentText().toStdString();
     std::string type = ui->comboBoxType->currentText().toStdString();
