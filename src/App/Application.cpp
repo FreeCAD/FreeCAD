@@ -911,6 +911,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
         FC_DURATION_LOG(timing.d2, doc.getDocumentName() << " postprocess");
     }
     FC_TIME_LOG(t,"total");
+    PropertyLinkBase::updateAllElementReferences();
     _isRestoring = false;
 
     signalFinishOpenDocument();

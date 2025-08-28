@@ -86,6 +86,8 @@ public:
     void changeEvent(QEvent* e) override;
     void accept() override;
     void reject() override;
+    static void populateGroup(EditFinishedComboBox& comboBox, const App::DocumentObject* varSet);
+    static void setWidgetForLabel(const char* labelName, QWidget* widget, QLayout* layout);
 
 public Q_SLOTS:
     void valueChanged();
@@ -102,9 +104,6 @@ private:
         Type
     };
 
-    int findLabelRow(const char* labelName, QFormLayout* layout);
-    void removeExistingWidget(QFormLayout* layout, int labelRow);
-    void setWidgetForLabel(const char* labelName, QWidget* widget);
     void initializeGroup();
 
     std::vector<Base::Type> getSupportedTypes();
@@ -152,6 +151,9 @@ private:
     void closeTransaction(TransactionOption option);
     void clearFields();
     void addDocumentation();
+
+    static void removeExistingWidget(QFormLayout* layout, int labelRow);
+    static int findLabelRow(const char* labelName, QFormLayout* layout);
 
 private:
     App::VarSet* varSet;

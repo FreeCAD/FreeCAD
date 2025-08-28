@@ -287,13 +287,11 @@ MeasureType Measurement::getType()
 TopoDS_Shape
 Measurement::getShape(App::DocumentObject* obj, const char* subName, TopAbs_ShapeEnum hint) const
 {
-    TopoShape shape = ShapeFinder::getLocatedTopoShape(*obj, subName);
-
-    if (shape.shapeType() == TopAbs_COMPOUND && hint != TopAbs_COMPOUND
-        && shape.hasSubShape(hint)) {
-        return shape.getSubTopoShape(hint, true).getShape();
-    }
-    return shape.getShape();
+    return Part::Feature::getShape(obj,
+                                   Part::ShapeOption::NeedSubElement
+                                       | Part::ShapeOption::ResolveLink
+                                       | Part::ShapeOption::Transform,
+                                   subName);
 }
 
 
@@ -331,6 +329,9 @@ double Measurement::length() const
 
                 //  Get the length of one edge
                 TopoDS_Shape shape = getShape(*obj, (*subEl).c_str(), TopAbs_EDGE);
+                if (shape.IsNull() || shape.Infinite()) {
+                    continue;
+                }
                 const TopoDS_Edge& edge = TopoDS::Edge(shape);
                 BRepAdaptor_Curve curve(edge);
 
@@ -365,8 +366,8 @@ double Measurement::length() const
                         throw Base::RuntimeError(
                             "Measurement - length - Curve type not currently handled");
                     }
-                }  // end switch
-            }  // end for
+                }
+            }
         }
     }
     return result;
@@ -431,8 +432,6 @@ double Measurement::planePlaneDistance() const
 
     const auto& objects = References3D.getValues();
     const auto& subElements = References3D.getSubValues();
-
-    std::vector<gp_Pln> planes;
 
     // Get the first plane
     TopoDS_Shape shape1 = getShape(objects[0], subElements[0].c_str(), TopAbs_FACE);
@@ -684,7 +683,11 @@ double Measurement::volume() const
 
         for (size_t i = 0; i < objects.size(); ++i) {
             GProp_GProps props = GProp_GProps();
-            BRepGProp::VolumeProperties(getShape(objects[i], subElements[i].c_str()), props);
+            TopoDS_Shape shape = getShape(objects[i], subElements[i].c_str());
+            if (shape.IsNull() || shape.Infinite()) {
+                continue;
+            }
+            BRepGProp::VolumeProperties(shape, props);
             result += props.Mass();
         }
     }
@@ -707,7 +710,11 @@ double Measurement::area() const
 
         for (size_t i = 0; i < objects.size(); ++i) {
             GProp_GProps props;
-            BRepGProp::SurfaceProperties(getShape(objects[i], subElements[i].c_str()), props);
+            TopoDS_Shape shape = getShape(objects[i], subElements[i].c_str());
+            if (shape.IsNull() || shape.Infinite()) {
+                continue;
+            }
+            BRepGProp::SurfaceProperties(shape, props);
             result += props.Mass();  // Area is obtained using Mass method for surface properties
         }
     }
@@ -742,7 +749,11 @@ Base::Vector3d Measurement::massCenter() const
                 // Compute inertia properties
 
                 GProp_GProps props = GProp_GProps();
-                BRepGProp::VolumeProperties(getShape((*obj), ""), props);
+                TopoDS_Shape shape = ShapeFinder::getLocatedShape(*(*obj), "");
+                if (shape.IsNull()) {
+                    continue;
+                }
+                BRepGProp::VolumeProperties(shape, props);
                 gprops.Add(props);
                 // Get inertia properties
             }
@@ -818,11 +829,17 @@ bool Measurement::linesAreParallel() const
 
     // Get the first line
     TopoDS_Shape shape1 = getShape(objects[0], subElements[0].c_str(), TopAbs_EDGE);
+    if (shape1.IsNull()) {
+        return false;
+    }
     const TopoDS_Edge& edge1 = TopoDS::Edge(shape1);
     BRepAdaptor_Curve curve1(edge1);
 
     // Get the second line
     TopoDS_Shape shape2 = getShape(objects[1], subElements[1].c_str(), TopAbs_EDGE);
+    if (shape2.IsNull()) {
+        return false;
+    }
     const TopoDS_Edge& edge2 = TopoDS::Edge(shape2);
     BRepAdaptor_Curve curve2(edge2);
 
