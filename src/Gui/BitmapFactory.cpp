@@ -36,6 +36,7 @@
 # include <QString>
 # include <QSvgRenderer>
 # include <QStyleOption>
+# include <QDirIterator>
 #endif
 
 #include <string>
