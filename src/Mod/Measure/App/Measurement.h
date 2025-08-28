@@ -45,12 +45,14 @@ enum class MeasureType
     TwoLines,          // Two lines
     TwoParallelLines,  // Two parallel lines
     Circle,            // One circle
+    CircleArc,         // One circle arc
     TwoCircles,
     CircleToEdge,
     CircleToSurface,
     CircleToCylinder,
-    Surfaces,  // Measure the surface(s)
-    Cylinder,  // One Cylinder
+    Surfaces,         // Measure the surface(s)
+    Cylinder,         // One Cylinder
+    CylinderSection,  // One cylinder section
     TwoCylinders,
     Cone,       // One Cone
     Sphere,     // One Sphere
@@ -102,6 +104,9 @@ public:
 
     // Calculates the radius for an arc or circular edge
     double radius() const;
+
+    // Calculates the diameter for a circle or a cylinder
+    double diameter() const;
 
     // Calculates the angle between two edges
     double

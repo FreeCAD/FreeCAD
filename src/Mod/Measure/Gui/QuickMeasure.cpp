@@ -218,10 +218,14 @@ void QuickMeasure::printResult()
     else if (mtype == MeasureType::Cone || mtype == MeasureType::Plane) {
         print(tr("Area: %1").arg(areaStr(measurement->area())));
     }
-    else if (mtype == MeasureType::Cylinder || mtype == MeasureType::Sphere
+    else if (mtype == MeasureType::CylinderSection || mtype == MeasureType::Sphere
              || mtype == MeasureType::Torus) {
         print(tr("Area: %1, Radius: %2")
                   .arg(areaStr(measurement->area()), lengthStr(measurement->radius())));
+    }
+    else if (mtype == MeasureType::Cylinder) {
+        print(tr("Area: %1, Diameter: %2")
+                  .arg(areaStr(measurement->area()), lengthStr(measurement->diameter())));
     }
     else if (mtype == MeasureType::TwoCylinders) {
         print(
@@ -241,8 +245,11 @@ void QuickMeasure::printResult()
     else if (mtype == MeasureType::Line) {
         print(tr("Length: %1").arg(lengthStr(measurement->length())));
     }
-    else if (mtype == MeasureType::Circle) {
+    else if (mtype == MeasureType::CircleArc) {
         print(tr("Radius: %1").arg(lengthStr(measurement->radius())));
+    }
+    else if (mtype == MeasureType::Circle) {
+        print(tr("Diameter: %1").arg(lengthStr(measurement->diameter())));
     }
     else if (mtype == MeasureType::PointToPoint) {
         print(tr("Distance: %1").arg(lengthStr(measurement->length())));

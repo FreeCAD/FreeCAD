@@ -114,9 +114,11 @@ MeasureType Measurement::findType()
     int edges = 0;
     int lines = 0;
     int circles = 0;
+    int circleArcs = 0;
     int faces = 0;
     int planes = 0;
     int cylinders = 0;
+    int cylinderSections = 0;
     int cones = 0;
     int torus = 0;
     int spheres = 0;
@@ -156,7 +158,12 @@ MeasureType Measurement::findType()
                     lines++;
                 }
                 else if (sf.GetType() == GeomAbs_Circle) {
-                    circles++;
+                    if (sf.IsClosed()) {
+                        circles++;
+                    }
+                    else {
+                        circleArcs++;
+                    }
                 }
             } break;
             case TopAbs_FACE: {
@@ -168,7 +175,12 @@ MeasureType Measurement::findType()
                     planes++;
                 }
                 else if (sf.GetType() == GeomAbs_Cylinder) {
-                    cylinders++;
+                    if (sf.IsUClosed() || sf.IsVClosed()) {
+                        cylinders++;
+                    }
+                    else {
+                        cylinderSections++;
+                    }
                 }
                 else if (sf.GetType() == GeomAbs_Sphere) {
                     spheres++;
@@ -202,16 +214,17 @@ MeasureType Measurement::findType()
     }
     else if (faces > 0) {
         if (verts > 0 || edges > 0) {
-            if (faces == 1 && cylinders == 1 && verts == 1 && edges == 0) {
+            if (faces == 1 && (cylinders + cylinderSections) == 1 && verts == 1 && edges == 0) {
                 mode = MeasureType::PointToCylinder;
             }
             else if (faces == 1 && verts == 1) {
                 mode = MeasureType::PointToSurface;
             }
-            else if (faces == 1 && cylinders == 1 && circles == 1 && edges == 1) {
+            else if (faces == 1 && (cylinders + cylinderSections) == 1
+                     && (circles + circleArcs) == 1 && edges == 1) {
                 mode = MeasureType::CircleToCylinder;
             }
-            else if (faces == 1 && circles == 1 && edges == 1) {
+            else if (faces == 1 && (circles + circleArcs) == 1 && edges == 1) {
                 mode = MeasureType::CircleToSurface;
             }
             else {
@@ -233,7 +246,10 @@ MeasureType Measurement::findType()
             else if (cylinders == 1 && faces == 1) {
                 mode = MeasureType::Cylinder;
             }
-            else if (cylinders == 2 && faces == 2) {
+            else if (cylinderSections == 1 && faces == 1) {
+                mode = MeasureType::CylinderSection;
+            }
+            else if ((cylinders + cylinderSections) == 2 && faces == 2) {
                 mode = MeasureType::TwoCylinders;
             }
             else if (cones == 1 && faces == 1) {
@@ -255,7 +271,7 @@ MeasureType Measurement::findType()
             if (verts > 1) {
                 mode = MeasureType::Invalid;
             }
-            else if (circles == 1) {
+            else if ((circles + circleArcs) == 1) {
                 mode = MeasureType::PointToCircle;
             }
             else {
@@ -276,10 +292,13 @@ MeasureType Measurement::findType()
         else if (circles == 1 && edges == 1) {
             mode = MeasureType::Circle;
         }
-        else if (circles == 2 && edges == 2) {
+        else if (circleArcs == 1 && edges == 1) {
+            mode = MeasureType::CircleArc;
+        }
+        else if ((circles + circleArcs) == 2 && edges == 2) {
             mode = MeasureType::TwoCircles;
         }
-        else if (circles == 1 && edges == 2) {
+        else if ((circles + circleArcs == 1) && edges == 2) {
             mode = MeasureType::CircleToEdge;
         }
         else {
@@ -343,7 +362,7 @@ double Measurement::length() const
         }
         else if (measureType == MeasureType::Edges || measureType == MeasureType::Line
                  || measureType == MeasureType::TwoLines || measureType == MeasureType::Circle
-                 || measureType == MeasureType::TwoCircles
+                 || measureType == MeasureType::CircleArc || measureType == MeasureType::TwoCircles
                  || measureType == MeasureType::CircleToEdge) {
 
             // Iterate through edges and calculate each length
@@ -698,7 +717,7 @@ double Measurement::radius() const
     if (numRefs == 0) {
         Base::Console().error("Measurement::radius - No 3D references available\n");
     }
-    else if (measureType == MeasureType::Circle) {
+    else if (measureType == MeasureType::Circle || measureType == MeasureType::CircleArc) {
         TopoDS_Shape shape = getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_EDGE);
         const TopoDS_Edge& edge = TopoDS::Edge(shape);
 
@@ -707,8 +726,8 @@ double Measurement::radius() const
             return (double)curve.Circle().Radius();
         }
     }
-    else if (measureType == MeasureType::Cylinder || measureType == MeasureType::Sphere
-             || measureType == MeasureType::Torus) {
+    else if (measureType == MeasureType::Cylinder || measureType == MeasureType::CylinderSection
+             || measureType == MeasureType::Sphere || measureType == MeasureType::Torus) {
         TopoDS_Shape shape = getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_FACE);
         TopoDS_Face face = TopoDS::Face(shape);
 
@@ -724,6 +743,36 @@ double Measurement::radius() const
         }
     }
     Base::Console().error("Measurement::radius - Invalid References3D Provided\n");
+    return 0.0;
+}
+double Measurement::diameter() const
+{
+    const std::vector<App::DocumentObject*>& objects = References3D.getValues();
+    const std::vector<std::string>& subElements = References3D.getSubValues();
+
+    int numRefs = References3D.getSize();
+    if (numRefs == 0) {
+        Base::Console().error("Measurement::diameter - No 3D references available\n");
+    }
+    else if (measureType == MeasureType::Circle) {
+        TopoDS_Shape shape = getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_EDGE);
+        const TopoDS_Edge& edge = TopoDS::Edge(shape);
+
+        BRepAdaptor_Curve curve(edge);
+        if (curve.GetType() == GeomAbs_Circle) {
+            return (double)curve.Circle().Radius() * 2.0;
+        }
+    }
+    else if (measureType == MeasureType::Cylinder) {
+        TopoDS_Shape shape = getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_FACE);
+        TopoDS_Face face = TopoDS::Face(shape);
+
+        BRepAdaptor_Surface sf(face);
+        if (sf.GetType() == GeomAbs_Cylinder) {
+            return sf.Cylinder().Radius() * 2.0;
+        }
+    }
+    Base::Console().error("Measurement::diameter - Invalid References3D Provided\n");
     return 0.0;
 }
 
@@ -860,9 +909,10 @@ double Measurement::area() const
         Base::Console().error("Measurement::area - No 3D references available\n");
     }
     else if (measureType == MeasureType::Volumes || measureType == MeasureType::Surfaces
-             || measureType == MeasureType::Cylinder || measureType == MeasureType::TwoCylinders
-             || measureType == MeasureType::Cone || measureType == MeasureType::Sphere
-             || measureType == MeasureType::Torus || measureType == MeasureType::Plane) {
+             || measureType == MeasureType::Cylinder || measureType == MeasureType::CylinderSection
+             || measureType == MeasureType::TwoCylinders || measureType == MeasureType::Cone
+             || measureType == MeasureType::Sphere || measureType == MeasureType::Torus
+             || measureType == MeasureType::Plane) {
 
         const std::vector<App::DocumentObject*>& objects = References3D.getValues();
         const std::vector<std::string>& subElements = References3D.getSubValues();
