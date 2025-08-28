@@ -460,6 +460,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             prisms.push_back(prism1);
         }
         else if (sideTypeStr == "Symmetric") {
+            len1 /= 2.0;
             TopoShape prism1 = generateSingleExtrusionSide(sketchshape,
                 method1, len1, taper1, UpToFace, UpToShape,
                 dir, offset1, makeface, base);
@@ -739,18 +740,18 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(const TopoShape& sketchsha
     return prism;
 }
 
-
-void FeatureExtrude::handleChangedPropertyType(Base::XMLReader& reader,
-                                              const char* TypeName,
-                                              App::Property* prop)
+void FeatureExtrude::onDocumentRestored()
 {
     // property Type no longer has TwoLengths.
-    if (prop == &Type && strcmp(Type.getValueAsString(), "TwoLengths") == 0) {
+    if (strcmp(Type.getValueAsString(), "TwoLengths") == 0) {
         Type.setValue("Length");
         Type2.setValue("Length");
         SideType.setValue("Two sides");
     }
-    else {
-        ProfileBased::handleChangedPropertyType(reader, TypeName, prop);
+    else if (Midplane.getValue()) {
+        Midplane.setValue(false);
+        SideType.setValue("Symmetric");
     }
+
+    ProfileBased::onDocumentRestored();
 }
