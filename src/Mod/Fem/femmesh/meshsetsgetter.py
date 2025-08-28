@@ -393,15 +393,15 @@ class MeshSetsGetter:
             )
 
         for femobj in self.member.cons_electrostatic:
-            if femobj["Object"].BoundaryCondition == "Neumann":
-                print_obj_info(femobj["Object"])
+            obj = femobj["Object"]
+            if obj.BoundaryCondition == "Neumann":
+                print_obj_info(obj)
+                result = []
+                ref_data = meshtools.pair_obj_reference(obj.References)
+                for ref_pair in ref_data:
+                    result.append(meshtools.get_ccx_elements(self, ref_pair))
 
-                charged_faces = meshtools.get_charge_density_obj_faces(
-                    self.femmesh, self.femelement_table, self.femnodes_ele_table, femobj
-                )
-                some_string = "{}: face electric flux".format(femobj["Object"].Name)
-                femobj["ElectricFluxFaces"] = [(some_string, charged_faces)]
-                FreeCAD.Console.PrintLog("{}\n".format(femobj["ElectricFluxFaces"]))
+                femobj["ElectricFluxFaces"] = result
 
     def get_constraints_electricchargedensity_faces(self):
         if not self.member.cons_electricchargedensity:
@@ -416,27 +416,17 @@ class MeshSetsGetter:
             )
 
         for femobj in self.member.cons_electricchargedensity:
-            if femobj["Object"].Mode in ["Interface", "Total Interface"]:
-                print_obj_info(femobj["Object"])
+            obj = femobj["Object"]
+            print_obj_info(obj)
+            result = []
+            ref_data = meshtools.pair_obj_reference(obj.References)
+            for ref_pair in ref_data:
+                result.append(meshtools.get_ccx_elements(self, ref_pair))
 
-                charged_faces = meshtools.get_charge_density_obj_faces(
-                    self.femmesh, self.femelement_table, self.femnodes_ele_table, femobj
-                )
-                some_string = "{}: face electric charge density".format(femobj["Object"].Name)
-                femobj["ChargeDensityFaces"] = [(some_string, charged_faces)]
-                FreeCAD.Console.PrintLog("{}\n".format(femobj["ChargeDensityFaces"]))
-
-            elif femobj["Object"].Mode in ["Source", "Total Source"]:
-                print_obj_info(femobj["Object"])
-
-                charged_volumes = meshtools.get_charge_density_obj_elements(
-                    self.femmesh, self.femelement_table, self.femnodes_ele_table, femobj
-                )
-                some_string = "{}: Elements with electric charge density".format(
-                    femobj["Object"].Name
-                )
-                femobj["ChargeDensityElements"] = (some_string, charged_volumes)
-                FreeCAD.Console.PrintLog("{}\n".format(femobj["ChargeDensityElements"]))
+            if obj.Mode in ["Interface", "Total Interface"]:
+                femobj["ChargeDensityFaces"] = result
+            elif obj.Mode in ["Source", "Total Source"]:
+                femobj["ChargeDensityElements"] = result
 
     def get_constraints_contact_faces(self):
         if not self.member.cons_contact:
