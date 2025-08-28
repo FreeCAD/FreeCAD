@@ -58,40 +58,52 @@ def set_status_widget(statuswidget):
     lock_button.setChecked(checked)
     on_toggle_lock(checked, noconvert=True)
     lock_button.triggered.connect(on_toggle_lock)
-    set_properties_editor(statuswidget)
+    set_prop_buttons_visibility(statuswidget)
 
 
 def set_properties_editor(statuswidget):
     """Adds additional buttons to the properties editor"""
 
     if hasattr(statuswidget, "propertybuttons"):
+        return
+
+    from PySide import QtCore, QtGui  # lazy loading
+
+    mw = FreeCADGui.getMainWindow()
+    editor = mw.findChild(QtGui.QTabWidget,"propertyTab")
+    if editor:
+        pTabCornerWidget = QtGui.QWidget()
+        pButton1 = QtGui.QToolButton(pTabCornerWidget)
+        pButton1.setText("")
+        pButton1.setToolTip(translate("BIM","Add IFC property..."))
+        pButton1.setIcon(QtGui.QIcon(":/icons/IFC.svg"))
+        pButton1.clicked.connect(on_add_property)
+        pButton2 = QtGui.QToolButton(pTabCornerWidget)
+        pButton2.setText("")
+        pButton2.setToolTip(translate("BIM","Add standard IFC Property Set..."))
+        pButton2.setIcon(QtGui.QIcon(":/icons/BIM_IfcProperties.svg"))
+        pButton2.clicked.connect(on_add_pset)
+        pHLayout = QtGui.QHBoxLayout(pTabCornerWidget)
+        pHLayout.addWidget(pButton1)
+        pHLayout.addWidget(pButton2)
+        pHLayout.setSpacing(2)
+        pHLayout.setContentsMargins(2, 2, 0, 0)
+        pHLayout.insertStretch(0)
+        editor.setCornerWidget(pTabCornerWidget, QtCore.Qt.BottomRightCorner)
+        statuswidget.propertybuttons = pTabCornerWidget
+        pTabCornerWidget.hide()
+
+
+def set_prop_buttons_visibility(statuswidget):
+    """Shows or hides buttons on properties editor depending on active workbench."""
+
+    if not hasattr(statuswidget, "propertybuttons"):
+        set_properties_editor(statuswidget)
+
+    if FreeCADGui.activeWorkbench().name() == "BIMWorkbench":
         statuswidget.propertybuttons.show()
     else:
-        from PySide import QtCore, QtGui  # lazy loading
-
-        mw = FreeCADGui.getMainWindow()
-        editor = mw.findChild(QtGui.QTabWidget,"propertyTab")
-        if editor:
-            pTabCornerWidget = QtGui.QWidget()
-            pButton1 = QtGui.QToolButton(pTabCornerWidget)
-            pButton1.setText("")
-            pButton1.setToolTip(translate("BIM","Add IFC property..."))
-            pButton1.setIcon(QtGui.QIcon(":/icons/IFC.svg"))
-            pButton1.clicked.connect(on_add_property)
-            pButton2 = QtGui.QToolButton(pTabCornerWidget)
-            pButton2.setText("")
-            pButton2.setToolTip(translate("BIM","Add standard IFC Property Set..."))
-            pButton2.setIcon(QtGui.QIcon(":/icons/BIM_IfcProperties.svg"))
-            pButton2.clicked.connect(on_add_pset)
-            pHLayout = QtGui.QHBoxLayout(pTabCornerWidget)
-            pHLayout.addWidget(pButton1)
-            pHLayout.addWidget(pButton2)
-            pHLayout.setSpacing(2)
-            pHLayout.setContentsMargins(2, 2, 0, 0)
-            pHLayout.insertStretch(0)
-            editor.setCornerWidget(pTabCornerWidget, QtCore.Qt.BottomRightCorner)
-            statuswidget.propertybuttons = pTabCornerWidget
-            QtCore.QTimer.singleShot(0,pTabCornerWidget.show)
+        statuswidget.propertybuttons.hide()
 
 
 def on_add_property():
