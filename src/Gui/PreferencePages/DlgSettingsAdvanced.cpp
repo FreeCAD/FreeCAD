@@ -55,45 +55,6 @@ DlgSettingsAdvanced::DlgSettingsAdvanced(QWidget* parent)
 
 
     // Auto generated code (Tools/params_utils.py:420)
-    groupTreeview = new QGroupBox(this);
-    layout->addWidget(groupTreeview);
-    auto layoutHorizTreeview = new QHBoxLayout(groupTreeview);
-    auto layoutTreeview = new QGridLayout();
-    layoutHorizTreeview->addLayout(layoutTreeview);
-    layoutHorizTreeview->addStretch();
-
-    // Auto generated code (Tools/params_utils.py:433)
-    labelItemBackgroundPadding = new QLabel(this);
-    layoutTreeview->addWidget(labelItemBackgroundPadding, 0, 0);
-    ItemBackgroundPadding = new Gui::PrefSpinBox(this);
-    layoutTreeview->addWidget(ItemBackgroundPadding, 0, 1);
-    ItemBackgroundPadding->setValue(Gui::TreeParams::defaultItemBackgroundPadding());
-    ItemBackgroundPadding->setEntryName("ItemBackgroundPadding");
-    ItemBackgroundPadding->setParamGrpPath("TreeView");
-    // Auto generated code (Tools/params_utils.py:1135)
-    ItemBackgroundPadding->setMinimum(0);
-    ItemBackgroundPadding->setMaximum(100);
-    ItemBackgroundPadding->setSingleStep(1);
-    ItemBackgroundPadding->setAlignment(Qt::AlignRight);
-    ItemBackgroundPadding->setSuffix(QLatin1String(" px"));
-
-    // Auto generated code (Tools/params_utils.py:433)
-    labelFontSize = new QLabel(this);
-    layoutTreeview->addWidget(labelFontSize, 1, 0);
-    FontSize = new Gui::PrefSpinBox(this);
-    layoutTreeview->addWidget(FontSize, 1, 1);
-    FontSize->setValue(Gui::TreeParams::defaultFontSize());
-    FontSize->setEntryName("FontSize");
-    FontSize->setParamGrpPath("TreeView");
-    // Auto generated code (Tools/params_utils.py:1135)
-    FontSize->setMinimum(0);
-    FontSize->setMaximum(100);
-    FontSize->setSingleStep(1);
-    FontSize->setAlignment(Qt::AlignRight);
-    FontSize->setSuffix(QLatin1String(" pt"));
-
-
-    // Auto generated code (Tools/params_utils.py:420)
     groupOverlay = new QGroupBox(this);
     layout->addWidget(groupOverlay);
     auto layoutHorizOverlay = new QHBoxLayout(groupOverlay);
@@ -381,8 +342,6 @@ DlgSettingsAdvanced::~DlgSettingsAdvanced()
 void DlgSettingsAdvanced::saveSettings()
 {
     // Auto generated code (Tools/params_utils.py:461)
-    ItemBackgroundPadding->onSave();
-    FontSize->onSave();
     DockOverlayWheelDelay->onSave();
     DockOverlayAlphaRadius->onSave();
     DockOverlayCheckNaviCube->onSave();
@@ -408,8 +367,6 @@ void DlgSettingsAdvanced::saveSettings()
 void DlgSettingsAdvanced::loadSettings()
 {
     // Auto generated code (Tools/params_utils.py:449)
-    ItemBackgroundPadding->onRestore();
-    FontSize->onRestore();
     DockOverlayWheelDelay->onRestore();
     DockOverlayAlphaRadius->onRestore();
     DockOverlayCheckNaviCube->onRestore();
@@ -435,13 +392,6 @@ void DlgSettingsAdvanced::loadSettings()
 void DlgSettingsAdvanced::retranslateUi()
 {
     setWindowTitle(QObject::tr("Advanced"));
-    groupTreeview->setTitle(QObject::tr("Tree view"));
-    ItemBackgroundPadding->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docItemBackgroundPadding()));
-    labelItemBackgroundPadding->setText(QObject::tr("Item background padding"));
-    labelItemBackgroundPadding->setToolTip(ItemBackgroundPadding->toolTip());
-    FontSize->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docFontSize()));
-    labelFontSize->setText(QObject::tr("Font size"));
-    labelFontSize->setToolTip(FontSize->toolTip());
     groupOverlay->setTitle(QObject::tr("Overlay"));
     DockOverlayWheelDelay->setToolTip(QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayWheelDelay()));
     labelDockOverlayWheelDelay->setText(QObject::tr("Delay mouse wheel pass through"));
