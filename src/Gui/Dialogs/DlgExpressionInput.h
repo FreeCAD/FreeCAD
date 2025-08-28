@@ -31,7 +31,7 @@
 #include <Base/Unit.h>
 #include <memory>
 
-#include "Dialogs/DlgAddPropertyVarSet.h"
+#include "Dialogs/DlgAddProperty.h"
 
 namespace Ui {
 class DlgExpressionInput;
