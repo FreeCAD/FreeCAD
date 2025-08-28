@@ -1866,4 +1866,3 @@ void CreateMeshCommands()
     rcCmdMgr.addCommand(new CmdMeshSplitComponents());
     rcCmdMgr.addCommand(new CmdMeshScale());
 }
-
