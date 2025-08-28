@@ -324,7 +324,7 @@ display the splash screen.</string>
          </font>
         </property>
         <property name="text">
-         <string>Looking for more themes? You can obtain them using the &lt;a href=&quot;freecad:Std_AddonMgr&quot;&gt;Addon Manager&lt;/a&gt;.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Looking for more themes or Icons? You can obtain them using the &lt;a href=&quot;freecad:Std_AddonMgr&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#13253e;&quot;&gt;Addon Manager&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="textFormat">
          <enum>Qt::TextFormat::RichText</enum>
