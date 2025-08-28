@@ -92,6 +92,7 @@ public:
      * which Gui::Selection() cannot provide.
      */
     static std::vector<SelInfo> getSelection(App::Document *doc=nullptr);
+    static std::vector<Document*> getSelectedDocuments();
 
     static TreeWidget *instance();
 
