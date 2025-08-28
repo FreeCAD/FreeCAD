@@ -21,15 +21,18 @@
 #*                                                                         *
 #***************************************************************************/
 
-# FreeCAD init module
+# FreeCAD init module - App
 #
 # Gathering all the information to start FreeCAD.
 # This is the second of four init scripts:
-# -- CMakeVariables
-# -> FreeCADInit
-# -- FreeCADTest
-# -- FreeCADGuiInit
-# The forth one runs when the gui is up.
+# +------+------------------+-----------------------------+
+# | This | Script           | Runs                        |
+# +------+------------------+-----------------------------+
+# |      | CMakeVariables   | always                      |
+# | >>>> | FreeCADInit      | always                      |
+# |      | FreeCADTest      | only if test and not Gui    |
+# |      | FreeCADGuiInit   | only if Gui is up           |
+# +------+------------------+-----------------------------+
 
 import FreeCAD
 

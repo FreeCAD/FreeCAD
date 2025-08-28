@@ -21,15 +21,18 @@
 #*                                                                         *
 #***************************************************************************/
 
-# FreeCAD gui init module
+# FreeCAD init module - Gui
 #
 # Gathering all the information to start FreeCAD Gui.
-# This is the second of four init scripts:
-# -- CMakeVariables
-# -- FreeCADInit
-# -- FreeCADTest
-# -> FreeCADGuiInit
-# The forth one runs when the gui is up.
+# This is the forth of four init scripts:
+# +------+------------------+-----------------------------+
+# | This | Script           | Runs                        |
+# +------+------------------+-----------------------------+
+# |      | CMakeVariables   | always                      |
+# |      | FreeCADInit      | always                      |
+# |      | FreeCADTest      | only if test and not Gui    |
+# | >>>> | FreeCADGuiInit   | only if Gui is up           |
+# +------+------------------+-----------------------------+
 
 from enum import IntEnum, Enum
 from dataclasses import dataclass
