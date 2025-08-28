@@ -813,7 +813,7 @@ class SearchPaths:
         *,
         env_path: PathPriority = PathPriority.OverrideLast,
         sys_path: PathPriority = PathPriority.OverrideFirst,
-        dll_path: PathPriority = PathPriority.Ignore
+        dll_path: PathPriority = PathPriority.OverrideLast
     ) -> None:
         """
         Add item to required namespaces with the specified priority.
