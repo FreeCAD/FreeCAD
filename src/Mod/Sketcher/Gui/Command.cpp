@@ -152,6 +152,24 @@ Attacher::eMapMode SuggestAutoMapMode(Attacher::SuggestResult::eSuggestResult* p
 /* Sketch commands =======================================================*/
 DEF_STD_CMD_A(CmdSketcherNewSketch)
 
+namespace {
+    QString getAutoGroupCommandStr()
+        // Helper function to get the python code to add the newly created object to the active Part/Body object if present
+    {
+        App::GeoFeature* activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PDBODYKEY);
+        if (!activeObj) {
+            activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PARTKEY);
+        }
+
+        if (activeObj) {
+            QString activeName = QString::fromLatin1(activeObj->getNameInDocument());
+            return QStringLiteral("App.ActiveDocument.getObject('%1\').addObject(obj)\n").arg(activeName);
+        }
+
+        return QStringLiteral("# Object created at document root.");
+    }
+}
+
 CmdSketcherNewSketch::CmdSketcherNewSketch()
     : Command("Sketcher_NewSketch")
 {
@@ -249,9 +267,8 @@ void CmdSketcherNewSketch::activated(int iMsg)
         std::string FeatName = getUniqueObjectName("Sketch");
 
         openCommand(QT_TRANSLATE_NOOP("Command", "Create a new sketch on a face"));
-        doCommand(Doc,
-                  "App.activeDocument().addObject('Sketcher::SketchObject', '%s')",
-                  FeatName.c_str());
+        doCommand(Doc,"obj = App.activeDocument().addObject('Sketcher::SketchObject', '%s')", FeatName.c_str());
+        doCommand(Doc, getAutoGroupCommandStr().toUtf8());
         if (mapmode < Attacher::mmDummy_NumberOfModes)
             doCommand(Gui,
                       "App.activeDocument().%s.MapMode = \"%s\"",
@@ -292,16 +309,16 @@ void CmdSketcherNewSketch::activated(int iMsg)
         openCommand(QT_TRANSLATE_NOOP("Command", "Create a new sketch"));
         if (groupSelected) {
             doCommand(Doc,
-                    "App.activeDocument().getObject('%s').addObject(App.activeDocument().addObject('Sketcher::SketchObject', '%s'))",
+                    "obj = App.activeDocument().getObject('%s').addObject(App.activeDocument().addObject('Sketcher::SketchObject', '%s'))",
                     groupName.c_str(),
                     FeatName.c_str());
         }
         else {
             doCommand(Doc,
-                  "App.activeDocument().addObject('Sketcher::SketchObject', '%s')",
+                  "obj = App.activeDocument().addObject('Sketcher::SketchObject', '%s')",
                   FeatName.c_str());
         }
-
+        doCommand(Doc, getAutoGroupCommandStr().toUtf8());
         doCommand(Doc,
                   "App.activeDocument().%s.Placement = App.Placement(App.Vector(%f, %f, %f), "
                   "App.Rotation(%f, %f, %f, %f))",
@@ -994,24 +1011,6 @@ bool CmdSketcherMirrorSketch::isActive()
     return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0;
 }
 
-namespace {
-    QString getAutoGroupCommandStr()
-        // Helper function to get the python code to add the newly created object to the active Part/Body object if present
-    {
-        App::GeoFeature* activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PDBODYKEY);
-        if (!activeObj) {
-            activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PARTKEY);
-        }
-
-        if (activeObj) {
-            QString activeName = QString::fromLatin1(activeObj->getNameInDocument());
-            return QStringLiteral("App.ActiveDocument.getObject('%1\').addObject(obj)\n").arg(activeName);
-        }
-
-        return QStringLiteral("# Object created at document root.");
-    }
-}
-
 DEF_STD_CMD_A(CmdSketcherMergeSketches)
 
 CmdSketcherMergeSketches::CmdSketcherMergeSketches()
@@ -1046,8 +1045,7 @@ void CmdSketcherMergeSketches::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("Sketch");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Merge sketches"));
-    doCommand(Doc, "obj = App.activeDocument().addObject('Sketcher::SketchObject', '%s')", FeatName.c_str());
-    doCommand(Doc, getAutoGroupCommandStr().toUtf8());
+    doCommand(Doc, "App.activeDocument().addObject('Sketcher::SketchObject', '%s')", FeatName.c_str());
 
     Sketcher::SketchObject* mergesketch =
         static_cast<Sketcher::SketchObject*>(doc->getObject(FeatName.c_str()));
