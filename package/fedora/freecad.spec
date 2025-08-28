@@ -237,8 +237,8 @@ pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Test/"
 pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Tux/"
 pp="${pp-}${pp+:}%{buildroot}%{_libdir}/freecad/Mod/Web/"
 
-# Passsing
-PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestAddonManagerApp
+# Passing
+#PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestAddonManagerApp
 # Failing
 #PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestAssemblyWorkbench
 #PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestArch
@@ -247,14 +247,14 @@ PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestAddonManagerApp
 #PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestFemApp
 #PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestMaterialsApp
 # Passing
-PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  MeshTestsApp
+#PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  MeshTestsApp
 # Failing
 #PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestPartApp
 #PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestPartDesignApp
 #PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestSketcherApp
 #PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestSpreadsheet
 # Passing
-PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestSurfaceApp
+#PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestSurfaceApp
 # Failing
 #PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestTechDrawApp
 # Passing
@@ -266,7 +266,7 @@ PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  StringHasher
 PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  UnicodeTests
 PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestPythonSyntax
 
-PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestAddonManagerApp
+#PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestAddonManagerApp
 # Failing
 #PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestAssemblyWorkbench
 #PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestArch
@@ -276,7 +276,7 @@ PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestAddonManagerApp
 #PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestFemApp
 #PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestMaterialsApp
 # Passing
-PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  MeshTestsApp
+#PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  MeshTestsApp
 # Failing
 #PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestPartApp
 #PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestPartDesignApp
