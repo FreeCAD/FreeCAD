@@ -667,22 +667,32 @@ void DlgSettingsGeneral::onCustomIconFolderClicked()
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Bitmaps");
     std::vector<std::string> paths = group->GetASCIIs("CustomPath");
     QStringList pathList;
+    QList<bool> enabledList;
+    int index = 0;
     for (const auto& path : paths) {
         pathList << QString::fromUtf8(path.c_str());
+        std::stringstream enabledKey;
+        enabledKey << "CustomPathEnabled" << index;
+        bool enabled = group->GetBool(enabledKey.str().c_str(), true);
+        enabledList << enabled;
+        ++index;
     }
 
     // Open the IconFolders dialog
-    Gui::Dialog::IconFolders dlg(pathList, this);
+    Gui::Dialog::IconFolders dlg(pathList, enabledList, this);
     dlg.setWindowTitle(tr("Custom icon folders"));
     if (dlg.exec()) {
-        QStringList newPaths = dlg.getPaths();
         group->Clear();
-        int index = 0;
-        for (const QString& p : newPaths) {
-            std::stringstream str;
-            str << "CustomPath" << index;
-            group->SetASCII(str.str().c_str(), (const char*)p.toUtf8());
-            ++index;
+        int rowCount = dlg.getRowCount();
+        for (int row = 0; row < rowCount; ++row) {
+            QString path = dlg.getPathAt(row);
+            bool enabled = dlg.isPathEnabledAt(row);
+            std::stringstream pathKey;
+            pathKey << "CustomPath" << row;
+            group->SetASCII(pathKey.str().c_str(), (const char*)QDir::toNativeSeparators(path).toUtf8());
+            std::stringstream enabledKey;
+            enabledKey << "CustomPathEnabled" << row;
+            group->SetBool(enabledKey.str().c_str(), enabled);
         }
     }
 }

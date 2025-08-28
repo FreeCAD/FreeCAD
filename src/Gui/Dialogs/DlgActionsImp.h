@@ -118,15 +118,19 @@ class IconFolders : public QDialog
     Q_OBJECT
 
 public:
-    IconFolders(const QStringList&, QWidget* parent);
+    IconFolders(const QStringList& paths, const QList<bool>& enabledList, QWidget* parent);
     ~IconFolders() override;
     QStringList getPaths() const;
+    QStringList getEnabledPaths() const;
+    int getRowCount() const;
+    QString getPathAt(int row) const;
+    bool isPathEnabledAt(int row) const;
     void accept() override;
 
 private:
     void addFolder();
     void removeFolder();
-    void addTableRow(const QString& path);
+    void addTableRow(const QString& path, bool enabled = true);
     bool restart;
     int maxLines;
     bool pathsChanged;

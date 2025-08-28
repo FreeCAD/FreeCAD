@@ -109,9 +109,20 @@ void BitmapFactoryInst::restoreCustomPaths()
 {
     Base::Reference<ParameterGrp> group = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Bitmaps");
-    std::vector<std::string> paths = group->GetASCIIs("CustomPath");
-    for (auto & path : paths) {
-        addPath(QString::fromUtf8(path.c_str()));
+    int index = 0;
+    while (true) {
+        std::stringstream key;
+        key << "CustomPath" << index;
+        std::string path = group->GetASCII(key.str().c_str());
+        if (path.empty())
+            break;
+        std::stringstream enabledKey;
+        enabledKey << "CustomPathEnabled" << index;
+        bool enabled = group->GetBool(enabledKey.str().c_str(), true);
+        if (enabled) {
+            addPath(QString::fromUtf8(path.c_str()));
+        }
+        ++index;
     }
 }
 

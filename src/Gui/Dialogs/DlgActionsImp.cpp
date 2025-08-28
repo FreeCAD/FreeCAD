@@ -452,49 +452,32 @@ void IconDialog::onAddIconPath()
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Bitmaps");
     std::vector<std::string> paths = group->GetASCIIs("CustomPath");
     QStringList pathList;
+    QList<bool> enabledList;
+    int index = 0;
     for (const auto& path : paths) {
         pathList << QString::fromUtf8(path.c_str());
+        std::stringstream enabledKey;
+        enabledKey << "CustomPathEnabled" << index;
+        bool enabled = group->GetBool(enabledKey.str().c_str(), true);
+        enabledList << enabled;
+        ++index;
     }
 
-    IconFolders dlg(pathList, this);
+    IconFolders dlg(pathList, enabledList, this);
     dlg.setWindowTitle(tr("Icon Folders"));
     if (dlg.exec()) {
-        QStringList paths = dlg.getPaths();
-
-        // Write to user config
+        // Save both path and enabled state
         group->Clear();
-        int index = 0;
-        for (QStringList::iterator it = paths.begin(); it != paths.end(); ++it, ++index) {
-            std::stringstream str;
-            str << "CustomPath" << index;
-            group->SetASCII(str.str().c_str(), (const char*)it->toUtf8());
-        }
-
-        QStringList search = BitmapFactory().getPaths();
-        for (auto& it : search) {
-            it = QDir::toNativeSeparators(it);
-        }
-        for (const auto& path : paths) {
-            if (search.indexOf(path) < 0) {
-                QStringList filters;
-                QList<QByteArray> formats = QImageReader::supportedImageFormats();
-                for (const auto& format : formats) {
-                    filters << QStringLiteral("*.%1").arg(
-                        QString::fromLatin1(format).toLower());
-                }
-                QDir d(path);
-                d.setNameFilters(filters);
-                QFileInfoList fi = d.entryInfoList();
-                for (const auto& jt : fi) {
-                    QString file = jt.absoluteFilePath();
-                    auto item = new QListWidgetItem(ui->listWidget);
-                    item->setIcon(QIcon(file));
-                    item->setText(jt.baseName());
-                    item->setToolTip(file);
-                }
-
-                BitmapFactory().addPath(path);
-            }
+        int rowCount = dlg.getRowCount();
+        for (int row = 0; row < rowCount; ++row) {
+            QString path = dlg.getPathAt(row);
+            bool enabled = dlg.isPathEnabledAt(row);
+            std::stringstream pathKey;
+            pathKey << "CustomPath" << row;
+            group->SetASCII(pathKey.str().c_str(), (const char*)QDir::toNativeSeparators(path).toUtf8());
+            std::stringstream enabledKey;
+            enabledKey << "CustomPathEnabled" << row;
+            group->SetBool(enabledKey.str().c_str(), enabled);
         }
     }
 }
@@ -527,7 +510,7 @@ void DlgCustomActionsImp::changeEvent(QEvent* e)
     QWidget::changeEvent(e);
 }
 
-IconFolders::IconFolders(const QStringList& paths, QWidget* parent)
+IconFolders::IconFolders(const QStringList& paths, const QList<bool>& enabledList, QWidget* parent)
     : QDialog(parent)
     , ui(new Ui_IconFolders)
     , restart(false)
@@ -535,20 +518,35 @@ IconFolders::IconFolders(const QStringList& paths, QWidget* parent)
     , pathsChanged(false)
 {
     ui->setupUi(this);
-    // Make the Path column stretch to fill available space
     ui->tableWidget->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
-    // Connect dialog buttons
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &IconFolders::accept);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &IconFolders::reject);
-    // Add the user defined paths to the table
     ui->tableWidget->setRowCount(0);
-    for (const QString& path : paths) {
-        addTableRow(path);
+    int count = paths.size();
+    for (int i = 0; i < count; ++i) {
+        bool enabled = (i < enabledList.size()) ? enabledList[i] : true;
+        addTableRow(paths[i], enabled);
     }
     connect(ui->addButton, &QPushButton::clicked, this, &IconFolders::addFolder);
     if (ui->tableWidget->rowCount() >= this->maxLines) {
         ui->addButton->setDisabled(true);
     }
+}
+
+int IconFolders::getRowCount() const {
+    return ui->tableWidget->rowCount();
+}
+
+QString IconFolders::getPathAt(int row) const {
+    QLineEdit* edit = qobject_cast<QLineEdit*>(ui->tableWidget->cellWidget(row, 1));
+    return edit ? QDir::toNativeSeparators(edit->text()) : QString();
+}
+
+bool IconFolders::isPathEnabledAt(int row) const {
+    QWidget* checkWidget = ui->tableWidget->cellWidget(row, 2);
+    QCheckBox* activeBox = checkWidget ? checkWidget->findChild<QCheckBox*>() : nullptr;
+    return activeBox ? activeBox->isChecked() : true;
+
 }
 
 IconFolders::~IconFolders() { delete ui; }
@@ -599,7 +597,7 @@ void IconFolders::removeFolder()
     }
 }
 // Helper to add a row to the table for a given path
-void IconFolders::addTableRow(const QString& path)
+void IconFolders::addTableRow(const QString& path, bool enabled)
 {
     int row = ui->tableWidget->rowCount();
     ui->tableWidget->insertRow(row);
@@ -631,32 +629,56 @@ void IconFolders::addTableRow(const QString& path)
     edit->setText(path);
     ui->tableWidget->setCellWidget(row, 1, edit);
 
-    // Remove button
+    // Active checkbox cell (centered)
+    QWidget* checkWidget = new QWidget(this);
+    QHBoxLayout* checkLayout = new QHBoxLayout(checkWidget);
+    checkLayout->setContentsMargins(0,0,0,0);
+    checkLayout->setAlignment(Qt::AlignCenter);
+    QCheckBox* activeBox = new QCheckBox(checkWidget);
+    activeBox->setChecked(enabled);
+    checkLayout->addWidget(activeBox);
+    checkWidget->setLayout(checkLayout);
+    ui->tableWidget->setCellWidget(row, 2, checkWidget);
+
+    // Remove button (4th column)
     QPushButton* removeButton = new QPushButton(tr("Remove"), this);
     removeButton->setFixedHeight(rowHeight);
     removeButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     removeButton->setContentsMargins(0, 0, 0, 0);
-    ui->tableWidget->setCellWidget(row, 2, removeButton);
+    ui->tableWidget->setCellWidget(row, 3, removeButton);
     connect(removeButton, &QPushButton::clicked, this, &IconFolders::removeFolder);
 }
 void IconFolders::accept()
 {
-    // Compare current paths to preferences
+    // Save both path and enabled state
     QStringList currentPaths = getPaths();
+    QStringList enabledPaths = getEnabledPaths();
     Base::Reference<ParameterGrp> group =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Bitmaps");
-    std::vector<std::string> prefPaths = group->GetASCIIs("CustomPath");
-    QStringList prefList;
-    for (const auto& path : prefPaths) {
-        prefList << QString::fromUtf8(path.c_str());
+    // Remove all previous CustomPath and CustomPathEnabled keys
+    group->Clear();
+    // Save new paths and enabled states
+    int index = 0;
+    for (int row = 0; row < ui->tableWidget->rowCount(); ++row) {
+        QLineEdit* edit = qobject_cast<QLineEdit*>(ui->tableWidget->cellWidget(row, 1));
+        QWidget* checkWidget = ui->tableWidget->cellWidget(row, 2);
+        QCheckBox* activeBox = checkWidget ? checkWidget->findChild<QCheckBox*>() : nullptr;
+        if (edit) {
+            std::stringstream pathKey;
+            pathKey << "CustomPath" << index;
+            group->SetASCII(pathKey.str().c_str(), (const char*)QDir::toNativeSeparators(edit->text()).toUtf8());
+            std::stringstream enabledKey;
+            enabledKey << "CustomPathEnabled" << index;
+            group->SetBool(enabledKey.str().c_str(), activeBox ? activeBox->isChecked() : true);
+            ++index;
+        }
     }
-    if (currentPaths != prefList) {
-        QMessageBox msgBox(QMessageBox::Warning,
-            tr("Restart required"),
-            tr("Changing icon folders only takes effect after an application restart."),
-            QMessageBox::Ok, this);
-        msgBox.exec();
-    }
+    // Warn if any change
+    QMessageBox msgBox(QMessageBox::Warning,
+        tr("Restart required"),
+        tr("Changing icon folders only takes effect after an application restart."),
+        QMessageBox::Ok, this);
+    msgBox.exec();
     QDialog::accept();
 }
 
@@ -671,6 +693,19 @@ QStringList IconFolders::getPaths() const
     return paths;
 }
 
+QStringList IconFolders::getEnabledPaths() const
+{
+    QStringList paths;
+    for (int row = 0; row < ui->tableWidget->rowCount(); ++row) {
+        QLineEdit* edit = qobject_cast<QLineEdit*>(ui->tableWidget->cellWidget(row, 1));
+        QWidget* checkWidget = ui->tableWidget->cellWidget(row, 2);
+        QCheckBox* activeBox = checkWidget ? checkWidget->findChild<QCheckBox*>() : nullptr;
+        if (edit && activeBox && activeBox->isChecked()) {
+            paths << QDir::toNativeSeparators(edit->text());
+        }
+    }
+    return paths;
+}
 
 // Add this to the class definition in the header:
 // QTableWidget* tableWidget;
