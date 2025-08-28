@@ -207,85 +207,115 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/org.freecad.Fr
 
 %if %{with tests}
 pushd %_vpath_builddir
-# Passsing
-bin/FreeCADCmd -t  TestAddonManagerApp
-# Failing
-#bin/FreeCADCmd -t  TestAssemblyWorkbench
-#bin/FreeCADCmd -t  TestArch
-#bin/FreeCADCmd -t  TestCAMApp
-#bin/FreeCADCmd -t  TestDraft
-#bin/FreeCADCmd -t  TestFemApp
-#bin/FreeCADCmd -t  TestMaterialsApp
-# Passing
-bin/FreeCADCmd -t  MeshTestsApp
-# Failing
-#bin/FreeCADCmd -t  TestPartApp
-#bin/FreeCADCmd -t  TestPartDesignApp
-#bin/FreeCADCmd -t  TestSketcherApp
-#bin/FreeCADCmd -t  TestSpreadsheet
-# Passing
-bin/FreeCADCmd -t  TestSurfaceApp
-# Failing
-# bin/FreeCADCmd -t  TestTechDrawApp
-# Passing
-bin/FreeCADCmd -t  BaseTests
-bin/FreeCADCmd -t  UnitTests
-bin/FreeCADCmd -t  Document
-bin/FreeCADCmd -t  Metadata
-bin/FreeCADCmd -t  StringHasher
-bin/FreeCADCmd -t  UnicodeTests
-bin/FreeCADCmd -t  TestPythonSyntax
+pp="${pp-}${pp+:}Mod/AddonManager/"
+pp="${pp-}${pp+:}Mod/Assembly/"
+pp="${pp-}${pp+:}Mod/BIM/"
+pp="${pp-}${pp+:}Mod/CAM/"
+pp="${pp-}${pp+:}Mod/Draft/"
+pp="${pp-}${pp+:}Mod/Drawing/"
+pp="${pp-}${pp+:}Mod/Fem/"
+pp="${pp-}${pp+:}Mod/Help/"
+pp="${pp-}${pp+:}Mod/Idf/"
+pp="${pp-}${pp+:}Mod/Import/"
+pp="${pp-}${pp+:}Mod/Inspection/"
+pp="${pp-}${pp+:}Mod/Material/"
+pp="${pp-}${pp+:}Mod/Measure/"
+pp="${pp-}${pp+:}Mod/Mesh/"
+pp="${pp-}${pp+:}Mod/MeshPart/"
+pp="${pp-}${pp+:}Mod/OpenSCAD/"
+pp="${pp-}${pp+:}Mod/Part/"
+pp="${pp-}${pp+:}Mod/Points/"
+pp="${pp-}${pp+:}Mod/ReverseEngineering/"
+pp="${pp-}${pp+:}Mod/Robot/"
+pp="${pp-}${pp+:}Mod/Show/"
+pp="${pp-}${pp+:}Mod/Sketcher/"
+pp="${pp-}${pp+:}Mod/Spreadsheet/"
+pp="${pp-}${pp+:}Mod/Start/"
+pp="${pp-}${pp+:}Mod/Surface/"
+pp="${pp-}${pp+:}Mod/TechDraw/"
+pp="${pp-}${pp+:}Mod/Test/"
+pp="${pp-}${pp+:}Mod/Tux/"
+pp="${pp-}${pp+:}Mod/Web/"
 
-xvfb-run bin/FreeCAD -t  TestAddonManagerApp
+# Passsing
+PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestAddonManagerApp
 # Failing
-#xvfb-run bin/FreeCAD -t  TestAssemblyWorkbench
-#xvfb-run bin/FreeCAD -t  TestArch
-#xvfb-run bin/FreeCAD -t  TestCAMApp
-# Failing
-#xvfb-run bin/FreeCAD -t  TestDraft
-#xvfb-run bin/FreeCAD -t  TestFemApp
-#xvfb-run bin/FreeCAD -t  TestMaterialsApp
+#PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestAssemblyWorkbench
+#PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestArch
+#PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestCAMApp
+#PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestDraft
+#PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestFemApp
+#PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestMaterialsApp
 # Passing
-xvfb-run bin/FreeCAD -t  MeshTestsApp
+PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  MeshTestsApp
 # Failing
-#xvfb-run bin/FreeCAD -t  TestPartApp
-#xvfb-run bin/FreeCAD -t  TestPartDesignApp
-#xvfb-run bin/FreeCAD -t  TestSketcherApp
-#xvfb-run bin/FreeCAD -t  TestSpreadsheet
-#xvfb-run bin/FreeCAD -t  TestSurfaceApp
-#xvfb-run bin/FreeCAD -t  TestTechDrawApp
+#PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestPartApp
+#PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestPartDesignApp
+#PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestSketcherApp
+#PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestSpreadsheet
 # Passing
-xvfb-run bin/FreeCAD -t  BaseTests
-xvfb-run bin/FreeCAD -t  UnitTests
-xvfb-run bin/FreeCAD -t  Document
-xvfb-run bin/FreeCAD -t  Metadata
-xvfb-run bin/FreeCAD -t  StringHasher
-xvfb-run bin/FreeCAD -t  UnicodeTests
-xvfb-run bin/FreeCAD -t  TestPythonSyntax
-xvfb-run bin/FreeCAD -t  TestAddonManagerGui
+PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestSurfaceApp
 # Failing
-#xvfb-run bin/FreeCAD -t  TestArchGui
+#PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestTechDrawApp
 # Passing
-xvfb-run bin/FreeCAD -t  TestDraftGui
-xvfb-run bin/FreeCAD -t  TestFemGui
+PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  BaseTests
+PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  UnitTests
+PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  Document
+PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  Metadata
+PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  StringHasher
+PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  UnicodeTests
+PYTHONPATH=$PYTHONPATH:"${pp-}" bin/FreeCADCmd -t  TestPythonSyntax
+
+PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestAddonManagerApp
 # Failing
-#xvfb-run bin/FreeCAD -t  TestImportGui
-#xvfb-run bin/FreeCAD -t  TestMaterialsGui
-# Passing
-xvfb-run bin/FreeCAD -t  TestOpenSCADGui
+#PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestAssemblyWorkbench
+#PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestArch
+#PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestCAMApp
 # Failing
-#xvfb-run bin/FreeCAD -t  TestPartGui
-#xvfb-run bin/FreeCAD -t  TestPartDesignGui
+#PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestDraft
+#PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestFemApp
+#PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestMaterialsApp
 # Passing
-xvfb-run bin/FreeCAD -t  TestSketcherGui
+PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  MeshTestsApp
 # Failing
-#xvfb-run bin/FreeCAD -t  TestTechDrawGui
-#xvfb-run bin/FreeCAD -t  Workbench
+#PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestPartApp
+#PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestPartDesignApp
+#PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestSketcherApp
+#PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestSpreadsheet
+#PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestSurfaceApp
+#PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestTechDrawApp
 # Passing
-xvfb-run bin/FreeCAD -t  Menu
-xvfb-run bin/FreeCAD -t  Menu.MenuDeleteCases
-xvfb-run bin/FreeCAD -t  Menu.MenuCreateCases
-xvfb-run bin/FreeCAD -t  GuiDocument
+PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  BaseTests
+PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  UnitTests
+PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  Document
+PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  Metadata
+PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  StringHasher
+PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  UnicodeTests
+PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestPythonSyntax
+PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestAddonManagerGui
+# Failing
+#PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestArchGui
+# Passing
+PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestDraftGui
+PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestFemGui
+# Failing
+#PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestImportGui
+#PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestMaterialsGui
+# Passing
+PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestOpenSCADGui
+# Failing
+#PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestPartGui
+#PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestPartDesignGui
+# Passing
+PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestSketcherGui
+# Failing
+#PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  TestTechDrawGui
+#PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  Workbench
+# Passing
+PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  Menu
+PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  Menu.MenuDeleteCases
+PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  Menu.MenuCreateCases
+PYTHONPATH=$PYTHONPATH:"${pp-}" xvfb-run bin/FreeCAD -t  GuiDocument
 popd
 
 skip="${skip-}${skip+}PropertyExpressionEngineTest.executeCrossPropertyReference|"
