@@ -113,7 +113,14 @@ def InitApplications():
     if os.path.isdir(FreeCAD.getHomePath()+'src\\Tools'):
         sys.path.append(FreeCAD.getHomePath()+'src\\Tools')
 
-
+    fallback_mods = {}
+    def update_mod_registry(mod_dict):
+        for mod_name, mod_path in mod_dict.items():
+            if mod_name in fallback_mods:
+                if mod_path not in fallback_mods[mod_name]:
+                    fallback_mods[mod_name].append(mod_path)
+            else:
+                fallback_mods[mod_name] = [mod_path]
 
     # Searching for module dirs +++++++++++++++++++++++++++++++++++++++++++++++++++
     # Use dict to handle duplicated module names
@@ -123,6 +130,8 @@ def InitApplications():
         for i in ModDirs: ModDict[i.lower()] = os.path.join(ModDir,i)
     else:
         Wrn ("No modules found in " + ModDir + "\n")
+    update_mod_registry(ModDict)
+
     # Search for additional modules in the home directory
     if os.path.isdir(HomeMod):
         HomeMods = os.listdir(HomeMod)
@@ -130,15 +139,26 @@ def InitApplications():
     elif os.path.isdir(os.path.join(os.path.expanduser("~"),".FreeCAD","Mod")):
         # Check if old location exists
         Wrn ("User path has changed to " + FreeCAD.getUserAppDataDir() + ". Please move user modules and macros\n")
+    update_mod_registry(ModDict)
+
     # Search for additional modules in the macro directory
     if os.path.isdir(MacroMod):
         MacroMods = os.listdir(MacroMod)
         for i in MacroMods:
             key = i.lower()
             if key not in ModDict: ModDict[key] = os.path.join(MacroMod,i)
+    update_mod_registry(ModDict)
+
     # Search for additional modules in command line
     for i in AddPath:
         if os.path.isdir(i): ModDict[i] = i
+    update_mod_registry(ModDict)
+
+    FreeCAD.__fallback_mods__ = fallback_mods
+    for name, entries in fallback_mods.items():
+        if len(entries) > 1:
+            Msg(f"{len(entries)} entries found for module '{name}': using the one in {entries[-1]}\n")
+
     #AddModPaths = App.ParamGet("System parameter:AdditionalModulePaths")
     #Err( AddModPaths)
     # add also this path so that all modules search for libraries
@@ -189,6 +209,17 @@ def InitApplications():
                 Log('-'*100+'\n')
                 Err('During initialization the error "' + str(inst) + '" occurred in ' + InstallFile + '\n')
                 Err('Please look into the log file for further information\n')
+                mod_name = os.path.normpath(Dir).split(os.path.sep)[-1].lower()
+                if hasattr(FreeCAD,"__failed_mods__"):
+                    FreeCAD.__failed_mods__.append(mod_name)
+                else:
+                    FreeCAD.__failed_mods__ = [mod_name]
+                if mod_name not in FreeCAD.__fallback_mods__:
+                    Err("Could not evaluate module '" + mod_name + "' for fallbacks\n")
+                elif len(FreeCAD.__fallback_mods__[mod_name]) > 1:
+                    new_path = os.path.normpath(FreeCAD.__fallback_mods__[mod_name][-2])
+                    Err(f"A fallback module was found for module '{mod_name}': {new_path}\n")
+                    Err(f"Rename or remove {os.path.normpath(Dir)} to use the fallback module\n")
             else:
                 Log('Init:      Initializing ' + Dir + '... done\n')
         else:
