@@ -42,8 +42,7 @@
 #include "ShortcutManager.h"
 #include "ui_DlgChooseIcon.h"
 #include <QCheckBox>
-#endif
-#include <QCheckBox>
+
 
 using namespace Gui::Dialog;
 
