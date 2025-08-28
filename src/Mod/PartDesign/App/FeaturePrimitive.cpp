@@ -404,11 +404,11 @@ PROPERTY_SOURCE(PartDesign::Ellipsoid, PartDesign::FeaturePrimitive)
 
 Ellipsoid::Ellipsoid()
 {
-    ADD_PROPERTY_TYPE(Radius1,(2.0),"Ellipsoid",App::Prop_None,"Radius in local z-direction");
+    ADD_PROPERTY_TYPE(Radius1,(2.0),"Ellipsoid",App::Prop_None,"Radius in local Z-direction");
     Radius1.setConstraints(&quantityRange);
-    ADD_PROPERTY_TYPE(Radius2,(4.0),"Ellipsoid",App::Prop_None,"Radius in local x-direction");
+    ADD_PROPERTY_TYPE(Radius2,(4.0),"Ellipsoid",App::Prop_None,"Radius in local X-direction");
     Radius2.setConstraints(&quantityRange);
-    ADD_PROPERTY_TYPE(Radius3,(0.0),"Ellipsoid",App::Prop_None,"Radius in local y-direction\nIf zero, it is equal to Radius2");
+    ADD_PROPERTY_TYPE(Radius3,(0.0),"Ellipsoid",App::Prop_None,"Radius in local Y-direction\nIf zero, it is equal to Radius2");
     Radius3.setConstraints(&quantityRangeZero);
     ADD_PROPERTY_TYPE(Angle1,(-90.0f),"Ellipsoid",App::Prop_None,"The angle of the ellipsoid");
     Angle1.setConstraints(&angleRangeV);

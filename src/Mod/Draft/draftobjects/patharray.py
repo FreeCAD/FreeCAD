@@ -299,7 +299,7 @@ class PathArray(DraftLink):
             obj.TangentVector = App.Vector(1, 0, 0)
 
         if "ForceVertical" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property","Force use of 'Vertical Vector' as local Z direction when using 'Original' or 'Tangent' alignment mode")
+            _tip = QT_TRANSLATE_NOOP("App::Property","Force use of 'Vertical Vector' as local Z-direction when using 'Original' or 'Tangent' alignment mode")
             obj.addProperty("App::PropertyBool",
                             "ForceVertical",
                             "Alignment",

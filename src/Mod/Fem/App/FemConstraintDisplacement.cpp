@@ -45,66 +45,66 @@ ConstraintDisplacement::ConstraintDisplacement()
                       (true),
                       "ConstraintDisplacement",
                       App::Prop_None,
-                      "Use free translation in X direction");
+                      "Use free translation in X-direction");
     ADD_PROPERTY_TYPE(xDisplacement,
                       (0.0),
                       "ConstraintDisplacement",
                       App::Prop_None,
-                      "Translation in local X direction");
+                      "Translation in local X-direction");
     ADD_PROPERTY_TYPE(hasXFormula,
                       (false),
                       "ConstraintDisplacement",
                       App::Prop_None,
-                      "Define translation in X direction as a formula");
+                      "Define translation in X-direction as a formula");
     ADD_PROPERTY_TYPE(xDisplacementFormula,
                       (""),
                       "ConstraintDisplacement",
                       App::Prop_None,
-                      "Formula for translation in X direction");
+                      "Formula for translation in X-direction");
 
     // y displacement
     ADD_PROPERTY_TYPE(yFree,
                       (true),
                       "ConstraintDisplacement",
                       App::Prop_None,
-                      "Use free translation in Y direction");
+                      "Use free translation in Y-direction");
     ADD_PROPERTY_TYPE(yDisplacement,
                       (0.0),
                       "ConstraintDisplacement",
                       App::Prop_None,
-                      "Translation in local Y direction");
+                      "Translation in local Y-direction");
     ADD_PROPERTY_TYPE(hasYFormula,
                       (false),
                       "ConstraintDisplacement",
                       App::Prop_None,
-                      "Define translation in Y direction as a formula");
+                      "Define translation in Y-direction as a formula");
     ADD_PROPERTY_TYPE(yDisplacementFormula,
                       (""),
                       "ConstraintDisplacement",
                       App::Prop_None,
-                      "Formula for translation in Y direction");
+                      "Formula for translation in Y-direction");
 
     // z displacement
     ADD_PROPERTY_TYPE(zFree,
                       (true),
                       "ConstraintDisplacement",
                       App::Prop_None,
-                      "Use free translation in Z direction");
+                      "Use free translation in Z-direction");
     ADD_PROPERTY_TYPE(zDisplacement,
                       (0.0),
                       "ConstraintDisplacement",
                       App::Prop_None,
-                      "Translation in local Z direction");
+                      "Translation in local Z-direction");
     ADD_PROPERTY_TYPE(hasZFormula,
                       (false),
                       "ConstraintDisplacement",
                       App::Prop_None,
-                      "Define translation in Z direction as a formula");
+                      "Define translation in Z-direction as a formula");
     ADD_PROPERTY_TYPE(zDisplacementFormula,
                       (""),
                       "ConstraintDisplacement",
                       App::Prop_None,
-                      "Formula for translation in Z direction");
+                      "Formula for translation in Z-direction");
 
     // flow surface force
     ADD_PROPERTY_TYPE(useFlowSurfaceForce,
@@ -118,36 +118,36 @@ ConstraintDisplacement::ConstraintDisplacement()
                       (true),
                       "ConstraintDisplacement",
                       App::Prop_None,
-                      "Use free rotation in X direction");
+                      "Use free rotation in X-direction");
     ADD_PROPERTY_TYPE(xRotation,
                       (0.0),
                       "ConstraintDisplacement",
                       App::Prop_None,
-                      "Rotation in local X direction");
+                      "Rotation in local X-direction");
 
     // y rotation
     ADD_PROPERTY_TYPE(rotyFree,
                       (true),
                       "ConstraintDisplacement",
                       App::Prop_None,
-                      "Use free rotation in Y direction");
+                      "Use free rotation in Y-direction");
     ADD_PROPERTY_TYPE(yRotation,
                       (0.0),
                       "ConstraintDisplacement",
                       App::Prop_None,
-                      "Rotation in local Y direction");
+                      "Rotation in local Y-direction");
 
     // z rotation
     ADD_PROPERTY_TYPE(rotzFree,
                       (true),
                       "ConstraintDisplacement",
                       App::Prop_None,
-                      "Use free rotation in Z direction");
+                      "Use free rotation in Z-direction");
     ADD_PROPERTY_TYPE(zRotation,
                       (0.0),
                       "ConstraintDisplacement",
                       App::Prop_None,
-                      "Rotation in local Z direction");
+                      "Rotation in local Z-direction");
     ADD_PROPERTY_TYPE(EnableAmplitude,
                       (false),
                       "ConstraintDisplacement",

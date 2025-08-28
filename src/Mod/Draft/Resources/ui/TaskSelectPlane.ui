@@ -211,7 +211,7 @@ will be moved to the center of the view.</string>
      <item row="3" column="0">
       <widget class="QLabel" name="label_8">
        <property name="toolTip">
-        <string>The number of squares in the X and Y direction of the grid</string>
+        <string>The number of squares in the X- and Y-direction of the grid</string>
        </property>
        <property name="text">
         <string>Grid size</string>
@@ -221,7 +221,7 @@ will be moved to the center of the view.</string>
      <item row="3" column="1">
       <widget class="QSpinBox" name="fieldGridExtension">
        <property name="toolTip">
-        <string>The number of squares in the X and Y direction of the grid</string>
+        <string>The number of squares in the X- and Y-direction of the grid</string>
        </property>
        <property name="suffix">
         <string> squares</string>

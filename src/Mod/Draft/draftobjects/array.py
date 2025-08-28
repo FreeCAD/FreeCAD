@@ -164,7 +164,7 @@ class Array(DraftLink):
 
         if "NumberX" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Number of copies in X direction")
+                                     "Number of copies in X-direction")
             obj.addProperty("App::PropertyInteger",
                             "NumberX",
                             "Orthogonal array",
@@ -174,7 +174,7 @@ class Array(DraftLink):
 
         if "NumberY" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Number of copies in Y direction")
+                                     "Number of copies in Y-direction")
             obj.addProperty("App::PropertyInteger",
                             "NumberY",
                             "Orthogonal array",
@@ -184,7 +184,7 @@ class Array(DraftLink):
 
         if "NumberZ" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Number of copies in Z direction")
+                                     "Number of copies in Z-direction")
             obj.addProperty("App::PropertyInteger",
                             "NumberZ",
                             "Orthogonal array",
@@ -195,7 +195,7 @@ class Array(DraftLink):
         if "IntervalX" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Distance and orientation "
-                                     "of intervals in X direction")
+                                     "of intervals in X-direction")
             obj.addProperty("App::PropertyVectorDistance",
                             "IntervalX",
                             "Orthogonal array",
@@ -206,7 +206,7 @@ class Array(DraftLink):
         if "IntervalY" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Distance and orientation "
-                                     "of intervals in Y direction")
+                                     "of intervals in Y-direction")
             obj.addProperty("App::PropertyVectorDistance",
                             "IntervalY",
                             "Orthogonal array",
@@ -217,7 +217,7 @@ class Array(DraftLink):
         if "IntervalZ" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Distance and orientation "
-                                     "of intervals in Z direction")
+                                     "of intervals in Z-direction")
             obj.addProperty("App::PropertyVectorDistance",
                             "IntervalZ",
                             "Orthogonal array",

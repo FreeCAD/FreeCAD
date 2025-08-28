@@ -133,7 +133,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>In x-direction</string>
+         <string>In X-direction</string>
         </property>
         <property name="buddy">
          <cstring>labelOffset</cstring>
@@ -168,7 +168,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>In y-direction</string>
+         <string>In Y-direction</string>
         </property>
        </widget>
       </item>
@@ -200,7 +200,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>In z-direction</string>
+         <string>In Z-direction</string>
         </property>
        </widget>
       </item>
