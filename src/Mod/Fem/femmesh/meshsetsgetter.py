@@ -474,16 +474,15 @@ class MeshSetsGetter:
 
         for femobj in self.member.cons_tie:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
-            print_obj_info(femobj["Object"])
-            slave_faces, master_faces = meshtools.get_tie_obj_faces(
-                self.femmesh, self.femelement_table, self.femnodes_ele_table, femobj
-            )
-            # [ele_id, ele_face_id], [ele_id, ele_face_id], ...]
-            # whereas the ele_face_id might be ccx specific
-            femobj["TieSlaveFaces"] = slave_faces
-            femobj["TieMasterFaces"] = master_faces
-            # FreeCAD.Console.PrintLog("{}\n".format(femobj["ContactSlaveFaces"]))
-            # FreeCAD.Console.PrintLog("{}\n".format(femobj["ContactMasterFaces"]))
+            obj = femobj["Object"]
+            print_obj_info(obj)
+            result = []
+            ref_data = meshtools.pair_obj_reference(obj.References)
+            for ref_pair in ref_data:
+                result.append(meshtools.get_ccx_elements(self, ref_pair))
+
+            femobj["TieSlaveFaces"] = result[:-1]
+            femobj["TieMasterFaces"] = result[-1:]
 
     def get_constraints_sectionprint_faces(self):
         if not self.member.cons_sectionprint:
