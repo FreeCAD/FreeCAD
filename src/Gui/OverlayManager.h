@@ -78,6 +78,7 @@ public:
 
     /// Setup title bar for a QDockWidget
     void setupTitleBar(QDockWidget *);
+    QList<QAction*> actionsForDock(QDockWidget *dock) const;
 
     /// Overlay mode
     enum class OverlayMode {

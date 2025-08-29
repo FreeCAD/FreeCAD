@@ -73,6 +73,9 @@ using namespace Gui;
 
 static std::array<OverlayTabWidget*, 4> _Overlays;
 
+// Forward-declare free helper so member functions and lambdas can call it.
+QWidget *createTitleBar(QWidget *parent);
+
 static inline OverlayTabWidget *findTabWidget(QWidget *widget=nullptr, bool filterDialog=false)
 {
     if(!widget)
@@ -89,6 +92,7 @@ static inline OverlayTabWidget *findTabWidget(QWidget *widget=nullptr, bool filt
     }
     return nullptr;
 }
+
 
 class OverlayStyleSheet: public ParameterGrp::ObserverType {
 public:
@@ -908,53 +912,12 @@ public:
 
     void setupTitleBar(QDockWidget *dock)
     {
+        // Only set our custom overlay titlebar for docked widgets.
+        // Floating QDockWidget should use the native OS titlebar.
+        if (dock->isFloating())
+            return;
         if(!dock->titleBarWidget())
             dock->setTitleBarWidget(createTitleBar(dock));
-    }
-
-    QWidget *createTitleBar(QWidget *parent)
-    {
-        OverlayTitleBar *widget = new OverlayTitleBar(parent);
-        widget->setObjectName(QStringLiteral("OverlayTitle"));
-
-        // Find the QDockWidget ancestor
-        QDockWidget* dockWidget = nullptr;
-        QWidget* w = parent;
-        while (w && !dockWidget)
-            dockWidget = qobject_cast<QDockWidget*>(w), w = w->parentWidget();
-
-        if (dockWidget) {
-            if (dockWidget->isFloating()) {
-                widget->deleteLater();
-                return nullptr;
-            }
-            QObject::connect(dockWidget, &QDockWidget::topLevelChanged, widget, [dockWidget, widget](bool floating) {
-                if (floating) {
-                    dockWidget->setTitleBarWidget(nullptr);
-                } else {
-                    dockWidget->setTitleBarWidget(widget);
-                }
-            });
-        }
-
-        QList<QAction*> actions;
-        if (auto tabWidget = qobject_cast<OverlayTabWidget*>(parent))
-            actions = tabWidget->actions();
-        else if (auto dock = qobject_cast<QDockWidget*>(parent))
-        {
-            const QDockWidget::DockWidgetFeatures features = dock->features();
-
-            actions.append(&_actOverlay);
-            if (features.testFlag(QDockWidget::DockWidgetFloatable))
-                actions.append(&_actFloat);
-            if (features.testFlag(QDockWidget::DockWidgetClosable))
-                actions.append(&_actClose);
-        }
-        else
-            actions = _actions;
-
-        widget->setTitleItem(OverlayTabWidget::prepareTitleWidget(widget, actions));
-        return widget;
     }
 
     void onAction(QAction *action) {
@@ -976,9 +939,13 @@ public:
                         _overlayMap.erase(it);
                         dock->show();
                         dock->setFloating(true);
+                        if (auto tb = qobject_cast<OverlayTitleBar*>(dock->titleBarWidget()))
+                            tb->setMinimal(true);
                         refresh();
                     } else
                         dock->setFloating(!dock->isFloating());
+                        if (auto tb = qobject_cast<OverlayTitleBar*>(dock->titleBarWidget()))
+                            tb->setMinimal(dock->isFloating());
                 }
                 return;
             }
@@ -1008,6 +975,8 @@ public:
             _overlayMap.erase(it);
         }
         dock->setFloating(true);
+        if (auto tb = qobject_cast<OverlayTitleBar*>(dock->titleBarWidget()))
+            tb->setMinimal(true);
         dock->show();
     }
 
@@ -1234,18 +1203,22 @@ public:
                     }
                     setFocusView();
                     dock->setFloating(true);
+                    if (auto tb = qobject_cast<OverlayTitleBar*>(dock->titleBarWidget()))
+                        tb->setMinimal(true);
                     dock->move(pos - dragOffset);
                     dock->show();
                 }
-                if (OverlayTabWidget::_DragFloating)
+                if (OverlayTabWidget::_DragFloating) {
                     OverlayTabWidget::_DragFloating->hide();
+                    OverlayTabWidget::_DragFloating->deleteLater();
+                    OverlayTabWidget::_DragFloating = nullptr;
+                }
             } else if (!dock->isFloating()) {
                 if (!OverlayTabWidget::_DragFloating) {
-                    OverlayTabWidget::_DragFloating = new QDockWidget(getMainWindow());
-                    OverlayTabWidget::_DragFloating->setFloating(true);
+                    OverlayTabWidget::_DragFloating = new OverlayDragFrame(getMainWindow());
+                    OverlayTabWidget::_DragFloating->setAttribute(Qt::WA_TranslucentBackground, true);
                 }
                 OverlayTabWidget::_DragFloating->resize(dock->size());
-                OverlayTabWidget::_DragFloating->setWindowTitle(dock->windowTitle());
                 OverlayTabWidget::_DragFloating->show();
                 OverlayTabWidget::_DragFloating->move(pos - dragOffset);
             }
@@ -1256,8 +1229,11 @@ public:
         } else if (!drop && OverlayTabWidget::_DragFrame && !OverlayTabWidget::_DragFrame->isVisible()) {
             OverlayTabWidget::_DragFrame->raise();
             OverlayTabWidget::_DragFrame->show();
-            if (OverlayTabWidget::_DragFloating)
+            if (OverlayTabWidget::_DragFloating) {
                 OverlayTabWidget::_DragFloating->hide();
+                OverlayTabWidget::_DragFloating->deleteLater();
+                OverlayTabWidget::_DragFloating = nullptr;
+            }
         }
 
         int insertDock = 0; // 0: tabify, -1: insert before, 1: insert after
@@ -1483,6 +1459,20 @@ void OverlayManager::setOverlayMode(OverlayMode mode)
     d->setOverlayMode(mode);
 }
 
+QList<QAction*> OverlayManager::actionsForDock(QDockWidget *dock) const
+{
+    QList<QAction*> actions;
+    if (!dock)
+        return actions;
+    const QDockWidget::DockWidgetFeatures features = dock->features();
+    actions.append(&d->_actOverlay);
+    if (features.testFlag(QDockWidget::DockWidgetFloatable))
+        actions.append(&d->_actFloat);
+    if (features.testFlag(QDockWidget::DockWidgetClosable))
+        actions.append(&d->_actClose);
+    return actions;
+}
+
 
 void OverlayManager::initDockWidget(QDockWidget *dw)
 {
@@ -1492,6 +1482,50 @@ void OverlayManager::initDockWidget(QDockWidget *dw)
             this, &OverlayManager::onDockVisibleChange);
     QObject::connect(dw, &QDockWidget::featuresChanged,
             this, &OverlayManager::onDockFeaturesChange);
+    // Ensure titlebar is created/updated when the dock becomes floating or docked.
+    // For floating docks we install our custom minimal OverlayTitleBar and make
+    // the window frameless so the OS titlebar is not shown. When docked we
+    // restore the regular overlay titlebar via setupTitleBar.
+    QObject::connect(dw, &QDockWidget::topLevelChanged, this, [this, dw](bool floating){
+        if (floating) {
+            // Replace any existing titlebar with our custom overlay titlebar
+            if (dw->titleBarWidget()) {
+                dw->titleBarWidget()->deleteLater();
+            }
+            QWidget *tb = ::createTitleBar(dw);
+            dw->setTitleBarWidget(tb);
+            if (auto ot = qobject_cast<OverlayTitleBar*>(tb))
+                ot->setMinimal(true);
+
+            // Make the floating dock frameless and translucent so our custom
+            // titlebar is visible instead of the OS frame.
+            dw->setWindowFlags(dw->windowFlags() | Qt::FramelessWindowHint);
+            dw->setAttribute(Qt::WA_TranslucentBackground, true);
+            dw->show();
+        } else {
+            // Remove frameless flag and restore overlay titlebar for docked state
+            dw->setWindowFlags(dw->windowFlags() & ~Qt::FramelessWindowHint);
+            dw->setAttribute(Qt::WA_TranslucentBackground, false);
+            setupTitleBar(dw);
+            dw->show();
+        }
+    });
+
+    // Ensure initial state matches current floating status.
+    if (dw->isFloating()) {
+        // Install custom minimal titlebar for already-floating docks
+        if (dw->titleBarWidget())
+            dw->titleBarWidget()->deleteLater();
+    QWidget *tb = ::createTitleBar(dw);
+        dw->setTitleBarWidget(tb);
+        if (auto ot = qobject_cast<OverlayTitleBar*>(tb))
+            ot->setMinimal(true);
+        dw->setWindowFlags(dw->windowFlags() | Qt::FramelessWindowHint);
+        dw->setAttribute(Qt::WA_TranslucentBackground, true);
+        dw->show();
+    } else {
+        setupTitleBar(dw);
+    }
     if (auto widget = dw->widget()) {
         QObject::connect(widget, &QWidget::windowTitleChanged,
                 this, &OverlayManager::onDockWidgetTitleChange);
@@ -1511,6 +1545,41 @@ void OverlayManager::initDockWidget(QDockWidget *dw)
             d->refresh();
         }
     }
+}
+
+// Global helper that creates an OverlayTitleBar for a given parent.
+// This is a free function (not a member of OverlayManager::Private)
+// so it can be referenced from multiple translation units without
+// requiring access to the Private type. It uses the public
+// OverlayManager::actionsForDock helper to obtain appropriate actions
+// for a dock widget parent.
+QWidget *createTitleBar(QWidget *parent)
+{
+    OverlayTitleBar *widget = new OverlayTitleBar(parent);
+    widget->setObjectName(QStringLiteral("OverlayTitle"));
+
+    // Find the QDockWidget ancestor
+    QDockWidget* dockWidget = nullptr;
+    QWidget* w = parent;
+    while (w && !dockWidget)
+        dockWidget = qobject_cast<QDockWidget*>(w), w = w->parentWidget();
+
+    // Do not connect to the dock's topLevelChanged here. Titlebar
+    // creation/removal for floating vs docked is handled in
+    // OverlayManager::initDockWidget so floating windows will keep
+    // the native OS titlebar when desired.
+    Q_UNUSED(dockWidget);
+
+    QList<QAction*> actions;
+    if (auto tabWidget = qobject_cast<OverlayTabWidget*>(parent))
+        actions = tabWidget->actions();
+    else if (auto dock = qobject_cast<QDockWidget*>(parent))
+        actions = OverlayManager::instance()->actionsForDock(dock);
+    else
+        actions = OverlayManager::instance()->actionsForDock(nullptr);
+
+    widget->setTitleItem(OverlayTabWidget::prepareTitleWidget(widget, actions));
+    return widget;
 }
 
 void OverlayManager::setupDockWidget(QDockWidget *dw, int dockArea)
@@ -1551,13 +1620,38 @@ void OverlayManager::onDockFeaturesChange(QDockWidget::DockWidgetFeatures featur
         return;
     }
 
-    // Rebuild the title widget as it may have a different set of buttons shown.
+    // Rebuild the title widget contents in-place to avoid destroying the
+    // widget (which causes layout relayout and visible movement).
     if (auto *titleBarWidget = qobject_cast<OverlayTitleBar*>(dw->titleBarWidget())) {
-        dw->setTitleBarWidget(nullptr);
-        delete titleBarWidget;
+        dw->setUpdatesEnabled(false);
+        // Clear old layout and child widgets
+        if (auto oldLayout = titleBarWidget->layout()) {
+            QLayoutItem *it;
+            while ((it = oldLayout->takeAt(0)) != nullptr) {
+                if (auto w = it->widget()) {
+                    w->setParent(nullptr);
+                    w->deleteLater();
+                }
+                delete it;
+            }
+            delete oldLayout;
+        }
+        // Recompute actions same as in createTitleBar for dock parents
+        QList<QAction*> actions;
+        const QDockWidget::DockWidgetFeatures features = dw->features();
+        actions.append(&d->_actOverlay);
+        if (features.testFlag(QDockWidget::DockWidgetFloatable))
+            actions.append(&d->_actFloat);
+        if (features.testFlag(QDockWidget::DockWidgetClosable))
+            actions.append(&d->_actClose);
+        // Build new contents on the existing title bar widget
+        QLayoutItem *titleItem = OverlayTabWidget::prepareTitleWidget(titleBarWidget, actions);
+        titleBarWidget->setTitleItem(titleItem);
+        dw->setUpdatesEnabled(true);
+        titleBarWidget->update();
+    } else {
+        setupTitleBar(dw);
     }
-
-    setupTitleBar(dw);
 }
 
 void OverlayManager::onTaskViewUpdate()
