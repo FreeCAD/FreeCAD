@@ -259,7 +259,7 @@ private:
         TopoDS_Shape offsetShape = mkOffset.Shape();
 
         if (offsetShape.IsNull()) {
-            throw Base::CADKernelError("makeOffset2D: result of offsetting is null!");
+            return offsetShape;
         }
 
         // Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
@@ -344,6 +344,9 @@ private:
                        std::vector<int>& listOfOffsetGeoIds)
     {
         TopoDS_Shape offsetShape = makeOffsetShape();
+        if (offsetShape.IsNull()) {
+            return;
+        }
 
         TopExp_Explorer expl(offsetShape, TopAbs_EDGE);
         int geoIdToAdd = firstCurveCreated;
