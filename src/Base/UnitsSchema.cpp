@@ -21,6 +21,7 @@
  *                                                                      *
  ************************************************************************/
 
+#include <format>
 #include <iomanip>
 #include <sstream>
 #include <string>
@@ -113,7 +114,7 @@ UnitsSchema::toLocale(const Quantity& quant, const double factor, const std::str
         return s.empty() || s == "°" || s == "″" || s == "′" || s == "\"" || s == "'";
     };
 
-    return fmt::format("{}{}{}", valueString, notUnit(unitString) ? "" : " ", unitString);
+    return std::format("{}{}{}", valueString, notUnit(unitString) ? "" : " ", unitString);
 }
 
 bool UnitsSchema::isMultiUnitLength() const

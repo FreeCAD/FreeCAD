@@ -27,6 +27,7 @@
 #include <algorithm>
 #include <iostream>
 #include <memory>
+#include <format>
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
 #include <xercesc/framework/LocalFileInputSource.hpp>
@@ -51,7 +52,6 @@
 #endif
 
 #include <boost/algorithm/string.hpp>
-#include <fmt/printf.h>
 
 #include "Parameter.h"
 #include "Parameter.inl"
@@ -817,7 +817,7 @@ long ParameterGrp::GetInt(const char* Name, long lPreset) const
 
 void ParameterGrp::SetInt(const char* Name, long lValue)
 {
-    std::string buf = fmt::sprintf("%li", lValue);
+    std::string buf = std::to_string(lValue);
     _SetAttribute(ParamType::FCInt, Name, buf.c_str());
 }
 
@@ -890,7 +890,7 @@ unsigned long ParameterGrp::GetUnsigned(const char* Name, unsigned long lPreset)
 
 void ParameterGrp::SetUnsigned(const char* Name, unsigned long lValue)
 {
-    std::string buf = fmt::sprintf("%lu", lValue);
+    std::string buf = std::to_string(lValue);
     _SetAttribute(ParamType::FCUInt, Name, buf.c_str());
 }
 
@@ -967,7 +967,7 @@ double ParameterGrp::GetFloat(const char* Name, double dPreset) const
 void ParameterGrp::SetFloat(const char* Name, double dValue)
 {
     // use %.12f instead of %f to handle values < 1.0e-6
-    std::string buf = fmt::sprintf("%.12f", dValue);
+    std::string buf = std::format("{:.12f}", dValue);
     _SetAttribute(ParamType::FCFloat, Name, buf.c_str());
 }
 
