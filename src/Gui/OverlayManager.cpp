@@ -454,6 +454,25 @@ public:
             case ToggleMode::Toggle:
                 _overlayMap.erase(it);
                 o->tabWidget->removeWidget(dock);
+
+                // If the dock is docked after removal, try a quick undock+redock
+                // sequence to force the window system / Qt to recreate the
+                // titlebar/native decorations immediately.
+                if (dock && !dock->isFloating()) {
+                    FC_LOG("toggleOverlay: undock/redock to restore titlebar for '" << dock->objectName().toUtf8().constData() << "'");
+                    // temporarily make it floating then re-dock it
+                    dock->setFloating(true);
+                    dock->show();
+                    QApplication::processEvents();
+                    dock->setFloating(false);
+                    getMainWindow()->addDockWidget(o->dockArea, dock);
+                    dock->show();
+                    QApplication::processEvents();
+
+                    // Ensure our overlay titlebar is installed for the docked state.
+                    setupTitleBar(dock);
+                }
+
                 return false;
             default:
                 break;
@@ -691,6 +710,98 @@ public:
         _top.tabWidget->setRect(QRect(rectLeft.width()-ofs.width(),ofs.height(),tw,rect.height()));
     }
 
+    void onToggleDockWidget(QDockWidget *dock, int checked)
+    {
+        if(!dock)
+            return;
+
+        auto it = _overlayMap.find(dock);
+        if(it == _overlayMap.end())
+            return;
+
+        OverlayTabWidget *tabWidget = it->second->tabWidget;
+        int index = tabWidget->dockWidgetIndex(dock);
+        if(index < 0)
+            return;
+
+        auto sizes = tabWidget->getSplitter()->sizes();
+        while(index >= sizes.size())
+            sizes.append(0);
+
+        if (checked < -1)
+            checked = 0;
+        else if (checked == 3) {
+            checked = 1;
+            sizes[index] = 0; // force expand the tab in full
+        } else if (checked <= 1) {
+            if (sizes[index] != 0 && tabWidget->isHidden())
+                checked = 1;
+            else
+                checked = sizes[index] == 0 ? 1 : 0;
+        }
+        if(sizes[index]==0) {
+            if (!checked)
+                return;
+            tabWidget->setCurrent(dock);
+            tabWidget->onCurrentChanged(tabWidget->dockWidgetIndex(dock));
+        } else if (!checked) {
+            if (sizes[index] > 0 && sizes.size() > 1) {
+                int newtotal = 0;
+                auto newsizes = sizes;
+                newsizes[index] = 0;
+                for (int i=0; i<sizes.size(); ++i) {
+                    if (i != index) {
+                        auto d = tabWidget->dockWidget(i);
+                        auto it = tabWidget->_sizemap.find(d);
+                        if (it == tabWidget->_sizemap.end())
+                            newsizes[i] = 0;
+                        else {
+                            if (newtotal == 0)
+                                tabWidget->setCurrent(d);
+                            newsizes[i] = it->second;
+                            newtotal += it->second;
+                        }
+                    }
+                }
+                if (!newtotal) {
+                    int expand = 0;
+                    for (int i=0; i<sizes.size(); ++i) {
+                        if (i != index && sizes[i] > 0) {
+                            ++expand;
+                            break;
+                        }
+                    }
+                    if (expand) {
+                        int expansion = sizes[index];
+                        int step = expansion / expand;
+                        for (int i=0; i<sizes.size(); ++i) {
+                            if (i == index)
+                                newsizes[i] = 0;
+                            else if (--expand) {
+                                expansion -= step;
+                                newsizes[i] += step;
+                            } else {
+                                newsizes[i] += expansion;
+                                break;
+                            }
+                        }
+                    }
+                    newsizes[index] = 0;
+                }
+                tabWidget->splitter->setSizes(newsizes);
+                tabWidget->saveTabs();
+            }
+        }
+        for (int i=0; i<sizes.size(); ++i) {
+            if (sizes[i])
+                tabWidget->_sizemap[tabWidget->dockWidget(i)] = sizes[i];
+        }
+        if (checked)
+            tabWidget->setRevealTime(QTime::currentTime().addMSecs(
+                    OverlayParams::getDockOverlayRevealDelay()));
+        refresh();
+    }
+
     void setOverlayMode(OverlayMode mode)
     {
         switch(mode) {
@@ -771,28 +882,29 @@ public:
             break;
         }
 
-        ToggleMode m;
+        ToggleMode m = ToggleMode::Unset;
         QDockWidget *dock = nullptr;
-        for(auto w=qApp->widgetAt(QCursor::pos()); w; w=w->parentWidget()) {
+
+        for (auto w = qApp->widgetAt(QCursor::pos()); w; w = w->parentWidget()) {
             dock = qobject_cast<QDockWidget*>(w);
-            if(dock)
+            if (dock)
                 break;
             auto tabWidget = qobject_cast<OverlayTabWidget*>(w);
-            if(tabWidget) {
+            if (tabWidget) {
                 dock = tabWidget->currentDockWidget();
-                if(dock)
+                if (dock)
                     break;
             }
         }
-        if(!dock) {
-            for(auto w=qApp->focusWidget(); w; w=w->parentWidget()) {
+        if (!dock) {
+            for (auto w = qApp->focusWidget(); w; w = w->parentWidget()) {
                 dock = qobject_cast<QDockWidget*>(w);
-                if(dock)
+                if (dock)
                     break;
             }
         }
 
-        switch(mode) {
+        switch (mode) {
         case OverlayManager::OverlayMode::ToggleActive:
             m = ToggleMode::Toggle;
             break;
@@ -808,102 +920,11 @@ public:
         default:
             return;
         }
+
+        if (!dock)
+            return;
+
         toggleOverlay(dock, m);
-    }
-
-    void onToggleDockWidget(QDockWidget *dock, int checked)
-    {
-        if(!dock)
-            return;
-
-        auto it = _overlayMap.find(dock);
-        if(it == _overlayMap.end())
-            return;
-
-        OverlayTabWidget *tabWidget = it->second->tabWidget;
-        int index = tabWidget->dockWidgetIndex(dock);
-        if(index < 0)
-            return;
-        auto sizes = tabWidget->getSplitter()->sizes();
-        while(index >= sizes.size())
-            sizes.append(0);
-
-        if (checked < -1)
-            checked = 0;
-        else if (checked == 3) {
-            checked = 1;
-            sizes[index] = 0; // force expand the tab in full
-        } else if (checked <= 1) {
-            if (sizes[index] != 0 && tabWidget->isHidden())
-                checked = 1;
-            else {
-                // child widget inside splitter by right shouldn't been hidden, so
-                // we ignore the given toggle bit, but rely on its splitter size to
-                // decide.
-                checked = sizes[index] == 0 ? 1 : 0;
-            }
-        }
-        if(sizes[index]==0) {
-            if (!checked)
-                return;
-            tabWidget->setCurrent(dock);
-            tabWidget->onCurrentChanged(tabWidget->dockWidgetIndex(dock));
-        } else if (!checked) {
-            if (sizes[index] > 0 && sizes.size() > 1) {
-                int newtotal = 0;
-                auto newsizes = sizes;
-                newsizes[index] = 0;
-                for (int i=0; i<sizes.size(); ++i) {
-                    if (i != index) {
-                        auto d = tabWidget->dockWidget(i);
-                        auto it = tabWidget->_sizemap.find(d);
-                        if (it == tabWidget->_sizemap.end())
-                            newsizes[i] = 0;
-                        else {
-                            if (newtotal == 0)
-                                tabWidget->setCurrent(d);
-                            newsizes[i] = it->second;
-                            newtotal += it->second;
-                        }
-                    }
-                }
-                if (!newtotal) {
-                    int expand = 0;
-                    for (int i=0; i<sizes.size(); ++i) {
-                        if (i != index && sizes[i] > 0) {
-                            ++expand;
-                            break;
-                        }
-                    }
-                    if (expand) {
-                        int expansion = sizes[index];
-                        int step = expansion / expand;
-                        for (int i=0; i<sizes.size(); ++i) {
-                            if (i == index)
-                                newsizes[i] = 0;
-                            else if (--expand) {
-                                expansion -= step;
-                                newsizes[i] += step;
-                            } else {
-                                newsizes[i] += expansion;
-                                break;
-                            }
-                        }
-                    }
-                    newsizes[index] = 0;
-                }
-                tabWidget->splitter->setSizes(newsizes);
-                tabWidget->saveTabs();
-            }
-        }
-        for (int i=0; i<sizes.size(); ++i) {
-            if (sizes[i])
-                tabWidget->_sizemap[tabWidget->dockWidget(i)] = sizes[i];
-        }
-        if (checked)
-            tabWidget->setRevealTime(QTime::currentTime().addMSecs(
-                    OverlayParams::getDockOverlayRevealDelay()));
-        refresh();
     }
 
     void onFocusChanged(QWidget *, QWidget *) {
@@ -1506,26 +1527,38 @@ void OverlayManager::initDockWidget(QDockWidget *dw)
             // Remove frameless flag and restore overlay titlebar for docked state
             dw->setWindowFlags(dw->windowFlags() & ~Qt::FramelessWindowHint);
             dw->setAttribute(Qt::WA_TranslucentBackground, false);
-            setupTitleBar(dw);
+            // Replace any existing title bar with a fresh overlay titlebar to
+            // avoid cases where an invisible or stale widget prevents it from
+            // being shown after docking.
+            if (dw->titleBarWidget())
+                dw->titleBarWidget()->deleteLater();
+            QWidget *tb = ::createTitleBar(dw);
+            dw->setTitleBarWidget(tb);
             dw->show();
         }
     });
 
     // Ensure initial state matches current floating status.
-    if (dw->isFloating()) {
-        // Install custom minimal titlebar for already-floating docks
-        if (dw->titleBarWidget())
-            dw->titleBarWidget()->deleteLater();
-    QWidget *tb = ::createTitleBar(dw);
-        dw->setTitleBarWidget(tb);
-        if (auto ot = qobject_cast<OverlayTitleBar*>(tb))
-            ot->setMinimal(true);
-        dw->setWindowFlags(dw->windowFlags() | Qt::FramelessWindowHint);
-        dw->setAttribute(Qt::WA_TranslucentBackground, true);
-        dw->show();
-    } else {
-        setupTitleBar(dw);
-    }
+        if (dw->isFloating()) {
+            // Install custom minimal titlebar for already-floating docks
+            if (dw->titleBarWidget())
+                dw->titleBarWidget()->deleteLater();
+            QWidget *tb = ::createTitleBar(dw);
+            dw->setTitleBarWidget(tb);
+            if (auto ot = qobject_cast<OverlayTitleBar*>(tb))
+                ot->setMinimal(true);
+            dw->setWindowFlags(dw->windowFlags() | Qt::FramelessWindowHint);
+            dw->setAttribute(Qt::WA_TranslucentBackground, true);
+            dw->show();
+        } else {
+            // For docked state, always recreate the overlay titlebar to ensure
+            // the proper title widget is installed and visible.
+            if (dw->titleBarWidget())
+                dw->titleBarWidget()->deleteLater();
+            QWidget *tb = ::createTitleBar(dw);
+            dw->setTitleBarWidget(tb);
+            dw->show();
+        }
     if (auto widget = dw->widget()) {
         QObject::connect(widget, &QWidget::windowTitleChanged,
                 this, &OverlayManager::onDockWidgetTitleChange);
