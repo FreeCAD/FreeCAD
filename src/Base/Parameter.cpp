@@ -23,6 +23,7 @@
 
 
 #include <algorithm>
+#include <cstdio>
 #include <iostream>
 #include <memory>
 #include <xercesc/dom/DOM.hpp>
@@ -49,7 +50,6 @@
 #endif
 
 #include <boost/algorithm/string.hpp>
-#include <fmt/printf.h>
 
 #include "Parameter.h"
 #include "Parameter.inl"
@@ -815,7 +815,7 @@ long ParameterGrp::GetInt(const char* Name, long lPreset) const
 
 void ParameterGrp::SetInt(const char* Name, long lValue)
 {
-    std::string buf = fmt::sprintf("%li", lValue);
+    std::string buf = std::to_string(lValue);
     _SetAttribute(ParamType::FCInt, Name, buf.c_str());
 }
 
@@ -888,7 +888,7 @@ unsigned long ParameterGrp::GetUnsigned(const char* Name, unsigned long lPreset)
 
 void ParameterGrp::SetUnsigned(const char* Name, unsigned long lValue)
 {
-    std::string buf = fmt::sprintf("%lu", lValue);
+    std::string buf = std::to_string(lValue);
     _SetAttribute(ParamType::FCUInt, Name, buf.c_str());
 }
 
@@ -964,9 +964,10 @@ double ParameterGrp::GetFloat(const char* Name, double dPreset) const
 
 void ParameterGrp::SetFloat(const char* Name, double dValue)
 {
+    char buf[32];  // full precision is 24 characters and trailing zero, see IEEE 754-1985
     // use %.12f instead of %f to handle values < 1.0e-6
-    std::string buf = fmt::sprintf("%.12f", dValue);
-    _SetAttribute(ParamType::FCFloat, Name, buf.c_str());
+    std::snprintf(buf, sizeof(buf), "%.12f", dValue);
+    _SetAttribute(ParamType::FCFloat, Name, buf);
 }
 
 std::vector<double> ParameterGrp::GetFloats(const char* sFilter) const
