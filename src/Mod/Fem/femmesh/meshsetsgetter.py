@@ -442,16 +442,15 @@ class MeshSetsGetter:
 
         for femobj in self.member.cons_contact:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
-            print_obj_info(femobj["Object"])
-            contact_slave_faces, contact_master_faces = meshtools.get_contact_obj_faces(
-                self.femmesh, self.femelement_table, self.femnodes_ele_table, femobj
-            )
-            # [ele_id, ele_face_id], [ele_id, ele_face_id], ...]
-            # whereas the ele_face_id might be ccx specific
-            femobj["ContactSlaveFaces"] = contact_slave_faces
-            femobj["ContactMasterFaces"] = contact_master_faces
-            # FreeCAD.Console.PrintLog("{}\n".format(femobj["ContactSlaveFaces"]))
-            # FreeCAD.Console.PrintLog("{}\n".format(femobj["ContactMasterFaces"]))
+            obj = femobj["Object"]
+            print_obj_info(obj)
+            result = []
+            ref_data = meshtools.pair_obj_reference(obj.References)
+            for ref_pair in ref_data:
+                result.append(meshtools.get_ccx_elements(self, ref_pair))
+
+            femobj["ContactSlaveFaces"] = result[:-1]
+            femobj["ContactMasterFaces"] = result[-1:]
 
     # information in the regard of element faces constraints
     # forum post: https://forum.freecad.org/viewtopic.php?f=18&t=42783&p=370286#p366723
