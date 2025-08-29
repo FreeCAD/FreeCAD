@@ -449,6 +449,18 @@ private:
     bool mouseMovePending = false;
     bool ignoreMouse = false;
     bool m_minimal = false;
+    // Resize support for floating docks: track which edge is being resized
+    enum ResizeEdge {
+        ResizeNone = 0,
+        ResizeLeft = 1,
+        ResizeRight = 2,
+        ResizeTop = 4,
+        ResizeBottom = 8
+    };
+    int resizeEdge = ResizeNone;
+    bool resizing = false;
+    QRect resizeStartGeom;
+    QPoint resizeStartPos;
 };
 
 /// Size grip for title bar and split handler of OverlayTabWidget

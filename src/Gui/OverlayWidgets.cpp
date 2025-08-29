@@ -2164,6 +2164,59 @@ void OverlayTitleBar::mouseMoveEvent(QMouseEvent *me)
         OverlayTabWidget::_Dragging = this;
     }
 
+    // If currently resizing a floating dock, perform resize
+    if (resizing) {
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+        QPoint pos = me->globalPos();
+#else
+        QPoint pos = me->globalPosition().toPoint();
+#endif
+        QWidget *parent = parentWidget();
+        auto dock = qobject_cast<QDockWidget*>(parent);
+        if (!dock) return;
+        QRect g = resizeStartGeom;
+        int dx = pos.x() - resizeStartPos.x();
+        int dy = pos.y() - resizeStartPos.y();
+        if (resizeEdge & ResizeLeft) {
+            g.setLeft(g.left() + dx);
+        }
+        if (resizeEdge & ResizeRight) {
+            g.setRight(g.right() + dx);
+        }
+        if (resizeEdge & ResizeTop) {
+            g.setTop(g.top() + dy);
+        }
+        if (resizeEdge & ResizeBottom) {
+            g.setBottom(g.bottom() + dy);
+        }
+        dock->setGeometry(g);
+        return;
+    }
+
+    // If not dragging and not resizing, update cursor when hovering edges for floating docks
+    if (!(me->buttons() & Qt::LeftButton) && !resizing) {
+        QWidget *parent = parentWidget();
+        auto dock = qobject_cast<QDockWidget*>(parent);
+        if (dock && dock->isFloating()) {
+            const int margin = 6;
+            QPoint p = me->pos();
+            QRect r = rect();
+            bool left = p.x() <= r.left() + margin;
+            bool right = p.x() >= r.right() - margin;
+            bool top = p.y() <= r.top() + margin;
+            bool bottom = p.y() >= r.bottom() - margin;
+            if ((left || right) && (top || bottom)) {
+                setCursor(Qt::SizeAllCursor);
+            } else if (left || right) {
+                setCursor(Qt::SizeHorCursor);
+            } else if (top || bottom) {
+                setCursor(Qt::SizeVerCursor);
+            } else {
+                setCursor(Qt::OpenHandCursor);
+            }
+        }
+    }
+
     if (OverlayTabWidget::_Dragging != this)
         return;
 
@@ -2190,6 +2243,27 @@ void OverlayTitleBar::mousePressEvent(QMouseEvent *me)
     QWidget *parent = parentWidget();
     if (OverlayTabWidget::_Dragging || !parent || !getMainWindow() || me->button() != Qt::LeftButton)
         return;
+
+    // If mouse pressed near the titlebar edges on a floating dock, start resizing
+    auto dock = qobject_cast<QDockWidget*>(parent);
+    if (dock && dock->isFloating()) {
+        const int margin = 6; // pixels from edge to start resize
+        QPoint p = me->pos();
+        QRect r = rect();
+        resizeEdge = ResizeNone;
+        if (p.x() <= r.left() + margin) resizeEdge |= ResizeLeft;
+        else if (p.x() >= r.right() - margin) resizeEdge |= ResizeRight;
+        if (p.y() <= r.top() + margin) resizeEdge |= ResizeTop;
+        else if (p.y() >= r.bottom() - margin) resizeEdge |= ResizeBottom;
+        if (resizeEdge != ResizeNone) {
+            resizing = true;
+            resizeStartGeom = dock->geometry();
+            resizeStartPos = me->globalPos();
+            setCursor(Qt::SizeAllCursor);
+            me->accept();
+            return;
+        }
+    }
 
     dragSize = parent->size();
     OverlayTabWidget *tabWidget = qobject_cast<OverlayTabWidget*>(parent);
@@ -2231,6 +2305,14 @@ void OverlayTitleBar::mouseReleaseEvent(QMouseEvent *me)
 {
     if (ignoreMouse) {
         me->ignore();
+        return;
+    }
+    // Finish resizing if active
+    if (resizing) {
+        resizing = false;
+        resizeEdge = ResizeNone;
+        setCursor(Qt::OpenHandCursor);
+        me->accept();
         return;
     }
 
