@@ -120,6 +120,7 @@ class AssetPreferencesPage:
                 )
                 return False
         Path.Preferences.setAssetPath(asset_path)
+        Path.Preferences.setLastToolLibrary("")
         return True
 
     def loadSettings(self):
