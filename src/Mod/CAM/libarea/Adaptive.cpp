@@ -1744,17 +1744,15 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths& stockPaths,
     lastProgressTime = clock();
     stopProcessing = false;
 
-    if (helixRampDiameter < NTOL) {
-        helixRampDiameter = 0.75 * toolDiameter;
+    if (helixRampTargetDiameter < NTOL) {
+        helixRampTargetDiameter = toolDiameter;
     }
-    if (helixRampDiameter > toolDiameter) {
-        helixRampDiameter = toolDiameter;
-    }
-    if (helixRampDiameter < toolDiameter / 8) {
-        helixRampDiameter = toolDiameter / 8;
-    }
+    helixRampTargetDiameter = min(helixRampTargetDiameter, toolDiameter);
+    helixRampMinDiameter = max(helixRampMinDiameter, toolDiameter / 8);
+    helixRampTargetDiameter = max(helixRampTargetDiameter, helixRampMinDiameter);
 
-    helixRampRadiusScaled = long(helixRampDiameter * scaleFactor / 2);
+    helixRampMaxRadiusScaled = long(helixRampTargetDiameter * scaleFactor / 2);
+    helixRampMinRadiusScaled = long(helixRampMinDiameter * scaleFactor / 2);
     if (finishingProfile) {
         finishPassOffsetScaled = long(stepOverScaled / 10);
     }
@@ -1783,7 +1781,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths& stockPaths,
 #ifdef DEV_MODE
     cout << "optimalCutAreaPD:" << optimalCutAreaPD << " scaleFactor:" << scaleFactor
          << " toolRadiusScaled:" << toolRadiusScaled
-         << " helixRampRadiusScaled:" << helixRampRadiusScaled << endl;
+         << " helixRampMaxRadiusScaled:" << helixRampMaxRadiusScaled << endl;
 #endif
     //******************************
     // Convert input paths to clipper
@@ -1884,8 +1882,8 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths& stockPaths,
 
     if (opType == OperationType::otProfilingInside || opType == OperationType::otProfilingOutside) {
         double offset = opType == OperationType::otProfilingInside
-            ? -2 * (helixRampRadiusScaled + toolRadiusScaled) - RESOLUTION_FACTOR
-            : 2 * (helixRampRadiusScaled + toolRadiusScaled) + RESOLUTION_FACTOR;
+            ? -2 * (helixRampMaxRadiusScaled + toolRadiusScaled) - RESOLUTION_FACTOR
+            : 2 * (helixRampMaxRadiusScaled + toolRadiusScaled) + RESOLUTION_FACTOR;
         for (const auto& current : inputPaths) {
             int nesting = getPathNestingLevel(current, inputPaths);
             if (nesting % 2 != 0
@@ -1948,7 +1946,8 @@ bool Adaptive2d::FindEntryPoint(TPaths& progressPaths,
                                 ClearedArea& clearedArea /*output-initial cleared area by helix*/,
                                 IntPoint& entryPoint /*output*/,
                                 IntPoint& toolPos,
-                                DoublePoint& toolDir)
+                                DoublePoint& toolDir,
+                                long& helixRadiusScaled)
 {
     Paths incOffset;
     Paths lastValidOffset;
@@ -1988,13 +1987,12 @@ bool Adaptive2d::FindEntryPoint(TPaths& progressPaths,
             }
         }
         // check if helix fits
-        if (found) {
-            // make initial polygon cleared by helix ramp
+        const auto checkHelixFit = [&](long testHelixRadiusScaled) {
             clipof.Clear();
             Path p1;
             p1.push_back(entryPoint);
             clipof.AddPath(p1, JoinType::jtRound, EndType::etOpenRound);
-            clipof.Execute(clearedPaths, helixRampRadiusScaled + toolRadiusScaled);
+            clipof.Execute(clearedPaths, (double)(testHelixRadiusScaled + toolRadiusScaled));
             CleanPolygons(clearedPaths);
             // we got first cleared area - check if it is crossing boundary
             clip.Clear();
@@ -2002,11 +2000,32 @@ bool Adaptive2d::FindEntryPoint(TPaths& progressPaths,
             clip.AddPaths(boundPaths, PolyType::ptClip, true);
             Paths crossing;
             clip.Execute(ClipType::ctDifference, crossing);
-            if (!crossing.empty()) {
-                // helix does not fit to the cutting area
+
+            return crossing.empty();
+        };
+
+        if (found) {
+            // check that helix fits, and make initial polygon cleared by helix ramp
+            if (!checkHelixFit(helixRampMinRadiusScaled)) {
+                // min-size helix does not fit
                 found = false;
             }
             else {
+                // find the largest helix that fits
+                // minSize = largest known fit; maxSize = largest possible fit
+                long minSize = helixRampMinRadiusScaled;
+                long maxSize = helixRampMaxRadiusScaled;
+                while (minSize < maxSize) {
+                    long testSize = (minSize + maxSize + 1) / 2;  // always testSize > minSize
+                    if (checkHelixFit(testSize)) {
+                        minSize = testSize;
+                    }
+                    else {
+                        maxSize = testSize - 1;  // always maxSize >= minSize
+                    }
+                }
+                helixRadiusScaled = minSize;
+                checkHelixFit(helixRadiusScaled);  // set clearedPaths for final size
                 clearedArea.SetClearedPaths(clearedPaths);
             }
         }
@@ -2040,14 +2059,15 @@ bool Adaptive2d::FindEntryPoint(TPaths& progressPaths,
         hp << entryPoint;
         clipof.AddPath(hp, JoinType::jtRound, EndType::etOpenRound);
         Paths hps;
-        clipof.Execute(hps, helixRampRadiusScaled);
+        clipof.Execute(hps, helixRadiusScaled);
         AddPathsToProgress(progressPaths, hps);
 
-        toolPos = IntPoint(entryPoint.X, entryPoint.Y - helixRampRadiusScaled);
+        toolPos = IntPoint(entryPoint.X, entryPoint.Y - helixRadiusScaled);
         toolDir = DoublePoint(1.0, 0.0);
     }
     return found;
 }
+
 bool Adaptive2d::FindEntryPointOutside(
     TPaths& progressPaths,
     const Paths& toolBoundPaths,
@@ -2714,6 +2734,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
     ClipperOffset clipof;
 
     IntPoint entryPoint;
+    long helixRadiusScaled;
     TPaths progressPaths;
     progressPaths.reserve(10000);
 
@@ -2762,7 +2783,8 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                             cleared,
                             entryPoint,
                             toolPos,
-                            toolDir)) {
+                            toolDir,
+                            helixRadiusScaled)) {
             Perf_ProcessPolyNode.Stop();
             return;
         }
