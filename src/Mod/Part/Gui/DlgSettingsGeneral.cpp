@@ -67,6 +67,7 @@ void DlgSettingsGeneral::saveSettings()
     ui->comboDefaultProfileTypeForHole->onSave();
     ui->checkShowFinalPreview->onSave();
     ui->checkShowTransparentPreview->onSave();
+    ui->checkShowProfilePreview->onSave();
     ui->checkSwitchToTask->onSave();
 }
 
@@ -82,6 +83,7 @@ void DlgSettingsGeneral::loadSettings()
     ui->comboDefaultProfileTypeForHole->onRestore();
     ui->checkShowFinalPreview->onRestore();
     ui->checkShowTransparentPreview->onRestore();
+    ui->checkShowProfilePreview->onRestore();
     ui->checkSwitchToTask->onRestore();
 }
 
