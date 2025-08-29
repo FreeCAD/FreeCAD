@@ -406,7 +406,7 @@ private:
 
     void jointOffsetCurves(std::vector<int>& listOfOffsetGeoIds)
     {
-        if (listOfOffsetGeoIds.size() <= 0) {
+        if (listOfOffsetGeoIds.empty()) {
             return;
         }
         std::stringstream stream;
