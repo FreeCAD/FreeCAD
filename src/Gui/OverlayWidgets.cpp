@@ -2051,7 +2051,7 @@ void OverlayTitleBar::endDrag()
         if (OverlayTabWidget::_DragFrame)
             OverlayTabWidget::_DragFrame->hide();
         if (OverlayTabWidget::_DragFloating)
-            OverlayTabWidget::_DragFloating->hide();
+            OverlayTabWidget::_DragFrame->hide();
     }
 }
 
