@@ -40,8 +40,7 @@ using Base::UnitsSchema;
 using Base::UnitsSchemas;
 
 void UnitsApi::init()
-{
-}
+{}
 
 std::vector<std::string> UnitsApi::getDescriptions()
 {
