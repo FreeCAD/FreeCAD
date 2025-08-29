@@ -16,7 +16,7 @@ from Base.Metadata import export
     Constructor=True,
     Delete=True,
 )
-class PathSim(BaseClass):
+class PathSimPy(BaseClass):
     """
     FreeCAD python wrapper of PathSimulator
 

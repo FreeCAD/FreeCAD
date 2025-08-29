@@ -22,7 +22,7 @@ qt_add_resources(AssemblyResource_SRCS Resources/Assembly.qrc ${Assembly_TR_QRC}
 
 SOURCE_GROUP("Resources" FILES ${AssemblyResource_SRCS})
 
-generate_from_py(ViewProviderAssemblyPy)
+generate_from_py(ViewProviderAssembly)
 
 set(AssemblyGui_UIC_SRCS
     TaskAssemblyCreateBom.ui
@@ -34,7 +34,7 @@ set(AssemblyGui_UIC_SRCS
 )
 
 SET(Python_SRCS
-    ViewProviderAssemblyPy.pyi
+    ViewProviderAssembly.pyi
     ViewProviderAssemblyPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})

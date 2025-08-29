@@ -33,21 +33,21 @@ set(FemGui_LIBS
     PartGui
 )
 
-generate_from_py(ViewProviderFemConstraintPy)
-generate_from_py(ViewProviderFemMeshPy)
-generate_from_py(ViewProviderFemPostPipelinePy)
-generate_from_py(ViewProviderFemPostFilterPy)
+generate_from_py(ViewProviderFemConstraint)
+generate_from_py(ViewProviderFemMesh)
+generate_from_py(ViewProviderFemPostPipeline)
+generate_from_py(ViewProviderFemPostFilterPy) # TODO: FixMe
 
 SET(Python_SRCS
-    ViewProviderFemConstraintPy.pyi
+    ViewProviderFemConstraint.pyi
     ViewProviderFemConstraintPyImp.cpp
-    ViewProviderFemMeshPy.pyi
+    ViewProviderFemMesh.pyi
     ViewProviderFemMeshPyImp.cpp
 )
 if(BUILD_FEM_VTK)
     set(Python_SRCS
         ${Python_SRCS}
-        ViewProviderFemPostPipelinePy.pyi
+        ViewProviderFemPostPipeline.pyi
         ViewProviderFemPostPipelinePyImp.cpp
         ViewProviderFemPostFilterPy.pyi
         ViewProviderFemPostFilterPyImp.cpp

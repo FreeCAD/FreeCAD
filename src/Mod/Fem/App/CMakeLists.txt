@@ -49,12 +49,11 @@ else()
 endif()
 
 
-generate_from_xml(FemMeshPy)
-generate_from_py_(FemMeshPy)
+generate_from_py(FemMesh)
 
 
 SET(Python_SRCS
-    FemMeshPy.pyi
+    FemMesh.pyi
     FemMeshPyImp.cpp
     HypothesisPy.cpp
     HypothesisPy.h
@@ -64,19 +63,19 @@ SET(Python_SRCS
 if(BUILD_FEM_VTK)
     SET(Python_SRCS
         ${Python_SRCS}
-        FemPostObjectPy.pyi
+        FemPostObject.pyi
         FemPostObjectPyImp.cpp
-        FemPostPipelinePy.pyi
+        FemPostPipeline.pyi
         FemPostPipelinePyImp.cpp
-        FemPostFilterPy.pyi
+        FemPostFilter.pyi
         FemPostFilterPyImp.cpp
-        FemPostBranchFilterPy.pyi
+        FemPostBranchFilter.pyi
         FemPostBranchFilterPyImp.cpp
     )
-    generate_from_py(FemPostObjectPy)
-    generate_from_py(FemPostPipelinePy)
-    generate_from_py(FemPostFilterPy)
-    generate_from_py(FemPostBranchFilterPy)
+    generate_from_py(FemPostObject)
+    generate_from_py(FemPostPipeline)
+    generate_from_py(FemPostFilter)
+    generate_from_py(FemPostBranchFilter)
 
 endif(BUILD_FEM_VTK)
 SOURCE_GROUP("Python" FILES ${Python_SRCS})

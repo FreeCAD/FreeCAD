@@ -5,16 +5,10 @@ from Base.Metadata import export
 from Gui.ViewProviderGeometryObject import ViewProviderGeometryObject
 
 @export(
-    Father="ViewProviderGeometryObjectPy",
-    Name="ViewProviderFemMeshPy",
-    Twin="ViewProviderFemMesh",
-    TwinPointer="ViewProviderFemMesh",
     Include="Mod/Fem/Gui/ViewProviderFemMesh.h",
     Namespace="FemGui",
-    FatherInclude="Gui/ViewProviderGeometryObjectPy.h",
-    FatherNamespace="Gui",
 )
-class ViewProviderFemMeshPy(ViewProviderGeometryObject):
+class ViewProviderFemMesh(ViewProviderGeometryObject):
     """
     ViewProviderFemMesh class
     """

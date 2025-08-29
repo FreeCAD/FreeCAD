@@ -14,29 +14,29 @@ set(Assembly_LIBS
 	OndselSolver
 )
 
-generate_from_py(AssemblyObjectPy)
-generate_from_py(AssemblyLinkPy)
-generate_from_py(BomObjectPy)
-generate_from_py(BomGroupPy)
-generate_from_py(JointGroupPy)
-generate_from_py(ViewGroupPy)
-generate_from_py(SimulationGroupPy)
+generate_from_py(AssemblyObject)
+generate_from_py(AssemblyLink)
+generate_from_py(BomObject)
+generate_from_py(BomGroup)
+generate_from_py(JointGroup)
+generate_from_py(ViewGroup)
+generate_from_py(SimulationGroup)
 
 
 SET(Python_SRCS
-    AssemblyObjectPy.pyi
+    AssemblyObject.pyi
     AssemblyObjectPyImp.cpp
-    AssemblyLinkPy.pyi
+    AssemblyLink.pyi
     AssemblyLinkPyImp.cpp
-    BomObjectPy.pyi
+    BomObject.pyi
     BomObjectPyImp.cpp
-    BomGroupPy.pyi
+    BomGroup.pyi
     BomGroupPyImp.cpp
-    JointGroupPy.pyi
+    JointGroup.pyi
     JointGroupPyImp.cpp
-    ViewGroupPy.pyi
+    ViewGroup.pyi
     ViewGroupPyImp.cpp
-    SimulationGroupPy.pyi
+    SimulationGroup.pyi
     SimulationGroupPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
