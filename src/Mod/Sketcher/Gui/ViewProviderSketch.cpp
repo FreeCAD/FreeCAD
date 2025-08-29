@@ -42,8 +42,7 @@
 #include <QWindow>
 
 #include <limits>
-
-#include <fmt/format.h>
+#include <format>
 
 #include <Base/Console.h>
 #include <Base/ServiceProvider.h>
@@ -2855,15 +2854,15 @@ bool ViewProviderSketch::selectAll()
 
         auto selectVertex = [this, &addConvertedName](int geoId, Sketcher::PointPos pos) {
             int vertexId = this->getSketchObject()->getVertexIndexGeoPos(geoId, pos);
-            addConvertedName(fmt::format("Vertex{}", vertexId + 1));
+            addConvertedName(std::format("Vertex{}", vertexId + 1));
         };
 
         auto selectEdge = [&addConvertedName](int GeoId) {
             if (GeoId >= 0) {
-                addConvertedName(fmt::format("Edge{}", GeoId + 1));
+                addConvertedName(std::format("Edge{}", GeoId + 1));
             }
             else {
-                addConvertedName(fmt::format("ExternalEdge{}", GeoEnum::RefExt - GeoId + 1));
+                addConvertedName(std::format("ExternalEdge{}", GeoEnum::RefExt - GeoId + 1));
             }
         };
 
@@ -2919,7 +2918,7 @@ bool ViewProviderSketch::selectAll()
             if (focusedList && std::ranges::find(ids, i) == ids.end()) {
                 continue;
             }
-            addConvertedName(fmt::format("Constraint{}", i + 1));
+            addConvertedName(std::format("Constraint{}", i + 1));
         }
     }
 

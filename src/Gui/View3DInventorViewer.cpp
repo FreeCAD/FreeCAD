@@ -35,7 +35,7 @@
 # include <GL/glu.h>
 #endif
 
-#include <fmt/format.h>
+#include <format>
 
 #include <Inventor/SbBox.h>
 #include <Inventor/SoEventManager.h>
@@ -2740,7 +2740,7 @@ void View3DInventorViewer::printDimension() const
         auto hStr = Base::UnitsApi::schemaTranslate(qHeight);
 
         // Create final string and update window
-        dim = fmt::format("{} x {}", wStr, hStr);
+        dim = std::format("{} x {}", wStr, hStr);
     }
 
     getMainWindow()->setPaneText(2, QString::fromStdString(dim));

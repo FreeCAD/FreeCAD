@@ -24,6 +24,7 @@
 
 #include <boost/algorithm/string/regex.hpp>
 #include <boost/format.hpp>
+#include <format>
 
 #include <Base/Exception.h>
 #include <Mod/Sketcher/App/Constraint.h>
@@ -223,7 +224,7 @@ std::string makeSplineInfoArrayString(const std::vector<T>& rInfoVec)
     // remove last comma and add brackets
     int index = res.rfind(',');
     res.resize(index);
-    return fmt::format("[{}]", res);
+    return std::format("[{}]", res);
     ;
 }
 

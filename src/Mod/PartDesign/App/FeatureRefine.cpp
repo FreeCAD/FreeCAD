@@ -91,7 +91,7 @@ TopoShape FeatureRefine::refineShapeIfActive(
     }
     catch (Standard_Failure& err) {
         if (onError == RefineErrorPolicy::Warn) {
-            Base::Console().warning(fmt::format("Refine failed: {}", err.GetMessageString()).c_str());
+            Base::Console().warning(std::format("Refine failed: {}", err.GetMessageString()).c_str());
         }
         else {
             throw;

@@ -22,6 +22,9 @@
 
 #include <FCConfig.h>
 
+#include <format>
+#include <list>
+#include <ranges>
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoError.h>
@@ -44,9 +47,6 @@
 #include <QStyleFactory>
 
 #include <QLoggingCategory>
-#include <fmt/format.h>
-#include <list>
-#include <ranges>
 
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
@@ -394,7 +394,7 @@ void Application::initStyleParameterManager()
             return path;
         }
 
-        return fmt::format("qss:parameters/{}.yaml", hMainWindowGrp->GetASCII("Theme", "Classic"));
+        return std::format("qss:parameters/{}.yaml", hMainWindowGrp->GetASCII("Theme", "Classic"));
     };
 
     auto themeParametersSource = new StyleParameters::YamlParameterSource(
@@ -768,7 +768,7 @@ void Application::open(const char* FileName, const char* Module)
                 }
             }
             else {
-                std::string code = fmt::format(
+                std::string code = std::format(
                     "from freecad import module_io\n"
                     "module_io.OpenInsertObject(\"{}\", \"{}\", \"{}\")\n",
                     Module,
@@ -847,7 +847,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                     }
                 }
 
-                std::string code = fmt::format(
+                std::string code = std::format(
                     "from freecad import module_io\n"
                     "module_io.OpenInsertObject(\"{}\", \"{}\", \"{}\", \"{}\")\n",
                     Module,
