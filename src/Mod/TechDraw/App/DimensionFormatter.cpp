@@ -22,12 +22,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <format>
 # include <QLocale>
 # include <QRegularExpression>
 # include <QString>
 #endif
-
-#include <fmt/format.h>
 
 #include <Base/Console.h>
 #include <Base/UnitsApi.h>
@@ -277,7 +276,7 @@ QString DimensionFormatter::formatValueToSpec(const double value, QString format
     QString formattedValue;
 
     constexpr auto format = [](QString f, double value){
-        return QString::fromStdString(fmt::sprintf(f.toStdString(), value));
+        return QString::fromStdString(std::vformat(f.toStdString(), std::make_format_args(value)));
     };
 
     QRegularExpression wrRegExp(QStringLiteral("%(?<dec>.*)(?<spec>[wWrR])"));

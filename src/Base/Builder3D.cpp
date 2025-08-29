@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 #include <algorithm>
+#include <format>
 #include <string>
 #include <string_view>
 #include <boost/algorithm/string.hpp>
@@ -1284,7 +1285,7 @@ BaseExport Vector3f stringToVector(std::string str)
 
 BaseExport std::string vectorToString(Vector3f vec)
 {
-    return fmt::format("({},{},{})", vec.x, vec.y, vec.z);
+    return std::format("({},{},{})", vec.x, vec.y, vec.z);
 }
 
 }  // namespace Base
