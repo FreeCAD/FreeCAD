@@ -29,7 +29,6 @@
 #include <App/Document.h>
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
-#include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -132,9 +131,9 @@ void DlgRegularSolidImp::onCreateSolidButtonClicked()
                     "App.ActiveDocument.{0}.Length={1}\n"
                     "App.ActiveDocument.{0}.Width={2}\n"
                     "App.ActiveDocument.{0}.Height={3}\n", name,
-                        Base::UnitsApi::toNumber(ui->boxLength->value()),
-                        Base::UnitsApi::toNumber(ui->boxWidth->value()),
-                        Base::UnitsApi::toNumber(ui->boxHeight->value()));
+                        ui->boxLength->value().toNumber(),
+                        ui->boxWidth->value().toNumber(),
+                        ui->boxHeight->value().toNumber());
                 break;
             case 1:
                 name = doc->getUniqueObjectName("Cylinder");
@@ -145,9 +144,9 @@ void DlgRegularSolidImp::onCreateSolidButtonClicked()
                     "App.ActiveDocument.{0}.EdgeLength={3}\n"
                     "App.ActiveDocument.{0}.Closed={4}\n"
                     "App.ActiveDocument.{0}.Sampling={5}\n", name,
-                        Base::UnitsApi::toNumber(ui->cylinderRadius->value()),
-                        Base::UnitsApi::toNumber(ui->cylinderLength->value()),
-                        Base::UnitsApi::toNumber(ui->cylinderEdgeLength->value()),
+                        ui->cylinderRadius->value().toNumber(),
+                        ui->cylinderLength->value().toNumber(),
+                        ui->cylinderEdgeLength->value().toNumber(),
                         ui->cylinderClosed->isChecked() ? "True" : "False",
                         ui->cylinderCount->value());
                 break;
@@ -161,10 +160,10 @@ void DlgRegularSolidImp::onCreateSolidButtonClicked()
                     "App.ActiveDocument.{0}.EdgeLength={4}\n"
                     "App.ActiveDocument.{0}.Closed={5}\n"
                     "App.ActiveDocument.{0}.Sampling={6}\n", name,
-                        Base::UnitsApi::toNumber(ui->coneRadius1->value()),
-                        Base::UnitsApi::toNumber(ui->coneRadius2->value()),
-                        Base::UnitsApi::toNumber(ui->coneLength->value()),
-                        Base::UnitsApi::toNumber(ui->coneEdgeLength->value()),
+                        ui->coneRadius1->value().toNumber(),
+                        ui->coneRadius2->value().toNumber(),
+                        ui->coneLength->value().toNumber(),
+                        ui->coneEdgeLength->value().toNumber(),
                         ui->coneClosed->isChecked() ? "True" : "False",
                         ui->coneCount->value());
                 break;
@@ -174,7 +173,7 @@ void DlgRegularSolidImp::onCreateSolidButtonClicked()
                     "App.ActiveDocument.addObject(\"Mesh::Sphere\",\"{0}\")\n"
                     "App.ActiveDocument.{0}.Radius={1}\n"
                     "App.ActiveDocument.{0}.Sampling={2}\n", name,
-                        Base::UnitsApi::toNumber(ui->sphereRadius->value()),
+                        ui->sphereRadius->value().toNumber(),
                         ui->sphereCount->value());
                 break;
             case 4:
@@ -184,8 +183,8 @@ void DlgRegularSolidImp::onCreateSolidButtonClicked()
                     "App.ActiveDocument.{0}.Radius1={1}\n"
                     "App.ActiveDocument.{0}.Radius2={2}\n"
                     "App.ActiveDocument.{0}.Sampling={3}\n", name,
-                        Base::UnitsApi::toNumber(ui->ellipsoidRadius1->value()),
-                        Base::UnitsApi::toNumber(ui->ellipsoidRadius2->value()),
+                        ui->ellipsoidRadius1->value().toNumber(),
+                        ui->ellipsoidRadius2->value().toNumber(),
                         ui->ellipsoidCount->value());
                 break;
             case 5:
@@ -195,8 +194,8 @@ void DlgRegularSolidImp::onCreateSolidButtonClicked()
                     "App.ActiveDocument.{0}.Radius1={1}\n"
                     "App.ActiveDocument.{0}.Radius2={2}\n"
                     "App.ActiveDocument.{0}.Sampling={3}\n", name,
-                        Base::UnitsApi::toNumber(ui->toroidRadius1->value()),
-                        Base::UnitsApi::toNumber(ui->toroidRadius2->value()),
+                        ui->toroidRadius1->value().toNumber(),
+                        ui->toroidRadius2->value().toNumber(),
                         ui->toroidCount->value());
                 break;
         }
