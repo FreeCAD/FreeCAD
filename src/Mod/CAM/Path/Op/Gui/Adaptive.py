@@ -46,9 +46,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def initPage(self, obj):
         self.form.LiftDistance.setProperty("unit", obj.LiftDistance.getUserPreferred()[2])
-        self.form.HelixDiameterLimit.setProperty(
-            "unit", obj.HelixDiameterLimit.getUserPreferred()[2]
-        )
         self.form.KeepToolDownRatio.setProperty("unit", obj.KeepToolDownRatio.getUserPreferred()[2])
         self.form.StockToLeave.setProperty("unit", obj.StockToLeave.getUserPreferred()[2])
 
@@ -62,7 +59,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.Tolerance.valueChanged)
         signals.append(self.form.HelixAngle.valueChanged)
         signals.append(self.form.HelixConeAngle.valueChanged)
-        signals.append(self.form.HelixDiameterLimit.valueChanged)
+        signals.append(self.form.HelixIdealDiameterPercent.valueChanged)
+        signals.append(self.form.HelixMinDiameterPercent.valueChanged)
         signals.append(self.form.LiftDistance.valueChanged)
         signals.append(self.form.KeepToolDownRatio.valueChanged)
         signals.append(self.form.StockToLeave.valueChanged)
@@ -92,7 +90,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             FreeCAD.Units.Quantity(obj.HelixConeAngle, FreeCAD.Units.Angle).UserString
         )
 
-        self.form.HelixDiameterLimit.setProperty("rawValue", obj.HelixDiameterLimit.Value)
+        self.form.HelixIdealDiameterPercent.setValue(obj.HelixIdealDiameterPercent)
+        self.form.HelixMinDiameterPercent.setValue(obj.HelixMinDiameterPercent)
 
         self.form.LiftDistance.setProperty("rawValue", obj.LiftDistance.Value)
 
@@ -124,10 +123,15 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.StepOver != self.form.stepOverPercent.value():
             obj.StepOver = self.form.stepOverPercent.value()
 
+        if obj.HelixIdealDiameterPercent != self.form.HelixIdealDiameterPercent.value():
+            obj.HelixIdealDiameterPercent = self.form.HelixIdealDiameterPercent.value()
+
+        if obj.HelixMinDiameterPercent != self.form.HelixMinDiameterPercent.value():
+            obj.HelixMinDiameterPercent = self.form.HelixMinDiameterPercent.value()
+
         obj.Tolerance = 1.0 * self.form.Tolerance.value() / 100.0
         PathGuiUtil.updateInputField(obj, "HelixAngle", self.form.HelixAngle)
         PathGuiUtil.updateInputField(obj, "HelixConeAngle", self.form.HelixConeAngle)
-        PathGuiUtil.updateInputField(obj, "HelixDiameterLimit", self.form.HelixDiameterLimit)
         PathGuiUtil.updateInputField(obj, "LiftDistance", self.form.LiftDistance)
 
         if hasattr(obj, "KeepToolDownRatio"):

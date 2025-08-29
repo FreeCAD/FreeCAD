@@ -699,6 +699,12 @@ def ExecuteModelAware(op, obj):
         FreeCADGui.updateGui()
 
     try:
+        obj.HelixMinDiameterPercent = max(obj.HelixMinDiameterPercent, 10)
+        obj.HelixIdealDiameterPercent = max(
+            obj.HelixIdealDiameterPercent, obj.HelixMinDiameterPercent
+        )
+        obj.StepOver = max(obj.StepOver, 1)
+
         helixDiameter = obj.HelixIdealDiameterPercent / 100 * op.tool.Diameter.Value
         helixMinDiameter = obj.HelixMinDiameterPercent / 100 * op.tool.Diameter.Value
         topZ = op.stock.Shape.BoundBox.ZMax
