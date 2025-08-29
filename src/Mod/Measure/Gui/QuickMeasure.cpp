@@ -228,9 +228,20 @@ void QuickMeasure::printResult()
                   .arg(areaStr(measurement->area()), lengthStr(measurement->diameter())));
     }
     else if (mtype == MeasureType::TwoCylinders) {
-        print(
-            tr("Total area: %1, Axis distance: %2")
-                .arg(areaStr(measurement->area()), lengthStr(measurement->cylinderAxisDistance())));
+
+        double angle = measurement->angle();
+
+        if (angle <= Precision::Confusion()) {
+            print(tr("Total area: %1, Axis distance: %2")
+                      .arg(areaStr(measurement->area()),
+                           lengthStr(measurement->cylinderAxisDistance())));
+        }
+        else {
+            print(tr("Total area: %1, Axis distance: %2, Axis angle: %3")
+                      .arg(areaStr(measurement->area()),
+                           lengthStr(measurement->cylinderAxisDistance()),
+                           angleStr(angle)));
+        }
     }
     else if (mtype == MeasureType::Edges) {
         print(tr("Total length: %1").arg(lengthStr(measurement->length())));
@@ -267,7 +278,21 @@ void QuickMeasure::printResult()
                   .arg(lengthStr(measurement->length()),
                        lengthStr(measurement->circleCenterDistance())));
     }
-    else if (mtype == MeasureType::TwoCircles || mtype == MeasureType::CircleToEdge) {
+    else if (mtype == MeasureType::TwoCircles) {
+        double angle = measurement->angle();
+        if (angle <= Precision::Confusion()) {
+            print(tr("Total length: %1, Center distance: %2")
+                      .arg(lengthStr(measurement->length()),
+                           lengthStr(measurement->circleCenterDistance())));
+        }
+        else {
+            print(tr("Total length: %1, Center distance: %2, Axis angle: %3")
+                      .arg(lengthStr(measurement->length()),
+                           lengthStr(measurement->circleCenterDistance()),
+                           angleStr(angle)));
+        }
+    }
+    else if (mtype == MeasureType::CircleToEdge) {
         print(tr("Total length: %1, Center distance: %2")
                   .arg(lengthStr(measurement->length()),
                        lengthStr(measurement->circleCenterDistance())));
@@ -277,9 +302,18 @@ void QuickMeasure::printResult()
             tr("Center surface distance: %1").arg(lengthStr(measurement->circleCenterDistance())));
     }
     else if (mtype == MeasureType::CircleToCylinder) {
-        print(tr("Minimum center distance: %1, Center axis distance: %2")
-                  .arg(lengthStr(measurement->circleCenterDistance()),
-                       lengthStr(measurement->cylinderAxisDistance())));
+        double angle = measurement->angle();
+        if (angle <= Precision::Confusion()) {
+            print(tr("Minimum center distance: %1, Center axis distance: %2")
+                      .arg(lengthStr(measurement->circleCenterDistance()),
+                           lengthStr(measurement->cylinderAxisDistance())));
+        }
+        else {
+            print(tr("Minimum center distance: %1, Center axis distance: %2, Axis angle: %3")
+                      .arg(lengthStr(measurement->circleCenterDistance()),
+                           lengthStr(measurement->cylinderAxisDistance()),
+                           angleStr(angle)));
+        }
     }
     else {
         print(QStringLiteral(""));

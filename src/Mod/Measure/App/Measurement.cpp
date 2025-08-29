@@ -705,6 +705,44 @@ double Measurement::angle(const Base::Vector3d& /*param*/) const
             return Base::toDegrees<double>(radians);
         }
     }
+    else if (measureType == MeasureType::TwoCylinders || measureType == MeasureType::TwoCircles
+             || measureType == MeasureType::CircleToCylinder) {
+        if (numRefs == 2) {
+            TopoDS_Shape shape1 = getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_EDGE);
+            TopoDS_Shape shape2 = getShape(objects.at(1), subElements.at(1).c_str(), TopAbs_EDGE);
+
+            gp_Ax1 axis1;
+            gp_Ax1 axis2;
+
+            if (measureType == MeasureType::TwoCylinders) {
+                BRepAdaptor_Surface surface1(TopoDS::Face(shape1));
+                BRepAdaptor_Surface surface2(TopoDS::Face(shape2));
+
+                axis1 = surface1.Cylinder().Axis();
+                axis2 = surface2.Cylinder().Axis();
+            }
+            else if (measureType == MeasureType::TwoCircles) {
+                BRepAdaptor_Curve curve1(TopoDS::Edge(shape1));
+                BRepAdaptor_Curve curve2(TopoDS::Edge(shape2));
+
+                axis1 = curve1.Circle().Axis();
+                axis2 = curve2.Circle().Axis();
+            }
+            else if (measureType == MeasureType::CircleToCylinder) {
+                if (shape1.ShapeType() == TopAbs_FACE) {
+                    std::swap(shape1, shape2);
+                }
+                BRepAdaptor_Curve curve1(TopoDS::Edge(shape1));
+                BRepAdaptor_Surface surface2(TopoDS::Face(shape2));
+
+                axis1 = curve1.Circle().Axis();
+                axis2 = surface2.Cylinder().Axis();
+            }
+            double aRad = axis1.Angle(axis2);
+            return Base::toDegrees<double>(
+                std::min(aRad, std::fmod(aRad + std::numbers::pi, 2.0 * std::numbers::pi)));
+        }
+    }
     throw Base::RuntimeError("Unexpected error for angle measurement");
 }
 
