@@ -40,9 +40,8 @@
 #include <QTextStream>
 
 #include <limits>
+#include <format>
 #endif
-
-#include <fmt/format.h>
 
 #include <Base/Console.h>
 #include <Base/ServiceProvider.h>
@@ -2762,15 +2761,15 @@ bool ViewProviderSketch::selectAll()
         auto selectVertex = [this](int &vertexId, int numberOfVertices) {
             for (int i = 0; i < numberOfVertices; i++) {
                 vertexId++;
-                addSelection2(fmt::format("Vertex{}", vertexId + 1));
+                addSelection2(std::format("Vertex{}", vertexId + 1));
             }
         };
 
         auto selectEdge = [this](int GeoId) {
             if (GeoId >= 0) {
-                addSelection2(fmt::format("Edge{}", GeoId + 1));
+                addSelection2(std::format("Edge{}", GeoId + 1));
             } else {
-                addSelection2(fmt::format("ExternalEdge{}", GeoEnum::RefExt - GeoId + 1));
+                addSelection2(std::format("ExternalEdge{}", GeoEnum::RefExt - GeoId + 1));
             }
         };
 
@@ -2815,7 +2814,7 @@ bool ViewProviderSketch::selectAll()
     if (focusOnConstraintWidget || noWidgetSelected) {
         const std::vector<Sketcher::Constraint*>& constraints = sketchObject->Constraints.getValues();
         for (size_t i = 0; i < constraints.size(); ++i) {
-            addSelection2(fmt::format("Constraint{}", i + 1));
+            addSelection2(std::format("Constraint{}", i + 1));
         }
     }
 
