@@ -43,10 +43,14 @@ public:
     /// destructor
     ~ViewProviderViewClip() override;
 
+    App::PropertyBool   ClipChildren;
+
     bool useNewSelectionModel() const override {return false;}
 
     TechDraw::DrawViewClip* getViewObject() const override;
     TechDraw::DrawViewClip* getObject() const;
+
+    void onChanged(const App::Property *prop) override;
 
     /// Hide the object in the view
     void hide() override;
