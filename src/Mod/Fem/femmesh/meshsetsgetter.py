@@ -553,13 +553,24 @@ class MeshSetsGetter:
         # get element ids and write them into the femobj
         if not self.member.cons_bodyheatsource:
             return
-        if (
-            len(self.member.cons_bodyheatsource) == 1
-            and not self.member.cons_bodyheatsource[0]["Object"].References
-        ):
-            self.member.cons_bodyheatsource[0]["FEMElements"] = self.ccx_evolumes
-        else:
-            self.get_solid_element_sets(self.member.cons_bodyheatsource)
+        if not self.femnodes_mesh:
+            self.femnodes_mesh = self.femmesh.Nodes
+        if not self.femelement_table:
+            self.femelement_table = meshtools.get_femelement_table(self.femmesh)
+        if not self.femnodes_ele_table:
+            self.femnodes_ele_table = meshtools.get_femnodes_ele_table(
+                self.femnodes_mesh, self.femelement_table
+            )
+
+        for femobj in self.member.cons_bodyheatsource:
+            obj = femobj["Object"]
+            print_obj_info(obj)
+            result = []
+            ref_data = meshtools.pair_obj_reference(obj.References)
+            for ref_pair in ref_data:
+                result.append(meshtools.get_ccx_elements(self, ref_pair))
+
+            femobj["BodyHeatSourceElements"] = result
 
     # ********************************************************************************************
     # ********************************************************************************************
