@@ -83,8 +83,9 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  libappstream-glib
 
 %if %{with tests}
-BuildRequires:  xorg-x11-server-Xvfb
 BuildRequires:  openscad
+BuildRequires:  xcb-util-cursor
+BuildRequires:  xorg-x11-server-Xvfb
 %endif
 
 Requires:       hicolor-icon-theme
@@ -97,9 +98,9 @@ Requires:       %{name}-data = %{epoch}:%{version}-%{release}
 
 Provides:       bundled(smesh) = 5.1.2.2
 
-# These are needed when intsalling, but should be linked as
+# These are needed when installing, but should be linked as
 # private libraries or if public, should have sonames
-#global __provides_exclude_from ^%{_libdir}/%{name}/%{_lib}/.*$
+#global __provides_exclude_from ^%%{_libdir}/%%{name}/%%{_lib}/.*$
 
 
 %description
