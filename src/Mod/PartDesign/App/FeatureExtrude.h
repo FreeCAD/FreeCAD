@@ -73,7 +73,7 @@ public:
     static const char* SideTypesEnums[];
 
 protected:
-    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop) override;
+    void onDocumentRestored() override;
     Base::Vector3d computeDirection(const Base::Vector3d& sketchVector, bool inverse);
     bool hasTaperedAngle() const;
 

@@ -768,8 +768,10 @@ void TaskExtrudeParameters::updateWholeUI(Type type, Side side)
     // Side 2 is only visible if in TwoSides mode, and we pass whether it should receive focus.
     updateSideUI(m_side2, type, mode2, isSide2GroupVisible, (side == Side::Second));
 
-    ui->checkBoxAlongDirection->setVisible(m_side1.lengthEdit->isVisible()
-                                           || m_side2.lengthEdit->isVisible());
+    bool side1HasLength = (mode1 == Mode::Dimension);
+    bool side2HasLength = (sidesMode == SidesMode::TwoSides && mode2 == Mode::Dimension);
+    ui->checkBoxAlongDirection->setVisible(side1HasLength || side2HasLength);
+  
     ui->checkBoxReversed->setEnabled(sidesMode != SidesMode::Symmetric || mode1 != Mode::Dimension);
 }
 
@@ -1362,4 +1364,5 @@ bool TaskDlgExtrudeParameters::reject()
 }
 
 #include "moc_TaskExtrudeParameters.cpp"
+
 
