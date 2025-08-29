@@ -56,23 +56,19 @@ using Base::Quantity;
 using Base::QuantityFormat;
 using Base::UnitsSchema;
 
-// ====== Static attributes =========================
-// NOLINTNEXTLINE
-int QuantityFormat::defaultDenominator = 8;  // for 1/8"
-
 
 QuantityFormat::QuantityFormat()
     : option(OmitGroupSeparator | RejectGroupSeparator)
     , format(Fixed)
+    , denominator(-1)
     , precision(-1)
-    , denominator(defaultDenominator)
 {}
 
 QuantityFormat::QuantityFormat(QuantityFormat::NumberFormat format, int decimals)
     : option(OmitGroupSeparator | RejectGroupSeparator)
     , format(format)
+    , denominator(-1)
     , precision(decimals)
-    , denominator(defaultDenominator)
 {}
 
 int QuantityFormat::getPrecision() const
@@ -80,9 +76,20 @@ int QuantityFormat::getPrecision() const
     return precision < 0 ? Base::UnitsApi::getDecimals() : precision;
 }
 
-void Base::QuantityFormat::setPrecision(int prec)
+void QuantityFormat::setPrecision(int prec)
 {
     precision = prec;
+}
+
+
+int QuantityFormat::getDenominator() const
+{
+    return denominator <= 0 ? Base::UnitsApi::getDenominator() : denominator;
+}
+
+void QuantityFormat::setDenominator(int denom)
+{
+    denominator = denom;
 }
 
 // ----------------------------------------------------------------------------

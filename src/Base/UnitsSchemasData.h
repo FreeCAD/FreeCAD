@@ -630,7 +630,8 @@ inline const UnitsSchemaSpec s9
 
 // clang-format on
 // NOLINTEND
-inline const std::vector schemaSpecs {s3, s4, s5, s6, s7, s8, s9, s0, s1, s2};
+inline static const std::vector<UnitsSchemaSpec>
+    schemaSpecs {s3, s4, s5, s6, s7, s8, s9, s0, s1, s2};
 
 /**
  * Special functions
@@ -639,127 +640,8 @@ inline const std::vector schemaSpecs {s3, s4, s5, s6, s7, s8, s9, s0, s1, s2};
  * Such functions must be included here and also registered in special functions caller (below)
  */
 
-/** utility function for toFractional */
-inline std::size_t greatestCommonDenominator(const std::size_t a, const std::size_t b)
-{
-    return b == 0 ? a : greatestCommonDenominator(b, a % b);  // Euclid's algorithm
-}
-
-/**
- * double -> [feet'] [inches" [+ fraction]"], e.g.: 3' 4" + 3/8"
- */
-inline std::string toFractional(const double value)
-{
-    constexpr auto inchPerFoot {12};
-    constexpr auto mmPerInch {25.4};
-
-
-    int denom = QuantityFormat::getDefaultDenominator();
-
-    auto numFractUnits = static_cast<std::size_t>(std::round(std::abs(value) / mmPerInch * denom));
-    if (numFractUnits == 0) {
-        return "0";
-    }
-
-    const auto feet = static_cast<std::size_t>(std::floor(numFractUnits / (inchPerFoot * denom)));
-    numFractUnits -= inchPerFoot * denom * feet;
-
-    const auto inches = static_cast<std::size_t>(std::floor(numFractUnits / denom));
-    const std::size_t fractNumerator = numFractUnits - (denom * inches);
-
-    const std::size_t common_denom = greatestCommonDenominator(fractNumerator, denom);
-    const std::size_t numerator = fractNumerator / common_denom;
-    const std::size_t denominator = denom / common_denom;
-
-    bool addSpace {false};
-    std::string result;
-
-    if (value < 0) {
-        result += "-";
-    }
-
-    if (feet > 0) {
-        result += fmt::format("{}'", feet);
-        addSpace = true;
-    }
-
-    if (inches > 0) {
-        result += fmt::format("{}{}\"", addSpace ? " " : "", inches);
-        addSpace = false;
-    }
-
-    if (numerator > 0) {
-        if (inches > 0) {
-            result += fmt::format(" {} ", value < 0 ? "-" : "+");
-            addSpace = false;
-        }
-        result += fmt::format("{}{}/{}\"", addSpace ? " " : "", numerator, denominator);
-    }
-
-    return result;
-}
-
-/**
- * double -> degrees°[minutes′[seconds″]]
- */
-inline std::string toDms(const double value)
-{
-    constexpr auto dmsRatio {60.0};
-
-    auto calc = [&](const double total) -> std::pair<int, double> {
-        const double whole = std::floor(total);
-        return {static_cast<int>(whole), dmsRatio * (total - whole)};
-    };
-
-    auto [degrees, totalMinutes] = calc(value);
-    std::string out = fmt::format("{}°", degrees);
-
-    if (totalMinutes > 0) {
-        auto [minutes, totalSeconds] = calc(totalMinutes);
-        out += fmt::format("{}′", minutes);
-
-        if (totalSeconds > 0) {
-            out += fmt::format("{}″", std::round(totalSeconds));
-        }
-    }
-
-    return out;
-}
-
-
-/**
- * Special functions caller
- */
-
-// clang-format off
-inline const std::map<std::string, std::function<std::string(double, double&, std::string&)>> specials
-{
-    {
-        { "toDMS"        , [](const double val, double& factor, std::string& unitString) {
-            factor = 1.0;
-            unitString = "deg";
-            return toDms(val);
-        }},
-        { "toFractional" , [](const double val, double& factor, std::string& unitString) {
-            factor = 25.4;
-            unitString = "in";
-            return toFractional(val);
-        }}
-    }
-};  // clang-format on
-
-inline std::string
-runSpecial(const std::string& name, const double value, double& factor, std::string& unitString)
-{
-    return specials.contains(name) ? specials.at(name)(value, factor, unitString) : "";
-}
-
-
-/**
- * Build data pack
- */
-inline const std::vector<UnitsSchemaSpec> specs = schemaSpecs;
-
+std::string
+runSpecial(const std::string& name, const double value, double& factor, std::string& unitString);
 
 }  // namespace Base::UnitsSchemasData
 #endif  // BASE_UNITSSCHEMASDATA_H

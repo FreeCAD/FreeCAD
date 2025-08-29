@@ -671,7 +671,7 @@ Py::Dict QuantityPy::getFormat() const
     Py::Dict dict;
     dict.setItem("Precision", Py::Long(fmt.getPrecision()));
     dict.setItem("NumberFormat", Py::Char(fmt.toFormat()));
-    dict.setItem("Denominator", Py::Long(fmt.denominator));
+    dict.setItem("Denominator", Py::Long(fmt.getDenominator()));
     return dict;
 }
 
@@ -719,7 +719,7 @@ void QuantityPy::setFormat(Py::Dict arg)
         if (fracInch & (fracInch - 1)) {
             throw Py::ValueError("Denominator must be a power of two");
         }
-        fmt.denominator = fracInch;
+        fmt.setDenominator(fracInch);
     }
 
     getQuantityPtr()->setFormat(fmt);
