@@ -27,7 +27,8 @@
 #include <QString>
 #include <QTimeZone>
 #include <QUrl>
-#include <fmt/format.h>
+#include <cmath>
+#include <format>
 
 #include "FileUtilities.h"
 #include <Base/TimeInfo.h>
@@ -93,7 +94,7 @@ std::string Start::humanReadableSize(uint64_t bytes)
 
     const bool isByteUnit = unitIndex == 0;
     const size_t precision = isByteUnit ? 0 : 1;
-    return fmt::format("{:.{}f} {}", scaledValue, precision, unit);
+    return std::format("{:.{}f} {}", scaledValue, precision, unit);
 }
 
 std::string Start::getLastModifiedAsString(const Base::FileInfo& file)

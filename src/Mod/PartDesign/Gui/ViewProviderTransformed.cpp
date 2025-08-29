@@ -54,7 +54,9 @@ const std::string& ViewProviderTransformed::featureName() const
 
 std::string ViewProviderTransformed::featureIcon() const
 {
-    return fmt::format("PartDesign_{}", featureName());
+    std::string name = "PartDesign_";
+    name += featureName();
+    return name;
 }
 
 void ViewProviderTransformed::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
