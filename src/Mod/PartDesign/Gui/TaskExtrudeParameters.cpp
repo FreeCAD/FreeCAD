@@ -763,7 +763,6 @@ void TaskExtrudeParameters::updateWholeUI(Type type, Side side)
     const bool isSide2GroupVisible = (sidesMode == SidesMode::TwoSides);
     ui->side1Label->setVisible(isSide2GroupVisible);
     ui->side2Label->setVisible(isSide2GroupVisible);
-    ui->line1->setVisible(isSide2GroupVisible);
     ui->line2->setVisible(isSide2GroupVisible);
     ui->typeLabel2->setVisible(isSide2GroupVisible);
     ui->changeMode2->setVisible(isSide2GroupVisible);
@@ -1444,5 +1443,6 @@ bool TaskDlgExtrudeParameters::reject()
 }
 
 #include "moc_TaskExtrudeParameters.cpp"
+
 
 
