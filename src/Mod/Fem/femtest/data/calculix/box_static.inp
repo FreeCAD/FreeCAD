@@ -558,7 +558,7 @@ FemConstraintFixed,3
 ** constraints pressure element face loads
 ** FemConstraintPressure
 *DLOAD
-** FemConstraintPressure: face load
+** Box.Face2
 3,P1,1000.0
 6,P3,1000.0
 9,P2,1000.0
