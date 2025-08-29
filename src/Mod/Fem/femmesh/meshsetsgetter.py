@@ -533,25 +533,24 @@ class MeshSetsGetter:
     def get_constraints_heatflux_faces(self):
         if not self.member.cons_heatflux:
             return
-        # TODO: use meshtools to get the surfaces (or move to mesh tools)
-        # see constraint contact or constraint tie and constraint force
-        # heatflux_obj_face_table: see force_obj_node_load_table
-        #     [
-        #         ("refshape_name:elemname", face_table),
-        #         ...,
-        #         ("refshape_name:elemname", face_table)
-        #     ]
+        if not self.femnodes_mesh:
+            self.femnodes_mesh = self.femmesh.Nodes
+        if not self.femelement_table:
+            self.femelement_table = meshtools.get_femelement_table(self.femmesh)
+        if not self.femnodes_ele_table:
+            self.femnodes_ele_table = meshtools.get_femnodes_ele_table(
+                self.femnodes_mesh, self.femelement_table
+            )
+
         for femobj in self.member.cons_heatflux:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            heatflux_obj = femobj["Object"]
-            femobj["HeatFluxFaceTable"] = []
-            for o, elem_tup in heatflux_obj.References:
-                for elem in elem_tup:
-                    ho = o.Shape.getElement(elem)
-                    if ho.ShapeType == "Face":
-                        elem_info = f"{o.Name}:{elem}"
-                        face_table = self.mesh_object.FemMesh.getccxVolumesByFace(ho)
-                        femobj["HeatFluxFaceTable"].append((elem_info, face_table))
+            obj = femobj["Object"]
+            print_obj_info(obj)
+            result = []
+            ref_data = meshtools.pair_obj_reference(obj.References)
+            for ref_pair in ref_data:
+                result.append(meshtools.get_ccx_elements(self, ref_pair))
+
+            femobj["HeatFluxFaces"] = result
 
     # ********************************************************************************************
     # ********************************************************************************************
