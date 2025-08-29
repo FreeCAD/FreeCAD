@@ -29,6 +29,7 @@ __url__ = "https://www.freecad.org"
 
 import os
 import re
+import shutil
 import subprocess
 from PySide.QtCore import QProcess, QThread
 
@@ -337,59 +338,33 @@ class GmshTools:
         Console.PrintMessage("  " + self.temp_file_geo + "\n")
 
     def get_gmsh_command(self):
-        from platform import system
-
-        gmsh_std_location = FreeCAD.ParamGet(
+        self.gmsh_bin = FreeCAD.ParamGet(
             "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
-        ).GetBool("UseStandardGmshLocation")
-        if gmsh_std_location:
-            if system() == "Windows":
-                gmsh_path = FreeCAD.getHomePath() + "bin/gmsh.exe"
-                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Gmsh").SetString(
-                    "gmshBinaryPath", gmsh_path
-                )
-                self.gmsh_bin = gmsh_path
-            elif system() == "Linux":
-                p1 = subprocess.Popen(["which", "gmsh"], stdout=subprocess.PIPE)
-                if p1.wait() == 0:
-                    output = p1.stdout.read()
-                    output = output.decode("utf-8")
-                    gmsh_path = output.split("\n")[0]
-                elif p1.wait() == 1:
-                    error_message = (
-                        "Gmsh binary gmsh not found in standard system binary path. "
-                        "Please install Gmsh or set path to binary "
-                        "in FEM preferences tab Gmsh.\n"
-                    )
-                    Console.PrintError(error_message)
-                    raise GmshError(error_message)
-                self.gmsh_bin = gmsh_path
-            elif system() == "Darwin":
-                # https://forum.freecad.org/viewtopic.php?f=13&t=73041&p=642026#p642022
-                gmsh_path = "/Applications/Gmsh.app/Contents/MacOS/gmsh"
-                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Gmsh").SetString(
-                    "gmshBinaryPath", gmsh_path
-                )
-                self.gmsh_bin = gmsh_path
-            else:
+        ).GetString("gmshBinaryPath", "")
+
+        if self.gmsh_bin and not shutil.which(self.gmsh_bin):
+            error_message = (
+                f"Configured Gmsh binary '${self.gmsh_bin}' not found. Please set path to "
+                "binary in FEM's Gmsh preferences page or leave blank to use default binary.\n"
+            )
+            Console.PrintError(error_message)
+            raise GmshError(error_message)
+
+        if not self.gmsh_bin:
+            from platform import system
+
+            gmsh_path = shutil.which("gmsh")
+            if system() == "Darwin" and not gmsh_path:
+                gmsh_path = shutil.which("/Applications/Gmsh.app/Contents/MacOS/gmsh")
+
+            if not gmsh_path:
                 error_message = (
-                    "No standard location implemented for your operating system. "
-                    "Set GMHS binary path in FEM preferences.\n"
+                    "Gmsh binary not found. Please install Gmsh or set path to binary "
+                    "in FEM's Gmsh preferences page.\n"
                 )
                 Console.PrintError(error_message)
                 raise GmshError(error_message)
-        else:
-            if not self.gmsh_bin:
-                self.gmsh_bin = FreeCAD.ParamGet(
-                    "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
-                ).GetString("gmshBinaryPath", "")
-            if not self.gmsh_bin:  # in prefs not set, we will try to use something reasonable
-                if system() == "Linux":
-                    self.gmsh_bin = "gmsh"
-                elif system() == "Windows":
-                    self.gmsh_bin = FreeCAD.getHomePath() + "bin/gmsh.exe"
-                else:
-                    self.gmsh_bin = "gmsh"
+            self.gmsh_bin = gmsh_path
         Console.PrintMessage("  " + self.gmsh_bin + "\n")
 
     def get_group_data(self):
@@ -433,7 +408,7 @@ class GmshTools:
 
     def version(self):
         self.get_gmsh_command()
-        if os.path.exists(self.gmsh_bin):
+        if shutil.which(self.gmsh_bin):
             found_message = "file found: " + self.gmsh_bin
             Console.PrintMessage(found_message + "\n")
         else:
@@ -949,10 +924,10 @@ class GmshTools:
             # print(output)
             # print(error)
         except Exception:
-            if os.path.exists(self.gmsh_bin):
+            if shutil.which(self.gmsh_bin):
                 error = "Error executing: {}\n".format(" ".join(command_list))
             else:
-                error = f"Gmsh executable not found: {self.gmsh_bin}\n"
+                error = f"Gmsh executable not found: '{self.gmsh_bin}'\n"
             Console.PrintError(error)
             self.error = True
 
