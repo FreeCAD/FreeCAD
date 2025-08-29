@@ -28,7 +28,6 @@ import Path
 import Path.Base.Language as PathLanguage
 import Path.Dressup.Utils as PathDressup
 import PathScripts.PathUtils as PathUtils
-from Path.Geom import wireForPath
 import math
 
 __doc__ = """LeadInOut Dressup USE ROLL-ON ROLL-OFF to profile"""
@@ -130,9 +129,6 @@ class ObjectDressup:
         )
         obj.Proxy = self
 
-        self.wire = None
-        self.rapids = None
-
     def dumps(self):
         return None
 
@@ -172,7 +168,6 @@ class ObjectDressup:
             )
             obj.LengthOut = 0.1
 
-        self.wire, self.rapids = wireForPath(PathUtils.getPathWithPlacement(obj.Base))
         obj.Path = self.generateLeadInOutCurve(obj)
 
     def onDocumentRestored(self, obj):
