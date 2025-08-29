@@ -66,7 +66,7 @@
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="QLabel" name="threadFitLabel">
+          <widget class="QLabel" name="accuracyPerformanceLabel">
            <property name="text">
             <string>Accuracy vs performance</string>
            </property>
@@ -173,21 +173,113 @@ Larger values (further to the right) will calculate faster; smaller values (furt
         </property>
        </widget>
       </item>
-      <item row="12" column="1">
-       <widget class="Gui::InputField" name="HelixConeAngle">
-        <property name="toolTip">
-         <string>Angle of the helix entry cone</string>
+      <item row="10" column="0" colspan="2">
+       <widget class="QFrame" name="helixFrame">
+        <property name="frameShape">
+         <enum>QFrame::Shape::StyledPanel</enum>
         </property>
-        <property name="unit" stdset="0">
-         <string notr="true"/>
+        <property name="frameShadow">
+         <enum>QFrame::Shadow::Raised</enum>
         </property>
-       </widget>
-      </item>
-      <item row="10" column="0">
-       <widget class="QLabel" name="label_7">
-        <property name="text">
-         <string>Helix ramp angle</string>
-        </property>
+        <layout class="QGridLayout" name="helixLayout">
+         <item row="9" column="0">
+          <widget class="QLabel" name="label_max_stepdown">
+           <property name="text">
+            <string>Helix max stepdown</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="1">
+          <widget class="Gui::InputField" name="HelixMaxStepdown">
+           <property name="toolTip">
+            <string>The maximum allowable descent in a single revolution of the helix.</string>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true"/>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="0">
+          <widget class="QLabel" name="label_7">
+           <property name="text">
+            <string>Helix ramp angle</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="1">
+          <widget class="Gui::InputField" name="HelixAngle">
+           <property name="toolTip">
+            <string>Angle of the helix ramp entry</string>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true"/>
+           </property>
+          </widget>
+         </item>
+         <item row="12" column="0">
+          <widget class="QLabel" name="label_8">
+           <property name="text">
+            <string>Helix cone angle</string>
+           </property>
+          </widget>
+         </item>
+         <item row="12" column="1">
+          <widget class="Gui::InputField" name="HelixConeAngle">
+           <property name="toolTip">
+            <string>Angle of the helix entry cone</string>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true"/>
+           </property>
+          </widget>
+         </item>
+         <item row="14" column="0">
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string>Helix ideal diameter</string>
+           </property>
+          </widget>
+         </item>
+         <item row="14" column="1">
+          <widget class="QSpinBox" name="HelixIdealDiameterPercent">
+           <property name="toolTip">
+            <string>Ideal helix entry diameter, as a percentage of the tool diameter.</string>
+           </property>
+           <property name="minimum">
+            <number>10</number>
+           </property>
+           <property name="maximum">
+            <number>100</number>
+           </property>
+           <property name="singleStep">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item row="15" column="0">
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string>Helix min diameter</string>
+           </property>
+          </widget>
+         </item>
+         <item row="15" column="1">
+          <widget class="QSpinBox" name="HelixMinDiameterPercent">
+           <property name="toolTip">
+            <string>Minimum acceptable entry diameter, as a percentage of the tool diameter.</string>
+           </property>
+           <property name="minimum">
+            <number>10</number>
+           </property>
+           <property name="maximum">
+            <number>100</number>
+           </property>
+           <property name="singleStep">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
       <item row="25" column="0">
@@ -221,33 +313,6 @@ Larger values (further to the right) will calculate faster; smaller values (furt
         </property>
        </widget>
       </item>
-      <item row="14" column="1">
-       <widget class="Gui::QuantitySpinBox" name="HelixDiameterLimit" native="true">
-        <property name="toolTip">
-         <string>If greater than zero it limits the helix ramp diameter, otherwise 75 percent of tool diameter is used</string>
-        </property>
-        <property name="unit" stdset="0">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </item>
-      <item row="12" column="0">
-       <widget class="QLabel" name="label_8">
-        <property name="text">
-         <string>Helix cone angle</string>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="1">
-       <widget class="Gui::InputField" name="HelixAngle">
-        <property name="toolTip">
-         <string>Angle of the helix ramp entry</string>
-        </property>
-        <property name="unit" stdset="0">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </item>
       <item row="16" column="0">
        <widget class="QLabel" name="label_10">
         <property name="text">
@@ -269,13 +334,6 @@ Larger values (further to the right) will calculate faster; smaller values (furt
         </property>
         <property name="unit" stdset="0">
          <string notr="true"/>
-        </property>
-       </widget>
-      </item>
-      <item row="14" column="0">
-       <widget class="QLabel" name="label_9">
-        <property name="text">
-         <string>Helix max diameter</string>
         </property>
        </widget>
       </item>
