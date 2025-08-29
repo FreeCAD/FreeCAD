@@ -2029,8 +2029,31 @@ void OverlayTitleBar::paintEvent(QPaintEvent *)
 {
     if (m_minimal) {
         QPainter painter(this);
-        // Minimal mode: use the widget background from the current palette
+        // Minimal mode: fill background using the current palette so the
+        // titlebar area remains visually distinct in floating (frameless)
+        // docks; then draw the window title.
         painter.fillRect(this->rect(), palette().color(QPalette::Window));
+        QDockWidget *dock = qobject_cast<QDockWidget*>(parentWidget());
+        QString title;
+        if (!dock) {
+            // Try to find a QDockWidget ancestor if parent is different
+            QWidget *w = parentWidget();
+            while (w && !dock) {
+                dock = qobject_cast<QDockWidget*>(w);
+                w = w ? w->parentWidget() : nullptr;
+            }
+        }
+        if (dock)
+            title = dock->windowTitle();
+        else if (parentWidget())
+            title = parentWidget()->windowTitle();
+
+        if (!title.isEmpty()) {
+            QRect r = this->rect().adjusted(8, 0, -8, 0);
+            QString text = painter.fontMetrics().elidedText(title, Qt::ElideRight, r.width());
+            painter.setPen(palette().color(QPalette::WindowText));
+            painter.drawText(r, Qt::AlignCenter, text);
+        }
         return;
     }
     if (!titleItem)
