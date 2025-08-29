@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>550</width>
-    <height>513</height>
+    <height>552</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -203,7 +203,7 @@
       <item>
        <widget class="Gui::PrefCheckBox" name="checkShowFinalPreview">
         <property name="text">
-         <string>Show final result by default when editing feature</string>
+         <string>Show final result by default when editing features</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ShowFinal</cstring>
@@ -216,13 +216,29 @@
       <item>
        <widget class="Gui::PrefCheckBox" name="checkShowTransparentPreview">
         <property name="text">
-         <string>Show transparent preview overlay by default when editing feature</string>
+         <string>Show transparent preview overlay by default when editing features</string>
         </property>
         <property name="checked">
          <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ShowTransparentPreview</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/PartDesign/Preview</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkShowProfilePreview">
+        <property name="text">
+         <string>Highlight the profile used to create features</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowProfilePreview</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/PartDesign/Preview</cstring>
