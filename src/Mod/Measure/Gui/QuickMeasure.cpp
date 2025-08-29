@@ -304,13 +304,12 @@ void QuickMeasure::printResult()
     else if (mtype == MeasureType::CircleToCylinder) {
         double angle = measurement->angle();
         if (angle <= Precision::Confusion()) {
-            print(tr("Center axis distance: %1")
-                      .arg(lengthStr(measurement->cylinderAxisDistance())));
+            print(
+                tr("Center axis distance: %1").arg(lengthStr(measurement->cylinderAxisDistance())));
         }
         else {
             print(tr("Center axis distance: %1, Axis angle: %2")
-                      .arg(lengthStr(measurement->cylinderAxisDistance()),
-                           angleStr(angle)));
+                      .arg(lengthStr(measurement->cylinderAxisDistance()), angleStr(angle)));
         }
     }
     else {
