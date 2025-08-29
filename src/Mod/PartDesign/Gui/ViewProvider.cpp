@@ -49,7 +49,6 @@
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/Part/Gui/ViewProviderExt.h>
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
-#include <Mod/Part/Gui/ViewProviderPreviewExtension.h>
 
 #include "TaskFeatureParameters.h"
 #include "StyleParameters.h"

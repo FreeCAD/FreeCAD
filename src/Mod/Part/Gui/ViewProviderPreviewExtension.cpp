@@ -37,6 +37,7 @@
 #include <App/Document.h>
 #include <Gui/Utilities.h>
 #include <Gui/Inventor/So3DAnnotation.h>
+#include <Mod/Part/App/PreviewExtension.h>
 #include <Mod/Part/App/Tools.h>
 
 using namespace PartGui;
