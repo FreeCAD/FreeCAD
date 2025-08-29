@@ -2082,7 +2082,7 @@ void PropertyLinkSub::getLinks(std::vector<App::DocumentObject*>& objs,
 {
     if (all || _pcScope != LinkScope::Hidden) {
         if (_pcLinkSub && _pcLinkSub->isAttachedToDocument()) {
-            updateElementReferences(_pcLinkSub);
+            // updateElementReferences(_pcLinkSub);
             objs.push_back(_pcLinkSub);
             if (subs) {
                 *subs = getSubValues(newStyle);
@@ -3154,7 +3154,7 @@ void PropertyLinkSubList::getLinks(std::vector<App::DocumentObject*>& objs,
         objs.reserve(objs.size() + _lValueList.size());
         for (auto obj : _lValueList) {
             if (obj && obj->isAttachedToDocument()) {
-                updateElementReferences(obj);
+                // updateElementReferences(obj);
                 objs.push_back(obj);
             }
         }
@@ -4659,7 +4659,7 @@ void PropertyXLink::getLinks(std::vector<App::DocumentObject*>& objs,
                              bool newStyle) const
 {
     if ((all || _pcScope != LinkScope::Hidden) && _pcLink && _pcLink->isAttachedToDocument()) {
-        updateElementReferences(_pcLink, false);
+        // updateElementReferences(_pcLink, false);
         objs.push_back(_pcLink);
         if (subs && _SubList.size() == _ShadowSubList.size()) {
             *subs = getSubValues(newStyle);
@@ -5394,7 +5394,7 @@ void PropertyXLinkSubList::getLinks(std::vector<App::DocumentObject*>& objs,
         for (auto& l : _Links) {
             auto obj = l.getValue();
             if (obj && obj->isAttachedToDocument()) {
-                updateElementReferences(obj);
+                // updateElementReferences(obj);
 
                 auto subnames = l.getSubValues(newStyle);
                 if (subnames.empty()) {
