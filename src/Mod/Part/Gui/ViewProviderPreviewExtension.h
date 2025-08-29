@@ -44,7 +44,6 @@
 #include <Gui/ViewProviderExtension.h>
 #include <Gui/ViewProviderExtensionPython.h>
 #include <Mod/Part/App/TopoShape.h>
-#include <Mod/PartDesign/App/Feature.h>
 
 namespace PartGui {
 
@@ -66,7 +65,7 @@ public:
 };
 
 class PartGuiExport ViewProviderPreviewExtension : public Gui::ViewProviderExtension {
-    Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderPreviewExtension)
+    Q_DECLARE_TR_FUNCTIONS(PartGui::ViewProviderPreviewExtension)
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderPreviewExtension);
 
 public:
