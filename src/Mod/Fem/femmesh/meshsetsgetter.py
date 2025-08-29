@@ -342,21 +342,6 @@ class MeshSetsGetter:
     def get_constraints_pressure_faces(self):
         if not self.member.cons_pressure:
             return
-        # TODO see comments in get_constraints_force_nodeloads()
-        # it applies here too. Mhh it applies to all constraints ...
-
-        """
-        # deprecated version
-        # get the faces and face numbers
-        for femobj in self.member.cons_pressure:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            femobj["PressureFaces"] = meshtools.get_pressure_obj_faces_depreciated(
-                self.femmesh,
-                femobj
-            )
-            # print(femobj["PressureFaces"])
-        """
-
         if not self.femnodes_mesh:
             self.femnodes_mesh = self.femmesh.Nodes
         if not self.femelement_table:
@@ -368,17 +353,14 @@ class MeshSetsGetter:
 
         for femobj in self.member.cons_pressure:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
-            print_obj_info(femobj["Object"])
-            pressure_faces = meshtools.get_pressure_obj_faces(
-                self.femmesh, self.femelement_table, self.femnodes_ele_table, femobj
-            )
-            # the data model is for compatibility reason with deprecated version
-            # get_pressure_obj_faces_depreciated returns the face ids in a tuple per ref_shape
-            # some_string was the reference_shape_element_string in deprecated method
-            # [(some_string, [ele_id, ele_face_id], [ele_id, ele_face_id], ...])]
-            some_string = "{}: face load".format(femobj["Object"].Name)
-            femobj["PressureFaces"] = [(some_string, pressure_faces)]
-            FreeCAD.Console.PrintLog("{}\n".format(femobj["PressureFaces"]))
+            obj = femobj["Object"]
+            print_obj_info(obj)
+            result = []
+            ref_data = meshtools.pair_obj_reference(obj.References)
+            for ref_pair in ref_data:
+                result.append(meshtools.get_ccx_elements(self, ref_pair))
+
+            femobj["PressureFaces"] = result
 
     def get_constraints_electrostatic_faces(self):
         if not self.member.cons_electrostatic:
