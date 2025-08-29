@@ -45,6 +45,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return form
 
     def initPage(self, obj):
+        self.form.HelixMaxStepdown.setProperty("unit", obj.HelixMaxStepdown.getUserPreferred()[2])
+
         self.form.LiftDistance.setProperty("unit", obj.LiftDistance.getUserPreferred()[2])
         self.form.KeepToolDownRatio.setProperty("unit", obj.KeepToolDownRatio.getUserPreferred()[2])
         self.form.StockToLeave.setProperty("unit", obj.StockToLeave.getUserPreferred()[2])
@@ -58,6 +60,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.stepOverPercent.valueChanged)
         signals.append(self.form.Tolerance.valueChanged)
         signals.append(self.form.HelixAngle.valueChanged)
+        signals.append(self.form.HelixMaxStepdown.valueChanged)
         signals.append(self.form.HelixConeAngle.valueChanged)
         signals.append(self.form.HelixIdealDiameterPercent.valueChanged)
         signals.append(self.form.HelixMinDiameterPercent.valueChanged)
@@ -85,6 +88,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.HelixAngle.setText(
             FreeCAD.Units.Quantity(obj.HelixAngle, FreeCAD.Units.Angle).UserString
         )
+
+        self.form.HelixMaxStepdown.setProperty("rawValue", obj.HelixMaxStepdown.Value)
 
         self.form.HelixConeAngle.setText(
             FreeCAD.Units.Quantity(obj.HelixConeAngle, FreeCAD.Units.Angle).UserString
@@ -131,6 +136,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         obj.Tolerance = 1.0 * self.form.Tolerance.value() / 100.0
         PathGuiUtil.updateInputField(obj, "HelixAngle", self.form.HelixAngle)
+        PathGuiUtil.updateInputField(obj, "HelixMaxStepdown", self.form.HelixMaxStepdown)
         PathGuiUtil.updateInputField(obj, "HelixConeAngle", self.form.HelixConeAngle)
         PathGuiUtil.updateInputField(obj, "LiftDistance", self.form.LiftDistance)
 

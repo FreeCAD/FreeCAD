@@ -138,6 +138,9 @@ def GenerateGCode(op, obj, adaptiveResults):
 
     helixAngleRad = math.radians(obj.HelixAngle)
     depthPerOneCircle = length * math.tan(helixAngleRad)
+    if obj.HelixMaxStepdown.Value != 0 and obj.HelixMaxStepdown.Value < depthPerOneCircle:
+        depthPerOneCircle = obj.HelixMaxStepdown.Value
+        helixAngleRad = math.atan(depthPerOneCircle / length)
 
     stepUp = max(obj.LiftDistance.Value, 0)
 
@@ -1811,6 +1814,15 @@ class PathAdaptive(PathOp.ObjectOp):
             ),
         )
         obj.addProperty(
+            "App::PropertyLength",
+            "HelixMaxStepdown",
+            "Adaptive",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The maximum allowable descent in a single revolution of the helix.",
+            ),
+        )
+        obj.addProperty(
             "App::PropertyAngle",
             "HelixConeAngle",
             "Adaptive",
@@ -2010,6 +2022,17 @@ class PathAdaptive(PathOp.ObjectOp):
                 obj.HelixIdealDiameterPercent = (
                     75 if oldD == 0 else 100 * oldD / obj.ToolController.Tool.Diameter.Value
                 )
+
+        if not hasattr(obj, "HelixMaxStepdown"):
+            obj.addProperty(
+                "App::PropertyLength",
+                "HelixMaxStepdown",
+                "Adaptive",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "The maximum allowable descent in a single revolution of the helix.",
+                ),
+            )
 
         FeatureExtensions.initialize_properties(obj)
 
