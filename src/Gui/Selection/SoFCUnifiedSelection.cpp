@@ -1381,7 +1381,7 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath) {
         auto &packer = ShapeColorNode->shapeColorPacker;
         auto &trans = ShapeColorNode->transOverride;
         auto &color = ShapeColorNode->colorOverride;
-        if(!SoOverrideElement::getTransparencyOverride(state) && trans) {
+        if(!SoOverrideElement::getTransparencyOverride(state)) {
             SoLazyElement::setTransparency(state, ShapeColorNode, 1, &trans, &packer);
             SoOverrideElement::setTransparencyOverride(state,ShapeColorNode,true);
         }
@@ -1462,7 +1462,7 @@ bool SoFCSelectionRoot::checkColorOverride(SoState *state) {
             auto &packer = ShapeColorNode->shapeColorPacker;
             auto &trans = ShapeColorNode->transOverride;
             auto &color = ShapeColorNode->colorOverride;
-            if(!SoOverrideElement::getTransparencyOverride(state) && trans) {
+            if(!SoOverrideElement::getTransparencyOverride(state)) {
                 SoLazyElement::setTransparency(state, ShapeColorNode, 1, &trans, &packer);
                 SoOverrideElement::setTransparencyOverride(state,ShapeColorNode,true);
             }
@@ -1892,3 +1892,4 @@ void SoFCPathAnnotation::getBoundingBox(SoGetBoundingBoxAction * action)
             action->extendBy(bbox);
     }
 }
+
