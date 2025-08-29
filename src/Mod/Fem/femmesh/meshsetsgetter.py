@@ -101,6 +101,19 @@ class MeshSetsGetter:
         self.femelement_count_test = True
         self.mat_geo_sets = []
 
+        self._load_tables()
+
+    def _load_tables(self):
+        if self.mesh_object:
+            if not self.femnodes_mesh:
+                self.femnodes_mesh = self.femmesh.Nodes
+            if not self.femelement_table:
+                self.femelement_table = meshtools.get_femelement_table(self.femmesh)
+            if not self.femnodes_ele_table:
+                self.femnodes_ele_table = meshtools.get_femnodes_ele_table(
+                    self.femnodes_mesh, self.femelement_table
+                )
+
     # ********************************************************************************************
     # ********************************************************************************************
     # use set for node sets to be sure all nodes are unique
@@ -338,72 +351,35 @@ class MeshSetsGetter:
 
     # ********************************************************************************************
     # ********************************************************************************************
+    def _get_ccx_elements(self, obj):
+        print_obj_info(obj)
+        result = []
+        ref_data = meshtools.pair_obj_reference(obj.References)
+        for ref_pair in ref_data:
+            result.append(meshtools.get_ccx_elements(self, ref_pair))
+
+        return result
+
     # faces sets
     def get_constraints_pressure_faces(self):
-        if not self.member.cons_pressure:
-            return
-        if not self.femnodes_mesh:
-            self.femnodes_mesh = self.femmesh.Nodes
-        if not self.femelement_table:
-            self.femelement_table = meshtools.get_femelement_table(self.femmesh)
-        if not self.femnodes_ele_table:
-            self.femnodes_ele_table = meshtools.get_femnodes_ele_table(
-                self.femnodes_mesh, self.femelement_table
-            )
-
         for femobj in self.member.cons_pressure:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
             obj = femobj["Object"]
-            print_obj_info(obj)
-            result = []
-            ref_data = meshtools.pair_obj_reference(obj.References)
-            for ref_pair in ref_data:
-                result.append(meshtools.get_ccx_elements(self, ref_pair))
+            result = self._get_ccx_elements(obj)
 
             femobj["PressureFaces"] = result
 
     def get_constraints_electrostatic_faces(self):
-        if not self.member.cons_electrostatic:
-            return
-        if not self.femnodes_mesh:
-            self.femnodes_mesh = self.femmesh.Nodes
-        if not self.femelement_table:
-            self.femelement_table = meshtools.get_femelement_table(self.femmesh)
-        if not self.femnodes_ele_table:
-            self.femnodes_ele_table = meshtools.get_femnodes_ele_table(
-                self.femnodes_mesh, self.femelement_table
-            )
-
         for femobj in self.member.cons_electrostatic:
             obj = femobj["Object"]
             if obj.BoundaryCondition == "Neumann":
-                print_obj_info(obj)
-                result = []
-                ref_data = meshtools.pair_obj_reference(obj.References)
-                for ref_pair in ref_data:
-                    result.append(meshtools.get_ccx_elements(self, ref_pair))
+                result = self._get_ccx_elements(obj)
 
                 femobj["ElectricFluxFaces"] = result
 
     def get_constraints_electricchargedensity_faces(self):
-        if not self.member.cons_electricchargedensity:
-            return
-        if not self.femnodes_mesh:
-            self.femnodes_mesh = self.femmesh.Nodes
-        if not self.femelement_table:
-            self.femelement_table = meshtools.get_femelement_table(self.femmesh)
-        if not self.femnodes_ele_table:
-            self.femnodes_ele_table = meshtools.get_femnodes_ele_table(
-                self.femnodes_mesh, self.femelement_table
-            )
-
         for femobj in self.member.cons_electricchargedensity:
             obj = femobj["Object"]
-            print_obj_info(obj)
-            result = []
-            ref_data = meshtools.pair_obj_reference(obj.References)
-            for ref_pair in ref_data:
-                result.append(meshtools.get_ccx_elements(self, ref_pair))
+            result = self._get_ccx_elements(obj)
 
             if obj.Mode in ["Interface", "Total Interface"]:
                 femobj["ChargeDensityFaces"] = result
@@ -411,25 +387,9 @@ class MeshSetsGetter:
                 femobj["ChargeDensityElements"] = result
 
     def get_constraints_contact_faces(self):
-        if not self.member.cons_contact:
-            return
-        if not self.femnodes_mesh:
-            self.femnodes_mesh = self.femmesh.Nodes
-        if not self.femelement_table:
-            self.femelement_table = meshtools.get_femelement_table(self.femmesh)
-        if not self.femnodes_ele_table:
-            self.femnodes_ele_table = meshtools.get_femnodes_ele_table(
-                self.femnodes_mesh, self.femelement_table
-            )
-
         for femobj in self.member.cons_contact:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
             obj = femobj["Object"]
-            print_obj_info(obj)
-            result = []
-            ref_data = meshtools.pair_obj_reference(obj.References)
-            for ref_pair in ref_data:
-                result.append(meshtools.get_ccx_elements(self, ref_pair))
+            result = self._get_ccx_elements(obj)
 
             femobj["ContactSlaveFaces"] = result[:-1]
             femobj["ContactMasterFaces"] = result[-1:]
@@ -442,25 +402,9 @@ class MeshSetsGetter:
     #                from one side of the geometric face are needed
 
     def get_constraints_tie_faces(self):
-        if not self.member.cons_tie:
-            return
-        if not self.femnodes_mesh:
-            self.femnodes_mesh = self.femmesh.Nodes
-        if not self.femelement_table:
-            self.femelement_table = meshtools.get_femelement_table(self.femmesh)
-        if not self.femnodes_ele_table:
-            self.femnodes_ele_table = meshtools.get_femnodes_ele_table(
-                self.femnodes_mesh, self.femelement_table
-            )
-
         for femobj in self.member.cons_tie:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
             obj = femobj["Object"]
-            print_obj_info(obj)
-            result = []
-            ref_data = meshtools.pair_obj_reference(obj.References)
-            for ref_pair in ref_data:
-                result.append(meshtools.get_ccx_elements(self, ref_pair))
+            result = self._get_ccx_elements(obj)
 
             femobj["TieSlaveFaces"] = result[:-1]
             femobj["TieMasterFaces"] = result[-1:]
@@ -513,24 +457,9 @@ class MeshSetsGetter:
                         )
 
     def get_constraints_heatflux_faces(self):
-        if not self.member.cons_heatflux:
-            return
-        if not self.femnodes_mesh:
-            self.femnodes_mesh = self.femmesh.Nodes
-        if not self.femelement_table:
-            self.femelement_table = meshtools.get_femelement_table(self.femmesh)
-        if not self.femnodes_ele_table:
-            self.femnodes_ele_table = meshtools.get_femnodes_ele_table(
-                self.femnodes_mesh, self.femelement_table
-            )
-
         for femobj in self.member.cons_heatflux:
             obj = femobj["Object"]
-            print_obj_info(obj)
-            result = []
-            ref_data = meshtools.pair_obj_reference(obj.References)
-            for ref_pair in ref_data:
-                result.append(meshtools.get_ccx_elements(self, ref_pair))
+            result = self._get_ccx_elements(obj)
 
             femobj["HeatFluxFaces"] = result
 
@@ -550,25 +479,9 @@ class MeshSetsGetter:
             self.get_solid_element_sets(self.member.cons_centrif)
 
     def get_constraints_bodyheatsource_elements(self):
-        # get element ids and write them into the femobj
-        if not self.member.cons_bodyheatsource:
-            return
-        if not self.femnodes_mesh:
-            self.femnodes_mesh = self.femmesh.Nodes
-        if not self.femelement_table:
-            self.femelement_table = meshtools.get_femelement_table(self.femmesh)
-        if not self.femnodes_ele_table:
-            self.femnodes_ele_table = meshtools.get_femnodes_ele_table(
-                self.femnodes_mesh, self.femelement_table
-            )
-
         for femobj in self.member.cons_bodyheatsource:
             obj = femobj["Object"]
-            print_obj_info(obj)
-            result = []
-            ref_data = meshtools.pair_obj_reference(obj.References)
-            for ref_pair in ref_data:
-                result.append(meshtools.get_ccx_elements(self, ref_pair))
+            result = self._get_ccx_elements(obj)
 
             femobj["BodyHeatSourceElements"] = result
 
