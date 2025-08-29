@@ -917,12 +917,32 @@ public:
         OverlayTitleBar *widget = new OverlayTitleBar(parent);
         widget->setObjectName(QStringLiteral("OverlayTitle"));
 
+        // Find the QDockWidget ancestor
+        QDockWidget* dockWidget = nullptr;
+        QWidget* w = parent;
+        while (w && !dockWidget)
+            dockWidget = qobject_cast<QDockWidget*>(w), w = w->parentWidget();
+
+        if (dockWidget) {
+            if (dockWidget->isFloating()) {
+                widget->deleteLater();
+                return nullptr;
+            }
+            QObject::connect(dockWidget, &QDockWidget::topLevelChanged, widget, [dockWidget, widget](bool floating) {
+                if (floating) {
+                    dockWidget->setTitleBarWidget(nullptr);
+                } else {
+                    dockWidget->setTitleBarWidget(widget);
+                }
+            });
+        }
+
         QList<QAction*> actions;
         if (auto tabWidget = qobject_cast<OverlayTabWidget*>(parent))
             actions = tabWidget->actions();
-        else if (auto dockWidget = qobject_cast<QDockWidget*>(parent))
+        else if (auto dock = qobject_cast<QDockWidget*>(parent))
         {
-            const QDockWidget::DockWidgetFeatures features = dockWidget->features();
+            const QDockWidget::DockWidgetFeatures features = dock->features();
 
             actions.append(&_actOverlay);
             if (features.testFlag(QDockWidget::DockWidgetFloatable))
@@ -979,8 +999,11 @@ public:
     void floatDockWidget(QDockWidget *dock)
     {
         setFocusView();
-        auto it = _overlayMap.find(dock);
-        if (it != _overlayMap.end()) {
+        // Remove the dock from all overlays it may be present in
+        while (true) {
+            auto it = _overlayMap.find(dock);
+            if (it == _overlayMap.end())
+                break;
             it->second->tabWidget->removeWidget(dock);
             _overlayMap.erase(it);
         }
