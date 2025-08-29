@@ -184,6 +184,9 @@ void GmshWidget::accept()
     if (writeProject(inpFile, outFile)) {
         // ./gmsh - -bin -2 /tmp/mesh.geo -o /tmp/best.stl
         QString proc = d->ui.fileChooser->fileName();
+        if (proc.isEmpty()) {
+            proc = QLatin1String("gmsh");
+        }
         QStringList args;
         args << QLatin1String("-")
              << QLatin1String("-bin")
