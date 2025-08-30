@@ -49,7 +49,7 @@ void SketcherTransformationExpressionHelper::storeOriginalExpressions(
                     || (cstr->Second == geoId && cstr->Type != Sketcher::Radius
                         && cstr->Type != Sketcher::Diameter && cstr->Type != Sketcher::Weight))) {
 
-                App::ObjectIdentifier spath = sketchObject->Constraints.createPath(i);
+                App::ObjectIdentifier spath = sketchObject->Constraints.createPath(static_cast<int>(i));
                 App::PropertyExpressionEngine::ExpressionInfo expr_info =
                     sketchObject->getExpression(spath);
 
