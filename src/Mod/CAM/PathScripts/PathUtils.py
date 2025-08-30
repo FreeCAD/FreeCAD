@@ -450,6 +450,81 @@ def addToJob(obj, jobname=None):
     return job
 
 
+def sort_locations_line_2opt(locations, keys, attractors=None, startPoint=None, endPoint=None):
+    """STEP 1: Add the startPoint and apply Nearest neighbour algorithm
+    (https://en.wikipedia.org/wiki/Nearest_neighbour_algorithm)"""
+    if startPoint is not None:
+        locations.insert(
+            0,
+            {
+                "startx": startPoint.x,
+                "starty": startPoint.y,
+                "endx": startPoint.x,
+                "endy": startPoint.y,
+            },
+        )
+
+    lastNeighbourAdded = locations[0]
+    potentialNeighbours = locations[1:]
+    route = [lastNeighbourAdded]
+
+    while potentialNeighbours:
+        minCost = 10e12
+        for i in range(len(potentialNeighbours)):
+            # 10e-3 is added to prefer X direction when there are mupltiple neighbours the same distance away
+            cost = (potentialNeighbours[i]["startx"] - lastNeighbourAdded["endx"]) ** 2 + (
+                abs(potentialNeighbours[i]["starty"] - lastNeighbourAdded["endy"]) + 10e-3
+            ) ** 2
+            if cost < minCost:
+                minCost = cost
+                nearestNeighbour = potentialNeighbours[i]
+        route.append(nearestNeighbour)
+        potentialNeighbours.remove(nearestNeighbour)
+        lastNeighbourAdded = nearestNeighbour
+
+    # STEP 2: Add the endPoint and apply 2-opt algorithm (https://en.wikipedia.org/wiki/2-opt)
+    if endPoint is not None:
+        route.append(
+            {"startx": endPoint[0], "starty": endPoint[1], "endx": endPoint[0], "endy": endPoint[1]}
+        )
+
+    for repetition in range(len(route)):
+        """number of repetitions can be arbitrary,
+        more repetitions = better ressult,
+        but after len(route) repetitions doesn't improve anymore"""
+        for i in range(1, len(route) - 2):
+            for j in range(i + 1, len(route)):
+                lengthDelta = 0
+                lengthDelta += math.dist(
+                    [route[i - 1]["endx"], route[i - 1]["endy"]],
+                    [route[j - 1]["startx"], route[j - 1]["starty"]],
+                )
+                lengthDelta += math.dist(
+                    [route[i]["endx"], route[i]["endy"]], [route[j]["startx"], route[j]["starty"]]
+                )
+                lengthDelta -= math.dist(
+                    [route[i - 1]["endx"], route[i - 1]["endy"]],
+                    [route[i]["startx"], route[i]["starty"]],
+                )
+                lengthDelta -= math.dist(
+                    [route[j]["startx"], route[j]["starty"]],
+                    [route[j - 1]["endx"], route[j - 1]["endy"]],
+                )
+                if (
+                    lengthDelta < 10e-6
+                ):  # check if swapping would actually reduce total route length - instead of 0 is used 10e-6 to avoid some glitches
+                    route[i:j] = route[i:j][
+                        ::-1
+                    ]  # perform the swap of i'th and j'th element, and make all elements in between in reverse order
+
+    if startPoint is not None:
+        del route[0]
+    if endPoint is not None:
+        del route[-1]
+
+    return route
+
+
 def sort_locations(locations, keys, attractors=None):
     """sort holes by the nearest neighbor method
     keys: two-element list of keys for X and Y coordinates. for example ['x','y']
