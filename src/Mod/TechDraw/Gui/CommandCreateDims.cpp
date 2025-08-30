@@ -2126,6 +2126,28 @@ bool CmdTechDrawDimensionRepair::isActive(void)
 
 //------------------------------------------------------------------------------
 
+void CreateTechDrawCommandsDims()
+{
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+
+    rcCmdMgr.addCommand(new CmdTechDrawDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawRadiusDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawDiameterDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawLengthDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawHorizontalDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawVerticalDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawAngleDimension());
+    rcCmdMgr.addCommand(new CmdTechDraw3PtAngleDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawAreaDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawExtentGroup());
+    rcCmdMgr.addCommand(new CmdTechDrawVerticalExtentDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawHorizontalExtentDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawDimensionRepair());
+    rcCmdMgr.addCommand(new CmdTechDrawCompDimensionTools());
+}
+
+//------------------------------------------------------------------------------
+
 //Common code to build a dimension feature
 
 void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometry, std::vector<int> minimumCounts, std::vector<DimensionGeometry> acceptableDimensionGeometrys)

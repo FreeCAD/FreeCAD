@@ -68,6 +68,7 @@
 
 // use a different name to CreateCommand()
 void CreateTechDrawCommands();
+void CreateTechDrawCommandsDims();
 void CreateTechDrawCommandsDecorate();
 void CreateTechDrawCommandsAnnotate();
 void CreateTechDrawCommandsExtensionDims();
@@ -128,6 +129,7 @@ PyMOD_INIT_FUNC(TechDrawGui)
     CreateTechDrawCommandsAnnotate();
     CreateTechDrawCommandsExtensionDims();
     CreateTechDrawCommandsExtensions();
+    CreateTechDrawCommandsDims();
     CreateTechDrawCommandsStack();
     CreateTechDrawCommandsAlign();
 
