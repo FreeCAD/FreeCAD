@@ -326,7 +326,7 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
                 type="App::PropertyBool",
                 name="ExcludeBendingStiffness",
                 group="Solver",
-                doc="Exclude bending stiffness to replace shells with membranes",
+                doc="Exclude bending stiffness to replace shells with membranes or beams with trusses",
                 value=False,
             )
         )

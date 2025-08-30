@@ -45,52 +45,58 @@ def write_femelement_geometry(f, ccxwriter):
                 section_nor = "{:.13G}, {:.13G}, {:.13G}\n".format(
                     beam_axis_m[0], beam_axis_m[1], beam_axis_m[2]
                 )
-                if beamsec_obj.SectionType == "Rectangular":
-                    # see meshtools.get_beam_main_axis_m(beam_direction, defined_angle)
-                    # the method get_beam_main_axis_m() which calculates the beam_axis_m vector
-                    # unless rotated, this vector points towards +y axis
-                    # doesn't follow 1,2-direction order of CalculiX
-                    # ^ (n, 2-direction)
-                    # |
-                    # |
-                    # .----> (m, 1-direction)
-                    #
-                    len_beam_axis_n = beamsec_obj.RectHeight.getValueAs("mm").Value
-                    len_beam_axis_m = beamsec_obj.RectWidth.getValueAs("mm").Value
-                    section_type = ", SECTION=RECT"
-                    section_geo = f"{len_beam_axis_m:.13G},{len_beam_axis_n:.13G}\n"
-                    section_def = f"*BEAM SECTION, {elsetdef}{material}{section_type}\n"
-                elif beamsec_obj.SectionType == "Circular":
-                    diameter = beamsec_obj.CircDiameter.getValueAs("mm").Value
-                    section_type = ", SECTION=CIRC"
-                    section_geo = f"{diameter:.13G}\n"
-                    section_def = f"*BEAM SECTION, {elsetdef}{material}{section_type}\n"
-                elif beamsec_obj.SectionType == "Elliptical":
-                    axis1 = beamsec_obj.Axis1Length.getValueAs("mm").Value
-                    axis2 = beamsec_obj.Axis2Length.getValueAs("mm").Value
-                    section_type = ", SECTION=CIRC"
-                    section_geo = f"{axis1:.13G},{axis2:.13G}\n"
-                    section_def = f"*BEAM SECTION, {elsetdef}{material}{section_type}\n"
-                elif beamsec_obj.SectionType == "Pipe":
-                    radius = 0.5 * beamsec_obj.PipeDiameter.getValueAs("mm").Value
-                    thickness = beamsec_obj.PipeThickness.getValueAs("mm").Value
-                    section_type = ", SECTION=PIPE"
-                    section_geo = f"{radius:.13G},{thickness:.13G}\n"
-                    section_def = f"*BEAM SECTION, {elsetdef}{material}{section_type}\n"
-                elif beamsec_obj.SectionType == "Box":
-                    box_width = beamsec_obj.BoxWidth.getValueAs("mm").Value
-                    box_height = beamsec_obj.BoxHeight.getValueAs("mm").Value
-                    box_t1 = beamsec_obj.BoxT1.getValueAs("mm").Value
-                    box_t2 = beamsec_obj.BoxT2.getValueAs("mm").Value
-                    box_t3 = beamsec_obj.BoxT3.getValueAs("mm").Value
-                    box_t4 = beamsec_obj.BoxT4.getValueAs("mm").Value
-                    section_type = ", SECTION=BOX"
-                    section_geo = f"{box_width:.13G},{box_height:.13G},{box_t1:.13G},{box_t2:.13G},{box_t3:.13G},{box_t4:.13G}\n"
-                    section_def = f"*BEAM SECTION, {elsetdef}{material}{section_type}\n"
+                if ccxwriter.solver_obj.ExcludeBendingStiffness:
+                    area = beamsec_obj.TrussArea.getValueAs("mm^2").Value
+                    section_def = f"*SOLID SECTION, {elsetdef}{material}\n"
+                    section_geo = f"{area:.13G}\n"
+                else:
+                    if beamsec_obj.SectionType == "Rectangular":
+                        # see meshtools.get_beam_main_axis_m(beam_direction, defined_angle)
+                        # the method get_beam_main_axis_m() which calculates the beam_axis_m vector
+                        # unless rotated, this vector points towards +y axis
+                        # doesn't follow 1,2-direction order of CalculiX
+                        # ^ (n, 2-direction)
+                        # |
+                        # |
+                        # .----> (m, 1-direction)
+                        #
+                        len_beam_axis_n = beamsec_obj.RectHeight.getValueAs("mm").Value
+                        len_beam_axis_m = beamsec_obj.RectWidth.getValueAs("mm").Value
+                        section_type = ", SECTION=RECT"
+                        section_geo = f"{len_beam_axis_m:.13G},{len_beam_axis_n:.13G}\n"
+                        section_def = f"*BEAM SECTION, {elsetdef}{material}{section_type}\n"
+                    elif beamsec_obj.SectionType == "Circular":
+                        diameter = beamsec_obj.CircDiameter.getValueAs("mm").Value
+                        section_type = ", SECTION=CIRC"
+                        section_geo = f"{diameter:.13G}\n"
+                        section_def = f"*BEAM SECTION, {elsetdef}{material}{section_type}\n"
+                    elif beamsec_obj.SectionType == "Elliptical":
+                        axis1 = beamsec_obj.Axis1Length.getValueAs("mm").Value
+                        axis2 = beamsec_obj.Axis2Length.getValueAs("mm").Value
+                        section_type = ", SECTION=CIRC"
+                        section_geo = f"{axis1:.13G},{axis2:.13G}\n"
+                        section_def = f"*BEAM SECTION, {elsetdef}{material}{section_type}\n"
+                    elif beamsec_obj.SectionType == "Pipe":
+                        radius = 0.5 * beamsec_obj.PipeDiameter.getValueAs("mm").Value
+                        thickness = beamsec_obj.PipeThickness.getValueAs("mm").Value
+                        section_type = ", SECTION=PIPE"
+                        section_geo = f"{radius:.13G},{thickness:.13G}\n"
+                        section_def = f"*BEAM SECTION, {elsetdef}{material}{section_type}\n"
+                    elif beamsec_obj.SectionType == "Box":
+                        box_width = beamsec_obj.BoxWidth.getValueAs("mm").Value
+                        box_height = beamsec_obj.BoxHeight.getValueAs("mm").Value
+                        box_t1 = beamsec_obj.BoxT1.getValueAs("mm").Value
+                        box_t2 = beamsec_obj.BoxT2.getValueAs("mm").Value
+                        box_t3 = beamsec_obj.BoxT3.getValueAs("mm").Value
+                        box_t4 = beamsec_obj.BoxT4.getValueAs("mm").Value
+                        section_type = ", SECTION=BOX"
+                        section_geo = f"{box_width:.13G},{box_height:.13G},{box_t1:.13G},{box_t2:.13G},{box_t3:.13G},{box_t4:.13G}\n"
+                        section_def = f"*BEAM SECTION, {elsetdef}{material}{section_type}\n"
 
                 f.write(section_def)
                 f.write(section_geo)
-                f.write(section_nor)
+                if not ccxwriter.solver_obj.ExcludeBendingStiffness:
+                    f.write(section_nor)
             elif "fluidsection_obj" in matgeoset:  # fluid mesh
                 fluidsec_obj = matgeoset["fluidsection_obj"]
                 if fluidsec_obj.SectionType == "Liquid":
