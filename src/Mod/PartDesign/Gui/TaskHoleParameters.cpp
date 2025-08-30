@@ -81,11 +81,15 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     // read values from the hole properties
     auto pcHole = getObject<PartDesign::Hole>();
     bool isNone = std::string(pcHole->ThreadType.getValueAsString()) == "None";
+    bool isThreaded = pcHole->Threaded.getValue();
 
+    ui->labelThreading->setHidden(isNone);
     ui->labelHoleType->setHidden(isNone);
     ui->HoleType->setHidden(isNone);
     ui->ThreadSize->setHidden(isNone);
     ui->labelSize->setHidden(isNone);
+    ui->ThreadFit->setHidden(isNone || isThreaded);
+    ui->labelThreadClearance->setHidden(isNone || isThreaded);
 
     updateHoleTypeCombo();
     ui->ThreadType->setCurrentIndex(pcHole->ThreadType.getValue());
@@ -165,10 +169,8 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->TaperedAngle->setValue(pcHole->TaperedAngle.getValue());
     ui->Reversed->setChecked(pcHole->Reversed.getValue());
 
-    bool isThreaded = pcHole->Threaded.getValue();
     bool isModeled = pcHole->ModelThread.getValue();
     ui->ThreadGroupBox->setVisible(isThreaded);
-    ui->ClearanceWidget->setHidden(isNone || isThreaded);
     ui->UseCustomThreadClearance->setChecked(pcHole->UseCustomThreadClearance.getValue());
     ui->CustomThreadClearance->setValue(pcHole->CustomThreadClearance.getValue());
     ui->ThreadDepthType->setCurrentIndex(pcHole->ThreadDepthType.getValue());
@@ -285,7 +287,6 @@ void TaskHoleParameters::holeTypeChanged(int index)
     pcHole->ModelThread.setValue(isModeled);
 
     ui->ThreadGroupBox->setVisible(isThreaded);
-    ui->ClearanceWidget->setHidden(isThreaded);
     // update view not active if modeling threads
     // this will also ensure that the feature is recomputed.
     ui->UpdateView->setVisible(isModeled);
@@ -656,9 +657,11 @@ void TaskHoleParameters::threadTypeChanged(int index)
     ui->ThreadGroupBox->setHidden(isNone || !isThreaded);
     ui->ThreadSize->setHidden(isNone);
     ui->labelSize->setHidden(isNone);
+    ui->labelThreading->setHidden(isNone);
     ui->labelHoleType->setHidden(isNone);
     ui->HoleType->setHidden(isNone);
-    ui->ClearanceWidget->setHidden(isNone || isThreaded);
+    ui->ThreadFit->setHidden(isNone || isThreaded);
+    ui->labelThreadClearance->setHidden(isNone || isThreaded);
 
     if (TypeClass == QByteArray("None")) {
         QString noneText = QStringLiteral("-");
