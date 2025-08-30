@@ -44,6 +44,7 @@ from . import write_constraint_fluidsection as con_fluidsection
 from . import write_constraint_force as con_force
 from . import write_constraint_heatflux as con_heatflux
 from . import write_constraint_initialtemperature as con_itemp
+from . import write_constraint_finaltemperature as con_ftemp
 from . import write_constraint_planerotation as con_planerotation
 from . import write_constraint_pressure as con_pressure
 from . import write_constraint_rigidbody as con_rigidbody
@@ -204,6 +205,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_meshsets(inpfile, self.member.cons_force, con_force)
         self.write_constraints_meshsets(inpfile, self.member.cons_pressure, con_pressure)
         self.write_constraints_propdata(inpfile, self.member.cons_temperature, con_temperature)
+        self.write_constraints_propdata(inpfile, self.member.cons_finaltemperature, con_ftemp)
         self.write_constraints_meshsets(inpfile, self.member.cons_heatflux, con_heatflux)
         self.write_constraints_propdata(
             inpfile, self.member.cons_electricchargedensity, con_electricchargedensity

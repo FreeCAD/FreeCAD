@@ -1221,11 +1221,15 @@ Evolumes
 *MATERIAL, NAME=MechanicalMaterialLow
 *ELASTIC
 70000,0.35
+*EXPANSION, ZERO=0
+0
 ** FreeCAD material name: Steel-Generic
 ** MechanicalMaterialUpp
 *MATERIAL, NAME=MechanicalMaterialUpp
 *ELASTIC
 200000,0.3
+*EXPANSION, ZERO=0
+0
 
 ***********************************************************
 ** Sections

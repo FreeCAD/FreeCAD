@@ -2555,6 +2555,8 @@ Efaces
 *MATERIAL, NAME=FemMaterial
 *ELASTIC
 200000,0.3
+*EXPANSION, ZERO=0
+0
 
 ***********************************************************
 ** Sections
