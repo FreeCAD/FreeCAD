@@ -79,15 +79,143 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The vertex index to start the toolpath from"),
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "Reverse",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Reverse wires"),
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "Pattern",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Direction of the path\n"
+                "\nDirectional - use direction from wire"
+                "\nBidirectional - direction can be swapped while step down or optimizing path",
+            ),
+        )
+        pattern = [
+            QT_TRANSLATE_NOOP("CAM_Engrave", "Directional"),
+            QT_TRANSLATE_NOOP("CAM_Engrave", "Bidirectional"),
+        ]
+        obj.Pattern = pattern
+        obj.Pattern = "Bidirectional"
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "SortingMode",
+            "Sorting",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Order processing of the wires\n"
+                "\nManual - Using order from selection without sorting"
+                "\nAutomatic - Sorting wires by the nearest neighbor method"
+                "\nAutomatic2 - Sorting wires by the nearest neighbour method, further improved with 2-opt",
+            ),
+        )
+        obj.SortingMode = ("Automatic", "Automatic2", "Manual")
+        obj.SortingMode = "Automatic2"
+
+        obj.addProperty(
+            "App::PropertyVectorDistance",
+            "StartPoint",
+            "Sorting",
+            QT_TRANSLATE_NOOP("App::Property", "The start point for sorting"),
+        )
+        obj.addProperty(
+            "App::PropertyVectorDistance",
+            "EndPoint",
+            "Sorting",
+            QT_TRANSLATE_NOOP("App::Property", "The end point for sorting"),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "UseEndPoint",
+            "Sorting",
+            QT_TRANSLATE_NOOP("App::Property", "Use end point for sorting"),
+        )
+        obj.setEditorMode("StartPoint", 2)  # hide
+        obj.setEditorMode("EndPoint", 2)  # hide
+        obj.setEditorMode("UseEndPoint", 2)  # hide
         self.setupAdditionalProperties(obj)
 
     def opOnDocumentRestored(self, obj):
         # upgrade ...
+        if not hasattr(obj, "Reverse"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "Reverse",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Reverse wires"),
+            )
+        if not hasattr(obj, "Pattern"):
+            pattern = [
+                QT_TRANSLATE_NOOP("CAM_Engrave", "Directional"),
+                QT_TRANSLATE_NOOP("CAM_Engrave", "Bidirectional"),
+            ]
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "Pattern",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Direction of the path\n"
+                    "\nDirectional - use direction from wire"
+                    "\nBidirectional - direction can be swapped while step down or optimizing path",
+                ),
+            )
+            obj.Pattern = pattern
+        if not hasattr(obj, "SortingMode"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "SortingMode",
+                "Sorting",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Order processing of the wires\n"
+                    "\nManual - Using order from selection without sorting"
+                    "\nAutomatic - Sorting wires by the nearest neighbor method"
+                    "\nAutomatic2 - Sorting wires by the nearest neighbour method, further improved with 2-opt",
+                ),
+            )
+            obj.SortingMode = ("Automatic", "Automatic2", "Automatic3", "Manual")
+            obj.SortingMode = "Automatic2"
+        if not hasattr(obj, "StartPoint"):
+            obj.addProperty(
+                "App::PropertyVectorDistance",
+                "StartPoint",
+                "Sorting",
+                QT_TRANSLATE_NOOP("App::Property", "The start point of this path"),
+            )
+            obj.setEditorMode("StartPoint", 2)  # hide
+        if not hasattr(obj, "EndPoint"):
+            obj.addProperty(
+                "App::PropertyVectorDistance",
+                "EndPoint",
+                "Sorting",
+                QT_TRANSLATE_NOOP("App::Property", "The end point of this path"),
+            )
+            obj.setEditorMode("EndPoint", 2)  # hide
+        if not hasattr(obj, "UseEndPoint"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "UseEndPoint",
+                "Sorting",
+                QT_TRANSLATE_NOOP("App::Property", "Make True, if specifying a End Point"),
+            )
+            obj.setEditorMode("UseEndPoint", 2)  # hide
+
         self.setupAdditionalProperties(obj)
 
     def opExecute(self, obj):
         """opExecute(obj) ... process engraving operation"""
         Path.Log.track()
+
+        SortingMode = 0 if "Automatic2" in obj.SortingMode else 2
+        obj.setEditorMode("StartPoint", SortingMode)
+        obj.setEditorMode("EndPoint", SortingMode)
+        obj.setEditorMode("UseEndPoint", SortingMode)
 
         jobshapes = []
 
@@ -138,7 +266,13 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 self.commandlist.append(
                     Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
                 )
-                self.buildpathocc(obj, shapeWires, self.getZValues(obj))
+                self.buildpathocc(
+                    obj,
+                    shapeWires,
+                    self.getZValues(obj),
+                    forward=not obj.Reverse,
+                    start_idx=obj.StartVertex,
+                )
                 wires.extend(shapeWires)
             self.wires = wires
             Path.Log.debug("processing {} jobshapes -> {} wires".format(len(jobshapes), len(wires)))
