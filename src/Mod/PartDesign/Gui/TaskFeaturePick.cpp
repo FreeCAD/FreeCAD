@@ -159,7 +159,7 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
             Gui::Application::Instance->getViewProvider(origin));
         if (vpo) {
             vpo->setTemporaryVisibility(originVisStatus[origin]);
-            vpo->setTemporaryScale(4.0);  // NOLINT
+            vpo->setTemporaryScale(2.0);  // NOLINT
             vpo->setPlaneLabelVisibility(true);
             origins.push_back(vpo);
         }

@@ -41,6 +41,7 @@ class Property;
 }
 
 namespace Gui {
+class ViewProviderPlane;
 class ViewProvider;
 }
 
@@ -152,6 +153,8 @@ private:
     using Connection = boost::signals2::connection;
     Connection connectDelObject;
     Connection connectDelDocument;
+
+    std::vector<Gui::ViewProviderPlane*> modifiedPlaneViewProviders;
 };
 
 /// simulation dialog for the TaskView

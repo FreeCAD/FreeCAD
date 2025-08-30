@@ -203,6 +203,12 @@ public:
     void hideViewProvider(const App::DocumentObject*);
     /// Get the view provider of the given object
     Gui::ViewProvider* getViewProvider(const App::DocumentObject*) const;
+    /// Get the type safe view provider of the given object
+    template <typename T>
+    T* getViewProvider(const App::DocumentObject* obj) const
+    {
+        return freecad_cast<T*>(getViewProvider(obj));
+    }
     //@}
 
     /// true when the application shutting down

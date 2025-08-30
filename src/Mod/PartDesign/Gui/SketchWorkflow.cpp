@@ -550,7 +550,7 @@ private:
             Gui::Application::Instance->getViewProvider(origin));
         if (vpo) {
             vpo->setTemporaryVisibility(Gui::DatumElement::Planes | Gui::DatumElement::Axes);
-            vpo->setTemporaryScale(3.0);  // NOLINT
+            vpo->setTemporaryScale(2.0);  // NOLINT
             vpo->setPlaneLabelVisibility(true);
         }
     }
