@@ -1,18 +1,3 @@
-# In the current version, CMake cannot enable C++17 mode for some compilers.
-# This function uses a workaround.
-function(custom_enable_cxx17 TARGET)
-    # Enable C++17 where CMake can.
-    target_compile_features(${TARGET} PUBLIC cxx_std_17)
-    # Enable C++latest mode in Visual Studio
-    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        set_target_properties(${TARGET} PROPERTIES COMPILE_FLAGS "/std:c++latest")
-    # Enable linking with libc++, libc++experimental, and pthread for Clang
-    elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-        set_target_properties(${TARGET} PROPERTIES COMPILE_FLAGS "-stdlib=libc++ -pthread")
-        target_link_libraries(${TARGET} c++experimental pthread)
-    endif()
-endfunction(custom_enable_cxx17)
-
 # Function to add a library target.
 function(custom_add_library_from_dir TARGET)
     # Gather files from the current directory
