@@ -72,6 +72,30 @@ public:
     bool hasStoredExpressions() const;
 
 private:
+    struct CopyCalculationParams {
+        int firstCurveCreated;
+        int size;
+        int numberOfCopiesToMake;
+    };
+
+    /// calculate parameters needed for copy operations
+    CopyCalculationParams calculateCopyParams(Sketcher::SketchObject* sketchObject,
+                                             const std::vector<int>& listOfGeoIds,
+                                             size_t shapeGeometrySize,
+                                             int numberOfCopies) const;
+
+    /// try to apply an expression to a constraint if it matches copied geometry
+    bool tryApplyExpressionToConstraint(const Sketcher::Constraint* cstr,
+                                       size_t constraintIndex,
+                                       int originalIndex,
+                                       const CopyCalculationParams& params,
+                                       int secondNumberOfCopies,
+                                       const std::shared_ptr<App::Expression>& expression,
+                                       const std::string& sketchObj) const;
+
+    /// check if a constraint references the specified geometry ID
+    bool constraintReferencesGeometry(const Sketcher::Constraint* cstr, int geoId) const;
+
     // original geo id to expression mapping
     std::map<int, std::shared_ptr<App::Expression>> originalExpressions;
 };

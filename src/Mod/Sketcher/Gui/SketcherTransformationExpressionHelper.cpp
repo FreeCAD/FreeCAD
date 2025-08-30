@@ -70,62 +70,35 @@ void SketcherTransformationExpressionHelper::copyExpressionsToNewConstraints(
     int numberOfCopies,
     int secondNumberOfCopies)
 {
-    // apply stored expressions to new constraints, but bail out if we haven't stored
-    // anything
+    // apply stored expressions to new constraints, but bail out if we haven't stored anything
     if (originalExpressions.empty() || !sketchObject) {
         return;
     }
 
     std::string sketchObj = Gui::Command::getObjectCmd(sketchObject);
-
     const std::vector<Sketcher::Constraint*>& vals = sketchObject->Constraints.getValues();
 
+    CopyCalculationParams params = calculateCopyParams(sketchObject, listOfGeoIds, 
+                                                      shapeGeometrySize, numberOfCopies);
     for (size_t i = 0; i < vals.size(); i++) {
         const auto& cstr = vals[i];
-        if (cstr->isDriving && cstr->isDimensional()) {
+        if (!cstr->isDriving || !cstr->isDimensional()) {
+            continue;
+        }
 
-            bool expressionApplied = false;
+        // try to find and apply a matching expression for this constraint
+        bool expressionApplied = false;
+        for (const auto& exprPair : originalExpressions) {
+            int originalGeoId = exprPair.first;
+            int originalIndex = indexOfGeoId(listOfGeoIds, originalGeoId);
 
-            for (const auto& exprPair : originalExpressions) {
+            if (originalIndex >= 0) {
+                expressionApplied = tryApplyExpressionToConstraint(
+                    cstr, i, originalIndex, params, secondNumberOfCopies, 
+                    exprPair.second, sketchObj);
+
                 if (expressionApplied) {
-                    break;  // found a match, stop searching for this constraint
-                }
-
-                int originalGeoId = exprPair.first;
-
-                // index of the original geometry before operation of the sketcher tool
-                int originalIndex = indexOfGeoId(listOfGeoIds, originalGeoId);
-                if (originalIndex >= 0) {
-                    int firstCurveCreated = sketchObject->getHighestCurveIndex() + 1
-                        - static_cast<int>(shapeGeometrySize);
-                    int size = static_cast<int>(listOfGeoIds.size());
-
-                    // check all copies of this geometry as we assign them the same expression
-                    int numberOfCopiesToMake = numberOfCopies == 0 ? 1 : numberOfCopies;
-
-                    for (int k = 0; k < secondNumberOfCopies && !expressionApplied; k++) {
-                        for (int copy = 1; copy <= numberOfCopiesToMake && !expressionApplied;
-                             copy++) {
-                            int expectedNewGeoId = firstCurveCreated + originalIndex
-                                + size * (copy - 1) + size * numberOfCopiesToMake * k;
-
-                            // if this constraint references our copied geometry, apply the
-                            // expression
-                            if (cstr->First == expectedNewGeoId
-                                || (cstr->Second == expectedNewGeoId
-                                    && cstr->Type != Sketcher::Radius
-                                    && cstr->Type != Sketcher::Diameter
-                                    && cstr->Type != Sketcher::Weight)) {
-
-                                Gui::Command::doCommand(Gui::Command::Doc,
-                                                        "%s.setExpression('Constraints[%d]', '%s')",
-                                                        sketchObj.c_str(),
-                                                        static_cast<int>(i),
-                                                        exprPair.second->toString().c_str());
-                                expressionApplied = true;
-                            }
-                        }
-                    }
+                    break;
                 }
             }
         }
@@ -140,4 +113,59 @@ void SketcherTransformationExpressionHelper::clear()
 bool SketcherTransformationExpressionHelper::hasStoredExpressions() const
 {
     return !originalExpressions.empty();
+}
+
+SketcherTransformationExpressionHelper::CopyCalculationParams 
+SketcherTransformationExpressionHelper::calculateCopyParams(
+    Sketcher::SketchObject* sketchObject,
+    const std::vector<int>& listOfGeoIds,
+    size_t shapeGeometrySize,
+    int numberOfCopies) const
+{
+    CopyCalculationParams params;
+    params.firstCurveCreated = sketchObject->getHighestCurveIndex() + 1 
+                              - static_cast<int>(shapeGeometrySize);
+    params.size = static_cast<int>(listOfGeoIds.size());
+    params.numberOfCopiesToMake = numberOfCopies == 0 ? 1 : numberOfCopies;
+    return params;
+}
+
+bool SketcherTransformationExpressionHelper::tryApplyExpressionToConstraint(
+    const Sketcher::Constraint* cstr,
+    size_t constraintIndex,
+    int originalIndex,
+    const CopyCalculationParams& params,
+    int secondNumberOfCopies,
+    const std::shared_ptr<App::Expression>& expression,
+    const std::string& sketchObj) const
+{
+    // check all copies of this geometry as we assign them the same expression
+    for (int k = 0; k < secondNumberOfCopies; k++) {
+        for (int copy = 1; copy <= params.numberOfCopiesToMake; copy++) {
+            int expectedNewGeoId = params.firstCurveCreated + originalIndex
+                + params.size * (copy - 1) + params.size * params.numberOfCopiesToMake * k;
+
+            // if this constraint references our copied geometry, apply the expression
+            if (constraintReferencesGeometry(cstr, expectedNewGeoId)) {
+                Gui::Command::doCommand(Gui::Command::Doc,
+                                      "%s.setExpression('Constraints[%d]', '%s')",
+                                      sketchObj.c_str(),
+                                      static_cast<int>(constraintIndex),
+                                      expression->toString().c_str());
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool SketcherTransformationExpressionHelper::constraintReferencesGeometry(
+    const Sketcher::Constraint* cstr, 
+    int geoId) const
+{
+    return cstr->First == geoId
+        || (cstr->Second == geoId
+            && cstr->Type != Sketcher::Radius
+            && cstr->Type != Sketcher::Diameter
+            && cstr->Type != Sketcher::Weight);
 }
