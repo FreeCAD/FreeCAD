@@ -3914,32 +3914,32 @@ The default template is located at:
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="213"/>
-      <location filename="../../ArchStructure.py" line="983"/>
+      <location filename="../../ArchStructure.py" line="982"/>
       <source>Facemaker returned an error</source>
       <translation>Kreator ścian zwrócił błąd</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1324"/>
+      <location filename="../../ArchStructure.py" line="1323"/>
       <source>Node Tools</source>
       <translation>Narzędzia węzłów</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1343"/>
+      <location filename="../../ArchStructure.py" line="1342"/>
       <source>Extends the nodes of this element to reach the nodes of another element</source>
       <translation>Rozszerza punkty węzłów tego elementu, aby dosięgnąć punktów węzłów innego elementu</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1350"/>
+      <location filename="../../ArchStructure.py" line="1349"/>
       <source>Connects nodes of this element with the nodes of another element</source>
       <translation>Łączy węzły tego elementu z węzłami innego elementu</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1357"/>
+      <location filename="../../ArchStructure.py" line="1356"/>
       <source>Toggles all structural nodes of the document on/off</source>
       <translation>Włącza / wyłącza wszystkie węzły konstrukcyjne dokumentu</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1362"/>
+      <location filename="../../ArchStructure.py" line="1361"/>
       <source>Extrusion Tools</source>
       <translation>Narzędzia do wyciągania</translation>
     </message>
@@ -3959,85 +3959,85 @@ The default template is located at:
       <translation type="unfinished">Error: The base shape could not be extruded along this tool object</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1329"/>
+      <location filename="../../ArchStructure.py" line="1328"/>
       <source>Reset Nodes</source>
       <translation type="unfinished">Reset Nodes</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1336"/>
+      <location filename="../../ArchStructure.py" line="1335"/>
       <source>Edit Nodes</source>
       <translation type="unfinished">Edit Nodes</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1342"/>
+      <location filename="../../ArchStructure.py" line="1341"/>
       <source>Extend Nodes</source>
       <translation type="unfinished">Extend Nodes</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1349"/>
+      <location filename="../../ArchStructure.py" line="1348"/>
       <source>Connect Nodes</source>
       <translation type="unfinished">Connect Nodes</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1356"/>
+      <location filename="../../ArchStructure.py" line="1355"/>
       <source>Toggle All Nodes</source>
       <translation type="unfinished">Toggle All Nodes</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1367"/>
-      <location filename="../../ArchStructure.py" line="1501"/>
+      <location filename="../../ArchStructure.py" line="1366"/>
+      <location filename="../../ArchStructure.py" line="1500"/>
       <source>Select Tool</source>
       <translation type="unfinished">Select Tool</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1368"/>
+      <location filename="../../ArchStructure.py" line="1367"/>
       <source>Selects object or edges to be used as a tool (extrusion path)</source>
       <translation type="unfinished">Selects object or edges to be used as a tool (extrusion path)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1391"/>
-      <location filename="../../ArchStructure.py" line="1423"/>
+      <location filename="../../ArchStructure.py" line="1390"/>
+      <location filename="../../ArchStructure.py" line="1422"/>
       <source>Choose another Structure object:</source>
       <translation>Wybierz inny obiekt konstrukcji:</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1396"/>
-      <location filename="../../ArchStructure.py" line="1428"/>
+      <location filename="../../ArchStructure.py" line="1395"/>
+      <location filename="../../ArchStructure.py" line="1427"/>
       <source>The chosen object is not a Structure</source>
       <translation>Wybrany obiekt nie jest konstrukcją</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1399"/>
-      <location filename="../../ArchStructure.py" line="1431"/>
+      <location filename="../../ArchStructure.py" line="1398"/>
+      <location filename="../../ArchStructure.py" line="1430"/>
       <source>The chosen object has no structural nodes</source>
       <translation>Wybrany obiekt nie ma węzłów konstrukcyjnych</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1402"/>
-      <location filename="../../ArchStructure.py" line="1434"/>
+      <location filename="../../ArchStructure.py" line="1401"/>
+      <location filename="../../ArchStructure.py" line="1433"/>
       <source>One of these objects has more than 2 nodes</source>
       <translation>Jeden z tych obiektów ma więcej niż 2 węzły</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1409"/>
-      <location filename="../../ArchStructure.py" line="1441"/>
+      <location filename="../../ArchStructure.py" line="1408"/>
+      <location filename="../../ArchStructure.py" line="1440"/>
       <source>Unable to find a suitable intersection point</source>
       <translation>Nie można znaleźć odpowiedniego punktu przecięcia</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1412"/>
+      <location filename="../../ArchStructure.py" line="1411"/>
       <source>Intersection found.
 </source>
       <translation>Znaleziono przecięcie.
 </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1444"/>
+      <location filename="../../ArchStructure.py" line="1443"/>
       <source>Intersection found.</source>
       <translation>Znaleziono przecięcie.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1480"/>
+      <location filename="../../ArchStructure.py" line="1479"/>
       <source>Done</source>
       <translation>Gotowe</translation>
     </message>
@@ -5055,7 +5055,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="448"/>
-      <location filename="../../ArchStructure.py" line="1591"/>
+      <location filename="../../ArchStructure.py" line="1590"/>
       <source>Could not compute a shape</source>
       <translation type="unfinished">Could not compute a shape</translation>
     </message>
@@ -5904,7 +5904,7 @@ Utwórz kilka, aby zdefiniować typy ścian.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="474"/>
       <source>The selected wall contains no subwalls to merge</source>
-      <translation type="unfinished">The selected wall contains no subwalls to merge</translation>
+      <translation>Wybrana ściana nie zawiera ścian podrzędnych do scalenia</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="477"/>
@@ -6023,7 +6023,7 @@ Utwórz kilka, aby zdefiniować typy ścian.</translation>
     <name>App::Property</name>
     <message>
       <location filename="../../ArchStructure.py" line="677"/>
-      <location filename="../../ArchStructure.py" line="1497"/>
+      <location filename="../../ArchStructure.py" line="1496"/>
       <source>An optional extrusion path for this element</source>
       <translation>Opcjonalna ścieżka wyciągnięcia dla tego elementu</translation>
     </message>
@@ -6128,42 +6128,42 @@ Utwórz kilka, aby zdefiniować typy ścian.</translation>
 Wybierz właściwość użytkownika PropertySet do użycia przy tworzeniu wariantu kształtu, z tym samym obiektem ArchSketch </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1188"/>
+      <location filename="../../ArchStructure.py" line="1187"/>
       <source>If the nodes are visible or not</source>
       <translation>Jeśli węzły są widoczne lub nie</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1190"/>
+      <location filename="../../ArchStructure.py" line="1189"/>
       <source>The width of the nodes line</source>
       <translation>Szerokość linii węzłów</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1192"/>
+      <location filename="../../ArchStructure.py" line="1191"/>
       <source>The size of the node points</source>
       <translation>Rozmiar punktów węzła</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1195"/>
+      <location filename="../../ArchStructure.py" line="1194"/>
       <source>The color of the nodes line</source>
       <translation>Kolor linii węzłów</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1198"/>
+      <location filename="../../ArchStructure.py" line="1197"/>
       <source>The type of structural node</source>
       <translation>Typ węzła strukturalnego</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1534"/>
+      <location filename="../../ArchStructure.py" line="1533"/>
       <source>Axes systems this structure is built on</source>
       <translation>Systemy osi, na których zbudowana jest ta struktura</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1535"/>
+      <location filename="../../ArchStructure.py" line="1534"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>Numery elementów do wykluczenia, gdy konstrukcja oparta jest na osiach</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1536"/>
+      <location filename="../../ArchStructure.py" line="1535"/>
       <source>If true the element are aligned with axes</source>
       <translation>Jeśli to prawda, element jest wyrównany z osiami</translation>
     </message>
@@ -6587,7 +6587,7 @@ jeśli wysokość tych obiektów jest ustawiona na 0</translation>
     <message>
       <location filename="../../ArchSite.py" line="587"/>
       <source>The generated sun ray object</source>
-      <translation type="unfinished">The generated sun ray object</translation>
+      <translation>Wygenerowany obiekt promienia słonecznego</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="798"/>
@@ -6642,42 +6642,42 @@ jeśli wysokość tych obiektów jest ustawiona na 0</translation>
     <message>
       <location filename="../../ArchSite.py" line="823"/>
       <source>Show the sun position for a specific date and time</source>
-      <translation type="unfinished">Show the sun position for a specific date and time</translation>
+      <translation>Pokaż pozycję słońca dla określonej daty i godziny</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="825"/>
       <source>The month of the year to show the sun position</source>
-      <translation type="unfinished">The month of the year to show the sun position</translation>
+      <translation>Miesiąc w roku pokazujący pozycję słońca</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="828"/>
       <source>The day of the month to show the sun position</source>
-      <translation type="unfinished">The day of the month to show the sun position</translation>
+      <translation>Dzień miesiąca pokazujący pozycję słońca</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="832"/>
       <source>The hour of the day to show the sun position</source>
-      <translation type="unfinished">The hour of the day to show the sun position</translation>
+      <translation>Godzina dnia pokazująca pozycję słońca</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="836"/>
       <source>Show text labels for key hours on the sun path</source>
-      <translation type="unfinished">Show text labels for key hours on the sun path</translation>
+      <translation>Wyświetl opisy kluczowych godzin na ścieżce słońca</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1449"/>
       <source>The altitude of the sun above the horizon</source>
-      <translation type="unfinished">The altitude of the sun above the horizon</translation>
+      <translation>Wysokość słońca nad horyzontem</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1451"/>
       <source>The compass direction of the sun (0° is North)</source>
-      <translation type="unfinished">The compass direction of the sun (0° is North)</translation>
+      <translation>Azymut słońca (0° odpowiada północy)</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1453"/>
       <source>The date and time for this sun position</source>
-      <translation type="unfinished">The date and time for this sun position</translation>
+      <translation>Data i czas dla tej pozycji słońca</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="166"/>
@@ -8338,12 +8338,12 @@ Narzędzie GUI „Edytuj segment ściany” jest dostępne w zewnętrznym dodatk
   <context>
     <name>Arch_StructureTools</name>
     <message>
-      <location filename="../../ArchStructure.py" line="1651"/>
+      <location filename="../../ArchStructure.py" line="1650"/>
       <source>Structure Tools</source>
       <translation type="unfinished">Structure Tools</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1654"/>
+      <location filename="../../ArchStructure.py" line="1653"/>
       <source>Structure tools</source>
       <translation>Narzędzia konstrukcyjne</translation>
     </message>
@@ -8389,7 +8389,7 @@ Narzędzie GUI „Edytuj segment ściany” jest dostępne w zewnętrznym dodatk
     <message>
       <location filename="../../InitGui.py" line="417"/>
       <source>Draft Snap</source>
-      <translation type="unfinished">Draft Snap</translation>
+      <translation>Rysunek Roboczy — Przyciąganie</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="418"/>
@@ -8789,7 +8789,7 @@ Narzędzie GUI „Edytuj segment ściany” jest dostępne w zewnętrznym dodatk
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="315"/>
       <source>Nests a series of selected shapes in a container</source>
-      <translation>Zagnieżdża serię wybranych kształtów w pojemniku</translation>
+      <translation>Zagnieżdża serię wybranych kształtów w zawartości</translation>
     </message>
   </context>
   <context>
@@ -9042,7 +9042,7 @@ Narzędzie GUI „Edytuj segment ściany” jest dostępne w zewnętrznym dodatk
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="240"/>
       <source>Closes holes in open shapes, turning them into solids</source>
-      <translation type="unfinished">Closes holes in open shapes, turning them into solids</translation>
+      <translation>Zamyka otwory kształtów otwartych, przekształcając je w bryły</translation>
     </message>
   </context>
   <context>
@@ -9713,37 +9713,37 @@ Nie można eksplorować.</translation>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="105"/>
       <source>Search Objects</source>
-      <translation type="unfinished">Search Objects</translation>
+      <translation>Szukaj obiektów</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="106"/>
       <source>Searches for objects in the tree</source>
-      <translation type="unfinished">Searches for objects in the tree</translation>
+      <translation>Wyszukuje obiekty w drzewie</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="127"/>
       <source> Material Operations</source>
-      <translation type="unfinished"> Material Operations</translation>
+      <translation> Operacje na materiałach</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="134"/>
       <source>New Material</source>
-      <translation type="unfinished">New Material</translation>
+      <translation>Nowy materiał</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="142"/>
       <source>Create new Multi-Material</source>
-      <translation type="unfinished">Create new Multi-Material</translation>
+      <translation>Utwórz nowy materiał wielowarstwowy</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="151"/>
       <source>Merge Duplicates</source>
-      <translation type="unfinished">Merge Duplicates</translation>
+      <translation>Scal duplikaty</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="162"/>
       <source>Delete Unused</source>
-      <translation type="unfinished">Delete Unused</translation>
+      <translation>Usuń nieużywane</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="183"/>
@@ -10139,17 +10139,17 @@ Naciśnij przycisk, aby dowiedzieć się więcej.</translation>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="89"/>
       <source>Active</source>
-      <translation type="unfinished">Active</translation>
+      <translation>Aktywne</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="90"/>
       <source>Add Level</source>
-      <translation type="unfinished">Add Level</translation>
+      <translation>Dodaj poziom</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="91"/>
       <source>Add Proxy WP</source>
-      <translation type="unfinished">Add Proxy WP</translation>
+      <translation>Dodaj pośrednią płaszczyznę roboczą</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="93"/>
@@ -10159,12 +10159,12 @@ Naciśnij przycisk, aby dowiedzieć się więcej.</translation>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="95"/>
       <source>Save View Position</source>
-      <translation type="unfinished">Save View Position</translation>
+      <translation>Zapisz pozycję widoku</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="124"/>
       <source>Toggles the visibility of selected items</source>
-      <translation type="unfinished">Toggles the visibility of selected items</translation>
+      <translation>Włącz / wyłącz widoczność wybranego elementu</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="125"/>
@@ -10397,9 +10397,9 @@ Do you want to proceed using the default template?</translation>
       <source>The default WebGL export template is not available at path: {}
 
 Please check your FreeCAD installation or provide a custom template under menu Preferences → Import-Export → WebGL.</source>
-      <translation type="unfinished">The default WebGL export template is not available at path: {}
+      <translation>Domyślny szablon eksportu WebGL nie jest dostępny w ścieżce: {}
 
-Please check your FreeCAD installation or provide a custom template under menu Preferences → Import-Export → WebGL.</translation>
+Sprawdź swoją instalację FreeCAD lub wprowadź niestandardowy szablon w menu Preferencje → Import-Eksport → WebGL.</translation>
     </message>
     <message>
       <location filename="../../importers/importWebGL.py" line="191"/>
@@ -10409,12 +10409,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="108"/>
       <source>Deactivate Container</source>
-      <translation type="unfinished">Deactivate Container</translation>
+      <translation>Dezaktywuj zawartość</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="110"/>
       <source>Make Active Container</source>
-      <translation type="unfinished">Make Active Container</translation>
+      <translation>Utwórz aktywną zawartość</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="114"/>
@@ -10460,27 +10460,27 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="144"/>
       <source>Load Material</source>
-      <translation type="unfinished">Load Material</translation>
+      <translation>Wczytaj materiał</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="148"/>
       <source>Convert to Type</source>
-      <translation type="unfinished">Convert to Type</translation>
+      <translation>Konwertuj na typ</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="435"/>
       <source>View Diff</source>
-      <translation type="unfinished">View Diff</translation>
+      <translation>Pokaż różnice</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="439"/>
       <source>Save IFC File</source>
-      <translation type="unfinished">Save IFC File</translation>
+      <translation>Zapisz plik IFC</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="442"/>
       <source>Save IFC File As…</source>
-      <translation type="unfinished">Save IFC File As…</translation>
+      <translation>Zapisz plik IFC jako …</translation>
     </message>
   </context>
   <context>
@@ -11014,7 +11014,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="40"/>
       <source>New Page</source>
-      <translation type="unfinished">New Page</translation>
+      <translation>Nowa strona</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="43"/>
@@ -11430,7 +11430,8 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="356"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color of faces in the 3D view. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Part/Part Design Color &amp;gt; Shape Appearance &amp;gt; Shape color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color of faces in the 3D view. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Part/Part Design Color &amp;gt; Shape Appearance &amp;gt; Shape color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Domyślny kolor powierzchni w widoku 3D. 
+Lokalizacja w preferencjach: &lt;span style=" font-weight:600;"&gt;Część / Projekt Części → Wygląd kształtu &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="363"/>
@@ -11450,7 +11451,9 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="384"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color for helper objects such as grids and axes. Location in preferences: &lt;span style=" font-weight:600;"&gt;BIM  &amp;gt; Defaults &amp;gt; Helper colors&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color for helper objects such as grids and axes. Location in preferences: &lt;span style=" font-weight:600;"&gt;BIM  &amp;gt; Defaults &amp;gt; Helper colors&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Domyślny kolor obiektów pomocniczych takich jak siatki i osie. 
+Lokalizacja w preferencjach:
+ &lt;span style=" font-weight:600;"&gt;BIM → Ustawienia domyślnie → Obiekty pomocnicze&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="391"/>
@@ -11460,7 +11463,8 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="398"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color of lines in the 3D view. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Part/Part Design Color &amp;gt; Shape Appearance &amp;gt; Default line color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color of lines in the 3D view. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Part/Part Design Color &amp;gt; Shape Appearance &amp;gt; Default line color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Domyślny kolor powierzchni w widoku 3D. 
+Lokalizacja w preferencjach: &lt;span style=" font-weight:600;"&gt;Część / Projekt Części → Wygląd kształtu → Kolor linii&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="419"/>

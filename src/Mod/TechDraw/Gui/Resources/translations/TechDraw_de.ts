@@ -910,7 +910,7 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1200"/>
       <source>Cosmetic 1 Point Circle</source>
-      <translation type="unfinished">Cosmetic 1 Point Circle</translation>
+      <translation>Hilfskreis um 1 Punkt</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1201"/>
@@ -953,7 +953,7 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
       <location filename="../../CommandExtensionPack.cpp" line="1106"/>
       <location filename="../../CommandExtensionPack.cpp" line="1287"/>
       <source>Cosmetic 2 Point Circle</source>
-      <translation type="unfinished">Cosmetic 2 Point Circle</translation>
+      <translation>Hilfskreis durch 2-Punkte</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1107"/>
@@ -1619,7 +1619,7 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
     <message>
       <location filename="../../CommandDecorate.cpp" line="261"/>
       <source>Select an image file</source>
-      <translation type="unfinished">Select an image file</translation>
+      <translation>Eine Bilddatei auswählen</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="263"/>
@@ -1660,7 +1660,7 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
     <message>
       <location filename="../../CommandAnnotate.cpp" line="91"/>
       <source>Adds a leader line</source>
-      <translation type="unfinished">Adds a leader line</translation>
+      <translation>Fügt eine Hinweislinie hinzu</translation>
     </message>
   </context>
   <context>
@@ -1945,7 +1945,7 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1333"/>
       <source>Toggle Edge Visibility</source>
-      <translation type="unfinished">Toggle Edge Visibility</translation>
+      <translation>Kantensichtbarkeit umschalten</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1334"/>
@@ -3610,7 +3610,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="886"/>
       <source>Selection is empty.</source>
-      <translation type="unfinished">Selection is empty.</translation>
+      <translation>Auswahl ist leer.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="909"/>
@@ -4334,7 +4334,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TemplateTextField.cpp" line="57"/>
       <source>Click to update text</source>
-      <translation type="unfinished">Click to update text</translation>
+      <translation>Text durch Anklicken aktualisieren</translation>
     </message>
   </context>
   <context>
@@ -6459,7 +6459,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="95"/>
       <source>Bubble shape</source>
-      <translation type="unfinished">Bubble shape</translation>
+      <translation>Blasenform</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="220"/>
@@ -7898,7 +7898,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLinkDim.ui" line="87"/>
       <source>Geometry1</source>
-      <translation type="unfinished">Geometry1</translation>
+      <translation>Geometrie1</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="107"/>
@@ -7908,7 +7908,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLinkDim.ui" line="127"/>
       <source>Geometry2</source>
-      <translation type="unfinished">Geometry2</translation>
+      <translation>Geometrie2</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="153"/>
@@ -9359,7 +9359,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="181"/>
       <source>End angle</source>
-      <translation type="unfinished">End angle</translation>
+      <translation>Endwinkel</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="188"/>
@@ -9413,7 +9413,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
       <location filename="../../CommandExtensionPack.cpp" line="857"/>
       <location filename="../../CommandExtensionPack.cpp" line="1280"/>
       <source>Cosmetic 1 Point Circle</source>
-      <translation type="unfinished">Cosmetic 1 Point Circle</translation>
+      <translation>Hilfskreis um 1 Punkt</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="858"/>

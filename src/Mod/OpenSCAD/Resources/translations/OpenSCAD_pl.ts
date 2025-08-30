@@ -114,7 +114,7 @@ funkcje będą wymagać swoich elementów podrzędnych w widoku drzewa</translat
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="102"/>
       <source>Use ViewProviders in Tree View</source>
-      <translation type="unfinished">Use ViewProviders in Tree View</translation>
+      <translation>Użyj dostawcy widoku w Widoku drzewa</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="182"/>
@@ -321,7 +321,8 @@ funkcje będą wymagać swoich elementów podrzędnych w widoku drzewa</translat
     <message>
       <location filename="../../OpenSCADCommands.py" line="103"/>
       <source>Explodes a fusion or compound and applies random colors</source>
-      <translation type="unfinished">Explodes a fusion or compound and applies random colors</translation>
+      <translation>Rozbija złożenie lub bryłę zespoloną i nadaje kolory losowo.
+</translation>
     </message>
   </context>
   <context>
@@ -360,7 +361,7 @@ funkcje będą wymagać swoich elementów podrzędnych w widoku drzewa</translat
     <message>
       <location filename="../../OpenSCADCommands.py" line="269"/>
       <source>Creates a feature to increase the tolerance</source>
-      <translation type="unfinished">Creates a feature to increase the tolerance</translation>
+      <translation>Tworzy cechę zwiększając tolerancję</translation>
     </message>
   </context>
   <context>
@@ -373,7 +374,7 @@ funkcje będą wymagać swoich elementów podrzędnych w widoku drzewa</translat
     <message>
       <location filename="../../OpenSCADCommands.py" line="286"/>
       <source>Expands all placements downwards in the Tree View</source>
-      <translation type="unfinished">Expands all placements downwards in the Tree View</translation>
+      <translation>Rozwiń wszystkie umiejscowienia w głąb Widoku drzewa</translation>
     </message>
   </context>
   <context>

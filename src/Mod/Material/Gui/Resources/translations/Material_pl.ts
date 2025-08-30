@@ -319,7 +319,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="128"/>
       <source>Copy to Clipboard</source>
-      <translation type="unfinished">Copy to Clipboard</translation>
+      <translation>Skopiuj do schowka</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="151"/>
@@ -827,7 +827,7 @@ Najlepiej dokonać zapisu jako nowy materiał.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="205"/>
       <source>Toggle Favorite</source>
-      <translation type="unfinished">Toggle Favorite</translation>
+      <translation>Włącz / wyłącz ulubione</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="164"/>
@@ -991,7 +991,7 @@ Najlepiej dokonać zapisu jako nowy materiał.</translation>
     <message>
       <location filename="../../ModelSelect.ui" line="162"/>
       <source>Toggle Favorites</source>
-      <translation type="unfinished">Toggle Favorites</translation>
+      <translation>Włącz / wyłącz ulubione</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="172"/>

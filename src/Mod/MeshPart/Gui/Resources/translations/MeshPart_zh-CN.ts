@@ -217,9 +217,9 @@
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
 This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</source>
-      <translation type="unfinished">Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+      <translation>按下“开始”，然后在网格上选取点；设置足够多的点后，右键单击并选择“创建”。重复此过程以创建更多样条线。关闭此任务面板以完成操作。
 
-This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</translation>
+此命令仅适用于网格对象，不适用于常规面或曲面。要将对象转换为网格，请使用网格工作台的工具。</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -540,12 +540,12 @@ Select a different shape.</source>
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Trim With Plane</source>
-      <translation type="unfinished">Trim With Plane</translation>
+      <translation>用平面修剪</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Select the side to keep</source>
-      <translation type="unfinished">Select the side to keep</translation>
+      <translation>选择要保留的一侧</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>

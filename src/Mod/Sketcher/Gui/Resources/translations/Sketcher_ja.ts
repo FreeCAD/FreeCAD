@@ -850,27 +850,27 @@ invalid constraints, and degenerate geometry</source>
       <translation>スケッチ拘束の名前を変更</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1732"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1734"/>
       <source>Drag Point</source>
       <translation>点をドラッグ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1732"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1734"/>
       <source>Drag Curve</source>
       <translation>曲線をドラッグ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1733"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1735"/>
       <source>Drag geometries</source>
       <translation>ジオメトリーをドラッグ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1112"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1114"/>
       <source>Drag Constraint</source>
       <translation>拘束をドラッグ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1313"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1315"/>
       <source>Modify sketch constraints</source>
       <translation>スケッチ拘束を変更</translation>
     </message>
@@ -3069,7 +3069,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
     <message>
       <location filename="../../SketcherSettings.cpp" line="232"/>
       <source>Never</source>
-      <translation>常にしない</translation>
+      <translation>なし</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="233"/>
@@ -3766,7 +3766,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="74"/>
       <source>Ignores construction geometry in the search</source>
-      <translation type="unfinished">Ignores construction geometry in the search</translation>
+      <translation>検索で補助ジオメトリーを無視</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="77"/>
@@ -3798,27 +3798,27 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="108"/>
       <source>Invalid Constraints</source>
-      <translation type="unfinished">Invalid Constraints</translation>
+      <translation>無効な拘束</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="137"/>
       <source>Delete Constraints Linked to External Geometry</source>
-      <translation type="unfinished">Delete Constraints Linked to External Geometry</translation>
+      <translation>外部ジオメトリーにリンクされている拘束を削除</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="147"/>
       <source>Degenerate Geometry</source>
-      <translation type="unfinished">Degenerate Geometry</translation>
+      <translation>縮退したジオメトリー</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="176"/>
       <source>Reversed External Geometry</source>
-      <translation type="unfinished">Reversed External Geometry</translation>
+      <translation>反転された外部ジオメトリー</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="195"/>
       <source>Swap Endpoints in Constraints</source>
-      <translation type="unfinished">Swap Endpoints in Constraints</translation>
+      <translation>拘束内の端点を交換</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="205"/>
@@ -3884,119 +3884,119 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3160"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3249"/>
       <source>A dialog is already open in the task panel</source>
       <translation>タスクパネルで既にダイアログが開かれています</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3182"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3271"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>スケッチが不正で、編集できません。</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3340"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3429"/>
       <source>The following constraint is partially redundant:</source>
       <translation>以下の拘束は一部が冗長です:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3341"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3430"/>
       <source>The following constraints are partially redundant:</source>
       <translation>以下の拘束は一部が冗長です:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3143"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3232"/>
       <source>Edit Sketch</source>
       <translation>スケッチを編集</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3161"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3250"/>
       <source>Close this dialog?</source>
       <translation>このダイアログを閉じますか？</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3180"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3269"/>
       <source>Invalid Sketch</source>
       <translation>無効なスケッチ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3181"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3270"/>
       <source>Open the sketch validation tool?</source>
       <translation>スケッチ検証ツールを開きますか？</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3326"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3415"/>
       <source>Remove the following constraint:</source>
       <translation>以下の拘束を削除してください：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3327"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3416"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>以下の拘束から少なくとも1つを削除してください：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3333"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3422"/>
       <source>Remove the following redundant constraint:</source>
       <translation>以下の冗長な拘束を削除してください：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3334"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3423"/>
       <source>Remove the following redundant constraints:</source>
       <translation>以下の冗長な拘束を削除してください：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3347"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3436"/>
       <source>Remove the following malformed constraint:</source>
       <translation>以下の不正な拘束を削除してください：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3348"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3437"/>
       <source>Remove the following malformed constraints:</source>
       <translation>以下の不正な拘束を削除してください：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3406"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3495"/>
       <source>Empty sketch</source>
       <translation>スケッチが空です</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3411"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3500"/>
       <source>Over-constrained:</source>
       <translation>過剰拘束:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3417"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3506"/>
       <source>Malformed constraints:</source>
       <translation>不正な拘束:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3425"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3514"/>
       <source>Redundant constraints:</source>
       <translation>冗長な拘束:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3431"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3520"/>
       <source>Partially redundant:</source>
       <translation>部分的に冗長:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3438"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3527"/>
       <source>Solver failed to converge</source>
       <translation>ソルバーの収束に失敗</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3444"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3533"/>
       <source>Under-constrained:</source>
       <translation>未拘束:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="3446"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3535"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n 自由度</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3450"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3539"/>
       <source>Fully constrained</source>
       <translation>完全拘束</translation>
     </message>
@@ -4475,7 +4475,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</sour
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3390"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3479"/>
       <source>and %1 more</source>
       <translation>%1 以上</translation>
     </message>
@@ -4777,7 +4777,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
     <message>
       <location filename="../../CommandConstraints.cpp" line="775"/>
       <source>Invalid constraint</source>
-      <translation type="unfinished">Invalid constraint</translation>
+      <translation>無効な拘束</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="501"/>
@@ -4987,7 +4987,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
     <message>
       <location filename="../../CommandConstraints.cpp" line="1405"/>
       <source>Dimension tools</source>
-      <translation type="unfinished">Dimension tools</translation>
+      <translation>寸法ツール</translation>
     </message>
   </context>
   <context>
@@ -5216,12 +5216,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="20"/>
       <source>Working Colors</source>
-      <translation type="unfinished">Working Colors</translation>
+      <translation>作業中の色</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="114"/>
       <source>Color of the crosshair cursor</source>
-      <translation type="unfinished">Color of the crosshair cursor</translation>
+      <translation>十字カーソルの色</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="139"/>

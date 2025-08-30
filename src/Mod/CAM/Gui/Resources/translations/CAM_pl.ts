@@ -1052,7 +1052,7 @@ mniejsze wartości (bardziej w lewo) dają dokładniejsze ścieżki narzędzia.<
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="129"/>
       <source>How much material to leave in the XY-plane (i.e. for finishing operation)</source>
-      <translation type="unfinished">How much material to leave in the XY-plane (i.e. for finishing operation)</translation>
+      <translation>Ilość materiału do pozostawienia w płaszczyźnie XY (np. na operację wykańczającą)</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="139"/>
@@ -4671,33 +4671,33 @@ Domyślnie: 3 mm</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="124"/>
-      <source>Extra allowance from part bound box in negative X direction</source>
-      <translation>Dodatkowy naddatek z obwiedni części w kierunku ujemnym X</translation>
+      <source>Extra allowance from part bound box in negative X-direction</source>
+      <translation type="unfinished">Extra allowance from part bound box in negative X-direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="133"/>
-      <source>Extra allowance from part bound box in positive X direction</source>
-      <translation>Dodatkowy naddatek z obwiedni części w kierunku dodatnim X</translation>
+      <source>Extra allowance from part bound box in positive X-direction</source>
+      <translation type="unfinished">Extra allowance from part bound box in positive X-direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="142"/>
-      <source>Extra allowance from part bound box in negative Y direction</source>
-      <translation>Dodatkowy naddatek z obwiedni części w kierunku ujemnym Y</translation>
+      <source>Extra allowance from part bound box in negative Y-direction</source>
+      <translation type="unfinished">Extra allowance from part bound box in negative Y-direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="151"/>
-      <source>Extra allowance from part bound box in positive Y direction</source>
-      <translation>Dodatkowy naddatek z obwiedni części w kierunku dodatnim Y</translation>
+      <source>Extra allowance from part bound box in positive Y-direction</source>
+      <translation type="unfinished">Extra allowance from part bound box in positive Y-direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="160"/>
-      <source>Extra allowance from part bound box in negative Z direction</source>
-      <translation>Dodatkowy naddatek z obwiedni części w kierunku ujemnym Z</translation>
+      <source>Extra allowance from part bound box in negative Z-direction</source>
+      <translation type="unfinished">Extra allowance from part bound box in negative Z-direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="169"/>
-      <source>Extra allowance from part bound box in positive Z direction</source>
-      <translation>Dodatkowy naddatek z ramki otaczającej części w dodatnim kierunku Z</translation>
+      <source>Extra allowance from part bound box in positive Z-direction</source>
+      <translation type="unfinished">Extra allowance from part bound box in positive Z-direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="235"/>
@@ -5229,13 +5229,13 @@ lub przeciwnie do ruchu wskazówek zegara (konwencjonalnie)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Probe.py" line="67"/>
-      <source>Number of points to probe in X direction</source>
-      <translation>Liczba punktów zbieranych sondą w kierunku X</translation>
+      <source>Number of points to probe in X-direction</source>
+      <translation type="unfinished">Number of points to probe in X-direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Probe.py" line="73"/>
-      <source>Number of points to probe in Y direction</source>
-      <translation>Liczba punktów zbieranych sondą w kierunku Y</translation>
+      <source>Number of points to probe in Y-direction</source>
+      <translation type="unfinished">Number of points to probe in Y-direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Probe.py" line="81"/>
@@ -5675,40 +5675,26 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
       <translation>Metoda wzoru</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Array.py" line="57"/>
-      <source>The spacing between the array copies in Linear pattern</source>
-      <translation>Odstęp między kopiami szyku, we wzorze liniowym</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="65"/>
-      <source>The number of copies in X direction in Linear pattern</source>
-      <translation>Liczba kopii w kierunku X wzoru liniowego</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="73"/>
-      <source>The number of copies in Y direction in Linear pattern</source>
-      <translation>Liczba kopii w kierunku Y wzoru liniowego</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="79"/>
-      <source>Total angle in Polar pattern</source>
-      <translation>Całkowity kąt w szyku biegunowym</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="87"/>
-      <source>The number of copies in Linear 1D and Polar pattern</source>
-      <translation>Liczba kopii w jednym kierunku i wzorze polarnym</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="93"/>
-      <source>The centre of rotation in Polar pattern</source>
-      <translation>Środek obrotu wzoru biegunowego</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="102"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="107"/>
       <source>Make copies in X direction before Y in Linear 2D pattern</source>
       <translation>Wykonuj najpierw kopie w kierunku X, potem w kierunku Y, w liniowym wzorze 2D</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Array.py" line="65"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="70"/>
+      <source>The number of copies in X-direction in linear pattern</source>
+      <translation type="unfinished">The number of copies in X-direction in linear pattern</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Array.py" line="73"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="78"/>
+      <source>The number of copies in Y-direction in linear pattern</source>
+      <translation type="unfinished">The number of copies in Y-direction in linear pattern</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Array.py" line="102"/>
+      <source>Make copies in X-direction before Y in linear 2D pattern</source>
+      <translation type="unfinished">Make copies in X-direction before Y in linear 2D pattern</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="108"/>
@@ -5735,31 +5721,25 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
       <translation type="unfinished">The toolpaths to array</translation>
     </message>
     <message>
+      <location filename="../../../Path/Dressup/Array.py" line="57"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="62"/>
       <source>The spacing between the array copies in linear pattern</source>
       <translation type="unfinished">The spacing between the array copies in linear pattern</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="70"/>
-      <source>The number of copies in X direction in linear pattern</source>
-      <translation type="unfinished">The number of copies in X direction in linear pattern</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="78"/>
-      <source>The number of copies in Y direction in linear pattern</source>
-      <translation type="unfinished">The number of copies in Y direction in linear pattern</translation>
-    </message>
-    <message>
+      <location filename="../../../Path/Dressup/Array.py" line="79"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="84"/>
       <source>Total angle in polar pattern</source>
       <translation type="unfinished">Total angle in polar pattern</translation>
     </message>
     <message>
+      <location filename="../../../Path/Dressup/Array.py" line="87"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="92"/>
       <source>The number of copies in linear 1D and polar pattern</source>
       <translation type="unfinished">The number of copies in linear 1D and polar pattern</translation>
     </message>
     <message>
+      <location filename="../../../Path/Dressup/Array.py" line="93"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="98"/>
       <source>The centre of rotation in polar pattern</source>
       <translation type="unfinished">The centre of rotation in polar pattern</translation>
@@ -8991,7 +8971,7 @@ ponieważ teraz wykorzystywana jest właściwość "TrybChłodzenia" podstawowej
     <message>
       <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="289"/>
       <source>Toggle ambient occlusion</source>
-      <translation type="unfinished">Toggle ambient occlusion</translation>
+      <translation>Włącz / wyłącz efekt zacienienia otoczenia</translation>
     </message>
     <message>
       <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="290"/>

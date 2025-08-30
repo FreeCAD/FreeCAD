@@ -541,7 +541,7 @@ Select a different shape.</translation>
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Trim With Plane</source>
-      <translation type="unfinished">Trim With Plane</translation>
+      <translation>Przytnij płaszczyzną</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="105"/>

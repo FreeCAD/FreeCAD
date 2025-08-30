@@ -9881,7 +9881,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1448"/>
       <source>Dimension tools</source>
-      <translation type="unfinished">Dimension tools</translation>
+      <translation>Outils de cotation</translation>
     </message>
   </context>
   <context>

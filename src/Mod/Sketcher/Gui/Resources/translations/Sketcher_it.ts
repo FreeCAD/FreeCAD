@@ -19,12 +19,12 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="8698"/>
       <source>Radius/Diameter Dimension</source>
-      <translation type="unfinished">Radius/Diameter Dimension</translation>
+      <translation>Quota del Raggio/Diametro</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8699"/>
       <source>Constrains the radius or diameter of an arc or a circle</source>
-      <translation type="unfinished">Constrains the radius or diameter of an arc or a circle</translation>
+      <translation>Vincola il raggio o il diametro di un arco o di un cerchio</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8809"/>
@@ -285,7 +285,7 @@ invalid constraints, and degenerate geometry</translation>
     <message>
       <location filename="../../Command.cpp" line="852"/>
       <source>Select only 1 sketch.</source>
-      <translation type="unfinished">Select only 1 sketch.</translation>
+      <translation>Seleziona solo 1 schizzo.</translation>
     </message>
   </context>
   <context>
@@ -853,27 +853,27 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Rinomina il vincolo dello schizzo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1732"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1734"/>
       <source>Drag Point</source>
       <translation>Trascina Punto</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1732"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1734"/>
       <source>Drag Curve</source>
       <translation>Trascina Curva</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1733"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1735"/>
       <source>Drag geometries</source>
       <translation>Trascina geometrie</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1112"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1114"/>
       <source>Drag Constraint</source>
       <translation>Trascina Vincolo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1313"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1315"/>
       <source>Modify sketch constraints</source>
       <translation>Modifica i vincoli dello schizzo</translation>
     </message>
@@ -1287,7 +1287,7 @@ invalid constraints, and degenerate geometry</translation>
       <location filename="../../CommandAlterGeometry.cpp" line="170"/>
       <location filename="../../CommandAlterGeometry.cpp" line="179"/>
       <source>Select edges from the sketch</source>
-      <translation type="unfinished">Select edges from the sketch</translation>
+      <translation>Seleziona i bordi dallo schizzo</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="104"/>
@@ -2305,12 +2305,12 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="576"/>
       <source>Show Constraints</source>
-      <translation type="unfinished">Show Constraints</translation>
+      <translation>Mostra Vincoli</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="578"/>
       <source>Hide Constraints</source>
-      <translation type="unfinished">Hide Constraints</translation>
+      <translation>Nascondi Vincoli</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="595"/>
@@ -2358,7 +2358,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
       <location filename="../../EditDatumDialog.cpp" line="128"/>
       <source>Insert Radius</source>
-      <translation type="unfinished">Insert Radius</translation>
+      <translation>Inserire il raggio</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="135"/>
@@ -2566,7 +2566,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="92"/>
       <source>Radius Dimension</source>
-      <translation type="unfinished">Radius Dimension</translation>
+      <translation>Quota del Raggio</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="94"/>
@@ -2576,7 +2576,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="96"/>
       <source>Radius or Diameter Dimension</source>
-      <translation type="unfinished">Radius or Diameter Dimension</translation>
+      <translation>Quota del Raggio o del Diametro</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="98"/>
@@ -2957,7 +2957,7 @@ Per ottenere l'effetto è necessario accedere nuovamente alla modalità di modif
     <message>
       <location filename="../../SketcherSettings.ui" line="292"/>
       <source>Dimension tool diameter/radius mode</source>
-      <translation type="unfinished">Dimension tool diameter/radius mode</translation>
+      <translation>Modalità dello strumento Quota diametro/raggio</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="299"/>
@@ -3265,7 +3265,7 @@ Works only when "Restore camera position after editing" is enabled.</translation
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="473"/>
       <source>Apply to Existing Sketches</source>
-      <translation type="unfinished">Apply to Existing Sketches</translation>
+      <translation>Applica agli Schizzi Esistenti</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="111"/>
@@ -3888,112 +3888,112 @@ Questo viene fatto analizzando le geometrie e i vincoli dello schizzo.</translat
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3160"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3249"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Nel pannello azioni c'è già una finestra di dialogo aperta</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3182"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3271"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Lo schizzo non è valido e non può essere modificato.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3340"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3429"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Il seguente vincolo è parzialmente ridondante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3341"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3430"/>
       <source>The following constraints are partially redundant:</source>
       <translation>I seguenti vincoli sono parzialmente ridondanti:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3143"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3232"/>
       <source>Edit Sketch</source>
       <translation type="unfinished">Edit Sketch</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3161"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3250"/>
       <source>Close this dialog?</source>
       <translation type="unfinished">Close this dialog?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3180"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3269"/>
       <source>Invalid Sketch</source>
       <translation type="unfinished">Invalid Sketch</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3181"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3270"/>
       <source>Open the sketch validation tool?</source>
       <translation type="unfinished">Open the sketch validation tool?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3326"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3415"/>
       <source>Remove the following constraint:</source>
       <translation type="unfinished">Remove the following constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3327"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3416"/>
       <source>Remove at least one of the following constraints:</source>
       <translation type="unfinished">Remove at least one of the following constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3333"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3422"/>
       <source>Remove the following redundant constraint:</source>
       <translation type="unfinished">Remove the following redundant constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3334"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3423"/>
       <source>Remove the following redundant constraints:</source>
       <translation type="unfinished">Remove the following redundant constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3347"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3436"/>
       <source>Remove the following malformed constraint:</source>
       <translation type="unfinished">Remove the following malformed constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3348"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3437"/>
       <source>Remove the following malformed constraints:</source>
       <translation type="unfinished">Remove the following malformed constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3406"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3495"/>
       <source>Empty sketch</source>
       <translation>Schizzo vuoto</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3411"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3500"/>
       <source>Over-constrained:</source>
       <translation>Sovravincolato:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3417"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3506"/>
       <source>Malformed constraints:</source>
       <translation>Vincoli malformati:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3425"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3514"/>
       <source>Redundant constraints:</source>
       <translation>Vincoli ridondanti:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3431"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3520"/>
       <source>Partially redundant:</source>
       <translation>Parzialmente ridondante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3438"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3527"/>
       <source>Solver failed to converge</source>
       <translation>Risolutore impossibilitato a convergere</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3444"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3533"/>
       <source>Under-constrained:</source>
       <translation>Sottovincolato:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="3446"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3535"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Degrees of Freedom</numerusform>
@@ -4001,7 +4001,7 @@ Questo viene fatto analizzando le geometrie e i vincoli dello schizzo.</translat
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3450"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3539"/>
       <source>Fully constrained</source>
       <translation>Completamente vincolato</translation>
     </message>
@@ -4481,7 +4481,7 @@ L'algoritmo di Eigen Sparse QR è ottimizzato per matrici sparsi; solitamente pi
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3390"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3479"/>
       <source>and %1 more</source>
       <translation>e %1 in più</translation>
     </message>
@@ -5661,7 +5661,7 @@ Invece vengono applicati vincoli uguali tra gli oggetti originali e le loro copi
       <location filename="../../CommandConstraints.cpp" line="8810"/>
       <location filename="../../CommandConstraints.cpp" line="8812"/>
       <source>Fix the radius of an arc or a circle</source>
-      <translation>Correggere il raggio di un arco o di un cerchio</translation>
+      <translation>Fissa il raggio di un arco o di un cerchio</translation>
     </message>
   </context>
   <context>
@@ -5999,12 +5999,12 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     <message>
       <location filename="../../CommandConstraints.cpp" line="3496"/>
       <source>Lock Position</source>
-      <translation type="unfinished">Lock Position</translation>
+      <translation>Fissa posizione</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3497"/>
       <source>Constrains the selected vertices by adding horizontal and vertical distance constraints</source>
-      <translation type="unfinished">Constrains the selected vertices by adding horizontal and vertical distance constraints</translation>
+      <translation>Vincola i vertici selezionati aggiungendo vincoli di distanza orizzontali e verticali</translation>
     </message>
   </context>
   <context>
@@ -6142,12 +6142,12 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     <message>
       <location filename="../../CommandConstraints.cpp" line="7649"/>
       <source>Radius Dimension</source>
-      <translation type="unfinished">Radius Dimension</translation>
+      <translation>Quota del Raggio</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7650"/>
       <source>Constrains the radius of the selected circle or arc</source>
-      <translation type="unfinished">Constrains the radius of the selected circle or arc</translation>
+      <translation>Vincola il raggio del cerchio o dell'arco selezionato</translation>
     </message>
   </context>
   <context>
@@ -6168,12 +6168,12 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     <message>
       <location filename="../../CommandConstraints.cpp" line="8330"/>
       <source>Radius/Diameter Dimension</source>
-      <translation type="unfinished">Radius/Diameter Dimension</translation>
+      <translation>Quota del Raggio/Diametro</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8331"/>
       <source>Constrains the radius of the selected arc or the diameter of the selected circle</source>
-      <translation type="unfinished">Constrains the radius of the selected arc or the diameter of the selected circle</translation>
+      <translation>Vincola il raggio dell'arco selezionato o il diametro del cerchio selezionato</translation>
     </message>
   </context>
   <context>

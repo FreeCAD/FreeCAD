@@ -263,7 +263,7 @@
     <message>
       <location filename="../../Command.cpp" line="527"/>
       <source>Mesh From Shape</source>
-      <translation type="unfinished">Mesh From Shape</translation>
+      <translation>Netz aus Form</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="528"/>
@@ -1596,7 +1596,7 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
     <message>
       <location filename="../../MeshEditor.cpp" line="396"/>
       <source>Add Triangle</source>
-      <translation type="unfinished">Add Triangle</translation>
+      <translation>Dreieck hinzufügen</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="397"/>
@@ -2226,13 +2226,13 @@ Visit https://openscad.org/ to install it.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1530"/>
-      <source>Fill holes</source>
-      <translation>Löcher schließen</translation>
+      <source>Fill Holes</source>
+      <translation type="unfinished">Fill Holes</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1531"/>
-      <source>Fill holes with maximum number of edges:</source>
-      <translation>Löcher schließen mit maximaler Anzahl Kanten:</translation>
+      <source>Fill holes with maximum number of edges</source>
+      <translation type="unfinished">Fill holes with maximum number of edges</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1795"/>

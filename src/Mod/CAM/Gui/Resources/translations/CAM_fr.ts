@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="49"/>
       <source>Creates a feature area from the selected objects</source>
-      <translation type="unfinished">Creates a feature area from the selected objects</translation>
+      <translation>Crée une zone d'usinage à partir d'objets sélectionnés.</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="143"/>
       <source>Area Workplane</source>
-      <translation type="unfinished">Area Workplane</translation>
+      <translation>Créer une zone plane d'usinage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="144"/>
       <source>Selects a workplane for a feature area</source>
-      <translation type="unfinished">Selects a workplane for a feature area</translation>
+      <translation>Sélectionne un plan de travail pour une zone d'usinage.</translation>
     </message>
   </context>
   <context>
@@ -773,11 +773,11 @@ For stock from the base object&apos;s bounding box it means the extra material i
 Add features for processing by selecting them and then pressing &apos;Add&apos;. If a feature is accidentally added to the list, it can be removed through &apos;Remove&apos; and will no longer be processed.
 
 Reset deletes all current items from the list and fills the list with all circular holes eligible for the operation from the model. Refine the list afterwards by enabling/disabling, removing and adding features.</source>
-      <translation type="unfinished">Table of hole features and the determined radius of the associated hole.
+      <translation>Tableau des trous et des rayons calculés pour chaque trou.
 
-Add features for processing by selecting them and then pressing &apos;Add&apos;. If a feature is accidentally added to the list, it can be removed through &apos;Remove&apos; and will no longer be processed.
+Ajouter des éléments pour le traitement en les sélectionnant, puis en appuyant sur « Ajouter ». Si un élément est ajouté accidentellement à la liste, il peut être supprimé à l'aide de « Supprimer » et ne sera plus traité.
 
-Reset deletes all current items from the list and fills the list with all circular holes eligible for the operation from the model. Refine the list afterwards by enabling/disabling, removing and adding features.</translation>
+La réinitialisation supprime tous les éléments de la liste et remplit la liste avec tous les trous circulaires éligibles pour l'opération à partir du modèle. Affiner ensuite la liste en activant/désactivant, supprimant et ajoutant des éléments.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="33"/>
@@ -4677,33 +4677,33 @@ Par défaut : 3 mm</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="124"/>
-      <source>Extra allowance from part bound box in negative X direction</source>
-      <translation>Marge supplémentaire de la boîte englobante liée à la pièce dans la direction des X négatifs</translation>
+      <source>Extra allowance from part bound box in negative X-direction</source>
+      <translation type="unfinished">Extra allowance from part bound box in negative X-direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="133"/>
-      <source>Extra allowance from part bound box in positive X direction</source>
-      <translation>Marge supplémentaire de la boîte englobante liée à la pièce dans la direction des X positifs</translation>
+      <source>Extra allowance from part bound box in positive X-direction</source>
+      <translation type="unfinished">Extra allowance from part bound box in positive X-direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="142"/>
-      <source>Extra allowance from part bound box in negative Y direction</source>
-      <translation>Marge supplémentaire de la boîte englobante liée à la pièce dans la direction des Y négatifs</translation>
+      <source>Extra allowance from part bound box in negative Y-direction</source>
+      <translation type="unfinished">Extra allowance from part bound box in negative Y-direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="151"/>
-      <source>Extra allowance from part bound box in positive Y direction</source>
-      <translation>Marge supplémentaire de la boîte englobante liée à la pièce dans la direction des Y positifs</translation>
+      <source>Extra allowance from part bound box in positive Y-direction</source>
+      <translation type="unfinished">Extra allowance from part bound box in positive Y-direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="160"/>
-      <source>Extra allowance from part bound box in negative Z direction</source>
-      <translation>Marge supplémentaire de la boîte englobante liée à la pièce dans la direction des Z négatifs</translation>
+      <source>Extra allowance from part bound box in negative Z-direction</source>
+      <translation type="unfinished">Extra allowance from part bound box in negative Z-direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="169"/>
-      <source>Extra allowance from part bound box in positive Z direction</source>
-      <translation>Marge supplémentaire de la boîte englobante liée à la pièce dans la direction des Z positifs</translation>
+      <source>Extra allowance from part bound box in positive Z-direction</source>
+      <translation type="unfinished">Extra allowance from part bound box in positive Z-direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="235"/>
@@ -5234,13 +5234,13 @@ Use property KeepToolDown to change this</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Probe.py" line="67"/>
-      <source>Number of points to probe in X direction</source>
-      <translation>Nombre de points à sonder dans la direction en X</translation>
+      <source>Number of points to probe in X-direction</source>
+      <translation type="unfinished">Number of points to probe in X-direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Probe.py" line="73"/>
-      <source>Number of points to probe in Y direction</source>
-      <translation>Nombre de points à sonder dans la direction en Y</translation>
+      <source>Number of points to probe in Y-direction</source>
+      <translation type="unfinished">Number of points to probe in Y-direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Probe.py" line="81"/>
@@ -5674,40 +5674,26 @@ Rotationnel : balayage rotationnel sur le 4ᵉ axe.</translation>
       <translation>Méthode par gabarit</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Array.py" line="57"/>
-      <source>The spacing between the array copies in Linear pattern</source>
-      <translation>L'écartement entre les copies du réseau dans le motif linéaire</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="65"/>
-      <source>The number of copies in X direction in Linear pattern</source>
-      <translation>Nombre de copies dans la direction X dans le motif linéaire</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="73"/>
-      <source>The number of copies in Y direction in Linear pattern</source>
-      <translation>Nombre de copies dans la direction Y dans le motif linéaire</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="79"/>
-      <source>Total angle in Polar pattern</source>
-      <translation>Angle total pour le motif polaire</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="87"/>
-      <source>The number of copies in Linear 1D and Polar pattern</source>
-      <translation>Nombre de copies dans les motifs linéaire 1D et polaire</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="93"/>
-      <source>The centre of rotation in Polar pattern</source>
-      <translation>Centre de rotation dans le motif polaire</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="102"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="107"/>
       <source>Make copies in X direction before Y in Linear 2D pattern</source>
       <translation>Faire des copies dans la direction X avant la direction Y dans le motif 2D linéaire</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Array.py" line="65"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="70"/>
+      <source>The number of copies in X-direction in linear pattern</source>
+      <translation type="unfinished">The number of copies in X-direction in linear pattern</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Array.py" line="73"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="78"/>
+      <source>The number of copies in Y-direction in linear pattern</source>
+      <translation type="unfinished">The number of copies in Y-direction in linear pattern</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Array.py" line="102"/>
+      <source>Make copies in X-direction before Y in linear 2D pattern</source>
+      <translation type="unfinished">Make copies in X-direction before Y in linear 2D pattern</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="108"/>
@@ -5734,31 +5720,25 @@ Rotationnel : balayage rotationnel sur le 4ᵉ axe.</translation>
       <translation type="unfinished">The toolpaths to array</translation>
     </message>
     <message>
+      <location filename="../../../Path/Dressup/Array.py" line="57"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="62"/>
       <source>The spacing between the array copies in linear pattern</source>
       <translation type="unfinished">The spacing between the array copies in linear pattern</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="70"/>
-      <source>The number of copies in X direction in linear pattern</source>
-      <translation type="unfinished">The number of copies in X direction in linear pattern</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="78"/>
-      <source>The number of copies in Y direction in linear pattern</source>
-      <translation type="unfinished">The number of copies in Y direction in linear pattern</translation>
-    </message>
-    <message>
+      <location filename="../../../Path/Dressup/Array.py" line="79"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="84"/>
       <source>Total angle in polar pattern</source>
       <translation type="unfinished">Total angle in polar pattern</translation>
     </message>
     <message>
+      <location filename="../../../Path/Dressup/Array.py" line="87"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="92"/>
       <source>The number of copies in linear 1D and polar pattern</source>
       <translation type="unfinished">The number of copies in linear 1D and polar pattern</translation>
     </message>
     <message>
+      <location filename="../../../Path/Dressup/Array.py" line="93"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="98"/>
       <source>The centre of rotation in polar pattern</source>
       <translation type="unfinished">The centre of rotation in polar pattern</translation>
@@ -5944,12 +5924,12 @@ Rotationnel : balayage rotationnel sur le 4ᵉ axe.</translation>
     <message>
       <location filename="../../../Path/Op/Area.py" line="115"/>
       <source>job %s has no Base.</source>
-      <translation>la tâche %s n'a pas de base.</translation>
+      <translation>La tâche %s n'a pas de base.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Area.py" line="117"/>
       <source>no job for operation %s found.</source>
-      <translation>aucune tâche pour l'opération %s n'a été trouvée.</translation>
+      <translation>Aucune tâche pour l'opération %s n'a été trouvée.</translation>
     </message>
   </context>
   <context>

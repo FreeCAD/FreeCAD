@@ -928,7 +928,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1200"/>
       <source>Cosmetic 1 Point Circle</source>
-      <translation type="unfinished">Cosmetic 1 Point Circle</translation>
+      <translation>Касметычная адна-кропкавая акружнасць</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1201"/>
@@ -971,12 +971,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="1106"/>
       <location filename="../../CommandExtensionPack.cpp" line="1287"/>
       <source>Cosmetic 2 Point Circle</source>
-      <translation type="unfinished">Cosmetic 2 Point Circle</translation>
+      <translation>Касметычная дзвюх-кропкавая акружнасць</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1107"/>
       <source>Adds a cosmetic circle based on two selected vertices, where the first is the center point and the second is the radius</source>
-      <translation type="unfinished">Adds a cosmetic circle based on two selected vertices, where the first is the center point and the second is the radius</translation>
+      <translation>Дадае касметычны круг, які заснаваны на абраных вяршынях, дзе першая кропка з'яўляецца цэнтральнай кропкай, а другая - радыусам</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1289"/>
@@ -995,7 +995,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="1169"/>
       <location filename="../../CommandExtensionPack.cpp" line="1297"/>
       <source>Adds a cosmetic circle that passes through 3 selected perimeter points</source>
-      <translation type="unfinished">Adds a cosmetic circle that passes through 3 selected perimeter points</translation>
+      <translation>Дадае касметычную акружнасць, якая праходзіць праз тры абраныя кропкі па перыметры</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1168"/>
@@ -1976,7 +1976,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1333"/>
       <source>Toggle Edge Visibility</source>
-      <translation type="unfinished">Toggle Edge Visibility</translation>
+      <translation>Пераключыць бачнасць рэбраў</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1334"/>
@@ -2490,12 +2490,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2091"/>
       <source>Create Dimension DistanceX</source>
-      <translation type="unfinished">Create Dimension DistanceX</translation>
+      <translation>Стварыць вымярэнне DistanceX</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2093"/>
       <source>Create Dimension DistanceY</source>
-      <translation type="unfinished">Create Dimension DistanceY</translation>
+      <translation>Стварыць вымярэнне DistanceY</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2319"/>
@@ -3473,7 +3473,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="1873"/>
       <source>Page contains DrawViewBIM which will not be exported. Continue?</source>
-      <translation type="unfinished">Page contains DrawViewBIM which will not be exported. Continue?</translation>
+      <translation>Старонка ўтрымлівае DrawViewBIM, які не будзе экспартаваны.
+Ці працягнуць?</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1515"/>
@@ -3646,22 +3647,22 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="886"/>
       <source>Selection is empty.</source>
-      <translation type="unfinished">Selection is empty.</translation>
+      <translation>Выбар пусты.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="909"/>
       <source>You must select a base View for the circle.</source>
-      <translation type="unfinished">You must select a base View for the circle.</translation>
+      <translation>Неабходна абраць асноўны выгляд для акружнасці.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="931"/>
       <source>Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</source>
-      <translation type="unfinished">Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</translation>
+      <translation>Абрана не касметычная акружнасць ці не касметычная дуга акружнасці.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="967"/>
       <source>Please select a center for the circle.</source>
-      <translation type="unfinished">Please select a center for the circle.</translation>
+      <translation>Абярыце цэнтр для акружнасці.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1863"/>
@@ -4375,7 +4376,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TemplateTextField.cpp" line="57"/>
       <source>Click to update text</source>
-      <translation type="unfinished">Click to update text</translation>
+      <translation>Націснуць, каб абнавіць тэкст</translation>
     </message>
   </context>
   <context>
@@ -5697,7 +5698,7 @@ This affects only the toolbar; all tools remain available via the menu and short
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="566"/>
       <source>Dimension tool diameter/radius mode</source>
-      <translation type="unfinished">Dimension tool diameter/radius mode</translation>
+      <translation>Рэжым вымярэння дыяметра/радыуса інструменту</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="573"/>
@@ -6515,7 +6516,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="95"/>
       <source>Bubble shape</source>
-      <translation type="unfinished">Bubble shape</translation>
+      <translation>Фігура пазіцыйнай зноскі</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="220"/>
@@ -7046,17 +7047,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="136"/>
       <source>Circular run-out</source>
-      <translation type="unfinished">Circular run-out</translation>
+      <translation>Кругавое біццё</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="146"/>
       <source>Total run-out</source>
-      <translation type="unfinished">Total run-out</translation>
+      <translation>Агульнае біццё</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="217"/>
       <source>Minimax (Chebychev)</source>
-      <translation type="unfinished">Minimax (Chebychev)</translation>
+      <translation>Мінімакс (Чабышоў)</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="232"/>
@@ -7416,7 +7417,7 @@ the negated value for &apos;Undertolerance&apos;.</source>
     <message>
       <location filename="../../TaskDimension.ui" line="79"/>
       <source>Undertolerance</source>
-      <translation type="unfinished">Undertolerance</translation>
+      <translation>Ніжняя мяжа дакладнасці</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="92"/>
@@ -7948,22 +7949,22 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskLinkDim.ui" line="67"/>
       <source>Feature1</source>
-      <translation type="unfinished">Feature1</translation>
+      <translation>Элемент1</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="87"/>
       <source>Geometry1</source>
-      <translation type="unfinished">Geometry1</translation>
+      <translation>Геаметрыя1</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="107"/>
       <source>Feature2</source>
-      <translation type="unfinished">Feature2</translation>
+      <translation>Элемент2</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="127"/>
       <source>Geometry2</source>
-      <translation type="unfinished">Geometry2</translation>
+      <translation>Геаметрыя2</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="153"/>
@@ -8866,17 +8867,17 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <source>Attributes/Modifications</source>
-      <translation type="unfinished">Attributes/Modifications</translation>
+      <translation>Атрыбуты/Змены</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
       <source>Centerlines/Threading</source>
-      <translation type="unfinished">Centerlines/Threading</translation>
+      <translation>Цэнтральныя лініі/наразанне разьбы</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>Format/Organize Dimensions</source>
-      <translation type="unfinished">Format/Organize Dimensions</translation>
+      <translation>Фарматаванне/парадкаванне вымярэнняў</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
@@ -9416,7 +9417,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="181"/>
       <source>End angle</source>
-      <translation type="unfinished">End angle</translation>
+      <translation>Канцавы вугал</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="188"/>
@@ -9470,13 +9471,13 @@ there is an open task dialog.</source>
       <location filename="../../CommandExtensionPack.cpp" line="857"/>
       <location filename="../../CommandExtensionPack.cpp" line="1280"/>
       <source>Cosmetic 1 Point Circle</source>
-      <translation type="unfinished">Cosmetic 1 Point Circle</translation>
+      <translation>Касметычная адна-кропкавая акружнасць</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="858"/>
       <location filename="../../CommandExtensionPack.cpp" line="1282"/>
       <source>Adds a cosmetic circle based on a selected centerpoint</source>
-      <translation type="unfinished">Adds a cosmetic circle based on a selected centerpoint</translation>
+      <translation>Дадае касметычную акружнасць на аснове абранай цэнтральнай кропкі</translation>
     </message>
   </context>
   <context>

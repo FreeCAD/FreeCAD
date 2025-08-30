@@ -113,7 +113,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="102"/>
       <source>Use ViewProviders in Tree View</source>
-      <translation type="unfinished">Use ViewProviders in Tree View</translation>
+      <translation>Ужываць пастаўшчыкоў выглядаў (ViewProvider) у дрэве прагляду</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="182"/>
@@ -320,7 +320,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="103"/>
       <source>Explodes a fusion or compound and applies random colors</source>
-      <translation type="unfinished">Explodes a fusion or compound and applies random colors</translation>
+      <translation>Выбухае зліццё ці злучэнне і прымяняе выпадковыя колеры</translation>
     </message>
   </context>
   <context>
@@ -359,7 +359,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="269"/>
       <source>Creates a feature to increase the tolerance</source>
-      <translation type="unfinished">Creates a feature to increase the tolerance</translation>
+      <translation>Стварае функцыю для павялічэння дакладнасці</translation>
     </message>
   </context>
   <context>
@@ -372,7 +372,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="286"/>
       <source>Expands all placements downwards in the Tree View</source>
-      <translation type="unfinished">Expands all placements downwards in the Tree View</translation>
+      <translation>Пашырае ўсе месцы размяшчэння ўнізе па дрэву прагляду</translation>
     </message>
   </context>
   <context>
@@ -385,7 +385,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="307"/>
       <source>Replaces an object in the Tree View</source>
-      <translation type="unfinished">Replaces an object in the Tree View</translation>
+      <translation>Замяняе аб'ект у праглядзе дрэва</translation>
     </message>
   </context>
   <context>
@@ -398,7 +398,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="320"/>
       <source>Removes the selected objects and all children that are not referenced by other objects</source>
-      <translation type="unfinished">Removes the selected objects and all children that are not referenced by other objects</translation>
+      <translation>Выдаліць абраныя аб'екты і ўсе даччыныя элементы, на якія не спасылаюцца іншыя аб'екты</translation>
     </message>
   </context>
   <context>
@@ -484,7 +484,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="533"/>
       <source>Adds an OpenSCAD element based on entered OpenSCAD code using the OpenSCAD binary</source>
-      <translation type="unfinished">Adds an OpenSCAD element based on entered OpenSCAD code using the OpenSCAD binary</translation>
+      <translation>Дадае элемент OpenSCAD на аснове ўведзенага коду OpenSCAD з выкананнем двайковага файлу OpenSCAD</translation>
     </message>
   </context>
   <context>
@@ -497,7 +497,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="548"/>
       <source>Performs a boolean operation using the OpenSCAD binary</source>
-      <translation type="unfinished">Performs a boolean operation using the OpenSCAD binary</translation>
+      <translation>Выконвае лагічную аперацыю з ужываннем двайковага файла OpenSCAD</translation>
     </message>
   </context>
   <context>
