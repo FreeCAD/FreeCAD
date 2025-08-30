@@ -416,18 +416,18 @@ const Quantity Quantity::MicroHenry             ( 1.0                   , Unit::
 const Quantity Quantity::MilliHenry             ( 1e+3                  , Unit::ElectricalInductance    );
 const Quantity Quantity::Henry                  ( 1e+6                  , Unit::ElectricalInductance    );  // Henry (kg*m^2/s^2/A^2)
 
-const Quantity Quantity::Joule                  ( 1e+6                  , Unit::Moment                  );  // Joule (kg*m^2/s^2)
-const Quantity Quantity::MilliJoule             ( 1e+3                  , Unit::Moment                  );
-const Quantity Quantity::KiloJoule              ( 1e+9                  , Unit::Moment                  );
+const Quantity Quantity::Joule                  ( 1e+6                  , Unit::Work                    );  // Joule (kg*m^2/s^2)
+const Quantity Quantity::MilliJoule             ( 1e+3                  , Unit::Work                    );
+const Quantity Quantity::KiloJoule              ( 1e+9                  , Unit::Work                    );
+const Quantity Quantity::VoltAmpereSecond       ( 1e+6                  , Unit::Work                    );  // Joule (kg*m^2/s^2)
+const Quantity Quantity::WattSecond             ( 1e+6                  , Unit::Work                    );  // Joule (kg*m^2/s^2)
+const Quantity Quantity::KiloWattHour           ( 3.6e+12               , Unit::Work                    );  // 1 kWh = 3.6e6 J
+const Quantity Quantity::ElectronVolt           ( 1.602176634e-13       , Unit::Work                    );  // 1 eV = 1.602176634e-19 J
+const Quantity Quantity::KiloElectronVolt       ( 1.602176634e-10       , Unit::Work                    );
+const Quantity Quantity::MegaElectronVolt       ( 1.602176634e-7        , Unit::Work                    );
+const Quantity Quantity::Calorie                ( 4.1868e+6             , Unit::Work                    );  // 1 cal = 4.1868 J
+const Quantity Quantity::KiloCalorie            ( 4.1868e+9             , Unit::Work                    );
 const Quantity Quantity::NewtonMeter            ( 1e+6                  , Unit::Moment                  );  // Joule (kg*m^2/s^2)
-const Quantity Quantity::VoltAmpereSecond       ( 1e+6                  , Unit::Moment                  );  // Joule (kg*m^2/s^2)
-const Quantity Quantity::WattSecond             ( 1e+6                  , Unit::Moment                  );  // Joule (kg*m^2/s^2)
-const Quantity Quantity::KiloWattHour           ( 3.6e+12               , Unit::Moment                  );  // 1 kWh = 3.6e6 J
-const Quantity Quantity::ElectronVolt           ( 1.602176634e-13       , Unit::Moment                  );  // 1 eV = 1.602176634e-19 J
-const Quantity Quantity::KiloElectronVolt       ( 1.602176634e-10       , Unit::Moment                  );
-const Quantity Quantity::MegaElectronVolt       ( 1.602176634e-7        , Unit::Moment                  );
-const Quantity Quantity::Calorie                ( 4.1868e+6             , Unit::Moment                  );  // 1 cal = 4.1868 J
-const Quantity Quantity::KiloCalorie            ( 4.1868e+9             , Unit::Moment                  );
 
 const Quantity Quantity::KMH                    ( 277.778               , Unit::Velocity                );  // km/h
 const Quantity Quantity::MPH                    ( 447.04                , Unit::Velocity                );  // Mile/h
