@@ -61,7 +61,7 @@ def write_constraint(f, femobj, inittemp_obj, ccxwriter):
         finaltemp = inittemp_obj.finalTemperature.getValueAs("K")
 
         f.write("*TEMPERATURE\n")
-        if inittemp_obj.References and len(inittemp_obj.References) > 0:
+        if inittemp_obj.References:
             f.write(f"{inittemp_obj.Name},{finaltemp}\n")
         else:
             f.write(f"{ccxwriter.ccx_nall},{finaltemp}\n")
