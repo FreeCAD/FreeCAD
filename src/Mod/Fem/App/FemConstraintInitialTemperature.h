@@ -43,7 +43,7 @@ public:
     // Temperature parameters
     App::PropertyTemperature initialTemperature;
     App::PropertyBool EnableFinalTemperature;
-    App::PropertyTemperature finalTemperature;
+    App::PropertyTemperature FinalTemperature;
 
     /// recalculate the object
     App::DocumentObjectExecReturn* execute() override;
