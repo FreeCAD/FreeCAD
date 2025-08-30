@@ -620,7 +620,7 @@ class Joint:
 
             self.updateJCSPlacements(joint)
 
-            presolved = self.preSolve(joint, False)
+            presolved = joint.JointType in JointUsingPreSolve and self.preSolve(joint, False)
 
             isAssembly = self.getAssembly(joint).Type == "Assembly"
             if isAssembly and not presolved:
