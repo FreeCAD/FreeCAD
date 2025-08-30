@@ -54,21 +54,13 @@ def write_meshdata_constraint(f, femobj, prs_obj, ccxwriter):
         f.write("*DLOAD\n")
     rev = -1 if prs_obj.Reversed else 1
     # the pressure has to be output in MPa
-    pressure_quantity = FreeCAD.Units.Quantity(prs_obj.Pressure.getValueAs("MPa"))
-    press_rev = rev * pressure_quantity
-    for ref_shape in femobj["PressureFaces"]:
-        # the loop is needed for compatibility reason
-        # in deprecated method get_pressure_obj_faces_depreciated
-        # the face ids where per ref_shape
-        f.write("** " + ref_shape[0] + "\n")
-        for face, fno in ref_shape[1]:
-            if fno > 0:  # solid mesh face
-                f.write(f"{face},P{fno},{press_rev}\n")
-            # on shell mesh face: fno == 0
-            # normal of element face == face normal
-            elif fno == 0:
-                f.write(f"{face},P,{press_rev}\n")
-            # on shell mesh face: fno == -1
-            # normal of element face opposite direction face normal
-            elif fno == -1:
-                f.write(f"{face},P,{-1 * press_rev}\n")
+    pressure = prs_obj.Pressure.getValueAs("MPa").Value
+    pressure *= rev
+    for feat, surf, is_sub_el in femobj["PressureFaces"]:
+        f.write("** {0.Name}.{1[0]}\n".format(*feat))
+        if is_sub_el:
+            for elem, fno in surf:
+                f.write(f"{elem},P{fno},{pressure}\n")
+        else:
+            for elem in surf:
+                f.write(f"{elem},P,{-1*pressure}\n")

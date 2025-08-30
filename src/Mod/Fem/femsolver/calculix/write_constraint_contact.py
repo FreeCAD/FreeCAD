@@ -57,12 +57,23 @@ def get_after_write_constraint():
 def write_meshdata_constraint(f, femobj, contact_obj, ccxwriter):
     # slave DEP
     f.write(f"*SURFACE, NAME=DEP{contact_obj.Name}\n")
-    for i in femobj["ContactSlaveFaces"]:
-        f.write(f"{i[0]},S{i[1]}\n")
+    for refs, surf, is_sub_el in femobj["ContactSlaveFaces"]:
+        if is_sub_el:
+            for elem, fno in surf:
+                f.write(f"{elem},S{fno}\n")
+        else:
+            for elem in surf:
+                f.write(f"{elem},S2\n")
+
     # master IND
     f.write(f"*SURFACE, NAME=IND{contact_obj.Name}\n")
-    for i in femobj["ContactMasterFaces"]:
-        f.write(f"{i[0]},S{i[1]}\n")
+    for refs, surf, is_sub_el in femobj["ContactMasterFaces"]:
+        if is_sub_el:
+            for elem, fno in surf:
+                f.write(f"{elem},S{fno}\n")
+        else:
+            for elem in surf:
+                f.write(f"{elem},S2\n")
 
 
 def write_constraint(f, femobj, contact_obj, ccxwriter):
