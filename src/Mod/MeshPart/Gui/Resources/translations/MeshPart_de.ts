@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="59"/>
       <source>Mesh From Shape</source>
-      <translation type="unfinished">Mesh From Shape</translation>
+      <translation>Netz aus Form</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="61"/>

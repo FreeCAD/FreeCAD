@@ -2226,13 +2226,13 @@ Visit https://openscad.org/ to install it.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1530"/>
-      <source>Fill holes</source>
+      <source>Fill Holes</source>
       <translation>ხვრელების შევსება</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1531"/>
-      <source>Fill holes with maximum number of edges:</source>
-      <translation>შესავსები ხვრელების წიბოების მაქსიმალური რაოდენობა:</translation>
+      <source>Fill holes with maximum number of edges</source>
+      <translation type="unfinished">Fill holes with maximum number of edges</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1795"/>

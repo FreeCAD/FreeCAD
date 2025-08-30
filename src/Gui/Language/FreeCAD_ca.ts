@@ -26,7 +26,7 @@
       <translation>Posició</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="295"/>
+      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="303"/>
       <location filename="../propertyeditor/PropertyItem.cpp" line="2924"/>
       <source>Enum</source>
       <translation>Enumerador</translation>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../CommandTest.cpp" line="716"/>
       <source>Test Console Output</source>
-      <translation type="unfinished">Test Console Output</translation>
+      <translation>Sortida de la consola de prova</translation>
     </message>
     <message>
       <location filename="../CommandTest.cpp" line="717"/>
@@ -58,17 +58,17 @@
       <translation>Edita</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="788"/>
+      <location filename="../Application.cpp" line="821"/>
       <source>Import</source>
       <translation>Importa</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1343"/>
+      <location filename="../CommandDoc.cpp" line="1358"/>
       <source>Delete</source>
       <translation>Elimina</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1948"/>
+      <location filename="../CommandDoc.cpp" line="1963"/>
       <source>Paste expressions</source>
       <translation>Enganxa expressions</translation>
     </message>
@@ -164,17 +164,17 @@
     <message>
       <location filename="../CommandView.cpp" line="881"/>
       <source>Toggle Visibility</source>
-      <translation type="unfinished">Toggle Visibility</translation>
+      <translation>Commuta la visibilitat</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="915"/>
       <source>Toggle Transparency</source>
-      <translation type="unfinished">Toggle Transparency</translation>
+      <translation>Commuta la transparència</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1032"/>
       <source>Toggle Selectability</source>
-      <translation type="unfinished">Toggle Selectability</translation>
+      <translation>Commuta la selectivitat</translation>
     </message>
   </context>
   <context>
@@ -247,7 +247,7 @@
     <message>
       <location filename="../Workbench.cpp" line="538"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Vista d'Arbre</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="539"/>
@@ -270,22 +270,22 @@
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="22"/>
       <source>Global sensitivity</source>
-      <translation type="unfinished">Global sensitivity</translation>
+      <translation>Sensibilitat global</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="54"/>
       <source>Dominant mode</source>
-      <translation type="unfinished">Dominant mode</translation>
+      <translation>Mode dominant</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="72"/>
       <source>Enable translations</source>
-      <translation type="unfinished">Enable translations</translation>
+      <translation>Permetre translacions</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="82"/>
       <source>Enable rotations</source>
-      <translation type="unfinished">Enable rotations</translation>
+      <translation>Permetre rotacions</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="107"/>
@@ -323,42 +323,37 @@
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="26"/>
       <source>Expression Editor</source>
-      <translation type="unfinished">Expression Editor</translation>
+      <translation>Editor d'expressions</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.ui" line="38"/>
-      <source>Variable Sets</source>
-      <translation>Conjunts de Variables</translation>
+      <location filename="../Dialogs/DlgExpressionInput.ui" line="181"/>
+      <source>Store in VarSet...</source>
+      <translation type="unfinished">Store in VarSet...</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.ui" line="49"/>
+      <location filename="../Dialogs/DlgExpressionInput.ui" line="254"/>
+      <source>Error</source>
+      <translation>Error</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.ui" line="278"/>
+      <source>Variable Set</source>
+      <translation type="unfinished">Variable Set</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.ui" line="295"/>
+      <source>Name</source>
+      <translation>Nom</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.ui" line="288"/>
       <source>Group</source>
       <translation>Grup</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="75"/>
-      <source>Variable set</source>
-      <translation type="unfinished">Variable set</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgExpressionInput.ui" line="85"/>
-      <source>Info</source>
-      <translation type="unfinished">Info</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgExpressionInput.ui" line="92"/>
-      <source>New property</source>
-      <translation>Propietat nova</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgExpressionInput.ui" line="149"/>
       <source>Result</source>
       <translation>Resultat</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgExpressionInput.ui" line="114"/>
-      <source>Show variable sets</source>
-      <translation>Mostrar conjunts de variables</translation>
     </message>
   </context>
   <context>
@@ -404,7 +399,7 @@
     <message>
       <location filename="../Application.h" line="293"/>
       <source>The object will have the color of its individual faces editable with the Appearance per Face command</source>
-      <translation type="unfinished">The object will have the color of its individual faces editable with the Appearance per Face command</translation>
+      <translation>L'objecte tindrà el color de les seves cares individuals editables amb el comandament Part FaceAppearances</translation>
     </message>
     <message>
       <location filename="../Application.h" line="283"/>
@@ -422,7 +417,7 @@
     <message>
       <location filename="../QuantitySpinBox_p.h" line="63"/>
       <source>Enter expression… (=)</source>
-      <translation type="unfinished">Enter expression… (=)</translation>
+      <translation>Introdueix una expressió (=)</translation>
     </message>
     <message>
       <location filename="../QuantitySpinBox_p.h" line="64"/>
@@ -509,7 +504,7 @@
     <message>
       <location filename="../Navigation/BlenderNavigationStyle.cpp" line="54"/>
       <source>Press Shift and middle mouse button</source>
-      <translation type="unfinished">Press Shift and middle mouse button</translation>
+      <translation>Premeu la tecla Majús i el botó central del ratolí</translation>
     </message>
     <message>
       <location filename="../Navigation/BlenderNavigationStyle.cpp" line="56"/>
@@ -537,14 +532,13 @@
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="55"/>
       <source>Press middle+left or middle+right mouse button</source>
-      <translation type="unfinished">Press middle+left or middle+right mouse button</translation>
+      <translation>Premeu el botó central+botó esquerre o el botó central+botó dret</translation>
     </message>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="57"/>
       <source>Scroll mouse wheel or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation type="unfinished">Scroll mouse wheel or keep middle button depressed
-while doing a left or right click and move the mouse up or down</translation>
+      <translation>Gireu la rodeta del ratolí o manteniu premuda la rodeta mentre feu clic dret o esquerre i moveu el ratolí cap amunt o cap avall</translation>
     </message>
   </context>
   <context>
@@ -570,17 +564,17 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../DAGView/DAGModel.cpp" line="128"/>
       <source>Renames the object</source>
-      <translation type="unfinished">Renames the object</translation>
+      <translation>Reanomena l'objecte</translation>
     </message>
     <message>
       <location filename="../DAGView/DAGModel.cpp" line="135"/>
       <source>Finish Editing</source>
-      <translation type="unfinished">Finish Editing</translation>
+      <translation>Finalitza l'edició</translation>
     </message>
     <message>
       <location filename="../DAGView/DAGModel.cpp" line="136"/>
       <source>Finishes editing the object</source>
-      <translation type="unfinished">Finishes editing the object</translation>
+      <translation>Finalitza l'edició de l'objecte</translation>
     </message>
   </context>
   <context>
@@ -619,7 +613,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/AboutApplication.ui" line="225"/>
       <source>Copy to Clipboard</source>
-      <translation type="unfinished">Copy to Clipboard</translation>
+      <translation>Copiar al porta-retalls</translation>
     </message>
     <message>
       <location filename="../Dialogs/AboutApplication.ui" line="261"/>
@@ -653,7 +647,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgAbout.cpp" line="328"/>
       <source>FreeCAD would not be possible without the contributions of:</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of:</translation>
+      <translation>El FreeCAD no seria possible sense les contribucions de:</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAbout.cpp" line="330"/>
@@ -699,7 +693,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="242"/>
       <source>Cache Directory</source>
-      <translation type="unfinished">Cache Directory</translation>
+      <translation>Directori de memòria cau</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="244"/>
@@ -709,12 +703,12 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="245"/>
       <source>Clear it now?</source>
-      <translation type="unfinished">Clear it now?</translation>
+      <translation>Vols esborrar-ho ara?</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="246"/>
       <source>Warning: Make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</source>
-      <translation type="unfinished">Warning: Make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</translation>
+      <translation>Avís: si us plau, assegureu-vos que aquesta és l'única instància %1 en execució i que no s'obre cap document, ja que això pot provocar la pèrdua de dades!</translation>
     </message>
   </context>
   <context>
@@ -727,7 +721,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="288"/>
       <source>Out of range</source>
-      <translation type="unfinished">Out of range</translation>
+      <translation>Fora del rang</translation>
     </message>
   </context>
   <context>
@@ -735,7 +729,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="361"/>
       <source>Camera Settings</source>
-      <translation type="unfinished">Camera Settings</translation>
+      <translation>Configuració de la càmera</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="368"/>
@@ -765,7 +759,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="421"/>
       <source>Current View</source>
-      <translation type="unfinished">Current View</translation>
+      <translation>Vista Actual</translation>
     </message>
   </context>
   <context>
@@ -808,7 +802,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Clipping.ui" line="155"/>
       <source>Custom Clipping Direction</source>
-      <translation type="unfinished">Custom Clipping Direction</translation>
+      <translation>Direcció de retall personalitzada</translation>
     </message>
     <message>
       <location filename="../Clipping.ui" line="190"/>
@@ -923,7 +917,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="14"/>
       <source>Add Property</source>
-      <translation type="unfinished">Add Property</translation>
+      <translation>Afegir Propietat</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="20"/>
@@ -944,7 +938,7 @@ while doing a left or right click and move the mouse up or down</translation>
       <location filename="../Dialogs/DlgAddProperty.ui" line="50"/>
       <location filename="../Dialogs/DlgAddProperty.ui" line="60"/>
       <source>Verbose description of the new property</source>
-      <translation type="unfinished">Verbose description of the new property</translation>
+      <translation>Descripció detallada de la nova propietat</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="67"/>
@@ -953,11 +947,11 @@ In this case the prefix will be automatically trimmed when shown in the property
 However, the property is still used in a script with the full name, like 'obj.Group_Name'.
 
 If this is not checked, the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
-      <translation type="unfinished">Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
-In this case the prefix will be automatically trimmed when shown in the property editor.
-However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+      <translation>Prefixa el nom de la propietat amb el nom del group de la manera 'Grup_Nom' per evitar conflictes amb propietats ja existents.
+En aquest cas el prefix s'escapçarà automàticament quan es mostri en l'editor de propietats.
+Tanmateix, la propietat se segueix utilitzant en els scripts amb el nom sencer 'obj.Grup_Nom'.
 
-If this is not checked, the property must be uniquely named, and it is accessed like 'obj.Name'.</translation>
+Si no està activat, la propietat ha de tenir un nom únic, i s'accedeix a ella mitjançant 'obj.Nom'.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="53"/>
@@ -1030,7 +1024,7 @@ If this is not checked, the property must be uniquely named, and it is accessed 
     <message>
       <location filename="../Dialogs/DlgChooseIcon.ui" line="38"/>
       <source>Icon Folders</source>
-      <translation type="unfinished">Icon Folders</translation>
+      <translation>Carpetes d'icones</translation>
     </message>
   </context>
   <context>
@@ -1061,7 +1055,7 @@ If this is not checked, the property must be uniquely named, and it is accessed 
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="163"/>
       <source>Export configuration</source>
-      <translation type="unfinished">Export configuration</translation>
+      <translation>Exporta la configuració</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="171"/>
@@ -1071,7 +1065,7 @@ If this is not checked, the property must be uniquely named, and it is accessed 
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="172"/>
       <source>A preference pack with that name already exists. Overwrite it?</source>
-      <translation type="unfinished">A preference pack with that name already exists. Overwrite it?</translation>
+      <translation>Ja existeix un paquet de preferències amb el mateix nom. Voleu sobreescriure'l?</translation>
     </message>
   </context>
   <context>
@@ -1094,7 +1088,7 @@ If this is not checked, the property must be uniquely named, and it is accessed 
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="67"/>
       <source>Menu text</source>
-      <translation type="unfinished">Menu text</translation>
+      <translation>Text del menú</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="74"/>
@@ -1104,17 +1098,17 @@ If this is not checked, the property must be uniquely named, and it is accessed 
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="81"/>
       <source>Status text</source>
-      <translation type="unfinished">Status text</translation>
+      <translation>Text d'estat</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="88"/>
       <source>What's this</source>
-      <translation type="unfinished">What's this</translation>
+      <translation>Què és això?</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="95"/>
       <source>Accelerator</source>
-      <translation type="unfinished">Accelerator</translation>
+      <translation>Accelerador</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="118"/>
@@ -1162,7 +1156,7 @@ If this is not checked, the property must be uniquely named, and it is accessed 
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="214"/>
       <source>Could not find macro file '%1'</source>
-      <translation type="unfinished">Could not find macro file '%1'</translation>
+      <translation>No s'ha pogut trobar el fitxer de macro '%1'</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="238"/>
@@ -1172,7 +1166,7 @@ If this is not checked, the property must be uniquely named, and it is accessed 
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="238"/>
       <source>Specify the macro first</source>
-      <translation type="unfinished">Specify the macro first</translation>
+      <translation>Especifiqueu la macro en primer lloc</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="243"/>
@@ -1184,7 +1178,7 @@ If this is not checked, the property must be uniquely named, and it is accessed 
       <location filename="../Dialogs/DlgActionsImp.cpp" line="243"/>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="313"/>
       <source>Specify the menu text first</source>
-      <translation type="unfinished">Specify the menu text first</translation>
+      <translation>Especifiqueu el text del menú en primer lloc</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="308"/>
@@ -1194,7 +1188,7 @@ If this is not checked, the property must be uniquely named, and it is accessed 
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="308"/>
       <source>Select a macro item first</source>
-      <translation type="unfinished">Select a macro item first</translation>
+      <translation>Trieu un element de macro en primer lloc</translation>
     </message>
   </context>
   <context>
@@ -1233,27 +1227,27 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="48"/>
       <source>&amp;Category</source>
-      <translation type="unfinished">&amp;Category</translation>
+      <translation>&amp;Categoria</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="100"/>
       <source>Current shortcut</source>
-      <translation type="unfinished">Current shortcut</translation>
+      <translation>Drecera actual</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="119"/>
       <source>&amp;New shortcut</source>
-      <translation type="unfinished">&amp;New shortcut</translation>
+      <translation>Drecera &amp;nova</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="137"/>
       <source>Multi-key sequence delay</source>
-      <translation type="unfinished">Multi-key sequence delay</translation>
+      <translation>Retard en la seqüència multi tecla</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="191"/>
       <source>Shortcut priority list</source>
-      <translation type="unfinished">Shortcut priority list</translation>
+      <translation>Llista de prioritats de les dreceres</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="238"/>
@@ -1310,7 +1304,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgKeyboardImp.cpp" line="152"/>
       <source>Type to search…</source>
-      <translation type="unfinished">Type to search…</translation>
+      <translation>Escriviu per cercar…</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboardImp.cpp" line="234"/>
@@ -1363,42 +1357,42 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="107"/>
       <source>Move Right</source>
-      <translation type="unfinished">Move Right</translation>
+      <translation>Mou a la dreta</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="110"/>
       <source>&lt;b&gt;Moves the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Moves the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Mou l'element seleccionat un nivell cap avall.&lt;/b&gt;&lt;p&gt;Això també canvia el nivell de l'element pare.&lt;/p&gt;</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="133"/>
       <source>Move Left</source>
-      <translation type="unfinished">Move Left</translation>
+      <translation>Moure a l'Esquerra</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="136"/>
       <source>&lt;b&gt;Moves the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Moves the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Mou l'element seleccionat un nivell cap amunt.&lt;/b&gt;&lt;p&gt;Això també canvia el nivell de l'element pare.&lt;/p&gt;</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="165"/>
       <source>Move Up</source>
-      <translation type="unfinished">Move Up</translation>
+      <translation>Mou amunt</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="168"/>
       <source>&lt;b&gt;Moves the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Moves the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Mou l'element seleccionat cap amunt.&lt;/b&gt;&lt;p&gt;L'element es mourà dins del nivell de jerarquia.&lt;/p&gt;</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="191"/>
       <source>Move Down</source>
-      <translation type="unfinished">Move Down</translation>
+      <translation>Mou avall</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="194"/>
       <source>&lt;b&gt;Moves the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Moves the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Mou l'element seleccionat cap avall.&lt;/b&gt;&lt;p&gt;L'element es mourà dins del nivell de jerarquia.&lt;/p&gt;</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="288"/>
@@ -1507,7 +1501,7 @@ same time. The one with the highest priority will be triggered.</source>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.cpp" line="45"/>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.cpp" line="134"/>
       <source>No Spaceball present</source>
-      <translation type="unfinished">No Spaceball present</translation>
+      <translation>No hi ha cap ratolí 3D</translation>
     </message>
   </context>
   <context>
@@ -1520,7 +1514,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="678"/>
       <source>No Spaceball present</source>
-      <translation type="unfinished">No Spaceball present</translation>
+      <translation>No hi ha cap ratolí 3D</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="727"/>
@@ -1583,22 +1577,22 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="14"/>
       <source>Execute Macro</source>
-      <translation type="unfinished">Execute Macro</translation>
+      <translation>Executa la macro</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="55"/>
       <source>Macro Name</source>
-      <translation type="unfinished">Macro Name</translation>
+      <translation>Nom de la macro</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="85"/>
       <source>Find file</source>
-      <translation type="unfinished">Find file</translation>
+      <translation>Troba el fitxer</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="99"/>
       <source>Find in files</source>
-      <translation type="unfinished">Find in files</translation>
+      <translation>Troba en fitxers</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="122"/>
@@ -1648,27 +1642,27 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="281"/>
       <source>Launches a guide on how to set up a macro in a custom global toolbar</source>
-      <translation type="unfinished">Launches a guide on how to set up a macro in a custom global toolbar</translation>
+      <translation>Inicia una guia sobre com configurar una macro en una barra d'eines global personalitzada</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="307"/>
       <source>Opens the Addon Manager to download macros created by the community</source>
-      <translation type="unfinished">Opens the Addon Manager to download macros created by the community</translation>
+      <translation>Obre el Gestor de complements per descarregar macros creades per la comunitat</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="321"/>
       <source>User Macros Location</source>
-      <translation type="unfinished">User Macros Location</translation>
+      <translation>Ubicació de les macros de l'usuari</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="355"/>
       <source>Opens the macros folder in the system file manager</source>
-      <translation type="unfinished">Opens the macros folder in the system file manager</translation>
+      <translation>Obre la carpeta de macros al gestor de fitxers del sistema</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="358"/>
       <source>Open Folder</source>
-      <translation type="unfinished">Open Folder</translation>
+      <translation>Obrir carpeta</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="284"/>
@@ -1678,7 +1672,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="106"/>
       <source>Filter by file content, case-insensitive. Regular expressions are supported.</source>
-      <translation type="unfinished">Filter by file content, case-insensitive. Regular expressions are supported.</translation>
+      <translation>Filtra per contingut del fitxer, sense distingir entre majúscules i minúscules. S'admeten expressions regulars.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="310"/>
@@ -1771,38 +1765,38 @@ Nota: els vostres canvis s'aplicaran quan canvieu de banc de treball
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="451"/>
       <source>Read-Only</source>
-      <translation type="unfinished">Read-Only</translation>
+      <translation>Només lectura</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="470"/>
       <source>Enter a file name:</source>
-      <translation type="unfinished">Enter a file name:</translation>
+      <translation>Introduïu un nom de fitxer:</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="540"/>
       <source>Delete the macro '%1'?</source>
-      <translation type="unfinished">Delete the macro '%1'?</translation>
+      <translation>Voleu suprimir la macro '%1'?</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="631"/>
       <source>Walkthrough, Dialog 1 of 2</source>
-      <translation type="unfinished">Walkthrough, Dialog 1 of 2</translation>
+      <translation>Procediment guiat, diàleg 1 de 2</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="696"/>
       <source>Walkthrough, Dialog 1 of 1</source>
-      <translation type="unfinished">Walkthrough, Dialog 1 of 1</translation>
+      <translation>Procediment guiat, diàleg 1 de 1</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="697"/>
       <source>Walkthrough, Dialog 2 of 2</source>
-      <translation type="unfinished">Walkthrough, Dialog 2 of 2</translation>
+      <translation>Procediment guiat, diàleg 2 de 2</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="866"/>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1027"/>
       <source>Enter new name</source>
-      <translation type="unfinished">Enter new name</translation>
+      <translation>Introduïu un nom nou</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="886"/>
@@ -1847,22 +1841,22 @@ Potser per un error de permisos del fitxer?</translation>
     <message>
       <location filename="../Dialogs/DlgMacroRecord.ui" line="14"/>
       <source>Record Macro</source>
-      <translation type="unfinished">Record Macro</translation>
+      <translation>Enregistra una macro</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecord.ui" line="35"/>
       <source>Macro Name</source>
-      <translation type="unfinished">Macro Name</translation>
+      <translation>Nom de la macro</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecord.ui" line="62"/>
       <source>Macro Path</source>
-      <translation type="unfinished">Macro Path</translation>
+      <translation>Camí de la macro</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecord.ui" line="96"/>
       <source>Choose Folder</source>
-      <translation type="unfinished">Choose Folder</translation>
+      <translation>Trieu una carpeta</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecord.ui" line="123"/>
@@ -1892,22 +1886,22 @@ Potser per un error de permisos del fitxer?</translation>
     <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="106"/>
       <source>Specify a place to save first.</source>
-      <translation type="unfinished">Specify a place to save first.</translation>
+      <translation>Especifiqueu un lloc on desar primer.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="115"/>
       <source>The macro directory does not exist. Choose another one.</source>
-      <translation type="unfinished">The macro directory does not exist. Choose another one.</translation>
+      <translation>El directori de macro no existeix. Trieu-ne un altre.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="130"/>
       <source>The macro '%1' already exists. Overwrite it?</source>
-      <translation type="unfinished">The macro '%1' already exists. Overwrite it?</translation>
+      <translation>La macro '%1' ja existeix. Voleu sobreescriure-la?</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="143"/>
       <source>You have no write permission for the directory. Choose another one.</source>
-      <translation type="unfinished">You have no write permission for the directory. Choose another one.</translation>
+      <translation>No teniu permisos d'escriptura en el directori. Trieu-ne un altre.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="129"/>
@@ -1940,12 +1934,12 @@ Potser per un error de permisos del fitxer?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="14"/>
       <source>Material Properties</source>
-      <translation type="unfinished">Material Properties</translation>
+      <translation>Propietats del material</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="47"/>
       <source>Diffuse color</source>
-      <translation type="unfinished">Diffuse color</translation>
+      <translation>Color difús</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="54"/>
@@ -1955,12 +1949,12 @@ Potser per un error de permisos del fitxer?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="78"/>
       <source>Ambient color</source>
-      <translation type="unfinished">Ambient color</translation>
+      <translation>Color ambient</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="114"/>
       <source>Specular color</source>
-      <translation type="unfinished">Specular color</translation>
+      <translation>Color especular</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="131"/>
@@ -1970,7 +1964,7 @@ Potser per un error de permisos del fitxer?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="148"/>
       <source>Emissive color</source>
-      <translation type="unfinished">Emissive color</translation>
+      <translation>Color emissiu</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="155"/>
@@ -1987,12 +1981,12 @@ Potser per un error de permisos del fitxer?</translation>
     <message>
       <location filename="../Dialogs/DlgOnlineHelp.ui" line="14"/>
       <source>Online Help</source>
-      <translation type="unfinished">Online Help</translation>
+      <translation>Ajuda en línia</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgOnlineHelp.ui" line="26"/>
       <source>Help Viewer</source>
-      <translation type="unfinished">Help Viewer</translation>
+      <translation>Visualitzador de l'ajuda</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgOnlineHelp.ui" line="38"/>
@@ -2017,9 +2011,7 @@ Potser per un error de permisos del fitxer?</translation>
       <source>Access denied to '%1'
 
 Specify another directory.</source>
-      <translation type="unfinished">Access denied to '%1'
-
-Specify another directory.</translation>
+      <translation>S'ha denegat l'accés a '%1' Especifiqueu un altre directori.</translation>
     </message>
   </context>
   <context>
@@ -2042,7 +2034,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="70"/>
       <source>Enter a group name to search</source>
-      <translation type="unfinished">Enter a group name to search</translation>
+      <translation>Introduïu un nom de grup a cercar</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="86"/>
@@ -2057,7 +2049,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="73"/>
       <source>Search group</source>
-      <translation type="unfinished">Search group</translation>
+      <translation>Cerca un grup</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="112"/>
@@ -2081,12 +2073,12 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgParameterFind.ui" line="32"/>
       <source>Find What</source>
-      <translation type="unfinished">Find What</translation>
+      <translation>Què cercar</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterFind.ui" line="55"/>
       <source>Look At</source>
-      <translation type="unfinished">Look At</translation>
+      <translation>Cerca a</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterFind.ui" line="61"/>
@@ -2106,7 +2098,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgParameterFind.ui" line="94"/>
       <source>Match exact string</source>
-      <translation type="unfinished">Match exact string</translation>
+      <translation>Coincideix amb la cadena exacta</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterFind.cpp" line="48"/>
@@ -2121,7 +2113,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgParameterFind.cpp" line="311"/>
       <source>Cannot find the text: %1</source>
-      <translation type="unfinished">Cannot find the text: %1</translation>
+      <translation>No es pot trobar el text: %1</translation>
     </message>
   </context>
   <context>
@@ -2163,7 +2155,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="127"/>
       <source>Search group</source>
-      <translation type="unfinished">Search group</translation>
+      <translation>Cerca un grup</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="475"/>
@@ -2186,7 +2178,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgPreferencePackManagement.ui" line="56"/>
       <source>Open Addon Manager</source>
-      <translation type="unfinished">Open Addon Manager</translation>
+      <translation>Obre el gestor de complements</translation>
     </message>
   </context>
   <context>
@@ -2209,17 +2201,17 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="135"/>
       <source>Deletes the user-saved preference pack '%1'</source>
-      <translation type="unfinished">Deletes the user-saved preference pack '%1'</translation>
+      <translation>Suprimeix el paquet de preferències desat per l'usuari '% 1'</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="145"/>
       <source>Toggles the visibility of the addon preference pack '%1' (use the Addon Manager to remove permanently)</source>
-      <translation type="unfinished">Toggles the visibility of the addon preference pack '%1' (use the Addon Manager to remove permanently)</translation>
+      <translation>Commuta la visibilitat del paquet de preferències de complements "% 1" (utilitza el Gestor de complements per eliminar-lo permanentment)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="158"/>
       <source>Delete the preference pack named '%1'? This cannot be undone.</source>
-      <translation type="unfinished">Delete the preference pack named '%1'? This cannot be undone.</translation>
+      <translation>Suprimir el paquet de preferències anomenat '%1'? Això no es pot desfer.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="157"/>
@@ -2247,7 +2239,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgPreferences.ui" line="233"/>
       <source>Search preferences...</source>
-      <translation type="unfinished">Search preferences...</translation>
+      <translation>Cerca preferències...</translation>
     </message>
     <message>
       <source/>
@@ -2259,7 +2251,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="772"/>
       <source>Reset Page '%1'</source>
-      <translation type="unfinished">Reset Page '%1'</translation>
+      <translation>Restablir pàgina '%1'</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="776"/>
@@ -2269,47 +2261,47 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="779"/>
       <source>Reset Group '%1'</source>
-      <translation type="unfinished">Reset Group '%1'</translation>
+      <translation>Restablir grup '%1'</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="787"/>
       <source>Reset All</source>
-      <translation type="unfinished">Reset All</translation>
+      <translation>Reinicialitza-ho tot</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="805"/>
       <source>Clear User Settings</source>
-      <translation type="unfinished">Clear User Settings</translation>
+      <translation>Esborra els paràmetres d'usuari</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="806"/>
       <source>Clear all your user settings?</source>
-      <translation type="unfinished">Clear all your user settings?</translation>
+      <translation>Voleu esborrar tota la vostra configuració d'usuari?</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="807"/>
       <source>All settings will be cleared.</source>
-      <translation type="unfinished">All settings will be cleared.</translation>
+      <translation>S'esborraran tots els paràmetres.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="950"/>
       <source>Restart Required</source>
-      <translation type="unfinished">Restart Required</translation>
+      <translation>Es necessita reiniciar</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="951"/>
       <source>Restart FreeCAD for changes to take effect.</source>
-      <translation type="unfinished">Restart FreeCAD for changes to take effect.</translation>
+      <translation>S'ha de reiniciar FreeCAD perquè els canvis tinguin efecte.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="956"/>
       <source>Restart Now</source>
-      <translation type="unfinished">Restart Now</translation>
+      <translation>Reinicia ara</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="957"/>
       <source>Restart Later</source>
-      <translation type="unfinished">Restart Later</translation>
+      <translation>Reinicia més endavant</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="783"/>
@@ -2332,7 +2324,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="14"/>
       <source>Document Information</source>
-      <translation type="unfinished">Document Information</translation>
+      <translation>Informació del document</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="26"/>
@@ -2342,7 +2334,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="47"/>
       <source>&amp;Name</source>
-      <translation type="unfinished">&amp;Name</translation>
+      <translation>&amp;Nom</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="73"/>
@@ -2352,57 +2344,57 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="96"/>
       <source>UUID</source>
-      <translation type="unfinished">UUID</translation>
+      <translation>UUID</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="119"/>
       <source>Program version</source>
-      <translation type="unfinished">Program version</translation>
+      <translation>Versió del programa</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="142"/>
       <source>Unit system</source>
-      <translation type="unfinished">Unit system</translation>
+      <translation>Sistema d'unitats</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="159"/>
       <source>Created &amp;by</source>
-      <translation type="unfinished">Created &amp;by</translation>
+      <translation>Creat &amp;per</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="182"/>
       <source>Creation &amp;date</source>
-      <translation type="unfinished">Creation &amp;date</translation>
+      <translation>&amp;Data de creació</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="208"/>
       <source>&amp;Last modified by</source>
-      <translation type="unfinished">&amp;Last modified by</translation>
+      <translation>&amp;Última modificació per</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="231"/>
       <source>Last &amp;modification date</source>
-      <translation type="unfinished">Last &amp;modification date</translation>
+      <translation>Data de l'última &amp;modificació</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="257"/>
       <source>Com&amp;pany</source>
-      <translation type="unfinished">Com&amp;pany</translation>
+      <translation>Em&amp;presa</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="280"/>
       <source>License information</source>
-      <translation type="unfinished">License information</translation>
+      <translation>Informació de la llicència</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="308"/>
       <source>Open in Browser</source>
-      <translation type="unfinished">Open in Browser</translation>
+      <translation>Obre al navegador</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="317"/>
       <source>&amp;Comment</source>
-      <translation type="unfinished">&amp;Comment</translation>
+      <translation>&amp;Comentari</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="152"/>
@@ -2424,12 +2416,12 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.ui" line="14"/>
       <source>Document Utility</source>
-      <translation type="unfinished">Document Utility</translation>
+      <translation>Utilitat del document</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.ui" line="22"/>
       <source>Extract Document</source>
-      <translation type="unfinished">Extract Document</translation>
+      <translation>Extreure document</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.ui" line="28"/>
@@ -2451,7 +2443,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.ui" line="72"/>
       <source>Create Document</source>
-      <translation type="unfinished">Create Document</translation>
+      <translation>Crear document</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.ui" line="137"/>
@@ -2518,7 +2510,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgPropertyLink.ui" line="53"/>
       <source>Synchronizes the 3D view selection with the full object hierarchy</source>
-      <translation type="unfinished">Synchronizes the 3D view selection with the full object hierarchy</translation>
+      <translation>Sincronitza la selecció de la vista 3D amb la jerarquia completa d'objectes</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPropertyLink.ui" line="56"/>
@@ -2563,12 +2555,12 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgRevertToBackupConfig.ui" line="26"/>
       <source>WARNING: this process will undo any preference changes made since the specified date, and will also reset your recent files and Macros to their state on that date.</source>
-      <translation type="unfinished">WARNING: this process will undo any preference changes made since the specified date, and will also reset your recent files and Macros to their state on that date.</translation>
+      <translation>ADVERTÈNCIA: aquest procés desfarà els canvis de preferències fets des de la data especificada i també restablirà els vostres fitxers i macros recents al seu estat en aquesta data.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgRevertToBackupConfig.ui" line="52"/>
       <source>Available backup files</source>
-      <translation type="unfinished">Available backup files</translation>
+      <translation>Fitxers de còpia de seguretat disponibles</translation>
     </message>
   </context>
   <context>
@@ -2584,7 +2576,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgRunExternal.ui" line="20"/>
       <source>Running External Program</source>
-      <translation type="unfinished">Running External Program</translation>
+      <translation>S'està executant un programa extern</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgRunExternal.ui" line="38"/>
@@ -2599,7 +2591,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgRunExternal.ui" line="104"/>
       <source>Accept Changes</source>
-      <translation type="unfinished">Accept Changes</translation>
+      <translation>Accepta els canvis</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgRunExternal.ui" line="111"/>
@@ -2609,7 +2601,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgRunExternal.ui" line="118"/>
       <source>Abort Program</source>
-      <translation type="unfinished">Abort Program</translation>
+      <translation>Interromp el programa</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgRunExternal.ui" line="138"/>
@@ -2733,7 +2725,7 @@ es mostraran a la cantonada inferior esquerra dels fitxers oberts</translation>
     <message>
       <location filename="../Multisample.cpp" line="43"/>
       <source>Line smoothing</source>
-      <translation type="unfinished">Line smoothing</translation>
+      <translation>Suavitzat de línies</translation>
     </message>
     <message>
       <location filename="../Multisample.cpp" line="44"/>
@@ -2783,26 +2775,26 @@ es mostraran a la cantonada inferior esquerra dels fitxers oberts</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="64"/>
       <source>Relative size</source>
-      <translation type="unfinished">Relative size</translation>
+      <translation>Mida relativa</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="74"/>
       <source>Size of main coordinate system representation
 in the corner in % of height/width of the viewport</source>
-      <translation type="unfinished">Size of main coordinate system representation
-in the corner in % of height/width of the viewport</translation>
+      <translation>Mida de la representació del sistema de coordenades principal
+a la cantonada -- en % d'alçada/amplada de la finestra gràfica</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="100"/>
       <source>Letter color</source>
-      <translation type="unfinished">Letter color</translation>
+      <translation>Color de lletra</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="286"/>
       <source>This option is useful for troubleshooting graphics card and driver problems.
 Changing this option requires a restart of the application.</source>
-      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
-Changing this option requires a restart of the application.</translation>
+      <translation>Aquesta opció és útil per investigar problemes amb la targeta gràfica i el controlador.
+Per modificar aquesta opció cal reiniciar l'aplicació.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="303"/>
@@ -2816,21 +2808,21 @@ can be rendered directly by the GPU.
 Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
 report this setting as enabled when seeking support.</source>
-      <translation type="unfinished">If selected, Vertex Buffer Objects (VBO) will be used.
-A VBO is an OpenGL feature that provides methods for uploading
-vertex data (position, normal vector, color, etc.) to the graphics card.
-VBOs offer substantial performance gains because the data resides
-in the graphics memory rather than the system memory and so it
-can be rendered directly by the GPU.
+      <translation>Si es selecciona, s'utilitzaran els objectes de memòria intermèdia de vèrtexs (VBO).
+Un VBO és una funció d'OpenGL que proporciona mètodes per carregar
+dades de vèrtexs (posició, vector normal, color, etc.) a la targeta gràfica.
+Els VBO ofereixen guanys de rendiment substancials perquè les dades resideixen
+a la memòria gràfica en lloc de la memòria del sistema i, per tant,
+poden ser renderitzades directament per la GPU.
 
-Note: Sometimes this feature may lead to a host of different
-issues ranging from graphical anomalies to GPU crash bugs. Remember to
-report this setting as enabled when seeking support.</translation>
+Nota: De vegades, aquesta funció pot provocar una sèrie de problemes diferents
+que van des d'anomalies gràfiques fins a errors de bloqueig de la GPU. Recordeu
+informar d'aquesta configuració com a habilitada quan busqueu assistència.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="336"/>
       <source>Method of multisample anti-aliasing</source>
-      <translation type="unfinished">Method of multisample anti-aliasing</translation>
+      <translation>Mètode d'antialiàsing multisample</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="346"/>
@@ -2845,7 +2837,7 @@ report this setting as enabled when seeking support.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="363"/>
       <source>Transparent objects</source>
-      <translation type="unfinished">Transparent objects</translation>
+      <translation>Objectes transparents</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="405"/>
@@ -2856,13 +2848,7 @@ There are 3 options available to achieve this:
 3) 'Centralized', manually turn off cache in all nodes of all view provider, and
 only cache at the scene graph root node. This offers the fastest rendering speed
 but slower response to any scene changes.</source>
-      <translation type="unfinished">'Render caching' is another way to say 'Rendering acceleration'.
-There are 3 options available to achieve this:
-1) 'Auto' (default), let Coin3D decide where to cache.
-2) 'Distributed', manually turn on cache for all view provider root node.
-3) 'Centralized', manually turn off cache in all nodes of all view provider, and
-only cache at the scene graph root node. This offers the fastest rendering speed
-but slower response to any scene changes.</translation>
+      <translation>.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="469"/>
@@ -2876,12 +2862,12 @@ mida de la caixa contenidora de l'objecte 3D que es mostra actualment.</translat
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="504"/>
       <source>Camera Type</source>
-      <translation type="unfinished">Camera Type</translation>
+      <translation>Tipus de càmera</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="541"/>
       <source>Objects will be in orthographic projection</source>
-      <translation type="unfinished">Objects will be in orthographic projection</translation>
+      <translation>Els objectes es projectaran en projecció ortogràfica</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="525"/>
@@ -2976,17 +2962,17 @@ mida de la caixa contenidora de l'objecte 3D que es mostra actualment.</translat
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="20"/>
       <source>Cache Directory</source>
-      <translation type="unfinished">Cache Directory</translation>
+      <translation>Directori de memòria cau</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="28"/>
       <source>Location (read-only)</source>
-      <translation type="unfinished">Location (read-only)</translation>
+      <translation>Ubicació (només lectura)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="59"/>
       <source>Check periodically at program start</source>
-      <translation type="unfinished">Check periodically at program start</translation>
+      <translation>Comprova periòdicament a l'inici del programa</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="86"/>
@@ -3021,12 +3007,12 @@ mida de la caixa contenidora de l'objecte 3D que es mostra actualment.</translat
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="119"/>
       <source>Cache size limit</source>
-      <translation type="unfinished">Cache size limit</translation>
+      <translation>Límit de la mida de la memòria cau</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="164"/>
       <source>Check Now</source>
-      <translation type="unfinished">Check Now</translation>
+      <translation>Comprova-ho ara</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="59"/>
@@ -3049,37 +3035,37 @@ mida de la caixa contenidora de l'objecte 3D que es mostra actualment.</translat
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="14"/>
       <source>Color Gradient Settings</source>
-      <translation type="unfinished">Color Gradient Settings</translation>
+      <translation>Paràmetres del gradient de color</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="26"/>
       <source>Color Model</source>
-      <translation type="unfinished">Color Model</translation>
+      <translation>Model del color</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="32"/>
       <source>&amp;Gradient</source>
-      <translation type="unfinished">&amp;Gradient</translation>
+      <translation>&amp;Gradient</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="43"/>
       <source>Red-yellow-green-cyan-blue</source>
-      <translation type="unfinished">Red-yellow-green-cyan-blue</translation>
+      <translation>Roig-groc-verd-cian-blau</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="48"/>
       <source>Blue-cyan-green-yellow-red</source>
-      <translation type="unfinished">Blue-cyan-green-yellow-red</translation>
+      <translation>Blau-cian-verd-groc-roig</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="53"/>
       <source>White-black</source>
-      <translation type="unfinished">White-black</translation>
+      <translation>Blanc-negre</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="58"/>
       <source>Black-white</source>
-      <translation type="unfinished">Black-white</translation>
+      <translation>Negre-blanc</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="85"/>
@@ -3158,27 +3144,27 @@ es mostrarà amb transparència</translation>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="190"/>
       <source>Parameter Range</source>
-      <translation type="unfinished">Parameter Range</translation>
+      <translation>Rang del paràmetre</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="196"/>
       <source>Ma&amp;ximum</source>
-      <translation type="unfinished">Ma&amp;ximum</translation>
+      <translation>Mà&amp;xim</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="241"/>
       <source>&amp;Labels</source>
-      <translation type="unfinished">&amp;Labels</translation>
+      <translation>&amp;Etiquetes</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="267"/>
       <source>Mi&amp;nimum</source>
-      <translation type="unfinished">Mi&amp;nimum</translation>
+      <translation>Mí&amp;nim</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="296"/>
       <source>&amp;Decimals</source>
-      <translation type="unfinished">&amp;Decimals</translation>
+      <translation>&amp;Decimals</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="257"/>
@@ -3302,36 +3288,36 @@ a més de la barra de colors</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="132"/>
       <source>Using undo/redo in documents</source>
-      <translation type="unfinished">Using undo/redo in documents</translation>
+      <translation>Ús de Desfer/Refer en els documents</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="165"/>
       <source>Maximum undo/redo steps</source>
-      <translation type="unfinished">Maximum undo/redo steps</translation>
+      <translation>Nombre màxim de passos de desfer/refer</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="172"/>
       <source>How many undo/redo steps should be recorded</source>
-      <translation type="unfinished">How many undo/redo steps should be recorded</translation>
+      <translation>Nombre de passos de desfer/refer que s'han de gravar</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="197"/>
       <source>Allow user aborting document recomputation by pressing Esc.
 This feature may slightly increase recomputation time.</source>
-      <translation type="unfinished">Allow user aborting document recomputation by pressing Esc.
-This feature may slightly increase recomputation time.</translation>
+      <translation>Permet que l'usuari interrompi el recàlcul de documents prement ESC.
+Aquesta característica pot augmentar lleugerament el temps de recàlcul.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="281"/>
       <source>Add thumbnail to project file when saving</source>
-      <translation type="unfinished">Add thumbnail to project file when saving</translation>
+      <translation>Afegeix la miniatura al fitxer del projecte quan es desi</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="320"/>
       <source>Sets the size of the thumbnail that is stored in the document.
 Common sizes are 128, 256 and 512.</source>
-      <translation type="unfinished">Sets the size of the thumbnail that is stored in the document.
-Common sizes are 128, 256 and 512.</translation>
+      <translation>Estableix la mida de la miniatura que es desa al document.
+Les mides habituals són 128, 256 i 512.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="365"/>
@@ -3342,23 +3328,23 @@ Common sizes are 128, 256 and 512.</translation>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="412"/>
       <source>If there is a recovery file available, the application will
 automatically run a file recovery when it is started</source>
-      <translation type="unfinished">If there is a recovery file available, the application will
-automatically run a file recovery when it is started</translation>
+      <translation>Si hi ha un fitxer de recuperació disponible, l’aplicació
+executarà automàticament una recuperació de fitxer quan s'iniciï</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="448"/>
       <source>The program icon will be added to the thumbnail</source>
-      <translation type="unfinished">The program icon will be added to the thumbnail</translation>
+      <translation>La icona del programa s’afegirà a la miniatura</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="451"/>
       <source>Add program icon to the generated thumbnail</source>
-      <translation type="unfinished">Add program icon to the generated thumbnail</translation>
+      <translation>Afegeix la icona del programa a la miniatura generada</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="472"/>
       <source>Save auto-recovery information every</source>
-      <translation type="unfinished">Save auto-recovery information every</translation>
+      <translation>Guarda la informació d'autorecuperació cada</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="529"/>
@@ -3380,7 +3366,7 @@ tindran el sufix de data segons el format especificat</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="574"/>
       <source>Document Objects</source>
-      <translation type="unfinished">Document Objects</translation>
+      <translation>Objectes del document</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="580"/>
@@ -3585,32 +3571,32 @@ També podeu utilitzar la forma: Joan Peris &lt;joan@peris.com&gt;</translation>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="14"/>
       <source>Image Settings</source>
-      <translation type="unfinished">Image Settings</translation>
+      <translation>Paràmetres de la imatge</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="35"/>
       <source>Image Dimensions</source>
-      <translation type="unfinished">Image Dimensions</translation>
+      <translation>Dimensions de la imatge</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="73"/>
       <source>Standard sizes</source>
-      <translation type="unfinished">Standard sizes</translation>
+      <translation>Mides estàndard</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="199"/>
       <source>&amp;Width</source>
-      <translation type="unfinished">&amp;Width</translation>
+      <translation>&amp;Amplària</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="226"/>
       <source>&amp;Height</source>
-      <translation type="unfinished">&amp;Height</translation>
+      <translation>&amp;Alçària</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="272"/>
       <source>Aspect ratio</source>
-      <translation type="unfinished">Aspect ratio</translation>
+      <translation>Relació d'aspecte</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="279"/>
@@ -3655,22 +3641,22 @@ També podeu utilitzar la forma: Joan Peris &lt;joan@peris.com&gt;</translation>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="324"/>
       <source>Image Properties</source>
-      <translation type="unfinished">Image Properties</translation>
+      <translation>Propietats d'imatge</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="345"/>
       <source>Back&amp;ground</source>
-      <translation type="unfinished">Back&amp;ground</translation>
+      <translation>&amp;Fons</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="379"/>
       <source>Creation method</source>
-      <translation type="unfinished">Creation method</translation>
+      <translation>Mètode de creació</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="395"/>
       <source>Image Comment</source>
-      <translation type="unfinished">Image Comment</translation>
+      <translation>Comentari de la imatge</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="356"/>
@@ -3713,12 +3699,12 @@ També podeu utilitzar la forma: Joan Peris &lt;joan@peris.com&gt;</translation>
     <message>
       <location filename="../Dialogs/DlgSettingsImageImp.cpp" line="57"/>
       <source>Offscreen (new)</source>
-      <translation type="unfinished">Offscreen (new)</translation>
+      <translation>Fora de pantalla (Nou)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImageImp.cpp" line="58"/>
       <source>Offscreen (old)</source>
-      <translation type="unfinished">Offscreen (old)</translation>
+      <translation>Fora de pantalla (Antic)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImageImp.cpp" line="59"/>
@@ -3756,22 +3742,22 @@ També podeu utilitzar la forma: Joan Peris &lt;joan@peris.com&gt;</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="20"/>
       <source>General Macro Settings</source>
-      <translation type="unfinished">General Macro Settings</translation>
+      <translation>Configuració general de macros</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="48"/>
       <source>Macro Recording Settings</source>
-      <translation type="unfinished">Macro Recording Settings</translation>
+      <translation>Paràmetres de gravació d'una macro</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="69"/>
       <source>Macro Path</source>
-      <translation type="unfinished">Macro Path</translation>
+      <translation>Camí de la macro</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="109"/>
       <source>Gui Commands</source>
-      <translation type="unfinished">Gui Commands</translation>
+      <translation>Ordres de la GUI</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="130"/>
@@ -3811,12 +3797,12 @@ També podeu utilitzar la forma: Joan Peris &lt;joan@peris.com&gt;</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="211"/>
       <source>Log all commands issued by menus to file</source>
-      <translation type="unfinished">Log all commands issued by menus to file</translation>
+      <translation>Registra al fitxer totes les ordres publicades pels menús</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="243"/>
       <source>Recent Macros Menu</source>
-      <translation type="unfinished">Recent Macros Menu</translation>
+      <translation>Menú de macros recents</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="224"/>
@@ -3981,13 +3967,12 @@ Trackball Classic: moving the mouse will rotate the part allowing precession.
 Turntable: the part will be rotated around the Z-axis (with constrained axes).
 Free Turntable: the part will be rotated around the Z-axis.
          </source>
-      <translation type="unfinished">Rotation orbit style.
-Rounded Arcball: moving the mouse in the corners of the screen will only roll the part.
-Trackball: moving the mouse horizontally will rotate the part around the Y-axis.
-Trackball Classic: moving the mouse will rotate the part allowing precession.
-Turntable: the part will be rotated around the Z-axis (with constrained axes).
-Free Turntable: the part will be rotated around the Z-axis.
-         </translation>
+      <translation>Estil d'òrbita de rotació.
+Arcball arrodonit: moure el ratolí per les cantonades de la pantalla només farà rodar la peça.
+Trackball: moure el ratolí horitzontalment girarà la peça al voltant de l'eix y.
+Trackball clàssic: moure el ratolí girarà la peça permetent la precessió.
+Plat giratori: la peça girarà al voltant de l'eix Z (amb eixos restringits).
+Plat giratori lliure: la peça girarà al voltant de l'eix Z.         </translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="488"/>
@@ -4086,19 +4071,17 @@ El valor és el diàmetre de l’esfera per a ajustar-se a la pantalla.</transla
       <source>Prevents view tilting when pinch-zooming.
 Affects only Gesture navigation style.
 Mouse tilting is not disabled by this setting.</source>
-      <translation type="unfinished">Prevents view tilting when pinch-zooming.
-Affects only Gesture navigation style.
-Mouse tilting is not disabled by this setting.</translation>
+      <translation>Evita la inclinació de la vista quan s'està fent zoom amb els dits. Només afecta l'estil de Navegació amb gestos. Aquesta opció no desactiva la inclinació del ratolí.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="743"/>
       <source>Space Mouse</source>
-      <translation type="unfinished">Space Mouse</translation>
+      <translation>Espai ratolí</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="749"/>
       <source>Enable support of legacy SpaceMouse devices</source>
-      <translation type="unfinished">Enable support of legacy SpaceMouse devices</translation>
+      <translation>Habilita el suport per a dispositius ratolí heretats</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="777"/>
@@ -4118,17 +4101,17 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="20"/>
       <source>Navigation Cube</source>
-      <translation type="unfinished">Navigation Cube</translation>
+      <translation>Cub de navegació</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="84"/>
       <source>Corner where the navigation cube is displayed</source>
-      <translation type="unfinished">Corner where the navigation cube is displayed</translation>
+      <translation>Cantonada on es mostra el cub de navegació</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="120"/>
       <source>Rotates to nearest possible state when clicking a face of the cube</source>
-      <translation type="unfinished">Rotates to nearest possible state when clicking a face of the cube</translation>
+      <translation>Gira a l'estat més proper possible quan es fa clic en una cara del cub</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="139"/>
@@ -4138,24 +4121,24 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="282"/>
       <source>Rotation Center Indicator</source>
-      <translation type="unfinished">Rotation Center Indicator</translation>
+      <translation>Indicador centre de rotació</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="384"/>
       <source>3D navigation</source>
-      <translation type="unfinished">3D navigation</translation>
+      <translation>Navegació 3D</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="421"/>
       <source>Lists the mouse button configs for each chosen navigation setting.
 Select a set and then press the button to view said configurations.</source>
-      <translation type="unfinished">Lists the mouse button configs for each chosen navigation setting.
-Select a set and then press the button to view said configurations.</translation>
+      <translation>Mostra les configuracions del botó del ratolí per a cada paràmetre de navegació escollit.
+Seleccioneu un paràmetre i, a continuació, premeu el botó per a veure aquestes configuracions.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="425"/>
       <source>Mouse Configuration</source>
-      <translation type="unfinished">Mouse Configuration</translation>
+      <translation>Configuració del ratolí</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="619"/>
@@ -4296,17 +4279,17 @@ horizontal space in Python console</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="84"/>
       <source>Python profiler interval (ms)</source>
-      <translation type="unfinished">Python profiler interval (ms)</translation>
+      <translation>Interval de perfilador Python (mil·lisegons)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="91"/>
       <source>The interval in milliseconds at which the profiler runs when there is Python code running (to keep the GUI responding). Set to 0 to disable.</source>
-      <translation type="unfinished">The interval in milliseconds at which the profiler runs when there is Python code running (to keep the GUI responding). Set to 0 to disable.</translation>
+      <translation>L'interval en ms. en el qual s'executa el perfilador quan hi ha codi de Python en execució (per a mantenir la interfície responent). Establiu a 0 per a desactivar-ho.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="125"/>
       <source>Path to external Python executable (optional)</source>
-      <translation type="unfinished">Path to external Python executable (optional)</translation>
+      <translation>Camí a l'executable de Python extern (opcional)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="94"/>
@@ -4334,7 +4317,7 @@ horizontal space in Python console</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="20"/>
       <source>Viewport Selection Behavior</source>
-      <translation type="unfinished">Viewport Selection Behavior</translation>
+      <translation>Comportament de selecció de la finestra gràfica</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="67"/>
@@ -4346,9 +4329,8 @@ horizontal space in Python console</source>
       <source>Area for selecting elements in the 3D view.
 A larger value makes it easier to select elements, but may prevent selection of small features.
       </source>
-      <translation type="unfinished">Area for selecting elements in the 3D view.
-A larger value makes it easier to select elements, but may prevent selection of small features.
-      </translation>
+      <translation>Àrea per seleccionar elements a la vista 3D.
+Un valor més gran facilita la selecció d'elements, però pot impedir la selecció de petites característiques.      </translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="154"/>
@@ -4363,17 +4345,17 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="173"/>
       <source>Preselect the object in the 3D view when hovering the cursor over the tree item</source>
-      <translation type="unfinished">Preselect the object in the 3D view when hovering the cursor over the tree item</translation>
+      <translation>Preseleccioneu l'objecte a la vista 3D quan passeu el cursor per sobre de l'element de l'arbre</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="189"/>
       <source>Tree Selection Behavior</source>
-      <translation type="unfinished">Tree Selection Behavior</translation>
+      <translation>Comportament de selecció en arbre</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="208"/>
       <source>Auto expand tree item when the corresponding object is selected in the 3D view</source>
-      <translation type="unfinished">Auto expand tree item when the corresponding object is selected in the 3D view</translation>
+      <translation>Expandeix automàticament l’element de l'arbre quan l’objecte corresponent està seleccionat en la vista 3D</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="46"/>
@@ -4466,19 +4448,19 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="23"/>
       <source>Background Color</source>
-      <translation type="unfinished">Background Color</translation>
+      <translation>Color de fons</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="61"/>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="123"/>
       <source>Background will have the selected color</source>
-      <translation type="unfinished">Background will have the selected color</translation>
+      <translation>El fons tindrà el color seleccionat</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="77"/>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="96"/>
       <source>Background will have the selected color gradient</source>
-      <translation type="unfinished">Background will have the selected color gradient</translation>
+      <translation>El fons tindrà el degradat del color seleccionat</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="166"/>
@@ -4493,12 +4475,12 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="204"/>
       <source>Middle</source>
-      <translation type="unfinished">Middle</translation>
+      <translation>Mig</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="231"/>
       <source>Color gradient will get the selected color as middle color</source>
-      <translation type="unfinished">Color gradient will get the selected color as middle color</translation>
+      <translation>El degradat de color tindrà el color seleccionat com a color mitjà</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="247"/>
@@ -4508,32 +4490,32 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="281"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Vista d'Arbre</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="341"/>
       <source>Background color for objects in the tree view that are currently edited</source>
-      <translation type="unfinished">Background color for objects in the tree view that are currently edited</translation>
+      <translation>Color de fons per a objectes en vista d’arbre que s’editen actualment</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="361"/>
       <source>Active container object</source>
-      <translation type="unfinished">Active container object</translation>
+      <translation>Objecte contenidor actiu</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="374"/>
       <source>Background color for active containers (e.g. part or body) in the tree view</source>
-      <translation type="unfinished">Background color for active containers (e.g. part or body) in the tree view</translation>
+      <translation>Color de fons per als contenidors actius (per exemple, part o cos) a la vista d'arbre</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="475"/>
       <source>Color bar label text color (e.g. in Mesh and FEM)</source>
-      <translation type="unfinished">Color bar label text color (e.g. in Mesh and FEM)</translation>
+      <translation>Color del text de l'etiqueta de la barra de colors (per exemple, a Mesh i FEM)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="502"/>
       <source>Color bar label text size (e.g. in Mesh and FEM)</source>
-      <translation type="unfinished">Color bar label text size (e.g. in Mesh and FEM)</translation>
+      <translation>Color del text de l'etiqueta de la barra de colors (per exemple, a Mesh i FEM)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="234"/>
@@ -4583,17 +4565,17 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="14"/>
       <source>Units Converter</source>
-      <translation type="unfinished">Units Converter</translation>
+      <translation>Convertidor d'unitats</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="35"/>
       <source>as</source>
-      <translation type="unfinished">as</translation>
+      <translation>com</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="48"/>
       <source>Input the unit for the result</source>
-      <translation type="unfinished">Input the unit for the result</translation>
+      <translation>Introduïu aquí la unitat per al resultat</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="58"/>
@@ -4621,39 +4603,39 @@ Per afegir un càlcul, premeu Retorn al camp d'entrada del valor</translation>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="117"/>
       <source>Unit system</source>
-      <translation type="unfinished">Unit system</translation>
+      <translation>Sistema d'unitats</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="124"/>
       <source>Unit system to be used for the Quantity.
 The preference system is the one set in the general preferences.</source>
-      <translation type="unfinished">Unit system to be used for the Quantity.
-The preference system is the one set in the general preferences.</translation>
+      <translation>Sistema de unitats que s'utilitzarà per a la quantitat
+El sistema de preferències és el fixat en les preferències generals.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="132"/>
       <source>Decimals</source>
-      <translation type="unfinished">Decimals</translation>
+      <translation>Decimals</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="139"/>
       <source>Decimals for the quantity</source>
-      <translation type="unfinished">Decimals for the quantity</translation>
+      <translation>Decimals de la quantitat</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="155"/>
       <source>Unit category</source>
-      <translation type="unfinished">Unit category</translation>
+      <translation>Categoria d'unitat</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="168"/>
       <source>Unit category for the quantity</source>
-      <translation type="unfinished">Unit category for the quantity</translation>
+      <translation>Categoria d'unitat per a la quantitat</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="193"/>
       <source>Copies the result to the clipboard</source>
-      <translation type="unfinished">Copies the result to the clipboard</translation>
+      <translation>Copia el resultat en el porta-retalls</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="196"/>
@@ -4705,12 +4687,12 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
     <message>
       <location filename="../DocumentRecovery.ui" line="49"/>
       <source>Status of recovered documents</source>
-      <translation type="unfinished">Status of recovered documents</translation>
+      <translation>Estat dels documents recuperats</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.ui" line="60"/>
       <source>Document name</source>
-      <translation type="unfinished">Document name</translation>
+      <translation>Nom del document</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.ui" line="65"/>
@@ -4757,22 +4739,22 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
     <message>
       <location filename="../DocumentRecovery.cpp" line="523"/>
       <source>Delete the selected transient directories?</source>
-      <translation type="unfinished">Delete the selected transient directories?</translation>
+      <translation>Voleu suprimir els directoris transitoris seleccionats?</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="524"/>
       <source>When deleting the selected transient directory it is not possible to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting the selected transient directory it is not possible to recover any files afterwards.</translation>
+      <translation>Si suprimiu el directori transitori seleccionat després no podreu recuperar cap fitxer.</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="555"/>
       <source>Delete all transient directories?</source>
-      <translation type="unfinished">Delete all transient directories?</translation>
+      <translation>Voleu suprimir els directoris transitoris seleccionats?</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="556"/>
       <source>When deleting all transient directories it is not possible to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting all transient directories it is not possible to recover any files afterwards.</translation>
+      <translation>Eliminant tots els directoris transitoris no es podrà recuperar cap arxiu.</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.ui" line="42"/>
@@ -4802,7 +4784,7 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
     <message>
       <location filename="../DownloadItem.cpp" line="441"/>
       <source>Open Containing Folder</source>
-      <translation type="unfinished">Open Containing Folder</translation>
+      <translation>Obre la carpeta contenidora</translation>
     </message>
     <message>
       <location filename="../DownloadItem.cpp" line="458"/>
@@ -4875,7 +4857,7 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
     <message>
       <location filename="../DownloadManager.ui" line="34"/>
       <source>Clean Up</source>
-      <translation type="unfinished">Clean Up</translation>
+      <translation>Neteja</translation>
     </message>
     <message>
       <location filename="../DownloadManager.ui" line="56"/>
@@ -4903,7 +4885,7 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="460"/>
       <source>Icon Folders</source>
-      <translation type="unfinished">Icon Folders</translation>
+      <translation>Carpetes d'icones</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="597"/>
@@ -4926,7 +4908,7 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="625"/>
       <source>Removing a folder only takes effect after an application restart</source>
-      <translation type="unfinished">Removing a folder only takes effect after an application restart</translation>
+      <translation>L'acció d'eliminar una carpeta només té efecte després de reiniciar l'aplicació</translation>
     </message>
   </context>
   <context>
@@ -4934,7 +4916,7 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
     <message>
       <location filename="../InputVector.ui" line="14"/>
       <source>Input Vector</source>
-      <translation type="unfinished">Input Vector</translation>
+      <translation>Vector d'entrada</translation>
     </message>
     <message>
       <location filename="../InputVector.ui" line="20"/>
@@ -4962,7 +4944,7 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
     <message>
       <location filename="../MouseButtons.ui" line="14"/>
       <source>Mouse Buttons</source>
-      <translation type="unfinished">Mouse Buttons</translation>
+      <translation>Botons del ratolí</translation>
     </message>
     <message>
       <location filename="../MouseButtons.ui" line="20"/>
@@ -4977,7 +4959,7 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
     <message>
       <location filename="../MouseButtons.ui" line="48"/>
       <source>Panning</source>
-      <translation type="unfinished">Panning</translation>
+      <translation>Panoràmica</translation>
     </message>
     <message>
       <location filename="../MouseButtons.ui" line="68"/>
@@ -4987,7 +4969,7 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
     <message>
       <location filename="../MouseButtons.ui" line="88"/>
       <source>Zooming</source>
-      <translation type="unfinished">Zooming</translation>
+      <translation>Zoom</translation>
     </message>
   </context>
   <context>
@@ -5013,37 +4995,37 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="494"/>
       <source>Add Sub-Group</source>
-      <translation type="unfinished">Add Sub-Group</translation>
+      <translation>Afegeix un subgrup</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="496"/>
       <source>Remove Group</source>
-      <translation type="unfinished">Remove Group</translation>
+      <translation>Elimina el grup</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="498"/>
       <source>Rename Group</source>
-      <translation type="unfinished">Rename Group</translation>
+      <translation>Reanomena el grup</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="500"/>
       <source>Export Parameter</source>
-      <translation type="unfinished">Export Parameter</translation>
+      <translation>Exporta el paràmetre</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="502"/>
       <source>Import Parameter</source>
-      <translation type="unfinished">Import Parameter</translation>
+      <translation>Importa el paràmetre</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="542"/>
       <source>Remove this parameter group?</source>
-      <translation type="unfinished">Remove this parameter group?</translation>
+      <translation>Voleu eliminar aquest grup de paràmetres?</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="650"/>
       <source>Import error</source>
-      <translation type="unfinished">Import error</translation>
+      <translation>Error d’importació</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="671"/>
@@ -5101,42 +5083,42 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="688"/>
       <source>Change Value</source>
-      <translation type="unfinished">Change Value</translation>
+      <translation>Canviar valor</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="692"/>
       <source>Remove Key</source>
-      <translation type="unfinished">Remove Key</translation>
+      <translation>Elimina la clau</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="693"/>
       <source>Rename Key</source>
-      <translation type="unfinished">Rename Key</translation>
+      <translation>Reanomena la clau</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="698"/>
       <source>New String Item</source>
-      <translation type="unfinished">New String Item</translation>
+      <translation>Element de cadena nou</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="699"/>
       <source>New Float Item</source>
-      <translation type="unfinished">New Float Item</translation>
+      <translation>Element flotant nou</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="700"/>
       <source>New Integer Item</source>
-      <translation type="unfinished">New Integer Item</translation>
+      <translation>Element enter nou</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="702"/>
       <source>New Unsigned Item</source>
-      <translation type="unfinished">New Unsigned Item</translation>
+      <translation>Element sense signe nou</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="703"/>
       <source>New Boolean Item</source>
-      <translation type="unfinished">New Boolean Item</translation>
+      <translation>Element booleà nou</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="816"/>
@@ -5187,12 +5169,12 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
     <message>
       <location filename="../Placement.ui" line="105"/>
       <source>Shift-click for opposite direction</source>
-      <translation type="unfinished">Shift-click for opposite direction</translation>
+      <translation>Majúscules clic per a la direcció oposada</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="108"/>
       <source>Apply Axial</source>
-      <translation type="unfinished">Apply Axial</translation>
+      <translation>Aplicar axial</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="118"/>
@@ -5202,7 +5184,7 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
     <message>
       <location filename="../Placement.ui" line="194"/>
       <source>Selected Points</source>
-      <translation type="unfinished">Selected Points</translation>
+      <translation>Punts escollits</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="204"/>
@@ -5212,7 +5194,7 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
     <message>
       <location filename="../Placement.ui" line="231"/>
       <source>Euler angles (Z–Y′–X″)</source>
-      <translation type="unfinished">Euler angles (Z–Y′–X″)</translation>
+      <translation>Angles d'Euler (XY'Z″)</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="284"/>
@@ -5228,23 +5210,23 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
       <location filename="../Placement.ui" line="360"/>
       <location filename="../Placement.ui" line="367"/>
       <source>Yaw (around Z-axis)</source>
-      <translation type="unfinished">Yaw (around Z-axis)</translation>
+      <translation>Rotació (sobre l'eix z)</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="380"/>
       <location filename="../Placement.ui" line="387"/>
       <source>Pitch (around Y-axis)</source>
-      <translation type="unfinished">Pitch (around Y-axis)</translation>
+      <translation>Pas (al voltant de l'eix Y)</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="400"/>
       <source>Roll (around X-axis)</source>
-      <translation type="unfinished">Roll (around X-axis)</translation>
+      <translation>Rodar (al voltant de l'eix X)</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="407"/>
       <source>Roll (around the X-axis)</source>
-      <translation type="unfinished">Roll (around the X-axis)</translation>
+      <translation>Rotació (sobre l'eix de les x)</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="445"/>
@@ -5259,17 +5241,17 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
     <message>
       <location filename="../Placement.cpp" line="712"/>
       <source>Select 1, 2, or 3 points before clicking this button. A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
-      <translation type="unfinished">Select 1, 2, or 3 points before clicking this button. A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</translation>
+      <translation>Seleccioneu 1, 2 o 3 punts abans de fer clic en aquest botó.  Un punt pot estar en un vèrtex, cara o aresta.  Si esteu en una cara o aresta, el punt utilitzat serà el punt en la cara o aresta de la posició del ratolí.  Si es selecciona 1 punt s'uutilitzarà com a centre de rotació. Si se seleccionen 2 punts, el punt mig entre ells serà el centre de rotació i es crearà, si és necessari,  un nou eix personalitzat. Si se seleccionen 3 punts, el primer punt es converteix en el centre de rotació i es troba en el vector que és normal al pla definit per 3 punts. Alguns detalls de distància i angle es proporcionen en la visualització d'informe, que pot ser útil per a alinear objectes.  Per a la vostra comoditat, quan feu Majúscules + clic s'utilitza la distància adequada o l'angle es copia al porta-retalls.</translation>
     </message>
     <message>
       <location filename="../Placement.cpp" line="804"/>
       <source>Incorrect Quantity</source>
-      <translation type="unfinished">Incorrect Quantity</translation>
+      <translation>La quantitat és incorrecta</translation>
     </message>
     <message>
       <location filename="../Placement.cpp" line="806"/>
       <source>There are input fields with incorrect input. Ensure valid placement values!</source>
-      <translation type="unfinished">There are input fields with incorrect input. Ensure valid placement values!</translation>
+      <translation>Hi ha camps d'entrada amb entrada incorrecta, assegureu-vos que els valors d'emplaçament són vàlids.</translation>
     </message>
   </context>
   <context>
@@ -5290,7 +5272,7 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
     <message>
       <location filename="../RemoteDebugger.ui" line="14"/>
       <source>Attach to Remote Debugger</source>
-      <translation type="unfinished">Attach to Remote Debugger</translation>
+      <translation>Adjunta al depurador remot</translation>
     </message>
     <message>
       <location filename="../RemoteDebugger.ui" line="24"/>
@@ -5310,7 +5292,7 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
     <message>
       <location filename="../RemoteDebugger.ui" line="78"/>
       <source>Port</source>
-      <translation type="unfinished">Port</translation>
+      <translation>Port</translation>
     </message>
     <message>
       <location filename="../RemoteDebugger.ui" line="58"/>
@@ -5354,7 +5336,7 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
     <message>
       <location filename="../TextureMapping.ui" line="20"/>
       <source>Texture Mapping</source>
-      <translation type="unfinished">Texture Mapping</translation>
+      <translation>Mapatge de textura</translation>
     </message>
     <message>
       <location filename="../TextureMapping.ui" line="26"/>
@@ -5411,7 +5393,7 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
     <message>
       <location filename="../Dialogs/DlgObjectSelection.ui" line="32"/>
       <source>The selected objects contain other dependencies. Select which objects to export. All dependencies are auto-selected by default.</source>
-      <translation type="unfinished">The selected objects contain other dependencies. Select which objects to export. All dependencies are auto-selected by default.</translation>
+      <translation>Els objectes seleccionats contenen altres dependències. Seleccioneu quins objectes voleu exportar. Totes les dependències se seleccionen automàticament per defecte.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgObjectSelection.ui" line="157"/>
@@ -5458,14 +5440,14 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
     <message>
       <location filename="../Dialogs/DlgObjectSelection.cpp" line="157"/>
       <source>&amp;Use Original Selection</source>
-      <translation type="unfinished">&amp;Use Original Selection</translation>
+      <translation>&amp;Utilitza les seleccions originals</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgObjectSelection.cpp" line="158"/>
       <source>Ignore dependencies and proceed with the objects
 originally selected prior to opening this dialog</source>
-      <translation type="unfinished">Ignore dependencies and proceed with the objects
-originally selected prior to opening this dialog</translation>
+      <translation>Ignoreu les dependències i continueu amb els objectes
+seleccionats abans d'obrir aquest diàleg</translation>
     </message>
   </context>
   <context>
@@ -5496,44 +5478,44 @@ originally selected prior to opening this dialog</translation>
       <location filename="../ReportView.cpp" line="596"/>
       <location filename="../ReportView.cpp" line="620"/>
       <source>Normal Messages</source>
-      <translation type="unfinished">Normal Messages</translation>
+      <translation>Missatges normals</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="600"/>
       <location filename="../ReportView.cpp" line="624"/>
       <source>Log Messages</source>
-      <translation type="unfinished">Log Messages</translation>
+      <translation>Missatges de registre</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="612"/>
       <location filename="../ReportView.cpp" line="636"/>
       <source>Critical Messages</source>
-      <translation type="unfinished">Critical Messages</translation>
+      <translation>Missatges crítics</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="642"/>
       <source>Redirect Python Output</source>
-      <translation type="unfinished">Redirect Python Output</translation>
+      <translation>Redirigeix la sortida de Python</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="646"/>
       <source>Redirect Python Errors</source>
-      <translation type="unfinished">Redirect Python Errors</translation>
+      <translation>Redirigeix els errors de Python</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="651"/>
       <source>Go to End</source>
-      <translation type="unfinished">Go to End</translation>
+      <translation>Ves al final</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="672"/>
       <source>Save As…</source>
-      <translation type="unfinished">Save As…</translation>
+      <translation>Anomena i desa…</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="681"/>
       <source>Plain text files</source>
-      <translation type="unfinished">Plain text files</translation>
+      <translation>Fitxers de text pla</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="604"/>
@@ -5544,7 +5526,7 @@ originally selected prior to opening this dialog</translation>
     <message>
       <location filename="../ReportView.cpp" line="593"/>
       <source>Display Message Types</source>
-      <translation type="unfinished">Display Message Types</translation>
+      <translation>Mostra els tipus de missatges</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="608"/>
@@ -5555,7 +5537,7 @@ originally selected prior to opening this dialog</translation>
     <message>
       <location filename="../ReportView.cpp" line="617"/>
       <source>Show Report View On</source>
-      <translation type="unfinished">Show Report View On</translation>
+      <translation>Activa Mostra la vista de l'informe </translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="670"/>
@@ -5580,7 +5562,7 @@ originally selected prior to opening this dialog</translation>
       <location filename="../ReportView.cpp" line="83"/>
       <location filename="../ReportView.cpp" line="105"/>
       <source>Python Console</source>
-      <translation type="unfinished">Python Console</translation>
+      <translation>Consola Python</translation>
     </message>
   </context>
   <context>
@@ -5618,37 +5600,37 @@ originally selected prior to opening this dialog</translation>
     <message>
       <location filename="../Selection/SelectionView.cpp" line="641"/>
       <source>Select Only</source>
-      <translation type="unfinished">Select Only</translation>
+      <translation>Selecciona només</translation>
     </message>
     <message>
       <location filename="../Selection/SelectionView.cpp" line="651"/>
       <source>Zoom Fit</source>
-      <translation type="unfinished">Zoom Fit</translation>
+      <translation>Ajusta zoom</translation>
     </message>
     <message>
       <location filename="../Selection/SelectionView.cpp" line="655"/>
       <source>Go to Selection</source>
-      <translation type="unfinished">Go to Selection</translation>
+      <translation>Anar a la selecció</translation>
     </message>
     <message>
       <location filename="../Selection/SelectionView.cpp" line="658"/>
       <source>Mark to Recompute</source>
-      <translation type="unfinished">Mark to Recompute</translation>
+      <translation>Marca per a recalcular</translation>
     </message>
     <message>
       <location filename="../Selection/SelectionView.cpp" line="660"/>
       <source>Marks this object to be recomputed</source>
-      <translation type="unfinished">Marks this object to be recomputed</translation>
+      <translation>Marca aquest objecte per a recalcular-lo</translation>
     </message>
     <message>
       <location filename="../Selection/SelectionView.cpp" line="663"/>
       <source>To Python Console</source>
-      <translation type="unfinished">To Python Console</translation>
+      <translation>A la consola Python</translation>
     </message>
     <message>
       <location filename="../Selection/SelectionView.cpp" line="672"/>
       <source>Duplicate Subshape</source>
-      <translation type="unfinished">Duplicate Subshape</translation>
+      <translation>Subforma duplicada</translation>
     </message>
     <message>
       <location filename="../Selection/SelectionView.cpp" line="645"/>
@@ -5716,16 +5698,16 @@ originally selected prior to opening this dialog</translation>
       <source>%1.
 
 This has been modified outside of the source editor. Reload it?</source>
-      <translation type="unfinished">%1.
+      <translation>%1. 
 
-This has been modified outside of the source editor. Reload it?</translation>
+S'ha modificat fora de l'editor de codi font. Voleu tornar-lo a carregar?</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="351"/>
       <source>The document has been modified.
 Save all changes?</source>
-      <translation type="unfinished">The document has been modified.
-Save all changes?</translation>
+      <translation>El document s'ha modificat.
+Voleu desar tots els canvis?</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="380"/>
@@ -5771,13 +5753,13 @@ Save all changes?</translation>
   <context>
     <name>Gui::FileDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="215"/>
+      <location filename="../FileDialog.cpp" line="218"/>
       <source>Save As</source>
-      <translation type="unfinished">Save As</translation>
+      <translation>Anomena i desa</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="291"/>
-      <location filename="../FileDialog.cpp" line="344"/>
+      <location filename="../FileDialog.cpp" line="294"/>
+      <location filename="../FileDialog.cpp" line="347"/>
       <source>Open</source>
       <translation>Obre</translation>
     </message>
@@ -5785,12 +5767,12 @@ Save all changes?</translation>
   <context>
     <name>Gui::FileOptionsDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="453"/>
+      <location filename="../FileDialog.cpp" line="456"/>
       <source>Extended</source>
       <translation>Expandit</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="489"/>
+      <location filename="../FileDialog.cpp" line="492"/>
       <source>All files (*.*)</source>
       <translation>Tots els fitxers (*.*)</translation>
     </message>
@@ -5800,22 +5782,22 @@ Save all changes?</translation>
     <message>
       <location filename="../Flag.cpp" line="161"/>
       <source>Top Left</source>
-      <translation type="unfinished">Top Left</translation>
+      <translation>Superior esquerra</translation>
     </message>
     <message>
       <location filename="../Flag.cpp" line="163"/>
       <source>Bottom Left</source>
-      <translation type="unfinished">Bottom Left</translation>
+      <translation>Inferior esquerra</translation>
     </message>
     <message>
       <location filename="../Flag.cpp" line="165"/>
       <source>Top Right</source>
-      <translation type="unfinished">Top Right</translation>
+      <translation>Superior dreta</translation>
     </message>
     <message>
       <location filename="../Flag.cpp" line="167"/>
       <source>Bottom Right</source>
-      <translation type="unfinished">Bottom Right</translation>
+      <translation>Inferior dreta</translation>
     </message>
     <message>
       <location filename="../Flag.cpp" line="170"/>
@@ -5843,7 +5825,7 @@ Save all changes?</translation>
     <message>
       <location filename="../Navigation/GestureNavigationStyle.cpp" line="863"/>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR PgUp/PgDown on keyboard.</source>
-      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR PgUp/PgDown on keyboard.</translation>
+      <translation>Pinceu (poseu dos dits en la pantalla i separeu-los o ajunteu-los). O feu girar la rodeta del ratolí. O utilitzeu les tecles Re Pàg/Av Pàg del teclat.</translation>
     </message>
   </context>
   <context>
@@ -5938,7 +5920,7 @@ Save all changes?</translation>
     <message>
       <location filename="../InputField.cpp" line="224"/>
       <source>Save Value</source>
-      <translation type="unfinished">Save Value</translation>
+      <translation>Desa Fitxer</translation>
     </message>
   </context>
   <context>
@@ -5946,7 +5928,7 @@ Save all changes?</translation>
     <message>
       <location filename="../Navigation/InventorNavigationStyle.cpp" line="51"/>
       <source>Press Ctrl and left mouse button</source>
-      <translation type="unfinished">Press Ctrl and left mouse button</translation>
+      <translation>Premeu la tecla Ctrl i el botó esquerre del ratolí</translation>
     </message>
     <message>
       <location filename="../Navigation/InventorNavigationStyle.cpp" line="53"/>
@@ -6020,7 +6002,7 @@ Save all changes?</translation>
       <location filename="../InputVector.h" line="443"/>
       <location filename="../InputVector.h" line="458"/>
       <source>User defined…</source>
-      <translation type="unfinished">User defined…</translation>
+      <translation>Definit per l'usuari…</translation>
     </message>
     <message>
       <location filename="../InputVector.cpp" line="211"/>
@@ -6142,14 +6124,14 @@ Save all changes?</translation>
     <message>
       <location filename="../MainWindow.cpp" line="1996"/>
       <source>The exported object contains external link. Save the documentat least once before exporting.</source>
-      <translation type="unfinished">The exported object contains external link. Save the documentat least once before exporting.</translation>
+      <translation>L’objecte exportat conté un enllaç extern. Deseu el documenta almenys una vegada abans d’exportar-lo.</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="2088"/>
       <source>To link to external objects, the document must be saved at least once.
 Save the document now?</source>
-      <translation type="unfinished">To link to external objects, the document must be saved at least once.
-Save the document now?</translation>
+      <translation>Per a enllaçar amb objectes externs, el document s’ha de desar almenys una vegada.
+Voleu desar el document ara?</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="2390"/>
@@ -6181,17 +6163,17 @@ Save the document now?</translation>
     <message>
       <location filename="../ManualAlignment.cpp" line="804"/>
       <source>Select at least 1 point in the left and the right view</source>
-      <translation type="unfinished">Select at least 1 point in the left and the right view</translation>
+      <translation>Seleccioneu almenys 1 punt en les vistes esquerra i dreta</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="805"/>
       <source>Select at least %1 points in the left and the right view</source>
-      <translation type="unfinished">Select at least %1 points in the left and the right view</translation>
+      <translation>Selecciioneu almenys %1 punts en les vistes esquerra i dreta</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="860"/>
       <source>Select points in the left and right view</source>
-      <translation type="unfinished">Select points in the left and right view</translation>
+      <translation>Seleccioneu punts en les vistes esquerra i dreta</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="916"/>
@@ -6266,12 +6248,12 @@ How do you want to proceed?</source>
     <message>
       <location filename="../ManualAlignment.cpp" line="1250"/>
       <source>&amp;Remove Last Point</source>
-      <translation type="unfinished">&amp;Remove Last Point</translation>
+      <translation>&amp;Eliminar el darrer punt</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="1256"/>
       <source>&amp;Synchronize Views</source>
-      <translation type="unfinished">&amp;Synchronize Views</translation>
+      <translation>&amp;Sincronitza vistes</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="1252"/>
@@ -6289,17 +6271,17 @@ How do you want to proceed?</source>
     <message>
       <location filename="../Navigation/MayaGestureNavigationStyle.cpp" line="96"/>
       <source>Drag screen with two fingers OR press Alt + middle mouse button.</source>
-      <translation type="unfinished">Drag screen with two fingers OR press Alt + middle mouse button.</translation>
+      <translation>Arrossegueu la pantalla amb dos dits. O premeu ALT i el botó central del ratolí.</translation>
     </message>
     <message>
       <location filename="../Navigation/MayaGestureNavigationStyle.cpp" line="98"/>
       <source>Drag screen with one finger OR press Alr + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation type="unfinished">Drag screen with one finger OR press Alr + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+      <translation>Arrossegueu la pantalla amb un dit o premeu el botó esquerre del ratolí. A Croquis i altres modes d'edició, manteniu a més Alt.</translation>
     </message>
     <message>
       <location filename="../Navigation/MayaGestureNavigationStyle.cpp" line="100"/>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR press Alt + right mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR press Alt + right mouse button OR PgUp/PgDown on keyboard.</translation>
+      <translation>Pinceu (poseu dos dits en la pantalla i separeu-los o ajunteu-los). O feu girar la rodeta del ratolí. O premeu ALT i el botó dret del ratolí. O utilitzeu les tecles Re Pàg/Av Pàg del teclat.</translation>
     </message>
   </context>
   <context>
@@ -6320,17 +6302,17 @@ How do you want to proceed?</source>
     <message>
       <location filename="../Navigation/OpenCascadeNavigationStyle.cpp" line="51"/>
       <source>Press Ctrl and middle mouse button</source>
-      <translation type="unfinished">Press Ctrl and middle mouse button</translation>
+      <translation>Premeu la tecla CTRL i el botó central del ratolí</translation>
     </message>
     <message>
       <location filename="../Navigation/OpenCascadeNavigationStyle.cpp" line="53"/>
       <source>Press Ctrl and right mouse button</source>
-      <translation type="unfinished">Press Ctrl and right mouse button</translation>
+      <translation>Premeu la tecla Ctrl i el botó dret del ratolí</translation>
     </message>
     <message>
       <location filename="../Navigation/OpenCascadeNavigationStyle.cpp" line="55"/>
       <source>Press Ctrl and left mouse button</source>
-      <translation type="unfinished">Press Ctrl and left mouse button</translation>
+      <translation>Premeu la tecla Ctrl i el botó esquerre del ratolí</translation>
     </message>
   </context>
   <context>
@@ -6366,12 +6348,12 @@ How do you want to proceed?</source>
     <message>
       <location filename="../PrefWidgets.cpp" line="727"/>
       <source>Save Value</source>
-      <translation type="unfinished">Save Value</translation>
+      <translation>Desa el valor</translation>
     </message>
     <message>
       <location filename="../PrefWidgets.cpp" line="728"/>
       <source>Clear List</source>
-      <translation type="unfinished">Clear List</translation>
+      <translation>Neteja la llista</translation>
     </message>
   </context>
   <context>
@@ -6389,7 +6371,7 @@ How do you want to proceed?</source>
     <message>
       <location filename="../ProgressBar.cpp" line="485"/>
       <source>Abort the operation?</source>
-      <translation type="unfinished">Abort the operation?</translation>
+      <translation>Interrompre l'operació?</translation>
     </message>
   </context>
   <context>
@@ -6407,7 +6389,7 @@ How do you want to proceed?</source>
     <message>
       <location filename="../ProgressDialog.cpp" line="316"/>
       <source>Abort the operation?</source>
-      <translation type="unfinished">Abort the operation?</translation>
+      <translation>Interrompre l'operació?</translation>
     </message>
   </context>
   <context>
@@ -6443,47 +6425,47 @@ How do you want to proceed?</source>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="763"/>
       <source>Add Property</source>
-      <translation type="unfinished">Add Property</translation>
+      <translation>Afegir Propietat</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="768"/>
       <source>Rename Property Group</source>
-      <translation type="unfinished">Rename Property Group</translation>
+      <translation>Reanomena el nom del grup de propietats</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="776"/>
       <source>Rename Property</source>
-      <translation type="unfinished">Rename Property</translation>
+      <translation>Reanomena la propietat</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="793"/>
       <source>Delete Property</source>
-      <translation type="unfinished">Delete Property</translation>
+      <translation>Eliminar Propietat</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="950"/>
       <source>Rename property</source>
-      <translation type="unfinished">Rename property</translation>
+      <translation>Reanomena la propietat</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="800"/>
       <source>Show Hidden</source>
-      <translation type="unfinished">Show Hidden</translation>
+      <translation>Mostrar ocults</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="806"/>
       <source>Auto-Expand</source>
-      <translation type="unfinished">Auto-Expand</translation>
+      <translation>Auto expandir</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="821"/>
       <source>Expression</source>
-      <translation type="unfinished">Expression</translation>
+      <translation>Expressió</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="951"/>
       <source>Property name</source>
-      <translation type="unfinished">Property name</translation>
+      <translation>Nom de la propietat</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="975"/>
@@ -6535,8 +6517,8 @@ How do you want to proceed?</source>
       <location filename="../PythonConsole.cpp" line="830"/>
       <source>The application is still running.
 Exit without saving all data?</source>
-      <translation type="unfinished">The application is still running.
-Exit without saving all data?</translation>
+      <translation>L'aplicació està encara en funcionament.
+Voleu sortir sense desar les dades?</translation>
     </message>
     <message>
       <location filename="../PythonConsole.cpp" line="842"/>
@@ -6549,7 +6531,7 @@ Exit without saving all data?</translation>
       <location filename="../PythonConsole.cpp" line="848"/>
       <location filename="../PythonConsole.cpp" line="851"/>
       <source>Python Console</source>
-      <translation type="unfinished">Python Console</translation>
+      <translation>Consola Python</translation>
     </message>
     <message>
       <location filename="../PythonConsole.cpp" line="845"/>
@@ -6574,17 +6556,17 @@ Exit without saving all data?</translation>
     <message>
       <location filename="../PythonConsole.cpp" line="1300"/>
       <source>&amp;Copy Command</source>
-      <translation type="unfinished">&amp;Copy Command</translation>
+      <translation>&amp;Copia l'ordre</translation>
     </message>
     <message>
       <location filename="../PythonConsole.cpp" line="1303"/>
       <source>&amp;Copy History</source>
-      <translation type="unfinished">&amp;Copy History</translation>
+      <translation>&amp;Copia l'historial</translation>
     </message>
     <message>
       <location filename="../PythonConsole.cpp" line="1306"/>
       <source>Save History As…</source>
-      <translation type="unfinished">Save History As…</translation>
+      <translation>Anomena i desa l'historial…</translation>
     </message>
     <message>
       <location filename="../PythonConsole.cpp" line="1310"/>
@@ -6610,17 +6592,17 @@ Exit without saving all data?</translation>
     <message>
       <location filename="../PythonConsole.cpp" line="1325"/>
       <source>Clear Console</source>
-      <translation type="unfinished">Clear Console</translation>
+      <translation>Neteja la consola</translation>
     </message>
     <message>
       <location filename="../PythonConsole.cpp" line="1329"/>
       <source>Insert File Name…</source>
-      <translation type="unfinished">Insert File Name…</translation>
+      <translation>Inseriu un nom de fitxer…</translation>
     </message>
     <message>
       <location filename="../PythonConsole.cpp" line="1332"/>
       <source>Word Wrap</source>
-      <translation type="unfinished">Word Wrap</translation>
+      <translation>Ajust de les paraules</translation>
     </message>
     <message>
       <location filename="../PythonConsole.cpp" line="1357"/>
@@ -6653,7 +6635,7 @@ Exit without saving all data?</translation>
     <message>
       <location filename="../PythonEditor.cpp" line="181"/>
       <source>Execute in Console</source>
-      <translation type="unfinished">Execute in Console</translation>
+      <translation>Executar a la consola</translation>
     </message>
   </context>
   <context>
@@ -6662,7 +6644,7 @@ Exit without saving all data?</translation>
       <location filename="../Action.cpp" line="867"/>
       <source>Clear Recent Files</source>
       <extracomment>Empties the list of recent files</extracomment>
-      <translation type="unfinished">Clear Recent Files</translation>
+      <translation>Neteja els fitxers recents</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="945"/>
@@ -6698,7 +6680,7 @@ Exit without saving all data?</translation>
     <message>
       <location filename="../Navigation/RevitNavigationStyle.cpp" line="55"/>
       <source>Press Shift and middle mouse button</source>
-      <translation type="unfinished">Press Shift and middle mouse button</translation>
+      <translation>Premeu la tecla Majús i el botó central del ratolí</translation>
     </message>
     <message>
       <location filename="../Navigation/RevitNavigationStyle.cpp" line="57"/>
@@ -6732,12 +6714,12 @@ Exit without saving all data?</translation>
   <context>
     <name>Gui::SelectModule</name>
     <message>
-      <location filename="../FileDialog.cpp" line="842"/>
+      <location filename="../FileDialog.cpp" line="845"/>
       <source>Select Module</source>
-      <translation type="unfinished">Select Module</translation>
+      <translation>Seleccioneu el mòdul</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="844"/>
+      <location filename="../FileDialog.cpp" line="847"/>
       <source>Open %1 as</source>
       <translation>Obre %1 com a</translation>
     </message>
@@ -6760,12 +6742,12 @@ Exit without saving all data?</translation>
     <message>
       <location filename="../NetworkRetriever.cpp" line="391"/>
       <source>Download Online Help</source>
-      <translation type="unfinished">Download Online Help</translation>
+      <translation>Baixa l'ajuda en línia</translation>
     </message>
     <message>
       <location filename="../NetworkRetriever.cpp" line="392"/>
       <source>Downloads %1's online help</source>
-      <translation type="unfinished">Downloads %1's online help</translation>
+      <translation>Baixa l'ajuda en línia de %1</translation>
     </message>
     <message>
       <location filename="../NetworkRetriever.cpp" line="495"/>
@@ -6777,18 +6759,14 @@ Exit without saving all data?</translation>
       <source>The directory '%1' does not exist.
 
 Specify an existing directory?</source>
-      <translation type="unfinished">The directory '%1' does not exist.
-
-Specify an existing directory?</translation>
+      <translation>El directori '%1' no existeix. Especifiqueu un directori existent?</translation>
     </message>
     <message>
       <location filename="../NetworkRetriever.cpp" line="514"/>
       <source>You don't have write permission to '%1'
 
 Specify another directory?</source>
-      <translation type="unfinished">You don't have write permission to '%1'
-
-Specify another directory?</translation>
+      <translation>No teniu permisos d'escriptura en '%1' Voleu especificar un altre directori?</translation>
     </message>
     <message>
       <location filename="../NetworkRetriever.cpp" line="513"/>
@@ -6822,7 +6800,7 @@ Specify another directory?</translation>
     <message>
       <location filename="../TaskElementColors.ui" line="14"/>
       <source>Set Element Color</source>
-      <translation type="unfinished">Set Element Color</translation>
+      <translation>Estableix el color de l'element</translation>
     </message>
     <message>
       <location filename="../TaskElementColors.ui" line="22"/>
@@ -6847,17 +6825,17 @@ Specify another directory?</translation>
     <message>
       <location filename="../TaskElementColors.ui" line="61"/>
       <source>Remove All</source>
-      <translation type="unfinished">Remove All</translation>
+      <translation>Elimina tot</translation>
     </message>
     <message>
       <location filename="../TaskElementColors.ui" line="68"/>
       <source>Box Select</source>
-      <translation type="unfinished">Box Select</translation>
+      <translation>Quadre de selecció</translation>
     </message>
     <message>
       <location filename="../TaskElementColors.ui" line="84"/>
       <source>On top when selected</source>
-      <translation type="unfinished">On top when selected</translation>
+      <translation>En la part superior quan està seleccionat</translation>
     </message>
     <message>
       <location filename="../TaskElementColors.ui" line="77"/>
@@ -6876,12 +6854,12 @@ Specify another directory?</translation>
     <message>
       <location filename="../TaskView/TaskAppearance.ui" line="37"/>
       <source>Document window</source>
-      <translation type="unfinished">Document window</translation>
+      <translation>Finestra del document</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskAppearance.ui" line="60"/>
       <source>Plot mode</source>
-      <translation type="unfinished">Plot mode</translation>
+      <translation>Mode de gràfic</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskAppearance.ui" line="84"/>
@@ -6970,17 +6948,17 @@ Specify another directory?</translation>
     <message>
       <location filename="../Navigation/TouchpadNavigationStyle.cpp" line="50"/>
       <source>Press Shift button</source>
-      <translation type="unfinished">Press Shift button</translation>
+      <translation>Premeu la tecla Maj</translation>
     </message>
     <message>
       <location filename="../Navigation/TouchpadNavigationStyle.cpp" line="52"/>
       <source>Press Alt button</source>
-      <translation type="unfinished">Press Alt button</translation>
+      <translation>Premeu la tecla Alt</translation>
     </message>
     <message>
       <location filename="../Navigation/TouchpadNavigationStyle.cpp" line="54"/>
       <source>Press Ctrl and Shift buttons</source>
-      <translation type="unfinished">Press Ctrl and Shift buttons</translation>
+      <translation>Premeu les tecles CTRL i MAJ</translation>
     </message>
   </context>
   <context>
@@ -7019,13 +6997,13 @@ Specify another directory?</translation>
       <location filename="Translator.cpp" line="187"/>
       <source>Chinese (Simplified)</source>
       <oldsource>Chinese Simplified</oldsource>
-      <translation type="unfinished">Chinese (Simplified)</translation>
+      <translation>Xinès (simplificat)</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="188"/>
       <source>Chinese (Traditional)</source>
       <oldsource>Chinese Traditional</oldsource>
-      <translation type="unfinished">Chinese (Traditional)</translation>
+      <translation>Xinès (Tradicional)</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="189"/>
@@ -7126,7 +7104,7 @@ Specify another directory?</translation>
       <location filename="Translator.cpp" line="210"/>
       <source>Portuguese (Brazilian)</source>
       <oldsource>Portuguese, Brazilian</oldsource>
-      <translation type="unfinished">Portuguese (Brazilian)</translation>
+      <translation>Portuguès (Brasil)</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="211"/>
@@ -7152,7 +7130,7 @@ Specify another directory?</translation>
       <location filename="Translator.cpp" line="215"/>
       <source>Serbian (Latin)</source>
       <oldsource>Serbian, Latin</oldsource>
-      <translation type="unfinished">Serbian (Latin)</translation>
+      <translation>Serbi (llatí)</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="216"/>
@@ -7173,7 +7151,7 @@ Specify another directory?</translation>
       <location filename="Translator.cpp" line="219"/>
       <source>Spanish (Argentina)</source>
       <oldsource>Spanish, Argentina</oldsource>
-      <translation type="unfinished">Spanish (Argentina)</translation>
+      <translation>Espanyol (Argentina)</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="220"/>
@@ -7203,7 +7181,7 @@ Specify another directory?</translation>
     <message>
       <location filename="Translator.cpp" line="225"/>
       <source>Malay</source>
-      <translation type="unfinished">Malay</translation>
+      <translation>Malai</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="191"/>
@@ -7244,37 +7222,37 @@ Specify another directory?</translation>
     <message>
       <location filename="../Tree.cpp" line="1134"/>
       <source>Activate Document</source>
-      <translation type="unfinished">Activate Document</translation>
+      <translation>Activa el document</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="1141"/>
       <source>Activates document %1</source>
-      <translation type="unfinished">Activates document %1</translation>
+      <translation>Activa el document %1</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="1153"/>
       <source>Tree Settings</source>
-      <translation type="unfinished">Tree Settings</translation>
+      <translation>Opcions d'Arbre</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="1157"/>
       <source>Show Description</source>
-      <translation type="unfinished">Show Description</translation>
+      <translation>Mostra la descripció</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="1158"/>
       <source>Show Internal Name</source>
-      <translation type="unfinished">Show Internal Name</translation>
+      <translation>Mostrar nom intern</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="1159"/>
       <source>Shows a description column for items. An item's description can be set by by editing the 'label2' property.</source>
-      <translation type="unfinished">Shows a description column for items. An item's description can be set by by editing the 'label2' property.</translation>
+      <translation>Mostra una columna de descripció per als elements. La descripció d'un element es pot definir editant la propietat 'label2'.</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="1174"/>
       <source>Shows an internal name column for items.</source>
-      <translation type="unfinished">Shows an internal name column for items.</translation>
+      <translation>Mostra un nom de columna interna per als elements.</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="1215"/>
@@ -7315,117 +7293,117 @@ Specify another directory?</translation>
     <message>
       <location filename="../Tree.cpp" line="3362"/>
       <source>Show Items Hidden in Tree View</source>
-      <translation type="unfinished">Show Items Hidden in Tree View</translation>
+      <translation>Mostra objectes amagats en la vista en arbre</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3363"/>
       <source>Shows items that are marked as 'hidden' in the tree view</source>
-      <translation type="unfinished">Shows items that are marked as 'hidden' in the tree view</translation>
+      <translation>Mostra objectes marcats com a "ocults" a la vista en arbre</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3365"/>
       <source>Toggle Visibility in Tree View</source>
-      <translation type="unfinished">Toggle Visibility in Tree View</translation>
+      <translation>Commuta la visibilitat en la vista en arbre</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3368"/>
       <source>Create Group</source>
-      <translation type="unfinished">Create Group</translation>
+      <translation>Crear grup</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3369"/>
       <source>Creates a group</source>
-      <translation type="unfinished">Creates a group</translation>
+      <translation>Crea un grup</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3372"/>
       <source>Renames object</source>
-      <translation type="unfinished">Renames object</translation>
+      <translation>Reanomena l'objecte</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3374"/>
       <source>Finish Editing</source>
-      <translation type="unfinished">Finish Editing</translation>
+      <translation>Finalitza l'edició</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3375"/>
       <source>Finishes editing object</source>
-      <translation type="unfinished">Finishes editing object</translation>
+      <translation>Finalitza l'edició de l'objecte</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3377"/>
       <source>Add Dependent Objects to Selection</source>
-      <translation type="unfinished">Add Dependent Objects to Selection</translation>
+      <translation>Afegiu objectes dependents a la selecció</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3380"/>
       <source>Close Document</source>
-      <translation type="unfinished">Close Document</translation>
+      <translation>Tanca document</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3381"/>
       <source>Closes the document</source>
-      <translation type="unfinished">Closes the document</translation>
+      <translation>Tanca el document</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3385"/>
       <source>Reveals the current file location in Finder</source>
-      <translation type="unfinished">Reveals the current file location in Finder</translation>
+      <translation>Mostra la ubicació actual del fitxer al buscador</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3388"/>
       <source>Opens the current file location</source>
-      <translation type="unfinished">Opens the current file location</translation>
+      <translation>Obre la ubicació actual del fitxer</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3391"/>
       <source>Reload Document</source>
-      <translation type="unfinished">Reload Document</translation>
+      <translation>Torna a carregar el document</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3392"/>
       <source>Reloads a partially loaded document</source>
-      <translation type="unfinished">Reloads a partially loaded document</translation>
+      <translation>Torna a carregar un document que s'ha carregat parcialment</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3394"/>
       <source>Skip Recomputes</source>
-      <translation type="unfinished">Skip Recomputes</translation>
+      <translation>Omet el recàlcul</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3395"/>
       <source>Enables or disables the recomputations of document</source>
-      <translation type="unfinished">Enables or disables the recomputations of document</translation>
+      <translation>Activa o desactiva els recàlculs del document</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3397"/>
       <source>Allow Partial Recomputes</source>
-      <translation type="unfinished">Allow Partial Recomputes</translation>
+      <translation>Permet recàlculs parcials</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3399"/>
       <source>Enables or disables the recomputating editing object when 'skip recomputation' is enabled</source>
-      <translation type="unfinished">Enables or disables the recomputating editing object when 'skip recomputation' is enabled</translation>
+      <translation>Habilita o inhabilita el recàlcul de l'edició d'objectes quan estigui activat «Omet el recàlcul»</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3401"/>
       <source>Mark to Recompute</source>
-      <translation type="unfinished">Mark to Recompute</translation>
+      <translation>Marca per a recalcular</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3402"/>
       <source>Marks this object to be recomputed</source>
-      <translation type="unfinished">Marks this object to be recomputed</translation>
+      <translation>Marca aquest objecte per a recalcular-lo</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3405"/>
       <source>Recompute Object</source>
-      <translation type="unfinished">Recompute Object</translation>
+      <translation>Recalcula l'objecte</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3406"/>
       <source>Recomputes the selected object</source>
-      <translation type="unfinished">Recomputes the selected object</translation>
+      <translation>Recalcula l'objecte seleccionat</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3366"/>
@@ -7435,12 +7413,12 @@ Specify another directory?</translation>
     <message>
       <location filename="../Tree.cpp" line="686"/>
       <source>Search Objects</source>
-      <translation type="unfinished">Search Objects</translation>
+      <translation>Cerca objectes</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="687"/>
       <source>Searches for objects in the tree</source>
-      <translation type="unfinished">Searches for objects in the tree</translation>
+      <translation>Cerca objectes en l'arbre</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3371"/>
@@ -7489,12 +7467,12 @@ Specify another directory?</translation>
     <message>
       <location filename="../VectorListEditor.cpp" line="337"/>
       <source>Copy Table</source>
-      <translation type="unfinished">Copy Table</translation>
+      <translation>Copia la taula</translation>
     </message>
     <message>
       <location filename="../VectorListEditor.cpp" line="341"/>
       <source>Paste Table</source>
-      <translation type="unfinished">Paste Table</translation>
+      <translation>Enganxa la taula</translation>
     </message>
   </context>
   <context>
@@ -7525,7 +7503,7 @@ Specify another directory?</translation>
     <message>
       <location filename="../Action.cpp" line="725"/>
       <source>Selects the '%1' workbench</source>
-      <translation type="unfinished">Selects the '%1' workbench</translation>
+      <translation>Selecciona el banc de treball '%1'</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="753"/>
@@ -7604,7 +7582,7 @@ Specify another directory?</translation>
     <message>
       <location filename="../Dialogs/DlgLocationPos.ui" line="86"/>
       <source>Grid snap in</source>
-      <translation type="unfinished">Grid snap in</translation>
+      <translation>Ajust de la quadrícula</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgLocationPos.ui" line="97"/>
@@ -7707,22 +7685,22 @@ Specify another directory?</translation>
     <message>
       <location filename="../MainWindow.cpp" line="594"/>
       <source>Report View</source>
-      <translation type="unfinished">Report View</translation>
+      <translation>Visualització de l'informe</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="614"/>
       <source>Python Console</source>
-      <translation type="unfinished">Python Console</translation>
+      <translation>Consola Python</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="638"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Vista d'Arbre</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="665"/>
       <source>Property View</source>
-      <translation type="unfinished">Property View</translation>
+      <translation>Visualització de les propietats</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="694"/>
@@ -7780,68 +7758,68 @@ Specify another directory?</translation>
       <translation>Python</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="748"/>
-      <location filename="../Application.cpp" line="847"/>
-      <location filename="../Application.cpp" line="924"/>
+      <location filename="../Application.cpp" line="781"/>
+      <location filename="../Application.cpp" line="880"/>
+      <location filename="../Application.cpp" line="957"/>
       <source>Unknown filetype</source>
       <translation>El tipus de fitxer és desconegut.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="749"/>
-      <location filename="../Application.cpp" line="848"/>
+      <location filename="../Application.cpp" line="782"/>
+      <location filename="../Application.cpp" line="881"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>No es pot obrir el tipus de fitxer desconegut: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="915"/>
+      <location filename="../Application.cpp" line="948"/>
       <source>Export failed</source>
       <translation>Exportació fallida</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="925"/>
+      <location filename="../Application.cpp" line="958"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>No es pot desar el tipus de fitxer desconegut: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1054"/>
+      <location filename="../Application.cpp" line="1087"/>
       <source>Recomputation required</source>
       <translation>Es necessita una recomputació</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1055"/>
+      <location filename="../Application.cpp" line="1088"/>
       <source>Some documents require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
 
 Recompute now?</source>
-      <translation type="unfinished">Some documents require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
+      <translation>Alguns documents necessiten un recàlcul per propòsits de migració. Per a evitar problemes de compatibilitat, és altament recomanat fer un recàlcul abans de qualsevol modificació.
 
-Recompute now?</translation>
+Estàs segur que vols fer el recàlcul ara?</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1073"/>
+      <location filename="../Application.cpp" line="1106"/>
       <source>Failed to recompute some documents.
 Check the report view for more details.</source>
-      <translation type="unfinished">Failed to recompute some documents.
-Check the report view for more details.</translation>
+      <translation>Ha fallat el recàlcul en alguns documents.
+Comproveu la vista d'informes per a veure més detalls.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1072"/>
+      <location filename="../Application.cpp" line="1105"/>
       <source>Recompute error</source>
       <translation>Error de recomputació</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1754"/>
+      <location filename="../Application.cpp" line="1787"/>
       <source>Workbench failure</source>
       <translation>Fallada del banc de treball</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1755"/>
+      <location filename="../Application.cpp" line="1788"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
     <message>
       <location filename="../StartupProcess.cpp" line="333"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Upgrade the graphics driver and/or card as required.</source>
-      <translation type="unfinished">This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Upgrade the graphics driver and/or card as required.</translation>
+      <translation>Aquest sistema està executant OpenGL %1.%2. FreeCAD requereix OpenGL 2.0 o superior. Actualitzeu el controlador de gràfics i/o la targeta segons calgui.</translation>
     </message>
     <message>
       <location filename="../StartupProcess.cpp" line="342"/>
@@ -7859,18 +7837,18 @@ Check the report view for more details.</translation>
       <translation>Obre un document</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1082"/>
-      <location filename="../Application.cpp" line="1094"/>
+      <location filename="../Application.cpp" line="1115"/>
+      <location filename="../Application.cpp" line="1127"/>
       <source>Error</source>
       <translation>Error</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1083"/>
+      <location filename="../Application.cpp" line="1116"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>S'han produït errors en carregar el fitxer. Algunes dades es poden haver modificat o no s'han recuperat. Consulteu la vista d'informe per a obtenir informació més específica sobre els objectes implicats.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1095"/>
+      <location filename="../Application.cpp" line="1128"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>Hi ha hagut errors greus en carregar el fitxer. Pot ser que s'hagin modificat dades o no s'hagin recuperat. Desar el projecte probablement provocarà la pèrdua de dades.</translation>
     </message>
@@ -7887,39 +7865,39 @@ Check the report view for more details.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="910"/>
       <source>Printing…</source>
-      <translation type="unfinished">Printing…</translation>
+      <translation>S'està imprimint…</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="973"/>
       <source>Exporting PDF…</source>
-      <translation type="unfinished">Exporting PDF…</translation>
+      <translation>Exportant a PDF…</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1244"/>
       <source>The exported object contains an external link. Save the document.at least once before exporting.</source>
-      <translation type="unfinished">The exported object contains an external link. Save the document.at least once before exporting.</translation>
+      <translation>L’objecte exportat conté un enllaç extern. Deseu el documenta almenys una vegada abans d’exportar-lo.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1834"/>
+      <location filename="../CommandDoc.cpp" line="1849"/>
       <source>Copy Selected</source>
-      <translation type="unfinished">Copy Selected</translation>
+      <translation>Copia la selecció</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1835"/>
+      <location filename="../CommandDoc.cpp" line="1850"/>
       <source>Copy Active Document</source>
-      <translation type="unfinished">Copy Active Document</translation>
+      <translation>Copia el document actiu</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1836"/>
+      <location filename="../CommandDoc.cpp" line="1851"/>
       <source>Copy All Documents</source>
-      <translation type="unfinished">Copy All Documents</translation>
+      <translation>Copia tots el documents</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1943"/>
+      <location filename="../CommandDoc.cpp" line="1958"/>
       <source>Failed to parse some of the expressions.
 Check the report view for more details.</source>
-      <translation type="unfinished">Failed to parse some of the expressions.
-Check the report view for more details.</translation>
+      <translation>No s'han pogut analitzar algunes de les expressions.
+Consulteu la vista d'informe per obtenir més detalls.</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1243"/>
@@ -7927,28 +7905,28 @@ Check the report view for more details.</translation>
       <translation>El document no s'ha desat</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1450"/>
-      <location filename="../CommandDoc.cpp" line="1454"/>
+      <location filename="../CommandDoc.cpp" line="1465"/>
+      <location filename="../CommandDoc.cpp" line="1469"/>
       <source>Delete failed</source>
       <translation>No s'ha pogut eliminar</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1506"/>
+      <location filename="../CommandDoc.cpp" line="1521"/>
       <source>Dependency error</source>
       <translation>Error de dependència</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1837"/>
+      <location filename="../CommandDoc.cpp" line="1852"/>
       <source>Paste</source>
       <translation>Enganxa</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1942"/>
+      <location filename="../CommandDoc.cpp" line="1957"/>
       <source>Expression error</source>
       <translation>S'ha produït un error d'expressió</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1967"/>
+      <location filename="../CommandDoc.cpp" line="1982"/>
       <source>Failed to paste expressions</source>
       <translation>No s'han pogut enganxar les expressions</translation>
     </message>
@@ -7971,36 +7949,36 @@ Check the report view for more details.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="349"/>
       <source>Restart FreeCAD and enter safe mode?</source>
-      <translation type="unfinished">Restart FreeCAD and enter safe mode?</translation>
+      <translation>Reiniciar FreeCAD i entrar en mode segur?</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="350"/>
       <source>Safe mode temporarily disables the configuration and addons.</source>
-      <translation type="unfinished">Safe mode temporarily disables the configuration and addons.</translation>
+      <translation>El mode segur deshabilita temporalment les teves preferències i els complements.</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="338"/>
       <location filename="../CommandView.cpp" line="571"/>
       <source>&amp;Save Views…</source>
-      <translation type="unfinished">&amp;Save Views…</translation>
+      <translation>&amp;Desa les visualitzacions…</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="340"/>
       <location filename="../CommandView.cpp" line="572"/>
       <source>&amp;Load Views…</source>
-      <translation type="unfinished">&amp;Load Views…</translation>
+      <translation>&amp;Carrega les visualitzacions…</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="343"/>
       <location filename="../CommandView.cpp" line="573"/>
       <source>F&amp;reeze View</source>
-      <translation type="unfinished">F&amp;reeze View</translation>
+      <translation>Congela la visualització</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="346"/>
       <location filename="../CommandView.cpp" line="574"/>
       <source>&amp;Clear Views</source>
-      <translation type="unfinished">&amp;Clear Views</translation>
+      <translation>&amp;Neteja les visualitzacions</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="392"/>
@@ -8029,18 +8007,17 @@ Check the report view for more details.</translation>
       <location filename="../CommandView.cpp" line="463"/>
       <source>Importing the restored views would clear the already stored views.
 Continue?</source>
-      <translation type="unfinished">Importing the restored views would clear the already stored views.
-Continue?</translation>
+      <translation>La importació de les visualitzacions restaurades netejarà les visualitzacions ja emmagatzemades. Voleu continuar?</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1965"/>
       <source>Save Image</source>
-      <translation type="unfinished">Save Image</translation>
+      <translation>Desa la imatge</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2113"/>
       <source>Choose an Image File to Open</source>
-      <translation type="unfinished">Choose an Image File to Open</translation>
+      <translation>Trieu un fitxer d'imatge per obrir</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="471"/>
@@ -8055,7 +8032,7 @@ Continue?</translation>
     <message>
       <location filename="../CommandView.cpp" line="578"/>
       <source>Restore View &amp;%1</source>
-      <translation type="unfinished">Restore View &amp;%1</translation>
+      <translation>Restaura la visualització &amp;%1</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1957"/>
@@ -8116,7 +8093,7 @@ Continue?</translation>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="824"/>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="1149"/>
       <source>Enter text:</source>
-      <translation type="unfinished">Enter text:</translation>
+      <translation>Introduïu el text:</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="863"/>
@@ -8126,12 +8103,12 @@ Continue?</translation>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="1247"/>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="1304"/>
       <source>Enter number:</source>
-      <translation type="unfinished">Enter number:</translation>
+      <translation>Introduïu nombre:</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="907"/>
       <source>New Unsigned Item</source>
-      <translation type="unfinished">New Unsigned Item</translation>
+      <translation>Element sense signe nou</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="1062"/>
@@ -8164,7 +8141,7 @@ Continue?</translation>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="1251"/>
       <source>Change Value</source>
-      <translation type="unfinished">Change Value</translation>
+      <translation>Canviar valor</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="431"/>
@@ -8197,12 +8174,12 @@ Continue?</translation>
     <message>
       <location filename="../NotificationArea.cpp" line="1089"/>
       <source>Skip confirmation of further critical message notifications while loading the file?</source>
-      <translation type="unfinished">Skip confirmation of further critical message notifications while loading the file?</translation>
+      <translation>Voleu ometre la confirmació de més missatges de notificacions crítiques mentre es carrega el fitxer?</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="1093"/>
       <source>Critical message</source>
-      <translation type="unfinished">Critical message</translation>
+      <translation>Missatge crític</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="1159"/>
@@ -8226,7 +8203,7 @@ Continue?</translation>
     <message>
       <location filename="../Document.cpp" line="1347"/>
       <source>Check report view for more…</source>
-      <translation type="unfinished">Check report view for more…</translation>
+      <translation>Comproveu la vista d'informe per obtenir més informació…</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1350"/>
@@ -8294,12 +8271,12 @@ Voleu desar-lo amb un nom diferent?</translation>
     <message>
       <location filename="../Document.cpp" line="1484"/>
       <source>Save document under new filename…</source>
-      <translation type="unfinished">Save document under new filename…</translation>
+      <translation>Desa el document amb un altre nom…</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1589"/>
       <source>Save a copy of the document under new filename…</source>
-      <translation type="unfinished">Save a copy of the document under new filename…</translation>
+      <translation>Desa una còpia del document amb un altre nom…</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1491"/>
@@ -8471,22 +8448,22 @@ Trieu «Interromp» per a interrompre</translation>
     <message>
       <location filename="../MainWindow.cpp" line="807"/>
       <source>Unsaved Document</source>
-      <translation type="unfinished">Unsaved Document</translation>
+      <translation>Document no desat</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="810"/>
       <source>Save all changes to document '%1' before closing?</source>
-      <translation type="unfinished">Save all changes to document '%1' before closing?</translation>
+      <translation>Voleu desar tots els canvis al document '%1' abans de tancar?</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="811"/>
       <source>Save all changes to document before closing?</source>
-      <translation type="unfinished">Save all changes to document before closing?</translation>
+      <translation>Voleu desar tots els canvis al document '' abans de tancar?</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="815"/>
       <source>Otherwise, all changes will be lost.</source>
-      <translation type="unfinished">Otherwise, all changes will be lost.</translation>
+      <translation>Altrament, es perdran tots els canvis.</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="933"/>
@@ -8496,7 +8473,7 @@ Trieu «Interromp» per a interrompre</translation>
     <message>
       <location filename="../MainWindow.cpp" line="934"/>
       <source>Some documents could not be saved. Cancel closing?</source>
-      <translation type="unfinished">Some documents could not be saved. Cancel closing?</translation>
+      <translation>Alguns documents no s'han pogut desar. Vol cancel·lar la sortida?</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="532"/>
@@ -8524,7 +8501,7 @@ Trieu «Interromp» per a interrompre</translation>
       <translation>L'%1 no és buit, voleu esborrar-ne le contingut?</translation>
     </message>
     <message>
-      <location filename="../Inventor/Draggers/SoLinearDragger.cpp" line="341"/>
+      <location filename="../Inventor/Draggers/SoLinearDragger.cpp" line="267"/>
       <source>Translation:</source>
       <translation>Translació:</translation>
     </message>
@@ -8534,7 +8511,7 @@ Trieu «Interromp» per a interrompre</translation>
       <translation>Translació XY:</translation>
     </message>
     <message>
-      <location filename="../Inventor/Draggers/SoRotationDragger.cpp" line="332"/>
+      <location filename="../Inventor/Draggers/SoRotationDragger.cpp" line="250"/>
       <source>Rotation:</source>
       <translation>Rotació:</translation>
     </message>
@@ -8542,19 +8519,19 @@ Trieu «Interromp» per a interrompre</translation>
       <location filename="../CommandLink.cpp" line="99"/>
       <location filename="../CommandLink.cpp" line="116"/>
       <source>Simple Group</source>
-      <translation type="unfinished">Simple Group</translation>
+      <translation>Grup simple</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="101"/>
       <location filename="../CommandLink.cpp" line="117"/>
       <source>Group With Links</source>
-      <translation type="unfinished">Group With Links</translation>
+      <translation>Grup amb enllaços</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="103"/>
       <location filename="../CommandLink.cpp" line="118"/>
       <source>Group With Transform Links</source>
-      <translation type="unfinished">Group With Transform Links</translation>
+      <translation>Grup amb enllaços de transformació</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="195"/>
@@ -8602,8 +8579,8 @@ Trieu «Interromp» per a interrompre</translation>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="107"/>
       <source>The property or group name must only contain alphanumericals,
 underscore, and must not start with a digit.</source>
-      <translation type="unfinished">The property or group name must only contain alphanumericals,
-underscore, and must not start with a digit.</translation>
+      <translation>El nom de la propietat només ha de contenir caràcters alfanumèrics
+i guions baixos i no ha de començar amb un dígit.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="118"/>
@@ -8617,13 +8594,13 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="150"/>
-      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="790"/>
+      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="798"/>
       <source>Add property</source>
       <translation>Afegeix una propietat</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="151"/>
-      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="791"/>
+      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="799"/>
       <source>Failed to add property to '%1': %2</source>
       <translation>No s'ha pogut afegir la propietat a «%1»: %2</translation>
     </message>
@@ -8642,27 +8619,27 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2469"/>
       <source>Setup Configurable Object</source>
-      <translation type="unfinished">Setup Configurable Object</translation>
+      <translation>Configura objecte configurable</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2470"/>
       <source>Selects which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
-      <translation type="unfinished">Selects which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</translation>
+      <translation>Selecciona quin objecte a copiar o excloure quan canviï la configuració. Tots els objectes enllaçats externs s'exclouen per defecte.</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2485"/>
       <source>Select which objects to copy when the configuration is changed</source>
-      <translation type="unfinished">Select which objects to copy when the configuration is changed</translation>
+      <translation>Selecciona quins objectes es copiaran quan es canviï la configuració</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2488"/>
       <source>Applies the setting to all links</source>
-      <translation type="unfinished">Applies the setting to all links</translation>
+      <translation>Aplica la configuració a tots els enllaços</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2532"/>
       <source>Copy on Change</source>
-      <translation type="unfinished">Copy on Change</translation>
+      <translation>Copiar al canviar</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2533"/>
@@ -8684,19 +8661,19 @@ underscore, and must not start with a digit.</translation>
       <source>Copies the linked object when its configuration is changed.
 Also auto redo the copy if the original linked object is changed.
 </source>
-      <translation type="unfinished">Copies the linked object when its configuration is changed.
-Also auto redo the copy if the original linked object is changed.
+      <translation>Copia l'objecte enllaçat quan es modifica la seva configuració.
+També refà automàticament la còpia si es canvia l'objecte enllaçat original.
 </translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2567"/>
       <source>Disable Copy on Change</source>
-      <translation type="unfinished">Disable Copy on Change</translation>
+      <translation>Desactiva la còpia en canviar</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2582"/>
       <source>Refresh Configurable Object</source>
-      <translation type="unfinished">Refresh Configurable Object</translation>
+      <translation>Actualitza l'objecte configurable</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2583"/>
@@ -8704,31 +8681,31 @@ Also auto redo the copy if the original linked object is changed.
 creating a new deep copy. Any changes made to
 the current copy will be lost.
 </source>
-      <translation type="unfinished">Synchronizes the original configurable source object by
-creating a new deep copy. Any changes made to
-the current copy will be lost.
+      <translation>Sincronitza l'objecte font original configurable 
+creant una nova còpia profunda. Tingueu en compte que qualsevol canvi fet a
+la còpia actual es perdrà.
 </translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2615"/>
       <source>Toggle Array Elements</source>
-      <translation type="unfinished">Toggle Array Elements</translation>
+      <translation>Commuta els elements de la matriu</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2624"/>
       <source>Changes whether to show each link array element as individual objects</source>
-      <translation type="unfinished">Changes whether to show each link array element as individual objects</translation>
+      <translation>Canvia si es mostra cada element de la matriu d'enllaços com a objectes individuals</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2642"/>
       <source>Transforms the object at the origin of the placement</source>
-      <translation type="unfinished">Transforms the object at the origin of the placement</translation>
+      <translation>Transforma l'objecte a l'origen de l'emplaçament</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2652"/>
       <location filename="../ViewProviderLink.cpp" line="2658"/>
       <source>Override Colors</source>
-      <translation type="unfinished">Override Colors</translation>
+      <translation>Sobreescriu els colors</translation>
     </message>
     <message>
       <location filename="../ViewProviderDocumentObject.cpp" line="259"/>
@@ -8874,7 +8851,7 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="453"/>
       <source>Check navigation cube</source>
-      <translation type="unfinished">Check navigation cube</translation>
+      <translation>Comprovar el cub de navegació</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="499"/>
@@ -8894,13 +8871,13 @@ the current copy will be lost.
     <message>
       <location filename="../SplashScreen.cpp" line="190"/>
       <source>Do not use it in a production environment.</source>
-      <translation type="unfinished">Do not use it in a production environment.</translation>
+      <translation>No s'ha d'utilitzar en un entorn de producció.</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="117"/>
       <location filename="../OverlayWidgets.cpp" line="147"/>
       <source>Press Esc to hide hint</source>
-      <translation type="unfinished">Press Esc to hide hint</translation>
+      <translation>Pressiona ESC per ocultar la pista</translation>
     </message>
     <message>
       <location filename="../SoFCColorBar.cpp" line="353"/>
@@ -8910,32 +8887,32 @@ the current copy will be lost.
     <message>
       <location filename="../ViewProviderImagePlane.cpp" line="169"/>
       <source>Change Image</source>
-      <translation type="unfinished">Change Image</translation>
+      <translation>Canviar imatge</translation>
     </message>
     <message>
       <location filename="../ViewProviderPart.cpp" line="73"/>
       <source>Active Object</source>
-      <translation type="unfinished">Active Object</translation>
+      <translation>Objecte actiu</translation>
     </message>
     <message>
       <location filename="../ViewProviderTextDocument.cpp" line="76"/>
       <source>Edit Text</source>
-      <translation type="unfinished">Edit Text</translation>
+      <translation>Edita el text</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskDialog.cpp" line="102"/>
       <source>Close this dialog?</source>
-      <translation type="unfinished">Close this dialog?</translation>
+      <translation>Tancar aquest diàleg?</translation>
     </message>
     <message>
       <location filename="../ViewProviderDocumentObjectGroup.cpp" line="107"/>
       <source>Select Group Contents</source>
-      <translation type="unfinished">Select Group Contents</translation>
+      <translation>Selecciona el contingut del grup</translation>
     </message>
     <message>
       <location filename="../ViewProviderDocumentObjectGroup.cpp" line="108"/>
       <source>Selects all objects that are children of this group</source>
-      <translation type="unfinished">Selects all objects that are children of this group</translation>
+      <translation>Selecciona tots els objectes que són fills d'aquest grup</translation>
     </message>
   </context>
   <context>
@@ -8961,7 +8938,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="223"/>
       <source>Displays information about %1</source>
-      <translation type="unfinished">Displays information about %1</translation>
+      <translation>Mostra informació sobre %1</translation>
     </message>
   </context>
   <context>
@@ -8974,7 +8951,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="289"/>
       <source>Displays information about Qt</source>
-      <translation type="unfinished">Displays information about Qt</translation>
+      <translation>Mostra informació sobre Qt</translation>
     </message>
   </context>
   <context>
@@ -8987,7 +8964,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandWindow.cpp" line="173"/>
       <source>Activates the next window</source>
-      <translation type="unfinished">Activates the next window</translation>
+      <translation>Activa la finestra següent</translation>
     </message>
   </context>
   <context>
@@ -9000,7 +8977,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandWindow.cpp" line="202"/>
       <source>Switches to the previously active window</source>
-      <translation type="unfinished">Switches to the previously active window</translation>
+      <translation>Canvia a la finestra activa prèviament</translation>
     </message>
   </context>
   <context>
@@ -9013,7 +8990,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandWindow.cpp" line="85"/>
       <source>Tiles pragmatic</source>
-      <translation type="unfinished">Tiles pragmatic</translation>
+      <translation>Mosaic pragmàtic</translation>
     </message>
   </context>
   <context>
@@ -9026,7 +9003,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandWindow.cpp" line="113"/>
       <source>Closes the active window</source>
-      <translation type="unfinished">Closes the active window</translation>
+      <translation>Tanca la finestra activa</translation>
     </message>
   </context>
   <context>
@@ -9039,7 +9016,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandWindow.cpp" line="145"/>
       <source>Closes all windows</source>
-      <translation type="unfinished">Closes all windows</translation>
+      <translation>Tanca totes les finestres</translation>
     </message>
   </context>
   <context>
@@ -9052,7 +9029,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="1135"/>
       <source>Copies the selection to the clipboard</source>
-      <translation type="unfinished">Copies the selection to the clipboard</translation>
+      <translation>Copia la selecció al porta-retalls</translation>
     </message>
   </context>
   <context>
@@ -9065,18 +9042,18 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="1107"/>
       <source>Removes the selection and copies it to the clipboard</source>
-      <translation type="unfinished">Removes the selection and copies it to the clipboard</translation>
+      <translation>Elimina la selecció i la copia al porta-retalls</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDelete</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1328"/>
+      <location filename="../CommandDoc.cpp" line="1343"/>
       <source>&amp;Delete</source>
       <translation>&amp;Elimina</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1329"/>
+      <location filename="../CommandDoc.cpp" line="1344"/>
       <source>Deletes the selected objects</source>
       <translation>Elimina els objectes seleccionats</translation>
     </message>
@@ -9086,7 +9063,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandMacro.cpp" line="53"/>
       <source>Record &amp;Macro</source>
-      <translation type="unfinished">Record &amp;Macro</translation>
+      <translation>Enregistra una &amp;macro</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="55"/>
@@ -9114,18 +9091,18 @@ the current copy will be lost.
     <message>
       <location filename="../CommandWindow.cpp" line="283"/>
       <source>Lists available dock panels</source>
-      <translation type="unfinished">Lists available dock panels</translation>
+      <translation>Llista els panells d'acoblament disponibles</translation>
     </message>
   </context>
   <context>
     <name>StdCmdEdit</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1713"/>
+      <location filename="../CommandDoc.cpp" line="1728"/>
       <source>Toggle &amp;Edit Mode</source>
-      <translation type="unfinished">Toggle &amp;Edit Mode</translation>
+      <translation>Commuta el mode d'&amp;edició</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1714"/>
+      <location filename="../CommandDoc.cpp" line="1729"/>
       <source>Toggles the selected object's edit mode</source>
       <translation>Commuta el mode d'edició de l'objecte seleccionat</translation>
     </message>
@@ -9135,12 +9112,12 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="269"/>
       <source>&amp;Export…</source>
-      <translation type="unfinished">&amp;Export…</translation>
+      <translation>&amp;Exportar…</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="270"/>
       <source>Exports an object in the active document</source>
-      <translation type="unfinished">Exports an object in the active document</translation>
+      <translation>Exporta un objecte en el document actiu</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="405"/>
@@ -9150,18 +9127,18 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="406"/>
       <source>Select objects to export before using the Export command.</source>
-      <translation type="unfinished">Select objects to export before using the Export command.</translation>
+      <translation>Seleccioneu els objectes que voleu exportar abans d'utilitzar l'ordre Exportar.</translation>
     </message>
   </context>
   <context>
     <name>StdCmdExpression</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1790"/>
+      <location filename="../CommandDoc.cpp" line="1805"/>
       <source>Expression Actions</source>
-      <translation type="unfinished">Expression Actions</translation>
+      <translation>Accions d’expressió</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1791"/>
+      <location filename="../CommandDoc.cpp" line="1806"/>
       <source>Actions that apply to expressions</source>
       <translation>Accions que s'apliquen a expressions</translation>
     </message>
@@ -9176,7 +9153,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandFeat.cpp" line="60"/>
       <source>Recomputes a feature or document</source>
-      <translation type="unfinished">Recomputes a feature or document</translation>
+      <translation>Recalcula una funcionalitat o document</translation>
     </message>
   </context>
   <context>
@@ -9197,7 +9174,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="323"/>
       <source>F&amp;reeze Display</source>
-      <translation type="unfinished">F&amp;reeze Display</translation>
+      <translation>Congela la visualització</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="324"/>
@@ -9210,12 +9187,12 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="183"/>
       <source>&amp;Import…</source>
-      <translation type="unfinished">&amp;Import…</translation>
+      <translation>&amp;Importa…</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="184"/>
       <source>Imports a file into the active document</source>
-      <translation type="unfinished">Imports a file into the active document</translation>
+      <translation>Importa un fitxer en el document actiu</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="197"/>
@@ -9233,7 +9210,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandLink.cpp" line="852"/>
       <source>&amp;Link Navigation</source>
-      <translation type="unfinished">&amp;Link Navigation</translation>
+      <translation>Navegació a través d'en&amp;llaços</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="853"/>
@@ -9251,7 +9228,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandLink.cpp" line="521"/>
       <source>Unlinks the object by placing it directly in the container</source>
-      <translation type="unfinished">Unlinks the object by placing it directly in the container</translation>
+      <translation>Desvincula l'objecte col·locant-lo directament al contenidor</translation>
     </message>
   </context>
   <context>
@@ -9259,12 +9236,12 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="524"/>
       <source>&amp;Merge Document</source>
-      <translation type="unfinished">&amp;Merge Document</translation>
+      <translation>Fusiona un docu&amp;ment</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="526"/>
       <source>Merges another FreeCAD document into the active one</source>
-      <translation type="unfinished">Merges another FreeCAD document into the active one</translation>
+      <translation>Fusiona un altre document de FreeCAD amb l'actiu</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="539"/>
@@ -9294,12 +9271,12 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="653"/>
       <source>&amp;New Document</source>
-      <translation type="unfinished">&amp;New Document</translation>
+      <translation>Document &amp;nou</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="654"/>
       <source>Creates a new empty document</source>
-      <translation type="unfinished">Creates a new empty document</translation>
+      <translation>Crea un document buit nou</translation>
     </message>
   </context>
   <context>
@@ -9320,12 +9297,12 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="89"/>
       <source>&amp;Open…</source>
-      <translation type="unfinished">&amp;Open…</translation>
+      <translation>&amp;Obrir…</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="90"/>
       <source>Opens a document or imports files</source>
-      <translation type="unfinished">Opens a document or imports files</translation>
+      <translation>Obre un document o importa fitxers</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="104"/>
@@ -9358,7 +9335,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="1170"/>
       <source>Pastes the contents of the clipboard</source>
-      <translation type="unfinished">Pastes the contents of the clipboard</translation>
+      <translation>Enganxa el contingut del porta-retalls</translation>
     </message>
   </context>
   <context>
@@ -9384,7 +9361,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="141"/>
       <source>Displays the list of recently opened files</source>
-      <translation type="unfinished">Displays the list of recently opened files</translation>
+      <translation>Mostra la llista dels fitxers oberts recentment</translation>
     </message>
   </context>
   <context>
@@ -9423,7 +9400,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="684"/>
       <source>Saves the active document</source>
-      <translation type="unfinished">Saves the active document</translation>
+      <translation>Desa el document actiu</translation>
     </message>
   </context>
   <context>
@@ -9436,7 +9413,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="770"/>
       <source>Saves all open documents</source>
-      <translation type="unfinished">Saves all open documents</translation>
+      <translation>Desa tots els documents oberts</translation>
     </message>
   </context>
   <context>
@@ -9449,7 +9426,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="1298"/>
       <source>Selects all objects in the active document</source>
-      <translation type="unfinished">Selects all objects in the active document</translation>
+      <translation>Selecciona tots els objectes del document actiu</translation>
     </message>
   </context>
   <context>
@@ -9470,7 +9447,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandWindow.cpp" line="413"/>
       <source>Status Bar</source>
-      <translation type="unfinished">Status Bar</translation>
+      <translation>Barra d'estat</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="414"/>
@@ -9488,7 +9465,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandWindow.cpp" line="57"/>
       <source>Tiles the windows</source>
-      <translation type="unfinished">Tiles the windows</translation>
+      <translation>Organitza les finestres en mosaic</translation>
     </message>
   </context>
   <context>
@@ -9514,7 +9491,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="1020"/>
       <source>Undoes the previous action</source>
-      <translation type="unfinished">Undoes the previous action</translation>
+      <translation>Desfà l'acció anterior</translation>
     </message>
   </context>
   <context>
@@ -9527,7 +9504,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="1304"/>
       <source>Sets the camera to the bottom view</source>
-      <translation type="unfinished">Sets the camera to the bottom view</translation>
+      <translation>Estableix la càmera a la vista inferior</translation>
     </message>
   </context>
   <context>
@@ -9540,7 +9517,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="1473"/>
       <source>Sets the camera to the dimetric view</source>
-      <translation type="unfinished">Sets the camera to the dimetric view</translation>
+      <translation>Estableix la càmera a la vista dimètrica</translation>
     </message>
   </context>
   <context>
@@ -9548,7 +9525,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="2262"/>
       <source>Inventor Example #1</source>
-      <translation type="unfinished">Inventor Example #1</translation>
+      <translation>Inventor exemple #1</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2263"/>
@@ -9561,7 +9538,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="2290"/>
       <source>Inventor Example #2</source>
-      <translation type="unfinished">Inventor Example #2</translation>
+      <translation>Inventor exemple #2</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2291"/>
@@ -9579,7 +9556,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="1328"/>
       <source>Sets the camera to the front view</source>
-      <translation type="unfinished">Sets the camera to the front view</translation>
+      <translation>Estableix la càmera a la vista frontal</translation>
     </message>
   </context>
   <context>
@@ -9592,7 +9569,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="1276"/>
       <source>Sets the camera to the default home view</source>
-      <translation type="unfinished">Sets the camera to the default home view</translation>
+      <translation>Estableix la càmera a la vista d'inici predeterminada</translation>
     </message>
   </context>
   <context>
@@ -9605,7 +9582,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="1449"/>
       <source>Sets the camera to the isometric view</source>
-      <translation type="unfinished">Sets the camera to the isometric view</translation>
+      <translation>Estableix la càmera a la vista isomètrica</translation>
     </message>
   </context>
   <context>
@@ -9825,8 +9802,8 @@ the current copy will be lost.
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3449"/>
-      <source>Pre-selects the object in 3D view when hovering the cursor over the tree item</source>
-      <translation type="unfinished">Pre-selects the object in 3D view when hovering the cursor over the tree item</translation>
+      <source>Preselects the object in 3D view when hovering the cursor over the tree item</source>
+      <translation type="unfinished">Preselects the object in 3D view when hovering the cursor over the tree item</translation>
     </message>
   </context>
   <context>
@@ -9910,7 +9887,7 @@ the current copy will be lost.
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1406"/>
+      <location filename="../CommandDoc.cpp" line="1421"/>
       <source>The following referencing objects might break.
 
 Continue?
@@ -9921,7 +9898,7 @@ Continue?
 </translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1415"/>
+      <location filename="../CommandDoc.cpp" line="1430"/>
       <source>Object dependencies</source>
       <translation>Dependències de l'objecte</translation>
     </message>
@@ -10010,8 +9987,8 @@ Continue?
       <location filename="../CommandDoc.cpp" line="1262"/>
       <source>To link to external objects, the document must be saved at least once.
 Save the document now?</source>
-      <translation type="unfinished">To link to external objects, the document must be saved at least once.
-Save the document now?</translation>
+      <translation>Per a enllaçar amb objectes externs, el document s’ha de desar almenys una vegada.
+Voleu desar el document ara?</translation>
     </message>
   </context>
   <context>
@@ -10494,7 +10471,7 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="14"/>
       <source>Image Plane Settings</source>
-      <translation type="unfinished">Image Plane Settings</translation>
+      <translation>Configuració de la imatge de plans</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="28"/>
@@ -10519,12 +10496,12 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="100"/>
       <source>X distance</source>
-      <translation type="unfinished">X distance</translation>
+      <translation>Distància X</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="120"/>
       <source>Y distance</source>
-      <translation type="unfinished">Y distance</translation>
+      <translation>Distància Y</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="140"/>
@@ -10539,7 +10516,7 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="188"/>
       <source>Image Size</source>
-      <translation type="unfinished">Image Size</translation>
+      <translation>Mida de la imatge</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="194"/>
@@ -10554,7 +10531,7 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="244"/>
       <source>Scales the image interactively by setting a length between two points of the image</source>
-      <translation type="unfinished">Scales the image interactively by setting a length between two points of the image</translation>
+      <translation>Escala la imatge de manera interactiva establint una longitud entre dos punts de la mateixa</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="247"/>
@@ -10587,22 +10564,22 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="87"/>
       <source>Toggles the visibility of %1 in the available workbenches</source>
-      <translation type="unfinished">Toggles the visibility of %1 in the available workbenches</translation>
+      <translation>Activa/desactiva la visibilitat de %1 als bancs de treball disponibles</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="92"/>
       <source>This is the current startup module, and must be enabled</source>
-      <translation type="unfinished">This is the current startup module, and must be enabled</translation>
+      <translation>Aquest és el mòdul d'inici actual i s'ha d'habilitar</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="115"/>
       <source>Shortcut to activate this workbench</source>
-      <translation type="unfinished">Shortcut to activate this workbench</translation>
+      <translation>Drecera per a activar aquest banc de treball</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="131"/>
       <source>Loads %1 automatically when FreeCAD starts</source>
-      <translation type="unfinished">Loads %1 automatically when FreeCAD starts</translation>
+      <translation>Carrega %1 automàticament quan s'inicia el FreeCAD</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="137"/>
@@ -10630,7 +10607,7 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="239"/>
       <source>Sort Alphabetically</source>
-      <translation type="unfinished">Sort Alphabetically</translation>
+      <translation>Ordena alfabèticament</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="519"/>
@@ -10648,7 +10625,7 @@ after FreeCAD launches</translation>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="526"/>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="537"/>
       <source>Icon and text</source>
-      <translation type="unfinished">Icon and text</translation>
+      <translation>Icona i text</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="527"/>
@@ -10673,7 +10650,7 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../NotificationArea.cpp" line="696"/>
       <source>Delete User Notifications</source>
-      <translation type="unfinished">Delete User Notifications</translation>
+      <translation>Elimina les notificacions d'usuari</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="703"/>
@@ -10686,7 +10663,7 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../NotificationArea.cpp" line="978"/>
       <source>Delete User Notifications</source>
-      <translation type="unfinished">Delete User Notifications</translation>
+      <translation>Elimina les notificacions d'usuari</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="987"/>
@@ -10709,17 +10686,17 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../ImageView.cpp" line="179"/>
       <source>Fit to Window</source>
-      <translation type="unfinished">Fit to Window</translation>
+      <translation>Ajusta a la finestra</translation>
     </message>
     <message>
       <location filename="../ImageView.cpp" line="184"/>
       <source>Zoom In</source>
-      <translation type="unfinished">Zoom In</translation>
+      <translation>Amplia</translation>
     </message>
     <message>
       <location filename="../ImageView.cpp" line="187"/>
       <source>Zoom Out</source>
-      <translation type="unfinished">Zoom Out</translation>
+      <translation>Allunya</translation>
     </message>
   </context>
   <context>
@@ -10727,7 +10704,7 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../CommandView.cpp" line="2092"/>
       <source>&amp;Load Image…</source>
-      <translation type="unfinished">&amp;Load Image…</translation>
+      <translation>Carrega &amp;la imatge…</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2093"/>
@@ -10740,7 +10717,7 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../NaviCube.cpp" line="1258"/>
       <source>Movable Navigation Cube</source>
-      <translation type="unfinished">Movable Navigation Cube</translation>
+      <translation>Cub de navegació movible</translation>
     </message>
     <message>
       <location filename="../NaviCube.cpp" line="1259"/>
@@ -10835,22 +10812,22 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="156"/>
       <source>Tab size</source>
-      <translation type="unfinished">Tab size</translation>
+      <translation>Mida de la tabulació</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="182"/>
       <source>Indent size</source>
-      <translation type="unfinished">Indent size</translation>
+      <translation>Mida del sagnat</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="255"/>
       <source>Display Items</source>
-      <translation type="unfinished">Display Items</translation>
+      <translation>Visualitza els elements</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="291"/>
       <source>Family</source>
-      <translation type="unfinished">Family</translation>
+      <translation>Família</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="311"/>
@@ -11045,7 +11022,7 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="254"/>
       <source>Tree View and Property View mode</source>
-      <translation type="unfinished">Tree View and Property View mode</translation>
+      <translation>Mode de la vista de l'arbre i de propietats</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="278"/>
@@ -11055,7 +11032,7 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="20"/>
       <source>Language and Number Format</source>
-      <translation type="unfinished">Language and Number Format</translation>
+      <translation>Idioma i format de nombre</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="41"/>
@@ -11065,7 +11042,7 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="55"/>
       <source>Default unit system</source>
-      <translation type="unfinished">Default unit system</translation>
+      <translation>Sistema d'unitats predeterminat</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="71"/>
@@ -11075,26 +11052,25 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="93"/>
       <source>Ignores document unit systems</source>
-      <translation type="unfinished">Ignores document unit systems</translation>
+      <translation>Ignora els sistemes d'unitats de documents</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="103"/>
       <source>Minimum fractional inch</source>
-      <translation type="unfinished">Minimum fractional inch</translation>
+      <translation>Fracció de polzada mínima</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="152"/>
       <source>Number format</source>
-      <translation type="unfinished">Number format</translation>
+      <translation>Format de nombre</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="169"/>
       <source>Substitutes numerical keypad decimal separator with locale separator, except
 in the Python console and the macro editor where a
 dot/period will always be printed</source>
-      <translation type="unfinished">Substitutes numerical keypad decimal separator with locale separator, except
-in the Python console and the macro editor where a
-dot/period will always be printed</translation>
+      <translation>Substitueix el separador decimal del teclat numèric pel separador de configuració regional, excepte
+a la consola de Python i a l'editor de macros, on sempre s'imprimirà un punt</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="211"/>
@@ -11104,22 +11080,22 @@ dot/period will always be printed</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="218"/>
       <source>Customize the appearance of the user interface</source>
-      <translation type="unfinished">Customize the appearance of the user interface</translation>
+      <translation>Personalitza l'aspecte de la interfície d'usuari</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="230"/>
       <source>Looking for more themes? You can obtain them using the &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation type="unfinished">Looking for more themes? You can obtain them using the &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
+      <translation>Cerqueu més temes? Podeu trobar-los al &lt;a href="freecad:Std_AddonMgr"&gt;Gestor de complements&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="240"/>
       <source>Size of toolbar icons</source>
-      <translation type="unfinished">Size of toolbar icons</translation>
+      <translation>Mida de les icones de la barra d'eines</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="247"/>
       <source>Icon size in the toolbar</source>
-      <translation type="unfinished">Icon size in the toolbar</translation>
+      <translation>Mida de les icones de la barra d'eines</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="261"/>
@@ -11127,20 +11103,20 @@ dot/period will always be printed</translation>
 
 'Combined': combine tree and property view into one panel.
 'Independent': split tree and property view into separate panels.</source>
-      <translation type="unfinished">Customize how the tree view is shown in the panel (restart required).
+      <translation>Personalitzeu com es mostra la vista d'arbre en el tauler (cal reiniciar-lo).
 
-'Combined': combine tree and property view into one panel.
-'Independent': split tree and property view into separate panels.</translation>
+'Combinat': combina la vista d'arbre i la de propietats en un únic tauler.
+'Independent': separa la vista d'arbre i la de propietats en taulers separats.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="271"/>
       <source>Size of recent file list</source>
-      <translation type="unfinished">Size of recent file list</translation>
+      <translation>Mida de la llista de fitxers recents</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="294"/>
       <source>Background of the main window (when no document is opened) will consist of tiles of an image.</source>
-      <translation type="unfinished">Background of the main window (when no document is opened) will consist of tiles of an image.</translation>
+      <translation>El fons de la finestra principal (quan no hi ha cap document obert) consistirà en mosaics d'una imatge.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="297"/>
@@ -11162,39 +11138,38 @@ dot/period will always be printed</translation>
       <source>A splash screen is a small loading window that is shown
 when FreeCAD is launching. If this option is checked, FreeCAD will
 display the splash screen.</source>
-      <translation type="unfinished">A splash screen is a small loading window that is shown
-when FreeCAD is launching. If this option is checked, FreeCAD will
-display the splash screen.</translation>
+      <translation>Una pantalla de presentació és una finestra petita que es mostra
+quan arrenca FreeCAD. Si aquesta opció està marcada, FreeCAD la mostrarà.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="328"/>
       <source>Enable splash screen at start-up</source>
-      <translation type="unfinished">Enable splash screen at start-up</translation>
+      <translation>Activa la pantalla de presentació a l'arrencar</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="344"/>
       <source>Activate overlay handling of docked panels</source>
-      <translation type="unfinished">Activate overlay handling of docked panels</translation>
+      <translation>Habilitar manipulador de superposició de finestres acoblades</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="347"/>
       <source>Activate overlay panels</source>
-      <translation type="unfinished">Activate overlay panels</translation>
+      <translation>Habilitar finestres de superposició</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="366"/>
       <source>Preference Packs</source>
-      <translation type="unfinished">Preference Packs</translation>
+      <translation>Paquets de preferències</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="477"/>
       <source>Import Configuration</source>
-      <translation type="unfinished">Import Configuration</translation>
+      <translation>Importa configuració</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="484"/>
       <source>Save as New</source>
-      <translation type="unfinished">Save as New</translation>
+      <translation>Desar com a nou</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="497"/>
@@ -11204,7 +11179,7 @@ display the splash screen.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="504"/>
       <source>Revert</source>
-      <translation type="unfinished">Revert</translation>
+      <translation>Desfes</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="432"/>
@@ -11279,7 +11254,7 @@ display the splash screen.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="651"/>
       <source>Applies the %1 preference pack</source>
-      <translation type="unfinished">Applies the %1 preference pack</translation>
+      <translation>Apliqueu el paquet de preferències %1</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="714"/>
@@ -11302,7 +11277,7 @@ display the splash screen.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="14"/>
       <source>Report View</source>
-      <translation type="unfinished">Report View</translation>
+      <translation>Visualització de l'informe</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="20"/>
@@ -11434,7 +11409,7 @@ on-screen while displaying the log message</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="501"/>
       <source>Python Interpreter</source>
-      <translation type="unfinished">Python Interpreter</translation>
+      <translation>Intèrpret de Python</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="283"/>
@@ -11497,22 +11472,22 @@ de la consola Python al tauler de Vista d'informes</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="68"/>
       <source>Pushes in</source>
-      <translation type="unfinished">Pushes in</translation>
+      <translation>Empeny cap a dins</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="88"/>
       <source>Pulls out</source>
-      <translation type="unfinished">Pulls out</translation>
+      <translation>Estirar</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="188"/>
       <source>Main light</source>
-      <translation type="unfinished">Main light</translation>
+      <translation>Llum principal</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="224"/>
       <source>Backlight</source>
-      <translation type="unfinished">Backlight</translation>
+      <translation>Retroil·luminació</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="250"/>
@@ -11762,12 +11737,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdProperties</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1753"/>
+      <location filename="../CommandDoc.cpp" line="1768"/>
       <source>Propert&amp;ies</source>
       <translation>Propi&amp;etats</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1754"/>
+      <location filename="../CommandDoc.cpp" line="1769"/>
       <source>Shows the property view, which displays the properties of the selected object.</source>
       <translation type="unfinished">Shows the property view, which displays the properties of the selected object.</translation>
     </message>
@@ -11844,37 +11819,37 @@ la regió no són opacs.</translation>
       <translation>Consell</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="442"/>
+      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="450"/>
       <source>Add a Property to %1</source>
       <translation type="unfinished">Add a Property to %1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="513"/>
+      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="521"/>
       <source>Invalid group name</source>
       <translation type="unfinished">Invalid group name</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="516"/>
+      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="524"/>
       <source>Invalid type name</source>
       <translation type="unfinished">Invalid type name</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="522"/>
+      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="530"/>
       <source>Invalid property name '%1'</source>
       <translation type="unfinished">Invalid property name '%1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="525"/>
+      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="533"/>
       <source>Property '%1' already exists</source>
       <translation type="unfinished">Property '%1' already exists</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="528"/>
+      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="536"/>
       <source>'%1' is a constant</source>
       <translation type="unfinished">'%1' is a constant</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="531"/>
+      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="539"/>
       <source>'%1' is a unit</source>
       <translation type="unfinished">'%1' is a unit</translation>
     </message>
@@ -11971,7 +11946,7 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="207"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Vista d'Arbre</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="213"/>
@@ -12201,12 +12176,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdTransformManip</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1607"/>
+      <location filename="../CommandDoc.cpp" line="1622"/>
       <source>Trans&amp;form</source>
       <translation>Trans&amp;formar</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1608"/>
+      <location filename="../CommandDoc.cpp" line="1623"/>
       <source>Transforms the selected object in the 3D view</source>
       <translation type="unfinished">Transforms the selected object in the 3D view</translation>
     </message>
@@ -12452,12 +12427,12 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../TaskTransform.cpp" line="401"/>
       <source>Move to Other Object</source>
-      <translation type="unfinished">Move to Other Object</translation>
+      <translation>Mou a un altre objecte</translation>
     </message>
     <message>
       <location filename="../TaskTransform.cpp" line="408"/>
       <source>Select face, edge, or vertex…</source>
-      <translation type="unfinished">Select face, edge, or vertex…</translation>
+      <translation>Selecciona cara, aresta o vèrtex…</translation>
     </message>
     <message>
       <location filename="../TaskTransform.cpp" line="409"/>
@@ -12490,13 +12465,13 @@ la regió no són opacs.</translation>
       <location filename="../InputHintWidget.cpp" line="239"/>
       <source>Esc</source>
       <extracomment>Keyboard key for Escape</extracomment>
-      <translation type="unfinished">Esc</translation>
+      <translation>Esc</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="241"/>
       <source>Tab ⭾</source>
       <extracomment>Keyboard key for Tab</extracomment>
-      <translation type="unfinished">Tab ⭾</translation>
+      <translation>Tab ⭾</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="251"/>
@@ -12556,67 +12531,67 @@ la regió no són opacs.</translation>
       <location filename="../InputHintWidget.cpp" line="283"/>
       <source>⇧ Shift</source>
       <extracomment>Keyboard key for Shift on Windows &amp; Linux</extracomment>
-      <translation type="unfinished">⇧ Shift</translation>
+      <translation>⇧ Shift</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="340"/>
       <source>Num0</source>
       <extracomment>Keyboard key for numpad 0</extracomment>
-      <translation type="unfinished">Num0</translation>
+      <translation>Num0</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="342"/>
       <source>Num1</source>
       <extracomment>Keyboard key for numpad 1</extracomment>
-      <translation type="unfinished">Num1</translation>
+      <translation>Num1</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="344"/>
       <source>Num2</source>
       <extracomment>Keyboard key for numpad 2</extracomment>
-      <translation type="unfinished">Num2</translation>
+      <translation>Num2</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="346"/>
       <source>Num3</source>
       <extracomment>Keyboard key for numpad 3</extracomment>
-      <translation type="unfinished">Num3</translation>
+      <translation>Num3</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="348"/>
       <source>Num4</source>
       <extracomment>Keyboard key for numpad 4</extracomment>
-      <translation type="unfinished">Num4</translation>
+      <translation>Num4</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="350"/>
       <source>Num5</source>
       <extracomment>Keyboard key for numpad 5</extracomment>
-      <translation type="unfinished">Num5</translation>
+      <translation>Num5</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="352"/>
       <source>Num6</source>
       <extracomment>Keyboard key for numpad 6</extracomment>
-      <translation type="unfinished">Num6</translation>
+      <translation>Num6</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="354"/>
       <source>Num7</source>
       <extracomment>Keyboard key for numpad 7</extracomment>
-      <translation type="unfinished">Num7</translation>
+      <translation>Num7</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="356"/>
       <source>Num8</source>
       <extracomment>Keyboard key for numpad 8</extracomment>
-      <translation type="unfinished">Num8</translation>
+      <translation>Num8</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="358"/>
       <source>Num9</source>
       <extracomment>Keyboard key for numpad 9</extracomment>
-      <translation type="unfinished">Num9</translation>
+      <translation>Num9</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="285"/>
@@ -12659,7 +12634,7 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../Navigation/SolidWorksNavigationStyle.cpp" line="54"/>
       <source>Press Ctrl and middle mouse button</source>
-      <translation type="unfinished">Press Ctrl and middle mouse button</translation>
+      <translation>Premeu la tecla CTRL i el botó central del ratolí</translation>
     </message>
     <message>
       <location filename="../Navigation/SolidWorksNavigationStyle.cpp" line="56"/>
@@ -12692,7 +12667,7 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../Dialogs/DlgLocationAngle.ui" line="86"/>
       <source>Angle snap</source>
-      <translation type="unfinished">Angle snap</translation>
+      <translation>Ajust angular</translation>
     </message>
   </context>
   <context>
@@ -12700,7 +12675,7 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.ui" line="14"/>
       <source>Theme Editor</source>
-      <translation type="unfinished">Theme Editor</translation>
+      <translation>Editor de temes</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.ui" line="20"/>
@@ -12715,22 +12690,22 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.ui" line="59"/>
       <source>RadioButton</source>
-      <translation type="unfinished">RadioButton</translation>
+      <translation>Botó de selecció excloent</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.ui" line="67"/>
       <source>Item 1</source>
-      <translation type="unfinished">Item 1</translation>
+      <translation>Nota 1</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.ui" line="72"/>
       <source>Item 2</source>
-      <translation type="unfinished">Item 2</translation>
+      <translation>Nota 2</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.ui" line="80"/>
       <source>PushButton</source>
-      <translation type="unfinished">PushButton</translation>
+      <translation>Polsador</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.ui" line="88"/>
@@ -12748,7 +12723,7 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../TaskView/TaskSolverMessages.ui" line="26"/>
       <source>DOF</source>
-      <translation type="unfinished">DOF</translation>
+      <translation>DOF</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskSolverMessages.ui" line="33"/>
@@ -12758,7 +12733,7 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../TaskView/TaskSolverMessages.ui" line="52"/>
       <source>Forces the recomputation of the active document</source>
-      <translation type="unfinished">Forces the recomputation of the active document</translation>
+      <translation>Força el recàlcul del document actiu</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskSolverMessages.ui" line="72"/>
@@ -12769,19 +12744,24 @@ la regió no són opacs.</translation>
   <context>
     <name>Gui::Application</name>
     <message>
-      <location filename="../Application.cpp" line="385"/>
+      <location filename="../Application.cpp" line="414"/>
       <source>Built-in Parameters</source>
-      <translation type="unfinished">Built-in Parameters</translation>
+      <translation>Paràmetres Incorporats</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="391"/>
+      <location filename="../Application.cpp" line="402"/>
       <source>Theme Parameters</source>
-      <translation type="unfinished">Theme Parameters</translation>
+      <translation>Paràmetres de tema</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="398"/>
+      <location filename="../Application.cpp" line="421"/>
+      <source>Theme Parameters - Fallback</source>
+      <translation type="unfinished">Theme Parameters - Fallback</translation>
+    </message>
+    <message>
+      <location filename="../Application.cpp" line="430"/>
       <source>User Parameters</source>
-      <translation type="unfinished">User Parameters</translation>
+      <translation>Paràmetres d'usuari</translation>
     </message>
   </context>
   <context>
@@ -12797,12 +12777,12 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="579"/>
       <source>Dependency Gra&amp;ph</source>
-      <translation type="unfinished">Dependency Gra&amp;ph</translation>
+      <translation>Gràfic de de&amp;pendència</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="581"/>
       <source>Shows the dependency graph of the objects in the active document</source>
-      <translation type="unfinished">Shows the dependency graph of the objects in the active document</translation>
+      <translation>Mostra el gràfic de dependències dels objectes en el document actiu</translation>
     </message>
   </context>
   <context>
@@ -12810,7 +12790,7 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="593"/>
       <source>Dependency Graph</source>
-      <translation type="unfinished">Dependency Graph</translation>
+      <translation>Gràfic de de&amp;pendència</translation>
     </message>
   </context>
   <context>
@@ -12818,12 +12798,12 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="612"/>
       <source>Export Dependency &amp;Graph</source>
-      <translation type="unfinished">Export Dependency &amp;Graph</translation>
+      <translation>Exportar &amp;graf de dependència</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="613"/>
       <source>Exports the dependency graph as a Graphviz (.gv) file</source>
-      <translation type="unfinished">Exports the dependency graph as a Graphviz (.gv) file</translation>
+      <translation>Exporta el graph de dependència com a fitxer Graphviz (.gv)</translation>
     </message>
   </context>
   <context>
@@ -12831,12 +12811,12 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="712"/>
       <source>Save &amp;As…</source>
-      <translation type="unfinished">Save &amp;As…</translation>
+      <translation>Des&amp;a com…</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="713"/>
       <source>Saves the active document under a new file name</source>
-      <translation type="unfinished">Saves the active document under a new file name</translation>
+      <translation>Desa el document actiu amb un altre nom</translation>
     </message>
   </context>
   <context>
@@ -12844,7 +12824,7 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="741"/>
       <source>Save Cop&amp;y</source>
-      <translation type="unfinished">Save Cop&amp;y</translation>
+      <translation>Desa una &amp;còpia</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="743"/>
@@ -12857,17 +12837,17 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="810"/>
       <source>Revert Document</source>
-      <translation type="unfinished">Revert Document</translation>
+      <translation>Torneu a la versió anterior del document</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="811"/>
       <source>This will discard all the changes since the last file save.</source>
-      <translation type="unfinished">This will discard all the changes since the last file save.</translation>
+      <translation>Això descartarà tots els canvis des de l'última acció de desar el fitxer.</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="812"/>
       <source>Continue?</source>
-      <translation type="unfinished">Continue?</translation>
+      <translation>Continuar?</translation>
     </message>
   </context>
   <context>
@@ -12875,12 +12855,12 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="836"/>
       <source>Doc&amp;ument Information</source>
-      <translation type="unfinished">Doc&amp;ument Information</translation>
+      <translation>Informació del doc&amp;ument</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="838"/>
       <source>Shows information about the active document</source>
-      <translation type="unfinished">Shows information about the active document</translation>
+      <translation>Mostra informació sobre el document actiu</translation>
     </message>
   </context>
   <context>
@@ -12888,12 +12868,12 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="868"/>
       <source>Do&amp;cument Utility</source>
-      <translation type="unfinished">Do&amp;cument Utility</translation>
+      <translation>Utilitat del do&amp;cument</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="870"/>
       <source>Extracts or creates document files</source>
-      <translation type="unfinished">Extracts or creates document files</translation>
+      <translation>Extreu o crea fitxers de documents</translation>
     </message>
   </context>
   <context>
@@ -12901,12 +12881,12 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="896"/>
       <source>&amp;Print</source>
-      <translation type="unfinished">&amp;Print</translation>
+      <translation>Im&amp;primir</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="898"/>
       <source>Prints the active document</source>
-      <translation type="unfinished">Prints the active document</translation>
+      <translation>Imprimeix el document actiu</translation>
     </message>
   </context>
   <context>
@@ -12914,12 +12894,12 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="929"/>
       <source>Print Previe&amp;w</source>
-      <translation type="unfinished">Print Previe&amp;w</translation>
+      <translation>&amp;Vista prèvia d'impressió</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="931"/>
       <source>Previews the active document before printing</source>
-      <translation type="unfinished">Previews the active document before printing</translation>
+      <translation>Previsualitza el document actiu abans d'imprimir</translation>
     </message>
   </context>
   <context>
@@ -12927,12 +12907,12 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="960"/>
       <source>Export P&amp;DF</source>
-      <translation type="unfinished">Export P&amp;DF</translation>
+      <translation>Exporta com a P&amp;DF</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="962"/>
       <source>Exports the active document as a PDF file</source>
-      <translation type="unfinished">Exports the active document as a PDF file</translation>
+      <translation>Exporta el document actiu com a fitxer PDF</translation>
     </message>
   </context>
   <context>
@@ -12940,7 +12920,7 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1209"/>
       <source>Duplicate Selecti&amp;on</source>
-      <translation type="unfinished">Duplicate Selecti&amp;on</translation>
+      <translation>Duplica la selecci&amp;ó</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1210"/>
@@ -12951,12 +12931,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdRefresh</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1476"/>
+      <location filename="../CommandDoc.cpp" line="1491"/>
       <source>Recompute</source>
       <translation>Recalcula</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1477"/>
+      <location filename="../CommandDoc.cpp" line="1492"/>
       <source>Recomputes the active document</source>
       <translation type="unfinished">Recomputes the active document</translation>
     </message>
@@ -12964,7 +12944,7 @@ la regió no són opacs.</translation>
   <context>
     <name>Std_Refresh</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1507"/>
+      <location filename="../CommandDoc.cpp" line="1522"/>
       <source>The document contains dependency cycles.
 Check the report view for more details.
 
@@ -12978,12 +12958,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdTransform</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1531"/>
+      <location filename="../CommandDoc.cpp" line="1546"/>
       <source>Transform</source>
       <translation>Transforma</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1533"/>
+      <location filename="../CommandDoc.cpp" line="1548"/>
       <source>Transforms the selected object</source>
       <translation type="unfinished">Transforms the selected object</translation>
     </message>
@@ -12991,12 +12971,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdPlacement</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1558"/>
+      <location filename="../CommandDoc.cpp" line="1573"/>
       <source>P&amp;lacement</source>
       <translation type="unfinished">P&amp;lacement</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1560"/>
+      <location filename="../CommandDoc.cpp" line="1575"/>
       <source>Opens the placement editor to adjust the placement of the selected object</source>
       <translation type="unfinished">Opens the placement editor to adjust the placement of the selected object</translation>
     </message>
@@ -13004,12 +12984,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdAlignment</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1642"/>
+      <location filename="../CommandDoc.cpp" line="1657"/>
       <source>Ali&amp;gn To…</source>
       <translation type="unfinished">Ali&amp;gn To…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1644"/>
+      <location filename="../CommandDoc.cpp" line="1659"/>
       <source>Aligns the selected objects</source>
       <translation type="unfinished">Aligns the selected objects</translation>
     </message>
@@ -13032,7 +13012,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandFeat.cpp" line="312"/>
       <source>Skip Recomputes</source>
-      <translation type="unfinished">Skip Recomputes</translation>
+      <translation>Omet el recàlcul</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="314"/>
@@ -13284,7 +13264,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="317"/>
       <source>Opens the macros folder in the system file manager</source>
-      <translation type="unfinished">Opens the macros folder in the system file manager</translation>
+      <translation>Obre la carpeta de macros al gestor de fitxers del sistema</translation>
     </message>
   </context>
   <context>
@@ -13292,12 +13272,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="181"/>
       <source>&amp;Recent Macros</source>
-      <translation type="unfinished">&amp;Recent Macros</translation>
+      <translation>Macros &amp;recents</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="182"/>
       <source>Displays the list of recently used macros</source>
-      <translation type="unfinished">Displays the list of recently used macros</translation>
+      <translation>Mostra la llista de les macros usades recentment</translation>
     </message>
   </context>
   <context>
@@ -13305,12 +13285,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="381"/>
       <source>E&amp;dit Parameters</source>
-      <translation type="unfinished">E&amp;dit Parameters</translation>
+      <translation>E&amp;dita els paràmetres</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="383"/>
       <source>Opens a dialog to edit the parameters</source>
-      <translation type="unfinished">Opens a dialog to edit the parameters</translation>
+      <translation>Obri un quadre de diàleg per a editar els paràmetres</translation>
     </message>
   </context>
   <context>
@@ -13318,7 +13298,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="407"/>
       <source>Prefere&amp;nces</source>
-      <translation type="unfinished">Prefere&amp;nces</translation>
+      <translation>Preferè&amp;ncies</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="409"/>
@@ -14298,13 +14278,13 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::FileChooser</name>
     <message>
-      <location filename="../FileDialog.cpp" line="744"/>
-      <location filename="../FileDialog.cpp" line="746"/>
+      <location filename="../FileDialog.cpp" line="747"/>
+      <location filename="../FileDialog.cpp" line="749"/>
       <source>Select a File</source>
       <translation type="unfinished">Select a File</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="749"/>
+      <location filename="../FileDialog.cpp" line="752"/>
       <source>Select a Directory</source>
       <translation type="unfinished">Select a Directory</translation>
     </message>
@@ -14330,7 +14310,7 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../PropertyView.cpp" line="582"/>
       <source>Property View</source>
-      <translation type="unfinished">Property View</translation>
+      <translation>Visualització de les propietats</translation>
     </message>
   </context>
   <context>
@@ -14338,15 +14318,56 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../Tree.cpp" line="3749"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Vista d'Arbre</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgExpressionInput</name>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="72"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="77"/>
       <source>Revert to last calculated value (as constant)</source>
       <translation>Reverteix a l'últim valor calculat (com a constant)</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="343"/>
+      <source> (Warning: unit discarded)</source>
+      <translation type="unfinished"> (Warning: unit discarded)</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="469"/>
+      <source>Invalid property name: %1</source>
+      <translation type="unfinished">Invalid property name: %1</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="473"/>
+      <source>Unknown object</source>
+      <translation type="unfinished">Unknown object</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="479"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="846"/>
+      <source>the name cannot be empty</source>
+      <translation type="unfinished">the name cannot be empty</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="489"/>
+      <source>%1 is a unit</source>
+      <translation type="unfinished">%1 is a unit</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="494"/>
+      <source>%1 is a constant</source>
+      <translation type="unfinished">%1 is a constant</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="500"/>
+      <source>%1 already exists</source>
+      <translation type="unfinished">%1 already exists</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="842"/>
+      <source>Invalid group name: %1</source>
+      <translation type="unfinished">Invalid group name: %1</translation>
     </message>
   </context>
   <context>
@@ -14388,22 +14409,22 @@ This makes the docked panel stay transparent at all times.</translation>
       <translation type="unfinished">Root</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="496"/>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="500"/>
       <source>Name</source>
       <translation>Nom</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="498"/>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="502"/>
       <source>Expression</source>
       <translation type="unfinished">Expression</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="500"/>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="504"/>
       <source>Preview</source>
       <translation>Previsualització</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="502"/>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="506"/>
       <source>Type</source>
       <translation>Tipus</translation>
     </message>
@@ -14459,6 +14480,24 @@ This makes the docked panel stay transparent at all times.</translation>
       <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="137"/>
       <source>No</source>
       <translation>No</translation>
+    </message>
+  </context>
+  <context>
+    <name>Exceptions</name>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="283"/>
+      <source>Value out of range (%1 out of [%2, %3])</source>
+      <translation type="unfinished">Value out of range (%1 out of [%2, %3])</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="330"/>
+      <source>Not a number</source>
+      <translation type="unfinished">Not a number</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="337"/>
+      <source>Unit mismatch between result and required unit</source>
+      <translation type="unfinished">Unit mismatch between result and required unit</translation>
     </message>
   </context>
 </TS>

@@ -3894,32 +3894,32 @@ The default template is located at:
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="213"/>
-      <location filename="../../ArchStructure.py" line="983"/>
+      <location filename="../../ArchStructure.py" line="982"/>
       <source>Facemaker returned an error</source>
       <translation>Ploskovnik je vrnil napako</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1324"/>
+      <location filename="../../ArchStructure.py" line="1323"/>
       <source>Node Tools</source>
       <translation>Orodja vozlišč</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1343"/>
+      <location filename="../../ArchStructure.py" line="1342"/>
       <source>Extends the nodes of this element to reach the nodes of another element</source>
       <translation>Podaljša oglišča tega gradnika do oglišč drugega gradnika</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1350"/>
+      <location filename="../../ArchStructure.py" line="1349"/>
       <source>Connects nodes of this element with the nodes of another element</source>
       <translation>Stakne oglišča tega predmeta z oglišči drugega predmeta</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1357"/>
+      <location filename="../../ArchStructure.py" line="1356"/>
       <source>Toggles all structural nodes of the document on/off</source>
       <translation>Vklaplja/izklaplja vsa konstrukcijska vozlišča dokumenta</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1362"/>
+      <location filename="../../ArchStructure.py" line="1361"/>
       <source>Extrusion Tools</source>
       <translation>Izrivalna orodja</translation>
     </message>
@@ -3939,85 +3939,85 @@ The default template is located at:
       <translation type="unfinished">Error: The base shape could not be extruded along this tool object</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1329"/>
+      <location filename="../../ArchStructure.py" line="1328"/>
       <source>Reset Nodes</source>
       <translation type="unfinished">Reset Nodes</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1336"/>
+      <location filename="../../ArchStructure.py" line="1335"/>
       <source>Edit Nodes</source>
       <translation type="unfinished">Edit Nodes</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1342"/>
+      <location filename="../../ArchStructure.py" line="1341"/>
       <source>Extend Nodes</source>
       <translation type="unfinished">Extend Nodes</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1349"/>
+      <location filename="../../ArchStructure.py" line="1348"/>
       <source>Connect Nodes</source>
       <translation type="unfinished">Connect Nodes</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1356"/>
+      <location filename="../../ArchStructure.py" line="1355"/>
       <source>Toggle All Nodes</source>
       <translation type="unfinished">Toggle All Nodes</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1367"/>
-      <location filename="../../ArchStructure.py" line="1501"/>
+      <location filename="../../ArchStructure.py" line="1366"/>
+      <location filename="../../ArchStructure.py" line="1500"/>
       <source>Select Tool</source>
       <translation type="unfinished">Select Tool</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1368"/>
+      <location filename="../../ArchStructure.py" line="1367"/>
       <source>Selects object or edges to be used as a tool (extrusion path)</source>
       <translation type="unfinished">Selects object or edges to be used as a tool (extrusion path)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1391"/>
-      <location filename="../../ArchStructure.py" line="1423"/>
+      <location filename="../../ArchStructure.py" line="1390"/>
+      <location filename="../../ArchStructure.py" line="1422"/>
       <source>Choose another Structure object:</source>
       <translation>Izberite drugi konstrukcijski predmet:</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1396"/>
-      <location filename="../../ArchStructure.py" line="1428"/>
+      <location filename="../../ArchStructure.py" line="1395"/>
+      <location filename="../../ArchStructure.py" line="1427"/>
       <source>The chosen object is not a Structure</source>
       <translation>Izbran predmet ni konstrukcija</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1399"/>
-      <location filename="../../ArchStructure.py" line="1431"/>
+      <location filename="../../ArchStructure.py" line="1398"/>
+      <location filename="../../ArchStructure.py" line="1430"/>
       <source>The chosen object has no structural nodes</source>
       <translation>Izbrani predmet nima konstrukcijskih vozlišč</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1402"/>
-      <location filename="../../ArchStructure.py" line="1434"/>
+      <location filename="../../ArchStructure.py" line="1401"/>
+      <location filename="../../ArchStructure.py" line="1433"/>
       <source>One of these objects has more than 2 nodes</source>
       <translation>Eden od predmetov ima več kot 2 vozlišči</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1409"/>
-      <location filename="../../ArchStructure.py" line="1441"/>
+      <location filename="../../ArchStructure.py" line="1408"/>
+      <location filename="../../ArchStructure.py" line="1440"/>
       <source>Unable to find a suitable intersection point</source>
       <translation>Ni mogoče najti primernega presečišča</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1412"/>
+      <location filename="../../ArchStructure.py" line="1411"/>
       <source>Intersection found.
 </source>
       <translation>Presečišče najdeno.
 </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1444"/>
+      <location filename="../../ArchStructure.py" line="1443"/>
       <source>Intersection found.</source>
       <translation>Presečišče najdeno.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1480"/>
+      <location filename="../../ArchStructure.py" line="1479"/>
       <source>Done</source>
       <translation>Končano</translation>
     </message>
@@ -5034,7 +5034,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="448"/>
-      <location filename="../../ArchStructure.py" line="1591"/>
+      <location filename="../../ArchStructure.py" line="1590"/>
       <source>Could not compute a shape</source>
       <translation type="unfinished">Could not compute a shape</translation>
     </message>
@@ -5999,7 +5999,7 @@ Ustvarjanj stavbe prekinjeno.</translation>
     <name>App::Property</name>
     <message>
       <location filename="../../ArchStructure.py" line="677"/>
-      <location filename="../../ArchStructure.py" line="1497"/>
+      <location filename="../../ArchStructure.py" line="1496"/>
       <source>An optional extrusion path for this element</source>
       <translation>Neobvezna pot izrivanja te prvine</translation>
     </message>
@@ -6102,42 +6102,42 @@ Ustvarjanj stavbe prekinjeno.</translation>
       <translation type="unfinished">Select User Defined PropertySet to use in creating variant shape, with same ArchSketch </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1188"/>
+      <location filename="../../ArchStructure.py" line="1187"/>
       <source>If the nodes are visible or not</source>
       <translation>Če so vozlišča vidna ali ne</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1190"/>
+      <location filename="../../ArchStructure.py" line="1189"/>
       <source>The width of the nodes line</source>
       <translation>Debelina črte vozlišča</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1192"/>
+      <location filename="../../ArchStructure.py" line="1191"/>
       <source>The size of the node points</source>
       <translation>Velikost točk vozlišča</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1195"/>
+      <location filename="../../ArchStructure.py" line="1194"/>
       <source>The color of the nodes line</source>
       <translation>Barva vozliščne črte</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1198"/>
+      <location filename="../../ArchStructure.py" line="1197"/>
       <source>The type of structural node</source>
       <translation>Vrsta konstrukcijskega vozlišča</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1534"/>
+      <location filename="../../ArchStructure.py" line="1533"/>
       <source>Axes systems this structure is built on</source>
       <translation>Osni sistem, ki je osnova te konstrukcije</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1535"/>
+      <location filename="../../ArchStructure.py" line="1534"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>Neupoštevane številke gradnika, ko je ta konstrukcija izhaja iz osi</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1536"/>
+      <location filename="../../ArchStructure.py" line="1535"/>
       <source>If true the element are aligned with axes</source>
       <translation>Če drži, so gradniki poravnani z osjo</translation>
     </message>
@@ -8278,12 +8278,12 @@ Ustvarjanj stavbe prekinjeno.</translation>
   <context>
     <name>Arch_StructureTools</name>
     <message>
-      <location filename="../../ArchStructure.py" line="1651"/>
+      <location filename="../../ArchStructure.py" line="1650"/>
       <source>Structure Tools</source>
       <translation type="unfinished">Structure Tools</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1654"/>
+      <location filename="../../ArchStructure.py" line="1653"/>
       <source>Structure tools</source>
       <translation>Konstrukcijska orodja</translation>
     </message>
@@ -11929,7 +11929,7 @@ select both the view and the page before executing the command.</translation>
     <message>
       <location filename="../ui/dialogClassification.ui" line="68"/>
       <source>Alphabetical</source>
-      <translation>Po abecedi</translation>
+      <translation>Po abecednem redu</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="77"/>

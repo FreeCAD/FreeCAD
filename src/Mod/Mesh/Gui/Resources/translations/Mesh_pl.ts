@@ -1597,7 +1597,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../MeshEditor.cpp" line="396"/>
       <source>Add Triangle</source>
-      <translation type="unfinished">Add Triangle</translation>
+      <translation>Dodaj trójkąt</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="397"/>
@@ -2048,8 +2048,8 @@ do gładszego wyglądu.
       <location filename="../../Command.cpp" line="299"/>
       <source>OpenSCAD cannot be found on the system.
 Visit https://openscad.org/ to install it.</source>
-      <translation type="unfinished">OpenSCAD cannot be found on the system.
-Visit https://openscad.org/ to install it.</translation>
+      <translation>OpenSCAD nie znaleziony w systemie.
+Odwiedź https://openscad.org żeby go zainstalować.</translation>
     </message>
   </context>
   <context>
@@ -2227,13 +2227,13 @@ Visit https://openscad.org/ to install it.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1530"/>
-      <source>Fill holes</source>
-      <translation>Wypełnij otwory</translation>
+      <source>Fill Holes</source>
+      <translation type="unfinished">Fill Holes</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1531"/>
-      <source>Fill holes with maximum number of edges:</source>
-      <translation>Wypełnij otwory maksymalną liczbą krawędzi:</translation>
+      <source>Fill holes with maximum number of edges</source>
+      <translation type="unfinished">Fill holes with maximum number of edges</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1795"/>

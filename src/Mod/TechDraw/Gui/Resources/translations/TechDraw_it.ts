@@ -1845,7 +1845,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1501"/>
       <source>Radius Dimension</source>
-      <translation type="unfinished">Radius Dimension</translation>
+      <translation>Quota del Raggio</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1502"/>
@@ -4334,7 +4334,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TemplateTextField.cpp" line="57"/>
       <source>Click to update text</source>
-      <translation type="unfinished">Click to update text</translation>
+      <translation>Fare clic per aggiornare il testo</translation>
     </message>
   </context>
   <context>
@@ -5652,7 +5652,7 @@ This affects only the toolbar; all tools remain available via the menu and short
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="566"/>
       <source>Dimension tool diameter/radius mode</source>
-      <translation type="unfinished">Dimension tool diameter/radius mode</translation>
+      <translation>Modalità dello strumento Quota diametro/raggio</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="573"/>

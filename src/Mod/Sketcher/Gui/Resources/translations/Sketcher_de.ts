@@ -179,7 +179,7 @@
     <message>
       <location filename="../../Command.cpp" line="1001"/>
       <source>Merge Sketches</source>
-      <translation type="unfinished">Merge Sketches</translation>
+      <translation>Skizzen zusammenführen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1002"/>
@@ -194,7 +194,7 @@
     <message>
       <location filename="../../Command.cpp" line="1018"/>
       <source>Select at least 2 sketches</source>
-      <translation type="unfinished">Select at least 2 sketches</translation>
+      <translation>Mindestens zwei Skizzen auswählen</translation>
     </message>
   </context>
   <context>
@@ -202,7 +202,7 @@
     <message>
       <location filename="../../Command.cpp" line="874"/>
       <source>Mirror Sketch</source>
-      <translation type="unfinished">Mirror Sketch</translation>
+      <translation>Skizze spiegeln</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="875"/>
@@ -221,7 +221,7 @@ as mirroring reference</translation>
     <message>
       <location filename="../../Command.cpp" line="893"/>
       <source>Select at least 1 sketch</source>
-      <translation type="unfinished">Select at least 1 sketch</translation>
+      <translation>Mindestens eine Skizze auswählen</translation>
     </message>
   </context>
   <context>
@@ -268,7 +268,7 @@ as mirroring reference</translation>
     <message>
       <location filename="../../Command.cpp" line="834"/>
       <source>Validate Sketch</source>
-      <translation type="unfinished">Validate Sketch</translation>
+      <translation>Skizze überprüfen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="835"/>
@@ -285,7 +285,7 @@ invalid constraints, and degenerate geometry</translation>
     <message>
       <location filename="../../Command.cpp" line="852"/>
       <source>Select only 1 sketch.</source>
-      <translation type="unfinished">Select only 1 sketch.</translation>
+      <translation>Nur eine Skizze auswählen.</translation>
     </message>
   </context>
   <context>
@@ -853,27 +853,27 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Sketcher-Randbedingung umbenannt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1732"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1734"/>
       <source>Drag Point</source>
       <translation>Punkt ziehen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1732"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1734"/>
       <source>Drag Curve</source>
       <translation>Kurve ziehen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1733"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1735"/>
       <source>Drag geometries</source>
       <translation>Geometrien ziehen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1112"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1114"/>
       <source>Drag Constraint</source>
       <translation>Randbedingung ziehen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1313"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1315"/>
       <source>Modify sketch constraints</source>
       <translation>Sketcher-Randbedingung geändert</translation>
     </message>
@@ -1125,7 +1125,7 @@ invalid constraints, and degenerate geometry</translation>
     <message>
       <location filename="../../Command.cpp" line="203"/>
       <source>Do not attach</source>
-      <translation type="unfinished">Do not attach</translation>
+      <translation>Nicht befestigen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="699"/>
@@ -1761,7 +1761,7 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
       <location filename="../../CommandConstraints.cpp" line="1238"/>
       <location filename="../../CommandConstraints.cpp" line="1286"/>
       <source>%1 pick line</source>
-      <translation type="unfinished">%1 pick line</translation>
+      <translation>%1 wähle Linie</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1242"/>
@@ -1772,7 +1772,7 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
     <message>
       <location filename="../../CommandConstraints.cpp" line="1255"/>
       <source>%1 pick symmetry line</source>
-      <translation type="unfinished">%1 pick symmetry line</translation>
+      <translation>%1 wähle die Symmetrie-Linie</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1268"/>
@@ -2285,7 +2285,7 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="563"/>
       <source>Change Value</source>
-      <translation type="unfinished">Change Value</translation>
+      <translation>Wert ändern</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="568"/>
@@ -2315,7 +2315,7 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="595"/>
       <source>Center Sketch</source>
-      <translation type="unfinished">Center Sketch</translation>
+      <translation>Skizze zentrieren</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="603"/>
@@ -2348,7 +2348,7 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
     <message>
       <location filename="../../EditDatumDialog.cpp" line="121"/>
       <source>Insert Angle</source>
-      <translation type="unfinished">Insert Angle</translation>
+      <translation>Winkel einfügen</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="123"/>
@@ -2358,17 +2358,17 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
     <message>
       <location filename="../../EditDatumDialog.cpp" line="128"/>
       <source>Insert Radius</source>
-      <translation type="unfinished">Insert Radius</translation>
+      <translation>Radius einfügen</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="135"/>
       <source>Insert Diameter</source>
-      <translation type="unfinished">Insert Diameter</translation>
+      <translation>Durchmesser eingeben</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="142"/>
       <source>Insert Weight</source>
-      <translation type="unfinished">Insert Weight</translation>
+      <translation>Gewicht eingeben</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="148"/>
@@ -2379,7 +2379,7 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
     <message>
       <location filename="../../EditDatumDialog.cpp" line="155"/>
       <source>Insert Length</source>
-      <translation type="unfinished">Insert Length</translation>
+      <translation>Länge eingeben</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="130"/>
@@ -2662,12 +2662,12 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
     <message>
       <location filename="../../InsertDatum.ui" line="23"/>
       <source>Insert Datum</source>
-      <translation type="unfinished">Insert Datum</translation>
+      <translation>Datum einfügen</translation>
     </message>
     <message>
       <location filename="../../InsertDatum.ui" line="31"/>
       <source>Datum</source>
-      <translation type="unfinished">Datum</translation>
+      <translation>Datum</translation>
     </message>
     <message>
       <location filename="../../InsertDatum.ui" line="48"/>
@@ -2705,7 +2705,7 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
       <location filename="../../SketchMirrorDialog.ui" line="14"/>
       <location filename="../../SketchMirrorDialog.ui" line="20"/>
       <source>Select Mirror Axis or Point</source>
-      <translation type="unfinished">Select Mirror Axis or Point</translation>
+      <translation>Wähle die Spiegelachse oder den Punkt</translation>
     </message>
     <message>
       <location filename="../../SketchMirrorDialog.ui" line="26"/>
@@ -2728,12 +2728,12 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="14"/>
       <source>Choose Orientation</source>
-      <translation type="unfinished">Choose Orientation</translation>
+      <translation>Ausrichtung wählen</translation>
     </message>
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="20"/>
       <source>Sketch Orientation</source>
-      <translation type="unfinished">Sketch Orientation</translation>
+      <translation>Skizzen-Ausrichtung</translation>
     </message>
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="26"/>
@@ -2771,7 +2771,7 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="17"/>
       <source>Create Array</source>
-      <translation type="unfinished">Create Array</translation>
+      <translation>Array erzeugen</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="25"/>
@@ -3889,112 +3889,112 @@ Dies erfolgt durch Analyse der Skizzengeometrien und Randbedingungen.</translati
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3160"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3249"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Ein Dialog im Arbeitspanel ist bereits geöffnet</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3182"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3271"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Die Skizze ist ungültig und kann nicht bearbeitet werden.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3340"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3429"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Die folgende Randbedingung ist teilweise überflüssig:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3341"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3430"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Die folgenden Randbedingungen sind teilweise überflüssig:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3143"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3232"/>
       <source>Edit Sketch</source>
       <translation type="unfinished">Edit Sketch</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3161"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3250"/>
       <source>Close this dialog?</source>
       <translation>Diesen Dialog schließen?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3180"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3269"/>
       <source>Invalid Sketch</source>
       <translation type="unfinished">Invalid Sketch</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3181"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3270"/>
       <source>Open the sketch validation tool?</source>
       <translation type="unfinished">Open the sketch validation tool?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3326"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3415"/>
       <source>Remove the following constraint:</source>
       <translation type="unfinished">Remove the following constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3327"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3416"/>
       <source>Remove at least one of the following constraints:</source>
       <translation type="unfinished">Remove at least one of the following constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3333"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3422"/>
       <source>Remove the following redundant constraint:</source>
       <translation type="unfinished">Remove the following redundant constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3334"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3423"/>
       <source>Remove the following redundant constraints:</source>
       <translation type="unfinished">Remove the following redundant constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3347"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3436"/>
       <source>Remove the following malformed constraint:</source>
       <translation type="unfinished">Remove the following malformed constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3348"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3437"/>
       <source>Remove the following malformed constraints:</source>
       <translation type="unfinished">Remove the following malformed constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3406"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3495"/>
       <source>Empty sketch</source>
       <translation>Leere Skizze</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3411"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3500"/>
       <source>Over-constrained:</source>
       <translation>Überbestimmt:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3417"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3506"/>
       <source>Malformed constraints:</source>
       <translation>Fehlerhafte Randbedingungen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3425"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3514"/>
       <source>Redundant constraints:</source>
       <translation>Überflüssige Randbedingungen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3431"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3520"/>
       <source>Partially redundant:</source>
       <translation>Teilweise redundant:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3438"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3527"/>
       <source>Solver failed to converge</source>
       <translation>Der Gleichungslöser konnte keine Lösung annähern</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3444"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3533"/>
       <source>Under-constrained:</source>
       <translation>Unterbestimmt:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="3446"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3535"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Degrees of Freedom</numerusform>
@@ -4002,7 +4002,7 @@ Dies erfolgt durch Analyse der Skizzengeometrien und Randbedingungen.</translati
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3450"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3539"/>
       <source>Fully constrained</source>
       <translation>Vollständig bestimmt</translation>
     </message>
@@ -4483,7 +4483,7 @@ Eigen Sparse QR ein Algorithmus, der für dünn besetzte Matrizen optimiert ist;
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3390"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3479"/>
       <source>and %1 more</source>
       <translation>und %1 mehr</translation>
     </message>

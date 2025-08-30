@@ -80,7 +80,7 @@
     <message>
       <location filename="../../StartView.cpp" line="225"/>
       <source>Creates a 2D Draft document</source>
-      <translation type="unfinished">Creates a 2D Draft document</translation>
+      <translation>2B Taslak belgesi oluşturur</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="228"/>
@@ -115,7 +115,7 @@
     <message>
       <location filename="../../StartView.cpp" line="221"/>
       <source>Creates an assembly project</source>
-      <translation type="unfinished">Creates an assembly project</translation>
+      <translation>Yeni bir montaj projesi oluşturur</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="229"/>
@@ -145,7 +145,7 @@
     <message>
       <location filename="../../StartView.cpp" line="516"/>
       <source>Do not show this Start page again (start with blank screen)</source>
-      <translation type="unfinished">Do not show this Start page again (start with blank screen)</translation>
+      <translation>Bu Başlangıç ​​sayfasını tekrar gösterme (boş ekranla başla)</translation>
     </message>
   </context>
   <context>
@@ -223,7 +223,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="33"/>
       <source>Show examples folder contents</source>
-      <translation type="unfinished">Show examples folder contents</translation>
+      <translation>Örnek klasör içeriğini göster</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="40"/>
@@ -240,7 +240,7 @@ Dizinleri ayırmak için ";;" kullanılarak birden fazla klasör eklenebilir.</t
     <message>
       <location filename="../../DlgStartPreferences.ui" line="64"/>
       <source>Shows example files on the start page</source>
-      <translation type="unfinished">Shows example files on the start page</translation>
+      <translation>Başlangıç ​​sayfasında örnek dosyaları gösterir</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="114"/>

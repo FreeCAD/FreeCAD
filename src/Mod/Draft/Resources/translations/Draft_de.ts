@@ -171,12 +171,12 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
       <source>Style Name</source>
-      <translation type="unfinished">Style Name</translation>
+      <translation>Name des Beschriftungsstils</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
       <source>The name of the style. Existing style names can be edited.</source>
-      <translation type="unfinished">The name of the style. Existing style names can be edited.</translation>
+      <translation>Der Name des Stils. Bestehende Stilnamen können bearbeitet werden.</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="50"/>
@@ -192,12 +192,12 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="352"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="374"/>
       <source>The type of the starting arrows or markers to use for dimensions and labels</source>
-      <translation type="unfinished">The type of the starting arrows or markers to use for dimensions and labels</translation>
+      <translation>Die Art der Pfeile oder Marker am Startpunkt, zur Verwendung für Maße und Hinweise</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="355"/>
       <source>Start arrow type</source>
-      <translation type="unfinished">Start arrow type</translation>
+      <translation>Anfangspfeiltyp</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="403"/>
@@ -209,34 +209,34 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="411"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="421"/>
       <source>The size of the starting arrows or markers in system units</source>
-      <translation type="unfinished">The size of the starting arrows or markers in system units</translation>
+      <translation>Die Größe der Anfangspfeile oder Markierungen in Systemeinheiten</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="414"/>
       <source>Start arrow size</source>
-      <translation type="unfinished">Start arrow size</translation>
+      <translation>Anfangspfeilgröße</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="431"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="453"/>
       <source>The type of the ending arrows or markers to use for dimensions and labels</source>
-      <translation type="unfinished">The type of the ending arrows or markers to use for dimensions and labels</translation>
+      <translation>Der Typ der Endpfeile oder Markierungen, die für Bemaßungen und Beschriftungen verwendet werden</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="434"/>
       <source>End arrow type</source>
-      <translation type="unfinished">End arrow type</translation>
+      <translation>Endpfeiltyp</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="490"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="500"/>
       <source>The size of the ending arrows or markers in system units</source>
-      <translation type="unfinished">The size of the ending arrows or markers in system units</translation>
+      <translation>Die Größe der Endpfeile oder Markierungen in Systemeinheiten</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="493"/>
       <source>End arrow size</source>
-      <translation type="unfinished">End arrow size</translation>
+      <translation>Endpfeilgröße</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="536"/>
@@ -437,7 +437,7 @@ It must be at least 2.</translation>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="86"/>
       <source>Number of concentric circles</source>
-      <translation type="unfinished">Number of concentric circles</translation>
+      <translation>Anzahl konzentrischer Kreise</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="135"/>
@@ -520,27 +520,9 @@ Die Zahl muss mindestens 1 in jede Richtung sein.</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="168"/>
-      <source>Distance between the elements in the X direction.
-Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</source>
-      <translation>Abstand zwischen den Elementen in der X-Richtung.
-Normalerweise ist nur der X-Wert nötig; die anderen beiden Werte können eine zusätzliche Verschiebung in die jeweilige Richtung ermöglichen.
-Negative Werte führen zu Kopien, die in die negative Richtung erzeugt werden.</translation>
-    </message>
-    <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="249"/>
       <source>Reset X</source>
       <translation>X zurücksetzen</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="259"/>
-      <source>Distance between the elements in the Y direction.
-Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</source>
-      <translation>Abstand zwischen den Elementen in der Y-Richtung.
-Normalerweise wird nur der Y-Wert benötigt; die anderen beiden Werte können eine zusätzliche Verschiebung in die jeweilige Richtung ermöglichen.
-Negative Werte führen zu Kopien, die in die negative Richtung erzeugt werden.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="340"/>
@@ -597,6 +579,15 @@ Negative Werte führen zu Kopien, die in die negative Richtung erzeugt werden.</
       <translation>Aktuell ausgewählte Achse</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="168"/>
+      <source>Distance between the elements in the X-direction.
+Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</source>
+      <translation type="unfinished">Distance between the elements in the X-direction.
+Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</translation>
+    </message>
+    <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="173"/>
       <source>X Intervals</source>
       <translation>X-Intervalle</translation>
@@ -607,6 +598,15 @@ Negative Werte führen zu Kopien, die in die negative Richtung erzeugt werden.</
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="428"/>
       <source>Resets the distances</source>
       <translation>Setzt die Abstände zurück</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="259"/>
+      <source>Distance between the elements in the Y-direction.
+Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</source>
+      <translation type="unfinished">Distance between the elements in the Y-direction.
+Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="264"/>
@@ -978,12 +978,6 @@ will be moved to the center of the view.</source>
       <translation> Quadrate</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="214"/>
-      <location filename="../ui/TaskSelectPlane.ui" line="224"/>
-      <source>The number of squares in the X and Y direction of the grid</source>
-      <translation>Die Anzahl der Quadrate in X- und Y-Richtung des Rasters</translation>
-    </message>
-    <message>
       <location filename="../ui/TaskSelectPlane.ui" line="217"/>
       <source>Grid size</source>
       <translation>Rastergröße</translation>
@@ -1013,6 +1007,12 @@ will be moved to the center of the view.</source>
       <location filename="../ui/TaskSelectPlane.ui" line="177"/>
       <source>Grid spacing</source>
       <translation>Rasterabstand</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="214"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="224"/>
+      <source>The number of squares in the X- and Y-direction of the grid</source>
+      <translation type="unfinished">The number of squares in the X- and Y-direction of the grid</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="243"/>
@@ -1225,7 +1225,7 @@ Anmerkungsskala-Widget. Bei einer Skala von 1:100 beträgt der Multiplikator 100
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="409"/>
       <source>Start arrow type</source>
-      <translation type="unfinished">Start arrow type</translation>
+      <translation>Anfangspfeiltyp</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
@@ -1260,17 +1260,17 @@ Anmerkungsskala-Widget. Bei einer Skala von 1:100 beträgt der Multiplikator 100
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="450"/>
       <source>Start arrow size</source>
-      <translation type="unfinished">Start arrow size</translation>
+      <translation>Anfangspfeilgröße</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
       <source>End arrow type</source>
-      <translation type="unfinished">End arrow type</translation>
+      <translation>Endpfeiltyp</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="505"/>
       <source>End arrow size</source>
-      <translation type="unfinished">End arrow size</translation>
+      <translation>Endpfeilgröße</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="563"/>
@@ -1615,7 +1615,7 @@ wird die Bewegung der Maus so lange deaktiviert, bis der Befehl beendet ist.</tr
     <message>
       <location filename="../ui/preferences-draft.ui" line="116"/>
       <source>Show working plane orientation</source>
-      <translation type="unfinished">Show working plane orientation</translation>
+      <translation>Ausrichtung der Arbeitsebene anzeigen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="149"/>
@@ -1753,7 +1753,7 @@ Muster enthält, die zu den Standardmustern hinzugefügt werden sollen</translat
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="266"/>
       <source>Start arrow type</source>
-      <translation type="unfinished">Start arrow type</translation>
+      <translation>Anfangspfeiltyp</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="279"/>
@@ -1769,17 +1769,17 @@ Muster enthält, die zu den Standardmustern hinzugefügt werden sollen</translat
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="322"/>
       <source>Start arrow size</source>
-      <translation type="unfinished">Start arrow size</translation>
+      <translation>Anfangspfeilgröße</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="329"/>
       <source>The default starting arrow size</source>
-      <translation type="unfinished">The default starting arrow size</translation>
+      <translation>Die Standard-Anfangspfeilgröße</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="354"/>
       <source>End arrow type</source>
-      <translation type="unfinished">End arrow type</translation>
+      <translation>Endpfeiltyp</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="367"/>
@@ -1789,12 +1789,12 @@ Muster enthält, die zu den Standardmustern hinzugefügt werden sollen</translat
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="410"/>
       <source>End arrow size</source>
-      <translation type="unfinished">End arrow size</translation>
+      <translation>Endpfeilgröße</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="417"/>
       <source>The default ending arrow size</source>
-      <translation type="unfinished">The default ending arrow size</translation>
+      <translation>Die Standard-Endpfeilgröße</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="531"/>
@@ -2121,7 +2121,7 @@ wird ein unveränderter Kantenzug der ursprünglichen Form hinzugefügt</transla
     <message>
       <location filename="../ui/preferences-svg.ui" line="245"/>
       <source>Convert white line color to black</source>
-      <translation type="unfinished">Convert white line color to black</translation>
+      <translation>Weiße Linienfarbe in schwarze umwandeln</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="265"/>
@@ -2535,11 +2535,6 @@ Hauptrasterlinien sind breiter als Nebenrasterlinien.</translation>
       <translation> Quadrate</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="220"/>
-      <source>The number of squares in the X and Y direction of the grid</source>
-      <translation>Die Anzahl der Quadrate in X- und Y-Richtung des Rasters</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftsnap.ui" line="298"/>
       <source>Snapping and Modifier Keys</source>
       <translation type="unfinished">Snapping and Modifier Keys</translation>
@@ -2665,6 +2660,11 @@ gefärbt, wenn sie mit der X-, Y- oder Z-Achse des globalen Koordinatensystems �
       <location filename="../ui/preferences-draftsnap.ui" line="213"/>
       <source>Grid size</source>
       <translation>Rastergröße</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="220"/>
+      <source>The number of squares in the X- and Y-direction of the grid</source>
+      <translation type="unfinished">The number of squares in the X- and Y-direction of the grid</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="242"/>
@@ -4955,7 +4955,7 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>Textform</translation>
     </message>
     <message>
-      <location filename="../../draftutils/params.py" line="477"/>
+      <location filename="../../draftutils/params.py" line="478"/>
       <source>Default</source>
       <translation>Standard</translation>
     </message>
@@ -5981,17 +5981,17 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../draftobjects/hatch.py" line="104"/>
       <source>PAT file not found</source>
-      <translation type="unfinished">PAT file not found</translation>
+      <translation>PAT-Datei nicht gefunden</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="108"/>
       <source>Specified PAT file is not a file</source>
-      <translation type="unfinished">Specified PAT file is not a file</translation>
+      <translation>Die angegebene PAT-Datei ist keine Datei</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="112"/>
       <source>Specified file type is not supported</source>
-      <translation type="unfinished">Specified file type is not supported</translation>
+      <translation>Der angegebene Dateityp wird nicht unterstützt</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="116"/>
@@ -7164,6 +7164,11 @@ Wenn diese vorhanden sind, werden die Kopien nur entlang dieser Unterelemente er
 Lassen Sie diese Eigenschaft leer, um Kopien entlang des gesamten 'Pfad-Objekt' zu erstellen.</translation>
     </message>
     <message>
+      <location filename="../../draftobjects/patharray.py" line="303"/>
+      <source>Force use of 'Vertical Vector' as local Z-direction when using 'Original' or 'Tangent' alignment mode</source>
+      <translation type="unfinished">Force use of 'Vertical Vector' as local Z-direction when using 'Original' or 'Tangent' alignment mode</translation>
+    </message>
+    <message>
       <location filename="../../draftobjects/patharray.py" line="353"/>
       <source>Number of copies to create</source>
       <translation>Anzahl der zu erstellenden Kopien</translation>
@@ -7179,11 +7184,6 @@ Dies ist nützlich, um den Unterschied zwischen dem Form-Mittelpunkt und dem For
       <location filename="../../draftobjects/patharray.py" line="294"/>
       <source>Alignment vector for 'Tangent' mode</source>
       <translation>Richtungsvektor für den „Tangenten“-Modus</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="303"/>
-      <source>Force use of 'Vertical Vector' as local Z direction when using 'Original' or 'Tangent' alignment mode</source>
-      <translation>Verwendung von 'vertikalem Vektor' als lokale Z-Richtung erzwingen, wenn 'Original' oder 'Tangentiale' Ausrichtung verwendet wird</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="312"/>
@@ -7274,33 +7274,33 @@ Andernfalls haben die Kopien dieselbe Ausrichtung wie das ursprüngliche Basisob
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="168"/>
-      <source>Number of copies in X direction</source>
-      <translation>Anzahl der Kopien in X-Richtung</translation>
+      <source>Number of copies in X-direction</source>
+      <translation type="unfinished">Number of copies in X-direction</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="178"/>
-      <source>Number of copies in Y direction</source>
-      <translation>Anzahl der Kopien in Y-Richtung</translation>
+      <source>Number of copies in Y-direction</source>
+      <translation type="unfinished">Number of copies in Y-direction</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="188"/>
-      <source>Number of copies in Z direction</source>
-      <translation>Anzahl der Kopien in Z-Richtung</translation>
+      <source>Number of copies in Z-direction</source>
+      <translation type="unfinished">Number of copies in Z-direction</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="199"/>
-      <source>Distance and orientation of intervals in X direction</source>
-      <translation>Abstand und Ausrichtung der Intervalle in X-Richtung</translation>
+      <source>Distance and orientation of intervals in X-direction</source>
+      <translation type="unfinished">Distance and orientation of intervals in X-direction</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="210"/>
-      <source>Distance and orientation of intervals in Y direction</source>
-      <translation>Abstand und Ausrichtung der Intervalle in Y-Richtung</translation>
+      <source>Distance and orientation of intervals in Y-direction</source>
+      <translation type="unfinished">Distance and orientation of intervals in Y-direction</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="221"/>
-      <source>Distance and orientation of intervals in Z direction</source>
-      <translation>Abstand und Ausrichtung der Intervalle in Z-Richtung</translation>
+      <source>Distance and orientation of intervals in Z-direction</source>
+      <translation type="unfinished">Distance and orientation of intervals in Z-direction</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="237"/>

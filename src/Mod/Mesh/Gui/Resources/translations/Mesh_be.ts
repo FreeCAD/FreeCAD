@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="1432"/>
       <source>Bounding Box Info</source>
-      <translation type="unfinished">Bounding Box Info</translation>
+      <translation>Інфармацыя пра габарыты</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1433"/>
       <source>Shows the bounding box coordinates of the selected mesh</source>
-      <translation type="unfinished">Shows the bounding box coordinates of the selected mesh</translation>
+      <translation>Адлюстроўвае каардынаты габарытаў абранай паліганальнай сеткі</translation>
     </message>
   </context>
   <context>
@@ -191,12 +191,12 @@
     <message>
       <location filename="../../Command.cpp" line="1567"/>
       <source>Close Hole</source>
-      <translation type="unfinished">Close Hole</translation>
+      <translation>Замкнуць адтуліны</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1568"/>
       <source>Closes a hole interactively in the mesh</source>
-      <translation type="unfinished">Closes a hole interactively in the mesh</translation>
+      <translation>Інтэрактыўна замыкае адтуліны ў паліганальнай сетцы</translation>
     </message>
   </context>
   <context>
@@ -2044,8 +2044,8 @@ to a smoother appearance.
       <location filename="../../Command.cpp" line="299"/>
       <source>OpenSCAD cannot be found on the system.
 Visit https://openscad.org/ to install it.</source>
-      <translation type="unfinished">OpenSCAD cannot be found on the system.
-Visit https://openscad.org/ to install it.</translation>
+      <translation>OpenSCAD не знойдзеная ў сістэме.
+Наведайце https://openscad.org/ каб усталяваць яго.</translation>
     </message>
   </context>
   <context>
@@ -2223,13 +2223,13 @@ Visit https://openscad.org/ to install it.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1530"/>
-      <source>Fill holes</source>
+      <source>Fill Holes</source>
       <translation>Запоўніць адтуліны</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1531"/>
-      <source>Fill holes with maximum number of edges:</source>
-      <translation>Запаўняе адтуліны з найбольшай колькасцю рэбраў:</translation>
+      <source>Fill holes with maximum number of edges</source>
+      <translation type="unfinished">Fill holes with maximum number of edges</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1795"/>

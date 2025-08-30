@@ -181,7 +181,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="50"/>
       <source>Add new…</source>
-      <translation type="unfinished">Add new…</translation>
+      <translation>Yeni ekle...</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="173"/>
@@ -192,12 +192,12 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="352"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="374"/>
       <source>The type of the starting arrows or markers to use for dimensions and labels</source>
-      <translation type="unfinished">The type of the starting arrows or markers to use for dimensions and labels</translation>
+      <translation>Boyutlar ve etiketler için kullanılacak başlangıç ​​oklarının veya işaretleyicilerin türü</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="355"/>
       <source>Start arrow type</source>
-      <translation type="unfinished">Start arrow type</translation>
+      <translation>Başlangıç ok tipi</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="403"/>
@@ -209,12 +209,12 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="411"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="421"/>
       <source>The size of the starting arrows or markers in system units</source>
-      <translation type="unfinished">The size of the starting arrows or markers in system units</translation>
+      <translation>Başlangıç ​​oklarının veya işaretleyicilerinin sistem birimlerindeki boyutu</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="414"/>
       <source>Start arrow size</source>
-      <translation type="unfinished">Start arrow size</translation>
+      <translation>Başlangıç ok boyutu</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="431"/>
@@ -520,27 +520,9 @@ Sayı her yönde en az 1 olmalıdır.</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="168"/>
-      <source>Distance between the elements in the X direction.
-Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</source>
-      <translation>X yönündeki öğelerin aralarındaki uzaklık.
-Normalde, sadece X değeri gereklidir. Diğer iki değer kendi ilgili yönlerinde ek kaymaları sağlayabilir.
-Negatif değerler kopyaların negatif yönde üretilmesine neden olacaktır.</translation>
-    </message>
-    <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="249"/>
       <source>Reset X</source>
       <translation>Sıfırla X</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="259"/>
-      <source>Distance between the elements in the Y direction.
-Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</source>
-      <translation>Y yönündeki öğelerin aralarındaki uzaklık.
-Normalde, sadece Y değeri gereklidir. Diğer iki değer kendi ilgili yönlerinde ek kaymaları sağlayabilir.
-Negatif değerler kopyaların negatif yönde üretilmesine neden olacaktır.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="340"/>
@@ -597,6 +579,15 @@ Negatif değerler kopyaların negatif yönde üretilmesine neden olacaktır.</tr
       <translation type="unfinished">Currently selected axis</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="168"/>
+      <source>Distance between the elements in the X-direction.
+Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</source>
+      <translation type="unfinished">Distance between the elements in the X-direction.
+Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</translation>
+    </message>
+    <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="173"/>
       <source>X Intervals</source>
       <translation type="unfinished">X Intervals</translation>
@@ -607,6 +598,15 @@ Negatif değerler kopyaların negatif yönde üretilmesine neden olacaktır.</tr
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="428"/>
       <source>Resets the distances</source>
       <translation type="unfinished">Resets the distances</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="259"/>
+      <source>Distance between the elements in the Y-direction.
+Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</source>
+      <translation type="unfinished">Distance between the elements in the Y-direction.
+Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="264"/>
@@ -979,12 +979,6 @@ görüntünün merkezine taşınır.</translation>
       <translation> kareler</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="214"/>
-      <location filename="../ui/TaskSelectPlane.ui" line="224"/>
-      <source>The number of squares in the X and Y direction of the grid</source>
-      <translation>Izgaranın X ve Y yönündeki kare sayısı</translation>
-    </message>
-    <message>
       <location filename="../ui/TaskSelectPlane.ui" line="217"/>
       <source>Grid size</source>
       <translation>Izgara boyutu</translation>
@@ -1014,6 +1008,12 @@ görüntünün merkezine taşınır.</translation>
       <location filename="../ui/TaskSelectPlane.ui" line="177"/>
       <source>Grid spacing</source>
       <translation>Izgara aralığı</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="214"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="224"/>
+      <source>The number of squares in the X- and Y-direction of the grid</source>
+      <translation type="unfinished">The number of squares in the X- and Y-direction of the grid</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="243"/>
@@ -1225,7 +1225,7 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="409"/>
       <source>Start arrow type</source>
-      <translation type="unfinished">Start arrow type</translation>
+      <translation>Başlangıç ok tipi</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
@@ -1260,7 +1260,7 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="450"/>
       <source>Start arrow size</source>
-      <translation type="unfinished">Start arrow size</translation>
+      <translation>Başlangıç ok boyutu</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
@@ -1750,7 +1750,7 @@ pattern definitions to be added to the standard patterns</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="266"/>
       <source>Start arrow type</source>
-      <translation type="unfinished">Start arrow type</translation>
+      <translation>Başlangıç ok tipi</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="279"/>
@@ -1766,7 +1766,7 @@ pattern definitions to be added to the standard patterns</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="322"/>
       <source>Start arrow size</source>
-      <translation type="unfinished">Start arrow size</translation>
+      <translation>Başlangıç ok boyutu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="329"/>
@@ -2526,11 +2526,6 @@ Majör ızgara çizgileri, minör ızgara çizgilerinden daha kalındır.</trans
       <translation> kareler</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="220"/>
-      <source>The number of squares in the X and Y direction of the grid</source>
-      <translation>Izgaranın X ve Y yönündeki kare sayısı</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftsnap.ui" line="298"/>
       <source>Snapping and Modifier Keys</source>
       <translation type="unfinished">Snapping and Modifier Keys</translation>
@@ -2654,6 +2649,11 @@ if they match the X, Y or Z axis of the global coordinate system</source>
       <location filename="../ui/preferences-draftsnap.ui" line="213"/>
       <source>Grid size</source>
       <translation>Izgara boyutu</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="220"/>
+      <source>The number of squares in the X- and Y-direction of the grid</source>
+      <translation type="unfinished">The number of squares in the X- and Y-direction of the grid</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="242"/>
@@ -4946,7 +4946,7 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>Şekil dizesi</translation>
     </message>
     <message>
-      <location filename="../../draftutils/params.py" line="477"/>
+      <location filename="../../draftutils/params.py" line="478"/>
       <source>Default</source>
       <translation>Varsayılan</translation>
     </message>
@@ -7150,6 +7150,11 @@ If these are present, the copies will be created along these subelements only.
 Leave this property empty to create copies along the entire 'Path Object'.</translation>
     </message>
     <message>
+      <location filename="../../draftobjects/patharray.py" line="303"/>
+      <source>Force use of 'Vertical Vector' as local Z-direction when using 'Original' or 'Tangent' alignment mode</source>
+      <translation type="unfinished">Force use of 'Vertical Vector' as local Z-direction when using 'Original' or 'Tangent' alignment mode</translation>
+    </message>
+    <message>
       <location filename="../../draftobjects/patharray.py" line="353"/>
       <source>Number of copies to create</source>
       <translation type="unfinished">Number of copies to create</translation>
@@ -7165,11 +7170,6 @@ This is useful to adjust for the difference between shape centre and shape refer
       <location filename="../../draftobjects/patharray.py" line="294"/>
       <source>Alignment vector for 'Tangent' mode</source>
       <translation type="unfinished">Alignment vector for 'Tangent' mode</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="303"/>
-      <source>Force use of 'Vertical Vector' as local Z direction when using 'Original' or 'Tangent' alignment mode</source>
-      <translation type="unfinished">Force use of 'Vertical Vector' as local Z direction when using 'Original' or 'Tangent' alignment mode</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="312"/>
@@ -7260,33 +7260,33 @@ Otherwise the copies will have the same orientation as the original Base object.
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="168"/>
-      <source>Number of copies in X direction</source>
-      <translation type="unfinished">Number of copies in X direction</translation>
+      <source>Number of copies in X-direction</source>
+      <translation type="unfinished">Number of copies in X-direction</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="178"/>
-      <source>Number of copies in Y direction</source>
-      <translation type="unfinished">Number of copies in Y direction</translation>
+      <source>Number of copies in Y-direction</source>
+      <translation type="unfinished">Number of copies in Y-direction</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="188"/>
-      <source>Number of copies in Z direction</source>
-      <translation type="unfinished">Number of copies in Z direction</translation>
+      <source>Number of copies in Z-direction</source>
+      <translation type="unfinished">Number of copies in Z-direction</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="199"/>
-      <source>Distance and orientation of intervals in X direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in X direction</translation>
+      <source>Distance and orientation of intervals in X-direction</source>
+      <translation type="unfinished">Distance and orientation of intervals in X-direction</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="210"/>
-      <source>Distance and orientation of intervals in Y direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Y direction</translation>
+      <source>Distance and orientation of intervals in Y-direction</source>
+      <translation type="unfinished">Distance and orientation of intervals in Y-direction</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="221"/>
-      <source>Distance and orientation of intervals in Z direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Z direction</translation>
+      <source>Distance and orientation of intervals in Z-direction</source>
+      <translation type="unfinished">Distance and orientation of intervals in Z-direction</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="237"/>

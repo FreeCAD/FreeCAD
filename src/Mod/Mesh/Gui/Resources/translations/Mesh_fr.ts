@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="1432"/>
       <source>Bounding Box Info</source>
-      <translation type="unfinished">Bounding Box Info</translation>
+      <translation>Afficher les informations sur la boîte englobante</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1433"/>
       <source>Shows the bounding box coordinates of the selected mesh</source>
-      <translation type="unfinished">Shows the bounding box coordinates of the selected mesh</translation>
+      <translation>Affiche les coordonnées de la boîte englobante du maillage sélectionné.</translation>
     </message>
   </context>
   <context>
@@ -191,12 +191,12 @@
     <message>
       <location filename="../../Command.cpp" line="1567"/>
       <source>Close Hole</source>
-      <translation type="unfinished">Close Hole</translation>
+      <translation>Boucher un trou</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1568"/>
       <source>Closes a hole interactively in the mesh</source>
-      <translation type="unfinished">Closes a hole interactively in the mesh</translation>
+      <translation>Bouche un trou de manière interactive dans le maillage.</translation>
     </message>
   </context>
   <context>
@@ -2042,8 +2042,8 @@ Avec l'ombrage plat, les normales de la surface ne sont pas définies par les so
       <location filename="../../Command.cpp" line="299"/>
       <source>OpenSCAD cannot be found on the system.
 Visit https://openscad.org/ to install it.</source>
-      <translation type="unfinished">OpenSCAD cannot be found on the system.
-Visit https://openscad.org/ to install it.</translation>
+      <translation>OpenSCAD est introuvable sur le système.
+Consulter le site https://openscad.org/ pour l'installer.</translation>
     </message>
   </context>
   <context>
@@ -2221,13 +2221,13 @@ Visit https://openscad.org/ to install it.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1530"/>
-      <source>Fill holes</source>
+      <source>Fill Holes</source>
       <translation>Remplir les trous</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1531"/>
-      <source>Fill holes with maximum number of edges:</source>
-      <translation>Remplir les trous avec un nombre maximum de contours :</translation>
+      <source>Fill holes with maximum number of edges</source>
+      <translation type="unfinished">Fill holes with maximum number of edges</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1795"/>

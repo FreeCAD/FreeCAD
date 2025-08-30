@@ -920,7 +920,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="72"/>
       <source>CCX binary path</source>
-      <translation type="unfinished">CCX binary path</translation>
+      <translation>Pfad der CCX-Binärdatei</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="119"/>
@@ -3885,7 +3885,7 @@ Siehe das nachfolgende Beschreibungsfeld für mögliche Variablen.</translation>
     <message>
       <location filename="../ui/ResultHints.ui" line="178"/>
       <source>maximum shear stress: MS</source>
-      <translation type="unfinished">maximum shear stress: MS</translation>
+      <translation>maximale Scherspannung: MS</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="188"/>
@@ -3895,7 +3895,7 @@ Siehe das nachfolgende Beschreibungsfeld für mögliche Variablen.</translation>
     <message>
       <location filename="../ui/ResultHints.ui" line="198"/>
       <source>maximum principal stress: P1</source>
-      <translation type="unfinished">maximum principal stress: P1</translation>
+      <translation>maximale Hauptspannung: P1</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="208"/>
@@ -3915,12 +3915,12 @@ Siehe das nachfolgende Beschreibungsfeld für mögliche Variablen.</translation>
     <message>
       <location filename="../ui/ResultHints.ui" line="238"/>
       <source>minimum principal stress: P3</source>
-      <translation type="unfinished">minimum principal stress: P3</translation>
+      <translation>minimale Hauptspannung: P3</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="248"/>
       <source>Mohr-Coulomb: mc</source>
-      <translation type="unfinished">Mohr-Coulomb: mc</translation>
+      <translation>Mohr-Coulomb: mc</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="148"/>
@@ -5442,7 +5442,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="778"/>
       <source>Mesh From Shape by Gmsh</source>
-      <translation type="unfinished">Mesh From Shape by Gmsh</translation>
+      <translation>Netz aus Form - Gmsh</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="781"/>
@@ -5455,7 +5455,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="839"/>
       <source>Mesh From Shape by Netgen</source>
-      <translation type="unfinished">Mesh From Shape by Netgen</translation>
+      <translation>Netz aus Form - Netgen</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="843"/>
@@ -5799,12 +5799,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
       <source>VTK Python module conflict</source>
-      <translation type="unfinished">VTK Python module conflict</translation>
+      <translation>VTK Python-Modulkonflikt</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="253"/>
       <source>VTK Python Module Conflict</source>
-      <translation type="unfinished">VTK Python Module Conflict</translation>
+      <translation>VTK Python-Modulkonflikt</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="256"/>

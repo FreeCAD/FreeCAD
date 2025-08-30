@@ -853,27 +853,27 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Aldatu krokis-murrizketaren izena</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1732"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1734"/>
       <source>Drag Point</source>
       <translation>Arrastatu puntua</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1732"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1734"/>
       <source>Drag Curve</source>
       <translation>Arrastatu kurba</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1733"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1735"/>
       <source>Drag geometries</source>
       <translation type="unfinished">Drag geometries</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1112"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1114"/>
       <source>Drag Constraint</source>
       <translation>Arrastatu murrizketa</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1313"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1315"/>
       <source>Modify sketch constraints</source>
       <translation>Aldatu krokis-murrizketak</translation>
     </message>
@@ -3888,112 +3888,112 @@ Krokisaren geometriak eta murrizketak analizatzen dira horretarako.</translation
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3160"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3249"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Elkarrizketa-koadro bat irekita dago ataza-panelean</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3182"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3271"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Krokisa baliogabea da eta ezin da editatu.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3340"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3429"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Honako murrizketa partzialki erredundantea da:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3341"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3430"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Honako murrizketak partzialki erredundanteak dira:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3143"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3232"/>
       <source>Edit Sketch</source>
       <translation type="unfinished">Edit Sketch</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3161"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3250"/>
       <source>Close this dialog?</source>
       <translation type="unfinished">Close this dialog?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3180"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3269"/>
       <source>Invalid Sketch</source>
       <translation type="unfinished">Invalid Sketch</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3181"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3270"/>
       <source>Open the sketch validation tool?</source>
       <translation type="unfinished">Open the sketch validation tool?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3326"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3415"/>
       <source>Remove the following constraint:</source>
       <translation type="unfinished">Remove the following constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3327"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3416"/>
       <source>Remove at least one of the following constraints:</source>
       <translation type="unfinished">Remove at least one of the following constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3333"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3422"/>
       <source>Remove the following redundant constraint:</source>
       <translation type="unfinished">Remove the following redundant constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3334"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3423"/>
       <source>Remove the following redundant constraints:</source>
       <translation type="unfinished">Remove the following redundant constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3347"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3436"/>
       <source>Remove the following malformed constraint:</source>
       <translation type="unfinished">Remove the following malformed constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3348"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3437"/>
       <source>Remove the following malformed constraints:</source>
       <translation type="unfinished">Remove the following malformed constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3406"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3495"/>
       <source>Empty sketch</source>
       <translation>Krokis hutsa</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3411"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3500"/>
       <source>Over-constrained:</source>
       <translation type="unfinished">Over-constrained:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3417"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3506"/>
       <source>Malformed constraints:</source>
       <translation type="unfinished">Malformed constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3425"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3514"/>
       <source>Redundant constraints:</source>
       <translation>Murrizketa erredundanteak:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3431"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3520"/>
       <source>Partially redundant:</source>
       <translation>Partzialki erredundantea:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3438"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3527"/>
       <source>Solver failed to converge</source>
       <translation>Ebazleak ezin izan du konbergitu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3444"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3533"/>
       <source>Under-constrained:</source>
       <translation type="unfinished">Under-constrained:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="3446"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3535"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Degrees of Freedom</numerusform>
@@ -4001,7 +4001,7 @@ Krokisaren geometriak eta murrizketak analizatzen dira horretarako.</translation
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3450"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3539"/>
       <source>Fully constrained</source>
       <translation>Osorik murritua</translation>
     </message>
@@ -4483,7 +4483,7 @@ Eigen Sparse QR algoritmoa matrize sakabanatuetarako optimizatuta dago; normalea
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3390"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3479"/>
       <source>and %1 more</source>
       <translation>eta %1 gehiago</translation>
     </message>

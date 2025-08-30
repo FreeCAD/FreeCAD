@@ -113,7 +113,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="102"/>
       <source>Use ViewProviders in Tree View</source>
-      <translation type="unfinished">Use ViewProviders in Tree View</translation>
+      <translation>以树状图使用 ViewProviders</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="182"/>
@@ -320,7 +320,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="103"/>
       <source>Explodes a fusion or compound and applies random colors</source>
-      <translation type="unfinished">Explodes a fusion or compound and applies random colors</translation>
+      <translation>分解融合或复合体并应用随机颜色</translation>
     </message>
   </context>
   <context>
@@ -359,7 +359,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="269"/>
       <source>Creates a feature to increase the tolerance</source>
-      <translation type="unfinished">Creates a feature to increase the tolerance</translation>
+      <translation>创建一个特征来增加公差</translation>
     </message>
   </context>
   <context>
@@ -372,7 +372,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="286"/>
       <source>Expands all placements downwards in the Tree View</source>
-      <translation type="unfinished">Expands all placements downwards in the Tree View</translation>
+      <translation>在树状图中向下展开所有放置</translation>
     </message>
   </context>
   <context>
@@ -385,7 +385,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="307"/>
       <source>Replaces an object in the Tree View</source>
-      <translation type="unfinished">Replaces an object in the Tree View</translation>
+      <translation>替换树状图中的对象</translation>
     </message>
   </context>
   <context>
@@ -398,7 +398,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="320"/>
       <source>Removes the selected objects and all children that are not referenced by other objects</source>
-      <translation type="unfinished">Removes the selected objects and all children that are not referenced by other objects</translation>
+      <translation>移除选定的对象以及所有未被其他对象引用的子对象</translation>
     </message>
   </context>
   <context>
@@ -484,7 +484,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="533"/>
       <source>Adds an OpenSCAD element based on entered OpenSCAD code using the OpenSCAD binary</source>
-      <translation type="unfinished">Adds an OpenSCAD element based on entered OpenSCAD code using the OpenSCAD binary</translation>
+      <translation>使用 OpenSCAD 二进制文件根据输入的 OpenSCAD 代码添加 OpenSCAD 元素</translation>
     </message>
   </context>
   <context>
@@ -497,7 +497,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="548"/>
       <source>Performs a boolean operation using the OpenSCAD binary</source>
-      <translation type="unfinished">Performs a boolean operation using the OpenSCAD binary</translation>
+      <translation>使用 OpenSCAD 二进制执行布尔运算</translation>
     </message>
   </context>
   <context>
