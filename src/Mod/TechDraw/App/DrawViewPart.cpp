@@ -1537,6 +1537,8 @@ void DrawViewPart::handleChangedPropertyType(Base::XMLReader &reader, const char
         }
         return;
     }
+
+    DrawView::handleChangedPropertyType(reader, TypeName, prop);
 }
 
 // true if owner->element is a cosmetic vertex

@@ -47,7 +47,7 @@
 
 #ifndef _PreComp_
 #include <BRepAdaptor_Surface.hxx>
-#include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
+#include <BRepAlgoAPI_Cut.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
@@ -502,6 +502,21 @@ void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
 
 void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
 {
+    auto tryCutShapes = [](const TopoDS_Shape& sh1,
+                           const TopoDS_Shape& sh2) -> TopoDS_Shape {
+        try {
+            BRepAlgoAPI_Cut mkCut(sh1, sh2);
+            if (!mkCut.IsDone()) {
+                return {};
+            }
+
+            return mkCut.Shape();
+        }
+        catch (const Standard_Failure&) {
+            return {};
+        }
+    };
+
     showProgressMessage(getNameInDocument(), "is making section cut");
 
     // We need to copy the shape to not modify the BRepstructure
@@ -525,12 +540,12 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
     TopExp_Explorer expl(myShape, TopAbs_SOLID);
     for (; expl.More(); expl.Next()) {
         const TopoDS_Solid& s = TopoDS::Solid(expl.Current());
-        FCBRepAlgoAPI_Cut mkCut(s, m_cuttingTool);
-        if (!mkCut.IsDone()) {
+        TopoDS_Shape result = tryCutShapes(s, m_cuttingTool);
+        if (result.IsNull()) {
             Base::Console().warning("DVS: Section cut has failed in %s\n", getNameInDocument());
             continue;
         }
-        builder.Add(cutPieces, mkCut.Shape());
+        builder.Add(cutPieces, result);
     }
 
     // cutPieces contains result of cutting each subshape in baseShape with tool
@@ -542,9 +557,9 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
     // second cut if requested.  Sometimes the first cut includes extra uncut
     // pieces.
     if (trimAfterCut()) {
-        FCBRepAlgoAPI_Cut mkCut2(cutPieces, m_cuttingTool);
-        if (mkCut2.IsDone()) {
-            m_cutPieces = mkCut2.Shape();
+        TopoDS_Shape result = tryCutShapes(cutPieces, m_cuttingTool);
+        if (!result.IsNull()) {
+            m_cutPieces = result;
             if (debugSection()) {
                 BRepTools::Write(m_cutPieces, "DVSCutPieces2.brep");// debug
             }
@@ -1254,6 +1269,8 @@ void DrawViewSection::handleChangedPropertyType(Base::XMLReader &reader, const c
         }
         return;
     }
+
+    DrawViewPart::handleChangedPropertyType(reader, TypeName, prop);
 }
 
 // checks that SectionNormal and XDirection are perpendicular and that Direction is the same as
