@@ -182,11 +182,12 @@ void DlgSettingsGeneral::saveUnitSystemSettings()
     ParameterGrp::handle hGrpu = App::GetApplication().GetParameterGroupByPath
     ("User parameter:BaseApp/Preferences/Units");
     hGrpu->SetInt("UserSchema", ui->comboBox_UnitSystem->currentIndex());
-    hGrpu->SetInt("Decimals", ui->spinBoxDecimals->value());
-    hGrpu->SetBool("IgnoreProjectSchema", ui->checkBox_projectUnitSystemIgnore->isChecked());
-
+    int decimals = ui->spinBoxDecimals->value();
+    hGrpu->SetInt("Decimals", decimals);
     // Set actual value
-    UnitsApi::setDecimals(ui->spinBoxDecimals->value());
+    UnitsApi::setDecimals(decimals);
+
+    hGrpu->SetBool("IgnoreProjectSchema", ui->checkBox_projectUnitSystemIgnore->isChecked());    
 
     // Convert the combobox index to the its integer denominator. Currently
     // with 1/2, 1/4, through 1/128, this little equation directly computes the
@@ -200,7 +201,7 @@ void DlgSettingsGeneral::saveUnitSystemSettings()
     hGrpu->SetInt("FracInch", FracInch);
 
     // Set the actual format value
-    QuantityFormat::setDefaultDenominator(FracInch);
+    UnitsApi::setDenominator(FracInch);
 
     // Set and save the Unit System
     if (ui->checkBox_projectUnitSystemIgnore->isChecked()) {
@@ -272,7 +273,7 @@ void DlgSettingsGeneral::loadSettings()
     ui->checkBox_projectUnitSystemIgnore->setChecked(hGrpu->GetBool("IgnoreProjectSchema", false));
 
     // Get the current user setting for the minimum fractional inch
-    FracInch = hGrpu->GetInt("FracInch", QuantityFormat::getDefaultDenominator());
+    FracInch = hGrpu->GetInt("FracInch", UnitsApi::getDenominator());
 
     // Convert fractional inch to the corresponding combobox index using this
     // handy little equation.

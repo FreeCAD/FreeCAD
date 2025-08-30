@@ -57,13 +57,6 @@ struct UnitsSchemaSpec
     std::map<std::string, std::vector<UnitTranslationSpec>> translationSpecs;
 };
 
-struct UnitsSchemasDataPack
-{
-    std::vector<UnitsSchemaSpec> specs;
-    size_t defDecimals;
-    size_t defDenominator;
-};
-
 
 }  // namespace Base
 #endif  // UNITSCHEMASPECS_H

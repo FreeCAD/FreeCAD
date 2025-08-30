@@ -49,33 +49,13 @@ struct BaseExport QuantityFormat
     using NumberOptions = int;
     NumberOptions option;
     NumberFormat format;
-    int precision;
-    int denominator;
 
-    // Default denominator of minimum fractional inch. Only used in certain
-    // schemas.
-    // NOLINTNEXTLINE
-    static int defaultDenominator;  // i.e 8 for 1/8"
+    int getPrecision() const;
+    void setPrecision(int prec);
 
-    static inline int getDefaultDenominator()
-    {
-        return defaultDenominator;
-    }
+    int getDenominator() const;
+    void setDenominator(int denom);
 
-    static inline void setDefaultDenominator(int denom)
-    {
-        defaultDenominator = denom;
-    }
-
-    inline int getDenominator() const
-    {
-        return denominator;
-    }
-
-    inline void setDenominator(int denom)
-    {
-        denominator = denom;
-    }
     QuantityFormat();
     explicit QuantityFormat(NumberFormat format, int decimals = -1);
     inline char toFormat() const
@@ -108,6 +88,10 @@ struct BaseExport QuantityFormat
                 return Default;
         }
     }
+
+private:
+    int precision;
+    int denominator;
 };
 
 /**
