@@ -774,7 +774,6 @@ SET(Dock_Windows_CPP_SRCS
     DAGView/DAGModel.cpp
     DAGView/DAGRectItem.cpp
     DAGView/DAGModelGraph.cpp
-    DAGView/DAGFilter.cpp
 )
 SET(Dock_Windows_HPP_SRCS
     ComboView.h
@@ -789,7 +788,6 @@ SET(Dock_Windows_HPP_SRCS
     DAGView/DAGModel.h
     DAGView/DAGRectItem.h
     DAGView/DAGModelGraph.h
-    DAGView/DAGFilter.h
 )
 SET(Dock_Windows_SRCS
     ${Dock_Windows_CPP_SRCS}
