@@ -39,6 +39,8 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 
+#include "Document.h"
+#include "Tree.h"
 #include "PropertyEditor.h"
 #include "Dialogs/DlgAddProperty.h"
 #include "MainWindow.h"
@@ -726,6 +728,19 @@ enum MenuAction
     MA_Copy,
 };
 
+static App::PropertyContainer* getSelectedPropertyContainer()
+{
+    auto sels = Gui::Selection().getSelection("*");
+    if (sels.size() == 1) {
+        return sels[0].pObject;
+    }
+    std::vector<Gui::Document*> docs = Gui::TreeWidget::getSelectedDocuments();
+    if (docs.size() == 1) {
+        return docs[0]->getDocument();
+    }
+    return nullptr;
+}
+
 void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
 {
     QMenu menu;
@@ -760,7 +775,11 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
     }
 
     // add property
-    menu.addAction(tr("Add Property"))->setData(QVariant(MA_AddProp));
+    if (getSelectedPropertyContainer()) {
+        menu.addAction(tr("Add Property"))->setData(QVariant(MA_AddProp));
+    }
+
+    // rename property group
     if (!props.empty() && std::all_of(props.begin(), props.end(), [](auto prop) {
             return prop->testStatus(App::Property::PropDynamic)
                 && !boost::starts_with(prop->getName(), prop->getGroup());
@@ -918,18 +937,12 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             }
             break;
         case MA_AddProp: {
+            App::PropertyContainer* container = getSelectedPropertyContainer();
+            if (container == nullptr) {
+                return;
+            }
             App::AutoTransaction committer("Add property");
-            std::unordered_set<App::PropertyContainer*> containers;
-            auto sels = Gui::Selection().getSelection("*");
-            if (sels.size() == 1) {
-                containers.insert(sels[0].pObject);
-            }
-            else {
-                for (auto prop : props) {
-                    containers.insert(prop->getContainer());
-                }
-            }
-            Gui::Dialog::DlgAddProperty dlg(Gui::getMainWindow(), std::move(containers));
+            Gui::Dialog::DlgAddProperty dlg(Gui::getMainWindow(), container);
             dlg.exec();
             return;
         }
