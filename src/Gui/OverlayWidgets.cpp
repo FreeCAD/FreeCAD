@@ -76,7 +76,7 @@ FC_LOG_LEVEL_INIT("Dock", true, true);
 using namespace Gui;
 
 OverlayDragFrame *OverlayTabWidget::_DragFrame;
-QDockWidget *OverlayTabWidget::_DragFloating;
+OverlayDragFrame *OverlayTabWidget::_DragFloating;
 QWidget *OverlayTabWidget::_Dragging;
 OverlayTabWidget *OverlayTabWidget::_LeftOverlay;
 OverlayTabWidget *OverlayTabWidget::_RightOverlay;
@@ -301,6 +301,7 @@ QRect OverlayProxyWidget::getRect() const
             if (int length = OverlayParams::getDockOverlayHintTopLength())
                  rect.setWidth(std::min(length, rect.width()));
             break;
+
         case Qt::BottomDockWidgetArea:
             if (int offset = OverlayParams::getDockOverlayHintBottomOffset())
                 rect.moveLeft(std::max(rect.left()+offset, rect.right()-10));
@@ -849,6 +850,11 @@ void OverlayTabWidget::onTabMoved(int from, int to)
     QWidget *w = splitter->widget(from);
     splitter->insertWidget(to,w);
     saveTabs();
+    // Update title bar minimal state to match new current dock after removal
+    if (auto ot = qobject_cast<OverlayTitleBar*>(titleBar)) {
+        QDockWidget *cur = currentDockWidget();
+        ot->setMinimal(cur ? cur->isFloating() : false);
+    }
 }
 
 void OverlayTabWidget::setTitleBar(QWidget *w)
@@ -1634,17 +1640,23 @@ void OverlayTabWidget::addWidget(QDockWidget *dock, const QString &title)
     if(titleWidget && titleWidget->objectName()==QStringLiteral("OverlayTitle")) {
         // replace the title bar with an invisible widget to hide it. The
         // OverlayTabWidget uses its own title bar for all docks.
+        dock->setUpdatesEnabled(false);
         auto w = new QWidget();
         w->setObjectName(QStringLiteral("OverlayTitle"));
         dock->setTitleBarWidget(w);
         w->hide();
         titleWidget->deleteLater();
+        dock->setUpdatesEnabled(true);
     }
 
     dock->show();
     splitter->addWidget(dock);
     auto dummyWidget = new QWidget(this);
     addTab(dummyWidget, title);
+    // Update shared title bar minimal state to match the newly added dock
+    if (auto ot = qobject_cast<OverlayTitleBar*>(titleBar)) {
+        ot->setMinimal(dock->isFloating());
+    }
     connect(dock, &QObject::destroyed, dummyWidget, &QObject::deleteLater);
 
     dock->setFeatures(dock->features() & ~QDockWidget::DockWidgetFloatable);
@@ -1700,10 +1712,32 @@ void OverlayTabWidget::removeWidget(QDockWidget *dock, QDockWidget *lastDock)
 
     w = dock->titleBarWidget();
     if(w && w->objectName() == QStringLiteral("OverlayTitle")) {
-        dock->setTitleBarWidget(nullptr);
-        w->deleteLater();
+        dock->setUpdatesEnabled(false);
+        auto titleBarWidget = qobject_cast<OverlayTitleBar*>(w);
+        if (titleBarWidget) {
+            if (auto oldLayout = titleBarWidget->layout()) {
+                QLayoutItem *it;
+                while ((it = oldLayout->takeAt(0)) != nullptr) {
+                    if (auto cw = it->widget()) {
+                        cw->setParent(nullptr);
+                        cw->deleteLater();
+                    }
+                    delete it;
+                }
+                delete oldLayout;
+            }
+            QList<QAction*> actions = OverlayManager::instance()->actionsForDock(dock);
+            QLayoutItem *titleItem = OverlayTabWidget::prepareTitleWidget(titleBarWidget, actions);
+            titleBarWidget->setTitleItem(titleItem);
+            dock->setUpdatesEnabled(true);
+            titleBarWidget->update();
+        } else {
+            OverlayManager::instance()->setupTitleBar(dock);
+            dock->setUpdatesEnabled(true);
+        }
+    } else {
+        OverlayManager::instance()->setupTitleBar(dock);
     }
-    OverlayManager::instance()->setupTitleBar(dock);
 
     dock->setFeatures(dock->features() | QDockWidget::DockWidgetFloatable);
 
@@ -1834,6 +1868,13 @@ void OverlayTabWidget::onCurrentChanged(int index)
     splitter->setSizes(sizes);
     onSplitterResize(index);
     saveTabs();
+    // Ensure shared title bar reflects the current dock's floating state
+    {
+        QDockWidget *curDock = dockWidget(index);
+        if (auto ot = qobject_cast<OverlayTitleBar*>(titleBar)) {
+            ot->setMinimal(curDock ? curDock->isFloating() : false);
+        }
+    }
 }
 
 void OverlayTabWidget::onSizeGripMove(const QPoint &p)
@@ -1959,6 +2000,24 @@ OverlayTitleBar::OverlayTitleBar(QWidget * parent)
     setFocusPolicy(Qt::ClickFocus);
     setMouseTracking(true);
     setCursor(Qt::OpenHandCursor);
+    // Stabilize layout: try to match the native OS titlebar height where possible
+    int titleH = 0;
+    if (style())
+        titleH = style()->pixelMetric(QStyle::PM_TitleBarHeight, nullptr, this);
+    if (titleH <= 0) {
+        // fallback to font-metrics-based height
+        titleH = fontMetrics().ascent() + fontMetrics().descent() + 8;
+    }
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    setFixedHeight(titleH);
+}
+
+void OverlayTitleBar::setMinimal(bool minimal)
+{
+    if (m_minimal != minimal) {
+        m_minimal = minimal;
+        update();
+    }
 }
 
 void OverlayTitleBar::setTitleItem(QLayoutItem *item)
@@ -1968,6 +2027,35 @@ void OverlayTitleBar::setTitleItem(QLayoutItem *item)
 
 void OverlayTitleBar::paintEvent(QPaintEvent *)
 {
+    if (m_minimal) {
+        QPainter painter(this);
+        // Minimal mode: fill background using the current palette so the
+        // titlebar area remains visually distinct in floating (frameless)
+        // docks; then draw the window title.
+        painter.fillRect(this->rect(), palette().color(QPalette::Window));
+        QDockWidget *dock = qobject_cast<QDockWidget*>(parentWidget());
+        QString title;
+        if (!dock) {
+            // Try to find a QDockWidget ancestor if parent is different
+            QWidget *w = parentWidget();
+            while (w && !dock) {
+                dock = qobject_cast<QDockWidget*>(w);
+                w = w ? w->parentWidget() : nullptr;
+            }
+        }
+        if (dock)
+            title = dock->windowTitle();
+        else if (parentWidget())
+            title = parentWidget()->windowTitle();
+
+        if (!title.isEmpty()) {
+            QRect r = this->rect().adjusted(8, 0, -8, 0);
+            QString text = painter.fontMetrics().elidedText(title, Qt::ElideRight, r.width());
+            painter.setPen(palette().color(QPalette::WindowText));
+            painter.drawText(r, Qt::AlignCenter, text);
+        }
+        return;
+    }
     if (!titleItem)
         return;
 
@@ -2050,8 +2138,11 @@ void OverlayTitleBar::endDrag()
         setCursor(Qt::OpenHandCursor);
         if (OverlayTabWidget::_DragFrame)
             OverlayTabWidget::_DragFrame->hide();
-        if (OverlayTabWidget::_DragFloating)
-            OverlayTabWidget::_DragFrame->hide();
+        if (OverlayTabWidget::_DragFloating) {
+            OverlayTabWidget::_DragFloating->hide();
+            OverlayTabWidget::_DragFloating->deleteLater();
+            OverlayTabWidget::_DragFloating = nullptr;
+        }
     }
 }
 
@@ -2071,6 +2162,59 @@ void OverlayTitleBar::mouseMoveEvent(QMouseEvent *me)
             return;
         mouseMovePending = false;
         OverlayTabWidget::_Dragging = this;
+    }
+
+    // If currently resizing a floating dock, perform resize
+    if (resizing) {
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+        QPoint pos = me->globalPos();
+#else
+        QPoint pos = me->globalPosition().toPoint();
+#endif
+        QWidget *parent = parentWidget();
+        auto dock = qobject_cast<QDockWidget*>(parent);
+        if (!dock) return;
+        QRect g = resizeStartGeom;
+        int dx = pos.x() - resizeStartPos.x();
+        int dy = pos.y() - resizeStartPos.y();
+        if (resizeEdge & ResizeLeft) {
+            g.setLeft(g.left() + dx);
+        }
+        if (resizeEdge & ResizeRight) {
+            g.setRight(g.right() + dx);
+        }
+        if (resizeEdge & ResizeTop) {
+            g.setTop(g.top() + dy);
+        }
+        if (resizeEdge & ResizeBottom) {
+            g.setBottom(g.bottom() + dy);
+        }
+        dock->setGeometry(g);
+        return;
+    }
+
+    // If not dragging and not resizing, update cursor when hovering edges for floating docks
+    if (!(me->buttons() & Qt::LeftButton) && !resizing) {
+        QWidget *parent = parentWidget();
+        auto dock = qobject_cast<QDockWidget*>(parent);
+        if (dock && dock->isFloating()) {
+            const int margin = 6;
+            QPoint p = me->pos();
+            QRect r = rect();
+            bool left = p.x() <= r.left() + margin;
+            bool right = p.x() >= r.right() - margin;
+            bool top = p.y() <= r.top() + margin;
+            bool bottom = p.y() >= r.bottom() - margin;
+            if ((left || right) && (top || bottom)) {
+                setCursor(Qt::SizeAllCursor);
+            } else if (left || right) {
+                setCursor(Qt::SizeHorCursor);
+            } else if (top || bottom) {
+                setCursor(Qt::SizeVerCursor);
+            } else {
+                setCursor(Qt::OpenHandCursor);
+            }
+        }
     }
 
     if (OverlayTabWidget::_Dragging != this)
@@ -2099,6 +2243,27 @@ void OverlayTitleBar::mousePressEvent(QMouseEvent *me)
     QWidget *parent = parentWidget();
     if (OverlayTabWidget::_Dragging || !parent || !getMainWindow() || me->button() != Qt::LeftButton)
         return;
+
+    // If mouse pressed near the titlebar edges on a floating dock, start resizing
+    auto dock = qobject_cast<QDockWidget*>(parent);
+    if (dock && dock->isFloating()) {
+        const int margin = 6; // pixels from edge to start resize
+        QPoint p = me->pos();
+        QRect r = rect();
+        resizeEdge = ResizeNone;
+        if (p.x() <= r.left() + margin) resizeEdge |= ResizeLeft;
+        else if (p.x() >= r.right() - margin) resizeEdge |= ResizeRight;
+        if (p.y() <= r.top() + margin) resizeEdge |= ResizeTop;
+        else if (p.y() >= r.bottom() - margin) resizeEdge |= ResizeBottom;
+        if (resizeEdge != ResizeNone) {
+            resizing = true;
+            resizeStartGeom = dock->geometry();
+            resizeStartPos = me->globalPos();
+            setCursor(Qt::SizeAllCursor);
+            me->accept();
+            return;
+        }
+    }
 
     dragSize = parent->size();
     OverlayTabWidget *tabWidget = qobject_cast<OverlayTabWidget*>(parent);
@@ -2142,6 +2307,14 @@ void OverlayTitleBar::mouseReleaseEvent(QMouseEvent *me)
         me->ignore();
         return;
     }
+    // Finish resizing if active
+    if (resizing) {
+        resizing = false;
+        resizeEdge = ResizeNone;
+        setCursor(Qt::OpenHandCursor);
+        me->accept();
+        return;
+    }
 
     setCursor(Qt::OpenHandCursor);
     mouseMovePending = false;
@@ -2165,8 +2338,31 @@ void OverlayTitleBar::mouseReleaseEvent(QMouseEvent *me)
                                                true);
     if (OverlayTabWidget::_DragFrame)
         OverlayTabWidget::_DragFrame->hide();
-    if (OverlayTabWidget::_DragFloating)
+    if (OverlayTabWidget::_DragFloating) {
         OverlayTabWidget::_DragFloating->hide();
+        OverlayTabWidget::_DragFloating->deleteLater();
+        OverlayTabWidget::_DragFloating = nullptr;
+    }
+}
+
+QSize OverlayTitleBar::sizeHint() const
+{
+    int titleH = 0;
+    if (const_cast<OverlayTitleBar*>(this)->style())
+        titleH = const_cast<OverlayTitleBar*>(this)->style()->pixelMetric(QStyle::PM_TitleBarHeight, nullptr, this);
+    if (titleH <= 0)
+        titleH = fontMetrics().ascent() + fontMetrics().descent() + 8;
+    return QSize(100, titleH);
+}
+
+QSize OverlayTitleBar::minimumSizeHint() const
+{
+    int titleH = 0;
+    if (const_cast<OverlayTitleBar*>(this)->style())
+        titleH = const_cast<OverlayTitleBar*>(this)->style()->pixelMetric(QStyle::PM_TitleBarHeight, nullptr, this);
+    if (titleH <= 0)
+        titleH = fontMetrics().ascent() + fontMetrics().descent() + 6;
+    return QSize(40, titleH);
 }
 
 void OverlayTitleBar::keyPressEvent(QKeyEvent *ke)
@@ -2186,10 +2382,13 @@ OverlayDragFrame::OverlayDragFrame(QWidget * parent)
 void OverlayDragFrame::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
-    painter.drawRect(0, 0, this->width()-1, this->height()-1);
-    painter.setOpacity(0.3);
-    painter.setBrush(QBrush(Qt::blue));
-    painter.drawRect(0, 0, this->width()-1, this->height()-1);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    QRectF r(1, 1, this->width()-2, this->height()-2);
+    QColor fill(0, 0, 0, 80); // subtle translucent dark ghost
+    QColor outline(0, 0, 0, 150);
+    painter.setBrush(fill);
+    painter.setPen(QPen(outline, 1));
+    painter.drawRoundedRect(r, 6, 6);
 }
 
 QSize OverlayDragFrame::sizeHint() const
@@ -2456,8 +2655,11 @@ void OverlaySplitterHandle::endDrag()
             ?  Qt::SizeHorCursor : Qt::SizeVerCursor);
     if (OverlayTabWidget::_DragFrame)
         OverlayTabWidget::_DragFrame->hide();
-    if (OverlayTabWidget::_DragFloating)
+    if (OverlayTabWidget::_DragFloating) {
         OverlayTabWidget::_DragFloating->hide();
+        OverlayTabWidget::_DragFloating->deleteLater();
+        OverlayTabWidget::_DragFloating = nullptr;
+    }
 }
 
 void OverlaySplitterHandle::keyPressEvent(QKeyEvent *ke)
@@ -2604,13 +2806,13 @@ void OverlayGraphicsEffect::draw(QPainter* painter)
     tmp.setDevicePixelRatio(px.devicePixelRatioF());
     tmp.fill(0);
     QPainter tmpPainter(&tmp);
-    QPainterPath clip;
     tmpPainter.setCompositionMode(QPainter::CompositionMode_Source);
     if(_size.width() == 0 && _size.height() == 0)
         tmpPainter.drawPixmap(QPoint(0, 0), px);
     else {
-        // exclude splitter handles
-        auto splitter = qobject_cast<QSplitter*>(parent());
+    // exclude splitter handles
+    QPainterPath clip;
+    auto splitter = qobject_cast<QSplitter*>(parent());
         if (splitter) {
             int i = -1;
             for (int size : splitter->sizes()) {

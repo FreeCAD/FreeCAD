@@ -394,7 +394,7 @@ private:
 
     // NOLINTBEGIN
     static OverlayDragFrame *_DragFrame;
-    static QDockWidget *_DragFloating;
+    static OverlayDragFrame *_DragFloating;
     static QWidget *_Dragging;
     static OverlayTabWidget *_LeftOverlay;
     static OverlayTabWidget *_RightOverlay;
@@ -421,9 +421,15 @@ class OverlayTitleBar: public QWidget
 {
     Q_OBJECT
 public:
+    /// Minimal mode for floating state
+    void setMinimal(bool minimal);
+    bool isMinimal() const { return m_minimal; }
+
     explicit OverlayTitleBar(QWidget * parent);
     void setTitleItem(QLayoutItem *);
     void endDrag();
+    QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
 
 protected:
     void mouseMoveEvent(QMouseEvent* ev) override;
@@ -442,6 +448,19 @@ private:
     bool blink = false;
     bool mouseMovePending = false;
     bool ignoreMouse = false;
+    bool m_minimal = false;
+    // Resize support for floating docks: track which edge is being resized
+    enum ResizeEdge {
+        ResizeNone = 0,
+        ResizeLeft = 1,
+        ResizeRight = 2,
+        ResizeTop = 4,
+        ResizeBottom = 8
+    };
+    int resizeEdge = ResizeNone;
+    bool resizing = false;
+    QRect resizeStartGeom;
+    QPoint resizeStartPos;
 };
 
 /// Size grip for title bar and split handler of OverlayTabWidget
