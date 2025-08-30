@@ -45,6 +45,7 @@
 #include <fmt/format.h>
 
 #include <Base/Console.h>
+#include <Base/ServiceProvider.h>
 #include <Base/Vector3D.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -70,6 +71,7 @@
 #include "EditDatumDialog.h"
 #include "EditModeCoinManager.h"
 #include "SnapManager.h"
+#include "StyleParameters.h"
 #include "TaskDlgEditSketch.h"
 #include "TaskSketcherValidation.h"
 #include "Utils.h"
@@ -1509,6 +1511,22 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
             // (#0003130)
             qreal dpr = viewer->getGLWidget()->devicePixelRatioF();
             DoubleClick::newCursorPos = cursorPos;
+
+            // depending on selection direction (touch selection (right to left) or window selection (left to right))
+            // set the appropriate color and line style using theme design tokens
+            bool isRightToLeft = DoubleClick::prvCursorPos.getValue()[0] > DoubleClick::newCursorPos.getValue()[0];
+
+            auto* styleParameterManager = Base::provideService<Gui::StyleParameters::ParameterManager>();
+
+            // try to get colors from theme tokens
+            auto touchColorValue = styleParameterManager->resolve(StyleParameters::SketcherRubberbandTouchSelectionColor).asValue<Base::Color>();
+            auto windowColorValue = styleParameterManager->resolve(StyleParameters::SketcherRubberbandWindowSelectionColor).asValue<Base::Color>();
+
+            auto color = isRightToLeft ? touchColorValue : windowColorValue;
+
+            rubberband->setColor(color.r, color.g, color.b, color.a);
+            rubberband->setLineStipple(isRightToLeft);  // dashed for touch, solid for window
+
             rubberband->setCoords(
                 DoubleClick::prvCursorPos.getValue()[0],
                 viewer->getGLWidget()->height() * dpr - DoubleClick::prvCursorPos.getValue()[1],
