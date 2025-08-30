@@ -205,7 +205,7 @@ Dzięki temu będzie on teraz zakotwiony.</translation>
     <message>
       <location filename="../../../JointObject.py" line="1566"/>
       <source>Thread pitch</source>
-      <translation type="unfinished">Thread pitch</translation>
+      <translation>Skok gwintu</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1568"/>

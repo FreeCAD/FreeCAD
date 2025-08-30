@@ -2213,12 +2213,12 @@ Visit https://openscad.org/ to install it.</source>
     </message>
     <message>
         <location filename="../../Command.cpp" line="1530"/>
-        <source>Fill holes</source>
+        <source>Fill Holes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="1531"/>
-        <source>Fill holes with maximum number of edges:</source>
+        <source>Fill holes with maximum number of edges</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -200,17 +200,17 @@ so that self intersection is avoided.</source>
 <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-        <location filename="../../Command.cpp" line="2308"/>
+        <location filename="../../Command.cpp" line="2309"/>
         <source>PartDesign</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2309"/>
+        <location filename="../../Command.cpp" line="2310"/>
         <source>Boolean Operation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2310"/>
+        <location filename="../../Command.cpp" line="2311"/>
         <source>Applies boolean operations with the selected objects and the active body</source>
         <translation type="unfinished"></translation>
     </message>
@@ -488,17 +488,17 @@ so that self intersection is avoided.</source>
 <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-        <location filename="../../Command.cpp" line="2193"/>
+        <location filename="../../Command.cpp" line="2194"/>
         <source>PartDesign</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2194"/>
+        <location filename="../../Command.cpp" line="2195"/>
         <source>Multi-Transform</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2195"/>
+        <location filename="../../Command.cpp" line="2196"/>
         <source>Applies multiple transformations to the selected features or active body</source>
         <translation type="unfinished"></translation>
     </message>
@@ -596,17 +596,17 @@ so that self intersection is avoided.</source>
 <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-        <location filename="../../Command.cpp" line="2096"/>
+        <location filename="../../Command.cpp" line="2097"/>
         <source>PartDesign</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2097"/>
+        <location filename="../../Command.cpp" line="2098"/>
         <source>Polar Pattern</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2098"/>
+        <location filename="../../Command.cpp" line="2099"/>
         <source>Duplicates the selected features or the active body in a circular pattern</source>
         <translation type="unfinished"></translation>
     </message>
@@ -632,17 +632,17 @@ so that self intersection is avoided.</source>
 <context>
     <name>CmdPartDesignScaled</name>
     <message>
-        <location filename="../../Command.cpp" line="2151"/>
+        <location filename="../../Command.cpp" line="2152"/>
         <source>PartDesign</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2152"/>
+        <location filename="../../Command.cpp" line="2153"/>
         <source>Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2153"/>
+        <location filename="../../Command.cpp" line="2154"/>
         <source>Scales the selected features or the active body</source>
         <translation type="unfinished"></translation>
     </message>
@@ -899,7 +899,7 @@ so that self intersection is avoided.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2238"/>
+        <location filename="../../Command.cpp" line="2239"/>
         <source>Convert to Multi-Transform feature</source>
         <translation type="unfinished"></translation>
     </message>
@@ -920,7 +920,7 @@ so that self intersection is avoided.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2326"/>
+        <location filename="../../Command.cpp" line="2327"/>
         <source>Create Boolean</source>
         <translation type="unfinished"></translation>
     </message>
@@ -956,22 +956,22 @@ so that self intersection is avoided.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="267"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="264"/>
         <source>Mirror</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="304"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="301"/>
         <source>Linear Pattern</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="348"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="345"/>
         <source>Polar Pattern</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="385"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="382"/>
         <source>Scale</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1233,12 +1233,18 @@ Select a body from below, or create a new body.</source>
     </message>
     <message>
         <location filename="../../TaskPrimitiveParameters.ui" line="827"/>
-        <source>Radius in local x-direction</source>
+        <source>Radius in local X-direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskPrimitiveParameters.ui" line="843"/>
         <source>Radius 3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskPrimitiveParameters.ui" line="850"/>
+        <source>Radius in local Y-direction
+If zero, it is equal to Radius2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1360,12 +1366,6 @@ Select a body from below, or create a new body.</source>
         <location filename="../../TaskPrimitiveParameters.ui" line="2133"/>
         <location filename="../../TaskPrimitiveParameters.ui" line="2216"/>
         <source>Z</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskPrimitiveParameters.ui" line="850"/>
-        <source>Radius in local y-direction
-If zero, it is equal to Radius2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1562,7 +1562,7 @@ If zero, it is equal to Radius2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskChamferParameters.cpp" line="327"/>
+        <location filename="../../TaskChamferParameters.cpp" line="347"/>
         <source>Empty chamfer created!
 </source>
         <translation type="unfinished"></translation>
@@ -1654,7 +1654,7 @@ If zero, it is equal to Radius2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskDraftParameters.cpp" line="287"/>
+        <location filename="../../TaskDraftParameters.cpp" line="289"/>
         <source>Empty draft created!
 </source>
         <translation type="unfinished"></translation>
@@ -1691,79 +1691,79 @@ If zero, it is equal to Radius2</source>
 <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-        <location filename="../../TaskExtrudeParameters.cpp" line="1343"/>
+        <location filename="../../TaskExtrudeParameters.cpp" line="1359"/>
         <source>No face selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskExtrudeParameters.cpp" line="159"/>
-        <location filename="../../TaskExtrudeParameters.cpp" line="1123"/>
+        <location filename="../../TaskExtrudeParameters.cpp" line="163"/>
+        <location filename="../../TaskExtrudeParameters.cpp" line="1139"/>
         <source>Face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskExtrudeParameters.cpp" line="73"/>
+        <location filename="../../TaskExtrudeParameters.cpp" line="75"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskExtrudeParameters.cpp" line="345"/>
+        <location filename="../../TaskExtrudeParameters.cpp" line="349"/>
         <source>Preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskExtrudeParameters.cpp" line="349"/>
+        <location filename="../../TaskExtrudeParameters.cpp" line="353"/>
         <source>Select Faces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskExtrudeParameters.cpp" line="682"/>
+        <location filename="../../TaskExtrudeParameters.cpp" line="688"/>
         <source>Select reference…</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskExtrudeParameters.cpp" line="590"/>
+        <location filename="../../TaskExtrudeParameters.cpp" line="596"/>
         <source>No shape selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskExtrudeParameters.cpp" line="675"/>
+        <location filename="../../TaskExtrudeParameters.cpp" line="681"/>
         <source>Sketch normal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskExtrudeParameters.cpp" line="678"/>
+        <location filename="../../TaskExtrudeParameters.cpp" line="684"/>
         <source>Face normal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskExtrudeParameters.cpp" line="686"/>
-        <location filename="../../TaskExtrudeParameters.cpp" line="691"/>
+        <location filename="../../TaskExtrudeParameters.cpp" line="692"/>
+        <location filename="../../TaskExtrudeParameters.cpp" line="697"/>
         <source>Custom direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskExtrudeParameters.cpp" line="1069"/>
+        <location filename="../../TaskExtrudeParameters.cpp" line="1085"/>
         <source>Click on a shape in the model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskExtrudeParameters.cpp" line="1330"/>
+        <location filename="../../TaskExtrudeParameters.cpp" line="1346"/>
         <source>One sided</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskExtrudeParameters.cpp" line="1331"/>
+        <location filename="../../TaskExtrudeParameters.cpp" line="1347"/>
         <source>Two sided</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskExtrudeParameters.cpp" line="1332"/>
+        <location filename="../../TaskExtrudeParameters.cpp" line="1348"/>
         <source>Symmetric</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskExtrudeParameters.cpp" line="1338"/>
+        <location filename="../../TaskExtrudeParameters.cpp" line="1354"/>
         <source>Click on a face in the model</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1885,7 +1885,7 @@ If zero, it is equal to Radius2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskFilletParameters.cpp" line="193"/>
+        <location filename="../../TaskFilletParameters.cpp" line="205"/>
         <source>Empty fillet created!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1899,37 +1899,37 @@ If zero, it is equal to Radius2</source>
     </message>
     <message>
         <location filename="../../TaskHelixParameters.ui" line="48"/>
-        <location filename="../../TaskHelixParameters.cpp" line="237"/>
+        <location filename="../../TaskHelixParameters.cpp" line="243"/>
         <source>Base X-axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskHelixParameters.ui" line="53"/>
-        <location filename="../../TaskHelixParameters.cpp" line="238"/>
+        <location filename="../../TaskHelixParameters.cpp" line="244"/>
         <source>Base Y-axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskHelixParameters.ui" line="58"/>
-        <location filename="../../TaskHelixParameters.cpp" line="239"/>
+        <location filename="../../TaskHelixParameters.cpp" line="245"/>
         <source>Base Z-axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskHelixParameters.ui" line="63"/>
-        <location filename="../../TaskHelixParameters.cpp" line="221"/>
+        <location filename="../../TaskHelixParameters.cpp" line="227"/>
         <source>Horizontal sketch axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskHelixParameters.ui" line="68"/>
-        <location filename="../../TaskHelixParameters.cpp" line="220"/>
+        <location filename="../../TaskHelixParameters.cpp" line="226"/>
         <source>Vertical sketch axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskHelixParameters.ui" line="73"/>
-        <location filename="../../TaskHelixParameters.cpp" line="219"/>
+        <location filename="../../TaskHelixParameters.cpp" line="225"/>
         <source>Normal sketch axis</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1945,7 +1945,7 @@ If zero, it is equal to Radius2</source>
     </message>
     <message>
         <location filename="../../TaskHelixParameters.ui" line="78"/>
-        <location filename="../../TaskHelixParameters.cpp" line="204"/>
+        <location filename="../../TaskHelixParameters.cpp" line="210"/>
         <source>Select reference…</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2020,27 +2020,27 @@ If zero, it is equal to Radius2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHelixParameters.cpp" line="56"/>
+        <location filename="../../TaskHelixParameters.cpp" line="60"/>
         <source>Helix Parameters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHelixParameters.cpp" line="223"/>
+        <location filename="../../TaskHelixParameters.cpp" line="229"/>
         <source>Construction line %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHelixParameters.cpp" line="289"/>
+        <location filename="../../TaskHelixParameters.cpp" line="295"/>
         <source>Warning: helix might be self intersecting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHelixParameters.cpp" line="294"/>
+        <location filename="../../TaskHelixParameters.cpp" line="300"/>
         <source>Error: helix touches itself</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHelixParameters.cpp" line="343"/>
+        <location filename="../../TaskHelixParameters.cpp" line="349"/>
         <source>Error: unsupported mode</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2048,176 +2048,132 @@ If zero, it is equal to Radius2</source>
 <context>
     <name>PartDesignGui::TaskHoleParameters</name>
     <message>
-        <location filename="../../TaskHoleParameters.cpp" line="47"/>
+        <location filename="../../TaskHoleParameters.cpp" line="53"/>
         <source>Counterbore</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHoleParameters.cpp" line="48"/>
+        <location filename="../../TaskHoleParameters.cpp" line="54"/>
         <source>Countersink</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHoleParameters.cpp" line="49"/>
+        <location filename="../../TaskHoleParameters.cpp" line="55"/>
         <source>Counterdrill</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHoleParameters.cpp" line="53"/>
+        <location filename="../../TaskHoleParameters.cpp" line="59"/>
         <source>Hole Parameters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHoleParameters.cpp" line="63"/>
+        <location filename="../../TaskHoleParameters.cpp" line="69"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHoleParameters.cpp" line="64"/>
+        <location filename="../../TaskHoleParameters.cpp" line="70"/>
         <source>ISO metric regular</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHoleParameters.cpp" line="65"/>
+        <location filename="../../TaskHoleParameters.cpp" line="71"/>
         <source>ISO metric fine</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHoleParameters.cpp" line="66"/>
+        <location filename="../../TaskHoleParameters.cpp" line="72"/>
         <source>UTS coarse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHoleParameters.cpp" line="67"/>
+        <location filename="../../TaskHoleParameters.cpp" line="73"/>
         <source>UTS fine</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHoleParameters.cpp" line="68"/>
+        <location filename="../../TaskHoleParameters.cpp" line="74"/>
         <source>UTS extra fine</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHoleParameters.cpp" line="69"/>
+        <location filename="../../TaskHoleParameters.cpp" line="75"/>
         <source>ANSI pipes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHoleParameters.cpp" line="70"/>
+        <location filename="../../TaskHoleParameters.cpp" line="76"/>
         <source>ISO/BSP pipes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHoleParameters.cpp" line="71"/>
+        <location filename="../../TaskHoleParameters.cpp" line="77"/>
         <source>BSW whitworth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHoleParameters.cpp" line="72"/>
+        <location filename="../../TaskHoleParameters.cpp" line="78"/>
         <source>BSF whitworth fine</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHoleParameters.cpp" line="73"/>
+        <location filename="../../TaskHoleParameters.cpp" line="79"/>
         <source>ISO tyre valves</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHoleParameters.cpp" line="655"/>
+        <location filename="../../TaskHoleParameters.cpp" line="670"/>
         <source>Medium</source>
         <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHoleParameters.cpp" line="656"/>
+        <location filename="../../TaskHoleParameters.cpp" line="671"/>
         <source>Fine</source>
         <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHoleParameters.cpp" line="657"/>
+        <location filename="../../TaskHoleParameters.cpp" line="672"/>
         <source>Coarse</source>
         <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHoleParameters.cpp" line="660"/>
+        <location filename="../../TaskHoleParameters.cpp" line="675"/>
         <source>Normal</source>
         <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHoleParameters.cpp" line="661"/>
+        <location filename="../../TaskHoleParameters.cpp" line="676"/>
         <source>Close</source>
         <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHoleParameters.cpp" line="662"/>
+        <location filename="../../TaskHoleParameters.cpp" line="677"/>
         <source>Loose</source>
         <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHoleParameters.cpp" line="665"/>
+        <location filename="../../TaskHoleParameters.cpp" line="680"/>
         <source>Normal</source>
         <comment>Distance between thread crest and hole wall</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHoleParameters.cpp" line="666"/>
+        <location filename="../../TaskHoleParameters.cpp" line="681"/>
         <source>Close</source>
         <comment>Distance between thread crest and hole wall</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskHoleParameters.cpp" line="667"/>
+        <location filename="../../TaskHoleParameters.cpp" line="682"/>
         <source>Wide</source>
         <comment>Distance between thread crest and hole wall</comment>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>PartDesignGui::TaskLinearPatternParameters</name>
-    <message>
-        <location filename="../../TaskLinearPatternParameters.ui" line="34"/>
-        <source>Direction</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskLinearPatternParameters.ui" line="46"/>
-        <source>Reverse direction</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskLinearPatternParameters.ui" line="55"/>
-        <source>Mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskLinearPatternParameters.ui" line="63"/>
-        <source>Overall length</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskLinearPatternParameters.ui" line="68"/>
-        <location filename="../../TaskLinearPatternParameters.ui" line="131"/>
-        <source>Offset</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskLinearPatternParameters.ui" line="93"/>
-        <source>Length</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskLinearPatternParameters.ui" line="156"/>
-        <source>Occurrences</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskLinearPatternParameters.cpp" line="330"/>
-        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2282,7 +2238,7 @@ If zero, it is equal to Radius2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMirroredParameters.cpp" line="180"/>
+        <location filename="../../TaskMirroredParameters.cpp" line="175"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2300,47 +2256,47 @@ If zero, it is equal to Radius2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="71"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="70"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="77"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="76"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="83"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="82"/>
         <source>Add Mirror Transformation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="89"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="88"/>
         <source>Add Linear Pattern</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="95"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="94"/>
         <source>Add Polar Pattern</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="101"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="100"/>
         <source>Add Scale Transformation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="107"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="106"/>
         <source>Move Up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="110"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="109"/>
         <source>Move Down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="144"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="143"/>
         <source>Right-click to add a transformation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2825,54 +2781,6 @@ measured along the specified direction</source>
     </message>
 </context>
 <context>
-    <name>PartDesignGui::TaskPolarPatternParameters</name>
-    <message>
-        <location filename="../../TaskPolarPatternParameters.ui" line="34"/>
-        <source>Axis</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskPolarPatternParameters.ui" line="46"/>
-        <source>Reverse direction</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskPolarPatternParameters.ui" line="55"/>
-        <source>Mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskPolarPatternParameters.ui" line="63"/>
-        <source>Overall angle</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskPolarPatternParameters.ui" line="68"/>
-        <source>Offset angle</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskPolarPatternParameters.ui" line="93"/>
-        <source>Angle</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskPolarPatternParameters.ui" line="137"/>
-        <source>Offset</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskPolarPatternParameters.ui" line="168"/>
-        <source>Occurrences</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskPolarPatternParameters.cpp" line="329"/>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>PartDesignGui::TaskRevolutionParameters</name>
     <message>
         <location filename="../../TaskRevolutionParameters.ui" line="22"/>
@@ -2881,25 +2789,25 @@ measured along the specified direction</source>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.ui" line="30"/>
-        <location filename="../../TaskRevolutionParameters.cpp" line="188"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="193"/>
         <source>Dimension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.ui" line="50"/>
-        <location filename="../../TaskRevolutionParameters.cpp" line="235"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="240"/>
         <source>Base X-axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-        <location filename="../../TaskRevolutionParameters.cpp" line="236"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="241"/>
         <source>Base Y-axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.ui" line="60"/>
-        <location filename="../../TaskRevolutionParameters.cpp" line="237"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="242"/>
         <source>Base Z-axis</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2935,7 +2843,7 @@ measured along the specified direction</source>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.ui" line="75"/>
-        <location filename="../../TaskRevolutionParameters.cpp" line="244"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="249"/>
         <source>Select reference…</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2946,8 +2854,8 @@ measured along the specified direction</source>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.ui" line="170"/>
-        <location filename="../../TaskRevolutionParameters.cpp" line="152"/>
-        <location filename="../../TaskRevolutionParameters.cpp" line="468"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="157"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="475"/>
         <source>Face</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2957,32 +2865,32 @@ measured along the specified direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskRevolutionParameters.cpp" line="190"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="195"/>
         <source>To last</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskRevolutionParameters.cpp" line="193"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="198"/>
         <source>Through all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskRevolutionParameters.cpp" line="195"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="200"/>
         <source>To first</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskRevolutionParameters.cpp" line="196"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="201"/>
         <source>Up to face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskRevolutionParameters.cpp" line="197"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="202"/>
         <source>Two dimensions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskRevolutionParameters.cpp" line="455"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="462"/>
         <source>No face selected</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3101,7 +3009,7 @@ measured along the specified direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskThicknessParameters.cpp" line="260"/>
+        <location filename="../../TaskThicknessParameters.cpp" line="269"/>
         <source>Empty thickness created!
 </source>
         <translation type="unfinished"></translation>
@@ -3115,7 +3023,7 @@ measured along the specified direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskTransformedParameters.cpp" line="402"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="404"/>
         <source>Normal sketch axis</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3125,13 +3033,13 @@ measured along the specified direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskTransformedParameters.cpp" line="404"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="402"/>
         <source>Horizontal sketch axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskTransformedParameters.cpp" line="406"/>
-        <location filename="../../TaskTransformedParameters.cpp" line="442"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="443"/>
         <source>Construction line %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3151,23 +3059,23 @@ measured along the specified direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskTransformedParameters.cpp" line="456"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="457"/>
         <source>Base XY-plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskTransformedParameters.cpp" line="457"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="458"/>
         <source>Base YZ-plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskTransformedParameters.cpp" line="458"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="459"/>
         <source>Base XZ-plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskTransformedParameters.cpp" line="430"/>
-        <location filename="../../TaskTransformedParameters.cpp" line="466"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="467"/>
         <source>Select reference…</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3305,7 +3213,7 @@ measured along the specified direction</source>
     <message>
         <location filename="../../Command.cpp" line="1014"/>
         <location filename="../../SketchWorkflow.cpp" line="661"/>
-        <location filename="../../ViewProvider.cpp" line="140"/>
+        <location filename="../../ViewProvider.cpp" line="139"/>
         <location filename="../../ViewProviderBoolean.cpp" line="79"/>
         <location filename="../../ViewProviderDatum.cpp" line="250"/>
         <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
@@ -3350,7 +3258,7 @@ measured along the specified direction</source>
     <message>
         <location filename="../../Command.cpp" line="1015"/>
         <location filename="../../SketchWorkflow.cpp" line="662"/>
-        <location filename="../../ViewProvider.cpp" line="141"/>
+        <location filename="../../ViewProvider.cpp" line="140"/>
         <location filename="../../ViewProviderBoolean.cpp" line="80"/>
         <location filename="../../ViewProviderDatum.cpp" line="251"/>
         <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
@@ -3580,19 +3488,19 @@ This may lead to unexpected results.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskRevolutionParameters.cpp" line="221"/>
-        <location filename="../../TaskTransformedParameters.cpp" line="439"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="226"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="440"/>
         <source>Vertical sketch axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskRevolutionParameters.cpp" line="222"/>
-        <location filename="../../TaskTransformedParameters.cpp" line="440"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="227"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="441"/>
         <source>Horizontal sketch axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskRevolutionParameters.cpp" line="224"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="229"/>
         <source>Construction line %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3639,7 +3547,7 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProvider.cpp" line="97"/>
+        <location filename="../../ViewProvider.cpp" line="96"/>
         <location filename="../../ViewProviderDressUp.cpp" line="65"/>
         <location filename="../../ViewProviderShapeBinder.cpp" line="210"/>
         <location filename="../../ViewProviderTransformed.cpp" line="66"/>
@@ -3647,7 +3555,7 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProvider.cpp" line="110"/>
+        <location filename="../../ViewProvider.cpp" line="109"/>
         <source>Set Face Colors</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3703,21 +3611,6 @@ This feature is broken and cannot be edited.</source>
     <message>
         <location filename="../../ViewProviderShapeBinder.cpp" line="319"/>
         <source>Select Bound Object</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../ViewProviderTransformed.cpp" line="151"/>
-        <source>One transformed shape does not intersect the support</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../ViewProviderTransformed.cpp" line="153"/>
-        <source>%1 transformed shapes do not intersect the support</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../ViewProviderTransformed.cpp" line="163"/>
-        <source>Transformation succeeded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4549,7 +4442,7 @@ over 90: larger hole radius at the bottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureBase.cpp" line="78"/>
+        <location filename="../../../App/FeatureBase.cpp" line="75"/>
         <source>BaseFeature has an empty shape</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4583,13 +4476,17 @@ over 90: larger hole radius at the bottom</source>
         <location filename="../../../App/FeatureBoolean.cpp" line="163"/>
         <location filename="../../../App/FeatureChamfer.cpp" line="174"/>
         <location filename="../../../App/FeatureDraft.cpp" line="291"/>
-        <location filename="../../../App/FeatureExtrude.cpp" line="578"/>
+        <location filename="../../../App/FeatureExtrude.cpp" line="576"/>
+        <location filename="../../../App/FeatureExtrude.cpp" line="589"/>
+        <location filename="../../../App/FeatureExtrude.cpp" line="599"/>
         <location filename="../../../App/FeatureFillet.cpp" line="119"/>
         <location filename="../../../App/FeatureGroove.cpp" line="196"/>
         <location filename="../../../App/FeatureHole.cpp" line="2185"/>
         <location filename="../../../App/FeatureLoft.cpp" line="277"/>
+        <location filename="../../../App/FeatureLoft.cpp" line="312"/>
         <location filename="../../../App/FeaturePipe.cpp" line="404"/>
-        <location filename="../../../App/FeatureRevolution.cpp" line="232"/>
+        <location filename="../../../App/FeaturePipe.cpp" line="425"/>
+        <location filename="../../../App/FeatureRevolution.cpp" line="233"/>
         <source>Result has multiple solids: enable &apos;Allow Compounds&apos; in the active body.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4605,40 +4502,32 @@ over 90: larger hole radius at the bottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureExtrude.cpp" line="325"/>
+        <location filename="../../../App/FeatureExtrude.cpp" line="327"/>
         <source>Cannot create a pad with a total length of zero.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureExtrude.cpp" line="330"/>
+        <location filename="../../../App/FeatureExtrude.cpp" line="332"/>
         <source>Cannot create a pocket with a total length of zero.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureExtrude.cpp" line="516"/>
+        <location filename="../../../App/FeatureExtrude.cpp" line="514"/>
         <source>No extrusion geometry was generated.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureExtrude.cpp" line="536"/>
+        <location filename="../../../App/FeatureExtrude.cpp" line="534"/>
         <source>Resulting fused extrusion is null.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureExtrude.cpp" line="570"/>
+        <location filename="../../../App/FeatureExtrude.cpp" line="568"/>
         <location filename="../../../App/FeatureLoft.cpp" line="306"/>
         <location filename="../../../App/FeaturePipe.cpp" line="401"/>
         <location filename="../../../App/FeaturePipe.cpp" line="422"/>
         <location filename="../../../App/FeaturePrimitive.cpp" line="130"/>
         <source>Resulting shape is not a solid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../App/FeatureExtrude.cpp" line="591"/>
-        <location filename="../../../App/FeatureExtrude.cpp" line="601"/>
-        <location filename="../../../App/FeatureLoft.cpp" line="312"/>
-        <location filename="../../../App/FeaturePipe.cpp" line="425"/>
-        <source>Result has multiple solids: that is not currently supported.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4702,37 +4591,37 @@ over 90: larger hole radius at the bottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureExtrude.cpp" line="371"/>
+        <location filename="../../../App/FeatureExtrude.cpp" line="373"/>
         <source>Failed to obtain profile shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureExtrude.cpp" line="423"/>
+        <location filename="../../../App/FeatureExtrude.cpp" line="425"/>
         <source>Creation failed because direction is orthogonal to sketch&apos;s normal vector</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureExtrude.cpp" line="445"/>
+        <location filename="../../../App/FeatureExtrude.cpp" line="447"/>
         <location filename="../../../App/FeatureGroove.cpp" line="129"/>
-        <location filename="../../../App/FeatureRevolution.cpp" line="136"/>
+        <location filename="../../../App/FeatureRevolution.cpp" line="137"/>
         <source>Creating a face from sketch failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../App/FeatureGroove.cpp" line="151"/>
-        <location filename="../../../App/FeatureRevolution.cpp" line="154"/>
+        <location filename="../../../App/FeatureRevolution.cpp" line="155"/>
         <source>Revolve axis intersects the sketch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../App/FeatureGroove.cpp" line="159"/>
-        <location filename="../../../App/FeatureRevolution.cpp" line="239"/>
+        <location filename="../../../App/FeatureRevolution.cpp" line="240"/>
         <source>Could not revolve the sketch!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../App/FeatureGroove.cpp" line="205"/>
-        <location filename="../../../App/FeatureRevolution.cpp" line="251"/>
+        <location filename="../../../App/FeatureRevolution.cpp" line="252"/>
         <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
         <translation type="unfinished"></translation>
@@ -4942,7 +4831,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureExtrude.cpp" line="613"/>
+        <location filename="../../../App/FeatureExtrude.cpp" line="611"/>
         <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
         <translation type="unfinished"></translation>
@@ -5168,22 +5057,22 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureRevolution.cpp" line="91"/>
+        <location filename="../../../App/FeatureRevolution.cpp" line="92"/>
         <source>Angle of revolution too large</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureRevolution.cpp" line="97"/>
+        <location filename="../../../App/FeatureRevolution.cpp" line="98"/>
         <source>Angle of revolution too small</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureRevolution.cpp" line="129"/>
+        <location filename="../../../App/FeatureRevolution.cpp" line="130"/>
         <source>Reference axis is invalid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureExtrude.cpp" line="563"/>
+        <location filename="../../../App/FeatureExtrude.cpp" line="561"/>
         <source>Fusion with base feature failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5291,12 +5180,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
 <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-        <location filename="../../Command.cpp" line="2371"/>
+        <location filename="../../Command.cpp" line="2372"/>
         <source>Create Datum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2372"/>
+        <location filename="../../Command.cpp" line="2373"/>
         <source>Creates a datum object or local coordinate system</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5304,12 +5193,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
 <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-        <location filename="../../Command.cpp" line="2406"/>
+        <location filename="../../Command.cpp" line="2407"/>
         <source>Create Datum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2407"/>
+        <location filename="../../Command.cpp" line="2408"/>
         <source>Creates a datum object or local coordinate system</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5411,7 +5300,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
 <context>
     <name>PartDesignGui::TaskDlgRevolutionParameters</name>
     <message>
-        <location filename="../../TaskRevolutionParameters.cpp" line="716"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="828"/>
         <source>Revolution Parameters</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5419,7 +5308,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
 <context>
     <name>PartDesignGui::TaskDlgGrooveParameters</name>
     <message>
-        <location filename="../../TaskRevolutionParameters.cpp" line="724"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="836"/>
         <source>Groove Parameters</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5532,6 +5421,24 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
         <location filename="../../ViewProviderThickness.h" line="41"/>
         <source>Thickness Parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PartDesignGui::TaskPatternParameters</name>
+    <message>
+        <location filename="../../TaskPatternParameters.cpp" line="116"/>
+        <source>Direction 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskPatternParameters.cpp" line="219"/>
+        <source>Select a direction reference (edge, face, datum line)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskPatternParameters.cpp" line="294"/>
+        <source>Invalid selection. Select an edge, planar face, or datum line.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

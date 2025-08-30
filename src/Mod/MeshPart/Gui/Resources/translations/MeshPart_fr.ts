@@ -217,9 +217,9 @@
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
 This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</source>
-      <translation type="unfinished">Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+      <translation>Appuyer sur « Démarrer », puis sélectionnez des points sur le maillage ; lorsqu'il y a suffisamment de points, cliquer avec le bouton droit et sélectionner « Créer ». Répéter cette procédure pour créer d'autres splines. Fermer ce panneau de tâches pour terminer l'opération.
 
-This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</translation>
+Cette commande ne fonctionne qu'avec un objet Mesh, et non avec une face ou une surface classique. Pour convertir un objet en maillage, utiliser les outils de l'atelier Mesh.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -546,7 +546,7 @@ Sélectionnez une forme différente.</translation>
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Select the side to keep</source>
-      <translation type="unfinished">Select the side to keep</translation>
+      <translation>Sélectionner le côté à garder</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>

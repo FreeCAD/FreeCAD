@@ -63,7 +63,7 @@ Documentation can be downloaded for offline use via the Addon Manager and instal
 automatically search for the help files at the default location
 ($USERAPPDATADIR/Mod/offline-documentation).</source>
       <translation>将此设置为自定义 URL 或帮助文件所在的文件夹。
-可以通过插件管理器下载文档以供离线使用，并安装“offline-documentation”插件。如果此字段留空，FreeCAD 将自动在默认位置（$USERAPPDATADIR/Mod/offline-documentation）搜索帮助文件。</translation>
+可以通过附加组件管理器下载文档以供离线使用，并安装“offline-documentation”附加组件。如果此字段留空，FreeCAD 将自动在默认位置（$USERAPPDATADIR/Mod/offline-documentation）搜索帮助文件。</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="112"/>
@@ -158,12 +158,12 @@ This only applies if Markdown is selected above.</source>
     <message>
       <location filename="../../Help.py" line="75"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
-      <translation type="unfinished">Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</translation>
+      <translation>无法检索此页面的内容。请检查菜单“编辑 → 首选项 → 常规 → 帮助”下的设置。</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="79"/>
       <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
-      <translation type="unfinished">Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</translation>
+      <translation>无法确定帮助文件的位置。请检查菜单“编辑 → 首选项 → 常规 → 帮助”下的设置。</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="83"/>

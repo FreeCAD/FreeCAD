@@ -514,22 +514,8 @@ The number must be at least 1 in each direction.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/TaskPanel_OrthoArray.ui" line="168"/>
-        <source>Distance between the elements in the X direction.
-Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/TaskPanel_OrthoArray.ui" line="249"/>
         <source>Reset X</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/TaskPanel_OrthoArray.ui" line="259"/>
-        <source>Distance between the elements in the Y direction.
-Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -585,6 +571,13 @@ Negative values will result in copies produced in the negative direction.</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/TaskPanel_OrthoArray.ui" line="168"/>
+        <source>Distance between the elements in the X-direction.
+Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../ui/TaskPanel_OrthoArray.ui" line="173"/>
         <source>X Intervals</source>
         <translation type="unfinished"></translation>
@@ -594,6 +587,13 @@ Negative values will result in copies produced in the negative direction.</sourc
         <location filename="../ui/TaskPanel_OrthoArray.ui" line="337"/>
         <location filename="../ui/TaskPanel_OrthoArray.ui" line="428"/>
         <source>Resets the distances</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/TaskPanel_OrthoArray.ui" line="259"/>
+        <source>Distance between the elements in the Y-direction.
+Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -951,12 +951,6 @@ will be moved to the center of the view.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/TaskSelectPlane.ui" line="214"/>
-        <location filename="../ui/TaskSelectPlane.ui" line="224"/>
-        <source>The number of squares in the X and Y direction of the grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/TaskSelectPlane.ui" line="217"/>
         <source>Grid size</source>
         <translation type="unfinished"></translation>
@@ -985,6 +979,12 @@ will be moved to the center of the view.</source>
     <message>
         <location filename="../ui/TaskSelectPlane.ui" line="177"/>
         <source>Grid spacing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/TaskSelectPlane.ui" line="214"/>
+        <location filename="../ui/TaskSelectPlane.ui" line="224"/>
+        <source>The number of squares in the X- and Y-direction of the grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2452,11 +2452,6 @@ Major grid lines are thicker than minor grid lines.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-draftsnap.ui" line="220"/>
-        <source>The number of squares in the X and Y direction of the grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/preferences-draftsnap.ui" line="298"/>
         <source>Snapping and Modifier Keys</source>
         <translation type="unfinished"></translation>
@@ -2577,6 +2572,11 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
         <location filename="../ui/preferences-draftsnap.ui" line="213"/>
         <source>Grid size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences-draftsnap.ui" line="220"/>
+        <source>The number of squares in the X- and Y-direction of the grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4861,7 +4861,7 @@ The final angle will be the base angle plus this amount.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftutils/params.py" line="477"/>
+        <location filename="../../draftutils/params.py" line="478"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7004,6 +7004,11 @@ Leave this property empty to create copies along the entire &apos;Path Object&ap
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../draftobjects/patharray.py" line="303"/>
+        <source>Force use of &apos;Vertical Vector&apos; as local Z-direction when using &apos;Original&apos; or &apos;Tangent&apos; alignment mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../draftobjects/patharray.py" line="353"/>
         <source>Number of copies to create</source>
         <translation type="unfinished"></translation>
@@ -7017,11 +7022,6 @@ This is useful to adjust for the difference between shape centre and shape refer
     <message>
         <location filename="../../draftobjects/patharray.py" line="294"/>
         <source>Alignment vector for &apos;Tangent&apos; mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftobjects/patharray.py" line="303"/>
-        <source>Force use of &apos;Vertical Vector&apos; as local Z direction when using &apos;Original&apos; or &apos;Tangent&apos; alignment mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7101,32 +7101,32 @@ Otherwise the copies will have the same orientation as the original Base object.
     </message>
     <message>
         <location filename="../../draftobjects/array.py" line="168"/>
-        <source>Number of copies in X direction</source>
+        <source>Number of copies in X-direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../draftobjects/array.py" line="178"/>
-        <source>Number of copies in Y direction</source>
+        <source>Number of copies in Y-direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../draftobjects/array.py" line="188"/>
-        <source>Number of copies in Z direction</source>
+        <source>Number of copies in Z-direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../draftobjects/array.py" line="199"/>
-        <source>Distance and orientation of intervals in X direction</source>
+        <source>Distance and orientation of intervals in X-direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../draftobjects/array.py" line="210"/>
-        <source>Distance and orientation of intervals in Y direction</source>
+        <source>Distance and orientation of intervals in Y-direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../draftobjects/array.py" line="221"/>
-        <source>Distance and orientation of intervals in Z direction</source>
+        <source>Distance and orientation of intervals in Z-direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

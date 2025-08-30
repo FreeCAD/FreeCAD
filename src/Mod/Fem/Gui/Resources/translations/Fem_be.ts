@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Bearing Constraint</source>
-      <translation type="unfinished">Bearing Constraint</translation>
+      <translation>Абмежаванне падшыпніка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="244"/>
@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="291"/>
       <source>Contact Constraint</source>
-      <translation type="unfinished">Contact Constraint</translation>
+      <translation>Абмежаванне кантакту</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="292"/>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="357"/>
       <source>Displacement Boundary Condition</source>
-      <translation type="unfinished">Displacement Boundary Condition</translation>
+      <translation>Межавая ўмову зрушэння</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="358"/>
@@ -65,7 +65,7 @@
     <message>
       <location filename="../../Command.cpp" line="407"/>
       <source>Fixed Boundary Condition</source>
-      <translation type="unfinished">Fixed Boundary Condition</translation>
+      <translation>Фіксаваная межавая ўмова</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="408"/>
@@ -83,7 +83,7 @@
     <message>
       <location filename="../../Command.cpp" line="509"/>
       <source>Fluid Boundary Condition</source>
-      <translation type="unfinished">Fluid Boundary Condition</translation>
+      <translation>Межавая ўмова вадкасці</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="511"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../Command.cpp" line="561"/>
       <source>Force Load</source>
-      <translation type="unfinished">Force Load</translation>
+      <translation>Сілавая нагрузка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="562"/>
@@ -119,7 +119,7 @@
     <message>
       <location filename="../../Command.cpp" line="618"/>
       <source>Gear Constraint</source>
-      <translation type="unfinished">Gear Constraint</translation>
+      <translation>Абмежаванне шасцерні</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="619"/>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../../Command.cpp" line="666"/>
       <source>Heat Flux Load</source>
-      <translation type="unfinished">Heat Flux Load</translation>
+      <translation>Нагрузка на цеплавы паток</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="667"/>
@@ -155,7 +155,7 @@
     <message>
       <location filename="../../Command.cpp" line="727"/>
       <source>Initial Temperature</source>
-      <translation type="unfinished">Initial Temperature</translation>
+      <translation>Пачатковая тэмпература</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="728"/>
@@ -173,7 +173,7 @@
     <message>
       <location filename="../../Command.cpp" line="778"/>
       <source>Plane Multi-Point Constraint</source>
-      <translation type="unfinished">Plane Multi-Point Constraint</translation>
+      <translation>Абмежаванне шматкропкавай плоскасці</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="779"/>
@@ -191,7 +191,7 @@
     <message>
       <location filename="../../Command.cpp" line="829"/>
       <source>Pressure Load</source>
-      <translation type="unfinished">Pressure Load</translation>
+      <translation>Нагрузка ціску</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="830"/>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../Command.cpp" line="940"/>
       <source>Pulley Constraint</source>
-      <translation type="unfinished">Pulley Constraint</translation>
+      <translation>Абмежаванне шківу</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="941"/>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="885"/>
       <source>Spring Boundary Condition</source>
-      <translation type="unfinished">Spring Boundary Condition</translation>
+      <translation>Межавая ўмова спружыны</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="886"/>
       <source>Creates a spring boundary condition on a face</source>
-      <translation type="unfinished">Creates a spring boundary condition on a face</translation>
+      <translation>Стварае межавую ўмову спружыны на грані</translation>
     </message>
   </context>
   <context>
@@ -245,7 +245,7 @@
     <message>
       <location filename="../../Command.cpp" line="993"/>
       <source>Temperature Boundary Condition</source>
-      <translation type="unfinished">Temperature Boundary Condition</translation>
+      <translation>Межавая ўмова тэмпературы</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="994"/>
@@ -268,7 +268,7 @@
     <message>
       <location filename="../../Command.cpp" line="1045"/>
       <source>Creates a local coordinate system on a face</source>
-      <translation type="unfinished">Creates a local coordinate system on a face</translation>
+      <translation>Стварае лакальную сістэму каардынат на грані</translation>
     </message>
   </context>
   <context>
@@ -281,7 +281,7 @@
     <message>
       <location filename="../../Command.cpp" line="1190"/>
       <source>Nodes Set</source>
-      <translation type="unfinished">Nodes Set</translation>
+      <translation>Набор вузлоў</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1191"/>
@@ -296,12 +296,12 @@
     <message>
       <location filename="../../Command.cpp" line="1228"/>
       <source>Select a single FEM mesh or nodes set.</source>
-      <translation type="unfinished">Select a single FEM mesh or nodes set.</translation>
+      <translation>Абраць адну паліганальную сетку МКЭ ці набор вузлоў.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1377"/>
       <source>Select a single FEM Mesh.</source>
-      <translation type="unfinished">Select a single FEM Mesh.</translation>
+      <translation>Абраць адну паліганальную сетку МКЭ.</translation>
     </message>
   </context>
   <context>
@@ -314,12 +314,12 @@
     <message>
       <location filename="../../Command.cpp" line="1131"/>
       <source>Node Set by Polygon</source>
-      <translation type="unfinished">Node Set by Polygon</translation>
+      <translation>Набор вузлоў па шматкутніку</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1132"/>
       <source>Creates a node set by polygon selection</source>
-      <translation type="unfinished">Creates a node set by polygon selection</translation>
+      <translation>Стварае вузел, які зададзены абраным шматкутнікам</translation>
     </message>
   </context>
   <context>
@@ -332,12 +332,12 @@
     <message>
       <location filename="../../Command.cpp" line="2621"/>
       <source>Apply Changes to Pipeline</source>
-      <translation type="unfinished">Apply Changes to Pipeline</translation>
+      <translation>Прымяніць змены да канвееру</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2622"/>
       <source>Applies changes to parameters directly and not on recompute only</source>
-      <translation type="unfinished">Applies changes to parameters directly and not on recompute only</translation>
+      <translation>Прымяняе змены да налад напрамую, а не толькі пры пераліку</translation>
     </message>
   </context>
   <context>
@@ -350,17 +350,17 @@
     <message>
       <location filename="../../Command.cpp" line="2030"/>
       <source>Region Clip Filter</source>
-      <translation type="unfinished">Region Clip Filter</translation>
+      <translation>Фільтр абрэзкі вобласці</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2032"/>
       <source>Defines a clip filter which uses functions to define the clipped region</source>
-      <translation type="unfinished">Defines a clip filter which uses functions to define the clipped region</translation>
+      <translation>Вызначае фільтр абрэзкі, які ўжывае функцыі для вызначэння вобласці абрэзкі</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2523"/>
       <source>Select a pipeline.</source>
-      <translation type="unfinished">Select a pipeline.</translation>
+      <translation>Абраць канвеер.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2522"/>
@@ -378,12 +378,12 @@
     <message>
       <location filename="../../Command.cpp" line="2068"/>
       <source>Function Cut Filter</source>
-      <translation type="unfinished">Function Cut Filter</translation>
+      <translation>Функцыя рэзкі фільтра</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2069"/>
       <source>Cuts the data along an implicit function</source>
-      <translation type="unfinished">Cuts the data along an implicit function</translation>
+      <translation>Разразае дадзеныя па няяўнай функцыі</translation>
     </message>
   </context>
   <context>
@@ -396,12 +396,12 @@
     <message>
       <location filename="../../Command.cpp" line="2105"/>
       <source>Line Clip Filter</source>
-      <translation type="unfinished">Line Clip Filter</translation>
+      <translation>Фільтр абрэзкі лініі</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2106"/>
       <source>Defines a clip filter which clips a field along a line</source>
-      <translation type="unfinished">Defines a clip filter which clips a field along a line</translation>
+      <translation>Вызначае фільтр абрэзкі, які абразае поле наўздоўж лініі</translation>
     </message>
   </context>
   <context>
@@ -414,12 +414,12 @@
     <message>
       <location filename="../../Command.cpp" line="2142"/>
       <source>Data at Point Clip Filter</source>
-      <translation type="unfinished">Data at Point Clip Filter</translation>
+      <translation>Дадзеныя ў фільтры абрэзкі кропкі</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2143"/>
       <source>Defines a clip filter which clips a field data at point</source>
-      <translation type="unfinished">Defines a clip filter which clips a field data at point</translation>
+      <translation>Вызначае фільтр абрэзкі, які абразае дадзеныя палі ў кропцы</translation>
     </message>
   </context>
   <context>
@@ -432,12 +432,12 @@
     <message>
       <location filename="../../Command.cpp" line="2400"/>
       <source>Filter Functions</source>
-      <translation type="unfinished">Filter Functions</translation>
+      <translation>Функцыі фільтра</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2401"/>
       <source>Functions for use in postprocessing filter</source>
-      <translation type="unfinished">Functions for use in postprocessing filter</translation>
+      <translation>Функцыі, якія ўжываюцца ў фільтры пасляапрацоўкі</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2574"/>
@@ -506,18 +506,18 @@
     <message>
       <location filename="../../Command.cpp" line="2180"/>
       <source>Stress Linearization Plot</source>
-      <translation type="unfinished">Stress Linearization Plot</translation>
+      <translation>Графік лінеарызацыі напружання</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2181"/>
       <source>Defines a stress linearization plot</source>
-      <translation type="unfinished">Defines a stress linearization plot</translation>
+      <translation>Вызначае графікі лінеарызацыі напружання</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2219"/>
       <location filename="../../Command.cpp" line="2227"/>
       <source>Select a clip filter which clips a stress field along a line</source>
-      <translation type="unfinished">Select a clip filter which clips a stress field along a line</translation>
+      <translation>Абраць фільтр абрэзкі, які абразае поле напружанне наўздоўж лініі</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2218"/>
@@ -536,7 +536,7 @@
     <message>
       <location filename="../../Command.cpp" line="2662"/>
       <source>Post Pipeline From Result</source>
-      <translation type="unfinished">Post Pipeline From Result</translation>
+      <translation>Паслаць канвеер з выніку</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2663"/>
@@ -551,7 +551,7 @@
     <message>
       <location filename="../../Command.cpp" line="2742"/>
       <source>Select a result object.</source>
-      <translation type="unfinished">Select a result object.</translation>
+      <translation>Абраць аб'ект выніку.</translation>
     </message>
   </context>
   <context>
@@ -564,12 +564,12 @@
     <message>
       <location filename="../../Command.cpp" line="2253"/>
       <source>Scalar Clip Filter</source>
-      <translation type="unfinished">Scalar Clip Filter</translation>
+      <translation>Скалярны фільтр зрэзу</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2254"/>
       <source>Defines a clip filter which clips a field with a scalar value</source>
-      <translation type="unfinished">Defines a clip filter which clips a field with a scalar value</translation>
+      <translation>Вызначае фільтр зрэзу, які абразае поле са скалярным значэннем</translation>
     </message>
   </context>
   <context>
@@ -582,12 +582,12 @@
     <message>
       <location filename="../../Command.cpp" line="2290"/>
       <source>Warp Filter</source>
-      <translation type="unfinished">Warp Filter</translation>
+      <translation>Фільтр дэфармацыі</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2291"/>
       <source>Warps the geometry along a vector field by a certain factor</source>
-      <translation type="unfinished">Warps the geometry along a vector field by a certain factor</translation>
+      <translation>Дэфармуе геаметрыю наўздоўж вектарнага полю па пэўнаму каэфіцыенту</translation>
     </message>
   </context>
   <context>
@@ -655,7 +655,7 @@
     <message>
       <location filename="../../Command.cpp" line="902"/>
       <source>Make Spring Constraint</source>
-      <translation type="unfinished">Make Spring Constraint</translation>
+      <translation>Зрабіць абмежаванне падшыпніка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="957"/>
@@ -731,7 +731,8 @@
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="23"/>
       <source>Mesh groups detected. Choose values for the different groups.</source>
-      <translation type="unfinished">Mesh groups detected. Choose values for the different groups.</translation>
+      <translation>Выяўлены суполкі паліганальнай сеткі.
+Абярыце значэнні для розных суполак.</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="62"/>
@@ -761,7 +762,7 @@
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="26"/>
       <source>Select the vertices, lines and surfaces</source>
-      <translation type="unfinished">Select the vertices, lines and surfaces</translation>
+      <translation>Абярыце вяршыні, лініі і паверхні</translation>
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
@@ -900,12 +901,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="724"/>
       <source>Thermo-Mechanical Defaults</source>
-      <translation type="unfinished">Thermo-Mechanical Defaults</translation>
+      <translation>Першапачатковыя значэнні тэрмамеханікі</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="760"/>
       <source>Frequency Defaults</source>
-      <translation type="unfinished">Frequency Defaults</translation>
+      <translation>Першапачатковая частата</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="870"/>
@@ -920,12 +921,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="72"/>
       <source>CCX binary path</source>
-      <translation type="unfinished">CCX binary path</translation>
+      <translation>Шлях да двайковага файла CCX (CalculiX)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="119"/>
       <source>Input file editor</source>
-      <translation type="unfinished">Input file editor</translation>
+      <translation>Сродак праўкі ўваходнага файла</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="151"/>
@@ -2808,17 +2809,17 @@ Specify another file.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="482"/>
       <source>Bend radius / pipe diameter</source>
-      <translation type="unfinished">Bend radius / pipe diameter</translation>
+      <translation>Радыус выгібу / дыяметр трубы</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="509"/>
       <source>Bend angle</source>
-      <translation type="unfinished">Bend angle</translation>
+      <translation>Вугал выгібу</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="613"/>
       <source>Pump characteristic</source>
-      <translation type="unfinished">Pump characteristic</translation>
+      <translation>Характарыстыка насоса</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="651"/>
@@ -2828,12 +2829,12 @@ Specify another file.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="829"/>
       <source>Gas section parameter</source>
-      <translation type="unfinished">Gas section parameter</translation>
+      <translation>Налады падзелу газа</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="843"/>
       <source>Open channel section parameter</source>
-      <translation type="unfinished">Open channel section parameter</translation>
+      <translation>Налада перасеку канала на вольнай паверхні</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="533"/>
@@ -2863,7 +2864,7 @@ Specify another file.</translation>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="14"/>
       <source>Tie Parameter</source>
-      <translation type="unfinished">Tie Parameter</translation>
+      <translation>Налада прывязкі</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="56"/>
@@ -2873,7 +2874,7 @@ Specify another file.</translation>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="63"/>
       <source>Enable adjust</source>
-      <translation type="unfinished">Enable adjust</translation>
+      <translation>Уключыць рэгуляванне</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
@@ -2900,12 +2901,12 @@ Specify another file.</translation>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="14"/>
       <source>Centrif Parameter</source>
-      <translation type="unfinished">Centrif Parameter</translation>
+      <translation>Налада цэнтрыфугавання</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="34"/>
       <source>Rotation frequency</source>
-      <translation type="unfinished">Rotation frequency</translation>
+      <translation>Частата вярчэнне</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="41"/>
@@ -2915,7 +2916,7 @@ Specify another file.</translation>
     <message>
       <location filename="../ui/ConstraintSectionPrint.ui" line="14"/>
       <source>Section Print Parameter</source>
-      <translation type="unfinished">Section Print Parameter</translation>
+      <translation>Налада друку падзела</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintSectionPrint.ui" line="34"/>
@@ -2925,12 +2926,12 @@ Specify another file.</translation>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="26"/>
       <source>Boundary condition</source>
-      <translation type="unfinished">Boundary condition</translation>
+      <translation>Межавая ўмова</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="50"/>
       <source>Potential</source>
-      <translation type="unfinished">Potential</translation>
+      <translation>Патэнцыял</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="60"/>
@@ -2940,7 +2941,7 @@ Specify another file.</translation>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="84"/>
       <source>Electromagnetic potential</source>
-      <translation type="unfinished">Electromagnetic potential</translation>
+      <translation>Электрамагнітны патэнцыял</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="100"/>
@@ -2998,22 +2999,22 @@ Note: has no effect if a solid was selected</source>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="391"/>
       <source>Electric infinity</source>
-      <translation type="unfinished">Electric infinity</translation>
+      <translation>Электрычная бясконцасць</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="419"/>
       <source>Electric flux density</source>
-      <translation type="unfinished">Electric flux density</translation>
+      <translation>Шчыльнасць электрычнага патоку</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="445"/>
       <source>Capacitance body</source>
-      <translation type="unfinished">Capacitance body</translation>
+      <translation>Ёмістасць цела</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="448"/>
       <source>Enabled by 'Calculate capacity matrix' in Electrostatic equation</source>
-      <translation type="unfinished">Enabled by 'Calculate capacity matrix' in Electrostatic equation</translation>
+      <translation>Уключаецца з дапамогай 'Матрыцы разліку ёмістасці' у электрастатычным ураўненні</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="398"/>
@@ -3023,7 +3024,7 @@ Note: has no effect if a solid was selected</source>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="401"/>
       <source>Potential constant</source>
-      <translation type="unfinished">Potential constant</translation>
+      <translation>Канстанта патэнцыялу</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="413"/>
@@ -3089,7 +3090,7 @@ Note: has no effect if a solid was selected</source>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="14"/>
       <source>Beam Section Rotation</source>
-      <translation type="unfinished">Beam Section Rotation</translation>
+      <translation>Вярчэнне перасеку элемента тыпу бэлькі</translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="61"/>
@@ -3104,12 +3105,12 @@ Note: has no effect if a solid was selected</source>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="14"/>
       <source>Mesh Boundary Layer Settings</source>
-      <translation type="unfinished">Mesh Boundary Layer Settings</translation>
+      <translation>Налады мяжы пласта паліганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="34"/>
       <source>Maximum layers</source>
-      <translation type="unfinished">Maximum layers</translation>
+      <translation>Найбольшая колькасць пластоў</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="51"/>
@@ -5251,7 +5252,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../Workbench.cpp" line="75"/>
       <source>Filter Functions</source>
-      <translation type="unfinished">Filter Functions</translation>
+      <translation>Функцыі фільтра</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="76"/>
