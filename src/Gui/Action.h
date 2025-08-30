@@ -146,6 +146,7 @@ public:
     void setIsMode(bool check) { _isMode = check; }
 
     void setRememberLast(bool);
+    void setRecent(bool);
     bool doesRememberLast() const;
 
     void setDropDownMenu(bool check) { _dropDown = check; }
@@ -176,6 +177,7 @@ private:
     bool _dropDown;
     bool _isMode;
     bool _rememberLast;
+    bool _isRecent;
 
 private:
     Q_DISABLE_COPY(ActionGroup)

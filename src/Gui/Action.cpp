@@ -36,6 +36,7 @@
 # include <QToolBar>
 # include <QToolButton>
 # include <QToolTip>
+# include <QRegularExpression>
 #endif
 
 #include <Base/Exception.h>
@@ -439,6 +440,7 @@ ActionGroup::ActionGroup(Command* pcCmd, QObject* parent)
     , _dropDown(false)
     , _isMode(false)
     , _rememberLast(true)
+    , _isRecent(false)
 {
     _group = new QActionGroup(this);
     connect(_group, &QActionGroup::triggered, this, qOverload<QAction*>(&ActionGroup::onActivated));
@@ -535,6 +537,11 @@ void ActionGroup::setRememberLast(bool remember)
     _rememberLast = remember;
 }
 
+void ActionGroup::setRecent(bool recent)
+{
+    _isRecent = recent;
+}
+
 bool ActionGroup::doesRememberLast() const
 {
     return _rememberLast;
@@ -596,12 +603,22 @@ void ActionGroup::onActivated (QAction* act)
 {
     if (_rememberLast) {
         int index = groupAction()->actions().indexOf(act);
+        int defaultIndex = index;
+        if (_isRecent) {
+            defaultIndex = 0;
+        }
 
         this->setIcon(act->icon());
         if (!this->_isMode) {
-            this->setToolTip(act->toolTip(), act->text());
+            QString str = act->text();
+            if (_isRecent) {
+                // remove index from toolTip text
+                // for Std_RecentMacros and Std_RecentFiles
+                str = str.remove(QRegularExpression(QString::fromUtf8("^&?[0-9]+ ")));
+            }
+            this->setToolTip(act->toolTip(), str);
         }
-        this->setProperty("defaultAction", QVariant(index));
+        this->setProperty("defaultAction", QVariant(defaultIndex));
         command()->invoke(index, Command::TriggerChildAction);
     }
 }
