@@ -278,6 +278,7 @@ private:
     std::ostringstream* m_ssBlkRecord;
     std::ostringstream* m_ssEntity;
     std::ostringstream* m_ssLayer;
+    std::ostringstream* m_ssDimstyle;
 
 protected:
     static Base::Vector3d toVector3d(const double* coordinatesXYZ)
@@ -462,6 +463,7 @@ public:
     void makeBlockRecordTableHead();
     void makeBlockRecordTableBody();
     void makeBlockSectionHead();
+    void makeDimstyleTable();
     void setColor(int aci)
     {
         m_currentColor = aci;
