@@ -137,9 +137,9 @@ std::unique_ptr<Part::GeomBSplineCurve> createTypicalPeriodicBSpline()
 
 void prepareExternal(Sketcher::SketchObject* obj)
 {
-  auto* doc = obj->getDocument();
-  auto box {doc->addObject("Part::Box")};
-  obj->addExternal(box, "Face6");
+    auto* doc = obj->getDocument();
+    auto box {doc->addObject("Part::Box")};
+    obj->addExternal(box, "Face6");
 }
 
 int countConstraintsOfType(const Sketcher::SketchObject* obj, const Sketcher::ConstraintType cType)
