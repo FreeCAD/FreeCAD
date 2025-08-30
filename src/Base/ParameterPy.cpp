@@ -93,7 +93,7 @@ public:
 public:
     // NOLINTBEGIN
     Py::Object callable;
-    boost::signals2::scoped_connection conn;
+    fastsignals::scoped_connection conn;
     ParameterGrp* _target = nullptr;  // no reference counted, do not access
     // NOLINTEND
 
