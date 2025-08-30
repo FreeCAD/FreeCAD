@@ -102,6 +102,7 @@
 
 #include "Annotation.h"
 #include "Application.h"
+#include "ApplicationDirectories.h"
 #include "CleanupProcess.h"
 #include "ComplexGeoData.h"
 #include "Services.h"
@@ -185,6 +186,7 @@ Base::ConsoleObserverStd  *Application::_pConsoleObserverStd = nullptr;
 Base::ConsoleObserverFile *Application::_pConsoleObserverFile = nullptr;
 
 AppExport std::map<std::string, std::string> Application::mConfig;
+std::unique_ptr<ApplicationDirectories> Application::_appDirs;
 
 
 //**************************************************************************
@@ -1113,7 +1115,7 @@ int64_t Application::applicationPid()
 
 std::string Application::getHomePath()
 {
-    return mConfig["AppHomePath"];
+    return Base::FileInfo::pathToString(Application::directories()->getHomePath()) + PATHSEP;
 }
 
 std::string Application::getExecutableName()
@@ -1140,78 +1142,53 @@ bool Application::isDevelopmentVersion()
     return suffix == "dev";
 }
 
+const std::unique_ptr<ApplicationDirectories>& Application::directories() {
+    return _appDirs;
+}
+
 std::string Application::getTempPath()
 {
-    return mConfig["AppTempPath"];
+    return Base::FileInfo::pathToString(_appDirs->getTempPath()) + PATHSEP;
 }
 
 std::string Application::getTempFileName(const char* FileName)
 {
-    return Base::FileInfo::getTempFileName(FileName, getTempPath().c_str());
+    return Base::FileInfo::pathToString(_appDirs->getTempFileName(FileName ? FileName : std::string()));
 }
 
 std::string Application::getUserCachePath()
 {
-    return mConfig["UserCachePath"];
+    return Base::FileInfo::pathToString(_appDirs->getUserCachePath()) + PATHSEP;
 }
 
 std::string Application::getUserConfigPath()
 {
-    return mConfig["UserConfigPath"];
+    return Base::FileInfo::pathToString(_appDirs->getUserConfigPath()) + PATHSEP;
 }
 
 std::string Application::getUserAppDataDir()
 {
-    return mConfig["UserAppData"];
+    return Base::FileInfo::pathToString(_appDirs->getUserAppDataDir()) + PATHSEP;
 }
 
 std::string Application::getUserMacroDir()
 {
-    return mConfig["UserMacroPath"];
+    return Base::FileInfo::pathToString(_appDirs->getUserMacroDir()) + PATHSEP;
 }
 
 std::string Application::getResourceDir()
 {
-#ifdef RESOURCEDIR
-    // #6892: Conda may inject null characters => remove them using c_str()
-    std::string path = std::string(RESOURCEDIR).c_str();
-    path += PATHSEP;
-    const QDir dir(QString::fromStdString(path));
-    if (dir.isAbsolute())
-        return path;
-    return mConfig["AppHomePath"] + path;
-#else
-    return mConfig["AppHomePath"];
-#endif
+    return Base::FileInfo::pathToString(_appDirs->getResourceDir()) + PATHSEP;
 }
 
 std::string Application::getLibraryDir()
 {
-#ifdef LIBRARYDIR
-    // #6892: Conda may inject null characters => remove them using c_str()
-    std::string path = std::string(LIBRARYDIR).c_str();
-    const QDir dir(QString::fromStdString(path));
-    if (dir.isAbsolute())
-        return path;
-    return mConfig["AppHomePath"] + path;
-#else
-    return mConfig["AppHomePath"] + "lib";
-#endif
+    return Base::FileInfo::pathToString(_appDirs->getLibraryDir()) + PATHSEP;
 }
 
 std::string Application::getHelpDir()
 {
-#ifdef DOCDIR
-    // #6892: Conda may inject null characters => remove them using c_str()
-    std::string path = std::string(DOCDIR).c_str();
-    path += PATHSEP;
-    const QDir dir(QString::fromStdString(path));
-    if (dir.isAbsolute())
-        return path;
-    return mConfig["AppHomePath"] + path;
-#else
-    return mConfig["DocPath"];
-#endif
+    return Base::FileInfo::pathToString(_appDirs->getHelpDir()) + PATHSEP;
 }
 
 int Application::checkLinkDepth(int depth, MessageOption option)
@@ -2535,7 +2512,7 @@ void processProgramOptions(const boost::program_options::variables_map& vm, std:
 void Application::initConfig(int argc, char ** argv)
 {
     // find the home path....
-    mConfig["AppHomePath"] = FindHomePath(argv[0]);
+    mConfig["AppHomePath"] = ApplicationDirectories::findHomePath(argv[0]).string();
 
     // Version of the application extracted from SubWCRef into src/Build/Version.h
     // We only set these keys if not yet defined. Therefore it suffices to search
@@ -2593,7 +2570,7 @@ void Application::initConfig(int argc, char ** argv)
     }
 
     // extract home paths
-    ExtractUserPath();
+    _appDirs = std::make_unique<ApplicationDirectories>(mConfig);
 
     if (vm.contains("safe-mode")) {
         SafeMode::StartSafeMode();

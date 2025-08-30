@@ -24,14 +24,21 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QApplication>
-#include <QDir>
 #include <QImageReader>
 #include <QLabel>
+#include <QMessageBox>
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
+#include <QProcess>
 #include <QStatusBar>
+#include <QThread>
+#include <QTimer>
 #include <QWindow>
 #include <Inventor/SoDB.h>
+
+#include <set>
+#include <string>
+#include <ranges>
 #endif
 
 #include "StartupProcess.h"
@@ -43,6 +50,7 @@
 #include "MainWindow.h"
 #include "Language/Translator.h"
 #include <App/Application.h>
+#include <App/ApplicationDirectories.h>
 #include <Base/Console.h>
 
 
@@ -220,6 +228,7 @@ void StartupPostProcess::execute()
     showMainWindow();
     activateWorkbench();
     checkParameters();
+    runWelcomeScreen();
 }
 
 void StartupPostProcess::setWindowTitle()
@@ -544,3 +553,146 @@ void StartupPostProcess::checkParameters()
                                 "Continue with an empty configuration that won't be saved.\n");
     }
 }
+
+void StartupPostProcess::runWelcomeScreen()
+{
+    // If the user is running a custom directory set, there is no migration to versioned directories
+    if (App::Application::directories()->usingCustomDirectories()) {
+        return;
+    }
+
+    auto prefGroup = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Migration");
+
+    // Split our comma-separated list of already-migrated-to version directories into a set for easy
+    // searching
+    auto splitCommas = [](const std::string &input) {
+        std::set<std::string> result;
+        std::stringstream ss(input);
+        std::string token;
+
+        while (std::getline(ss, token, ',')) {
+            result.insert(token);
+        }
+
+        return result;
+    };
+
+    std::string offeredToMigrateToVersionedConfig =
+        prefGroup->GetASCII("OfferedToMigrateToVersionedConfig", "");
+    std::set<std::string> knownVersions;
+    if (!offeredToMigrateToVersionedConfig.empty()) {
+        knownVersions = splitCommas(offeredToMigrateToVersionedConfig);
+    }
+
+    auto joinCommas = [](const std::set<std::string>& s) {
+        std::ostringstream oss;
+        for (auto it = s.begin(); it != s.end(); ++it) {
+            if (it != s.begin()) {
+                oss << ',';
+            }
+            oss << *it;
+        }
+        return oss.str();
+    };
+
+    int major = std::stoi(App::Application::Config()["BuildVersionMajor"]);
+    int minor = std::stoi(App::Application::Config()["BuildVersionMinor"]);
+    std::string currentVersionedDirName = App::ApplicationDirectories::versionStringForPath(major, minor);
+    if (!knownVersions.contains(currentVersionedDirName)
+        && !App::Application::directories()->usingCurrentVersionConfig(
+            App::Application::directories()->getUserAppDataDir())) {
+        auto programName = QString::fromStdString(App::Application::getExecutableName());
+        auto result = QMessageBox::question(
+            mainWindow,
+            QObject::tr("Welcome to %1 v%2.%3").arg(programName, QString::number(major), QString::number(minor)),
+            QObject::tr("Welcome to %1 v%2.%3\n\n").arg(programName, QString::number(major), QString::number(minor))
+                + QObject::tr("Configuration data and addons from previous program version found. "
+                              "Migrate the old configuration to this version?"),
+            QMessageBox::Yes | QMessageBox::No);
+        knownVersions.insert(currentVersionedDirName);
+        prefGroup->SetASCII("OfferedToMigrateToVersionedConfig", joinCommas(knownVersions));
+        if (result == QMessageBox::Yes) {
+            migrateToCurrentVersion();
+        }
+    }
+}
+
+class PathMigrationWorker : public QObject
+{
+    Q_OBJECT
+
+public:
+    void run () {
+        try {
+            App::GetApplication().GetUserParameter().SaveDocument();
+            App::Application::directories()->migrateAllPaths(
+                {App::Application::getUserAppDataDir(), App::Application::getUserConfigPath()});
+            Q_EMIT(complete());
+        } catch (const Base::Exception& e) {
+            Base::Console().error("Error migrating configuration data: %s\n", e.what());
+            Q_EMIT(failed());
+        } catch (const std::exception& e) {
+            Base::Console().error("Unrecognized error migrating configuration data: %s\n", e.what());
+            Q_EMIT(failed());
+        } catch (...) {
+            Base::Console().error("Error migrating configuration data\n");
+            Q_EMIT(failed());
+        }
+    }
+
+Q_SIGNALS:
+    void complete();
+    void failed();
+};
+
+void StartupPostProcess::migrateToCurrentVersion()
+{
+    auto *workerThread = new QThread(mainWindow);
+    auto *worker = new PathMigrationWorker();
+    worker->moveToThread(workerThread);
+    QObject::connect(workerThread, &QThread::started, worker, &PathMigrationWorker::run);
+
+    auto migrationRunning = new QMessageBox(mainWindow);
+    migrationRunning->setWindowTitle(QObject::tr("Migrating"));
+    migrationRunning->setText(QObject::tr("Migrating configuration data and addons..."));
+    migrationRunning->setStandardButtons(QMessageBox::NoButton);
+    QObject::connect(worker, &PathMigrationWorker::complete, migrationRunning, &QMessageBox::accept);
+    QObject::connect(worker, &PathMigrationWorker::failed, migrationRunning, &QMessageBox::reject);
+
+    workerThread->start();
+    migrationRunning->exec();
+
+    if (migrationRunning->result() == QDialog::Accepted) {
+        auto* restarting = new QMessageBox(mainWindow);
+        restarting->setText(
+            QObject::tr("Migration complete. Restarting..."));
+        restarting->setWindowTitle(QObject::tr("Restarting"));
+        restarting->setStandardButtons(QMessageBox::NoButton);
+        auto closeNotice = [restarting]() {
+            restarting->reject();
+        };
+
+        // Insert a short delay before restart so the user can see the success message, and
+        // knows it's a restart and not a crash...
+        const int delayRestartMillis {2000};
+        QTimer::singleShot(delayRestartMillis, closeNotice);
+        restarting->exec();
+
+        QObject::connect(qApp, &QCoreApplication::aboutToQuit, [=] {
+            if (getMainWindow()->close()) {
+                auto args = QApplication::arguments();
+                args.removeFirst();
+                QProcess::startDetached(QApplication::applicationFilePath(),
+                                        args,
+                                        QApplication::applicationDirPath());
+            }
+            });
+        QCoreApplication::exit(0);
+        _exit(0); // No really. Die.
+    } else {
+        QMessageBox::critical(mainWindow, QObject::tr("Migration failed"),QObject::tr("Migration failed. See the Report View for details."));
+    }
+}
+
+#include "StartupProcess.moc"

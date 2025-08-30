@@ -28,6 +28,7 @@
 #include <QStringList>
 
 class QApplication;
+class QMessageBox;
 
 namespace Gui {
 
@@ -75,6 +76,8 @@ private:
     void showMainWindow();
     void activateWorkbench();
     void checkParameters();
+    void runWelcomeScreen();
+    void migrateToCurrentVersion();
 
 private:
     bool loadFromPythonModule = false;
