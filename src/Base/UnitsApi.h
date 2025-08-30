@@ -85,6 +85,7 @@ public:
 
     static bool isMultiUnitAngle();
     static bool isMultiUnitLength();
+    static bool isMultiUnitLength(int index);
     static std::string getBasicLengthUnit();
     static std::size_t getFractDenominator();
 
