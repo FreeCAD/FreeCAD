@@ -36,7 +36,7 @@ ConstraintInitialTemperature::ConstraintInitialTemperature()
 {
     ADD_PROPERTY(initialTemperature, (300.0));
     ADD_PROPERTY(EnableFinalTemperature, (false));
-    ADD_PROPERTY(finalTemperature, (300.0));
+    ADD_PROPERTY(FinalTemperature, (300.0));
 }
 
 App::DocumentObjectExecReturn* ConstraintInitialTemperature::execute()
