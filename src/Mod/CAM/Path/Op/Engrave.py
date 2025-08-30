@@ -86,10 +86,108 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The vertex index to start the toolpath from"),
         )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "Direction",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Direction of the path"),
+        )
+        direction = [
+            QT_TRANSLATE_NOOP("CAM_Engrave", "From wire"),
+            QT_TRANSLATE_NOOP("CAM_Engrave", "Reversed"),
+            QT_TRANSLATE_NOOP("CAM_Engrave", "Dual"),
+        ]
+        obj.Direction = direction
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "SortingMode",
+            "Sorting",
+            QT_TRANSLATE_NOOP("App::Property", "Sorting mode"),
+        )
+        obj.SortingMode = ("Automatic", "Automatic PaxTux", "Manual")
+        obj.SortingMode = "Automatic"
+
+        obj.addProperty(
+            "App::PropertyVectorDistance",
+            "StartPoint",
+            "Sorting",
+            QT_TRANSLATE_NOOP("App::Property", "The start point of this path"),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "UseStartPoint",
+            "Sorting",
+            QT_TRANSLATE_NOOP("App::Property", "Make True, if specifying a Start Point"),
+        )
+        obj.addProperty(
+            "App::PropertyVectorDistance",
+            "EndPoint",
+            "Sorting",
+            QT_TRANSLATE_NOOP("App::Property", "The end point of this path"),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "UseEndPoint",
+            "Sorting",
+            QT_TRANSLATE_NOOP("App::Property", "Make True, if specifying a End Point"),
+        )
+
         self.setupAdditionalProperties(obj)
 
     def opOnDocumentRestored(self, obj):
         # upgrade ...
+        if not hasattr(obj, "Direction"):
+            direction = [
+                QT_TRANSLATE_NOOP("CAM_Engrave", "From wire"),
+                QT_TRANSLATE_NOOP("CAM_Engrave", "Reversed"),
+                QT_TRANSLATE_NOOP("CAM_Engrave", "Dual"),
+            ]
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "Direction",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Direction of the path"),
+            )
+            obj.Direction = direction
+            obj.Direction == "From wire"
+        if not hasattr(obj, "SortingMode"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "SortingMode",
+                "Sorting",
+                QT_TRANSLATE_NOOP("App::Property", "Sorting mode"),
+            )
+            obj.SortingMode = ("Automatic", "Automatic PaxTux", "Manual")
+            obj.SortingMode = "Automatic"
+        if not hasattr(obj, "StartPoint"):
+            obj.addProperty(
+                "App::PropertyVectorDistance",
+                "StartPoint",
+                "Sorting",
+                QT_TRANSLATE_NOOP("App::Property", "The start point of this path"),
+            )
+        if not hasattr(obj, "UseStartPoint"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "UseStartPoint",
+                "Sorting",
+                QT_TRANSLATE_NOOP("App::Property", "Make True, if specifying a Start Point"),
+            )
+        if not hasattr(obj, "EndPoint"):
+            obj.addProperty(
+                "App::PropertyVectorDistance",
+                "EndPoint",
+                "Sorting",
+                QT_TRANSLATE_NOOP("App::Property", "The end point of this path"),
+            )
+        if not hasattr(obj, "UseEndPoint"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "UseEndPoint",
+                "Sorting",
+                QT_TRANSLATE_NOOP("App::Property", "Make True, if specifying a End Point"),
+            )
+
         self.setupAdditionalProperties(obj)
 
     def opExecute(self, obj):
@@ -100,23 +198,21 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
 
         if len(obj.Base) >= 1:  # user has selected specific subelements
             Path.Log.track(len(obj.Base))
-            wires = []
             for base, subs in obj.Base:
                 edges = []
-                basewires = []
+                wires = []
                 for feature in subs:
                     sub = base.Shape.getElement(feature)
-                    if type(sub) == Part.Edge:
+                    if type(sub) is Part.Edge:
                         edges.append(sub)
                     elif sub.Wires:
-                        basewires.extend(sub.Wires)
+                        wires.extend(sub.Wires)
                     else:
-                        basewires.append(Part.Wire(sub.Edges))
+                        wires.append(Part.Wire(sub.Edges))
 
                 for edgelist in Part.sortEdges(edges):
-                    basewires.append(Part.Wire(edgelist))
+                    wires.append(Part.Wire(edgelist))
 
-                wires.extend(basewires)
                 jobshapes.append(Part.makeCompound(wires))
 
         elif len(obj.BaseShapes) > 0:  # user added specific shapes
@@ -136,7 +232,10 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             Path.Log.debug("processing {} jobshapes".format(len(jobshapes)))
             wires = []
             for shape in jobshapes:
-                shapeWires = shape.Wires
+                if type(shape) is Part.Edge:
+                    shapeWires = [Part.Wire(shape)]
+                else:
+                    shapeWires = shape.Wires
                 Path.Log.debug("jobshape has {} edges".format(len(shape.Edges)))
                 self.commandlist.append(
                     Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
