@@ -29,6 +29,7 @@
 #include <QDialog>
 #include <QList>
 #include <QPair>
+#include "ui_DlgIconFolder.h"
 
 class QListWidgetItem;
 class QTreeWidgetItem;
@@ -117,21 +118,23 @@ class IconFolders : public QDialog
     Q_OBJECT
 
 public:
-    IconFolders(const QStringList&, QWidget* parent);
+    IconFolders(const QStringList& paths, const QList<bool>& enabledList, QWidget* parent);
     ~IconFolders() override;
     QStringList getPaths() const;
+    QStringList getEnabledPaths() const;
+    int getRowCount() const;
+    QString getPathAt(int row) const;
+    bool isPathEnabledAt(int row) const;
+    void accept() override;
 
 private:
     void addFolder();
     void removeFolder();
-
-private:
+    void addTableRow(const QString& path, bool enabled = true);
     bool restart;
     int maxLines;
-    QGridLayout* gridLayout;
-    QLabel* textLabel;
-    QPushButton* addButton;
-    QList< QPair<QLineEdit*, QPushButton*> > buttonMap;
+    bool pathsChanged;
+    Ui_IconFolders* ui;
 };
 
 } // namespace Dialog
