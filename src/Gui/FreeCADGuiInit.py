@@ -20,20 +20,44 @@
 #*   USA                                                                   *
 #*                                                                         *
 #***************************************************************************/
-from dataclasses import dataclass
 
-# FreeCAD gui init module
+# FreeCAD init module - Gui
 #
-# Gathering all the information to start FreeCAD
-# This is the second one of three init scripts, the third one
-# runs when the gui is up
+# Gathering all the information to start FreeCAD Gui.
+# This is the forth of four init scripts:
+# +------+------------------+-----------------------------+
+# | This | Script           | Runs                        |
+# +------+------------------+-----------------------------+
+# |      | CMakeVariables   | always                      |
+# |      | FreeCADInit      | always                      |
+# |      | FreeCADTest      | only if test and not Gui    |
+# | >>>> | FreeCADGuiInit   | only if Gui is up           |
+# +------+------------------+-----------------------------+
 
-# imports the one and only
-import FreeCAD, FreeCADGui
 from enum import IntEnum, Enum
+from dataclasses import dataclass
+import traceback
+import typing
+import re
+from pathlib import Path
+import importlib
+import FreeCAD
+import FreeCADGui
 
 # shortcuts
 Gui = FreeCADGui
+App = FreeCAD
+
+App.Console.PrintLog('Init: Running FreeCADGuiInit.py start script...\n')
+App.Console.PrintLog("░░░▀█▀░█▀█░▀█▀░▀█▀░░░█▀▀░█░█░▀█▀░░\n")
+App.Console.PrintLog("░░░░█░░█░█░░█░░░█░░░░█░█░█░█░░█░░░\n")
+App.Console.PrintLog("░░░▀▀▀░▀░▀░▀▀▀░░▀░░░░▀▀▀░▀▀▀░▀▀▀░░\n")
+
+
+# Declare symbols already defined in global by previous scripts to make linter happy.
+if typing.TYPE_CHECKING:
+    from __main__ import Log, Err, ModState
+
 
 # this is to keep old code working
 Gui.listCommands = Gui.Command.listAll
@@ -70,62 +94,85 @@ class Workbench:
     def Initialize(self):
         """Initializes this workbench."""
         App.Console.PrintWarning(str(self) + ": Workbench.Initialize() not implemented in subclass!")
+
     def ContextMenu(self, recipient):
         pass
+
     def appendToolbar(self,name,cmds):
         self.__Workbench__.appendToolbar(name, cmds)
+
     def removeToolbar(self,name):
         self.__Workbench__.removeToolbar(name)
+
     def listToolbars(self):
         return self.__Workbench__.listToolbars()
+
     def getToolbarItems(self):
         return self.__Workbench__.getToolbarItems()
+
     def appendCommandbar(self,name,cmds):
         self.__Workbench__.appendCommandbar(name, cmds)
+
     def removeCommandbar(self,name):
         self.__Workbench__.removeCommandbar(name)
+
     def listCommandbars(self):
         return self.__Workbench__.listCommandbars()
+
     def appendMenu(self,name,cmds):
         self.__Workbench__.appendMenu(name, cmds)
+
     def removeMenu(self,name):
         self.__Workbench__.removeMenu(name)
+
     def listMenus(self):
         return self.__Workbench__.listMenus()
+
     def appendContextMenu(self,name,cmds):
         self.__Workbench__.appendContextMenu(name, cmds)
+
     def removeContextMenu(self,name):
         self.__Workbench__.removeContextMenu(name)
+
     def reloadActive(self):
         self.__Workbench__.reloadActive()
+
     def name(self):
         return self.__Workbench__.name()
+
     def GetClassName(self):
         """Return the name of the associated C++ class."""
         # as default use this to simplify writing workbenches in Python
         return "Gui::PythonWorkbench"
 
 
-class StandardWorkbench ( Workbench ):
-    """A workbench defines the tool bars, command bars, menus,
-context menu and dockable windows of the main window.
+class StandardWorkbench(Workbench):
     """
+    A workbench defines the tool bars, command bars, menus,
+    context menu and dockable windows of the main window.
+    """
+
     def Initialize(self):
         """Initialize this workbench."""
         # load the module
         Log ('Init: Loading FreeCAD GUI\n')
+
     def GetClassName(self):
         """Return the name of the associated C++ class."""
         return "Gui::StdWorkbench"
 
-class NoneWorkbench ( Workbench ):
+
+class NoneWorkbench(Workbench):
     """An empty workbench."""
+
     MenuText = "<none>"
     ToolTip = "The default empty workbench"
+
     def Initialize(self):
         """Initialize this workbench."""
         # load the module
         Log ('Init: Loading FreeCAD GUI\n')
+
     def GetClassName(self):
         """Return the name of the associated C++ class."""
         return "Gui::NoneWorkbench"
@@ -187,173 +234,181 @@ class HintManager:
 Gui.InputHint = InputHint
 Gui.HintManager = HintManager()
 
-def InitApplications():
-    import sys,os,traceback
-    import io as cStringIO
-  
-    # Searching modules dirs +++++++++++++++++++++++++++++++++++++++++++++++++++
-    # (additional module paths are already cached)
-    ModDirs = FreeCAD.__ModDirs__
-    #print ModDirs
-    Log('Init:   Searching modules\n')
+class ModGui:
+    """
+    Mod Gui Loader.
+    """
 
-    def RunInitGuiPy(Dir) -> bool:
-        InstallFile = os.path.join(Dir,"InitGui.py")
-        if os.path.exists(InstallFile):
-            try:
-                with open(InstallFile, 'rt', encoding='utf-8') as f:
-                    exec(compile(f.read(), InstallFile, 'exec'))
-            except Exception as inst:
-                Log('Init:      Initializing ' + Dir + '... failed\n')
-                Log('-'*100+'\n')
-                Log(traceback.format_exc())
-                Log('-'*100+'\n')
-                Err('During initialization the error "' + str(inst) + '" occurred in '\
-                    + InstallFile + '\n')
-                Err('Look into the log file for further information\n')
-            else:
-                Log('Init:      Initializing ' + Dir + '... done\n')
-                return True
-        else:
-            Log('Init:      Initializing ' + Dir + '(InitGui.py not found)... ignore\n')
+    def run_init_gui(self, sub_workbench: Path | None = None) -> bool:
         return False
 
-    def processMetadataFile(Dir, MetadataFile):
-        meta = FreeCAD.Metadata(MetadataFile)
-        if not meta.supportsCurrentFreeCAD():
-            return None
+    def process_metadata(self) -> bool:
+        return False
+
+    def load(self) -> None:
+        """
+        Load the Mod Gui.
+        """
+        try:
+            if self.mod.state == ModState.Loaded and not self.process_metadata():
+                self.run_init_gui()
+        except Exception as ex:
+            self.mod.state = ModState.Failed
+            Err(str(ex))
+
+class DirModGui(ModGui):
+    """
+    Dir Mod Gui Loader.
+    """
+
+    INIT_GUI_PY = "InitGui.py"
+
+    def __init__(self, mod):
+        self.mod = mod
+
+    def run_init_gui(self, sub_workbench: Path | None = None) -> bool:
+        init_gui_py = (sub_workbench or self.mod.path) / self.INIT_GUI_PY
+        if init_gui_py.exists():
+            try:
+                source = init_gui_py.read_text(encoding="utf-8")
+                code = compile(source, init_gui_py, "exec")
+                exec(code)
+            except Exception as ex:
+                sep = "-" * 100 + "\n"
+                Log(f"Init:      Initializing {self.mod.path!s}... failed\n")
+                Log(sep)
+                Log(traceback.format_exc())
+                Log(sep)
+                Err(f"During initialization the error \"{ex!s}\" occurred in {self.mod.path!s}\n")
+                Err("Look into the log file for further information\n")
+            else:
+                Log(f"Init:      Initializing {self.mod.path!s}... done\n")
+                return True
+        else:
+            Log(f"Init:      Initializing {self.mod.path!s} (InitGui.py not found)... ignore\n")
+        return False
+
+    def process_metadata(self) -> bool:
+        meta = self.mod.metadata
+        if not meta:
+            return False
+
         content = meta.Content
+        processed = False
         if "workbench" in content:
-            FreeCAD.Gui.addIconPath(Dir)
+            FreeCAD.Gui.addIconPath(str(self.mod.path))
             workbenches = content["workbench"]
             for workbench_metadata in workbenches:
                 if not workbench_metadata.supportsCurrentFreeCAD():
-                    return None
-                subdirectory = workbench_metadata.Name\
-                    if not workbench_metadata.Subdirectory\
-                    else workbench_metadata.Subdirectory
-                subdirectory = subdirectory.replace("/",os.path.sep)
-                subdirectory = os.path.join(Dir, subdirectory)
-                ran_init = RunInitGuiPy(subdirectory)
+                    continue
 
-                if ran_init:
+                subdirectory = workbench_metadata.Subdirectory or workbench_metadata.Name
+                subdirectory = self.mod.path / Path(*re.split(r"[/\\]+", subdirectory))
+                if not subdirectory.exists():
+                    continue
+
+                if self.run_init_gui(subdirectory):
+                    processed = True
                     # Try to generate a new icon from the metadata-specified information
                     classname = workbench_metadata.Classname
                     if classname:
                         try:
                             wb_handle = FreeCAD.Gui.getWorkbench(classname)
                         except Exception:
-                            Log(f"Failed to get handle to {classname} -- no icon\
-                                can be generated,\n check classname in package.xml\n")
+                            Log(
+                                f"Failed to get handle to {classname} -- no icon "
+                                "can be generated, check classname in package.xml\n"
+                            )
                         else:
-                            GeneratePackageIcon(dir, subdirectory, workbench_metadata,
-                                                wb_handle)
+                            GeneratePackageIcon(
+                                str(self.mod.path),
+                                str(subdirectory),
+                                workbench_metadata,
+                                wb_handle,
+                            )
+        return processed
 
-    def tryProcessMetadataFile(Dir, MetadataFile):
+
+class ExtModGui(ModGui):
+    """
+    Ext Mod Gui Loader.
+    """
+
+    def __init__(self, mod):
+        self.mod = mod
+
+    def run_init_gui(self, _sub_workbench: Path | None = None) -> bool:
+        Log(f'Init: Initializing {self.mod.name}\n')
         try:
-            processMetadataFile(Dir, MetadataFile)
-        except Exception as exc:
-            Err(str(exc))
-
-    def checkIfAddonIsDisabled(Dir):
-        DisabledAddons = FreeCAD.ConfigGet("DisabledAddons").split(";")
-        Name = os.path.basename(Dir)
-
-        if Name in DisabledAddons:
-            Msg(f'NOTICE: Addon "{Name}" disabled by presence of "--disable-addon {Name}" argument\n')
-            return True
-
-        stopFileName = "ALL_ADDONS_DISABLED"
-        stopFile = os.path.join(Dir, os.path.pardir, stopFileName)
-        if os.path.exists(stopFile):
-            Msg(f'NOTICE: Addon "{Dir}" disabled by presence of {stopFileName} stopfile\n')
-            return True
-
-        stopFileName = "ADDON_DISABLED"
-        stopFile = os.path.join(Dir, stopFileName)
-        if os.path.exists(stopFile):
-            Msg(f'NOTICE: Addon "{Dir}" disabled by presence of {stopFileName} stopfile\n')
-            return True
-
+            try:
+                importlib.import_module(f"{self.mod.name}.init_gui")
+            except ModuleNotFoundError:
+                Log(f'Init: No init_gui module found in {self.mod.name}, skipping\n')
+            else:
+                Log(f'Init: Initializing {self.mod.name}... done\n')
+                return True
+        except ImportError as ex:
+            Err(f'During initialization the error "{ex!s}" occurred\n')
+        except Exception as ex:
+            sep = "-" * 80 + "\n"
+            Err(f'During initialization the error "{ex!s}" occurred in {self.mod.name}\n')
+            Err(sep)
+            Err(traceback.format_exc())
+            Err(sep)
+            Log(f'Init:      Initializing {self.mod.name}... failed\n')
+            Log(sep)
+            Log(traceback.format_exc())
+            Log(sep)
         return False
 
-    for Dir in ModDirs:
-        if Dir not in ['', 'CVS', '__init__.py']:
-            if checkIfAddonIsDisabled(Dir):
-                continue
-            MetadataFile = os.path.join(Dir, "package.xml")
-            if os.path.exists(MetadataFile):
-                tryProcessMetadataFile(Dir, MetadataFile)
-            else:
-                RunInitGuiPy(Dir)
+
+def InitApplications():
+    Log("Init:   Searching modules\n")
+
+    def mod_gui_init(kind: str, mod_type: type, output: list[str]) -> None:
+        for mod in App.__ModCache__:
+            if mod.kind == kind:
+                if mod.state == ModState.Loaded:
+                    gui = mod_type(mod)
+                    gui.load()
+                if mod.init_mode:
+                    row = f"| {mod.name:<24.24} | {mod.state.name:<10.10} | {mod.init_mode:<6.6} |\n"
+                    output.append(row)
+
+    output = []
+    output.append(f"+-{'--':-<24}-+-{'--------':-<10}-+-{'---':-<6}-+\n")
+    output.append(f"| {'Mod':<24} | {'Gui State':<10} | {'Mode':<6} |\n")
+    output.append(output[0])
+
+    mod_gui_init("Dir", DirModGui, output)
     Log("All modules with GUIs using InitGui.py are now initialized\n")
 
-    try:
-        import pkgutil
-        import importlib
-        import freecad
-        freecad.gui = FreeCADGui
-        for _, freecad_module_name,\
-            freecad_module_ispkg in pkgutil.iter_modules(freecad.__path__, "freecad."):
-            # Check for a stopfile
-            stopFile = os.path.join(FreeCAD.getUserAppDataDir(), "Mod",
-                                    freecad_module_name[8:], "ADDON_DISABLED")
-            if os.path.exists(stopFile):
-                continue
-
-            # Make sure that package.xml (if present) does not exclude this version of FreeCAD
-            MetadataFile = os.path.join(FreeCAD.getUserAppDataDir(), "Mod",
-                                        freecad_module_name[8:], "package.xml")
-            if os.path.exists(MetadataFile):
-                meta = FreeCAD.Metadata(MetadataFile)
-                if not meta.supportsCurrentFreeCAD():
-                    continue
-
-            if freecad_module_ispkg:
-                Log('Init: Initializing ' + freecad_module_name + '\n')
-                try:
-                    freecad_module = importlib.import_module(freecad_module_name)
-                    if any (module_name == 'init_gui' for _, module_name,
-                            ispkg in pkgutil.iter_modules(freecad_module.__path__)):
-                        importlib.import_module(freecad_module_name + '.init_gui')
-                        Log('Init: Initializing ' + freecad_module_name + '... done\n')
-                    else:
-                        Log('Init: No init_gui module found in ' + freecad_module_name\
-                            + ', skipping\n')
-                except Exception as inst:
-                    Err('During initialization the error "' + str(inst) + '" occurred in '\
-                        + freecad_module_name + '\n')
-                    Err('-'*80+'\n')
-                    Err(traceback.format_exc())
-                    Err('-'*80+'\n')
-                    Log('Init:      Initializing ' + freecad_module_name + '... failed\n')
-                    Log('-'*80+'\n')
-                    Log(traceback.format_exc())
-                    Log('-'*80+'\n')
-    except ImportError as inst:
-        Err('During initialization the error "' + str(inst) + '" occurred\n')
-
+    mod_gui_init("Ext", ExtModGui, output)
     Log("All modules with GUIs initialized using pkgutil are now initialized\n")
 
-def GeneratePackageIcon(dir:str, subdirectory:str, workbench_metadata:FreeCAD.Metadata,
-                        wb_handle:Workbench) -> None:
+    Log("FreeCADGuiInit Mod summary:\n")
+    for line in output:
+        Log(line)
+    Log(output[0])
+
+
+def GeneratePackageIcon(
+        parent_dir: str,
+        subdirectory: str,
+        workbench_metadata: FreeCAD.Metadata,
+        wb_handle: Workbench
+    ) -> None:
     relative_filename = workbench_metadata.Icon
     if not relative_filename:
         # Although a required element, this content item does not have an icon. Just bail out
         return
-    absolute_filename = os.path.join(subdirectory, relative_filename)
+    absolute_filename = Path(subdirectory) / Path(relative_filename)
     if hasattr(wb_handle, "Icon") and wb_handle.Icon:
         Log(f"Init:      Packaged workbench {workbench_metadata.Name} specified icon\
             in class {workbench_metadata.Classname}")
-        Log(f" ... replacing with icon from package.xml data.\n")
-    wb_handle.__dict__["Icon"] = absolute_filename
+        Log(" ... replacing with icon from package.xml data.\n")
+    wb_handle.__dict__["Icon"] = str(absolute_filename.resolve())
 
-
-Log ('Init: Running FreeCADGuiInit.py start script...\n')
-
-
-
-# init the gui
 
 # signal that the gui is up
 App.GuiUp = 1
@@ -369,19 +424,25 @@ InitApplications()
 Gui.activateWorkbench("NoneWorkbench")
 
 # Register .py, .FCScript and .FCMacro
-FreeCAD.addImportType("Inventor V2.1 (*.iv *.IV)","FreeCADGui")
-FreeCAD.addImportType("VRML V2.0 (*.wrl *.WRL *.vrml *.VRML *.wrz *.WRZ *.wrl.gz *.WRL.GZ)","FreeCADGui")
-FreeCAD.addImportType("Python (*.py *.FCMacro *.FCScript *.fcmacro *.fcscript)","FreeCADGui")
-FreeCAD.addExportType("Inventor V2.1 (*.iv)","FreeCADGui")
-FreeCAD.addExportType("VRML V2.0 (*.wrl *.vrml *.wrz *.wrl.gz)","FreeCADGui")
-FreeCAD.addExportType("X3D Extensible 3D (*.x3d *.x3dz)","FreeCADGui")
-FreeCAD.addExportType("WebGL/X3D (*.xhtml)","FreeCADGui")
+FreeCAD.addImportType("Inventor V2.1 (*.iv *.IV)", "FreeCADGui")
+FreeCAD.addImportType("VRML V2.0 (*.wrl *.WRL *.vrml *.VRML *.wrz *.WRZ *.wrl.gz *.WRL.GZ)", "FreeCADGui")
+FreeCAD.addImportType("Python (*.py *.FCMacro *.FCScript *.fcmacro *.fcscript)", "FreeCADGui")
+FreeCAD.addExportType("Inventor V2.1 (*.iv)", "FreeCADGui")
+FreeCAD.addExportType("VRML V2.0 (*.wrl *.vrml *.wrz *.wrl.gz)", "FreeCADGui")
+FreeCAD.addExportType("X3D Extensible 3D (*.x3d *.x3dz)", "FreeCADGui")
+FreeCAD.addExportType("WebGL/X3D (*.xhtml)", "FreeCADGui")
+FreeCAD.addExportType("Portable Document Format (*.pdf)", "FreeCADGui")
 #FreeCAD.addExportType("IDTF (for 3D PDF) (*.idtf)","FreeCADGui")
 #FreeCAD.addExportType("3D View (*.svg)","FreeCADGui")
-FreeCAD.addExportType("Portable Document Format (*.pdf)","FreeCADGui")
+
+Log ('Init: Running FreeCADGuiInit.py start script... done\n')
+
+# ┌────────────────────────────────────────────────┐
+# │ Cleanup                                        │
+# └────────────────────────────────────────────────┘
 
 del InitApplications
 del NoneWorkbench
 del StandardWorkbench
-
-Log ('Init: Running FreeCADGuiInit.py start script... done\n')
+del App.__ModCache__, ModGui, DirModGui, ExtModGui
+del typing, re, Path, importlib
