@@ -101,6 +101,7 @@ CDxfWrite::CDxfWrite(const char* filepath)
     , m_ssBlkRecord(new std::ostringstream())
     , m_ssEntity(new std::ostringstream())
     , m_ssLayer(new std::ostringstream())
+    , m_ssDimstyle(new std::ostringstream())
     , m_version(12)
     , m_handle(0xA00)
     ,  // room for 2560 handles in boilerplate files
@@ -125,6 +126,8 @@ CDxfWrite::CDxfWrite(const char* filepath)
     // use lots of digits to avoid rounding errors
     m_ssEntity->setf(std::ios::fixed);
     m_ssEntity->precision(9);
+    m_ssDimstyle->setf(std::ios::fixed);
+    m_ssDimstyle->precision(9);
 }
 
 CDxfWrite::~CDxfWrite()
@@ -134,6 +137,7 @@ CDxfWrite::~CDxfWrite()
     delete m_ssBlkRecord;
     delete m_ssEntity;
     delete m_ssLayer;
+    delete m_ssDimstyle;
 }
 
 void CDxfWrite::init()
@@ -147,6 +151,7 @@ void CDxfWrite::init()
 void CDxfWrite::endRun()
 {
     makeLayerTable();
+    makeDimstyleTable();
     makeBlockRecordTableBody();
 
     writeClassesSection();
@@ -209,6 +214,7 @@ void CDxfWrite::writeTablesSection()
     (*m_ofs) << getPlateFile(fileSpec);
 
     (*m_ofs) << (*m_ssLayer).str();
+    (*m_ofs) << (*m_ssDimstyle).str();
 
     // static tables section tail end content
     ss.str("");
