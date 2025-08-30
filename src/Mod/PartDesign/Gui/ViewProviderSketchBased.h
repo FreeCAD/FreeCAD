@@ -25,6 +25,9 @@
 
 #include "ViewProvider.h"
 
+#include <Gui/ParamHandler.h>
+#include <Gui/Inventor/SoToggleSwitch.h>
+
 namespace PartDesignGui {
 
 /**
@@ -43,6 +46,21 @@ public:
     /// grouping handling
     std::vector<App::DocumentObject*> claimChildren() const override;
 
+    void attach(App::DocumentObject* pcObject) override;
+
+protected:
+    void updateData(const App::Property* prop) override;
+    void updatePreview() override;
+
+private:
+    void updateProfileShape();
+
+    Gui::CoinPtr<SoToggleSwitch> pcProfileToggle;
+    Gui::CoinPtr<PartGui::SoPreviewShape> pcProfileShape;
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/PartDesign/Preview");
+    Gui::ParamHandlers handlers;
 };
 
 } /* PartDesignGui  */
