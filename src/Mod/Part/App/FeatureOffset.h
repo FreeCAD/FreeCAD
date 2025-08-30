@@ -41,7 +41,6 @@ public:
 
     App::PropertyLink  Source;
     App::PropertyFloat Value;
-    App::PropertyEnumeration Mode;
     App::PropertyEnumeration Join;
     App::PropertyBool Intersection;
     App::PropertyBool SelfIntersection;
@@ -58,7 +57,6 @@ public:
     //@}
 
 private:
-    static const char* ModeEnums[];
     static const char* JoinEnums[];
 };
 
@@ -69,6 +67,8 @@ public:
     Offset2D();
     ~Offset2D() override;
 
+    App::PropertyEnumeration Mode;
+
     /** @name methods override feature */
     //@{
     /// recalculate the feature
@@ -78,6 +78,9 @@ public:
         return "PartGui::ViewProviderOffset2D";
     }
     //@}
+
+private: 
+    static const char* ModeEnums[];
 };
 
 }

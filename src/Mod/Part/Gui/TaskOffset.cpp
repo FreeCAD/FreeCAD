@@ -71,8 +71,16 @@ OffsetWidget::OffsetWidget(Part::Offset* offset, QWidget* parent)
 
     bool is_2d = d->offset->isDerivedFrom<Part::Offset2D>();
     d->ui.selfIntersection->setVisible(!is_2d);
-    if(is_2d)
-        d->ui.modeType->removeItem(2);//remove Recto-Verso mode, not supported by 2d offset
+
+    // Offset mode is only supported in 2d offsets
+    d->ui.label_2->setVisible(is_2d);
+    d->ui.modeType->setVisible(is_2d);
+    if(is_2d) {
+        auto* offset2d = static_cast<Part::Offset2D*>(offset);
+        long mode = offset2d->Mode.getValue();
+        if (mode >= 0 && mode < d->ui.modeType->count())
+            d->ui.modeType->setCurrentIndex(mode);
+    }
 
     //block signals to fill values read out from feature...
     bool block = true;
@@ -88,9 +96,7 @@ OffsetWidget::OffsetWidget(Part::Offset* offset, QWidget* parent)
     d->ui.fillOffset->setChecked(offset->Fill.getValue());
     d->ui.intersection->setChecked(offset->Intersection.getValue());
     d->ui.selfIntersection->setChecked(offset->SelfIntersection.getValue());
-    long mode = offset->Mode.getValue();
-    if (mode >= 0 && mode < d->ui.modeType->count())
-        d->ui.modeType->setCurrentIndex(mode);
+
     long join = offset->Join.getValue();
     if (join >= 0 && join < d->ui.joinType->count())
         d->ui.joinType->setCurrentIndex(join);
@@ -146,9 +152,11 @@ void OffsetWidget::onSpinOffsetValueChanged(double val)
 
 void OffsetWidget::onModeTypeActivated(int val)
 {
-    d->offset->Mode.setValue(val);
-    if (d->ui.updateView->isChecked())
-        d->offset->getDocument()->recomputeFeature(d->offset);
+    if (auto* offset2d = freecad_cast<Part::Offset2D*>(d->offset)) {
+        offset2d->Mode.setValue(val);
+        if (d->ui.updateView->isChecked())
+            d->offset->getDocument()->recomputeFeature(d->offset);
+    }
 }
 
 void OffsetWidget::onJoinTypeActivated(int val)
