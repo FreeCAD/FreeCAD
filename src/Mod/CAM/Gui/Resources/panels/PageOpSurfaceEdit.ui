@@ -22,7 +22,7 @@
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QFormLayout" name="formLayout">
+     <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
        <widget class="QLabel" name="toolController_label">
         <property name="text">
@@ -48,6 +48,13 @@
        <widget class="QComboBox" name="coolantController">
         <property name="toolTip">
          <string>The tool and its settings to be used for this operation</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="editToolController">
+        <property name="text">
+         <string>Edit Tool Controller</string>
         </property>
        </widget>
       </item>
