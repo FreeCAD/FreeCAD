@@ -25,6 +25,7 @@
 #define ASSEMBLYGUI_VIEWPROVIDER_ViewProviderAssembly_H
 
 #include <QCoreApplication>
+#include <boost/signals2.hpp>
 
 #include <Mod/Assembly/AssemblyGlobal.h>
 
@@ -44,6 +45,7 @@ class View3DInventorViewer;
 
 namespace AssemblyGui
 {
+class TaskAssemblyMessages;
 
 struct MovingObject
 {
@@ -200,6 +202,8 @@ public:
 
     static Base::Vector3d getCenterOfBoundingBox(const std::vector<MovingObject>& movingObjs);
 
+    void UpdateSolverInformation();
+
     DragMode dragMode;
     bool canStartDragging;
     bool partMoving;
@@ -229,6 +233,10 @@ public:
     SoFieldSensor* translationSensor = nullptr;
     SoFieldSensor* rotationSensor = nullptr;
 
+    boost::signals2::signal<
+        void(const QString& state, const QString& msg, const QString& url, const QString& linkText)>
+        signalSetUp;
+
 private:
     bool tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer);
     void tryInitMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer);
@@ -237,6 +245,9 @@ private:
                                const std::string& subNamePrefix,
                                App::DocumentObject* currentObject,
                                bool onlySolids);
+
+    TaskAssemblyMessages* taskSolver;
+    boost::signals2::connection connectSolverUpdate;
 };
 
 }  // namespace AssemblyGui

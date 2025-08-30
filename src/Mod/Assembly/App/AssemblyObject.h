@@ -25,6 +25,7 @@
 #ifndef ASSEMBLY_AssemblyObject_H
 #define ASSEMBLY_AssemblyObject_H
 
+#include <boost/signals2.hpp>
 
 #include <Mod/Assembly/AssemblyGlobal.h>
 
@@ -193,6 +194,51 @@ public:
 
     bool isMbDJointValid(App::DocumentObject* joint);
 
+    bool isEmpty() const;
+    int numberOfComponents() const;
+
+    inline int getLastDoF() const
+    {
+        return lastDoF;
+    }
+    inline bool getLastHasConflicts() const
+    {
+        return lastHasConflict;
+    }
+    inline bool getLastHasRedundancies() const
+    {
+        return lastHasRedundancies;
+    }
+    inline bool getLastHasPartialRedundancies() const
+    {
+        return lastHasPartialRedundancies;
+    }
+    inline bool getLastHasMalformedConstraints() const
+    {
+        return lastHasMalformedConstraints;
+    }
+    inline int getLastSolverStatus() const
+    {
+        return lastSolverStatus;
+    }
+    inline const std::vector<int>& getLastConflicting() const
+    {
+        return lastConflicting;
+    }
+    inline const std::vector<int>& getLastRedundant() const
+    {
+        return lastRedundant;
+    }
+    inline const std::vector<int>& getLastPartiallyRedundant() const
+    {
+        return lastPartiallyRedundant;
+    }
+    inline const std::vector<int>& getLastMalformedConstraints() const
+    {
+        return lastMalformedConstraints;
+    }
+    boost::signals2::signal<void()> signalSolverUpdate;
+
 private:
     std::shared_ptr<MbD::ASMTAssembly> mbdAssembly;
 
@@ -204,6 +250,18 @@ private:
     std::vector<std::pair<App::DocumentObject*, Base::Placement>> previousPositions;
 
     bool bundleFixed;
+
+    int lastDoF;
+    bool lastHasConflict;
+    bool lastHasRedundancies;
+    bool lastHasPartialRedundancies;
+    bool lastHasMalformedConstraints;
+    int lastSolverStatus;
+
+    std::vector<int> lastConflicting;
+    std::vector<int> lastRedundant;
+    std::vector<int> lastPartiallyRedundant;
+    std::vector<int> lastMalformedConstraints;
 };
 
 }  // namespace Assembly

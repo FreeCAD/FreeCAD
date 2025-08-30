@@ -541,7 +541,7 @@ AssemblyObject* AssemblyLink::getParentAssembly() const
     return nullptr;
 }
 
-bool AssemblyLink::isRigid()
+bool AssemblyLink::isRigid() const
 {
     auto* prop = dynamic_cast<App::PropertyBool*>(getPropertyByName("Rigid"));
     if (!prop) {
@@ -558,4 +558,19 @@ std::vector<App::DocumentObject*> AssemblyLink::getJoints()
         return {};
     }
     return jointGroup->getJoints();
+}
+
+bool AssemblyLink::allowDuplicateLabel() const
+{
+    return true;
+}
+
+int AssemblyLink::numberOfComponents() const
+{
+    return isRigid() ? 1 : getLinkedAssembly()->numberOfComponents();
+}
+
+bool AssemblyLink::isEmpty() const
+{
+    return numberOfComponents() == 0;
 }
