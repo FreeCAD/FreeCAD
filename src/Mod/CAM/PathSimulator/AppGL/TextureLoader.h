@@ -26,7 +26,7 @@
 #include <vector>
 #include <QImage>
 
-namespace MillSim
+namespace CAMSimulator
 {
 
 struct TextureItem
@@ -51,5 +51,5 @@ protected:
     std::string mImageFolder;
 };
 
-}  // namespace MillSim
+}  // namespace CAMSimulator
 #endif  // !__texture_loader_h__

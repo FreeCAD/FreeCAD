@@ -28,12 +28,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "GlUtils.h"
 #include "Shader.h"
+
 #include <iostream>
+
 #include <Base/Console.h>
 
-namespace MillSim
+#include "GlUtils.h"
+#include "OpenGlWrapper.h"
+
+namespace CAMSimulator
 {
 
 Shader* CurrentShader = nullptr;
@@ -43,31 +47,34 @@ Shader::~Shader()
     Destroy();
 }
 
-void Shader::UpdateModelMat(mat4x4 tmat, mat4x4 nmat)
+void Shader::UpdateModelMat(const mat4x4& tmat, const mat4x4& nmat)
 {
     if (mModelPos >= 0) {
-        glUniformMatrix4fv(mModelPos, 1, GL_FALSE, (GLfloat*)tmat);
+        glUniformMatrix4fv(mModelPos, 1, GL_FALSE, (const GLfloat*)tmat);
     }
     if (mNormalRotPos >= 0) {
-        glUniformMatrix4fv(mNormalRotPos, 1, GL_FALSE, (GLfloat*)nmat);
+        glUniformMatrix4fv(mNormalRotPos, 1, GL_FALSE, (const GLfloat*)nmat);
     }
 }
 
-void Shader::UpdateProjectionMat(mat4x4 mat)
+void Shader::UpdateProjectionMat(const mat4x4& mat)
 {
     if (mProjectionPos >= 0) {
-        glUniformMatrix4fv(mProjectionPos, 1, GL_FALSE, (GLfloat*)mat);
+        glUniformMatrix4fv(mProjectionPos, 1, GL_FALSE, (const GLfloat*)mat);
     }
 }
 
-void Shader::UpdateViewMat(mat4x4 mat)
+void Shader::UpdateViewMat(const mat4x4& mat)
 {
     if (mViewPos >= 0) {
-        glUniformMatrix4fv(mViewPos, 1, GL_FALSE, (GLfloat*)mat);
+        glUniformMatrix4fv(mViewPos, 1, GL_FALSE, (const GLfloat*)mat);
     }
 }
 
-void Shader::UpdateEnvColor(vec3 lightPos, vec3 lightColor, vec3 ambient, float linearity)
+void Shader::UpdateEnvColor(const vec3& lightPos,
+                            const vec3& lightColor,
+                            const vec3& ambient,
+                            float linearity)
 {
     if (mLightPosPos >= 0) {
         glUniform3fv(mLightPosPos, 1, lightPos);
@@ -93,14 +100,14 @@ void Shader::UpdateScreenDimension(int width, int height)
     }
 }
 
-void Shader::UpdateObjColor(vec3 objColor)
+void Shader::UpdateObjColor(const vec3& objColor)
 {
     if (mObjectColorPos >= 0) {
         glUniform3fv(mObjectColorPos, 1, objColor);
     }
 }
 
-void Shader::UpdateObjColorAlpha(vec4 objColor)
+void Shader::UpdateObjColorAlpha(const vec4& objColor)
 {
     if (mObjectColorAlphaPos >= 0) {
         glUniform4fv(mObjectColorAlphaPos, 1, objColor);
@@ -279,6 +286,10 @@ void Shader::Destroy()
     shaderId = 0;
 }
 
+bool Shader::IsValid()
+{
+    return shaderId > 0;
+}
 
 const char* VertShader3DNorm = R"(
     #version 330 core
@@ -325,7 +336,6 @@ const char* VertShader3DInvNorm = R"(
     }
 )";
 
-
 const char* VertShader2DTex = R"(
     #version 330 core
 
@@ -359,7 +369,6 @@ const char* FragShader2dTex = R"(
         FragColor = vec4(objectColor, 1.0) * texColor;
     }
 )";
-
 
 const char* FragShaderNorm = R"(
     #version 330
@@ -629,4 +638,4 @@ const char* FragShader3DLine = R"(
     }
 )";
 
-}  // namespace MillSim
+}  // namespace CAMSimulator
