@@ -842,9 +842,19 @@ void AttachEngine::readLinks(const std::vector<App::DocumentObject*>& objs,
 
         auto shape = extractSubShape(objs[i], subs[i]);
         if (shape.isNull()) {
-            FC_THROWM(AttachEngineException,
-                      "AttachEngine3D: null subshape " << objs[i]->getNameInDocument() << '.'
-                                                       << subs[i]);
+            if (subs[i].length() == 0) {
+                storage.emplace_back(TopoShape());
+                shapes[i] = &storage.back();
+                types[i] = eRefType(rtPart | rtFlagHasPlacement);
+                continue;
+            }
+            else {
+                // This case should now be unreachable because extractSubShape would have thrown
+                // for a missing subname. But it's good defensive programming.
+                FC_THROWM(AttachEngineException,
+                          "AttachEngine3D: null subshape " << objs[i]->getNameInDocument() << '.'
+                                                           << subs[i]);
+            }
         }
 
         storage.emplace_back(shape);
@@ -889,9 +899,22 @@ TopoShape AttachEngine::extractSubShape(App::DocumentObject* obj, const std::str
 
         for (;;) {
             if (shape.isNull()) {
-                FC_THROWM(AttachEngineException,
-                          "AttachEngine3D: subshape not found " << obj->getNameInDocument() << '.'
-                                                                << subname);
+                // Shape is null. Let's see if this is an acceptable null.
+                // (i.e., an empty object was selected, not a broken link to a sub-element).
+                if (subname.empty()) {
+                    // The user selected the whole object, and it has no shape.
+                    // This is the empty sketch or empty body case.
+                    // Instead of throwing an error, we return a null TopoShape.
+                    // The caller (readLinks) will then handle this null shape.
+                    return TopoShape();  // Return a default-constructed (null) shape
+                }
+                else {
+                    // The user specified a subname (e.g., "Edge1"), but it couldn't be found.
+                    // This is a genuine error.
+                    FC_THROWM(AttachEngineException,
+                              "AttachEngine3D: subshape not found " << obj->getNameInDocument()
+                                                                    << '.' << subname);
+                }
             }
 
             if (shape.shapeType() != TopAbs_COMPOUND || shape.countSubShapes(TopAbs_SHAPE) != 1) {
