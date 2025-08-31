@@ -56,9 +56,14 @@ class ToolBitLibraryDock(object):
         self.defaultJob = defaultJob
         self.autoClose = autoClose
         self.form = QtWidgets.QDialog()
-        self.form_layout = QtGui.QVBoxLayout(self.form)
         self.form.setObjectName("ToolSelector")
         self.form.setWindowTitle(translate("CAM_ToolBit", "Tool Selector"))
+        self.form.setMinimumSize(600, 400)
+        self.form.resize(800, 600)
+        self.form.adjustSize()
+        self.form_layout = QtGui.QVBoxLayout(self.form)
+        self.form_layout.setContentsMargins(4, 4, 4, 4)
+        self.form_layout.setSpacing(4)
 
         # Create the browser widget
         self.browser_widget = LibraryBrowserWidget(asset_manager=cam_assets)
@@ -72,6 +77,8 @@ class ToolBitLibraryDock(object):
         # Create a main widget and layout for the dock
         main_widget = QtGui.QWidget()
         main_layout = QtGui.QVBoxLayout(main_widget)
+        main_layout.setContentsMargins(4, 4, 4, 4)
+        main_layout.setSpacing(4)
 
         # Add the browser widget to the layout
         main_layout.addWidget(self.browser_widget)
