@@ -53,7 +53,7 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
             _PropHelper(
                 type="App::PropertyEnumeration",
                 name="AnalysisType",
-                group="Solver",
+                group="AnalysisType",
                 doc="Type of the analysis",
                 value=["static", "frequency", "thermomech", "check", "buckling", "electromagnetic"],
             )
@@ -125,7 +125,7 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
             _PropHelper(
                 type="App::PropertyTime",
                 name="TimeInitialStep",
-                group="Solver",
+                group="TimeIncrement",
                 doc="Initial time steps",
                 value=0.01,
             )
@@ -134,7 +134,7 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
             _PropHelper(
                 type="App::PropertyTime",
                 name="TimeEnd",
-                group="Solver",
+                group="TimeIncrement",
                 doc="End time analysis",
                 value=1.0,
             )
@@ -143,7 +143,7 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
             _PropHelper(
                 type="App::PropertyTime",
                 name="TimeMinimumStep",
-                group="Solver",
+                group="TimeIncrement",
                 doc="Minimum time step",
                 value=0.00001,
             )
@@ -152,7 +152,7 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
             _PropHelper(
                 type="App::PropertyTime",
                 name="TimeMaximumStep",
-                group="Solver",
+                group="TimeIncrement",
                 doc="Maximum time step",
                 value=1.0,
             )
@@ -161,7 +161,7 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
             _PropHelper(
                 type="App::PropertyBool",
                 name="ThermoMechSteadyState",
-                group="Solver",
+                group="AnalysisType",
                 doc="Choose between steady state thermo mech or transient thermo mech analysis",
                 value=True,
             )
@@ -225,21 +225,12 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
         prop.append(
             _PropHelper(
                 type="App::PropertyBool",
-                name="IterationsUserDefinedIncrementations",
-                group="Solver",
-                doc="Set to True to switch off the ccx automatic incrementation completely\n"
-                + "(ccx parameter DIRECT). Use with care. Analysis may not converge!",
-                value=False,
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyBool",
-                name="IterationsUserDefinedTimeStepLength",
-                group="Solver",
-                doc="Set to True to use the user defined time steps.\n"
-                + "They are set with TimeInitialStep, TimeEnd, TimeMinimum and TimeMaximum",
-                value=False,
+                name="AutomaticIncrementation",
+                group="TimeIncrement",
+                doc="If False, switch off automatic incrementation via CalculiX\n"
+                + "`DIRECT` parameter and ignore minimum and maximum time increments.\n"
+                + "Analysis may not converge!",
+                value=True,
             )
         )
         prop.append(
@@ -271,7 +262,7 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
             _PropHelper(
                 type="App::PropertyBool",
                 name="BeamReducedIntegration",
-                group="Solver",
+                group="ElementModel",
                 doc="Set to True to use beam elements with reduced integration",
                 value=True,
             )
@@ -289,7 +280,7 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
             _PropHelper(
                 type="App::PropertyEnumeration",
                 name="ModelSpace",
-                group="Solver",
+                group="ElementModel",
                 doc="Type of model space",
                 value=["3D", "plane stress", "plane strain", "axisymmetric"],
             )
@@ -298,7 +289,7 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
             _PropHelper(
                 type="App::PropertyEnumeration",
                 name="ThermoMechType",
-                group="Solver",
+                group="AnalysisType",
                 doc="Type of thermomechanical analysis",
                 value=["coupled", "uncoupled", "pure heat transfer"],
             )
@@ -316,7 +307,7 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
             _PropHelper(
                 type="App::PropertyEnumeration",
                 name="ElectromagneticMode",
-                group="Solver",
+                group="AnalysisType",
                 doc="Electromagnetic mode",
                 value=["electrostatic"],
             )
@@ -325,7 +316,7 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
             _PropHelper(
                 type="App::PropertyBool",
                 name="ExcludeBendingStiffness",
-                group="Solver",
+                group="ElementModel",
                 doc="Exclude bending stiffness to replace shells with membranes or beams with trusses",
                 value=False,
             )
@@ -339,3 +330,16 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
                 obj.getPropertyByName(prop.name)
             except Base.PropertyError:
                 prop.add_to_object(obj)
+
+        # remove old properties
+        try:
+            obj.AutomaticIncrementation = not obj.getPropertyByName(
+                "IterationsUserDefinedIncrementations"
+            )
+            obj.setPropertyStatus("IterationsUserDefinedIncrementations", "-LockDynamic")
+            obj.removeProperty("IterationsUserDefinedIncrementations")
+            obj.setPropertyStatus("IterationsUserDefinedTimeStepLength", "-LockDynamic")
+            obj.removeProperty("IterationsUserDefinedTimeStepLength")
+
+        except Base.PropertyError:
+            pass
