@@ -8,11 +8,80 @@
 #include <App/Document.h>
 #include <App/Expression.h>
 #include <App/ObjectIdentifier.h>
+#include <Mod/Part/App/FeaturePartBox.h>
 #include <Mod/Sketcher/App/GeoEnum.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include "SketcherTestHelpers.h"
 
 using namespace SketcherTestHelpers;
+
+TEST_F(SketchObjectTest, testAddExternalIncreasesCount)
+{
+    // Arrange
+    auto* doc = getObject()->getDocument();
+    auto box {doc->addObject("Part::Box")};
+    int numboxes = doc->countObjectsOfType<Part::Box>();
+    int numExtPre = getObject()->ExternalGeo.getSize();
+    doc->recompute();
+
+    // Act
+    getObject()->addExternal(box, "Face6");
+    int numExt = getObject()->ExternalGeo.getSize();
+
+    // Assert
+    EXPECT_TRUE(numExt > numExtPre);
+}
+
+TEST_F(SketchObjectTest, testDelExternalUndef)
+{
+    // Act
+    int res = getObject()->delExternal(Sketcher::GeoEnum::GeoUndef);
+
+    // Assert
+    EXPECT_EQ(res, -1);
+}
+
+TEST_F(SketchObjectTest, testDelExternalWhenEmpty)
+{
+    // Act
+    int res = getObject()->delExternal(Sketcher::GeoEnum::RefExt);
+
+    // Assert
+    EXPECT_EQ(res, -1);
+}
+
+TEST_F(SketchObjectTest, testDelExternalWhenEmptyWithPositiveId)
+{
+    // Act
+    int res = getObject()->delExternal(1);
+
+    // Assert
+    EXPECT_EQ(res, -1);
+}
+
+TEST_F(SketchObjectTest, testDelExternalReducesCount)
+{
+    // Arrange
+    auto* doc = getObject()->getDocument();
+    auto box {doc->addObject("Part::Box")};
+    doc->recompute();
+    // NOTE: When adding, say, `Face6` instead, `delExternal` removes all the edges. This could be
+    // intended behaviour, ensuring that adding a face always gives a closed loop, or a side effect,
+    // or should instead be an option at time of external geometry creation.
+    // TODO: Consider whether this should be intended behaviour, and add tests accordingly.
+    getObject()->addExternal(box, "Edge6");
+    getObject()->addExternal(box, "Edge4");
+    int numExt = getObject()->ExternalGeo.getSize();
+
+    // Act
+    int res = getObject()->delExternal(Sketcher::GeoEnum::RefExt);
+
+    // Assert
+    EXPECT_EQ(getObject()->ExternalGeo.getSize(), numExt - 1);
+}
+
+// TODO: `delExternal` situation of constraints
+// TODO: `delExternal` situation of constraint containing more than 3 entities
 
 TEST_F(SketchObjectTest, testReplaceGeometriesOneToOne)
 {
