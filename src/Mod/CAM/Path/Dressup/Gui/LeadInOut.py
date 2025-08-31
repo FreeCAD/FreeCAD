@@ -498,12 +498,22 @@ class ObjectDressup:
 
         return command
 
+    # Get optimal step angle for iteration ArcZ
+    def getStepAngleArcZ(self, radius):
+        stepAngle = math.pi / 60  # less angle give more iterations
+        stepArcLength = stepAngle * radius
+        if stepArcLength > 1:
+            # limit arc length by 1 mm
+            stepAngle = 1 / radius
+
+        return stepAngle
+
     # Create vertical arc with move Down by line segments
     def createArcZMoveDown(self, obj, begin, end, radius):
         commands = []
         horizfeed = PathDressup.toolController(obj.Base).HorizFeed.Value
         angle = math.acos((radius - begin.z + end.z) / radius)  # start angle
-        stepAngle = math.radians(3)  # less angle give more iterations
+        stepAngle = self.getStepAngleArcZ(radius)
         iters = math.ceil(angle / stepAngle)
         iterBegin = copy.copy(begin)  # start point of short segment
         iter = 1
@@ -531,7 +541,7 @@ class ObjectDressup:
         commands = []
         horizfeed = PathDressup.toolController(obj.Base).HorizFeed.Value
         angleMax = math.acos((radius - end.z + begin.z) / radius)  # finish angle
-        stepAngle = math.radians(10)  # less angle give more iterations
+        stepAngle = self.getStepAngleArcZ(radius)
         iters = math.ceil(angleMax / stepAngle)
         iterBegin = copy.copy(begin)  # start point of short segment
         iter = 1
@@ -775,8 +785,8 @@ class ObjectDressup:
         return lead
 
     # Check command
-    def isCuttingMove(self, obj, instr):
-        result = instr.isMove() and not instr.isRapid() and (not instr.isPlunge())
+    def isCuttingMove(self, instr):
+        result = instr.isMove() and not instr.isRapid() and not instr.isPlunge()
         return result
 
     # Get direction of non cut movements
@@ -794,7 +804,7 @@ class ObjectDressup:
     # Get last index of mill command in whole Path
     def findLastCuttingMoveIndex(self, obj, source):
         for i in range(len(source) - 1, -1, -1):
-            if self.isCuttingMove(obj, source[i]):
+            if self.isCuttingMove(source[i]):
                 return i
 
         return None
@@ -802,7 +812,7 @@ class ObjectDressup:
     # Get finish index of mill command for one profile
     def findLastCutMultiProfileIndex(self, obj, source, startIndex):
         for i in range(startIndex, len(source), +1):
-            if not self.isCuttingMove(obj, source[i]):
+            if not self.isCuttingMove(source[i]):
                 return i - 1
 
         return i
@@ -988,7 +998,7 @@ class ObjectDressup:
         for i, instr in enumerate(source):
 
             # Process not mill instruction
-            if not self.isCuttingMove(obj, instr):
+            if not self.isCuttingMove(instr):
                 if not instr.isMove():
                     # non-move instruction get added verbatim
                     commands.append(instr)
@@ -1005,11 +1015,11 @@ class ObjectDressup:
                 continue
 
             # measuring length for one profile
-            if self.isCuttingMove(obj, instr):
+            if self.isCuttingMove(instr):
                 measuredLength += instr.pathLength()
 
             # Process Lead-In
-            if first or not self.isCuttingMove(obj, source[i - 1 - skipCounter]):
+            if first or not self.isCuttingMove(source[i - 1 - skipCounter]):
                 if obj.StyleIn != "No Change":
                     # Process negative Offset Lead-In (cut travel from begin)
                     if obj.OffsetIn.Value < 0 and obj.StyleIn != "Suppress Retraction":
@@ -1055,7 +1065,7 @@ class ObjectDressup:
 
             # Process Lead-Out
             last = bool(i == lastCuttingMoveIndex)
-            if (last or not self.isCuttingMove(obj, source[i + 1])) and obj.StyleOut != "No Change":
+            if (last or not self.isCuttingMove(source[i + 1])) and obj.StyleOut != "No Change":
                 measuredLength = 0  # reset measured length for last profile
                 lastMillIndex = i  # index last mill instruction for last profile
 
