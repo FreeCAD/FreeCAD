@@ -29,6 +29,7 @@
 #include <Base/Type.h>
 #include <Base/Handle.h>
 #include <Base/Bitmask.h>
+#include <App/ThreadAwareSignal.h>
 
 #include "PropertyContainer.h"
 #include "PropertyLinks.h"
@@ -163,67 +164,64 @@ public:
     //@{
     // clang-format off
     /// signal before changing an doc property
-    fastsignals::signal<void(const Document&, const Property&)> signalBeforeChange;
+    App::ThreadAwareSignal<void(const Document&, const Property&)> signalBeforeChange;
     /// signal on changed doc property
-    fastsignals::signal<void(const Document&, const Property&)> signalChanged;
+    App::ThreadAwareSignal<void(const Document&, const Property&)> signalChanged;
     /// signal on new Object
-    fastsignals::signal<void(const DocumentObject&)> signalNewObject;
+    App::ThreadAwareSignal<void(const DocumentObject&)> signalNewObject;
     /// signal on deleted Object
-    fastsignals::signal<void(const DocumentObject&)> signalDeletedObject;
+    App::ThreadAwareSignal<void(const DocumentObject&)> signalDeletedObject;
     /// signal before changing an Object
-    fastsignals::signal<void(const DocumentObject&, const Property&)> signalBeforeChangeObject;
+    App::ThreadAwareSignal<void(const DocumentObject&, const Property&)> signalBeforeChangeObject;
     /// signal on changed Object
-    fastsignals::signal<void(const DocumentObject&, const Property&)> signalChangedObject;
+    App::ThreadAwareSignal<void(const DocumentObject&, const Property&)> signalChangedObject;
     /// signal on manually called DocumentObject::touch()
-    fastsignals::signal<void(const DocumentObject&)> signalTouchedObject;
+    App::ThreadAwareSignal<void(const DocumentObject&)> signalTouchedObject;
     /// signal on relabeled Object
-    fastsignals::signal<void(const DocumentObject&)> signalRelabelObject;
+    App::ThreadAwareSignal<void(const DocumentObject&)> signalRelabelObject;
     /// signal on activated Object
-    fastsignals::signal<void(const DocumentObject&)> signalActivatedObject;
+    App::ThreadAwareSignal<void(const DocumentObject&)> signalActivatedObject;
     /// signal on created object
-    fastsignals::signal<void(const DocumentObject&, Transaction*)> signalTransactionAppend;
+    App::ThreadAwareSignal<void(const DocumentObject&, Transaction*)> signalTransactionAppend;
     /// signal on removed object
-    fastsignals::signal<void(const DocumentObject&, Transaction*)> signalTransactionRemove;
+    App::ThreadAwareSignal<void(const DocumentObject&, Transaction*)> signalTransactionRemove;
     /// signal on undo
-    fastsignals::signal<void(const Document&)> signalUndo;
+    App::ThreadAwareSignal<void(const Document&)> signalUndo;
     /// signal on redo
-    fastsignals::signal<void(const Document&)> signalRedo;
+    App::ThreadAwareSignal<void(const Document&)> signalRedo;
     /** signal on load/save document
      * this signal is given when the document gets streamed.
      * you can use this hook to write additional information in
      * the file (like the Gui::Document does).
      */
-    fastsignals::signal<void(Base::Writer&)> signalSaveDocument;
-    fastsignals::signal<void(Base::XMLReader&)> signalRestoreDocument;
-    fastsignals::signal<void(const std::vector<DocumentObject*>&, Base::Writer&)> signalExportObjects;
-    fastsignals::signal<void(const std::vector<DocumentObject*>&, Base::Writer&)> signalExportViewObjects;
-    fastsignals::signal<void(const std::vector<DocumentObject*>&, Base::XMLReader&)> signalImportObjects;
-    fastsignals::signal<void(const std::vector<DocumentObject*>&, Base::Reader&,
+    App::ThreadAwareSignal<void(Base::Writer&)> signalSaveDocument;
+    App::ThreadAwareSignal<void(Base::XMLReader&)> signalRestoreDocument;
+    App::ThreadAwareSignal<void(const std::vector<DocumentObject*>&, Base::Writer&)> signalExportObjects;
+    App::ThreadAwareSignal<void(const std::vector<DocumentObject*>&, Base::Writer&)> signalExportViewObjects;
+    App::ThreadAwareSignal<void(const std::vector<DocumentObject*>&, Base::XMLReader&)> signalImportObjects;
+    App::ThreadAwareSignal<void(const std::vector<DocumentObject*>&, Base::Reader&,
                                  const std::map<std::string, std::string>&)> signalImportViewObjects;
-    fastsignals::signal<void(const std::vector<DocumentObject*>&)> signalFinishImportObjects;
+    App::ThreadAwareSignal<void(const std::vector<DocumentObject*>&)> signalFinishImportObjects;
     // signal starting a save action to a file
-    fastsignals::signal<void(const Document&, const std::string&)> signalStartSave;
+    App::ThreadAwareSignal<void(const Document&, const std::string&)> signalStartSave;
     // signal finishing a save action to a file
-    fastsignals::signal<void(const Document&, const std::string&)> signalFinishSave;
-    fastsignals::signal<void(const Document&)> signalBeforeRecompute;
-    fastsignals::signal<void(const Document&, const std::vector<DocumentObject*>&)> signalRecomputed;
-    fastsignals::signal<void(const DocumentObject&)> signalRecomputedObject;
+    App::ThreadAwareSignal<void(const Document&, const std::string&)> signalFinishSave;
+    App::ThreadAwareSignal<void(const Document&)> signalBeforeRecompute;
+    App::ThreadAwareSignal<void(const Document&, const std::vector<DocumentObject*>&)> signalRecomputed;
+    App::ThreadAwareSignal<void(const DocumentObject&)> signalRecomputedObject;
     // signal a new opened transaction
-    fastsignals::signal<void(const Document&, std::string)> signalOpenTransaction;
+    App::ThreadAwareSignal<void(const Document&, std::string)> signalOpenTransaction;
     // signal a committed transaction
-    fastsignals::signal<void(const Document&)> signalCommitTransaction;
+    App::ThreadAwareSignal<void(const Document&)> signalCommitTransaction;
     // signal an aborted transaction
-    fastsignals::signal<void(const Document&)> signalAbortTransaction;
-    fastsignals::signal<void(const Document&, const std::vector<DocumentObject*>&)> signalSkipRecompute;
-    fastsignals::signal<void(const DocumentObject&)> signalFinishRestoreObject;
-    fastsignals::signal<void(const Document&, const Property&)> signalChangePropertyEditor;
-    fastsignals::signal<void(std::string)> signalLinkXsetValue;
+    App::ThreadAwareSignal<void(const Document&)> signalAbortTransaction;
+    App::ThreadAwareSignal<void(const Document&, const std::vector<DocumentObject*>&)> signalSkipRecompute;
+    App::ThreadAwareSignal<void(const DocumentObject&)> signalFinishRestoreObject;
+    App::ThreadAwareSignal<void(const Document&, const Property&)> signalChangePropertyEditor;
+    App::ThreadAwareSignal<void(std::string)> signalLinkXsetValue;
     // clang-format on
     //@}
     // NOLINTEND
-
-    using PreRecomputeHook = std::function<void()>;
-    void setPreRecomputeHook(const PreRecomputeHook& hook);
 
     void clearDocument();
 
