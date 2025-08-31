@@ -5,16 +5,12 @@ from Base.Metadata import export
 from Gui.ViewProviderDocumentObject import ViewProviderDocumentObject
 
 @export(
-    Father="ViewProviderDocumentObjectPy",
-    Name="ViewProviderSpreadsheetPy",
     Twin="ViewProviderSheet",
     TwinPointer="ViewProviderSheet",
     Include="Mod/Spreadsheet/Gui/ViewProviderSpreadsheet.h",
     Namespace="SpreadsheetGui",
-    FatherInclude="Gui/ViewProviderDocumentObjectPy.h",
-    FatherNamespace="Gui",
 )
-class ViewProviderSpreadsheetPy(ViewProviderDocumentObject):
+class ViewProviderSpreadsheet(ViewProviderDocumentObject):
     """
     ViewProviderSheet class
     """
