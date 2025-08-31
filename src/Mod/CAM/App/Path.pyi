@@ -4,19 +4,15 @@ from Base.Metadata import constmethod, export
 from Base.Persistence import Persistence
 
 @export(
-    Father="PersistencePy",
-    Name="PathPy",
+    Include="Mod/CAM/App/Path.h",
     Twin="Toolpath",
     TwinPointer="Toolpath",
-    Include="Mod/CAM/App/Path.h",
     Namespace="Path",
-    FatherInclude="Base/PersistencePy.h",
-    FatherNamespace="Base",
     ReadOnly=["Length", "Size", "BoundBox"],
     Delete=True,
     Constructor=True,
 )
-class PathPy(Persistence):
+class Path(Persistence):
     """
     Path([commands]): Represents a basic Gcode path
     commands (optional) is a list of Path commands

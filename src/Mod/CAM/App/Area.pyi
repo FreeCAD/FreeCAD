@@ -4,19 +4,13 @@ from Base.BaseClass import BaseClass
 from Base.Metadata import export
 
 @export(
-    Father="BaseClassPy",
-    Name="AreaPy",
-    Twin="Area",
-    TwinPointer="Area",
     Include="Mod/CAM/App/Area.h",
     Namespace="Path",
-    FatherInclude="Base/BaseClassPy.h",
-    FatherNamespace="Base",
     ReadOnly=["Sections", "Shapes"],
     Constructor=True,
     Delete=True,
 )
-class AreaPy(BaseClass):
+class Area(BaseClass):
     """
     FreeCAD python wrapper of libarea
 

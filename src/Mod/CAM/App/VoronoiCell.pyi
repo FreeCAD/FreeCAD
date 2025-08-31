@@ -4,20 +4,13 @@ from Base.BaseClass import BaseClass
 from Base.Metadata import constmethod, export
 
 @export(
-    Father="BaseClassPy",
-    Name="VoronoiCellPy",
-    Twin="VoronoiCell",
-    PythonName="Path.Voronoi.Cell",
-    TwinPointer="VoronoiCell",
     Include="Mod/CAM/App/VoronoiCell.h",
     Namespace="Path",
-    FatherInclude="Base/BaseClassPy.h",
-    FatherNamespace="Base",
     Constructor=True,
     RichCompare=True,
     Delete=True,
 )
-class VoronoiCellPy(BaseClass):
+class VoronoiCell(BaseClass):
     """
     Cell of a Voronoi diagram
     """
