@@ -1,5 +1,6 @@
 add_executable(App_tests_run
         Application.cpp
+        ApplicationDirectories.cpp
         BackupPolicy.cpp
         Branding.cpp
         ComplexGeoData.cpp
