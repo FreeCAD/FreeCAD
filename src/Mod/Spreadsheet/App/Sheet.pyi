@@ -5,17 +5,11 @@ from Base.Metadata import export
 from App.DocumentObject import DocumentObject
 
 @export(
-    Father="DocumentObjectPy",
-    Name="SheetPy",
-    Twin="Sheet",
-    TwinPointer="Sheet",
     Include="Mod/Spreadsheet/App/Sheet.h",
     Namespace="Spreadsheet",
-    FatherInclude="App/DocumentObjectPy.h",
-    FatherNamespace="App",
     Constructor=True,
 )
-class SheetPy(DocumentObject):
+class Sheet(DocumentObject):
     """
     With this object you can manipulate spreadsheets
     """

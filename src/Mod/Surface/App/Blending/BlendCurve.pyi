@@ -4,18 +4,12 @@ from Base.BaseClass import PyObjectBase
 from Base.Metadata import export
 
 @export(
-    Father="PyObjectBase",
-    Name="BlendCurvePy",
-    Twin="BlendCurve",
-    TwinPointer="BlendCurve",
     Include="Mod/Surface/App/Blending/BlendCurve.h",
     Namespace="Surface",
-    FatherInclude="Base/BaseClassPy.h",
-    FatherNamespace="Base",
     Constructor=True,
     Delete=True,
 )
-class BlendCurvePy(PyObjectBase):
+class BlendCurve(PyObjectBase):
     """
     Create a BlendCurve that interpolate 2 BlendPoints.
         curve = BlendCurve(BlendPoint1, BlendPoint2)
