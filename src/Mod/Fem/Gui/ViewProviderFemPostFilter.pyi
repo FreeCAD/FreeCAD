@@ -5,16 +5,13 @@ from Base.Metadata import export
 from Gui.ViewProviderDocumentObject import ViewProviderDocumentObject
 
 @export(
-    Father="ViewProviderDocumentObjectPy",
-    Name="ViewProviderFemPostFilterPy",
     Twin="ViewProviderFemPostObject",
     TwinPointer="ViewProviderFemPostObject",
     Include="Mod/Fem/Gui/ViewProviderFemPostObject.h",
     Namespace="FemGui",
     FatherInclude="Gui/ViewProviderDocumentObjectPy.h",
-    FatherNamespace="Gui",
 )
-class ViewProviderFemPostFilterPy(ViewProviderDocumentObject):
+class ViewProviderFemPostFilter(ViewProviderDocumentObject):
     """
     ViewProviderFemPostPipeline class
     """

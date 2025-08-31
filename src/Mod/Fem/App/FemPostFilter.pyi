@@ -5,16 +5,12 @@ from Base.Metadata import export
 from Fem.FemPostObject import FemPostObject
 
 @export(
-    Father="FemPostObjectPy",
-    Name="FemPostFilterPy",
-    Twin="FemPostFilter",
-    TwinPointer="FemPostFilter",
     Include="Mod/Fem/App/FemPostFilter.h",
     Namespace="Fem",
     FatherInclude="Mod/Fem/App/FemPostObjectPy.h",
     FatherNamespace="Fem",
 )
-class FemPostFilterPy(FemPostObject):
+class FemPostFilter(FemPostObject):
     """
     The FemPostFilter class.
     """

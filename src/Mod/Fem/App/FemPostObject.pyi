@@ -5,16 +5,12 @@ from Base.Metadata import export
 from App.GeoFeature import GeoFeature
 
 @export(
-    Father="GeoFeaturePy",
-    Name="FemPostObjectPy",
-    Twin="FemPostObject",
-    TwinPointer="FemPostObject",
     Include="Mod/Fem/App/FemPostObject.h",
     Namespace="Fem",
-    FatherInclude="App/GeoFeaturePy.h",
     FatherNamespace="App",
+    FatherInclude="App/GeoFeaturePy.h",
 )
-class FemPostObjectPy(GeoFeature):
+class FemPostObject(GeoFeature):
     """
     The FemPostObject class.
     """

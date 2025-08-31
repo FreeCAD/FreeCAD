@@ -5,17 +5,13 @@ from Base.Metadata import constmethod, export
 from App.ComplexGeoData import ComplexGeoData
 
 @export(
-    Father="ComplexGeoDataPy",
-    Name="FemMeshPy",
-    Twin="FemMesh",
-    TwinPointer="FemMesh",
     Include="Mod/Fem/App/FemMesh.h",
     Namespace="Fem",
     FatherInclude="App/ComplexGeoDataPy.h",
     FatherNamespace="Data",
     Constructor=True,
 )
-class FemMeshPy(ComplexGeoData):
+class FemMesh(ComplexGeoData):
     """
     FemMesh class
     """
