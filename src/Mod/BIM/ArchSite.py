@@ -1455,10 +1455,9 @@ class _ViewProviderSite:
             vo = ray_object.ViewObject
             vo.LineColor = (1.0, 1.0, 0.0)
             vo.DrawStyle = "Dashed"
-            vo.ArrowType = "Arrow"
+            vo.ArrowTypeEnd = "Arrow"
             vo.LineWidth = 2
-            vo.EndArrow = True
-            vo.ArrowSize = vobj.SolarDiagramScale * 0.015
+            vo.ArrowSizeEnd = vobj.SolarDiagramScale * 0.015
 
             if hasattr(obj, "addObject"):
                 obj.addObject(ray_object)
