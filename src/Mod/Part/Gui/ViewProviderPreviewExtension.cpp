@@ -29,6 +29,7 @@
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoPolygonOffset.h>
+# include <Inventor/nodes/SoTransform.h>
 #endif
 
 #include "ViewProviderPreviewExtension.h"
@@ -53,6 +54,9 @@ SoPreviewShape::SoPreviewShape()
     SO_NODE_ADD_FIELD(color, (defaultColor));
     SO_NODE_ADD_FIELD(transparency, (defaultTransparency));
     SO_NODE_ADD_FIELD(lineWidth, (defaultLineWidth));
+    SO_NODE_ADD_FIELD(transform, (SbMatrix::identity()));
+
+    pcTransform = new SoTransform;
 
     auto pickStyle = new SoPickStyle;
     pickStyle->style = SoPickStyle::UNPICKABLE;
@@ -103,6 +107,7 @@ SoPreviewShape::SoPreviewShape()
     annotation->addChild(polygonOffset);
     annotation->addChild(faceset);
 
+    SoSeparator::addChild(pcTransform);
     SoSeparator::addChild(pickStyle);
     SoSeparator::addChild(solidLineStyle);
     SoSeparator::addChild(material);
@@ -117,6 +122,14 @@ SoPreviewShape::SoPreviewShape()
 void SoPreviewShape::initClass()
 {
     SO_NODE_INIT_CLASS(SoPreviewShape, SoSeparator, "Separator");
+}
+
+void SoPreviewShape::notify(SoNotList* nl)
+{
+    SoField* field = nl->getLastField();
+    if (field == &transform) {
+        pcTransform->setMatrix(transform.getValue());
+    }
 }
 
 EXTENSION_PROPERTY_SOURCE(PartGui::ViewProviderPreviewExtension, Gui::ViewProviderExtension)
@@ -224,6 +237,7 @@ void ViewProviderPreviewExtension::updatePreviewShape(Part::TopoShape shape,
 
     try {
         updatePreviewShape(preview, shape);
+        preview->transform.setValue(Base::convertTo<SbMatrix>(shape.getTransform()));
     } catch (Standard_Failure& e) {
         Base::Console().userTranslatedNotification(
             tr("Failure while rendering preview: %1. That usually indicates an error with model.")
