@@ -200,7 +200,7 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
         bool thisViewIsSelected = value.toBool();
         bool anyChildSelected = false;
         if (!thisViewIsSelected) { // Only check children if this view is becoming unselected
-            anyChildSelected = 
+            anyChildSelected =
                 std::ranges::any_of(childItems(), [](QGraphicsItem* child) {
                     return child->isSelected();
                 });
@@ -518,7 +518,7 @@ void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     QGraphicsItemGroup::hoverEnterEvent(event);
 
-    m_isHovered = true; 
+    m_isHovered = true;
 
     if (isSelected()) {
         m_colCurrent = getSelectColor();
@@ -528,11 +528,11 @@ void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
     m_border->show();
     m_label->show();
-    
+
     m_lock->setVisible(getViewObject()->isLocked() && getViewObject()->showLock());
 
-    drawBorder(); 
-    update(); 
+    drawBorder();
+    update();
 }
 
 
@@ -540,7 +540,7 @@ void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     QGraphicsItemGroup::hoverLeaveEvent(event);
 
-    m_isHovered = false; 
+    m_isHovered = false;
 
     if (isSelected()) {
         m_colCurrent = getSelectColor();
@@ -551,11 +551,11 @@ void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
         m_colCurrent = PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor());
         m_border->hide();
         m_label->hide();
-        m_lock->hide(); 
+        m_lock->hide();
     }
 
-    drawBorder(); 
-    update(); 
+    drawBorder();
+    update();
 }
 
 //sets position in /Gui(graphics), not /App
@@ -798,7 +798,7 @@ QRectF QGIView::customChildrenBoundingRect() const
         if (!child->isVisible()) {
             continue;
         }
-        if (            
+        if (
             child->type() != UserType::QGIRichAnno &&
             child->type() != UserType::QGEPath &&
             child->type() != UserType::QGMText &&

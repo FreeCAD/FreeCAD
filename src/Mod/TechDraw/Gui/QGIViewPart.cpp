@@ -830,7 +830,7 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
 
     std::pair<Base::Vector3d, Base::Vector3d> dirsDCS = dcs->sectionLineArrowDirsMapped();
     sectionLine->setArrowDirections(dirsDCS.first, dirsDCS.second);
-    
+
     //set the general parameters
     sectionLine->setPos(0.0, 0.0);
 
