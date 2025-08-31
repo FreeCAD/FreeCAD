@@ -36,7 +36,7 @@ import Part
 from draftgeoutils import faces
 from draftobjects.base import DraftObject
 from draftutils import gui_utils
-from draftutils.messages import _err, _wrn
+from draftutils.messages import _err, _log
 from draftutils.translate import translate
 
 
@@ -117,10 +117,14 @@ class ShapeString(DraftObject):
         obj.KeepLeftMargin = True
         obj.ScaleToSize = False
         obj.Tracking = old_tracking
-        _wrn("v1.0, " + obj.Label + ", "
-             + translate("draft", "added 'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ObliqueAngle' and 'ScaleToSize'  properties"))
-        _wrn("v1.0, " + obj.Label + ", "
-             + translate("draft", "changed 'Tracking' property type"))
+        _log(
+            "v1.0, "
+            + obj.Name
+            + ", "
+            + "added 'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', "
+            + "'ObliqueAngle' and 'ScaleToSize' properties"
+          )
+        _log("v1.0, " + obj.Name + ", changed 'Tracking' property type")
 
     def execute(self, obj):
         if self.props_changed_placement_only() \
