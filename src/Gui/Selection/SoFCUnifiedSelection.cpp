@@ -762,7 +762,6 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                     this->touch();
                 }
             }
-            action->setHandled();
         }
     }
     // mouse press events for (de)selection
