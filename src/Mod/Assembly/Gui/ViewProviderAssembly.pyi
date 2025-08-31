@@ -4,17 +4,8 @@ from Base.Metadata import export
 
 from Gui.ViewProvider import ViewProvider
 
-@export(
-    Father="ViewProviderPy",
-    Name="ViewProviderAssemblyPy",
-    Twin="ViewProviderAssembly",
-    TwinPointer="ViewProviderAssembly",
-    Include="Mod/Assembly/Gui/ViewProviderAssembly.h",
-    Namespace="AssemblyGui",
-    FatherInclude="Gui/ViewProviderPy.h",
-    FatherNamespace="Gui",
-)
-class ViewProviderAssemblyPy(ViewProvider):
+@export(Include="Mod/Assembly/Gui/ViewProviderAssembly.h", Namespace="AssemblyGui")
+class ViewProviderAssembly(ViewProvider):
     """
     This is the ViewProviderAssembly class
     """

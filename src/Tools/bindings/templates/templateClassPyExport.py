@@ -40,6 +40,7 @@ class TemplateClassPyExport(template.ModelTemplate):
         if self.is_python and not self.export.ModuleName in [
             "Base",
             "App",
+            "Assembly",
             "Gui",
             "Part",
             "PartDesign",
