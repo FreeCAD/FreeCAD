@@ -44,8 +44,12 @@ class TemplateClassPyExport(template.ModelTemplate):
             "CAM",
             "Fem",
             "Gui",
+            "Import",
+            "Measure",
+            "Mesh",
             "Part",
             "PartDesign",
+            "Points",
             "Material",
             "Sketcher",
         ]:

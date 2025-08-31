@@ -5,8 +5,6 @@ from Base.Metadata import constmethod, export
 from App.ComplexGeoData import ComplexGeoData
 
 @export(
-    Father="ComplexGeoDataPy",
-    Name="MeshPy",
     Twin="MeshObject",
     TwinPointer="MeshObject",
     Include="Mod/Mesh/App/Mesh.h",
@@ -21,7 +19,7 @@ from App.ComplexGeoData import ComplexGeoData
     friend class PropertyMeshKernel;
     class PropertyMeshKernel* parentProperty = nullptr;"""
 )
-class MeshPy(ComplexGeoData):
+class Mesh(ComplexGeoData):
     """Mesh() -- Create an empty mesh object.
 
     This class allows one to manipulate the mesh object by adding new facets, deleting facets, importing from an STL file,

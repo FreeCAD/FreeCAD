@@ -4,17 +4,11 @@ from Base.BaseClass import BaseClass
 from Base.Metadata import export
 
 @export(
-    Father="BaseClassPy",
-    Name="MeasurementPy",
-    Twin="Measurement",
-    TwinPointer="Measurement",
     Include="Mod/Measure/App/Measurement.h",
     Namespace="Measure",
-    FatherInclude="Base/BaseClassPy.h",
-    FatherNamespace="Base",
     Constructor=True,
 )
-class MeasurementPy(BaseClass):
+class Measurement(BaseClass):
     """
     Make a measurement
     """

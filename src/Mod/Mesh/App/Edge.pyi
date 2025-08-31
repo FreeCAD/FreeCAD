@@ -4,18 +4,12 @@ from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 
 @export(
-    Father="PyObjectBase",
-    Name="EdgePy",
-    Twin="Edge",
-    TwinPointer="Edge",
     Include="Mod/Mesh/App/Edge.h",
     Namespace="Mesh",
-    FatherInclude="Base/PyObjectBase.h",
-    FatherNamespace="Base",
     Constructor=True,
     Delete=True,
 )
-class EdgePy(PyObjectBase):
+class Edge(PyObjectBase):
     """
     Edge in mesh
     This is an edge of a facet in a MeshObject. You can get it by e.g. iterating over the facets of a
