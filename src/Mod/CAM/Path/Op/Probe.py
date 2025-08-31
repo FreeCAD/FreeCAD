@@ -64,13 +64,13 @@ class ObjectProbing(PathOp.ObjectOp):
             "App::PropertyInteger",
             "PointCountX",
             "Probe",
-            QT_TRANSLATE_NOOP("App::Property", "Number of points to probe in X direction"),
+            QT_TRANSLATE_NOOP("App::Property", "Number of points to probe in X-direction"),
         )
         obj.addProperty(
             "App::PropertyInteger",
             "PointCountY",
             "Probe",
-            QT_TRANSLATE_NOOP("App::Property", "Number of points to probe in Y direction"),
+            QT_TRANSLATE_NOOP("App::Property", "Number of points to probe in Y-direction"),
         )
         obj.addProperty(
             "App::PropertyFile",

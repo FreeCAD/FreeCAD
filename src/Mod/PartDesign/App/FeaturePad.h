@@ -45,8 +45,6 @@ public:
       *  that is cut by a line through the centre of gravite of the sketch
       * If Type is "UpToFirst" then extrusion will stop at the first face of the support
       * If Type is "UpToFace" then the extrusion will stop at FaceName in the support
-      * If Type is "TwoLengths" then the extrusion will extend Length in the direction away from the support
-      *  and Length2 in the opposite direction
       * If Midplane is true, then the extrusion will extend for half of the length on both sides of the sketch plane
       * If Reversed is true then the direction of revolution will be reversed.
       * The created material will be fused with the sketch support (if there is one)

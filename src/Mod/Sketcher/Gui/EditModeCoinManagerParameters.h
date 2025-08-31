@@ -102,7 +102,6 @@ struct DrawingParameters
     /** @name Rendering Coin Colors **/
     //@{
     static SbColor InformationColor;                       // Information Overlay Color
-    static SbColor CreateCurveColor;                       // Color for Edit Curves during creation
     static SbColor CrossColorH;                            // Color for the Horizontal Axis
     static SbColor CrossColorV;                            // Color for the Vertical Axis
     static SbColor InvalidSketchColor;                     // Color for rendering an invalid sketch
@@ -411,6 +410,14 @@ struct EditModeScenegraphNodes
     std::vector<SoMarkerSet*> PointSet;
     //@}
 
+    /** @name Origin Point nodes*/
+    //@{
+    SoMaterial* OriginPointMaterial;
+    SoCoordinate3* OriginPointCoordinate;
+    SoMarkerSet* OriginPointSet;
+    SoDrawStyle* OriginPointDrawStyle;
+    //@}
+
     /** @name Curve nodes*/
     //@{
     SmSwitchboard* CurvesGroup;
@@ -426,7 +433,6 @@ struct EditModeScenegraphNodes
     //@}
 
     /** @name Axes nodes*/
-    /// @warning Root Point is added together with the Point nodes above
     //@{
     SoMaterial* RootCrossMaterials;
     SoCoordinate3* RootCrossCoordinate;
@@ -541,6 +547,10 @@ struct CoinMapping
     /// index and the coin layer of the curve or point
     MultiFieldId getIndexLayer(int geoid, Sketcher::PointPos pos)
     {
+        if (geoid == -1) {
+            return MultiFieldId(-1, 0, 0);
+        }
+
         auto indexit = GeoElementId2SetId.find(Sketcher::GeoElementId(geoid, pos));
 
         if (indexit != GeoElementId2SetId.end()) {
@@ -554,6 +564,9 @@ struct CoinMapping
     /// layer of the point
     MultiFieldId getIndexLayer(int vertexId)
     {
+        if (vertexId == -1) {
+            return MultiFieldId(-1, 0, 0);
+        }
 
         for (size_t l = 0; l < PointIdToVertexId.size(); l++) {
 

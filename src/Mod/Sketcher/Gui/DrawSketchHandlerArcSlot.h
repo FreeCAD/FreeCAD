@@ -677,6 +677,8 @@ void DSHArcSlotControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
                     unsetOnViewParameter(fifthParam.get());
                 }
                 else {
+                    handler->arcAngle = arcAngle;
+
                     double length = (onSketchPos - handler->centerPoint).Length();
                     double angle = handler->startAngleBackup + arcAngle;
                     onSketchPos.x = handler->centerPoint.x + cos(angle) * length;

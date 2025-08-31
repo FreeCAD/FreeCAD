@@ -57,8 +57,8 @@ class ShapeString(gui_base.GuiCommandBase):
         """Set icon, menu and tooltip."""
 
         return {"Pixmap": "Draft_ShapeString",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_ShapeString", "Shape from text"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_ShapeString", "Creates a shape from a text string by choosing a specific font and a placement.\nThe closed shapes can be used for extrusions and boolean operations.")}
+                "MenuText": QT_TRANSLATE_NOOP("Draft_ShapeString", "Shape From Text"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_ShapeString", "Creates a shape from a text string and a specified font")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -69,6 +69,7 @@ class ShapeString(gui_base.GuiCommandBase):
         task = Gui.Control.showDialog(self.ui)
         task.setDocumentName(Gui.ActiveDocument.Document.Name)
         task.setAutoCloseOnDeletedDocument(True)
+        self.ui.update_hints()
 
     def finish(self):
         try:

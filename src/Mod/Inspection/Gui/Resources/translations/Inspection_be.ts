@@ -6,17 +6,17 @@
     <message>
       <location filename="../../Command.cpp" line="74"/>
       <source>Inspection</source>
-      <translation>Праверка</translation>
+      <translation>Параўнаць</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="75"/>
-      <source>Inspection...</source>
-      <translation>Праверка...</translation>
+      <source>Inspection…</source>
+      <translation>Параўнаць…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="76"/>
-      <source>Get distance information</source>
-      <translation>Атрымаць інфармацыі аб адлегласці</translation>
+      <source>Inspects distance information</source>
+      <translation>Параўноўвае інфармацыю пра адлегласці</translation>
     </message>
   </context>
   <context>
@@ -24,18 +24,17 @@
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Inspection</source>
-      <translation>Праверка</translation>
+      <translation>Параўнаць</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="49"/>
-      <source>Visual inspection...</source>
-      <translation>Візуальная праверка...</translation>
+      <source>Visual Inspection…</source>
+      <translation>Праверыць візуальна…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="50"/>
-      <location filename="../../Command.cpp" line="51"/>
-      <source>Visual inspection</source>
-      <translation>Візуальная праверка</translation>
+      <source>Inspects the objects visually</source>
+      <translation>Параўноўвае аб'екты візуальна</translation>
     </message>
   </context>
   <context>
@@ -43,7 +42,7 @@
     <message>
       <location filename="../../VisualInspection.cpp" line="237"/>
       <source>Visual Inspection</source>
-      <translation>Візуальная праверка</translation>
+      <translation>Параўнаць візуальна</translation>
     </message>
   </context>
   <context>
@@ -51,7 +50,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="14"/>
       <source>Visual Inspection</source>
-      <translation>Візуальная праверка</translation>
+      <translation>Параўнаць візуальна</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="23"/>
@@ -110,7 +109,7 @@
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="564"/>
-      <source>Leave info mode</source>
+      <source>Leave Info Mode</source>
       <translation>Выйсці з інфармацыйнага рэжыму</translation>
     </message>
     <message>

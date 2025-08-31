@@ -348,7 +348,7 @@ float PlaneFit::GetStdDeviation() const
     }
 
     fMean = (1.0F / ulPtCt) * fSumXi;
-    return sqrt((ulPtCt / (ulPtCt - 1.0F)) * ((1.0F / ulPtCt) * fSumXi2 - fMean * fMean));
+    return sqrtf((ulPtCt / (ulPtCt - 1.0F)) * ((1.0F / ulPtCt) * fSumXi2 - fMean * fMean));
 }
 
 float PlaneFit::GetSignedStdDeviation() const
@@ -392,7 +392,8 @@ float PlaneFit::GetSignedStdDeviation() const
 
     fMean = 1.0F / ulPtCt * fSumXi;
 
-    return fFactor * sqrt((ulPtCt / (ulPtCt - 3.0F)) * ((1.0F / ulPtCt) * fSumXi2 - fMean * fMean));
+    return fFactor
+        * sqrtf((ulPtCt / (ulPtCt - 3.0F)) * ((1.0F / ulPtCt) * fSumXi2 - fMean * fMean));
 }
 
 void PlaneFit::ProjectToPlane()
@@ -1314,7 +1315,7 @@ float CylinderFit::GetStdDeviation() const
     }
 
     fMean = (1.0F / ulPtCt) * fSumXi;
-    return sqrt((ulPtCt / (ulPtCt - 1.0F)) * ((1.0F / ulPtCt) * fSumXi2 - fMean * fMean));
+    return sqrtf((ulPtCt / (ulPtCt - 1.0F)) * ((1.0F / ulPtCt) * fSumXi2 - fMean * fMean));
 }
 
 void CylinderFit::GetBounding(Base::Vector3f& bottom, Base::Vector3f& top) const
@@ -1485,7 +1486,7 @@ float SphereFit::GetStdDeviation() const
     }
 
     fMean = (1.0F / ulPtCt) * fSumXi;
-    return sqrt((ulPtCt / (ulPtCt - 1.0F)) * ((1.0F / ulPtCt) * fSumXi2 - fMean * fMean));
+    return sqrtf((ulPtCt / (ulPtCt - 1.0F)) * ((1.0F / ulPtCt) * fSumXi2 - fMean * fMean));
 }
 
 void SphereFit::ProjectToSphere()

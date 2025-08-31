@@ -97,16 +97,16 @@ SectionCut::SectionCut(QWidget* parent)
     // get all objects in the document
     auto docGui = Gui::Application::Instance->activeDocument();
     if (!docGui) {
-        throw Base::RuntimeError("SectionCut error: there is no document");
+        throw Base::RuntimeError("Section cut error: there is no document");
     }
     doc = docGui->getDocument();
     if (!doc) {
-        throw Base::RuntimeError("SectionCut error: there is no document");
+        throw Base::RuntimeError("Section cut error: there is no document");
     }
 
     std::vector<App::DocumentObject*> ObjectsList = doc->getObjects();
     if (ObjectsList.empty()) {
-        throw Base::RuntimeError("SectionCut error: there are no objects in the document");
+        throw Base::RuntimeError("Section cut error: there are no objects in the document");
     }
 
     // now store those that are currently visible
@@ -550,7 +550,7 @@ void SectionCut::deleteCompound()
             pcCompoundDelBF = Gui::Application::Instance->getViewProvider(compoundObject);
             if (!pcCompoundDelBF) {
                 Base::Console().error(
-                    "SectionCut error: compound is incorrectly named, cannot proceed\n");
+                    "Section cut error: compound is incorrectly named, cannot proceed\n");
                 return;
             }
             compoundChilds = pcCompoundDelBF->claimChildren();
@@ -606,7 +606,7 @@ Part::Box* SectionCut::createBox(const char* name, const Base::Vector3f& size)  
     // create a box
     auto pcBox = doc->addObject<Part::Box>(name);
     if (!pcBox) {
-        throw Base::RuntimeError(std::string("SectionCut error: ")
+        throw Base::RuntimeError(std::string("Section cut error: ")
             + std::string(name) + std::string(" could not be added\n"));
     }
 
@@ -785,7 +785,7 @@ Part::Cut* SectionCut::createCut(const char* name)
 {
     auto pcCut = doc->addObject<Part::Cut>(name);
     if (!pcCut) {
-        throw Base::RuntimeError(std::string("SectionCut error: ")
+        throw Base::RuntimeError(std::string("Section cut error: ")
             + std::string(name) + std::string(" could not be added\n"));
     }
 
@@ -1126,7 +1126,7 @@ std::tuple<Base::Vector3f, Base::Vector3f> SectionCut::adjustRanges()
     // we get its size by its bounding box
     SbBox3f CompoundBoundingBox = getViewBoundingBox();
     if (CompoundBoundingBox.isEmpty()) {  // NOLINT
-        throw Base::RuntimeError("SectionCut error: the CompoundBoundingBox is empty");
+        throw Base::RuntimeError("Section cut error: the CompoundBoundingBox is empty");
     }
 
     // refresh all cut limits according to the new bounding box
@@ -1392,7 +1392,7 @@ SectionCut* SectionCut::makeDockWidget(QWidget* parent)
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
     // the dialog is designed that you can see the tree, thus put it to the right side
     QDockWidget *dw =
-        pDockMgr->addDockWindow("Section Cutting", sectionCut, Qt::RightDockWidgetArea);
+        pDockMgr->addDockWindow("Section cutting", sectionCut, Qt::RightDockWidgetArea);
     dw->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     //dw->setFloating(true);
     dw->show();
@@ -1567,7 +1567,7 @@ void SectionCut::onCutXvalueChanged(double val)
     }
     auto pcBox = dynamic_cast<Part::Box*>(CutBox);
     if (!pcBox) {
-        Base::Console().error((std::string("SectionCut error: ") + std::string(BoxXName)
+        Base::Console().error((std::string("Section cut error: ") + std::string(BoxXName)
             + std::string(" is no Part::Box object. Cannot proceed.\n")).c_str());
         return;
     }
@@ -1644,7 +1644,7 @@ void SectionCut::onCutXvalueChanged(double val)
         // recompute the cut
         auto pcCut = dynamic_cast<Part::Cut*>(CutObject);
         if (!pcCut) {
-            Base::Console().error((std::string("SectionCut error: ") + std::string(CutZName)
+            Base::Console().error((std::string("Section cut error: ") + std::string(CutZName)
                 + std::string(" is no Part::Cut object. Cannot proceed.\n")).c_str());
             return;
         }
@@ -1688,7 +1688,7 @@ void SectionCut::onCutYvalueChanged(double val)
     }
     auto pcBox = dynamic_cast<Part::Box*>(CutBox);
     if (!pcBox) {
-        Base::Console().error((std::string("SectionCut error: ") + std::string(BoxYName)
+        Base::Console().error((std::string("Section cut error: ") + std::string(BoxYName)
             + std::string(" is no Part::Box object. Cannot proceed.\n")).c_str());
         return;
     }
@@ -1710,7 +1710,7 @@ void SectionCut::onCutYvalueChanged(double val)
     if (hasBoxZ) {
         auto CutFeatureZ = findObject(CutZName);
         if (!CutFeatureZ) {
-            Base::Console().error((std::string("SectionCut error: there is no ")
+            Base::Console().error((std::string("Section cut error: there is no ")
                 + std::string(CutZName) + std::string("\n")).c_str());
             return;
         }
@@ -1746,7 +1746,7 @@ void SectionCut::onCutYvalueChanged(double val)
         // recompute the cut
         auto pcCut = dynamic_cast<Part::Cut*>(CutObject);
         if (!pcCut) {
-            Base::Console().error((std::string("SectionCut error: ") + std::string(CutZName)
+            Base::Console().error((std::string("Section cut error: ") + std::string(CutZName)
                 + std::string(" is no Part::Cut object. Cannot proceed.\n")).c_str());
             return;
         }
@@ -1810,7 +1810,7 @@ void SectionCut::onCutZvalueChanged(double val)
     }
     auto pcBox = dynamic_cast<Part::Box*>(CutBox);
     if (!pcBox) {
-        Base::Console().error((std::string("SectionCut error: ") + std::string(BoxZName)
+        Base::Console().error((std::string("Section cut error: ") + std::string(BoxZName)
             + std::string(" is no Part::Box object. Cannot proceed.\n")).c_str());
         return;
     }
@@ -1827,7 +1827,7 @@ void SectionCut::onCutZvalueChanged(double val)
     }
     auto pcCut = dynamic_cast<Part::Cut*>(CutObject);
     if (!pcCut) {
-        Base::Console().error((std::string("SectionCut error: ") + std::string(CutZName)
+        Base::Console().error((std::string("Section cut error: ") + std::string(CutZName)
             + std::string(" is no Part::Cut object. Cannot proceed.\n")).c_str());
         return;
     }
@@ -1916,7 +1916,7 @@ void SectionCut::FlipClickedHelper(const char* BoxName)
     }
     auto pcBox = dynamic_cast<Part::Box*>(CutBox);
     if (!pcBox) {
-        Base::Console().error((std::string("SectionCut error: ") + std::string(BoxName)
+        Base::Console().error((std::string("Section cut error: ") + std::string(BoxName)
             + std::string(" is no Part::Box object. Cannot proceed.\n")).c_str());
         return;
     }
@@ -2007,7 +2007,7 @@ Part::Box* SectionCut::findCutBox(const char* name) const
     if (auto obj = doc->getObject(name)) {
         auto pcBox = dynamic_cast<Part::Box*>(obj);
         if (!pcBox) {
-            throw Base::RuntimeError("SectionCut error: cut box is incorrectly named, cannot proceed");
+            throw Base::RuntimeError("Section cut error: cut box is incorrectly named, cannot proceed");
         }
 
         return pcBox;
@@ -2025,7 +2025,7 @@ App::DocumentObject* SectionCut::findOrCreateObject(const char* objName)
 {
     auto object = findObject(objName);
     if (!object) {
-        Base::Console().warning((std::string("SectionCut warning: there is no ")
+        Base::Console().warning((std::string("Section cut warning: there is no ")
             + std::string(objName) + std::string(", trying to recreate it\n")).c_str());
         startCutting();
         return nullptr;
@@ -2144,7 +2144,7 @@ void SectionCut::setBooleanFragmentsColor()
         compoundObject = doc->getObject(CompoundName);
     }
     else {
-        Base::Console().error("SectionCut error: compound is incorrectly named, cannot proceed\n");
+        Base::Console().error("Section cut error: compound is incorrectly named, cannot proceed\n");
         return;
     }
     // assure it is not a Part::Compound
@@ -2153,7 +2153,7 @@ void SectionCut::setBooleanFragmentsColor()
         // check for valid BooleanFragments by accessing its ViewProvider
         auto CompoundBFVP = Gui::Application::Instance->getViewProvider(compoundObject);
         if (!CompoundBFVP) {
-            Base::Console().error("SectionCut error: cannot access ViewProvider of cut compound\n");
+            Base::Console().error("Section cut error: cannot access ViewProvider of cut compound\n");
             return;
         }
         auto CutCompoundBFGeom = dynamic_cast<Gui::ViewProviderGeometryObject*>(CompoundBFVP);
@@ -2175,7 +2175,7 @@ void SectionCut::onBFragTransparencyHSMoved(int val)
         Gui::ViewProvider* CutVP = Gui::Application::Instance->getViewProvider(cutObject);
         if (!CutVP) {
             Base::Console().error(
-                "SectionCut error: cannot access ViewProvider of cut object\n");
+                "Section cut error: cannot access ViewProvider of cut object\n");
             return;
         }
         auto CutVPGeom = dynamic_cast<Gui::ViewProviderGeometryObject*>(CutVP);
@@ -2227,14 +2227,14 @@ void SectionCut::onRefreshCutPBclicked()
     // get document
     auto docGui = Gui::Application::Instance->activeDocument();
     if (!docGui) {
-        Base::Console().error("SectionCut error: there is no document\n");
+        Base::Console().error("Section cut error: there is no document\n");
         return;
     }
     doc = docGui->getDocument();
     // get all objects in the document
     std::vector<App::DocumentObject*> ObjectsList = doc->getObjects();
     if (ObjectsList.empty()) {
-        Base::Console().error("SectionCut error: there are no objects in the document\n");
+        Base::Console().error("Section cut error: there are no objects in the document\n");
         return;
     }
     // empty the ObjectsListVisible
@@ -2281,12 +2281,12 @@ SbBox3f SectionCut::getViewBoundingBox()
     SbBox3f Box;
     auto docGui = Gui::Application::Instance->activeDocument();
     if (!docGui) {
-        Base::Console().error("SectionCut error: there is no active document\n");
+        Base::Console().error("Section cut error: there is no active document\n");
         return Box; // return an empty box
     }
     auto view = dynamic_cast<Gui::View3DInventor*>(docGui->getActiveView());
     if (!view) {
-        Base::Console().error("SectionCut error: could not get the active view\n");
+        Base::Console().error("Section cut error: could not get the active view\n");
         return Box; // return an empty box
     }
     Gui::View3DInventorViewer* viewer = view->getViewer();
@@ -2376,7 +2376,7 @@ App::DocumentObject* SectionCut::CreateBooleanFragments(App::Document* doc)
     // check for success
     App::DocumentObject* object = doc->getObject(CompoundName);
     if (!object) {
-        Base::Console().error((std::string("SectionCut error: ") + std::string(CompoundName)
+        Base::Console().error((std::string("Section cut error: ") + std::string(CompoundName)
                                + std::string(" could not be added\n")).c_str());
         return nullptr;
     }
@@ -2394,7 +2394,7 @@ App::DocumentObject* SectionCut::createBooleanFragments(
     auto CutLinkList = dynamic_cast<App::PropertyLinkList*>(
         CutCompoundBF ? CutCompoundBF->getPropertyByName("Objects") : nullptr);
     if (!CutLinkList) {
-        throw Base::RuntimeError((std::string("SectionCut error: ") + std::string(CompoundName)
+        throw Base::RuntimeError((std::string("Section cut error: ") + std::string(CompoundName)
                                + std::string(" could not be added\n")).c_str());
     }
     CutLinkList->setValue(links);
@@ -2418,7 +2418,7 @@ Part::Compound* SectionCut::createCompound(const std::vector<App::DocumentObject
 {
     auto CutCompoundPart = doc->addObject<Part::Compound>(CompoundName);
     if (!CutCompoundPart) {
-        throw Base::RuntimeError((std::string("SectionCut error: ") + std::string(CompoundName)
+        throw Base::RuntimeError((std::string("Section cut error: ") + std::string(CompoundName)
             + std::string(" could not be added\n")).c_str());
     }
 

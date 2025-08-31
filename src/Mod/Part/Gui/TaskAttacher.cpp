@@ -51,6 +51,8 @@
 #include <Mod/Part/Gui/TaskAttacher.h>
 
 #include "TaskAttacher.h"
+
+#include "ViewProvider2DObject.h"
 #include "ui_TaskAttacher.h"
 
 
@@ -222,6 +224,7 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject* ViewProvider, QWidge
     updateListOfModes();
     selectMapMode(eMapMode(pcAttach->MapMode.getValue()));
     updatePreview();
+    showPlacementUtilities();
 
     //NOLINTBEGIN
     // connect object deletion with slot
@@ -341,7 +344,7 @@ bool TaskAttacher::updatePreview()
             ui->message->setStyleSheet(QStringLiteral("QLabel{color: green;}"));
         }
     }
-    QString splmLabelText = attached ? tr("Attachment Offset (in local coordinates):") : tr("Attachment Offset (inactive - not attached):");
+    QString splmLabelText = attached ? tr("Attachment offset (in its local coordinate system):") : tr("Attachment offset (inactive - not attached):");
     ui->groupBox_AttachmentOffset->setTitle(splmLabelText);
     ui->groupBox_AttachmentOffset->setEnabled(attached);
 
@@ -876,7 +879,7 @@ void TaskAttacher::updateRefButton(int idx)
     b->setChecked(iActiveRef == idx);
 
     if (iActiveRef == idx) {
-        b->setText(tr("Selecting..."));
+        b->setText(tr("Selecting…"));
     }
     else if (idx < static_cast<int>(this->lastSuggestResult.references_Types.size())) {
         b->setText(AttacherGui::getShapeTypeText(this->lastSuggestResult.references_Types[idx]));
@@ -1049,6 +1052,17 @@ void TaskAttacher::selectMapMode(eMapMode mmode) {
     }
 
     ui->listOfModes->blockSignals(false);
+}
+
+void TaskAttacher::showPlacementUtilities()
+{
+    if (auto planarViewProvider = freecad_cast<PartGui::ViewProvider2DObject*>(ViewProvider)) {
+        overrides.override(planarViewProvider->ShowPlane, true);
+    }
+
+    if (auto partViewProvider = freecad_cast<PartGui::ViewProviderPartExt*>(ViewProvider)) {
+        overrides.override(partViewProvider->ShowPlacement, true);
+    }
 }
 
 Attacher::eMapMode TaskAttacher::getActiveMapMode()
@@ -1293,7 +1307,7 @@ bool TaskDlgAttacher::accept()
         Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Datum dialog: Input error"), QCoreApplication::translate("Exception", e.what()));
+        QMessageBox::warning(parameter, tr("Datum dialog: input error"), QCoreApplication::translate("Exception", e.what()));
         return false;
     }
 

@@ -5,11 +5,15 @@
     <name>CmdInspectAppearance</name>
     <message>
       <location filename="../../Command.cpp" line="146"/>
-      <source>Inspect Appearance...</source>
-      <translation>გარეგნობის შემოწმება...</translation>
+      <source>Inspect Appearance</source>
+      <translation>გარეგნობის შემოწმება</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="147"/>
+      <source>Inspects the appearance properties of the selected object</source>
+      <translation>მონიშნული ობიექტის გარეგნობის თვისებების შემოწმება</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Inspect the appearance properties of the selected object</source>
       <translation>მონიშნული ობიექტის გარეგნობის თვისებების შემოწმება</translation>
@@ -19,11 +23,15 @@
     <name>CmdInspectMaterial</name>
     <message>
       <location filename="../../Command.cpp" line="173"/>
-      <source>Inspect Material...</source>
-      <translation>მასალის შემოწმება...</translation>
+      <source>Inspect Material</source>
+      <translation>მასალის ნახვა</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
+      <source>Inspects the material properties of the selected object</source>
+      <translation>მონიშნული ობიექტის მასალის თვისებების შემოწმება</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="176"/>
       <source>Inspect the material properties of the selected object</source>
       <translation>მონიშნული ობიექტის მასალის თვისებების შემოწმება</translation>
@@ -37,13 +45,13 @@
       <translation>2D მასივი</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="78"/>
-      <source>Delete row</source>
+      <location filename="../../Array2D.cpp" line="79"/>
+      <source>Delete Row</source>
       <translation>მწკრივის წაშლა</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="140"/>
-      <source>Context menu</source>
+      <location filename="../../Array2D.cpp" line="138"/>
+      <source>Context Menu</source>
       <translation>კონტექსტური მენიუ</translation>
     </message>
   </context>
@@ -57,13 +65,13 @@
     <message>
       <location filename="../../Array3D.cpp" line="77"/>
       <location filename="../../Array3D.cpp" line="81"/>
-      <source>Delete row</source>
+      <source>Delete Row</source>
       <translation>მწკრივის წაშლა</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="231"/>
       <location filename="../../Array3D.cpp" line="302"/>
-      <source>Context menu</source>
+      <source>Context Menu</source>
       <translation>კონტექსტური მენიუ</translation>
     </message>
     <message>
@@ -75,8 +83,8 @@
     <message>
       <location filename="../../Array3D.cpp" line="265"/>
       <location filename="../../Array3D.cpp" line="337"/>
-      <source>Are you sure you want to delete the row?</source>
-      <translation>დარწმუნებული ხართ, რომ გნებავთ, წაშალოთ მწკრივი?</translation>
+      <source>Delete the row?</source>
+      <translation>წავშალო მწკრივი?</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="267"/>
@@ -114,23 +122,23 @@
     <name>MatGui::DlgDisplayProperties</name>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="14"/>
-      <source>Display properties</source>
+      <source>Display Properties</source>
       <translation>თვისებების ჩვენება</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="20"/>
-      <source>Viewing mode</source>
+      <source>Viewing Mode</source>
       <translation>ხედის რეჟიმი</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="55"/>
-      <source>Document window:</source>
-      <translation>დოკუმენტის ფანჯარა:</translation>
+      <source>Document window</source>
+      <translation>დოკუმენტის ფანჯარა</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="87"/>
-      <source>Plot mode:</source>
-      <translation>გრაფიკის რეჟიმი:</translation>
+      <source>Plot mode</source>
+      <translation>ნახაზის რეჟიმი</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="106"/>
@@ -139,66 +147,48 @@
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="144"/>
-      <source>Point size:</source>
-      <translation>წერტილის ზომა:</translation>
+      <source>Point size</source>
+      <translation>წერტილის ზომა</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="199"/>
-      <source>Line width:</source>
-      <translation>ხაზის სიგანე:</translation>
+      <source>Line width</source>
+      <translation>ხაზის სიგანე</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="237"/>
-      <source>Transparency:</source>
-      <translation>გამჭვირვალობა:</translation>
+      <source>Transparency</source>
+      <translation>გამჭვირვალობა</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="289"/>
-      <source>Line transparency:</source>
-      <translation>ხაზის გამჭვირვალობა:</translation>
+      <source>Line transparency</source>
+      <translation>ხაზის გამჭვირვალობა</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="365"/>
+      <source>Color plot</source>
+      <translation>ფერადი გრაფიკი</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="372"/>
+      <source>Custom appearance</source>
+      <translation>მორგებული გარეგნობა</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="382"/>
+      <source>Point color</source>
+      <translation>წერტილის ფერი</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="389"/>
+      <source>Line color</source>
+      <translation>ხაზის ფერი</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="338"/>
       <source>Material</source>
       <translation>მასალა</translation>
-    </message>
-    <message>
-      <location filename="../../DlgDisplayProperties.ui" line="365"/>
-      <source>Color plot:</source>
-      <translation>დიაგრამის ფერი:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgDisplayProperties.ui" line="372"/>
-      <source>Custom appearance:</source>
-      <translation>მორგებული გარეგნობა:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgDisplayProperties.ui" line="382"/>
-      <source>Point color:</source>
-      <translation>წერტილის ფერი:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgDisplayProperties.ui" line="389"/>
-      <source>Line color:</source>
-      <translation>ხაზის ფერი:</translation>
-    </message>
-  </context>
-  <context>
-    <name>MatGui::DlgDisplayPropertiesImp</name>
-    <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="181"/>
-      <source>Basic Appearance</source>
-      <translation>ძირითადი გარეგნობა</translation>
-    </message>
-    <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="186"/>
-      <source>Texture Appearance</source>
-      <translation>ტექსტურის გარეგნობა</translation>
-    </message>
-    <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="191"/>
-      <source>All Materials</source>
-      <translation>ყველა მასალა</translation>
     </message>
   </context>
   <context>
@@ -214,18 +204,18 @@
       <translation>დოკუმენტი</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.ui" line="50"/>
-      <source>Document Name</source>
-      <translation>დოკუმენტის სახელი</translation>
-    </message>
-    <message>
       <location filename="../../DlgInspectAppearance.ui" line="57"/>
       <source>Name of the active document</source>
       <translation>აქტიური დოკუმენტის სახელი</translation>
     </message>
     <message>
+      <location filename="../../DlgInspectAppearance.ui" line="50"/>
+      <source>Document name</source>
+      <translation>დოკუმენტის სახელი</translation>
+    </message>
+    <message>
       <location filename="../../DlgInspectAppearance.ui" line="64"/>
-      <source>Label / Internal Name</source>
+      <source>Label / internal name</source>
       <translation>ჭდე / შიდა სახელი</translation>
     </message>
     <message>
@@ -255,22 +245,22 @@
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="202"/>
-      <source>Diffuse Color</source>
+      <source>Diffuse color</source>
       <translation>ფერის დიფუზია</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="211"/>
-      <source>Ambient Color</source>
+      <source>Ambient color</source>
       <translation>გარემოს ფერი</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="220"/>
-      <source>Emissive Color</source>
+      <source>Emissive color</source>
       <translation>გამოსხივების ფერი</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="229"/>
-      <source>Specular Color</source>
+      <source>Specular color</source>
       <translation>ბზინვის ფერი</translation>
     </message>
     <message>
@@ -297,18 +287,18 @@
       <translation>დოკუმენტი</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.ui" line="50"/>
-      <source>Document Name</source>
-      <translation>დოკუმენტის სახელი</translation>
-    </message>
-    <message>
       <location filename="../../DlgInspectMaterial.ui" line="57"/>
       <source>Name of the active document</source>
       <translation>აქტიური დოკუმენტის სახელი</translation>
     </message>
     <message>
+      <location filename="../../DlgInspectMaterial.ui" line="50"/>
+      <source>Document name</source>
+      <translation>დოკუმენტის სახელი</translation>
+    </message>
+    <message>
       <location filename="../../DlgInspectMaterial.ui" line="64"/>
-      <source>Label / Internal Name</source>
+      <source>Label / internal name</source>
       <translation>ჭდე / შიდა სახელი</translation>
     </message>
     <message>
@@ -328,7 +318,7 @@
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="128"/>
-      <source>Copy to clipboard</source>
+      <source>Copy to Clipboard</source>
       <translation>ბუფერში კოპირება</translation>
     </message>
     <message>
@@ -343,7 +333,7 @@
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="172"/>
-      <source>Internal Name: </source>
+      <source>Internal name: </source>
       <translation>შიდა სახელი: </translation>
     </message>
     <message>
@@ -389,14 +379,38 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="273"/>
       <location filename="../../DlgInspectMaterial.cpp" line="346"/>
-      <source>Library Directory: </source>
+      <source>Library directory: </source>
       <translation>ბიბლიოთეკის საქაღალდე: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="276"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="348"/>
-      <source>Sub Directory: </source>
+      <source>Subdirectory: </source>
       <translation>ქვესაქაღალდე: </translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="348"/>
+      <source>Sub directory: </source>
+      <translation>ქვესაქაღალდე: </translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="365"/>
+      <source>Appearance models:</source>
+      <translation>გარეგნობის მოდელები:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="371"/>
+      <source>Physical models:</source>
+      <translation>ფიზიკური მოდელები:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="377"/>
+      <source>Appearance properties:</source>
+      <translation>გარეგნობის თვისებები:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="383"/>
+      <source>Physical properties:</source>
+      <translation>ფიზიკური თვისებები:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="279"/>
@@ -423,26 +437,6 @@
       <location filename="../../DlgInspectMaterial.cpp" line="333"/>
       <source>Yes</source>
       <translation>დიახ</translation>
-    </message>
-    <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="365"/>
-      <source>Appearance Models:</source>
-      <translation>გარეგნობის მოდელები:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="371"/>
-      <source>Physical Models:</source>
-      <translation>ფიზიკური მოდელები:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="377"/>
-      <source>Appearance Properties:</source>
-      <translation>გარეგნობის თვისებები:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="383"/>
-      <source>Physical Properties:</source>
-      <translation>ფიზიკური თვისებები:</translation>
     </message>
   </context>
   <context>
@@ -475,24 +469,9 @@
       <translation>ზოგადი</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="23"/>
-      <source>Card resources</source>
-      <translation>ბარათების ბიბლიოთეკა</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="31"/>
-      <source>The cards built-in to FreeCAD will be listed as available.</source>
-      <translation>FreeCAD-ში ჩაშენებული ბარათები მონიშნული იქნება, როგორც ხელმისაწვდომი.</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsMaterial.ui" line="34"/>
       <source>Use built-in materials</source>
       <translation>ჩაშენებული მასალების გამოყენება</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="50"/>
-      <source>Use materials added by external workbenches.</source>
-      <translation>გარე სამუშაო მაგიდების მიერ დამატებული მასალების გამოყენება.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="53"/>
@@ -500,96 +479,109 @@
       <translation>მასალების გამოყენება გარე სამუშაო მაგიდებიდან</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="69"/>
-      <source>Also cards from FreeCAD&apos;s preferences directory will be listed as available.</source>
-      <translation>ბარათები FreeCAD-ის პარამეტრებს საქაღალდიდან ასევე მოინიშნებიან, როგორც ხელმისაწვდომი.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="72"/>
-      <source>Use materials from Materials directory in user&apos;s FreeCAD preference directory</source>
-      <translation>მასალების FreeCAD-ის პარამეტრების საქაღალდეში მდებარე 'Materials' საქაღალდიდან წაკითხვა</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="88"/>
-      <source>Also material cards also from the specified directory
-will be listed as available.</source>
-      <translation>მასალის ბარათები მითითებული საქაღალდიდან
-ასევე იქნებიან მოშიშნულები, როგორც ხელმისაწვდომი.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="92"/>
-      <source>Use materials from user defined directory</source>
-      <translation>მასალების მომხმარებლის მიერ მითითებული საქაღალდიდან გამოყენება</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="119"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="118"/>
       <source>User directory</source>
       <translation>მომხმარებლის საქაღალდე</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="155"/>
-      <source>Card sorting and duplicates</source>
+      <location filename="../../DlgSettingsMaterial.ui" line="23"/>
+      <source>Card Resources</source>
+      <translation>ბარათის რესურსები</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="31"/>
+      <source>The cards built-in to FreeCAD will be listed as available</source>
+      <translation>FreeCAD-ში ჩაშენებული ბარათები მონიშნული იქნება, როგორც ხელმისაწვდომი</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="50"/>
+      <source>Use materials added by external workbenches</source>
+      <translation>გარე სამუშაო მაგიდების მიერ დამატებული მასალების გამოყენება</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="69"/>
+      <source>Cards from FreeCAD’s preferences directory are also listed as available</source>
+      <translation>ბარათები FreeCAD-ის პარამეტრების საქაღალდიდან ასევე მოინიშნება, როგორც ხელმისაწვდომი</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="72"/>
+      <source>Use materials from the Materials preference directory</source>
+      <translation>მასალების გამოყენება მასალების საქაღალდიდან</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="88"/>
+      <source>Material cards from the specified directory will also be listed as available</source>
+      <translation>მასალის ბარათები მითითებული საქაღალდიდან ასევე მოინიშნება, როგორც ხელმისაწვდომი</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="91"/>
+      <source>Use materials from user-defined directory</source>
+      <translation>მასალების მომხმარებლის მიერ მითითებული საქაღალდიდან გამოყენება</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="154"/>
+      <source>Card Sorting and Duplicates</source>
       <translation>ბარათების დალაგება და ასლები</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="161"/>
-      <source>Duplicate cards will be deleted from the displayed material card list.</source>
-      <translation>დუბლირებული ბარათები წაიშლება ნაჩვენები მასალების ბარათის სიიდან.</translation>
+      <location filename="../../DlgSettingsMaterial.ui" line="160"/>
+      <source>Duplicate cards will be deleted from the displayed material card list</source>
+      <translation>დუბლირებული ბარათები წაიშლება ნაჩვენები მასალების ბარათის სიიდან</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="164"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="163"/>
       <source>Delete card duplicates</source>
       <translation>ბარათის ასლების წაშლა</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="180"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="179"/>
       <source>Material cards appear sorted by their resources (locations).
 If unchecked, they will be sorted by their name.</source>
       <translation>როგორც ჩანს, მასალის ბარათები თავისი რესურსების(მდებარეობების) მიხედვთაა დალაგებული.
 თუ გამორთულია, ისინი სახელის მიხედვით დალაგდება.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="184"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="183"/>
       <source>Sort by resources</source>
       <translation>რესურსებით დალაგება</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="203"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="202"/>
       <source>Material Selector</source>
       <translation>მასალის ამრჩევი</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="209"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="292"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="208"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="291"/>
       <source>Show favorites</source>
       <translation>რჩეულების ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="225"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="308"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="224"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="307"/>
       <source>Show recent</source>
       <translation>უახლესების ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="241"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="324"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="240"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="323"/>
       <source>Show empty libraries</source>
       <translation>ცარიელი ბიბლიოთეკების ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="257"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="340"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="256"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="339"/>
       <source>Show empty folders</source>
       <translation>ცარიელი საქაღალდეების ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="270"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="353"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="269"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="352"/>
       <source>Show legacy files</source>
       <translation>მოძველებული ფაილების ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="286"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="285"/>
       <source>Material Editor</source>
       <translation>მასალების რედაქტორი</translation>
     </message>
@@ -608,8 +600,8 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
       <location filename="../../ImageEdit.ui" line="95"/>
-      <source>File...</source>
-      <translation>ფაილი...</translation>
+      <source>File</source>
+      <translation>ფაილი</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.ui" line="104"/>
@@ -672,103 +664,107 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="22"/>
-      <source>Library:</source>
-      <translation>ბიბლიოთეკა:</translation>
+      <source>Library</source>
+      <translation>ბიბლიოთეკა</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.ui" line="70"/>
+      <source>Filename</source>
+      <translation>ფაილის სახელი</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.ui" line="104"/>
+      <source>Save as inherited</source>
+      <translation>შენახვა როგორც მემკვიდრეობითის</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="59"/>
-      <location filename="../../MaterialSave.cpp" line="485"/>
-      <location filename="../../MaterialSave.cpp" line="495"/>
       <source>New Folder</source>
       <translation>ახალი საქაღალდე</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.ui" line="70"/>
-      <source>Filename:</source>
-      <translation>ფაილის სახელი:</translation>
-    </message>
-    <message>
-      <location filename="../../MaterialSave.ui" line="104"/>
-      <source>Save as Inherited</source>
-      <translation>შენახვა როგორც მემკვიდრეობითის</translation>
-    </message>
-    <message>
-      <location filename="../../MaterialSave.cpp" line="92"/>
+      <location filename="../../MaterialSave.cpp" line="96"/>
       <source>Delete</source>
       <translation>წაშლა</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="192"/>
-      <source>Are you sure you want to save over &apos;%1&apos;?</source>
-      <translation>დარწმუნებული ბრძანდებით, რომ გნებავთ შეინახოთ &apos;%1&apos;-ის თავზე?</translation>
-    </message>
-    <message>
-      <location filename="../../MaterialSave.cpp" line="195"/>
+      <location filename="../../MaterialSave.cpp" line="196"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
       <translation>ორიგინალი ფაილის თავზე შენახვამ, შეიძლება, დოკუმენტი გააფუჭოს. ეს რეკომენდებული არაა.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="217"/>
-      <source>Confirm Save As New Material</source>
-      <translation>დაადასტურეთ ახალ მასალად შენახვა</translation>
-    </message>
-    <message>
-      <location filename="../../MaterialSave.cpp" line="219"/>
+      <location filename="../../MaterialSave.cpp" line="220"/>
       <source>Save as new material</source>
       <translation>შენახვა ახალ მასალად</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="222"/>
-      <source>This material already exists in this library. Would you like to save as a new material?</source>
+      <location filename="../../MaterialSave.cpp" line="193"/>
+      <source>Save over &apos;%1&apos;?</source>
+      <translation>შევინახო &apos;%1&apos;-ის თავზე;?</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.cpp" line="218"/>
+      <source>Confirm Save as New Material</source>
+      <translation>დაადასტურეთ ახალ მასალად შენახვა</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.cpp" line="223"/>
+      <source>This material already exists in this library. Save as a new material?</source>
       <translation>მასალა ბიბლიოთეკაში უკვე არსებობს. გნებავთ, შეინახოთ ის, როგორც ახალი მასალა?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="244"/>
-      <source>Confirm Save As Copy</source>
+      <location filename="../../MaterialSave.cpp" line="245"/>
+      <source>Confirm Save as Copy</source>
       <translation>დაადასტურეთ ასლად შენახვა</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="246"/>
-      <source>Save as Copy</source>
+      <location filename="../../MaterialSave.cpp" line="247"/>
+      <source>Save as copy</source>
       <translation>ასლად შენახვა</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="249"/>
-      <source>Saving a copy is not recommended as it can break other documents. We recommend you save as a new material.</source>
-      <translation>ასლის შენახვა რეკომენდებული არაა, რადგან მან სხვა დოკუმენტები შეიძლება დააზიანოს. ჩვენი რეკომენდაციაა, ის როგორც ახალი მასალა შეინახოთ.</translation>
+      <location filename="../../MaterialSave.cpp" line="250"/>
+      <source>Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</source>
+      <translation>ასლის შენახვა რეკომენდებული არაა, რადგან მან სხვა დოკუმენტები შეიძლება, დააზიანოს. ჩვენი რეკომენდაციაა, ის შეინახოთ, როგორც ახალი მასალა.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="252"/>
+      <location filename="../../MaterialSave.cpp" line="253"/>
       <source>Save Copy</source>
       <translation>ასლის შენახვა</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="253"/>
+      <location filename="../../MaterialSave.cpp" line="254"/>
       <source>Save As New</source>
       <translation>შენახვა, როგორც ახლის</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="535"/>
-      <source>Context menu</source>
+      <location filename="../../MaterialSave.cpp" line="486"/>
+      <location filename="../../MaterialSave.cpp" line="496"/>
+      <source>New folder</source>
+      <translation>ახალი საქაღალდე</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.cpp" line="536"/>
+      <source>Context Menu</source>
       <translation>კონტექსტური მენიუ</translation>
     </message>
   </context>
   <context>
     <name>MatGui::MaterialTreeWidget</name>
     <message>
-      <location filename="../../MaterialTreeWidget.cpp" line="142"/>
-      <source>Launch editor</source>
+      <location filename="../../MaterialTreeWidget.cpp" line="140"/>
+      <source>Launch Editor</source>
       <translation>რედაქტორის გაშვება</translation>
     </message>
     <message>
-      <location filename="../../MaterialTreeWidget.cpp" line="315"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="545"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="313"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="534"/>
       <source>Favorites</source>
       <translation>რჩეულები</translation>
     </message>
     <message>
-      <location filename="../../MaterialTreeWidget.cpp" line="315"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="552"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="313"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="541"/>
       <source>Recent</source>
       <translation>ბოლო</translation>
     </message>
@@ -817,8 +813,18 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="151"/>
-      <source>Source Reference</source>
+      <source>Source reference</source>
       <translation>მიმართვა წყაროზე</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.ui" line="202"/>
+      <source>Adds or removes to/from favorites</source>
+      <translation>დაამატებს ან წაშლის რჩეულებში/რჩებულებიდან</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.ui" line="205"/>
+      <source>Toggle Favorite</source>
+      <translation>რჩეულობის გადართვა</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="164"/>
@@ -834,11 +840,6 @@ If unchecked, they will be sorted by their name.</source>
       <location filename="../../MaterialsEditor.ui" line="195"/>
       <source>Inherit New</source>
       <translation>მემკვიდრეობით, ახალი</translation>
-    </message>
-    <message>
-      <location filename="../../MaterialsEditor.ui" line="202"/>
-      <source>Add to favorites</source>
-      <translation>რჩეულებში დამატება</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="215"/>
@@ -871,56 +872,56 @@ If unchecked, they will be sorted by their name.</source>
       <translation>გარეგნობის მოდელის წაშლა</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="485"/>
+      <location filename="../../MaterialsEditor.cpp" line="484"/>
       <source>Unnamed</source>
       <translation>უსახელო</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="607"/>
+      <location filename="../../MaterialsEditor.cpp" line="606"/>
       <source>Old Format Material</source>
       <translation>ძველი ფორმატის მასალა</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="609"/>
+      <location filename="../../MaterialsEditor.cpp" line="608"/>
       <source>This file is in the old material card format.</source>
       <translation>ფაილი ძველი მასალის ბარათის ფორმატშია.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="695"/>
+      <location filename="../../MaterialsEditor.cpp" line="694"/>
       <source>This card uses the old format and must be saved before use</source>
       <translation>ეს ბარათი ძველ ფორმატს იყენებს და გამოყენებამდე უნდა შეინახოთ</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="755"/>
-      <location filename="../../MaterialsEditor.cpp" line="787"/>
+      <location filename="../../MaterialsEditor.cpp" line="754"/>
+      <location filename="../../MaterialsEditor.cpp" line="786"/>
       <location filename="../../MaterialsEditor.cpp" line="1088"/>
       <location filename="../../MaterialsEditor.cpp" line="1150"/>
       <source>Property</source>
       <translation>თვისება</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="756"/>
-      <location filename="../../MaterialsEditor.cpp" line="788"/>
+      <location filename="../../MaterialsEditor.cpp" line="755"/>
+      <location filename="../../MaterialsEditor.cpp" line="787"/>
       <location filename="../../MaterialsEditor.cpp" line="1089"/>
       <location filename="../../MaterialsEditor.cpp" line="1151"/>
       <source>Value</source>
       <translation>მნიშვნელობა</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="757"/>
-      <location filename="../../MaterialsEditor.cpp" line="789"/>
+      <location filename="../../MaterialsEditor.cpp" line="756"/>
+      <location filename="../../MaterialsEditor.cpp" line="788"/>
       <location filename="../../MaterialsEditor.cpp" line="1090"/>
       <location filename="../../MaterialsEditor.cpp" line="1152"/>
       <source>Type</source>
       <translation>ტიპი</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="880"/>
+      <location filename="../../MaterialsEditor.cpp" line="879"/>
       <source>Favorites</source>
       <translation>რჩეულები</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="887"/>
+      <location filename="../../MaterialsEditor.cpp" line="886"/>
       <source>Recent</source>
       <translation>ბოლო</translation>
     </message>
@@ -931,17 +932,17 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1320"/>
-      <source>Context menu</source>
+      <source>Context Menu</source>
       <translation>კონტექსტური მენიუ</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1322"/>
-      <source>Inherit from</source>
+      <source>Inherit From</source>
       <translation>მემკვიდრეობით საიდან</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1326"/>
-      <source>Inherit new material</source>
+      <source>Inherit New Material</source>
       <translation>ახალი მასალა მემკვიდრეობით</translation>
     </message>
   </context>
@@ -981,8 +982,13 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="159"/>
-      <source>Add to favorites</source>
-      <translation>რჩეულებში დამატება</translation>
+      <source>Adds or removes to/from favorites</source>
+      <translation>დაამატებს ან წაშლის რჩეულებში/რჩებულებიდან</translation>
+    </message>
+    <message>
+      <location filename="../../ModelSelect.ui" line="162"/>
+      <source>Toggle Favorites</source>
+      <translation>რჩეულობის გადართვა</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="172"/>
@@ -1039,7 +1045,7 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="22"/>
-      <source>Material card</source>
+      <source>Material Card</source>
       <translation>მასალის ბარათი</translation>
     </message>
     <message>
@@ -1059,38 +1065,38 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="70"/>
-      <source>Open...</source>
-      <translation>გახსნა...</translation>
+      <source>Open…</source>
+      <translation>გახსნა…</translation>
+    </message>
+    <message>
+      <location filename="../ui/materials-editor.ui" line="80"/>
+      <source>Save As…</source>
+      <translation>შენახვა როგორც…</translation>
+    </message>
+    <message>
+      <location filename="../ui/materials-editor.ui" line="96"/>
+      <source>Material Parameter</source>
+      <translation>მასალის პარამეტრი</translation>
+    </message>
+    <message>
+      <location filename="../ui/materials-editor.ui" line="115"/>
+      <source>Add/Remove Parameter</source>
+      <translation>პარამეტრის დამატება/წაშლა</translation>
+    </message>
+    <message>
+      <location filename="../ui/materials-editor.ui" line="126"/>
+      <source>Add Property</source>
+      <translation>თვისების დამატება</translation>
+    </message>
+    <message>
+      <location filename="../ui/materials-editor.ui" line="133"/>
+      <source>Delete Property</source>
+      <translation>თვისების წაშლა</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="77"/>
       <source>Saves this material as a card</source>
       <translation>შეინახავს ამ მასალას ბარათის სახით</translation>
-    </message>
-    <message>
-      <location filename="../ui/materials-editor.ui" line="80"/>
-      <source>Save as...</source>
-      <translation>შენახვა, როგორც...</translation>
-    </message>
-    <message>
-      <location filename="../ui/materials-editor.ui" line="96"/>
-      <source>Material parameter</source>
-      <translation>მასალის პარამეტრი</translation>
-    </message>
-    <message>
-      <location filename="../ui/materials-editor.ui" line="115"/>
-      <source>Add / remove parameter</source>
-      <translation>პარამეტრის დამატება/წაშლა</translation>
-    </message>
-    <message>
-      <location filename="../ui/materials-editor.ui" line="126"/>
-      <source>Add property</source>
-      <translation>თვისების დამატება</translation>
-    </message>
-    <message>
-      <location filename="../ui/materials-editor.ui" line="133"/>
-      <source>Delete property</source>
-      <translation>თვისების წაშლა</translation>
     </message>
   </context>
   <context>
@@ -1105,7 +1111,7 @@ If unchecked, they will be sorted by their name.</source>
     <name>QObject</name>
     <message>
       <location filename="../../AppMatGui.cpp" line="110"/>
-      <source>Material workbench</source>
+      <source>Material Workbench</source>
       <translation>მასალის სამუშაო მაგიდა</translation>
     </message>
     <message>
@@ -1116,30 +1122,30 @@ If unchecked, they will be sorted by their name.</source>
       <translation>მასალა</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="189"/>
+      <location filename="../../MaterialSave.cpp" line="190"/>
       <source>Confirm Overwrite</source>
       <translation>გადაწერის დადასტურება</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="379"/>
       <location filename="../../MaterialSave.cpp" line="380"/>
+      <location filename="../../MaterialSave.cpp" line="381"/>
       <source>No writeable library</source>
       <translation>ჩაწერადი ბიბლიოთეკის გარეშე</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="567"/>
-      <source>Are you sure you want to delete &apos;%1&apos;?</source>
-      <translation>დარწმუნებული ბრძანდებით, რომ გნებავთ წაშალოთ &apos;%1&apos;?</translation>
+      <location filename="../../MaterialSave.cpp" line="568"/>
+      <source>Delete &apos;%1&apos;?</source>
+      <translation>წავშალო &apos;%1&apos;?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="571"/>
+      <location filename="../../MaterialSave.cpp" line="572"/>
       <source>Removing this will also remove all contents.</source>
       <translation>ამის წაშლა მის შემცველობასაც წაშლის.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="610"/>
-      <source>You must save the material before using it.</source>
-      <translation>მასალის გამოყენებამდე აუცილებელია, შეინახოთ ის.</translation>
+      <location filename="../../MaterialsEditor.cpp" line="609"/>
+      <source>Save the material before using it.</source>
+      <translation>შეინახეთ მასალა მის გამოყენებამდე.</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1347"/>
@@ -1148,34 +1154,34 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1348"/>
-      <source>Do you want to save your changes to the material before closing?</source>
-      <translation>გსურთ შეინახოთ მასალის ცვლილებები მის დახურვამდე?</translation>
+      <source>Save changes to the material before closing?</source>
+      <translation>შევინახო მასალის ცვლილებები დახურვამდე?</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1350"/>
-      <source>If you don&apos;t save, your changes will be lost.</source>
-      <translation>თუ არ შეინახავთ, თქვენი ცვლილებები დაიკარგება.</translation>
+      <location filename="../../MaterialsEditor.cpp" line="1349"/>
+      <source>Otherwise, all changes will be lost.</source>
+      <translation>სხვაგვარად ყველა ცვლილება დაიკარგება.</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="172"/>
+      <location filename="../../Array2D.cpp" line="170"/>
       <location filename="../../ListEdit.cpp" line="142"/>
-      <location filename="../../MaterialSave.cpp" line="564"/>
+      <location filename="../../MaterialSave.cpp" line="565"/>
       <source>Confirm Delete</source>
       <translation>წაშლის დადასტურება</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="174"/>
+      <location filename="../../Array2D.cpp" line="172"/>
       <location filename="../../ListEdit.cpp" line="144"/>
-      <source>Are you sure you want to delete the row?</source>
-      <translation>დარწმუნებული ხართ, რომ გნებავთ, წაშალოთ მწკრივი?</translation>
+      <source>Delete the row?</source>
+      <translation>წავშალო მწკრივი?</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSetAppearance</name>
     <message>
       <location filename="../../Command.cpp" line="88"/>
-      <source>&amp;Appearance...</source>
-      <translation>&amp;გარეგნობა...</translation>
+      <source>&amp;Appearance</source>
+      <translation>&amp;გარეგნობა</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="89"/>
@@ -1188,8 +1194,8 @@ If unchecked, they will be sorted by their name.</source>
     <name>StdCmdSetMaterial</name>
     <message>
       <location filename="../../Command.cpp" line="117"/>
-      <source>&amp;Material...</source>
-      <translation>&amp;მასალა...</translation>
+      <source>&amp;Material</source>
+      <translation>&amp;მასალა</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="118"/>
@@ -1216,27 +1222,27 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="14"/>
       <source>Materials Migration</source>
-      <translation type="unfinished">Materials Migration</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMigrateExternal.ui" line="20"/>
-      <source>Select Material Libraries</source>
-      <translation type="unfinished">Select Material Libraries</translation>
+      <translation>მასალების მიგრაცია</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="27"/>
       <source>Select material libraries to migrate. Existing materials will not be overwritten.</source>
-      <translation type="unfinished">Select material libraries to migrate. Existing materials will not be overwritten.</translation>
+      <translation>აირჩიეთ მასალის ბიბლიოთეკები მიგრაციისთვის. არსებულ მასალებს თავზე არ გადაეწერება.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMigrateExternal.ui" line="20"/>
+      <source>Select material libraries</source>
+      <translation>აირჩიეთ მასალის ბიბლიოთეკები</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="34"/>
-      <source>Select Model Libraries</source>
-      <translation type="unfinished">Select Model Libraries</translation>
+      <source>Select model libraries</source>
+      <translation>აირჩიეთ მოდელის ბიბლიოთეკები</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="41"/>
       <source>Select model libraries to migrate. Existing models will not be overwritten.</source>
-      <translation type="unfinished">Select model libraries to migrate. Existing models will not be overwritten.</translation>
+      <translation>აირჩიეთ მოდელის ბიბლიოთეკები მიგრაციისთვის. არსებულ მოდელებს თავზე არ გადაეწერება.</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="48"/>
@@ -1246,21 +1252,25 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="180"/>
       <source>&amp;Migrate</source>
-      <translation type="unfinished">&amp;Migrate</translation>
+      <translation>&amp;მიგრაცია</translation>
     </message>
   </context>
   <context>
     <name>MatGui::DlgSettingsExternal</name>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="14"/>
-      <location filename="../../DlgSettingsExternal.ui" line="29"/>
       <source>External Interface</source>
-      <translation type="unfinished">External Interface</translation>
+      <translation>გარე ინტერფეისი</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="20"/>
       <source>Use External Interface</source>
-      <translation type="unfinished">Use External Interface</translation>
+      <translation>გარე ინტერფეისის გამოყენება</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsExternal.ui" line="29"/>
+      <source>External interface</source>
+      <translation>გარე ინტერფეისი</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="65"/>
@@ -1269,19 +1279,19 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="91"/>
-      <source>Model Cache Size</source>
-      <translation type="unfinished">Model Cache Size</translation>
+      <source>Model cache size</source>
+      <translation>მოდელის კეშის ზომა</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="98"/>
       <location filename="../../DlgSettingsExternal.ui" line="124"/>
-      <source>Hit Rate</source>
-      <translation type="unfinished">Hit Rate</translation>
+      <source>Hit rate</source>
+      <translation>მოხვედრების სიხშირე</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="134"/>
-      <source>Material Cache Size</source>
-      <translation type="unfinished">Material Cache Size</translation>
+      <source>Material cache size</source>
+      <translation>მასალის კეშის ზომა</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.cpp" line="97"/>
@@ -1293,8 +1303,8 @@ If unchecked, they will be sorted by their name.</source>
     <name>MatGui::DlgMigrateExternal</name>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="77"/>
-      <source>Migrating Models...</source>
-      <translation type="unfinished">Migrating Models...</translation>
+      <source>Migrating models…</source>
+      <translation>მოდელების მიგრაცია…</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="83"/>
@@ -1302,7 +1312,7 @@ If unchecked, they will be sorted by their name.</source>
       <location filename="../../TaskMigrateExternal.cpp" line="107"/>
       <location filename="../../TaskMigrateExternal.cpp" line="119"/>
       <source>  Library: </source>
-      <translation type="unfinished">  Library: </translation>
+      <translation>  ბიბლიოთეკა: </translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="87"/>
@@ -1310,22 +1320,28 @@ If unchecked, they will be sorted by their name.</source>
       <location filename="../../TaskMigrateExternal.cpp" line="111"/>
       <location filename="../../TaskMigrateExternal.cpp" line="123"/>
       <source>done</source>
-      <translation type="unfinished">done</translation>
+      <translation>მზადაა</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="89"/>
-      <source>Validating Models...</source>
-      <translation type="unfinished">Validating Models...</translation>
+      <source>Validating models…</source>
+      <translation>მოდელების ვალიდაცია…</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="101"/>
-      <source>Migrating Materials...</source>
-      <translation type="unfinished">Migrating Materials...</translation>
+      <source>Migrating materials…</source>
+      <translation>მოდელების მიგრაცია…</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="113"/>
-      <source>Validating Materials...</source>
-      <translation type="unfinished">Validating Materials...</translation>
+      <source>Validating materials…</source>
+      <translation>მოდელების ვალიდაცია…</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMigrateExternal.cpp" line="147"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="150"/>
+      <source>Unknown exception - aborted</source>
+      <translation>უცნობი გამონაკლისი - შეწყდა</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="127"/>
@@ -1334,13 +1350,7 @@ If unchecked, they will be sorted by their name.</source>
       <location filename="../../TaskMigrateExternal.cpp" line="139"/>
       <location filename="../../TaskMigrateExternal.cpp" line="143"/>
       <source>Aborted</source>
-      <translation type="unfinished">Aborted</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="147"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="150"/>
-      <source>Unknown exception - Aborted</source>
-      <translation type="unfinished">Unknown exception - Aborted</translation>
+      <translation>შეწყვეტილია</translation>
     </message>
   </context>
   <context>
@@ -1352,31 +1362,49 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="54"/>
-      <source>Edit...</source>
-      <translation>ჩასწორება...</translation>
+      <source>Edit</source>
+      <translation>ჩასწორება</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="55"/>
-      <source>Edit material properties</source>
-      <translation type="unfinished">Edit material properties</translation>
+      <source>Edits material properties</source>
+      <translation>ჩაასწორებს მასალის მახასიათებლებს</translation>
     </message>
   </context>
   <context>
     <name>CmdMigrateToExternal</name>
     <message>
       <location filename="../../Command.cpp" line="202"/>
-      <source>Migrate...</source>
-      <translation type="unfinished">Migrate...</translation>
+      <source>Migrate</source>
+      <translation>მიგრაცია</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="203"/>
-      <source>Migrate the materials to the external materials manager</source>
-      <translation type="unfinished">Migrate the materials to the external materials manager</translation>
+      <source>Migrates the materials to the external materials manager</source>
+      <translation>გადაიტანს მასალებს გარე მასალების მმართველში</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="205"/>
       <source>Migrate existing materials to the external materials manager</source>
-      <translation type="unfinished">Migrate existing materials to the external materials manager</translation>
+      <translation>გადაიტანს არსებულ მასალებს გარე მასალების მმართველში</translation>
+    </message>
+  </context>
+  <context>
+    <name>MatGui::DlgDisplayPropertiesImp</name>
+    <message>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="181"/>
+      <source>Basic appearance</source>
+      <translation>ძირითადი გარეგნობა</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="186"/>
+      <source>Texture appearance</source>
+      <translation>ტექსტურის გარეგნობა</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="191"/>
+      <source>All materials</source>
+      <translation>ყველა მასალა</translation>
     </message>
   </context>
 </TS>

@@ -122,17 +122,14 @@ public:
 
     Gui::MDIView* getMDIView() const override;
 
-    bool getFrameState() const;
-    void setFrameState(bool state);
-    void toggleFrameState();
     void setTemplateMarkers(bool state) const;
 
     bool canDelete(App::DocumentObject* obj) const override;
 
     void setGrid();
 
-    QGSPage* getQGSPage() const { return m_graphicsScene; }
-    QGVPage* getQGVPage() const { return m_graphicsView; }
+    QGSPage* getQGSPage() const;
+    QGVPage* getQGVPage() const;
 
     ViewProviderPageExtension* getVPPExtension() const;
 
@@ -149,7 +146,7 @@ protected:
 private:
     QPointer<MDIViewPage> m_mdiView;
     std::string m_pageName;
-    QGVPage* m_graphicsView;
+    QPointer<QGVPage> m_graphicsView;
     QGSPage* m_graphicsScene;
 };
 

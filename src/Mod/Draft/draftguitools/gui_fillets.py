@@ -67,7 +67,7 @@ class Fillet(gui_base_original.Creator):
         return {"Pixmap": "Draft_Fillet",
                 "Accel": "F,I",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_Fillet", "Fillet"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Fillet", "Creates a fillet between two selected wires or edges.")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Fillet", "Creates a fillet between 2 selected edges")}
 
     def Activated(self, name="Fillet"):
         """Execute when the command is called."""
@@ -77,7 +77,7 @@ class Fillet(gui_base_original.Creator):
             self.chamfer = params.get_param("FilletChamferMode")
             self.delete = params.get_param("FilletDeleteMode")
             label = translate("draft", "Fillet radius")
-            tooltip = translate("draft", "Radius of fillet")
+            tooltip = translate("draft", "Radius of the fillet")
 
             # Call the task panel defined in DraftGui to enter a radius.
             self.ui.taskUi(title=translate("Draft", "Fillet"), icon="Draft_Fillet")
@@ -113,7 +113,7 @@ class Fillet(gui_base_original.Creator):
             # self.linetrack = trackers.lineTracker(dotted=True)
             # self.arctrack = trackers.arcTracker()
             # self.call = self.view.addEventCallback("SoEvent", self.action)
-            _toolmsg(translate("draft", "Enter radius."))
+            _toolmsg(translate("draft", "Enter radius"))
 
     def action(self, arg):
         """Scene event handler. CURRENTLY NOT USED.
@@ -168,7 +168,7 @@ class Fillet(gui_base_original.Creator):
                     "Draft.autogroup(fillet)",
                     "FreeCAD.ActiveDocument.recompute()"]
 
-        self.commit(translate("draft", "Create fillet"), cmd_list)
+        self.commit(translate("draft", "Create Fillet"), cmd_list)
         self.finish()
 
 

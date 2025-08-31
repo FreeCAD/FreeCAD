@@ -402,6 +402,7 @@ class _ArchPipeConnector(ArchComponent.Component):
             v1x = v1.cross(v1y)
             rot = FreeCAD.Rotation(v1x,v1y,v1,"ZYX")
             p.rotate(p.CenterOfMass,rot.Axis,math.degrees(rot.Angle))
+            p.rotate(p.CenterOfMass,v1,90)
             try:
                 sh = p.revolve(center,normal,math.degrees(math.pi-v1.getAngle(v2)))
             except:

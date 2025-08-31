@@ -30,11 +30,16 @@
 #endif
 
 #include <Base/Interpreter.h>
+#include <Base/Converter.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Gui/Inventor/Draggers/GizmoHelper.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/PartDesign/App/FeatureFillet.h>
+#include <Mod/Part/App/Attacher.h>
+#include <Mod/Part/App/Geometry.h>
+#include <Mod/Part/App/Tools.h>
 
 #include "ui_TaskFilletParameters.h"
 #include "TaskFilletParameters.h"
@@ -103,6 +108,8 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp* DressUpView, QWi
     else {
         hideOnError();
     }
+
+    setupGizmos(DressUpView);
 }
 
 void TaskFilletParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -114,6 +121,10 @@ void TaskFilletParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (selectionMode == refSel) {
             referenceSelected(msg, ui->listWidgetReferences);
         }
+    } else if (msg.Type == Gui::SelectionChanges::ClrSelection) {
+        // TODO: the gizmo position should be only recalculated when the feature associated
+        // with the gizmo is removed from the list
+        setGizmoPositions();
     }
 }
 
@@ -134,12 +145,13 @@ void TaskFilletParameters::onCheckBoxUseAllEdgesToggled(bool checked)
 void TaskFilletParameters::setButtons(const selectionModes mode)
 {
     ui->buttonRefSel->setChecked(mode == refSel);
-    ui->buttonRefSel->setText(mode == refSel ? btnPreviewStr() : btnSelectStr());
+    ui->buttonRefSel->setText(mode == refSel ? stopSelectionLabel() : startSelectionLabel());
 }
 
 void TaskFilletParameters::onRefDeleted()
 {
     TaskDressUpParameters::deleteRef(ui->listWidgetReferences);
+    setGizmoPositions();
 }
 
 void TaskFilletParameters::onAddAllEdges()
@@ -195,6 +207,59 @@ void TaskFilletParameters::apply()
     }
 }
 
+void TaskFilletParameters::setupGizmos(ViewProviderDressUp* vp)
+{
+    if (!GizmoContainer::isEnabled()) {
+        return;
+    }
+
+    radiusGizmo = new Gui::LinearGizmo(ui->filletRadius);
+    radiusGizmo2 = new Gui::LinearGizmo(ui->filletRadius);
+
+    gizmoContainer = GizmoContainer::createGizmo({radiusGizmo, radiusGizmo2}, vp);
+
+    setGizmoPositions();
+}
+
+void TaskFilletParameters::setGizmoPositions()
+{
+    if (!gizmoContainer) {
+        return;
+    }
+
+    auto fillet = getObject<PartDesign::Fillet>();
+    if (!fillet) {
+        gizmoContainer->visible = false;
+        return;
+    }
+    Part::TopoShape baseShape = fillet->getBaseTopoShape();
+    std::vector<Part::TopoShape> shapes = fillet->getContinuousEdges(baseShape);
+
+    if (shapes.size() == 0) {
+        gizmoContainer->visible = false;
+        return;
+    }
+    gizmoContainer->visible = true;
+
+    // Attach the arrow to the first edge
+    Part::TopoShape edge = shapes[0];
+    auto [face1, face2] = getAdjacentFacesFromEdge(edge, baseShape);
+
+    DraggerPlacementProps props1 = getDraggerPlacementFromEdgeAndFace(edge, face1);
+    radiusGizmo->Gizmo::setDraggerPlacement(props1.position, props1.dir);
+
+    DraggerPlacementProps props2 = getDraggerPlacementFromEdgeAndFace(edge, face2);
+    radiusGizmo2->Gizmo::setDraggerPlacement(props2.position, props2.dir);
+
+    // The dragger length won't be equal to the radius if the two faces
+    // are not orthogonal so this correction is needed
+    double angle = props1.dir.GetAngle(props2.dir);
+    double correction = 1/std::tan(angle/2);
+
+    radiusGizmo->setMultFactor(correction);
+    radiusGizmo2->setMultFactor(correction);
+}
+
 //**************************************************************************
 //**************************************************************************
 // TaskDialog
@@ -206,6 +271,7 @@ TaskDlgFilletParameters::TaskDlgFilletParameters(ViewProviderFillet* DressUpView
     parameter = new TaskFilletParameters(DressUpView);
 
     Content.push_back(parameter);
+    Content.push_back(preview);
 }
 
 TaskDlgFilletParameters::~TaskDlgFilletParameters() = default;
@@ -216,7 +282,7 @@ bool TaskDlgFilletParameters::accept()
 {
     auto obj = getObject();
     if (!obj->isError()) {
-        parameter->showObject();
+        getViewObject()->showPreviousFeature(false);
     }
 
     parameter->apply();

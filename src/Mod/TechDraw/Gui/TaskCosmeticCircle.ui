@@ -58,10 +58,10 @@
      <item row="1" column="0">
       <widget class="QRadioButton" name="rb2d1">
        <property name="toolTip">
-        <string>Treat the center point as a 2D point within the parent View.  Z coordinate is ignored.</string>
+        <string>Treats the center point as a 2D point within the parent view. The Z coordinate is ignored.</string>
        </property>
        <property name="text">
-        <string>2D Point</string>
+        <string>2D point</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -74,10 +74,10 @@
      <item row="1" column="1">
       <widget class="QRadioButton" name="rb3d1">
        <property name="toolTip">
-        <string>Treat the center point as a 3D point and project it onto the parent View.</string>
+        <string>Treats the center point as a 3D point and project it onto the parent view</string>
        </property>
        <property name="text">
-        <string>3D Point</string>
+        <string>3D point</string>
        </property>
        <property name="autoExclusive">
         <bool>true</bool>
@@ -87,7 +87,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_8">
        <property name="text">
-        <string>Circle Center</string>
+        <string>Circle center</string>
        </property>
       </widget>
      </item>
@@ -98,7 +98,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string notr="true">X:</string>
+        <string notr="true">X</string>
        </property>
       </widget>
      </item>
@@ -112,7 +112,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string notr="true">Y:</string>
+        <string notr="true">Y</string>
        </property>
       </widget>
      </item>
@@ -126,7 +126,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string notr="true">Z:</string>
+        <string notr="true">Z</string>
        </property>
       </widget>
      </item>
@@ -144,7 +144,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_9">
        <property name="text">
-        <string>Radius:</string>
+        <string>Radius</string>
        </property>
       </widget>
      </item>
@@ -178,14 +178,14 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_6">
        <property name="text">
-        <string>End Angle:</string>
+        <string>End angle</string>
        </property>
       </widget>
      </item>
      <item row="3" column="0">
       <widget class="QCheckBox" name="cbClockwise">
        <property name="toolTip">
-        <string>Check this box to make an arc from start angle to end angle in a clockwise direction.</string>
+        <string>Creates an arc from start angle to end angle in a clockwise direction</string>
        </property>
        <property name="text">
         <string>Clockwise Angle</string>
@@ -195,7 +195,7 @@
      <item row="2" column="1">
       <widget class="Gui::QuantitySpinBox" name="qsbEndAngle" native="true">
        <property name="toolTip">
-        <string>End angle (conventional) of arc in degrees.</string>
+        <string>End angle (conventional) of arc in degrees</string>
        </property>
        <property name="unit" stdset="0">
         <string notr="true"/>
@@ -205,17 +205,17 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>Start Angle:</string>
+        <string>Start angle</string>
        </property>
       </widget>
      </item>
      <item row="0" column="0">
       <widget class="QRadioButton" name="rbArc">
        <property name="toolTip">
-        <string>Select to enter angles and create a circular arc.</string>
+        <string>Uses angles and create a circular arc</string>
        </property>
        <property name="text">
-        <string>Arc of Circle</string>
+        <string>Arc of circle</string>
        </property>
       </widget>
      </item>

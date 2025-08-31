@@ -74,7 +74,6 @@ endif()
 include_directories(
     ${QtCore_INCLUDE_DIRS}
     ${QtXml_INCLUDE_DIRS}
-    ${Coin_INCLUDE_DIR}
 )
 list(APPEND FreeCADApp_LIBS
         ${QtCore_LIBRARIES}
@@ -263,6 +262,7 @@ SET(Properties_HPP_SRCS
     PropertyStandard.h
     PropertyUnits.h
     PropertyExpressionEngine.h
+    PropertyOverrides.h
 )
 SET(Properties_SRCS
     ${Properties_CPP_SRCS}

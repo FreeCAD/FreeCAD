@@ -321,6 +321,43 @@ TEST_F(RenameProperty, updateExpressionDifferentDocument)
     doc->removeObject(varSet2->getNameInDocument());
 }
 
+// Test if we can rename a property which value is the result of an expression
+TEST_F(RenameProperty, renamePropertyWithExpression)
+{
+    // Arrange
+    auto* prop2 = freecad_cast<App::PropertyInteger*>(
+        varSet->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables"));
+    prop2->setValue(Value);
+
+    App::ObjectIdentifier path(*prop);
+    std::shared_ptr<App::Expression> expr(App::Expression::parse(varSet, "Variable2"));
+    varSet->setExpression(path, expr);
+    varSet->ExpressionEngine.execute();
+
+    // Assert before the rename
+    EXPECT_EQ(prop2->getValue(), Value);
+    EXPECT_EQ(prop->getValue(), Value);
+
+    // Act
+    bool isRenamed = varSet->renameDynamicProperty(prop, "NewName");
+    varSet->ExpressionEngine.execute();
+
+    // Assert after the rename
+    EXPECT_TRUE(isRenamed);
+    EXPECT_STREQ(varSet->getPropertyName(prop), "NewName");
+    EXPECT_EQ(prop->getValue(), Value);
+    EXPECT_EQ(varSet->getDynamicPropertyByName("Variable"), nullptr);
+    EXPECT_EQ(varSet->getDynamicPropertyByName("NewName"), prop);
+
+    // Act
+    prop2->setValue(Value + 1);
+    varSet->ExpressionEngine.execute();
+
+    // Assert
+    EXPECT_EQ(prop2->getValue(), Value + 1);
+    EXPECT_EQ(prop->getValue(), Value + 1);
+}
+
 // Tests whether we can rename a property and undo it
 TEST_F(RenameProperty, undoRenameProperty)
 {

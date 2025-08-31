@@ -39,7 +39,7 @@ class BIM_Unclone:
             "MenuText": QT_TRANSLATE_NOOP("BIM_Unclone", "Unclone"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_Unclone",
-                "Makes a selected clone object independent from its original",
+                "Creates a selected clone object independent from its original",
             ),
         }
 
@@ -131,7 +131,7 @@ class BIM_Unclone:
 
             elif Draft.getType(obj) == "Clone":
                 FreeCAD.Console.PrintError(
-                    translate("BIM", "Draft Clones are not supported yet!") + "\n"
+                    translate("BIM", "Draft clones are not supported yet!") + "\n"
                 )
             else:
                 FreeCAD.Console.PrintError(
@@ -139,7 +139,7 @@ class BIM_Unclone:
                 )
         else:
             FreeCAD.Console.PrintError(
-                translate("BIM", "Please select exactly one object") + "\n"
+                translate("BIM", "Select exactly one object") + "\n"
             )
 
 

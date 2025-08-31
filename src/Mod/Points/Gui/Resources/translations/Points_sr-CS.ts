@@ -10,13 +10,12 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="240"/>
-      <source>Convert to points...</source>
-      <translation>Pretvori u tačke...</translation>
+      <source>Convert to Points</source>
+      <translation>Pretvori u tačke</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="241"/>
-      <location filename="../../Command.cpp" line="243"/>
-      <source>Convert to points</source>
+      <source>Converts to points</source>
       <translation>Pretvori u tačke</translation>
     </message>
   </context>
@@ -29,8 +28,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="154"/>
-      <source>Export points...</source>
-      <translation>Izvezi tačke...</translation>
+      <source>Export Points…</source>
+      <translation>Izvezi tačke…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="155"/>
@@ -48,12 +47,11 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="69"/>
-      <source>Import points...</source>
-      <translation>Uvezi tačke...</translation>
+      <source>Import Points…</source>
+      <translation>Uvezi tačke…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="70"/>
-      <location filename="../../Command.cpp" line="72"/>
       <source>Imports a point cloud</source>
       <translation>Uvozi oblak tačaka</translation>
     </message>
@@ -67,13 +65,12 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="376"/>
-      <source>Merge point clouds</source>
+      <source>Merge Point Clouds</source>
       <translation>Objedini oblake tačaka</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="377"/>
-      <location filename="../../Command.cpp" line="379"/>
-      <source>Merge several point clouds into one</source>
+      <source>Merges several point clouds into one</source>
       <translation>Objedini nekoliko oblaka tačaka u jedan</translation>
     </message>
   </context>
@@ -86,14 +83,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="328"/>
-      <source>Cut point cloud</source>
-      <translation>Seče oblak tačaka</translation>
+      <source>Cut Point Cloud</source>
+      <translation>Iseci oblak tačaka</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="329"/>
-      <location filename="../../Command.cpp" line="331"/>
-      <source>Cuts a point cloud with a picked polygon</source>
-      <translation>Seče oblak tačaka sa izabranim mnogouglom</translation>
+      <source>Cuts a point cloud with a selected polygon</source>
+      <translation>Iseci oblaka tačaka sa izabranim mnogouglom</translation>
     </message>
   </context>
   <context>
@@ -105,13 +101,12 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="438"/>
-      <source>Structured point cloud</source>
+      <source>Structured Point Cloud</source>
       <translation>Strukturirani oblak tačaka</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="439"/>
-      <location filename="../../Command.cpp" line="441"/>
-      <source>Convert points to structured point cloud</source>
+      <source>Converts points to a structured point cloud</source>
       <translation>Pretvori tačke u strukturirani oblak tačaka</translation>
     </message>
   </context>
@@ -129,8 +124,7 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="202"/>
-      <location filename="../../Command.cpp" line="204"/>
-      <source>Test to transform a point cloud</source>
+      <source>Performs tests to transform a point cloud</source>
       <translation>Test za transformisanje oblaka tačaka</translation>
     </message>
   </context>
@@ -161,26 +155,6 @@
   <context>
     <name>PointsGui::DlgPointsRead</name>
     <message>
-      <location filename="../../DlgPointsRead.ui" line="14"/>
-      <source>ASCII points import</source>
-      <translation>Uvoz ASCII tačaka</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPointsRead.ui" line="34"/>
-      <source>Template:</source>
-      <translation>Šablon:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPointsRead.ui" line="46"/>
-      <source>Special lines</source>
-      <translation>Posebne linije</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPointsRead.ui" line="58"/>
-      <source>First line:</source>
-      <translation>Prva linija:</translation>
-    </message>
-    <message>
       <location filename="../../DlgPointsRead.ui" line="70"/>
       <source>Ignore</source>
       <translation>Zanemari</translation>
@@ -189,26 +163,6 @@
       <location filename="../../DlgPointsRead.ui" line="80"/>
       <source>Number of points</source>
       <translation>Broj tačaka</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPointsRead.ui" line="101"/>
-      <source>Cluster by lines starting with:</source>
-      <translation>Grupisano po linijama počevši od:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPointsRead.ui" line="111"/>
-      <source>Ignore lines starting with:</source>
-      <translation>Zanemari linije počevši od:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPointsRead.ui" line="126"/>
-      <source>Point format</source>
-      <translation>Format tačke</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPointsRead.ui" line="146"/>
-      <source>Number separator:</source>
-      <translation>Separator brojeva:</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="167"/>
@@ -221,11 +175,6 @@
       <translation>\w</translation>
     </message>
     <message>
-      <location filename="../../DlgPointsRead.ui" line="180"/>
-      <source>Points format:</source>
-      <translation>Format tačaka:</translation>
-    </message>
-    <message>
       <location filename="../../DlgPointsRead.ui" line="188"/>
       <source>X,Y,Z</source>
       <translation>X,Y,Z</translation>
@@ -236,18 +185,63 @@
       <translation>X,Y</translation>
     </message>
     <message>
+      <location filename="../../DlgPointsRead.ui" line="14"/>
+      <source>ASCII Points Import</source>
+      <translation>Uvoz ASCII tačaka</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="34"/>
+      <source>Template</source>
+      <translation>Šablon</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="46"/>
+      <source>Special Lines</source>
+      <translation>Posebne linije</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="58"/>
+      <source>First Line</source>
+      <translation>Prva linija</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="101"/>
+      <source>Cluster by lines starting with</source>
+      <translation>Grupisano po linijama počevši od</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="111"/>
+      <source>Ignore lines starting with</source>
+      <translation>Zanemari linije počevši od</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="126"/>
+      <source>Point Format</source>
+      <translation>Format tačke</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="146"/>
+      <source>Number separator</source>
+      <translation>Separator brojeva</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="180"/>
+      <source>Points format</source>
+      <translation>Format tačaka</translation>
+    </message>
+    <message>
       <location filename="../../DlgPointsRead.ui" line="201"/>
       <location filename="../../DlgPointsRead.ui" line="237"/>
       <location filename="../../DlgPointsRead.ui" line="273"/>
-      <source>Next block:</source>
-      <translation>Sledeći blok:</translation>
+      <source>Next block</source>
+      <translation>Sledeći blok</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="209"/>
       <location filename="../../DlgPointsRead.ui" line="245"/>
       <location filename="../../DlgPointsRead.ui" line="281"/>
-      <source>none</source>
-      <translation>ništa</translation>
+      <source>None</source>
+      <translation>Nijedan</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="214"/>
@@ -274,18 +268,18 @@
       <location filename="../../DlgPointsRead.ui" line="229"/>
       <location filename="../../DlgPointsRead.ui" line="265"/>
       <location filename="../../DlgPointsRead.ui" line="301"/>
-      <source>I (Gray value)</source>
+      <source>I (gray value)</source>
       <translation>I (vrednost sive)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="341"/>
+      <source>Number of previewed lines</source>
+      <translation>Broj pregledanih linija</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="314"/>
       <source>Preview</source>
       <translation>Pregled</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPointsRead.ui" line="341"/>
-      <source>Number of previewed lines:</source>
-      <translation>Broj pregledanih linija:</translation>
     </message>
   </context>
   <context>
@@ -309,8 +303,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="118"/>
-      <source>The Bounding Box of the imported points does not contain the origin.  Do you want to translate it to the origin?</source>
-      <translation>Koordinatni početak nije unutar granične kutije oko uvezenih tačaka. Da li želiš da ih pomerim u koordinatni početak?</translation>
+      <source>The bounding box of the imported points does not contain the origin. Translate it to the origin?</source>
+      <translation>Koordinatni početak se ne nalazi unutar granične kutije uvezenih tačaka. Da li želiš da ih pomerim u koordinatni početak?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="260"/>
@@ -327,8 +321,8 @@
     <name>Workbench</name>
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
-      <source>Points tools</source>
-      <translation>Alati tačaka</translation>
+      <source>Points Tools</source>
+      <translation>Alatke za rad sa tačkama</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="35"/>

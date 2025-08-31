@@ -4,56 +4,53 @@
   <context>
     <name>CmdMeshAddFacet</name>
     <message>
-      <location filename="../../Command.cpp" line="717"/>
+      <location filename="../../Command.cpp" line="714"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="718"/>
-      <source>Add triangle</source>
-      <translation>Ajouter un triangle</translation>
+      <location filename="../../Command.cpp" line="715"/>
+      <source>Add Triangle</source>
+      <translation>Ajout d'un triangle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="719"/>
-      <location filename="../../Command.cpp" line="721"/>
-      <source>Add triangle manually to a mesh</source>
-      <translation>Ajouter manuellement un triangle à un maillage</translation>
+      <location filename="../../Command.cpp" line="716"/>
+      <source>Adds a triangle manually to a mesh</source>
+      <translation>Ajoute un triangle manuellement à un maillage</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshBoundingBox</name>
     <message>
-      <location filename="../../Command.cpp" line="1434"/>
+      <location filename="../../Command.cpp" line="1431"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1435"/>
-      <source>Boundings info...</source>
-      <translation>Dimensions extérieures...</translation>
+      <location filename="../../Command.cpp" line="1432"/>
+      <source>Bounding Box Info</source>
+      <translation type="unfinished">Bounding Box Info</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1436"/>
-      <location filename="../../Command.cpp" line="1438"/>
-      <source>Shows the boundings of the selected mesh</source>
-      <translation>Afficher les dimensions englobantes du maillage sélectionné</translation>
+      <location filename="../../Command.cpp" line="1433"/>
+      <source>Shows the bounding box coordinates of the selected mesh</source>
+      <translation type="unfinished">Shows the bounding box coordinates of the selected mesh</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshBuildRegularSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1486"/>
+      <location filename="../../Command.cpp" line="1483"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1487"/>
-      <source>Regular solid...</source>
-      <translation>Solide régulier...</translation>
+      <location filename="../../Command.cpp" line="1484"/>
+      <source>Regular Solid</source>
+      <translation>Solide régulier</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1488"/>
-      <location filename="../../Command.cpp" line="1490"/>
+      <location filename="../../Command.cpp" line="1485"/>
       <source>Builds a regular solid</source>
       <translation>Construire un solide régulier</translation>
     </message>
@@ -61,38 +58,35 @@
   <context>
     <name>CmdMeshCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="954"/>
+      <location filename="../../Command.cpp" line="951"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="955"/>
-      <source>Cross-sections...</source>
-      <translation>Coupes...</translation>
+      <location filename="../../Command.cpp" line="952"/>
+      <source>Cross-Sections</source>
+      <translation>Créer des coupes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="956"/>
-      <location filename="../../Command.cpp" line="957"/>
-      <source>Cross-sections</source>
-      <translation>Coupes</translation>
+      <location filename="../../Command.cpp" line="953"/>
+      <source>Creates cross-sections of the mesh</source>
+      <translation>Crée des coupes du maillage</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshDecimating</name>
     <message>
-      <location filename="../../Command.cpp" line="1330"/>
+      <location filename="../../Command.cpp" line="1327"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1331"/>
-      <source>Decimation...</source>
-      <translation>Décimer...</translation>
+      <location filename="../../Command.cpp" line="1328"/>
+      <source>Decimate</source>
+      <translation>Décimer</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1332"/>
-      <location filename="../../Command.cpp" line="1333"/>
-      <location filename="../../Command.cpp" line="1334"/>
+      <location filename="../../Command.cpp" line="1329"/>
       <source>Decimates a mesh</source>
       <translation>Décimer un maillage</translation>
     </message>
@@ -100,69 +94,71 @@
   <context>
     <name>CmdMeshDifference</name>
     <message>
-      <location filename="../../Command.cpp" line="164"/>
+      <location filename="../../Command.cpp" line="163"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="165"/>
+      <location filename="../../Command.cpp" line="164"/>
       <source>Difference</source>
       <translation>Créer une différence</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="165"/>
+      <source>Creates a boolean difference of the selected meshes</source>
+      <translation>Crée une différence booléenne de maillages sélectionnés.</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshEvaluateFacet</name>
     <message>
-      <location filename="../../Command.cpp" line="1085"/>
+      <location filename="../../Command.cpp" line="1082"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1086"/>
-      <source>Face info</source>
-      <translation>Informations sur la face</translation>
+      <location filename="../../Command.cpp" line="1083"/>
+      <source>Face Info</source>
+      <translation>Informer sur la face</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1087"/>
-      <location filename="../../Command.cpp" line="1089"/>
-      <source>Information about face</source>
-      <translation>Informations sur la face</translation>
+      <location filename="../../Command.cpp" line="1084"/>
+      <source>Displays information about the selected faces</source>
+      <translation>Affiche des informations sur les faces sélectionnées</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshEvaluateSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1260"/>
+      <location filename="../../Command.cpp" line="1257"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1261"/>
-      <source>Check solid mesh</source>
-      <translation>Vérifier la solidité du maillage</translation>
+      <location filename="../../Command.cpp" line="1258"/>
+      <source>Evaluate Solid</source>
+      <translation>Vérifier si le maillage est un solide</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1262"/>
-      <location filename="../../Command.cpp" line="1264"/>
+      <location filename="../../Command.cpp" line="1259"/>
       <source>Checks whether the mesh is a solid</source>
-      <translation>Vérifier si le maillage est un solide</translation>
+      <translation>Vérifie si le maillage est un solide.</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshEvaluation</name>
     <message>
-      <location filename="../../Command.cpp" line="1040"/>
+      <location filename="../../Command.cpp" line="1037"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1042"/>
-      <source>Evaluate and repair mesh...</source>
-      <translation>Évaluer et réparer un maillage...</translation>
+      <location filename="../../Command.cpp" line="1039"/>
+      <source>Evaluate and Repair</source>
+      <translation>Évaluer et réparer</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1043"/>
-      <location filename="../../Command.cpp" line="1045"/>
+      <location filename="../../Command.cpp" line="1040"/>
       <source>Opens a dialog to analyze and repair a mesh</source>
       <translation>Ouvrir une fenêtre de dialogue pour analyser et réparer un maillage</translation>
     </message>
@@ -170,131 +166,125 @@
   <context>
     <name>CmdMeshExport</name>
     <message>
-      <location filename="../../Command.cpp" line="375"/>
+      <location filename="../../Command.cpp" line="372"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="376"/>
-      <source>Export mesh...</source>
-      <translation>Exporter le maillage...</translation>
+      <location filename="../../Command.cpp" line="373"/>
+      <source>Export Mesh…</source>
+      <translation>Exporter le maillage…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="377"/>
-      <location filename="../../Command.cpp" line="379"/>
-      <source>Exports a mesh to file</source>
-      <translation>Exporte le maillage dans un fichier</translation>
+      <location filename="../../Command.cpp" line="374"/>
+      <source>Exports a mesh to a file</source>
+      <translation>Exporte un maillage vers un fichier</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshFillInteractiveHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1569"/>
+      <location filename="../../Command.cpp" line="1566"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1570"/>
-      <source>Close hole</source>
-      <translation>Boucher un trou</translation>
+      <location filename="../../Command.cpp" line="1567"/>
+      <source>Close Hole</source>
+      <translation type="unfinished">Close Hole</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1571"/>
-      <location filename="../../Command.cpp" line="1573"/>
-      <source>Close holes interactively</source>
-      <translation>Boucher un trou de manière interactive</translation>
+      <location filename="../../Command.cpp" line="1568"/>
+      <source>Closes a hole interactively in the mesh</source>
+      <translation type="unfinished">Closes a hole interactively in the mesh</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshFillupHoles</name>
     <message>
-      <location filename="../../Command.cpp" line="1518"/>
+      <location filename="../../Command.cpp" line="1515"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1519"/>
-      <source>Fill holes...</source>
-      <translation>Remplir les trous...</translation>
+      <location filename="../../Command.cpp" line="1516"/>
+      <source>Fill Holes</source>
+      <translation>Remplir les trous</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1520"/>
-      <location filename="../../Command.cpp" line="1522"/>
-      <source>Fill holes of the mesh</source>
-      <translation>Remplir un trou de manière interactive</translation>
+      <location filename="../../Command.cpp" line="1517"/>
+      <source>Fills holes in the mesh</source>
+      <translation>Remplis les trous du maillage.</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshFlipNormals</name>
     <message>
-      <location filename="../../Command.cpp" line="1398"/>
+      <location filename="../../Command.cpp" line="1395"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1399"/>
-      <source>Flip normals</source>
-      <translation>Inverser les normales</translation>
+      <location filename="../../Command.cpp" line="1396"/>
+      <source>Flip Normals</source>
+      <translation>Inverser les normales‏‎</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1400"/>
-      <location filename="../../Command.cpp" line="1402"/>
-      <source>Flips the normals of the mesh</source>
-      <translation>Inverser les normales du maillage</translation>
+      <location filename="../../Command.cpp" line="1397"/>
+      <source>Flips the normals of the selected mesh</source>
+      <translation>Inverse les normales du maillage sélectionné.</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshFromGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="458"/>
+      <location filename="../../Command.cpp" line="455"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="459"/>
-      <source>Create mesh from geometry...</source>
-      <translation>Créer un maillage depuis une géométrie...</translation>
+      <location filename="../../Command.cpp" line="456"/>
+      <source>Mesh From Geometry</source>
+      <translation>Créer un maillage à partir de la géométrie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="460"/>
-      <location filename="../../Command.cpp" line="462"/>
-      <source>Create mesh from the selected geometry</source>
-      <translation>Créer un maillage à partir de la géométrie sélectionnée</translation>
+      <location filename="../../Command.cpp" line="457"/>
+      <source>Creates a mesh from the selected geometry</source>
+      <translation>Crée un maillage à partir de la géométrie sélectionnée.</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshFromPartShape</name>
     <message>
-      <location filename="../../Command.cpp" line="529"/>
+      <location filename="../../Command.cpp" line="526"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="530"/>
-      <source>Create mesh from shape...</source>
-      <translation>Créer un maillage à partir d'une forme...</translation>
+      <location filename="../../Command.cpp" line="527"/>
+      <source>Mesh From Shape</source>
+      <translation>Créer un maillage à partir d'une forme</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="531"/>
-      <source>Tessellate shape</source>
-      <translation>Tesseller la forme</translation>
+      <location filename="../../Command.cpp" line="528"/>
+      <source>Tessellates the selected shape to a mesh</source>
+      <translation>Tesselle la forme sélectionnée en un maillage.</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshHarmonizeNormals</name>
     <message>
-      <location filename="../../Command.cpp" line="1362"/>
+      <location filename="../../Command.cpp" line="1359"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1363"/>
-      <source>Harmonize normals</source>
-      <translation>Harmoniser les normales</translation>
+      <location filename="../../Command.cpp" line="1360"/>
+      <source>Harmonize Normals</source>
+      <translation>Harmoniser les normales‎</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1364"/>
-      <location filename="../../Command.cpp" line="1366"/>
+      <location filename="../../Command.cpp" line="1361"/>
       <source>Harmonizes the normals of the mesh</source>
       <translation>Harmoniser les normales du maillage</translation>
     </message>
@@ -302,49 +292,53 @@
   <context>
     <name>CmdMeshImport</name>
     <message>
-      <location filename="../../Command.cpp" line="322"/>
+      <location filename="../../Command.cpp" line="319"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="323"/>
-      <source>Import mesh...</source>
-      <translation>Importer un maillage...</translation>
+      <location filename="../../Command.cpp" line="320"/>
+      <source>Import Mesh…</source>
+      <translation>Importer un maillage…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="324"/>
-      <location filename="../../Command.cpp" line="326"/>
-      <source>Imports a mesh from file</source>
-      <translation>Importer un maillage depuis un fichier</translation>
+      <location filename="../../Command.cpp" line="321"/>
+      <source>Imports a mesh from a file</source>
+      <translation>Importe un maillage depuis un fichier.</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshIntersection</name>
     <message>
-      <location filename="../../Command.cpp" line="243"/>
+      <location filename="../../Command.cpp" line="241"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="244"/>
+      <location filename="../../Command.cpp" line="242"/>
       <source>Intersection</source>
       <translation>Intersection</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="243"/>
+      <source>Creates a boolean intersection from the selected meshes</source>
+      <translation>Crée une intersection booléenne à partir des maillages sélectionnés.</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="1688"/>
+      <location filename="../../Command.cpp" line="1685"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1689"/>
+      <location filename="../../Command.cpp" line="1686"/>
       <source>Merge</source>
       <translation>Fusionner</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1690"/>
+      <location filename="../../Command.cpp" line="1687"/>
       <source>Merges selected meshes into one</source>
       <translation>Fusionner les maillages sélectionnés en un seul</translation>
     </message>
@@ -352,37 +346,35 @@
   <context>
     <name>CmdMeshPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="766"/>
+      <location filename="../../Command.cpp" line="763"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="767"/>
-      <source>Cut mesh</source>
-      <translation>Couper le maillage</translation>
+      <location filename="../../Command.cpp" line="764"/>
+      <source>Cut</source>
+      <translation>Couper</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="768"/>
-      <location filename="../../Command.cpp" line="770"/>
-      <source>Cuts a mesh with a picked polygon</source>
-      <translation>Couper un maillage à l'aide du polygone sélectionné</translation>
+      <location filename="../../Command.cpp" line="765"/>
+      <source>Cuts the mesh with a selected polygon</source>
+      <translation>Coupe le maillage par un polygone sélectionné.</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPolySegm</name>
     <message>
-      <location filename="../../Command.cpp" line="658"/>
+      <location filename="../../Command.cpp" line="655"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="659"/>
-      <source>Make segment</source>
-      <translation>Créer un segment</translation>
+      <location filename="../../Command.cpp" line="656"/>
+      <source>Segment</source>
+      <translation>Segment</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="660"/>
-      <location filename="../../Command.cpp" line="662"/>
+      <location filename="../../Command.cpp" line="657"/>
       <source>Creates a mesh segment</source>
       <translation>Créer un segment de maillage</translation>
     </message>
@@ -390,227 +382,222 @@
   <context>
     <name>CmdMeshPolySplit</name>
     <message>
-      <location filename="../../Command.cpp" line="983"/>
+      <location filename="../../Command.cpp" line="980"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="984"/>
-      <source>Split mesh</source>
-      <translation>Diviser un maillage</translation>
+      <location filename="../../Command.cpp" line="981"/>
+      <source>Split</source>
+      <translation>Scinder</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="985"/>
-      <location filename="../../Command.cpp" line="987"/>
-      <source>Splits a mesh into two meshes</source>
-      <translation>Diviser un maillage en deux</translation>
+      <location filename="../../Command.cpp" line="982"/>
+      <source>Splits a mesh into 2 meshes</source>
+      <translation>Divise un maillage en deux maillages.</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPolyTrim</name>
     <message>
-      <location filename="../../Command.cpp" line="831"/>
+      <location filename="../../Command.cpp" line="828"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="832"/>
-      <source>Trim mesh</source>
-      <translation>Ajuster le maillage</translation>
+      <location filename="../../Command.cpp" line="829"/>
+      <source>Trim</source>
+      <translation>Découper</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="833"/>
-      <location filename="../../Command.cpp" line="835"/>
+      <location filename="../../Command.cpp" line="830"/>
+      <source>Trims a mesh with a selected polygon</source>
+      <translation>Découpe le maillage par un polygone sélectionné.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="832"/>
       <source>Trims a mesh with a picked polygon</source>
-      <translation>Ajuster un maillage à l'aide du polygone sélectionné</translation>
+      <translation>Découpe un maillage par un polygone sélectionné.</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshRemeshGmsh</name>
     <message>
-      <location filename="../../Command.cpp" line="1179"/>
+      <location filename="../../Command.cpp" line="1176"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1180"/>
-      <source>Refinement...</source>
-      <translation>Remailler...</translation>
+      <location filename="../../Command.cpp" line="1177"/>
+      <source>Refinement</source>
+      <translation>Remailler</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1181"/>
-      <location filename="../../Command.cpp" line="1182"/>
-      <source>Refine existing mesh</source>
-      <translation>Remailler le maillage existant</translation>
+      <location filename="../../Command.cpp" line="1178"/>
+      <source>Refines an existing mesh</source>
+      <translation>Remaille un maillage existant.</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
-      <location filename="../../Command.cpp" line="1213"/>
+      <location filename="../../Command.cpp" line="1210"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1214"/>
-      <source>Remove components by hand...</source>
-      <translation>Supprimer manuellement des composants...</translation>
+      <location filename="../../Command.cpp" line="1211"/>
+      <source>Remove Components Manually</source>
+      <translation>Supprimer manuellement des composants</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1215"/>
-      <location filename="../../Command.cpp" line="1217"/>
-      <source>Mark a component to remove it from the mesh</source>
-      <translation>Marquer un composant pour le supprimer du maillage</translation>
+      <location filename="../../Command.cpp" line="1212"/>
+      <source>Marks a component to remove it from the mesh</source>
+      <translation>Marque un composant pour le supprimer du maillage.</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshRemoveComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="1131"/>
+      <location filename="../../Command.cpp" line="1128"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1132"/>
-      <source>Remove components...</source>
-      <translation>Supprimer des composants...</translation>
+      <location filename="../../Command.cpp" line="1129"/>
+      <source>Remove Components</source>
+      <translation>Supprimer des composants</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1133"/>
-      <location filename="../../Command.cpp" line="1135"/>
-      <source>Remove topologic independent components from the mesh</source>
-      <translation>Supprimer les composants de topologie indépendants du maillage</translation>
+      <location filename="../../Command.cpp" line="1130"/>
+      <source>Removes topologically independent components from the mesh</source>
+      <translation>Supprime des composants topologiquement indépendants du maillage.</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1781"/>
+      <location filename="../../Command.cpp" line="1778"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1782"/>
-      <source>Scale...</source>
-      <translation>Mettre à l'échelle...</translation>
+      <location filename="../../Command.cpp" line="1779"/>
+      <source>Scale</source>
+      <translation>Échelle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1783"/>
-      <source>Scale selected meshes</source>
-      <translation>Mettre à l'échelle les maillages sélectionnés</translation>
+      <location filename="../../Command.cpp" line="1780"/>
+      <source>Scales the selected mesh objects</source>
+      <translation>Met à l'échelle les maillages sélectionnés.</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshSectionByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="925"/>
+      <location filename="../../Command.cpp" line="922"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="926"/>
-      <source>Create section from mesh and plane</source>
-      <translation>Créer une section à partir d'un maillage et d'un plan</translation>
+      <location filename="../../Command.cpp" line="923"/>
+      <source>Section From Plane</source>
+      <translation>Créer une coupe par un plan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="927"/>
-      <location filename="../../Command.cpp" line="928"/>
-      <source>Section from mesh and plane</source>
-      <translation>Section à partir d'un maillage et d'un plan</translation>
+      <location filename="../../Command.cpp" line="924"/>
+      <source>Sections the mesh with the selected plane</source>
+      <translation>Crée une coupe d'un maillage par un plan sélectionné.</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshSegmentation</name>
     <message>
-      <location filename="../../Command.cpp" line="1616"/>
+      <location filename="../../Command.cpp" line="1613"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1617"/>
-      <source>Create mesh segments...</source>
-      <translation>Segmenter le maillage...</translation>
+      <location filename="../../Command.cpp" line="1614"/>
+      <source>Segmentation</source>
+      <translation>Segmentation</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1618"/>
-      <location filename="../../Command.cpp" line="1620"/>
-      <source>Create mesh segments</source>
-      <translation>Segmenter le maillage</translation>
+      <location filename="../../Command.cpp" line="1615"/>
+      <source>Creates new mesh segments from the mesh</source>
+      <translation>Crée de nouveaux segments de maillage à partir du maillage.</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshSegmentationBestFit</name>
     <message>
-      <location filename="../../Command.cpp" line="1652"/>
+      <location filename="../../Command.cpp" line="1649"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1653"/>
-      <source>Create mesh segments from best-fit surfaces...</source>
-      <translation>Segmenter le maillage par des surfaces adaptées...</translation>
+      <location filename="../../Command.cpp" line="1650"/>
+      <source>Segmentation From Best-Fit Surfaces</source>
+      <translation>Segmenter le maillage à partir des surfaces les mieux adaptées</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1654"/>
-      <location filename="../../Command.cpp" line="1656"/>
-      <source>Create mesh segments from best-fit surfaces</source>
-      <translation>Segmenter le maillage par des surfaces adaptées</translation>
+      <location filename="../../Command.cpp" line="1651"/>
+      <source>Creates new mesh segments from the best-fit surfaces</source>
+      <translation>Crée de nouveaux segments de maillage à partir des surfaces les mieux adaptées.</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshSmoothing</name>
     <message>
-      <location filename="../../Command.cpp" line="1301"/>
+      <location filename="../../Command.cpp" line="1298"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1302"/>
-      <source>Smooth...</source>
-      <translation>Lisser...</translation>
+      <location filename="../../Command.cpp" line="1299"/>
+      <source>Smooth</source>
+      <translation>Lisser</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1303"/>
-      <location filename="../../Command.cpp" line="1305"/>
-      <source>Smooth the selected meshes</source>
-      <translation>Lisser les maillages sélectionnés</translation>
+      <location filename="../../Command.cpp" line="1300"/>
+      <source>Smoothes the selected meshes</source>
+      <translation>Lisse les maillages sélectionnés.</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshSplitComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="1733"/>
+      <location filename="../../Command.cpp" line="1730"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1734"/>
-      <source>Split by components</source>
-      <translation>Éclater par composants</translation>
+      <location filename="../../Command.cpp" line="1731"/>
+      <source>Split by Components</source>
+      <translation>Éclater en composants</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1735"/>
-      <source>Split selected mesh into its components</source>
-      <translation>Éclater le maillage sélectionné en ses composants</translation>
+      <location filename="../../Command.cpp" line="1732"/>
+      <source>Splits the selected mesh into its components</source>
+      <translation>Éclate le maillage sélectionné en ses composants.</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshTrimByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="896"/>
+      <location filename="../../Command.cpp" line="893"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="897"/>
-      <source>Trim mesh with a plane</source>
-      <translation>Ajuster le maillage avec un plan</translation>
+      <location filename="../../Command.cpp" line="894"/>
+      <source>Trim With Plane</source>
+      <translation>Découper par un plan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="898"/>
-      <location filename="../../Command.cpp" line="899"/>
-      <source>Trims a mesh with a plane</source>
-      <translation>Ajuster le maillage avec un plan</translation>
+      <location filename="../../Command.cpp" line="895"/>
+      <source>Trims a mesh by removing faces on one side of a selected plane</source>
+      <translation>Découpe un maillage en supprimant les faces d'un côté du plan sélectionné.</translation>
     </message>
   </context>
   <context>
@@ -625,22 +612,26 @@
       <source>Union</source>
       <translation>Unir</translation>
     </message>
+    <message>
+      <location filename="../../Command.cpp" line="87"/>
+      <source>Unites the selected meshes</source>
+      <translation>Unifie les maillages sélectionnés.</translation>
+    </message>
   </context>
   <context>
     <name>CmdMeshVertexCurvature</name>
     <message>
-      <location filename="../../Command.cpp" line="555"/>
+      <location filename="../../Command.cpp" line="552"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="556"/>
-      <source>Curvature plot</source>
+      <location filename="../../Command.cpp" line="553"/>
+      <source>Curvature Plot</source>
       <translation>Tracer la courbure</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="557"/>
-      <location filename="../../Command.cpp" line="559"/>
+      <location filename="../../Command.cpp" line="554"/>
       <source>Calculates the curvature of the vertices of a mesh</source>
       <translation>Calculer la courbure des sommets du maillage</translation>
     </message>
@@ -648,20 +639,19 @@
   <context>
     <name>CmdMeshVertexCurvatureInfo</name>
     <message>
-      <location filename="../../Command.cpp" line="610"/>
+      <location filename="../../Command.cpp" line="607"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="611"/>
-      <source>Curvature info</source>
+      <location filename="../../Command.cpp" line="608"/>
+      <source>Curvature Info</source>
       <translation>Informations sur la courbure</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="612"/>
-      <location filename="../../Command.cpp" line="614"/>
-      <source>Information about curvature</source>
-      <translation>Informations sur la courbure</translation>
+      <location filename="../../Command.cpp" line="609"/>
+      <source>Displays information about the curvature</source>
+      <translation>Affiche les informations sur la courbure.</translation>
     </message>
   </context>
   <context>
@@ -672,22 +662,22 @@
       <translation>Unir des maillages</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="179"/>
+      <location filename="../../Command.cpp" line="178"/>
       <source>Mesh difference</source>
       <translation>Générer la différence de maillages</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="258"/>
+      <location filename="../../Command.cpp" line="256"/>
       <source>Mesh intersection</source>
-      <translation>Générer la l'intersection de maillages</translation>
+      <translation>Générer l'intersection de maillages</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="354"/>
+      <location filename="../../Command.cpp" line="351"/>
       <source>Import Mesh</source>
       <translation>Importer un maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="572"/>
+      <location filename="../../Command.cpp" line="569"/>
       <source>Mesh VertexCurvature</source>
       <translation>Déterminer la courbure des sommets du maillage</translation>
     </message>
@@ -697,32 +687,32 @@
       <translation>Lisser un maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1374"/>
+      <location filename="../../Command.cpp" line="1371"/>
       <source>Harmonize mesh normals</source>
       <translation>Harmoniser les normales du maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1410"/>
+      <location filename="../../Command.cpp" line="1407"/>
       <source>Flip mesh normals</source>
       <translation>Inverser les normales du maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1544"/>
+      <location filename="../../Command.cpp" line="1541"/>
       <source>Fill up holes</source>
       <translation>Remplir des trous</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1703"/>
+      <location filename="../../Command.cpp" line="1700"/>
       <source>Mesh merge</source>
       <translation>Fusionner des maillages</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1748"/>
+      <location filename="../../Command.cpp" line="1745"/>
       <source>Mesh split</source>
       <translation>Scinder un maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1810"/>
+      <location filename="../../Command.cpp" line="1807"/>
       <source>Mesh scale</source>
       <translation>Mettre à l'échelle le maillage</translation>
     </message>
@@ -773,8 +763,8 @@
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1179"/>
-      <source>Repair mesh</source>
-      <translation>Réparer le maillage</translation>
+      <source>Repair Mesh</source>
+      <translation>Réparation du maillage</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="163"/>
@@ -785,18 +775,18 @@
       <location filename="../../ViewProvider.cpp" line="956"/>
       <location filename="../../ViewProvider.cpp" line="1017"/>
       <source>Cut</source>
-      <translation>Couper</translation>
+      <translation>Soustraire</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="966"/>
       <location filename="../../ViewProvider.cpp" line="1086"/>
       <source>Trim</source>
-      <translation>Ajuster</translation>
+      <translation>Découper</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1173"/>
       <source>Split</source>
-      <translation>Recomposer</translation>
+      <translation>Scinder</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1246"/>
@@ -861,16 +851,6 @@
       <translation>Évaluer et réparer un maillage</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="23"/>
-      <source>Mesh information</source>
-      <translation>Informations sur le maillage</translation>
-    </message>
-    <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="46"/>
-      <source>Number of faces:</source>
-      <translation>Nombre de faces :</translation>
-    </message>
-    <message>
       <location filename="../../DlgEvaluateMesh.ui" line="69"/>
       <location filename="../../DlgEvaluateMesh.ui" line="102"/>
       <location filename="../../DlgEvaluateMesh.ui" line="135"/>
@@ -886,14 +866,24 @@
       <translation>Aucune information</translation>
     </message>
     <message>
+      <location filename="../../DlgEvaluateMesh.ui" line="23"/>
+      <source>Mesh Information</source>
+      <translation>Informations du maillage</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMesh.ui" line="46"/>
+      <source>Number of faces</source>
+      <translation>Nombre de faces</translation>
+    </message>
+    <message>
       <location filename="../../DlgEvaluateMesh.ui" line="79"/>
-      <source>Number of edges:</source>
-      <translation>Nombre de contours :</translation>
+      <source>Number of edges</source>
+      <translation>Nombre d'arêtes</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="112"/>
-      <source>Number of points:</source>
-      <translation>Nombre de points :</translation>
+      <source>Number of points</source>
+      <translation>Nombre de points</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="147"/>
@@ -980,11 +970,6 @@
   <context>
     <name>MeshGui::DlgEvaluateMeshImp</name>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="141"/>
-      <source>Settings...</source>
-      <translation>Paramètres...</translation>
-    </message>
-    <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="253"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="420"/>
       <source>No selection</source>
@@ -1014,6 +999,11 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="524"/>
       <source>No flipped normals</source>
       <translation>Aucune normale inversée</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="141"/>
+      <source>Settings</source>
+      <translation>Paramètres</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="530"/>
@@ -1148,13 +1138,13 @@
     <name>MeshGui::DlgEvaluateSettings</name>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="14"/>
-      <source>Evaluation settings</source>
+      <source>Evaluation Settings</source>
       <translation>Paramètres d'évaluation</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="20"/>
       <source>Settings</source>
-      <translation>Paramètres</translation>
+      <translation>Réglages</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="26"/>
@@ -1181,8 +1171,8 @@
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="29"/>
-      <source>Solid:</source>
-      <translation>Solide :</translation>
+      <source>Solid</source>
+      <translation>Solide</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="42"/>
@@ -1218,30 +1208,30 @@
       <location filename="../../DlgRegularSolid.ui" line="120"/>
       <location filename="../../DlgRegularSolid.ui" line="236"/>
       <location filename="../../DlgRegularSolid.ui" line="387"/>
-      <source>Length:</source>
-      <translation>Longueur :</translation>
+      <source>Length</source>
+      <translation>Longueur</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="143"/>
-      <source>Width:</source>
-      <translation>Largeur :</translation>
+      <source>Width</source>
+      <translation>Épaisseur</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="163"/>
-      <source>Height:</source>
-      <translation>Hauteur :</translation>
+      <source>Height</source>
+      <translation>Hauteur</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="219"/>
       <location filename="../../DlgRegularSolid.ui" line="501"/>
-      <source>Radius:</source>
-      <translation>Rayon :</translation>
+      <source>Radius</source>
+      <translation>Rayon</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="273"/>
       <location filename="../../DlgRegularSolid.ui" line="424"/>
-      <source>Edge length:</source>
-      <translation>Longueur du contour :</translation>
+      <source>Edge length</source>
+      <translation>Longueur des arêtes</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="293"/>
@@ -1249,28 +1239,28 @@
       <location filename="../../DlgRegularSolid.ui" line="538"/>
       <location filename="../../DlgRegularSolid.ui" line="642"/>
       <location filename="../../DlgRegularSolid.ui" line="746"/>
-      <source>Sampling:</source>
-      <translation>Discrétisation :</translation>
+      <source>Sampling</source>
+      <translation>Discrétisation </translation>
+    </message>
+    <message>
+      <location filename="../../DlgRegularSolid.ui" line="353"/>
+      <location filename="../../DlgRegularSolid.ui" line="588"/>
+      <location filename="../../DlgRegularSolid.ui" line="692"/>
+      <source>Radius 1</source>
+      <translation>Rayon 1</translation>
+    </message>
+    <message>
+      <location filename="../../DlgRegularSolid.ui" line="370"/>
+      <location filename="../../DlgRegularSolid.ui" line="605"/>
+      <location filename="../../DlgRegularSolid.ui" line="709"/>
+      <source>Radius 2</source>
+      <translation>Rayon 2</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="307"/>
       <location filename="../../DlgRegularSolid.ui" line="455"/>
       <source>Closed</source>
       <translation>Fermé</translation>
-    </message>
-    <message>
-      <location filename="../../DlgRegularSolid.ui" line="353"/>
-      <location filename="../../DlgRegularSolid.ui" line="588"/>
-      <location filename="../../DlgRegularSolid.ui" line="692"/>
-      <source>Radius 1:</source>
-      <translation>Rayon 1 :</translation>
-    </message>
-    <message>
-      <location filename="../../DlgRegularSolid.ui" line="370"/>
-      <location filename="../../DlgRegularSolid.ui" line="605"/>
-      <location filename="../../DlgRegularSolid.ui" line="709"/>
-      <source>Radius 2:</source>
-      <translation>Rayon 2 :</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="809"/>
@@ -1357,13 +1347,13 @@
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="114"/>
-      <source>Width:</source>
-      <translation>Largeur :</translation>
+      <source>Width</source>
+      <translation>Épaisseur</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="138"/>
-      <source>Height:</source>
-      <translation>Hauteur :</translation>
+      <source>Height</source>
+      <translation>Hauteur</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExportImp.cpp" line="39"/>
@@ -1374,16 +1364,6 @@ is used when writing a file in AMF format</source>
   </context>
   <context>
     <name>MeshGui::DlgSettingsMeshView</name>
-    <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="14"/>
-      <source>Mesh view</source>
-      <translation>Maillage</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="35"/>
-      <source>Default appearance for new meshes</source>
-      <translation>Apparence par défaut pour les nouveaux maillages</translation>
-    </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="73"/>
       <source>Default mesh color</source>
@@ -1460,15 +1440,23 @@ is used when writing a file in AMF format</source>
       <translation>Angle de pliage</translation>
     </message>
     <message>
+      <location filename="../../DlgSettingsMeshView.ui" line="14"/>
+      <source>Mesh View</source>
+      <translation>Vue du maillage</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMeshView.ui" line="35"/>
+      <source>Default Appearance for New Meshes</source>
+      <translation>Apparence par défaut pour les nouveaux maillages</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettingsMeshView.ui" line="251"/>
       <source>The bottom side of the surface will be rendered the same way as the top side.
 If not checked, it depends on the option "Enable backlight color"
 (preferences section Display -&gt; 3D View). Either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">The bottom side of the surface will be rendered the same way as the top side.
-If not checked, it depends on the option "Enable backlight color"
-(preferences section Display -&gt; 3D View). Either the backlight color
-will be used or black.</translation>
+      <translation>La face inférieure de la surface sera rendue de la même manière que la face supérieure.
+Si cette option n'est pas cochée, le rendu dépendra de l'option "Couleur du rétroéclairage" (voir préférences Affichage → Vue 3D). La couleur du rétroéclairage sera utilisée ou ce sera noir.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="334"/>
@@ -1479,13 +1467,10 @@ With flat shading the surface normals are not defined per vertex that leads
 to an unreal appearance for curved surfaces while using Phong shading leads
 to a smoother appearance.
 </source>
-      <translation type="unfinished">If this option is set Phong shading is used, otherwise flat shading.
-Shading defines the appearance of surfaces.
+      <translation>Si cette option est cochée, l'ombrage de Phong est utilisé, sinon l'ombrage plat est utilisé.
+L'ombrage définit l'apparence des surfaces.
 
-With flat shading the surface normals are not defined per vertex that leads
-to an unreal appearance for curved surfaces while using Phong shading leads
-to a smoother appearance.
-</translation>
+Avec l'ombrage plat, les normales de la surface ne sont pas définies par les sommets, ce qui donne un aspect irréel aux surfaces courbes, tandis que l'ombrage de Phong donne un aspect plus lisse.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="369"/>
@@ -1528,18 +1513,18 @@ to a smoother appearance.
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="55"/>
-      <source>Iterations:</source>
-      <translation>Itérations :</translation>
+      <source>Iterations</source>
+      <translation>Itérations</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="72"/>
-      <source>Lambda:</source>
-      <translation>Lambda :</translation>
+      <source>Lambda</source>
+      <translation>Lambda</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="95"/>
-      <source>Mu:</source>
-      <translation>Mu :</translation>
+      <source>Mu</source>
+      <translation>Mu</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="118"/>
@@ -1577,7 +1562,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="106"/>
       <source>Quasi-structured Quad</source>
-      <translation type="unfinished">Quasi-structured Quad</translation>
+      <translation>Quadrilatéral quasi-structuré</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="197"/>
@@ -1587,8 +1572,8 @@ to a smoother appearance.
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="243"/>
-      <source>Running Gmsh...</source>
-      <translation type="unfinished">Running Gmsh...</translation>
+      <source>Running Gmsh…</source>
+      <translation>Lancer Gmsh…</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="266"/>
@@ -1605,18 +1590,18 @@ to a smoother appearance.
     <name>MeshGui::MeshFaceAddition</name>
     <message>
       <location filename="../../MeshEditor.cpp" line="396"/>
-      <source>Add triangle</source>
-      <translation>Ajouter un triangle</translation>
+      <source>Add Triangle</source>
+      <translation>Ajout d'un triangle</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="397"/>
-      <source>Flip normal</source>
-      <translation>Inverser les normales</translation>
+      <source>Flip Normal</source>
+      <translation>Inverser la normale</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="398"/>
       <source>Clear</source>
-      <translation>Effacer</translation>
+      <translation>Supprimer</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="414"/>
@@ -1636,7 +1621,7 @@ to a smoother appearance.
     <name>MeshGui::ParametersDialog</name>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="173"/>
-      <source>Surface fit</source>
+      <source>Surface Fit</source>
       <translation>Ajustement de la surface</translation>
     </message>
     <message>
@@ -1662,7 +1647,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="205"/>
       <source>Clear</source>
-      <translation>Effacer</translation>
+      <translation>Supprimer</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="211"/>
@@ -1694,23 +1679,23 @@ to a smoother appearance.
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="32"/>
-      <source>Meshing:</source>
-      <translation>Maillage :</translation>
+      <source>Meshing</source>
+      <translation>Maillage</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>
-      <source>Max element size (0.0 = Auto):</source>
-      <translation>Taille maximale des éléments (0.0 = Auto) :</translation>
+      <source>Max element size (0.0 = Auto)</source>
+      <translation>Taille maximale de l'élément (0.0 = automatique)</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="68"/>
-      <source>Min element size (0.0 = Auto):</source>
-      <translation>Taille minimale des éléments (0.0 = Auto) :</translation>
+      <source>Min element size (0.0 = Auto)</source>
+      <translation>Taille minimale de l'élément (0.0 = automatique)</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
-      <source>Angle:</source>
-      <translation>Angle :</translation>
+      <source>Angle</source>
+      <translation>Angle</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="126"/>
@@ -1729,20 +1714,20 @@ to a smoother appearance.
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="181"/>
-      <source>Time:</source>
-      <translation>Temps :</translation>
+      <source>Time</source>
+      <translation>Temps</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="188"/>
       <source>Clear</source>
-      <translation>Effacer</translation>
+      <translation>Supprimer</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
     <message>
       <location filename="../../RemoveComponents.ui" line="14"/>
-      <source>Remove components</source>
+      <source>Remove Components</source>
       <translation>Supprimer des composants</translation>
     </message>
     <message>
@@ -1776,8 +1761,18 @@ to a smoother appearance.
     <message>
       <location filename="../../RemoveComponents.ui" line="89"/>
       <location filename="../../RemoveComponents.ui" line="175"/>
-      <source>Pick triangle</source>
+      <source>Pick Triangle</source>
       <translation>Choisir un triangle</translation>
+    </message>
+    <message>
+      <location filename="../../RemoveComponents.ui" line="192"/>
+      <source>Region Options</source>
+      <translation>Options de la région</translation>
+    </message>
+    <message>
+      <location filename="../../RemoveComponents.ui" line="208"/>
+      <source>Respect only triangles with screen-facing normals</source>
+      <translation>Prendre en compte uniquement les triangles avec des normales orientées vers l'écran</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="96"/>
@@ -1800,26 +1795,16 @@ to a smoother appearance.
       <translation>Dé-sélectionner le composant entier</translation>
     </message>
     <message>
-      <location filename="../../RemoveComponents.ui" line="192"/>
-      <source>Region options</source>
-      <translation>Options de région</translation>
-    </message>
-    <message>
       <location filename="../../RemoveComponents.ui" line="198"/>
       <source>Respect only visible triangles</source>
-      <translation>Respecter uniquement les triangles visibles</translation>
-    </message>
-    <message>
-      <location filename="../../RemoveComponents.ui" line="208"/>
-      <source>Respect only triangles with normals facing screen</source>
-      <translation>Respecter seulement les triangles dont les normales font face à écran</translation>
+      <translation>Prendre en compte uniquement les triangles visibles</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::Segmentation</name>
     <message>
       <location filename="../../Segmentation.ui" line="14"/>
-      <source>Mesh segmentation</source>
+      <source>Mesh Segmentation</source>
       <translation>Segmentation du maillage</translation>
     </message>
     <message>
@@ -1861,13 +1846,23 @@ to a smoother appearance.
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="109"/>
-      <source>Tolerance (Flat)</source>
-      <translation>Tolérance (plat)</translation>
+      <source>Tolerance (flat)</source>
+      <translation>Tolérance (plane)</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="126"/>
-      <source>Tolerance (Curved)</source>
-      <translation>Tolérance (courbé)</translation>
+      <source>Tolerance (curved)</source>
+      <translation>Tolérance (courbure)</translation>
+    </message>
+    <message>
+      <location filename="../../Segmentation.ui" line="235"/>
+      <source>Maximum curvature</source>
+      <translation>Courbure maximale</translation>
+    </message>
+    <message>
+      <location filename="../../Segmentation.ui" line="269"/>
+      <source>Minimum curvature</source>
+      <translation>Courbure minimale</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="163"/>
@@ -1879,35 +1874,25 @@ to a smoother appearance.
       <source>Freeform</source>
       <translation>Forme libre</translation>
     </message>
-    <message>
-      <location filename="../../Segmentation.ui" line="235"/>
-      <source>Max. Curvature</source>
-      <translation>Courbure maximale</translation>
-    </message>
-    <message>
-      <location filename="../../Segmentation.ui" line="269"/>
-      <source>Min. Curvature</source>
-      <translation>Courbure minimale</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::SegmentationBestFit</name>
-    <message>
-      <location filename="../../SegmentationBestFit.ui" line="14"/>
-      <source>Mesh segmentation</source>
-      <translation>Segmentation du maillage</translation>
-    </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="20"/>
       <source>Plane</source>
       <translation>Plan</translation>
     </message>
     <message>
+      <location filename="../../SegmentationBestFit.ui" line="14"/>
+      <source>Mesh Segmentation</source>
+      <translation>Segmentation du maillage</translation>
+    </message>
+    <message>
       <location filename="../../SegmentationBestFit.ui" line="29"/>
       <location filename="../../SegmentationBestFit.ui" line="82"/>
       <location filename="../../SegmentationBestFit.ui" line="135"/>
-      <source>Parameters...</source>
-      <translation>Paramètres...</translation>
+      <source>Parameters</source>
+      <translation>Paramètres</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="36"/>
@@ -1977,17 +1962,17 @@ to a smoother appearance.
     <message>
       <location filename="../../Selection.ui" line="46"/>
       <source>Clear</source>
-      <translation>Effacer</translation>
+      <translation>Supprimer</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="53"/>
       <source>Respect only visible triangles</source>
-      <translation>Respecter uniquement les triangles visibles</translation>
+      <translation>Prendre en compte uniquement les triangles visibles</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="63"/>
-      <source>Respect only triangles with normals facing screen</source>
-      <translation>Respecter seulement les triangles dont les normales font face à écran</translation>
+      <source>Respect only triangles with screen-facing normals</source>
+      <translation>Prendre en compte uniquement les triangles avec des normales orientées vers l'écran</translation>
     </message>
     <message>
       <location filename="../../Selection.cpp" line="86"/>
@@ -2027,7 +2012,7 @@ to a smoother appearance.
   <context>
     <name>Mesh_BoundingBox</name>
     <message>
-      <location filename="../../Command.cpp" line="1458"/>
+      <location filename="../../Command.cpp" line="1455"/>
       <source>Boundings of %1:</source>
       <translation>Limites de %1 :</translation>
     </message>
@@ -2036,29 +2021,29 @@ to a smoother appearance.
     <name>Mesh_Union</name>
     <message>
       <location filename="../../Command.cpp" line="137"/>
-      <location filename="../../Command.cpp" line="143"/>
-      <location filename="../../Command.cpp" line="216"/>
-      <location filename="../../Command.cpp" line="222"/>
-      <location filename="../../Command.cpp" line="295"/>
-      <location filename="../../Command.cpp" line="301"/>
+      <location filename="../../Command.cpp" line="142"/>
+      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="220"/>
+      <location filename="../../Command.cpp" line="293"/>
+      <location filename="../../Command.cpp" line="298"/>
       <source>OpenSCAD</source>
       <translation>OpenSCAD</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="138"/>
-      <location filename="../../Command.cpp" line="217"/>
-      <location filename="../../Command.cpp" line="296"/>
+      <location filename="../../Command.cpp" line="216"/>
+      <location filename="../../Command.cpp" line="294"/>
       <source>Unknown error occurred while running OpenSCAD.</source>
       <translation>Une erreur inconnue s’est produite lors de l’exécution d'OpenSCAD.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="144"/>
-      <location filename="../../Command.cpp" line="223"/>
-      <location filename="../../Command.cpp" line="302"/>
-      <source>OpenSCAD cannot be found on your system.
-Please visit http://www.openscad.org/index.html to install it.</source>
-      <translation>OpenSCAD n'as pas pu être trouvé dans votre système.
-Consulter le site http://www.openscad.org/index.html pour l'installer.</translation>
+      <location filename="../../Command.cpp" line="143"/>
+      <location filename="../../Command.cpp" line="221"/>
+      <location filename="../../Command.cpp" line="299"/>
+      <source>OpenSCAD cannot be found on the system.
+Visit https://openscad.org/ to install it.</source>
+      <translation type="unfinished">OpenSCAD cannot be found on the system.
+Visit https://openscad.org/ to install it.</translation>
     </message>
   </context>
   <context>
@@ -2082,175 +2067,175 @@ Consulter le site http://www.openscad.org/index.html pour l'installer.</translat
       <translation>Importer/Exporter</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="335"/>
+      <location filename="../../Command.cpp" line="332"/>
       <source>All Mesh Files</source>
       <translation>Tous les fichiers de maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="336"/>
-      <location filename="../../Command.cpp" line="396"/>
+      <location filename="../../Command.cpp" line="333"/>
+      <location filename="../../Command.cpp" line="393"/>
       <source>Binary STL</source>
       <translation>STL binaire</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="337"/>
-      <location filename="../../Command.cpp" line="397"/>
-      <location filename="../../Command.cpp" line="398"/>
+      <location filename="../../Command.cpp" line="334"/>
+      <location filename="../../Command.cpp" line="394"/>
+      <location filename="../../Command.cpp" line="395"/>
       <source>ASCII STL</source>
       <translation>STL ASCII</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="338"/>
-      <location filename="../../Command.cpp" line="399"/>
+      <location filename="../../Command.cpp" line="335"/>
+      <location filename="../../Command.cpp" line="396"/>
       <source>Binary Mesh</source>
       <translation>Maillage binaire</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="339"/>
-      <location filename="../../Command.cpp" line="400"/>
+      <location filename="../../Command.cpp" line="336"/>
+      <location filename="../../Command.cpp" line="397"/>
       <source>Alias Mesh</source>
       <translation>Maillage Alias d'Autodesk</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="340"/>
-      <location filename="../../Command.cpp" line="402"/>
+      <location filename="../../Command.cpp" line="337"/>
+      <location filename="../../Command.cpp" line="399"/>
       <source>Object File Format</source>
       <translation>Format du fichier de l'objet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="341"/>
+      <location filename="../../Command.cpp" line="338"/>
       <source>Inventor V2.1 ASCII</source>
       <translation>Inventor V2.1 ASCII</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="342"/>
-      <location filename="../../Command.cpp" line="407"/>
+      <location filename="../../Command.cpp" line="339"/>
+      <location filename="../../Command.cpp" line="404"/>
       <source>Stanford Polygon</source>
       <translation>Polygone Stanford</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="343"/>
+      <location filename="../../Command.cpp" line="340"/>
       <source>NASTRAN</source>
       <translation>NASTRAN</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="344"/>
-      <location filename="../../Command.cpp" line="414"/>
+      <location filename="../../Command.cpp" line="341"/>
+      <location filename="../../Command.cpp" line="411"/>
       <source>All Files</source>
       <translation>Tous les fichiers</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="348"/>
-      <source>Import mesh</source>
+      <location filename="../../Command.cpp" line="345"/>
+      <source>Import Mesh</source>
       <translation>Importer un maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="401"/>
+      <location filename="../../Command.cpp" line="398"/>
       <source>Simple Model Format</source>
       <translation>Format du modèle simple</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="403"/>
+      <location filename="../../Command.cpp" line="400"/>
       <source>Inventor V2.1 ascii</source>
       <translation>Inventor V2.1 ascii</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="404"/>
+      <location filename="../../Command.cpp" line="401"/>
       <source>X3D Extensible 3D</source>
       <translation>X3D Extensible 3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="405"/>
+      <location filename="../../Command.cpp" line="402"/>
       <source>Compressed X3D</source>
       <translation>X3D compressé</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="406"/>
+      <location filename="../../Command.cpp" line="403"/>
       <source>WebGL/X3D</source>
       <translation>WebGL/X3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="408"/>
+      <location filename="../../Command.cpp" line="405"/>
       <source>VRML V2.0</source>
       <translation>VRML V2.0</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="409"/>
+      <location filename="../../Command.cpp" line="406"/>
       <source>Compressed VRML 2.0</source>
       <translation>VRML 2.0 compressé</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="410"/>
+      <location filename="../../Command.cpp" line="407"/>
       <source>Nastran</source>
       <translation>Nastran</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="411"/>
+      <location filename="../../Command.cpp" line="408"/>
       <source>Python module def</source>
       <translation>Définition du module Python</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="412"/>
+      <location filename="../../Command.cpp" line="409"/>
       <source>Asymptote Format</source>
       <translation>Format Asymptote</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="413"/>
+      <location filename="../../Command.cpp" line="410"/>
       <source>3D Manufacturing Format</source>
       <translation>Format de fabrication 3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="423"/>
-      <source>Export mesh</source>
-      <translation>Exporter un maillage</translation>
+      <location filename="../../Command.cpp" line="420"/>
+      <source>Export Mesh</source>
+      <translation>Exporter le maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="469"/>
+      <location filename="../../Command.cpp" line="466"/>
       <source>Meshing Tolerance</source>
       <translation>Tolérance de maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="470"/>
+      <location filename="../../Command.cpp" line="467"/>
       <source>Enter tolerance for meshing geometry:</source>
       <translation>Saisir la tolérance pour la géométrie maillée :</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1276"/>
+      <location filename="../../Command.cpp" line="1273"/>
       <source>The mesh '%1' is not a solid.</source>
       <translation>Le maillage '%1' n'est pas un solide.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1280"/>
+      <location filename="../../Command.cpp" line="1277"/>
       <source>The mesh '%1' is a solid.</source>
       <translation>Le maillage '%1' est un solide.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1283"/>
+      <location filename="../../Command.cpp" line="1280"/>
       <source>Solid Mesh</source>
       <translation>Maillage solide</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1467"/>
+      <location filename="../../Command.cpp" line="1464"/>
       <source>Boundings</source>
       <translation>Limites englobantes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1533"/>
+      <location filename="../../Command.cpp" line="1530"/>
       <source>Fill holes</source>
       <translation>Remplir les trous</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1534"/>
+      <location filename="../../Command.cpp" line="1531"/>
       <source>Fill holes with maximum number of edges:</source>
       <translation>Remplir les trous avec un nombre maximum de contours :</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1798"/>
+      <location filename="../../Command.cpp" line="1795"/>
       <source>Scaling</source>
       <translation>Mettre à l'échelle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1799"/>
+      <location filename="../../Command.cpp" line="1796"/>
       <source>Enter scaling factor:</source>
       <translation>Entrer le facteur d’échelle :</translation>
     </message>
@@ -2261,23 +2246,23 @@ Consulter le site http://www.openscad.org/index.html pour l'installer.</translat
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="795"/>
-      <source>Display components</source>
-      <translation>Afficher les composants</translation>
+      <source>Display Components</source>
+      <translation>Affichage des composants</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="803"/>
-      <source>Display segments</source>
-      <translation>Afficher les segments</translation>
+      <source>Display Segments</source>
+      <translation>Affichage des segments</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="811"/>
-      <source>Display colors</source>
-      <translation>Afficher les couleurs</translation>
+      <source>Display Colors</source>
+      <translation>Affichage des couleurs</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCurvature.cpp" line="540"/>
       <location filename="../../ViewProvider.cpp" line="1681"/>
-      <source>Leave info mode</source>
+      <location filename="../../ViewProviderCurvature.cpp" line="540"/>
+      <source>Leave Info Mode</source>
       <translation>Quitter le mode Information</translation>
     </message>
     <message>
@@ -2287,23 +2272,23 @@ Consulter le site http://www.openscad.org/index.html pour l'installer.</translat
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1774"/>
-      <source>Leave hole-filling mode</source>
-      <translation>Quitter le mode Remplissage des trous</translation>
+      <source>Leave Hole-Filling Mode</source>
+      <translation>Quitter le mode de remplissage des trous</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1822"/>
-      <source>Leave removal mode</source>
-      <translation>Quitter le mode Suppression</translation>
+      <source>Leave Removal Mode</source>
+      <translation>Quitter le mode de suppression</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1823"/>
-      <source>Delete selected faces</source>
+      <source>Delete Selected Faces</source>
       <translation>Supprimer les faces sélectionnées</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1824"/>
-      <source>Clear selected faces</source>
-      <translation>Dé-sélectionner les faces sélectionnées</translation>
+      <source>Clear Selected Faces</source>
+      <translation>Effacer les faces sélectionnées</translation>
     </message>
     <message>
       <location filename="../../ViewProviderCurvature.cpp" line="537"/>
@@ -2312,32 +2297,32 @@ Consulter le site http://www.openscad.org/index.html pour l'installer.</translat
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="69"/>
-      <source>Number of points:</source>
-      <translation>Nombre de points :</translation>
+      <source>Number of points</source>
+      <translation>Nombre de points</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="72"/>
-      <source>Number of facets:</source>
-      <translation>Nombre de facettes :</translation>
+      <source>Number of facets</source>
+      <translation>Nombre de facettes</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="78"/>
-      <source>Minimum bound:</source>
-      <translation>Limite minimale :</translation>
+      <source>Minimum bound</source>
+      <translation>Limite minimale</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="81"/>
-      <source>Maximum bound:</source>
-      <translation>Limite maximale :</translation>
+      <source>Maximum bound</source>
+      <translation>Limite maximale</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="88"/>
-      <source>Mesh info box</source>
-      <translation>Boîte d'information du maillage</translation>
+      <source>Mesh Info Box</source>
+      <translation>Boîte d'informations du maillage</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="89"/>
-      <source>Mesh info</source>
+      <source>Mesh Info</source>
       <translation>Informations sur le maillage</translation>
     </message>
   </context>
@@ -2365,33 +2350,33 @@ Consulter le site http://www.openscad.org/index.html pour l'installer.</translat
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
-      <source>Mesh tools</source>
-      <translation>Outils de Mesh</translation>
+      <source>Mesh Tools</source>
+      <translation>Outils de maillage</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
-      <source>Mesh modify</source>
-      <translation>Modifier de Mesh</translation>
+      <source>Mesh Modify</source>
+      <translation>Modification du maillage</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
-      <source>Mesh boolean</source>
-      <translation>Opérations booléennes de Mesh</translation>
+      <source>Mesh Boolean</source>
+      <translation>Opération booléenne sur le maillage</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
-      <source>Mesh cutting</source>
-      <translation>Couper de Mesh</translation>
+      <source>Mesh Cutting</source>
+      <translation>Coupe du maillage</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
-      <source>Mesh segmentation</source>
+      <source>Mesh Segmentation</source>
       <translation>Segmentation du maillage</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
-      <source>Mesh analyze</source>
-      <translation>Analyser de Mesh</translation>
+      <source>Mesh Analyze</source>
+      <translation>Analyse du maillage</translation>
     </message>
   </context>
 </TS>

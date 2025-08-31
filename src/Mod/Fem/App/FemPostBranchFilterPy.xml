@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
     <PythonExport
-        Father="FemPostObjectPy"
+        Father="FemPostFilterPy"
         Name="FemPostBranchFilterPy"
         Twin="FemPostBranchFilter"
         TwinPointer="FemPostBranchFilter"
         Include="Mod/Fem/App/FemPostBranchFilter.h"
         Namespace="Fem"
-        FatherInclude="Mod/Fem/App/FemPostObjectPy.h"
+        FatherInclude="Mod/Fem/App/FemPostFilterPy.h"
         FatherNamespace="Fem">
         <Documentation>
             <Author Licence="LGPL" Name="Stefan Tröger" EMail="stefantroeger@gmx.net" />

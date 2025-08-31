@@ -221,7 +221,7 @@ void InputField::contextMenuEvent(QContextMenuEvent *event)
 
     // add the save value portion of the menu
     menu->addSeparator();
-    QAction *SaveValueAction = menu->addAction(tr("Save value"));
+    QAction *SaveValueAction = menu->addAction(tr("Save Value"));
     std::vector<QString> savedValues = getSavedValues();
 
     for(const auto & savedValue : savedValues){

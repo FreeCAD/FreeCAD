@@ -67,7 +67,6 @@
 #include <QRegularExpression>
 #include <QSettings>
 #include <QStandardPaths>
-#include <Inventor/C/basic.h>
 #include <LibraryVersions.h>
 
 #include <App/MaterialPy.h>
@@ -912,6 +911,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
         FC_DURATION_LOG(timing.d2, doc.getDocumentName() << " postprocess");
     }
     FC_TIME_LOG(t,"total");
+    PropertyLinkBase::updateAllElementReferences();
     _isRestoring = false;
 
     signalFinishOpenDocument();
@@ -1130,6 +1130,14 @@ std::string Application::getNameWithVersion()
     auto point = config["BuildVersionPoint"];
     auto suffix = config["BuildVersionSuffix"];
     return fmt::format("{} {}.{}.{}{}", appname, major, minor, point, suffix);
+}
+
+bool Application::isDevelopmentVersion()
+{
+    static std::string suffix = []() constexpr {
+        return FCVersionSuffix;
+    }();
+    return suffix == "dev";
 }
 
 std::string Application::getTempPath()
@@ -3714,7 +3722,7 @@ void Application::getVerboseCommonInfo(QTextStream& str, const std::map<std::str
     // report also the version numbers of the most important libraries in FreeCAD
     str << "Python " << PY_VERSION << ", ";
     str << "Qt " << QT_VERSION_STR << ", ";
-    str << "Coin " << COIN_VERSION << ", ";
+    str << "Coin " << fcCoin3dVersion << ", ";
     str << "Vtk " << fcVtkVersion << ", ";
     str << "boost " << BOOST_LIB_VERSION << ", ";
     str << "Eigen3 " << fcEigen3Version << ", ";

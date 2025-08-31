@@ -10,13 +10,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="75"/>
-      <source>Inspection...</source>
-      <translation>检查...</translation>
+      <source>Inspection…</source>
+      <translation>检查…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="76"/>
-      <source>Get distance information</source>
-      <translation>获取距离信息</translation>
+      <source>Inspects distance information</source>
+      <translation>检查距离信息</translation>
     </message>
   </context>
   <context>
@@ -28,14 +28,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="49"/>
-      <source>Visual inspection...</source>
-      <translation>可视性检查...</translation>
+      <source>Visual Inspection…</source>
+      <translation>目视检查…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="50"/>
-      <location filename="../../Command.cpp" line="51"/>
-      <source>Visual inspection</source>
-      <translation>可视性检查</translation>
+      <source>Inspects the objects visually</source>
+      <translation>目视检查对象</translation>
     </message>
   </context>
   <context>
@@ -43,7 +42,7 @@
     <message>
       <location filename="../../VisualInspection.cpp" line="237"/>
       <source>Visual Inspection</source>
-      <translation>可视性检查</translation>
+      <translation>目视检查</translation>
     </message>
   </context>
   <context>
@@ -51,12 +50,12 @@
     <message>
       <location filename="../../VisualInspection.ui" line="14"/>
       <source>Visual Inspection</source>
-      <translation>可视性检查</translation>
+      <translation>目视检查</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="23"/>
       <source>Actual</source>
-      <translation>实际的</translation>
+      <translation>实际</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="39"/>
@@ -83,7 +82,7 @@
       <location filename="../../VisualInspection.ui" line="129"/>
       <location filename="../../VisualInspection.ui" line="174"/>
       <source> mm</source>
-      <translation> 毫米</translation>
+      <translation> mm</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="145"/>
@@ -110,8 +109,8 @@
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="564"/>
-      <source>Leave info mode</source>
-      <translation>退出查询模式</translation>
+      <source>Leave Info Mode</source>
+      <translation>离开信息模式</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="695"/>

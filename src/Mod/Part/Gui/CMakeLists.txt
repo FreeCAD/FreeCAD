@@ -59,6 +59,7 @@ set(PartGui_UIC_SRCS
     DlgSettingsGeneral.ui
     DlgSettingsObjectColor.ui
     DlgProjectionOnSurface.ui
+    PatternParametersWidget.ui
     SectionCutting.ui
     ShapeFromMesh.ui
     TaskFaceAppearances.ui
@@ -145,6 +146,9 @@ SET(PartGui_SRCS
     DlgProjectionOnSurface.cpp
     DlgProjectionOnSurface.h
     DlgProjectionOnSurface.ui
+    PatternParametersWidget.cpp
+    PatternParametersWidget.h
+    PatternParametersWidget.ui
     Resources/Part.qrc
     PreCompiled.cpp
     PreCompiled.h
@@ -162,6 +166,8 @@ SET(PartGui_SRCS
     ViewProvider.h
     ViewProviderAttachExtension.h
     ViewProviderAttachExtension.cpp
+    ViewProviderPreviewExtension.h
+    ViewProviderPreviewExtension.cpp
     ViewProviderDatum.cpp
     ViewProviderDatum.h
     ViewProviderExt.cpp

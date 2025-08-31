@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="groupBoxNaviCube">
      <property name="title">
-      <string>Navigation cube</string>
+      <string>Navigation Cube</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -81,7 +81,7 @@
       <item row="0" column="4">
        <widget class="Gui::PrefComboBox" name="naviCubeCorner">
         <property name="toolTip">
-         <string>Corner where navigation cube is shown</string>
+         <string>Corner where the navigation cube is displayed</string>
         </property>
         <property name="currentIndex">
          <number>1</number>
@@ -117,7 +117,7 @@
       <item row="1" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="naviCubeToNearest">
         <property name="toolTip">
-         <string>Rotates to nearest possible state when clicking a cube face</string>
+         <string>Rotates to nearest possible state when clicking a face of the cube</string>
         </property>
         <property name="text">
          <string>Rotate to nearest</string>
@@ -279,7 +279,7 @@
    <item>
     <widget class="QGroupBox" name="groupBoxRotationCenter">
      <property name="title">
-      <string>Rotation center indicator</string>
+      <string>Rotation Center Indicator</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -381,7 +381,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="navigationLabel">
         <property name="text">
-         <string>3D Navigation</string>
+         <string>3D navigation</string>
         </property>
        </widget>
       </item>
@@ -418,11 +418,11 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>List the mouse button configs for each chosen navigation setting.
+           <string>Lists the mouse button configs for each chosen navigation setting.
 Select a set and then press the button to view said configurations.</string>
           </property>
           <property name="text">
-           <string>Mouse...</string>
+           <string>Mouse Configuration</string>
           </property>
          </widget>
         </item>
@@ -474,10 +474,10 @@ Select a set and then press the button to view said configurations.</string>
         <property name="toolTip">
          <string>Rotation orbit style.
 Rounded Arcball: moving the mouse in the corners of the screen will only roll the part.
-Trackball: moving the mouse horizontally will rotate the part around the y-axis.
+Trackball: moving the mouse horizontally will rotate the part around the Y-axis.
 Trackball Classic: moving the mouse will rotate the part allowing precession.
-Turntable: the part will be rotated around the z-axis (with constrained axes).
-Free Turntable: the part will be rotated around the z-axis.
+Turntable: the part will be rotated around the Z-axis (with constrained axes).
+Free Turntable: the part will be rotated around the Z-axis.
          </string>
         </property>
         <property name="currentIndex">
@@ -717,7 +717,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</string>
        <widget class="Gui::PrefCheckBox" name="checkBoxDisableTilt">
         <property name="toolTip">
          <string>Prevents view tilting when pinch-zooming.
-Affects only gesture navigation style.
+Affects only Gesture navigation style.
 Mouse tilting is not disabled by this setting.</string>
         </property>
         <property name="text">
@@ -740,13 +740,13 @@ Mouse tilting is not disabled by this setting.</string>
    <item>
     <widget class="QGroupBox" name="spaceMouseDevice">
      <property name="title">
-      <string>Space mouse</string>
+      <string>Space Mouse</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_5">
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="legacySpaceMouseDevices">
         <property name="text">
-         <string>Enable support of legacy space mouse devices</string>
+         <string>Enable support of legacy SpaceMouse devices</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>LegacySpaceMouseDevices</cstring>

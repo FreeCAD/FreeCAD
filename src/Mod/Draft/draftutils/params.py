@@ -34,7 +34,6 @@ try:
 except ModuleNotFoundError:
     pass
 
-from draftutils import init_draft_statusbar
 from draftutils.translate import translate
 
 if App.GuiUp:
@@ -95,6 +94,8 @@ def _param_observer_callback_tray():
 
 def _param_observer_callback_scalemultiplier(value):
     # value is a string.
+    # import has to happen here to avoid circular imports
+    from draftutils import init_draft_statusbar
     if not value:
         return
     value = float(value)
@@ -135,12 +136,16 @@ def _param_observer_callback_snapbar(value):
 
 
 def _param_observer_callback_snapwidget():
+    # import has to happen here to avoid circular imports
+    from draftutils import init_draft_statusbar
     if Gui.activeWorkbench().name() == "DraftWorkbench":
         init_draft_statusbar.hide_draft_statusbar()
         init_draft_statusbar.show_draft_statusbar()
 
 
 def _param_observer_callback_scalewidget():
+    # import has to happen here to avoid circular imports
+    from draftutils import init_draft_statusbar
     if Gui.activeWorkbench().name() == "DraftWorkbench":
         init_draft_statusbar.hide_draft_statusbar()
         init_draft_statusbar.show_draft_statusbar()
@@ -460,6 +465,7 @@ def _get_param_dictionary():
         "LayersManagerWidth":          ("int",       640),
         "MakeFaceMode":                ("bool",      True),
         "maxSnapEdges":                ("int",       0),
+        "maxSnapFaces":                ("int",       0),
         "OffsetCopyMode":              ("bool",      False),
         "Offset_OCC":                  ("bool",      False),
         "RelativeMode":                ("bool",      True),

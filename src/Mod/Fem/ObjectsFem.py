@@ -822,15 +822,20 @@ def makePostTableIndexOverFrames(doc, name="IndexOverFrames1D"):
 
 
 # ********* solver objects ***********************************************************************
+def _equation_creator(creator, base_solver, doc, name):
+    eq = creator.create(doc, name)
+    if base_solver:
+        eq.Priority = 255 - len(base_solver.Group)
+        base_solver.addObject(eq)
+    return eq
+
+
 def makeEquationDeformation(doc, base_solver=None, name="Deformation"):
     """makeEquationDeformation(document, [base_solver], [name]):
     creates a FEM deformation (nonlinear elasticity) equation for a solver"""
     from femsolver.elmer.equations import deformation
 
-    obj = deformation.create(doc, name)
-    if base_solver:
-        base_solver.addObject(obj)
-    return obj
+    return _equation_creator(deformation, base_solver, doc, name)
 
 
 def makeEquationElasticity(doc, base_solver=None, name="Elasticity"):
@@ -838,10 +843,7 @@ def makeEquationElasticity(doc, base_solver=None, name="Elasticity"):
     creates a FEM elasticity equation for a solver"""
     from femsolver.elmer.equations import elasticity
 
-    obj = elasticity.create(doc, name)
-    if base_solver:
-        base_solver.addObject(obj)
-    return obj
+    return _equation_creator(elasticity, base_solver, doc, name)
 
 
 def makeEquationElectricforce(doc, base_solver=None, name="Electricforce"):
@@ -849,10 +851,7 @@ def makeEquationElectricforce(doc, base_solver=None, name="Electricforce"):
     creates a FEM Electricforce equation for a solver"""
     from femsolver.elmer.equations import electricforce
 
-    obj = electricforce.create(doc, name)
-    if base_solver:
-        base_solver.addObject(obj)
-    return obj
+    return _equation_creator(electricforce, base_solver, doc, name)
 
 
 def makeEquationElectrostatic(doc, base_solver=None, name="Electrostatic"):
@@ -860,10 +859,7 @@ def makeEquationElectrostatic(doc, base_solver=None, name="Electrostatic"):
     creates a FEM electrostatic equation for a solver"""
     from femsolver.elmer.equations import electrostatic
 
-    obj = electrostatic.create(doc, name)
-    if base_solver:
-        base_solver.addObject(obj)
-    return obj
+    return _equation_creator(electrostatic, base_solver, doc, name)
 
 
 def makeEquationFlow(doc, base_solver=None, name="Flow"):
@@ -871,10 +867,7 @@ def makeEquationFlow(doc, base_solver=None, name="Flow"):
     creates a FEM flow equation for a solver"""
     from femsolver.elmer.equations import flow
 
-    obj = flow.create(doc, name)
-    if base_solver:
-        base_solver.addObject(obj)
-    return obj
+    return _equation_creator(flow, base_solver, doc, name)
 
 
 def makeEquationFlux(doc, base_solver=None, name="Flux"):
@@ -882,10 +875,7 @@ def makeEquationFlux(doc, base_solver=None, name="Flux"):
     creates a FEM flux equation for a solver"""
     from femsolver.elmer.equations import flux
 
-    obj = flux.create(doc, name)
-    if base_solver:
-        base_solver.addObject(obj)
-    return obj
+    return _equation_creator(flux, base_solver, doc, name)
 
 
 def makeEquationHeat(doc, base_solver=None, name="Heat"):
@@ -893,10 +883,7 @@ def makeEquationHeat(doc, base_solver=None, name="Heat"):
     creates a FEM heat equation for a solver"""
     from femsolver.elmer.equations import heat
 
-    obj = heat.create(doc, name)
-    if base_solver:
-        base_solver.addObject(obj)
-    return obj
+    return _equation_creator(heat, base_solver, doc, name)
 
 
 def makeEquationMagnetodynamic(doc, base_solver=None, name="Magnetodynamic"):
@@ -904,10 +891,7 @@ def makeEquationMagnetodynamic(doc, base_solver=None, name="Magnetodynamic"):
     creates a FEM magnetodynamic equation for a solver"""
     from femsolver.elmer.equations import magnetodynamic
 
-    obj = magnetodynamic.create(doc, name)
-    if base_solver:
-        base_solver.addObject(obj)
-    return obj
+    return _equation_creator(magnetodynamic, base_solver, doc, name)
 
 
 def makeEquationMagnetodynamic2D(doc, base_solver=None, name="Magnetodynamic2D"):
@@ -915,10 +899,7 @@ def makeEquationMagnetodynamic2D(doc, base_solver=None, name="Magnetodynamic2D")
     creates a FEM magnetodynamic2D equation for a solver"""
     from femsolver.elmer.equations import magnetodynamic2D
 
-    obj = magnetodynamic2D.create(doc, name)
-    if base_solver:
-        base_solver.addObject(obj)
-    return obj
+    return _equation_creator(magnetodynamic2D, base_solver, doc, name)
 
 
 def makeEquationStaticCurrent(doc, base_solver=None, name="StaticCurrent"):
@@ -926,10 +907,7 @@ def makeEquationStaticCurrent(doc, base_solver=None, name="StaticCurrent"):
     creates a FEM static current equation for a solver"""
     from femsolver.elmer.equations import staticcurrent
 
-    obj = staticcurrent.create(doc, name)
-    if base_solver:
-        base_solver.addObject(obj)
-    return obj
+    return _equation_creator(staticcurrent, base_solver, doc, name)
 
 
 def makeSolverCalculiXCcxTools(doc, name="SolverCcxTools"):

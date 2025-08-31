@@ -466,11 +466,6 @@ void QGSPage::addItemToParent(QGIView* item, QGIView* parent)
     assert(item);
     assert(parent);
 
-    if (item->type() == UserType::QGIWeldSymbol) {
-        // don't touch these
-        return;
-    }
-
     // original parenting logic here
     QPointF posRef(0., 0.);
     if (item->type() == UserType::QGIViewDimension ||
@@ -565,7 +560,7 @@ QGIView* QGSPage::addDrawViewClip(TechDraw::DrawViewClip* view)
     qview->setViewFeature(view);
     addItemToScene(qview);
     qview->setPosition(Rez::guiX(view->X.getValue()), Rez::guiX(view->Y.getValue()));
-
+    qview->installSceneEventFilter(qview);
     return qview;
 }
 
@@ -733,17 +728,14 @@ void QGSPage::addRichAnnoToParent(QGIRichAnno* anno, QGIView* parent)
     anno->setZValue(ZVALUE::DIMENSION);
 }
 
-// ?? why does this not get parented to its leader here??
-// the taskdialog sets the Leader property in the weld feature.
-// the weld symbol draws itself based on the leader's geometry, but is not added to the leader's
-// group(?why?)
+
 QGIView* QGSPage::addWeldSymbol(TechDraw::DrawWeldSymbol* weldFeat)
 {
-    QGIWeldSymbol *weldView = new QGIWeldSymbol;
-    weldView->setViewFeature(weldFeat);
-    addItem(weldView);
+    auto *weldQGItem = new QGIWeldSymbol;
+    weldQGItem->setViewFeature(weldFeat);
+    addItemToScene(weldQGItem);
 
-    return weldView;
+    return weldQGItem;
 }
 
 
@@ -1079,8 +1071,6 @@ void QGSPage::saveSvg(QString filename)
 
     Gui::Selection().clearSelection();
 
-    bool saveState = m_vpPage->getFrameState();
-    m_vpPage->setFrameState(false);
     m_vpPage->setTemplateMarkers(false);
     setExportingSvg(true);
 
@@ -1108,8 +1098,6 @@ void QGSPage::saveSvg(QString filename)
     render(&p, targetRect, sourceRect);//note: scene render, not item render!
     p.end();
 
-    m_vpPage->setFrameState(saveState);
-    m_vpPage->setTemplateMarkers(saveState);
     setExportingSvg(false);
     if (templateVisible && svgTemplate) {
         svgTemplate->show();

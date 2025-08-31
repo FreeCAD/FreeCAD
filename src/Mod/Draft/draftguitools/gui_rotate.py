@@ -55,7 +55,7 @@ class Rotate(gui_base_original.Modifier):
         return {"Pixmap": "Draft_Rotate",
                 "Accel": "R, O",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_Rotate", "Rotate"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Rotate", "Rotates the selected objects. Choose the center of rotation, then the initial angle, and then the final angle.\nIf the \"copy\" option is active, it will create rotated copies.\nSHIFT to constrain. Hold ALT and click to create a copy with each click.")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Rotate", "Rotates the selected objects.\nIf the \"Copy\" option is active, it will create rotated copies.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -102,6 +102,8 @@ class Rotate(gui_base_original.Modifier):
         """
         if arg["Type"] == "SoKeyboardEvent" and arg["Key"] == "ESCAPE":
             self.finish()
+        elif not self.ui.mouse:
+            pass
         elif arg["Type"] == "SoLocation2Event":
             self.handle_mouse_move_event(arg)
         elif (arg["Type"] == "SoMouseButtonEvent"
@@ -181,7 +183,7 @@ class Rotate(gui_base_original.Modifier):
         self.ui.radiusValue.setText(U.Quantity(0, U.Angle).UserString)
         self.ui.makeFace.hide()
         self.ui.labelRadius.setText(translate("draft", "Base angle"))
-        self.ui.radiusValue.setToolTip(translate("draft", "The base angle you wish to start the rotation from"))
+        self.ui.radiusValue.setToolTip(translate("draft", "The base angle to start the rotation from"))
         self.arctrack.setCenter(self.center)
         for ghost in self.ghosts:
             ghost.center(self.center)
@@ -194,7 +196,7 @@ class Rotate(gui_base_original.Modifier):
         """Set the starting point of the rotation."""
         self.firstangle = self._get_angle()
         self.ui.labelRadius.setText(translate("draft", "Rotation"))
-        self.ui.radiusValue.setToolTip(translate("draft", "The amount of rotation you wish to perform.\nThe final angle will be the base angle plus this amount."))
+        self.ui.radiusValue.setToolTip(translate("draft", "The amount of rotation to perform.\nThe final angle will be the base angle plus this amount."))
         self.arctrack.on()
         self.arctrack.setStartPoint(self.point)
         for ghost in self.ghosts:
@@ -288,7 +290,7 @@ class Rotate(gui_base_original.Modifier):
         self.ui.radiusUi()
         self.ui.makeFace.hide()
         self.ui.labelRadius.setText(translate("draft", "Base angle"))
-        self.ui.radiusValue.setToolTip(translate("draft", "The base angle you wish to start the rotation from"))
+        self.ui.radiusValue.setToolTip(translate("draft", "The base angle to start the rotation from"))
         self.ui.radiusValue.setText(U.Quantity(0, U.Angle).UserString)
         self.step = 1
         _toolmsg(translate("draft", "Pick base angle"))
@@ -301,7 +303,7 @@ class Rotate(gui_base_original.Modifier):
         """
         if self.step == 1:
             self.ui.labelRadius.setText(translate("draft", "Rotation"))
-            self.ui.radiusValue.setToolTip(translate("draft", "The amount of rotation you wish to perform.\nThe final angle will be the base angle plus this amount."))
+            self.ui.radiusValue.setToolTip(translate("draft", "The amount of rotation to perform.\nThe final angle will be the base angle plus this amount."))
             self.ui.radiusValue.setText(U.Quantity(0, U.Angle).UserString)
             self.firstangle = math.radians(rad)
             self.arctrack.setStartAngle(self.firstangle)

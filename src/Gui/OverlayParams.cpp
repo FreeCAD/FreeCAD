@@ -315,7 +315,7 @@ void OverlayParams::removeDockOverlayAutoView() {
 // Auto generated code (Tools/params_utils.py:350)
 const char *OverlayParams::docDockOverlayDelay() {
     return QT_TRANSLATE_NOOP("OverlayParams",
-"Overlay dock (re),layout delay.");
+"Overlay layout delay");
 }
 
 // Auto generated code (Tools/params_utils.py:358)
@@ -454,8 +454,9 @@ void OverlayParams::removeDockOverlayAutoMouseThrough() {
 
 // Auto generated code (Tools/params_utils.py:350)
 const char *OverlayParams::docDockOverlayWheelPassThrough() {
-    return QT_TRANSLATE_NOOP("OverlayParams",
-"Auto pass through mouse wheel event on transparent dock overlay.");
+    return QT_TRANSLATE_NOOP(
+        "OverlayParams",
+        "Automatically passes mouse wheel events through the transparent areas of an overlay panel");
 }
 
 // Auto generated code (Tools/params_utils.py:358)

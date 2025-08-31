@@ -34,6 +34,8 @@ as they operate on selections and graphical properties.
 
 ## \addtogroup draftguitools
 # @{
+import re
+
 import FreeCAD as App
 import FreeCADGui as Gui
 import WorkingPlane
@@ -41,6 +43,8 @@ from draftutils import gui_utils
 from draftutils import params
 from draftutils import utils
 from draftutils.messages import _wrn
+from draftutils.translate import translate
+
 
 # Set modifier keys from the parameter database
 MODS = ["shift", "ctrl", "alt"]
@@ -56,6 +60,66 @@ def get_mod_snap_key():
 
 def get_mod_alt_key():
     return MODS[params.get_param("modalt")]
+
+
+_HINT_MOD_KEYS = [Gui.UserInput.KeyShift, Gui.UserInput.KeyControl, Gui.UserInput.KeyAlt]
+
+
+# To allows for easy concatenation the _get_hint_* functions
+# always return a list (with a single item or an empty list).
+
+def _get_hint_mod_constrain():
+    key = _HINT_MOD_KEYS[params.get_param("modconstrain")]
+    return [Gui.InputHint(translate("draft", "%1 constrain"), key)]
+
+
+def _get_hint_mod_snap():
+    if params.get_param("alwaysSnap"):
+        return []
+    key = _HINT_MOD_KEYS[params.get_param("modsnap")]
+    return [Gui.InputHint(translate("draft", "%1 snap"), key)]
+
+
+def _get_hint_xyz_constrain():
+    pattern = re.compile("[A-Z]")
+    shortcut_x = params.get_param("inCommandShortcutRestrictX").upper()
+    shortcut_y = params.get_param("inCommandShortcutRestrictY").upper()
+    shortcut_z = params.get_param("inCommandShortcutRestrictZ").upper()
+    if pattern.fullmatch(shortcut_x) \
+            and pattern.fullmatch(shortcut_y) \
+            and pattern.fullmatch(shortcut_z):
+        key_x = getattr(Gui.UserInput, "Key" + shortcut_x)
+        key_y = getattr(Gui.UserInput, "Key" + shortcut_y)
+        key_z = getattr(Gui.UserInput, "Key" + shortcut_z)
+        return [Gui.InputHint(translate("draft", "%1/%2/%3 switch constraint"), key_x, key_y, key_z)]
+    return []
+
+
+def _get_hint_relative():
+    pattern = re.compile("[A-Z]")
+    shortcut = params.get_param("inCommandShortcutRelative").upper()
+    if pattern.fullmatch(shortcut):
+        key = getattr(Gui.UserInput, "Key" + shortcut)
+        return [Gui.InputHint(translate("draft", "%1 toggle relative"), key)]
+    return []
+
+
+def _get_hint_global():
+    pattern = re.compile("[A-Z]")
+    shortcut = params.get_param("inCommandShortcutGlobal").upper()
+    if pattern.fullmatch(shortcut):
+        key = getattr(Gui.UserInput, "Key" + shortcut)
+        return [Gui.InputHint(translate("draft", "%1 toggle global"), key)]
+    return []
+
+
+def _get_hint_continue():
+    pattern = re.compile("[A-Z]")
+    shortcut = params.get_param("inCommandShortcutContinue").upper()
+    if pattern.fullmatch(shortcut):
+        key = getattr(Gui.UserInput, "Key" + shortcut)
+        return [Gui.InputHint(translate("draft", "%1 toggle continue"), key)]
+    return []
 
 
 def format_unit(exp, unit="mm"):

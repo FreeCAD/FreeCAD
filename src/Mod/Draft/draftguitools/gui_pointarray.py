@@ -64,8 +64,8 @@ class PointArray(gui_base_original.Modifier):
         """Set icon, menu and tooltip."""
 
         return {'Pixmap': 'Draft_PointArray',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_PointArray", "Point array"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_PointArray", "Creates copies of the selected base object at the points of a point object.\nFirst select the base object, and then select the point object.")}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_PointArray", "Point Array"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_PointArray", "Creates copies of the selected object at the points of a point object")}
 
     def Activated(self, name="Point array"):
         """Execute when the command is called."""
@@ -92,7 +92,7 @@ class PointArray(gui_base_original.Modifier):
         """Proceed with the command if one object was selected."""
         sel = Gui.Selection.getSelectionEx()
         if len(sel) != 2:
-            _err(translate("draft","Please select exactly two objects, the base object and the point object, before calling this command."))
+            _err(translate("draft","Select exactly 2 objects, the base object and the point object, before calling this command"))
         else:
             base_object = sel[0].Object
             point_object = sel[1].Object
@@ -110,7 +110,7 @@ class PointArray(gui_base_original.Modifier):
             _cmd_list = ["_obj_ = " + _cmd,
                          "Draft.autogroup(_obj_)",
                          "App.ActiveDocument.recompute()"]
-            self.commit(translate("draft","Point array"), _cmd_list)
+            self.commit(translate("draft","Create Point Array"), _cmd_list)
 
         # Commit the transaction and execute the commands
         # through the parent class
@@ -129,8 +129,8 @@ class PointLinkArray(PointArray):
         """Set icon, menu and tooltip."""
 
         return {'Pixmap': 'Draft_PointLinkArray',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_PointLinkArray", "Point link array"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_PointLinkArray", "Like the PointArray tool, but creates a 'Point link array' instead.\nA 'Point link array' is more efficient when handling many copies.")}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_PointLinkArray", "Point Link Array"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_PointLinkArray", "Creates linked copies of the selected object at the points of a point object")}
 
     def Activated(self):
         """Execute when the command is called."""

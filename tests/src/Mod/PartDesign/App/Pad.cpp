@@ -76,7 +76,7 @@ TEST_F(PadTest, TestMidPlaneTwoLength)
     pad->Length.setValue(10.0);
     pad->Length2.setValue(20.0);
 
-    pad->Type.setValue("TwoLengths");
+    pad->SideType.setValue("Two sides");
 
     doc->recompute();
 

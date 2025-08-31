@@ -414,10 +414,10 @@ class PropertyBagCreateCommand(object):
 
     def GetResources(self):
         return {
-            "MenuText": translate("CAM_PropertyBag", "PropertyBag"),
+            "MenuText": translate("CAM_PropertyBag", "Property Bag"),
             "ToolTip": translate(
                 "CAM_PropertyBag",
-                "Creates an object which can be used to store reference properties.",
+                "Creates an object which can be used to store reference properties",
             ),
         }
 
@@ -443,4 +443,4 @@ class PropertyBagCreateCommand(object):
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand("CAM_PropertyBag", PropertyBagCreateCommand())
 
-FreeCAD.Console.PrintLog("Loading PathPropertyBagGui ... done\n")
+FreeCAD.Console.PrintLog("Loading PathPropertyBagGui… done\n")

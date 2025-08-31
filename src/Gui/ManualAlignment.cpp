@@ -801,8 +801,8 @@ void ManualAlignment::startAlignment(Base::Type mousemodel)
     myViewer->showMaximized();
     int n = this->myPickPoints;
     QString msg = n == 1
-        ? tr("Please, select at least one point in the left and the right view")
-        : tr("Please, select at least %1 points in the left and the right view").arg(n);
+        ? tr("Select at least 1 point in the left and the right view")
+        : tr("Select at least %1 points in the left and the right view").arg(n);
     myViewer->myLabel->setText(msg);
 
     connect(myViewer, &QObject::destroyed, this, &ManualAlignment::reset);
@@ -857,7 +857,7 @@ void ManualAlignment::continueAlignment()
         grp.addToViewer(myViewer->getViewer(0));
         grp.setAlignable(true);
 
-        Gui::getMainWindow()->showMessage(tr("Please pick points in the left and right view"));
+        Gui::getMainWindow()->showMessage(tr("Select points in the left and right view"));
 
         myViewer->getViewer(0)->setEditingCursor(QCursor(Qt::PointingHandCursor));
         myViewer->getViewer(1)->setEditingCursor(QCursor(Qt::PointingHandCursor));
@@ -1247,13 +1247,13 @@ void ManualAlignment::probePickedCallback(void * ud, SoEventCallback * n)
                 nPoints = self->myFixedGroup.countPoints();
             QMenu menu;
             QAction* fi = menu.addAction(tr("&Align"));
-            QAction* rem = menu.addAction(tr("&Remove last point"));
+            QAction* rem = menu.addAction(tr("&Remove Last Point"));
             //QAction* cl = menu.addAction("C&lear");
             QAction* ca = menu.addAction(tr("&Cancel"));
             fi->setEnabled(self->canAlign());
             rem->setEnabled(nPoints > 0);
             menu.addSeparator();
-            QAction* sync = menu.addAction(tr("&Synchronize views"));
+            QAction* sync = menu.addAction(tr("&Synchronize Views"));
             sync->setCheckable(true);
             if (self->d->sensorCam1->getAttachedNode())
                 sync->setChecked(true);

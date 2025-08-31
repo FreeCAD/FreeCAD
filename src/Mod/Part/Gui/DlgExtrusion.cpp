@@ -211,7 +211,7 @@ void DlgExtrusion::onSelectEdgeClicked()
     if (!filter) {
         filter = new EdgeSelection();
         Gui::Selection().addSelectionGate(filter);
-        ui->btnSelectEdge->setText(tr("Selecting..."));
+        ui->btnSelectEdge->setText(tr("Selecting…"));
 
         //visibility automation
         try{
@@ -474,7 +474,8 @@ void DlgExtrusion::apply()
 
             if (Part::Feature::getTopoShape(sourceObj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform).isNull()){
                 FC_ERR("Object " << sourceObj->getFullName()
-                        << " is not Part object (has no OCC shape). Can't extrude it.");
+                        << " is not a Part object because it has no OCC shape. Extrusion is not possible.");
+
                 continue;
             }
 
@@ -507,7 +508,7 @@ void DlgExtrusion::apply()
     catch (Base::Exception &err){
         QMessageBox::critical(this,
                               windowTitle(),
-                              tr("Creating Extrusion failed.\n%1")
+                              tr("Creating extrusion failed.\n%1")
                                   .arg(QCoreApplication::translate("Exception", err.what())));
         return;
     }
@@ -642,7 +643,7 @@ bool DlgExtrusion::validate()
     //check source shapes
     if (ui->treeWidget->selectedItems().isEmpty()) {
         QMessageBox::critical(this, windowTitle(),
-            tr("No shapes selected for extrusion. Select some, first."));
+            tr("No shapes selected for extrusion."));
         return false;
     }
 
@@ -688,7 +689,7 @@ bool DlgExtrusion::validate()
             errmsg = QStringLiteral("Unknown error");
         }
         if (errmsg.length() > 0){
-            QMessageBox::critical(this, windowTitle(), tr("Can't determine normal vector of shape to be extruded. Please use other mode. \n\n(%1)").arg(errmsg));
+            QMessageBox::critical(this, windowTitle(), tr("Cannot determine normal vector of shape to be extruded. Use other mode. \n\n(%1)").arg(errmsg));
             ui->rbDirModeNormal->setFocus();
             return false;
         }

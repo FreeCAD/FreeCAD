@@ -15,8 +15,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="251"/>
-      <source>Approximate a cylinder</source>
-      <translation>ცილინდრის აპროქსიმაცია</translation>
+      <source>Approximates a cylinder</source>
+      <translation>ახდენს ცილინდრის აპროქსიმაციას</translation>
     </message>
   </context>
   <context>
@@ -33,7 +33,7 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="143"/>
-      <source>Approximate a plane</source>
+      <source>Approximates a plane</source>
       <translation>სიბრტყის აპროქსიმაცია</translation>
     </message>
   </context>
@@ -46,13 +46,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="366"/>
-      <source>Polynomial surface</source>
+      <source>Polynomial Surface</source>
       <translation>პოლინომური ზედაპირი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="367"/>
-      <source>Approximate a polynomial surface</source>
-      <translation>პოლინომური ზედაპირის აპროქსიმაცია</translation>
+      <source>Approximates a polynomial surface</source>
+      <translation>ახდენს პოლინომური ზედაპირის აპროქსიმაციას</translation>
     </message>
   </context>
   <context>
@@ -69,7 +69,7 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="319"/>
-      <source>Approximate a sphere</source>
+      <source>Approximates a sphere</source>
       <translation>სფეროს აპროქსიმაცია</translation>
     </message>
   </context>
@@ -82,13 +82,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="104"/>
-      <source>Approximate B-spline surface...</source>
-      <translation>B-სპლაინის ზედაპირის აპროქსიმაცია...</translation>
+      <source>Approximate B-Spline Surface…</source>
+      <translation>B-სპლაინის ზედაპირის აპროქსიმაცია…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="105"/>
-      <source>Approximate a B-spline surface</source>
-      <translation>B-სპლაინის ზედაპირის აპროქსიმაცია</translation>
+      <source>Approximates a B-spline surface</source>
+      <translation>ახდენს B-სპლაინის ზედაპირის აპროქსიმაციას</translation>
     </message>
   </context>
   <context>
@@ -100,13 +100,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="536"/>
-      <source>Wire from mesh boundary...</source>
-      <translation>პოლიხაზი ბადის საზღვრებისგან...</translation>
+      <source>Wire From Mesh Boundary…</source>
+      <translation>პოლიხაზი ბადის საზღვრებისგან…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="537"/>
-      <source>Create wire from mesh boundaries</source>
-      <translation>პოლიხაზის შექმნა ბადის საზღვრებისგან</translation>
+      <source>Creates a wire from mesh boundaries</source>
+      <translation>ქმნის პოლიხაზს ბადის საზღვრებისგან</translation>
     </message>
   </context>
   <context>
@@ -118,13 +118,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="601"/>
-      <source>Poisson...</source>
-      <translation>პუასონი...</translation>
+      <source>Poisson…</source>
+      <translation>პუასონი…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="602"/>
-      <source>Poisson surface reconstruction</source>
-      <translation>პუასონის ზედაპირის რეკონსტრუქცია</translation>
+      <source>Performs Poisson surface reconstruction</source>
+      <translation>ახდენს პუასონის ზედაპირის რეკონსტრუქციას</translation>
     </message>
   </context>
   <context>
@@ -136,13 +136,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="424"/>
-      <source>Mesh segmentation...</source>
-      <translation>ბადის სეგმენტაცია...</translation>
+      <source>Mesh Segmentation…</source>
+      <translation>ბადის სეგმენტაცია…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="425"/>
-      <source>Create mesh segments</source>
-      <translation>ბადის სეგმენების შექმნა</translation>
+      <source>Creates separate mesh segments based on surface types</source>
+      <translation>ქმნის ცალკე ბადის სეგმენტებს ზედაპირისი ტიპებზე დამოკიდებულებით</translation>
     </message>
   </context>
   <context>
@@ -154,13 +154,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="486"/>
-      <source>From components</source>
+      <source>From Components</source>
       <translation>კოპონენტებიდან</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="487"/>
-      <source>Create mesh segments from components</source>
-      <translation>ბადის სეგმენტების შექმნა კომპონენტებისგან</translation>
+      <source>Creates mesh segments from components</source>
+      <translation>ქმნის ბადის სეგმენტებს კომპონენტებისგან</translation>
     </message>
   </context>
   <context>
@@ -172,30 +172,34 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="456"/>
-      <source>Manual segmentation...</source>
-      <translation>სეგმენტაციის ხელით მორგება...</translation>
+      <source>Manual Segmentation…</source>
+      <translation>ხელით სეგმენტაცია…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="457"/>
-      <source>Create mesh segments manually</source>
-      <translation>ბადის სეგმენტების ხელით შექმნა</translation>
+      <source>Creates mesh segments manually</source>
+      <translation>ქმნის ბადის სეგმენტების ხელით</translation>
     </message>
   </context>
   <context>
     <name>CmdViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="635"/>
+      <location filename="../../Command.cpp" line="634"/>
       <source>Reverse Engineering</source>
       <translation>საინჟინრო ანალიზი</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="635"/>
+      <source>Structured Point Clouds</source>
+      <translation>დალაგებული წერტილების ღრუბლები</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="636"/>
-      <source>Structured point clouds</source>
-      <translation>დალაგებული წერტილების ღრუბელი</translation>
+      <source>Triangulates structured point clouds</source>
+      <translation>ახდენს სტრუქტურული წერტილების ღრუბლის ტრიანგულაციას</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="637"/>
-      <location filename="../../Command.cpp" line="638"/>
       <source>Triangulation of structured point clouds</source>
       <translation>სტრუქტურული წერტილების ღრუბლის ტრიანგულაცია</translation>
     </message>
@@ -223,7 +227,7 @@
       <translation>პოლინომური ზედაპირის ჩატევა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="647"/>
+      <location filename="../../Command.cpp" line="646"/>
       <source>View triangulation</source>
       <translation>ტრიანგულაციის ნახვა</translation>
     </message>
@@ -233,8 +237,8 @@
       <translation>მდებარეობა</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="230"/>
       <location filename="../../FitBSplineCurve.cpp" line="139"/>
+      <location filename="../../FitBSplineSurface.cpp" line="230"/>
       <source>Fit B-spline</source>
       <translation>B-სპლაინის მოთავსება</translation>
     </message>
@@ -252,16 +256,6 @@
   <context>
     <name>ReenGui::FitBSplineSurface</name>
     <message>
-      <location filename="../../FitBSplineSurface.ui" line="14"/>
-      <source>Fit B-spline surface</source>
-      <translation>B-სპლაინის ზედაპირის ჩატევა</translation>
-    </message>
-    <message>
-      <location filename="../../FitBSplineSurface.ui" line="20"/>
-      <source>u-Direction</source>
-      <translation>u მიმართულება</translation>
-    </message>
-    <message>
       <location filename="../../FitBSplineSurface.ui" line="26"/>
       <location filename="../../FitBSplineSurface.ui" line="93"/>
       <source>Degree</source>
@@ -274,9 +268,19 @@
       <translation>საკონტროლო წერტილები</translation>
     </message>
     <message>
+      <location filename="../../FitBSplineSurface.ui" line="14"/>
+      <source>Fit B-Spline Surface</source>
+      <translation>B-სპლაინის ზედაპირის ჩატევა</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="20"/>
+      <source>U-Direction</source>
+      <translation>U მიმართულება</translation>
+    </message>
+    <message>
       <location filename="../../FitBSplineSurface.ui" line="87"/>
-      <source>v-Direction</source>
-      <translation>v მიმართულება</translation>
+      <source>V-Direction</source>
+      <translation>V მიმართულება</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="154"/>
@@ -300,18 +304,18 @@
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="231"/>
-      <source>Create placement</source>
+      <source>Create Placement</source>
       <translation>მდებარეობის შექმნა</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="247"/>
+      <source>Total weight</source>
+      <translation>ჯამური წონა</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="238"/>
       <source>Smoothing</source>
       <translation>მოგლუვება</translation>
-    </message>
-    <message>
-      <location filename="../../FitBSplineSurface.ui" line="247"/>
-      <source>Total Weight</source>
-      <translation>ჯამური წონა</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="276"/>
@@ -344,8 +348,8 @@
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="206"/>
-      <source>Please select a single placement object to get local orientation.</source>
-      <translation>გთხოვთ, აირჩიოთ ერთი განლაგების ობიექტი ლოკალური ორიენტაციის მისაღებად.</translation>
+      <source>Select a single placement object to get the local orientation.</source>
+      <translation>აირჩიეთ ერთი განლაგების ობიექტი ლოკალური ორიენტაციის მისაღებად.</translation>
     </message>
   </context>
   <context>
@@ -386,30 +390,30 @@
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <location filename="../../Command.cpp" line="121"/>
-      <location filename="../../Command.cpp" line="615"/>
+      <location filename="../../Command.cpp" line="614"/>
       <source>Wrong selection</source>
       <translation>არასწორი არჩევანი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
-      <source>Please select a point cloud.</source>
+      <source>Select a point cloud.</source>
       <translation>აირჩიეთ წერტილების ღრუბელი.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="122"/>
-      <source>Please select a point cloud or mesh.</source>
-      <translation>გთხოვთ აირჩიოთ წერტილების ღრუბელი ან ბადე.</translation>
+      <source>Select a point cloud or mesh.</source>
+      <translation>აირჩიეთ წერტილების ღრუბელი ან ბადე.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="616"/>
-      <source>Please select a single point cloud.</source>
-      <translation>გთხოვთ აირჩიოთ ღრუბლის ერთი წერტილი.</translation>
+      <location filename="../../Command.cpp" line="615"/>
+      <source>Select a single point cloud.</source>
+      <translation>აირჩიეთ ღრუბლის ერთი წერტილი.</translation>
     </message>
   </context>
   <context>
     <name>Reen_ViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="669"/>
+      <location filename="../../Command.cpp" line="668"/>
       <source>View triangulation failed</source>
       <translation>ტრიანგულაციის ნახვის შეცდომა</translation>
     </message>
@@ -418,7 +422,7 @@
     <name>ReverseEngineeringGui::Segmentation</name>
     <message>
       <location filename="../../Segmentation.ui" line="14"/>
-      <source>Mesh segmentation</source>
+      <source>Mesh Segmentation</source>
       <translation>ბადის სეგმენტაცია</translation>
     </message>
     <message>
@@ -460,11 +464,6 @@
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
     <message>
-      <location filename="../../SegmentationManual.ui" line="14"/>
-      <source>Manual segmentation</source>
-      <translation>სეგმენტაციის ხელით მორგება</translation>
-    </message>
-    <message>
       <location filename="../../SegmentationManual.ui" line="20"/>
       <source>Select</source>
       <translation>არჩევა</translation>
@@ -490,8 +489,13 @@
       <translation>&lt; ზედაპირი, ვიდრე</translation>
     </message>
     <message>
+      <location filename="../../SegmentationManual.ui" line="14"/>
+      <source>Manual Mesh Segmentation</source>
+      <translation>ბადის ხელით სეგმენტაცია</translation>
+    </message>
+    <message>
       <location filename="../../SegmentationManual.ui" line="98"/>
-      <source>Pick triangle</source>
+      <source>Pick Triangle</source>
       <translation>აირჩიეთ სამკუთხედი</translation>
     </message>
     <message>
@@ -542,18 +546,18 @@
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="281"/>
-      <source>Region options</source>
+      <source>Region Options</source>
       <translation>რეგიონის პარამეტრები</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="297"/>
+      <source>Respect only triangles with screen-facing normals</source>
+      <translation>ყურადღების მხოლოდ იმ სამკუთხედებზე მიქცევა, რომლის ნორმალებიც ეკრანს უყურებენ</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="287"/>
       <source>Respect only visible triangles</source>
       <translation>ყურადღების მხოლოდ ხილულ სამკუთხედებზე მიქცევა</translation>
-    </message>
-    <message>
-      <location filename="../../SegmentationManual.ui" line="297"/>
-      <source>Respect only triangles with normals facing screen</source>
-      <translation>ყურადღების მხოლოდ ეკრანისკენ მოშვერილი ნორმალიანი სამკუთხედებისთვის მიქცევა</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="310"/>
@@ -591,7 +595,7 @@
     <name>ReenGui::FitBSplineCurve</name>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="14"/>
-      <source>Fit B-spline curve</source>
+      <source>Fit B-Spline Curve</source>
       <translation>B-სპლაინის მრუდის ჩატევა</translation>
     </message>
     <message>
@@ -704,13 +708,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="71"/>
-      <source>Approximate B-spline curve...</source>
-      <translation>B-სპლაინის მრუდის აპროქსიმაცია...</translation>
+      <source>Approximate B-Spline Curve…</source>
+      <translation>B-სპლაინის მრუდის აპროქსიმაცია…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="72"/>
-      <source>Approximate a B-spline curve</source>
-      <translation>B-სპლაინის მრუდის აპროქსიმაცია</translation>
+      <source>Approximates a B-spline curve</source>
+      <translation>ახდენს B-სპლაინის მრუდის აპროქსიმაციას</translation>
     </message>
   </context>
   <context>

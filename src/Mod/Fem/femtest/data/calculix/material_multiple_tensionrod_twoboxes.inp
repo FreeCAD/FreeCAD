@@ -1251,7 +1251,7 @@ ConstraintFixed,3
 ** constraints pressure element face loads
 ** ConstraintPressure
 *DLOAD
-** ConstraintPressure: face load
+** MultiMatCompSolid.Face11
 61,P3,1000.0
 74,P3,1000.0
 75,P3,1000.0

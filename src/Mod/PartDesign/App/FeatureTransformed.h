@@ -44,8 +44,8 @@ class PartDesignExport Transformed: public PartDesign::FeatureRefine
 public:
     enum class Mode
     {
-        TransformToolShapes,
-        TransformBody
+        Features,
+        WholeShape
     };
 
     Transformed();
@@ -53,9 +53,7 @@ public:
     /** The features to be transformed
      */
     App::PropertyLinkList Originals;
-
     App::PropertyEnumeration TransformMode;
-
     App::PropertyBool Refine;
 
     /**
@@ -66,6 +64,8 @@ public:
      *               Default is false.
      */
     Part::Feature* getBaseObject(bool silent = false) const override;
+
+    virtual std::vector<App::DocumentObject*> getOriginals() const;
 
     /// Return the sketch of the first original
     App::DocumentObject* getSketchObject() const;
@@ -93,6 +93,10 @@ public:
     App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
     //@}
+
+    App::DocumentObjectExecReturn* recomputePreview() override;
+
+    void onChanged(const App::Property* prop) override;
 
     /** returns the compound of the shapes that were rejected during the last execute
      * because they did not overlap with the support

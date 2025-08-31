@@ -93,7 +93,12 @@ public:
      * Defines the color as (R,G,B,A) whereas all values are in the range [0,1].
      * \a A defines the alpha value.
      */
-    explicit Color(float R = 0.0, float G = 0.0, float B = 0.0, float A = 1.0);
+    constexpr explicit Color(float R = 0.0, float G = 0.0, float B = 0.0, float A = 1.0)
+        : r(R)
+        , g(G)
+        , b(B)
+        , a(A)
+    {}
 
     /**
      * Does basically the same as the constructor above unless that (R,G,B,A) is

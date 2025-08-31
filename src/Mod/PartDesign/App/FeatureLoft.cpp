@@ -213,7 +213,23 @@ App::DocumentObjectExecReturn *Loft::execute()
             std::vector<TopoShape> backwires;
             for(auto& sectionWires : wiresections)
                 backwires.push_back(sectionWires.back());
-            back = TopoShape(0).makeElementFace(backwires);
+            const char *faceMaker[] = {
+                "Part::FaceMakerBullseye",
+                "Part::FaceMakerCheese",
+                "Part::FaceMakerSimple",
+            };
+            for (size_t i = 0; i < std::size(faceMaker); i++) {
+                try {
+                    back = TopoShape(0).makeElementFace(backwires, nullptr, faceMaker[i]);
+                    break;
+                }
+                catch (...) {
+                   if (i == std::size(faceMaker) - 1) {
+                       throw;
+                   }
+                   continue;
+                }
+            }
         }
 
         if (!front.isNull() || !back.isNull()) {
@@ -258,7 +274,7 @@ App::DocumentObjectExecReturn *Loft::execute()
 
         if(base.isNull()) {
             if (!isSingleSolidRuleSatisfied(result.getShape())) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compounds' in the active body."));
             }
             Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
@@ -293,7 +309,7 @@ App::DocumentObjectExecReturn *Loft::execute()
         this->rawShape = boolOp;
         boolOp = refineShapeIfActive(boolOp);
         if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compounds' in the active body."));
         }
         boolOp = getSolid(boolOp);
         Shape.setValue(boolOp);
@@ -330,3 +346,5 @@ void Loft::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeNa
         ProfileBased::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
+
+

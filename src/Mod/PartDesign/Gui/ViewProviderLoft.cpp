@@ -37,7 +37,7 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderLoft,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderLoft, PartDesignGui::ViewProvider)
 
 ViewProviderLoft::ViewProviderLoft() = default;
 
@@ -63,44 +63,12 @@ std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren()const
 
 void ViewProviderLoft::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    addDefaultAction(menu, QObject::tr("Edit loft"));
-    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
-}
-
-bool ViewProviderLoft::setEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default)
-        setPreviewDisplayMode(true);
-
-    return ViewProviderAddSub::setEdit(ModNum);
+    addDefaultAction(menu, QObject::tr("Edit Loft"));
+    ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
 TaskDlgFeatureParameters* ViewProviderLoft::getEditDialog() {
     return new TaskDlgLoftParameters(this);
-}
-
-
-void ViewProviderLoft::unsetEdit(int ModNum) {
-    setPreviewDisplayMode(false);
-    ViewProviderAddSub::unsetEdit(ModNum);
-}
-
-
-bool ViewProviderLoft::onDelete(const std::vector<std::string> & /*s*/)
-{/*
-    PartDesign::Loft* pcLoft = getObject<PartDesign::Loft>();
-
-    // get the Sketch
-    Sketcher::SketchObject *pcSketch = 0;
-    if (pcLoft->Sketch.getValue())
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcLoft->Sketch.getValue());
-
-    // if abort command deleted the object the sketch is visible again
-    if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
-        Gui::Application::Instance->getViewProvider(pcSketch)->show();
-
-    return ViewProvider::onDelete(s);*/
-    return true;
 }
 
 void ViewProviderLoft::highlightProfile(bool on)

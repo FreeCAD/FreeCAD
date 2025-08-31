@@ -102,8 +102,8 @@ class BIM_Material:
             searchLayout = QtGui.QHBoxLayout()
             searchLayout.setSpacing(2)
             searchBox = MatLineEdit(self.dlg)
-            searchBox.setPlaceholderText(translate("BIM", "Search..."))
-            searchBox.setToolTip(translate("BIM", "Searches object labels"))
+            searchBox.setPlaceholderText(translate("BIM", "Search Objects"))
+            searchBox.setToolTip(translate("BIM", "Searches for objects in the tree"))
             self.dlg.searchBox = searchBox
             searchLayout.addWidget(searchBox)
             searchBox.textChanged.connect(self.onSearch)
@@ -124,14 +124,14 @@ class BIM_Material:
             lay.addLayout(searchLayout)
 
             createButtonsLayoutBox = QtGui.QGroupBox(
-                translate("BIM", " Material operations"), self.dlg
+                translate("BIM", " Material Operations"), self.dlg
             )
             createButtonsLayoutBox.setObjectName("matOpsGrpBox")
             createButtonsLayout = QtGui.QGridLayout()
 
             # create
             buttonCreate = QtGui.QPushButton(
-                translate("BIM", "Create new material"), self.dlg
+                translate("BIM", "New Material"), self.dlg
             )
             buttonCreate.setIcon(QtGui.QIcon(":/icons/Arch_Material.svg"))
             createButtonsLayout.addWidget(buttonCreate, 0, 0)
@@ -139,7 +139,7 @@ class BIM_Material:
 
             # create multi
             buttonMulti = QtGui.QPushButton(
-                translate("BIM", "Create new multi-material"), self.dlg
+                translate("BIM", "Create new Multi-Material"), self.dlg
             )
             buttonMulti.setIcon(QtGui.QIcon(":/icons/Arch_Material_Multi.svg"))
             createButtonsLayout.addWidget(buttonMulti, 0, 1)
@@ -148,7 +148,7 @@ class BIM_Material:
             # merge dupes
             opsLayout = QtGui.QHBoxLayout()
             buttonMergeDupes = QtGui.QPushButton(
-                translate("BIM", "Merge duplicates"), self.dlg
+                translate("BIM", "Merge Duplicates"), self.dlg
             )
             buttonMergeDupes.setIcon(QtGui.QIcon(":/icons/view-refresh.svg"))
             createButtonsLayout.addWidget(buttonMergeDupes, 1, 0)
@@ -159,7 +159,7 @@ class BIM_Material:
 
             # delete unused
             buttonDeleteUnused = QtGui.QPushButton(
-                translate("BIM", "Delete unused"), self.dlg
+                translate("BIM", "Delete Unused"), self.dlg
             )
             buttonDeleteUnused.setIcon(QtGui.QIcon(":/icons/delete.svg"))
             createButtonsLayout.addWidget(buttonDeleteUnused, 1, 1)
@@ -184,7 +184,7 @@ class BIM_Material:
             context1.triggered.connect(self.onStartRename)
             context2 = self.contextMenu.addAction(translate("BIM", "Duplicate"))
             context2.triggered.connect(self.onDuplicate)
-            context3 = self.contextMenu.addAction(translate("BIM", "Merge to..."))
+            context3 = self.contextMenu.addAction(translate("BIM", "Merge To…"))
             context3.triggered.connect(self.onMergeTo)
             context4 = self.contextMenu.addAction(translate("BIM", "Delete"))
             context4.triggered.connect(self.onDelete)
@@ -629,7 +629,7 @@ class Arch_MaterialToolsCommand:
     def GetCommands(self):
         return tuple(['Arch_Material','Arch_MultiMaterial'])
     def GetResources(self):
-        return { 'MenuText': QT_TRANSLATE_NOOP("Arch_MaterialTools",'Material tools'),
+        return { 'MenuText': QT_TRANSLATE_NOOP("Arch_MaterialTools",'Material Tools'),
                  'ToolTip': QT_TRANSLATE_NOOP("Arch_MaterialTools",'Material tools')
                }
     def IsActive(self):

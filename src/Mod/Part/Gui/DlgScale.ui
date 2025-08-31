@@ -19,7 +19,7 @@
      <item row="3" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>X Factor</string>
+        <string>X factor</string>
        </property>
       </widget>
      </item>
@@ -61,7 +61,7 @@
      <item row="5" column="0">
       <widget class="QLabel" name="label_7">
        <property name="text">
-        <string>Z Factor</string>
+        <string>Z factor</string>
        </property>
       </widget>
      </item>
@@ -109,17 +109,17 @@
      <item row="4" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>Y Factor</string>
+        <string>Y factor</string>
        </property>
       </widget>
      </item>
      <item row="2" column="0">
       <widget class="QRadioButton" name="rbNonUniform">
        <property name="toolTip">
-        <string>Specify a different scale factor for each cardinal direction.</string>
+        <string>Specify a different scale factor for each cardinal direction</string>
        </property>
        <property name="text">
-        <string>Non-Uniform Scaling</string>
+        <string>Non-uniform scaling</string>
        </property>
       </widget>
      </item>
@@ -192,7 +192,7 @@
    <item>
     <widget class="QTreeWidget" name="treeWidget">
      <property name="toolTip">
-      <string>Select shape(s) that should be scaled</string>
+      <string>Select shapes to be scaled</string>
      </property>
      <column>
       <property name="text">

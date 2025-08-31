@@ -281,10 +281,11 @@ void TaskFemConstraintHeatflux::addToSelection()
 
         if (!subNames.empty()) {
             for (const auto& subName : subNames) {
-                if (subName.substr(0, 4) != "Face") {
-                    QMessageBox::warning(this,
-                                         tr("Selection error"),
-                                         tr("Selection must only consist of faces!"));
+                if ((subName.substr(0, 4) != "Face") && (subName.substr(0, 4) != "Edge")) {
+                    QMessageBox::warning(
+                        this,
+                        tr("Selection error"),
+                        tr("Selection must only consist of faces! (edges in 2D models)"));
                     return;
                 }
             }
@@ -345,10 +346,11 @@ void TaskFemConstraintHeatflux::removeFromSelection()
 
         if (!subNames.empty()) {
             for (const auto& subName : subNames) {
-                if (subName.substr(0, 4) != "Face") {
-                    QMessageBox::warning(this,
-                                         tr("Selection error"),
-                                         tr("Selection must only consist of faces!"));
+                if ((subName.substr(0, 4) != "Face") && (subName.substr(0, 4) != "Edge")) {
+                    QMessageBox::warning(
+                        this,
+                        tr("Selection error"),
+                        tr("Selection must only consist of faces! (edges in 2D models)"));
                     return;
                 }
             }

@@ -42,19 +42,22 @@ jobs:
     runs-on: windows-latest
     continue-on-error: ${{ inputs.allowedToFail }}
     env:
-      CCACHE_DIR: C:/FC/cache/
       CCACHE_COMPILERCHECK: "%compiler%" # default:mtime
-      CCACHE_MAXSIZE: 1G
       CCACHE_COMPRESS: true
-      CCACHE_COMPRESSLEVEL: 1
-      CCACHE_NOHASHDIR: true
-      CCACHE_DIRECT: true
-      #CCACHE_SLOPPINESS: "pch_defines,time_macros" # Can't get PCH to work on Windows
+      CCACHE_COMPRESSLEVEL: 5
+      CCACHE_DIR: C:/FC/cache/
       CCACHE_LOGFILE: C:/logs/ccache.log
+      CCACHE_MAXSIZE: 1G
+      CCACHE_NODIRECT: true
+      CCACHE_NOHASHDIR: true
+      CCACHE_NOINODECACHE: true
+      CCACHE_SLOPPINESS: "include_file_ctime,include_file_mtime,pch_defines,time_macros" # Can't get PCH to work on Windows
       ## Have to use C:\ because not enough space on workspace drive
       builddir: C:/FC/build/release/
-      libpackdir: C:/FC/libpack/
+      cacheKey: Windows
       ccachebindir: C:/FC/ccache/
+      config: release
+      libpackdir: C:/FC/libpack/
       logdir: C:/logs/
       reportdir: C:/report/
       reportfilename: ${{ inputs.artifactBasename }}-report.md
@@ -68,9 +71,10 @@ jobs:
           egress-policy: audit
 
       - name: Checking out source code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           submodules: true
+
       - name: Make needed directories, files and initializations
         id: Init
         run: |
@@ -81,36 +85,43 @@ jobs:
           mkdir ${{ env.logdir }}
           mkdir ${{ env.reportdir }}
           echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
+
       - name: Get Ccache
         uses: ./.github/workflows/actions/windows/getCcache
         with:
           ccachebindir: ${{ env.ccachebindir }}
+
       - name: Get Libpack
         uses: ./.github/workflows/actions/windows/getLibpack
         with:
           libpackdir: ${{ env.libpackdir }}
+
       - name: Restore compiler cache
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        id: cache-restore
+        if: always()
+        uses: actions/cache/restore@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
         with:
-          save-always: true
           path: ${{ env.CCACHE_DIR }}
-          key: FC-Windows-${{ github.ref }}-${{ github.run_id }}
+          key: FC-${{ env.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
           restore-keys: |
-            FC-Windows-${{ github.ref }}-
-            FC-Windows-
+            FC-${{ env.cacheKey }}-${{ github.ref }}-
+            FC-${{ env.cacheKey }}-
+
       - name: Print Ccache statistics before build, reset stats and print config
         run: |
           . $env:ccachebindir\ccache -s
           . $env:ccachebindir\ccache -z
           . $env:ccachebindir\ccache -p
+
       - name: Install cmake
         uses: jwlawson/actions-setup-cmake@802fa1a2c4e212495c05bf94dba2704a92a472be # v2.0.2
         with:
           cmake-version: '3.31.6'
+
       - name: Configuring CMake
         run: >
           cmake -B"${{ env.builddir }}" .
-          --preset release
+          --preset ${{ env.config }}
           -DCMAKE_VS_NO_COMPILE_BATCHING=ON
           -DCMAKE_BUILD_TYPE=Release
           -DFREECAD_USE_PCH=OFF
@@ -119,23 +130,38 @@ jobs:
           -DFREECAD_COPY_DEPEND_DIRS_TO_BUILD=ON
           -DFREECAD_COPY_LIBPACK_BIN_TO_BUILD=ON
           -DFREECAD_COPY_PLUGINS_BIN_TO_BUILD=ON
+
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@6fb02220983dee41ce7ae257b6f4d8f9bf5ed4ce # v2.0.0
+
       - name: Compiling sources
         run: |
           cd $env:builddir
           msbuild ALL_BUILD.vcxproj /m /p:Configuration=Release /p:TrackFileAccess=false /p:CLToolPath=${{ env.ccachebindir }}
+
       - name: Print Ccache statistics after build
+        if: always()
         run: |
           . $env:ccachebindir\ccache -s
+
       - name: C++ unit tests
         if: false # Disabled because seems to not function on Windows build
         timeout-minutes: 1
         run: |
           . ${{ env.builddir }}\tests\Release\Tests_run --gtest_output=json:${{ env.reportdir }}gtest_results.json # 2>&1 | tee -filepath ${{ env.logdir }}\unitTests.log
+
       - name: FreeCAD CLI tests
         run: |
           . ${{ env.builddir }}\bin\FreeCADCmd -t 0 # 2>&1 | tee -filepath ${{ env.logdir }}\integrationTests.log
+
+      - name: Save Compiler Cache
+        id: cache-save
+        if: always()
+        uses: actions/cache/save@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: FC-${{ env.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
+
       - name: Upload logs
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

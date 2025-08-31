@@ -41,7 +41,7 @@ jobs:
           remove-stale-when-updated: true
           ascending: true
           stale-issue-message: |
-            Hi! This issue hasn’t seen activity in a while. If it’s still relevant, please update to the latest FreeCAD weekly build [download here](https://github.com/FreeCAD/FreeCAD-Bundle/releases/tag/weekly-builds) to see if the problem is resolved.
+            Hi! This issue hasn’t seen activity in a while. If it’s still relevant, please update to the latest FreeCAD weekly build [download here](https://github.com/FreeCAD/FreeCAD/releases/) to see if the problem is resolved.
 
             If the issue persists, let us know by adding a comment with any updates or details. Otherwise, we’ll close this issue automatically in 14 days to keep our backlog tidy. Feel free to comment anytime to keep it open. Closed issues can always be reopened.
             Thanks for helping improve FreeCAD!
@@ -68,7 +68,7 @@ jobs:
           ascending: true
           stale-issue-message: |
             Hi! This issue hasn’t seen activity in a while despite the need for further feedback.
-            If it’s still relevant, please update to the latest FreeCAD weekly build [download here](https://github.com/FreeCAD/FreeCAD-Bundle/releases/tag/weekly-builds) to see if the problem is resolved.
+            If it’s still relevant, please update to the latest FreeCAD weekly build [download here](https://github.com/FreeCAD/FreeCAD/releases/) to see if the problem is resolved.
 
             If the issue persists, let us know by adding a comment with any updates or details. Otherwise, we’ll close this issue automatically in 14 days to keep our backlog tidy. Feel free to comment anytime to keep it open. Closed issues can always be reopened.
             Thanks for helping improve FreeCAD!
@@ -95,7 +95,7 @@ jobs:
           ascending: true
           stale-issue-message: |
             Hi! This issue hasn’t seen activity in a while. We automatically check each issue after 190 days without activity to keep the backlog tidy.
-            If it’s still relevant, please update to the latest FreeCAD weekly build [download here](https://github.com/FreeCAD/FreeCAD-Bundle/releases/tag/weekly-builds) to see if the issue is already resolved.
+            If it’s still relevant, please update to the latest FreeCAD weekly build [download here](https://github.com/FreeCAD/FreeCAD/releases/) to see if the issue is already resolved.
 
             If the issue is still relevant, let us know by adding a comment.
             Otherwise, we’ll close this issue automatically in 60 days.

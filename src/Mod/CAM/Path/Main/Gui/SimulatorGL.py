@@ -347,9 +347,9 @@ class CommandCAMSimulate:
         """Command info"""
         return {
             "Pixmap": "CAM_SimulatorGL",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "New CAM Simulator"),
+            "MenuText": QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "CAM Simulator"),
             "Accel": "P, N",
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "Simulate G-code on stock"),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "Simulates G-code on stock"),
         }
 
     def IsActive(self):
@@ -369,4 +369,4 @@ class CommandCAMSimulate:
 if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand("CAM_SimulatorGL", CommandCAMSimulate())
-    FreeCAD.Console.PrintLog("Loading PathSimulator Gui... done\n")
+    FreeCAD.Console.PrintLog("Loading PathSimulator Gui… done\n")

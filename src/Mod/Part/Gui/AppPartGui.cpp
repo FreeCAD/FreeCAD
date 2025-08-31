@@ -68,6 +68,7 @@
 #include "ViewProviderMirror.h"
 #include "ViewProviderPlaneParametric.h"
 #include "ViewProviderPointParametric.h"
+#include "ViewProviderPreviewExtension.h"
 #include "ViewProviderPrism.h"
 #include "ViewProviderProjectOnSurface.h"
 #include "ViewProviderRegularPolygon.h"
@@ -133,7 +134,7 @@ PyMOD_INIT_FUNC(PartGui)
 
     PyObject* partGuiModule = PartGui::initModule();
 
-    Base::Console().log("Loading GUI of Part module... done\n");
+    Base::Console().log("Loading GUI of Part module… done\n");
 
     Gui::BitmapFactory().addPath(QStringLiteral(":/icons/booleans"));
     Gui::BitmapFactory().addPath(QStringLiteral(":/icons/create"));
@@ -162,10 +163,14 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::SoBrepEdgeSet                          ::initClass();
     PartGui::SoBrepPointSet                         ::initClass();
     PartGui::SoFCControlPoints                      ::initClass();
+    PartGui::SoFCShape                              ::initClass();
+    PartGui::SoPreviewShape                         ::initClass();
     PartGui::ViewProviderAttachExtension            ::init();
     PartGui::ViewProviderAttachExtensionPython      ::init();
     PartGui::ViewProviderGridExtension              ::init();
     PartGui::ViewProviderGridExtensionPython        ::init();
+    PartGui::ViewProviderPreviewExtension           ::init();
+    PartGui::ViewProviderPreviewExtensionPython     ::init();
     PartGui::ViewProviderSplineExtension            ::init();
     PartGui::ViewProviderSplineExtensionPython      ::init();
     PartGui::ViewProviderLine                       ::init();

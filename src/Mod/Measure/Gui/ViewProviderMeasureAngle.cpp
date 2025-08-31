@@ -129,7 +129,7 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
 
         GeomAPI_ProjectPointOnCurve projection(tempPoint, heapLine2);
         if (projection.NbPoints() < 1) {
-            throw Base::RuntimeError("parallel vectors: couldn't project onto line");
+            throw Base::RuntimeError("parallel vectors: could not project onto line");
         }
         gp_Vec newPoint2;
         newPoint2.SetXYZ(projection.Point(1).XYZ());
@@ -195,7 +195,7 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
         GeomAPI_ExtremaCurveCurve extrema(heapLine1, heapLine2);
 
         if (extrema.NbExtrema() < 1) {
-            throw Base::RuntimeError("couldn't get extrema");
+            throw Base::RuntimeError("Could not get extrema");
         }
 
         gp_Pnt extremaPoint1, extremaPoint2, dimensionOriginPoint;

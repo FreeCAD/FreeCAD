@@ -35,10 +35,10 @@ class BIM_Windows:
     def GetResources(self):
         return {
             "Pixmap": "BIM_Windows",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_Windows", "Manage doors and windows..."),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_Windows", "Manage Doors and Windows"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_Windows",
-                "Manage the different doors and windows of your BIM project",
+                "Manages the different doors and windows of the BIM project",
             ),
         }
 

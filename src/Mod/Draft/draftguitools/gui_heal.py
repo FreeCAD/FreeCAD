@@ -56,7 +56,7 @@ class Heal(gui_base.GuiCommandSimplest):
 
         return {'Pixmap': 'Draft_Heal',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Heal", "Heal"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Heal", "Heal faulty Draft objects saved with an earlier version of the program.\nIf an object is selected it will try to heal that object in particular,\notherwise it will try to heal all objects in the active document.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Heal", "Heals faulty Draft objects saved with an earlier version of FreeCAD.\nIf an object is selected it tries to heal only that object,\notherwise it tries to heal all objects in the active document.")}
 
     def Activated(self):
         """Execute when the command is called."""
