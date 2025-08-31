@@ -386,7 +386,7 @@ class _ProfileTSLOT(_Profile):
         templist.append(templist[0])
         poly = Part.makePolygon(templist)
         pf = Part.Face(poly)
-        orificio = Part.makeCircle(obj.hole_diameter, FreeCAD.Vector(0, 0, 0))
+        orificio = Part.makeCircle(obj.hole_diameter/2, FreeCAD.Vector(0, 0, 0))
         cf=Part.Face(Part.Wire(orificio))
         p=pf.cut(cf)
         #p.reverse()
