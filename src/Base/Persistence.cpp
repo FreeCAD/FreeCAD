@@ -139,7 +139,7 @@ std::string Persistence::validateXMLString(const std::string& str)
     std::u32string cp_out;
     cp_out.reserve(cp_in.size());
     for (auto cp : cp_in) {
-        if (std::any_of(validRanges.begin(), validRanges.end(), [cp](const auto& range){
+        if (std::any_of(validRanges.begin(), validRanges.end(), [cp](const auto& range) {
                 return cp >= range.first && cp <= range.second;
             })) {
             cp_out += cp;

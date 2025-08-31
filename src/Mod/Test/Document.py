@@ -668,7 +668,7 @@ class DocumentBasicCases(unittest.TestCase):
 
     def testValidateXml(self):
         self.Doc.openTransaction("Add")
-        obj = self.Doc.addObject("App::FeatureTest","Label")
+        obj = self.Doc.addObject("App::FeatureTest", "Label")
         obj.Label = "abc\x01ef"
         TempPath = tempfile.gettempdir()
         SaveName = TempPath + os.sep + "CreateTest.FCStd"
