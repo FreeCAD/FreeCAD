@@ -4,17 +4,8 @@ from Base.Metadata import constmethod, export
 
 from App.Part import Part
 
-@export(
-    Father="PartPy",
-    Name="AssemblyObjectPy",
-    Twin="AssemblyObject",
-    TwinPointer="AssemblyObject",
-    Include="Mod/Assembly/App/AssemblyObject.h",
-    Namespace="Assembly",
-    FatherInclude="App/PartPy.h",
-    FatherNamespace="App",
-)
-class AssemblyObjectPy(Part):
+@export(Include="Mod/Assembly/App/AssemblyObject.h", Namespace="Assembly")
+class AssemblyObject(Part):
     """
     This class handles document objects in Assembly
     """
