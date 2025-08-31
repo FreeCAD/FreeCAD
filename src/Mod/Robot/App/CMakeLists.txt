@@ -20,21 +20,21 @@ set(Robot_LIBS
     FreeCADApp
 )
 
-generate_from_py(Robot6AxisPy)
-generate_from_py(TrajectoryPy)
-generate_from_py(WaypointPy)
-generate_from_py(RobotObjectPy)
+generate_from_py(Robot6Axis)
+generate_from_py(Trajectory)
+generate_from_py(Waypoint)
+generate_from_py(RobotObject)
 
 
 
 SET(Python_SRCS
-    Robot6AxisPy.pyi
+    Robot6Axis.pyi
     Robot6AxisPyImp.cpp
-    TrajectoryPy.pyi
+    Trajectory.pyi
     TrajectoryPyImp.cpp
-    RobotObjectPy.pyi
+    RobotObject.pyi
     RobotObjectPyImp.cpp
-    WaypointPy.pyi
+    Waypoint.pyi
     WaypointPyImp.cpp
 )
 

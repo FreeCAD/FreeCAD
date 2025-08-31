@@ -6,7 +6,7 @@ from Base.Metadata import export
     Include="Mod/Mesh/Gui/ViewProvider.h",
     Namespace="MeshGui",
 )
-class ViewProviderMeshPy(ViewProviderGeometryObject):
+class ViewProviderMesh(ViewProviderGeometryObject):
     """
     This is the ViewProvider base class
     """

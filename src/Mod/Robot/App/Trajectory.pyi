@@ -4,18 +4,12 @@ from Base.Metadata import export
 from Base.Persistence import Persistence
 
 @export(
-    Father="PersistencePy",
-    Name="TrajectoryPy",
-    Twin="Trajectory",
-    TwinPointer="Trajectory",
     Include="Mod/Robot/App/Trajectory.h",
     Namespace="Robot",
-    FatherInclude="Base/PersistencePy.h",
-    FatherNamespace="Base",
     Constructor=True,
     Delete=True,
 )
-class TrajectoryPy(Persistence):
+class Trajectory(Persistence):
     """
     Trajectory class
     """
