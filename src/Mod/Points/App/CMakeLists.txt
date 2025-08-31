@@ -38,14 +38,14 @@ list(APPEND Points_LIBS
     ${QtConcurrent_LIBRARIES}
 )
 
-generate_from_py(PointsPy)
+generate_from_py(Points)
 
 SET(Points_SRCS
     AppPoints.cpp
     AppPointsPy.cpp
     Points.cpp
     Points.h
-    PointsPy.pyi
+    Points.pyi
     PointsPyImp.cpp
     PointsAlgos.cpp
     PointsAlgos.h

@@ -32,16 +32,16 @@ list(APPEND Mesh_LIBS
 
 generate_from_py(Edge)
 generate_from_py(Facet)
-generate_from_py(MeshFeaturePy)
+generate_from_py(MeshFeature)
 generate_from_py(MeshPoint)
-generate_from_py(MeshPy)
+generate_from_py(Mesh)
 
 SET(Mesh_XML_SRCS
     Edge.pyi
     Facet.pyi
-    MeshFeaturePy.pyi
+    MeshFeature.pyi
     MeshPoint.pyi
-    MeshPy.pyi
+    Mesh.pyi
 )
 SOURCE_GROUP("XML" FILES ${Mesh_XML_SRCS})
 

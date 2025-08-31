@@ -16,7 +16,7 @@ set(CAMSimulator_LIBS
 )
 
 SET(CAMSimulator_SRCS_Python
-    CAMSimPy.pyi
+    CAMSim.pyi
     CAMSimPyImp.cpp
 )
 
@@ -66,7 +66,7 @@ SET(CAMSimulator_SRCS_Core
     TextureLoader.h
 )
 
-generate_from_py(CAMSimPy)
+generate_from_py(CAMSim)
 
 SOURCE_GROUP("Module" FILES ${CAMSimulator_SRCS_Module})
 SOURCE_GROUP("Python" FILES ${CAMSimulator_SRCS_Python})

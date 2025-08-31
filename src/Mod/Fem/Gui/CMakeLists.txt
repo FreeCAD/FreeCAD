@@ -36,7 +36,7 @@ set(FemGui_LIBS
 generate_from_py(ViewProviderFemConstraint)
 generate_from_py(ViewProviderFemMesh)
 generate_from_py(ViewProviderFemPostPipeline)
-generate_from_py(ViewProviderFemPostFilterPy) # TODO: FixMe
+generate_from_py(ViewProviderFemPostFilter)
 
 SET(Python_SRCS
     ViewProviderFemConstraint.pyi
@@ -49,7 +49,7 @@ if(BUILD_FEM_VTK)
         ${Python_SRCS}
         ViewProviderFemPostPipeline.pyi
         ViewProviderFemPostPipelinePyImp.cpp
-        ViewProviderFemPostFilterPy.pyi
+        ViewProviderFemPostFilter.pyi
         ViewProviderFemPostFilterPyImp.cpp
     )
 endif(BUILD_FEM_VTK)
