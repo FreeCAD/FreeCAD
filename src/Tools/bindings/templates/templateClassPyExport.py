@@ -42,6 +42,7 @@ class TemplateClassPyExport(template.ModelTemplate):
             "App",
             "Assembly",
             "CAM",
+            "Fem",
             "Gui",
             "Part",
             "PartDesign",
