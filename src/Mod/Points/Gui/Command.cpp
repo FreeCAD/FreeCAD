@@ -89,13 +89,13 @@ void CmdPointsImport::activated(int iMsg)
 
     if (!fn.isEmpty()) {
         fn = Base::Tools::escapeEncodeFilename(fn);
-        Gui::Document* doc = getActiveGuiDocument();
+        App::Document* doc = getActiveDocument();
         openCommand(QT_TRANSLATE_NOOP("Command", "Import points"));
         addModule(Command::App, "Points");
         doCommand(Command::Doc,
                   "Points.insert(\"%s\", \"%s\")",
                   fn.toUtf8().data(),
-                  doc->getDocument()->getName());
+                  doc->getName());
         commitCommand();
 
         updateActive();
@@ -105,8 +105,7 @@ void CmdPointsImport::activated(int iMsg)
          *  origin had inaccuracies in the relative positioning of the points due to
          *  imprecise floating point variables used in COIN
          **/
-        auto* pcFtr = dynamic_cast<Points::Feature*>(doc->getDocument()->getActiveObject());
-        if (pcFtr) {
+        if (auto pcFtr = dynamic_cast<Points::Feature*>(doc->getActiveObject())) {
             auto points = pcFtr->Points.getValue();
             auto bbox = points.getBoundBox();
             auto center = bbox.GetCenter();
@@ -123,11 +122,9 @@ void CmdPointsImport::activated(int iMsg)
                 auto ret = msgBox.exec();
 
                 if (ret == QMessageBox::Yes) {
-                    Points::PointKernel translatedPoints;
-                    for (const auto& point : points) {
-                        translatedPoints.push_back(point - center);
-                    }
-                    pcFtr->Points.setValue(translatedPoints);
+                    Points::PointKernel* kernel = pcFtr->Points.startEditing();
+                    kernel->moveGeometry(-center);
+                    pcFtr->Points.finishEditing();
                 }
             }
         }
