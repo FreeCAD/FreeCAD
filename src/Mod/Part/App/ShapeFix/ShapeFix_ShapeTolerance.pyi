@@ -19,10 +19,10 @@ class ShapeFix_ShapeTolerance(PyObjectBase):
 
     @overload
     def limitTolerance(self, shape: TopoShape, tmin: float) -> None: ...
-    
+
     @overload
     def limitTolerance(self, shape: TopoShape, tmin: float, tmax: float, ShapeEnum: str = None) -> None: ...
-    
+
     def limitTolerance(self, shape: TopoShape, tmin: float, tmax: float = 0, ShapeEnum: str = None) -> None:
         """
         limitTolerance(shape, tmin, [tmax=0, ShapeEnum=SHAPE])
@@ -31,10 +31,10 @@ class ShapeFix_ShapeTolerance(PyObjectBase):
 
     @overload
     def setTolerance(self, shape: TopoShape, precision: float) -> None: ...
-    
+
     @overload
     def setTolerance(self, shape: TopoShape, precision: float, ShapeEnum: str = None) -> None: ...
-    
+
     def setTolerance(self, shape: TopoShape, precision: float, ShapeEnum: str = None) -> None:
         """
         setTolerance(shape, precision, [ShapeEnum=SHAPE])
