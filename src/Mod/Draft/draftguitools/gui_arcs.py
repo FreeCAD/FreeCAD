@@ -581,12 +581,17 @@ class Arc_3Points(gui_base.GuiCommandBase):
             # proceed with creating the final object.
             # Draw a simple `Part::Feature` if the parameter is `True`.
             Gui.addModule("Draft")
+            Gui.addModule("WorkingPlane")
             _cmd = "Draft.make_arc_3points(["
             _cmd += "FreeCAD." + str(self.points[0])
             _cmd += ", FreeCAD." + str(self.points[1])
             _cmd += ", FreeCAD." + str(self.points[2])
-            _cmd += "], primitive=" + str(params.get_param("UsePartPrimitives")) + ")"
-            _cmd_list = ["circle = " + _cmd,
+            _cmd += "]"
+            _cmd += ", placement=pl"
+            _cmd += ", primitive=" + str(params.get_param("UsePartPrimitives"))
+            _cmd += ")"
+            _cmd_list = ["pl = WorkingPlane.get_working_plane().get_placement()",
+                         "circle = " + _cmd,
                          "Draft.autogroup(circle)"]
             if params.get_param("UsePartPrimitives"):
                 _cmd_list.append("Draft.select(circle)")
