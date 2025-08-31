@@ -296,6 +296,13 @@ class GeometryElementsSelection(QtGui.QWidget):
         # button
         self.pushButton_Add = QtGui.QPushButton(self.tr("Add"))
         self.pushButton_Remove = QtGui.QPushButton(self.tr("Remove"))
+        # label
+        self.lb_help = QtGui.QLabel()
+        self.lb_help.setWordWrap(True)
+        selectHelpText = self.tr(
+            "Select geometry of type: {}{}{}"
+        ).format("<b>", self.sel_elem_text, "</b>")
+        self.lb_help.setText(selectHelpText)
         # list
         self.list_References = QtGui.QListWidget()
         # radiobutton down the list
@@ -315,6 +322,7 @@ class GeometryElementsSelection(QtGui.QWidget):
         # main layout
         mainLayout = QtGui.QVBoxLayout()
         mainLayout.addLayout(subLayout)
+        mainLayout.addWidget(self.lb_help)
         mainLayout.addWidget(self.list_References)
 
         tip1 = self.tr(
