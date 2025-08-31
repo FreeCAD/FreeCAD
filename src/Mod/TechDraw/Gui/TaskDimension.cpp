@@ -146,6 +146,17 @@ TaskDimension::TaskDimension(QGIViewDimension *parent, ViewProviderDimension *di
     connect(ui->cbArbitraryTolerances, &QCheckBox::stateChanged, this, &TaskDimension::onArbitraryTolerancesChanged);
 #endif
 
+    // Reference
+    std::regex refRegex("\\(%\\.([0-9]+)([fFrRgGwWeE])\\)");
+    if (std::regex_search(currentFormat, refRegex)) {
+        ui->cbReference->setChecked(true);
+    } else {
+        ui->cbReference->setChecked(false);
+    }
+
+    connect(ui->cbReference, &QCheckBox::stateChanged, this, &TaskDimension::onReferenceChanged);
+
+
     // Display Style
     if (dimensionVP) {
         ui->cbArrowheads->setChecked(dimensionVP->FlipArrowheads.getValue());
@@ -257,6 +268,32 @@ void TaskDimension::onNumDecChanged(int decimals)
     ui->leFormatSpecifier->setText(QString::fromStdString(newFormatSpec));
     ui->leFormatSpecifier->blockSignals(false);
 
+    onFormatSpecifierChanged();
+}
+
+void TaskDimension::onReferenceChanged()
+{
+    std::string currentFormat = ui->leFormatSpecifier->text().toUtf8().constData();
+    std::string newFormat = currentFormat;
+    bool isChecked = ui->cbReference->isChecked();
+
+    // Find a format specifier
+    std::regex specRegex("%\\.([0-9]+)([fFrRgGwWeE])");
+    // Find a reference format specifier
+    std::regex refRegex("\\((%\\.([0-9]+)([fFrRgGwWeE]))\\)");
+    
+    if (isChecked) {
+        newFormat = std::regex_replace(currentFormat, specRegex, "($&)");
+
+    } else {
+        newFormat = std::regex_replace(currentFormat, refRegex, "$1");
+    }
+
+    // Update UI
+    ui->leFormatSpecifier->blockSignals(true);
+    ui->leFormatSpecifier->setText(QString::fromStdString(newFormat));
+    ui->leFormatSpecifier->blockSignals(false);
+    
     onFormatSpecifierChanged();
 }
 

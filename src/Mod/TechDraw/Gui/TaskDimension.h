@@ -70,6 +70,7 @@ private Q_SLOTS:
     void onExtUseDefaultClicked();
     void onExtUseSelectionClicked();
     void onNumDecChanged(int decimals);
+    void onReferenceChanged();
 
 private:
     std::unique_ptr<Ui_TaskDimension> ui;
