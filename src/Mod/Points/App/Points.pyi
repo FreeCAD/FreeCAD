@@ -5,7 +5,6 @@ from Data import object
 
 @export(
     Father="ComplexGeoDataPy",
-    Name="PointsPy",
     Twin="PointKernel",
     TwinPointer="PointKernel",
     Include="Mod/Points/App/Points.h",
@@ -14,7 +13,7 @@ from Data import object
     FatherNamespace="Data",
     Constructor=True,
 )
-class PointsPy(object):
+class Points(object):
     """
     Points() -- Create an empty points object.
 
