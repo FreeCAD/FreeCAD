@@ -2082,6 +2082,9 @@ void PropertyLinkSub::getLinks(std::vector<App::DocumentObject*>& objs,
 {
     if (all || _pcScope != LinkScope::Hidden) {
         if (_pcLinkSub && _pcLinkSub->isAttachedToDocument()) {
+            // we use to run this method everytime the program needed to access the sub-elements in
+            // a property link, but it caused multiple issues (#23441 and #23402) so it has been
+            // commented out.
             // updateElementReferences(_pcLinkSub);
             objs.push_back(_pcLinkSub);
             if (subs) {
@@ -3154,6 +3157,9 @@ void PropertyLinkSubList::getLinks(std::vector<App::DocumentObject*>& objs,
         objs.reserve(objs.size() + _lValueList.size());
         for (auto obj : _lValueList) {
             if (obj && obj->isAttachedToDocument()) {
+                // we use to run this method everytime the program needed to access the sub-elements in
+                // a property link, but it caused multiple issues (#23441 and #23402) so it has been
+                // commented out.
                 // updateElementReferences(obj);
                 objs.push_back(obj);
             }
@@ -4105,8 +4111,6 @@ void PropertyXLink::onContainerRestored()
     for (size_t i = 0; i < _SubList.size(); ++i) {
         _registerElementReference(_pcLink, _SubList[i], _ShadowSubList[i]);
     }
-
-    // updateElementReferences(_pcLink);
 }
 
 void PropertyXLink::updateElementReference(DocumentObject* feature, bool reverse, bool notify)
@@ -4659,6 +4663,9 @@ void PropertyXLink::getLinks(std::vector<App::DocumentObject*>& objs,
                              bool newStyle) const
 {
     if ((all || _pcScope != LinkScope::Hidden) && _pcLink && _pcLink->isAttachedToDocument()) {
+        // we use to run this method everytime the program needed to access the sub-elements in
+        // a property link, but it caused multiple issues (#23441 and #23402) so it has been
+        // commented out.
         // updateElementReferences(_pcLink, false);
         objs.push_back(_pcLink);
         if (subs && _SubList.size() == _ShadowSubList.size()) {
@@ -5394,6 +5401,9 @@ void PropertyXLinkSubList::getLinks(std::vector<App::DocumentObject*>& objs,
         for (auto& l : _Links) {
             auto obj = l.getValue();
             if (obj && obj->isAttachedToDocument()) {
+                // we use to run this method everytime the program needed to access the sub-elements in
+                // a property link, but it caused multiple issues (#23441 and #23402) so it has been
+                // commented out.
                 // updateElementReferences(obj);
 
                 auto subnames = l.getSubValues(newStyle);
