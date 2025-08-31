@@ -14,4 +14,3 @@ class ViewProviderPartExt(ViewProviderGeometryObject):
     Licence: LGPL
     """
     ...
-    

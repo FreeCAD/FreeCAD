@@ -958,7 +958,7 @@ class TopoShape(ComplexGeoData):
         """
         Returns a SubElement
         getElement(elementName, [silent = False]) -> Face | Edge | Vertex
-        elementName:  SubElement name - i.e. 'Edge1', 'Face3' etc. 
+        elementName:  SubElement name - i.e. 'Edge1', 'Face3' etc.
                       Accepts TNP mitigation mapped names as well
         silent:  True to suppress the exception throw if the shape isn't found.
         """

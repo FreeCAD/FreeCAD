@@ -349,7 +349,7 @@ void ThicknessWidget::setGizmoPositions()
         DraggerPlacementProps props = getDraggerPlacementFromEdgeAndFace(edges[0], face);
 
         // The part thickness operation by default goes creates towards outside
-        // so -props.dir is taken 
+        // so -props.dir is taken
         linearGizmo->Gizmo::setDraggerPlacement(props.position, -props.dir);
 
         gizmoContainer->visible = true;
