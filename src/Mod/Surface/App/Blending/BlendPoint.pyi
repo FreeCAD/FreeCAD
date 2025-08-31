@@ -4,18 +4,12 @@ from Base.BaseClass import PyObjectBase
 from Base.Metadata import constmethod, export
 
 @export(
-    Father="PyObjectBase",
-    Name="BlendPointPy",
-    Twin="BlendPoint",
-    TwinPointer="BlendPoint",
     Include="Mod/Surface/App/Blending/BlendPoint.h",
     Namespace="Surface",
-    FatherInclude="Base/BaseClassPy.h",
-    FatherNamespace="Base",
     Constructor=True,
     Delete=True,
 )
-class BlendPointPy(PyObjectBase):
+class BlendPoint(PyObjectBase):
     """
     Create BlendPoint from a point and some derivatives.
     myBlendPoint = BlendPoint([Point, D1, D2, ..., DN])

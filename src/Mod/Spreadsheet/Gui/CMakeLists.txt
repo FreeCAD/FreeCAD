@@ -3,11 +3,11 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-generate_from_py(ViewProviderSpreadsheetPy)
+generate_from_py(ViewProviderSpreadsheet)
 
 # The XML files
 set(SpreadsheetGui_XML_SRCS
-    ViewProviderSpreadsheetPy.pyi
+    ViewProviderSpreadsheet.pyi
 )
 
 set(SpreadsheetGui_LIBS
