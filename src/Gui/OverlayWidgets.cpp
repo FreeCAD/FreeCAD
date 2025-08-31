@@ -2008,8 +2008,39 @@ OverlayTitleBar::OverlayTitleBar(QWidget * parent)
         // fallback to font-metrics-based height
         titleH = fontMetrics().ascent() + fontMetrics().descent() + 8;
     }
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    setFixedHeight(titleH);
+    // Decide orientation based on dock area. If the associated dock is
+    // mounted at Top/Bottom we want a vertical title strip that expands
+    // vertically; otherwise use a horizontal titlebar that expands
+    // horizontally. Try to detect the dock area via the parent chain or
+    // the OverlayTabWidget owner.
+    Qt::DockWidgetArea area = Qt::NoDockWidgetArea;
+    QDockWidget *dock = qobject_cast<QDockWidget*>(parent);
+    QWidget *w = parent;
+    while (!dock && w) { dock = qobject_cast<QDockWidget*>(w); w = w->parentWidget(); }
+    if (!dock) {
+        if (auto tab = qobject_cast<OverlayTabWidget*>(parent))
+            area = tab->getDockArea();
+    } else {
+        // If the dock is floating, treat it as floating (horizontal
+        // titlebar) instead of inheriting the last dock area so the
+        // titlebar will stretch across the floating window.
+        if (dock->isFloating()) {
+            area = Qt::NoDockWidgetArea;
+        } else if (getMainWindow()) {
+            area = getMainWindow()->dockWidgetArea(dock);
+        }
+    }
+
+    const int SIDE_STRIP_MIN = 28;
+    if (area == Qt::TopDockWidgetArea || area == Qt::BottomDockWidgetArea) {
+        // Vertical strip: fixed small width, expandable vertically
+        setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+        setMinimumWidth(SIDE_STRIP_MIN);
+    } else {
+        // Horizontal bar: expandable horizontally, fixed height
+        setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        setMinimumHeight(titleH);
+    }
 }
 
 void OverlayTitleBar::setMinimal(bool minimal)
