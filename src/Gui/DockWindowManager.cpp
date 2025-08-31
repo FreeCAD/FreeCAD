@@ -248,9 +248,7 @@ QDockWidget* DockWindowManager::addDockWindow(const char* name, QWidget* widget,
     MainWindow* mw = getMainWindow();
     dw = new QDockWidget(mw);
 
-    if (d->overlayManager) {
-        d->overlayManager->setupOverlayTitleBar(dw);
-    }
+
 
     // Note: By default all dock widgets are hidden but the user can show them manually in the view menu.
     // First, hide immediately the dock widget to avoid flickering, after setting up the dock widgets

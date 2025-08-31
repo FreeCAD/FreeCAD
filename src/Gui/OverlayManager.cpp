@@ -470,7 +470,6 @@ public:
                     QApplication::processEvents();
 
                     // Ensure our overlay titlebar is installed for the docked state.
-                    //setupTitleBar(dock);
                 }
 
                 return false;
@@ -931,31 +930,6 @@ public:
         refresh();
     }
 
-    void setupTitleBar(QDockWidget *dock)
-    {
-        // Install our custom OverlayTitleBar for all dock widgets, whether
-        // they are part of the overlay tab sets or standalone. For floating
-        // docks we will put the titlebar into "minimal" mode and set the
-        // window flags so the custom bar is visible; for docked widgets we
-        // ensure a proper overlay titlebar is attached.
-        if (dock->titleBarWidget())
-            dock->titleBarWidget()->deleteLater();
-
-        QWidget *tb = createTitleBar(dock);
-        dock->setTitleBarWidget(tb);
-
-        if (auto ot = qobject_cast<OverlayTitleBar*>(tb)) {
-            ot->setMinimal(dock->isFloating());
-        }
-
-        if (dock->isFloating()) {
-            dock->setWindowFlags(dock->windowFlags() | Qt::FramelessWindowHint);
-            dock->setAttribute(Qt::WA_TranslucentBackground, true);
-        } else {
-            dock->setWindowFlags(dock->windowFlags() & ~Qt::FramelessWindowHint);
-            dock->setAttribute(Qt::WA_TranslucentBackground, false);
-        }
-    }
 
     void onAction(QAction *action) {
         if(action == &_actOverlay) {
@@ -1651,7 +1625,6 @@ QWidget *createTitleBar(QWidget *parent)
 void OverlayManager::setupDockWidget(QDockWidget *dw, int dockArea)
 {
     (void)dockArea;
-    //d->setupTitleBar(dw);
 }
 
 void OverlayManager::cleanupDockWidget(QDockWidget *dw)
@@ -1715,8 +1688,6 @@ void OverlayManager::onDockFeaturesChange(QDockWidget::DockWidgetFeatures featur
         titleBarWidget->setTitleItem(titleItem);
         dw->setUpdatesEnabled(true);
         titleBarWidget->update();
-    } else {
-        //setupTitleBar(dw);
     }
 }
 
@@ -2169,10 +2140,6 @@ void OverlayManager::restore()
                 this, &OverlayManager::onTaskViewUpdate);
 }
 
-void OverlayManager::setupOverlayTitleBar(QDockWidget *dock)
-{
-    //d->setupTitleBar(dock);
-}
 
 
 void OverlayManager::onFocusChanged(QWidget *old, QWidget *now)

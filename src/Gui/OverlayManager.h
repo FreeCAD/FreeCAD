@@ -81,11 +81,9 @@ public:
     void refresh(QWidget *widget=nullptr, bool refreshStyle=false);
 
     /// Setup overlay title bar for a QDockWidget
-    void setupOverlayTitleBar(QDockWidget *);
     QList<QAction*> getActionsForDock(QDockWidget *dock) const;
 
     // Backwards-compatible wrappers (deprecated)
-    inline void setupTitleBar(QDockWidget *dw) { setupOverlayTitleBar(dw); }
     inline QList<QAction*> actionsForDock(QDockWidget *dock) const { return getActionsForDock(dock); }
 
     /// Overlay mode

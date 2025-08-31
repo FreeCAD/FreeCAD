@@ -1732,11 +1732,9 @@ void OverlayTabWidget::removeWidget(QDockWidget *dock, QDockWidget *lastDock)
             dock->setUpdatesEnabled(true);
             titleBarWidget->update();
             } else {
-            OverlayManager::instance()->setupOverlayTitleBar(dock);
             dock->setUpdatesEnabled(true);
         }
     } else {
-        OverlayManager::instance()->setupOverlayTitleBar(dock);
     }
 
     dock->setFeatures(dock->features() | QDockWidget::DockWidgetFloatable);
