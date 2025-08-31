@@ -29,11 +29,6 @@
       <translation>Si està marcat, Característiques mostrarà els seus fills en la llista d'arbre</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="102"/>
-      <source>Use ViewProvider in Tree View</source>
-      <translation>Utilitzar ViewProvider en Vista d'Arbre</translation>
-    </message>
-    <message>
       <location filename="../ui/openscadprefs-base.ui" line="119"/>
       <source>If this is checked, Multmatrix Object will be Parametric</source>
       <translation>Si està marcada, l'objecte Multmatrix serà paramètric</translation>
@@ -114,6 +109,11 @@
       <location filename="../ui/openscadprefs-base.ui" line="74"/>
       <source>OpenSCAD Import</source>
       <translation type="unfinished">OpenSCAD Import</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="102"/>
+      <source>Use ViewProviders in Tree View</source>
+      <translation type="unfinished">Use ViewProviders in Tree View</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="182"/>
@@ -288,12 +288,12 @@
       <translation>Suma Minkowski</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="653"/>
+      <location filename="../../OpenSCADUtils.py" line="649"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
       <translation>El fitxer OpenSCAD conté formes 2D i 3D. Això no és compatible amb aquest importador, totes les formes han de tenir la mateixa dimensionalitat.</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="664"/>
+      <location filename="../../OpenSCADUtils.py" line="660"/>
       <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
       <translation>Error: o totes les formes han de ser 2D o totes les formes han de ser 3D</translation>
     </message>
@@ -319,8 +319,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="103"/>
-      <source>Removes fusion and applies placement to children, and color randomly</source>
-      <translation type="unfinished">Removes fusion and applies placement to children, and color randomly</translation>
+      <source>Explodes a fusion or compound and applies random colors</source>
+      <translation type="unfinished">Explodes a fusion or compound and applies random colors</translation>
     </message>
   </context>
   <context>
@@ -358,8 +358,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="269"/>
-      <source>Creates a feature that allows increasing the tolerance</source>
-      <translation type="unfinished">Creates a feature that allows increasing the tolerance</translation>
+      <source>Creates a feature to increase the tolerance</source>
+      <translation type="unfinished">Creates a feature to increase the tolerance</translation>
     </message>
   </context>
   <context>
@@ -371,8 +371,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="286"/>
-      <source>Expands all placements downwards in the tree view</source>
-      <translation type="unfinished">Expands all placements downwards in the tree view</translation>
+      <source>Expands all placements downwards in the Tree View</source>
+      <translation type="unfinished">Expands all placements downwards in the Tree View</translation>
     </message>
   </context>
   <context>
@@ -384,8 +384,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="307"/>
-      <source>Replaces an object in the tree view. Select old, new, and parent object</source>
-      <translation type="unfinished">Replaces an object in the tree view. Select old, new, and parent object</translation>
+      <source>Replaces an object in the Tree View</source>
+      <translation type="unfinished">Replaces an object in the Tree View</translation>
     </message>
   </context>
   <context>
@@ -397,8 +397,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="320"/>
-      <source>Removes the selected objects and all children that are not referenced from other objects</source>
-      <translation>Elimina els objectes seleccionats i tots els fills que no facin referència a altres objectes</translation>
+      <source>Removes the selected objects and all children that are not referenced by other objects</source>
+      <translation type="unfinished">Removes the selected objects and all children that are not referenced by other objects</translation>
     </message>
   </context>
   <context>
@@ -483,8 +483,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="533"/>
-      <source>Adds an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
-      <translation type="unfinished">Adds an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</translation>
+      <source>Adds an OpenSCAD element based on entered OpenSCAD code using the OpenSCAD binary</source>
+      <translation type="unfinished">Adds an OpenSCAD element based on entered OpenSCAD code using the OpenSCAD binary</translation>
     </message>
   </context>
   <context>
@@ -496,8 +496,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="548"/>
-      <source>Exports objects as meshes and use OpenSCAD to perform a boolean operation</source>
-      <translation type="unfinished">Exports objects as meshes and use OpenSCAD to perform a boolean operation</translation>
+      <source>Performs a boolean operation using the OpenSCAD binary</source>
+      <translation type="unfinished">Performs a boolean operation using the OpenSCAD binary</translation>
     </message>
   </context>
   <context>

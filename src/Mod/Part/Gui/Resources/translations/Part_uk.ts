@@ -856,12 +856,6 @@
       <translation>Концентричний</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="89"/>
-      <source>Align XY plane to osculating circle of an edge. Optional vertex link defines where.</source>
-      <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align XY plane to osculating circle of an edge. Optional vertex link defines where.</translation>
-    </message>
-    <message>
       <location filename="../../AttacherTexts.cpp" line="91"/>
       <source>Revolution Section</source>
       <comment>Attachment3D mode caption</comment>
@@ -874,40 +868,46 @@
       <translation type="unfinished">Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="94"/>
-      <source>XY plane by 3 points</source>
-      <comment>Attachment3D mode caption</comment>
-      <translation>Площина XY по 3 точкам</translation>
-    </message>
-    <message>
-      <location filename="../../AttacherTexts.cpp" line="95"/>
-      <source>Align XY plane to pass through three vertices.</source>
-      <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align XY plane to pass through three vertices.</translation>
-    </message>
-    <message>
-      <location filename="../../AttacherTexts.cpp" line="97"/>
-      <source>XZ plane by 3 points</source>
-      <comment>Attachment3D mode caption</comment>
-      <translation>Площина XZ по 3 точкам</translation>
-    </message>
-    <message>
-      <location filename="../../AttacherTexts.cpp" line="98"/>
-      <source>Align XZ plane to pass through 3 points; X axis will pass through two first points.</source>
-      <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align XZ plane to pass through 3 points; X axis will pass through two first points.</translation>
-    </message>
-    <message>
       <location filename="../../AttacherTexts.cpp" line="100"/>
       <source>Folding</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Згинання</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="101"/>
-      <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.</source>
+      <location filename="../../AttacherTexts.cpp" line="89"/>
+      <source>Align XY-plane to osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Спеціальний режим для складання багатогранників. Виберіть 4 ребра у порядку: ребро, що згинається, лінія згину, інша лінія згину, інше ребро, що згинається. Площина XY буде вирівняна по лінії згину першої грані.</translation>
+      <translation type="unfinished">Align XY-plane to osculating circle of an edge. Optional vertex link defines where.</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="94"/>
+      <source>XY-plane by 3 points</source>
+      <comment>Attachment3D mode caption</comment>
+      <translation type="unfinished">XY-plane by 3 points</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="95"/>
+      <source>Align XY-plane to pass through three vertices.</source>
+      <comment>Attachment3D mode tooltip</comment>
+      <translation type="unfinished">Align XY-plane to pass through three vertices.</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="97"/>
+      <source>XZ-plane by 3 points</source>
+      <comment>Attachment3D mode caption</comment>
+      <translation type="unfinished">XZ-plane by 3 points</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="98"/>
+      <source>Align XZ-plane to pass through 3 points; X axis will pass through two first points.</source>
+      <comment>Attachment3D mode tooltip</comment>
+      <translation type="unfinished">Align XZ-plane to pass through 3 points; X axis will pass through two first points.</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="101"/>
+      <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY-plane will be aligned to folding the first edge.</source>
+      <comment>Attachment3D mode tooltip</comment>
+      <translation type="unfinished">Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY-plane will be aligned to folding the first edge.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="103"/>
@@ -2142,8 +2142,8 @@ of the projection.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1070"/>
-      <source>Part Import Curve Net</source>
-      <translation>Імпорт в Деталь Мережі Кривої</translation>
+      <source>Import Curve Net</source>
+      <translation type="unfinished">Import Curve Net</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1186"/>
@@ -2197,8 +2197,8 @@ of the projection.</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="70"/>
-      <source>Create Part Cylinder</source>
-      <translation>Створити Деталь Циліндр</translation>
+      <source>Create Cylinder</source>
+      <translation type="unfinished">Create Cylinder</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="180"/>
@@ -2331,18 +2331,39 @@ of the projection.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="235"/>
-      <source>Around x-axis</source>
-      <translation type="unfinished">Around x-axis</translation>
+      <source>Around X-axis</source>
+      <translation type="unfinished">Around X-axis</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="254"/>
+      <source>Rotation around the X-axis
+Note: The placement is expressed in local space of object being attached.</source>
+      <translation type="unfinished">Rotation around the X-axis
+Note: The placement is expressed in local space of object being attached.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="280"/>
-      <source>Around y-axis</source>
-      <translation type="unfinished">Around y-axis</translation>
+      <source>Around Y-axis</source>
+      <translation type="unfinished">Around Y-axis</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="299"/>
+      <source>Rotation around the Y-axis
+Note: The placement is expressed in local space of object being attached.</source>
+      <translation type="unfinished">Rotation around the Y-axis
+Note: The placement is expressed in local space of object being attached.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="325"/>
-      <source>Around z-axis</source>
-      <translation type="unfinished">Around z-axis</translation>
+      <source>Around Z-axis</source>
+      <translation type="unfinished">Around Z-axis</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="344"/>
+      <source>Rotation around the Z-axis
+Note: The placement is expressed in local space of object being attached.</source>
+      <translation type="unfinished">Rotation around the Z-axis
+Note: The placement is expressed in local space of object being attached.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="158"/>
@@ -2350,30 +2371,6 @@ of the projection.</translation>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="222"/>
       <source>Note: The placement is expressed in local space of object being attached.</source>
       <translation>Примітка: Розміщення відноситься до локальної системи
-координат приєднаного об’єкта.</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="254"/>
-      <source>Rotation around the x-axis
-Note: The placement is expressed in local space of object being attached.</source>
-      <translation>Обертання навколо осі X. 
-Примітка: Розміщення відноситься до локальної системи
-координат приєднаного об’єкта.</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="299"/>
-      <source>Rotation around the y-axis
-Note: The placement is expressed in local space of object being attached.</source>
-      <translation>Обертання навколо осі Y. 
-Примітка: Розміщення відноситься до локальної системи
-координат приєднаного об’єкта.</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="344"/>
-      <source>Rotation around the z-axis
-Note: The placement is expressed in local space of object being attached.</source>
-      <translation>Обертання навколо осі Z. 
-Примітка: Розміщення відноситься до локальної системи
 координат приєднаного об’єкта.</translation>
     </message>
     <message>
@@ -2433,6 +2430,11 @@ Note: The placement is expressed in local space of object being attached.</sourc
       <location filename="../../CrossSections.ui" line="92"/>
       <source>Count</source>
       <translation>Кількість</translation>
+    </message>
+    <message>
+      <location filename="../../CrossSections.cpp" line="308"/>
+      <source>Cannot compute cross-sections</source>
+      <translation type="unfinished">Cannot compute cross-sections</translation>
     </message>
   </context>
   <context>
@@ -4038,7 +4040,7 @@ Check one or more edge entities first.</translation>
       <translation>Автоматично уточнювати модель після булевої операції</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="89"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="105"/>
       <source>Add name of base object</source>
       <translation>Додати назву основного обʼєкта</translation>
     </message>
@@ -4053,72 +4055,62 @@ Check one or more edge entities first.</translation>
       <translation type="unfinished">Automatically refine model after applying operations</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="83"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="99"/>
       <source>Object Naming</source>
       <translation type="unfinished">Object Naming</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="111"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="127"/>
       <source>Features Settings</source>
       <translation type="unfinished">Features Settings</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="119"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="135"/>
       <source>Default profile type for holes</source>
       <translation type="unfinished">Default profile type for holes</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="136"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="152"/>
       <source>Circles and arcs</source>
       <translation type="unfinished">Circles and arcs</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="141"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="157"/>
       <source>Points, circles and arcs</source>
       <translation type="unfinished">Points, circles and arcs</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="146"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="162"/>
       <source>Points</source>
       <translation>Точки</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="156"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="172"/>
       <source>Switch to task panel when entering Part Design workbench</source>
       <translation type="unfinished">Switch to task panel when entering Part Design workbench</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="159"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="175"/>
       <source>Automatically switch to the task panel when the Part Design workbench is activated</source>
       <translation type="unfinished">Automatically switch to the task panel when the Part Design workbench is activated</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="181"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="197"/>
       <source>Preview</source>
       <translation>Попередній перегляд</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="190"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="206"/>
       <source>Show final result by default when editing feature</source>
       <translation type="unfinished">Show final result by default when editing feature</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="203"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="219"/>
       <source>Show transparent preview overlay by default when editing feature</source>
       <translation type="unfinished">Show transparent preview overlay by default when editing feature</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="225"/>
-      <source>Experimental</source>
-      <translation type="unfinished">Experimental</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="234"/>
-      <source>These settings are experimental and may result in decreased stability, problems and undefined behaviors</source>
-      <translation type="unfinished">These settings are experimental and may result in decreased stability, problems and undefined behaviors</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="244"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="74"/>
       <source>Allow multiple solids in Part Design bodies by default</source>
       <translation type="unfinished">Allow multiple solids in Part Design bodies by default</translation>
     </message>
@@ -4867,38 +4859,38 @@ of the object being attached</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="244"/>
-      <source>Around x-axis</source>
-      <translation type="unfinished">Around x-axis</translation>
+      <source>Around X-axis</source>
+      <translation type="unfinished">Around X-axis</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="257"/>
-      <source>Rotation around the local x-axis. The offset is expressed in the local coordinate system
+      <source>Rotation around the local X-axis. The offset is expressed in the local coordinate system
 of the object being attached.</source>
-      <translation type="unfinished">Rotation around the local x-axis. The offset is expressed in the local coordinate system
+      <translation type="unfinished">Rotation around the local X-axis. The offset is expressed in the local coordinate system
 of the object being attached.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="283"/>
-      <source>Around y-axis</source>
-      <translation type="unfinished">Around y-axis</translation>
+      <source>Around Y-axis</source>
+      <translation type="unfinished">Around Y-axis</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="296"/>
-      <source>Rotation around the local y-axis. The offset is expressed in the local coordinate system
+      <source>Rotation around the local Y-axis. The offset is expressed in the local coordinate system
 of the object being attached.</source>
-      <translation type="unfinished">Rotation around the local y-axis. The offset is expressed in the local coordinate system
+      <translation type="unfinished">Rotation around the local Y-axis. The offset is expressed in the local coordinate system
 of the object being attached.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="322"/>
-      <source>Around z-axis</source>
-      <translation type="unfinished">Around z-axis</translation>
+      <source>Around Z-axis</source>
+      <translation type="unfinished">Around Z-axis</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="335"/>
-      <source>Rotation around the local z-axis. The offset is expressed in the local coordinate system
+      <source>Rotation around the local Z-axis. The offset is expressed in the local coordinate system
 of the object being attached.</source>
-      <translation type="unfinished">Rotation around the local z-axis. The offset is expressed in the local coordinate system
+      <translation type="unfinished">Rotation around the local Z-axis. The offset is expressed in the local coordinate system
 of the object being attached.</translation>
     </message>
     <message>
@@ -5551,20 +5543,20 @@ in the 3D view for the sweep path.</translation>
       <translation>Редагувати %1</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="247"/>
+      <location filename="../../AppPartGui.cpp" line="248"/>
       <source>Part and Part Design workbench</source>
       <translation type="unfinished">Part and Part Design workbench</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="248"/>
       <location filename="../../AppPartGui.cpp" line="249"/>
       <location filename="../../AppPartGui.cpp" line="250"/>
+      <location filename="../../AppPartGui.cpp" line="251"/>
       <source>Part/Part Design</source>
       <translation type="unfinished">Part/Part Design</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="251"/>
       <location filename="../../AppPartGui.cpp" line="252"/>
+      <location filename="../../AppPartGui.cpp" line="253"/>
       <source>Import-Export</source>
       <translation>Імпорт-експорт</translation>
     </message>
@@ -6011,13 +6003,13 @@ Continue?</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
-      <source>Part tools</source>
-      <translation>Інструменти деталі</translation>
+      <source>Part Tools</source>
+      <translation type="unfinished">Part Tools</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
-      <source>Boolean</source>
-      <translation>Логічне</translation>
+      <source>Boolean Tools</source>
+      <translation type="unfinished">Boolean Tools</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
@@ -6574,8 +6566,8 @@ Overlapping volumes of the shapes will be removed.</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="67"/>
-      <source>Supports making planar faces with holes with islands.</source>
-      <translation type="unfinished">Supports making planar faces with holes with islands.</translation>
+      <source>Supports making planar faces with holes with islands in them</source>
+      <translation type="unfinished">Supports making planar faces with holes with islands in them</translation>
     </message>
   </context>
   <context>
@@ -6587,19 +6579,19 @@ Overlapping volumes of the shapes will be removed.</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
-      <source>Supports making planar faces with holes, but no islands inside holes.</source>
-      <translation type="unfinished">Supports making planar faces with holes, but no islands inside holes.</translation>
+      <source>Supports making planar faces with holes, but no islands inside holes</source>
+      <translation type="unfinished">Supports making planar faces with holes, but no islands inside holes</translation>
     </message>
   </context>
   <context>
     <name>Part::FaceMakerExtrusion</name>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="393"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="395"/>
       <source>Part Extrude facemaker</source>
       <translation type="unfinished">Part Extrude facemaker</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="398"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="400"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation type="unfinished">Supports making faces with holes, does not support nesting.</translation>
     </message>
@@ -6967,8 +6959,8 @@ Overlapping volumes of the shapes will be removed.</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="374"/>
-      <source>Supports making planar faces with holes and holes as faces.</source>
-      <translation type="unfinished">Supports making planar faces with holes and holes as faces.</translation>
+      <source>Supports making planar faces with holes and holes as faces</source>
+      <translation type="unfinished">Supports making planar faces with holes and holes as faces</translation>
     </message>
   </context>
   <context>
@@ -7068,7 +7060,7 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>PartDesignGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="233"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="223"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation type="unfinished">Failure while rendering preview: %1. That usually indicates an error with model.</translation>
     </message>

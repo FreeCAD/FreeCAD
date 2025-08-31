@@ -37,7 +37,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="14"/>
       <source>Layers Manager</source>
-      <translation type="unfinished">Layers Manager</translation>
+      <translation>图层管理器</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="43"/>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="50"/>
       <source>Toggle Visibility</source>
-      <translation type="unfinished">Toggle Visibility</translation>
+      <translation>切换可见性</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="57"/>
@@ -103,47 +103,35 @@
       <translation> px</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="352"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="374"/>
-      <source>The type of arrows or markers to use for dimensions and labels</source>
-      <translation>用于尺寸和标签的箭头/标记的类型</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="406"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="416"/>
-      <source>The size of the arrows or markers in system units</source>
-      <translation>系统单元中箭头或标记的大小</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="426"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="436"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="510"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="520"/>
       <source>The color of lines and arrows</source>
       <translation>线和箭头的颜色</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="429"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="513"/>
       <source>Line and arrow color</source>
       <translation>线和箭头颜色</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="518"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="528"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="602"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="612"/>
       <source>The distance the dimension line is additionally extended</source>
       <translation>尺寸线额外扩展的距离</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="521"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="605"/>
       <source>Dimension line overshoot</source>
       <translation>尺寸线过度</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="541"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="625"/>
       <source>Extension line length</source>
       <translation>延长线长度</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="558"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="568"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="642"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="652"/>
       <source>The distance the extension lines are additionally extended beyond the dimension line</source>
       <translation>扩展线延伸到尺寸线之外的距离</translation>
     </message>
@@ -170,7 +158,7 @@
       <translation>文本颜色</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="446"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="530"/>
       <source>Units</source>
       <translation>单位</translation>
     </message>
@@ -183,17 +171,17 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
       <source>Style Name</source>
-      <translation type="unfinished">Style Name</translation>
+      <translation>样式名称</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
       <source>The name of the style. Existing style names can be edited.</source>
-      <translation type="unfinished">The name of the style. Existing style names can be edited.</translation>
+      <translation>样式的名称。可以编辑现有样式名称。</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="50"/>
       <source>Add new…</source>
-      <translation type="unfinished">Add new…</translation>
+      <translation>添加…</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="173"/>
@@ -201,45 +189,95 @@
       <translation>缩放因子</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="452"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="352"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="374"/>
+      <source>The type of the starting arrows or markers to use for dimensions and labels</source>
+      <translation type="unfinished">The type of the starting arrows or markers to use for dimensions and labels</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="355"/>
+      <source>Start arrow type</source>
+      <translation type="unfinished">Start arrow type</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="403"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="482"/>
+      <source>None</source>
+      <translation>无</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="411"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="421"/>
+      <source>The size of the starting arrows or markers in system units</source>
+      <translation type="unfinished">The size of the starting arrows or markers in system units</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="414"/>
+      <source>Start arrow size</source>
+      <translation type="unfinished">Start arrow size</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="431"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="453"/>
+      <source>The type of the ending arrows or markers to use for dimensions and labels</source>
+      <translation type="unfinished">The type of the ending arrows or markers to use for dimensions and labels</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="434"/>
+      <source>End arrow type</source>
+      <translation type="unfinished">End arrow type</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="490"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="500"/>
+      <source>The size of the ending arrows or markers in system units</source>
+      <translation type="unfinished">The size of the ending arrows or markers in system units</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="493"/>
+      <source>End arrow size</source>
+      <translation type="unfinished">End arrow size</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="536"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
       <translation>如果选中，它将显示尺寸值旁边的单位</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="455"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="539"/>
       <source>Show unit</source>
       <translation>显示单位</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="475"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="485"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="559"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="569"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
       <translation>指定一个有效的长度单位，如mm, m, ft, 以强制显示该单位的尺寸值</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="478"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="562"/>
       <source>Unit override</source>
       <translation>覆盖单位</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="492"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="502"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="576"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="586"/>
       <source>The number of decimals to show for dimension values</source>
       <translation>尺寸值显示的小数点数</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="512"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="596"/>
       <source>Dimension Details</source>
-      <translation type="unfinished">Dimension Details</translation>
+      <translation>尺寸详情</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="578"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="588"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="662"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="672"/>
       <source>The distance between the dimension text and the dimension line</source>
       <translation>标注线和标注文本之间的距离</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="581"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="665"/>
       <source>Text spacing</source>
       <translation>文字间距</translation>
     </message>
@@ -261,13 +299,13 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="300"/>
       <source>Lines and Arrows</source>
-      <translation type="unfinished">Lines and Arrows</translation>
+      <translation>线条与箭头</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="306"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="316"/>
       <source>Displays the dimension line</source>
-      <translation type="unfinished">Displays the dimension line</translation>
+      <translation>显示尺寸线</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="309"/>
@@ -280,58 +318,53 @@
       <translation>线宽</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="355"/>
-      <source>Arrow type</source>
-      <translation>箭头类型</translation>
-    </message>
-    <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="378"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="457"/>
       <source>Dot</source>
       <translation>点</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="383"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="462"/>
       <source>Circle</source>
       <translation>圆</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="388"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="467"/>
       <source>Arrow</source>
       <translation>箭头</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="393"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="472"/>
       <source>Tick</source>
       <translation>刻度</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="398"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="477"/>
       <source>Tick-2</source>
       <translation>刻度-2</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="409"/>
-      <source>Arrow size</source>
-      <translation>箭头大小</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="462"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="546"/>
       <source>Shows the unit next to the dimension value</source>
-      <translation type="unfinished">Shows the unit next to the dimension value</translation>
+      <translation>显示尺寸值旁边的单位</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="495"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="579"/>
       <source>Number of decimals</source>
       <translation>小数位数</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="561"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="645"/>
       <source>Extension line overshoot</source>
       <translation>延长线过度</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="538"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="548"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="622"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="632"/>
       <source>The length of the extension lines</source>
       <translation>延长线的长度</translation>
     </message>
@@ -341,13 +374,13 @@
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="26"/>
       <source>Circular Array</source>
-      <translation type="unfinished">Circular Array</translation>
+      <translation>环形阵列</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="34"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="44"/>
       <source>Distance from one layer of objects to the next layer of objects</source>
-      <translation type="unfinished">Distance from one layer of objects to the next layer of objects</translation>
+      <translation>相邻两层对象之间的距离</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="37"/>
@@ -368,43 +401,43 @@ It cannot be zero.</source>
       <translation>切向距离</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="82"/>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="93"/>
-      <source>Number of circular layers or rings to create, including a copy of the original object.
-It must be at least 2.</source>
-      <translation>要创建的环形层数或环数，（包括原始对象的副本）。
-输入至少 为2。</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="86"/>
-      <source>Number of circular layers</source>
-      <translation>边界层数</translation>
-    </message>
-    <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="110"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="120"/>
       <source>The number of symmetry lines in the circular array</source>
-      <translation type="unfinished">The number of symmetry lines in the circular array</translation>
+      <translation>环形阵列中对称线的数量</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="139"/>
       <source>Center of Rotation</source>
-      <translation type="unfinished">Center of Rotation</translation>
+      <translation>旋转中心</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="209"/>
       <source>Resets the coordinates of the center of rotation</source>
-      <translation type="unfinished">Resets the coordinates of the center of rotation</translation>
+      <translation>重置旋转中心的坐标</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="212"/>
       <source>Reset Point</source>
-      <translation type="unfinished">Reset Point</translation>
+      <translation>重置点</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="113"/>
       <source>Symmetry</source>
       <translation>对称</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="82"/>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="93"/>
+      <source>Number of concentric circles to create, including a copy of the original object.
+It must be at least 2.</source>
+      <translation type="unfinished">Number of concentric circles to create, including a copy of the original object.
+It must be at least 2.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="86"/>
+      <source>Number of concentric circles</source>
+      <translation type="unfinished">Number of concentric circles</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="135"/>
@@ -443,13 +476,13 @@ This only works if "Link array" is off.</source>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="235"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>如果选中，生成的对象将是“链接数组”而不是常规数组。
-链接数组在创建多个副本时效率更高，但不能融合在一起。</translation>
+      <translation>如果勾选此项，生成的对象将是一个“链接阵列”，而不是常规阵列。  
+链接阵列在创建多个副本时效率更高，但无法与其他对象进行融合。</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="239"/>
       <source>Link array</source>
-      <translation>链接数组</translation>
+      <translation>链接阵列</translation>
     </message>
   </context>
   <context>
@@ -525,69 +558,69 @@ Negative values will result in copies produced in the negative direction.</sourc
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="26"/>
       <source>Orthogonal Array</source>
-      <translation type="unfinished">Orthogonal Array</translation>
+      <translation>正交阵列</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="32"/>
       <source>Toggles between orthogonal and linear mode</source>
-      <translation type="unfinished">Toggles between orthogonal and linear mode</translation>
+      <translation>在正交模式和线性模式之间切换</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="35"/>
       <source>Switch to Linear Mode</source>
-      <translation type="unfinished">Switch to Linear Mode</translation>
+      <translation>切换到线性模式</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="47"/>
       <source>X axis</source>
-      <translation type="unfinished">X axis</translation>
+      <translation>X 轴</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="57"/>
       <source>Y axis</source>
-      <translation type="unfinished">Y axis</translation>
+      <translation>Y 轴</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="67"/>
       <source>Z axis</source>
-      <translation type="unfinished">Z axis</translation>
+      <translation>Z 轴</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="83"/>
       <source>Number of Elements</source>
-      <translation type="unfinished">Number of Elements</translation>
+      <translation>元素数量</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="156"/>
       <source>Currently selected axis</source>
-      <translation type="unfinished">Currently selected axis</translation>
+      <translation>当前选中的轴</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="173"/>
       <source>X Intervals</source>
-      <translation type="unfinished">X Intervals</translation>
+      <translation>X 方向间距</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="246"/>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="337"/>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="428"/>
       <source>Resets the distances</source>
-      <translation type="unfinished">Resets the distances</translation>
+      <translation>重置距离</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="264"/>
       <source>Y Intervals</source>
-      <translation type="unfinished">Y Intervals</translation>
+      <translation>Y 方向间距</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="355"/>
       <source>Z Intervals</source>
-      <translation type="unfinished">Z Intervals</translation>
+      <translation>Z 方向间距</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="431"/>
       <source>Reset Z</source>
-      <translation>重置Z</translation>
+      <translation>重置 Z</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="443"/>
@@ -604,13 +637,13 @@ This only works if "Link array" is off.</source>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="454"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>如果选中，生成的对象将是“链接数组”而不是常规数组。
-链接数组在创建多个副本时效率更高，但不能融合在一起。</translation>
+      <translation>如果勾选此项，生成的对象将是一个“链接阵列”，而不是常规阵列。  
+链接阵列在创建多个副本时效率更高，但无法与其他对象进行融合。</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="458"/>
       <source>Link array</source>
-      <translation>链接数组</translation>
+      <translation>链接阵列</translation>
     </message>
   </context>
   <context>
@@ -618,7 +651,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="26"/>
       <source>Polar Array</source>
-      <translation type="unfinished">Polar Array</translation>
+      <translation>极坐标阵列</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="34"/>
@@ -640,8 +673,8 @@ The maximum absolute value is 360 degrees.</source>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="78"/>
       <source>Number of elements in the array, including a copy of the original object.
 It must be at least 2.</source>
-      <translation>数组中元素的数量（含原始对象的副本）。
-输入须至少为 2。</translation>
+      <translation>阵列中的元素数量，包括原始对象的副本。
+必须至少为 2。</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="71"/>
@@ -658,17 +691,17 @@ Change the direction of the axis itself in the property editor.</source>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="101"/>
       <source>Center of Rotation</source>
-      <translation type="unfinished">Center of Rotation</translation>
+      <translation>旋转中心</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="171"/>
       <source>Resets the coordinates of the center of rotation</source>
-      <translation type="unfinished">Resets the coordinates of the center of rotation</translation>
+      <translation>重置旋转中心的坐标</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="174"/>
       <source>Reset Point</source>
-      <translation type="unfinished">Reset Point</translation>
+      <translation>重置点</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="109"/>
@@ -700,13 +733,13 @@ This only works if "Link array" is off.</source>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="197"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>如果选中，生成的对象将是“链接数组”而不是常规数组。
-链接数组在创建多个副本时效率更高，但不能融合在一起。</translation>
+      <translation>如果勾选此项，生成的对象将是一个“链接阵列”，而不是常规阵列。  
+链接阵列在创建多个副本时效率更高，但无法与其他对象进行融合。</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="201"/>
       <source>Link array</source>
-      <translation>链接数组</translation>
+      <translation>链接阵列</translation>
     </message>
   </context>
   <context>
@@ -714,7 +747,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskShapeString.ui" line="26"/>
       <source>ShapeString</source>
-      <translation>字串造型产生器</translation>
+      <translation>字符串形状工具</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="34"/>
@@ -735,8 +768,8 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
       <location filename="../ui/TaskShapeString.ui" line="85"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
-      <translation>相对于全局坐标系统的坐标。
-取消选中以使用工作平面坐标系统</translation>
+      <translation>相对于全局坐标系的坐标。
+取消选中则使用工作平面坐标系</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="89"/>
@@ -751,24 +784,24 @@ Uncheck to use working plane coordinate system</source>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="143"/>
       <source>Text to be made into ShapeString</source>
-      <translation>要制作成形状的文本</translation>
+      <translation>要制作成字符串形状工具的文本</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="41"/>
       <location filename="../ui/TaskShapeString.ui" line="58"/>
       <location filename="../ui/TaskShapeString.ui" line="75"/>
       <source>Enter coordinates or pick a point with the mouse</source>
-      <translation type="unfinished">Enter coordinates or pick a point with the mouse</translation>
+      <translation>输入坐标或用鼠标选择一个点</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="96"/>
       <source>Resets the picked point</source>
-      <translation type="unfinished">Resets the picked point</translation>
+      <translation>重置选中点</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="102"/>
       <source>Reset Point</source>
-      <translation type="unfinished">Reset Point</translation>
+      <translation>重置点</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="109"/>
@@ -794,29 +827,14 @@ Uncheck to use working plane coordinate system</source>
   <context>
     <name>Form</name>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="30"/>
-      <source>Sets the working plane to the XY plane (ground plane)</source>
-      <translation>将工作平面设置为 XY 平面(地面平面)</translation>
-    </message>
-    <message>
       <location filename="../ui/TaskSelectPlane.ui" line="33"/>
       <source>Top (XY)</source>
       <translation>上 (XY)</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="40"/>
-      <source>Sets the working plane to the XZ plane (front plane)</source>
-      <translation>将工作平面设置为 XZ 平面(前面平面)</translation>
-    </message>
-    <message>
       <location filename="../ui/TaskSelectPlane.ui" line="43"/>
       <source>Front (XZ)</source>
       <translation>前 (XZ)</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="50"/>
-      <source>Sets the working plane to the YZ plane (side plane)</source>
-      <translation>将工作平面设置为 YZ 平面(侧边平面)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="53"/>
@@ -826,29 +844,43 @@ Uncheck to use working plane coordinate system</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="60"/>
       <source>Sets the working plane facing the current view</source>
-      <translation>设置当前正向视图的基准面</translation>
+      <translation>设置面向当前视图的工作平面</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="14"/>
       <source>Working Plane Setup</source>
-      <translation type="unfinished">Working Plane Setup</translation>
+      <translation>工作平面设置</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="20"/>
       <source>Choose an option below. Or define a working plane by selecting 3 vertices, 1 or more shapes, or a working plane proxy, and then confirm with a click in the 3D view.</source>
-      <translation type="unfinished">Choose an option below. Or define a working plane by selecting 3 vertices, 1 or more shapes, or a working plane proxy, and then confirm with a click in the 3D view.</translation>
+      <translation>选择以下的一个选项。或者，通过选择 3 个顶点、1 个或多个形状或一个工作平面代理来定义工作平面，然后在 3D 视图中单击确认。</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="30"/>
+      <source>Sets the working plane to the XY-plane (ground plane)</source>
+      <translation type="unfinished">Sets the working plane to the XY-plane (ground plane)</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="40"/>
+      <source>Sets the working plane to the XZ-plane (front plane)</source>
+      <translation type="unfinished">Sets the working plane to the XZ-plane (front plane)</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="50"/>
+      <source>Sets the working plane to the YZ-plane (side plane)</source>
+      <translation type="unfinished">Sets the working plane to the YZ-plane (side plane)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="63"/>
       <source>Align to View</source>
-      <translation type="unfinished">Align to View</translation>
+      <translation>对齐视图</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="70"/>
       <source>The working plane will align to the current
 view each time a command is started</source>
-      <translation>每次命令执行时，工作面将对齐到当前视图
-</translation>
+      <translation>每次启动命令时，工作平面都会与当前视图对齐</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="77"/>
@@ -885,13 +917,12 @@ of the buttons above</source>
       <location filename="../ui/TaskSelectPlane.ui" line="117"/>
       <source>Centers the working plane on the current view when pressing one
 of the buttons above</source>
-      <translation type="unfinished">Centers the working plane on the current view when pressing one
-of the buttons above</translation>
+      <translation>按下上方按钮之一时，将工作平面置于当前视图的中心</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="133"/>
       <source>Or select a single vertex to move the current working plane without changing its orientation. Then press the button below.</source>
-      <translation>或者选择一个顶点移动当前工作平面而不改变其方向。然后按下面的按钮。</translation>
+      <translation>或者选择一个顶点来移动当前工作平面，但不改变其方向。然后按下方按钮。</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="143"/>
@@ -903,7 +934,7 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="148"/>
       <source>Move Working Plane</source>
-      <translation type="unfinished">Move Working Plane</translation>
+      <translation>移动工作平面</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="157"/>
@@ -959,7 +990,7 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="265"/>
       <source>Center View</source>
-      <translation type="unfinished">Center View</translation>
+      <translation>居中视图</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="287"/>
@@ -984,12 +1015,12 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="262"/>
       <source>Centers the view on the current working plane</source>
-      <translation>在当前工作平面居中</translation>
+      <translation>将视图置于当前工作平面的中心</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="274"/>
       <source>Resets the working plane to its previous position</source>
-      <translation>将工作平面重置到上一个位置</translation>
+      <translation>将工作平面重置到先前的位置</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="277"/>
@@ -1034,7 +1065,7 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="150"/>
       <source>Other</source>
-      <translation>其它</translation>
+      <translation>其他</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="156"/>
@@ -1108,7 +1139,7 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="181"/>
       <source>Point color</source>
-      <translation>点颜色：</translation>
+      <translation>点颜色</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="192"/>
@@ -1127,12 +1158,22 @@ will be moved to the center of the view.</source>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="285"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="607"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="667"/>
       <source>Annotations</source>
       <translation>注释</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="564"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="587"/>
+      <source>Extension line length</source>
+      <translation>延长线长度</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="607"/>
+      <source>Extension line overshoot</source>
+      <translation>延长线过度</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="624"/>
       <source>Text spacing</source>
       <translation>文字间距</translation>
     </message>
@@ -1142,12 +1183,13 @@ will be moved to the center of the view.</source>
       <translation>文本颜色</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="473"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="533"/>
       <source>Dimensions</source>
       <translation>尺寸</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="417"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="472"/>
       <source>Dot</source>
       <translation>点</translation>
     </message>
@@ -1173,32 +1215,67 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
       <translation>注释缩放倍数是注释缩放部件设置的缩放的倒数。 如果比例为1:100，则倍数为100。</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="409"/>
+      <source>Start arrow type</source>
+      <translation type="unfinished">Start arrow type</translation>
+    </message>
+    <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="477"/>
       <source>Circle</source>
       <translation>圆</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="427"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="482"/>
       <source>Arrow</source>
       <translation>箭头</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="432"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="487"/>
       <source>Tick</source>
       <translation>刻度</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="437"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="492"/>
       <source>Tick-2</source>
       <translation>刻度-2</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="503"/>
-      <source>The unit override for dimensions. Leave blank to use the current FreeCAD unit.</source>
-      <translation>设备重写为尺寸。留空则使用当前的FreeCAD 单元。</translation>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="442"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="497"/>
+      <source>None</source>
+      <translation>无</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="517"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="450"/>
+      <source>Start arrow size</source>
+      <translation type="unfinished">Start arrow size</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
+      <source>End arrow type</source>
+      <translation type="unfinished">End arrow type</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="505"/>
+      <source>End arrow size</source>
+      <translation type="unfinished">End arrow size</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="563"/>
+      <source>The unit override for dimensions. Leave blank to use the current FreeCAD unit.</source>
+      <translation>尺寸的单位覆盖。留空则使用当前 FreeCAD 单位。</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="570"/>
+      <source>Dimension line overshoot</source>
+      <translation>尺寸线过度</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="577"/>
       <source>The distance the dimension line is extended past the extension lines</source>
       <translation>尺寸线延伸到延长线之后的距离</translation>
     </message>
@@ -1225,7 +1302,7 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="348"/>
       <source>The height for texts, dimension texts and label texts</source>
-      <translation>文本、尺寸文本和标签的高度</translation>
+      <translation>文本、尺寸文本和标签文本的高度</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="365"/>
@@ -1238,102 +1315,76 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
       <translation>缩放因子</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="459"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="519"/>
       <source>Line and arrow color</source>
       <translation>线和箭头颜色</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="409"/>
-      <source>Arrow type</source>
-      <translation>箭头类型</translation>
-    </message>
-    <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="14"/>
       <source>Style Settings</source>
-      <translation type="unfinished">Style Settings</translation>
+      <translation>样式设置</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="40"/>
       <source>Saves the current style as a preset</source>
-      <translation type="unfinished">Saves the current style as a preset</translation>
+      <translation>保存当前样式为预设</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="63"/>
       <source>Shape Appearance</source>
-      <translation type="unfinished">Shape Appearance</translation>
+      <translation>形状外观</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="389"/>
       <source>Lines and Arrows</source>
-      <translation type="unfinished">Lines and Arrows</translation>
+      <translation>线条与箭头</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="445"/>
-      <source>Arrow size</source>
-      <translation>箭头大小</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="486"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="546"/>
       <source>Adds a unit symbol to dimension texts</source>
-      <translation type="unfinished">Adds a unit symbol to dimension texts</translation>
+      <translation>在尺寸文本中添加单位符号</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="510"/>
-      <source>Dim line overshoot</source>
-      <translation>已覆盖维度线</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="527"/>
-      <source>Ext line length</source>
-      <translation>外部线长度</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="534"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="594"/>
       <source>The length of extension lines. Use 0 for full extension lines. A negative value
 defines the gap between the ends of the extension lines and the measured points.
 A positive value defines the maximum length of the extension lines. Only used
 for linear dimensions.</source>
-      <translation>扩展线的长度。使用 0 作为完整扩展线。 负值
-定义了扩展线末尾与测量点之间的差距。
-正值定义了扩展线的最大长度。仅用于线性尺寸的</translation>
+      <translation>延伸线的长度。0 表示完整的延伸线。负值表示延伸线端点与测量点之间的间隙。
+正值表示延伸线的最大长度。仅适用于线性尺寸。</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="547"/>
-      <source>Ext line overshoot</source>
-      <translation>已覆盖外部线</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="554"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="614"/>
       <source>The length of extension lines above the dimension line</source>
-      <translation>尺寸线上方的扩展线长度</translation>
+      <translation>尺寸线上方延长线的长度</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="571"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="631"/>
       <source>The space between the dimension line and the dimension text</source>
       <translation>尺寸线和尺寸文本之间的距离</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="590"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="650"/>
       <source>Apply the above style to selected object(s)</source>
-      <translation>将上面的样式应用于所选对象(s)</translation>
+      <translation>将上述样式应用于选定的对象</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="604"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="664"/>
       <source>Apply the above style to all annotations (texts, dimensions and labels)</source>
-      <translation>将上述样式应用于所有批注(文本、尺寸和标签)</translation>
+      <translation>将上述样式应用于所有注释（文本、尺寸和标签）</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="479"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="539"/>
       <source>Show unit</source>
       <translation>显示单位</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="496"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="556"/>
       <source>Unit override</source>
       <translation>覆盖单位</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="593"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="653"/>
       <source>Selected</source>
       <translation>选定</translation>
     </message>
@@ -1365,7 +1416,7 @@ for linear dimensions.</source>
     <message>
       <location filename="../ui/dialogHatch.ui" line="81"/>
       <source>Align to face</source>
-      <translation type="unfinished">Align to face</translation>
+      <translation>与面对齐</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="88"/>
@@ -1400,8 +1451,8 @@ This setting modifies the Translate property.</translation>
       <location filename="../ui/preferences-draft.ui" line="39"/>
       <source>The number of decimals used in internal coordinate operations (for example 3 = 0.001).
 Values between 6 and 8 are usually considered the best trade-off.</source>
-      <translation>内部坐标操作中使用的小数点数 (例如3= 0)。
-值介于6-8之间通常被认为是最好的权衡。</translation>
+      <translation>内部坐标运算中使用的小数位数（例如 3 = 0.001）。
+6 到 8 之间的值通常被认为是最佳权衡。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="73"/>
@@ -1409,10 +1460,10 @@ Values between 6 and 8 are usually considered the best trade-off.</source>
 will automatically align with the current view whenever a command is started.
 Additionally it will align to preselected planar faces, or when points on planar
 faces are picked during commands.</source>
-      <translation>新视图的默认工作平面。 如果设置为“自动”，工作平面
-将在命令启动时自动与当前视图一致。
-此外，它将与预选的平面对齐，或者当Planar
-上的点数在命令中被选中时。</translation>
+      <translation>新视图的默认工作平面。如果设置为“自动”，
+则每当启动命令时，工作平面都会自动与当前视图对齐。
+此外，它还会与预先选定的平面对齐，
+或者在命令执行过程中拾取平面上的点时对齐。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="94"/>
@@ -1433,20 +1484,14 @@ faces are picked during commands.</source>
       <location filename="../ui/preferences-draft.ui" line="112"/>
       <source>If checked, a widget indicating the current working
 plane orientation appears when picking points</source>
-      <translation>如果选中，当选择点时，显示当前工作的
-平面方向的部件</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draft.ui" line="116"/>
-      <source>Show working plane tracker</source>
-      <translation>显示工作平面追踪器</translation>
+      <translation>如果选中，则在选取点时会出现一个指示当前工作平面方向的小组件</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="129"/>
       <source>If checked, the layers drop-down list also includes groups.
 Objects can then automatically be added to groups as well.</source>
-      <translation>如果选中，下拉列表也包含分组。
-对象也可以自动添加到组。</translation>
+      <translation>如果选中，图层下拉列表还会包含组。
+然后对象也可以自动添加到组中。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="133"/>
@@ -1456,7 +1501,7 @@ Objects can then automatically be added to groups as well.</source>
     <message>
       <location filename="../ui/preferences-draft.ui" line="155"/>
       <source>If checked, instructions are displayed in the Report view when using Draft commands</source>
-      <translation>如果选中此项，使用底图命令时将在报告视图中显示</translation>
+      <translation>如果选中，则使用草稿命令时会在报告视图中显示说明</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="158"/>
@@ -1556,6 +1601,11 @@ accidentally and modifying the entered value.</source>
       <translation>内部精度等级</translation>
     </message>
     <message>
+      <location filename="../ui/preferences-draft.ui" line="116"/>
+      <source>Show working plane orientation</source>
+      <translation type="unfinished">Show working plane orientation</translation>
+    </message>
+    <message>
       <location filename="../ui/preferences-draft.ui" line="149"/>
       <source>Command Options</source>
       <translation type="unfinished">Command Options</translation>
@@ -1610,7 +1660,7 @@ This allows indicating a direction and then type a distance.</source>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="20"/>
       <source>SVG Patterns</source>
-      <translation type="unfinished">SVG Patterns</translation>
+      <translation>SVG 图样</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="26"/>
@@ -1672,11 +1722,12 @@ pattern definitions to be added to the standard patterns</source>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="130"/>
-      <location filename="../ui/preferences-drafttexts.ui" line="330"/>
-      <location filename="../ui/preferences-drafttexts.ui" line="521"/>
-      <location filename="../ui/preferences-drafttexts.ui" line="560"/>
-      <location filename="../ui/preferences-drafttexts.ui" line="589"/>
-      <location filename="../ui/preferences-drafttexts.ui" line="618"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="335"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="423"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="614"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="653"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="682"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="711"/>
       <location filename="../ui/preferences-dxf.ui" line="560"/>
       <source>mm</source>
       <translation>mm</translation>
@@ -1684,25 +1735,71 @@ pattern definitions to be added to the standard patterns</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="205"/>
       <source>Lines and Arrows</source>
-      <translation type="unfinished">Lines and Arrows</translation>
+      <translation>线条与箭头</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="438"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="266"/>
+      <source>Start arrow type</source>
+      <translation type="unfinished">Start arrow type</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="279"/>
+      <source>The default symbol displayed at the start of dimension lines</source>
+      <translation type="unfinished">The default symbol displayed at the start of dimension lines</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="314"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="402"/>
+      <source>None</source>
+      <translation>无</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="322"/>
+      <source>Start arrow size</source>
+      <translation type="unfinished">Start arrow size</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="329"/>
+      <source>The default starting arrow size</source>
+      <translation type="unfinished">The default starting arrow size</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="354"/>
+      <source>End arrow type</source>
+      <translation type="unfinished">End arrow type</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="367"/>
+      <source>The default symbol displayed at the end of dimension lines</source>
+      <translation type="unfinished">The default symbol displayed at the end of dimension lines</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="410"/>
+      <source>End arrow size</source>
+      <translation type="unfinished">End arrow size</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="417"/>
+      <source>The default ending arrow size</source>
+      <translation type="unfinished">The default ending arrow size</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="531"/>
       <source>Number of decimals</source>
       <translation>小数位数</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="496"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="589"/>
       <source>Dimension Details</source>
-      <translation type="unfinished">Dimension Details</translation>
+      <translation>尺寸详情</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="576"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="669"/>
       <source>Extension line overshoot</source>
       <translation>延长线过度</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="502"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="595"/>
       <source>Dimension line overshoot</source>
       <translation>尺寸线过度</translation>
     </message>
@@ -1794,109 +1891,94 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</so
       <translation> px</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="266"/>
-      <source>Arrow type</source>
-      <translation>箭头类型</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="279"/>
-      <source>The default symbol displayed at the ends of dimension lines</source>
-      <translation>尺寸线末尾默认显示的符号</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-drafttexts.ui" line="289"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="377"/>
       <source>Dot</source>
       <translation>点</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="294"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="382"/>
       <source>Circle</source>
       <translation>圆</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="299"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="387"/>
       <source>Arrow</source>
       <translation>箭头</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="304"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="392"/>
       <source>Tick</source>
       <translation>刻度</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="309"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="397"/>
       <source>Tick-2</source>
       <translation>刻度-2</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="317"/>
-      <source>Arrow size</source>
-      <translation>箭头大小</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="324"/>
-      <source>The default arrow size</source>
-      <translation>默认箭头大小</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="349"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="442"/>
       <source>Line and arrow color</source>
       <translation>线和箭头颜色</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="356"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="449"/>
       <source>The default color for lines and arrows</source>
       <translation>线和箭头的默认颜色</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="379"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="472"/>
       <source>Units</source>
       <translation>单位</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="385"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="478"/>
       <source>If checked, a unit symbol is added to dimension texts by default</source>
       <translation>如果选中，则默认将一个单位符号添加到尺寸文本</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="388"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="481"/>
       <source>Show unit</source>
       <translation>显示单位</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="404"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="497"/>
       <source>Unit override</source>
       <translation>覆盖单位</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="417"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="510"/>
       <source>The default unit override for dimensions. Enter a unit such as m
 or cm, leave blank to use the current unit defined in FreeCAD.</source>
       <translation>尺寸的默认单位覆盖。输入单位，例如 m
 或 cm，留空则使用 FreeCAD 中定义的当前单位。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="445"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="538"/>
       <source>The default number of decimal places for dimension texts</source>
       <translation>尺寸文本的默认小数位数</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="480"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="573"/>
       <source>The optional string inserted between the feet and inches values in dimensions</source>
       <translation>插入尺寸的英尺与英寸值之间的默认字符串</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="515"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="608"/>
       <source>The default distance the dimension line is extended past the extension lines</source>
       <translation>尺寸线延伸过延长线的默认距离</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="544"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="637"/>
       <source>Extension line length</source>
       <translation>延长线长度</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="551"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="644"/>
       <source>The default length of extension lines. Use 0 for full extension lines. A negative
 value defines the gap between the ends of the extension lines and the measured
 points. A positive value defines the maximum length of the extension lines. Only
@@ -1906,24 +1988,24 @@ used for linear dimensions.</source>
 设为正值定义扩展线的最大长度。仅用于线性尺寸。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="583"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="676"/>
       <source>The default length of extension lines above the dimension line</source>
       <translation>尺寸线上方延长线的默认长度</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="612"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="705"/>
       <source>The default space between the dimension line and the dimension text</source>
       <translation>尺寸线和尺寸文本之间的默认距离</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="605"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="698"/>
       <source>Text spacing</source>
       <translation>文字间距</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="467"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="560"/>
       <source>Feet separator</source>
-      <translation>脚分隔符</translation>
+      <translation>英尺分隔符</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="14"/>
@@ -1977,7 +2059,7 @@ a raw wire from the original shape is added</translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="117"/>
       <source>Check to cut shapes according to the even/odd SVG fill rule</source>
-      <translation type="unfinished">Check to cut shapes according to the even/odd SVG fill rule</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="120"/>
@@ -2023,8 +2105,8 @@ a raw wire from the original shape is added</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="245"/>
-      <source>Translate white line color to black</source>
-      <translation>转换白线为黑色</translation>
+      <source>Convert white line color to black</source>
+      <translation type="unfinished">Convert white line color to black</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="265"/>
@@ -2049,7 +2131,7 @@ This value is the maximum segment length.</source>
       <location filename="../ui/preferences-oca.ui" line="26"/>
       <location filename="../ui/preferences-svg.ui" line="26"/>
       <source>Import Options</source>
-      <translation type="unfinished">Import Options</translation>
+      <translation>导入选项</translation>
     </message>
     <message>
       <location filename="../ui/preferences-oca.ui" line="46"/>
@@ -2075,6 +2157,11 @@ This value is the maximum segment length.</source>
       <location filename="../ui/preferences-dxf.ui" line="279"/>
       <source>Import</source>
       <translation>导入</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="586"/>
+      <source>All objects containing faces will be exported as 3D polyface meshes</source>
+      <translation type="unfinished">All objects containing faces will be exported as 3D polyface meshes</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="636"/>
@@ -2153,9 +2240,9 @@ a DXF file.</translation>
       <source>If checked, FreeCAD is allowed to download and update the Python libraries
 required by the legacy importer. This can also be done manually by installing
 the 'dxf_library' addon from the Addon Manager.</source>
-      <translation type="unfinished">If checked, FreeCAD is allowed to download and update the Python libraries
-required by the legacy importer. This can also be done manually by installing
-the 'dxf_library' addon from the Addon Manager.</translation>
+      <translation>如果选中，FreeCAD 可以下载和更新旧版导入器所需的 Python 库
+。 这也可以通过从附加组件管理器安装
+dxf_library”来手动完成。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="108"/>
@@ -2356,7 +2443,7 @@ instead of Draft or Part objects. This overrides the 'Import As' setting</transl
       <location filename="../ui/preferences-dxf.ui" line="504"/>
       <location filename="../ui/preferences-svg.ui" line="191"/>
       <source>Export Options</source>
-      <translation type="unfinished">Export Options</translation>
+      <translation>导出选项</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="544"/>
@@ -2369,11 +2456,6 @@ instead of Draft or Part objects. This overrides the 'Import As' setting</transl
       <translation type="unfinished">Maximum length of each of the polyline segments. '0' treats the whole spline as a straight segment.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="586"/>
-      <source>All objects containing faces will be exported as 3D polyfaces</source>
-      <translation>所有包含面的对象将导出为 3D 多边形</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-dxf.ui" line="589"/>
       <source>Export 3D objects as polyface meshes</source>
       <translation>导出 3D 对象为多边形网格</translation>
@@ -2382,18 +2464,18 @@ instead of Draft or Part objects. This overrides the 'Import As' setting</transl
       <location filename="../ui/preferences-dxf.ui" line="606"/>
       <source>TechDraw Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
-      <translation>TechDraw 视图将被导出为块。
-这可能会导致DXF R12 模板失败。</translation>
+      <translation>工程图视图将导出为块。
+对于 DXF R12 之后的模板，这可能会失败。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="610"/>
       <source>Export TechDraw Views as blocks</source>
-      <translation>导出技术绘制视图为块</translation>
+      <translation>将工程图视图导出为块</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="633"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
-      <translation>导出的对象将被预测为反映当前视图方向</translation>
+      <translation>导出的对象将被投影以反映当前的视图方向</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="425"/>
@@ -2405,7 +2487,7 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="377"/>
       <source>Always snap</source>
-      <translation>总是捕捉</translation>
+      <translation>总是吸附</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="14"/>
@@ -2483,7 +2565,7 @@ Major grid lines are thicker than minor grid lines.</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="485"/>
       <source>The Alt modifier key. The function of this key depends on the command.</source>
-      <translation>Alt 修饰键。此键的函数取决于命令。</translation>
+      <translation>Alt 修饰键。此键的功能取决于命令。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="26"/>
@@ -2500,12 +2582,12 @@ Use Draft ToggleGrid to change this for the active view.</source>
     <message>
       <location filename="../ui/preferences-draft.ui" line="303"/>
       <source>The maximum number of objects Draft Edit is allowed to process at the same time</source>
-      <translation>允许同时处理草稿编辑对象的最大数量</translation>
+      <translation>允许同时处理的最大对象草稿编辑数量</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="790"/>
       <source>Only show the Draft snap toolbar during commands</source>
-      <translation>仅在命令中显示底图吸附工具栏</translation>
+      <translation>仅在命令执行期间显示草图吸附工具栏</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="20"/>
@@ -2527,7 +2609,7 @@ Use Draft ToggleGrid to change this for the active view.</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="53"/>
       <source>Show the grid during commands</source>
-      <translation>在命令中显示网格</translation>
+      <translation>在命令执行期间显示网格</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="69"/>
@@ -2933,48 +3015,48 @@ if they match the X, Y or Z axis of the global coordinate system</source>
   <context>
     <name>draft</name>
     <message>
-      <location filename="../../DraftGui.py" line="547"/>
+      <location filename="../../DraftGui.py" line="549"/>
       <source>Relative</source>
       <translation>相对</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="552"/>
+      <location filename="../../DraftGui.py" line="554"/>
       <source>Global</source>
       <translation>全局</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="566"/>
-      <location filename="../../DraftGui.py" line="838"/>
+      <location filename="../../DraftGui.py" line="568"/>
+      <location filename="../../DraftGui.py" line="840"/>
       <source>Continue</source>
       <translation>继续</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="569"/>
+      <location filename="../../DraftGui.py" line="571"/>
       <source>If checked, the command will not finish until pressing the command button again</source>
       <translation type="unfinished">If checked, the command will not finish until pressing the command button again</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="572"/>
+      <location filename="../../DraftGui.py" line="574"/>
       <source>If checked, the next dimension will be placed in a chain with the previously placed Dimension</source>
       <translation type="unfinished">If checked, the next dimension will be placed in a chain with the previously placed Dimension</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="579"/>
+      <location filename="../../DraftGui.py" line="581"/>
       <source>Close</source>
       <translation>关闭</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="583"/>
+      <location filename="../../DraftGui.py" line="585"/>
       <source>Set Working Plane</source>
       <translation>设置工作面</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="585"/>
+      <location filename="../../DraftGui.py" line="587"/>
       <source>Select Edge</source>
       <translation type="unfinished">Select Edge</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="590"/>
+      <location filename="../../DraftGui.py" line="592"/>
       <location filename="../../draftguitools/gui_move.py" line="200"/>
       <location filename="../../draftguitools/gui_rotate.py" line="267"/>
       <location filename="../../draftguitools/gui_scale.py" line="209"/>
@@ -2982,7 +3064,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
       <translation>复制</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="581"/>
+      <location filename="../../DraftGui.py" line="583"/>
       <source>Wipe</source>
       <translation>清除</translation>
     </message>
@@ -3060,288 +3142,288 @@ if they match the X, Y or Z axis of the global coordinate system</source>
       <translation>位置:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="498"/>
-      <location filename="../../DraftGui.py" line="526"/>
-      <location filename="../../DraftGui.py" line="1468"/>
-      <location filename="../../DraftGui.py" line="1483"/>
+      <location filename="../../DraftGui.py" line="500"/>
+      <location filename="../../DraftGui.py" line="528"/>
+      <location filename="../../DraftGui.py" line="1478"/>
+      <location filename="../../DraftGui.py" line="1493"/>
       <location filename="../../draftguitools/gui_groups.py" line="254"/>
       <source>None</source>
       <translation>无</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="525"/>
+      <location filename="../../DraftGui.py" line="527"/>
       <source>active command:</source>
       <translation>活动命令：</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="527"/>
+      <location filename="../../DraftGui.py" line="529"/>
       <source>Active Draft command</source>
       <translation>当前绘图命令</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="528"/>
+      <location filename="../../DraftGui.py" line="530"/>
       <source>X coordinate of the point</source>
       <translation type="unfinished">X coordinate of the point</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="529"/>
+      <location filename="../../DraftGui.py" line="531"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="530"/>
+      <location filename="../../DraftGui.py" line="532"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="531"/>
+      <location filename="../../DraftGui.py" line="533"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="537"/>
+      <location filename="../../DraftGui.py" line="539"/>
       <source>Length</source>
       <translation>长度</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="538"/>
+      <location filename="../../DraftGui.py" line="540"/>
       <location filename="../../draftguitools/gui_trimex.py" line="229"/>
       <source>Angle</source>
       <translation>角度</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="544"/>
-      <location filename="../../DraftGui.py" line="821"/>
+      <location filename="../../DraftGui.py" line="546"/>
+      <location filename="../../DraftGui.py" line="823"/>
       <source>Radius</source>
       <translation>半径</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="595"/>
+      <location filename="../../DraftGui.py" line="597"/>
       <source>Creates the text object and finishes the command</source>
       <translation type="unfinished">Creates the text object and finishes the command</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="617"/>
+      <location filename="../../DraftGui.py" line="619"/>
       <source>Changes the default style for new objects</source>
       <translation type="unfinished">Changes the default style for new objects</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="618"/>
+      <location filename="../../DraftGui.py" line="620"/>
       <source>Toggles construction mode</source>
       <translation type="unfinished">Toggles construction mode</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="776"/>
+      <location filename="../../DraftGui.py" line="778"/>
       <source>Label Type</source>
       <translation type="unfinished">Label Type</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="822"/>
+      <location filename="../../DraftGui.py" line="824"/>
       <source>Radius of Circle</source>
       <translation>圆的半径</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="550"/>
+      <location filename="../../DraftGui.py" line="552"/>
       <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
       <translation>相对于最后一点的坐标或坐标系统原点
 如果是第一个点设置</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="532"/>
+      <location filename="../../DraftGui.py" line="534"/>
       <source>Y coordinate of the point</source>
       <translation type="unfinished">Y coordinate of the point</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="533"/>
+      <location filename="../../DraftGui.py" line="535"/>
       <source>Z coordinate of the point</source>
       <translation type="unfinished">Z coordinate of the point</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="534"/>
+      <location filename="../../DraftGui.py" line="536"/>
       <source>Enter Point</source>
       <translation type="unfinished">Enter Point</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="539"/>
+      <location filename="../../DraftGui.py" line="541"/>
       <source>Length of the current segment</source>
       <translation type="unfinished">Length of the current segment</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="540"/>
+      <location filename="../../DraftGui.py" line="542"/>
       <source>Angle of the current segment</source>
       <translation type="unfinished">Angle of the current segment</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="543"/>
+      <location filename="../../DraftGui.py" line="545"/>
       <source>Locks the current angle</source>
       <translation type="unfinished">Locks the current angle</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="545"/>
+      <location filename="../../DraftGui.py" line="547"/>
       <source>Radius of the circle</source>
       <translation>圆的半径</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="555"/>
+      <location filename="../../DraftGui.py" line="557"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
-      <translation>相对于全局坐标系统的坐标。
-取消选中以使用工作平面坐标系统</translation>
+      <translation>相对于全局坐标系的坐标。
+取消选中则使用工作平面坐标系</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="562"/>
+      <location filename="../../DraftGui.py" line="564"/>
       <source>Finish</source>
       <translation>完成</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="564"/>
+      <location filename="../../DraftGui.py" line="566"/>
       <source>Finishes the current drawing or editing operation</source>
       <translation>完成当前绘图或编辑操作</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1665"/>
+      <location filename="../../DraftGui.py" line="1675"/>
       <source>Modify Objects</source>
       <translation type="unfinished">Modify Objects</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1819"/>
+      <location filename="../../DraftGui.py" line="1829"/>
       <source>Facebinder Elements</source>
       <translation type="unfinished">Facebinder Elements</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="576"/>
+      <location filename="../../DraftGui.py" line="578"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
       <translation>如果选中，将执行OCC式偏移，而不是经典偏移量</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="573"/>
+      <location filename="../../DraftGui.py" line="575"/>
       <source>OCC-style offset</source>
       <translation>OCC-样式偏移</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="577"/>
+      <location filename="../../DraftGui.py" line="579"/>
       <source>Undo</source>
       <translation>撤销</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="591"/>
+      <location filename="../../DraftGui.py" line="593"/>
       <source>If checked, objects will be copied instead of moved</source>
       <translation>如果选中，对象将被复制而不是移动</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="578"/>
+      <location filename="../../DraftGui.py" line="580"/>
       <source>Undo the last segment</source>
       <translation>撤销最后一个段</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="536"/>
+      <location filename="../../DraftGui.py" line="538"/>
       <source>Enter a point with given coordinates</source>
       <translation>输入给定坐标的点</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="557"/>
+      <location filename="../../DraftGui.py" line="559"/>
       <source>Make face</source>
       <translation>造面</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="560"/>
+      <location filename="../../DraftGui.py" line="562"/>
       <source>If checked, the object will be filled with a face.
 Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>若勾选此项，对象将填充生成面。
 当“使用零件基元”偏好设置启用时，此功能不可用</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="570"/>
+      <location filename="../../DraftGui.py" line="572"/>
       <source>Chained mode</source>
       <translation>‌链式模式</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="580"/>
+      <location filename="../../DraftGui.py" line="582"/>
       <source>Finishes and closes the current line</source>
       <translation>处理后关闭当前线</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="582"/>
+      <location filename="../../DraftGui.py" line="584"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
       <translation>擦除这条线的现有线段并从最后一点重新开始</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="584"/>
+      <location filename="../../DraftGui.py" line="586"/>
       <source>Reorients the working plane on the last segment</source>
       <translation>重定向最后一段(或几段) 的工作平面</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="586"/>
+      <location filename="../../DraftGui.py" line="588"/>
       <source>Selects an existing edge to be measured by this dimension</source>
       <translation>选取一个将由此尺寸来测量的现有边</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="587"/>
+      <location filename="../../DraftGui.py" line="589"/>
       <source>Sides</source>
       <translation>边</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="588"/>
+      <location filename="../../DraftGui.py" line="590"/>
       <source>Number of sides</source>
       <translation>边数</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="592"/>
+      <location filename="../../DraftGui.py" line="594"/>
       <source>Modify subelements</source>
       <translation>修改子元素</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="593"/>
+      <location filename="../../DraftGui.py" line="595"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
       <translation>如果选中，子元素将被修改而不是整个对象</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="619"/>
-      <location filename="../../DraftGui.py" line="1471"/>
-      <location filename="../../DraftGui.py" line="1486"/>
+      <location filename="../../DraftGui.py" line="621"/>
+      <location filename="../../DraftGui.py" line="1481"/>
+      <location filename="../../DraftGui.py" line="1496"/>
       <source>Autogroup off</source>
       <translation>关闭自动分组</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="705"/>
+      <location filename="../../DraftGui.py" line="707"/>
       <location filename="../../draftguitools/gui_lines.py" line="66"/>
       <source>Line</source>
       <translation>线</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="713"/>
+      <location filename="../../DraftGui.py" line="715"/>
       <source>DWire</source>
       <translation>草图线</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="731"/>
+      <location filename="../../DraftGui.py" line="733"/>
       <source>Circle</source>
       <translation>圆</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="736"/>
+      <location filename="../../DraftGui.py" line="738"/>
       <source>Arc</source>
       <translation>圆弧</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="741"/>
+      <location filename="../../DraftGui.py" line="743"/>
       <location filename="../../draftguitools/gui_rotate.py" line="269"/>
       <source>Rotate</source>
       <translation>旋转</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="745"/>
+      <location filename="../../DraftGui.py" line="747"/>
       <source>Point</source>
       <translation>点</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="774"/>
+      <location filename="../../DraftGui.py" line="776"/>
       <source>Label</source>
       <translation>标签</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="792"/>
+      <location filename="../../DraftGui.py" line="794"/>
       <location filename="../../draftguitools/gui_offset.py" line="242"/>
       <location filename="../../draftguitools/gui_offset.py" line="259"/>
       <location filename="../../draftguitools/gui_offset.py" line="324"/>
@@ -3349,67 +3431,67 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>偏移</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="797"/>
-      <location filename="../../DraftGui.py" line="814"/>
+      <location filename="../../DraftGui.py" line="799"/>
+      <location filename="../../DraftGui.py" line="816"/>
       <location filename="../../draftguitools/gui_trimex.py" line="224"/>
       <source>Distance</source>
       <translation>距离</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="798"/>
-      <location filename="../../DraftGui.py" line="815"/>
+      <location filename="../../DraftGui.py" line="800"/>
+      <location filename="../../DraftGui.py" line="817"/>
       <location filename="../../draftguitools/gui_trimex.py" line="226"/>
       <source>Offset distance</source>
       <translation>偏移距离</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="811"/>
+      <location filename="../../DraftGui.py" line="813"/>
       <source>Trimex</source>
       <translation>Trimex</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="887"/>
-      <location filename="../../DraftGui.py" line="888"/>
       <location filename="../../DraftGui.py" line="889"/>
+      <location filename="../../DraftGui.py" line="890"/>
       <location filename="../../DraftGui.py" line="891"/>
-      <location filename="../../DraftGui.py" line="892"/>
       <location filename="../../DraftGui.py" line="893"/>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="118"/>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="119"/>
+      <location filename="../../DraftGui.py" line="894"/>
+      <location filename="../../DraftGui.py" line="895"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="120"/>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="121"/>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="122"/>
       <source>Local {}</source>
       <translation>区域 {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="895"/>
-      <location filename="../../DraftGui.py" line="896"/>
       <location filename="../../DraftGui.py" line="897"/>
+      <location filename="../../DraftGui.py" line="898"/>
       <location filename="../../DraftGui.py" line="899"/>
-      <location filename="../../DraftGui.py" line="900"/>
       <location filename="../../DraftGui.py" line="901"/>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="114"/>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="115"/>
+      <location filename="../../DraftGui.py" line="902"/>
+      <location filename="../../DraftGui.py" line="903"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="116"/>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="117"/>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="118"/>
       <source>Global {}</source>
       <translation>全局 {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1479"/>
+      <location filename="../../DraftGui.py" line="1489"/>
       <source>Autogroup:</source>
       <translation>自动组：</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1816"/>
+      <location filename="../../DraftGui.py" line="1826"/>
       <source>Faces</source>
       <translation>面</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1817"/>
+      <location filename="../../DraftGui.py" line="1827"/>
       <source>Remove</source>
-      <translation>删除</translation>
+      <translation>移除</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1818"/>
+      <location filename="../../DraftGui.py" line="1828"/>
       <source>Add</source>
       <translation>添加</translation>
     </message>
@@ -3457,13 +3539,13 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
       <location filename="../../importDWG.py" line="339"/>
       <location filename="../../importDWG.py" line="406"/>
       <source>No suitable external DWG converter has been found.
-Please set one manually under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; DWG
+Please set one manually under menu Edit → Preferences → Import/Export → DWG
 For more information see:
 https://wiki.freecad.org/Import_Export_Preferences</source>
-      <translation>没有找到合适的外部DWG 转换器。
-请在菜单编辑 -&gt; 首选项 -&gt; 导入/导出 -&gt; DWG
-下手动设置一个。欲了解更多信息，请参阅：
-https://wiki.freecad.org/Import_Export_首选项</translation>
+      <translation type="unfinished">No suitable external DWG converter has been found.
+Please set one manually under menu Edit → Preferences → Import/Export → DWG
+For more information see:
+https://wiki.freecad.org/Import_Export_Preferences</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="279"/>
@@ -3503,6 +3585,11 @@ or try saving to a lower DWG version.</source>
       <translation type="unfinished">Draft Scale Widget</translation>
     </message>
     <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="214"/>
+      <source>Set the scale used by Draft annotation tools</source>
+      <translation type="unfinished">Set the scale used by Draft annotation tools</translation>
+    </message>
+    <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="251"/>
       <source>Draft Snap Widget</source>
       <comment>A context menu action used to show or hide this toolbar widget</comment>
@@ -3514,17 +3601,12 @@ or try saving to a lower DWG version.</source>
       <translation>设定自定义注释比例，以x:x、x=x格式</translation>
     </message>
     <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="214"/>
-      <source>Set the scale used by draft annotation tools</source>
-      <translation>设置草稿批注工具使用的比例</translation>
-    </message>
-    <message>
       <location filename="../../draftfunctions/cut.py" line="57"/>
       <location filename="../../draftmake/make_array.py" line="85"/>
-      <location filename="../../draftmake/make_dimension.py" line="264"/>
-      <location filename="../../draftmake/make_dimension.py" line="353"/>
-      <location filename="../../draftmake/make_dimension.py" line="473"/>
-      <location filename="../../draftmake/make_dimension.py" line="587"/>
+      <location filename="../../draftmake/make_dimension.py" line="262"/>
+      <location filename="../../draftmake/make_dimension.py" line="351"/>
+      <location filename="../../draftmake/make_dimension.py" line="471"/>
+      <location filename="../../draftmake/make_dimension.py" line="585"/>
       <location filename="../../draftmake/make_label.py" line="194"/>
       <location filename="../../draftmake/make_layer.py" line="54"/>
       <location filename="../../draftmake/make_layer.py" line="143"/>
@@ -3534,14 +3616,14 @@ or try saving to a lower DWG version.</source>
       <location filename="../../draftmake/make_text.py" line="92"/>
       <location filename="../../draftmake/make_text.py" line="178"/>
       <location filename="../../draftutils/groups.py" line="95"/>
-      <location filename="../../draftutils/gui_utils.py" line="887"/>
-      <location filename="../../draftutils/utils.py" line="1021"/>
+      <location filename="../../draftutils/gui_utils.py" line="890"/>
+      <location filename="../../draftutils/utils.py" line="1055"/>
       <source>No active document. Aborting.</source>
       <translation>没有活动文档。中止。</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="131"/>
-      <location filename="../../draftutils/gui_utils.py" line="895"/>
+      <location filename="../../draftutils/gui_utils.py" line="898"/>
       <source>Wrong input: object {} not in document.</source>
       <translation>输入错误：对象 {} 不在文档中。</translation>
     </message>
@@ -3551,108 +3633,108 @@ or try saving to a lower DWG version.</source>
       <translation>无法将新对象插入缩放部分</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="266"/>
+      <location filename="../../draftutils/gui_utils.py" line="269"/>
       <source>Symbol not implemented. Using a default symbol.</source>
       <translation>符号未实现。使用默认符号。</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="771"/>
+      <location filename="../../draftutils/gui_utils.py" line="774"/>
       <source>image is Null</source>
       <translation>图像为空</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="777"/>
+      <location filename="../../draftutils/gui_utils.py" line="780"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>文件名在系统或资源文件中不存在</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="836"/>
+      <location filename="../../draftutils/gui_utils.py" line="839"/>
       <source>unable to load texture</source>
       <translation>无法加载纹理</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="901"/>
+      <location filename="../../draftutils/gui_utils.py" line="904"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation>没有'ViewObject.RootNode'。</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="529"/>
+      <location filename="../../draftutils/utils.py" line="563"/>
       <source>Solids:</source>
       <translation>实体</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="530"/>
+      <location filename="../../draftutils/utils.py" line="564"/>
       <source>Faces:</source>
       <translation>面:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="531"/>
+      <location filename="../../draftutils/utils.py" line="565"/>
       <source>Wires:</source>
       <translation>线框:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="532"/>
+      <location filename="../../draftutils/utils.py" line="566"/>
       <source>Edges:</source>
       <translation>边:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="533"/>
+      <location filename="../../draftutils/utils.py" line="567"/>
       <source>Vertices:</source>
       <translation>顶点:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="537"/>
+      <location filename="../../draftutils/utils.py" line="571"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="542"/>
+      <location filename="../../draftutils/utils.py" line="576"/>
       <source>Wire</source>
       <translation>线框</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="574"/>
-      <location filename="../../draftutils/utils.py" line="578"/>
+      <location filename="../../draftutils/utils.py" line="608"/>
+      <location filename="../../draftutils/utils.py" line="612"/>
       <source>different types</source>
       <translation>不同类型</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="588"/>
+      <location filename="../../draftutils/utils.py" line="622"/>
       <source>Objects have different placements. Distance between the two base points:</source>
       <translation>对象具有不同的位置。两个基准点之间的距离：</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="848"/>
+      <location filename="../../draftutils/utils.py" line="882"/>
       <source>%s cannot be modified because its placement is readonly</source>
       <translation>%s 无法修改：当前对象的状态为只读。</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1061"/>
+      <location filename="../../draftutils/utils.py" line="1095"/>
       <source>This function will be deprecated in {}. Please use '{}'.</source>
       <translation>此函数将在 {} 中弃用。请使用 '{}</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1063"/>
+      <location filename="../../draftutils/utils.py" line="1097"/>
       <source>This function will be deprecated. Please use '{}'.</source>
       <translation>此函数将被弃用。请使用 '{}</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="591"/>
+      <location filename="../../draftutils/utils.py" line="625"/>
       <source>has a different value</source>
       <translation>有不同的值</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="594"/>
+      <location filename="../../draftutils/utils.py" line="628"/>
       <source>doesn't exist in one of the objects</source>
       <translation>在其中一个对象中不存在</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="841"/>
+      <location filename="../../draftutils/utils.py" line="875"/>
       <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
-      <translation>%s 与 %d 其他对象共享基地。请检查是否要修改此项。</translation>
+      <translation>%s 与 %d 个其他对象共享一个基类。请检查您是否要修改此基类。</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="984"/>
+      <location filename="../../draftutils/utils.py" line="1018"/>
       <source>Wrong input: unknown document {}</source>
       <translation>输入错误：未知文档 {}</translation>
     </message>
@@ -3702,30 +3784,40 @@ or try saving to a lower DWG version.</source>
       <translation>创建线</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="334"/>
+      <location filename="../../draftguitools/gui_lines.py" line="305"/>
+      <source>%1 pick next point, snap to first point to close</source>
+      <translation type="unfinished">%1 pick next point, snap to first point to close</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_lines.py" line="311"/>
+      <source>%1 pick next point</source>
+      <translation type="unfinished">%1 pick next point</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_lines.py" line="362"/>
       <source>Unable to create a wire from the selected objects</source>
       <translation type="unfinished">Unable to create a wire from the selected objects</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="367"/>
+      <location filename="../../draftguitools/gui_lines.py" line="395"/>
       <source>Polyline</source>
       <translation>折线</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="154"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="157"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="152"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="155"/>
       <location filename="../../draftguitools/gui_lines.py" line="229"/>
-      <location filename="../../draftguitools/gui_lines.py" line="237"/>
-      <location filename="../../draftguitools/gui_lines.py" line="244"/>
-      <location filename="../../draftguitools/gui_lines.py" line="252"/>
-      <location filename="../../draftguitools/gui_lines.py" line="262"/>
-      <location filename="../../draftguitools/gui_splines.py" line="144"/>
-      <location filename="../../draftguitools/gui_splines.py" line="149"/>
+      <location filename="../../draftguitools/gui_lines.py" line="238"/>
+      <location filename="../../draftguitools/gui_lines.py" line="245"/>
+      <location filename="../../draftguitools/gui_lines.py" line="253"/>
+      <location filename="../../draftguitools/gui_lines.py" line="264"/>
+      <location filename="../../draftguitools/gui_splines.py" line="143"/>
+      <location filename="../../draftguitools/gui_splines.py" line="148"/>
       <source>Pick next point</source>
       <translation>选择下一个点</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="359"/>
+      <location filename="../../draftguitools/gui_lines.py" line="387"/>
       <source>Convert to Wire</source>
       <translation>转换为线</translation>
     </message>
@@ -3755,7 +3847,7 @@ or try saving to a lower DWG version.</source>
       <translation>选择位置点</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="594"/>
+      <location filename="../../DraftGui.py" line="596"/>
       <location filename="../../draftguitools/gui_texts.py" line="126"/>
       <source>Create Text</source>
       <translation>创建文本</translation>
@@ -3817,32 +3909,32 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="253"/>
       <location filename="../../draftguitools/gui_arcs.py" line="269"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="438"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="409"/>
       <location filename="../../draftguitools/gui_polygons.py" line="199"/>
       <location filename="../../draftguitools/gui_polygons.py" line="210"/>
-      <location filename="../../draftguitools/gui_polygons.py" line="270"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="271"/>
       <source>Pick radius</source>
       <translation>选取半径</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="276"/>
       <location filename="../../draftguitools/gui_arcs.py" line="277"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="473"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="474"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="445"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="446"/>
       <source>Start angle</source>
       <translation>起始角度</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="282"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="479"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="451"/>
       <source>Pick start angle</source>
       <translation>选择起始角度</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="284"/>
       <location filename="../../draftguitools/gui_arcs.py" line="285"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="481"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="482"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="453"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="454"/>
       <source>Aperture angle</source>
       <translation>孔径角度</translation>
     </message>
@@ -3852,70 +3944,111 @@ or try saving to a lower DWG version.</source>
       <translation>选择孔径：</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="299"/>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="73"/>
+      <source>%1 constrain</source>
+      <translation type="unfinished">%1 constrain</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="80"/>
+      <source>%1 snap</source>
+      <translation type="unfinished">%1 snap</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="94"/>
+      <source>%1/%2/%3 switch constraint</source>
+      <translation type="unfinished">%1/%2/%3 switch constraint</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="103"/>
+      <source>%1 toggle relative</source>
+      <translation type="unfinished">%1 toggle relative</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="112"/>
       <source>%1 toggle global</source>
       <translation>%1 全局模式</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="300"/>
+      <location filename="../../draftguitools/gui_tool_utils.py" line="121"/>
       <source>%1 toggle continue</source>
       <translation>%1 连续模式</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="304"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="474"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="306"/>
       <source>%1 pick center</source>
       <translation>%1 选择中心</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="310"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="478"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="310"/>
       <source>%1 pick radius</source>
       <translation>%1 选择半径</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="315"/>
-      <source>%1 pick starting angle</source>
-      <translation>%1 选择起始角度</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="320"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="486"/>
       <source>%1 pick aperture</source>
       <translation>%1 选择孔径</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="348"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="319"/>
       <source>Create Circle (Part)</source>
       <translation>建立圓形（零件）</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="366"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="337"/>
       <source>Create Circle</source>
       <translation>绘制圆</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="397"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="368"/>
       <source>Create Arc (Part)</source>
-      <translation>建立弧線（零件）</translation>
+      <translation>创建弧（零件）</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="417"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="388"/>
       <source>Create Arc</source>
       <translation>创建弧</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="491"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="463"/>
       <source>Pick aperture angle</source>
       <translation>选择孔径角度</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="534"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="578"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="482"/>
+      <source>%1 pick start angle</source>
+      <translation type="unfinished">%1 pick start angle</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_arcs.py" line="529"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="574"/>
       <source>Arc From 3 Points</source>
       <translation type="unfinished">Arc From 3 Points</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="597"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="594"/>
       <source>Create Arc From 3 Points</source>
       <translation type="unfinished">Create Arc From 3 Points</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_arcs.py" line="634"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="214"/>
+      <location filename="../../draftguitools/gui_lines.py" line="296"/>
+      <location filename="../../draftguitools/gui_rectangles.py" line="210"/>
+      <source>%1 pick first point</source>
+      <translation type="unfinished">%1 pick first point</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_arcs.py" line="638"/>
+      <location filename="../../draftguitools/gui_lines.py" line="300"/>
+      <source>%1 pick second point</source>
+      <translation type="unfinished">%1 pick second point</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_arcs.py" line="642"/>
+      <source>%1 pick third point</source>
+      <translation type="unfinished">%1 pick third point</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="110"/>
@@ -4032,13 +4165,19 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="115"/>
       <source>Create 2D View</source>
-      <translation type="unfinished">Create 2D View</translation>
+      <translation>创建 2D 视图</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_points.py" line="126"/>
-      <location filename="../../draftguitools/gui_points.py" line="138"/>
+      <location filename="../../draftguitools/gui_points.py" line="127"/>
+      <location filename="../../draftguitools/gui_points.py" line="139"/>
       <source>Create Point</source>
       <translation>创建点</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_points.py" line="169"/>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="211"/>
+      <source>%1 pick point</source>
+      <translation type="unfinished">%1 pick point</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="74"/>
@@ -4136,7 +4275,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="399"/>
       <source>New Group</source>
-      <translation type="unfinished">New Group</translation>
+      <translation>新建组</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="400"/>
@@ -4196,12 +4335,12 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>多边形</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_polygons.py" line="235"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="236"/>
       <source>Create Polygon (Part)</source>
-      <translation>建立多邊形 (零件)</translation>
+      <translation>创建多边形（零件）</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_polygons.py" line="254"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="255"/>
       <source>Create Polygon</source>
       <translation>创建多边形</translation>
     </message>
@@ -4269,24 +4408,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="68"/>
       <source>B-Spline</source>
-      <translation>贝塞尔样条曲线</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_splines.py" line="124"/>
-      <source>Spline has been closed</source>
-      <translation>样条线已闭合</translation>
+      <translation>贝塞尔曲线</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="187"/>
       <source>Create B-Spline</source>
       <translation type="unfinished">Create B-Spline</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="146"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="381"/>
-      <location filename="../../draftguitools/gui_splines.py" line="135"/>
-      <source>Last point has been removed</source>
-      <translation>最后一点已被删除</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="66"/>
@@ -4417,32 +4544,36 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>激活的对象必须有两个以上的点/节点</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="138"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="346"/>
-      <source>Bézier curve has been closed</source>
-      <translation>贝塞尔曲线已封闭</translation>
-    </message>
-    <message>
       <location filename="../../draftguitools/gui_beziers.py" line="76"/>
       <source>Bézier Curve</source>
       <translation type="unfinished">Bézier Curve</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="216"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="465"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="215"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="464"/>
       <source>Create Bézier Curve</source>
       <translation type="unfinished">Create Bézier Curve</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="268"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="267"/>
       <source>Cubic Bézier curve</source>
       <translation>三次贝塞尔曲线</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="389"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="393"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="387"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="391"/>
       <source>Click and drag to define next knot</source>
       <translation>单击并拖动以定义下一个节点</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_beziers.py" line="482"/>
+      <source>%1 click and drag to define first point and knot</source>
+      <translation type="unfinished">%1 click and drag to define first point and knot</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_beziers.py" line="486"/>
+      <source>%1 click and drag to define next point and knot</source>
+      <translation type="unfinished">%1 click and drag to define next point and knot</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="67"/>
@@ -4460,6 +4591,12 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftguitools/gui_rectangles.py" line="199"/>
       <source>Pick opposite point</source>
       <translation>选择相对点：</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_ellipses.py" line="218"/>
+      <location filename="../../draftguitools/gui_rectangles.py" line="214"/>
+      <source>%1 pick opposite point</source>
+      <translation type="unfinished">%1 pick opposite point</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_facebinders.py" line="70"/>
@@ -4624,12 +4761,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_shapestrings.py" line="68"/>
       <source>Pick ShapeString location point</source>
-      <translation>选择形状字符串位置点</translation>
+      <translation>选择字符串形状工具位置点</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="227"/>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="241"/>
       <source>Create ShapeString</source>
-      <translation>创建形状字符串</translation>
+      <translation>创建字符串形状工具</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_heal.py" line="51"/>
@@ -4654,7 +4791,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="83"/>
       <source>Polar Array</source>
-      <translation type="unfinished">Polar Array</translation>
+      <translation>极坐标阵列</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="172"/>
@@ -4681,12 +4818,12 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="367"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="265"/>
       <source>Fuse:</source>
-      <translation>合成</translation>
+      <translation>融合：</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="317"/>
       <source>Create Link array:</source>
-      <translation>建立連結陣列：</translation>
+      <translation>创建链接数组：</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="295"/>
@@ -4707,7 +4844,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="83"/>
       <source>Orthogonal Array</source>
-      <translation type="unfinished">Orthogonal Array</translation>
+      <translation>正交阵列</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="218"/>
@@ -4766,44 +4903,62 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Switch to Ortho Mode</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="443"/>
-      <source>Switch to Linear Mode</source>
-      <translation type="unfinished">Switch to Linear Mode</translation>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="444"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="480"/>
+      <source>X-Axis</source>
+      <translation>X轴</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="506"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="446"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="482"/>
+      <source>Y-Axis</source>
+      <translation>Y轴</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="448"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="484"/>
+      <source>Z-Axis</source>
+      <translation>Z轴</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="450"/>
+      <source>Switch to Linear Mode</source>
+      <translation>切换到线性模式</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="520"/>
       <source>Number of elements</source>
       <translation>元素数量</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="507"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="521"/>
       <source>Interval</source>
       <translation type="unfinished">Interval</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="54"/>
       <source>ShapeString</source>
-      <translation>字串造型产生器</translation>
+      <translation>字符串形状工具</translation>
     </message>
     <message>
-      <location filename="../../draftutils/params.py" line="473"/>
+      <location filename="../../draftutils/params.py" line="477"/>
       <source>Default</source>
       <translation>默认</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="191"/>
       <source>Radial distance is zero. Resulting array may not look correct.</source>
-      <translation>徑向距離為零。生成的陣列可能看起來不正確。"</translation>
+      <translation>径向距离为零。生成的阵列可能看起来不正确。</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="193"/>
       <source>Radial distance is negative. It is made positive to proceed.</source>
-      <translation>徑向距離為負數。它被變為正數以繼續進行。</translation>
+      <translation>径向距离为负数。继续前进时，该距离变为正数。</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="83"/>
       <source>Circular Array</source>
-      <translation type="unfinished">Circular Array</translation>
+      <translation>环形阵列</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="175"/>
@@ -4832,7 +4987,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="200"/>
       <source>Tangential distance is negative. It is made positive to proceed.</source>
-      <translation>切線距離為負數。它會被轉為正數以繼續進行。</translation>
+      <translation>切向距离为负。继续前进时，该距离为正。</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="257"/>
@@ -4851,8 +5006,8 @@ The final angle will be the base angle plus this amount.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="337"/>
-      <source>Number of circular layers:</source>
-      <translation>圆形图层数量：</translation>
+      <source>Number of concentric circles:</source>
+      <translation type="unfinished">Number of concentric circles:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="338"/>
@@ -4862,7 +5017,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="121"/>
       <source>added 'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ObliqueAngle' and 'ScaleToSize'  properties</source>
-      <translation>添加了“Fuse”保险丝、“Justification”理由、“JustificationReference”理由参考、“KeepLeftMargin”保持左边距、“ObriqueAngle”斜角和“ScaleToSize”缩放至尺寸属性</translation>
+      <translation>添加了“Fuse”、“Justification”、“JustificationReference”、“KeepLeftMargin”、“ObliqueAngle”和“ScaleToSize”属性</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="123"/>
@@ -4887,27 +5042,33 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="204"/>
       <source>ShapeString: oblique angle must be in the -80 to +80 degree range</source>
-      <translation>形状字符串：书目角度必须在 -80 到 +80 度范围</translation>
+      <translation>字符串形状工具：倾斜角度必须在 -80 到 +80 度范围内</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="216"/>
       <source>ShapeString: string has no wires</source>
-      <translation>形状字符串：字符串没有线</translation>
+      <translation>字符串形状工具：字符串没有线</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="249"/>
       <source>ShapeString: face creation failed for one character</source>
-      <translation>形状字符串：一个字符创建失败</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="79"/>
-      <source>added view property 'ScaleMultiplier'</source>
-      <translation>添加视图属性“缩放器”'ScaleMultiplier'</translation>
+      <translation>字符串形状工具：一个字符的面创建失败</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draft_annotation.py" line="82"/>
+      <source>added view property 'ScaleMultiplier'</source>
+      <translation>添加了视图属性“ScaleMultiplier”</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/draft_annotation.py" line="85"/>
       <source>added view property 'AnnotationStyle'</source>
-      <translation>添加视图属性'注释样式'</translation>
+      <translation>添加了视图属性“AnnotationStyle”</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/draft_annotation.py" line="120"/>
+      <location filename="../../draftobjects/wire.py" line="132"/>
+      <source>migrated view properties</source>
+      <translation type="unfinished">migrated view properties</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="442"/>
@@ -4989,17 +5150,17 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftobjects/patharray.py" line="815"/>
       <location filename="../../draftobjects/patharray.py" line="837"/>
       <source>Tangent and normal vectors are parallel. Normal replaced by a default axis.</source>
-      <translation>切線和法向量平行。法線被替換為預設軸。</translation>
+      <translation>切向量和法向量平行。法向量被默认轴替换。</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="827"/>
       <source>Cannot calculate normal vector. Using the default normal instead.</source>
-      <translation>無法計算法向量。將使用預設法線。</translation>
+      <translation>无法计算法向量。改用默认法线。</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="843"/>
       <source>AlignMode {} is not implemented</source>
-      <translation>对齐模式 {} 尚未实现</translation>
+      <translation>AlignMode {} 未实现</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_sketch.py" line="93"/>
@@ -5073,55 +5234,55 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftmake/make_patharray.py" line="345"/>
       <location filename="../../draftmake/make_polararray.py" line="109"/>
       <source>Wrong input: must be a number.</source>
-      <translation>输入错误：必须是一个数字。</translation>
+      <translation>错误输入：必须是一个数字。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_circulararray.py" line="147"/>
-      <location filename="../../draftmake/make_dimension.py" line="270"/>
-      <location filename="../../draftmake/make_dimension.py" line="276"/>
-      <location filename="../../draftmake/make_dimension.py" line="283"/>
-      <location filename="../../draftmake/make_dimension.py" line="391"/>
-      <location filename="../../draftmake/make_dimension.py" line="407"/>
-      <location filename="../../draftmake/make_dimension.py" line="522"/>
-      <location filename="../../draftmake/make_dimension.py" line="593"/>
-      <location filename="../../draftmake/make_dimension.py" line="619"/>
-      <location filename="../../draftmake/make_dimension.py" line="626"/>
+      <location filename="../../draftmake/make_dimension.py" line="268"/>
+      <location filename="../../draftmake/make_dimension.py" line="274"/>
+      <location filename="../../draftmake/make_dimension.py" line="281"/>
+      <location filename="../../draftmake/make_dimension.py" line="389"/>
+      <location filename="../../draftmake/make_dimension.py" line="405"/>
+      <location filename="../../draftmake/make_dimension.py" line="520"/>
+      <location filename="../../draftmake/make_dimension.py" line="591"/>
+      <location filename="../../draftmake/make_dimension.py" line="617"/>
+      <location filename="../../draftmake/make_dimension.py" line="624"/>
       <location filename="../../draftmake/make_label.py" line="202"/>
       <location filename="../../draftmake/make_patharray.py" line="194"/>
       <location filename="../../draftmake/make_patharray.py" line="244"/>
       <location filename="../../draftmake/make_patharray.py" line="252"/>
       <location filename="../../draftmake/make_polararray.py" line="115"/>
       <source>Wrong input: must be a vector.</source>
-      <translation>错误的输入：必须是一个矢量。</translation>
+      <translation>错误输入：必须是一个向量。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_patharray.py" line="206"/>
       <source>Wrong input: must be a list or tuple of strings, or a single string.</source>
-      <translation>錯誤的輸入：必須是一個字串列表或元組，或單個字串。</translation>
+      <translation>错误输入：必须是字符串列表或元组，或者单个字符串。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_patharray.py" line="237"/>
       <source>Wrong input: must be 'Original', 'Frenet', or 'Tangent'.</source>
-      <translation>錯誤輸入：必須是 'Original'、'Frenet' 或 'Tangent'。</translation>
+      <translation>错误输入：必须是“Original”、“Frenet”或“Tangent”。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="81"/>
       <source>Wrong input: must be a number or vector.</source>
-      <translation>错误的输入：必须是一个数字或向量。</translation>
+      <translation>错误输入：必须是一个数字或向量。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="86"/>
       <location filename="../../draftmake/make_orthoarray.py" line="89"/>
       <location filename="../../draftmake/make_orthoarray.py" line="92"/>
       <source>Input: single value expanded to vector.</source>
-      <translation>输入：单个值扩展到矢量。</translation>
+      <translation>输入：扩展为向量的单个值。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_circulararray.py" line="140"/>
       <location filename="../../draftmake/make_orthoarray.py" line="108"/>
       <location filename="../../draftmake/make_polararray.py" line="103"/>
       <source>Wrong input: must be an integer number.</source>
-      <translation>错误的输入：必须是整数。</translation>
+      <translation>错误输入：必须是一个整数。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="112"/>
@@ -5135,7 +5296,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftmake/make_pointarray.py" line="117"/>
       <location filename="../../draftmake/make_text.py" line="113"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
-      <translation>错误的输入：必须是一个位置、一个矢量或一个旋转。</translation>
+      <translation>错误输入：必须是放置、向量或旋转。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="223"/>
@@ -5160,7 +5321,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftmake/make_label.py" line="259"/>
       <source>Wrong input: label_type must be a string.</source>
-      <translation>输入错误：标签类型必须是字符串。</translation>
+      <translation>错误输入：label_type 必须是字符串。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="264"/>
@@ -5173,13 +5334,13 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftmake/make_text.py" line="98"/>
       <location filename="../../draftmake/make_text.py" line="103"/>
       <source>Wrong input: must be a list of strings or a single string.</source>
-      <translation>输入错误：必须是字符串列表或单个字符串。</translation>
+      <translation>错误输入：必须是字符串列表或单个字符串。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="285"/>
       <location filename="../../draftmake/make_label.py" line="289"/>
       <source>Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</source>
-      <translation>錯誤輸入：必須是一個字串，'水平 (Horizontal)'、'垂直 (Vertical)' 或 '自定义 (Custom)'。</translation>
+      <translation>错误输入：必须是字符串“Horizontal”（水平） 、“Vertical”（垂直）或“Custom”（自定义）。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="301"/>
@@ -5189,7 +5350,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftmake/make_label.py" line="335"/>
       <source>Direction is not 'Custom'; points won't be used.</source>
-      <translation>方向不是 '自定义 (Custom)'; 點將不會被用到。</translation>
+      <translation>方向不是“Custom”；点不会被使用。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="365"/>
@@ -5204,98 +5365,98 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftmake/make_pointarray.py" line="105"/>
       <source>Wrong input: object has the wrong type.</source>
-      <translation>输入错误：对象的类型错误。</translation>
+      <translation>错误输入：对象类型错误。</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="223"/>
+      <location filename="../../draftmake/make_dimension.py" line="221"/>
       <source>This function is deprecated. Do not use this function directly.</source>
-      <translation>此函数已废弃。请不要直接使用此函数。</translation>
+      <translation>此函数已弃用。请勿直接使用此函数。</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="224"/>
+      <location filename="../../draftmake/make_dimension.py" line="222"/>
       <source>Use one of 'make_linear_dimension', or 'make_linear_dimension_obj'.</source>
-      <translation>使用一个 'make_linear_dimension' 或 'make_linear_dimension_obj'。</translation>
+      <translation>使用“make_linear_dimension”或“make_linear_dimension_obj”之一。</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="357"/>
+      <location filename="../../draftmake/make_dimension.py" line="355"/>
       <source>Wrong input: edge_object must not be a list or tuple.</source>
       <translation>错误输入：edge_object 不能是列表或元组。</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="362"/>
-      <location filename="../../draftmake/make_dimension.py" line="478"/>
+      <location filename="../../draftmake/make_dimension.py" line="360"/>
+      <location filename="../../draftmake/make_dimension.py" line="476"/>
       <source>Wrong input: edge_object not in document.</source>
       <translation>错误输入：edge_object 不在文档中。</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="366"/>
-      <location filename="../../draftmake/make_dimension.py" line="482"/>
+      <location filename="../../draftmake/make_dimension.py" line="364"/>
+      <location filename="../../draftmake/make_dimension.py" line="480"/>
       <source>Wrong input: object doesn't have a 'Shape' to measure.</source>
-      <translation>错误的输入：对象没有可测量的“形状”。</translation>
+      <translation>错误输入：对象没有要测量的“形状”。</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="370"/>
+      <location filename="../../draftmake/make_dimension.py" line="368"/>
       <source>Wrong input: object does not have at least 1 element in 'Vertexes' to use for measuring.</source>
       <translation type="unfinished">Wrong input: object does not have at least 1 element in 'Vertexes' to use for measuring.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="376"/>
-      <location filename="../../draftmake/make_dimension.py" line="492"/>
+      <location filename="../../draftmake/make_dimension.py" line="374"/>
+      <location filename="../../draftmake/make_dimension.py" line="490"/>
       <source>Wrong input: must be an integer.</source>
-      <translation>错误的输入：必须是整数。</translation>
+      <translation>错误输入：必须是一个整型。</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="381"/>
+      <location filename="../../draftmake/make_dimension.py" line="379"/>
       <source>i1: values below 1 are not allowed; will be set to 1.</source>
-      <translation>i1：不允许低于1的值；将设置为1。</translation>
+      <translation>i1：不允许使用低于 1 的值；将设置为 1。</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="385"/>
-      <location filename="../../draftmake/make_dimension.py" line="400"/>
+      <location filename="../../draftmake/make_dimension.py" line="383"/>
+      <location filename="../../draftmake/make_dimension.py" line="398"/>
       <source>Wrong input: vertex not in object.</source>
-      <translation>输入错误：顶点不在对象。</translation>
+      <translation>错误输入：顶点不在对象中。</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="396"/>
+      <location filename="../../draftmake/make_dimension.py" line="394"/>
       <source>i2: values below 1 are not allowed; will be set to the last vertex in the object.</source>
       <translation>i2：不允许低于1的值；将设置为对象中的最后一个顶点。</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="486"/>
+      <location filename="../../draftmake/make_dimension.py" line="484"/>
       <source>Wrong input: object doesn't have at least one element in 'Edges' to use for measuring.</source>
-      <translation>错误的输入：对象在“Edges”中没有至少一个元素可以用于测量。</translation>
+      <translation>错误输入：对象在“Edges”中至少没有一个元素可用于测量。</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="497"/>
+      <location filename="../../draftmake/make_dimension.py" line="495"/>
       <source>index: values below 1 are not allowed; will be set to 1.</source>
       <translation>索引：不允许低于1的值；将设置为1。</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="501"/>
+      <location filename="../../draftmake/make_dimension.py" line="499"/>
       <source>Wrong input: index doesn't correspond to an edge in the object.</source>
-      <translation>错误的输入：索引不对应于对象中的边缘。</translation>
+      <translation>错误输入：索引与对象中的边缘不对应。</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="505"/>
+      <location filename="../../draftmake/make_dimension.py" line="503"/>
       <source>Wrong input: index doesn't correspond to a circular edge.</source>
-      <translation>错误的输入：索引不对应环形边缘。</translation>
+      <translation>错误输入：索引与环形边缘不对应。</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="511"/>
-      <location filename="../../draftmake/make_dimension.py" line="515"/>
+      <location filename="../../draftmake/make_dimension.py" line="509"/>
+      <location filename="../../draftmake/make_dimension.py" line="513"/>
       <source>Wrong input: must be a string, 'radius' or 'diameter'.</source>
-      <translation>錯誤輸入：必須是一個字串，'radius' 或 'diameter'。</translation>
+      <translation>错误输入：必须是字符串“radius”（半径）或“diameter”（直径）。</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_dimension.py" line="600"/>
-      <location filename="../../draftmake/make_dimension.py" line="607"/>
+      <location filename="../../draftmake/make_dimension.py" line="598"/>
+      <location filename="../../draftmake/make_dimension.py" line="605"/>
       <source>Wrong input: must be a list with two angles.</source>
-      <translation>错误的输入：必须是包含两个角度的列表。</translation>
+      <translation>错误输入：必须是一个包含两个角度的列表。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_circulararray.py" line="133"/>
       <source>Wrong input: must be a number or quantity.</source>
-      <translation>输入错误：必须是一个数字或数量。</translation>
+      <translation>错误输入：必须是一个数字或数量。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_layer.py" line="65"/>
@@ -5305,7 +5466,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftmake/make_layer.py" line="150"/>
       <source>Wrong input: it must be a string.</source>
-      <translation>错误的输入：它必须是一个字符串。</translation>
+      <translation>错误输入：它必须是一个字符串。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_layer.py" line="159"/>
@@ -5313,30 +5474,30 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftmake/make_layer.py" line="170"/>
       <location filename="../../draftmake/make_layer.py" line="174"/>
       <source>Wrong input: must be a tuple of three floats 0.0 to 1.0.</source>
-      <translation>输入错误：必须是三个浮点0-1.0的元组。</translation>
+      <translation>错误输入：必须是一个由三个浮点数 0.0 到 1.0 组成的元组。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_layer.py" line="189"/>
       <location filename="../../draftmake/make_layer.py" line="193"/>
       <source>Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'.</source>
-      <translation>錯誤輸入：必須是 '實線 (Solid)'、'虛線 (Dashed)'、'點線 (Dotted)' 或 '虛-點線(Dashdot)'。</translation>
+      <translation>错误输入：必须为“Solid”、“Dashed”、“Dotted”或“Dashdot”。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_layer.py" line="201"/>
       <source>Wrong input: must be a number between 0 and 100.</source>
-      <translation>输入错误：必须是0到100之间的数字。</translation>
+      <translation>错误输入：必须是 0 到 100 之间的数字。</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="440"/>
       <location filename="../../draftviewproviders/view_clone.py" line="67"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="274"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="318"/>
       <location filename="../../draftviewproviders/view_hatch.py" line="83"/>
       <source>Edit</source>
       <translation>编辑</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="448"/>
-      <location filename="../../draftviewproviders/view_wire.py" line="163"/>
+      <location filename="../../draftviewproviders/view_wire.py" line="198"/>
       <source>Flatten</source>
       <translation>平面化</translation>
     </message>
@@ -5413,7 +5574,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftfunctions/mirror.py" line="100"/>
       <source>mirrored</source>
-      <translation>已鏡射</translation>
+      <translation>已镜像</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="536"/>
@@ -5441,12 +5602,6 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>检测到对象有多个面在同一个面：正在优化</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/upgrade.py" line="571"/>
-      <location filename="../../draftfunctions/upgrade.py" line="615"/>
-      <source>Found 1 non-parametric object: draftifying it</source>
-      <translation>找到1个非参数对象: 对其进行编辑</translation>
-    </message>
-    <message>
       <location filename="../../draftfunctions/upgrade.py" line="582"/>
       <source>Found 1 closed sketch object: creating a face from it</source>
       <translation>找到 1 个闭合草图对象：从它创建一个面</translation>
@@ -5459,7 +5614,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="593"/>
       <source>Found several wires or edges: wiring them</source>
-      <translation>找到數個線段或邊：將其連接起來</translation>
+      <translation>发现几条线或边：将其连接起来</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="597"/>
@@ -5478,9 +5633,15 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>发现 1 个开口线：封闭它</translation>
     </message>
     <message>
+      <location filename="../../draftfunctions/upgrade.py" line="571"/>
+      <location filename="../../draftfunctions/upgrade.py" line="615"/>
+      <source>Found 1 non-parametric object: replacing it with a Draft object</source>
+      <translation type="unfinished">Found 1 non-parametric object: replacing it with a Draft object</translation>
+    </message>
+    <message>
       <location filename="../../draftfunctions/upgrade.py" line="621"/>
       <source>Found points: creating compound</source>
-      <translation>找到點：將其建立組件</translation>
+      <translation>发现点：创建复合体</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_text.py" line="185"/>
@@ -5488,21 +5649,21 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>文本</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="203"/>
+      <location filename="../../draftobjects/dimension.py" line="202"/>
       <source>added view property 'TextColor'</source>
       <translation>添加视图属性 'TextColor'</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="205"/>
+      <location filename="../../draftobjects/dimension.py" line="204"/>
       <location filename="../../draftobjects/label.py" line="267"/>
-      <location filename="../../draftobjects/text.py" line="94"/>
+      <location filename="../../draftobjects/text.py" line="99"/>
       <source>renamed 'DisplayMode' options to 'World/Screen'</source>
       <translation>重命名为 'World/Screen' 选项</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="263"/>
       <source>renamed view property 'TextFont' to 'FontName'</source>
-      <translation>將視圖屬性 'TextFont' 重新命名為 'FontName'</translation>
+      <translation>将视图属性“TextFont”重命名为“FontName”</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="265"/>
@@ -5585,7 +5746,7 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>选择三个顶点，一个或多个形状或对象来定义一个工作面</translation>
     </message>
     <message>
-      <location filename="../../draftutils/params.py" line="202"/>
+      <location filename="../../draftutils/params.py" line="206"/>
       <source>Do you want to update the SVG pattern options
 of existing objects in all opened documents?</source>
       <translation>您想要更新所有打开文档中存在的对象的 SVG 模式选项
@@ -5610,23 +5771,6 @@ of existing objects in all opened documents?</source>
       <location filename="../../draftobjects/layer.py" line="102"/>
       <source>updated view properties</source>
       <translation>更新视图属性</translation>
-    </message>
-    <message>
-      <location filename="../../importDXF.py" line="153"/>
-      <source>The DXF import/export libraries needed by FreeCAD to handle
-the DXF format were not found on this system.
-Please either allow FreeCAD to download these libraries:
-  1 - Load Draft workbench
-  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
-Or download these libraries manually, as explained on
-https://github.com/yorikvanhavre/Draft-dxf-importer
-To enabled FreeCAD to download these libraries, answer Yes.</source>
-      <translation>此系统上未找到 FreeCAD 处理 DXF​​ 格式所需的 DXF 导入/导出库。
-请允许 FreeCAD 下载这些库：
-1 - 加载 Draft 工作台
-2 - 菜单编辑 &gt; 首选项 &gt; 导入-导出 &gt; DXF &gt; 启用下载
-或者手动下载这些库，如 https://github.com/yorikvanhavre/Draft-dxf-importer 中所述
-要允许 FreeCAD 下载这些库，请回答“是”。</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
@@ -5801,6 +5945,50 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <source>Merge Layer Duplicates</source>
       <translation type="unfinished">Merge Layer Duplicates</translation>
     </message>
+    <message>
+      <location filename="../../importDXF.py" line="153"/>
+      <source>The DXF import/export libraries needed by FreeCAD to handle
+the DXF format were not found on this system.
+Please either allow FreeCAD to download these libraries:
+  1 - Load Draft workbench
+  2 - Menu Edit → Preferences → Import-Export → DXF → Enable downloads
+Or download these libraries manually, as explained on
+https://github.com/yorikvanhavre/Draft-dxf-importer
+To enabled FreeCAD to download these libraries, answer Yes.</source>
+      <translation type="unfinished">The DXF import/export libraries needed by FreeCAD to handle
+the DXF format were not found on this system.
+Please either allow FreeCAD to download these libraries:
+  1 - Load Draft workbench
+  2 - Menu Edit → Preferences → Import-Export → DXF → Enable downloads
+Or download these libraries manually, as explained on
+https://github.com/yorikvanhavre/Draft-dxf-importer
+To enabled FreeCAD to download these libraries, answer Yes.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/hatch.py" line="104"/>
+      <source>PAT file not found</source>
+      <translation type="unfinished">PAT file not found</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/hatch.py" line="108"/>
+      <source>Specified PAT file is not a file</source>
+      <translation type="unfinished">Specified PAT file is not a file</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/hatch.py" line="112"/>
+      <source>Specified file type is not supported</source>
+      <translation type="unfinished">Specified file type is not supported</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/hatch.py" line="116"/>
+      <source>Pattern not found in PAT file</source>
+      <translation type="unfinished">Pattern not found in PAT file</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/text.py" line="113"/>
+      <source>removed view properties</source>
+      <translation type="unfinished">removed view properties</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -5842,12 +6030,12 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="../../InitGui.py" line="126"/>
       <source>&amp;Modification</source>
-      <translation>修改 (&amp;M)</translation>
+      <translation>修改(&amp;M)</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="129"/>
       <source>&amp;Utilities</source>
-      <translation>实用程序 (&amp;U)</translation>
+      <translation>工具(&amp;U)</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_tools.py" line="50"/>
@@ -5868,13 +6056,6 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../importDXF.py" line="136"/>
-      <source>Download of dxf libraries failed.
-Please install the dxf Library addon manually
-from menu Tools -&gt; Addon Manager</source>
-      <translation>Dxf 库下载失败。请从菜单的工具-&gt; 插件管理器中手动安装 dxf 库插件</translation>
-    </message>
-    <message>
       <location filename="../../draftguitools/gui_fillets.py" line="83"/>
       <source>Fillet</source>
       <translation>圆角</translation>
@@ -5890,32 +6071,32 @@ from menu Tools -&gt; Addon Manager</source>
       <translation>创建倒角</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="421"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="437"/>
       <source>Save style</source>
       <translation>保存样式</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="422"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="438"/>
       <source>Name of this new style</source>
       <translation type="unfinished">Name of this new style</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="429"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="445"/>
       <source>Warning</source>
       <translation>警告</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="430"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="446"/>
       <source>Name exists. Overwrite?</source>
-      <translation>名称存在。覆盖？</translation>
+      <translation>名称已存在。是否覆盖？</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="450"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="466"/>
       <source>Error: json module not found. Unable to load style</source>
       <translation>错误：找不到json模块。无法加载样式</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="469"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="485"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation>错误：找不到json模块。无法保存样式</translation>
     </message>
@@ -5930,14 +6111,14 @@ from menu Tools -&gt; Addon Manager</source>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="147"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="113"/>
       <source>True</source>
-      <translation>是</translation>
+      <translation>真</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="124"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="149"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="117"/>
       <source>False</source>
-      <translation>否</translation>
+      <translation>假</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="50"/>
@@ -6043,7 +6224,7 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="372"/>
       <source>Line Print Color</source>
-      <translation type="unfinished">Line Print Color</translation>
+      <translation>线条打印颜色</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="371"/>
@@ -6118,7 +6299,7 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="../../draftobjects/label.py" line="350"/>
       <source>Label + Material</source>
-      <translation>标签 + 材料</translation>
+      <translation>标签 + 材质</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="101"/>
@@ -6139,6 +6320,15 @@ from menu Tools -&gt; Addon Manager</source>
       <location filename="../../draftobjects/pointarray.py" line="232"/>
       <source>Point object does not have a discrete point, it cannot be used for an array</source>
       <translation type="unfinished">Point object does not have a discrete point, it cannot be used for an array</translation>
+    </message>
+    <message>
+      <location filename="../../importDXF.py" line="136"/>
+      <source>Download of DXF libraries failed.
+Please install the DXF Library addon manually
+from menu Tools → Addon Manager</source>
+      <translation type="unfinished">Download of DXF libraries failed.
+Please install the DXF Library addon manually
+from menu Tools → Addon Manager</translation>
     </message>
   </context>
   <context>
@@ -6184,22 +6374,8 @@ from menu Tools -&gt; Addon Manager</source>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="66"/>
-      <source>Creates a label, optionally attached to a selected object or subelement.
-
-First select a vertex, an edge, or a face of an object, then call this command,
-and then set the position of the leader line and the textual label.
-The label will be able to display information about this object, and about the selected subelement,
-if any.
-
-If many objects or many subelements are selected, only the first one in each case
-will be used to provide information to the label.</source>
-      <translation>創建一個標籤，可選擇附加到所選物件或子元件。
-
-首先選擇一個物件的頂點、邊緣或面，然後呼叫此命令，
-然後設定標籤線的位置和文本標籤。
-該標籤將能夠顯示有關該物件以及所選子元件（如果有的話）的資訊。
-
-如果選擇了多個物件或多個子元件，則每種情況只會使用第一個來提供資訊給標籤。</translation>
+      <source>Creates a label, optionally attached to a selected object or subelement</source>
+      <translation type="unfinished">Creates a label, optionally attached to a selected object or subelement</translation>
     </message>
   </context>
   <context>
@@ -6218,12 +6394,12 @@ will be used to provide information to the label.</source>
   <context>
     <name>Draft_Wire</name>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="310"/>
+      <location filename="../../draftguitools/gui_lines.py" line="338"/>
       <source>Polyline</source>
       <translation>折线</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="313"/>
+      <location filename="../../draftguitools/gui_lines.py" line="341"/>
       <source>Creates a polyline</source>
       <translation type="unfinished">Creates a polyline</translation>
     </message>
@@ -6238,7 +6414,7 @@ will be used to provide information to the label.</source>
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="44"/>
       <source>Creates hatches on the faces of a selected object</source>
-      <translation>在被選物件的表面上建立填充圖樣</translation>
+      <translation>在选定对象的表面上创建阴影</translation>
     </message>
   </context>
   <context>
@@ -6313,12 +6489,12 @@ If the "Copy" option is active, it creates displaced copies.</translation>
   <context>
     <name>Draft_Point</name>
     <message>
-      <location filename="../../draftguitools/gui_points.py" line="62"/>
+      <location filename="../../draftguitools/gui_points.py" line="63"/>
       <source>Point</source>
       <translation>点</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_points.py" line="65"/>
+      <location filename="../../draftguitools/gui_points.py" line="66"/>
       <source>Creates a point</source>
       <translation type="unfinished">Creates a point</translation>
     </message>
@@ -6596,11 +6772,11 @@ otherwise it tries to heal all objects in the active document.</translation>
     <message>
       <location filename="../../draftguitools/gui_downgrade.py" line="61"/>
       <source>Downgrades the selected objects into simpler shapes.
-The result of the operation depends on the types of objects, which may be able to be downgraded several times in a row.
-For example, it explodes the selected polylines into simpler faces, wires, and then edges. It can also subtract faces.</source>
-      <translation>將所選物件降級為更簡單的形狀。
-此操作的結果取決於物件的類型，可能可以連續多次降級。
-例如，它可以將所選多邊形分解為更簡單的面、線和邊緣。它還可以執行面的減法操作。</translation>
+The result of the operation depends on the types of objects, which may be downgraded several times in a row.
+For example, a 3D solid is deconstructed into separate faces, wires, and then edges. Faces can also be subtracted.</source>
+      <translation type="unfinished">Downgrades the selected objects into simpler shapes.
+The result of the operation depends on the types of objects, which may be downgraded several times in a row.
+For example, a 3D solid is deconstructed into separate faces, wires, and then edges. Faces can also be subtracted.</translation>
     </message>
   </context>
   <context>
@@ -6640,17 +6816,17 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="../../draftobjects/shapestring.py" line="76"/>
       <source>Height reference used for justification</source>
-      <translation>用於對齊的高度參考</translation>
+      <translation>用于对齐的高度参考</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="82"/>
       <source>Keep left margin and leading white space when justification is left</source>
-      <translation>保留左边的边距和左边的白色空间</translation>
+      <translation>左对齐时保留左边距和前导空格</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="86"/>
       <source>Scale to ensure cap height is equal to size</source>
-      <translation>确保上限高度等于大小</translation>
+      <translation>缩放以确保大写高度与尺寸相等</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="90"/>
@@ -6670,37 +6846,37 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="../../draftobjects/shapestring.py" line="102"/>
       <source>Fuse faces if faces overlap, usually not required (can be very slow)</source>
-      <translation>如果面重疊，則融合面，通常不需要（可能會非常慢）</translation>
+      <translation>如果面重叠则融合面，通常不需要（可能非常慢）</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/hatch.py" line="50"/>
+      <location filename="../../draftobjects/hatch.py" line="51"/>
       <source>The base object used by this object</source>
       <translation>此对象使用的基对象</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/hatch.py" line="53"/>
+      <location filename="../../draftobjects/hatch.py" line="54"/>
       <source>The PAT file used by this object</source>
       <translation>此对象使用的 PAT 文件</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/hatch.py" line="56"/>
+      <location filename="../../draftobjects/hatch.py" line="57"/>
       <source>The pattern name used by this object</source>
       <translation>此对象使用的图案名称</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/hatch.py" line="59"/>
+      <location filename="../../draftobjects/hatch.py" line="60"/>
       <source>The pattern scale used by this object</source>
       <translation>此对象使用的图案缩放比例</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/hatch.py" line="62"/>
+      <location filename="../../draftobjects/hatch.py" line="63"/>
       <source>The pattern rotation used by this object</source>
-      <translation>此物件所使用的圖樣旋轉</translation>
+      <translation>此对象使用的图样旋转</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/hatch.py" line="65"/>
+      <location filename="../../draftobjects/hatch.py" line="66"/>
       <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
-      <translation>若設為偽 (False)，則將填充應用到面上，不進行平移（這對非 XY 面可能會產生錯誤的結果）</translation>
+      <translation>如果设为 False，则图案将按原样应用于面，无需平移（这可能会给非 XY 面带来错误的结果）</translation>
     </message>
     <message>
       <location filename="../../draftobjects/clone.py" line="52"/>
@@ -6716,7 +6892,7 @@ It is a list of strings; each element in the list will be displayed in its own l
       <location filename="../../draftobjects/clone.py" line="61"/>
       <source>If Clones includes several objects,
 set True for fusion or False for compound</source>
-      <translation>如果克隆包含多個物件，設為真 (True) 進行融合，或設為 偽 (False) 進行組件。</translation>
+      <translation>如果克隆包含多个对象，则设置 True 表示融合，False 表示复合</translation>
     </message>
     <message>
       <location filename="../../draftobjects/clone.py" line="64"/>
@@ -6732,8 +6908,8 @@ set True for fusion or False for compound</source>
       <location filename="../../draftobjects/circle.py" line="50"/>
       <source>End angle of the arc (for a full circle, 
                 give it same value as First Angle)</source>
-      <translation>弧的终结角度(对于整个圆圈， 
-                给它与第一个角相同的值)</translation>
+      <translation>圆弧的终止角（对于整圆，
+请将其设置为与起始角相同的值）</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="54"/>
@@ -6754,7 +6930,7 @@ set True for fusion or False for compound</source>
       <location filename="../../draftobjects/circle.py" line="62"/>
       <location filename="../../draftobjects/polygon.py" line="72"/>
       <location filename="../../draftobjects/rectangle.py" line="67"/>
-      <location filename="../../draftobjects/wire.py" line="93"/>
+      <location filename="../../draftobjects/wire.py" line="95"/>
       <source>The area of this object</source>
       <translation>此对象的面积</translation>
     </message>
@@ -6781,14 +6957,14 @@ set True for fusion or False for compound</source>
     <message>
       <location filename="../../draftobjects/polygon.py" line="60"/>
       <location filename="../../draftobjects/rectangle.py" line="52"/>
-      <location filename="../../draftobjects/wire.py" line="77"/>
+      <location filename="../../draftobjects/wire.py" line="79"/>
       <source>Radius to use to fillet the corners</source>
       <translation>用于圆角的半径</translation>
     </message>
     <message>
       <location filename="../../draftobjects/polygon.py" line="64"/>
       <location filename="../../draftobjects/rectangle.py" line="55"/>
-      <location filename="../../draftobjects/wire.py" line="81"/>
+      <location filename="../../draftobjects/wire.py" line="83"/>
       <source>Size of the chamfer to give to the corners</source>
       <translation>边角处倒角的尺寸</translation>
     </message>
@@ -6919,18 +7095,18 @@ The 'Custom Text' is displayed only if 'Label Type' is set to 'Custom'.</source>
 
 If 'Custom' is chosen, the contents of 'Custom Text' will be used.
 For other types, the string will be calculated automatically from the object defined in 'Target'.
-'Tag' and 'Material' only work for objects that have these properties, like Arch objects.
+'Tag' and 'Material' only work for objects that have these properties, like BIM objects.
 
 For 'Position', 'Length', and 'Area' these properties will be extracted from the main object in 'Target',
 or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is specified.</source>
-      <translation>此标签显示的信息类型。
+      <translation type="unfinished">The type of information displayed by this label.
 
-如果选择了“自定义”，则使用“自定义文本”的内容。
-对于其他类型，将从“目标”中定义的对象自动计算该字符串。
-'Tag' 和 'Material' 只适用于具有这些属性的对象，如Arch 对象。
+If 'Custom' is chosen, the contents of 'Custom Text' will be used.
+For other types, the string will be calculated automatically from the object defined in 'Target'.
+'Tag' and 'Material' only work for objects that have these properties, like BIM objects.
 
-关于“定位”、“长度”和“区域”，这些属性将从“目标”中的主对象中提取。
-或从子元素'VertexN', 'EdgeN', 或 'FacebookN', 如果指定的话。</translation>
+For 'Position', 'Length', and 'Area' these properties will be extracted from the main object in 'Target',
+or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is specified.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="85"/>
@@ -7060,11 +7236,11 @@ Otherwise the copies will have the same orientation as the original Base object.
       <source>The type of array to create.
 - Ortho: places the copies in the direction of the global X, Y, Z axes.
 - Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
-- Circular: places the copies in concentric circular layers around the base object.</source>
-      <translation>要创建的阵列的类型。
-- 正交：将副本放置在全局 X，Y，Z 轴的方向上。
-- 极性：将副本沿着圆弧放置，直至指定角度，并以中心和轴定义的特定方向放置。
-- 圆形：将副本放置在围绕基础对象的同心圆形层中。</translation>
+- Circular: places the copies in concentric circles around the base object.</source>
+      <translation type="unfinished">The type of array to create.
+- Ortho: places the copies in the direction of the global X, Y, Z axes.
+- Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
+- Circular: places the copies in concentric circles around the base object.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="128"/>
@@ -7121,9 +7297,9 @@ The 'Axis' passes through this point.</source>
       <source>The axis object that overrides the value of 'Axis' and 'Center', for example, a datum line.
 Its placement, position and rotation, will be used when creating polar and circular arrays.
 Leave this property empty to be able to set 'Axis' and 'Center' manually.</source>
-      <translation>覆盖“轴”和“中心”的值的轴对象，例如基准线。
-创建极坐标和圆形数组时将使用其放置，位置和旋转。
-将此属性保留为空，以便能够手动设置“轴”和“中心”。</translation>
+      <translation>覆盖“轴”和“中心”值的轴对象，例如基准线。
+创建极坐标和环形阵列时将使用其位置、方位和旋转。
+将此属性留空即可手动设置“轴”和“中心”。</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="283"/>
@@ -7142,30 +7318,30 @@ Leave this property empty to be able to set 'Axis' and 'Center' manually.</sourc
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="318"/>
-      <source>Distance between circular layers</source>
-      <translation>环形层之间的距离</translation>
+      <source>Distance between concentric circles</source>
+      <translation type="unfinished">Distance between concentric circles</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="329"/>
-      <source>Distance between copies in the same circular layer</source>
-      <translation>同一环形层中副本之间的距离</translation>
+      <source>Distance between copies in the same circle</source>
+      <translation type="unfinished">Distance between copies in the same circle</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="340"/>
-      <source>Number of circular layers. The 'Base' object counts as one layer.</source>
-      <translation>环形层的数量。 “基础”对象计为一层。</translation>
+      <source>Number of concentric circle. The 'Base' object counts as one circle.</source>
+      <translation type="unfinished">Number of concentric circle. The 'Base' object counts as one circle.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="352"/>
-      <source>A parameter that determines how many symmetry planes the circular array will have.</source>
-      <translation>确定圆形阵列具有多少个对称平面的参数。</translation>
+      <source>A parameter that determines how many symmetry planes the circular array will have</source>
+      <translation type="unfinished">A parameter that determines how many symmetry planes the circular array will have</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="142"/>
       <source>Total number of elements in the array.
 This property is read-only, as the number depends on the parameters of the array.</source>
-      <translation>数组中元素的总数。
-此属性是只读的，因为数量取决于数组的参数。</translation>
+      <translation>阵列中元素的总数。
+此属性为只读，因为元素数量取决于阵列的参数。</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="67"/>
@@ -7181,8 +7357,8 @@ This property is read-only, as the number depends on the parameters of the array
       <location filename="../../draftobjects/pointarray.py" line="97"/>
       <source>Number of copies in the array.
 This property is read-only, as the number depends on the points in 'Point Object'.</source>
-      <translation>数组中的副本数量。
-此属性是只读的，因为数字取决于“点对象”中的点。</translation>
+      <translation>阵列中的副本数量。
+此属性为只读，因为副本数量取决于“点对象”中的点。</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="107"/>
@@ -7237,7 +7413,7 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="115"/>
       <source>If this is True, this object will include only visible objects</source>
-      <translation>如果为 True，则该对象将仅包含可见对象</translation>
+      <translation>如果为真，则该对象将仅包含可见对象</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="121"/>
@@ -7252,17 +7428,17 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="131"/>
       <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
-      <translation>如果为 True，则仅处理实体几何图形。这将覆盖基础对象的“仅固体”属性</translation>
+      <translation>如果为真，则仅处理实体几何图形。这将覆盖基础对象的“仅固体”属性</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="136"/>
       <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
-      <translation>如果为 True，则内容将被剪裁到剖面的边界（如果适用）。这将覆盖基础对象的 剪切 属性</translation>
+      <translation>如果为真，则内容将被剪裁到剖面的边界（如果适用）。这将覆盖基础对象的 剪切 属性</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="141"/>
       <source>This object will be recomputed only if this is True.</source>
-      <translation>仅当为 True 时，才会重新计算该物体。</translation>
+      <translation>仅当为真时，才会重新计算该物体。</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bezcurve.py" line="46"/>
@@ -7282,7 +7458,7 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/bezcurve.py" line="58"/>
       <source>If the Bezier curve should be closed or not</source>
-      <translation/>
+      <translation>贝塞尔曲线是否应该闭合</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bezcurve.py" line="62"/>
@@ -7302,7 +7478,7 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/point.py" line="45"/>
       <source>X Location</source>
-      <translation>X位置</translation>
+      <translation>X 位置</translation>
     </message>
     <message>
       <location filename="../../draftobjects/point.py" line="48"/>
@@ -7361,37 +7537,37 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/fillet.py" line="77"/>
       <source>Radius to use to fillet the corner.</source>
-      <translation>倒圆角的半径.</translation>
+      <translation>用于圆角化的半径。</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="135"/>
       <source>The normal direction of the text of the dimension</source>
-      <translation>此尺寸的法线方向</translation>
+      <translation>尺寸文本的法线方向</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="149"/>
-      <source>The object measured by this dimension object</source>
-      <translation>尺寸测定的对象</translation>
+      <location filename="../../draftobjects/dimension.py" line="148"/>
+      <source>The object measured by this dimension</source>
+      <translation type="unfinished">The object measured by this dimension</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="167"/>
+      <location filename="../../draftobjects/dimension.py" line="166"/>
       <source>The object, and specific subelements of it,
-that this dimension object is measuring.
+that this dimension is measuring.
 
 There are various possibilities:
 - An object, and one of its edges.
 - An object, and two of its vertices.
 - An arc object, and its edge.</source>
-      <translation>对象和它的特定子元素，
-此尺寸对象正在测量。
+      <translation type="unfinished">The object, and specific subelements of it,
+that this dimension is measuring.
 
-有各种可能性：
-- 对象和其边缘之一。
-- 对象及其两个顶点。
-- 弧对象及其边缘。</translation>
+There are various possibilities:
+- An object, and one of its edges.
+- An object, and two of its vertices.
+- An arc object, and its edge.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="191"/>
+      <location filename="../../draftobjects/dimension.py" line="190"/>
       <source>A point through which the dimension line, or an extrapolation of it, will pass.
 
 - For linear dimensions, this property controls how close the dimension line
@@ -7407,7 +7583,7 @@ that displays the measured angle.</source>
 - 对于角度尺寸，它控制了显示测量角度的尺寸弧的半径。</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="238"/>
+      <location filename="../../draftobjects/dimension.py" line="237"/>
       <source>Starting point of the dimension line.
 
 If it is a radius dimension it will be the center of the arc.
@@ -7418,7 +7594,7 @@ If it is a diameter dimension it will be a point that lies on the arc.</source>
 如果是直径标注，则它将是位于圆弧上的点。</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="253"/>
+      <location filename="../../draftobjects/dimension.py" line="252"/>
       <source>Ending point of the dimension line.
 
 If it is a radius or diameter dimension
@@ -7429,14 +7605,14 @@ it will be a point that lies on the arc.</source>
 它将是一个位于圆弧上的点。</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="266"/>
+      <location filename="../../draftobjects/dimension.py" line="265"/>
       <source>The direction of the dimension line.
 If this remains '(0,0,0)', the direction will be calculated automatically.</source>
       <translation>尺寸线的方向。
 如果它保持'(0,0,0)'，方向将自动计算。</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="284"/>
+      <location filename="../../draftobjects/dimension.py" line="283"/>
       <source>The value of the measurement.
 
 This property is read-only because the value is calculated
@@ -7451,45 +7627,44 @@ is the radius or diameter, depending on the 'Diameter' property.</source>
 如果“链接的几何图形”是弧或圆，那么“距离”是半径或直径，取决于“直径”属性。</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="296"/>
+      <location filename="../../draftobjects/dimension.py" line="295"/>
       <source>When measuring circular arcs, it determines whether to display
 the radius or the diameter value</source>
       <translation>测量圆弧时，决定是否显示半径或直径值</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="532"/>
+      <location filename="../../draftobjects/dimension.py" line="531"/>
       <source>Starting angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation>尺寸线的起始角度(圆形弧)。
-弧是逆时针方向。</translation>
+      <translation>尺寸线（圆弧）的起始角度。
+圆弧按逆时针方向绘制。</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="544"/>
+      <location filename="../../draftobjects/dimension.py" line="543"/>
       <source>Ending angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation>尺寸线的起始角度(圆形弧)。
-弧是逆时针方向。</translation>
+      <translation>尺寸线（圆弧）的终止角度。
+圆弧按逆时针方向绘制。</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="560"/>
+      <location filename="../../draftobjects/dimension.py" line="559"/>
       <source>The center point of the dimension line, which is a circular arc.
 
 This is normally the point where two line segments, or their extensions
 intersect, resulting in the measured 'Angle' between them.</source>
-      <translation>尺寸线的中心点，即圆弧。
+      <translation>尺寸线（圆弧）的中心点。
 
-这通常是两个线段或它们的扩展
-相交的点, 导致它们之间测量的“角度”。</translation>
+这通常是两条线段或其延长线的交点，从而测量它们之间的“角度”。</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="575"/>
+      <location filename="../../draftobjects/dimension.py" line="574"/>
       <source>The value of the measurement.
 
 This property is read-only because the value is calculated from
 the 'First Angle' and 'Last Angle' properties.</source>
       <translation>测量值。
 
-此属性是只读的，因为该值是从“第一个角度”和“最后一个角度”属性。</translation>
+此属性为只读，因为该值是根据“第一个角度”和“最后一个角度”属性计算得出的。</translation>
     </message>
     <message>
       <location filename="../../draftobjects/rectangle.py" line="46"/>
@@ -7547,64 +7722,64 @@ the 'First Angle' and 'Last Angle' properties.</source>
       <translation>此区块的组件</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="49"/>
+      <location filename="../../draftobjects/wire.py" line="51"/>
       <source>The vertices of the wire</source>
       <translation>线的顶点</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="53"/>
+      <location filename="../../draftobjects/wire.py" line="55"/>
       <source>If the wire is closed or not</source>
       <translation>线条形成的图形是否封闭</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="57"/>
+      <location filename="../../draftobjects/wire.py" line="59"/>
       <source>The base object is the wire, it's formed from 2 objects</source>
-      <translation>基础对象是连线, 它是由2个对象形成的</translation>
+      <translation>基础对象是线，它由两个对象组成</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="61"/>
+      <location filename="../../draftobjects/wire.py" line="63"/>
       <source>The tool object is the wire, it's formed from 2 objects</source>
-      <translation>工具对象是连线, 它由2个对象形成的</translation>
+      <translation>工具对象是线，它由两个对象组成</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="65"/>
+      <location filename="../../draftobjects/wire.py" line="67"/>
       <source>The start point of this line</source>
       <translation>这条线的起点</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="69"/>
+      <location filename="../../draftobjects/wire.py" line="71"/>
       <source>The end point of this line</source>
       <translation>这条线的终点</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="73"/>
+      <location filename="../../draftobjects/wire.py" line="75"/>
       <source>The length of this line</source>
       <translation>这条线的长度</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="85"/>
+      <location filename="../../draftobjects/wire.py" line="87"/>
       <source>Create a face if this object is closed</source>
-      <translation>如果此对象封闭, 则创建一个面</translation>
+      <translation>如果此对象是封闭的，则创建一个面</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="89"/>
+      <location filename="../../draftobjects/wire.py" line="91"/>
       <source>The number of subdivisions of each edge</source>
-      <translation>每个边的细分数</translation>
+      <translation>每条边的细分数</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bspline.py" line="46"/>
       <source>The points of the B-spline</source>
-      <translation>B样条的点</translation>
+      <translation>B 样条线的点</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bspline.py" line="50"/>
       <source>If the B-spline is closed or not</source>
-      <translation>B样条曲线是封闭还是开放的</translation>
+      <translation>B 样条线是否闭合</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bspline.py" line="54"/>
-      <source>Create a face if this spline is closed</source>
-      <translation>如果曲线闭合, 则创建一个面</translation>
+      <source>Create a face if this B-spline is closed</source>
+      <translation type="unfinished">Create a face if this B-spline is closed</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bspline.py" line="73"/>
@@ -7614,12 +7789,12 @@ the 'First Angle' and 'Last Angle' properties.</source>
     <message>
       <location filename="../../draftobjects/draftlink.py" line="100"/>
       <source>Force sync pattern placements even when array elements are expanded</source>
-      <translation>即使数组元素被扩展，强制同步模式位置</translation>
+      <translation>即使阵列元素扩展，也强制同步模式放置</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draftlink.py" line="114"/>
       <source>Show the individual array elements</source>
-      <translation>显示单个数组元素</translation>
+      <translation>显示单独的阵列元素</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="139"/>
@@ -7630,7 +7805,7 @@ the 'First Angle' and 'Last Angle' properties.</source>
       <location filename="../../draftviewproviders/view_label.py" line="89"/>
       <location filename="../../draftviewproviders/view_text.py" line="64"/>
       <source>Line spacing (relative to font size)</source>
-      <translation>行距 (相对于字体大小)</translation>
+      <translation>行距（相对于字体大小）</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="58"/>
@@ -7649,69 +7824,69 @@ the 'First Angle' and 'Last Angle' properties.</source>
       <translation>水平对齐</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="125"/>
+      <location filename="../../draftviewproviders/view_label.py" line="106"/>
       <source>The type of frame around the text of this object</source>
       <translation>此对象文本周围的框架类型</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="135"/>
+      <location filename="../../draftviewproviders/view_label.py" line="116"/>
       <source>Display a leader line or not</source>
-      <translation>显示或不显示引线</translation>
+      <translation>是否显示引导线</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="153"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="200"/>
       <source>Line width</source>
       <translation>线宽</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="162"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="209"/>
       <source>Line color</source>
       <translation>线条颜色</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="109"/>
       <source>Defines an SVG pattern.</source>
-      <translation>定义SVG 模式。</translation>
+      <translation>定义 SVG 图样。</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="120"/>
       <source>Defines the size of the SVG pattern.</source>
-      <translation>定义SVG模式的大小。</translation>
+      <translation>定义 SVG 图样的大小。</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="67"/>
       <source>If it is true, the objects contained within this layer will adopt the line color of the layer</source>
-      <translation>如果为 true，此图层中包含的对象将会采用图层的线性颜色</translation>
+      <translation>如果为真，则该图层中包含的对象将采用该图层的线条颜色</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="79"/>
       <source>If it is true, the objects contained within this layer will adopt the shape appearance of the layer</source>
-      <translation>如果为 true，此图层中包含的对象将会采用图层的形状外观</translation>
+      <translation>如果为真，则该图层中包含的对象将采用该图层的形状外观</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="91"/>
       <source>If it is true, the print color will be used when objects in this layer are placed on a TechDraw page</source>
-      <translation>如果为 true，当此图层中的对象放置在 TechDraw 页面时将使用打印颜色</translation>
+      <translation>如果为真，当此层中的对象放置在工程图页面上时将使用打印颜色</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="103"/>
       <source>The line color of the objects contained within this layer</source>
-      <translation>此图层中包含的对象的线性颜色</translation>
+      <translation>此图层中包含的对象的线条颜色</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="114"/>
       <source>The shape color of the objects contained within this layer</source>
-      <translation>此图层中包含对象的形状颜色</translation>
+      <translation>此图层中包含的对象的形状颜色</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="126"/>
       <source>The shape appearance of the objects contained within this layer</source>
-      <translation>此图层中包含的对象的形状</translation>
+      <translation>此图层中包含的对象的形状外观</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="139"/>
       <source>The line width of the objects contained within this layer</source>
-      <translation>此图层中包含的对象的线宽度</translation>
+      <translation>此图层中包含的对象的线条宽度</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="150"/>
@@ -7726,7 +7901,7 @@ the 'First Angle' and 'Last Angle' properties.</source>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="174"/>
       <source>The line color of the objects contained within this layer, when used on a TechDraw page</source>
-      <translation>当在技术绘图页面上使用此图层中包含的对象的线性颜色</translation>
+      <translation>在工程图页面上使用时，此图层中包含的对象的线条颜色</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="119"/>
@@ -7782,44 +7957,46 @@ Use 'arch' to force US arch notation</source>
 使用“arch”强制使用美式拱形符号</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="207"/>
-      <location filename="../../draftviewproviders/view_label.py" line="103"/>
-      <location filename="../../draftviewproviders/view_wire.py" line="73"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="157"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="180"/>
+      <location filename="../../draftviewproviders/view_wire.py" line="64"/>
+      <location filename="../../draftviewproviders/view_wire.py" line="83"/>
       <source>Arrow size</source>
       <translation>箭头大小</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="217"/>
-      <location filename="../../draftviewproviders/view_label.py" line="113"/>
-      <location filename="../../draftviewproviders/view_wire.py" line="82"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="167"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="190"/>
+      <location filename="../../draftviewproviders/view_wire.py" line="73"/>
+      <location filename="../../draftviewproviders/view_wire.py" line="92"/>
       <source>Arrow type</source>
       <translation>箭头类型</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="228"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="207"/>
       <source>Rotate the dimension arrows 180 degrees</source>
       <translation>将尺寸箭头旋转 180 度</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="240"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="219"/>
       <source>The distance the dimension line is extended
 past the extension lines</source>
       <translation>尺寸线超出延长线的距离</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="250"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="229"/>
       <source>Length of the extension lines</source>
       <translation>延长线的长度</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="261"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="240"/>
       <source>Length of the extension line
 beyond the dimension line</source>
       <translation>延伸线的长度
 超出尺寸线</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="271"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="250"/>
       <source>Shows the dimension line and arrows</source>
       <translation>显示尺寸线和箭头</translation>
     </message>
@@ -7837,11 +8014,6 @@ beyond the dimension line</source>
       <location filename="../../draftviewproviders/view_rectangle.py" line="41"/>
       <source>Defines a texture image (overrides hatch patterns)</source>
       <translation>定义纹理贴图（覆盖填充图案）</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_wire.py" line="64"/>
-      <source>Displays a Dimension symbol at the end of the wire.</source>
-      <translation>在导线末端显示尺寸符号。</translation>
     </message>
   </context>
   <context>
@@ -7870,7 +8042,7 @@ beyond the dimension line</source>
       <location filename="../../InitGui.py" line="207"/>
       <location filename="../../InitGui.py" line="208"/>
       <source>Import-Export</source>
-      <translation>Import-Export</translation>
+      <translation>导入/导出</translation>
     </message>
   </context>
   <context>
@@ -7889,12 +8061,12 @@ beyond the dimension line</source>
   <context>
     <name>Draft_Arc_3Points</name>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="512"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="507"/>
       <source>Arc From 3 Points</source>
       <translation type="unfinished">Arc From 3 Points</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="515"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="510"/>
       <source>Creates a circular arc from 3 points</source>
       <translation type="unfinished">Creates a circular arc from 3 points</translation>
     </message>
@@ -7902,12 +8074,12 @@ beyond the dimension line</source>
   <context>
     <name>Draft_ArcTools</name>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="644"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="659"/>
       <source>Arc Tools</source>
       <translation type="unfinished">Arc Tools</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="647"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="662"/>
       <source>Tools to create various types of circular arcs</source>
       <translation type="unfinished">Tools to create various types of circular arcs</translation>
     </message>
@@ -7941,12 +8113,12 @@ beyond the dimension line</source>
   <context>
     <name>Draft_CubicBezCurve</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="255"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="254"/>
       <source>Cubic Bézier Curve</source>
       <translation type="unfinished">Cubic Bézier Curve</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="258"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="257"/>
       <source>Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Clicking and dragging allows to define segments.
 Control points and properties of each knot can be edited after creation.</source>
       <translation type="unfinished">Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Clicking and dragging allows to define segments.
@@ -7956,12 +8128,12 @@ Control points and properties of each knot can be edited after creation.</transl
   <context>
     <name>Draft_BezierTools</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="489"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="499"/>
       <source>Bézier Tools</source>
       <translation type="unfinished">Bézier Tools</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="492"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="502"/>
       <source>Tools to create various types of Bézier curves</source>
       <translation type="unfinished">Tools to create various types of Bézier curves</translation>
     </message>
@@ -7971,7 +8143,7 @@ Control points and properties of each knot can be edited after creation.</transl
     <message>
       <location filename="../../draftguitools/gui_circulararray.py" line="55"/>
       <source>Circular Array</source>
-      <translation type="unfinished">Circular Array</translation>
+      <translation>环形阵列</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_circulararray.py" line="58"/>
@@ -8046,8 +8218,8 @@ However, a single sketch with disconnected traces is converted into several indi
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="172"/>
-      <source>Selects the contents of selected groups. For selected non-group objects, the contents of the goup they are in are selected.</source>
-      <translation type="unfinished">Selects the contents of selected groups. For selected non-group objects, the contents of the goup they are in are selected.</translation>
+      <source>Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in are selected.</source>
+      <translation type="unfinished">Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in are selected.</translation>
     </message>
   </context>
   <context>
@@ -8249,7 +8421,7 @@ straight Draft lines that are drawn on the XY-plane.</translation>
     <message>
       <location filename="../../draftguitools/gui_polararray.py" line="55"/>
       <source>Polar Array</source>
-      <translation type="unfinished">Polar Array</translation>
+      <translation>极坐标阵列</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polararray.py" line="58"/>
@@ -8524,7 +8696,7 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="60"/>
       <source>B-Spline</source>
-      <translation>贝塞尔样条曲线</translation>
+      <translation>贝塞尔曲线</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="63"/>

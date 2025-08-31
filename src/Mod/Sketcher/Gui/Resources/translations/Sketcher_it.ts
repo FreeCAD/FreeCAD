@@ -87,8 +87,8 @@
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="115"/>
-      <source>Converts the selected geometry to a B-spline</source>
-      <translation>Converti la geometria selezionata in B-Spline</translation>
+      <source>Converts the selected geometry to B-splines</source>
+      <translation type="unfinished">Converts the selected geometry to B-splines</translation>
     </message>
   </context>
   <context>
@@ -209,9 +209,9 @@
       <source>Creates a new mirrored sketch for each selected sketch
 by using the X or Y axes, or the origin point,
 as mirroring reference</source>
-      <translation type="unfinished">Creates a new mirrored sketch for each selected sketch
-by using the X or Y axes, or the origin point,
-as mirroring reference</translation>
+      <translation>Crea un nuovo schizzo specchiato per ogni schizzo selezionato
+utilizzando gli assi X o Y o il punto di origine,
+come riferimento della specchiatura</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="892"/>
@@ -304,11 +304,6 @@ invalid constraints, and degenerate geometry</translation>
       <location filename="../../CommandConstraints.cpp" line="3701"/>
       <source>Add fixed constraint</source>
       <translation>Aggiungi vincolo fisso</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="3872"/>
-      <source>Add 'Block' constraint</source>
-      <translation>Aggiungi vincolo di blocco</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3921"/>
@@ -434,6 +429,7 @@ invalid constraints, and degenerate geometry</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2205"/>
+      <location filename="../../CommandConstraints.cpp" line="3872"/>
       <source>Add Block constraint</source>
       <translation>Aggiungi vincolo bloccato</translation>
     </message>
@@ -847,12 +843,6 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Aggiorna lo spazio virtuale del vincolo</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="892"/>
-      <location filename="../../DrawSketchHandler.cpp" line="763"/>
-      <source>Add auto constraints</source>
-      <translation>Aggiungi vincoli automatici</translation>
-    </message>
-    <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="708"/>
       <source>Swap constraint names</source>
       <translation>Scambia i nomi dei vincoli</translation>
@@ -863,27 +853,27 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Rinomina il vincolo dello schizzo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1678"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1732"/>
       <source>Drag Point</source>
       <translation>Trascina Punto</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1678"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1732"/>
       <source>Drag Curve</source>
       <translation>Trascina Curva</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1679"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1733"/>
       <source>Drag geometries</source>
       <translation>Trascina geometrie</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1060"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1112"/>
       <source>Drag Constraint</source>
       <translation>Trascina Vincolo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1259"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1313"/>
       <source>Modify sketch constraints</source>
       <translation>Modifica i vincoli dello schizzo</translation>
     </message>
@@ -928,17 +918,6 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Geometrie di simmetria</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="94"/>
-      <source>Add sketch bSpline</source>
-      <translation>Aggiungi schizzo B-spline</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="598"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="736"/>
-      <source>Add sketch B-spline</source>
-      <translation>Aggiungi schizzo B-spline</translation>
-    </message>
-    <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="457"/>
       <source>Add line to sketch polyline</source>
       <translation>Aggiungi linea allo schizzo polilinea</translation>
@@ -952,6 +931,19 @@ invalid constraints, and degenerate geometry</translation>
       <location filename="../../CommandAlterGeometry.cpp" line="184"/>
       <source>Toggle construction geometry</source>
       <translation>Geometria di costruzione</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchDefaultHandler.h" line="892"/>
+      <location filename="../../DrawSketchHandler.cpp" line="763"/>
+      <source>Add Auto-Constraints</source>
+      <translation type="unfinished">Add Auto-Constraints</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="94"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="598"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="736"/>
+      <source>Add Sketch B-Spline</source>
+      <translation type="unfinished">Add Sketch B-Spline</translation>
     </message>
   </context>
   <context>
@@ -1077,10 +1069,10 @@ invalid constraints, and degenerate geometry</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppSketcherGui.cpp" line="141"/>
-      <location filename="../../AppSketcherGui.cpp" line="143"/>
-      <location filename="../../AppSketcherGui.cpp" line="145"/>
-      <location filename="../../AppSketcherGui.cpp" line="147"/>
+      <location filename="../../AppSketcherGui.cpp" line="142"/>
+      <location filename="../../AppSketcherGui.cpp" line="144"/>
+      <location filename="../../AppSketcherGui.cpp" line="146"/>
+      <location filename="../../AppSketcherGui.cpp" line="148"/>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
     </message>
@@ -1817,7 +1809,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
       <location filename="../../CommandConstraints.cpp" line="3171"/>
       <source>The selected items cannot be constrained horizontally or vertically!</source>
-      <translation type="unfinished">The selected items cannot be constrained horizontally or vertically!</translation>
+      <translation>Gli elementi selezionati non possono essere vincolati orizzontalmente o verticalmente!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3827"/>
@@ -2948,27 +2940,37 @@ Per ottenere l'effetto è necessario accedere nuovamente alla modalità di modif
       <translation type="unfinished">Always add external geometry as construction</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="249"/>
+      <location filename="../../SketcherSettings.ui" line="240"/>
+      <source>Closed loops will automatically generate internal faces which are selectable to be used with other tools</source>
+      <translation type="unfinished">Closed loops will automatically generate internal faces which are selectable to be used with other tools</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettings.ui" line="243"/>
+      <source>Generate internal faces</source>
+      <translation type="unfinished">Generate internal faces</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettings.ui" line="265"/>
       <source>Dimension Constraint</source>
       <translation type="unfinished">Dimension Constraint</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="276"/>
+      <location filename="../../SketcherSettings.ui" line="292"/>
       <source>Dimension tool diameter/radius mode</source>
       <translation type="unfinished">Dimension tool diameter/radius mode</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="283"/>
+      <location filename="../../SketcherSettings.ui" line="299"/>
       <source>Dimensioning constraints</source>
       <translation type="unfinished">Dimensioning constraints</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="290"/>
+      <location filename="../../SketcherSettings.ui" line="306"/>
       <source>Scale upon first constraint</source>
       <translation type="unfinished">Scale upon first constraint</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="297"/>
+      <location filename="../../SketcherSettings.ui" line="313"/>
       <source>Select the mode of automatic geometry scaling upon first dimension:
 'Always': Automatic scaling upon first dimension is always performed.
 'Never': Automatic scaling upon first dimension is never performed.
@@ -2979,12 +2981,12 @@ Per ottenere l'effetto è necessario accedere nuovamente alla modalità di modif
 'When no scale feature is visible': Automatic scaling upon first dimension is only performed if there are no visible objects in the 3D view.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="316"/>
+      <location filename="../../SketcherSettings.ui" line="332"/>
       <source>Tool Parameters</source>
       <translation type="unfinished">Tool Parameters</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="322"/>
+      <location filename="../../SketcherSettings.ui" line="338"/>
       <source>On-view-parameters (OVP)</source>
       <translation type="unfinished">On-view-parameters (OVP)</translation>
     </message>
@@ -2999,7 +3001,7 @@ Per ottenere l'effetto è necessario accedere nuovamente alla modalità di modif
       <translation type="unfinished">Group the polyline and line commands</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="265"/>
+      <location filename="../../SketcherSettings.ui" line="281"/>
       <source>Select the type of dimensioning constraints for your toolbar:
 'Single tool': A single tool for all dimensioning constraints in the toolbar: Distance, Distance X / Y, Angle, Radius. (Others in dropdown)
 'Separated tools': Individual tools for each dimensioning constraint.
@@ -3012,7 +3014,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
 Questa impostazione è solo per la barra degli strumenti. Qualunque sia la scelta, tutti gli strumenti sono sempre disponibili nel menu e attraverso le scorciatoie.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="255"/>
+      <location filename="../../SketcherSettings.ui" line="271"/>
       <source>While using the Dimension tool you may choose how to handle circles and arcs:
 'Auto': The tool will apply radius to arcs and diameter to circles.
 'Diameter': The tool will apply diameter to both arcs and circles.
@@ -3023,7 +3025,7 @@ Questa impostazione è solo per la barra degli strumenti. Qualunque sia la scelt
 'Raggio': Lo strumento applicherà il raggio sia agli archi sia ai cerchi.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="329"/>
+      <location filename="../../SketcherSettings.ui" line="345"/>
       <source>Choose a visibility mode for the On-View-Parameters:
 'Disabled': On-View-Parameters are completely disabled.
 'Only dimensional': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.
@@ -3402,16 +3404,6 @@ However, no constraints linking to the endpoints were found.</translation>
       <translation type="unfinished">No reversed external geometry arcs were found.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="353"/>
-      <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view).</source>
-      <translation type="unfinished">Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view).</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="374"/>
-      <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
-      <translation type="unfinished">Orientation locking was disabled for %1 constraints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</translation>
-    </message>
-    <message>
       <location filename="../../TaskSketcherValidation.cpp" line="392"/>
       <source>This will delete all constraints that deal with external geometry. This is useful to rescue a sketch with broken or changed links to external geometry. Delete the constraints?</source>
       <translation type="unfinished">This will delete all constraints that deal with external geometry. This is useful to rescue a sketch with broken or changed links to external geometry. Delete the constraints?</translation>
@@ -3426,6 +3418,16 @@ However, no constraints linking to the endpoints were found.</translation>
       <location filename="../../TaskSketcherValidation.cpp" line="373"/>
       <source>Constraint orientation locking</source>
       <translation>Vincolo orientamento bloccato</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.cpp" line="353"/>
+      <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in the report view (menu View → Panels → Report view).</source>
+      <translation type="unfinished">Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in the report view (menu View → Panels → Report view).</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.cpp" line="374"/>
+      <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in the report view (menu View → Panels → Report view). Note that for all future constraints, the locking still defaults to ON.</source>
+      <translation type="unfinished">Orientation locking was disabled for %1 constraints. The constraints have been listed in the report view (menu View → Panels → Report view). Note that for all future constraints, the locking still defaults to ON.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="391"/>
@@ -3886,112 +3888,112 @@ Questo viene fatto analizzando le geometrie e i vincoli dello schizzo.</translat
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3016"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3160"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Nel pannello azioni c'è già una finestra di dialogo aperta</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3038"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3182"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Lo schizzo non è valido e non può essere modificato.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3196"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3340"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Il seguente vincolo è parzialmente ridondante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3197"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3341"/>
       <source>The following constraints are partially redundant:</source>
       <translation>I seguenti vincoli sono parzialmente ridondanti:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2999"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3143"/>
       <source>Edit Sketch</source>
       <translation type="unfinished">Edit Sketch</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3017"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3161"/>
       <source>Close this dialog?</source>
       <translation type="unfinished">Close this dialog?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3036"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3180"/>
       <source>Invalid Sketch</source>
       <translation type="unfinished">Invalid Sketch</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3037"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3181"/>
       <source>Open the sketch validation tool?</source>
       <translation type="unfinished">Open the sketch validation tool?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3182"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3326"/>
       <source>Remove the following constraint:</source>
       <translation type="unfinished">Remove the following constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3183"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3327"/>
       <source>Remove at least one of the following constraints:</source>
       <translation type="unfinished">Remove at least one of the following constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3189"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3333"/>
       <source>Remove the following redundant constraint:</source>
       <translation type="unfinished">Remove the following redundant constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3190"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3334"/>
       <source>Remove the following redundant constraints:</source>
       <translation type="unfinished">Remove the following redundant constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3203"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3347"/>
       <source>Remove the following malformed constraint:</source>
       <translation type="unfinished">Remove the following malformed constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3204"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3348"/>
       <source>Remove the following malformed constraints:</source>
       <translation type="unfinished">Remove the following malformed constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3262"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3406"/>
       <source>Empty sketch</source>
       <translation>Schizzo vuoto</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3267"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3411"/>
       <source>Over-constrained:</source>
       <translation>Sovravincolato:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3273"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3417"/>
       <source>Malformed constraints:</source>
       <translation>Vincoli malformati:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3281"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3425"/>
       <source>Redundant constraints:</source>
       <translation>Vincoli ridondanti:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3287"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3431"/>
       <source>Partially redundant:</source>
       <translation>Parzialmente ridondante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3294"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3438"/>
       <source>Solver failed to converge</source>
       <translation>Risolutore impossibilitato a convergere</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3300"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3444"/>
       <source>Under-constrained:</source>
       <translation>Sottovincolato:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="3302"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3446"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Degrees of Freedom</numerusform>
@@ -3999,7 +4001,7 @@ Questo viene fatto analizzando le geometrie e i vincoli dello schizzo.</translat
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3306"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3450"/>
       <source>Fully constrained</source>
       <translation>Completamente vincolato</translation>
     </message>
@@ -4479,7 +4481,7 @@ L'algoritmo di Eigen Sparse QR è ottimizzato per matrici sparsi; solitamente pi
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3246"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3390"/>
       <source>and %1 more</source>
       <translation>e %1 in più</translation>
     </message>
@@ -4801,7 +4803,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
     <message>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="334"/>
       <source>Cannot create arc of hyperbola</source>
-      <translation>Impossibile creare l'arco di iperbola</translation>
+      <translation>Impossibile creare l'arco di iperbole</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="257"/>
@@ -5243,11 +5245,6 @@ Invece vengono applicati vincoli uguali tra gli oggetti originali e le loro copi
       <translation>Non vincolato</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="171"/>
-      <source>Pattern</source>
-      <translation>Modello</translation>
-    </message>
-    <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="178"/>
       <source>Width</source>
       <translation>Larghezza</translation>
@@ -5316,11 +5313,6 @@ Invece vengono applicati vincoli uguali tra gli oggetti originali e le loro copi
       <location filename="../../SketcherSettingsAppearance.ui" line="489"/>
       <source>External reference geometry</source>
       <translation type="unfinished">External reference geometry</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="522"/>
-      <source>Line pattern of external edges</source>
-      <translation type="unfinished">Line pattern of external edges</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="532"/>
@@ -5393,29 +5385,44 @@ Invece vengono applicati vincoli uguali tra gli oggetti originali e le loro copi
       <translation type="unfinished">Colors Outside Sketcher</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="881"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="879"/>
       <source>Vertex</source>
       <translation>Vertice</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="888"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="886"/>
       <source>Color of vertices outside edit mode</source>
       <translation>Colore dei vertici fuori dalla modalità modifica</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="927"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="925"/>
       <source>Edge</source>
       <translation>Bordo</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="934"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="932"/>
       <source>Color of edges outside edit mode</source>
       <translation>Colore degli spigoli fuori dalla modalità modifica</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="952"/>
+      <source>Face</source>
+      <translation>Faccia</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="965"/>
+      <source>Color of internal faces formed by intersecting geometry or closed loops in the sketch</source>
+      <translation type="unfinished">Color of internal faces formed by intersecting geometry or closed loops in the sketch</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="198"/>
       <source>Geometry</source>
       <translation>Geometria</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="171"/>
+      <source>Line Type</source>
+      <translation type="unfinished">Line Type</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="295"/>
@@ -5431,6 +5438,11 @@ Invece vengono applicati vincoli uguali tra gli oggetti originali e le loro copi
       <location filename="../../SketcherSettingsAppearance.ui" line="502"/>
       <source>Color of external geometry in edit mode</source>
       <translation>Colore della geometria esterna in modalità di modifica</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="522"/>
+      <source>Line pattern of external reference edges</source>
+      <translation type="unfinished">Line pattern of external reference edges</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="683"/>
@@ -6057,7 +6069,7 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     <message>
       <location filename="../../CommandConstraints.cpp" line="4596"/>
       <source>Constrains the vertical distance between two points, or from a point to the origin if one is selected</source>
-      <translation type="unfinished">Constrains the vertical distance between two points, or from a point to the origin if one is selected</translation>
+      <translation>Vincola la distanza verticale tra due punti o da un punto all'origine, se è selezionato un solo punto</translation>
     </message>
   </context>
   <context>
@@ -6070,7 +6082,7 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     <message>
       <location filename="../../CommandConstraints.cpp" line="5250"/>
       <source>Constrains the horizontal distance between two points, or from a point to the origin if one is selected</source>
-      <translation type="unfinished">Constrains the horizontal distance between two points, or from a point to the origin if one is selected</translation>
+      <translation>Vincola la distanza orizzontale tra due punti o da un punto all'origine, se è selezionato un solo punto</translation>
     </message>
   </context>
   <context>
@@ -6356,7 +6368,7 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="401"/>
       <source>Creates an elliptical arc</source>
-      <translation type="unfinished">Creates an elliptical arc</translation>
+      <translation>Crea un arco ellittico</translation>
     </message>
   </context>
   <context>
@@ -6369,7 +6381,7 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="432"/>
       <source>Creates a hyperbolic arc</source>
-      <translation type="unfinished">Creates a hyperbolic arc</translation>
+      <translation>Crea un arco iperbolico</translation>
     </message>
   </context>
   <context>
@@ -6382,7 +6394,7 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="462"/>
       <source>Creates a parabolic arc</source>
-      <translation type="unfinished">Creates a parabolic arc</translation>
+      <translation>Crea un arco parabolico</translation>
     </message>
   </context>
   <context>
@@ -6767,12 +6779,12 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1626"/>
       <source>Trim Edge</source>
-      <translation type="unfinished">Trim Edge</translation>
+      <translation>Rifila</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1627"/>
       <source>Trims an edge with respect to the selected position</source>
-      <translation type="unfinished">Trims an edge with respect to the selected position</translation>
+      <translation>Taglia un bordo nel punto specificato</translation>
     </message>
   </context>
   <context>
@@ -6798,7 +6810,7 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1687"/>
       <source>Splits an edge into 2 segments while preserving constraints</source>
-      <translation type="unfinished">Splits an edge into 2 segments while preserving constraints</translation>
+      <translation>Divide un bordo in due segmenti preservando i vincoli</translation>
     </message>
   </context>
   <context>
@@ -6819,12 +6831,12 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1774"/>
       <source>External Projection</source>
-      <translation type="unfinished">External Projection</translation>
+      <translation>Crea geometria di proiezione esterna</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1775"/>
       <source>Creates the projection of external geometry in the sketch plane</source>
-      <translation type="unfinished">Creates the projection of external geometry in the sketch plane</translation>
+      <translation>Crea bordi di proiezione della geometria esterna</translation>
     </message>
   </context>
   <context>
@@ -6832,12 +6844,12 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1809"/>
       <source>External Intersection</source>
-      <translation type="unfinished">External Intersection</translation>
+      <translation>Crea geometria di intersezione esterna</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1811"/>
       <source>Creates the intersection of external geometry with the sketch plane</source>
-      <translation type="unfinished">Creates the intersection of external geometry with the sketch plane</translation>
+      <translation>Crea bordi di intersezione della geometria esterna con il piano dello schizzo</translation>
     </message>
   </context>
   <context>
@@ -6845,7 +6857,7 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1846"/>
       <source>Carbon Copy</source>
-      <translation type="unfinished">Carbon Copy</translation>
+      <translation>Copia carbone</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1847"/>
@@ -6884,12 +6896,12 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="67"/>
       <source>Toggle B-Spline Degree</source>
-      <translation type="unfinished">Toggle B-Spline Degree</translation>
+      <translation>Mostra/nascondi il grado della B-spline</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="68"/>
       <source>Toggles the visibility of the degree for all B-splines</source>
-      <translation type="unfinished">Toggles the visibility of the degree for all B-splines</translation>
+      <translation>Attiva/disattiva la visibilità del grado per tutte le B-spline</translation>
     </message>
   </context>
   <context>
@@ -6897,12 +6909,12 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="96"/>
       <source>Toggle B-Spline Control Polygon</source>
-      <translation type="unfinished">Toggle B-Spline Control Polygon</translation>
+      <translation>Mostra/nascondi il poligono di controllo della B-spline</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="97"/>
       <source>Toggles the visibility of the control polygons for all B-splines</source>
-      <translation type="unfinished">Toggles the visibility of the control polygons for all B-splines</translation>
+      <translation>Attiva/disattiva la visibilità dei poligoni di controllo per tutte le B-spline</translation>
     </message>
   </context>
   <context>
@@ -6910,12 +6922,12 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="125"/>
       <source>Toggle B-Spline Curvature Comb</source>
-      <translation type="unfinished">Toggle B-Spline Curvature Comb</translation>
+      <translation>Mostra/nascondi la traccia di curvatura della B-Spline</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="126"/>
       <source>Toggles the visibility of the curvature comb for all B-splines</source>
-      <translation type="unfinished">Toggles the visibility of the curvature comb for all B-splines</translation>
+      <translation>Attiva/disattiva la visibilità delle traccie di curvatura per tutte le B-spline</translation>
     </message>
   </context>
   <context>
@@ -6923,12 +6935,12 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="154"/>
       <source>Toggle B-spline knot multiplicity</source>
-      <translation type="unfinished">Toggle B-spline knot multiplicity</translation>
+      <translation>Mostra/nascondi le molteplicità dei nodi della B-spline</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="155"/>
       <source>Toggles the visibility of the knot multiplicity for all B-splines</source>
-      <translation type="unfinished">Toggles the visibility of the knot multiplicity for all B-splines</translation>
+      <translation>Attiva/disattiva la visibilità della molteplicità dei nodi per tutte le B-spline</translation>
     </message>
   </context>
   <context>
@@ -6936,12 +6948,12 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="183"/>
       <source>Toggle B-Spline Control Point Weight</source>
-      <translation type="unfinished">Toggle B-Spline Control Point Weight</translation>
+      <translation>Mostra/nascondi i pesi dei punti di controllo delle B-spline</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="184"/>
       <source>Toggles the visibility of control point weights for all B-splines</source>
-      <translation type="unfinished">Toggles the visibility of control point weights for all B-splines</translation>
+      <translation>Attiva/disattiva la visibilità dei pesi dei punti di controllo per tutte le B-spline</translation>
     </message>
   </context>
   <context>
@@ -6949,37 +6961,37 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="213"/>
       <source>Toggle B-Spline Information Layer</source>
-      <translation type="unfinished">Toggle B-Spline Information Layer</translation>
+      <translation>Mostra/Nascondi il layer dati della B-spline</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="214"/>
       <source>Toggles the visibility of the information layer for all B-splines</source>
-      <translation type="unfinished">Toggles the visibility of the information layer for all B-splines</translation>
+      <translation>Attiva/disattiva la visibilità del layer dati per tutte le B-spline</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="295"/>
       <source>Toggle B-Spline Degree</source>
-      <translation type="unfinished">Toggle B-Spline Degree</translation>
+      <translation>Mostra/nascondi il grado della B-spline</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="304"/>
       <source>Toggle B-Spline Control Polygon</source>
-      <translation type="unfinished">Toggle B-Spline Control Polygon</translation>
+      <translation>Mostra/nascondi il poligono di controllo della B-spline</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="313"/>
       <source>Toggle B-Spline Curvature Comb</source>
-      <translation type="unfinished">Toggle B-Spline Curvature Comb</translation>
+      <translation>Mostra/nascondi la traccia di curvatura della B-Spline</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="322"/>
       <source>Toggle B-Spline Knot Multiplicity</source>
-      <translation type="unfinished">Toggle B-Spline Knot Multiplicity</translation>
+      <translation>Mostra/nascondi le molteplicità dei nodi della B-spline</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="332"/>
       <source>Toggle B-Spline Control Point Weight</source>
-      <translation type="unfinished">Toggle B-Spline Control Point Weight</translation>
+      <translation>Mostra/nascondi i pesi dei punti di controllo delle B-spline</translation>
     </message>
   </context>
   <context>
@@ -6988,7 +7000,7 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
       <location filename="../../CommandSketcherOverlay.cpp" line="298"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="301"/>
       <source>Toggles the visibility of the degree for all B-splines</source>
-      <translation type="unfinished">Toggles the visibility of the degree for all B-splines</translation>
+      <translation>Attiva/disattiva la visibilità del grado per tutte le B-spline</translation>
     </message>
   </context>
   <context>
@@ -6997,7 +7009,7 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
       <location filename="../../CommandSketcherOverlay.cpp" line="306"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="309"/>
       <source>Toggles the visibility of the control polygons for all B-splines</source>
-      <translation type="unfinished">Toggles the visibility of the control polygons for all B-splines</translation>
+      <translation>Attiva/disattiva la visibilità dei poligoni di controllo per tutte le B-spline</translation>
     </message>
   </context>
   <context>
@@ -7006,7 +7018,7 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
       <location filename="../../CommandSketcherOverlay.cpp" line="316"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="319"/>
       <source>Toggles the visibility of the curvature comb for all B-splines</source>
-      <translation type="unfinished">Toggles the visibility of the curvature comb for all B-splines</translation>
+      <translation>Attiva/disattiva la visibilità delle traccie di curvatura per tutte le B-spline</translation>
     </message>
   </context>
   <context>
@@ -7015,7 +7027,7 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
       <location filename="../../CommandSketcherOverlay.cpp" line="324"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="327"/>
       <source>Toggles the visibility of the knot multiplicity for all B-splines</source>
-      <translation type="unfinished">Toggles the visibility of the knot multiplicity for all B-splines</translation>
+      <translation>Attiva/disattiva la visibilità della molteplicità dei nodi per tutte le B-spline</translation>
     </message>
   </context>
   <context>
@@ -7024,7 +7036,7 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
       <location filename="../../CommandSketcherOverlay.cpp" line="334"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="337"/>
       <source>Toggles the visibility of the control point weight for all B-splines</source>
-      <translation type="unfinished">Toggles the visibility of the control point weight for all B-splines</translation>
+      <translation>Attiva/disattiva la visibilità dei pesi dei punti di controllo per tutte le B-spline</translation>
     </message>
   </context>
   <context>
@@ -7102,7 +7114,7 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="429"/>
       <source>Selects the local origin point of the sketch</source>
-      <translation type="unfinished">Selects the local origin point of the sketch</translation>
+      <translation>Seleziona il punto di origine locale dello schizzo</translation>
     </message>
   </context>
   <context>
@@ -7115,7 +7127,7 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="473"/>
       <source>Selects the local vertical axis of the sketch</source>
-      <translation type="unfinished">Selects the local vertical axis of the sketch</translation>
+      <translation>Seleziona l'asse verticale locale dello schizzo</translation>
     </message>
   </context>
   <context>
@@ -7128,7 +7140,7 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="514"/>
       <source>Selects the local horizontal axis of the sketch</source>
-      <translation type="unfinished">Selects the local horizontal axis of the sketch</translation>
+      <translation>Seleziona l'asse orizzontale locale dello schizzo</translation>
     </message>
   </context>
   <context>
@@ -7136,12 +7148,12 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="553"/>
       <source>Select Redundant Constraints</source>
-      <translation type="unfinished">Select Redundant Constraints</translation>
+      <translation>Seleziona i vincoli ridondanti</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="554"/>
       <source>Selects all redundant constraints</source>
-      <translation type="unfinished">Selects all redundant constraints</translation>
+      <translation>Seleziona tutti i vincoli ridondanti</translation>
     </message>
   </context>
   <context>
@@ -7175,12 +7187,12 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="722"/>
       <source>Select Conflicting Constraints</source>
-      <translation type="unfinished">Select Conflicting Constraints</translation>
+      <translation>Seleziona i vincoli in conflitto</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="723"/>
       <source>Selects all conflicting constraints</source>
-      <translation type="unfinished">Selects all conflicting constraints</translation>
+      <translation>Seleziona tutti i vincoli in conflitto</translation>
     </message>
   </context>
   <context>

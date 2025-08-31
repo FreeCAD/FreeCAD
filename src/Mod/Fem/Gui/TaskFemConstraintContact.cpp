@@ -227,8 +227,10 @@ void TaskFemConstraintContact::addToSelectionSlave()
         }
         for (const auto& subName : subNames) {  // for every selected sub element
             bool addMe = true;
-            if (subName.substr(0, 4) != "Face") {
-                QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
+            if ((subName.substr(0, 4) != "Face") && (subName.substr(0, 4) != "Edge")) {
+                QMessageBox::warning(this,
+                                     tr("Selection error"),
+                                     tr("Only faces can be picked (edges in 2D models)"));
                 return;
             }
             for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();
@@ -352,8 +354,10 @@ void TaskFemConstraintContact::addToSelectionMaster()
         }
         for (const auto& subName : subNames) {  // for every selected sub element
             bool addMe = true;
-            if (subName.substr(0, 4) != "Face") {
-                QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
+            if ((subName.substr(0, 4) != "Face") && (subName.substr(0, 4) != "Edge")) {
+                QMessageBox::warning(this,
+                                     tr("Selection error"),
+                                     tr("Only faces can be picked (edges in 2D models)"));
                 return;
             }
             for (auto itr = std::ranges::find(SubElements.begin(), SubElements.end(), subName);

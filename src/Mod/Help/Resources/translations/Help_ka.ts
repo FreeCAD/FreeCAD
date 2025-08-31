@@ -17,8 +17,8 @@
       <location filename="../../dlgPreferencesHelp.ui" line="29"/>
       <source>Fetches the documentation from pages rendered on GitHub.
 This is currently not available.</source>
-      <translation type="unfinished">Fetches the documentation from pages rendered on GitHub.
-This is currently not available.</translation>
+      <translation>გამოითხოვს დოკუმენტაციის GitHub-ზე დარენდერებულ გვერდებს.
+ამჟამად ეს ხელმისაწვდომი არაა.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="46"/>
@@ -57,16 +57,16 @@ Documentation can be downloaded for offline use via the Addon Manager and instal
 &quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
 automatically search for the help files at the default location
 ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation type="unfinished">Set this to a custom URL or the folder where the help files are located.
-Documentation can be downloaded for offline use via the Addon Manager and installing the
-&quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
-automatically search for the help files at the default location
-($USERAPPDATADIR/Mod/offline-documentation).</translation>
+      <translation>დააყენეთ ეს თქვენს URL-ზე ან საქაღალდეზე, სადაც დახმარების ფაილებია მოთავსებული.
+ინტერნეტის გარეშე გამოსაყენებლად დახმარების ფაილების გადმოწერა ადვილად შეგიძლიათ
+დამატებების მმართველიდან, &quot;გათიშული დოკუმენტაციის&quot; დამატების დაყენებით.
+თუ ეს ველი ცარიელია, FreeCAD ავტომატურად მოძებნის დახმარების ფაილებს ნაგულისხმევ
+მდებარეობაზე ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="112"/>
       <source>Translation suffix</source>
-      <translation type="unfinished">Translation suffix</translation>
+      <translation>თარგმანის სუფიქსი</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="119"/>
@@ -96,41 +96,41 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>Note: if PySide Web components are not found on the system, help pages will open in the default web browser regardless of the options below.</source>
-      <translation type="unfinished">Note: if PySide Web components are not found on the system, help pages will open in the default web browser regardless of the options below.</translation>
+      <translation>შენიშვნა: თუ PySide-ის ვებ-კომპონენტები თქვენს სისტემაში აღმოჩენილი არ იქნება, დახმარების გვერდები, ქვემოთ მითითებული პარამეტრების მიუხედავად, ნაგულისხმევ ბრაუზერში გაიხსნება.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="180"/>
       <source>The documentation will open in the default web browser</source>
-      <translation type="unfinished">The documentation will open in the default web browser</translation>
+      <translation>დოკუმენტაცია ნაგულისხმევ ბრაუზერში გაიხსნება</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="183"/>
       <source>In the default web browser</source>
-      <translation type="unfinished">In the default web browser</translation>
+      <translation>ნაგულისხმევ ბრაუზერში</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="199"/>
       <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component.</source>
-      <translation type="unfinished">The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component.</translation>
+      <translation>დოკუმენტაცია FreeCAD-ის ინტერფეისის ახალ ჩანართში გაიხსნება. ამას PySide-ის QtWebengineWidgets კომპონენტი სჭირდება.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="221"/>
       <source>Documentation opens in a dockable dialog within FreeCAD, allowing simultaneous work in the 3D view.
 Requires the PySide QtWebengineWidgets component.</source>
-      <translation type="unfinished">Documentation opens in a dockable dialog within FreeCAD, allowing simultaneous work in the 3D view.
-Requires the PySide QtWebengineWidgets component.</translation>
+      <translation>დოკუმენტაცია გაიხსნება მიმაგრებად დიალგში FreeCAD-ის შიგნით და ის საშუალებას მოგცემთ ერთდროულად 3D ხედში იმშაოდ.
+სჭირდება კომპონენტი PySide QtWebengingWidgets.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="249"/>
       <source>Custom stylesheet</source>
-      <translation type="unfinished">Custom stylesheet</translation>
+      <translation>მორგებული სტილების ცხრილი</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="256"/>
       <source>Specify the path to an alternative CSS file for styling Markdown pages.
 This only applies if Markdown is selected above.</source>
-      <translation type="unfinished">Specify the path to an alternative CSS file for styling Markdown pages.
-This only applies if Markdown is selected above.</translation>
+      <translation>მიუთითეთ ბილიკი ალტერნატიულ CSS ფაილამდე მარკდაუნის გვერდების დასტილვისთვის.
+გამოიყენება, მხოლოდ, მაშინ, თუ მარკდაუნს ზემოთ ჩართავთ.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>
@@ -152,13 +152,13 @@ This only applies if Markdown is selected above.</translation>
     <name>Help</name>
     <message>
       <location filename="../../Help.py" line="75"/>
-      <source>Contents for this page could not be retrieved. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
-      <translation>ამ გვერდის შემცველობის მიღება შეუძლებელია. შეამოწმეთ პარამეტრები მენიუში ჩასწორება -&gt; გამართვა -&gt; ზოგადი -&gt; დახმარება</translation>
+      <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
+      <translation type="unfinished">Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="79"/>
-      <source>Help files location could not be determined. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
-      <translation>დახმარების ფაილების მდებარეობა აღმოჩენილი არაა. გადაამოწმეთ პარამეტრები მენიუში ჩასწორება -&gt; გამართვა -&gt; ზოგადი -&gt; დახმარება</translation>
+      <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
+      <translation type="unfinished">Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="83"/>

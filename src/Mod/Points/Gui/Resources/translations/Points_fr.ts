@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="240"/>
       <source>Convert to Points</source>
-      <translation type="unfinished">Convert to Points</translation>
+      <translation>Convertir en points</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="241"/>
       <source>Converts to points</source>
-      <translation type="unfinished">Converts to points</translation>
+      <translation>Convertir en points</translation>
     </message>
   </context>
   <context>
@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="154"/>
       <source>Export Points…</source>
-      <translation type="unfinished">Export Points…</translation>
+      <translation>Exporter les points…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="155"/>
@@ -48,7 +48,7 @@
     <message>
       <location filename="../../Command.cpp" line="69"/>
       <source>Import Points…</source>
-      <translation type="unfinished">Import Points…</translation>
+      <translation>Importer des points…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="70"/>
@@ -66,12 +66,12 @@
     <message>
       <location filename="../../Command.cpp" line="376"/>
       <source>Merge Point Clouds</source>
-      <translation type="unfinished">Merge Point Clouds</translation>
+      <translation>Fusionner des nuages de points</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="377"/>
       <source>Merges several point clouds into one</source>
-      <translation type="unfinished">Merges several point clouds into one</translation>
+      <translation>Fusionner plusieurs nuages de points en un seul</translation>
     </message>
   </context>
   <context>
@@ -84,12 +84,12 @@
     <message>
       <location filename="../../Command.cpp" line="328"/>
       <source>Cut Point Cloud</source>
-      <translation type="unfinished">Cut Point Cloud</translation>
+      <translation>Couper un nuage de points</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="329"/>
       <source>Cuts a point cloud with a selected polygon</source>
-      <translation type="unfinished">Cuts a point cloud with a selected polygon</translation>
+      <translation>Couper un nuage de points à l'aide d'un polygone sélectionné</translation>
     </message>
   </context>
   <context>
@@ -102,12 +102,12 @@
     <message>
       <location filename="../../Command.cpp" line="438"/>
       <source>Structured Point Cloud</source>
-      <translation type="unfinished">Structured Point Cloud</translation>
+      <translation>Convertir en un nuage de points structuré</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="439"/>
       <source>Converts points to a structured point cloud</source>
-      <translation type="unfinished">Converts points to a structured point cloud</translation>
+      <translation>Convertir des points en un nuage de points structuré</translation>
     </message>
   </context>
   <context>
@@ -125,7 +125,7 @@
     <message>
       <location filename="../../Command.cpp" line="202"/>
       <source>Performs tests to transform a point cloud</source>
-      <translation type="unfinished">Performs tests to transform a point cloud</translation>
+      <translation>Effectuer des tests pour transformer un nuage de points</translation>
     </message>
   </context>
   <context>
@@ -187,7 +187,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="14"/>
       <source>ASCII Points Import</source>
-      <translation type="unfinished">ASCII Points Import</translation>
+      <translation>Importation de points ASCII</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="34"/>
@@ -197,44 +197,44 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="46"/>
       <source>Special Lines</source>
-      <translation type="unfinished">Special Lines</translation>
+      <translation>Lignes spéciales</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="58"/>
       <source>First Line</source>
-      <translation type="unfinished">First Line</translation>
+      <translation>Première ligne</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="101"/>
       <source>Cluster by lines starting with</source>
-      <translation type="unfinished">Cluster by lines starting with</translation>
+      <translation>Regrouper des lignes commençant par</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="111"/>
       <source>Ignore lines starting with</source>
-      <translation type="unfinished">Ignore lines starting with</translation>
+      <translation>Ignorer les lignes commençant par</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="126"/>
       <source>Point Format</source>
-      <translation type="unfinished">Point Format</translation>
+      <translation>Format du point</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="146"/>
       <source>Number separator</source>
-      <translation type="unfinished">Number separator</translation>
+      <translation>Séparateur de nombre</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="180"/>
       <source>Points format</source>
-      <translation type="unfinished">Points format</translation>
+      <translation>Format des points</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="201"/>
       <location filename="../../DlgPointsRead.ui" line="237"/>
       <location filename="../../DlgPointsRead.ui" line="273"/>
       <source>Next block</source>
-      <translation type="unfinished">Next block</translation>
+      <translation>Bloc suivant</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="209"/>
@@ -269,12 +269,12 @@
       <location filename="../../DlgPointsRead.ui" line="265"/>
       <location filename="../../DlgPointsRead.ui" line="301"/>
       <source>I (gray value)</source>
-      <translation type="unfinished">I (gray value)</translation>
+      <translation>I (valeur grise)</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="341"/>
       <source>Number of previewed lines</source>
-      <translation type="unfinished">Number of previewed lines</translation>
+      <translation>Nombre de lignes prévisualisées</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="314"/>
@@ -304,7 +304,7 @@
     <message>
       <location filename="../../Command.cpp" line="118"/>
       <source>The bounding box of the imported points does not contain the origin. Translate it to the origin?</source>
-      <translation type="unfinished">The bounding box of the imported points does not contain the origin. Translate it to the origin?</translation>
+      <translation>La boîte englobante des points importés ne contient pas l'origine. Faut-il la déplacée à l'origine ?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="260"/>
@@ -322,7 +322,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
       <source>Points Tools</source>
-      <translation type="unfinished">Points Tools</translation>
+      <translation>Outils Points</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="35"/>

@@ -43,6 +43,7 @@
 #include <ShapeAnalysis_Edge.hxx>
 #include <gp_Circ.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
+#include <GeomLib_IsPlanarSurface.hxx>
 
 #include <DatumFeature.h>
 #include <App/Application.h>
@@ -56,12 +57,14 @@
 #include <Base/Rotation.h>
 #include <Base/Vector3D.h>
 
+#include "Attacher.h"
 #include "VectorAdapter.h"
 #include "PartFeature.h"
 
 #include "MeasureClient.h"
 
 using namespace Part;
+using Attacher::AttachEnginePlane;
 
 
 // From: https://github.com/Celemation/FreeCAD/blob/joel_selection_summary_demo/src/Gui/Selection/SelectionSummary.cpp
@@ -183,11 +186,23 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
             BRepAdaptor_Surface surface(face);
 
             switch (surface.GetType()) {
-                case GeomAbs_Cylinder: { return App::MeasureElementType::CYLINDER; }
-                case GeomAbs_Plane: { return App::MeasureElementType::PLANE; }
+                case GeomAbs_Cylinder: {
+                    return App::MeasureElementType::CYLINDER;
+                }
+                case GeomAbs_Plane: {
+                    return App::MeasureElementType::PLANE;
+                }
                 default: {
-                    return App::MeasureElementType::SURFACE; }
+                    TopLoc_Location loc;
+                    Handle(Geom_Surface) surf = BRep_Tool::Surface(face, loc);
+                    GeomLib_IsPlanarSurface check(surf, AttachEnginePlane::planarPrecision());
+                    return check.IsPlanar() ? App::MeasureElementType::PLANE
+                                            : App::MeasureElementType::SURFACE;
+                }
             }
+        }
+        case TopAbs_SHELL: {
+            return App::MeasureElementType::SURFACE;
         }
         case TopAbs_SOLID: {
             return App::MeasureElementType::VOLUME;
@@ -341,7 +356,7 @@ MeasureAreaInfoPtr MeasureAreaHandler(const App::SubObjectT& subject)
     }
     TopAbs_ShapeEnum sType = shape.ShapeType();
 
-    if (sType != TopAbs_FACE) {
+    if (sType != TopAbs_FACE && sType != TopAbs_SHELL && sType != TopAbs_SOLID) {
         return std::make_shared<MeasureAreaInfo>(false, 0.0, Base::Matrix4D());
     }
 

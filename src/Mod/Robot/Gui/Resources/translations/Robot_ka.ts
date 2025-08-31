@@ -16,7 +16,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="242"/>
       <source>Adds a tool shape to the robot</source>
-      <translation type="unfinished">Adds a tool shape to the robot</translation>
+      <translation>რობოტს დაამატებს ხელსაწყოს მოხაზულობას</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="164"/>
       <source>Place Robot</source>
-      <translation type="unfinished">Place Robot</translation>
+      <translation>რობოტის მოთავსება</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="165"/>
       <source>Places a robot in the scene</source>
-      <translation type="unfinished">Places a robot in the scene</translation>
+      <translation>ჩასვამს რობოტს სცენაში</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="57"/>
       <source>Creates a new empty trajectory</source>
-      <translation type="unfinished">Creates a new empty trajectory</translation>
+      <translation>შექმნის ახალ ცარიელ ტრაექტორიას</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="361"/>
       <source>Edge to Trajectory</source>
-      <translation type="unfinished">Edge to Trajectory</translation>
+      <translation>წიბოდან ტრაექტორიამდე</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="362"/>
       <source>Generates a trajectory from the selected edges</source>
-      <translation type="unfinished">Generates a trajectory from the selected edges</translation>
+      <translation>შექმნის ტრაექტორიას მონიშნული წიბოებისგან</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../CommandExport.cpp" line="47"/>
       <source>Kuka Compact Subroutine</source>
-      <translation type="unfinished">Kuka Compact Subroutine</translation>
+      <translation>შეკუმშული ქვეპროგრამა Kuka</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="48"/>
       <source>Exports the trajectory as a compact KRL subroutine</source>
-      <translation type="unfinished">Exports the trajectory as a compact KRL subroutine</translation>
+      <translation>გაიტანს ტრაექტორიას კომპაქტური KRL ქვეპროგრამის სახით</translation>
     </message>
   </context>
   <context>
@@ -101,12 +101,12 @@
     <message>
       <location filename="../../CommandExport.cpp" line="122"/>
       <source>Kuka Full Subroutine</source>
-      <translation type="unfinished">Kuka Full Subroutine</translation>
+      <translation>სრული ქვეპროგრამა Kuka</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="123"/>
       <source>Exports the trajectory as a full KRL subroutine</source>
-      <translation type="unfinished">Exports the trajectory as a full KRL subroutine</translation>
+      <translation>გაიტანს ტრაექტორიას სრული KRIL ქვეპროგრამის სახით</translation>
     </message>
   </context>
   <context>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="194"/>
       <source>Inserts a Kuka IR125 robot into the scene</source>
-      <translation type="unfinished">Inserts a Kuka IR125 robot into the scene</translation>
+      <translation>ჩასვამს რობოტს Kuka IR125 სცენაში</translation>
     </message>
   </context>
   <context>
@@ -142,7 +142,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="99"/>
       <source>Inserts a Kuka IR16 robot into the scene</source>
-      <translation type="unfinished">Inserts a Kuka IR16 robot into the scene</translation>
+      <translation>ჩასვამს რობოტს Kuka IR16 სცენაში</translation>
     </message>
   </context>
   <context>
@@ -160,7 +160,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="147"/>
       <source>Inserts a Kuka IR210 robot into the scene</source>
-      <translation type="unfinished">Inserts a Kuka IR210 robot into the scene</translation>
+      <translation>ჩასვამს რობოტს Kuka IR210 სცენაში</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="48"/>
       <source>Inserts a Kuka IR500 into the document</source>
-      <translation type="unfinished">Inserts a Kuka IR500 into the document</translation>
+      <translation>ჩასვამს Kuka IR500-ს დოკუმენტში</translation>
     </message>
   </context>
   <context>
@@ -190,13 +190,13 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="90"/>
-      <source>Insert in trajectory</source>
+      <source>Insert in Trajectory</source>
       <translation>ტრაექტორიაში ჩასმა</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="91"/>
       <source>Inserts the robot tool location into the trajectory</source>
-      <translation type="unfinished">Inserts the robot tool location into the trajectory</translation>
+      <translation>ჩასვამს რობოტის ხელსაწყოს მდებარეობას ტრაექტორიაში</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="159"/>
       <source>Insert in Trajectory</source>
-      <translation type="unfinished">Insert in Trajectory</translation>
+      <translation>ტრაექტორიაში ჩასმა</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="160"/>
       <source>Inserts the preselection position into the trajectory (W)</source>
-      <translation type="unfinished">Inserts the preselection position into the trajectory (W)</translation>
+      <translation>ჩასვამს წინასწარი მონიშვნის პოზიციას ტრაექტორიაში (W)</translation>
     </message>
   </context>
   <context>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="111"/>
       <source>Move to Home</source>
-      <translation type="unfinished">Move to Home</translation>
+      <translation>მთავარზე გადასვლა</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="112"/>
       <source>Moves to the home position</source>
-      <translation type="unfinished">Moves to the home position</translation>
+      <translation>გადაიტანს საწყის პოზიციაზე</translation>
     </message>
   </context>
   <context>
@@ -245,12 +245,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="236"/>
       <source>Set Default Orientation</source>
-      <translation type="unfinished">Set Default Orientation</translation>
+      <translation>ნაგულისხმევი ორიენტაციის დაყენება</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="238"/>
       <source>Sets the default orientation for subsequent commands for waypoint creation</source>
-      <translation type="unfinished">Sets the default orientation for subsequent commands for waypoint creation</translation>
+      <translation>დააყენებს ნაგულისხმევ ორიენტაციას შემდგომი ბრძანებებისთვის საგზაო წერტილის შესაქმნელად</translation>
     </message>
   </context>
   <context>
@@ -263,12 +263,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="280"/>
       <source>Set Default Values</source>
-      <translation type="unfinished">Set Default Values</translation>
+      <translation>ნაგულისხმევი მნიშვნელობების დაყენება</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="281"/>
       <source>Sets the default values for speed, acceleration, and continuity for subsequent commands of waypoint creation</source>
-      <translation type="unfinished">Sets the default values for speed, acceleration, and continuity for subsequent commands of waypoint creation</translation>
+      <translation>დააყენებს ნაგულისხმევ მნიშვნელობებს სიჩქარისთვის, აჩქარებისთვის და უწყვეტობისთვის საგზაო წერტილის შექმნის შემდგომი ბრძანებებისთვის</translation>
     </message>
   </context>
   <context>
@@ -281,12 +281,12 @@
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <source>Set Home Position</source>
-      <translation type="unfinished">Set Home Position</translation>
+      <translation>საწყისი პოზიციის დაყენება</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="53"/>
       <source>Sets the home position</source>
-      <translation type="unfinished">Sets the home position</translation>
+      <translation>დააყენებს საწყისი პოზიციას</translation>
     </message>
   </context>
   <context>
@@ -299,12 +299,12 @@
     <message>
       <location filename="../../Command.cpp" line="213"/>
       <source>Simulate Trajectory</source>
-      <translation type="unfinished">Simulate Trajectory</translation>
+      <translation>ტრაექტორიის სიმულაცია</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="214"/>
       <source>Simulates robot movement along a selected trajectory</source>
-      <translation type="unfinished">Simulates robot movement along a selected trajectory</translation>
+      <translation>მოახდენს რობოის მოძრაობის სიმულაციას მონიშნული ტრაექტორიის გასწვრივ</translation>
     </message>
   </context>
   <context>
@@ -317,12 +317,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="483"/>
       <source>Trajectory Compound</source>
-      <translation type="unfinished">Trajectory Compound</translation>
+      <translation>ტრაექტორიების გადაბმა</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="484"/>
       <source>Groups and connects multiple trajectories into one</source>
-      <translation type="unfinished">Groups and connects multiple trajectories into one</translation>
+      <translation>ტრაექტორიების ერთში შეგროვება და შეერთება</translation>
     </message>
   </context>
   <context>
@@ -335,12 +335,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="427"/>
       <source>Dress-Up Trajectory</source>
-      <translation type="unfinished">Dress-Up Trajectory</translation>
+      <translation>ბაზური ტრაექტორიის შეცვლა</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="428"/>
       <source>Creates a dress-up object that overrides aspects of a trajectory</source>
-      <translation type="unfinished">Creates a dress-up object that overrides aspects of a trajectory</translation>
+      <translation>შექმნის ზღუდარის ისეთ ობიექტს, რომელიც გადაფარავს ტრაექტორიის ნაწილს</translation>
     </message>
   </context>
   <context>
@@ -348,12 +348,12 @@
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Trajectory Tools</source>
-      <translation type="unfinished">Trajectory Tools</translation>
+      <translation>ტრაექტორიის ხელსაწყოები</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Robot Tools</source>
-      <translation type="unfinished">Robot Tools</translation>
+      <translation>რობოტის ხელსაწყოები</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
@@ -492,7 +492,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="74"/>
       <source>Visit %1 and copy the files to %2</source>
-      <translation type="unfinished">Visit %1 and copy the files to %2</translation>
+      <translation>გადადით %1-ზე და ჩააკოპირეთ ფაილები %2-ში</translation>
     </message>
   </context>
   <context>
@@ -563,7 +563,7 @@
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="29"/>
       <source>Hide/Show</source>
-      <translation type="unfinished">Hide/Show</translation>
+      <translation>დამალვა/ჩვენება</translation>
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="47"/>
@@ -578,7 +578,7 @@
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="72"/>
       <source>Sizing Value</source>
-      <translation type="unfinished">Sizing Value</translation>
+      <translation>მნიშვნელობების ზომა</translation>
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="103"/>
@@ -850,7 +850,7 @@
     <message>
       <location filename="../../TaskTrajectory.cpp" line="39"/>
       <source>Trajectory</source>
-      <translation type="unfinished">Trajectory</translation>
+      <translation>ტრაექტორია</translation>
     </message>
   </context>
   <context>
@@ -869,7 +869,7 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="20"/>
       <source>Speed &amp; acceleration</source>
-      <translation type="unfinished">Speed &amp; acceleration</translation>
+      <translation>სიჩქარე &amp; აჩქარება</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="29"/>
@@ -879,12 +879,12 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="66"/>
       <source>Acceleration</source>
-      <translation type="unfinished">Acceleration</translation>
+      <translation>აჩქარება</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="102"/>
       <source>Do not change continuous mode</source>
-      <translation type="unfinished">Do not change continuous mode</translation>
+      <translation>უწყვეტი რეჟიმი არ შეიცვლება</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="108"/>
@@ -899,27 +899,27 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="128"/>
       <source>Position and orientation</source>
-      <translation type="unfinished">Position and orientation</translation>
+      <translation>პოზიცია და ორიენტაცია</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="160"/>
       <source>Don not change position &amp; orientation</source>
-      <translation type="unfinished">Don not change position &amp; orientation</translation>
+      <translation>არ შეცვალო პოზიცია და ორიენტაცია</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="165"/>
       <source>Use orientation</source>
-      <translation type="unfinished">Use orientation</translation>
+      <translation>ორიენტაციის გამოყენება</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="170"/>
       <source>Add position</source>
-      <translation type="unfinished">Add position</translation>
+      <translation>პოზიციის დამატება</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="175"/>
       <source>Add orientation</source>
-      <translation type="unfinished">Add orientation</translation>
+      <translation>ორიენტაციის დამატება</translation>
     </message>
   </context>
   <context>
@@ -937,7 +937,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Export Trajectory</source>
-      <translation type="unfinished">Export Trajectory</translation>
+      <translation>ტრაექტორიის გატანა</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>

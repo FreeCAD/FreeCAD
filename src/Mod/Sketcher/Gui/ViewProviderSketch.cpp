@@ -42,6 +42,8 @@
 #include <limits>
 #endif
 
+#include <fmt/format.h>
+
 #include <Base/Console.h>
 #include <Base/Vector3D.h>
 #include <Gui/Application.h>
@@ -2689,7 +2691,94 @@ void ViewProviderSketch::updateColor()
 
 bool ViewProviderSketch::selectAll()
 {
-    // TODO: eventually implement "select all" logic
+    // logic of this func has been stolen partly from doBoxSelection()
+    if (!isInEditMode()) {
+        return false;
+    }
+
+    Sketcher::SketchObject* sketchObject = getSketchObject();
+    if (!sketchObject) {
+        return false;
+    }
+
+    Gui::Selection().clearSelection();
+
+    int intGeoCount = sketchObject->getHighestCurveIndex() + 1;
+    int extGeoCount = sketchObject->getExternalGeometryCount();
+
+    const std::vector<Part::Geometry*> geomlist = sketchObject->getCompleteGeometry();
+
+    int VertexId = -1;
+    int GeoId = 0;
+
+    for (std::vector<Part::Geometry*>::const_iterator it = geomlist.begin();
+         it != geomlist.end() - 2; // -2 to exclude H_Axis and V_Axis
+         ++it, ++GeoId) {
+
+        if (GeoId >= intGeoCount) {
+            GeoId = -extGeoCount;
+        }
+
+        if ((*it)->is<Part::GeomPoint>()) {
+            VertexId++;
+            addSelection2(fmt::format("Vertex{}", VertexId + 1));
+        }
+        else if ((*it)->is<Part::GeomLineSegment>()) {
+            VertexId++; // start
+            addSelection2(fmt::format("Vertex{}", VertexId + 1));
+
+            VertexId++; // end
+            addSelection2(fmt::format("Vertex{}", VertexId + 1));
+
+            if (GeoId >= 0) {
+                addSelection2(fmt::format("Edge{}", GeoId + 1));
+            } else {
+                addSelection2(fmt::format("ExternalEdge{}", -GeoId - 1));
+            }
+        }
+        else if ((*it)->isDerivedFrom<Part::GeomConic>()) {
+            VertexId++;
+            addSelection2(fmt::format("Vertex{}", VertexId + 1));
+
+            if (GeoId >= 0) {
+                addSelection2(fmt::format("Edge{}", GeoId + 1));
+            } else {
+                addSelection2(fmt::format("ExternalEdge{}", -GeoId - 1));
+            }
+        }
+        else if ((*it)->isDerivedFrom<Part::GeomCurve>()) {
+            if (auto arc = dynamic_cast<const Part::GeomArcOfCircle*>(*it)) {
+                VertexId++; // start
+                addSelection2(fmt::format("Vertex{}", VertexId + 1));
+
+                VertexId++; // end
+                addSelection2(fmt::format("Vertex{}", VertexId + 1));
+
+                VertexId++; // center
+                addSelection2(fmt::format("Vertex{}", VertexId + 1));
+            } else {
+                // for other curves, select available vertices
+                VertexId++;
+                addSelection2(fmt::format("Vertex{}", VertexId + 1));
+            }
+
+            if (GeoId >= 0) {
+                addSelection2(fmt::format("Edge{}", GeoId + 1));
+            } else {
+                addSelection2(fmt::format("ExternalEdge{}", -GeoId - 1));
+            }
+        }
+    }
+
+    // select constraints too
+    const std::vector<Sketcher::Constraint*>& constraints = sketchObject->Constraints.getValues();
+    for (size_t i = 0; i < constraints.size(); ++i) {
+        addSelection2(fmt::format("Constraint{}", i + 1));
+    }
+
+    // get root point if they exist
+    addSelection2("RootPoint");
+
     return true;
 }
 

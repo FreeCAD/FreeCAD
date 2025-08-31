@@ -180,6 +180,49 @@ inline T fmod(T numerator, T denominator)
     return (modulo >= T(0)) ? modulo : modulo + denominator;
 }
 
+template<std::floating_point T>
+inline T angularDist(T v1, T v2)
+{
+    return std::min(std::fabs(v1 - v2), 360 - std::fabs(v1 - v2));
+}
+
+// Returns a value between [0, 360) or (-180, 180] depending on if the
+// minimum value was positive or negetive. This is done because the taper angle
+// values in FreeCAD usually treat values like -10 and 350 differently
+template<std::floating_point T>
+inline double clampAngle(T value, T min, T max, T precision)
+{
+    // Normalize the angles between 0 and 360
+    value = Base::fmod(value, 360.0);
+    T nMin = Base::fmod(min, 360.0);
+    T nMax = Base::fmod(max, 360.0);
+
+    if (std::abs(nMax - nMin) > precision) {
+        if (nMax > nMin) {
+            if (value < nMin || value > nMax) {
+                value = angularDist(value, nMin) > angularDist(value, nMax) ? nMax : nMin;
+            }
+        }
+        else {
+            if (value < nMin && value > nMax) {
+                value = angularDist(value, nMin) > angularDist(value, nMax) ? nMax : nMin;
+            }
+        }
+    }
+
+    if (min >= 0.0) {
+        // Return in [0, 360)
+        return value;
+    }
+
+    // Map to (-180, 180]
+    if (value > 180.0) {
+        value = value - 360;
+    }
+    return value;
+}
+
+
 // ----------------------------------------------------------------------------
 
 // NOLINTBEGIN
@@ -387,5 +430,6 @@ template<class... Ts>
 Overloads(Ts...) -> Overloads<Ts...>;
 
 }  // namespace Base
+
 
 #endif  // SRC_BASE_TOOLS_H_

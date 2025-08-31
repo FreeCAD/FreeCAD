@@ -262,6 +262,7 @@ SET(Properties_HPP_SRCS
     PropertyStandard.h
     PropertyUnits.h
     PropertyExpressionEngine.h
+    PropertyOverrides.h
 )
 SET(Properties_SRCS
     ${Properties_CPP_SRCS}

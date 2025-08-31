@@ -131,7 +131,7 @@
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="24"/>
       <source>Solids</source>
-      <translation>Volumenkörper</translation>
+      <translation>Festkörper</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="34"/>
@@ -239,11 +239,11 @@ Beachten, dass nur Bearbeitungen, die derzeit Konfigurationswerte haben, aufgeli
 This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
 
 Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</source>
-      <translation>Wenn aktiviert, dann ist die Erstellung des Rohteils in der Vorlage enthalten. Wenn eine Vorlage keine Definition für ein Rohteil enthält, dann wird der Standardgenerierungsalgorithmus dafür verwendet (Erstellung aus einer Basis-Objekts Begrenzungsbox).
+      <translation>Wenn aktiviert, ist die Erstellung des Rohteils in der Vorlage enthalten. Wenn eine Vorlage keine Festlegung für ein Rohteil enthält, wird der Standardalgorithmus zum Erstellen verwendet (Erstellung aus dem Begrenzungsrahmen des Basis-Objekts).
 
-Diese Option ist besonders nützlich, wenn es sich um eine Box oder einen Zylinder handelt oder wenn die Maschine eine Standardplatzierung für die Rohteileinspannung hat.
+Diese Option ist besonders nützlich, wenn es sich um einen Quader oder einen Zylinder handelt oder wenn die Maschine eine Standardpositionierung für die Rohteileinspannung hat.
 
-Beachte, dass diese Option deaktiviert ist, wenn als Rohteil ein vorhandenes Volumenmodell verwendet wird - es kann nicht als Vorlage gespeichert werden.</translation>
+Man beachte, dass diese Option deaktiviert ist, wenn ein Rohteil eines vorhandener Festkörpers in dem Auftrag verwendet wird - solche können nicht in einer Vorlage gespeichert werden.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="150"/>
@@ -257,11 +257,11 @@ Beachte, dass diese Option deaktiviert ist, wenn als Rohteil ein vorhandenes Vol
 For box and cylinder stocks this means the actual size of the stock solid being created.
 
 For stock from the base object&apos;s bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job&apos;s base object and apply the stored extra settings.</source>
-      <translation type="unfinished">If enabled, the current size settings for the stock object are included in the template.
+      <translation>Wenn aktiviert, sind die aktuellen Größeneinstellungen für das Rohmaterial in der Vorlage enthalten.
 
-For box and cylinder stocks this means the actual size of the stock solid being created.
+Für quader- und zylinderförmiges Rohmaterial bedeutet das, dass die tatsächliche Größe des Rohmaterialfestkörpers festgelegt wird.
 
-For stock from the base object&apos;s bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job&apos;s base object and apply the stored extra settings.</translation>
+Für Rohmaterial aus dem Begrenzungsrahmen des Basis-Objekts bedeutet es zusätzliches Material in alle Richtungen. Ein Rohmaterialobjekt, das aus einer solchen Vorlage erstellt wird, erhält seine Grundgröße aus dem Basis-Objekt des neuen Auftrags und fügt die gespeicherten Einstellungen hinzu.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="166"/>
@@ -596,7 +596,7 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="55"/>
       <source>Extend model&apos;s bounding box</source>
-      <translation type="unfinished">Extend model&apos;s bounding box</translation>
+      <translation>Begrenzungsrahmen des Modells erweitern</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="60"/>
@@ -616,12 +616,12 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="107"/>
       <source>Extension of bounding box&apos;s MinX</source>
-      <translation>Erweiterung der Begrenzungsbox box&apos;s MinX</translation>
+      <translation>Erweiterung des MinX des Begrenzungsrahmens</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="120"/>
       <source>Extension of bounding box&apos;s MaxX</source>
-      <translation>Erweiterung der Begrenzungsbox&apos;s MaxX</translation>
+      <translation>Erweiterung des MaxX des Begrenzungsrahmens</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="127"/>
@@ -631,12 +631,12 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="134"/>
       <source>Extension of bounding box&apos;s MinY</source>
-      <translation>Erweiterung der Begrenzungsbox&apos;s MinY</translation>
+      <translation>Erweiterung des MinY des Begrenzungsrahmens</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="141"/>
       <source>Extension of bounding box&apos;s MaxY</source>
-      <translation>Erweiterung der Begrenzungsbox&apos;s MaxY</translation>
+      <translation>Erweiterung des MaxY des Begrenzungsrahmens</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="148"/>
@@ -646,12 +646,12 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="155"/>
       <source>Extension of bounding box&apos;s MinZ</source>
-      <translation>Erweiterung der Begrenzungsbox&apos;s MinZ</translation>
+      <translation>Erweiterung des MinZ des Begrenzungsrahmens</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="162"/>
       <source>Extension of bounding box&apos;s MaxZ</source>
-      <translation>Erweiterung der Begrenzungsbox&apos;s MaxZ</translation>
+      <translation>Erweiterung des MaxZ des Begrenzungsrahmens</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="260"/>
@@ -985,11 +985,6 @@ Larger values (further to the right) will calculate faster; smaller values (furt
 Larger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="129"/>
-      <source>How much material to leave in the XY plane (i.e. for finishing operation)</source>
-      <translation type="unfinished">How much material to leave in the XY plane (i.e. for finishing operation)</translation>
-    </message>
-    <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="108"/>
       <source>Cut inside or outside of the selected shapes</source>
       <translation>Innerhalb oder außerhalb der ausgewählten Formen schneiden</translation>
@@ -1051,6 +1046,11 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="122"/>
       <source>Finishing profile</source>
       <translation type="unfinished">Finishing profile</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="129"/>
+      <source>How much material to leave in the XY-plane (i.e. for finishing operation)</source>
+      <translation type="unfinished">How much material to leave in the XY-plane (i.e. for finishing operation)</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="139"/>
@@ -1756,7 +1756,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpSlotEdit.ui" line="102"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="174"/>
       <source>Center of bounding box</source>
-      <translation type="unfinished">Center of bounding box</translation>
+      <translation>Mittelpunkt des Begrenzungsrahmens</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="107"/>
@@ -1798,12 +1798,12 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="241"/>
       <source>Currently using custom point inputs in the property view of the data tab</source>
-      <translation type="unfinished">Currently using custom point inputs in the property view of the data tab</translation>
+      <translation>Verwendet derzeit benutzerdefinierte Punkteingaben auf der Registerkarte Daten der Eigenschaften-Ansicht</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="244"/>
       <source>Currently using custom point inputs available in the property view of the data tab</source>
-      <translation type="unfinished">Currently using custom point inputs available in the property view of the data tab</translation>
+      <translation>Verwendet derzeit benutzerdefinierte Punkteingaben, die auf der Registerkarte Daten der Eigenschaften-Ansicht vorhanden sind</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="275"/>
@@ -1883,7 +1883,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpSurfaceEdit.ui" line="63"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="79"/>
       <source>Bounding box</source>
-      <translation type="unfinished">Bounding box</translation>
+      <translation>Begrenzungsrahmen</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="70"/>
@@ -1936,17 +1936,17 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="147"/>
       <source>Bounding box extra offset X, Y</source>
-      <translation>Begrenzungsrahmen extra Offset X, Y</translation>
+      <translation>Zusätzlicher X-, Y-Versatz des Begrenzungsrahmens</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="162"/>
       <source>Additional offset to the selected bounding box along the X axis</source>
-      <translation type="unfinished">Additional offset to the selected bounding box along the X axis</translation>
+      <translation>Zusätzlicher Abstand zum ausgewählten Begrenzungsrahmen entlang der X-Achse</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="172"/>
       <source>Additional offset to the selected bounding box along the Y axis</source>
-      <translation type="unfinished">Additional offset to the selected bounding box along the Y axis</translation>
+      <translation>Zusätzlicher Abstand zum ausgewählten Begrenzungsrahmen entlang der Y-Achse</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="184"/>
@@ -2680,7 +2680,7 @@ Der Umgang mit Namenskonflikten, kann in der unten stehenden Richtlinie zum Spei
     <message>
       <location filename="../preferences/PathJob.ui" line="405"/>
       <source>Extend model&apos;s bounding box</source>
-      <translation type="unfinished">Extend model&apos;s bounding box</translation>
+      <translation>Begrenzungsrahmen des Modells erweitern</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="429"/>
@@ -2787,7 +2787,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="116"/>
       <source>Bounding box normal color</source>
-      <translation>Begrenzungsbox normale Farbe</translation>
+      <translation>Normale Farbe des Begrenzungsrahmens</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="123"/>
@@ -2802,7 +2802,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="215"/>
       <source>Bounding box selection color</source>
-      <translation>Begrenzungsbox Auswahlfarbe</translation>
+      <translation>Auswahlfarbe des Begrenzungsrahmens</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="261"/>
@@ -2817,7 +2817,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="354"/>
       <source>Bounding box</source>
-      <translation type="unfinished">Bounding box</translation>
+      <translation>Begrenzungsrahmen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="367"/>
@@ -3712,7 +3712,7 @@ FreeCAD hat keine Kenntnis davon, wo ein bestimmtes Koordinatensystem innerhalb 
     <message>
       <location filename="../panels/PathEdit.ui" line="488"/>
       <source>Extend model&apos;s bounding box</source>
-      <translation type="unfinished">Extend model&apos;s bounding box</translation>
+      <translation>Begrenzungsrahmen des Modells erweitern</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="493"/>
@@ -4162,34 +4162,34 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
       <translation>CAMotics Projekt (*.camotics)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="726"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="746"/>
       <source>H</source>
       <comment>H is horizontal feed rate. Must be as short as possible</comment>
       <translation>H</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="729"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="749"/>
       <source>V</source>
       <comment>V is vertical feed rate. Must be as short as possible</comment>
       <translation>V</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="732"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="752"/>
       <source>Tool number</source>
       <translation>Werkzeugnummer</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="735"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="755"/>
       <source>Horizontal feedrate</source>
       <translation>Horizontale Vorschubgeschwindigkeit</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="738"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="758"/>
       <source>Vertical feedrate</source>
       <translation>Vertikale Vorschubgeschwindigkeit</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="741"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="761"/>
       <source>Spindle RPM</source>
       <translation>Spindel-Drehzahl</translation>
     </message>
@@ -4610,19 +4610,19 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="198"/>
-      <location filename="../../../Path/Main/Job.py" line="506"/>
+      <location filename="../../../Path/Main/Job.py" line="509"/>
       <source>Split output into multiple G-code files</source>
       <translation>Ausgabe auf mehrere G-Code Dateien aufteilen</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="204"/>
-      <location filename="../../../Path/Main/Job.py" line="497"/>
+      <location filename="../../../Path/Main/Job.py" line="500"/>
       <source>If multiple WCS, order the output this way</source>
       <translation>Wenn mehrere GKS vorhanden sind, ordnen Sie die Ausgabe auf diese Weise</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="210"/>
-      <location filename="../../../Path/Main/Job.py" line="488"/>
+      <location filename="../../../Path/Main/Job.py" line="491"/>
       <source>The Work Coordinate Systems for the Job</source>
       <translation>Das Arbeitskoordinatensystem für den Auftrag</translation>
     </message>
@@ -4642,14 +4642,14 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
       <translation>Sammlung aller Werkzeugsteuerungen für den Auftrag</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="479"/>
+      <location filename="../../../Path/Main/Job.py" line="482"/>
       <location filename="../../../Path/Op/Base.py" line="186"/>
       <location filename="../../../Path/Op/Base.py" line="440"/>
       <source>Operations Cycle Time Estimation</source>
       <translation>Abschätzung der Durchlaufzeit</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="515"/>
+      <location filename="../../../Path/Main/Job.py" line="518"/>
       <source>Select the type of Job</source>
       <translation>Die Art des Auftrags wählen</translation>
     </message>
@@ -5391,7 +5391,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="166"/>
       <source>Additional offset to the selected bounding box</source>
-      <translation>Zusätzlicher Versatz zur ausgewählten Begrenzungsbox</translation>
+      <translation>Zusätzlicher Abstand zum ausgewählten Begrenzungsrahmen</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="172"/>
@@ -6546,12 +6546,12 @@ Abbruch der OP-Erstellung</translation>
       <translation type="unfinished">Completes the selection of edges that form a loop</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="116"/>
+      <location filename="../../../PathCommands.py" line="131"/>
       <source>Feature Completion</source>
       <translation>Feature Vervollständigung</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="117"/>
+      <location filename="../../../PathCommands.py" line="132"/>
       <source>Closed loop detection failed.</source>
       <translation>Erkennung einer geschlossenen Kontur fehlgeschlagen.</translation>
     </message>
@@ -6878,7 +6878,7 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="134"/>
       <source>Helix</source>
-      <translation>Helix</translation>
+      <translation>Wendel</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="138"/>
@@ -7017,65 +7017,65 @@ Abbruch der OP-Erstellung</translation>
       <translation>Rohmaterialkörper ist kein Zylinder!</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1032"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1052"/>
       <source>Select Output File</source>
       <translation>Ausgabedatei auswählen</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1034"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1054"/>
       <source>All Files (*.*)</source>
       <translation>Alle Dateien (*.*)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1375"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1395"/>
       <source>Unsupported stock object %s</source>
       <translation>Nicht unterstütztes Rohmaterial-Objekt %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1391"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1411"/>
       <source>Unsupported stock type %s (%d)</source>
       <translation>Nicht unterstützter Rohmaterial Typ %s (%d)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1482"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1502"/>
       <source>Model Selection</source>
       <translation>Modellauswahl</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1637"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1657"/>
       <source>Warning</source>
       <translation>Warnung</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1638"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1658"/>
       <source>Please add one.</source>
       <translation>Bitte einen hinzufügen.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1639"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1659"/>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="116"/>
       <source>Ok</source>
       <translation>Ok</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1641"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1661"/>
       <source>Add</source>
       <translation>Hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1652"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1672"/>
       <source>This job has no base model.</source>
       <translation>Dieser Auftrag hat kein Basismodell.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1659"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1679"/>
       <source>This job has no tool.</source>
       <translation>Dieser Auftrag hat kein Werkzeug.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="62"/>
       <source>Solids</source>
-      <translation>Volumenkörper</translation>
+      <translation>Festkörper</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="64"/>
@@ -7093,32 +7093,32 @@ Abbruch der OP-Erstellung</translation>
       <translation type="unfinished">Don&apos;t show this warning again</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="214"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="216"/>
       <source>Model</source>
       <translation>Modell</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="215"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="217"/>
       <source>Count</source>
       <translation>Anzahl</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="297"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="299"/>
       <source>&lt;none&gt;</source>
       <translation>&lt;keine&gt;</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="379"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="381"/>
       <source>Base -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f</source>
       <translation>Basis-/ + %.2f/%.2f %.2f/%.2f %.2f/%.2f</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="389"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="391"/>
       <source>Box: %.2f x %.2f x %.2f</source>
       <translation>Quader: %.2f X %.2f x %.2f</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="404"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="406"/>
       <source>Unsupported stock type</source>
       <translation>Nicht unterstützter Rohmaterial Typ</translation>
     </message>
@@ -7188,7 +7188,7 @@ Abbruch der OP-Erstellung</translation>
   <context>
     <name>CAM_Job:</name>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="395"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="397"/>
       <source>Cylinder: %.2f x %.2f</source>
       <translation>Zylinder: %.2f x %.2f</translation>
     </message>
@@ -7601,62 +7601,62 @@ Abbruch der OP-Erstellung</translation>
   <context>
     <name>CAM</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="611"/>
+      <location filename="../../../Path/Op/Base.py" line="613"/>
       <source>No parent job found for operation.</source>
       <translation>Kein übergeordneter Auftrag für den Vorgang gefunden.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="616"/>
+      <location filename="../../../Path/Op/Base.py" line="618"/>
       <source>Parent job %s doesn&apos;t have a base object</source>
       <translation>Der übergeordnete Auftrag %s hat kein Basisobjekt</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="758"/>
+      <location filename="../../../Path/Op/Base.py" line="760"/>
       <source>No Tool Controller is selected. We need a tool to build a Path.</source>
       <translation>Keine Werkzeugsteuerung ausgewählt. Werkzeugsteuerung wird benötigt, um den Pfad zu erstellen.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="772"/>
+      <location filename="../../../Path/Op/Base.py" line="774"/>
       <source>No Tool found or diameter is zero. We need a tool to build a Path.</source>
       <translation>Kein Werkzeug gefunden oder Durchmesser ist Null. Werkzeug wird benötigt, um einen Pfad zu erstellen.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="842"/>
+      <location filename="../../../Path/Op/Base.py" line="844"/>
       <source>No Tool Controller selected.</source>
       <translation>Es ist keine Werkzeugsteuerung ausgewählt.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="845"/>
+      <location filename="../../../Path/Op/Base.py" line="847"/>
       <source>Tool Error</source>
       <translation>Werkzeugfehler</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="857"/>
+      <location filename="../../../Path/Op/Base.py" line="859"/>
       <source>Tool Controller feedrates required to calculate the cycle time.</source>
       <translation>Die Werkzeugsteuerung benötigt eine Vorschubgeschwindigkeit, um die Bearbeitungszeit zu berechnen.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="860"/>
+      <location filename="../../../Path/Op/Base.py" line="862"/>
       <source>Tool Feedrate Error</source>
       <translation type="unfinished">Tool Feedrate Error</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="866"/>
+      <location filename="../../../Path/Op/Base.py" line="868"/>
       <source>Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</source>
       <translation>Füge der Werkzeugsteuerung in der Einstellseite Eilgangsgeschwindigkeiten für eine höhere Genauigkeit der Bearbeitungszeiten hinzu.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="875"/>
+      <location filename="../../../Path/Op/Base.py" line="877"/>
       <source>Cycletime Error</source>
       <translation>Zykluszeit Fehler</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="817"/>
+      <location filename="../../../Path/Op/Base.py" line="819"/>
       <source>Base object %s.%s already in the list</source>
       <translation>Basisobjekt %s.%s ist bereits in der Liste</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="827"/>
+      <location filename="../../../Path/Op/Base.py" line="829"/>
       <source>Base object %s.%s rejected by operation</source>
       <translation>Basisobjekt %s.%s wurde von der Bearbeitung abgelehnt</translation>
     </message>
@@ -7908,7 +7908,7 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Helix.py" line="110"/>
       <source>Helix</source>
-      <translation>Helix</translation>
+      <translation>Wendel</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Helix.py" line="111"/>
@@ -8964,8 +8964,8 @@ oder TPI (Gewindegänge pro Zoll)</translation>
     </message>
     <message>
       <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="289"/>
-      <source>Toggle ambient oclusion</source>
-      <translation type="unfinished">Toggle ambient oclusion</translation>
+      <source>Toggle ambient occlusion</source>
+      <translation type="unfinished">Toggle ambient occlusion</translation>
     </message>
     <message>
       <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="290"/>
@@ -8989,12 +8989,12 @@ oder TPI (Gewindegänge pro Zoll)</translation>
   <context>
     <name>CAM_OpActiveToggle</name>
     <message>
-      <location filename="../../../PathCommands.py" line="145"/>
+      <location filename="../../../PathCommands.py" line="160"/>
       <source>Toggle Operation</source>
       <translation type="unfinished">Toggle Operation</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="149"/>
+      <location filename="../../../PathCommands.py" line="164"/>
       <source>Toggles the active state of the operation</source>
       <translation type="unfinished">Toggles the active state of the operation</translation>
     </message>
@@ -9002,12 +9002,12 @@ oder TPI (Gewindegänge pro Zoll)</translation>
   <context>
     <name>CAM_OperationCopy</name>
     <message>
-      <location filename="../../../PathCommands.py" line="186"/>
+      <location filename="../../../PathCommands.py" line="201"/>
       <source>Copy Operation</source>
       <translation type="unfinished">Copy Operation</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="187"/>
+      <location filename="../../../PathCommands.py" line="202"/>
       <source>Copies the operation in the job</source>
       <translation type="unfinished">Copies the operation in the job</translation>
     </message>

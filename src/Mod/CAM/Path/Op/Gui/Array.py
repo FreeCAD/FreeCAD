@@ -66,7 +66,7 @@ class ObjectArray:
             "CopiesX",
             "Path",
             QT_TRANSLATE_NOOP(
-                "App::Property", "The number of copies in X direction in linear pattern"
+                "App::Property", "The number of copies in X-direction in linear pattern"
             ),
         )
         obj.addProperty(
@@ -74,7 +74,7 @@ class ObjectArray:
             "CopiesY",
             "Path",
             QT_TRANSLATE_NOOP(
-                "App::Property", "The number of copies in Y direction in linear pattern"
+                "App::Property", "The number of copies in Y-direction in linear pattern"
             ),
         )
         obj.addProperty(

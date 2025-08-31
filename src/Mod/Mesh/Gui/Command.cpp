@@ -1527,8 +1527,8 @@ void CmdMeshFillupHoles::activated(int)
     bool ok {};
     int FillupHolesOfLength =
         QInputDialog::getInt(Gui::getMainWindow(),
-                             QObject::tr("Fill holes"),
-                             QObject::tr("Fill holes with maximum number of edges:"),
+                             QObject::tr("Fill Holes"),
+                             QObject::tr("Fill holes with maximum number of edges"),
                              3,
                              3,
                              10000,

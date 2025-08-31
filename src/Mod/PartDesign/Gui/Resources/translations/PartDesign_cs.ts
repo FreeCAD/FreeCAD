@@ -199,8 +199,8 @@ aby se zabránilo sebe.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="89"/>
-      <source>Creates a new body and activtes it</source>
-      <translation type="unfinished">Creates a new body and activtes it</translation>
+      <source>Creates a new body and activates it</source>
+      <translation type="unfinished">Creates a new body and activates it</translation>
     </message>
   </context>
   <context>
@@ -296,17 +296,17 @@ aby se zabránilo sebe.</translation>
   <context>
     <name>CmdPartDesignDuplicateSelection</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="608"/>
+      <location filename="../../CommandBody.cpp" line="614"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="609"/>
+      <location filename="../../CommandBody.cpp" line="615"/>
       <source>Duplicate &amp;Object</source>
       <translation type="unfinished">Duplicate &amp;Object</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="610"/>
+      <location filename="../../CommandBody.cpp" line="616"/>
       <source>Duplicates the selected object and adds it to the active body</source>
       <translation>Duplikuje vybraný objekt a přidá jej k aktivnímu tělesu</translation>
     </message>
@@ -404,17 +404,17 @@ aby se zabránilo sebe.</translation>
   <context>
     <name>CmdPartDesignMigrate</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="314"/>
+      <location filename="../../CommandBody.cpp" line="320"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="315"/>
+      <location filename="../../CommandBody.cpp" line="321"/>
       <source>Migrate</source>
       <translation>Migrovat</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="316"/>
+      <location filename="../../CommandBody.cpp" line="322"/>
       <source>Migrates the document to the modern Part Design workflow</source>
       <translation type="unfinished">Migrates the document to the modern Part Design workflow</translation>
     </message>
@@ -440,17 +440,17 @@ aby se zabránilo sebe.</translation>
   <context>
     <name>CmdPartDesignMoveFeature</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="668"/>
+      <location filename="../../CommandBody.cpp" line="674"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="669"/>
+      <location filename="../../CommandBody.cpp" line="675"/>
       <source>Move Object To…</source>
       <translation type="unfinished">Move Object To…</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="670"/>
+      <location filename="../../CommandBody.cpp" line="676"/>
       <source>Moves the selected object to another body</source>
       <translation>Přesune vybraný objekt k jinému tělesu</translation>
     </message>
@@ -458,17 +458,17 @@ aby se zabránilo sebe.</translation>
   <context>
     <name>CmdPartDesignMoveFeatureInTree</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="835"/>
+      <location filename="../../CommandBody.cpp" line="841"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="836"/>
+      <location filename="../../CommandBody.cpp" line="842"/>
       <source>Move Feature After…</source>
       <translation type="unfinished">Move Feature After…</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="837"/>
+      <location filename="../../CommandBody.cpp" line="843"/>
       <source>Moves the selected feature after another feature in the same body</source>
       <translation type="unfinished">Moves the selected feature after another feature in the same body</translation>
     </message>
@@ -476,17 +476,17 @@ aby se zabránilo sebe.</translation>
   <context>
     <name>CmdPartDesignMoveTip</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="529"/>
+      <location filename="../../CommandBody.cpp" line="535"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="530"/>
+      <location filename="../../CommandBody.cpp" line="536"/>
       <source>Set Tip</source>
       <translation type="unfinished">Set Tip</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="531"/>
+      <location filename="../../CommandBody.cpp" line="537"/>
       <source>Moves the tip of the body to the selected feature</source>
       <translation type="unfinished">Moves the tip of the body to the selected feature</translation>
     </message>
@@ -931,33 +931,33 @@ aby se zabránilo sebe.</translation>
       <translation>Použít booleovské operace</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="188"/>
+      <location filename="../../CommandBody.cpp" line="193"/>
       <location filename="../../DlgActiveBody.cpp" line="102"/>
       <source>Add a Body</source>
       <translation>Přidat těleso</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="432"/>
+      <location filename="../../CommandBody.cpp" line="438"/>
       <source>Migrate legacy Part Design features to bodies</source>
       <translation type="unfinished">Migrate legacy Part Design features to bodies</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="622"/>
+      <location filename="../../CommandBody.cpp" line="628"/>
       <source>Duplicate a Part Design object</source>
       <translation type="unfinished">Duplicate a Part Design object</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="905"/>
+      <location filename="../../CommandBody.cpp" line="911"/>
       <source>Move a feature inside body</source>
       <translation type="unfinished">Move a feature inside body</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="577"/>
+      <location filename="../../CommandBody.cpp" line="583"/>
       <source>Move tip to selected feature</source>
       <translation>Přesunout pracovní pozici na vybraný prvek</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="749"/>
+      <location filename="../../CommandBody.cpp" line="755"/>
       <source>Move an object</source>
       <translation>Přesunout objekt</translation>
     </message>
@@ -1127,9 +1127,9 @@ aby se zabránilo sebe.</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.ui" line="20"/>
-      <source>To create a new Part Design object, there must be an active body object in the document.
+      <source>To create a new Part Design object, there must be an active body in the document.
 Select a body from below, or create a new body.</source>
-      <translation type="unfinished">To create a new Part Design object, there must be an active body object in the document.
+      <translation type="unfinished">To create a new Part Design object, there must be an active body in the document.
 Select a body from below, or create a new body.</translation>
     </message>
     <message>
@@ -1255,6 +1255,16 @@ Select a body from below, or create a new body.</translation>
       <translation type="unfinished">V parameter</translation>
     </message>
     <message>
+      <location filename="../../TaskPrimitiveParameters.ui" line="1023"/>
+      <source>Radius in local XY-plane</source>
+      <translation type="unfinished">Radius in local XY-plane</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPrimitiveParameters.ui" line="1046"/>
+      <source>Radius in local XZ-plane</source>
+      <translation type="unfinished">Radius in local XZ-plane</translation>
+    </message>
+    <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1214"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2290"/>
       <source>Polygon</source>
@@ -1367,16 +1377,6 @@ If zero, it is equal to Radius2</source>
 Je-li nulový, rovná se Poloměr2</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.ui" line="1023"/>
-      <source>Radius in local xy-plane</source>
-      <translation>Poloměr v lokální rovině XY</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPrimitiveParameters.ui" line="1046"/>
-      <source>Radius in local xz-plane</source>
-      <translation>Poloměr v lokální rovině XZ</translation>
-    </message>
-    <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1645"/>
       <source>Right-handed</source>
       <translation>Pravoruký směr</translation>
@@ -1428,7 +1428,7 @@ Je-li nulový, rovná se Poloměr2</translation>
   <context>
     <name>PartDesignGui::NoDependentsSelection</name>
     <message>
-      <location filename="../../ReferenceSelection.cpp" line="271"/>
+      <location filename="../../ReferenceSelection.cpp" line="274"/>
       <source>Selecting this will cause circular dependency.</source>
       <translation>Tento výběr způsobí kruhovou závislost.</translation>
     </message>
@@ -1572,9 +1572,9 @@ Je-li nulový, rovná se Poloměr2</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.cpp" line="327"/>
-      <source>Empty chamfer created !
+      <source>Empty chamfer created!
 </source>
-      <translation>Prázdné sražení vytvořeno!
+      <translation type="unfinished">Empty chamfer created!
 </translation>
     </message>
   </context>
@@ -1666,9 +1666,9 @@ Je-li nulový, rovná se Poloměr2</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="287"/>
-      <source>Empty draft created !
+      <source>Empty draft created!
 </source>
-      <translation>Prázdné zkosení vytvořeno!
+      <translation type="unfinished">Empty draft created!
 </translation>
     </message>
   </context>
@@ -1703,64 +1703,79 @@ Je-li nulový, rovná se Poloměr2</translation>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1211"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1343"/>
       <source>No face selected</source>
       <translation>Nevybrána žádná plocha</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="160"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1046"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="159"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1123"/>
       <source>Face</source>
       <translation>Plocha</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="176"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="73"/>
       <source>Remove</source>
       <translation>Odstranit</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="262"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="345"/>
       <source>Preview</source>
       <translation>Náhled</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="266"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="349"/>
       <source>Select Faces</source>
       <translation type="unfinished">Select Faces</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="604"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="682"/>
       <source>Select reference…</source>
       <translation type="unfinished">Select reference…</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="489"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="590"/>
       <source>No shape selected</source>
       <translation>Není vybrán útvar</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="597"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="675"/>
       <source>Sketch normal</source>
       <translation>Normála náčrtu</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="600"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="678"/>
       <source>Face normal</source>
       <translation>Normála plochy</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="608"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="613"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="686"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="691"/>
       <source>Custom direction</source>
       <translation>Vlastní směr</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="998"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1069"/>
       <source>Click on a shape in the model</source>
       <translation>Klikněte na tvar v modelu</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1206"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1330"/>
+      <source>One sided</source>
+      <translation type="unfinished">One sided</translation>
+    </message>
+    <message>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1331"/>
+      <source>Two sided</source>
+      <translation type="unfinished">Two sided</translation>
+    </message>
+    <message>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1332"/>
+      <source>Symmetric</source>
+      <translation>Symetrické</translation>
+    </message>
+    <message>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1338"/>
       <source>Click on a face in the model</source>
       <translation>Klikněte na plochu v modelu</translation>
     </message>
@@ -1896,6 +1911,24 @@ Je-li nulový, rovná se Poloměr2</translation>
       <translation>Platný</translation>
     </message>
     <message>
+      <location filename="../../TaskHelixParameters.ui" line="48"/>
+      <location filename="../../TaskHelixParameters.cpp" line="237"/>
+      <source>Base X-axis</source>
+      <translation type="unfinished">Base X-axis</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHelixParameters.ui" line="53"/>
+      <location filename="../../TaskHelixParameters.cpp" line="238"/>
+      <source>Base Y-axis</source>
+      <translation type="unfinished">Base Y-axis</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHelixParameters.ui" line="58"/>
+      <location filename="../../TaskHelixParameters.cpp" line="239"/>
+      <source>Base Z-axis</source>
+      <translation type="unfinished">Base Z-axis</translation>
+    </message>
+    <message>
       <location filename="../../TaskHelixParameters.ui" line="63"/>
       <location filename="../../TaskHelixParameters.cpp" line="221"/>
       <source>Horizontal sketch axis</source>
@@ -1922,24 +1955,6 @@ Je-li nulový, rovná se Poloměr2</translation>
       <location filename="../../TaskHelixParameters.ui" line="40"/>
       <source>Axis</source>
       <translation>Osa</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHelixParameters.ui" line="48"/>
-      <location filename="../../TaskHelixParameters.cpp" line="237"/>
-      <source>Base x-axis</source>
-      <translation type="unfinished">Base x-axis</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHelixParameters.ui" line="53"/>
-      <location filename="../../TaskHelixParameters.cpp" line="238"/>
-      <source>Base y-axis</source>
-      <translation type="unfinished">Base y-axis</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHelixParameters.ui" line="58"/>
-      <location filename="../../TaskHelixParameters.cpp" line="239"/>
-      <source>Base z-axis</source>
-      <translation type="unfinished">Base z-axis</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="78"/>
@@ -2352,41 +2367,41 @@ Je-li nulový, rovná se Poloměr2</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="42"/>
-      <source>Offsets the pad from the face at which the pad will end</source>
-      <translation type="unfinished">Offsets the pad from the face at which the pad will end</translation>
+      <source>Offset the pad from the face at which the pad will end on side 1</source>
+      <translation type="unfinished">Offset the pad from the face at which the pad will end on side 1</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="43"/>
+      <source>Offset the pad from the face at which the pad will end on side 2</source>
+      <translation type="unfinished">Offset the pad from the face at which the pad will end on side 2</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadParameters.cpp" line="44"/>
       <source>Reverses pad direction</source>
       <translation>Obrátí směr desky</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="70"/>
+      <location filename="../../TaskPadParameters.cpp" line="73"/>
       <source>Dimension</source>
       <translation>Rozměr</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="71"/>
+      <location filename="../../TaskPadParameters.cpp" line="74"/>
       <source>To last</source>
       <translation>K poslední</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="72"/>
+      <location filename="../../TaskPadParameters.cpp" line="75"/>
       <source>To first</source>
       <translation>K další</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="73"/>
+      <location filename="../../TaskPadParameters.cpp" line="76"/>
       <source>Up to face</source>
       <translation>K ploše</translation>
     </message>
     <message>
-      <location filename="../../TaskPadParameters.cpp" line="74"/>
-      <source>Two dimensions</source>
-      <translation>Dva rozměry</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPadParameters.cpp" line="75"/>
+      <location filename="../../TaskPadParameters.cpp" line="77"/>
       <source>Up to shape</source>
       <translation>Ke tvaru</translation>
     </message>
@@ -2394,177 +2409,186 @@ Je-li nulový, rovná se Poloměr2</translation>
   <context>
     <name>PartDesignGui::TaskPadPocketParameters</name>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="22"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="68"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="303"/>
       <source>Type</source>
       <translation>Typ</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="30"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="76"/>
       <source>Dimension</source>
       <translation>Rozměr</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="38"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="84"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="313"/>
       <source>Length</source>
       <translation>Délka</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="75"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="101"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="330"/>
       <source>Offset to face</source>
       <translation>Odsazení od plochy</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="130"/>
-      <source>Select shape</source>
-      <translation>Vyberte tvar</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="148"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="192"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="421"/>
       <source>Select all faces</source>
       <translation>Vybrat všechny plochy</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="173"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="217"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="446"/>
       <source>Select</source>
       <translation>Vybrat</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="243"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="255"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="484"/>
+      <source>Select Face</source>
+      <translation type="unfinished">Select Face</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadPocketParameters.ui" line="281"/>
+      <source>Side 2</source>
+      <translation type="unfinished">Side 2</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadPocketParameters.ui" line="512"/>
       <source>Direction</source>
       <translation>Směr</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="258"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="527"/>
       <source>Set a direction or select an edge
 from the model as reference</source>
       <translation>Nastavit směr nebo vybrat hranu
 z modelu jako referenční</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="263"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="532"/>
       <source>Sketch normal</source>
       <translation>Normála náčrtu</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="273"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="542"/>
       <source>Custom direction</source>
       <translation>Vlastní směr</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="283"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="552"/>
       <source>Show direction</source>
       <translation>Zobrazit směr</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="293"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="562"/>
       <source>Use custom vector for pad direction, otherwise
 the sketch plane's normal vector will be used</source>
       <translation>Použít vlastní vektor pro směr desky, jinak
 bude použit normálový vektor roviny náčrtu</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="402"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="671"/>
       <source>If unchecked, the length will be
 measured along the specified direction</source>
       <translation>Pokud není zaškrtnuto, délka bude
 měřena ve stanoveném směru</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="406"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="675"/>
       <source>Length along sketch normal</source>
       <translation>Délka podél normály náčrtu</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="145"/>
-      <location filename="../../TaskPadPocketParameters.ui" line="226"/>
-      <source>Applies length symmetrically to sketch plane</source>
-      <translation>Použije délku symetricky k rovině náčrtu</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="170"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="214"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="443"/>
       <source>Toggles between selection and preview mode</source>
       <translation type="unfinished">Toggles between selection and preview mode</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="229"/>
-      <source>Symmetric to plane</source>
-      <translation>Symetrický k rovině</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="236"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="505"/>
       <source>Reversed</source>
       <translation>Překlopit</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="251"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="520"/>
       <source>Direction/edge</source>
       <translation type="unfinished">Direction/edge</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="268"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="537"/>
       <source>Select reference…</source>
       <translation type="unfinished">Select reference…</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="306"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="575"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="313"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="582"/>
       <source>X-component of direction vector</source>
       <translation type="unfinished">X-component of direction vector</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="335"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="604"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="342"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="611"/>
       <source>Y-component of direction vector</source>
       <translation type="unfinished">Y-component of direction vector</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="364"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="633"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="371"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="640"/>
       <source>Z-component of direction vector</source>
       <translation type="unfinished">Z-component of direction vector</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="418"/>
-      <location filename="../../TaskPadPocketParameters.ui" line="442"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="118"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="347"/>
       <source>Angle to taper the extrusion</source>
       <translation>Úhel pro zkosení vysunutí</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="421"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="22"/>
+      <source>Mode</source>
+      <translation>Způsob</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadPocketParameters.ui" line="46"/>
+      <source>Side 1</source>
+      <translation type="unfinished">Side 1</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadPocketParameters.ui" line="121"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="350"/>
       <source>Taper angle</source>
       <translation>Úhel zkosení</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="471"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="174"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="403"/>
+      <source>Select Shape</source>
+      <translation type="unfinished">Select Shape</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadPocketParameters.ui" line="189"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="418"/>
+      <source>Selects all faces of the shape</source>
+      <translation type="unfinished">Selects all faces of the shape</translation>
+    </message>
+    <message>
+      <location filename="../../TaskPadPocketParameters.ui" line="685"/>
       <source>Recompute on change</source>
       <translation type="unfinished">Recompute on change</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="58"/>
-      <source>2nd length</source>
-      <translation>2. délka</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="445"/>
-      <source>2nd taper angle</source>
-      <translation>Druhý úhel zkosení</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="211"/>
-      <source>Select face</source>
-      <translation>Vybrat plochu</translation>
     </message>
   </context>
   <context>
@@ -2776,9 +2800,14 @@ měřena ve stanoveném směru</translation>
       <translation type="unfinished">Pocket Parameters</translation>
     </message>
     <message>
+      <location filename="../../TaskPocketParameters.cpp" line="42"/>
+      <source>Offset from the selected face at which the pocket will end on side 1</source>
+      <translation type="unfinished">Offset from the selected face at which the pocket will end on side 1</translation>
+    </message>
+    <message>
       <location filename="../../TaskPocketParameters.cpp" line="43"/>
-      <source>Offset from face at which pocket will end</source>
-      <translation>Odsazení od plochy, u které má kapsa končit</translation>
+      <source>Offset from the selected face at which the pocket will end on side 2</source>
+      <translation type="unfinished">Offset from the selected face at which the pocket will end on side 2</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="44"/>
@@ -2786,32 +2815,27 @@ měřena ve stanoveném směru</translation>
       <translation>Obrátí směr kapsy</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="71"/>
+      <location filename="../../TaskPocketParameters.cpp" line="73"/>
       <source>Dimension</source>
       <translation>Rozměr</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="72"/>
+      <location filename="../../TaskPocketParameters.cpp" line="74"/>
       <source>Through all</source>
       <translation>Skrz vše</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="73"/>
+      <location filename="../../TaskPocketParameters.cpp" line="75"/>
       <source>To first</source>
       <translation>K další</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="74"/>
+      <location filename="../../TaskPocketParameters.cpp" line="76"/>
       <source>Up to face</source>
       <translation>K ploše</translation>
     </message>
     <message>
-      <location filename="../../TaskPocketParameters.cpp" line="75"/>
-      <source>Two dimensions</source>
-      <translation>Dva rozměry</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPocketParameters.cpp" line="76"/>
+      <location filename="../../TaskPocketParameters.cpp" line="77"/>
       <source>Up to shape</source>
       <translation>Ke tvaru</translation>
     </message>
@@ -2878,6 +2902,24 @@ měřena ve stanoveném směru</translation>
       <translation>Rozměr</translation>
     </message>
     <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="50"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="235"/>
+      <source>Base X-axis</source>
+      <translation type="unfinished">Base X-axis</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="55"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="236"/>
+      <source>Base Y-axis</source>
+      <translation type="unfinished">Base Y-axis</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="60"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="237"/>
+      <source>Base Z-axis</source>
+      <translation type="unfinished">Base Z-axis</translation>
+    </message>
+    <message>
       <location filename="../../TaskRevolutionParameters.ui" line="65"/>
       <source>Horizontal sketch axis</source>
       <translation>Vodorovná skicovací osa</translation>
@@ -2908,23 +2950,6 @@ měřena ve stanoveném směru</translation>
       <translation>Osa</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="50"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="235"/>
-      <source>Base x-axis</source>
-      <translation type="unfinished">Base x-axis</translation>
-    </message>
-    <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="236"/>
-      <source>Base y-axis</source>
-      <translation type="unfinished">Base y-axis</translation>
-    </message>
-    <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="60"/>
-      <source>Base z-xis</source>
-      <translation type="unfinished">Base z-xis</translation>
-    </message>
-    <message>
       <location filename="../../TaskRevolutionParameters.ui" line="75"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="244"/>
       <source>Select reference…</source>
@@ -2938,7 +2963,7 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="170"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="152"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="467"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="468"/>
       <source>Face</source>
       <translation>Plocha</translation>
     </message>
@@ -2973,12 +2998,7 @@ měřena ve stanoveném směru</translation>
       <translation>Dva rozměry</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="237"/>
-      <source>Base z-axis</source>
-      <translation type="unfinished">Base z-axis</translation>
-    </message>
-    <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="454"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="455"/>
       <source>No face selected</source>
       <translation>Nevybrána žádná plocha</translation>
     </message>
@@ -3015,8 +3035,8 @@ měřena ve stanoveném směru</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="61"/>
-      <source>Datum Shape Parameters</source>
-      <translation type="unfinished">Datum Shape Parameters</translation>
+      <source>Shape Binder Parameters</source>
+      <translation type="unfinished">Shape Binder Parameters</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="131"/>
@@ -3135,39 +3155,39 @@ měřena ve stanoveném směru</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="420"/>
-      <source>Base x-axis</source>
-      <translation type="unfinished">Base x-axis</translation>
+      <source>Base X-axis</source>
+      <translation type="unfinished">Base X-axis</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="421"/>
-      <source>Base y-axis</source>
-      <translation type="unfinished">Base y-axis</translation>
+      <source>Base Y-axis</source>
+      <translation type="unfinished">Base Y-axis</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="422"/>
-      <source>Base z-axis</source>
-      <translation type="unfinished">Base z-axis</translation>
+      <source>Base Z-axis</source>
+      <translation type="unfinished">Base Z-axis</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTransformedParameters.cpp" line="456"/>
+      <source>Base XY-plane</source>
+      <translation type="unfinished">Base XY-plane</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTransformedParameters.cpp" line="457"/>
+      <source>Base YZ-plane</source>
+      <translation type="unfinished">Base YZ-plane</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTransformedParameters.cpp" line="458"/>
+      <source>Base XZ-plane</source>
+      <translation type="unfinished">Base XZ-plane</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="430"/>
       <location filename="../../TaskTransformedParameters.cpp" line="466"/>
       <source>Select reference…</source>
       <translation type="unfinished">Select reference…</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="456"/>
-      <source>Base XY plane</source>
-      <translation>Základní rovina XY</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="457"/>
-      <source>Base YZ plane</source>
-      <translation>Základní rovina YZ</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="458"/>
-      <source>Base XZ plane</source>
-      <translation>Základní rovina XZ</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="35"/>
@@ -3203,12 +3223,12 @@ měřena ve stanoveném směru</translation>
   <context>
     <name>PartDesign_MoveFeature</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="738"/>
-      <source>Select body</source>
-      <translation>Vyberte těleso</translation>
+      <location filename="../../CommandBody.cpp" line="744"/>
+      <source>Select Body</source>
+      <translation type="unfinished">Select Body</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="739"/>
+      <location filename="../../CommandBody.cpp" line="745"/>
       <source>Select a body from the list</source>
       <translation>Vyberte těleso ze seznamu</translation>
     </message>
@@ -3216,27 +3236,27 @@ měřena ve stanoveném směru</translation>
   <context>
     <name>PartDesign_MoveFeatureInTree</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="892"/>
+      <location filename="../../CommandBody.cpp" line="898"/>
       <source>Move Feature After…</source>
       <translation type="unfinished">Move Feature After…</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="893"/>
+      <location filename="../../CommandBody.cpp" line="899"/>
       <source>Select a feature from the list</source>
       <translation>Vyberte prvek ze seznamu</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="967"/>
+      <location filename="../../CommandBody.cpp" line="973"/>
       <source>Move Tip</source>
       <translation type="unfinished">Move Tip</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="969"/>
+      <location filename="../../CommandBody.cpp" line="975"/>
       <source>Set tip to last feature?</source>
       <translation type="unfinished">Set tip to last feature?</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="968"/>
+      <location filename="../../CommandBody.cpp" line="974"/>
       <source>The moved feature appears after the currently set tip.</source>
       <translation>Přesunutý prvek se zobrazí za aktuálně nastavenou špičkou.</translation>
     </message>
@@ -3303,7 +3323,7 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../Command.cpp" line="1014"/>
       <location filename="../../SketchWorkflow.cpp" line="661"/>
-      <location filename="../../ViewProvider.cpp" line="137"/>
+      <location filename="../../ViewProvider.cpp" line="140"/>
       <location filename="../../ViewProviderBoolean.cpp" line="79"/>
       <location filename="../../ViewProviderDatum.cpp" line="250"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
@@ -3336,11 +3356,6 @@ měřena ve stanoveném směru</translation>
       <translation type="unfinished">Sub-shape binder</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="917"/>
-      <source>Consider using a sape binder or a base feature to reference external geometry in a body</source>
-      <translation type="unfinished">Consider using a sape binder or a base feature to reference external geometry in a body</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="939"/>
       <source>No sketch to work on</source>
       <translation>Chybí náčrt pro práci</translation>
@@ -3353,7 +3368,7 @@ měřena ve stanoveném směru</translation>
     <message>
       <location filename="../../Command.cpp" line="1015"/>
       <location filename="../../SketchWorkflow.cpp" line="662"/>
-      <location filename="../../ViewProvider.cpp" line="138"/>
+      <location filename="../../ViewProvider.cpp" line="141"/>
       <location filename="../../ViewProviderBoolean.cpp" line="80"/>
       <location filename="../../ViewProviderDatum.cpp" line="251"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
@@ -3388,6 +3403,11 @@ měřena ve stanoveném směru</translation>
       <translation>Vyberte hranu, plochu nebo těleso z aktivního tělesa.</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="917"/>
+      <source>Consider using a shape binder or a base feature to reference external geometry in a body</source>
+      <translation type="unfinished">Consider using a shape binder or a base feature to reference external geometry in a body</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="1649"/>
       <source>Wrong object type</source>
       <translation>Špatný typ objektu</translation>
@@ -3413,159 +3433,159 @@ měřena ve stanoveném směru</translation>
       <translation>Vytvoření objektu dílu selhalo.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="114"/>
       <location filename="../../CommandBody.cpp" line="119"/>
-      <location filename="../../CommandBody.cpp" line="132"/>
-      <location filename="../../CommandBody.cpp" line="181"/>
+      <location filename="../../CommandBody.cpp" line="124"/>
+      <location filename="../../CommandBody.cpp" line="137"/>
+      <location filename="../../CommandBody.cpp" line="186"/>
       <source>Bad base feature</source>
       <translation>Špatný základní prvek</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="115"/>
+      <location filename="../../CommandBody.cpp" line="120"/>
       <source>A body cannot be based on a Part Design feature.</source>
       <translation type="unfinished">A body cannot be based on a Part Design feature.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="120"/>
+      <location filename="../../CommandBody.cpp" line="125"/>
       <source>%1 already belongs to a body and cannot be used as a base feature for another body.</source>
       <translation type="unfinished">%1 already belongs to a body and cannot be used as a base feature for another body.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="133"/>
+      <location filename="../../CommandBody.cpp" line="138"/>
       <source>Base feature (%1) belongs to other part.</source>
       <translation>Základní prvek(%1) patří k jinému dílu.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="157"/>
+      <location filename="../../CommandBody.cpp" line="162"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
       <translation>Vybraný tvar se skládá z několika těles.
 To může vést k neočekávaným výsledkům.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="161"/>
+      <location filename="../../CommandBody.cpp" line="166"/>
       <source>The selected shape consists of multiple shells.
 This may lead to unexpected results.</source>
       <translation>Vybraný tvar se skládá z několika skořepin.
 To může vést k neočekávaným výsledkům.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="165"/>
+      <location filename="../../CommandBody.cpp" line="170"/>
       <source>The selected shape consists of only a shell.
 This may lead to unexpected results.</source>
       <translation>Vybraný tvar se skládá jen ze skořepiny.
 To může vést k neočekávaným výsledkům.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="169"/>
+      <location filename="../../CommandBody.cpp" line="174"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
       <translation>Vybraný tvar se skládá z několika těles nebo skořepin.
 To může vést k neočekávaným výsledkům.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="174"/>
+      <location filename="../../CommandBody.cpp" line="179"/>
       <source>Base feature</source>
       <translation>Základní prvek</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="182"/>
+      <location filename="../../CommandBody.cpp" line="187"/>
       <source>Body may be based on no more than one feature.</source>
       <translation>Těleso nemůže být založeno na více než jednom prvku.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="196"/>
+      <location filename="../../CommandBody.cpp" line="201"/>
       <source>Body</source>
       <translation>Těleso</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="345"/>
+      <location filename="../../CommandBody.cpp" line="351"/>
       <source>Nothing to migrate</source>
       <translation>Nic k migraci</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="346"/>
-      <source>No Part Design features found that do not belong to a body. Nothing to migrate.</source>
-      <translation type="unfinished">No Part Design features found that do not belong to a body. Nothing to migrate.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandBody.cpp" line="558"/>
+      <location filename="../../CommandBody.cpp" line="564"/>
       <source>Select exactly one Part Design feature or a body.</source>
       <translation type="unfinished">Select exactly one Part Design feature or a body.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="562"/>
+      <location filename="../../CommandBody.cpp" line="568"/>
       <source>Could not determine a body for the selected feature '%s'.</source>
       <translation type="unfinished">Could not determine a body for the selected feature '%s'.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="712"/>
+      <location filename="../../CommandBody.cpp" line="718"/>
       <source>Only features of a single source body can be moved</source>
       <translation type="unfinished">Only features of a single source body can be moved</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="494"/>
+      <location filename="../../CommandBody.cpp" line="500"/>
       <source>Sketch plane cannot be migrated</source>
       <translation>Rovinu náčrtu není možné migrovat</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="495"/>
+      <location filename="../../CommandBody.cpp" line="352"/>
+      <source>No Part Design features without body found Nothing to migrate.</source>
+      <translation type="unfinished">No Part Design features without body found Nothing to migrate.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandBody.cpp" line="501"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
       <translation>Prosím upravte '%1' a předefinujte ho za použití základny nebo pomocné roviny jako roviny náčrtu.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="557"/>
-      <location filename="../../CommandBody.cpp" line="561"/>
-      <location filename="../../CommandBody.cpp" line="566"/>
-      <location filename="../../CommandBody.cpp" line="863"/>
-      <location filename="../../CommandBody.cpp" line="870"/>
+      <location filename="../../CommandBody.cpp" line="563"/>
+      <location filename="../../CommandBody.cpp" line="567"/>
+      <location filename="../../CommandBody.cpp" line="572"/>
+      <location filename="../../CommandBody.cpp" line="869"/>
+      <location filename="../../CommandBody.cpp" line="876"/>
       <source>Selection error</source>
       <translation>Chyba výběru</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="567"/>
+      <location filename="../../CommandBody.cpp" line="573"/>
       <source>Only a solid feature can be the tip of a body.</source>
       <translation>Pouze prvek tělesa může být vrcholem těla.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="689"/>
-      <location filename="../../CommandBody.cpp" line="711"/>
-      <location filename="../../CommandBody.cpp" line="726"/>
+      <location filename="../../CommandBody.cpp" line="695"/>
+      <location filename="../../CommandBody.cpp" line="717"/>
+      <location filename="../../CommandBody.cpp" line="732"/>
       <source>Features cannot be moved</source>
       <translation>Prvky nemohou být přesunuty</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="690"/>
+      <location filename="../../CommandBody.cpp" line="696"/>
       <source>Some of the selected features have dependencies in the source body</source>
       <translation>Některé z vybraných prvků mají závislosti ve zdrojovém tělese</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="727"/>
+      <location filename="../../CommandBody.cpp" line="733"/>
       <source>There are no other bodies to move to</source>
       <translation>Žádné další těleso k přesunu</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="864"/>
+      <location filename="../../CommandBody.cpp" line="870"/>
       <source>Impossible to move the base feature of a body.</source>
       <translation>Nelze přesunout základní prvek tělesa.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="871"/>
+      <location filename="../../CommandBody.cpp" line="877"/>
       <source>Select one or more features from the same body.</source>
       <translation>Vyberte jeden nebo více prvků ze stejného tělesa.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="884"/>
+      <location filename="../../CommandBody.cpp" line="890"/>
       <source>Beginning of the body</source>
       <translation>Začátek tělesa</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="953"/>
+      <location filename="../../CommandBody.cpp" line="959"/>
       <source>Dependency violation</source>
       <translation>Porušení závislosti</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="954"/>
+      <location filename="../../CommandBody.cpp" line="960"/>
       <source>Early feature must not depend on later feature.
 
 </source>
@@ -3612,10 +3632,10 @@ To může vést k neočekávaným výsledkům.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="140"/>
-      <source>To use Part Design, an active body object is required in the document. Activate a body (double-click) or create a new one.
+      <source>To use Part Design, an active body is required in the document. Activate a body (double-click) or create a new one.
 
 For legacy documents with Part Design objects lacking a body, use the migrate function in Part Design to place them into a body.</source>
-      <translation type="unfinished">To use Part Design, an active body object is required in the document. Activate a body (double-click) or create a new one.
+      <translation type="unfinished">To use Part Design, an active body is required in the document. Activate a body (double-click) or create a new one.
 
 For legacy documents with Part Design objects lacking a body, use the migrate function in Part Design to place them into a body.</translation>
     </message>
@@ -3645,15 +3665,15 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>Pro použití tohoto prvku je potřebné, aby patřil k objektu díl v dokumentu.</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="94"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="62"/>
+      <location filename="../../ViewProvider.cpp" line="97"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="65"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="210"/>
       <location filename="../../ViewProviderTransformed.cpp" line="66"/>
       <source>Edit %1</source>
       <translation>Upravit %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="107"/>
+      <location filename="../../ViewProvider.cpp" line="110"/>
       <source>Set Face Colors</source>
       <translation type="unfinished">Set Face Colors</translation>
     </message>
@@ -3686,12 +3706,12 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation type="unfinished">Edit Datum</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="86"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="89"/>
       <source>Feature error</source>
       <translation>Chyba prvku</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="87"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="90"/>
       <source>%1 misses a base feature.
 This feature is broken and cannot be edited.</source>
       <translation type="unfinished">%1 misses a base feature.
@@ -3792,7 +3812,7 @@ Přesto můžete provést migraci kdykoliv později pomocí 'PartDesign -&gt; Mi
       <translation type="unfinished">Edit Helix</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHole.cpp" line="62"/>
+      <location filename="../../ViewProviderHole.cpp" line="66"/>
       <source>Edit Hole</source>
       <translation type="unfinished">Edit Hole</translation>
     </message>
@@ -4545,12 +4565,12 @@ nad 90: větší poloměr díry ve spodní části</translation>
   <context>
     <name>Exception</name>
     <message>
-      <location filename="../../../App/Body.cpp" line="403"/>
+      <location filename="../../../App/Body.cpp" line="396"/>
       <source>Linked object is not a PartDesign feature</source>
       <translation>Propojený objekt není PartDesign prvkem</translation>
     </message>
     <message>
-      <location filename="../../../App/Body.cpp" line="410"/>
+      <location filename="../../../App/Body.cpp" line="403"/>
       <source>Tip shape is empty</source>
       <translation>Tvar špičky je prázdný</translation>
     </message>
@@ -4596,6 +4616,20 @@ nad 90: větší poloměr díry ve spodní části</translation>
       <translation>Základní tvar je null</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureBoolean.cpp" line="163"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="174"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="291"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="578"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="119"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="196"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2185"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="277"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="404"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="232"/>
+      <source>Result has multiple solids: enable 'Allow Compounds' in the active body.</source>
+      <translation type="unfinished">Result has multiple solids: enable 'Allow Compounds' in the active body.</translation>
+    </message>
+    <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="112"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="134"/>
       <source>Tool shape is null</source>
@@ -4607,7 +4641,27 @@ nad 90: větší poloměr díry ve spodní části</translation>
       <translation>Nepodporovaná booleovská operace</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="807"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="325"/>
+      <source>Cannot create a pad with a total length of zero.</source>
+      <translation type="unfinished">Cannot create a pad with a total length of zero.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureExtrude.cpp" line="330"/>
+      <source>Cannot create a pocket with a total length of zero.</source>
+      <translation type="unfinished">Cannot create a pocket with a total length of zero.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureExtrude.cpp" line="516"/>
+      <source>No extrusion geometry was generated.</source>
+      <translation type="unfinished">No extrusion geometry was generated.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureExtrude.cpp" line="536"/>
+      <source>Resulting fused extrusion is null.</source>
+      <translation type="unfinished">Resulting fused extrusion is null.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureExtrude.cpp" line="570"/>
       <location filename="../../../App/FeatureLoft.cpp" line="306"/>
       <location filename="../../../App/FeaturePipe.cpp" line="401"/>
       <location filename="../../../App/FeaturePipe.cpp" line="422"/>
@@ -4616,20 +4670,10 @@ nad 90: větší poloměr díry ve spodní části</translation>
       <translation>Výsledný tvar není plné těleso</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="163"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="174"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="322"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="815"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="828"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="838"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="119"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="196"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2185"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="277"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="591"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="601"/>
       <location filename="../../../App/FeatureLoft.cpp" line="312"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="404"/>
       <location filename="../../../App/FeaturePipe.cpp" line="425"/>
-      <location filename="../../../App/FeatureRevolution.cpp" line="232"/>
       <source>Result has multiple solids: that is not currently supported.</source>
       <translation>Výsledek se skládá z více těles: to není v současné době podporováno.</translation>
     </message>
@@ -4639,7 +4683,7 @@ nad 90: větší poloměr díry ve spodní části</translation>
       <translation>Nepodařilo se vytvořit sražení</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureDraft.cpp" line="319"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="287"/>
       <location filename="../../../App/FeatureFillet.cpp" line="102"/>
       <source>Resulting shape is null</source>
       <translation>Výsledný tvar je null</translation>
@@ -4663,11 +4707,6 @@ nad 90: větší poloměr díry ve spodní části</translation>
       <location filename="../../../App/FeatureChamfer.cpp" line="255"/>
       <source>Angle must be greater than 0 and less than 180</source>
       <translation>Úhel musí být větší než 0 a menší než 180</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureDraft.cpp" line="315"/>
-      <source>Failed to create draft</source>
-      <translation>Nepodařilo se vytvořit zkosení</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureFillet.cpp" line="85"/>
@@ -4702,56 +4741,21 @@ nad 90: větší poloměr díry ve spodní části</translation>
   - vybraný náčrt nepatří k aktivnímu tělesu.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="487"/>
-      <source>Length too small</source>
-      <translation>Příliš malá délka</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="494"/>
-      <source>Second length too small</source>
-      <translation>Příliš malá druhá délka</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="533"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="371"/>
       <source>Failed to obtain profile shape</source>
       <translation>Nepodařilo se získat tvar profilu</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="585"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="423"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation>Vytvoření selhalo, protože směr je kolmý k normálovému vektoru náčrtu</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="643"/>
-      <source>Extrude: Can only offset one face</source>
-      <translation>Vysunutí: Umožňuje odsadit jen jednu plochu</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="604"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="445"/>
       <location filename="../../../App/FeatureGroove.cpp" line="129"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="136"/>
       <source>Creating a face from sketch failed</source>
       <translation>Vytvoření plochy z náčrtu selhalo</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="686"/>
-      <source>Up to face: Could not get SubShape!</source>
-      <translation>K ploše: Nelze získat dílčí tvar!</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="717"/>
-      <source>Unable to reach the selected shape, please select faces</source>
-      <translation>Nelze dosáhnout vybraného tvaru, vyberte prosím plochy</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="746"/>
-      <source>Magnitude of taper angle matches or exceeds 90 degrees</source>
-      <translation>Velikost kuželového úhlu je roven nebo přesahuje 90 stupňů</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="757"/>
-      <source>Padding with draft angle failed</source>
-      <translation>Vytvoření desky s úhlem úkosu se nezdařilo</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="151"/>
@@ -4819,7 +4823,7 @@ Protínání jednotlivých prvků v náčrtu není dovoleno.</translation>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="299"/>
       <location filename="../../../App/FeatureHelix.cpp" line="331"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2531"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2529"/>
       <source>Error: Result is not a solid</source>
       <translation>Chyba: Výsledek není plné těleso</translation>
     </message>
@@ -4944,17 +4948,17 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
 Protínání entit náčrtu nebo několika ploch v náčrtu není povoleno pro vytvoření kapsy k ploše.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2347"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2345"/>
       <source>Thread type out of range</source>
       <translation>Typ závitu mino rozsah</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2350"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2348"/>
       <source>Thread size out of range</source>
       <translation>Velikost závitu mimo rozsah</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2506"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2504"/>
       <source>Error: Thread could not be built</source>
       <translation>Chyba: Závit nelze vytvořit</translation>
     </message>
@@ -4979,7 +4983,7 @@ Protínání entit náčrtu nebo několika ploch v náčrtu není povoleno pro v
       <translation>Nepodařilo se vytvořit obal</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="850"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="613"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>Nelze vytvořit plochu z náčrtu.
@@ -5012,8 +5016,8 @@ Nejsou povoleny protínající se prvky náčrtu nebo více ploch v náčrtu.</t
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="237"/>
-      <source>Pipe: All sections need to be part features</source>
-      <translation>Potrubí: Všechny sekce musí být prvky dílu</translation>
+      <source>Pipe: All sections need to be Part features</source>
+      <translation type="unfinished">Pipe: All sections need to be Part features</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="243"/>
@@ -5221,7 +5225,7 @@ Nejsou povoleny protínající se prvky náčrtu nebo více ploch v náčrtu.</t
       <translation>Vztažná osa je neplatná</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="800"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="563"/>
       <source>Fusion with base feature failed</source>
       <translation>Sjednocení se základním prvkem selhalo</translation>
     </message>
@@ -5449,7 +5453,7 @@ Nejsou povoleny protínající se prvky náčrtu nebo více ploch v náčrtu.</t
   <context>
     <name>PartDesignGui::TaskDlgRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="715"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="716"/>
       <source>Revolution Parameters</source>
       <translation type="unfinished">Revolution Parameters</translation>
     </message>
@@ -5457,7 +5461,7 @@ Nejsou povoleny protínající se prvky náčrtu nebo více ploch v náčrtu.</t
   <context>
     <name>PartDesignGui::TaskDlgGrooveParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="723"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="724"/>
       <source>Groove Parameters</source>
       <translation type="unfinished">Groove Parameters</translation>
     </message>

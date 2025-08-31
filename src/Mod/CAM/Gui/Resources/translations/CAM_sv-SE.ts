@@ -985,11 +985,6 @@ Larger values (further to the right) will calculate faster; smaller values (furt
 Större värden (längre till höger) ger snabbare beräkningar; mindre värden (längre till vänster) ger mer exakta verktygsbanor.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="129"/>
-      <source>How much material to leave in the XY plane (i.e. for finishing operation)</source>
-      <translation>Hur mycket material som ska lämnas kvar i XY-planet (t.ex. för efterbearbetning)</translation>
-    </message>
-    <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="108"/>
       <source>Cut inside or outside of the selected shapes</source>
       <translation>Skär på insidan eller utsidan av de valda formerna</translation>
@@ -1051,6 +1046,11 @@ Större värden (längre till höger) ger snabbare beräkningar; mindre värden 
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="122"/>
       <source>Finishing profile</source>
       <translation type="unfinished">Finishing profile</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="129"/>
+      <source>How much material to leave in the XY-plane (i.e. for finishing operation)</source>
+      <translation type="unfinished">How much material to leave in the XY-plane (i.e. for finishing operation)</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="139"/>
@@ -4164,34 +4164,34 @@ Standard: 3 mm</translation>
       <translation>CAMotics-projekt (*.camotics)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="726"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="746"/>
       <source>H</source>
       <comment>H is horizontal feed rate. Must be as short as possible</comment>
       <translation>H</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="729"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="749"/>
       <source>V</source>
       <comment>V is vertical feed rate. Must be as short as possible</comment>
       <translation>V</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="732"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="752"/>
       <source>Tool number</source>
       <translation>Verktygsnummer</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="735"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="755"/>
       <source>Horizontal feedrate</source>
       <translation>Horisontell matningshastighet</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="738"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="758"/>
       <source>Vertical feedrate</source>
       <translation>Vertikal matningshastighet</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="741"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="761"/>
       <source>Spindle RPM</source>
       <translation>Spindelvarvtal</translation>
     </message>
@@ -4612,19 +4612,19 @@ Standard: 3 mm</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="198"/>
-      <location filename="../../../Path/Main/Job.py" line="506"/>
+      <location filename="../../../Path/Main/Job.py" line="509"/>
       <source>Split output into multiple G-code files</source>
       <translation>Dela upp utdata i flera G-kodfiler</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="204"/>
-      <location filename="../../../Path/Main/Job.py" line="497"/>
+      <location filename="../../../Path/Main/Job.py" line="500"/>
       <source>If multiple WCS, order the output this way</source>
       <translation>Om flera WCS, beställ utdata på följande sätt</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="210"/>
-      <location filename="../../../Path/Main/Job.py" line="488"/>
+      <location filename="../../../Path/Main/Job.py" line="491"/>
       <source>The Work Coordinate Systems for the Job</source>
       <translation>Arbetskoordinatsystem för jobbet</translation>
     </message>
@@ -4644,14 +4644,14 @@ Standard: 3 mm</translation>
       <translation>Samling av alla verktygsstyrningar för jobbet</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="479"/>
+      <location filename="../../../Path/Main/Job.py" line="482"/>
       <location filename="../../../Path/Op/Base.py" line="186"/>
       <location filename="../../../Path/Op/Base.py" line="440"/>
       <source>Operations Cycle Time Estimation</source>
       <translation>Uppskattning av cykeltid i verksamheten</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="515"/>
+      <location filename="../../../Path/Main/Job.py" line="518"/>
       <source>Select the type of Job</source>
       <translation>Välj typ av jobb</translation>
     </message>
@@ -6549,12 +6549,12 @@ Avbryter skapandet av operatör</translation>
       <translation type="unfinished">Completes the selection of edges that form a loop</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="116"/>
+      <location filename="../../../PathCommands.py" line="131"/>
       <source>Feature Completion</source>
       <translation>Komplettering av funktioner</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="117"/>
+      <location filename="../../../PathCommands.py" line="132"/>
       <source>Closed loop detection failed.</source>
       <translation>Detektering av sluten slinga misslyckades.</translation>
     </message>
@@ -7020,58 +7020,58 @@ Avbryter skapandet av operatör</translation>
       <translation>Lager inte en cylinder!</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1032"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1052"/>
       <source>Select Output File</source>
       <translation>Välj utdatafil</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1034"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1054"/>
       <source>All Files (*.*)</source>
       <translation>Alla filer (*.*)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1375"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1395"/>
       <source>Unsupported stock object %s</source>
       <translation>Lagerobjekt som inte stöds %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1391"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1411"/>
       <source>Unsupported stock type %s (%d)</source>
       <translation>Lagertyp som inte stöds %s (%d)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1482"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1502"/>
       <source>Model Selection</source>
       <translation>Val av modell</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1637"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1657"/>
       <source>Warning</source>
       <translation>Varning</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1638"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1658"/>
       <source>Please add one.</source>
       <translation>Lägg till en.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1639"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1659"/>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="116"/>
       <source>Ok</source>
       <translation>Ok</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1641"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1661"/>
       <source>Add</source>
       <translation>Lägg till</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1652"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1672"/>
       <source>This job has no base model.</source>
       <translation>Det här jobbet har ingen basmodell.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1659"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1679"/>
       <source>This job has no tool.</source>
       <translation>Det här jobbet har inget verktyg.</translation>
     </message>
@@ -7096,32 +7096,32 @@ Avbryter skapandet av operatör</translation>
       <translation>Visa inte denna varning igen</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="214"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="216"/>
       <source>Model</source>
       <translation>Modell</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="215"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="217"/>
       <source>Count</source>
       <translation>Antal</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="297"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="299"/>
       <source>&lt;none&gt;</source>
       <translation>&lt;ingen&gt;</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="379"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="381"/>
       <source>Base -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f</source>
       <translation>Bas -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="389"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="391"/>
       <source>Box: %.2f x %.2f x %.2f</source>
       <translation type="unfinished">Box: %.2f x %.2f x %.2f</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="404"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="406"/>
       <source>Unsupported stock type</source>
       <translation>Lagertyp som inte stöds</translation>
     </message>
@@ -7191,7 +7191,7 @@ Avbryter skapandet av operatör</translation>
   <context>
     <name>CAM_Job:</name>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="395"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="397"/>
       <source>Cylinder: %.2f x %.2f</source>
       <translation>Cylinder: %.2f x %.2f</translation>
     </message>
@@ -7604,62 +7604,62 @@ Avbryter skapandet av operatör</translation>
   <context>
     <name>CAM</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="611"/>
+      <location filename="../../../Path/Op/Base.py" line="613"/>
       <source>No parent job found for operation.</source>
       <translation>Inget föräldrajobb hittades för operation.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="616"/>
+      <location filename="../../../Path/Op/Base.py" line="618"/>
       <source>Parent job %s doesn&apos;t have a base object</source>
       <translation>Föräldrajobb %s har inte ett basobjekt</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="758"/>
+      <location filename="../../../Path/Op/Base.py" line="760"/>
       <source>No Tool Controller is selected. We need a tool to build a Path.</source>
       <translation>Ingen verktygsstyrenhet är vald. Vi behöver ett verktyg för att bygga en bana.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="772"/>
+      <location filename="../../../Path/Op/Base.py" line="774"/>
       <source>No Tool found or diameter is zero. We need a tool to build a Path.</source>
       <translation>Inget verktyg hittat eller diametern är noll. Vi behöver ett verktyg för att bygga en bana.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="842"/>
+      <location filename="../../../Path/Op/Base.py" line="844"/>
       <source>No Tool Controller selected.</source>
       <translation>Ingen verktygsstyrenhet vald.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="845"/>
+      <location filename="../../../Path/Op/Base.py" line="847"/>
       <source>Tool Error</source>
       <translation>Verktygsfel</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="857"/>
+      <location filename="../../../Path/Op/Base.py" line="859"/>
       <source>Tool Controller feedrates required to calculate the cycle time.</source>
       <translation>Verktygsregulatormatningar som krävs för att beräkna cykeltiden.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="860"/>
+      <location filename="../../../Path/Op/Base.py" line="862"/>
       <source>Tool Feedrate Error</source>
       <translation>Fel på verktygets matningshastighet</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="866"/>
+      <location filename="../../../Path/Op/Base.py" line="868"/>
       <source>Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</source>
       <translation>Lägg till Tool Controller Rapid Speeds på SetupSheet för mer exakta cykeltider.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="875"/>
+      <location filename="../../../Path/Op/Base.py" line="877"/>
       <source>Cycletime Error</source>
       <translation>Cykeltidsfel</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="817"/>
+      <location filename="../../../Path/Op/Base.py" line="819"/>
       <source>Base object %s.%s already in the list</source>
       <translation>Basobjekt %s.%s redan i listan</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="827"/>
+      <location filename="../../../Path/Op/Base.py" line="829"/>
       <source>Base object %s.%s rejected by operation</source>
       <translation>Basobjektet %s.%s avvisas av operatören</translation>
     </message>
@@ -8966,8 +8966,8 @@ Avbryter skapandet av operatör</translation>
     </message>
     <message>
       <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="289"/>
-      <source>Toggle ambient oclusion</source>
-      <translation>Växla omgivande oclusion</translation>
+      <source>Toggle ambient occlusion</source>
+      <translation type="unfinished">Toggle ambient occlusion</translation>
     </message>
     <message>
       <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="290"/>
@@ -8991,12 +8991,12 @@ Avbryter skapandet av operatör</translation>
   <context>
     <name>CAM_OpActiveToggle</name>
     <message>
-      <location filename="../../../PathCommands.py" line="145"/>
+      <location filename="../../../PathCommands.py" line="160"/>
       <source>Toggle Operation</source>
       <translation type="unfinished">Toggle Operation</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="149"/>
+      <location filename="../../../PathCommands.py" line="164"/>
       <source>Toggles the active state of the operation</source>
       <translation type="unfinished">Toggles the active state of the operation</translation>
     </message>
@@ -9004,12 +9004,12 @@ Avbryter skapandet av operatör</translation>
   <context>
     <name>CAM_OperationCopy</name>
     <message>
-      <location filename="../../../PathCommands.py" line="186"/>
+      <location filename="../../../PathCommands.py" line="201"/>
       <source>Copy Operation</source>
       <translation type="unfinished">Copy Operation</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="187"/>
+      <location filename="../../../PathCommands.py" line="202"/>
       <source>Copies the operation in the job</source>
       <translation type="unfinished">Copies the operation in the job</translation>
     </message>

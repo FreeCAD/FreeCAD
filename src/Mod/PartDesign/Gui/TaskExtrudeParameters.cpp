@@ -31,6 +31,10 @@
 #include <Base/UnitsApi.h>
 #include <Gui/Command.h>
 #include <Gui/Tools.h>
+#include <Gui/Inventor/Draggers/Gizmo.h>
+#include <Gui/Inventor/Draggers/GizmoHelper.h>
+#include <Gui/Inventor/Draggers/SoLinearDragger.h>
+#include <Gui/Inventor/Draggers/SoRotationDragger.h>
 #include <Mod/PartDesign/App/FeatureExtrude.h>
 
 #include "ui_TaskPadPocketParameters.h"
@@ -64,8 +68,6 @@ TaskExtrudeParameters::TaskExtrudeParameters(ViewProviderExtrude* SketchBasedVie
 
     this->groupLayout()->addWidget(proxy);
 }
-
-TaskExtrudeParameters::~TaskExtrudeParameters() = default;
 
 void TaskExtrudeParameters::setupDialog()
 {
@@ -114,6 +116,8 @@ void TaskExtrudeParameters::setupDialog()
 
     this->propReferenceAxis = &(extrude->ReferenceAxis);
     updateUI(Side::First);
+
+    setupGizmos();
 }
 
 void TaskExtrudeParameters::setupSideDialog(SideController& side)
@@ -476,6 +480,8 @@ void TaskExtrudeParameters::selectedReferenceAxis(const Gui::SelectionChanges& m
 
         // update direction combobox
         fillDirectionCombo();
+
+        setGizmoPositions();
     }
 }
 
@@ -768,8 +774,10 @@ void TaskExtrudeParameters::updateWholeUI(Type type, Side side)
     // Side 2 is only visible if in TwoSides mode, and we pass whether it should receive focus.
     updateSideUI(m_side2, type, mode2, isSide2GroupVisible, (side == Side::Second));
 
-    ui->checkBoxAlongDirection->setVisible(m_side1.lengthEdit->isVisible()
-                                           || m_side2.lengthEdit->isVisible());
+    bool side1HasLength = (mode1 == Mode::Dimension);
+    bool side2HasLength = (sidesMode == SidesMode::TwoSides && mode2 == Mode::Dimension);
+    ui->checkBoxAlongDirection->setVisible(side1HasLength || side2HasLength);
+  
     ui->checkBoxReversed->setEnabled(sidesMode != SidesMode::Symmetric || mode1 != Mode::Dimension);
 }
 
@@ -874,8 +882,7 @@ void TaskExtrudeParameters::onDirectionCBChanged(int num)
         // to distinguish that this is the direction selection
         setSelectionMode(SelectReferenceAxis);
         setDirectionMode(num);
-    }
-    else if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
+    } else if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
         if (lnk.getValue()) {
             if (!extrude->getDocument()->isIn(lnk.getValue())) {
                 Base::Console().error("Object was deleted\n");
@@ -891,6 +898,8 @@ void TaskExtrudeParameters::onDirectionCBChanged(int num)
         extrude->ReferenceAxis.setValue(lnk.getValue(), lnk.getSubValues());
         tryRecomputeFeature();
         updateDirectionEdits();
+
+        setGizmoPositions();
     }
 }
 
@@ -899,6 +908,8 @@ void TaskExtrudeParameters::onAlongSketchNormalChanged(bool on)
     if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
         extrude->AlongSketchNormal.setValue(on);
         tryRecomputeFeature();
+
+        setGizmoPositions();
     }
 }
 
@@ -938,6 +949,7 @@ void TaskExtrudeParameters::onXDirectionEditChanged(double len)
         // if there was a null vector, the normal vector of the sketch is used.
         // therefore the vector component edits must be updated
         updateDirectionEdits();
+        setGizmoPositions();
     }
 }
 
@@ -949,6 +961,7 @@ void TaskExtrudeParameters::onYDirectionEditChanged(double len)
                                     extrude->Direction.getValue().z);
         tryRecomputeFeature();
         updateDirectionEdits();
+        setGizmoPositions();
     }
 }
 
@@ -960,6 +973,7 @@ void TaskExtrudeParameters::onZDirectionEditChanged(double len)
                                     len);
         tryRecomputeFeature();
         updateDirectionEdits();
+        setGizmoPositions();
     }
 }
 
@@ -1019,6 +1033,8 @@ void TaskExtrudeParameters::onReversedChanged(bool on)
         // update the direction
         tryRecomputeFeature();
         updateDirectionEdits();
+
+        setGizmoPositions();
     }
 }
 
@@ -1343,6 +1359,72 @@ void TaskExtrudeParameters::handleLineFaceNameNo(QLineEdit* lineEdit)
     lineEdit->setPlaceholderText(tr("No face selected"));
 }
 
+void TaskExtrudeParameters::setupGizmos()
+{
+    if (GizmoContainer::isEnabled() == false) {
+        return;
+    }
+
+    lengthGizmo1 = new Gui::LinearGizmo(ui->lengthEdit);
+    lengthGizmo2 = new Gui::LinearGizmo(ui->lengthEdit2);
+    taperAngleGizmo1 = new Gui::RotationGizmo(ui->taperEdit);
+    taperAngleGizmo2 = new Gui::RotationGizmo(ui->taperEdit2);
+
+    connect(ui->sidesMode, qOverload<int>(&QComboBox::currentIndexChanged), [this] (int) {
+        setGizmoPositions();
+    });
+
+    gizmoContainer = GizmoContainer::createGizmo({
+        lengthGizmo1, lengthGizmo2,
+        taperAngleGizmo1, taperAngleGizmo2
+    }, vp);
+
+    setGizmoPositions();
+}
+
+void TaskExtrudeParameters::setGizmoPositions()
+{
+    if (!gizmoContainer) {
+        return;
+    }
+
+    auto extrude = getObject<PartDesign::FeatureExtrude>();
+    PartDesign::TopoShape shape = extrude->getProfileShape();
+    Base::Vector3d center = getMidPointFromProfile(shape);
+    std::string sideType = std::string(extrude->SideType.getValueAsString());
+    double dir = extrude->Reversed.getValue()? -1 : 1;
+
+    lengthGizmo1->Gizmo::setDraggerPlacement(center, extrude->Direction.getValue() * dir);
+    taperAngleGizmo1->placeOverLinearGizmo(lengthGizmo1);
+    lengthGizmo2->Gizmo::setDraggerPlacement(center, -extrude->Direction.getValue() * dir);
+    lengthGizmo2->setVisibility(
+        sideType == "Two sides"
+    );
+    taperAngleGizmo2->placeOverLinearGizmo(lengthGizmo2);
+    taperAngleGizmo2->setVisibility(
+        sideType == "Two sides"
+    );
+
+    Base::Vector3d padDir = extrude->Direction.getValue().Normalized();
+    Base::Vector3d sketchDir = extrude->getProfileNormal().Normalized();
+
+    double lengthFactor = padDir.Dot(sketchDir);
+    double multFactor = (sideType == "Symmetric")? 0.5 : 1.0;
+
+    // Important note: This code assumes that nothing other than alongSketchNormal
+    // and symmetric option influence the multFactor. If some custom gizmos changes
+    // it then that also should be handled properly here
+    if (extrude->AlongSketchNormal.getValue()) {
+        lengthGizmo1->setMultFactor(multFactor/lengthFactor);
+        lengthGizmo2->setMultFactor(multFactor/lengthFactor);
+    } else {
+        lengthGizmo1->setMultFactor(multFactor);
+        lengthGizmo2->setMultFactor(multFactor);
+    }
+
+    gizmoContainer->calculateScaleAndOrientation();
+}
+
 TaskDlgExtrudeParameters::TaskDlgExtrudeParameters(PartDesignGui::ViewProviderExtrude* vp)
     : TaskDlgSketchBasedParameters(vp)
 {}
@@ -1362,4 +1444,5 @@ bool TaskDlgExtrudeParameters::reject()
 }
 
 #include "moc_TaskExtrudeParameters.cpp"
+
 

@@ -342,7 +342,7 @@
       <translation>Stvori proračunsku tablicu</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="260"/>
+      <location filename="../../PropertiesDialog.cpp" line="267"/>
       <source>Set cell properties</source>
       <translation>Postavi svojstava ćelija</translation>
     </message>

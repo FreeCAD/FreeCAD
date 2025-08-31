@@ -342,7 +342,7 @@
       <translation>Utwórz Arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="260"/>
+      <location filename="../../PropertiesDialog.cpp" line="267"/>
       <source>Set cell properties</source>
       <translation>Ustaw właściwości komórki</translation>
     </message>

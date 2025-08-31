@@ -165,7 +165,7 @@ The number must be at least 1 in each direction.</string>
    <item row="4" column="0">
     <widget class="QGroupBox" name="group_X">
      <property name="toolTip">
-      <string>Distance between the elements in the X direction.
+      <string>Distance between the elements in the X-direction.
 Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
 Negative values will result in copies produced in the negative direction.</string>
      </property>
@@ -256,7 +256,7 @@ Negative values will result in copies produced in the negative direction.</strin
    <item row="5" column="0">
     <widget class="QGroupBox" name="group_Y">
      <property name="toolTip">
-      <string>Distance between the elements in the Y direction.
+      <string>Distance between the elements in the Y-direction.
 Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
 Negative values will result in copies produced in the negative direction.</string>
      </property>

@@ -96,12 +96,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="658"/>
       <source>Trackball Classic</source>
-      <translation type="unfinished">Trackball Classic</translation>
+      <translation>კლასიკური ტრეკბოლი</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="659"/>
       <source>Rounded Arcball</source>
-      <translation type="unfinished">Rounded Arcball</translation>
+      <translation>მმომრგვალებული ბურთის სექტორი</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="660"/>
@@ -112,7 +112,7 @@
       <location filename="../../NavigationIndicatorGui.py" line="672"/>
       <source>Navigation indicator</source>
       <comment>A context menu action used to show or hide the &apos;Navigation indicator&apos; toolbar widget</comment>
-      <translation type="unfinished">Navigation indicator</translation>
+      <translation>ნავიგაციის მაჩვენებელი</translation>
     </message>
   </context>
 </TS>

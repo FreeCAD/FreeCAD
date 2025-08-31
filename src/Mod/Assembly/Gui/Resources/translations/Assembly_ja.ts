@@ -145,7 +145,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1550"/>
+      <location filename="../../../JointObject.py" line="1560"/>
       <source>Distance</source>
       <translation>距離</translation>
     </message>
@@ -161,7 +161,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="58"/>
-      <location filename="../../../JointObject.py" line="1552"/>
+      <location filename="../../../JointObject.py" line="1562"/>
       <source>Angle</source>
       <translation>角度</translation>
     </message>
@@ -186,22 +186,27 @@
       <translation>ベルト</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="634"/>
+      <location filename="../../../JointObject.py" line="641"/>
       <source>Broken link in: </source>
       <translation>リンクが壊れています: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1394"/>
-      <source>You need to select 2 elements from 2 separate parts.</source>
-      <translation>2つの別々の部品から2つの要素を選択する必要があります。</translation>
+      <location filename="../../../JointObject.py" line="1404"/>
+      <source>Select 2 elements from 2 separate parts</source>
+      <translation type="unfinished">Select 2 elements from 2 separate parts</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1554"/>
+      <location filename="../../../JointObject.py" line="1564"/>
       <source>Radius 1</source>
       <translation>半径 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1556"/>
+      <location filename="../../../JointObject.py" line="1566"/>
+      <source>Thread pitch</source>
+      <translation type="unfinished">Thread pitch</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="1568"/>
       <source>Pitch radius</source>
       <translation>ピッチ半径</translation>
     </message>
@@ -246,159 +251,164 @@
       <translation>数量 (自動)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="197"/>
+      <location filename="../../../CommandCreateBom.py" line="200"/>
       <source>Default</source>
       <translation>デフォルト</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="293"/>
+      <location filename="../../../CommandCreateBom.py" line="296"/>
       <source>Duplicate Name</source>
       <translation>名前が重複しています。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="294"/>
+      <location filename="../../../CommandCreateBom.py" line="297"/>
       <source>This name is already used. Please choose a different name.</source>
       <translation>その名前はすでに使用されています。別の名前を選んでください。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="373"/>
+      <location filename="../../../CommandCreateBom.py" line="376"/>
       <source>Options</source>
       <translation>オプション</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="380"/>
+      <location filename="../../../CommandCreateBom.py" line="383"/>
       <source>Sub-assembly children: the children of sub-assemblies will be included in the bill of materials</source>
       <translation type="unfinished">Sub-assembly children: the children of sub-assemblies will be included in the bill of materials</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="386"/>
+      <location filename="../../../CommandCreateBom.py" line="389"/>
       <source>Parts children: the children of parts will be added to the bill of materials</source>
       <translation type="unfinished">Parts children: the children of parts will be added to the bill of materials</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="392"/>
+      <location filename="../../../CommandCreateBom.py" line="395"/>
       <source>Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.</source>
       <translation type="unfinished">Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="394"/>
+      <location filename="../../../CommandCreateBom.py" line="397"/>
       <source>Columns</source>
       <translation>列</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="407"/>
+      <location filename="../../../CommandCreateBom.py" line="410"/>
       <source>Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. If a column name starts with '.' followed by a property name (e.g. '.Length'), it will be auto-populated with that property value. These columns can be renamed by double-clicking or pressing F2 (renaming a column will currently lose its data).</source>
       <translation type="unfinished">Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. If a column name starts with '.' followed by a property name (e.g. '.Length'), it will be auto-populated with that property value. These columns can be renamed by double-clicking or pressing F2 (renaming a column will currently lose its data).</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="413"/>
+      <location filename="../../../CommandCreateBom.py" line="416"/>
       <source>Any column (custom or not), can be deleted by pressing the Delete key</source>
       <translation type="unfinished">Any column (custom or not), can be deleted by pressing the Delete key</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="415"/>
+      <location filename="../../../CommandCreateBom.py" line="418"/>
       <source>Export</source>
       <translation>エクスポート</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="422"/>
+      <location filename="../../../CommandCreateBom.py" line="425"/>
       <source>The exported file format can be customized in the Spreadsheet workbench preferences</source>
       <translation type="unfinished">The exported file format can be customized in the Spreadsheet workbench preferences</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="401"/>
+      <location filename="../../../CommandCreateBom.py" line="404"/>
       <source>Auto columns :  (Index, Quantity, Name...) are populated automatically. Any modification you make will be overridden. These columns cannot be renamed.</source>
       <translation>自動列: (インデックス、数量、名前...) が自動的に入力されます。変更はすべて上書きされます。これらの列の名前は変更できません。</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="84"/>
+      <location filename="../../../CommandInsertNewPart.py" line="87"/>
       <source>Part name</source>
       <translation>パーツ名</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="89"/>
+      <location filename="../../../CommandInsertNewPart.py" line="92"/>
       <source>Part</source>
       <translation>パーツ</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="94"/>
+      <location filename="../../../CommandInsertNewPart.py" line="97"/>
       <source>Create part in new file</source>
       <translation>新しいファイルにパーツを作成</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="101"/>
+      <location filename="../../../CommandInsertNewPart.py" line="104"/>
       <source>Joint new part origin</source>
       <translation>ジョイントの新しいパーツの原点</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="135"/>
+      <location filename="../../../CommandInsertNewPart.py" line="140"/>
+      <source>If the new document is not saved the new part cannot be linked in the assembly.</source>
+      <translation type="unfinished">If the new document is not saved the new part cannot be linked in the assembly.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandInsertNewPart.py" line="141"/>
       <source>Save Document</source>
       <translation>ドキュメントを保存</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="137"/>
+      <location filename="../../../CommandInsertNewPart.py" line="143"/>
       <source>Save</source>
       <translation>保存</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="140"/>
-      <source>Do not link</source>
-      <translation type="unfinished">Do not link</translation>
+      <location filename="../../../CommandInsertNewPart.py" line="146"/>
+      <source>Do not Link</source>
+      <translation type="unfinished">Do not Link</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="477"/>
+      <location filename="../../../CommandCreateSimulation.py" line="483"/>
       <source>Enter your formula...</source>
       <translation>数式を入力してください...</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="530"/>
-      <source>In capital are variables that you need to replace with actual values. More details about each example in it's tooltip.</source>
-      <translation>大文字は実際の値に置き換える必要がある変数です。ツールチップ内に各例の詳しい説明があります。</translation>
+      <location filename="../../../CommandCreateSimulation.py" line="536"/>
+      <source>In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</source>
+      <translation type="unfinished">In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="533"/>
+      <location filename="../../../CommandCreateSimulation.py" line="539"/>
       <source> - Linear: C + VEL*time</source>
       <translation> - 1次方程式: C + VEL*time</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="535"/>
+      <location filename="../../../CommandCreateSimulation.py" line="541"/>
       <source> - Quadratic: C + VEL*time + ACC*time^2</source>
       <translation> - 2次方程式: C + VEL*time + ACC*time^2</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="538"/>
+      <location filename="../../../CommandCreateSimulation.py" line="544"/>
       <source> - Harmonic: C + AMP*sin(VEL*time - PHASE)</source>
       <translation> - 調波: C + AMP*sin(VEL*time - PHASE)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="541"/>
+      <location filename="../../../CommandCreateSimulation.py" line="547"/>
       <source> - Exponential: C*exp(time/TIMEC)</source>
       <translation> - 指数: C*exp(time/TIMEC)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="547"/>
+      <location filename="../../../CommandCreateSimulation.py" line="553"/>
       <source> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</source>
       <translation> - 平滑ステップ: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="554"/>
+      <location filename="../../../CommandCreateSimulation.py" line="560"/>
       <source> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</source>
       <translation> - 平滑方形インパルス：(H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="561"/>
+      <location filename="../../../CommandCreateSimulation.py" line="567"/>
       <source> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</source>
       <translation> - 平滑ランプトップインパルス: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="571"/>
+      <location filename="../../../CommandCreateSimulation.py" line="577"/>
       <source>C is a constant offset.
 VEL is a velocity or slope or gradient of the straight line.</source>
       <translation>Cは定数オフセットです。
 VELは速度、または直線の傾き、勾配です。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="579"/>
+      <location filename="../../../CommandCreateSimulation.py" line="585"/>
       <source>C is a constant offset.
 VEL is the velocity or slope or gradient of the straight line.
 ACC is the acceleration or coefficient of the second order. The function is a parabola.</source>
@@ -407,7 +417,7 @@ VELは速度、または直線の傾き、勾配です。
 ACCは加速度、または2次の係数です。この関数は放物線です。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="588"/>
+      <location filename="../../../CommandCreateSimulation.py" line="594"/>
       <source>C is a constant offset.
 AMP is the amplitude of the sine wave.
 VEL is the angular velocity in radians per second.
@@ -418,14 +428,14 @@ VELはラジアン/秒単位の角速度です。
 PHASEは正弦波の位相です。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="595"/>
+      <location filename="../../../CommandCreateSimulation.py" line="601"/>
       <source>C is a constant.
 TIMEC is the time constant of the exponential function.</source>
       <translation>Cは定数です。
 TIMECは指数関数の時定数です。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="603"/>
+      <location filename="../../../CommandCreateSimulation.py" line="609"/>
       <source>L1 is step level before time = T0.
 L2 is step level after time = T0.
 SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</source>
@@ -434,7 +444,7 @@ L2は時間 = T0より後のステップ値です。
 SLOPE は時間 = T0付近でのL1とL2間の遷移の勾配を定義します。値が大きいほど角の鋭いステップになります。SLOPE = 1000以上が適しています。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="612"/>
+      <location filename="../../../CommandCreateSimulation.py" line="618"/>
       <source>H is the height of the impulse.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -445,7 +455,7 @@ T2はインパルスの終了時間です。
 SLOPEは時間 = T1とT2付近での0とHの間の遷移の勾配を定義します。値が大きいほど角の鋭いインパルスになります。SLOPE = 1000以上が適しています。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="623"/>
+      <location filename="../../../CommandCreateSimulation.py" line="629"/>
       <source>This is similar to the square impulse but the top has a sloping ramp. It is good for building a smooth piecewise linear function by adding a series of these.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -460,13 +470,13 @@ H2はランプの終了時のT2の高さです。
 SLOPEはそれぞれ時間 = T1とT2付近での、0とH1の間、またH2から0への遷移の勾配を定義します。値が大きいほど角の鋭いインパルスになります。SLOPE = 1000以上が適しています。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="661"/>
-      <location filename="../../../CommandCreateSimulation.py" line="678"/>
+      <location filename="../../../CommandCreateSimulation.py" line="667"/>
+      <location filename="../../../CommandCreateSimulation.py" line="684"/>
       <source>Help</source>
       <translation>ヘルプ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="676"/>
+      <location filename="../../../CommandCreateSimulation.py" line="682"/>
       <source>Hide help</source>
       <translation>ヘルプを非表示</translation>
     </message>
@@ -520,14 +530,75 @@ SLOPEはそれぞれ時間 = T1とT2付近での、0とH1の間、またH2から
     </message>
     <message>
       <location filename="../../../JointObject.py" line="221"/>
-      <source>This is the local coordinate system within Reference1's object that will be used for the joint.</source>
-      <translation>ジョイントに使用される Reference1 のオブジェクト内のローカル座標系です。</translation>
+      <source>This is the local coordinate system within Reference1's object that will be used for the joint</source>
+      <translation type="unfinished">This is the local coordinate system within Reference1's object that will be used for the joint</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="233"/>
+      <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement</source>
+      <translation type="unfinished">This prevents Placement1 from recomputing, enabling custom positioning of the placement</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="245"/>
       <location filename="../../../JointObject.py" line="516"/>
-      <source>This is the attachment offset of the first connector of the joint.</source>
-      <translation>ジョイントの1番目のコネクターのアタッチメント・オフセットです。</translation>
+      <source>This is the attachment offset of the first connector of the joint</source>
+      <translation type="unfinished">This is the attachment offset of the first connector of the joint</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="267"/>
+      <source>This is the local coordinate system within Reference2's object that will be used for the joint</source>
+      <translation type="unfinished">This is the local coordinate system within Reference2's object that will be used for the joint</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="279"/>
+      <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement</source>
+      <translation type="unfinished">This prevents Placement2 from recomputing, enabling custom positioning of the placement</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="291"/>
+      <location filename="../../../JointObject.py" line="527"/>
+      <source>This is the attachment offset of the second connector of the joint</source>
+      <translation type="unfinished">This is the attachment offset of the second connector of the joint</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="328"/>
+      <source>Enable the minimum length limit of the joint</source>
+      <translation type="unfinished">Enable the minimum length limit of the joint</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="341"/>
+      <source>Enable the maximum length limit of the joint</source>
+      <translation type="unfinished">Enable the maximum length limit of the joint</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="354"/>
+      <source>Enable the minimum angle limit of the joint</source>
+      <translation type="unfinished">Enable the minimum angle limit of the joint</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="367"/>
+      <source>Enable the maximum angle limit of the joint</source>
+      <translation type="unfinished">Enable the maximum angle limit of the joint</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="380"/>
+      <source>This is the minimum limit for the length between both coordinate systems (along their z-axis)</source>
+      <translation type="unfinished">This is the minimum limit for the length between both coordinate systems (along their z-axis)</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="392"/>
+      <source>This is the maximum limit for the length between both coordinate systems (along their z-axis)</source>
+      <translation type="unfinished">This is the maximum limit for the length between both coordinate systems (along their z-axis)</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="404"/>
+      <source>This is the minimum limit for the angle between both coordinate systems (between their x-axis)</source>
+      <translation type="unfinished">This is the minimum limit for the angle between both coordinate systems (between their x-axis)</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="416"/>
+      <source>This is the maximum limit for the angle between both coordinate systems (between their x-axis)</source>
+      <translation type="unfinished">This is the maximum limit for the angle between both coordinate systems (between their x-axis)</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="255"/>
@@ -535,35 +606,14 @@ SLOPEはそれぞれ時間 = T1とT2付近での、0とH1の間、またH2から
       <translation>ジョイントの2つ目の参照</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="267"/>
-      <source>This is the local coordinate system within Reference2's object that will be used for the joint.</source>
-      <translation>ジョイントに使用される Reference2 のオブジェクト内のローカル座標系です。</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="291"/>
-      <location filename="../../../JointObject.py" line="527"/>
-      <source>This is the attachment offset of the second connector of the joint.</source>
-      <translation>ジョイントの2番目のコネクターのアタッチメント・オフセットです。</translation>
-    </message>
-    <message>
       <location filename="../../../JointObject.py" line="435"/>
       <source>The first object of the joint</source>
       <translation>ジョイントの1つ目のオブジェクト</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="233"/>
-      <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement.</source>
-      <translation>Placement1 の再計算はされなくなり、カスタムでの位置設定が可能になります。</translation>
-    </message>
-    <message>
       <location filename="../../../JointObject.py" line="455"/>
       <source>The second object of the joint</source>
       <translation>ジョイントの2つ目のオブジェクト</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="279"/>
-      <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement.</source>
-      <translation>Placement2 の再計算はされなくなり、カスタムでの位置設定が可能になります。</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="304"/>
@@ -576,113 +626,73 @@ SLOPEはそれぞれ時間 = T1とT2付近での、0とH1の間、またH2から
       <translation>ジョイントの2つ目の距離。ギアジョイントでだけ2つ目の半径を格納するために使用されます。</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="328"/>
-      <source>Enable the minimum length limit of the joint.</source>
-      <translation>ジョイントの最小長さ制限を有効にします。</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="341"/>
-      <source>Enable the maximum length limit of the joint.</source>
-      <translation>ジョイントの最大長さ制限を有効にします。</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="354"/>
-      <source>Enable the minimum angle limit of the joint.</source>
-      <translation>ジョイントの最小角度制限を有効にします。</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="367"/>
-      <source>Enable the minimum length of the joint.</source>
-      <translation>ジョイントの最小長さを有効にします。</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="380"/>
-      <source>This is the minimum limit for the length between both coordinate systems (along their Z axis).</source>
-      <translation>両座標系の間の (Z軸に方向の) 長さの下限です。</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="392"/>
-      <source>This is the maximum limit for the length between both coordinate systems (along their Z axis).</source>
-      <translation>両座標系の間の (Z軸に方向の) 長さの上限です。</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="404"/>
-      <source>This is the minimum limit for the angle between both coordinate systems (between their X axis).</source>
-      <translation>両座標系の間の (X軸間の) 角度の下限です。</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="416"/>
-      <source>This is the maximum limit for the angle between both coordinate systems (between their X axis).</source>
-      <translation>両座標系の間の (X軸間の) 角度の上限です。</translation>
-    </message>
-    <message>
       <location filename="../../../JointObject.py" line="469"/>
       <source>The {order} reference of the joint</source>
       <translation>ジョイントの {order} 番目の参照</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1027"/>
+      <location filename="../../../JointObject.py" line="1035"/>
       <source>The object to ground</source>
       <translation>接地オブジェクト</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="254"/>
-      <location filename="../../../CommandCreateView.py" line="291"/>
+      <location filename="../../../CommandCreateView.py" line="261"/>
+      <location filename="../../../CommandCreateView.py" line="298"/>
       <source>The objects moved by the move</source>
       <translation>運動によって移動するオブジェクト</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="266"/>
+      <location filename="../../../CommandCreateView.py" line="273"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>これは運動の動きです。終了位置は開始位置 * この位置の結果となります。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="275"/>
+      <location filename="../../../CommandCreateView.py" line="282"/>
       <source>The type of the move</source>
       <translation>運動のタイプ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="110"/>
+      <location filename="../../../CommandCreateSimulation.py" line="113"/>
       <source>Simulation start time.</source>
       <translation>シミュレーションの開始時間</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="122"/>
+      <location filename="../../../CommandCreateSimulation.py" line="125"/>
       <source>Simulation end time.</source>
       <translation>シミュレーションの終了時間</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="134"/>
+      <location filename="../../../CommandCreateSimulation.py" line="137"/>
       <source>Simulation time step for output.</source>
       <translation>出力のシミュレーション時間刻み</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="146"/>
+      <location filename="../../../CommandCreateSimulation.py" line="149"/>
       <source>Integration global error tolerance.</source>
       <translation>グローバルな誤差許容値の積分値</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="158"/>
+      <location filename="../../../CommandCreateSimulation.py" line="161"/>
       <source>Frames Per Second.</source>
       <translation>1秒あたりのフレーム数</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="210"/>
+      <location filename="../../../CommandCreateSimulation.py" line="213"/>
       <source>The number of decimals to use for calculated texts</source>
       <translation>計算結果テキストで使用する小数点以下桁数</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="307"/>
+      <location filename="../../../CommandCreateSimulation.py" line="313"/>
       <source>The joint that is moved by the motion</source>
       <translation>運動によって動作するジョイント</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="319"/>
+      <location filename="../../../CommandCreateSimulation.py" line="325"/>
       <source>This is the formula of the motion. For example '1.0*time'.</source>
       <translation>これが運動式です。例えば「1.0*time」となります。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="328"/>
+      <location filename="../../../CommandCreateSimulation.py" line="334"/>
       <source>The type of the motion</source>
       <translation>運動のタイプ</translation>
     </message>
@@ -892,23 +902,23 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointScrew</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="350"/>
+      <location filename="../../../CommandCreateJoint.py" line="351"/>
       <source>Screw Joint</source>
       <translation type="unfinished">Screw Joint</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="357"/>
+      <location filename="../../../CommandCreateJoint.py" line="358"/>
       <source>Creates a screw joint that links a part with a sliding joint to a part with a revolute joint</source>
       <translation type="unfinished">Creates a screw joint that links a part with a sliding joint to a part with a revolute joint</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="362"/>
+      <location filename="../../../CommandCreateJoint.py" line="363"/>
       <source>Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.</source>
       <translation>回転ジョイントとスライドジョイントと同じ座標系を選択します。ピッチ半径によって回転スクリューとスライドするパーツの間の移動比が定義されます。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="392"/>
-      <location filename="../../../CommandCreateJoint.py" line="422"/>
+      <location filename="../../../CommandCreateJoint.py" line="393"/>
+      <location filename="../../../CommandCreateJoint.py" line="423"/>
       <source>Select the same coordinate systems as the revolute joints.</source>
       <translation>回転ジョイントと同じ座標系を選択してください。</translation>
     </message>
@@ -916,17 +926,17 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointGearBelt</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="441"/>
+      <location filename="../../../CommandCreateJoint.py" line="442"/>
       <source>Gears/Belt Joint</source>
       <translation type="unfinished">Gears/Belt Joint</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="447"/>
+      <location filename="../../../CommandCreateJoint.py" line="448"/>
       <source>Creates a gears or belt joint that links 2 rotating gears together</source>
       <translation type="unfinished">Creates a gears or belt joint that links 2 rotating gears together</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="452"/>
+      <location filename="../../../CommandCreateJoint.py" line="453"/>
       <source>Select the same coordinate systems as the revolute joints.</source>
       <translation>回転ジョイントと同じ座標系を選択してください。</translation>
     </message>
@@ -1228,17 +1238,17 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointFixed</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="76"/>
+      <location filename="../../../CommandCreateJoint.py" line="77"/>
       <source>Fixed Joint</source>
       <translation type="unfinished">Fixed Joint</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="83"/>
+      <location filename="../../../CommandCreateJoint.py" line="84"/>
       <source>1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation</source>
       <translation type="unfinished">1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="89"/>
+      <location filename="../../../CommandCreateJoint.py" line="90"/>
       <source>2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.</source>
       <translation type="unfinished">2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.</translation>
     </message>
@@ -1246,12 +1256,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointRevolute</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="110"/>
+      <location filename="../../../CommandCreateJoint.py" line="111"/>
       <source>Revolute Joint</source>
       <translation type="unfinished">Revolute Joint</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="117"/>
+      <location filename="../../../CommandCreateJoint.py" line="118"/>
       <source>Creates a revolute joint allowing rotation around a single axis between selected parts</source>
       <translation type="unfinished">Creates a revolute joint allowing rotation around a single axis between selected parts</translation>
     </message>
@@ -1259,12 +1269,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointCylindrical</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="135"/>
+      <location filename="../../../CommandCreateJoint.py" line="136"/>
       <source>Cylindrical Joint</source>
       <translation type="unfinished">Cylindrical Joint</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="142"/>
+      <location filename="../../../CommandCreateJoint.py" line="143"/>
       <source>Creates a cylindrical joint that allows rotation around and translation along a single axis between assembled parts</source>
       <translation type="unfinished">Creates a cylindrical joint that allows rotation around and translation along a single axis between assembled parts</translation>
     </message>
@@ -1272,12 +1282,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointSlider</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="160"/>
+      <location filename="../../../CommandCreateJoint.py" line="161"/>
       <source>Slider Joint</source>
       <translation type="unfinished">Slider Joint</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="167"/>
+      <location filename="../../../CommandCreateJoint.py" line="168"/>
       <source>Creates a slider joint that allows linear movement along a single axis, but restricts rotation between selected parts</source>
       <translation type="unfinished">Creates a slider joint that allows linear movement along a single axis, but restricts rotation between selected parts</translation>
     </message>
@@ -1285,12 +1295,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointBall</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="185"/>
+      <location filename="../../../CommandCreateJoint.py" line="186"/>
       <source>Ball Joint</source>
       <translation type="unfinished">Ball Joint</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="192"/>
+      <location filename="../../../CommandCreateJoint.py" line="193"/>
       <source>Creates a ball joint that connects parts at a point, allowing unrestricted movement as long as the connection points remain in contact</source>
       <translation type="unfinished">Creates a ball joint that connects parts at a point, allowing unrestricted movement as long as the connection points remain in contact</translation>
     </message>
@@ -1298,17 +1308,17 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointDistance</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="210"/>
+      <location filename="../../../CommandCreateJoint.py" line="211"/>
       <source>Distance Joint</source>
       <translation type="unfinished">Distance Joint</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="217"/>
+      <location filename="../../../CommandCreateJoint.py" line="218"/>
       <source>Creates a distance joint that fixes the distance between the selected objects</source>
       <translation type="unfinished">Creates a distance joint that fixes the distance between the selected objects</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="223"/>
+      <location filename="../../../CommandCreateJoint.py" line="224"/>
       <source>Creates one of several different joints based on the selectionFor example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.</source>
       <translation type="unfinished">Creates one of several different joints based on the selectionFor example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.</translation>
     </message>
@@ -1316,12 +1326,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointParallel</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="241"/>
+      <location filename="../../../CommandCreateJoint.py" line="242"/>
       <source>Parallel Joint</source>
       <translation type="unfinished">Parallel Joint</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="248"/>
+      <location filename="../../../CommandCreateJoint.py" line="249"/>
       <source>Creates a parallel joint that makes the Z-axis of the selected coordinate systems parallel</source>
       <translation type="unfinished">Creates a parallel joint that makes the Z-axis of the selected coordinate systems parallel</translation>
     </message>
@@ -1329,12 +1339,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointPerpendicular</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="268"/>
+      <location filename="../../../CommandCreateJoint.py" line="269"/>
       <source>Perpendicular Joint</source>
       <translation type="unfinished">Perpendicular Joint</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="275"/>
+      <location filename="../../../CommandCreateJoint.py" line="276"/>
       <source>Creates a perpendicular joint that makes the Z-axis of the selected coordinate systems perpendicular</source>
       <translation type="unfinished">Creates a perpendicular joint that makes the Z-axis of the selected coordinate systems perpendicular</translation>
     </message>
@@ -1342,12 +1352,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointAngle</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="293"/>
+      <location filename="../../../CommandCreateJoint.py" line="294"/>
       <source>Angle Joint</source>
       <translation type="unfinished">Angle Joint</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="300"/>
+      <location filename="../../../CommandCreateJoint.py" line="301"/>
       <source>Creates an angle joint that fixes the angle between the Z-axis of the selected coordinate systems</source>
       <translation type="unfinished">Creates an angle joint that fixes the angle between the Z-axis of the selected coordinate systems</translation>
     </message>
@@ -1355,17 +1365,17 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointRackPinion</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="320"/>
+      <location filename="../../../CommandCreateJoint.py" line="321"/>
       <source>Rack and Pinion Joint</source>
       <translation type="unfinished">Rack and Pinion Joint</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="327"/>
+      <location filename="../../../CommandCreateJoint.py" line="328"/>
       <source>Creates a rack and pinion joint that links a part with a sliding joint to a part with a revolute joint</source>
       <translation type="unfinished">Creates a rack and pinion joint that links a part with a sliding joint to a part with a revolute joint</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="332"/>
+      <location filename="../../../CommandCreateJoint.py" line="333"/>
       <source>Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.</source>
       <translation type="unfinished">Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.</translation>
     </message>
@@ -1373,12 +1383,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointGears</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="380"/>
+      <location filename="../../../CommandCreateJoint.py" line="381"/>
       <source>Gears Joint</source>
       <translation type="unfinished">Gears Joint</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="387"/>
+      <location filename="../../../CommandCreateJoint.py" line="388"/>
       <source>Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.</source>
       <translation type="unfinished">Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.</translation>
     </message>
@@ -1386,12 +1396,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointBelt</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="410"/>
+      <location filename="../../../CommandCreateJoint.py" line="411"/>
       <source>Belt Joint</source>
       <translation type="unfinished">Belt Joint</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="417"/>
+      <location filename="../../../CommandCreateJoint.py" line="418"/>
       <source>Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.</source>
       <translation type="unfinished">Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.</translation>
     </message>
@@ -1399,12 +1409,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_ToggleGrounded</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="485"/>
+      <location filename="../../../CommandCreateJoint.py" line="486"/>
       <source>Toggle Grounded</source>
       <translation type="unfinished">Toggle Grounded</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="492"/>
+      <location filename="../../../CommandCreateJoint.py" line="493"/>
       <source>Toggles the grounding of a part.
 Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</source>
       <translation type="unfinished">Toggles the grounding of a part.

@@ -124,6 +124,9 @@ public:
     bool isDynamicCounterbore(const std::string &thread, const std::string &holeCutType);
     bool isDynamicCountersink(const std::string &thread, const std::string &holeCutType);
 
+    Base::Vector3d guessNormalDirection(const TopoShape& profileshape) const;
+    TopoShape findHoles(std::vector<TopoShape> &holes, const TopoShape& profileshape, const TopoDS_Shape& protohole) const;
+
 protected:
     void onChanged(const App::Property* prop) override;
     void setupObject() override;
@@ -254,9 +257,7 @@ private:
     void findClosestDesignation();
     void rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, TopoDS_Shape& helixShape) const;
     gp_Vec computePerpendicular(const gp_Vec&) const;
-    Base::Vector3d guessNormalDirection(const TopoShape& profileshape) const;
     TopoDS_Shape makeThread(const gp_Vec&, const gp_Vec&, double);
-    TopoShape findHoles(std::vector<TopoShape> &holes, const TopoShape& profileshape, const TopoDS_Shape& protohole) const;
 
     // helpers for nlohmann json
     friend void from_json(const nlohmann::json &j, CounterBoreDimension &t);
